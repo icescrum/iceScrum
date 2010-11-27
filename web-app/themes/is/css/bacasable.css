@@ -1,0 +1,416 @@
+/*
+ * Copyright (c) 2010 iceScrum Technologies.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Stéphane Maldini (stephane.maldini@icescrum.com)
+ * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Damien Vitrac (damien@oocube.com)
+ *
+ */
+
+/*/////////////////////////////
+// Tou
+/////////////////////////////*/
+
+#dropmenu .content-help {
+    padding:6px 8px;
+    width:300px;
+}
+
+.ui-autocomplete li {
+    list-style:none;
+}
+
+#main .backlog {
+    height:98%;
+}
+
+.ui-dialog {
+    padding:0;
+}
+
+.ui-selectmenu-menu {
+    z-index:1010;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    padding:0;
+}
+
+.no-titlebar .ui-dialog-titlebar {
+    display:none;
+}
+
+body {
+    height:100%;
+    line-height:20px;
+    text-align:left;
+    width:100%;
+}
+body, html {
+    height:100%;
+    overflow:auto;
+    overflow-y:hidden;
+}
+
+.chart-container {
+    height:90%;
+}
+
+.ui-draggable {
+    cursor:move;
+}
+
+.ui-selectee {
+    cursor:pointer;
+}
+
+.kanban-col-0 .postit-story{
+    cursor:pointer;
+}
+
+/*/////////////////////////////
+// Release Plan                        releaseSelector
+/////////////////////////////*/
+.drap-container {
+    height:15px;
+}
+
+.drap {
+    background-position:0 0;
+    background-repeat:no-repeat;
+    display:block;
+    float:left;
+    height:15px;
+    line-height:15px;
+    margin:2px 0 2px 8px;
+    padding:0 0 0 25px;
+}
+
+.date-end {
+    background-position:0 -15px;
+}
+
+.sprint-dropzone {
+    height:100%;
+    width:100%;
+}
+
+
+
+
+/*/////////////////////////////
+// jQuery DND plugin
+/////////////////////////////*/
+.dnd-hoverclass {
+	background-color:yellow;
+}
+
+.dnd-drophelper {
+	position:absolute;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	overflow:hidden;
+	z-index:1000;
+    text-align:justify;
+}
+.drophelper-content {
+    text-align:center;
+    position:relative;
+    top:-50%;
+    left:-50%;
+    color:white;
+    font-weight:bolder;
+    font-size:20px;
+    text-shadow:1px 1px 2px black;
+}
+.modal-background {
+    filter : alpha(opacity=20);
+    -ms-filter: alpha(opacity=20);
+    moz-opacity:0.2;
+    opacity:0.2;
+    background-color:black;
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+}
+
+/*/////////////////////////////
+// timeline View
+/////////////////////////////*/
+
+.label-timeline-release {
+    margin-left:10px;
+}
+
+.label-timeline-sprint {
+    margin-left:2px;
+}
+
+.timeline-copyright {
+    display:none;
+}
+
+.timeline-sprint, .timeline-release {
+    margin-top:50px;
+}
+
+.label-timeline-release, .label-timeline-sprint {
+    margin-top:20px;
+    font:"12px "Trebuchet MS",Verdana,Geneva,Arial,Helvetica,sans-serif";
+}
+
+.label-timeline-sprint {
+    z-index:44;
+}
+
+.timeline-startproject,.small-timeline-startproject {
+    display:none;
+}
+
+
+.label-timeline-sprint {
+    float:left;
+    display:inline-block;
+}
+
+.timeline-band-layer-inner{
+    z-index:1;
+}
+
+
+/*//////////////////////////////
+// Postit
+//////////////////////////////*/
+
+.mini-value {
+    font-size:14px;
+    font-weight:bold;
+}
+
+.text-state {
+    margin-left:5px;
+}
+
+.editable-hover {
+    color:#4382BD;
+    cursor:pointer;
+    background:#fff;
+}
+
+.mini-value form {
+    margin-left:40px;
+}
+
+
+.mini-value.editable form {
+    margin-left:0px;
+}
+
+.mini-value.estimate:hover {
+    background-color:#FFF;
+    cursor:pointer;
+}
+
+/*//////////////////////////////
+// Divers 
+//////////////////////////////*/
+.break-word {
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+.table {
+    table-layout:fixed;
+}
+
+.table.kanban {
+    table-layout:auto;
+}
+
+
+.choose {
+    height:80px;
+    display:block;
+    float:right;
+}
+.choose-item {
+   float:left;
+    cursor:pointer;
+   text-align:center;
+    margin:5px;
+    height:40px;
+}
+
+.choose-item .image {
+   background-color:red;
+   margin:auto;
+   height:25px;
+   width:25px;
+   display:block;
+}
+
+.choose .ui-selected .image {
+   background-color:green;
+}
+
+.icescrum .ui-selectable-helper{
+   z-index:10000 !important;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//  State Sprint
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.event-header-label .state {
+    display:inline;
+    font-weight:bold;
+}
+
+.event-header-label .state-inprogress {
+    color:#C1FF89;
+}
+
+.event-header-label .state-done {
+    color:#C1FF89;
+    text-shadow:0px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//  input File
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.is-multifiles-filename {
+    display:none;
+    width:16em;
+}
+
+.is-multifiles-select {
+    height:24px;
+    padding:0;
+    float:left;
+    clear:both;
+}
+
+.is-multifiles-select .is-progressbar {
+    float:right;
+    height:18px;
+    position:relative;
+    width:120px;
+}
+
+.is-multifiles-select .is-progressbar .label {
+    line-height:18px;
+}
+
+.is-multifiles-form {
+    display:none;
+}
+
+.is-multifiles-button {
+    background-position:right;
+    display:inline;
+    position:absolute;
+    overflow:hidden;
+}
+
+.is-multifiles-filename .ui-icon-cancel{
+    float:left;
+    cursor:pointer;
+}
+
+.is-multifiles-filename a {
+    color:#444;
+}
+
+.field-input .is-multifiles-checkbox {
+    float:right;
+    position:relative;
+    margin:3px;
+    clear:both;
+}
+
+.field-input .is-multifiles-checkbox .ui-checkbox {
+    float:left;
+    margin:5px;
+}
+
+.panel .ui-button {
+    padding:3px;
+    margin:5px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//  Comments
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.comment-avatar {
+    float:right;
+}
+.comment-details {
+    clear:left;
+}
+comment-button-wrapper .button-s {
+    margin:auto;
+    margin-left:auto;
+    float:none!important;
+}
+.comment {
+    margin:5px;
+}
+
+.file-avatar .avatar {
+    float:left;
+    margin-left:-48px;
+    padding:2px;
+}
+
+.file-avatar .is-multifiles-select {
+    margin-top:5px;
+}
+
+#import-form .area-rich {
+    height:65px;
+    overflow:auto;
+    width:218px;
+}
+
+#import-form .field-area label {
+    height:60px;
+}
+
+table.jqplot-table-legend {
+    padding-top:10px;
+}
+
+td.jqplot-table-legend {
+    padding-right:2px;
+}

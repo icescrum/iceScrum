@@ -1,0 +1,350 @@
+/*
+ * Copyright (c) 2010 iceScrum Technologies.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Damien Vitrac (damien@oocube.com)
+ *
+ */
+
+/*
+////////////////////////////////////////
+//	Direction
+////////////////////////////////////////
+*/
+
+.ltr {
+	float: left;
+	padding: 5px 10px 5px 0;
+}
+
+.rtl {
+	float: right;
+	padding: 5px 0 5px 10px;
+}
+
+/*
+////////////////////////////////////////
+//	H1...H6.
+////////////////////////////////////////
+*/
+
+h1 {
+	font-size: 1.6em;
+	font-weight: bold;
+	padding: 10px 0;
+}
+
+h2 {
+	font-size: 1.5em;
+	font-weight: bold;
+	padding: 10px 0;
+}
+
+h3 {
+	font-size: 1.4em;
+	font-weight: bold;
+	padding: 10px 0 5px 0;
+}
+
+h4 {
+	font-size: 1.3em;
+	font-weight: bold;
+	padding: 20px 0;
+	text-decoration: underline;
+}
+
+h5 {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+h6 {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+h1+h2, h1+h3, h1+h4, h1+h5, h1+h6 {
+	padding-top: 5px;
+}
+
+h2+h3, h2+h4, h2+h5, h2+h6 {
+	padding-top: 5px;
+}
+
+h3+h4, h3+h5, h3+h6 {
+	padding-top: 5px;
+}
+
+h4>h5, h4>h6 {
+	padding-top: 5px;
+}
+
+h5>h6 {
+	padding-top: 5px;
+}
+
+/*
+////////////////////////////////////////
+//	Citation.
+////////////////////////////////////////
+*/
+
+q {
+	font-style: italic;
+}
+
+/*
+////////////////////////////////////////
+//	Paragraphe.
+////////////////////////////////////////
+*/
+
+p {
+	padding: 8px 0;
+}
+
+/*
+////////////////////////////////////////
+//	Emphase.
+////////////////////////////////////////
+*/
+
+em {
+	font-style: italic;
+}
+
+/*
+////////////////////////////////////////
+//	Gras.
+////////////////////////////////////////
+*/
+
+strong {
+	font-weight: bold;
+}
+
+/*
+////////////////////////////////////////
+//Barr�.
+////////////////////////////////////////
+*/
+
+s {
+	text-decoration: line-through;
+}
+
+/*
+////////////////////////////////////////
+//	Italique.
+////////////////////////////////////////
+*/
+
+samp {
+	font-style: italic;
+}
+
+/*
+////////////////////////////////////////
+//	Indice.
+////////////////////////////////////////
+*/
+
+sub {
+	font-size: 0.8em;
+	text-transform: uppercase;
+	vertical-align: sub;
+}
+
+/*
+////////////////////////////////////////
+//	Exposant.
+////////////////////////////////////////
+*/
+
+sup {
+	font-size: 0.8em;
+	text-transform: uppercase;
+	vertical-align: super;
+}
+
+/*
+////////////////////////////////////////
+//	Grand.
+////////////////////////////////////////
+*/
+
+big {
+	font-size: 1.2em;
+}
+
+/*
+////////////////////////////////////////
+//	Moyen.
+////////////////////////////////////////
+*/
+
+medium {
+	font-size: 1.1em;
+}
+
+/*
+////////////////////////////////////////
+//	Petit.
+////////////////////////////////////////
+*/
+
+small {
+	font-size: 0.8em;
+}
+
+/*
+////////////////////////////////////////
+//	Adresse.
+////////////////////////////////////////
+*/
+
+address {
+	
+}
+
+/*
+////////////////////////////////////////
+//	Acronyme.
+////////////////////////////////////////
+*/
+
+acronym {
+	border-bottom: 1px dotted #444;
+	cursor: help;
+}
+
+acronym:hover {
+	color: #94ad3c;
+	border-bottom: 1px dotted #94ad3c;
+}
+
+/*
+////////////////////////////////////////
+//	Abr�viation.
+////////////////////////////////////////
+*/
+
+abbr {
+	text-transform: uppercase;
+	color: #111;
+	font-style: italic;
+}
+
+/*
+////////////////////////////////////////
+//	Block.
+////////////////////////////////////////
+*/
+
+dl {
+}
+
+dl dt {
+	padding-top: 10px;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+dl dd {
+	padding: 0 20px;
+}
+
+/*
+////////////////////////////////////////
+//	Pre.
+////////////////////////////////////////
+*/
+
+pre {
+	display: block;
+	margin: 0;
+	padding: 0;	
+	padding: 5px 0;
+}
+
+/*
+////////////////////////////////////////
+//	Code.
+////////////////////////////////////////
+*/
+
+code {
+	margin: 0;
+	padding: 0;
+	font: 13px "Verdana", Geneva, Arial, Helvetica, sans-serif;
+	color: #6a7447;
+	letter-spacing: 1px;
+	cursor: text;
+}
+
+pre code {
+	display: block;
+	border: 1px solid #d1dda9;
+	padding: 10px;
+	background-color: #e8ecda;
+	border-radius: 5px;
+} 
+
+/*
+////////////////////////////////////////
+//	Lien.
+////////////////////////////////////////
+*/
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a.noline:hover{
+   text-decoration: none; 
+}
+
+/*
+////////////////////////////////////////
+//	Liste.
+////////////////////////////////////////
+*/
+
+ul, ol {
+	margin-left: 15px;	
+}
+
+ul, ol {
+	padding: 8px 0;
+}
+
+ul li {
+	padding: 5px 0;
+	list-style: circle;
+	list-style-type: disc;	
+}
+
+ol li {
+	list-style-type: decimal;
+	margin-left: 10px;
+	font-weight: bold;
+}

@@ -1,0 +1,1996 @@
+/*
+ * Copyright (c) 2010 iceScrum Technologies.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Stéphane Maldini (stephane.maldini@icescrum.com)
+ * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Damien Vitrac (damien@oocube.com)
+ *
+ */
+
+#application, #navigation, #footer {
+    height: 100%;
+}
+
+
+.window-fullscreen {
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    top: 40px;
+    z-index: 999;
+    bottom: 3px;
+}
+
+.is-logo {
+    position: relative;
+    width: 25px;
+    z-index: 997;
+}
+
+.is-logo a {
+    position: absolute;
+    display: block;
+    top: 6px;
+    left: 14px;
+    z-index: 999;
+    height: 17px;
+    width: 18px;
+    z-index: 999;
+}
+
+#is-logo {
+    text-indent: -6000em;
+    display: block;
+    height: 17px;
+    z-index: 1000;
+    width: 18px;
+    z-index: 999;
+}
+
+#window-title-bar-content-timeline .ui-selectmenu,#window-title-bar-content-releasePlan .ui-selectmenu,#window-title-bar-content-sprintBacklog .ui-selectmenu {
+    border: none;
+	background: 0 none;
+	font-weight: normal;
+	color: #FFFFFF;
+    display:inline-block;
+    float:left;
+}
+
+#window-title-bar-content-timeline .ui-selectmenu-menu li,#window-title-bar-content-releasePlan .ui-selectmenu-menu li,#window-title-bar-content-sprintBacklog .ui-selectmenu-menu li {
+    text-align:right;
+    padding-right:16px;
+}
+
+#window-title-bar-content-timeline .ui-selectmenu .ui-selectmenu-status,#window-title-bar-content-releasePlan .ui-selectmenu .ui-selectmenu-status,#window-title-bar-content-sprintBacklog .ui-selectmenu .ui-selectmenu-status {
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+    text-decoration:none;
+    font-weight: bold;
+    text-align:right;
+    margin-right:16px;
+}
+
+#team-details, #project-details {
+    position: relative;
+}
+
+.roles{
+   float:right;
+   width:170px;
+}
+
+li#li-roles{
+  padding-right:42px;
+}
+
+#team-details img, #project-details img {
+    left:211px;
+    padding:2px;
+    position:absolute;
+    top:1px;
+}
+
+.rich-content {
+    max-height:200px;
+    overflow:auto;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Main & local
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#main, #local {
+    position: absolute;
+    top: 40px;
+    bottom: 6px;
+}
+
+#main .main-content, #local .local-content {
+    bottom: 0;
+}
+
+#main {
+    right: 3px;
+    left: 269px;
+}
+
+#main .box, #main #main-content {
+    height: 100%;
+    position: relative;
+}
+
+#main .box .box-content, .window-fullscreen .box-content {
+    position:absolute;
+    top: 54px;
+    left: 0;
+    bottom: 0px;
+    right: 0;
+    overflow: auto;
+}
+
+#main .box-buttons-bar .box-content, .window-fullscreen .box-buttons-bar .box-content {
+    border-bottom-width: 0;
+    bottom: 25px;
+}
+
+#main .box .window-content-without-toolbar, .window-fullscreen .window-content-without-toolbar {
+    top: 26px;
+}
+
+#main .box .window-content-toolbar, .window-fullscreen .window-content-toolbar {
+    bottom: 26px;
+}
+
+#main .box .window-content-statusbar, .window-fullscreen .window-content-statusbar {
+    top: 52px;
+}
+
+#main .box #button-bar, .window-fullscreen #button-bar {
+    bottom:6px;
+    right:3px;
+    position: fixed;
+    left: 269px;
+    height: 20px;
+    border-width: 1px;
+    border-top-width:0;
+    padding: 4px 0 6px;
+    z-index:3;
+}
+
+.window-fullscreen #button-bar {
+    left: 3px;
+}
+
+#local {
+    left: 3px;
+	width: 258px;
+}
+
+#window-content-members td {
+    vertical-align: middle;
+}
+
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Navigation
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#navigation {
+	height: 38px;
+	background-repeat: repeat-x;
+}
+
+#navigation ul {
+	padding: 0;
+	padding: 0;
+}
+
+#navigation .navigation-content {
+	padding: 4px 0;
+	margin: 0;
+}
+
+#navigation .navigation-content .navigation-line {
+	float: left;
+	list-style: none;
+	padding-left: 5px;
+	list-style-type: none;
+}
+
+#navigation .navigation-content .text-only {
+    padding: 4px 0;
+}
+
+#navigation .navigation-content .separator {
+	background-position: right -93px;
+	background-repeat: no-repeat;
+	width: 2px;
+	height: 29px;
+	padding: 0;
+	margin: 0 8px;
+	padding-right: 4px;
+}
+
+#navigation .right {
+	position:absolute;
+    right:0;
+    top:0;
+}
+
+#navigation .right .navigation-content {
+	padding-right: 10px;
+}
+
+#navigation .right .navigation-line {
+	float: right;
+}
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Box
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.box .box-content, .box .box-navigation {
+	border-width: 0 1px;
+}
+
+.box .box-content-layout {
+    padding: 5px 10px;
+}
+
+.box .box-content {
+	border-bottom-width: 1px;
+}
+
+.box .resizable {
+    cursor:sw-resize;
+}
+
+.box .box-title {
+	display: block;
+	position: relative;
+	padding: 0;
+	margin: 0;
+	white-space: nowrap;
+}
+
+.box .box-title .content {
+	display: block;
+	height: 26px;
+	padding: 0 5px;
+	left: 0;
+	margin: 0 5px;
+	border: 0 none;
+	background-position: 0 -26px;
+}
+
+.box .box-title .start, .box .box-title .end {
+	width: 5px;
+	height: 26px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: block;
+}
+
+.box .box-title .end {
+	left: 100%;
+	margin-left: -5px;
+	background-position: -5px 0;
+}
+
+.box .box-title-buttons {
+    position: absolute;
+    right: 6px;
+    top: -1px;
+}
+
+.box .box-title-buttons li {
+    float: left;
+    list-style: none;
+    padding: 0 1px;
+    list-style-type: none;
+}
+
+.box .box-title-content {
+    padding:0;
+    padding-top:3px;
+    padding-bottom: 2px;
+    padding-right: 5px;
+    margin: 0;
+    position:absolute;
+    right:56px;
+    top:0;
+    height:20px;
+}
+
+.box .box-title-content li {
+    list-style: none;
+    padding:0;
+    list-style-type: none;
+    cursor:default;
+    display:inline-block;
+}
+
+.box .box-title-buttons .minimize, .box .box-title-buttons .maxicon, .box .box-title-buttons .close,
+    .box .box-title-buttons .help {
+    display: block;
+    height: 12px;
+    width: 12px;
+    float: left;
+    cursor: pointer;
+    text-indent: -6000em;
+}
+
+.box .box-title-buttons .minimize {
+    background-position: 0 0;
+}
+
+.box .box-title-buttons .maxicon {
+    background-position: -12px 0;
+}
+
+.box .box-title-buttons .close {
+    background-position: -24px 0;
+}
+
+.box .box-title-buttons .help {
+    background-position: -36px 0;
+}
+
+.box .box-navigation, .box .box-navigation ul {
+	padding: 0;
+	margin: 0;
+	padding-left: 2px;
+}
+
+.box .box-navigation .navigation-item {
+	float: left;
+	list-style: none;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	padding-left: 3px;
+}
+
+.box .box-navigation ul .navigation-right {
+    float: right;
+    padding: 2px;
+    list-style: none;
+    list-style-type: none;
+}
+
+.box .box-navigation ul .navigation-right-toolbar {
+    float: right;
+    list-style: none;
+    list-style-type: none;
+    margin-right:5px;
+}
+
+.box .box-navigation ul .navigation-right a {
+    float: right;
+}
+
+.box .box-navigation .separator {
+	background-position: right -93px;
+	background-repeat: no-repeat;
+	width: 2px;
+	height: 18px;
+	padding: 0;
+	margin: 0 3px;
+	padding-right: 4px;
+}
+
+.box .box-navigation .separator-s {
+	background-position: right -93px;
+	background-repeat: no-repeat;
+	width: 2px;
+	height: 10px;
+	padding: 0;
+	margin: 3px 3px;
+	padding-right: 4px;
+}
+
+.box .box-navigation ul .search, #main .box .box-navigation ul .search {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    float: right;
+    list-style: none;
+    list-style-type: none;
+}
+
+#main .box .box-navigation ul {
+    height: 24px;
+    border-width: 0 1px;
+}
+
+#main .box .box-navigation .ui-selectmenu-menu {
+    height: auto;
+    border-width: 1px;
+}
+
+.box .box-navigation ul .search-button {
+    display: block;
+    height: 28px;
+    width: 32px;
+    padding: 0;
+    margin: 0;
+    background-position: 0 -1px;
+}
+
+.box .box-navigation ul .active-search {
+    background-position: 0 -91px;
+}
+
+.box .box-navigation ul .search-button:hover,
+    .box .box-navigation ul .search-hover .search-button {
+    background-position: 0 -30px;
+}
+
+#dropmenu .search-content {
+    background-position: 0 -57px;
+    height: 33px;
+    width: 163px;
+}
+
+#dropmenu .search-content .input-content {
+    position: relative;
+}
+
+#dropmenu .search-content input {
+    position: absolute;
+    border: 0 none;
+    top: 7px;
+    left: 10px;
+    width: 140px;
+    background-position: -10px -64px;
+}
+
+.box .box-content .list {
+
+}
+
+.box .box-content .list li {
+	padding: 3px 5px;
+	border-bottom-width: 1px;
+}
+
+.box .box-content .list .last {
+	border-bottom-width: 0;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Main Box
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#main .box .box-navigation {
+	height: 28px;
+	background-position: 0 -38px;
+    position: absolute;
+    top: 26px;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+    z-index: 100;
+}
+
+.window-fullscreen .box-navigation {
+	height: 28px;
+	background-position: 0 -38px;
+    position: absolute;
+    top: 26px;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    z-index: 999;
+}
+
+#main .box .box-title {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+#main .box .resizable {
+    cursor:ne-resize;
+}
+
+#main .box .box-navigation ul, .window-fullscreen .box-navigation ul {
+	padding: 0 0 4px;
+}
+
+#main .box .box-navigation ul .navigation-item, .window-fullscreen .box-navigation ul .navigation-item {
+	padding-top: 5px;
+	padding-bottom: 4px;
+}
+
+#main .box .form-button-bar-fixed {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 25px;
+    z-index: 999;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Local Box
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#local .box .box-navigation {
+	height: 24px;
+	background-position: 0 -66px;
+    border-width: 0 1px;
+}
+
+#local .box-navigation ul {
+	padding: 0;
+}
+
+#local .box .box-navigation li {
+	padding-top: 3px;
+	padding-bottom: 2px;
+}
+
+#local .box {
+    margin-top: 5px;
+}
+
+#local .box .resizable {
+    cursor:ne-resize;
+}
+
+#local .box-first {
+    margin-top: 0;
+}
+
+#local .box-simple {
+    border-width: 1px;
+    margin-bottom: 5px;
+}
+
+#local .box-simple-last {
+    margin-bottom: 0;
+}
+
+#local .box-simple ul {
+    padding: 6px;
+    margin: 0;
+}
+
+#local .box-simple ul li {
+    padding: 0 42px 0 0;
+    margin: 0;
+    list-style-type: none;
+    list-style: none;
+}
+
+#local .view-postit {
+    padding: 0;
+    margin: 0;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Postit Rows
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.postit-row.ui-draggable-dragging {
+    border-width: 1px;
+    list-style:none outside none;
+    font-size:11px;
+    line-height:17px;
+    padding:3px 25px;
+}
+
+#local .postit-row {
+    padding-left: 25px;
+    position: relative;
+}
+
+.postit-row .postit-icon {
+    display: block;
+    height: 13px;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 15Px;
+}
+
+.postit-icon {
+    display: block;
+    height: 13px;
+    width: 15Px;
+    padding: 0;
+    margin: 0;
+}
+
+.postit-icon-yellow {
+	background-position: 0 0;
+}
+
+.postit-icon-blue {
+	background-position: -16px 0;
+}
+
+.postit-icon-orange {
+	background-position: -32px 0;
+}
+
+.postit-icon-green {
+	background-position: -48px 0;
+}
+
+.postit-icon-pink {
+	background-position: -64px 0;
+}
+
+.postit-icon-violet {
+	background-position: -80px 0;
+}
+
+.postit-icon-gray {
+	background-position: -96px 0;
+}
+
+.postit-icon-red {
+	background-position: -112px 0;
+}
+
+.postit-icon-bluelight {
+	background-position: -128px 0;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	View Table
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.view-table {
+	padding: 4px;
+}
+
+.view-table table {
+	width: 100%;
+	border-width: 1px;
+	padding: 0;
+	margin: 0;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	View Postit
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.view-postit {
+	padding: 4px;
+}
+
+.view-postit .postit,.view-postit .postit-placeholder  {
+	float: left;
+	margin: 1px;
+	width: 153px;
+	height: 129px;
+}
+
+.view-postit .postit-placeholder {
+    border-width: 1px;
+    margin: 0;
+}
+
+.view-postit .postit .postit-layout {
+    margin: 8px 6px 8px 7px;
+}
+
+.view-postit .table {
+	width: 100%;
+	border-width: 1px;
+	padding: 0;
+	margin: 0;
+}
+
+.view-postit .table td {
+	vertical-align: top;
+}
+
+
+/*
+/////////////////////////////////////////
+//  Postit.
+/////////////////////////////////////////
+*/
+
+.postit .postit-layout {
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 140px;
+	height: 95px;
+	text-align: center;
+	position: relative;
+	padding-top: 18px;
+}
+
+.postit .postit-id {
+	position: absolute;
+	top: 2px;
+	padding: 0;
+	margin: 0;
+	left: 8px;
+}
+
+.postit .postit-attachment,.postit-rect .postit-attachment, .postit .postit-comment,.postit-rect .postit-comment {
+    position: absolute;
+	padding: 0;
+	margin: 0;
+}
+
+.postit .postit-attachment{
+    bottom:4px;
+    left:25px;
+    height:15px;
+    width:15px;
+}
+
+.postit-rect .postit-attachment {
+    bottom:8px;
+    left:21px;
+    height:13px;
+    width:13px;
+}
+
+.postit .postit-comment{
+    bottom:4px;
+    left:6px;
+    height:15px;
+    width:15px;
+}
+
+.postit-rect .postit-comment {
+    bottom:8px;
+    left:5px;
+    height:15px;
+    width:15px;
+}
+
+.postit .postit-sortable {
+    cursor: move;
+}
+
+.postit .postit-label, .postit .postit-excerpt {
+	padding: 1px 10px;
+
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
+.postit .postit-ico {
+    display: block;
+    height: 19px;
+    width: 18px;
+    position: absolute;
+    top: 0;
+    left: 120px;
+}
+
+.postit .postit-yellow {
+	background-position: 0 0;
+}
+
+.postit .postit-blue {
+	background-position: -140px 0;
+}
+
+.postit .postit-orange {
+	background-position: -280px 0;
+}
+
+.postit .postit-green {
+	background-position: -420px 0;
+}
+
+.postit .postit-pink {
+	background-position: -560px 0;
+}
+
+.postit .postit-violet {
+	background-position: -700px 0;
+}
+
+.postit .postit-gray {
+	background-position: -840px 0;
+}
+
+.postit .postit-red {
+	background-position: -980px 0;
+}
+
+.postit .postit-bluelight {
+	background-position: -1120px 0;
+}
+
+
+.postit-feature .postit-excerpt {
+    padding-top: 6px;
+}
+
+.postit .state .text-state {
+    font-weight:bold;
+}
+
+/*
+/////////////////////////////////////////
+//  Postit Rect
+/////////////////////////////////////////
+*/
+
+.postit-rect {
+    width: 140px;
+	height: 75px;
+	margin: 1px;
+    padding: 6px 6px 8px 7px;
+    overflow: hidden;
+}
+
+.postit-rect .postit-ico {
+    display: block;
+    height: 19px;
+    width: 18px;
+    position: absolute;
+    top: 0;
+    left: 120px;
+}
+
+.postit-rect .postit-layout {
+	display: block;
+	padding: 0;
+	width: 140px;
+	height: 60px;
+	text-align: center;
+	position: relative;
+	padding-top: 18px;
+}
+
+.postit-rect .postit-id {
+	position: absolute;
+	top: 2px;
+	padding: 0;
+	margin: 0;
+	left: 8px;
+}
+
+.postit-rect .postit-sortable {
+    cursor: move;
+}
+
+.postit-rect .postit-label, .postit-rect .postit-excerpt {
+	padding: 0px 10px;
+	white-space: nowrap;
+}
+
+.postit-rect .postit-yellow {
+	background-position: 0 0;
+}
+
+.postit-rect .postit-blue {
+	background-position: -140px 0;
+}
+
+.postit-rect .postit-orange {
+	background-position: -280px 0;
+}
+
+.postit-rect .postit-green {
+	background-position: -420px 0;
+}
+
+.postit-rect .postit-pink {
+	background-position: -560px 0;
+}
+
+.postit-rect .postit-violet {
+	background-position: -700px 0;
+}
+
+.postit-rect .postit-gray {
+	background-position: -840px 0;
+}
+
+.postit-rect .postit-red {
+	background-position: -980px 0;
+}
+
+.postit-rect .postit-bluelight {
+	background-position: -1120px 0;
+}
+
+.postit-rect .state .text-state, .scrum-link {
+    font-weight:bold;
+}
+
+/*
+/////////////////////////////////////////
+//  Drop Menu
+/////////////////////////////////////////
+*/
+
+.postit .dropmenu-action, .postit-rect .dropmenu-action {
+    position: absolute;
+    top: 95px;
+    left: 118px;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.postit-rect .dropmenu-action {
+    top: 55px;
+}
+
+.dropmenu-action .dropmenu-arrow {
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: 13px;
+    height: 13px;
+    background-position: 0 0;
+    text-indent: -6000em;
+}
+
+.postit .dropmenu-action .dropmenu-hover .dropmenu-arrow {
+    background-position: -13px 0;
+}
+
+.dropmenu-action .dropmenu-content {
+    display: none;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	View Forms
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.view-forms {
+	padding: 0px 10px 10px 10px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Version
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#version {
+    position: absolute;
+    right: 8px;
+    bottom: 12px;
+    color: white;
+    padding: 0 10px;
+}
+
+#dropZone {
+    display: none !important;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Application Spinner
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#spinner-app {
+    display: none;
+    background-repeat: repeat-x;
+    height:38px;
+    position: absolute;
+    z-index: 996;
+    left: 0;
+    top: 0;
+    width: 125px;
+}
+
+#spinner-app .spinner-loading {
+    display: block;
+    height: 19px;
+    width: 115px;
+    line-height: 19px;
+    overflow: hidden;
+    text-align: center;
+    top: 9px;
+    left: 5px;
+    position: absolute;
+}
+
+.simple #spinner-app {
+    width: 100%;
+}
+
+.simple #spinner-app .spinner-loading {
+    margin: 0 auto;
+    position: relative;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Login Form
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#login_form {
+    width: 330px;
+    margin: 100px auto 20px auto;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Register Form
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#register-form {
+    width: 400px;
+    margin: 100px auto 20px auto;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	postit-ipsum
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.select-lorem {
+    height: 110Px;
+    position: relative;
+}
+
+.postit-ipsum {
+    position: absolute;
+    left: 340px;
+    top: -20px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Feature Color Select
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.featureColor {
+    float: left;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Wizard
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#wizard-left {
+    float: left;
+    width: 150px;
+    padding: 0;
+    padding-right: 10px;
+    margin: 0;
+}
+
+#cancelWizard {
+    margin-left:45px;
+    margin-top:10px;
+}
+
+#project-wizard .panel {
+    width: 560px;
+    padding: 0;
+    margin: 0;
+}
+
+.wizard-buttons {
+    bottom:10px;
+    position:absolute;
+    width:96%;
+}
+
+.wizard-buttons button {
+    margin-left:10px;
+}
+
+.wizard-commands {
+    display: block;
+    padding: 0;
+    margin: 5px 0 0;
+}
+
+.wizard-commands .next,.wizard-commands .prev {
+    float: right;
+}
+
+#project-wizard {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+.wizard #wizard-left #steps li {
+    list-style: none;
+    list-style-type: none;
+    display: block;
+    padding: 2px 0 3px 0;
+    margin: 0;
+}
+
+.wizard #steps {
+    padding: 0;
+    margin: 0;
+}
+
+.wizard #steps p {
+    padding: 0 5px;
+    margin: 0;
+    width: 120px;
+}
+
+.wizard #steps .current p {
+    display: block;
+    padding: 0 10px;
+    margin: 0;
+    width: 130px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Postit Details
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.postit-details .postit-details-information p,.postit-details-information .line .content, #version-tab p {
+    padding: 2px 0 4px 0;
+    margin: 0;
+}
+
+.postit-details .colset-2 .col2 {
+    width: 152px;
+    padding-top: 10px;
+}
+
+.postit-details .colset-2 .col1 {
+    width: 398px;
+}
+
+.postit-details-information .line .content {
+    float:left;
+    width:356px;
+    margin-left:4px;
+}
+
+.postit-details-information .line .content p {
+    background-image:none;
+}
+
+.postit-details-information .line {
+    float:left;
+    width:100%;
+}
+
+.postit-details-information .line strong {
+    float:left;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Dashboard List News
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.dashboard {
+    padding: 10px;
+}
+
+.dashboard .colset-2 .col1 {
+    width: 50%;
+}
+
+.dashboard panel-box-content {
+    max-height:200px;
+    overflow:auto;
+}
+
+.list-news {
+    padding: 0;
+    margin: 0;
+}
+
+.list-news .news-item {
+    background-position: 8px 4px;
+    background-repeat: no-repeat;
+    padding: 2px 0;
+    padding-left: 30px;
+}
+
+.list-news li, .list-comments li {
+    padding: 5px 0 7px 0;
+    list-style: none;
+    list-style-type: none;
+}
+
+.list-news li p, .list-comments li p {
+    padding: 0;
+    margin: 0;
+    line-height: 15px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Release Plan
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.view-release {
+    margin: 4px;
+    border-width: 0 1px;
+}
+
+.view-release .postit-rect {
+    margin: 1px auto;
+}
+
+.view-release .event-line-limiter {
+    width: 100%;
+    overflow: hidden;
+    position:relative;
+}
+
+.view-release .event-line-scroll {
+    display:none;
+    height: 25px;
+    border-top-width: 1px;
+    overflow:hidden;
+    width:100%;
+    cursor:move;
+    background-position:0 -38px;
+}
+.view-release .event-line-slider {
+    display:none;
+    height:25px;
+    margin:10px auto;
+}
+
+.view-release .event-line-sub {
+    margin-left:0;
+    position:absolute;
+    height:25px;
+    line-height: 20px;
+    left:0;
+    cursor:move;
+}
+
+.view-release .event-header .drap-container {
+    position: relative;
+}
+
+.view-release .event-header .dropmenu {
+    position: absolute;
+    left: 195px;
+    top: 2px;
+}
+
+.view-release .event-header-label {
+    cursor: pointer;
+}
+
+.event-header-label .event-header-velocity {
+    float:right;
+}
+
+.view-release .event-line-highlight {
+    background-position: 0 -83px;
+    border-width:0 1px;
+    height:25px;
+    position:absolute;
+    background-repeat: repeat-x;
+}
+
+.view-release .event-line-bar {
+    cursor: pointer;
+    height: 25px;
+}
+
+.view-release .event-line-barRight {
+    height:25px;
+    right:0;
+    top:0;
+    position:absolute;
+    width:20px;
+}
+
+.view-release .event-line-barLeft {
+    height:25px;
+    left:0;
+    top:0;
+    position:absolute;
+    width:20px;
+}
+
+.view-release .event-container {
+    float: left;
+    text-align: left;
+}
+
+.view-release .event-header {
+    padding:5px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    background-position: 0 -83px;
+    background-repeat: repeat-x;
+    line-height: 15px;
+}
+
+.view-release .event-content-list {
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    display:block;
+    position:relative;
+}
+
+.view-release .event-sub {
+    float:left;
+    line-height: 25px;
+    position: relative;
+    text-align: center;
+}
+.view-release .ui-drop-hover-postit-rect {
+    width: 150px;
+	height: 89px;
+    margin: 1px auto;
+    border-width: 1px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	About dialog
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#license {
+    color:black;
+}
+
+#license-tab .field-information {
+    border-width:1px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	kanban
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.kanban {
+    margin: 0;
+    padding: 0;
+}
+
+.kanban .kanban-col-0 {
+    width: 150px;
+}
+
+.kanban .kanban-col-2 {
+    min-width: 155px;
+}
+
+.kanban .kanban-col-1, .kanban .kanban-col-3 {
+    min-width: 155px;
+}
+
+.kanban .kanban-col-1, .kanban .kanban-col-2, .kanban .kanban-col-3 {
+    width:auto;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.kanban table.kanban {
+  width: 100%;
+}
+
+.kanban .kanban-cell {
+    white-space: normal;
+}
+
+.kanban th {
+  width: 500px;
+}
+
+.kanban-cell .postit, .kanban-cell .postit-rect {
+    float: left;
+}
+
+.kanban .ui-sortable .postit-rect .postit-label {
+    cursor: move;
+}
+
+.kanban .ui-sortable .ui-selectable-disabled .postit-label {
+    cursor: default;
+}
+
+.kanban .kanban-label {
+}
+
+.kanban .table-line td.kanban-cell {
+    padding: 4px 4px 6px
+}
+
+.kanban .postit-placeholder {
+    display: block;
+    width: 153px;
+	height: 89px;
+	margin: 0;
+    border-width: 1px;
+    float: left ;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Browse
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.browse .browse-list .ico {
+    float: left;
+    padding: 0px 7px 0 0;
+    width:28px;
+    height:28px;
+}
+
+.field-choose-state-hover{
+   background-color:#FFFAAE;
+}
+
+.browse .col1 .browse-list {
+    padding-left: 10px;
+    height:355px;
+}
+
+.browse .col2 .browse-list {
+    padding-left: 10px;
+    height:250px;
+}
+
+.browse .browse-list li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    list-style-type: none;
+}
+
+.browse .browse-list .browse-item  {
+    width: 169px;
+    padding-top: 4px;
+    padding-left: 4px;
+    margin: 3px;
+    cursor: pointer;
+    height: 32px;
+}
+
+.browse .browse-list p {
+    padding: 0;
+    margin: 0;
+    line-height: 13px;
+}
+
+.browse .colset-2 .col1 {
+    width: 25%;
+}
+
+.browse .colset-2 .col2 {
+    width: 75%;
+}
+
+.browse .browse-legend {
+    padding: 5px 0 2px;
+    padding-left: 6px;
+
+    margin: 0;
+    background-position: 0 -131px;
+    line-height: 14px;
+    border-bottom-width: 1px;
+    white-space: nowrap;
+}
+
+.browse .browse-content {
+    padding: 10px 20px;
+    height: 337px;
+}
+
+.browse .browse-content .browse-informations {
+    padding-bottom: 8px;
+    line-height: 16px;
+}
+
+.browse .browse-content .browse-informations .ico {
+    float: left;
+    padding: 7px 15px 0 0;
+    width: 80px;
+    height: 80px;
+}
+
+.browse .browse-content h4 {
+    padding: 6px 0;
+}
+
+.browse .browse-content .browse-member .browse-list li {
+    float: left;
+}
+
+.browse .col1 .bar-pagination {
+    margin: 0 10px;
+}
+
+.browse .browse-filter {
+    padding: 5px 10px;
+    margin: 0 10px;
+    border-bottom-width: 1px;
+}
+
+.browse .browse-filter input, .browse .browse-filter label {
+    float: left;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.browse .browse-filter label {
+    padding: 0 4px;
+    padding-left: 10px;
+}
+
+.browse .browse-filter input {
+    border-width: 1px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Chart Views
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#panel-chart-container .view-chart {
+    bottom:0;
+    left:0;
+    position:relative;
+    right:0;
+    top:0;
+    padding:5px;
+}
+
+.loading-chart {
+    height:50px;
+}
+
+.view-chart {
+    padding: 20px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    height:100%;
+}
+
+.error-loading-chart {
+    text-align:center;
+    padding:10px;
+}
+
+.view-chart .chart-container {
+    margin: 0 auto;
+}
+
+.view-chart table.jqplot-table-legend {
+  border: 0 none;
+  white-space: nowrap;
+}
+
+.view-chart .jqplot-yaxis-tick, .view-chart .jqplot-xaxis-tick {
+  white-space: nowrap;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Blank Box
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.box-blank {
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.box-blank .box-blank-button {
+    width: 100%;
+    padding-top: 10px;
+}
+
+.box-blank .box-blank-button td {
+    white-space: nowrap;
+}
+
+.box-blank .box-blank-button .empty {
+    width: 30%;
+}
+
+.box-blank p {
+    line-height: 16px;
+    padding: 8px 0;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Buttons
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.panel-box .button-rss,.panel-box .button-setting {
+    right: 2px;
+    top: 2px;
+}
+
+.panel-box .panel-box-title {
+    position: relative;
+}
+
+.button-rss, .button-setting {
+    position: absolute;
+}
+
+.button-rss .ico, .button-rss:hover .ico, .dropmenu-hover .button-rss .ico,
+.button-setting .ico, .button-setting:hover .ico, .dropmenu-hover .button-setting .ico {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	About dialog
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.buildinfos-table {
+    width:100%;
+    border-width:1px;
+}
+
+.buildinfos-table div.table-cell {
+    text-align:left;
+}
+
+.buildinfos-table-version {
+    width:20%;
+}
+
+.about-tab {
+    height:335px;
+    overflow:auto;
+}
+
+.member-mini,.member {
+    cursor:pointer;
+    margin:3px;
+    float:left;
+}
+
+.member-mini {
+    height:32px;
+    padding-left:4px;
+    padding-top:4px;
+    width:165px;
+}
+
+.members-medium {
+    padding: 5Px;
+}
+
+.member-medium {
+    padding:4px;
+    width:169px;
+    height:73px;
+    cursor:pointer;
+    border-width: 1px;
+    margin:5px;
+    float:left;
+    padding-bottom: 10Px;
+    padding-left: 8px;
+}
+
+.about-tab .member {
+    padding-left:4px;
+    padding-top:4px;
+    width:100%;
+    height:194px;
+}
+
+.member-mini p,.member p, .member-medium p {
+    line-height:13px;
+    margin:0;
+    padding: 0px 0px 0px 36px;
+}
+
+.member-medium p {
+    clear:right;
+}
+
+.about-tab .member p {
+    line-height:18px;
+    font-size:12px;
+}
+
+.about-tab .member p strong {
+    font-size:14px;
+}
+
+
+.member-medium .ico {
+    margin-bottom:8px;
+}
+
+.member-mini .ico, .member-medium .ico {
+    height:28px;
+    width:28px;
+}
+
+.about-tab .unselectable {
+    cursor:default
+}
+
+.member-mini.unselectable {
+    margin:2px;
+}
+
+.about-tab .member .ico {
+    height:100px;
+    width:100px;
+    padding-bottom:7px;
+}
+
+.about-tab .member .ico,.member-mini .ico, .member-medium .ico {
+    float:left;
+    padding:0 7px 0 0;
+}
+
+.member-medium .ico {
+    padding-top: 5px;
+}
+
+.about-tab .description {
+    line-height:15px;
+    margin-top:2px;
+    padding-right:20px;
+    text-align:justify;
+}
+
+.about-tab .list {
+    overflow:auto;
+    height:225px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Drop menubar list
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+#menubar-list.dropmenu .content .arrow {
+    background-image:url("../images/ui/ui-icons_ffffff_256x240.png");
+    background-position:-64px -16px;
+    height:100%;
+    width:17px;
+    display:block;
+    left:8px;
+    top:1px;
+    margin: 0;
+    padding: 0;
+}
+
+#menubar-list-content {
+    background: red;
+    float: none;
+}
+
+#menubar-list-content li, #menubar-list-content li a {
+    display: block;
+    float: none;
+}
+
+#menubar-list-content li, #menubar-list-content li a span {
+    background: 0 none;
+
+}
+
+#menubar-list-content li a span.start {
+    width: 0;
+}
+
+#menubar-list-content .button-s .content {
+    margin-left: 2px;
+}
+
+
+#dropmenu #menubar-list-content .drag {
+    background: 0 none;
+    width: auto;
+    border-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#dropmenu #menubar-list-content li.drag .button-s {
+    background: 0 none;
+    width: auto;
+    
+    cursor: pointer;
+	display: block;
+	height: 19px;
+	float: left;
+	position: relative;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+}
+
+#dropmenu #menubar-list-content li.drag .button-s .start {
+	width: 9px;
+	background-position: 0 0;
+}
+
+#dropmenu #menubar-list-content li.drag .button-s .end {
+	background-position: right 0;
+}
+
+#dropmenu #menubar-list-content li.drag .button-s .content {
+	height: 19px;
+	background-position: 0 -19px;
+    margin: 0 9px;
+}
+
+.read-more {
+    text-align:right;
+    padding:5px;
+}
+
+#comments .addorlogin {
+    padding-left:20px;
+    padding-top:5px;
+}
+
+.login-link, .retrieve-link {
+    float:right;
+}
+
+#loginForm .field-information {
+    width:318px;
+    float:left;
+    clear:both;
+}
+
+.welcome {
+    float:left;
+}
+
+.selector-avatars {
+    float:left;
+}
+
+.selector-avatars span {
+    float:left;
+    margin:3px;
+    padding:3px;
+}
+
+.selector-avatars span:hover{
+    padding:2px;
+    border-style:solid;
+    border-width:1px;
+    border-color:#C4C4C4;
+    cursor:pointer;
+}
+
+.table-group td span {
+    display:inline-block;
+}
+
+.table-line .postit-icon  {
+    display:inline-block;
+    position: relative;
+    top:3px;
+}
+
+#tasks-table .table-line .dropmenu,#story-table .table-line .dropmenu,.table-cell .dropmenu,
+#dropmenu-menu-recurrent,#dropmenu-menu-urgent,#feature-table .table-line .dropmenu {
+    display:inline-block;
+    top:3px;
+}
+
+#tasks-table .table-line .dropmenu,#story-table .table-line .dropmenu,.table-cell .dropmenu,
+#feature-table .table-line .dropmenu,{
+    margin-left:5px;
+}
+
+.line-right .postit-icon {
+    display:inline-block;
+    position: relative;
+    top:3px;
+    margin-right:3px;
+}
+
+#tasks-table td.table-cell-checkbox .table-cell,#story-table td.table-cell-checkbox .table-cell,
+#feature-table td.table-cell-checkbox .table-cell{
+    padding-left:7px;
+    width:auto;
+}
+
+.table-cell .postit-icon {
+    display:inline-block;
+    margin-right:5px;
+    position:relative;
+    top:2px;
+}
+
+.table-attachment,.table-comment {
+    height:15px;
+    width:15px;
+    display:inline-block;
+}
+
+#select-next, #select-previous {
+    display:inline-block;
+    height:16px;
+    width:11px;
+    float:left;
+    margin-top:1px;
+    position:relative;
+    text-decoration:none;
+}
+
+#select-next {
+    margin-right:5px;
+}
+
+.panel-box-title .right {
+    float:right;
+    margin-left:2px;
+}

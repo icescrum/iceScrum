@@ -1,0 +1,384 @@
+/*
+ * Copyright (c) 2010 iceScrum Technologies.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Damien Vitrac (damien@oocube.com)
+ *
+ */
+
+.button-n .content, .button-s .content {
+    margin: 0 1px !important;
+    padding: 0 8px !important;
+}
+
+.button-n .end, .button-s .end {
+}
+
+.dropmenu-button .content {
+    padding-right: 24px !important;
+}
+
+.tool-button .content {
+    padding-left: 20px !important;
+}
+
+#main .box .box-navigation ul {
+    height: 22px !important;
+    overflow: hidden;
+}
+
+#main .box .box-content {
+    height: expression(document.body.clientHeight-98);
+    width: expression(document.body.clientWidth-274);
+}
+
+.window-fullscreen .box-content {
+    height: expression(document.body.clientHeight-98);
+    width: expression(document.body.clientWidth - 8);
+}
+
+#main .box .window-content-toolbar {
+    height: expression(document.body.clientHeight-98);
+}
+
+.window-fullscreen .window-content-toolbar {
+    height: expression(document.body.clientHeight-98);
+}
+.window-fullscreen #button-bar {
+bottom:auto;
+top: expression(document.body.clientHeight-37);
+}
+
+.window-fullscreen .box-navigation {
+    width: expression(document.body.clientWidth - 8);
+    right:auto;
+}
+
+#main .box .box-navigation {
+    width: expression(document.body.clientWidth-272);
+    right:auto;
+}
+
+.panel-box {
+    background: #e3e3e3;
+}
+
+.panel-box-active {
+    background: #eeeeee;
+}
+
+.panel-box .panel-box-title {
+
+}
+
+.panel-box {
+}
+
+.panel-box .panel-box-content, .panel-box .list-news, .panel-box .panel-box-empty {
+    background: white;
+}
+
+.panel-box ul {
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+.panel-box .button-rss {
+    margin: 0;
+    padding: 0;
+    top: -1px;
+}
+
+#local .box-simple ul {
+    margin-bottom: 0;
+    height: 38px;
+    overflow: hidden;
+    padding-bottom: 0;
+}
+
+.button-n .content {
+}
+
+.button-n b {
+    margin: 0;
+    padding: 0;
+}
+
+.button-ico .ico {
+	left: 5px;
+}
+
+#main .box #button-bar, .window-fullscreen #button-bar {
+    border-width: 0 !important;
+}
+
+#window-toolbar .tool-button .content {
+    margin: 0 9px !important;
+    padding: 0 !important;
+}
+
+#window-toolbar .button-ico .content {
+    padding-left:12px !important;
+}
+
+#window-toolbar .button-ico .ico {
+    top: 4px;
+}
+
+.table-cell-postit-icon {
+    vertical-align: top;
+    padding-top: 11px;
+}
+
+.dropmenu .content{
+    padding-right: 12px !important;
+}
+
+.dropmenu .arrow {
+    top: 5px;
+}
+
+#local {
+    z-index: 99;
+}
+
+#main {
+    z-index: 91;
+}
+
+.field-buttons {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.field-buttons td {
+    white-space: nowrap !important;
+    float: none;
+    width: auto;
+}
+
+.field-buttons .button-s {
+    display: block;
+    white-space: nowrap;
+}
+
+#main .kanban, #main .view-table table {
+    margin: 0;
+    padding: 0;
+    width: expression(document.body.clientWidth-300);
+}
+
+.window-fullscreen .kanban, .window-fullscreen .view-table table {
+    margin: 0;
+    padding: 0;
+    width: expression(document.body.clientWidth-34);
+}
+
+.panel-box table, .panel-box .panel-texte, .panel-box .panel-tab-contents {
+    background: white;
+}
+
+.panel-box .panel-tab-contents, .panel-box .panel-texte {
+    padding-bottom: 1Px;
+}
+
+.event-header-label .event-header-velocity {
+    position: absolute;
+    right: 8px;
+}
+
+#local .box .box-title {
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.box .box-title .content {
+    margin: 0;
+    padding: 0;
+    text-indent: 10px;
+}
+
+.window-fullscreen .box-title .start,  .window-fullscreen .box-title .end,
+    #main .box .box-title .start,  #main .box .box-title .end {
+    background-color: white !important;
+}
+
+#local .box .box-title .start,  #local .box .box-title .end {
+    background-color: #f5f5f5 !important;
+}
+
+#local .postit-rows .postit-icon {
+    left:-19px;
+    top: 3px;
+}
+
+
+.postit-rect .postit-layout {
+	background-image: url(../../images/ie/postit-rectangle.png);
+}
+
+.view-release .ui-selected, .kanban .ui-selected {
+    background: url(../../images/ie/postit-rectangle-selectable.png) no-repeat 0 0;
+}
+
+.postit-icon {
+    background-image: url(../../images/ie/postit-small.png);
+}
+
+.postit .postit-layout {
+	background-image: url(../../images/ie/postit.png);
+}
+
+#navigation .button-s .start, #navigation .button-s .end, #navigation .button-s .content {
+    background-image:url(../../images/ie/small-top.png) !important;
+}
+
+
+#window-toolbar a.button-n .start, #window-toolbar a.button-n .end,
+    #window-toolbar a.button-n .content, #window-toolbar a.button-n {
+    background-image: url(../../images/ie/small-nav.png) !important;
+}
+
+#window-toolbar a.button-n .start, #window-toolbar a.button-n .end,
+    #window-toolbar a.button-n .content, #window-toolbar a.button-n {
+    background-position: 0 -190px;
+}
+
+#window-toolbar a.button-n {
+    background-position: 0 -190px;
+}
+
+#window-toolbar a.button-n:hover, #window-toolbar a.button-n:hover .content {
+    background-position: 0 -19px;
+}
+
+#window-toolbar a.button-n:hover .start {
+    background-position: 0 0;
+}
+
+#window-toolbar a.button-n:hover .end {
+    background-position: right 0;
+}
+
+
+#window-toolbar a.button-n:hover .end {
+    right: -1px;
+}
+
+
+#window-toolbar .tool-button .content {
+    margin: 0 6px !important;
+    padding: 0 !important;
+}
+
+#window-toolbar .button-ico .content {
+    padding-left:12px !important;
+}
+
+.postit .dropmenu-action .dropmenu-arrow, .postit-rect .dropmenu-action .dropmenu-arrow {
+    background-image:url("../../images/ie/arrow-bullet.png");
+}
+
+.postit .ico-feature-1, .postit .ico-story-3, .postit-rect .ico-feature-1, .postit-rect .ico-story-3 {
+background:url("../../images/ie/type/tech.png") repeat scroll 0 0 transparent;
+}
+
+.postit .ico-story-2, .postit-rect .ico-story-2 {
+background:url("../../images/ie/type/bug.png") repeat scroll 0 0 transparent;
+}
+
+#window-toolbar .dropmenu-button .content {
+    padding-left: 18px !important;
+    padding-right: 20px !important;
+}
+
+#navigation .dropmenu-button .content {
+    padding-right: 20px !important;
+}
+
+#window-toolbar .dropmenu-button .arrow {
+    top: 5px !important;
+}
+
+#window-toolbar  .dropmenu-hover .dropmenu-button .content {
+    background: url(../../images/ie/small-nav.png) 0 -19px repeat-x !important;
+}
+
+#window-toolbar  .dropmenu-hover .dropmenu-button .start {
+    background: url(../../images/ie/small-nav.png) 0 0 repeat-x !important;
+}
+
+#window-toolbar  .dropmenu-hover .dropmenu-button .end {
+    right: -1px;
+    background: url(../../images/ie/small-nav.png) right 0 repeat-x !important;
+}
+
+
+.dropmenu-hover .dropmenu-button .arrow {
+    background: url("../../images/application/arrow.png") 0 -25px no-repeat !important;
+    z-index: 1000 !important;
+    top: 5px !important;
+}
+
+#dropmenu .dropmenu-content {
+    width: 200px;
+}
+
+#dropmenu .dropmenu-content li {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 24px !important;
+    overflow: hidden;
+}
+
+#dropmenu .dropmenu-content li a {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 24px !important;
+    line-height: 26px;
+    padding-left: 4px;
+    overflow: hidden;
+}
+
+span.ui-checkbox, span.ui-radio {
+    font-size: 0;
+    line-height: 0;
+}
+
+.box .box-navigation ul .search .search-button, #dropmenu .search-content, #dropmenu .search-content input {
+    background-image: url(../../images/ie/search.png) !important;
+    background-repeat:no-repeat;
+}
+
+#spinner-app .spinner-loading {
+    background-image: url(../../images/ie/spinner.png);
+}
+
+.is-logo a {
+    left: 11px;
+    z-index: 9998 !important;
+}
+
+.postit-ipsum {
+   
+}
+
+#panel-chart-container .view-chart {
+    height:300px;
+}

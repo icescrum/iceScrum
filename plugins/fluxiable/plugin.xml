@@ -1,0 +1,16 @@
+<plugin name='fluxiable' version='0.1' grailsVersion='1.3.5 &gt; *'>
+  <author>Stephane Maldini</author>
+  <authorEmail>smaldini@doc4web.com</authorEmail>
+  <title>Fluxiable Plugin</title>
+  <description>\
+Inspired by Commentable plugin, this one allows you to display domain activity in a generic manner.
+</description>
+  <documentation>http://grails.org/fluxiable</documentation>
+  <resources>
+    <resource>grails.plugin.fluxiable.Activity</resource>
+    <resource>grails.plugin.fluxiable.ActivityLink</resource>
+    <resource>grails.plugin.fluxiable.ActivitiesTagLib</resource>
+  </resources>
+  <dependencies />
+  <behavior />
+</plugin>

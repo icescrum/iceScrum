@@ -1,0 +1,84 @@
+/*
+ * Copyright (c) 2010 iceScrum Technologies.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Damien Vitrac (damien@oocube.com)
+ *
+ */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td, hr
+{
+	border: 0;
+	outline: 0;
+	font-weight: normal;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+:focus
+{
+	outline: 0;
+}
+
+hr
+{
+	height: 20px;
+	background: none;
+	border: 0 none;
+}
+
+ol, ul
+{
+	list-style: none;
+}
+
+table
+{
+	border-collapse: separate;
+	border-spacing: 0px;
+}
+
+caption, th, td
+{
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after
+{
+	content: "";
+}
+
+blockquote, q
+{
+	quotes: "" "";
+}

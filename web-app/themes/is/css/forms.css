@@ -1,0 +1,1469 @@
+/*
+ * Copyright (c) 2010 iceScrum Technologies.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Damien Vitrac (damien@oocube.com)
+ *
+ */
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	List
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.list li {
+	display: block;
+	list-style: none;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.list {
+	padding: 0;
+	margin: 0;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	File Icon
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.file-icon {
+    height:15px;
+    width:auto;
+    padding-bottom:1px;
+    line-height:16px;
+    padding-left:22px;
+    margin: 4px 0 3px 4px;
+    margin-right:5px;
+    background-position: 0 -176px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Colset 2
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.colset-2-80 .col1 {
+    width: 64%;
+    float: left;
+}
+
+.colset-2-80 .col2 {
+    width: 35%;
+    float: right;
+}
+
+.colset-2 .col1 {
+    float: left;
+    width: 49%;
+}
+
+.colset-2 .col2 {
+    float: right;
+    width: 49%;
+}
+
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Buttons
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+/*
+/////////////////////////////////////////
+//  Generic
+/////////////////////////////////////////
+*/
+
+.button-n, .button-s {
+	cursor: pointer;
+	display: block;
+	height: 19px;
+	float: left;
+	position: relative;
+    white-space: nowrap;
+}
+
+.button-n span, .button-s span {
+	padding: 0;
+	margin: 0;
+}
+
+.button-n:hover, .button-n:hover span, .button-s:hover, .button-s:hover span {
+	text-decoration: none;
+}
+
+.button-n .content, .button-s .content {
+	display: block;
+	float: left;
+	height: 19px;
+	background-position: 0 -19px;
+    margin: 0 9px;
+}
+
+.button-n .content b, .button-s .content b {
+    font-style: normal;
+    text-decoration: underline;
+    font-weight:normal;
+}
+
+.button-n .start, .button-s .start {
+	height: 19px;
+	width: 9px;
+    position: absolute;
+    left: 0;
+    top: 0;
+	background-position: 0 0;
+}
+
+.button-n .end, .button-s .end {
+	height: 19px;
+	width: 9px;
+    position: absolute;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    top: 0;
+	background-position: right 0;
+}
+
+.button-s:hover .end {
+	background-position: right -38px;
+}
+
+.button-s:hover .start {
+	background-position: 0 -38px;
+}
+
+.button-s:hover .content {
+	background-position: 0 -57px;
+}
+
+.button-n-black .end, .button-s-black .end {
+	background-position: right -76px;
+}
+
+.button-n-black .start, .button-s-black .start {
+	background-position: 0 -76px;
+}
+
+.button-n-black .content, .button-s-black .content {
+	background-position: 0 -95px;
+}
+
+.button-s-black:hover .end {
+	background-position: right -114px;
+}
+
+.button-s-black:hover .start {
+	background-position: 0 -114px;
+}
+
+.button-s-black:hover .content {
+	background-position: 0 -133px;
+}
+
+.button-s-light .end, .button-s-light .end {
+	background-position: right -152px;
+}
+
+.button-s-light, .button-s-light .start {
+	background-position: 0 -152px;
+}
+
+.button-s-light .content, .button-s-light .content {
+	background-position: 0 -171px;
+}
+
+.button-s-light:hover .end {
+	background-position: right 0;
+}
+
+.button-s-light:hover .start {
+	background-position: 0 0;
+}
+
+.button-s-light:hover .content {
+	background-position: 0 -19px;
+}
+
+.button-s-light strong {
+    font-weight: normal;
+}
+
+/*
+/////////////////////////////////////////
+//  Button Action
+/////////////////////////////////////////
+*/
+
+.button-s .button-action {
+    display: block;
+    height:12px;
+    width:12px;
+    text-indent: -6000em;
+    position: absolute;
+    z-index: 999;
+    top: 3px;
+    right: 5px;
+}
+
+.button-s .button-delete {
+    background-position:-24px 0;
+}
+
+
+/*
+/////////////////////////////////////////
+//  Main Navigation
+/////////////////////////////////////////
+*/
+
+.button-ico .content {
+	padding-left: 12px;
+}
+
+.button-ico .ico {
+	position: absolute;
+	height: 10px;
+	width: 12px;
+	padding: 0;
+	margin: 0;
+	top: 3px;
+	left: 6px;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	font-size: 0;
+	line-height: 0;
+}
+
+.button-ico:hover .ico {
+	background-position: 0 -10px;
+}
+
+.button-n:hover .end {
+	background-position: right 0;
+}
+
+.button-n:hover .start {
+	background-position: 0 0;
+}
+
+.button-n:hover .content {
+	background-position: 0 -19px;
+}
+
+.button-n-black:hover .end {
+	background-position: right -114px;
+}
+
+.button-n-black:hover .start {
+	background-position: 0 -114px;
+}
+
+.button-n-black:hover .content {
+	background-position: 0 -133px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Table
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.table .cell-center {
+    text-align: center;
+}
+
+.table th {
+    white-space: nowrap;
+}
+
+.table td {
+	white-space: normal;
+}
+
+.table .table-cell {
+	padding: 3px 2px 5px 4px;
+}
+
+.table td.table-cell-checkbox {
+    width: 27px;
+}
+
+.table td.table-cell-postit-icon {
+    width: 23px;
+}
+
+.table .table-legend th .table-cell {
+    white-space: nowrap;
+}
+
+.table td.table-cell-postit-icon .table-cell {
+    position: relative;
+}
+
+.table td.table-cell-postit-icon .postit-icon {
+    top: -3px;
+    position: absolute;
+}
+
+.table th.table-cell-checkbox.first .table-cell {
+    padding:0 0 0 2px;
+    text-align:left;
+}
+
+.table td.table-cell-checkbox .table-cell {
+    padding: 3px 6px 5px 6px;
+    width: 15px;
+}
+
+.table .table-line td {
+	border-bottom-width: 1px;
+	border-top-width: 1px;
+}
+
+.table .table-line .first {
+	background: 0 none;
+	padding-left: 0;
+}
+
+.table .table-line td {
+	padding-left: 2px;
+	padding-bottom: 2px;
+}
+
+.table .line-last {
+	background: 0 none;
+}
+
+.table .line-last td {
+	padding-bottom: 0;
+	border-bottom-width: 0;
+}
+
+.table .table-filters td {
+	background-position: 0 -66px;
+	background-repeat: repeat-x;
+    padding: 0;
+}
+
+.table .table-filters .table-cell {
+    padding: 0;
+	padding-left: 8px;
+    height: 24px;
+}
+
+.table th {
+	background-position: 0 -131px;
+	border-bottom-width: 1px;
+	text-align: center;
+}
+
+.table th .table-cell {
+	padding: 2px 2px 2px 6px;
+}
+
+.table .table-legend .first .table-cell {
+	padding-left: 4px;
+}
+
+.table .table-foot {
+	background-position: 0 -131px;
+	border-top-width: 1px;
+}
+
+.table .table-foot .table-cell {
+	padding: 2px 4px;
+}
+
+.table .table-filters-bottom td {
+	border-top-width: 1px;
+}
+
+.table .table-pagination .table-cell {
+    padding: 0;
+}
+
+.table .table-cell-editable {
+    cursor:pointer;
+}
+
+.table tr.table-group td {
+	padding: 3px 2px 5px 15px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Pagination
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.pagination {
+	padding: 0;
+	margin: 0;
+	height: 20px;
+	padding: 2px 0;
+	overflow: hidden;
+    position: relative;
+}
+
+.pagination li {
+	float: left;
+	list-style: none;
+	list-style-type: none;
+	padding: 0 4px;
+	margin: 0;
+}
+
+.pagination .pagination-next {
+	float: right;
+	background-position: -1
+}
+
+.pagination .pagination-last {
+	float: right;
+}
+
+.pagination .pagination-first a, .pagination .pagination-previous a {
+	padding-left: 14px;
+}
+
+.pagination .pagination-first a {
+	background-position: 0 0;
+}
+
+.pagination .pagination-previous a {
+	background-position: 0 -16px;
+}
+
+.pagination .pagination-next a {
+	background-position: right -96px;
+}
+
+.pagination .pagination-last a {
+	background-position: right -80px;
+}
+
+.pagination .pagination-first a:hover {
+	background-position: 0 -32px;
+}
+
+.pagination .pagination-previous a:hover {
+	background-position: 0 -48px;
+}
+
+.pagination .pagination-next a:hover {
+	background-position: right -128px;
+}
+
+.pagination .pagination-last a:hover {
+	background-position: right -112px;
+}
+
+.pagination .pagination-next a, .pagination .pagination-last a {
+	padding-right: 14px;
+}
+
+.pagination .separator {
+	background-position: right -99px;
+	background-repeat: no-repeat;
+	width: 2px;
+	height: 16px;
+	padding: 0;
+	margin: 2px 3px;
+	margin-right: 0;
+	padding-right: 4px;
+	float: left;
+}
+
+.pagination .separator-right {
+	float: right;
+	padding: 0;
+	margin: 2px 5px;
+	margin-left: 0;
+}
+
+.pagination .pagination-action {
+    position: absolute;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    text-align: center;
+}
+
+.pagination .pagination-action a {
+    font-weight: bold;
+}
+
+
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Simple Select
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.simple-select p {
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	position: relative;
+	display: block;
+}
+
+.simple-select ul {
+	display: none;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Dropmenu
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.dropmenu {
+    position: relative;
+}
+
+#dropmenu {
+    z-index: 999;
+}
+
+#dropmenu .dropmenu-content {
+    display: none;
+    float: none;
+}
+
+#dropmenu .dropmenu-content li {
+    display: block;
+    float: none;
+}
+
+.dropmenu-hover .dropmenu-button {
+    
+}
+
+.dropmenu-hover .dropmenu-button .end {
+	background-position: right 0;
+}
+
+.dropmenu-hover .dropmenu-button .start {
+	background-position: 0 0;
+}
+
+.dropmenu-hover .dropmenu-button .content {
+	background-position: 0 -19px;
+}
+
+#dropmenu .dropmenu-content {
+    padding: 0;
+    margin: 0;
+    top: 19px;
+    z-index: 999;
+    border-width: 1px;
+    min-width: 160px;
+    max-width: 400px;
+}
+
+#dropmenu .content-help {
+    border-width: 0;
+}
+
+#dropmenu .dropmenu-content a {
+    white-space: nowrap; 
+}
+
+#dropmenu .dropmenu-content ul {
+    padding: 0;
+    margin: 0;
+}
+
+#dropmenu .dropmenu-content ul li {
+    padding: 0;
+    margin: 0;
+    display: block;
+    float: none;
+}
+
+#dropmenu .dropmenu-content ul li a {
+    display: block;
+    padding: 2px 6px;
+}
+
+#dropmenu .dropmenu-content ul.small li a {
+    padding: 0px 6px;
+}
+
+#dropmenu .dropmenu-content ul li a:hover {
+    background-position: 0 -38px;
+    text-decoration: none;
+}
+
+#dropmenu .dropmenu-content ul li {
+    border-top-width: 1px;
+}
+
+#dropmenu .dropmenu-content ul .first {
+    border-top-width: 0;
+}
+
+#dropmenu .dropmenu-content {
+    display: block;
+}
+
+.dropmenu .content {
+    padding-right: 15px;
+}
+
+.dropmenu .arrow {
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    top: 4px;
+    left: -7px;
+    z-index: 999;
+}
+
+.dropmenu .arrow {
+    background-position: 0 -5px;
+}
+
+.dropmenu-hover .arrow, .dropmenu .dropmenu-button:hover .arrow {
+    background-position: 0 -25px;
+}
+
+.dropmenu-hover .ico {
+	background-position: 0 -10px;
+}
+
+#dropmenu .dropmenu-content .menu-label {
+    display: block;
+    padding: 2px 0;
+    padding-left: 5px;
+    background-position:0 -38px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Input / Checkbox / Radio
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.input {
+    
+}
+
+.input span {
+    display: block;
+    height: 22px;
+    float: left;
+}
+
+.input .start, .input .end {
+    width: 11px;
+    background-repeat: no-repeat;
+}
+
+.input .content {
+    height: 18px;
+    padding-top: 4px;
+    background-position: 0 -22px;
+    background-repeat: repeat-x;
+}
+
+.input .start {
+    background-position: 0 0;
+}
+
+.input .end {
+    background-position: right 0;
+}
+
+.input input {
+    background-position: 0 -26px;
+    border: 0 none;
+}
+
+.input-focus .content {
+    background-position: 0 -66px;
+}
+
+.input-focus .start {
+    background-position: 0 -44px;
+}
+
+.input-focus .end {
+    background-position: right -44px;
+}
+
+.input-focus input {
+    background-position: 0 -68px;
+    border: 0 none;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Rich
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.rich {
+    display: block;
+}
+
+.rich-large .area-rich {
+    width: 500px;
+    overflow-x:hidden;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Textarea
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.area {
+
+}
+
+.area span {
+    display: block;
+    height: 50px;
+    float: left;
+}
+
+.area .start, .area .end {
+    width: 11px;
+    background-repeat: no-repeat;
+}
+
+.area .content {
+    height: 46px;
+    padding-top: 4px;
+    background-position: 0 -138px;
+    background-repeat: repeat-x;
+}
+
+.area .start {
+    background-position: 0 -88px;
+}
+
+.area .end {
+    background-position: right -88px;
+}
+
+.area textarea {
+    background-position: 0 -142px;
+    border: 0 none;
+    height: 44px;
+}
+
+.area-focus .content {
+    background-position: 0 -238px;
+}
+
+.area-focus .start {
+    background-position: 0 -188px;
+}
+
+.area-focus .end {
+    background-position: right -188px;
+}
+
+.area-focus textarea {
+    background-position: 0 -242px;
+    border: 0 none;
+}
+
+.area-medium {
+
+}
+
+.area-medium span {
+    display: block;
+    height: 100px;
+    float: left;
+}
+
+.area-medium .start, .area-medium .end {
+    width: 11px;
+    background-repeat: no-repeat;
+}
+
+.area-medium .content {
+    height: 96px;
+    padding-top: 4px;
+    background-position: 0 -388px;
+    background-repeat: repeat-x;
+}
+
+.area-medium .start {
+    background-position: 0 -288px;
+}
+
+.area-medium .end {
+    background-position: right -288px;
+}
+
+.area-medium textarea {
+    background-position: 0 -392px;
+    border: 0 none;
+    height: 94px;
+}
+
+.area-medium-focus .content {
+    background-position: 0 -588px;
+}
+
+.area-medium-focus .start {
+    background-position: 0 -488px;
+}
+
+.area-medium-focus .end {
+    background-position: right -488px;
+}
+
+.area-medium-focus textarea {
+    background-position: 0 -592px;
+    border: 0 none;
+}
+
+.area-large {
+
+}
+
+.area-large span {
+    display: block;
+    height: 150px;
+    float: left;
+}
+
+.area-large .start, .area-medium .end {
+    width: 11px;
+    background-repeat: no-repeat;
+}
+
+.area-large .content {
+    height: 146px;
+    padding-top: 4px;
+    background-position: 0 -838px;
+    background-repeat: repeat-x;
+}
+
+.area-large .start {
+    background-position: 0 -688px;
+}
+
+.area-large .end {
+    background-position: right -688px;
+}
+
+.area-large textarea {
+    background-position: 0 -842px;
+    border: 0 none;
+    height: 144px;
+}
+
+.area-large-focus .content {
+    background-position: 0 -1138px;
+}
+
+.area-large-focus .start {
+    background-position: 0 -988px;
+}
+
+.area-large-focus .end {
+    background-position: right -988px;
+}
+
+.area-large-focus textarea {
+    background-position: 0 -1142px;
+    border: 0 none;
+}
+
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Liste
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.list {
+    
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Panel
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.panel {
+    border-width: 1px;
+    margin: 10px;
+}
+
+.panel .panel-title {
+    padding: 2px 0;
+    margin: 0;
+    border-bottom-width: 1px;
+    padding-left: 8px;
+}
+
+.panel .ui-accordion {
+    padding: 5px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Panel Texte & Infos
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.panel-line td {
+    padding: 3px 0;
+}
+
+.panel-line .line-left {
+    text-align: right;
+    width: 101px;
+    padding-right: 10px;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.panel-line .line-right {
+    padding-left: 10px;
+}
+
+.panel-tab-button {
+    padding: 4px;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+.panel-tab-button a {
+    border-width: 1px;
+    display: block;
+    float: left;
+    padding:0;
+    margin:0;
+    line-height: 20px;
+    margin-right: 5px;
+    padding: 0 10px;
+}
+
+.panel-tab-button a:hover {
+    text-decoration: none;
+}
+
+.panel-tab-button .selected {
+
+}
+
+.panel-tab-content {
+    display: none;
+    padding: 5px 10px 20px;
+}
+
+.tab-selected {
+    display:block;
+}
+
+.panel-texte {
+    padding: 0 10px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Box Form
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.box-form p {
+    padding: 0;
+    margin: 0;
+}
+
+.box-form label {
+    display: block;
+    float: left;
+    text-align: right;
+    padding: 7px 0 6px 0;
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+.box-form-small-legend label {
+    width: 110px;
+}
+
+
+.box-form .field-input, .box-form .field-area, .box-form .field-select, .box-form .field-rich,
+    .box-form .field-checkbox, .box-form .field-color {
+    padding: 0;
+    margin: 0;
+    padding-bottom: 2px;
+}
+
+.box-form .field-input .input,.box-form .field-input .inputfile, .box-form .field-color .input {
+    float: left;
+    padding: 3px 0 2px 0;
+    padding-left: 5px;
+}
+
+.box-form .field-area .area-rich {
+    padding: 4px;
+    display: block;
+    float: left;
+}
+
+.box-form .field-input .area, .box-form .field-area .area {
+    float: left;
+    padding: 4px 0 4px 0;
+    padding-left: 5px;
+}
+
+.box-form .field-input .radio {
+    padding: 5px 0;
+    padding-left: 8px;
+    display: block;
+    float: left;
+}
+
+.box-form .field-select .selectmenu {
+    padding: 4px 0;
+    padding-left: 5px;
+    display: block;
+    float: left;
+}
+
+.box-form .field-list .list {
+    float: left;
+    display: block;
+    padding: 4px 0;
+    padding-left: 5px;
+}
+
+.box-form .field-information {
+    border-width: 1px 0;
+    background-repeat: repeat-x;
+    background-position: 0 -83px;
+    padding: 7px 5px 7px 5px
+}
+
+.box-form .field-information-nobordertop {
+    border-top-width: 0;
+}
+
+.box-form .field-check-line {
+    padding: 4px 10px;
+}
+
+.box-form-small-legend .field-check-line {
+    padding-left: 130px;
+}
+
+.box-form .field-check-line label {
+    display: block;
+    float: left;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+}
+
+.box-form .field-check-line input {
+    float: left;
+    display: block;
+    margin-top: 1px;
+    margin-right: 5px;
+}
+
+.mask-submit {
+    display:block;
+    overflow:hidden;
+    height:0;
+    width:0;
+}
+
+.mask-submit * {
+    height: 0;
+    width: 0;
+    border: 0 none;
+}
+
+.field-file .ui-progressbar .label {
+    margin:0;
+}
+
+.field-buttons {
+    overflow: hidden;
+    height: 18px;
+    padding: 4px 0 8px 0;
+    background-position: 0 -155px;
+}
+
+.form-button-bar-fixed .field-buttons {
+    border-width: 1px;
+    border-top-width: 0;
+}
+
+.button-bar-single {
+    width: 100%;
+}
+
+.button-bar-single .button-s {
+    margin: 0 auto;
+}
+
+.field-buttons td {
+    padding: 3px 2px;
+}
+
+.box-form .field-noseparator {
+    padding-bottom: 0;
+}
+
+.box-form .field-checkbox .checkbox {
+    display: block;
+    padding: 8px 0 0 0;
+}
+
+.box-form .field-checkbox .checkbox input {
+    margin-left: 8px;
+}
+
+.box-form-180 .input, .box-form-180 .area {
+    width: 180px;
+}
+
+.box-form-180 .input input, .box-form-180 .area textarea {
+    width: 150px;
+}
+
+.box-form-160 .input, .box-form-160 .area {
+    width: 160px;
+}
+
+.box-form-160 .input input, .box-form-160 .area textarea {
+    width: 130px;
+}
+
+.box-form-200-legend label {
+    width: 200px;
+}
+
+.box-form-200-legend .panel {
+    background-position: -285px 0;
+}
+
+.box-form-250 .input, .box-form-250 .area, .box-form-250 .rich, .box-form-250 .list {
+    width: 250px;
+}
+
+.box-form-250 .input input, .box-form-250 .area textarea {
+    width: 220px;
+}
+
+.box-form-250 .field-color .input {
+    width: auto;
+}
+
+.box-form .field-color .input .reset {
+    width: auto;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Field Input File
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+
+.field-file .inputfile {
+    padding:4px 0 2px 5px;
+}
+
+.box-form-250 .field-file .input {
+    width:350px;
+}
+
+.box-form-180 .field-file .input {
+    width:280px;
+}
+
+.box-form-160 .field-file .input {
+    width:260px;
+}
+
+.box-form-200 .field-file .input {
+    width:300px;
+}
+
+
+.field-file .ui-progressbar-value {
+    background-position:0 -52px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Field Choose
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.box-form .field-choose  {
+    width: 100%;
+    position: relative;
+    border-top-width: 1px;
+}
+
+.box-form .field-choose .field-choose-left {
+    width: 180px;
+    padding-right: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.box-form .field-choose .field-choose-left .button-s .content {
+    width: 145px;
+}
+
+.box-form .field-choose .field-choose-left .button-s .button-delete {
+    left: 146px;
+}
+
+.box-form .field-choose .field-choose-right {
+    padding-left: 180px
+}
+
+.field-choose-finder{
+    height: 168px;
+}
+
+.field-choose-list{
+    height: 188px;
+}
+
+.field-choose .field-choose-finder .list-selectable-item .ico {
+    float: left;
+    padding: 0px 7px 0 0;
+    width:28px;
+    height:28px;
+    cursor:move;
+}
+
+.field-choose-state-hover{
+   background-color:#FFFAAE;
+}
+
+.field-choose .field-choose-finder .list-selectable-item  {
+    width: 169px;
+    padding-top: 4px;
+    padding-left: 4px;
+    margin: 3px;
+    height: 32px;
+    float: left;
+}
+
+.field-choose .field-choose-finder .list-selectable-item p {
+    padding: 0;
+    margin: 0;
+    line-height: 13px;
+}
+
+.field-choose .field-choose-finder .ui-selectable {
+
+}
+
+.field-choose .field-choose-legend {
+    background-position: 0 -131px;
+    padding: 5px 0 2px;
+    padding-left: 6px;
+
+    border-bottom-width: 1px;
+    line-height: 14px;
+    white-space: nowrap;
+}
+
+.field-choose .field-choose-content {
+    padding: 5px;
+    height: 216px;
+}
+
+.field-choose .field-choose-search {
+    display: block;
+    height: 23px;
+}
+
+.field-choose .field-choose-search label {
+    float: left;
+    text-align: right;
+    width: 60px;
+    padding: 0;
+    padding-right: 5px;
+    padding-left: 40px;
+}
+
+.field-choose .field-choose-search input {
+    border-width: 1px;
+    float: left;
+    padding: 1px;
+}
+
+.field-choose .field-choose-list {
+    padding-top: 2px;
+}
+
+.field-choose .field-choose-list-item {
+    padding: 1px 0;
+}
+
+.bar-pagination {
+    border-top-width: 1px;
+    padding: 4px 0;
+}
+
+.field-choose .pagination {
+    border-top-width: 1px;
+    margin: 0 4px;
+    margin-top: 4px;
+}
+
+.field-choose .field-choose-finder {
+    padding-left: 5px;
+}
+
+.field-choose .field-choose-left .field-choose-content {
+    padding-left: 10px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Panel Box
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.panel-box {
+    border-width: 1px;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.panel-box .panel-box-empty {
+    padding: 5px 10px;
+}
+
+.panel-box .panel-box-title {
+    border-bottom-width: 1px;
+    margin: 0;
+    background-position: 0 0;
+    background-repeat: repeat-x;
+    padding: 0 10px;
+}
+
+.panel-box .panel-box-content {
+    padding: 5px 10px;
+}
+
+.panel-box-active .panel-box-title {
+    background-position: 0 -40px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//	Table Lines
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.table-lines {
+    width: 100%;
+    border-width: 1px;
+    border-bottom-width: 0;
+    margin: 5px 0;
+}
+
+.table-lines .table-lines-head th {
+    padding: 5px 0 2px;
+    padding-left: 6px;
+    margin: 0;
+    background-position: 0 -131px;
+    line-height: 14px;
+    border-bottom-width: 1px;
+    white-space: nowrap;
+}
+
+.table-lines .table-lines-item td {
+    border-width: 1px 0;
+    padding: 1px 5px 0 5px;
+    line-height: 16px;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////////////
+//  UI Progress bar
+////////////////////////////////////////////////////////////////////////////////
+*/
+
+.ui-progressbar {
+    display:block;
+    padding: 1px;
+    height:22px;
+    line-height: 22px;
+}
+
+.ui-progressbar .label {
+    left:0;
+    line-height:18px;
+    position:absolute;
+    right:0;
+    text-align:center;
+}
+
+.field-file .ui-progressbar {
+    position:relative;
+    float:right;
+    width:115px;
+    height:22px;
+    line-height: 22px;
+    border:none;
+    display: block;
+}
+
+.ui-progressbar-value {
+    background-image:url("../images/bar/blue.png");
+    background-position: 0 -27px;
+}
+
+.ui-progressbar-value.animated {
+    background-image:url("../images/bar/blue.png");
+    background-position: 0 -27px;
+}
+
+
+.ui-progressbar-value-error {
+    background:#FD8900
+}
