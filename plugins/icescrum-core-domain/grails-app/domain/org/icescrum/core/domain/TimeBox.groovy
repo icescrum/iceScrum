@@ -56,7 +56,7 @@ class TimeBox implements Comparable<TimeBox>, Fluxiable {
     goal type: 'text'
     description type: 'text'
     tablePerHierarchy false
-    cliches cascade: 'all-delete-orphan', sort: 'datePrise'
+    cliches cascade: 'all-delete-orphan', sort: 'datePrise', order:'asc'
     sort:'orderNumber'
   }
 
