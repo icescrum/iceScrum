@@ -29,7 +29,7 @@
 <g:message code="is.team.description"/></h3>
         <div class="panel-box-content">
           <g:if test="${team.description}">
-              <wikitext:renderHtml markup="Textile">${is.truncated(value:team.description,size:1000,encodeHTML:false)}</wikitext:renderHtml>
+              <wikitext:renderHtml markup="Textile">${is.truncated(value:team.description,size:1000,encodedHTML:false)}</wikitext:renderHtml>
             </g:if>
             <g:else>
               <g:message code="is.team.empty.description"/>

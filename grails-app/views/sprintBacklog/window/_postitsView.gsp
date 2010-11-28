@@ -175,7 +175,7 @@
                 editableEstimation="${(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE)}"
                 controller="${id}"
                 comment="${story.totalComments >= 0 ? story.totalComments : ''}">
-          <is:truncated size="50"><is:storyTemplate story="${story}"/></is:truncated>
+          <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
 
           %{--Embedded menu--}%
           <is:postitMenu id="${story.id}" contentView="window/postitMenu" params="[id:id,story:story,nextSprintExist:nextSprintExist]"/>

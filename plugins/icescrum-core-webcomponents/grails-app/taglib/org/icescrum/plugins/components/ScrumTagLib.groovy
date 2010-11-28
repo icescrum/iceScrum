@@ -219,7 +219,7 @@ class ScrumTagLib {
     if (str == "null")
       str = ""
 
-    if (attrs.encodeHTML)
+    if (attrs.encodedHTML)
       str = str.decodeHTML()
     def length = str?.length() ?: 0
 
@@ -238,7 +238,7 @@ class ScrumTagLib {
 
     }
 
-    if (attrs.encodeHTML) {
+    if (attrs.encodedHTML) {
       out << str?.encodeAsHTML()
     } else {
       out << str

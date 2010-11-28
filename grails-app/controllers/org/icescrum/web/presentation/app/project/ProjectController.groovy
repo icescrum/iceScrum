@@ -253,6 +253,7 @@ class ProjectController {
   def dashboard = {
     def currentProduct = Product.get(params.product)
     def sprint = Sprint.findCurrentOrLastSprint(currentProduct.id).list()[0]
+    def release = Release.findCurrentOrNextRelease(currentProduct.id).list()[0]
     def activities = Story.recentActivity(currentProduct)
     activities.addAll(Product.recentActivity(currentProduct))
     activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
@@ -260,6 +261,7 @@ class ProjectController {
             model: [product: currentProduct,
                     activities: activities,
                     sprint: sprint,
+                    release:release,
                     lang:RCU.getLocale(request).toString().substring(0,2),
                     id:id
             ]

@@ -74,7 +74,7 @@
           sortable='[rendered:productOwner]'
           controller="productBacklog"
           comment="${story.totalComments >= 0 ? story.totalComments : ''}">
-    <is:truncated size="50"><is:storyTemplate story="${story}" /></is:truncated>
+    <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}" /></is:truncated>
 
     %{--Embedded menu--}%
 

@@ -50,7 +50,7 @@
           sortable='[renderend:productOwner]'
           typeName="${feature.type}"
           controller="feature">
-  <is:truncated size="50">${feature.description?.encodeAsHTML()}</is:truncated>
+  <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
 
     %{--Embedded menu--}%
     <is:postitMenu id="${feature.id}" contentView="window/postitMenu" params="[id:id, feature:feature]" rendered="${productOwner}"/>

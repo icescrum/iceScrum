@@ -41,7 +41,7 @@
           type="actor"
           attachment="${actor.totalAttachments}"
           controller="actor">
-    <is:truncated size="50">${actor.description?.encodeAsHTML()}</is:truncated>
+    <is:truncated size="50" encodedHTML="true">${actor.description?.encodeAsHTML()}</is:truncated>
 
   %{--Embedded menu--}%
     <is:postitMenu id="${actor.id}" contentView="window/postitMenu" params="[id:id, actor:actor]" rendered="${productOwner}"/>

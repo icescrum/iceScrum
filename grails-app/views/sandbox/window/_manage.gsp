@@ -154,7 +154,7 @@
                 value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
       </g:if>
       <is:button
-              targetLocation="${referrer?.controller ?: 'sandbox' + referrer?.action ?'/'+referrer?.action:''+ referrer?.id ?'/'+referrer?.id:''}"
+              targetLocation="${(referrer?.controller ?: 'sandbox')+ (referrer?.action ?'/'+referrer?.action:'')+ (referrer?.id ?'/'+referrer?.id:'')}"
               id="submitForm"
               type="submitToRemote"
               before='if (\$.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
@@ -163,7 +163,7 @@
               value="${message(code:'is.button.update')}"/>
     </g:if>
     <is:button
-            targetLocation="${referrer?.controller ?: 'sandbox' + referrer?.action ?'/'+referrer?.action:''+ referrer?.id ?'/'+referrer?.id:''}"
+            targetLocation="${(referrer?.controller ?: 'sandbox')+ (referrer?.action ?'/'+referrer?.action:'')+ (referrer?.id ?'/'+referrer?.id:'')}"
             id="cancelForm"
             type="link"
             button="button-s button-s-black"

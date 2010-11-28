@@ -54,7 +54,7 @@
           color="${story.feature?.color}"
           controller="sandbox"
           comment="${story.totalComments >= 0 ? story.totalComments : ''}">
-    <is:truncated size="50"><is:storyTemplate story="${story}" /></is:truncated>
+    <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
 
   %{--Embedded menu--}%
     <is:postitMenu id="${story.id}" contentView="window/postitMenu" params="[id:id, story:story, sprint:sprint, user:user]" />

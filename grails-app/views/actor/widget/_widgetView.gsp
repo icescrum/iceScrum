@@ -30,7 +30,7 @@
           dblclickable='[restrictOnAccess:"inProduct()", selector:".postit-row", callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'>
     <li elemId="${actor.id}" class="postit-row postit-row-actor">
       <is:postitIcon/>
-      <is:truncated size="30">${actor.name.encodeAsHTML()}</is:truncated>
+      <is:truncated size="30" encodedHTML="true">${actor.name.encodeAsHTML()}</is:truncated>
     </li>
   </is:backlogElementLayout>
 </g:if>

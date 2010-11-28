@@ -56,19 +56,19 @@
       <is:panel id="panel-vision">
         <is:panelTitle><g:message code="is.ui.project.vision.title"/></is:panelTitle>
         <div class="panel-box-content">
-          <g:if test="${sprint?.parentRelease?.vision}">
-            <wikitext:renderHtml markup="Textile">${is.truncated(value:sprint.parentRelease.vision,size:1000,encodeHTML:false)}</wikitext:renderHtml>
+          <g:if test="${release?.vision}">
+            <wikitext:renderHtml markup="Textile">${is.truncated(value:release.vision,size:1000,encodedHTML:false)}</wikitext:renderHtml>
           </g:if>
           <g:else>
             <g:message code="is.release.empty.vision"/>
           </g:else>
         </div>
-        <g:if test="${sprint?.parentRelease?.vision?.length() > 1000}">
+        <g:if test="${release?.vision?.length() > 1000}">
             <div class="read-more">
              <is:scrumLink
                 controller="releasePlan"
                 action="vision"
-                id="${sprint.parentRelease.id}">
+                id="${release.id}">
                   <g:message code="is.ui.project.link.more"/>
                 </is:scrumLink>
             </div>
@@ -78,7 +78,7 @@
         <is:panelTitle><g:message code="is.ui.project.doneDefinition.title"/></is:panelTitle>
         <div class="panel-box-content">
           <g:if test="${sprint?.doneDefinition}">
-            <wikitext:renderHtml markup="Textile">${is.truncated(value:sprint.doneDefinition,size:1000,encodeHTML:false)}</wikitext:renderHtml>
+            <wikitext:renderHtml markup="Textile">${is.truncated(value:sprint.doneDefinition,size:1000,encodedHTML:false)}</wikitext:renderHtml>
           </g:if>
           <g:else>
             <g:message code="is.sprint.empty.doneDefinition"/>
@@ -99,7 +99,7 @@
         <is:panelTitle><g:message code="is.ui.project.retrospective.title"/></is:panelTitle>
         <div class="panel-box-content">
           <g:if test="${sprint?.retrospective}">
-            <wikitext:renderHtml markup="Textile">${is.truncated(value:sprint.retrospective,size:1000,encodeHTML:false)}</wikitext:renderHtml>
+            <wikitext:renderHtml markup="Textile">${is.truncated(value:sprint.retrospective,size:1000,encodedHTML:false)}</wikitext:renderHtml>
           </g:if>
           <g:else>
             <g:message code="is.sprint.empty.retrospective"/>
