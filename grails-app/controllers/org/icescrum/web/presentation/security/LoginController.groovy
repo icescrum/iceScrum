@@ -78,7 +78,11 @@ class LoginController {
 		}
         session.invalidate()
         def userAgent = request.getHeader("user-agent")
-        def locale = params.lang?:userAgent.substring(userAgent.indexOf("(") + 1).split("; ")[3]?:null
+        def headers = userAgent.substring(userAgent.indexOf("(") + 1).split("; ")
+        def locale = params.lang?:null
+        if (headers.size() >= 4){
+          locale = params.lang?:headers[3]?.substring(0,2)
+        }
         RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
 		String view = 'auth'
 		String postUrl = "${config.apf.filterProcessesUrl}"
