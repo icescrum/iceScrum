@@ -276,6 +276,7 @@
         onExit="submit"
         action="estimateTask"
         controller="${id}"
+        highlight="true"
         before="\$(this).next().hide();"
         cancel="\$(original).next().show();"
         callback="\$(this).next().show();"

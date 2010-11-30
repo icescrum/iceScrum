@@ -224,7 +224,7 @@ class TableTagLib {
         //gestion editable
         def editable = col.editable?.name?:col.editable?.type?:null
         if(editable && !editables."${editable}"){
-          editables."${editable}" = [id:col.editable.id?:'',type:col.editable.type,values:col.editable.values?:null,detach:col.editable.detach?:false]
+          editables."${editable}" = [id:col.editable.id?:'',type:col.editable.type,values:col.editable.values?:null,detach:col.editable.detach?:false,highlight:col.editable.highlight?:false]
         }
 
         col."class" = col."class" ?: ""
@@ -247,6 +247,7 @@ class TableTagLib {
       editableConfig.id = v.id
       editableConfig.values = v.values
       editableConfig.detach = v.detach
+      editableConfig.highlight = v.highlight
       jqCode = jqCode + is.jeditable(editableConfig)
       editableConfig.remove('type')
       editableConfig.remove('values')
@@ -301,6 +302,7 @@ class TableTagLib {
     def jqCode = """
                 \$('.table-cell-editable-${attrs.type}${attrs.id?'-'+attrs.id:''}').editable('${createLink(action:attrs.action,controller:attrs.controller,params:attrs.params)}',{
                     type:'${attrs.type}',
+                    select:${attrs.highlight?:false},
                     data : function(value, settings) {settings.name = ${detach}; settings.id = '${attrs.var}.id';${data}},
                     onsubmit:function(settings, original){var finder = ${finder}; var origin = ${original}; if (finder == origin) { original.reset(); return false;}},
                     submitdata : function(value, settings) {return {'name':\$(this).attr('name'),'table':true,'${attrs.var}.id':\$(this).parent().parent().attr('elemID'),'${attrs.var}.version':\$(this).parent().parent().attr('version')};},
