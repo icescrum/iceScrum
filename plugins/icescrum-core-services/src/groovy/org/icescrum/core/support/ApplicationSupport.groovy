@@ -53,6 +53,8 @@ class ApplicationSupport {
       if (value.class == java.lang.Boolean) {
           // because 'true.toBoolean() == false' !!!
           return value
+      } else if(value.class == ConfigObject){
+        return value.asBoolean()
       } else {
           return value.toBoolean()
       }
