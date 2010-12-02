@@ -222,7 +222,7 @@ class SandboxController {
       if (params.feature?.id && story.feature?.id != params.feature?.id){
         productBacklogService.associateFeature(Feature.get(params.long('feature.id')), story)
       }else{
-        if (story.feature)
+        if (story.feature && params.feature?.id == '')
           story.feature.removeFromStories(story)
       }
 
