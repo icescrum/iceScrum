@@ -383,6 +383,13 @@ $.widget("ui.selectmenu", {
 			this._trigger("open", event, this._uiHash());
 		}
 	},
+
+    refresh: function(){
+        var o = this.options;
+        this.destroy();
+        this._init(o);
+    },
+
 	close: function(event, retainFocus){
 		if(this.newelement.is('.ui-state-active')){
 			this.newelement
@@ -529,7 +536,8 @@ $.widget("ui.selectmenu", {
 			
 		this.list.attr('aria-activedescendant', activeID)
 	},
-	_refreshPosition: function(){	
+
+    _refreshPosition: function(){
 		//set left value
         if (this.container == 'body')
 		    this.list.css('left', this.newelement.offset().left);
