@@ -115,7 +115,7 @@
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
-							<textField>
+							<textField isStretchWithOverflow="true">
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="80" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
@@ -147,7 +147,7 @@
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
-							<textField isBlankWhenNull="true">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement stretchType="RelativeToBandHeight" x="4" y="4" width="156" height="22"/>
 								<textElement verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
@@ -163,7 +163,7 @@
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table 2_TD" height="30" rowSpan="1">
-							<textField isBlankWhenNull="true">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement stretchType="RelativeToBandHeight" x="4" y="4" width="176" height="22"/>
 								<textElement verticalAlignment="Middle" markup="html"/>
 								<textFieldExpression class="java.lang.String"><![CDATA[$F{notes}]]></textFieldExpression>
