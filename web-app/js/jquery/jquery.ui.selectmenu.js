@@ -384,12 +384,6 @@ $.widget("ui.selectmenu", {
 		}
 	},
 
-    refresh: function(){
-        var o = this.options;
-        this.destroy();
-        this._init(o);
-    },
-
 	close: function(event, retainFocus){
 		if(this.newelement.is('.ui-state-active')){
 			this.newelement
@@ -407,9 +401,8 @@ $.widget("ui.selectmenu", {
 		this.element.trigger('change');
 		this._trigger("change", event, this._uiHash());
 	},
-    getOptions: function() {
-        var self = this;
-		return self.options;
+    settings: function() {
+		return this.options;
 	},
 	select: function(event) {
 		this._trigger("select", event, this._uiHash());
