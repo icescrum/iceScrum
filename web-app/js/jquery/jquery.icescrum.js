@@ -47,6 +47,7 @@ $(document).ready(function($) {
     $.icescrum = {
 
         defaults:{
+            debug:false,
             baseUrlProduct:null,
             baseUrl:null,
             grailsServer:null,
@@ -73,18 +74,35 @@ $(document).ready(function($) {
 
         init:function(options) {
             this.o = jQuery.extend({}, this.defaults, options);
+
+            var old_console_log = console.log;
+            console.log = function() {
+                if ( $.icescrum.o.debug ) {
+                    old_console_log.apply(this, arguments);
+                }
+            };
+
             if (this.o.widgetsList.length > 0) {
                 var tmp = this.o.widgetsList;
                 this.o.widgetsList = [];
-                var widget;
                 for (i = 0; i < tmp.length; i++) {
                     this.addToWidgetBar(tmp[i]);
                 }
             }
+
             $.datepicker.setDefaults($.datepicker.regional[this.o.locale]);
             var url = location.hash.replace(/^.*#/, '');
+
             if(url != ''){
                 $.icescrum.openWindow(url);
+            }
+        },
+
+        debug:function(value){
+            if (value){
+                this.o.debug = value;
+            }else{
+                return this.o.debug;
             }
         },
 
