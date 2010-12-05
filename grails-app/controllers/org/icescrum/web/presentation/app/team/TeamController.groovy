@@ -187,7 +187,7 @@ class TeamController {
 
     def results = []
     teams?.each {
-      results << [id: it.id, label: it.name,
+      results << [id: it.id, label: it.name.encodeAsHTML(),
               image: resource(dir: is.currentThemeImage(), file: 'choose/default.png'), extra: "${it.members?.size()} ${message(code: 'is.ui.user.assigned')}"
       ]
     }

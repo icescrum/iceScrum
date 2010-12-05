@@ -29,7 +29,7 @@
         <strong><g:message code="is.actor.name"/> :</strong> ${actor.name.encodeAsHTML()}
       </p>
       <p>
-        <strong><g:message code="is.backlogelement.description"/> :</strong> ${actor.description?.encodeAsHTML()}
+        <strong><g:message code="is.backlogelement.description"/> :</strong> ${actor.description?.encodeAsHTML()?.encodeAsNL2BR()}
       </p>
       <div class="line">
         <strong><g:message code="is.backlogelement.notes"/> :</strong>
@@ -42,7 +42,7 @@
         <g:formatDate date="${actor.creationDate}" formatName="is.date.format.short.time"/>
       </p>
       <p>
-        <strong><g:message code="is.actor.satisfaction.criteria"/> :</strong> ${actor.satisfactionCriteria?.encodeAsHTML()}
+        <strong><g:message code="is.actor.satisfaction.criteria"/> :</strong> ${actor.satisfactionCriteria?.encodeAsHTML()?.encodeAsNL2BR()}
       </p>
       <p>
         <strong><g:message code="is.actor.it.level"/> :</strong> <g:message code="${expertnessLevelCode}" />

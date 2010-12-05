@@ -39,7 +39,7 @@
           value="${stories}"
           var="story">
     <li class="postit-row postit-row-story" elemId="${story.id}">
-      <is:postitIcon name="${story.feature?.name}" color="${story.feature?.color}" />
+      <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}" />
       </span>${story.id} - <is:truncated encodedHTML="true" size="30">${story.name.encodeAsHTML()}</is:truncated> <em>(${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})</em>
     </li>
   </is:backlogElementLayout>

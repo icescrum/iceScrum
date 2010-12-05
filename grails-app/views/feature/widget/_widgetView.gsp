@@ -36,7 +36,7 @@
           var="feature"
           dblclickable='[restrictOnAccess:"inProduct()", selector:".postit-row", callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'>
     <li elemId="${feature.id}" class="postit-row postit-row-feature">
-      <is:postitIcon name="${feature.name}" color="${feature.color}"/>
+      <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
       <is:truncated size="30" encodedHTML="true">${feature.name.encodeAsHTML()}</is:truncated>
     </li>
   </is:backlogElementLayout>

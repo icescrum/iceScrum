@@ -124,8 +124,11 @@ class FeatureController {
           def returnValue = ""
           if (params.name == 'type')
             returnValue = message(code:typesBundle[feature.type])
+          else if (params.name == 'description'){
+            returnValue = feature.description?.encodeAsHTML()?.encodeAsNL2BR()
+          }
           else
-            returnValue = feature."${params.name}"
+            returnValue = feature."${params.name}".encodeAsHTML()
           render(status: 200, text: returnValue?:'')
           if (params.name == 'rank')
             push "${params.product}-${id}"

@@ -132,7 +132,7 @@
               <li ${(activities.size() == (i + 1)) ? 'class="last"' : ''}>
                 <div class="news-item news-${a.code}">
                   <p>
-                    <is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName} ${a.poster.lastName}</is:scrumLink>
+                    <is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
                     <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.story"/>
                     <g:if test="${a.code != Activity.CODE_DELETE}">
                       <is:scrumLink controller="backlogElement" id="${a.cachedId}" params="${a.code == 'comment' ? ['tab':'comments'] : []}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink>

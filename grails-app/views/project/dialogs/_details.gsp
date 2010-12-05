@@ -21,7 +21,7 @@
 --}%
 <ul>
   <li>${message(code: "is.product")}:
-    <strong>${currentProduct.name}</strong>
+    <strong>${currentProduct.name.encodeAsHTML()}</strong>
     <sec:access expression='productOwner()'><is:remoteDialog
             action="openProperties"
             controller="project"

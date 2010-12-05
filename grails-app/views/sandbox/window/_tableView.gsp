@@ -60,9 +60,9 @@
           ${story.id}
         </is:scrumLink>
       </is:tableColumn>
-      <is:tableColumn editable="[type:'text',highlight:true,disabled:!productOwner,name:'name']">${story.name}</is:tableColumn>
+      <is:tableColumn editable="[type:'text',highlight:true,disabled:!productOwner,name:'name']">${story.name.encodeAsHTML()}</is:tableColumn>
       <is:tableColumn editable="[type:'selectui',id:'type',disabled:!productOwner,name:'type',values:typeSelect]"><is:bundleFromController bundle="typesBundle" value="${story.type}"/></is:tableColumn>
-      <is:tableColumn editable="[type:'selectui',id:'feature',disabled:!productOwner,detach:true,name:'feature.id',values:featureSelect]"><is:postitIcon name="${story.feature?.name}" color="${story.feature?.color}"/><g:message code="${story.feature?.name?:message(code:'is.ui.sandbox.manage.chooseFeature')}"/></is:tableColumn>
+      <is:tableColumn editable="[type:'selectui',id:'feature',disabled:!productOwner,detach:true,name:'feature.id',values:featureSelect]"><is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/><g:message code="${story.feature?.name?.encodeAsHTML()?:message(code:'is.ui.sandbox.manage.chooseFeature')}"/></is:tableColumn>
       <is:tableColumn editable="[type:'textarea',disabled:!productOwner,name:'description']">${story.description?.encodeAsHTML()}</is:tableColumn>
       <is:tableColumn editable="[type:'richarea',disabled:!productOwner,name:'notes']"><wikitext:renderHtml markup="Textile">${story.notes}</wikitext:renderHtml></is:tableColumn>
     </is:tableRows>

@@ -136,7 +136,7 @@ class SandboxController {
     def featureSelect = "'':'${message(code:'is.ui.sandbox.manage.chooseFeature')}'"
     if (currentProduct.features){
       featureSelect += ','
-      featureSelect += currentProduct.features.collect {v -> "'$v.id':'$v.name'"}.join(',')
+      featureSelect += currentProduct.features.collect {v -> "'$v.id':'${v.name.encodeAsHTML().encodeAsJavaScript()}'"}.join(',')
     }
 
     def sprint = Sprint.findCurrentSprint(currentProduct.id).list()[0]
@@ -235,12 +235,15 @@ class SandboxController {
         if (params.name == 'type')
           returnValue = message(code:typesBundle[story.type])
         else if (params.name == 'feature.id')
-          returnValue = is.postitIcon(name:story.feature?.name?:message(code:message(code:'is.ui.sandbox.manage.chooseFeature')),color:story.feature?.color?:'yellow')+(story.feature?.name?:message(code:message(code:'is.ui.sandbox.manage.chooseFeature')))
+          returnValue = is.postitIcon(name:story.feature?.name?.encodeAsHTML()?:message(code:message(code:'is.ui.sandbox.manage.chooseFeature')),color:story.feature?.color?:'yellow')+(story.feature?.name?.encodeAsHTML()?:message(code:message(code:'is.ui.sandbox.manage.chooseFeature')))
         else if (params.name == 'notes'){
           returnValue = wikitext.renderHtml(markup:'Textile',text:story."${params.name}")
         }
+        else if (params.name == 'description'){
+          returnValue = story.description?.encodeAsHTML()?.encodeAsNL2BR()
+        }
         else
-          returnValue = story."${params.name}"
+          returnValue = story."${params.name}".encodeAsHTML()
         render(status: 200, text: returnValue?:'')
         pushOthers "${params.product}-${id}"
         return

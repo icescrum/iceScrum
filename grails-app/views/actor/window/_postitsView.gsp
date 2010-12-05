@@ -48,9 +48,10 @@
 
     <g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
     <is:tooltipPostit
+            type="actor"
             id="${actor.id}"
             title="${actor.name.encodeAsHTML()}"
-            text="${actor.description?.encodeAsHTML()}"
+            text="${actor.description.encodeAsHTML()}"
             apiBeforeShow="if(\$('#dropmenu').is(':visible')){return false;}"
             container="\$('#window-content-${id}')"/>
     </g:if>

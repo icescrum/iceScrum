@@ -37,8 +37,7 @@ class ScrumTagLib {
     try {
       pageScope.menu = ''
     } catch (e) {}
-    attrs.title = attrs.title.decodeHTML()
-    params.title = (attrs.title.length() > 17) ? attrs.title[0..16] + '...' : attrs.title
+    params.title = is.truncated([size:17,encodedHTML:true],attrs.title)
     params.content = body()
     params.type = attrs.type ? attrs.type : ""
     params.color = params.color ?: "yellow"
@@ -219,6 +218,8 @@ class ScrumTagLib {
     if (str == "null")
       str = ""
 
+    attrs.encodedHTML = attrs.encodedHTML?.toBoolean()
+
     if (attrs.encodedHTML)
       str = str.decodeHTML()
     def length = str?.length() ?: 0
@@ -390,6 +391,9 @@ class ScrumTagLib {
       textStory += (attrs.story.textTo ?: '')
     }
     textStory = textStory.encodeAsHTML()
-    return textStory.encodeAsNL2BR()
+    if (attrs.displayBR)
+      return textStory.encodeAsNL2BR()
+    else
+      return textStory
   }
 }

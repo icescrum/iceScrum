@@ -44,7 +44,7 @@
             <g:elseif test="${entry instanceof Activity && entry.code != 'comment'}">
               <li ${(summary?.size() == (i + 1)) ? 'class="last"' : ''}>
                 <div class="news-item news-${entry.code}">
-                  <p><is:scrumLink controller="user" action='profile' id="${entry.poster.username}">${entry.poster.firstName} ${entry.poster.lastName}</is:scrumLink>
+                  <p><is:scrumLink controller="user" action='profile' id="${entry.poster.username}">${entry.poster.firstName.encodeAsHTML()} ${entry.poster.lastName.encodeAsHTML()}</is:scrumLink>
                   <g:message code="is.fluxiable.${entry.code}"/>
                   <g:message code="is.${entry.code.startsWith('task') ? 'task' : 'story'}"/>
                     <strong>${entry.cachedLabel.encodeAsHTML()}</strong></p>
@@ -93,7 +93,7 @@
           <g:each in="${activities}" var="a" status="i">
             <li ${(activities?.size() == (i + 1)) ? 'class="last"' : ''}>
               <div class="news-item news-${a.code}">
-                <p><is:scrumLink controller="members" action='profile' id="${a.posterId}">${a.poster.firstName} ${a.poster.lastName}</is:scrumLink>
+                <p><is:scrumLink controller="members" action='profile' id="${a.posterId}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
                 <g:message code="is.fluxiable.${a.code}"/>
                 <g:message code="is.${a.code.startsWith('task') ? 'task' : 'story'}"/>
                   <strong>${a.cachedLabel.encodeAsHTML()}</strong></p>

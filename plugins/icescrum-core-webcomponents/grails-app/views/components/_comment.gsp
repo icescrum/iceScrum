@@ -23,7 +23,7 @@
   </div>
 
   <div class="comment-details">
-    <is:scrumLink controller="user" action='profile' id="${comment.poster?.username}"><strong>${comment.poster?.firstName} ${comment.poster?.lastName}</strong></is:scrumLink>,
+    <is:scrumLink controller="user" action='profile' id="${comment.poster?.username}"><strong>${comment.poster?.firstName?.encodeAsHTML()} ${comment.poster?.lastName?.encodeAsHTML()}</strong></is:scrumLink>,
     <g:formatDate date="${comment.dateCreated}" formatName="is.date.format.short.time"/>
     <g:if test="${moderation && (access || user?.id == comment.poster?.id)}">
       (

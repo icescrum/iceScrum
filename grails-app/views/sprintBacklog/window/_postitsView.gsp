@@ -229,7 +229,7 @@
                   attachment="${task.totalAttachments}"
                   rect="true"
                   miniValue="${task.estimation ?: task.estimation == 0?'0':'?'}"
-                  stateText="${task.responsible?.firstName ?: ''} ${task.responsible?.lastName ?: ''}"
+                  stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
                   editableEstimation="${(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE)}"
                   color="yellow">
             <g:if test="${inProduct}">

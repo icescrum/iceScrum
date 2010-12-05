@@ -163,8 +163,11 @@ class UserController {
       link = createLink(controller: 'scrumOS', params: [product: params.product])
     else
       link = createLink(uri: '/')
+
+    def name = currentUser.firstName + ' ' + currentUser.lastName
+
     render(status: 200, contentType: 'application/json',
-            text: [name: currentUser.firstName + ' ' + currentUser.lastName,
+            text: [name: name.encodeAsHTML().encodeAsJavaScript(),
                     forceRefresh: forceRefresh,
                     refreshLink: link ?: null,
                     updateAvatar: createLink(action: 'avatar', id: currentUser.id),

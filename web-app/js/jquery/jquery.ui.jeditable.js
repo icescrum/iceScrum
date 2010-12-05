@@ -84,7 +84,7 @@ $.editable.addInputType('selectui', {
                 if ('selected' == key) {
                     continue;
                 }
-                var option = $('<option />').val(key).append(json[key]);
+                var option = $('<option />').val(key).append($('<div/>').text(json[key]).html());
                 $('select', this).append(option);
             }
             /* Loop option again to set selected. IE needed this... */

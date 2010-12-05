@@ -45,7 +45,7 @@
             <g:each in="${storyActivities}" var="a" status="i">
               <li ${(storyActivities.size() == (i + 1)) ? 'class="last"' : ''}>
                 <div class="news-item news-${a.code}">
-                  <p><is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName} ${a.poster.lastName}</is:scrumLink>
+                  <p><is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
                     <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.story"/>
                     <g:link class="scrum-link" action="idURL"  controller="backlogElement" id="${a.cachedId}">${a.cachedLabel.encodeAsHTML()}</g:link></p>
                   <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"/></p>

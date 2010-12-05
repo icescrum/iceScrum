@@ -49,7 +49,7 @@
           <span class="table-attachment" title="${message(code:'is.postit.attachment', args:[attachment,attachment > 1 ? 's' : ''])}"></span>
         </g:if>
       </is:tableColumn>
-      <is:tableColumn editable="[type:'text',disabled:!productOwner,name:'name']">${actor.name}</is:tableColumn>
+      <is:tableColumn editable="[type:'text',disabled:!productOwner,name:'name']">${actor.name.encodeAsHTML()}</is:tableColumn>
       <is:tableColumn editable="[type:'textarea',disabled:!productOwner,name:'description']">${actor.description?.encodeAsHTML()}</is:tableColumn>
       <is:tableColumn editable="[type:'selectui',id:'level',name:'expertnessLevel',values:levelsSelect,disabled:!productOwner]"><is:bundleFromController bundle="levelsBundle" value="${actor.expertnessLevel}"/></is:tableColumn>
       <is:tableColumn editable="[type:'textarea',disabled:!productOwner,name:'satisfactionCriteria']">${actor.satisfactionCriteria?.encodeAsHTML()}</is:tableColumn>

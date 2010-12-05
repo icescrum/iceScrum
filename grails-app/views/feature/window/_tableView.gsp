@@ -49,7 +49,7 @@
         </g:if>
       </is:tableColumn>
       <is:tableColumn class="table-cell-postit-icon">
-        <is:postitIcon name="${feature.name}" color="${feature.color}" />
+        <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}" />
       </is:tableColumn>
       <is:tableColumn editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!productOwner]">${feature.rank}</is:tableColumn>
       <is:tableColumn editable="[type:'selectui',disabled:!productOwner,name:'value',values:suiteSelect]">${feature.value}</is:tableColumn>

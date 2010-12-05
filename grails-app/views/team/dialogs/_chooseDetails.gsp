@@ -28,8 +28,8 @@
 <div id="tabs-description">
   <div class="browse-informations clearfix">
     <img src="${resource(dir: is.currentThemeImage(), file: 'choose/default.png')}" class="ico">
-    <h4>${team.name}</h4>
-    <p class="description">${team.description}</p>
+    <h4>${team.name.encodeAsHTML()}</h4>
+    <p class="description">${team.description?.encodeAsHTML()}</p>
   </div>
   <table cellpadding="0" cellspacing="0" class="table-lines">
     <tr class="table-lines-head">

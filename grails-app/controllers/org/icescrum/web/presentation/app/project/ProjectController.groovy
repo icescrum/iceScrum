@@ -744,7 +744,7 @@ class ProjectController {
 
     def results = []
     products?.each {
-      results << [id: it.id, label: it.name,
+      results << [id: it.id, label: it.name.encodeAsHTML(),
               image: resource(dir: is.currentThemeImage(), file: 'choose/default.png')
       ]
     }

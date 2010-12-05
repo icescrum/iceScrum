@@ -21,7 +21,7 @@
 --}%
 <ul>
   <li>${message(code:"is.team")}:
-  <strong>${currentTeam.name}</strong>
+  <strong>${currentTeam.name.encodeAsHTML()}</strong>
     <sec:access expression='scrumMaster()'> <is:remoteDialog
             action="openProperties"
             controller="team"

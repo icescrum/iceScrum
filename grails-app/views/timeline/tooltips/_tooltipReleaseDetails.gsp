@@ -22,7 +22,7 @@
 <%@ page import="org.icescrum.core.domain.Release" %>
 <p>
   <span class="important"><g:message code="is.release.goal"/> :</span>
-  ${release.goal}
+  ${release.goal.encodeAsHTML()}
 </p>
 <g:if test="${release.state == Release.STATE_DONE}">
   <p>

@@ -31,14 +31,14 @@
         <is:panelContext>
           <is:panelLine legend="${message(code:'is.backlogelement.name')}">${story.name.encodeAsHTML()}</is:panelLine>
           <is:panelLine legend="${message(code:'is.story.type')}">${message(code:typeCode)}</is:panelLine>
-          <is:panelLine legend="${message(code:'is.feature')}" rendered="${story.feature != null}"><is:postitIcon name="${story.feature.name}" color="${story.feature.color}"/>${story.feature.name.encodeAsHTML()}</is:panelLine>
+          <is:panelLine legend="${message(code:'is.feature')}" rendered="${story.feature != null}"><is:postitIcon name="${story.feature.name.encodeAsHTML()}" color="${story.feature.color}"/>${story.feature.name.encodeAsHTML()}</is:panelLine>
           <is:panelLine legend="${message(code:'is.story.effort')}" rendered="${story.effort != null}">${story.effort}</is:panelLine>
           <is:panelLine legend="${message(code:'is.story.rank')}" rendered="${story.state > Story.STATE_SUGGESTED}">${story.rank}</is:panelLine>
           <is:panelLine legend="${message(code:'is.sprint')}" rendered="${story.parentSprint != null}">
             <is:scrumLink controller="releasePlan" id="${story.parentSprint.parentRelease.id}">${message(code:'is.release')} ${story.parentSprint.parentRelease.orderNumber}</is:scrumLink> <is:scrumLink controller="sprintBacklog" id="${story.parentSprint.id}">${message(code:'is.sprint')} ${story.parentSprint.orderNumber}</is:scrumLink>
           </is:panelLine>
-          <is:panelLine legend="${message(code:'is.story.origin')}" rendered="${story.origin != ''}">${story.origin}</is:panelLine>
-          <is:panelLine legend="${message(code:'is.backlogelement.description')}"><is:storyTemplate story="${story}"/></is:panelLine>
+          <is:panelLine legend="${message(code:'is.story.origin')}" rendered="${story.origin != ''}">${story.origin.encodeAsHTML()}</is:panelLine>
+          <is:panelLine legend="${message(code:'is.backlogelement.description')}"><is:storyTemplate displayBR="true" story="${story}"/></is:panelLine>
           <is:panelLine legend="${message(code:'is.backlogelement.notes')}">
             <g:if test="${story.notes}">
               <div class="rich-content">
@@ -66,7 +66,7 @@
       <is:panel id="panel-people">
         <is:panelTitle>${message(code:'is.ui.backlogelement.people')}</is:panelTitle>
         <is:panelContext>
-          <is:panelLine legend="${message(code:'is.story.creator')}"><is:scrumLink controller="user" action="profile" id="${story.creator.username}">${story.creator.firstName} ${story.creator.lastName}</is:scrumLink></is:panelLine>
+          <is:panelLine legend="${message(code:'is.story.creator')}"><is:scrumLink controller="user" action="profile" id="${story.creator.username}">${story.creator.firstName.encodeAsHTML()} ${story.creator.lastName.encodeAsHTML()}</is:scrumLink></is:panelLine>
         </is:panelContext>
       </is:panel>
 

@@ -22,7 +22,7 @@
 <%@ page import="org.icescrum.core.domain.Sprint" %>
 <p>
   <span class="important"><g:message code="is.sprint.goal"/> :</span>
-  ${sprint.goal}
+  ${sprint.goal.encodeAsHTML()}
 </p>
 <p>
 <g:if test="${sprint.state == org.icescrum.core.domain.Sprint.STATE_DONE}">

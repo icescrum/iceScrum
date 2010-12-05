@@ -82,7 +82,14 @@ class ReleasePlanController {
      release = Release.get(params.long('id'))
     }
     releases = Release.findAllByParentProduct(Product.get(params.product), [sort:'startDate'])
-    render(template:'window/titleBarContent', model:[currentView:session.currentView, id:id, releases:releases,release:release])
+    def releasesHtml = []
+    releases.each{
+      def u = [:]
+      u.id = it.id
+      u.name = it.name.encodeAsHTML()
+      releasesHtml << u
+    }
+    render(template:'window/titleBarContent', model:[currentView:session.currentView, id:id, releases:releasesHtml,release:release])
   }
 
   def toolbar = {

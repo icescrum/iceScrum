@@ -37,7 +37,7 @@
           <g:each in="${activities}" var="a" status="i">
             <li ${(activities?.size() == (i + 1)) ? 'class="last"' : ''}>
               <div class="news-item news-${a.code}">
-                <p>${a.poster.firstName} ${a.poster.lastName}
+                <p>${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}
                   <g:message code="is.fluxiable.${a.code}"/>
                   <g:message code="is.${a.code.startsWith('task') ? 'task' : 'story'}"/>
                   <g:if test="${!a.code.startsWith('task') && a.code != Activity.CODE_DELETE}">

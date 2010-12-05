@@ -264,8 +264,10 @@ class SprintBacklogController {
         returnValue = task.estimation?:'?'
       }else if (params.name == 'state'){
         returnValue = g.message(code:taskStateBundle.get(task.state))
+      }else if (params.name == 'description'){
+        returnValue = task.description?.encodeAsHTML()?.encodeAsNL2BR()
       }else{
-        returnValue = task."${params.name}"
+        returnValue = task."${params.name}".encodeAsHTML()
       }
 
       render(status: 200, text: returnValue?:'')

@@ -25,7 +25,7 @@
       <li>
         <div class="browse-item">
           <img src="${resource(dir: is.currentThemeImage(), file: 'choose/default.png')}" class="ico">
-          <p><strong>${p.name}</strong></p>
+          <p><strong>${p.name.encodeAsHTML()}</strong></p>
         </div>
       </li>
     </g:each>

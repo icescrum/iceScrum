@@ -59,13 +59,13 @@
             </g:if>
           </is:tableColumn>
 
-          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name}</is:tableColumn>
+          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundleFromController bundle="taskStateBundle" value="${task.state}"/></is:tableColumn>
           <is:tableColumn editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
-          <is:tableColumn editable="[type:'textarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'description']">${task.description}</is:tableColumn>
+          <is:tableColumn editable="[type:'textarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'description']">${task.description?.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'richarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'notes']">${task.notes}</is:tableColumn>
 
-          <is:tableColumn>${task.responsible?.firstName} ${task.responsible?.lastName}</is:tableColumn>
+          <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',value:task.inProgressDate):''}</is:tableColumn>
           <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',value:task.doneDate):''}</is:tableColumn>
         </is:tableRows>
@@ -91,13 +91,13 @@
             </g:if>
           </is:tableColumn>
 
-          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name}</is:tableColumn>
+          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundleFromController bundle="taskStateBundle" value="${task.state}"/></is:tableColumn>
           <is:tableColumn editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
-          <is:tableColumn editable="[type:'textarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'description']">${task.description}</is:tableColumn>
+          <is:tableColumn editable="[type:'textarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'description']">${task.description?.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'richarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'notes']">${task.notes}</is:tableColumn>
 
-          <is:tableColumn>${task.responsible?.firstName} ${task.responsible?.lastName}</is:tableColumn>
+          <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',value:task.inProgressDate):''}</is:tableColumn>
           <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',value:task.doneDate):''}</is:tableColumn>
         </is:tableRows>
@@ -113,8 +113,8 @@
           <is:scrumLink id="${story.id}" controller="backlogElement">
             ${story.id}
           </is:scrumLink> -
-          <is:postitIcon name="${story.feature?.name}" color="${story.feature?.color}"/>
-          <strong>${story.name} - ${story.effort} - ${is.bundleFromController(bundle:'stateBundle',value:story.state)}</strong>
+          <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
+          <strong>${story.name.encodeAsHTML()} - ${story.effort} - ${is.bundleFromController(bundle:'stateBundle',value:story.state)}</strong>
         </is:tableGroupHeader>
         <is:tableRows in="${story.tasks.sort{it.rank}}" var="task" elemID="id">
           <is:tableColumn class="table-cell-checkbox">
@@ -128,13 +128,13 @@
 
           <g:set value="${(poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE}" var="disableEdit"/>
 
-          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!(disableEdit),name:'name']">${task.name}</is:tableColumn>
+          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!(disableEdit),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundleFromController bundle="taskStateBundle" value="${task.state}"/></is:tableColumn>
           <is:tableColumn editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
-          <is:tableColumn editable="[type:'textarea',disabled:!(disableEdit),name:'description']">${task.description}</is:tableColumn>
+          <is:tableColumn editable="[type:'textarea',disabled:!(disableEdit),name:'description']">${task.description?.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'richarea',disabled:!(disableEdit),name:'notes']">${task.notes}</is:tableColumn>
 
-          <is:tableColumn>${task.responsible?.firstName} ${task.responsible?.lastName}</is:tableColumn>
+          <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',value:task.inProgressDate):''}</is:tableColumn>
           <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',value:task.doneDate):''}</is:tableColumn>
         </is:tableRows>

@@ -64,7 +64,7 @@
               type="story"
               id="${story.id}"
               title="${story.name.encodeAsHTML()}"
-              text="${is.storyTemplate(story:story)}"
+              text="${is.storyTemplate([story:story])}"
               apiBeforeShow="if(\$('#dropmenu').is(':visible')){return false;}"
               container="\$('#window-content-${id}')"/>
     </g:if>

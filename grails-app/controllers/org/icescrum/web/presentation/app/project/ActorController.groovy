@@ -128,8 +128,11 @@ class ActorController {
           returnValue =  message(code:levelsBundle[actor.expertnessLevel])
         else if (params.name == 'useFrequency')
           returnValue =  message(code:frequenciesBundle[actor.useFrequency])
+        else if (params.name == 'description' || params.name == 'satisfactionCriteria'){
+          returnValue = actor."${params.name}"?.encodeAsHTML()?.encodeAsNL2BR()
+        }
         else
-           returnValue = actor."${params.name}"
+           returnValue = actor."${params.name}".encodeAsHTML()
         render(status: 200, text: returnValue?:'')
         pushOthers "${params.product}-${id}"
         return

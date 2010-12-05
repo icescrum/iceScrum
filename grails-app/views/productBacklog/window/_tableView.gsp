@@ -60,11 +60,11 @@
         </is:scrumLink>
       </is:tableColumn>
       <is:tableColumn editable="[type:'selectui',id:'rank',disabled:!productOwner,name:'rank',values:rankSelect]">${story.rank}</is:tableColumn>
-      <is:tableColumn editable="[type:'text',disabled:!productOwner,name:'name']">${story.name}</is:tableColumn>
+      <is:tableColumn editable="[type:'text',disabled:!productOwner,name:'name']">${story.name.encodeAsHTML()}</is:tableColumn>
       <is:tableColumn editable="[type:'selectui',id:'type',disabled:!productOwner,name:'type',values:typeSelect]"><is:bundleFromController bundle="typesBundle" value="${story.type}"/></is:tableColumn>
-      <is:tableColumn editable="[type:'selectui',id:'feature',disabled:!productOwner,detach:true,name:'feature.id',values:featureSelect]"><is:postitIcon name="${story.feature?.name}" color="${story.feature?.color}"/><g:message code="${story.feature?.name?:message(code:'is.ui.productBacklog.choose.feature')}"/></is:tableColumn>
+      <is:tableColumn editable="[type:'selectui',id:'feature',disabled:!productOwner,detach:true,name:'feature.id',values:featureSelect]"><is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/><g:message code="${story.feature?.name?.encodeAsHTML()?:message(code:'is.ui.productBacklog.choose.feature')}"/></is:tableColumn>
       <is:tableColumn editable="[type:'selectui',id:'effort',disabled:!inProduct,name:'effort',values:suiteSelect]">${story.effort?:'?'}</is:tableColumn>
-      <is:tableColumn editable="[type:'textarea',disabled:!productOwner,name:'description']">${story.description?.encodeAsHTML()}</is:tableColumn>
+      <is:tableColumn editable="[type:'textarea',disabled:!productOwner,name:'description']">${story.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
       <is:tableColumn editable="[type:'richarea',disabled:!productOwner,name:'notes']"><wikitext:renderHtml markup="Textile">${story.notes}</wikitext:renderHtml></is:tableColumn>
       <is:tableColumn>${story.acceptedDate?g.formatDate(value:story.acceptedDate,formatName:'is.date.format.short'):''}</is:tableColumn>
       <is:tableColumn>${story.estimatedDate?g.formatDate(value:story.estimatedDate,formatName:'is.date.format.short'):''}</is:tableColumn>

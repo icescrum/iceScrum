@@ -345,7 +345,7 @@ Timeline.IceScrumEventPainter.prototype.paintPreciseDurationEvent = function(evt
 Timeline.IceScrumEventPainter.prototype.paintImpreciseDurationEvent = function(evt, metrics, theme, highlightIndex) {
     var doc = this._timeline.getDocument();
     var text = evt.getText();
-    
+
     var startDate = evt.getStart();
     var latestStartDate = evt.getLatestStart();
     var endDate = evt.getEnd();

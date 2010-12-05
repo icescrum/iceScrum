@@ -284,7 +284,7 @@ class TableTagLib {
     }
     else if (attrs.type == 'textarea'){
       finder = "\$(original).find('textarea').val()"
-      data ="return jQuery.icescrum.htmlDecode(value);"
+      data ="var retval = value.replace(/<br[\\s\\/]?>/gi, '\\n'); return jQuery.icescrum.htmlDecode(retval);"
     }
     else if (attrs.type == 'datepicker'){
       finder = "\$(original).find('textarea').val()"

@@ -65,10 +65,10 @@ class TimelineController {
      def releasesDate = []
 
      currentProduct.releases?.eachWithIndex{ itt, index ->
-           releasesName << itt.name
+           releasesName << itt.name.encodeAsHTML()
            releasesDate << itt.startDate.getTime()
        itt.sprints?.eachWithIndex{ it2, index2 ->
-           releasesName << "${itt.name} - ${message(code:'is.sprint')} ${index2 + 1}"
+           releasesName << "${itt.name.encodeAsHTML()} - ${message(code:'is.sprint')} ${index2 + 1}"
            releasesDate << it2.startDate.getTime()
        }
      }
@@ -116,7 +116,7 @@ class TimelineController {
         if(it.sprints.asList().last().state == Sprint.STATE_DONE)
           isClosable = true
       }
-      def templateMenu = "<div class='dropmenu-action' onmouseover='if(jQuery(\"#dropmenu-rel-${it.id}\").dropMenuCreated() == false){jQuery(\"#dropmenu-rel-${it.id}\").dropmenu({top:10,showOnCreate:true});};'>"+is.menu(contentView:'window/menu', id:"rel-${it.id}" ,params:[release: it, isClosable:isClosable, id:id, activeRelease:currentProduct.releases.find {it.state == Release.STATE_INPROGRESS}])+"</div><span>${it.name}</span>"
+      def templateMenu = "<div class='dropmenu-action' onmouseover='if(jQuery(\"#dropmenu-rel-${it.id}\").dropMenuCreated() == false){jQuery(\"#dropmenu-rel-${it.id}\").dropmenu({top:10,showOnCreate:true});};'>"+is.menu(contentView:'window/menu', id:"rel-${it.id}" ,params:[release: it, isClosable:isClosable, id:id, activeRelease:currentProduct.releases.find {it.state == Release.STATE_INPROGRESS}])+"</div><span>${it.name.encodeAsJavaScript()}</span>"
       def templateTooltip = include(view: "$controllerName/tooltips/_tooltipReleaseDetails.gsp", model: [release: it])
 
       def tlR = [window:"releasePlan/${it.id}",
@@ -129,7 +129,7 @@ class TimelineController {
               classname:"timeline-release",
               eventID:it.id,
               tooltipContent:templateTooltip,
-              tooltipTitle:"${it.name} (${message(code:ReleaseStateBundle[it.state])})"]
+              tooltipTitle:"${it.name.encodeAsHTML()} (${message(code:ReleaseStateBundle[it.state])})"]
 
         list.add(tlR)
         it.sprints.eachWithIndex{ it2, index ->

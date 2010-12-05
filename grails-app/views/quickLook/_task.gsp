@@ -27,7 +27,7 @@
         <strong><g:message code="is.backlogelement.id"/></strong> ${task.id}
       </p>
       <p>
-        <strong><g:message code="is.backlogelement.description"/> :</strong> ${task.description?.encodeAsHTML()}
+        <strong><g:message code="is.backlogelement.description"/> :</strong> ${task.description?.encodeAsHTML()?.encodeAsNL2BR()}
       </p>
       <div class="line">
         <strong><g:message code="is.backlogelement.notes"/> :</strong>

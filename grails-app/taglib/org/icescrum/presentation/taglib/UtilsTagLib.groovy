@@ -215,7 +215,7 @@ class UtilsTagLib {
 
     def params = [
             for: "#postit-${attrs.type}-${attrs.id}",
-            contentTitleText: attrs.title?.decodeHTML(),
+            contentTitleText: attrs.title?.encodeAsJavaScript(),
             contentText: attrs.text,
             styleName: "icescrum",
             positionTarget: "\'mouse\'",

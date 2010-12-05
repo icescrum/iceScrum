@@ -35,7 +35,7 @@
         <strong><g:message code="is.feature.rank"/> :</strong> ${feature.rank}
       </p>
       <p>
-        <strong><g:message code="is.backlogelement.description"/> :</strong> ${feature.description?.encodeAsHTML()}
+        <strong><g:message code="is.backlogelement.description"/> :</strong> ${feature.description?.encodeAsHTML()?.encodeAsNL2BR()}
       </p>
       <div class="line">
         <strong><g:message code="is.backlogelement.notes"/> :</strong>

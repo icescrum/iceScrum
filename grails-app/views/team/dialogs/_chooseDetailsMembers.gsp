@@ -25,8 +25,8 @@
       <li>
         <div class="browse-item">
           <is:avatar userid="${m.id}" class="ico"/>
-          <p><strong>${m.firstName} ${m.lastName} (${m.username})</strong></p>
-          <p>${m.preferences.activity ?: ''}</p>
+          <p><strong>${m.firstName.encodeAsHTML()} ${m.lastName.encodeAsHTML()} (${m.username})</strong></p>
+          <p>${m.preferences.activity?.encodeAsHTML() ?: ''}</p>
         </div>
       </li>
     </g:each>

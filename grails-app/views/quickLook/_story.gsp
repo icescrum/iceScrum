@@ -28,7 +28,7 @@
         <strong><g:message code="is.backlogelement.id"/></strong> <is:scrumLink onclick="\$('#dialog').dialog('close');" controller="backlogElement" id="${story.id}">${story.id}</is:scrumLink>
       </p>
       <p>
-        <strong><g:message code="is.story.name"/> :</strong> ${story.name}
+        <strong><g:message code="is.story.name"/> :</strong> ${story.name.encodeAsHTML()}
       </p>
       <p>
         <strong><g:message code="is.story.type"/> :</strong> <g:message code="${typeCode}"/>
@@ -39,7 +39,7 @@
         </p>
       </g:if>
       <p>
-        <strong><g:message code="is.backlogelement.description"/> :</strong> <is:storyTemplate story="${story}"/>
+        <strong><g:message code="is.backlogelement.description"/> :</strong> <is:storyTemplate displayBR="true" story="${story}"/>
       </p>
       <div class="line">
         <strong><g:message code="is.backlogelement.notes"/> :</strong>

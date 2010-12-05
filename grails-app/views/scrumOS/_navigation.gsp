@@ -114,7 +114,7 @@
             <g:if test="${product?.id}">
               <li>
                 <is:link disabled="true" onClick="document.location=\$.icescrum.o.baseUrl;">
-                  <g:message code="is.closeProduct" args="${[is.truncated([encodedHTML:false,size:25],{product.name})]}"/>
+                  <g:message code="is.closeProduct" args="${[is.truncated([encodedHTML:true,size:25],{product.name.encodeAsHTML()})]}"/>
                 </is:link>
               </li>
             </g:if>
@@ -125,7 +125,7 @@
               </li>
               <g:each var="curProduct" in="${productFilteredsList}">
                 <li><g:link class="${(product?.id == curProduct.id) ? 'active' : ''}" controller="scrumOS" fragment="project" params="[product:curProduct.pkey]" onClick="${(product?.id == curProduct.id) ? is.notice(text:g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')]))+'return false;' : ''}">
-                      <is:truncated encodedHTML="false" size="25">${curProduct.name}</is:truncated>
+                      <is:truncated encodedHTML="true" size="25">${curProduct.name.encodeAsHTML()}</is:truncated>
                     </g:link>
                 </li>
               </g:each>
@@ -166,7 +166,7 @@
                 <g:each var="curTeam" in="${teamsList}">
                   <li>
                       <g:link class="${(team?.id == curTeam.id) ? 'active' : ''}" controller="team" params="[team:curTeam.id]" fragment="team" onClick="${(team?.id == curTeam.id) ? is.notice(text:g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.team')]))+'return false;' : ''}">
-                        <is:truncated encodedHTML="false" size="25">${curTeam.name}</is:truncated>
+                        <is:truncated encodedHTML="true" size="25">${curTeam.name.encodeAsHTML()}</is:truncated>
                       </g:link>
                   </li>
                 </g:each>
@@ -193,7 +193,7 @@
                   width="600"
                   resizable="false"
                   draggable="false">
-            ${user?.firstName} ${user?.lastName}
+            ${user?.firstName?.encodeAsHTML()} ${user?.lastName?.encodeAsHTML()}
           </is:remoteDialog>
         </li>
       </sec:ifLoggedIn>
