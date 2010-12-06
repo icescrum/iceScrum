@@ -48,11 +48,10 @@ class ScrumOSController {
   def index = {
     def currentUserInstance = null
 
-    def userAgent = request.getHeader("user-agent")
-    def headers = userAgent.substring(userAgent.indexOf("(") + 1).split("; ")
+    def localeAccept = request.getHeader("accept-language").split(",")[0]?.split("-")
     def locale = params.lang?:null
-    if (headers.size() >= 4){
-      locale = params.lang?:headers[3]?.substring(0,2)
+    if (localeAccept.size() > 0){
+      locale = params.lang?:localeAccept[0].toString()
     }
 
     if (springSecurityService.isLoggedIn()) {
