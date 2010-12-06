@@ -303,10 +303,11 @@ class TableTagLib {
                 \$('.table-cell-editable-${attrs.type}${attrs.id?'-'+attrs.id:''}').editable('${createLink(action:attrs.action,controller:attrs.controller,params:attrs.params)}',{
                     type:'${attrs.type}',
                     select:${attrs.highlight?:false},
+                    ajaxoptions:{dataType:'json'},
                     data : function(value, settings) {settings.name = ${detach}; settings.id = '${attrs.var}.id';${data}},
                     onsubmit:function(settings, original){var finder = ${finder}; var origin = ${original}; if (finder == origin) { original.reset(); return false;}},
                     submitdata : function(value, settings) {return {'name':\$(this).attr('name'),'table':true,'${attrs.var}.id':\$(this).parent().parent().attr('elemID'),'${attrs.var}.version':\$(this).parent().parent().attr('version')};},
-                    callback:function(value, settings) {var version = \$(this).parent().parent().attr('version'); \$(this).parent().parent().attr('version',parseInt(version)+1); return jQuery.icescrum.htmlDecode(value);},
+                    callback:function(value, settings) {\$(this).html(value.value); \$(this).parent().parent().attr('version',value.version);},
                     onblur:'${attrs.onExitCell}'
                     ${attrs.type == 'richarea' ?", loaddata:function(revert, settings){settings.name = ${detach}; settings.id = '${attrs.var}.id'; return {'${attrs.var}.id':\$(this).parent().parent().attr('elemID')}},loadurl : '"+createLink(action:attrs.action,controller:attrs.controller,params:attrs.params)+"?loadrich=true',markitup : textileSettings":""}
                 });

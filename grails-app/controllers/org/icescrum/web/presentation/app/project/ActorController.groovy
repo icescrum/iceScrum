@@ -133,7 +133,8 @@ class ActorController {
         }
         else
            returnValue = actor."${params.name}".encodeAsHTML()
-        render(status: 200, text: returnValue?:'')
+        def version = actor.isDirty() ? actor.version + 1 : actor.version
+        render(status: 200, text: [version:version,value:returnValue?:''] as JSON)
         pushOthers "${params.product}-${id}"
         return
       }

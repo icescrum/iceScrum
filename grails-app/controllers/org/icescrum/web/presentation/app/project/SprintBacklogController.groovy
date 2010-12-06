@@ -270,7 +270,8 @@ class SprintBacklogController {
         returnValue = task."${params.name}".encodeAsHTML()
       }
 
-      render(status: 200, text: returnValue?:'')
+      def version = task.isDirty() ? task.version + 1 : task.version
+      render(status: 200, text: [version:version,value:returnValue?:''] as JSON)
 
       if ((params.name == 'estimation' && task.state == Task.STATE_DONE) || params.name == 'state'){
         push "${params.product}-${id}-${task.backlog.id}"

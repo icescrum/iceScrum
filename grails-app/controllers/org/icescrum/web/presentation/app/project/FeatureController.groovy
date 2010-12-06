@@ -129,7 +129,9 @@ class FeatureController {
           }
           else
             returnValue = feature."${params.name}".encodeAsHTML()
-          render(status: 200, text: returnValue?:'')
+
+          def version = feature.isDirty() ? feature.version + 1 : feature.version
+          render(status: 200, text: [version:version,value:returnValue?:''] as JSON)
           if (params.name == 'rank')
             push "${params.product}-${id}"
           else

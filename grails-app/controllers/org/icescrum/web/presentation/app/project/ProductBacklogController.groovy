@@ -179,7 +179,8 @@ class ProductBacklogController {
           else
             returnValue = story."${params.name}".encodeAsHTML()
         }
-        render(status: 200, text: returnValue?:'')
+        def version = story.isDirty() ? story.version + 1 : story.version
+        render(status: 200, text: [version:version,value:returnValue?:''] as JSON)
         if (params.name == 'rank' || params.name == 'effort')
           push "${params.product}-${id}"
         else
