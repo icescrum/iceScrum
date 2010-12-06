@@ -27,7 +27,7 @@
     <div class="col1">
       <is:panel id="panel-chart">
         <is:panelTitle>
-          <g:if test="${sprint}">
+          <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
             <is:link class="right" disabled="true" onClick="jQuery.icescrum.displayChart('sprintBacklog/sprintBurnupTasksChart/${sprint?.id}','#panel-chart-container');">${message(code:'is.ui.project.chart.option.tasks')}</is:link>
             <span class="right"> | </span>
             <is:link rendered="${sprint}" class="right" disabled="true" onClick="jQuery.icescrum.displayChart('sprintBacklog/sprintBurnupStoriesChart/${sprint?.id}','#panel-chart-container');">${message(code:'is.ui.project.chart.option.stories')}</is:link>
