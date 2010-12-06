@@ -82,7 +82,7 @@
   </ul>
 </is:panelButton>
 
-<is:separator/>
+<is:separator elementId="menu-report-separator"/>
 
 %{--Print button--}%
 <is:reportPanel

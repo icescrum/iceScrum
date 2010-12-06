@@ -334,7 +334,11 @@ class FeatureController {
       indexF++
     }
     if (valueToDisplay.size() > 0)
-      render(template:'charts/productParkinglot',model:[id:id,values:valueToDisplay as JSON,featuresNames:values.label as JSON])
+      render(template:'charts/productParkinglot',model:[
+              id:id,
+              withButtonBar:(params.withButtonBar != null)?params.boolean('withButtonBar'):true,
+              values:valueToDisplay as JSON,
+              featuresNames:values.label as JSON])
     else {
       def msg = message(code: 'is.chart.error.no.values')
       render(status: 400, contentType:'application/json',  text: [notice: [text: msg]] as JSON)

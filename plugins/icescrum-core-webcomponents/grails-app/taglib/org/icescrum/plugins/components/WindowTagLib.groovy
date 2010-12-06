@@ -134,7 +134,7 @@ class WindowTagLib {
 
   def separatorSmall = { attrs, body ->
     if (UtilsWebComponents.rendered(attrs))
-      out << "<li class=\"navigation-item separator-s\"></li>"
+      out << "<li class=\"navigation-item separator-s\" ${attrs.elementId ? 'id=\"'+attrs.elementId+'\"':''}></li>"
   }
 
   /**
@@ -142,7 +142,7 @@ class WindowTagLib {
    */
   def separator = {attrs, body ->
     if (UtilsWebComponents.rendered(attrs))
-      out << "<li class=\"navigation-item separator\"></li>"
+      out << "<li class=\"navigation-item separator\" ${attrs.elementId ? 'id=\"'+attrs.elementId+'\"':''}></li>"
   }
 
   def buttonNavigation = { attrs, body ->

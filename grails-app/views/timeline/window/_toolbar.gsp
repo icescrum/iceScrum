@@ -40,13 +40,20 @@
     <li class="first"><is:link action="productCumulativeFlowChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.productCumulativeflow')}" remote="true" value="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}"/></li>
     <li><is:link action="productBurnupChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.burnup')}" remote="true" value="${message(code:'is.ui.timeline.charts.productBurnup')}"/></li>
     <li><is:link action="productBurndownChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.burndown')}" remote="true" value="${message(code:'is.ui.timeline.charts.productBurndown')}"/></li>
-    <li><is:link action="productParkingLotChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.parkinglot')}" remote="true" value="${message(code:'is.ui.timeline.charts.productParkingLot')}"/></li>
+    <li><is:link action="productParkingLotChart"
+            params="['referrer.action':'index','referrer.controller':id]"
+            controller="${id}"
+            update="window-content-${id}"
+            title="${message(code:'is.ui.timeline.charts.parkinglot')}"
+            remote="true"
+            value="${message(code:'is.ui.timeline.charts.productParkingLot')}"/>
+    </li>
     <li><is:link action="productVelocityChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.velocityType')}" remote="true" value="${message(code:'is.ui.timeline.charts.productVelocity')}"/></li>
     <li class="last"><is:link action="productVelocityCapacityChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}" remote="true" value="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}"/></li>
   </ul>
 </is:panelButton>
 
-<is:separator/>
+<is:separator elementId="menu-report-separator"/>
 
 %{--Print button--}%
 <is:reportPanel
