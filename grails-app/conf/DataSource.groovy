@@ -49,12 +49,8 @@ environments {
 	}
 	production {
 		dataSource {
-          driverClassName="org.gjt.mm.mysql.Driver"
-          dialect="org.hibernate.dialect.MySQLInnoDBDialect"
-          url="jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8"
-          username="root"
-          password="root"
-	      dbCreate = "create-drop"
+			dbCreate = "update"
+			url = "jdbc:hsqldb:file:prodDba;shutdown=true"
 		}
 	}
 }
