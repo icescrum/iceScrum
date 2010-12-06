@@ -964,6 +964,7 @@ class SprintBacklogController {
               id: id,
               remainingHours: values.remainingHours as JSON,
               idealHours: values.idealHours as JSON,
+              withButtonBar:(params.withButtonBar != null)?params.boolean('withButtonBar'):true,
               labels: values.label as JSON])
     } else {
       def msg = message(code: 'is.chart.error.no.values')
@@ -988,6 +989,7 @@ class SprintBacklogController {
       render(template: 'charts/sprintBurnupTasksChart', model: [
               id: id,
               tasks: values.tasks as JSON,
+              withButtonBar:(params.withButtonBar != null)?params.boolean('withButtonBar'):true,
               tasksDone: values.tasksDone as JSON,
               labels: values.label as JSON])
     } else {
@@ -1013,6 +1015,7 @@ class SprintBacklogController {
       render(template: 'charts/sprintBurnupStoriesChart', model: [
               id: id,
               stories: values.stories as JSON,
+              withButtonBar:(params.withButtonBar != null)?params.boolean('withButtonBar'):true,
               storiesDone: values.storiesDone as JSON,
               labels: values.label as JSON])
     } else {
