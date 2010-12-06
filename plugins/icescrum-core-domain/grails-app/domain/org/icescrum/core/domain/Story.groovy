@@ -261,33 +261,32 @@ class Story extends BacklogElement implements Cloneable {
     }
 
     findStoriesFilter { s,term = null,u = null ->
+      cache false
       parentSprint{
         eq 'id', s.id
       }
-      or {
-        tasks {
-          if (term){
-            or {
-              ilike 'name', term
-              ilike 'description', term
-              ilike 'notes', term
-            }
-          }
-          if (u){
-            responsible{
-              if(u.preferences.filterTask == 'myTasks'){
-                eq 'id', u.id
-              }
-            }
-            if (u.preferences.filterTask == 'freeTasks'){
-              isNull('responsible')
-            }
+      tasks {
+        if (term){
+          or {
+            ilike 'name', term
+            ilike 'description', term
+            ilike 'notes', term
           }
         }
-        if (term){
-          feature {
-            ilike 'name', term
+        if (u){
+          responsible{
+            if(u.preferences.filterTask == 'myTasks'){
+              eq 'id', u.id
+            }
           }
+          if (u.preferences.filterTask == 'freeTasks'){
+            isNull('responsible')
+          }
+        }
+      }
+      if (term){
+        feature {
+          ilike 'name', term
         }
       }
       if (u?.preferences?.hideDoneState){
