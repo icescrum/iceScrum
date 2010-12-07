@@ -53,9 +53,13 @@ class UserController {
         render(status:403)
         return
     }
-    def userAgent = request.getHeader("user-agent")
-    def locale = params.lang?:userAgent.substring(userAgent.indexOf("(") + 1).split("; ")[3]?:null
-    RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
+    def localeAccept = request.getHeader("accept-language")?.split(",")[0]?.split("-")
+    def locale = params.lang?:null
+    if (localeAccept?.size() > 0){
+      locale = params.lang?:localeAccept[0].toString()
+    }
+    if (locale)
+      RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
     render(template: 'window/register', model: [user: new User()])
   }
 
