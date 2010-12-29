@@ -222,12 +222,12 @@ grails {
       authority.className = 'org.icescrum.core.domain.security.Authority'
       successHandler.alwaysUseDefault = false
 
-      /*useBasicAuth = true
-      basic.realmName = "iceScrum auth"
+      useBasicAuth = true
+      basic.realmName = "iceScrum authentication for private stuff"
       filterChain.chainMap = [
-              '/services/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
+              '/private/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
               '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
-      ]*/
+      ]
 
       auth.loginFormUrl = '/login'
       rememberMe {

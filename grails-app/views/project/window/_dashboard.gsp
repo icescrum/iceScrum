@@ -121,7 +121,7 @@
     <div class="col2">
       <is:panel id="panel-activity">
         <is:panelTitle>
-          <g:link class="button-rss" action="feed" params="[product:product.pkey,lang:lang]">
+          <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
             <span class='ico'></span>
           </g:link>
           <g:message code="is.ui.project.activity.title"/>

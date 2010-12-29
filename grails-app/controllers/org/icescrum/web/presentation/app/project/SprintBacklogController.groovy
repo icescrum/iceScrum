@@ -1071,13 +1071,13 @@ class SprintBacklogController {
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
       return
     }
-
-    if (taskService.changeRank(movedItem, position)) {
+    try{
+      taskService.changeRank(movedItem, position)
+    }catch(Exception e){
+      render(status: 500, text: e.getMessage())
+    }
       pushOthers "${params.product}-${id}-${movedItem.backlog.id}"
       render(status: 200)
-    } else {
-      render(status: 500, text: '')
-    }
   }
 
   def copyRecurrentTasksFromPreviousSprint = {

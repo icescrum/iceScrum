@@ -113,7 +113,12 @@
                 remote="true"
                 value="${message(code:'is.ui.sprintBacklog.toolbar.filter.myTasks')}"/>
       </li>
-      <li class="last">
+      <g:if test="${sprint.state == Sprint.STATE_INPROGRESS}">
+        <li>
+      </g:if>
+      <g:else>
+        <li class="last">
+      </g:else>
         <is:link controller="${id}"
                 action="changeFilterTasks"
                 params="[filter:'freeTasks']"
@@ -124,24 +129,22 @@
                 remote="true"
                 value="${message(code:'is.ui.sprintBacklog.toolbar.filter.freeTasks')}"/>
       </li>
+      <g:if test="${sprint.state == Sprint.STATE_INPROGRESS}">
+        <li class="last">
+          <is:link
+            action="changeHideDoneState"
+            controller="${id}"
+            onSuccess="\$('#window-toolbar').icescrum('toolbar').reload('${id}');"
+            history="false"
+            remote="true"
+            id="${params.id}"
+            update="window-content-${id}">
+              ${hideDoneState?message(code: 'is.ui.sprintBacklog.toolbar.showDoneState'):message(code: 'is.ui.sprintBacklog.toolbar.hideDoneState')}
+          </is:link>
+        </li>
+      </g:if>
     </ul>
   </is:panelButton>
-
-  <is:separatorSmall rendered="${sprint.state == Sprint.STATE_INPROGRESS}"/>
-
-  <is:iconButton
-          rendered="${sprint.state == Sprint.STATE_INPROGRESS}"
-          action="changeHideDoneState"
-          shortcut="[key:'ctrl+shift+h',scope:id]"
-          controller="${id}"
-          onSuccess="\$('#window-toolbar').icescrum('toolbar').reload('${id}');"
-          history="false"
-          id="${params.id}"
-          update="window-content-${id}"
-          alt="${hideDoneState?message(code: 'is.ui.sprintBacklog.toolbar.alt.showDoneState'):message(code: 'is.ui.sprintBacklog.toolbar.alt.hideDoneState')}"
-          title="${hideDoneState?message(code: 'is.ui.sprintBacklog.toolbar.alt.showDoneState'):message(code: 'is.ui.sprintBacklog.toolbar.alt.hideDoneState')}">
-    ${hideDoneState?message(code: 'is.ui.sprintBacklog.toolbar.showDoneState'):message(code: 'is.ui.sprintBacklog.toolbar.hideDoneState')}
-  </is:iconButton>
 
   <is:separator/>
 

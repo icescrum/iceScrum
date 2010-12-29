@@ -149,6 +149,7 @@
   if(!jQuery("#dropmenu").is(':visible')){
     jQuery("#window-id-${id}").focus();
   }
+  jQuery('#window-title-bar-${id} .content').html('${message(code:"is.ui."+id)} - ${message(code:"is.sprint")} ${sprint.orderNumber}  - ${is.bundleFromController(bundle:'SprintStateBundle',value:sprint.state)} - [${g.formatDate(date:sprint.startDate, formatName:'is.date.format.short')} -> ${g.formatDate(date:sprint.endDate, formatName:'is.date.format.short')}]');
   <is:renderNotice />
   <icep:notifications
         name="${id}Window"

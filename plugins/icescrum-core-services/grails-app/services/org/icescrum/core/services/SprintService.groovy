@@ -36,6 +36,7 @@ import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.TimeBox
 import org.icescrum.core.utils.ServicesUtils
+import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil
 
 class SprintService {
 

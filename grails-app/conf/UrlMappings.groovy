@@ -50,6 +50,9 @@ class UrlMappings {
       action='textileParser'
     }
 
+    name privateURL:"/private/$controller/$action/$id?" {
+    }
+
     "/services/mylyn/$action?/$id?"(controller: 'mylynWebService')
 
     "/services/stories/suggest/$id?"(controller: 'storyWebService', parseRequest: true) {

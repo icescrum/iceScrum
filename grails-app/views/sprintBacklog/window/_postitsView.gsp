@@ -259,7 +259,7 @@
     jQuery("#window-id-${id}").focus();
   }
   $('#selectOnSprintBacklog').changeSelectValue(${sprint.id});
-  jQuery('#window-title-bar-${id} .content').html('${message(code:"is.ui."+id)} - ${message(code:"is.sprint")} ${sprint.orderNumber}  - ${is.bundleFromController(bundle:'SprintStateBundle',value:sprint.state)}');
+  jQuery('#window-title-bar-${id} .content').html('${message(code:"is.ui."+id)} - ${message(code:"is.sprint")} ${sprint.orderNumber}  - ${is.bundleFromController(bundle:'SprintStateBundle',value:sprint.state)} - [${g.formatDate(date:sprint.startDate, formatName:'is.date.format.short')} -> ${g.formatDate(date:sprint.endDate, formatName:'is.date.format.short')}]');
   <is:renderJavascript />
   <is:renderNotice />
   <icep:notifications

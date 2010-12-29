@@ -54,12 +54,12 @@ class TaskService {
       try {
         task.estimation = Integer.valueOf(task.estimation)
       } catch (NumberFormatException e) {
-        throw new RuntimeException('is_task_estimation_error')
+        throw new RuntimeException('is.task.error.estimation.number')
       }
     }
 
     if (task.estimation != null && task.estimation < 0)
-      throw new IllegalStateException('is_workflow_task_negative_estimation')
+      throw new IllegalStateException('is.task.error.negative.estimation')
 
     return true
   }
@@ -349,6 +349,15 @@ class TaskService {
     if(t.responsible == null && p.preferences.assignOnBeginTask && state >= Task.STATE_BUSY) {
       t.responsible = u
       t.inProgressDate = new Date()
+    }
+
+    if (t.type == Task.TYPE_URGENT
+            && state == Task.STATE_BUSY
+            && t.state != Task.STATE_BUSY
+            && p.preferences.limitUrgentTasks != 0
+            && p.preferences.limitUrgentTasks == ((Sprint)t.backlog).tasks?.findAll{it.state == Task.STATE_BUSY}?.size())
+    {
+      throw new IllegalStateException('is.task.error.limitTasksUrgent')
     }
 
     if((t.responsible && u.id.equals(t.responsible.id)) || u.id.equals(t.creator.id) || securityService.productOwner(p,springSecurityService.authentication) || securityService.scrumMaster(null,springSecurityService.authentication)){
