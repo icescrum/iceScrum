@@ -248,12 +248,6 @@ CLIENT MODULES SECTION
 
 */
 
-environments {
-  development {
-    grails.resources.debug = true
-  }
-}
-
 grails.resources.caching.excludes = ['js/timeline**/*.js']
 grails.resources.zip.excludes = ['/**/*.png', '/**/*.gif', '/**/*.jpg', '/**/*.gz']
 

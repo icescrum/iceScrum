@@ -29,11 +29,10 @@
 <g:layoutTitle/></title>
   <link rel="shortcut icon" href="${r.resource(dir: is.currentThemeImage(), file: 'favicon.ico')}" type="image/x-icon"/>
   <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
-  <r:use modules="jquery-ui, datepicker-locales, resize, qtip, pnotify, ui-selectmenu, hotkeys, history, mousewheel, eventline, dotimeout, jqplot,
-   browser, table, dropmenu, jeditable, progress, input, checkbox, alphanumeric, markitup, scrollbar" />
+  <r:use modules="jquery,jquery-ui,datepicker-locales, resize, qtip, pnotify, ui-selectmenu, hotkeys, history, mousewheel, eventline, dotimeout, jqplot,
+   browser, table, dropmenu, jeditable, progress, input, checkbox, alphanumeric, markitup, scrollbar, dnd, ui-jeditable" />
   <r:use module="icescrum"/>
   <sec:ifLoggedIn>
-    <r:use modules="dnd, ui-jeditable"/>
     <script src="${resource(dir:'js/timeline/timeline_ajax', file:'simile-ajax-api.js?bundle=true')}" type="text/javascript"></script>
     <script src="${resource(dir:'js/timeline/timeline_js', file:'timeline-api.js?bundle=true')}" type="text/javascript"></script>
     <script src="${resource(dir:'js/timeline', file:'icescrum-painter.js')}" type="text/javascript"></script>
@@ -44,6 +43,7 @@
   <g:layoutHead/>
 </head>
 <body class="icescrum">
+
 <div id="application">
   <div id="head" class="${product ? 'is_header-normal' : 'is_header-full'}">
     <is:mainMenu/>
@@ -55,7 +55,16 @@
     <g:layoutBody/>
   </is:desktop>
 </div>
-<is:shortcut key="ctrl+shift+n" callback="${is.remoteDialogFunction(action:'openWizard',controller:'project',title:'is.dialog.wizard',resizable:'false',width:'760',height:'460',draggable:'false')}"/>
+
+<is:shortcut
+        key="ctrl+shift+n"
+        callback="${is.remoteDialogFunction(
+                    action:'openWizard',
+                    controller:'project',
+                    title:'is.dialog.wizard',
+                    resizable:'false',
+                    width:'760',height:'460',
+                    draggable:'false')}"/>
 <is:spinner
         on401="document.location='${createLink(controller:'login')}?ref=${params.product?'p/'+product.pkey:params.team?'t/'+params.team:''}'+document.location.hash.replace('#','@');"
         on400="${is.notice(data:'$.parseJSON(xhr.responseText)',type:'error')}"
