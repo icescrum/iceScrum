@@ -200,7 +200,7 @@ class SprintService {
     Sprint newSprint
 
     for (int i = 0; i < nbSprints; i++) {
-      Date endDate = new Date(firstDate.time + (day * daysBySprint))
+      Date endDate = new Date(firstDate.time + (day * (daysBySprint - 1)))
       
       newSprint = new Sprint(
               orderNumber: (++nbSprint),

@@ -206,6 +206,7 @@ class FormTagLib {
     if (attrs.disabled == null || attrs.disabled == 'false' || attrs.disabled == false) {
       def id = attrs.name.replace('.', '\\\\.')
       jqCode += " \$('#${id}').selectmenu({$opts});"
+      println jq.jquery(null, {jqCode})
       out << jq.jquery(null, {jqCode})
     } else {
       attrs.disabled = true

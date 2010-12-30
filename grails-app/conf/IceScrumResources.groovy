@@ -24,9 +24,19 @@
 icescrum.theme = 'is'
 
 modules = {
+
+  overrides {
+     'jquery' {
+        resource id:'js', url: [plugin: 'jquery', dir:'js/jquery', file:"jquery-1.4.3.min.js"]
+     }
+
+     'jquery-ui' {
+          resource id:'theme', url: [dir: "themes/$icescrum.theme/css", file: 'ui.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
+     }
+  }
+
   'app-css' {
     resource url: [dir: "themes/$icescrum.theme/css", file: 'reset.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'ui.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
     resource url: [dir: "themes/$icescrum.theme/css", file: 'checkbox.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
     resource url: [dir: "themes/$icescrum.theme/css", file: 'styles.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
     resource url: [dir: "themes/$icescrum.theme/css", file: 'clearfix.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
@@ -40,6 +50,7 @@ modules = {
     resource url: [dir: "themes/$icescrum.theme/css", file: 'ie/ie7.css'], attrs: [media: 'screen,projection'], wrapper: { s -> "<!--[if IE 7]>$s<![endif]-->" }
     resource url: [dir: "themes/$icescrum.theme/css", file: 'ie/ie6.css'], attrs: [media: 'screen,projection'], wrapper: { s -> "<!--[if IE 6]>$s<![endif]-->" }
   }
+
   'icescrum' {
     dependsOn 'app-css', 'jquery'
     resource url: [dir: 'js/jquery', file: 'jquery.icescrum.js'],disposition: 'head', bundle:'icescrum'
