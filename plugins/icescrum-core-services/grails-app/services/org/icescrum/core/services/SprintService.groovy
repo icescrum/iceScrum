@@ -295,6 +295,15 @@ class SprintService {
 
     def nextSprint = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease,sprint.orderNumber + 1)
     if (nextSprint){
+      //Move not finished urgent task to next sprint
+      sprint.tasks?.findAll{it.type == Task.TYPE_URGENT && it.state != Task.STATE_DONE}?.each{
+        it.backlog = nextSprint
+        it.state = Task.STATE_WAIT
+        it.inProgressDate = null
+        if(!it.save()){
+          throw new RuntimeException()
+        }
+      }
       productBacklogService.associateStories(nextSprint,sprint.stories.findAll {it.state != Story.STATE_DONE})
     }else{
       productBacklogService.dissociatedAllStories([sprint])

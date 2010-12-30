@@ -40,6 +40,7 @@ class Task extends BacklogElement implements Serializable {
   Integer type
   Integer estimation
   Integer rank = 0
+  boolean blocked = false
 
   Date doneDate
   Date inProgressDate
@@ -72,6 +73,7 @@ class Task extends BacklogElement implements Serializable {
     doneDate nullable: true
     inProgressDate nullable: true
     name unique:'parentStory'
+    blocked nullable:false
   }
 
   static namedQueries = {
