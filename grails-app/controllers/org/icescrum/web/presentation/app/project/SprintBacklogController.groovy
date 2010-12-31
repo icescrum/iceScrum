@@ -63,6 +63,12 @@ class SprintBacklogController {
           (Task.STATE_DONE):'is.task.state.done'
   ]
 
+  static storyTypesBundle = [
+          (Story.TYPE_USER_STORY): 'is.story.type.story',
+          (Story.TYPE_DEFECT): 'is.story.type.defect',
+          (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
+  ]
+
   def springSecurityService
   def productBacklogService
   def sprintService
@@ -1039,7 +1045,6 @@ class SprintBacklogController {
     user.preferences.filterTask = params.filter
     userService.updateUser(user)
     redirect(action: 'index', params: [product: params.product, id: params.id])
-    render(status:200,text:'')
   }
 
   def changeHideDoneState = {
@@ -1055,7 +1060,33 @@ class SprintBacklogController {
       user.preferences.hideDoneState = true
     userService.updateUser(user)
     redirect(action: 'index', params: [product: params.product, id: params.id])
-    render(status:200,text:'')
+  }
+
+  def changeBlockedTask = {
+    if (!params.id) {
+      def msg = message(code: 'is.task.error.not.exist')
+      render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+      return
+    }
+    def task = Task.get(params.long('id'))
+    if (!task) {
+      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+      return
+    }
+    task.blocked = !task.blocked
+    def currentUserInstance = User.get(springSecurityService.principal.id)
+    def product = Product.load(params.product)
+    try {
+      taskService.updateTask(task, currentUserInstance, product)
+    } catch (IllegalStateException ise) {
+      ise.printStackTrace()
+      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+    } catch (RuntimeException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:task)]] as JSON)
+    }
+    pushOthers "${params.product}-${id}-${task.backlog.id}"
+    render(status:200)
   }
 
   def changeRank = {

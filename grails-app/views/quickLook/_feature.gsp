@@ -70,9 +70,10 @@
         title="${feature.name.encodeAsHTML()}"
         color="${feature.color}"
         type="feature"
+        typeNumber="${feature.type}"
+        typeTitle="${is.bundleFromController(bundle:'FeatureTypesBundle',value:feature.type)}"
         rect="true"
-        sortable='[restrictOnAccess:"productOwner()"]'
-        typeName="${feature.type}">
+        sortable='[restrictOnAccess:"productOwner()"]'>
       </is:postit>
       <g:if test="${feature.totalAttachments}">
         <div>

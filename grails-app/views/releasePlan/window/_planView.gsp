@@ -117,7 +117,8 @@
                   attachment="${story.totalAttachments}"
                   styleClass="story task${story.state == Story.STATE_DONE ? ' ui-selectable-disabled':''}"
                   type="story"
-                  typeName="${story.type}"
+                  typeNumber="${story.type}"
+                  typeTitle="${is.bundleFromController(bundle:'StoryTypesBundle',value:story.type)}"
                   sortable='[rendered:productOwner, disabled:story.state == Story.STATE_DONE]'
                   miniValue="${story.effort >= 0 ? story.effort :'?'}"
                   color="${story.feature?.color ?: 'yellow'}"

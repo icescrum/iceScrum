@@ -50,9 +50,12 @@ ${className} ${styleClass} postit-${type}" id="postit-${type}-${id}" elemId="${m
     <p class="postit-excerpt">${content.replace('<br>','')}</p>
     </g:if>
 
-    <g:if test="${typeName > 0}">
-      <span class="postit-ico ico-${type}-${typeName}"></span>
+    <g:if test="${typeNumber > 0}">
+      <span class="postit-ico ico-${type}-${typeNumber}" title="${typeTitle?:''}"></span>
     </g:if>
+    <g:else>
+      <span class="postit-ico"></span>
+    </g:else>
 
     %{--Status bar of the post-it note--}%
       <div class="state task-state">

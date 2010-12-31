@@ -42,9 +42,6 @@ class ScrumTagLib {
     params.type = attrs.type ? attrs.type : ""
     params.color = params.color ?: "yellow"
 
-    if (attrs.typeName != null)
-      params.typeName = attrs.typeName
-
     if (attrs.rect == "true")
       params.className = 'postit-rect';
     else

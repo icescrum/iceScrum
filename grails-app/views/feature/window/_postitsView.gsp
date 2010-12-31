@@ -48,7 +48,8 @@
           type="feature"
           attachment="${feature.totalAttachments}"
           sortable='[renderend:productOwner]'
-          typeName="${feature.type}"
+          typeNumber="${feature.type}"
+          typeTitle="${is.bundleFromController(bundle:'typesBundle',value:feature.type)}"
           controller="feature">
   <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
 

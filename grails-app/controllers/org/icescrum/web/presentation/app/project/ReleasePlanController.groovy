@@ -70,6 +70,12 @@ class ReleasePlanController {
           (Story.STATE_DONE):'is.story.state.done'
   ]
 
+  static StoryTypesBundle = [
+          (Story.TYPE_USER_STORY): 'is.story.type.story',
+          (Story.TYPE_DEFECT): 'is.story.type.defect',
+          (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
+  ]
+
   def titleBarContent = {
     def release = null
     def releases = null

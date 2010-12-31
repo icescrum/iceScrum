@@ -97,6 +97,8 @@
             rect="true"
             styleClass="story task${story.state == org.icescrum.core.domain.Story.STATE_DONE ? ' ui-selectable-disabled':''}"
             type="story"
+            typeNumber="${story.type}"
+            typeTitle="${is.bundleFromController(bundle:'StoryTypesBundle',value:story.type)}"
             miniValue="${story.effort >= 0 ? story.effort :'?'}"
             color="${story.feature?.color ?: 'yellow'}"
             stateText="${is.bundleFromController(bundle:'StoryStateBundle',value:story.state)}">

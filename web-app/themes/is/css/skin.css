@@ -352,6 +352,10 @@ body {
     background: url(../images/view/type/bug.png);
 }
 
+.postit-rect .ico-task-1 {
+    background: url(../images/view/type/blocked.png);
+}
+
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //  News Icons.

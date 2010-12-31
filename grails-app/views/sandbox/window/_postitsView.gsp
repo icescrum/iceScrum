@@ -50,7 +50,8 @@
           attachment="${story.totalAttachments}"
           styleClass="story type-story-${story.type}"
           type="story"
-          typeName="${story.type}"
+          typeNumber="${story.type}"
+          typeTitle="${is.bundleFromController(bundle:'typesBundle',value:story.type)}"
           color="${story.feature?.color}"
           controller="sandbox"
           comment="${story.totalComments >= 0 ? story.totalComments : ''}">

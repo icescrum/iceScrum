@@ -182,11 +182,13 @@ class TaskService {
         task.doneDate = new Date()
       } else if (task.state == Task.STATE_DONE) {
         task.estimation = 0
+        task.blocked = false
         task.doneDate = new Date()
       }
 
       if (task.state >= Task.STATE_BUSY && !task.inProgressDate)
           task.inProgressDate = new Date()
+          task.blocked = false
 
       if (task.state < Task.STATE_BUSY && task.inProgressDate)
           task.inProgressDate = null
