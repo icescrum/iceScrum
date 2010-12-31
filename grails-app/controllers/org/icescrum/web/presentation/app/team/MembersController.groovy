@@ -43,6 +43,12 @@ class MembersController {
   static menuBar = MenuBarSupport.teamOrProductDynamicBar('is.ui.members', id, false, 10)
   static window = [title: 'is.ui.members', help: 'is.ui.members.help', toolbar: true, init: 'browse']
 
+  static shortcuts = [
+          [code:'is.ui.shortcut.escape.code',text:'is.ui.shortcut.escape.text'],
+          [code:'is.ui.shortcut.del.code',text:'is.ui.shortcut.members.del.text'],
+          [code:'is.ui.shortcut.ctrln.code',text:'is.ui.shortcut.members.ctrln.text']
+  ]
+
   def toolbar = {
     render template: 'window/toolbar', model: [id: id, product: Product.get(params.product), team: Team.get(params.team)]
   }

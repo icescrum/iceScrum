@@ -46,6 +46,15 @@ class FeatureController {
   static window =  [title:'is.ui.feature',help:'is.ui.feature.help',init:'list',toolbar:true]
   static widget =  [title:'is.ui.feature',init:'list',toolbar:true,height:143]
 
+  static shortcuts = [
+          [code:'is.ui.shortcut.ctrlf.code',text:'is.ui.shortcut.ctrlf.text'],
+          [code:'is.ui.shortcut.escape.code',text:'is.ui.shortcut.escape.text'],
+          [code:'is.ui.shortcut.del.code',text:'is.ui.shortcut.feature.del.text'],
+          [code:'is.ui.shortcut.ctrla.code',text:'is.ui.shortcut.feature.ctrla.text'],
+          [code:'is.ui.shortcut.ctrln.code',text:'is.ui.shortcut.feature.ctrln.text'],
+          [code:'is.ui.shortcut.space.code',text:'is.ui.shortcut.feature.space.text']
+  ]
+
   static typesBundle = [
           (Feature.TYPE_FUNCTIONAL): 'is.feature.type.functional',
           (Feature.TYPE_ARCHITECTURAL): 'is.feature.type.architectural'

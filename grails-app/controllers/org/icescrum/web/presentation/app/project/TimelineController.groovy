@@ -42,6 +42,11 @@ class TimelineController {
   static menuBar = MenuBarSupport.productDynamicBar('is.ui.timeline', id, false, 1)
   static window =  [title:'is.ui.timeline',help:'is.ui.timeline.help',toolbar:true, titleBarContent:true]
 
+  static shortcuts = [
+          [code:'is.ui.shortcut.escape.code',text:'is.ui.shortcut.escape.text'],
+          [code:'is.ui.shortcut.ctrln.code',text:'is.ui.shortcut.timeline.ctrln.text']
+  ]
+
   def releaseService
   def productService
   def featureService

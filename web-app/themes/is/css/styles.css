@@ -1994,3 +1994,35 @@ li#li-roles{
     float:right;
     margin-left:2px;
 }
+
+.help-shortcut-title {
+    display:block;
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.keyboard-mappings .code {
+    padding: 2px 3px;
+    min-width:10px;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    margin-right: 5px;
+    border-color: #C4C4C4;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.keyboard-mappings {
+    color: #666666;
+    width:48%;
+    display:inline;
+    float:left;
+    line-height:20px;
+    margin-right:5px;
+}
+
+#dropmenu .dropmenu-content.content-help {
+    float:left;
+}

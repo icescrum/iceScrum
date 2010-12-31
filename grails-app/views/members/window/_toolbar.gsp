@@ -32,7 +32,7 @@
               width="600"
               valid="[action:'updateMembers',params:'\'team='+params.team+'\'',controller:'members',
               update:'window-content-'+id ,button:'is.button.ok']"
-              shortcut="[key:'ctrl+a',scope:id]"
+              shortcut="[key:'ctrl+n',scope:id]"
               icon="add"
               alt="${message(code:'is.ui.members.toolbar.alt.new')}"
               title="${message(code:'is.ui.members.toolbar.alt.new')}">

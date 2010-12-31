@@ -159,6 +159,7 @@ class ScrumOSController {
               pushDisabled: grailsApplication.config?.icepush?.disabled?:true,
               title: message(code: controller.getPropertyValue('window')?.title ?: ''),
               help: message(code: controller.getPropertyValue('window')?.help ?: null),
+              shortcuts : controller.getPropertyValue('shortcuts')?:null,
               hasToolbar: (controller.getPropertyValue('window')?.toolbar != null) ?controller.getPropertyValue('window')?.toolbar: true,
               hasTitleBarContent: controller.getPropertyValue('window')?.titleBarContent ?: false,
               maximizeable:controller.getPropertyValue('window')?.maximizeable ?: true,

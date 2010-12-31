@@ -43,6 +43,17 @@ class SandboxController {
   static menuBar = MenuBarSupport.productDynamicBar('is.ui.sandbox', id, true, 2)
   static window =  [title:'is.ui.sandbox',help:'is.ui.sandbox.help',init:'list',toolbar:true]
 
+  static shortcuts = [
+          [code:'is.ui.shortcut.ctrlf.code',text:'is.ui.shortcut.ctrlf.text'],
+          [code:'is.ui.shortcut.escape.code',text:'is.ui.shortcut.escape.text'],
+
+          [code:'is.ui.shortcut.del.code',text:'is.ui.shortcut.sandbox.del.text'],
+          [code:'is.ui.shortcut.ctrla.code',text:'is.ui.shortcut.sandbox.ctrla.text'],
+          [code:'is.ui.shortcut.ctrlshifta.code',text:'is.ui.shortcut.sandbox.ctrlshifta.text'],
+          [code:'is.ui.shortcut.ctrln.code',text:'is.ui.shortcut.sandbox.ctrln.text'],
+          [code:'is.ui.shortcut.space.code',text:'is.ui.shortcut.sandbox.space.text']
+  ]
+
   def springSecurityService
   def productBacklogService
   def dropImportService

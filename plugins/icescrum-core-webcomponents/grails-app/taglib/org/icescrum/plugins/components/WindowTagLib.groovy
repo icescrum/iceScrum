@@ -66,6 +66,17 @@ class WindowTagLib {
       }
     }
 
+    if (attrs.shortcuts){
+      attrs.help = attrs.help ?:""
+      attrs.help += "<span class='help-shortcut-title'>${message(code:'is.ui.shortcut.title')}</span>"
+      attrs.shortcuts.each{
+        attrs.help += "<p class='keyboard-mappings'>"
+        attrs.help += "<span class='code box-simple ui-corner-all'>${message(code:it.code)}</span>"
+        attrs.help += "${message(code:it.text)}"
+        attrs.help += "</p>"
+      }
+    }
+
     def params = [
             type: type,
             title: attrs.title ?: null,

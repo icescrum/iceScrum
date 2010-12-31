@@ -48,6 +48,15 @@ class ProductBacklogController {
   static window =  [title:'is.ui.productBacklog',help:'is.ui.productBacklog.help',init:'list',toolbar:true]
   static widget =  [title:'is.ui.productBacklog',init:'list',toolbar:false,height:143]
 
+  static shortcuts = [
+          [code:'is.ui.shortcut.ctrlf.code',text:'is.ui.shortcut.ctrlf.text'],
+          [code:'is.ui.shortcut.escape.code',text:'is.ui.shortcut.escape.text'],
+
+          [code:'is.ui.shortcut.del.code',text:'is.ui.shortcut.productBacklog.del.text'],
+          [code:'is.ui.shortcut.ctrla.code',text:'is.ui.shortcut.productBacklog.ctrla.text'],
+          [code:'is.ui.shortcut.space.code',text:'is.ui.shortcut.productBacklog.space.text']
+  ]
+
   static stateBundle = [
           (Story.STATE_SUGGESTED):'is.story.state.suggested',
           (Story.STATE_ACCEPTED):'is.story.state.accepted',

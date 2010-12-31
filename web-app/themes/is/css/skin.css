@@ -237,7 +237,7 @@ body {
     .field-buttons, .panel .panel-title, .dropmenu-content .menu-label,
     #spinner-app, .field-choose .field-choose-legend,
     .panel-box .panel-box-title, .view-release .event-line-scroll,
-    .browse .browse-legend, .table-lines .table-lines-head th {
+    .browse .browse-legend, .table-lines .table-lines-head th, .keyboard-mappings .code{
 	background-image: url(../images/bar/gray.png);
 }
 

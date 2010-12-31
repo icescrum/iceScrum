@@ -45,6 +45,16 @@ class SprintBacklogController {
   static menuBar = MenuBarSupport.productDynamicBar('is.ui.sprintBacklog', id, true, 5)
   static window = [title: 'is.ui.sprintBacklog',help:'is.ui.sprintBacklog.help', toolbar: true, titleBarContent:true]
 
+  static shortcuts = [
+          [code:'is.ui.shortcut.escape.code',text:'is.ui.shortcut.escape.text'],
+          [code:'is.ui.shortcut.del.code',text:'is.ui.shortcut.sprintBacklog.del.text'],
+          [code:'is.ui.shortcut.ctrln.code',text:'is.ui.shortcut.sprintBacklog.ctrln.text'],
+          [code:'is.ui.shortcut.ctrlshifta.code',text:'is.ui.shortcut.sprintBacklog.ctrlshifta.text'],
+          [code:'is.ui.shortcut.ctrlshiftc.code',text:'is.ui.shortcut.sprintBacklog.ctrlshiftc.text'],
+          [code:'is.ui.shortcut.ctrlshiftd.code',text:'is.ui.shortcut.sprintBacklog.ctrlshiftd.text'],
+          [code:'is.ui.shortcut.ctrlshiftr.code',text:'is.ui.shortcut.sprintBacklog.ctrlshiftr.text']
+  ]
+
   static stateBundle = [
           (Story.STATE_PLANNED): 'is.story.state.planned',
           (Story.STATE_INPROGRESS): 'is.story.state.inprogress',
