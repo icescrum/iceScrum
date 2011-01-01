@@ -73,7 +73,7 @@
             <is:tableHeader name="${message(code:'is.task.responsible')}"/>
             <is:tableHeader name="${message(code:'is.task.state')}"/>
 
-            <is:tableRows in="${story.tasks}" var="task">
+            <is:tableRows in="${story.tasks}" rowClass="${{task -> task.blocked?'ico-task-1':''}}" var="task">
               <is:tableColumn>${task.name.encodeAsHTML()}</is:tableColumn>
               <is:tableColumn>${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
               <is:tableColumn>${task.creator.firstName.encodeAsHTML()} ${task.creator.lastName.encodeAsHTML()}</is:tableColumn>
