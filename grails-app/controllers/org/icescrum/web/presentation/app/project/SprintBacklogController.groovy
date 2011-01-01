@@ -49,7 +49,7 @@ class SprintBacklogController {
           [code:'is.ui.shortcut.escape.code',text:'is.ui.shortcut.escape.text'],
           [code:'is.ui.shortcut.del.code',text:'is.ui.shortcut.sprintBacklog.del.text'],
           [code:'is.ui.shortcut.ctrln.code',text:'is.ui.shortcut.sprintBacklog.ctrln.text'],
-          [code:'is.ui.shortcut.ctrlshifta.code',text:'is.ui.shortcut.sprintBacklog.ctrlshifta.text'],
+          [code:'is.ui.shortcut.ctrla.code',text:'is.ui.shortcut.sprintBacklog.ctrla.text'],
           [code:'is.ui.shortcut.ctrlshiftc.code',text:'is.ui.shortcut.sprintBacklog.ctrlshiftc.text'],
           [code:'is.ui.shortcut.ctrlshiftd.code',text:'is.ui.shortcut.sprintBacklog.ctrlshiftd.text'],
           [code:'is.ui.shortcut.ctrlshiftr.code',text:'is.ui.shortcut.sprintBacklog.ctrlshiftr.text']
