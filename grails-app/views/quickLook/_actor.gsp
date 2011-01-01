@@ -60,7 +60,7 @@
     <div class="col2">
       <is:postit id="${actor.id}"
             miniId="${actor.id}"
-            title="${actor.name.encodeAsHTML()}"
+            title="${actor.name}"
             type="actor"
             rect="true"
             controller="actor">

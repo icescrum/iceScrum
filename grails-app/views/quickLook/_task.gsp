@@ -64,7 +64,7 @@
       </g:if>
     </div>
     <div class="col2">
-        <is:postit title="${task.name.encodeAsHTML()}"
+        <is:postit title="${task.name}"
             id="${task.id}"
             miniId="${task.id}"
             rect="true"

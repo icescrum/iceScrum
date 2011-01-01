@@ -91,7 +91,7 @@
       </g:if>
     </div>
     <div class="col2">
-        <is:postit title="${story.name.encodeAsHTML()}"
+        <is:postit title="${story.name}"
             id="${story.id}"
             miniId="${story.id}"
             rect="true"

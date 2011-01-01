@@ -67,7 +67,7 @@
       <is:postit
         id="${feature.id}"
         miniId="${feature.id}"
-        title="${feature.name.encodeAsHTML()}"
+        title="${feature.name}"
         color="${feature.color}"
         type="feature"
         typeNumber="${feature.type}"
