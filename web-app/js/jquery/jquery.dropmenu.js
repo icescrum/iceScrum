@@ -129,7 +129,7 @@
                     mask(settings);
                     _isHover = true;
                     _oldHover = elt;
-                    this.currentInput.focus();
+                    this.currentInput.focus(function(){this.select();});
                     show(this.dropContent, elt, settings, event, true);
                     _ul.show();
                     $(_ul).find('div>input').focus();
