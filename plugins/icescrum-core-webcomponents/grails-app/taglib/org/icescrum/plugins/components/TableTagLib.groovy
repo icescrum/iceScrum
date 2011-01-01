@@ -215,10 +215,16 @@ class TableTagLib {
       }else {
         version = row?.attrs?."${row.attrs.var}"?.version
       }
+
+      if (row.attrs.rowClass in Closure) {
+        row.attrs.rowClass.delegate = delegate
+        row.attrs.rowClass = row.attrs.rowClass(row.attrs."${row.attrs.var}")
+      }
+
       if (indexRow == (maxRows - 1))
-        out << '<tr class="table-line line-last '+(groupid?groupid:'')+'" elemID="'+elemID+'" version="'+version+'">'
+        out << '<tr class="table-line line-last '+(row.attrs.rowClass?row.attrs.rowClass:'')+' '+(groupid?groupid:'')+'" elemID="'+elemID+'" version="'+version+'">'
       else
-        out << '<tr class="table-line '+(groupid?groupid:'')+'"  elemID="'+elemID+'" version="'+version+'">'
+        out << '<tr class="table-line '+(row.attrs.rowClass?row.attrs.rowClass:'')+' '+(groupid?groupid:'')+'"  elemID="'+elemID+'" version="'+version+'">'
       row.columns.eachWithIndex { col, indexCol ->
 
         //gestion editable

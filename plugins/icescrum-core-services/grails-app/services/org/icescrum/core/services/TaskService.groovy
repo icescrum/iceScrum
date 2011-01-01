@@ -188,7 +188,8 @@ class TaskService {
 
       if (task.state >= Task.STATE_BUSY && !task.inProgressDate)
           task.inProgressDate = new Date()
-          task.blocked = false
+          if (!task.isDirty('blocked'))
+            task.blocked = false
 
       if (task.state < Task.STATE_BUSY && task.inProgressDate)
           task.inProgressDate = null

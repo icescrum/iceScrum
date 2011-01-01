@@ -48,7 +48,7 @@
           <is:menu rendered="${inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4" class="dropmenu-action" id="menu-recurrent" contentView="window/recurrentOrUrgentTask" params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent',id:id]"/>
           <strong>${message(code:'is.ui.sprintBacklog.kanban.recurrentTasks')}</strong>
         </is:tableGroupHeader>
-        <is:tableRows in="${recurrentTasks?.sort{it.rank}}" var="task" elemID="id">
+        <is:tableRows in="${recurrentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}" var="task" elemID="id">
 
           <is:tableColumn class="table-cell-checkbox">
             <g:checkBox name="check-${task.id}" />
@@ -59,7 +59,7 @@
             </g:if>
           </is:tableColumn>
 
-          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+          <is:tableColumn editable="[type:'text', disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundleFromController bundle="taskStateBundle" value="${task.state}"/></is:tableColumn>
           <is:tableColumn editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
           <is:tableColumn editable="[type:'textarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
@@ -80,7 +80,7 @@
           <is:menu rendered="${inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4" class="dropmenu-action" id="menu-urgent" contentView="window/recurrentOrUrgentTask" params="[sprint:sprint,type:'urgent',id:id]"/>
           <strong>${message(code:'is.ui.sprintBacklog.kanban.urgentTasks')}</strong>
         </is:tableGroupHeader>
-        <is:tableRows in="${urgentTasks?.sort{it.rank}}" var="task" elemID="id">
+        <is:tableRows in="${urgentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}" var="task" elemID="id">
 
           <is:tableColumn class="table-cell-checkbox">
             <g:checkBox name="check-${task.id}" />
@@ -91,7 +91,7 @@
             </g:if>
           </is:tableColumn>
 
-          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+          <is:tableColumn editable="[type:'text', disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundleFromController bundle="taskStateBundle" value="${task.state}"/></is:tableColumn>
           <is:tableColumn editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
           <is:tableColumn editable="[type:'textarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
@@ -116,7 +116,7 @@
           <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
           <strong>${story.name.encodeAsHTML()} - ${story.effort} - ${is.bundleFromController(bundle:'stateBundle',value:story.state)}</strong>
         </is:tableGroupHeader>
-        <is:tableRows in="${story.tasks.sort{it.rank}}" var="task" elemID="id">
+        <is:tableRows in="${story.tasks.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}" var="task" elemID="id">
           <is:tableColumn class="table-cell-checkbox">
             <g:checkBox name="check-${task.id}" />
             <is:menu rendered="${inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4" class="dropmenu-action" id="story-task-${task.id}" contentView="window/taskMenu" params="[id:id, task:task, story:story, user:user]"/>
@@ -128,7 +128,7 @@
 
           <g:set value="${(poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE}" var="disableEdit"/>
 
-          <is:tableColumn editable="[type:'text', typed:[type:'numeric',allow:'?'], disabled:!(disableEdit),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+          <is:tableColumn editable="[type:'text', disabled:!(disableEdit),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
           <is:tableColumn editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundleFromController bundle="taskStateBundle" value="${task.state}"/></is:tableColumn>
           <is:tableColumn editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
           <is:tableColumn editable="[type:'textarea',disabled:!(disableEdit),name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>

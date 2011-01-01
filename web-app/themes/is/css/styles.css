@@ -1939,6 +1939,10 @@ li#li-roles{
     top:3px;
 }
 
+.table-line.ico-task-1 td {
+    color:#ff4500;
+}
+
 #tasks-table .table-line .dropmenu,#story-table .table-line .dropmenu,.table-cell .dropmenu,
 #dropmenu-menu-recurrent,#dropmenu-menu-urgent,#feature-table .table-line .dropmenu {
     display:inline-block;

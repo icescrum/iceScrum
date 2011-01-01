@@ -70,6 +70,8 @@
             rect="true"
             styleClass="story task ui-selectable-disabled"
             type="task"
+            typeNumber="${task.blocked ? 1 : 0}"
+            typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
             color="yellow"
             stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
             miniValue="${task.estimation ?: task.estimation == 0?'0':'?'}">

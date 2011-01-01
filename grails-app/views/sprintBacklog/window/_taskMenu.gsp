@@ -82,7 +82,7 @@
           controller="${id}"
           remote="true"
           history="false"
-          onSuccess="if(jQuery('#postit-task-${task.id} .postit-ico').toggleClass('ico-task-1').hasClass('ico-task-1')){
+          onSuccess="if(jQuery('#postit-task-${task.id} .postit-ico,.table-line[elemid=\\'${task.id}\\']').toggleClass('ico-task-1').hasClass('ico-task-1')){
                        jQuery('#dropmenu-postit-story-task-${task.id} ul li:last a, #dropmenu-story-task-${task.id} ul li:last a').text('${message(code:'is.ui.sprintBacklog.menu.task.unblock')}');
                        jQuery('#postit-task-${task.id} .postit-ico').attr('title','${message(code:'is.task.blocked')}');
                      }else{
