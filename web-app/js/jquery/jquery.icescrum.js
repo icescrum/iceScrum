@@ -837,9 +837,10 @@ $(document).ready(function($) {
                       }
                 )
             }
+
             if(data.forceRefresh){
                 $.doTimeout(500,function(){
-                    document.location=data.refreshLink+document.location.hash;
+                    document.location.reload(true);
                 })
             }
             $.icescrum.renderNotice(data.notice,'notice');
