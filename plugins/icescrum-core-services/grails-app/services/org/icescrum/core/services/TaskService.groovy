@@ -186,10 +186,11 @@ class TaskService {
         task.doneDate = new Date()
       }
 
-      if (task.state >= Task.STATE_BUSY && !task.inProgressDate)
+      if (task.state >= Task.STATE_BUSY && !task.inProgressDate){
           task.inProgressDate = new Date()
           if (!task.isDirty('blocked'))
             task.blocked = false
+      }
 
       if (task.state < Task.STATE_BUSY && task.inProgressDate)
           task.inProgressDate = null
@@ -351,21 +352,19 @@ class TaskService {
 
     if(t.responsible == null && p.preferences.assignOnBeginTask && state >= Task.STATE_BUSY) {
       t.responsible = u
-      t.inProgressDate = new Date()
     }
 
     if (t.type == Task.TYPE_URGENT
             && state == Task.STATE_BUSY
             && t.state != Task.STATE_BUSY
             && p.preferences.limitUrgentTasks != 0
-            && p.preferences.limitUrgentTasks == ((Sprint)t.backlog).tasks?.findAll{it.state == Task.STATE_BUSY}?.size())
+            && p.preferences.limitUrgentTasks == ((Sprint)t.backlog).tasks?.findAll{it.type == Task.TYPE_URGENT && it.state == Task.STATE_BUSY}?.size())
     {
       throw new IllegalStateException('is.task.error.limitTasksUrgent')
     }
 
     if((t.responsible && u.id.equals(t.responsible.id)) || u.id.equals(t.creator.id) || securityService.productOwner(p,springSecurityService.authentication) || securityService.scrumMaster(null,springSecurityService.authentication)){
       if (state == Task.STATE_BUSY && t.state != Task.STATE_BUSY) {
-        t.inProgressDate = new Date()
         t.addActivity(u, 'taskInprogress', t.name)
       } else if(state == Task.STATE_WAIT && t.state != Task.STATE_WAIT){
         t.addActivity(u, 'taskWait', t.name)
