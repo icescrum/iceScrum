@@ -29,6 +29,7 @@ import org.codehaus.groovy.grails.commons.GrailsClass
 class UiControllerArtefactHandler extends ArtefactHandlerAdapter {
   static final TYPE = "UIController"
   static final PROPERTY = 'ui'
+  static final PLUGINNAME = 'pluginName'
 
   UiControllerArtefactHandler() {
     super(TYPE, GrailsClass, DefaultGrailsClass, TYPE)

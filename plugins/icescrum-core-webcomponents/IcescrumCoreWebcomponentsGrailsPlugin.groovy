@@ -74,17 +74,18 @@ class IcescrumCoreWebcomponentsGrailsPlugin {
     application.controllerClasses.each {
       if (it.hasProperty(UiControllerArtefactHandler.PROPERTY)) {
         application.addArtefact(UiControllerArtefactHandler.TYPE, it)
-        addUIControllerMethods(it, ctx)
+        def plugin = it.hasProperty(UiControllerArtefactHandler.PLUGINNAME)?it.getPropertyValue(UiControllerArtefactHandler.PLUGINNAME):null
+        addUIControllerMethods(it, ctx, plugin)
       }
     }
   }
 
-  private addUIControllerMethods(clazz, ApplicationContext ctx) {
+  private addUIControllerMethods(clazz, ApplicationContext ctx, pluginName) {
     def mc = clazz.metaClass
     def dynamicActions = [
             toolbar:{->
               try {
-                render (template:"window/toolbar", model:[currentView:session.currentView, id:id])
+                render (plugin:pluginName, template:"window/toolbar", model:[currentView:session.currentView, id:id])
               } catch(Exception e) {
                 render ('')
                 e.printStackTrace()
@@ -92,7 +93,7 @@ class IcescrumCoreWebcomponentsGrailsPlugin {
             },
             toolbarWidget:{->
               try {
-                render (template:"widget/toolbar", model:[id:id])
+                render (plugin:pluginName, template:"widget/toolbar", model:[id:id])
               } catch(Exception e) {
                 render ('')
                 e.printStackTrace()
@@ -100,7 +101,7 @@ class IcescrumCoreWebcomponentsGrailsPlugin {
             },
             titleBarContent:{
               try {
-                render (template:"window/titleBarContent", model:[id:id])
+                render (plugin:pluginName, template:"window/titleBarContent", model:[id:id])
               } catch(Exception e) {
                 render ('')
                 e.printStackTrace()
@@ -108,7 +109,7 @@ class IcescrumCoreWebcomponentsGrailsPlugin {
             },
             titleBarContentWidget:{
               try {
-                render (template:"widget/titleBarContent", model:[id:id])
+                render (plugin:pluginName, template:"widget/titleBarContent", model:[id:id])
               } catch(Exception e) {
                 render ('')
                 e.printStackTrace()
