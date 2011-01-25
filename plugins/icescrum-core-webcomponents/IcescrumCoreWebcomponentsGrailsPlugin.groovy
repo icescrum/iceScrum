@@ -28,18 +28,13 @@ import org.codehaus.groovy.grails.commons.ControllerArtefactHandler
 import org.codehaus.groovy.grails.scaffolding.view.ScaffoldingViewResolver
 
 class IcescrumCoreWebcomponentsGrailsPlugin {
+  def groupId = 'org.icescrum.core'
   // the plugin version
   def version = "0.1"
   // the version or versions of Grails the plugin is designed for
   def grailsVersion = "1.3.0   > *"
   // the other plugins this plugin depends on
   def dependsOn = ['controllers': grailsVersion]
-
-  /*def dependsOn = [
-          'controllers': grailsVersion,
-          'icescrum-core-domain':'0.1 > *',
-          'icescrum-core-services':'0.1 > *'
-  ]*/
 
   // resources that are excluded from plugin packaging
   def pluginExcludes = [

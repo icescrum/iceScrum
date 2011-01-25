@@ -21,6 +21,7 @@
  */
 
 class IcescrumCoreDomainGrailsPlugin {
+    def groupId = 'org.icescrum.core'
     // the plugin version
     def version = "0.1"
     // the version or versions of Grails the plugin is designed for
@@ -29,11 +30,6 @@ class IcescrumCoreDomainGrailsPlugin {
     def dependsOn = [:]
 
     def loadAfter = ['hibernate','spring-security-core','spring-security-acl']
-
-    /*def dependsOn = [
-          'spring-security-acl':'1.0.1 > *',
-          'spring-security-core':'1.0.1  > *'
-    ]*/
 
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
