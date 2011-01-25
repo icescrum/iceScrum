@@ -25,7 +25,7 @@
 
 <is:iconButton
         action="edit"
-        controller="${story.state > org.icescrum.core.domain.Story.STATE_SUGGESTED ? 'productBacklog' : 'sandbox'}"
+        controller="${story.state > Story.STATE_SUGGESTED ? 'productBacklog' : 'sandbox'}"
         id="${params.id}"
         rendered="${productOwner  || story.creator.id == user?.id}"
         history="false"
@@ -58,7 +58,13 @@
               \$('#window-toolbar').icescrum('toolbar').reload('${id}', {'id':'${params.id}'});"
               value="${message(code:'is.ui.backlogelement.toolbar.acceptAsStory')}"/>
     </li>
-    <li>
+
+    <g:if test="${!sprint}">
+      <li class="last">
+    </g:if>
+    <g:else>
+      <li>
+    </g:else>
       <is:link
               controller="backlogElement"
               action="accept"
@@ -70,18 +76,22 @@
               \$.icescrum.renderNotice('${message(code:'is.story.acceptedAsFeature').encodeAsJavaScript()}');"
               value="${message(code:'is.ui.backlogelement.toolbar.acceptAsFeature')}"/>
     </li>
-    <li class="last">
-      <is:link
-              controller="backlogElement"
-              action="accept"
-              id="${params.id}"
-              params="['acceptAs':2]"
-              history="false"
-              remote="true"
-              onSuccess="\$.icescrum.openWindow('sandbox');
-               \$.icescrum.renderNotice('${message(code:'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}');"
-              value="${message(code:'is.ui.backlogelement.toolbar.acceptAsUrgentTask')}"/>
-    </li>
+
+    <g:if test="${sprint}">
+      <li class="last">
+        <is:link
+                controller="backlogElement"
+                action="accept"
+                id="${params.id}"
+                params="['acceptAs':2]"
+                history="false"
+                remote="true"
+                onSuccess="\$.icescrum.openWindow('sandbox');
+                 \$.icescrum.renderNotice('${message(code:'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}');"
+                value="${message(code:'is.ui.backlogelement.toolbar.acceptAsUrgentTask')}"/>
+      </li>
+    </g:if>
+
   </ul>
 </is:panelButton>
 
@@ -89,7 +99,7 @@
 
 <is:iconButton
         action="delete"
-        controller="${story.state > org.icescrum.core.domain.Story.STATE_SUGGESTED ? 'productBacklog' : 'sandbox'}"
+        controller="${story.state > Story.STATE_SUGGESTED ? 'productBacklog' : 'sandbox'}"
         id="${params.id}"
         rendered="${productOwner}"
         title="${message(code:'is.ui.backlogelement.toolbar.delete')}"

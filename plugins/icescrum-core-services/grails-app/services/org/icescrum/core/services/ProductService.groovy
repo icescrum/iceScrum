@@ -184,7 +184,7 @@ class ProductService {
 
   def cumulativeFlowValues(Product product) {
     def values = []
-    product.releases?.each {
+    product.releases?.sort{a,b-> a.orderNumber < b.orderNumber}?.each {
       Cliche.findAllByParentTimeBoxAndType(it, Cliche.TYPE_ACTIVATION,[sort:"datePrise", order:"asc"])?.each { cliche ->
         def xmlRoot = new XmlSlurper().parseText(cliche.data)
         if (xmlRoot) {
@@ -205,7 +205,7 @@ class ProductService {
 
   def productBurnupValues(Product product) {
     def values = []
-    product.releases?.each {
+    product.releases?.sort{a,b-> a.orderNumber < b.orderNumber}?.each {
       Cliche.findAllByParentTimeBoxAndType(it, Cliche.TYPE_ACTIVATION,[sort:"datePrise", order:"asc"])?.each { cliche ->
 
         def xmlRoot = new XmlSlurper().parseText(cliche.data)
@@ -228,7 +228,7 @@ class ProductService {
 
   def productBurndownValues(Product product) {
     def values = []
-    product.releases?.each {
+    product.releases?.sort{a,b-> a.orderNumber < b.orderNumber}?.each {
       Cliche.findAllByParentTimeBoxAndType(it, Cliche.TYPE_ACTIVATION,[sort:"datePrise", order:"asc"])?.each { cliche ->
         def xmlRoot = new XmlSlurper().parseText(cliche.data)
         if (xmlRoot) {
@@ -246,7 +246,7 @@ class ProductService {
 
   def productVelocityValues(Product product) {
     def values = []
-    product.releases?.each {
+    product.releases?.sort{a,b-> a.orderNumber < b.orderNumber}?.each {
       Cliche.findAllByParentTimeBoxAndType(it, Cliche.TYPE_CLOSE,[sort:"datePrise", order:"asc"])?.each { cliche ->
         def xmlRoot = new XmlSlurper().parseText(cliche.data)
         if (xmlRoot) {
@@ -265,7 +265,7 @@ class ProductService {
   def productVelocityCapacityValues(Product product) {
     def values = []
     def capacity = 0, label = ""
-    product.releases?.each {
+    product.releases?.sort{a,b-> a.orderNumber < b.orderNumber}?.each {
       Cliche.findAllByParentTimeBox(it,[sort:"datePrise", order:"asc"])?.each { cliche ->
         def xmlRoot = new XmlSlurper().parseText(cliche.data)
         if (xmlRoot) {

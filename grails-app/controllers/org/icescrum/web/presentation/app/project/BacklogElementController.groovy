@@ -34,6 +34,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
 import org.springframework.web.servlet.support.RequestContextUtils
+import org.icescrum.core.domain.Sprint
 
 class BacklogElementController {
 
@@ -86,8 +87,8 @@ class BacklogElementController {
         next = Story.findByParentSprintAndRank(story.parentSprint,story.rank+1)?:null
       break
     }
-
-    render(template: 'window/toolbar',model: [id: id, story: story, user: user,next:next,previous:previous])
+    def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
+    render(template: 'window/toolbar',model: [id: id, story: story, user: user,next:next,previous:previous,sprint:sprint])
   }
 
   /**
