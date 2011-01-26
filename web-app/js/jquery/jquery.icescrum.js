@@ -47,7 +47,7 @@ $(document).ready(function($) {
     $.icescrum = {
 
         defaults:{
-            debug:false,
+            debug:true,
             baseUrlProduct:null,
             baseUrl:null,
             grailsServer:null,
@@ -185,6 +185,7 @@ $(document).ready(function($) {
         },
 
         renderNotice:function(text,type,title){
+            debugger;
             var titleP = "";
             if (title){
                 titleP = title;
@@ -862,7 +863,13 @@ $(document).ready(function($) {
                     $.doTimeout(200,function(){$('#autoCmpTxt').focus()})
                 }
             });
+        },
+
+
+        forPlanningTest:function(){
+            jQuery.icescrum.renderNotice("<b>go to the fucking planning poker now</b> !","notice");
         }
+
     },
 
             $.fn.addOptionToSelect = function(key, value) {
