@@ -101,7 +101,7 @@ class ProjectController {
     }
   }
 
-  @Secured('productOwner()')
+  @Secured('productOwner() or ScrumMaster()')
   def update = {
 
     def msg

@@ -22,7 +22,7 @@
 <ul>
   <li>${message(code: "is.product")}:
     <strong>${currentProduct.name.encodeAsHTML()}</strong>
-    <sec:access expression='productOwner()'><is:remoteDialog
+    <sec:access expression='productOwner() or ScrumMaster()'><is:remoteDialog
             action="openProperties"
             controller="project"
             params="[product:currentProduct.id]"
