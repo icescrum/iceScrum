@@ -96,21 +96,21 @@
       </is:accordionSection>
 
       <is:accordionSection title="is.dialog.project.preferences.meetingHours.title">
-        <is:fieldInput for="productpreferencesreleasePlanningHour" label="is.product.preferences.meetingHours.releasePlanningHour">
-          <is:input id="productpreferencesreleasePlanningHour" typed="[type:'numeric']" name="productd.preferences.releasePlanningHour" value="${product.preferences.releasePlanningHour}"/>
-        </is:fieldInput>
-        <is:fieldInput for="productpreferencessprintPlanningHour" label="is.product.preferences.meetingHours.sprintPlanningHour">
-          <is:input id="productpreferencessprintPlanningHour" typed="[type:'numeric']" name="productd.preferences.sprintPlanningHour" value="${product.preferences.sprintPlanningHour}"/>
-        </is:fieldInput>
-        <is:fieldInput for="productpreferencesdailyMeetingHour" label="is.product.preferences.meetingHours.dailyMeetingHour">
-          <is:input id="productpreferencesdailyMeetingHour" typed="[type:'numeric']" name="productd.preferences.dailyMeetingHour" value="${product.preferences.dailyMeetingHour}"/>
-        </is:fieldInput>
-        <is:fieldInput for="productpreferencessprintReviewHour" label="is.product.preferences.meetingHours.sprintReviewHour">
-          <is:input id="productpreferencessprintReviewHour" typed="[type:'numeric']" name="productd.preferences.sprintReviewHour" value="${product.preferences.sprintReviewHour}"/>
-        </is:fieldInput>
-        <is:fieldInput for="productpreferencessprintRetrospectiveHour" label="is.product.preferences.meetingHours.sprintRetrospectiveHour">
-          <is:input id="productpreferencessprintRetrospectiveHour" typed="[type:'numeric']" name="productd.preferences.sprintRetrospectiveHour" value="${product.preferences.sprintRetrospectiveHour}"/>
-        </is:fieldInput>
+        <is:fieldTimePicker for="productpreferencesreleasePlanningHour" label="is.product.preferences.meetingHours.releasePlanningHour">
+          <is:timePicker id="productpreferencesreleasePlanningHour" mode="read-input" hourGrid="4" stepMinute="15" minuteGrid="15" value="${product.preferences.releasePlanningHour}" timeFormat="h:mm" name="productd.preferences.releasePlanningHour"/>
+        </is:fieldTimePicker>
+        <is:fieldTimePicker for="productpreferencessprintPlanningHour" label="is.product.preferences.meetingHours.sprintPlanningHour">
+          <is:timePicker id="productpreferencessprintPlanningHour" mode="read-input" hourGrid="4" stepMinute="15" minuteGrid="15" value="${product.preferences.sprintPlanningHour}" timeFormat="h:mm" name="productd.preferences.sprintPlanningHour"/>
+        </is:fieldTimePicker>
+        <is:fieldTimePicker for="productpreferencesdailyMeetingHour" label="is.product.preferences.meetingHours.dailyMeetingHour">
+          <is:timePicker id="productpreferencesdailyMeetingHour" mode="read-input" hourGrid="4" stepMinute="15" minuteGrid="15" value="${product.preferences.dailyMeetingHour}" timeFormat="h:mm" name="productd.preferences.dailyMeetingHour"/>
+        </is:fieldTimePicker>
+        <is:fieldTimePicker for="productpreferencessprintReviewHour" label="is.product.preferences.meetingHours.sprintReviewHour">
+          <is:timePicker id="productpreferencessprintReviewHour" mode="read-input" hourGrid="4" stepMinute="15" minuteGrid="15" value="${product.preferences.sprintReviewHour}" timeFormat="h:mm" name="productd.preferences.sprintReviewHour"/>
+        </is:fieldTimePicker>
+        <is:fieldTimePicker for="productpreferencessprintRetrospectiveHour" label="is.product.preferences.meetingHours.sprintRetrospectiveHour">
+          <is:timePicker id="productpreferencessprintRetrospectiveHour" mode="read-input" hourGrid="4" stepMinute="15" minuteGrid="15" value="${product.preferences.sprintRetrospectiveHour}" timeFormat="h:mm" name="productd.preferences.sprintRetrospectiveHour"/>
+        </is:fieldTimePicker>
       </is:accordionSection>
     </is:accordion>
   </is:fieldset>

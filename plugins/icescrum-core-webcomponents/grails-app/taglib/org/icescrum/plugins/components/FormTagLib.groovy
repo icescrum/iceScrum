@@ -611,6 +611,11 @@ class FormTagLib {
     out << is.fieldInput(attrs, body)
   }
 
+  def fieldTimePicker = {attrs, body ->
+    if (attrs."for") attrs."for" = "timepicker-" + attrs."for"
+    out << is.fieldInput(attrs, body)
+  }
+
   def fieldSelect = {attrs, body ->
     attrs."class" = attrs."class"?attrs."class"+' field-select clearfix':"field-select clearfix"
     if (attrs.remove("noborder") == "true")
@@ -909,6 +914,55 @@ class FormTagLib {
     if (attrs.disabled && (attrs.disabled == 'true' || attrs.disabled == true))
       jqCode += "\$('#datepicker-${attrs.id}').datepicker('disable');"
     out << jq.jquery(null, jqCode)
+  }
+
+  def timePicker = { attrs, body ->
+
+    assert attrs.id
+
+    def jqCode = ''
+
+    if (attrs.onSelect)
+      attrs.onSelect = "function(dateText, inst) {${attrs.onSelect}}"
+
+    def args = [
+            ampm: attrs.ampm?:null,
+            showHour:attrs.showHour?:null,
+            showMinute:attrs.showMinute?:null,
+            showSecond:attrs.showSecond?:null,
+            stepHour: attrs.stepHour?:null,
+            stepMinute: attrs.stepMinute?:null,
+            stepSecond: attrs.stepSecond?:null,
+            hour: attrs.hour?:null,
+            minute: attrs.minute?:null,
+            second: attrs.second?:null,
+            hourGrid: attrs.hourGrid?:null,
+            minuteGrid: attrs.minuteGrid?:null,
+            secondGrid: attrs.secondGrid?:null,
+            timeFormat: attrs.timeFormat?UtilsWebComponents.wrap(attrs.timeFormat):null
+    ]
+
+    def argsInput = [
+            id: "timepicker-" + attrs.id,
+            name: attrs.name,
+            value: attrs.value,
+            class: "datePicker"
+    ]
+
+    out << is.input(argsInput, "")
+
+    if (attrs.mode && attrs.mode == 'read-input') {
+      jqCode += "\$('#timepicker-${attrs.id}').attr('readonly', true);"
+    }
+
+    def opts = args.findAll {k, v -> v != null}.collect {k, v -> " $k:$v"}.join(',')
+    jqCode += "\$('#timepicker-${attrs.id}').timepicker({${opts}});"
+
+    if (attrs.disabled && (attrs.disabled == 'true' || attrs.disabled == true))
+      jqCode += "\$('#timepicker-${attrs.id}').timepicker('disable');"
+    out << jq.jquery(null, jqCode)
+
+    println jq.jquery(null, jqCode)
   }
 
   def accordion = { attrs, body ->

@@ -2062,3 +2062,27 @@ html > body .ui-pnotify {
     color: white;
     border: 0 none;
 }
+
+.ui-timepicker-div .ui-widget-header{
+    margin-bottom: 8px;
+}
+
+.ui-timepicker-div dl{
+    text-align: left;
+}
+
+.ui-timepicker-div dl dt{
+    height: 25px;
+    padding-top:0px;
+    font-size:1.0em;
+    font-weight:normal;
+}
+
+.ui-timepicker-div dl dd{
+    margin: -25px 0 5px 65px;
+    padding:0px;
+}
+
+.ui-timepicker-div td {
+    font-size: 90%;
+}
