@@ -961,8 +961,6 @@ class FormTagLib {
     if (attrs.disabled && (attrs.disabled == 'true' || attrs.disabled == true))
       jqCode += "\$('#timepicker-${attrs.id}').timepicker('disable');"
     out << jq.jquery(null, jqCode)
-
-    println jq.jquery(null, jqCode)
   }
 
   def accordion = { attrs, body ->
