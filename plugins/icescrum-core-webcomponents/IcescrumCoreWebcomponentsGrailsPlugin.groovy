@@ -133,7 +133,8 @@ class IcescrumCoreWebcomponentsGrailsPlugin {
     if (controller?.hasProperty(UiControllerArtefactHandler.PROPERTY)) {
       ScaffoldingViewResolver.clearViewCache()
       application.addArtefact(UiControllerArtefactHandler.TYPE, controller)
-      addUIControllerMethods(controller, application.mainContext)
+      def plugin = controller.hasProperty(UiControllerArtefactHandler.PLUGINNAME)?controller.getPropertyValue(UiControllerArtefactHandler.PLUGINNAME):null
+      addUIControllerMethods(controller, application.mainContext, plugin)
     }
   }
 
