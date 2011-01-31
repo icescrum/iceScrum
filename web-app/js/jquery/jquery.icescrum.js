@@ -73,8 +73,8 @@ $(document).ready(function($) {
         o:{},
 
         init:function(options) {
-            this.o = jQuery.extend({}, this.defaults, options);
-
+            if (typeof icescrum === undefined) { icescrum = options; }
+            this.o = jQuery.extend({}, this.defaults, icescrum);
             var old_console_log = console.log;
             console.log = function() {
                 if ( $.icescrum.o.debug ) {
@@ -96,6 +96,7 @@ $(document).ready(function($) {
             if(url != ''){
                 $.icescrum.openWindow(url);
             }
+            $.icescrum.initHistory();
         },
 
         debug:function(value){
@@ -1190,6 +1191,8 @@ $.fn.qtip.styles.icescrum = {
     },
     name: 'light' // Inherit the rest of the attributes from the preset dark style
 };
+
+$.icescrum.init();
 
 /**
  * Cookie plugin

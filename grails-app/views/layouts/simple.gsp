@@ -26,15 +26,18 @@
   <title>iceScrum - <g:layoutTitle/></title>
   <link rel="shortcut icon" href="${r.resource(dir: is.currentThemeImage(), file: 'favicon.ico')}" type="image/x-icon"/>
   <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
+
+  <is:loadJsVar/>
+
   <r:use modules="jquery-ui, datepicker-locales, resize, qtip, pnotify, ui-selectmenu, hotkeys, history, mousewheel, eventline, dotimeout, jqplot,
    browser, table, dropmenu, jeditable, progress, input, checkbox, alphanumeric, scrollbar"/>
   <r:use module="icescrum"/>
+
   <r:layoutResources/>
   <g:layoutHead/>
 </head>
 <body class="simple">
 <g:layoutBody/>
-<is:loadJSContext/>
 <is:spinner on400="${is.notice(data: '$.parseJSON(xhr.responseText)')}" on403="${is.notice(text:message('is.denied'),type:'error')}"/>
 <r:layoutResources/>
 </body>
