@@ -94,6 +94,24 @@
           <is:input id="productpreferencesLimitUrgentTasks" name="productd.preferences.limitUrgentTasks" typed="[type:'numeric']" value="${product.preferences.limitUrgentTasks}"/>
         </is:fieldRadio>
       </is:accordionSection>
+
+      <is:accordionSection title="is.dialog.project.preferences.meetingHours.title">
+        <is:fieldInput for="productpreferencesreleasePlanningHour" label="is.product.preferences.meetingHours.releasePlanningHour">
+          <is:input id="productpreferencesreleasePlanningHour" typed="[type:'numeric']" name="productd.preferences.releasePlanningHour" value="${product.preferences.releasePlanningHour}"/>
+        </is:fieldInput>
+        <is:fieldInput for="productpreferencessprintPlanningHour" label="is.product.preferences.meetingHours.sprintPlanningHour">
+          <is:input id="productpreferencessprintPlanningHour" typed="[type:'numeric']" name="productd.preferences.sprintPlanningHour" value="${product.preferences.sprintPlanningHour}"/>
+        </is:fieldInput>
+        <is:fieldInput for="productpreferencesdailyMeetingHour" label="is.product.preferences.meetingHours.dailyMeetingHour">
+          <is:input id="productpreferencesdailyMeetingHour" typed="[type:'numeric']" name="productd.preferences.dailyMeetingHour" value="${product.preferences.dailyMeetingHour}"/>
+        </is:fieldInput>
+        <is:fieldInput for="productpreferencessprintReviewHour" label="is.product.preferences.meetingHours.sprintReviewHour">
+          <is:input id="productpreferencessprintReviewHour" typed="[type:'numeric']" name="productd.preferences.sprintReviewHour" value="${product.preferences.sprintReviewHour}"/>
+        </is:fieldInput>
+        <is:fieldInput for="productpreferencessprintRetrospectiveHour" label="is.product.preferences.meetingHours.sprintRetrospectiveHour">
+          <is:input id="productpreferencessprintRetrospectiveHour" typed="[type:'numeric']" name="productd.preferences.sprintRetrospectiveHour" value="${product.preferences.sprintRetrospectiveHour}"/>
+        </is:fieldInput>
+      </is:accordionSection>
     </is:accordion>
   </is:fieldset>
   <sec:access expression="owner()">

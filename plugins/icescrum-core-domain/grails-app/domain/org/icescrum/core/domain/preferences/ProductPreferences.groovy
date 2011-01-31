@@ -49,6 +49,13 @@ class ProductPreferences {
     int estimatedSprintsDuration = 14
     int limitUrgentTasks = 0
 
+    // Meeting hours
+    String releasePlanningHour = "9:00"
+    String sprintPlanningHour = "9:00"
+    String dailyMeetingHour = "11:00"
+    String sprintReviewHour = "14:00"
+    String sprintRetrospectiveHour = "15:00"
+
     static constraints = {
       url(nullable:true,url:true)
     }
