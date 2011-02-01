@@ -26,6 +26,11 @@
 
 package org.icescrum.core.domain
 
+import org.icescrum.core.event.IceScrumEvent
+import org.icescrum.core.event.IceScrumStoryEvent
+import org.grails.comments.Comment
+import grails.plugin.attachmentable.Attachment
+
 class Story extends BacklogElement implements Cloneable {
 
   static final long serialVersionUID = -6800252507987149001L
@@ -410,5 +415,13 @@ class Story extends BacklogElement implements Cloneable {
         todo += it.estimations.last
     }
     return todo
+  }
+
+  def onAddComment = { Comment c ->
+    publishEvent(new IceScrumStoryEvent(this,c,this.class,IceScrumStoryEvent.EVENT_COMMENT_ADDED))
+  }
+
+  def onAddAttachment = { Attachment a ->
+    publishEvent(new IceScrumStoryEvent(this,a,this.class,IceScrumStoryEvent.EVENT_FILE_ATTACHED_ADDED))
   }
 }

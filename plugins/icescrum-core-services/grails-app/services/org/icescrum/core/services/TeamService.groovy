@@ -35,6 +35,9 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.security.access.prepost.PostFilter
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.transaction.annotation.Transactional
+import org.icescrum.core.event.IceScrumEvent
+import org.icescrum.core.event.IceScrumTeamEvent
+import org.icescrum.core.event.IceScrumProductEvent
 
 class TeamService {
 
@@ -80,6 +83,7 @@ class TeamService {
       if (!team.save()) {
         throw new RuntimeException()
       }
+      publishEvent(new IceScrumTeamEvent(team,this.class,IceScrumEvent.EVENT_CREATED))
     }
 
   }
@@ -92,7 +96,7 @@ class TeamService {
     if (!_team.save()) {
       throw new RuntimeException()
     }
-
+    publishEvent(new IceScrumTeamEvent(team,this.class,IceScrumEvent.EVENT_UPDATED))
   }
 
   void deleteTeam(Team team) {
@@ -115,6 +119,7 @@ class TeamService {
       team.delete()
 
       securityService.unsecureDomain team
+      publishEvent(new IceScrumTeamEvent(team,this.class,IceScrumEvent.EVENT_DELETED))
     }
 
   }
@@ -135,7 +140,6 @@ class TeamService {
 
     if (!_user.save())
       throw new IllegalStateException('_user not saved')
-
   }
 
 
@@ -150,6 +154,7 @@ class TeamService {
     for (team in Team.getAll(teamIds)) {
       if (team)
         _product.removeFromTeams(team)
+        publishEvent(new IceScrumProductEvent(_product,team,this.class,IceScrumProductEvent.EVENT_TEAM_REMOVED))
     }
 
     if (!_product.save())
@@ -206,6 +211,7 @@ class TeamService {
     securityService.createTeamMemberPermissions member, team
     springcacheService.getOrCreateCache(SecurityService.CACHE_OPENPRODUCTTEAM).flush()
     springcacheService.getOrCreateCache(SecurityService.CACHE_PRODUCTTEAM).flush()
+    publishEvent(new IceScrumTeamEvent(team,member,this.class,IceScrumTeamEvent.EVENT_MEMBER_ADDED))
   }
 
   @Secured(['ROLE_USER', 'RUN_AS_PERMISSIONS_MANAGER'])
@@ -214,6 +220,7 @@ class TeamService {
     securityService.deleteTeamMemberPermissions member, team
     springcacheService.getOrCreateCache(SecurityService.CACHE_OPENPRODUCTTEAM).flush()
     springcacheService.getOrCreateCache(SecurityService.CACHE_PRODUCTTEAM).flush()
+    publishEvent(new IceScrumTeamEvent(team,member,this.class,IceScrumTeamEvent.EVENT_MEMBER_REMOVED))
   }
 
 

@@ -38,6 +38,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
+import org.icescrum.core.event.IceScrumStoryEvent
 
 class ProductBacklogService {
   def productService
@@ -51,7 +52,6 @@ class ProductBacklogService {
   static transactional = true
 
   void saveStory(Story story, Product p, User u, Sprint s = null) {
-    def actor = null
 
     if (!story.effort)
       story.effort = null
@@ -60,7 +60,7 @@ class ProductBacklogService {
     story.creator = u
 
     if (story.textAs != '') {
-      actor = Actor.findByBacklogAndName(p, story.textAs)
+      def actor = Actor.findByBacklogAndName(p, story.textAs)
       if (actor) {
         story.actor = actor
       }
@@ -79,6 +79,7 @@ class ProductBacklogService {
 
     if (story.save()) {
       story.addActivity(u, Activity.CODE_SAVE, story.name)
+      publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_CREATED))
     } else {
       throw new RuntimeException()
     }
@@ -89,18 +90,18 @@ class ProductBacklogService {
     _item.delete()
     p.removeFromStories(_item)
     p.save()
-    if (history)
+    if (history){
       p.addActivity(User.get(springSecurityService.principal?.id), Activity.CODE_DELETE, _item.name)
+      publishEvent(new IceScrumStoryEvent(_item,this.class,IceScrumStoryEvent.EVENT_DELETED))
+    }
     if (_item.state != Story.STATE_SUGGESTED)
         resetRank(p, _item.rank)
   }
 
   @PreAuthorize('productOwner(#p) or scrumMaster(#p)')
   void updateStory(Story story, Sprint sp = null) {
-    def actor = null
-
     if (story.textAs != '' && story.actor?.name != story.textAs) {
-      actor = Actor.findByBacklogAndName(story.backlog, story.textAs)
+      def actor = Actor.findByBacklogAndName(story.backlog, story.textAs)
       if (actor) {
         story.actor = actor
       } else {
@@ -126,6 +127,7 @@ class ProductBacklogService {
       throw new RuntimeException()
     } else {
       story.addActivity(User.get(springSecurityService.principal?.id), Activity.CODE_UPDATE, story.name)
+      publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_UPDATED))
     }
   }
 
@@ -136,6 +138,7 @@ class ProductBacklogService {
    */
   @PreAuthorize('teamMember() or scrumMaster()')
   void estimateStory(Story story, estimation) {
+    def oldState = story.state
     if (story.state < Story.STATE_ACCEPTED || story.state == Story.STATE_DONE)
       throw new IllegalStateException('is.story.error.estimated')
     if (!(estimation instanceof Number) && (estimation instanceof String && !estimation.isNumber())) {
@@ -147,8 +150,13 @@ class ProductBacklogService {
       story.effort = estimation.toInteger()
       story.estimatedDate = new Date()
     }
-    if (story.save())
+    if (story.save()){
       story.addActivity(User.get(springSecurityService.principal?.id), Activity.CODE_UPDATE, story.name)
+      if (oldState != story.state && story.state == Story.STATE_ESTIMATED)
+        publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_ESTIMATED))
+      else if(oldState != story.state && story.state == Story.STATE_ACCEPTED)
+        publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_ACCEPTED))
+    }
     else{
       throw new RuntimeException()
     }
@@ -220,12 +228,18 @@ class ProductBacklogService {
 
     if(!story.save())
       throw new RuntimeException()
+
     sprint.addToStories(story)
 
     // Calculate the velocity of the sprint
     if (sprint.state == Sprint.STATE_WAIT)
       sprint.capacity = sprint.stories.sum { it.effort }
     sprint.save()
+
+    if (story.state == Story.STATE_INPROGRESS)
+      publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_INPROGRESS))
+    else
+      publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_PLANNED))
   }
 
   /**
@@ -262,6 +276,8 @@ class ProductBacklogService {
       if(!pbi.save())
         throw new RuntimeException()
       setRank(pbi, 1)
+
+      publishEvent(new IceScrumStoryEvent(pbi,this.class,IceScrumStoryEvent.EVENT_UNPLANNED))
     } else {
       throw new IllegalStateException('is.sprint.error.dissociate.story.done')
     }
@@ -422,8 +438,10 @@ class ProductBacklogService {
         pbi.effort = 1
         pbi.state = Story.STATE_ESTIMATED
       }
-      if (pbi.save())
+      if (pbi.save()){
         pbi.addActivity(User.get(springSecurityService.principal?.id), 'acceptAs', pbi.name)
+        publishEvent(new IceScrumStoryEvent(pbi,this.class,IceScrumStoryEvent.EVENT_ACCEPTED))
+      }
     } else
       throw new IllegalStateException('is.story.error.not.state.suggested')
   }
@@ -439,6 +457,7 @@ class ProductBacklogService {
         feature.addAttachment(pbi.creator,attachmentableService.getFile(attachment),attachment.filename)
       }
       feature.addActivity(user, 'acceptAs', feature.name)
+      publishEvent(new IceScrumStoryEvent(feature,this.class,IceScrumStoryEvent.EVENT_ACCEPTED_AS_FEATURE))
       this.deleteStory(pbi,(Product)pbi.backlog,false)
     } else
       throw new IllegalStateException('is.story.error.not.state.suggested')
@@ -463,6 +482,7 @@ class ProductBacklogService {
           task.notes = (task.notes?:'') + '\n --- \n ' + comment.body  + '\n --- \n '
         }
         this.deleteStory(pbi,(Product)pbi.backlog,false)
+        publishEvent(new IceScrumStoryEvent(task,this.class,IceScrumStoryEvent.EVENT_ACCEPTED_AS_TASK))
       }else{
         throw new IllegalStateException('is.story.error.notacceptedAsUrgentTask')
       }
@@ -514,8 +534,10 @@ class ProductBacklogService {
       //Move story to last rank in sprint
       changeRank((Product)story.backlog, story, story.parentSprint.stories.size() + 1)
 
-      if (story.save())
+      if (story.save()){
         story.addActivity(User.get(springSecurityService.principal?.id), 'done', story.name)
+        publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_DONE))
+      }
       else
         throw new RuntimeException()
 
@@ -552,8 +574,10 @@ class ProductBacklogService {
       //Move story to last rank of in progress stories in sprint
       changeRank((Product)story.backlog, story, story.parentSprint.stories.findAll{it.state == Story.STATE_INPROGRESS}.size() + 1)
 
-      if (story.save())
+      if (story.save()){
         story.addActivity(User.get(springSecurityService.principal?.id), 'undone', story.name)
+        publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_UNDONE))
+      }
       else
         throw new RuntimeException()
     }

@@ -42,6 +42,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.util.Assert
 import static org.springframework.security.acls.domain.BasePermission.*
 import org.springframework.security.acls.model.*
+import org.icescrum.core.event.IceScrumUserEvent
 
 class SecurityService {
 
@@ -95,16 +96,19 @@ class SecurityService {
   void changeOwner(User u, o) {
     aclUtilService.changeOwner o, u.username
     springcacheService.flush(SecurityService.CACHE_OWNER)
+    publishEvent(new IceScrumUserEvent(u,o,this.class,IceScrumUserEvent.EVENT_IS_OWNER))
   }
 
   void createProductOwnerPermissions(User u, Product p) {
     aclUtilService.addPermission p, u.username, WRITE
     springcacheService.flush(SecurityService.CACHE_PRODUCTOWNER)
+    publishEvent(new IceScrumUserEvent(u,p,this.class,IceScrumUserEvent.EVENT_IS_PRODUCTOWNER))
   }
 
   void createScrumMasterPermissions(User u, Team t) {
     aclUtilService.addPermission t, u.username, WRITE
     springcacheService.flush(SecurityService.CACHE_SCRUMMASTER)
+    publishEvent(new IceScrumUserEvent(u,t,this.class,IceScrumUserEvent.EVENT_IS_SCRUMMASTER))
   }
 
   void createStakeHolderPermissions(User u, Product p) {
@@ -115,18 +119,21 @@ class SecurityService {
   void createTeamMemberPermissions(User u, Team t) {
     aclUtilService.addPermission t, u.username, READ
     springcacheService.flush(SecurityService.CACHE_TEAMMEMBER)
+    publishEvent(new IceScrumUserEvent(u,t,this.class,IceScrumUserEvent.EVENT_IS_MEMBER))
   }
 
   void deleteProductOwnerPermissions(User u, Product p) {
     aclUtilService.deletePermission p, u.username, WRITE
     aclUtilService.deletePermission p, u.username, ADMINISTRATION
     springcacheService.flush(SecurityService.CACHE_PRODUCTOWNER)
+    publishEvent(new IceScrumUserEvent(u,p,this.class,IceScrumUserEvent.EVENT_NOT_PRODUCTOWNER))
   }
 
   void deleteScrumMasterPermissions(User u, Team t) {
     aclUtilService.deletePermission t, u.username, WRITE
     aclUtilService.deletePermission t, u.username, ADMINISTRATION
     springcacheService.flush(SecurityService.CACHE_SCRUMMASTER)
+    publishEvent(new IceScrumUserEvent(u,t,this.class,IceScrumUserEvent.EVENT_NOT_SCRUMMASTER))
   }
 
   void deleteStakeHolderPermissions(User u, Product p) {
@@ -137,6 +144,7 @@ class SecurityService {
   void deleteTeamMemberPermissions(User u, Team t) {
     aclUtilService.deletePermission t, u.username, READ
     springcacheService.flush(SecurityService.CACHE_TEAMMEMBER)
+    publishEvent(new IceScrumUserEvent(u,t,this.class,IceScrumUserEvent.EVENT_NOT_MEMBER))
   }
 
   boolean inProduct(product, auth) {

@@ -27,8 +27,7 @@
       <g:hiddenField id="commentId${comment?.id ?: ''}" name="comment.id" value="${comment?.id}"/>
     </g:if>
     <g:if test="${commentable}">
-      <g:hiddenField id="commentRef${comment?.id ?: ''}" name="commentLink.commentRef" value="${commentable?.id}"/>
-      <g:hiddenField id="type${comment?.id ?: ''}" name="commentLink.type" value="${commentable?.class?.name}"/>
+      <g:hiddenField id="commentRef${comment?.id ?: ''}" name="comment.ref" value="${commentable?.id}"/>
     </g:if>
     <p class="comment-button-wrapper">
       <g:if test="${!mode || mode=='add'}">

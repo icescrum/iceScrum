@@ -28,13 +28,13 @@ import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
-import org.grails.comments.CommentLink
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.icescrum.core.domain.Sprint
+import org.icescrum.core.event.IceScrumStoryEvent
 
 class BacklogElementController {
 
@@ -153,23 +153,15 @@ class BacklogElementController {
   @Secured('isAuthenticated()')
   def addComment = {
     def poster = User.load(springSecurityService.principal.id)
-    def commentLink
     try {
       if (params['comment'] instanceof Map) {
         Comment.withTransaction { status ->
-          def comment = new Comment(params.comment)
-          comment.posterId = poster.id
-          comment.posterClass = poster.class.name
-          commentLink = new CommentLink(params.commentLink)
-          commentLink.type = GrailsNameUtils.getPropertyName(commentLink.type)
-
-          if (!comment.save()) {
+          try {
+              def story = Story.get(params.comment.ref)
+              story.addComment(poster,params.comment.body)
+              story.addActivity(poster, 'comment', story.name)
+          }catch(Exception e){
             status.setRollbackOnly()
-          } else {
-            commentLink.comment = comment
-            def story = Story.get(commentLink.commentRef)
-            story.addActivity(poster, 'comment', story.name)
-            if (!commentLink.save()) status.setRollbackOnly()
           }
         }
       }
@@ -179,17 +171,9 @@ class BacklogElementController {
       return
     }
 
-    def comments = CommentLink.withCriteria {
-      projections {
-        property "comment"
-      }
-      eq 'type', commentLink.type
-      eq 'commentRef', commentLink.commentRef
-      cache true
-    }
     // Reload the comments
-    forward(controller: controllerName, action: 'activitiesPanel', id: params.commentLink.commentRef, params: ['tab': 'comments'])
-    pushOthers "${params.product}-backlogElement-${params.commentLink.commentRef}-activities"
+    forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments'])
+    pushOthers "${params.product}-backlogElement-${params.comment.ref}-activities"
   }
 
   /**
@@ -215,10 +199,16 @@ class BacklogElementController {
       return
     }
     def comment = Comment.get(params.long('comment.id'))
+    def commentable = Story.get(params.long('comment.ref'))
     comment.body = params.comment.body
-    comment.save()
-    forward(controller: controllerName, action: 'activitiesPanel', id: params.commentLink.commentRef, params: [product: params.product, 'tab': 'comments'])
-    pushOthers "${params.product}-backlogElement-${params.commentLink.commentRef}-activities"
+    try{
+      comment.save()
+      forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
+      pushOthers "${params.product}-backlogElement-${params.comment.ref}-activities"
+      publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
+    } catch (RuntimeException e) {
+      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+    }
   }
 
   /**
@@ -241,6 +231,7 @@ class BacklogElementController {
       commentable.removeComment(comment)
       render include(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: [product: params.product, 'tab': 'comments'])
       pushOthers "${params.product}-backlogElement-${params.backlogelement}-activities"
+      publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,IceScrumStoryEvent.EVENT_COMMENT_DELETED))
     } catch (RuntimeException e) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
     }

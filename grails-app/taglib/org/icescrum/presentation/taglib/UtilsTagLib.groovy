@@ -151,7 +151,6 @@ class UtilsTagLib {
     def javascript = attrs.remove('javascript') ?: 'javascript'
     def js = request."$javascript" ?: flash."$javascript"
     if (js){
-      println js
       out << js
     }
   }

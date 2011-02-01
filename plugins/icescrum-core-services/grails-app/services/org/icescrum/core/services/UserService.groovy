@@ -34,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional
 
 import org.apache.commons.io.FilenameUtils
 import org.icescrum.core.utils.ImageConvert
+import org.icescrum.core.event.IceScrumEvent
+import org.icescrum.core.event.IceScrumUserEvent
 
 /**
  * The UserService class monitor the operations on the User domain requested by the web layer.
@@ -58,6 +60,7 @@ class UserService {
     _user.password = springSecurityService.encodePassword(_user.password)
     if (!_user.save())
       throw new RuntimeException()
+    publishEvent(new IceScrumUserEvent(_user,this.class,IceScrumEvent.EVENT_CREATED))
   }
 
   void updateUser(User _user, String pwd = null, String avatarPath = null, boolean scale = true) {
@@ -86,12 +89,14 @@ class UserService {
 
     if (!_user.save())
       throw new RuntimeException()
+    publishEvent(new IceScrumUserEvent(_user,this.class,IceScrumEvent.EVENT_UPDATED))
   }
 
   @PreAuthorize("ROLE_ADMIN")
   boolean deleteUser(User _user) {
     try {
       _user.delete()
+      publishEvent(new IceScrumUserEvent(_user,this.class,IceScrumEvent.EVENT_UPDATED))
       return true
     } catch (Exception e) {
       return false

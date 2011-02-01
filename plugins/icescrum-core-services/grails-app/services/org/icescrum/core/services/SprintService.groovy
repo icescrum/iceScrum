@@ -37,6 +37,9 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.TimeBox
 import org.icescrum.core.utils.ServicesUtils
 import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil
+import org.icescrum.core.event.IceScrumSprintEvent
+import org.icescrum.core.event.IceScrumEvent
+import org.icescrum.core.event.IceScrumStoryEvent
 
 class SprintService {
 
@@ -80,6 +83,7 @@ class SprintService {
       throw new RuntimeException()
     
     release.addToSprints(sprint)
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,IceScrumEvent.EVENT_CREATED))
   }
   
   /**
@@ -147,6 +151,7 @@ class SprintService {
     // Finally save the sprint
     if(!sprint.save())
       throw new RuntimeException()
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,IceScrumEvent.EVENT_UPDATED))
   }
 
   /**
@@ -166,7 +171,11 @@ class SprintService {
     productBacklogService.dissociatedAllStories(nextSprints)
     productBacklogService.dissociatedAllStories([sprint])
     release.removeFromSprints(sprint)
-    nextSprints.each { release.removeFromSprints(it) }
+    nextSprints.each {
+      release.removeFromSprints(it)
+      publishEvent(new IceScrumSprintEvent(it,this.class,IceScrumEvent.EVENT_DELETED))
+    }
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,IceScrumEvent.EVENT_DELETED))
   }
 
 
@@ -214,6 +223,7 @@ class SprintService {
         throw new RuntimeException()
 
       firstDate.time = endDate.time + day
+      publishEvent(new IceScrumSprintEvent(newSprint,this.class,IceScrumEvent.EVENT_CREATED))
     }
   }
 
@@ -262,6 +272,7 @@ class SprintService {
 
     sprint.stories.each {
       it.inProgressDate = new Date()
+      publishEvent(new IceScrumStoryEvent(it,this.class,IceScrumStoryEvent.EVENT_INPROGRESS))
     }
 
     //retrieve last done definition if no done definition in the current sprint
@@ -275,6 +286,8 @@ class SprintService {
     if(!sprint.save()){
       throw new RuntimeException()
     }
+
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,IceScrumSprintEvent.EVENT_ACTIVATED))
 
     // Create a cliché
     clicheService.createSprintCliche(sprint, new Date(),Cliche.TYPE_ACTIVATION)
@@ -316,6 +329,7 @@ class SprintService {
     if(!sprint.save(flush:true)){
       throw new RuntimeException()
     }
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,IceScrumSprintEvent.EVENT_CLOSED))
     // Create cliché
     clicheService.createSprintCliche(sprint, new Date(),Cliche.TYPE_CLOSE)
     clicheService.createOrUpdateDailyTasksCliche(sprint)
@@ -352,12 +366,14 @@ class SprintService {
     if(!sprint.save()){
       throw new RuntimeException()
     }
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,IceScrumSprintEvent.EVENT_UPDATED_DONE_DEFINITION))
   }
 
   void updateRetrospective(Sprint sprint) {
     if(!sprint.save()){
       throw new RuntimeException()
     }
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,IceScrumSprintEvent.EVENT_UPDATED_RETROSPECTIVE))
   }
 
   def sprintBurndownHoursValues(Sprint sprint) {

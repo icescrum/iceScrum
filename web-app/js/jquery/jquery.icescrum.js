@@ -186,7 +186,6 @@ $(document).ready(function($) {
         },
 
         renderNotice:function(text,type,title){
-            debugger;
             var titleP = "";
             if (title){
                 titleP = title;
