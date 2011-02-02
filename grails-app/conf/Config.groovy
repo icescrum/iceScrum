@@ -155,7 +155,6 @@ grails.views.javascript.library = 'jquery'
 environments {
   production {
     grails.config.locations = ["classpath:config.properties"]
-    grails.profiler.disable = true
   }
 }
 // log4j configuration
@@ -189,11 +188,6 @@ log4j = {
     info 'stdout', 'icescrumFileLog'
     additivity = true
   }
-
-  logger {
-    com.linkedin.grails = "info"
-  }
-
 }
 
 /*
