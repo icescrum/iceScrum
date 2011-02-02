@@ -59,9 +59,11 @@ class Task extends BacklogElement implements Serializable {
   static transients = ['stateBundle']
 
   static mapping = {
+    cache true
     table 'icescrum2_task'
     parentStory index:'t_name_index'
     name index:'t_name_index'
+    participants cache: true
   }
 
   static constraints = {

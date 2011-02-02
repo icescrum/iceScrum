@@ -69,14 +69,15 @@ class Product extends TimeBox {
   static mapping = {
     cache true
     table 'icescrum2_product'
-    actors cascade: 'all-delete-orphan', batchSize: 10
-    features cascade: 'all-delete-orphan', sort:'rank', batchSize: 10
-    stories cascade:'all-delete-orphan', sort: 'rank', 'label':'asc', batchSize: 25
-    domains cascade: 'all-delete-orphan', batchSize: 10
-    releases cascade: 'all-delete-orphan', batchSize: 10, sort: 'id'
-    impediments cascade: 'all-delete-orphan', batchSize: 10
+    actors cascade: 'all-delete-orphan', batchSize: 10, cache: true
+    features cascade: 'all-delete-orphan', sort:'rank', batchSize: 10, cache: true
+    stories cascade:'all-delete-orphan', sort: 'rank', 'label':'asc', batchSize: 25, cache: true
+    domains cascade: 'all-delete-orphan', batchSize: 10, cache: true
+    releases cascade: 'all-delete-orphan', batchSize: 10, sort: 'id', cache: true
+    impediments cascade: 'all-delete-orphan', batchSize: 10, cache: true
     pkey( index:'p_key_index')
     name(index: 'p_name_index')
+    preferences lazy: true
   }
 
   static constraints = {

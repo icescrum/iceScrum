@@ -26,7 +26,6 @@
 
 package org.icescrum.core.domain
 
-import org.icescrum.core.event.IceScrumEvent
 import org.icescrum.core.event.IceScrumStoryEvent
 import org.grails.comments.Comment
 import grails.plugin.attachmentable.Attachment
@@ -90,7 +89,7 @@ class Story extends BacklogElement implements Cloneable {
   static mapping = {
     cache true
     table 'icescrum2_story'
-    tasks cascade: 'all'
+    tasks cascade: 'all', cache: true
   }
 
   static constraints = {

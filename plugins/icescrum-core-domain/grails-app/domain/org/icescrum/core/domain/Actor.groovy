@@ -59,7 +59,7 @@ class Actor extends BacklogElement implements Serializable, Comparable<Actor> {
   static mapping = {
     cache true
     table 'icescrum2_actor'
-    stories cascade: "refresh, evict"
+    stories cascade: "refresh, evict", cache: true
   }
 
   static constraints = {

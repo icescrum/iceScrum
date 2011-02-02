@@ -36,6 +36,7 @@ import grails.plugins.springsecurity.Secured
 import org.icescrum.web.upload.AjaxMultipartResolver
 import org.icescrum.core.support.ProgressSupport
 import org.apache.commons.io.FilenameUtils
+import org.icescrum.core.domain.Product
 
 class ScrumOSController {
 
@@ -72,7 +73,7 @@ class ScrumOSController {
             team: currentTeamInstance,
             lang:RCU.getLocale(request).toString().substring(0,2),
             product: currentProductInstance,
-            publicProductsExists:productService.getProductList(null)?.size()?true:false,
+            publicProductsExists:Product.count()?true:false,
             productFilteredsList: productService.getByMemberProductList(),
             teamsList: teamService.teamList]
   }

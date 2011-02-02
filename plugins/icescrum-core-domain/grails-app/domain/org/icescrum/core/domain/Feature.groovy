@@ -51,7 +51,7 @@ class Feature extends BacklogElement implements Serializable {
   static mapping = {
     cache true
     table 'icescrum2_feature'
-    stories cascade: "refresh", sort: 'rank', 'name':'asc'
+    stories cascade: "refresh", sort: 'rank', 'name':'asc', cache: true
     sort "id"    
   }
 

@@ -35,6 +35,8 @@ import org.icescrum.core.domain.User
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.event.IceScrumStoryEvent
+import org.grails.followable.FollowException
+import org.grails.followable.FollowLink
 
 class BacklogElementController {
 
@@ -131,6 +133,23 @@ class BacklogElementController {
 
       def summary = story.comments + activities
       def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.id)
+
+      def criteria = FollowLink.createCriteria()
+
+      def isFollower = false
+      if (user){
+        isFollower = criteria.get {
+            projections {
+                    rowCount()
+            }
+            eq 'followRef', story.id
+            eq 'followerId', user.id
+            eq 'type', GrailsNameUtils.getPropertyName(Story.class)
+            cache true
+        }
+        isFollower = isFollower == 1
+      }
+
       summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
       render(view: 'details', model: [
               story: story,
@@ -145,6 +164,7 @@ class BacklogElementController {
               pkey: product.pkey,
               permalink: permalink,
               locale: RequestContextUtils.getLocale(request),
+              isFollower : isFollower,
               id: id
       ])
     }
@@ -160,6 +180,7 @@ class BacklogElementController {
               def story = Story.get(params.comment.ref)
               story.addComment(poster,params.comment.body)
               story.addActivity(poster, 'comment', story.name)
+              story.addFollower(poster)
           }catch(Exception e){
             status.setRollbackOnly()
           }
@@ -173,7 +194,8 @@ class BacklogElementController {
 
     // Reload the comments
     forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments'])
-    pushOthers "${params.product}-backlogElement-${params.comment.ref}-activities"
+    pushOthers "${params.product}-${id}-${params.comment.ref}-activities"
+    push "${params.product}-${id}-${params.comment.ref}-followers"
   }
 
   /**
@@ -204,7 +226,7 @@ class BacklogElementController {
     try{
       comment.save()
       forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
-      pushOthers "${params.product}-backlogElement-${params.comment.ref}-activities"
+      pushOthers "${params.product}-${id}-${params.comment.ref}-activities"
       publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
     } catch (RuntimeException e) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
@@ -344,5 +366,67 @@ class BacklogElementController {
                     product: params.product
             ])
 
+  }
+
+  @Secured('isAuthenticated()')
+  def follow = {
+    if (params.id == null) {
+      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+      return
+    }
+
+    def story = Story.get(params.long('id'))
+    if (!story) {
+      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+      return
+    }
+
+    def user = User.load(springSecurityService.principal.id)
+
+    try {
+      story.addFollower(user)
+      def followers = story.getTotalFollowers()
+      render(status: 200, contentType: 'application/json', text: [followers:followers+" "+message(code:'is.followable.followers',args:[followers > 1 ? 's' : ''])] as JSON)
+    }catch(FollowException e){
+      e.printStackTrace()
+      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.follow.error')]] as JSON)
+    }
+    pushOthers "${params.product}-${id}-${story.id}-followers"
+  }
+
+  @Secured('isAuthenticated()')
+  def unfollow = {
+    if (params.id == null) {
+      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+      return
+    }
+
+    def story = Story.get(params.long('id'))
+    if (!story) {
+      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+      return
+    }
+
+    try {
+      story.removeLink(springSecurityService.principal.id)
+      def followers = story.getTotalFollowers()
+      render(status: 200, contentType: 'application/json', text: [followers:followers+" "+message(code:'is.followable.followers',args:[followers > 1 ? 's' : ''])] as JSON)
+    }catch(FollowException e){
+      e.printStackTrace()
+      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.unfollow.error')]] as JSON)
+    }
+    pushOthers "${params.product}-${id}-${story.id}-followers"
+  }
+
+  def followers = {
+    if (params.id == null) {
+      return
+    }
+    def story = Story.get(params.long('id'))
+    if (!story) {
+      return
+    }
+    def followers = story.getTotalFollowers()
+    render(status: 200, contentType: 'application/json', text: [followers:followers+" "+message(code:'is.followable.followers',args:[followers > 1 ? 's' : ''])] as JSON)
   }
 }

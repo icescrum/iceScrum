@@ -71,6 +71,7 @@ class UserAuthority implements Serializable {
 	}
 
 	static mapping = {
+        cache true
 		id composite: ['authority', 'user']
 		version false
 	}

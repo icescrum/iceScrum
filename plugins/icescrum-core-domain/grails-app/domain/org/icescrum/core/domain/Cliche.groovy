@@ -38,7 +38,7 @@ class Cliche implements Serializable {
   static mapping = {
     data type:'text'
     table 'icescrum2_cliches'
-    cache 'true'
+    cache true
   }
 
   static constraints = {

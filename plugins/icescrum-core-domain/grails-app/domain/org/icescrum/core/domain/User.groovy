@@ -29,6 +29,9 @@ package org.icescrum.core.domain
 
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import grails.plugin.attachmentable.Attachmentable
+import org.icescrum.core.domain.preferences.UserPreferences
+import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.domain.security.UserAuthority
 
 class User implements Serializable, Attachmentable {
   static final long serialVersionUID = 813639032272976126L
@@ -40,7 +43,7 @@ class User implements Serializable, Attachmentable {
   String email
   Date dateCreated
   Date lastUpdated
-  preferences.UserPreferences preferences
+  UserPreferences preferences
 
   boolean enabled = true
   boolean accountExpired
@@ -65,6 +68,8 @@ class User implements Serializable, Attachmentable {
     table 'icescrum2_user'
     password column: '`password`'
     username index:'username_index'
+    preferences lazy: true
+    teams cache: true
   }
 
   static constraints = {
@@ -101,8 +106,8 @@ class User implements Serializable, Attachmentable {
   }
 
 
-  Set<security.Authority> getAuthorities() {
-    security.UserAuthority.findAllByUser(this).collect { it.authority } as Set
+  Set<Authority> getAuthorities() {
+    UserAuthority.findAllByUser(this).collect { it.authority } as Set
   }
 
   boolean equals(o) {

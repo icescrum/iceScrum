@@ -28,8 +28,9 @@ package org.icescrum.core.domain
 import grails.plugin.fluxiable.Fluxiable
 import grails.plugin.attachmentable.Attachmentable
 import org.grails.comments.Commentable
+import org.grails.followable.Followable
 
-abstract class BacklogElement implements Fluxiable, Attachmentable, Commentable {
+abstract class BacklogElement implements Fluxiable, Attachmentable, Commentable, Followable {
 
   static final long serialVersionUID = -6800252500987149051L
 
@@ -55,6 +56,7 @@ abstract class BacklogElement implements Fluxiable, Attachmentable, Commentable 
   }
 
   static mapping = {
+    cache true
     table 'icescrum2_backlogelement'
     description length: 3000
     notes length: 5000

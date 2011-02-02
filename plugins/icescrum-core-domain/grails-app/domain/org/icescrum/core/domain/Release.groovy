@@ -47,9 +47,10 @@ class Release extends TimeBox implements Cloneable {
   static transients = ['firstDate']
 
   static mapping = {
+    cache true
     table 'icescrum2_release'
     vision type:'text'
-    sprints cascade: 'all-delete-orphan', sort: 'id'
+    sprints cascade: 'all-delete-orphan', sort: 'id', cache: true
     name index:'rel_name_index'
   }
 

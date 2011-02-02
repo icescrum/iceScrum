@@ -91,7 +91,38 @@
           </is:panelLine>
         </is:panelContext>
       </is:panel>
-      
+
+      <is:panel id="panel-follow">
+        <g:set var="followers" value="${story.getTotalFollowers()}"/>
+        <is:panelTitle>${message(code:'is.followable')} - <b>${followers} ${message(code:'is.followable.followers', args:[followers > 1 ? 's' : ''])}</b></is:panelTitle>
+        <is:panelContext>
+          <is:panelLine legend="${message(code:'is.followable.status')}">
+            <button id="start-follow"
+                    onClick="${g.remoteFunction(action:'follow',
+                                   controller:id,
+                                   params:[product:params.product],
+                                   id:story.id,
+                                   before:'$(this).attr(\'disabled\',\'disabled\')',
+                                   onSuccess:'jQuery(\'#panel-follow .panel-box-title b\').text(data.followers); jQuery(\'#start-follow\').hide(); jQuery(\'#stop-follow\').show(); jQuery(\'#start-follow\').removeAttr(\'disabled\')')}"
+                    style="display:${isFollower?'none':'block'}"
+                    class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>
+              <g:message code="is.followable.start"/>
+            </button>
+            <button id="stop-follow"
+                    onClick="${g.remoteFunction(action:'unfollow',
+                                   controller:id,
+                                   params:[product:params.product],
+                                   id:story.id,
+                                   before:'$(this).attr(\'disabled\',\'disabled\')',
+                                   onSuccess:'jQuery(\'#panel-follow .panel-box-title b\').text(data.followers); jQuery(\'#start-follow\').show(); jQuery(\'#stop-follow\').hide() ; jQuery(\'#stop-follow\').removeAttr(\'disabled\')')}"
+                    style="display:${isFollower?'block':'none'}"
+                    class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>
+              <g:message code="is.followable.stop"/>
+            </button>
+          </is:panelLine>
+        </is:panelContext>
+      </is:panel>
+
     </div>
   </div>
 </div>
@@ -100,6 +131,8 @@
   <icep:notifications
         name="${id}Window"
         reload="[update:'#window-content-'+id,action:'details',id:params.id, params:[product:params.product]]"
+        before="var selTab = jQuery('#panel-activity .panel-tab-button .selected').attr('rel')"
+        disabled="!(selTab == '#comments' && jQuery('#commentEditorContainer').is(':visible'))"
         group="${params.product}-${id}-${params.id}"
         listenOn="#window-content-${id}"/>
   <icep:notifications
@@ -108,5 +141,10 @@
         disabled="!(selTab == '#comments' && jQuery('#commentEditorContainer').is(':visible'))"
         reload="[update:'#activities-wrapper',action:'activitiesPanel',id:params.id, params:[product:params.product], onComplete:'function(){jQuery.icescrum.openTab(selTab);}']"
         group="${params.product}-${id}-${params.id}-activities"
+        listenOn="#window-content-${id}"/>
+  <icep:notifications
+        name="${id}Followers"
+        callback="${g.remoteFunction(controller:id,action:'followers',id:params.id, params:[product:params.product],onSuccess:'jQuery(\'#panel-follow .panel-box-title b\').text(data.followers);')}"
+        group="${params.product}-${id}-${params.id}-followers"
         listenOn="#window-content-${id}"/>
 </jq:jquery>

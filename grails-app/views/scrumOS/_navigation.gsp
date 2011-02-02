@@ -204,6 +204,7 @@
                   noprefix='true'
                   button="button-s button-s-black"
                   controller="login"
+                  action="auth"
                   onClick="this.href=this.href+'?ref='+decodeURI('${params.product?'p/'+product.pkey:params.team?'t/'+params.team:''}')+decodeURI(document.location.hash.replace('#','@'));">
             <g:message code="is.button.connect"/>
           </is:buttonNavigation>

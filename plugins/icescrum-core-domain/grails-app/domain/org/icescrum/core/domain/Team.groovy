@@ -25,6 +25,7 @@
 package org.icescrum.core.domain
 
 import org.icescrum.core.services.SecurityService
+import org.icescrum.core.domain.preferences.TeamPreferences
 
 class Team {
 
@@ -35,7 +36,7 @@ class Team {
   Date dateCreated
   Date lastUpdated
 
-  preferences.TeamPreferences preferences
+  TeamPreferences preferences
 
   static hasMany = [
           products: Product,
@@ -61,6 +62,8 @@ class Team {
     cache true
     preferences lazy: true
     table 'icescrum2_team'
+    members cache: true
+    products cache: true
   }
 
   static members(Team team, params) {

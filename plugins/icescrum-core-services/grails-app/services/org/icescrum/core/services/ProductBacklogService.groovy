@@ -78,6 +78,7 @@ class ProductBacklogService {
     }
 
     if (story.save()) {
+      story.addFollower(u)
       story.addActivity(u, Activity.CODE_SAVE, story.name)
       publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_CREATED))
     } else {
@@ -87,6 +88,7 @@ class ProductBacklogService {
 
   void deleteStory(Story _item, Product p,boolean history = true) {
     _item.removeAllAttachments()
+    _item.removeLinkByFollow(_item.id)
     _item.delete()
     p.removeFromStories(_item)
     p.save()
@@ -98,7 +100,7 @@ class ProductBacklogService {
         resetRank(p, _item.rank)
   }
 
-  @PreAuthorize('productOwner(#p) or scrumMaster(#p)')
+  @PreAuthorize('productOwner() or scrumMaster()')
   void updateStory(Story story, Sprint sp = null) {
     if (story.textAs != '' && story.actor?.name != story.textAs) {
       def actor = Actor.findByBacklogAndName(story.backlog, story.textAs)

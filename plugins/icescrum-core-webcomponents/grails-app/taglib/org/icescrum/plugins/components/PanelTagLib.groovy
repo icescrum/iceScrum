@@ -39,7 +39,7 @@ class PanelTagLib {
   }
 
   def panelTitle = {attrs, body ->
-    out << "<h3 class=\"panel-box-title\">"
+    out << "<h3 class=\"panel-box-title\" ${attrs.id ? 'id= \"'+attrs.id+'\"' : ''}>"
     out << body()
     out << "</h3>"
   }

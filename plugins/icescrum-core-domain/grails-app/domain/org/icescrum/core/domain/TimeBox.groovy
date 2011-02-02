@@ -52,11 +52,12 @@ class TimeBox implements Comparable<TimeBox>, Fluxiable {
   static transients = ['numberOfDays']
 
   static mapping = {
+    cache true
     table 'icescrum2_timebox'
     goal type: 'text'
     description type: 'text'
     tablePerHierarchy false
-    cliches cascade: 'all-delete-orphan', sort: 'datePrise', order:'asc'
+    cliches cascade: 'all-delete-orphan', sort: 'datePrise', order:'asc', cache: true
     sort:'orderNumber'
   }
 
