@@ -18,6 +18,8 @@ class IceScrumEvent extends ApplicationEvent {
   static final String EVENT_UPDATED = 'Updated'
   static final String EVENT_DELETED = 'Deleted'
 
+  static final EVENT_CUD = [EVENT_CREATED,EVENT_UPDATED,EVENT_DELETED]
+
   Class generatedBy
   def type
 
@@ -51,6 +53,10 @@ class IceScrumStoryEvent extends IceScrumEvent {
   static final String EVENT_COMMENT_DELETED = 'CommentDeleted'
 
   static final String EVENT_FILE_ATTACHED_ADDED = 'FileAttachedAdded'
+
+  static final EVENT_STATE_LIST = [EVENT_SUGGESTED,EVENT_ACCEPTED,EVENT_ESTIMATED,EVENT_PLANNED,EVENT_UNPLANNED,EVENT_INPROGRESS,EVENT_DONE,EVENT_UNDONE]
+  static final EVENT_COMMENT_LIST = [EVENT_COMMENT_ADDED,EVENT_COMMENT_UPDATED,EVENT_COMMENT_DELETED]
+  static final EVENT_ACCEPTED_AS_LIST = [EVENT_ACCEPTED_AS_FEATURE,EVENT_ACCEPTED_AS_TASK]
 
   def attachment = null
   def comment = null

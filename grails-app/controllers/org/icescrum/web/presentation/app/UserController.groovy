@@ -33,7 +33,6 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Product
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import org.springframework.mail.MailException
-import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 
 class UserController {
@@ -45,6 +44,7 @@ class UserController {
   def securityService
   def springSecurityService
   def grailsApplication
+  def notificationEmailService
 
   static window = [title: 'is.user', toolbar: false, init: 'profile']
 
@@ -279,28 +279,15 @@ class UserController {
       return
     }
 
-    def user = User.findByEmailOrUsername(params.text,params.text)
+    def user = User.findByUsername(params.text)
 
     if(!user) {
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:'is.user.not.exist')]] as JSON)
       return
     }
-    Product.withTransaction { status ->
+    User.withTransaction { status ->
       try {
-        def password = userService.resetPassword(user)
-        def link = grailsApplication.config.grails.serverURL+'/login'
-        RCU.getLocaleResolver(request).setLocale(request, response, new Locale(user.preferences.language))
-        sendMail {
-          to user.email
-          subject g.message(code:'is.template.retrieve.subject',args:[user.username])
-          body(
-                  view:"/emails-templates/retrieve",
-                  model:[user:user,
-                         password:password,
-                         ip:request.getHeader('X-Forwarded-For')?:request.getRemoteAddr(),
-                         link:link]
-          )
-        }
+        userService.resetPassword(user)
       }catch(MailException e){
         status.setRollbackOnly()
         e.printStackTrace()

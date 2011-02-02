@@ -70,7 +70,7 @@
                     width:'760',height:'460',
                     draggable:'false')}"/>
 <is:spinner
-        on401="document.location='${createLink(controller:'login')}?ref=${params.product?'p/'+product.pkey:params.team?'t/'+params.team:''}'+document.location.hash.replace('#','@');"
+        on401="document.location='${createLink(controller:'login',action:'auth')}?ref=${params.product?'p/'+product.pkey:params.team?'t/'+params.team:''}'+document.location.hash.replace('#','@');"
         on400="${is.notice(data:'$.parseJSON(xhr.responseText)',type:'error')}"
         on403="${is.notice(text:message(code:'is.error.denied'),type:'error')}"
         on500="\$.icescrum.dialogError(xhr.responseText)"/>

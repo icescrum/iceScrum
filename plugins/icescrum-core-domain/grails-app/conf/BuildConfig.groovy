@@ -51,4 +51,11 @@ grails.project.dependency.resolution = {
       // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
       runtime 'mysql:mysql-connector-java:5.1.5'
    }
+
+    plugins {
+      compile ':commentable:0.7.5'
+      compile ':followable:0.3'
+      compile ':autobase:0.10.0'
+      compile ':jdbc-pool:0.3'
+    }
 }

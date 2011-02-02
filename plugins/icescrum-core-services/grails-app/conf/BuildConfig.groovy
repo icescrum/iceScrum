@@ -34,6 +34,8 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        runtime ':spring-events:1.1'
+        compile ':spring-events:1.1'
+        compile ':mail:1.0-SNAPSHOT'
+
     }
 }

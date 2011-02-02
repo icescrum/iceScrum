@@ -47,6 +47,7 @@ class UserService {
   def grailsApplication
   def springSecurityService
   def burningImageService
+  def notificationEmailService
 
   static transactional = true
 
@@ -112,7 +113,7 @@ class UserService {
     if (!user.save()){
       throw new RuntimeException('is.user.error.reset.password')
     }
-    return password
+    notificationEmailService.sendNewPassword(user,password)
   }
 
 
