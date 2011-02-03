@@ -175,7 +175,7 @@ log4j = {
           'net.sf.ehcache.hibernate'
   warn 'org.mortbay.log'
 
-  debug 'grails.plugin.springcache'
+  //debug 'grails.plugin.springcache'
 
   appenders {
     appender new DailyRollingFileAppender(name: "icescrumFileLog",
