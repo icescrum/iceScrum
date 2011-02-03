@@ -249,6 +249,9 @@ class WindowTagLib {
   def remoteDialog = { attrs, body ->
     attrs.remoteDialog = true
     def result = dialogMethod(attrs)
+    if (attrs.noprefix){
+      result.noprefix = true
+    }
     out << is.link(result, body)
   }
 
@@ -270,7 +273,7 @@ class WindowTagLib {
     }
 
     def space = params.product ? 'product' : (params.team ? 'team' : null)
-    if (space && !attrs.remove('noprefix')) {
+    if (space && !attrs.noprefix) {
       if (!attrs.params) {
         attrs.params = [(space): params.long(space)]
       } else if (Map.isAssignableFrom(attrs.params.getClass())) {

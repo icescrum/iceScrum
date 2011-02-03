@@ -80,7 +80,7 @@ class ProductBacklogService {
     if (story.save()) {
       story.addFollower(u)
       story.addActivity(u, Activity.CODE_SAVE, story.name)
-      publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_CREATED))
+      publishEvent(new IceScrumStoryEvent(story,this.class,u,IceScrumStoryEvent.EVENT_CREATED))
     } else {
       throw new RuntimeException()
     }
@@ -93,8 +93,9 @@ class ProductBacklogService {
     p.removeFromStories(_item)
     p.save()
     if (history){
-      p.addActivity(User.get(springSecurityService.principal?.id), Activity.CODE_DELETE, _item.name)
-      publishEvent(new IceScrumStoryEvent(_item,this.class,IceScrumStoryEvent.EVENT_DELETED))
+      def u = User.get(springSecurityService.principal?.id)
+      p.addActivity(u, Activity.CODE_DELETE, _item.name)
+      publishEvent(new IceScrumStoryEvent(_item,this.class,u,IceScrumStoryEvent.EVENT_DELETED))
     }
     if (_item.state != Story.STATE_SUGGESTED)
         resetRank(p, _item.rank)
@@ -128,8 +129,9 @@ class ProductBacklogService {
     if (!story.save()) {
       throw new RuntimeException()
     } else {
-      story.addActivity(User.get(springSecurityService.principal?.id), Activity.CODE_UPDATE, story.name)
-      publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_UPDATED))
+      def u = User.get(springSecurityService.principal?.id)
+      story.addActivity(u, Activity.CODE_UPDATE, story.name)
+      publishEvent(new IceScrumStoryEvent(story,this.class,u,IceScrumStoryEvent.EVENT_UPDATED))
     }
   }
 
@@ -153,11 +155,12 @@ class ProductBacklogService {
       story.estimatedDate = new Date()
     }
     if (story.save()){
-      story.addActivity(User.get(springSecurityService.principal?.id), Activity.CODE_UPDATE, story.name)
+      def u = User.get(springSecurityService.principal?.id)
+      story.addActivity(u, Activity.CODE_UPDATE, story.name)
       if (oldState != story.state && story.state == Story.STATE_ESTIMATED)
-        publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_ESTIMATED))
+        publishEvent(new IceScrumStoryEvent(story,this.class,u,IceScrumStoryEvent.EVENT_ESTIMATED))
       else if(oldState != story.state && story.state == Story.STATE_ACCEPTED)
-        publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_ACCEPTED))
+        publishEvent(new IceScrumStoryEvent(story,this.class,u,IceScrumStoryEvent.EVENT_ACCEPTED))
     }
     else{
       throw new RuntimeException()
@@ -195,6 +198,8 @@ class ProductBacklogService {
       dissociateStory(story.parentSprint, story, false)
     }
 
+    def user = User.get(springSecurityService.principal?.id)
+
     // Change the story state
     if (sprint.state == Sprint.STATE_INPROGRESS) {
       story.state = Story.STATE_INPROGRESS
@@ -203,9 +208,7 @@ class ProductBacklogService {
         story.plannedDate = story.inProgressDate
 
       def autoCreateTaskOnEmptyStory = sprint.parentRelease.parentProduct.preferences.autoCreateTaskOnEmptyStory
-      def user = null
       if (autoCreateTaskOnEmptyStory)
-        user = User.get(springSecurityService.principal.id)
       if (autoCreateTaskOnEmptyStory && !story.tasks){
         def emptyTask = new Task(name:story.name,state:Task.STATE_WAIT,description: story.description,creator:user,backlog:sprint)
         story.addToTasks(emptyTask).save()
@@ -239,9 +242,9 @@ class ProductBacklogService {
     sprint.save()
 
     if (story.state == Story.STATE_INPROGRESS)
-      publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_INPROGRESS))
+      publishEvent(new IceScrumStoryEvent(story,this.class,user,IceScrumStoryEvent.EVENT_INPROGRESS))
     else
-      publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_PLANNED))
+      publishEvent(new IceScrumStoryEvent(story,this.class,user,IceScrumStoryEvent.EVENT_PLANNED))
   }
 
   /**
@@ -269,7 +272,7 @@ class ProductBacklogService {
               task.state = Task.STATE_WAIT
               task.inProgressDate = null
             }else{
-              taskService.deleteTask(task,u,(Product)pbi.backlog)
+              taskService.deleteTask(task,u,pbi.backlog)
             }
           }
         }
@@ -279,7 +282,7 @@ class ProductBacklogService {
         throw new RuntimeException()
       setRank(pbi, 1)
 
-      publishEvent(new IceScrumStoryEvent(pbi,this.class,IceScrumStoryEvent.EVENT_UNPLANNED))
+      publishEvent(new IceScrumStoryEvent(pbi,this.class,User.load(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_UNPLANNED))
     } else {
       throw new IllegalStateException('is.sprint.error.dissociate.story.done')
     }
@@ -441,8 +444,9 @@ class ProductBacklogService {
         pbi.state = Story.STATE_ESTIMATED
       }
       if (pbi.save()){
-        pbi.addActivity(User.get(springSecurityService.principal?.id), 'acceptAs', pbi.name)
-        publishEvent(new IceScrumStoryEvent(pbi,this.class,IceScrumStoryEvent.EVENT_ACCEPTED))
+        def u = User.get(springSecurityService.principal?.id)
+        pbi.addActivity(u, 'acceptAs', pbi.name)
+        publishEvent(new IceScrumStoryEvent(pbi,this.class,u,IceScrumStoryEvent.EVENT_ACCEPTED))
       }
     } else
       throw new IllegalStateException('is.story.error.not.state.suggested')
@@ -459,7 +463,7 @@ class ProductBacklogService {
         feature.addAttachment(pbi.creator,attachmentableService.getFile(attachment),attachment.filename)
       }
       feature.addActivity(user, 'acceptAs', feature.name)
-      publishEvent(new IceScrumStoryEvent(feature,this.class,IceScrumStoryEvent.EVENT_ACCEPTED_AS_FEATURE))
+      publishEvent(new IceScrumStoryEvent(feature,this.class,user,IceScrumStoryEvent.EVENT_ACCEPTED_AS_FEATURE))
       this.deleteStory(pbi,(Product)pbi.backlog,false)
     } else
       throw new IllegalStateException('is.story.error.not.state.suggested')
@@ -484,7 +488,7 @@ class ProductBacklogService {
           task.notes = (task.notes?:'') + '\n --- \n ' + comment.body  + '\n --- \n '
         }
         this.deleteStory(pbi,(Product)pbi.backlog,false)
-        publishEvent(new IceScrumStoryEvent(task,this.class,IceScrumStoryEvent.EVENT_ACCEPTED_AS_TASK))
+        publishEvent(new IceScrumStoryEvent(task,this.class,User.load(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_ACCEPTED_AS_TASK))
       }else{
         throw new IllegalStateException('is.story.error.notacceptedAsUrgentTask')
       }
@@ -537,8 +541,9 @@ class ProductBacklogService {
       changeRank((Product)story.backlog, story, story.parentSprint.stories.size() + 1)
 
       if (story.save()){
-        story.addActivity(User.get(springSecurityService.principal?.id), 'done', story.name)
-        publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_DONE))
+        def u = User.get(springSecurityService.principal?.id)
+        story.addActivity(u, 'done', story.name)
+        publishEvent(new IceScrumStoryEvent(story,this.class,u,IceScrumStoryEvent.EVENT_DONE))
       }
       else
         throw new RuntimeException()
@@ -577,8 +582,9 @@ class ProductBacklogService {
       changeRank((Product)story.backlog, story, story.parentSprint.stories.findAll{it.state == Story.STATE_INPROGRESS}.size() + 1)
 
       if (story.save()){
-        story.addActivity(User.get(springSecurityService.principal?.id), 'undone', story.name)
-        publishEvent(new IceScrumStoryEvent(story,this.class,IceScrumStoryEvent.EVENT_UNDONE))
+        def u = User.get(springSecurityService.principal?.id)
+        story.addActivity(u,'undone', story.name)
+        publishEvent(new IceScrumStoryEvent(story,this.class,u,IceScrumStoryEvent.EVENT_UNDONE))
       }
       else
         throw new RuntimeException()

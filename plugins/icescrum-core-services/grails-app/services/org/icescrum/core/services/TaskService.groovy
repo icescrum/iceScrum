@@ -78,7 +78,7 @@ class TaskService {
     if (!task.save()) {
       throw new RuntimeException()
     }
-    clicheService.createOrUpdateDailyTasksCliche((Sprint)task.backlog)
+    clicheService.createOrUpdateDailyTasksCliche(task.backlog)
     task.addActivity(user, 'taskSave', task.name)
   }
 
@@ -212,7 +212,7 @@ class TaskService {
           service.declareAsDone(s)
         }
       }
-      clicheService.createOrUpdateDailyTasksCliche((Sprint)task.backlog)
+      clicheService.createOrUpdateDailyTasksCliche(task.backlog)
     }
   }
 
@@ -257,14 +257,14 @@ class TaskService {
     }
     if (task.responsible && task.responsible.id.equals(user.id) || task.creator.id.equals(user.id) || securityService.productOwner(product,springSecurityService.authentication) || securityService.scrumMaster(null,springSecurityService.authentication)) {
       task.removeAllAttachments()
-      def sprint = (Sprint)task.backlog
+      def sprint = task.backlog
       if(task.parentStory){
         task.parentStory.addActivity(user, 'taskDelete', task.name)
         task.parentStory.removeFromTasks(task)
       }
      sprint.removeFromTasks(task)
      task.delete()
-     clicheService.createOrUpdateDailyTasksCliche((Sprint)sprint)
+     clicheService.createOrUpdateDailyTasksCliche(sprint)
     }
   }
 
@@ -304,7 +304,7 @@ class TaskService {
        throw new RuntimeException()
     }
 
-    clicheService.createOrUpdateDailyTasksCliche((Sprint)task.backlog)
+    clicheService.createOrUpdateDailyTasksCliche(task.backlog)
   }
 
 

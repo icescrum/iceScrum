@@ -29,6 +29,7 @@ import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Team
 import org.icescrum.web.support.MenuBarSupport
+import grails.plugin.springcache.annotations.Cacheable
 
 @Secured('inTeam()')
 class TimelinesController {

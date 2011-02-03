@@ -83,7 +83,7 @@ class TeamService {
       if (!team.save()) {
         throw new RuntimeException()
       }
-      publishEvent(new IceScrumTeamEvent(team,this.class,IceScrumEvent.EVENT_CREATED))
+      publishEvent(new IceScrumTeamEvent(team,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
     }
 
   }
@@ -96,7 +96,7 @@ class TeamService {
     if (!_team.save()) {
       throw new RuntimeException()
     }
-    publishEvent(new IceScrumTeamEvent(team,this.class,IceScrumEvent.EVENT_UPDATED))
+    publishEvent(new IceScrumTeamEvent(_team,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }
 
   void deleteTeam(Team team) {
@@ -119,7 +119,7 @@ class TeamService {
       team.delete()
 
       securityService.unsecureDomain team
-      publishEvent(new IceScrumTeamEvent(team,this.class,IceScrumEvent.EVENT_DELETED))
+      publishEvent(new IceScrumTeamEvent(team,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
     }
 
   }
@@ -154,7 +154,7 @@ class TeamService {
     for (team in Team.getAll(teamIds)) {
       if (team)
         _product.removeFromTeams(team)
-        publishEvent(new IceScrumProductEvent(_product,team,this.class,IceScrumProductEvent.EVENT_TEAM_REMOVED))
+        publishEvent(new IceScrumProductEvent(_product,team,this.class,User.load(springSecurityService.principal?.id),IceScrumProductEvent.EVENT_TEAM_REMOVED))
     }
 
     if (!_product.save())
@@ -211,7 +211,7 @@ class TeamService {
     securityService.createTeamMemberPermissions member, team
     springcacheService.getOrCreateCache(SecurityService.CACHE_OPENPRODUCTTEAM).flush()
     springcacheService.getOrCreateCache(SecurityService.CACHE_PRODUCTTEAM).flush()
-    publishEvent(new IceScrumTeamEvent(team,member,this.class,IceScrumTeamEvent.EVENT_MEMBER_ADDED))
+    publishEvent(new IceScrumTeamEvent(team,member,this.class,User.load(springSecurityService.principal?.id),IceScrumTeamEvent.EVENT_MEMBER_ADDED))
   }
 
   @Secured(['ROLE_USER', 'RUN_AS_PERMISSIONS_MANAGER'])
@@ -220,7 +220,7 @@ class TeamService {
     securityService.deleteTeamMemberPermissions member, team
     springcacheService.getOrCreateCache(SecurityService.CACHE_OPENPRODUCTTEAM).flush()
     springcacheService.getOrCreateCache(SecurityService.CACHE_PRODUCTTEAM).flush()
-    publishEvent(new IceScrumTeamEvent(team,member,this.class,IceScrumTeamEvent.EVENT_MEMBER_REMOVED))
+    publishEvent(new IceScrumTeamEvent(team,member,this.class,User.load(springSecurityService.principal?.id),IceScrumTeamEvent.EVENT_MEMBER_REMOVED))
   }
 
 

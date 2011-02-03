@@ -41,6 +41,8 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
+import org.icescrum.core.security.ScrumDetailsService
+import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 
 class DummyPopulator {
 
@@ -220,9 +222,8 @@ class DummyPopulator {
 
   private static void loginAsAdmin() {
     // have to be authenticated as an admin to create ACLs
-    SCH.context.authentication = new UsernamePasswordAuthenticationToken(
-            'admin', 'adminadmin!',
-            AuthorityUtils.createAuthorityList('ROLE_ADMIN'))
+    def userDetails = new GrailsUser('admin', 'adminadmin!', true, true, true, true, AuthorityUtils.createAuthorityList('ROLE_ADMIN'), 1)
+    SCH.context.authentication = new UsernamePasswordAuthenticationToken(userDetails,'adminadmin!',AuthorityUtils.createAuthorityList('ROLE_ADMIN'))
   }
 
 }

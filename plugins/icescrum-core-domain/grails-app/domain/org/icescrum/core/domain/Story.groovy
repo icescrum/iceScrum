@@ -417,10 +417,10 @@ class Story extends BacklogElement implements Cloneable {
   }
 
   def onAddComment = { Comment c ->
-    publishEvent(new IceScrumStoryEvent(this,c,this.class,IceScrumStoryEvent.EVENT_COMMENT_ADDED))
+    publishEvent new IceScrumStoryEvent(this, c, this.class, c.poster, IceScrumStoryEvent.EVENT_COMMENT_ADDED)
   }
 
   def onAddAttachment = { Attachment a ->
-    publishEvent(new IceScrumStoryEvent(this,a,this.class,IceScrumStoryEvent.EVENT_FILE_ATTACHED_ADDED))
+    publishEvent new IceScrumStoryEvent(this, a, this.class, c.poster, IceScrumStoryEvent.EVENT_FILE_ATTACHED_ADDED)
   }
 }

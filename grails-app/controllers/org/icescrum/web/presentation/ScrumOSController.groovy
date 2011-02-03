@@ -26,6 +26,7 @@
 package org.icescrum.web.presentation
 
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
+import org.springframework.web.context.request.RequestContextHolder as RCH
 
 import grails.converters.JSON
 
@@ -37,6 +38,8 @@ import org.icescrum.web.upload.AjaxMultipartResolver
 import org.icescrum.core.support.ProgressSupport
 import org.apache.commons.io.FilenameUtils
 import org.icescrum.core.domain.Product
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 class ScrumOSController {
 

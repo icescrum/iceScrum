@@ -75,7 +75,6 @@ class Task extends BacklogElement implements Serializable {
     doneDate nullable: true
     inProgressDate nullable: true
     name unique:'parentStory'
-    blocked nullable:false
   }
 
   static namedQueries = {

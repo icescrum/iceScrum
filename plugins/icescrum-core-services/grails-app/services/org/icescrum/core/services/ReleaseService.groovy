@@ -37,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.icescrum.core.services.SprintService
 import org.icescrum.core.event.IceScrumEvent
 import org.icescrum.core.event.IceScrumReleaseEvent
+import org.icescrum.core.domain.User
 
 /**
  *
@@ -54,6 +55,7 @@ class ReleaseService {
   def productService
   def productBacklogService
   def clicheService
+  def springSecurityService
   def g = new org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib()
   
 
@@ -87,7 +89,7 @@ class ReleaseService {
 
     if (!release.save())
       throw new RuntimeException()
-    publishEvent(new IceScrumReleaseEvent(release,this.class,IceScrumEvent.EVENT_CREATED))
+    publishEvent(new IceScrumReleaseEvent(release,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
     product.addToReleases(release)
     product.endDate = release.endDate
   }
@@ -188,14 +190,14 @@ class ReleaseService {
     _release.startDate = startDate
     if (!_release.save())
       throw new RuntimeException()
-    publishEvent(new IceScrumReleaseEvent(_release,this.class,IceScrumEvent.EVENT_UPDATED))
+    publishEvent(new IceScrumReleaseEvent(_release,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }
 
   void updateVision(Release release) {
     if (!release.save()) {
       throw new RuntimeException()
     }
-    publishEvent(new IceScrumReleaseEvent(release,this.class,IceScrumReleaseEvent.EVENT_UPDATED_VISION))
+    publishEvent(new IceScrumReleaseEvent(release,this.class,User.load(springSecurityService.principal?.id),IceScrumReleaseEvent.EVENT_UPDATED_VISION))
   }
 
 
@@ -258,7 +260,7 @@ class ReleaseService {
     _rel.state = Release.STATE_INPROGRESS
     if(!_rel.save())
       throw new RuntimeException()
-    publishEvent(new IceScrumReleaseEvent(_rel,this.class,IceScrumReleaseEvent.EVENT_ACTIVATED))
+    publishEvent(new IceScrumReleaseEvent(_rel,this.class,User.load(springSecurityService.principal?.id),IceScrumReleaseEvent.EVENT_ACTIVATED))
   }
 
   @PreAuthorize('productOwner(#pb) or scrumMaster()')
@@ -280,7 +282,7 @@ class ReleaseService {
 
     if (!_rel.save())
       throw new RuntimeException()
-    publishEvent(new IceScrumReleaseEvent(_rel,this.class,IceScrumReleaseEvent.EVENT_CLOSED))
+    publishEvent(new IceScrumReleaseEvent(_rel,this.class,User.load(springSecurityService.principal?.id),IceScrumReleaseEvent.EVENT_CLOSED))
   }
 
   @PreAuthorize('productOwner(#p) or scrumMaster()')
@@ -293,12 +295,12 @@ class ReleaseService {
     productBacklogService.dissociatedAllStories(re.sprints)
     p.removeFromReleases(re)
 
-    publishEvent(new IceScrumReleaseEvent(re,this.class,IceScrumEvent.EVENT_DELETED))
+    publishEvent(new IceScrumReleaseEvent(re,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
 
     nextReleases.each {
       productBacklogService.dissociatedAllStories(it.sprints)
       p.removeFromReleases(it)
-      publishEvent(new IceScrumReleaseEvent(it,this.class,IceScrumEvent.EVENT_DELETED))
+      publishEvent(new IceScrumReleaseEvent(it,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
     }
     p.endDate = p.releases?.min {it.orderNumber}?.endDate ?: null
   }

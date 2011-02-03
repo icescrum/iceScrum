@@ -32,6 +32,7 @@
                 controller="scrumOS"
                 resizable="false"
                 withTitlebar="false"
+                noprefix="true"
                 width="600"
                 height="430"
                 buttons="'${message(code:'is.button.close')}': function() { \$(this).dialog('close'); }"
@@ -51,6 +52,7 @@
                         rendered="${creationEnable}"
                         controller="project"
                         resizable="false"
+                        noprefix="true"
                         withTitlebar="false"
                         width="770"
                         height="620"
@@ -66,6 +68,7 @@
                         rendered="${importEnable}"
                         controller="project"
                         resizable="false"
+                        noprefix="true"
                         withTitlebar="false"
                         width="520"
                         onOpen="if (jQuery('#import-validate').is(':hidden')){jQuery(\'.ui-dialog-buttonpane button:eq(1)\').hide()};"
@@ -100,6 +103,7 @@
                         controller="project"
                         resizable="false"
                         draggable="false"
+                        noprefix="true"
                         width="940"
                         height="540"
                         valid="[action:'index',
@@ -145,6 +149,7 @@
                           controller="team"
                           resizable="false"
                           draggable="false"
+                          noprefix="true"
                           width="610"
                           title="is.projectmenu.submenu.team.create"
                           valid="[action:'save',controller:'team',update:'dialog',button:'is.dialog.createTeam.button']">
@@ -153,7 +158,13 @@
                 </li>
               </g:if>
               <li>
-                <is:remoteDialog action="join" controller="team" resizable="false" draggable="false" width="940"
+                <is:remoteDialog
+                        action="join"
+                        controller="team"
+                        resizable="false"
+                        draggable="false"
+                        noprefix="true"
+                        width="940"
                         valid="[action:'requestMembership',controller:'team',update:'dialog',button:'is.dialog.joinTeam.button']">
                   <g:message code="is.projectmenu.submenu.team.join"/>
                 </is:remoteDialog>
@@ -191,6 +202,7 @@
                   valid="[action:'update',controller:'user',onSuccess:'\$.icescrum.updateProfile(data)']"
                   title="is.dialog.profile"
                   width="600"
+                  noprefix="true"
                   resizable="false"
                   draggable="false">
             ${user?.firstName?.encodeAsHTML()} ${user?.lastName?.encodeAsHTML()}

@@ -63,7 +63,7 @@ abstract class BacklogElement implements Fluxiable, Attachmentable, Commentable,
     backlog index:'be_name_index'
     name index:'be_name_index'
     tablePerHierarchy false
-
+    backlog lazy : true
   }
 
   def beforeDelete = {

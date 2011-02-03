@@ -33,6 +33,8 @@ import org.icescrum.core.domain.User
 import org.icescrum.web.support.MenuBarSupport
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.support.ProgressSupport
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 @Secured('stakeHolder() or inProduct()')
 class SandboxController {
@@ -125,7 +127,6 @@ class SandboxController {
       }
     }
   }
-
 
   def list = {
     def currentProduct = Product.load(params.product)

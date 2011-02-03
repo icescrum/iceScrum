@@ -95,7 +95,7 @@ class ProductService {
       throw new RuntimeException()
     securityService.secureDomain(_product)
     securityService.createProductOwnerPermissions(u, _product)
-    publishEvent(new IceScrumProductEvent(_product,this.class,IceScrumEvent.EVENT_CREATED))
+    publishEvent(new IceScrumProductEvent(_product,this.class,u,IceScrumEvent.EVENT_CREATED))
   }
 
   void saveImportedProduct(Product _product, String name) {
@@ -132,7 +132,7 @@ class ProductService {
          securityService.createProductOwnerPermissions(it, _product)
       }
       securityService.changeOwner(_product.productOwners.first(),_product)
-      publishEvent(new IceScrumProductEvent(_product,this.class,IceScrumEvent.EVENT_CREATED))
+      publishEvent(new IceScrumProductEvent(_product,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
     } catch (Exception e) {
       throw new RuntimeException(e)
     }
@@ -150,7 +150,7 @@ class ProductService {
     for (team in Team.getAll(teamIds*.toLong())) {
       if (team)
         _product.addToTeams(team)
-        publishEvent(new IceScrumProductEvent(_product,team,this.class,IceScrumProductEvent.EVENT_TEAM_ADDED))
+        publishEvent(new IceScrumProductEvent(_product,team,this.class,User.load(springSecurityService.principal?.id),IceScrumProductEvent.EVENT_TEAM_ADDED))
     }
 
     if (!_product.save())
@@ -173,7 +173,7 @@ class ProductService {
       throw new RuntimeException()
     }
     removeInCache(SecurityService.CACHE_STAKEHOLDER, _product.id)
-    publishEvent(new IceScrumProductEvent(_product,this.class,IceScrumEvent.EVENT_UPDATED))
+    publishEvent(new IceScrumProductEvent(_product,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }
 
 
@@ -454,6 +454,6 @@ class ProductService {
   def deleteProduct(Product p) {
     p.delete()
     securityService.unsecureDomain p
-    publishEvent(new IceScrumProductEvent(p,this.class,IceScrumEvent.EVENT_DELETED))
+    publishEvent(new IceScrumProductEvent(p,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
   }
 }

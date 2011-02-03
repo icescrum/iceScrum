@@ -35,7 +35,6 @@ $(document).ready(function($) {
 
     // Ajax Cache Init
     $.ajaxSetup({
-        cache: false,
         timeout:45000
     });
 
@@ -47,7 +46,7 @@ $(document).ready(function($) {
     $.icescrum = {
 
         defaults:{
-            debug:true,
+            debug:false,
             baseUrlProduct:null,
             baseUrl:null,
             grailsServer:null,

@@ -24,7 +24,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>iceScrum - <g:layoutTitle/></title>
-  <link rel="shortcut icon" href="${r.resource(dir: is.currentThemeImage(), file: 'favicon.ico')}" type="image/x-icon"/>
+  <r:resourceLink uri="/${is.currentThemeImage()}favicon.ico"/>
   <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
 
   <is:loadJsVar/>

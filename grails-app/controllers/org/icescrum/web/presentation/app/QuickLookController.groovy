@@ -30,6 +30,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Actor
+import grails.plugin.springcache.annotations.Cacheable
 
 class QuickLookController {
 

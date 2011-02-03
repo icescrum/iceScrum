@@ -34,6 +34,8 @@ import org.icescrum.core.domain.Product
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import org.springframework.mail.MailException
 import org.icescrum.core.support.ApplicationSupport
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 class UserController {
 

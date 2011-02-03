@@ -22,11 +22,13 @@ class IceScrumEvent extends ApplicationEvent {
 
   Class generatedBy
   def type
+  def doneBy
 
-  IceScrumEvent(def source,Class generatedBy, def type){
+  IceScrumEvent(def source, Class generatedBy, User doneBy, def type){
     super(source)
     this.generatedBy = generatedBy
     this.type = type
+    this.doneBy = doneBy
   }
 
   public getFullType(){
@@ -61,21 +63,21 @@ class IceScrumStoryEvent extends IceScrumEvent {
   def attachment = null
   def comment = null
 
-  IceScrumStoryEvent(Story story, Class generatedBy, def type){
-    super(story, generatedBy, type)
+  IceScrumStoryEvent(Story story, Class generatedBy, User doneBy, def type){
+    super(story, generatedBy, doneBy, type)
   }
 
-  IceScrumStoryEvent(BacklogElement element, Class generatedBy, def type){
-    super(element, generatedBy, type)
+  IceScrumStoryEvent(BacklogElement element, Class generatedBy, User doneBy, def type){
+    super(element, generatedBy, doneBy, type)
   }
 
-  IceScrumStoryEvent(BacklogElement element, Comment comment, Class generatedBy, def type){
-    super(element, generatedBy, type)
+  IceScrumStoryEvent(BacklogElement element, Comment comment, Class generatedBy, User doneBy, def type){
+    super(element, generatedBy, doneBy, type)
     this.comment = comment
   }
 
-  IceScrumStoryEvent(BacklogElement element, Attachment attachment, Class generatedBy, def type){
-    super(element, generatedBy, type)
+  IceScrumStoryEvent(BacklogElement element, Attachment attachment, Class generatedBy, User doneBy, def type){
+    super(element, generatedBy, doneBy, type)
     this.attachment = attachment
   }
 }
@@ -87,8 +89,8 @@ class IceScrumSprintEvent extends IceScrumEvent {
   static final String EVENT_UPDATED_DONE_DEFINITION = 'UpdatedDoneDefinition'
   static final String EVENT_UPDATED_RETROSPECTIVE = 'UpdatedRetrospective'
 
-  IceScrumSprintEvent(Sprint sprint, Class generatedBy, def type){
-    super(sprint, generatedBy, type)
+  IceScrumSprintEvent(Sprint sprint, Class generatedBy, User doneBy, def type){
+    super(sprint, generatedBy, doneBy, type)
   }
 }
 
@@ -98,8 +100,8 @@ class IceScrumReleaseEvent extends IceScrumEvent {
   static final String EVENT_CLOSED = 'Closed'
   static final String EVENT_UPDATED_VISION = 'UpdatedVision'
 
-  IceScrumReleaseEvent(Release release, Class generatedBy, def type){
-    super(release, generatedBy, type)
+  IceScrumReleaseEvent(Release release, Class generatedBy, User doneBy, def type){
+    super(release, generatedBy, doneBy, type)
   }
 }
 
@@ -108,12 +110,12 @@ class IceScrumProductEvent extends IceScrumEvent {
   static final String EVENT_TEAM_ADDED = 'TeamAdded'
   static final String EVENT_TEAM_REMOVED = 'TeamRemoved'
 
-  IceScrumProductEvent(Product product, Class generatedBy, def type){
-    super(product, generatedBy, type)
+  IceScrumProductEvent(Product product, Class generatedBy, User doneBy, def type){
+    super(product, generatedBy, doneBy, type)
   }
 
-  IceScrumProductEvent(Product product, Team team, Class generatedBy, def type){
-    super(product, generatedBy, type)
+  IceScrumProductEvent(Product product, Team team, Class generatedBy, User doneBy, def type){
+    super(product, generatedBy, doneBy, type)
     this.team = team
   }
 }
@@ -123,12 +125,12 @@ class IceScrumTeamEvent extends IceScrumEvent {
   static final String EVENT_MEMBER_ADDED = 'MemberAdded'
   static final String EVENT_MEMBER_REMOVED = 'MemberRemoved'
 
-  IceScrumTeamEvent(Team team, Class generatedBy, def type){
-    super(team, generatedBy, type)
+  IceScrumTeamEvent(Team team, Class generatedBy, User doneBy, def type){
+    super(team, generatedBy, doneBy, type)
   }
 
-  IceScrumTeamEvent(Team team, User user, Class generatedBy, def type){
-    super(team, generatedBy, type)
+  IceScrumTeamEvent(Team team, User user, Class generatedBy, User doneBy, def type){
+    super(team, generatedBy, doneBy, type)
     this.member = user
   }
 }
@@ -147,22 +149,22 @@ class IceScrumUserEvent extends IceScrumEvent {
   static final String EVENT_NOT_SCRUMMASTER = 'NotScrumMaster'
   static final String EVENT_NOT_MEMBER = 'NotMember'
 
-  IceScrumUserEvent(User user, Class generatedBy, def type){
-    super(user, generatedBy, type)
+  IceScrumUserEvent(User user, Class generatedBy, User doneBy, def type){
+    super(user, generatedBy, doneBy, type)
   }
 
-  IceScrumUserEvent(User user, Team team, Class generatedBy, def type){
-    super(user, generatedBy, type)
+  IceScrumUserEvent(User user, Team team, Class generatedBy, User doneBy, def type){
+    super(user, generatedBy, doneBy, type)
     this.team = team
   }
 
-  IceScrumUserEvent(User user, Product product, Class generatedBy, def type){
-    super(user, generatedBy, type)
+  IceScrumUserEvent(User user, Product product, Class generatedBy, User doneBy, def type){
+    super(user, generatedBy, doneBy, type)
     this.product = product
   }
 
-  IceScrumUserEvent(User user, def object, Class generatedBy, def type){
-    super(user, generatedBy, type)
+  IceScrumUserEvent(User user, def object, Class generatedBy, User doneBy, def type){
+    super(user, generatedBy, doneBy, type)
     this.object = object
   }
 }

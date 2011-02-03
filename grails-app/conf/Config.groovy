@@ -24,6 +24,7 @@
 
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
+import org.icescrum.web.cache.IceScrumKeyGenerator
 
 /*
  Public URL
@@ -174,6 +175,8 @@ log4j = {
           'net.sf.ehcache.hibernate'
   warn 'org.mortbay.log'
 
+  debug 'grails.plugin.springcache'
+
   appenders {
     appender new DailyRollingFileAppender(name: "icescrumFileLog",
             fileName: "logs/${appName}.log",
@@ -205,6 +208,10 @@ springcache {
       timeToLive = 120
     }
   }
+}
+
+beans {
+    springcacheFilter.keyGenerator = new IceScrumKeyGenerator()
 }
 
 /*

@@ -37,6 +37,7 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
+import grails.plugin.springcache.annotations.Cacheable
 
 
 @Secured('stakeHolder() or inProduct()')
@@ -756,13 +757,13 @@ class ProjectController {
   def browseDetails = {
     def product = Product.get(params.id)
 
-    if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication)) {
-      throw new AccessDeniedException('denied')
-    }
-
     if (!product) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.exist')]] as JSON)
       return
+    }
+
+    if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication)) {
+      throw new AccessDeniedException('denied')
     }
 
     render template: "dialogs/browseDetails", model: [product: product]

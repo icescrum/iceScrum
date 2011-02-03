@@ -1,4 +1,4 @@
-<plugin name='fluxiable' version='0.1' grailsVersion='1.3.5 &gt; *'>
+<plugin name='fluxiable' version='0.1' grailsVersion='1.3.6 &gt; *'>
   <author>Stephane Maldini</author>
   <authorEmail>smaldini@doc4web.com</authorEmail>
   <title>Fluxiable Plugin</title>

@@ -61,7 +61,7 @@ class UserService {
     _user.password = springSecurityService.encodePassword(_user.password)
     if (!_user.save())
       throw new RuntimeException()
-    publishEvent(new IceScrumUserEvent(_user,this.class,IceScrumEvent.EVENT_CREATED))
+    publishEvent(new IceScrumUserEvent(_user,this.class,_user,IceScrumEvent.EVENT_CREATED))
   }
 
   void updateUser(User _user, String pwd = null, String avatarPath = null, boolean scale = true) {
@@ -90,14 +90,14 @@ class UserService {
 
     if (!_user.save())
       throw new RuntimeException()
-    publishEvent(new IceScrumUserEvent(_user,this.class,IceScrumEvent.EVENT_UPDATED))
+    publishEvent(new IceScrumUserEvent(_user,this.class,_user,IceScrumEvent.EVENT_UPDATED))
   }
 
   @PreAuthorize("ROLE_ADMIN")
   boolean deleteUser(User _user) {
     try {
       _user.delete()
-      publishEvent(new IceScrumUserEvent(_user,this.class,IceScrumEvent.EVENT_UPDATED))
+      publishEvent(new IceScrumUserEvent(_user,this.class,_user,IceScrumEvent.EVENT_DELETED))
       return true
     } catch (Exception e) {
       return false
