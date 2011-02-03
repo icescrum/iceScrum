@@ -866,7 +866,10 @@ $(document).ready(function($) {
 
 
         forPlanningTest:function(){
-            jQuery.icescrum.renderNotice("<b>go to the fucking planning poker now</b> !","notice");
+            jQuery.icescrum.renderNotice("New planning poker session! " +
+                    "<a href=\"javascript:;\" disabled=\"true\" onClick=\"jQuery.icescrum.openWindow(\'planningPoker/display\')\">" +
+                    "<button>Join</button>" +
+                    "</a>","notice");
         }
 
     },
