@@ -74,7 +74,7 @@ icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalP
 grails.mail.host = "smtp.gmail.com"
 grails.mail.port = 465
 grails.mail.username = "barrier.vincent@gmail.com"
-grails.mail.password = "bahz3lol"
+grails.mail.password = ""
 grails.mail.props = ["mail.smtp.auth":"true",
         "mail.smtp.socketFactory.port":"465",
         "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",

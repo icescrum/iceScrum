@@ -382,7 +382,9 @@ class SprintService {
     def lastDaycliche = sprint.activationDate
     def maxHours = null
 
-    sprint.cliches?.eachWithIndex {cliche,index ->
+    clicheService.createOrUpdateDailyTasksCliche(sprint)
+
+    sprint.cliches?.sort{a,b -> a.datePrise <=> b.datePrise}?.eachWithIndex {cliche,index ->
         def xmlRoot = new XmlSlurper().parseText(cliche.data)
         if (xmlRoot) {
           lastDaycliche = cliche.datePrise
@@ -417,7 +419,10 @@ class SprintService {
   def sprintBurnupTasksValues(Sprint sprint) {
     def values = []
     def lastDaycliche = sprint.activationDate
-    sprint.cliches?.eachWithIndex { cliche,index ->
+
+    clicheService.createOrUpdateDailyTasksCliche(sprint)
+
+    sprint.cliches?.sort{a,b -> a.datePrise <=> b.datePrise}?.eachWithIndex { cliche,index ->
         def xmlRoot = new XmlSlurper().parseText(cliche.data)
         if (xmlRoot) {
           lastDaycliche = cliche.datePrise
@@ -447,7 +452,10 @@ class SprintService {
   def sprintBurnupStoriesValues(Sprint sprint) {
     def values = []
     def lastDaycliche = sprint.activationDate
-    sprint.cliches?.eachWithIndex { cliche,index ->
+
+    clicheService.createOrUpdateDailyTasksCliche(sprint)
+
+    sprint.cliches?.sort{a,b -> a.datePrise <=> b.datePrise}?.eachWithIndex { cliche,index ->
         def xmlRoot = new XmlSlurper().parseText(cliche.data)
         if (xmlRoot) {
           lastDaycliche = cliche.datePrise

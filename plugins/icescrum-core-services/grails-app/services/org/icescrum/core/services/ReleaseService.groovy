@@ -308,7 +308,7 @@ class ReleaseService {
 
   def releaseBurndownValues(Release release) {
     def values = []
-    Cliche.findAllByParentTimeBoxAndType(release, Cliche.TYPE_ACTIVATION)?.each { it ->
+    Cliche.findAllByParentTimeBoxAndType(release, Cliche.TYPE_ACTIVATION,[sort:"datePrise", order:"asc"])?.each { it ->
       def xmlRoot = new XmlSlurper().parseText(it.data)
       if (xmlRoot) {
         values << [

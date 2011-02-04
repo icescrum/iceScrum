@@ -37,13 +37,13 @@ class TooltipTagLib {
 
     //Arguments to define content of the tooltip
     def contentTitle = [
-            text: attrs.contentTitleText ? "\"${attrs.contentTitleText.encodeAsJavaScript()}\"" : null,
+            text: attrs.contentTitleText ? "\"${attrs.contentTitleText}\"" : null,
             button: attrs.contentTitleButton ? "\"${attrs.contentTitleButton}\"" : null,
     ]
 
     def content = [
             prerender: attrs.contentPrerender ?: null,
-            text: attrs.contentText ? "\"${attrs.contentText.encodeAsJavaScript()}\"" : null,
+            text: attrs.contentText ? "\"${attrs.contentText}\"" : null,
             url: attrs.contentUrl ? "'${attrs.contentUrl}'" : null,
             data: attrs.contentData ?: null,
             method: attrs.contentMethod ? "'${attrs.contentMethod}'" : null,
