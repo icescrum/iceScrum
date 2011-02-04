@@ -41,19 +41,25 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
   def messageSource
 
   void onApplicationEvent(IceScrumStoryEvent e) {
+    if (log.debugEnabled) {
+        log.debug "Receive event ${e.type}"
+    }
+    try {
+      if(e.type in IceScrumStoryEvent.EVENT_CUD){
+        sendAlertCUD((Story)e.source, (User)e.doneBy, e.type)
 
-    if(e.type in IceScrumStoryEvent.EVENT_CUD){
-      sendAlertCUD((Story)e.source, (User)e.doneBy, e.type)
+      }else if(e.type in IceScrumStoryEvent.EVENT_STATE_LIST){
+        sendAlertState((Story)e.source, (User)e.doneBy, e.type)
 
-    }else if(e.type in IceScrumStoryEvent.EVENT_STATE_LIST){
-      sendAlertState((Story)e.source, (User)e.doneBy, e.type)
+      }else if(e.type in IceScrumStoryEvent.EVENT_COMMENT_LIST){
+        sendAlertComment((Story)e.source, (User)e.doneBy, e.type, e.comment)
 
-    }else if(e.type in IceScrumStoryEvent.EVENT_COMMENT_LIST){
-      sendAlertComment((Story)e.source, (User)e.doneBy, e.type, e.comment)
+      }else if(e.type in IceScrumStoryEvent.EVENT_ACCEPTED_AS_LIST){
+        sendAlertAcceptedAs((BacklogElement)e.source, (User)e.doneBy, e.type)
 
-    }else if(e.type in IceScrumStoryEvent.EVENT_ACCEPTED_AS_LIST){
-      sendAlertAcceptedAs((BacklogElement)e.source, (User)e.doneBy, e.type)
-
+      }
+    }catch(Exception expt){
+      expt.printStackTrace()
     }
 
   }
@@ -78,6 +84,9 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
 
     def event = (IceScrumEvent.EVENT_CREATED == type)?'Created':(IceScrumEvent.EVENT_UPDATED == type?'Updated':'Deleted')
     listTo?.unique()?.groupBy{it.locale}?.each{ locale,  group ->
+      if (log.debugEnabled) {
+          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+      }
       send([
               bcc:group*.email.toArray(),
               subject:getMessage('is.template.email.story.'+event.toLowerCase()+'.subject',(Locale)locale, subjectArgs),
@@ -95,6 +104,9 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
 
     story.followers?.findAll{it.id != user.id}?.each{ listTo << [email:it.email,locale:new Locale(it.preferences.language)] }
     listTo?.unique()?.groupBy{it.locale}?.each{ locale, group ->
+      if (log.debugEnabled) {
+          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+      }
       send([
               bcc:group*.email.toArray(),
               subject:getMessage('is.template.email.story.changedState.subject',(Locale)locale,subjectArgs),
@@ -114,6 +126,9 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
     if (type == IceScrumStoryEvent.EVENT_COMMENT_ADDED){
       story.followers?.findAll{it.id != user.id}?.each{ listTo << [email:it.email,locale:new Locale(it.preferences.language)] }
       listTo?.unique()?.groupBy{it.locale}?.each{ locale, group ->
+        if (log.debugEnabled) {
+          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+        }
         send([
                 bcc:group*.email.toArray(),
                 subject:getMessage('is.template.email.story.commented.subject',(Locale)locale,subjectArgs),
@@ -124,6 +139,9 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
     } else if (type == IceScrumStoryEvent.EVENT_COMMENT_UPDATED){
       story.followers?.findAll{it.id != user.id}?.each{ listTo << [email:it.email,locale:new Locale(it.preferences.language)] }
       listTo?.unique()?.groupBy{it.locale}?.each{ locale, group ->
+        if (log.debugEnabled) {
+          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+        }
         send([
                 bcc:group*.email.toArray(),
                 subject:getMessage('is.template.email.story.commentEdited.subject',(Locale)locale,subjectArgs),
@@ -151,6 +169,9 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
     listTo?.unique()?.groupBy{it.locale}?.each{ locale, group ->
       def acceptedAs = getMessage(element instanceof Feature ? 'is.feature' : 'is.task',(Locale)locale)
       subjectArgs << acceptedAs
+      if (log.debugEnabled) {
+          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+      }
       send([
               bcc:group*.email.toArray(),
               subject:getMessage('is.template.email.story.acceptedAs.subject',(Locale)locale,subjectArgs),
@@ -163,6 +184,9 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
   void sendNewPassword(User user,String password){
       def link = grailsApplication.config.grails.serverURL+'/login'
       def request = RCH.currentRequestAttributes().getRequest()
+      if (log.debugEnabled) {
+          log.debug "Send email, retrieve password to : ${user.email} (${user.username})"
+      }
       send([
               to:user.email,
               subject:getMessage('is.template.email.user.retrieve.subject',new Locale(user.preferences.language),[user.username]),

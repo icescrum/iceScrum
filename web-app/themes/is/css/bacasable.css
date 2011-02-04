@@ -361,7 +361,12 @@ body, html {
     margin:5px;
 }
 
-.panel .ui-button, .panel-line .ui-button {
+.panel .ui-button {
+    padding:3px;
+    margin:5px;
+}
+
+.panel-line .ui-button {
     padding:3px;
     margin:0px;
 }
