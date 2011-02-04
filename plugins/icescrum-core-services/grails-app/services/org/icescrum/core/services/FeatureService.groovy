@@ -33,6 +33,8 @@ import org.codehaus.groovy.grails.commons.metaclass.GroovyDynamicMethodsIntercep
 import groovy.util.slurpersupport.NodeChild
 import java.text.SimpleDateFormat
 import org.springframework.transaction.annotation.Transactional
+import org.icescrum.core.event.IceScrumEvent
+import org.icescrum.core.event.IceScrumFeatureEvent
 
 class FeatureService {
 
@@ -43,6 +45,7 @@ class FeatureService {
 
   static transactional = true
   def productService
+  def springSecurityService
 
   void saveFeature(Feature feature, Product p) {
 
@@ -64,6 +67,8 @@ class FeatureService {
     //We put the real rank if we need
     if(rankProvided)
       changeRank(p,feature,rankProvided)
+
+    publishEvent(new IceScrumFeatureEvent(feature,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
   }
 
   void deleteFeature(Feature _feature, Product p) {
@@ -82,6 +87,7 @@ class FeatureService {
         it.save()
       }
     }
+    publishEvent(new IceScrumFeatureEvent(_feature,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
   }
 
   void updateFeature(Feature _feature, Product p) {
@@ -90,6 +96,7 @@ class FeatureService {
     if (!_feature.save()){
       throw new RuntimeException()
     }
+    publishEvent(new IceScrumFeatureEvent(_feature,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }
 
   void copyFeatureToProductBacklog(long featureID, long userID){
@@ -108,6 +115,7 @@ class FeatureService {
     if(!story.save()){
       throw new RuntimeException(story.errors.toString())
     }
+    publishEvent(new IceScrumFeatureEvent(feature,story,this.class,User.get(springSecurityService.principal?.id),IceScrumFeatureEvent.EVENT_COPIED_AS_STORY))
   }
 
   double calculateFeatureCompletion(Feature _feature, Product _p, Release _r = null) {

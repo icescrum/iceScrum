@@ -29,10 +29,14 @@ import org.icescrum.core.domain.Product
 import groovy.util.slurpersupport.NodeChild
 import java.text.SimpleDateFormat
 import org.springframework.transaction.annotation.Transactional
+import org.icescrum.core.event.IceScrumEvent
+import org.icescrum.core.domain.User
+import org.icescrum.core.event.IceScrumActorEvent
 
 class ActorService {
 
   static transactional = true
+  def springSecurityService
 
   void addActor(Actor act, Product p) {
     act.name = act.name?.trim()
@@ -40,16 +44,19 @@ class ActorService {
 
     if (!act.save())
       throw new RuntimeException()
+    publishEvent(new IceScrumActorEvent(act,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
   }
 
   void deleteActor(Actor act) {
     act.delete()
+    publishEvent(new IceScrumActorEvent(act,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
   }
 
   void updateActor(Actor act) {
     act.name = act.name?.trim()
     if (!act.save())
       throw new RuntimeException()
+    publishEvent(new IceScrumActorEvent(act,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }
 
   @Transactional(readOnly = true)

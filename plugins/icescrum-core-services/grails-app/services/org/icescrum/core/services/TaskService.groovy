@@ -37,6 +37,7 @@ import groovy.util.slurpersupport.NodeChild
 import java.text.SimpleDateFormat
 
 import org.springframework.transaction.annotation.Transactional
+import org.icescrum.core.event.IceScrumTaskEvent
 
 class TaskService {
 
@@ -80,6 +81,7 @@ class TaskService {
     }
     clicheService.createOrUpdateDailyTasksCliche(task.backlog)
     task.addActivity(user, 'taskSave', task.name)
+    publishEvent(new IceScrumTaskEvent(task,this.class,user,IceScrumTaskEvent.EVENT_CREATED))
   }
 
   void saveStoryTask(Task task, Story story, User user) {
@@ -190,6 +192,11 @@ class TaskService {
           task.inProgressDate = new Date()
           if (!task.isDirty('blocked'))
             task.blocked = false
+          else{
+            if(task.blocked){
+              publishEvent(new IceScrumTaskEvent(task,this.class,user,IceScrumTaskEvent.EVENT_STATE_BLOCKED))
+            }
+          }
       }
 
       if (task.state < Task.STATE_BUSY && task.inProgressDate)
@@ -200,6 +207,7 @@ class TaskService {
       } else {
         if(task.state == Task.STATE_DONE) {
           task.addActivity(user, 'taskFinish', task.name)
+          publishEvent(new IceScrumTaskEvent(task,this.class,user,IceScrumTaskEvent.EVENT_STATE_DONE))
         }
       }
 
@@ -213,6 +221,7 @@ class TaskService {
         }
       }
       clicheService.createOrUpdateDailyTasksCliche(task.backlog)
+      publishEvent(new IceScrumTaskEvent(task,this.class,user,IceScrumTaskEvent.EVENT_UPDATED))
     }
   }
 
@@ -265,6 +274,7 @@ class TaskService {
      sprint.removeFromTasks(task)
      task.delete()
      clicheService.createOrUpdateDailyTasksCliche(sprint)
+     publishEvent(new IceScrumTaskEvent(task,this.class,user,IceScrumTaskEvent.EVENT_DELETED))
     }
   }
 
@@ -303,8 +313,8 @@ class TaskService {
     if(!clonedTask.save()){
        throw new RuntimeException()
     }
-
     clicheService.createOrUpdateDailyTasksCliche(task.backlog)
+    publishEvent(new IceScrumTaskEvent(task,this.class,user,IceScrumTaskEvent.EVENT_CREATED))
   }
 
 
@@ -366,8 +376,10 @@ class TaskService {
     if((t.responsible && u.id.equals(t.responsible.id)) || u.id.equals(t.creator.id) || securityService.productOwner(p,springSecurityService.authentication) || securityService.scrumMaster(null,springSecurityService.authentication)){
       if (state == Task.STATE_BUSY && t.state != Task.STATE_BUSY) {
         t.addActivity(u, 'taskInprogress', t.name)
+        publishEvent(new IceScrumTaskEvent(t,this.class,u,IceScrumTaskEvent.EVENT_STATE_IN_PROGRESS))
       } else if(state == Task.STATE_WAIT && t.state != Task.STATE_WAIT){
         t.addActivity(u, 'taskWait', t.name)
+        publishEvent(new IceScrumTaskEvent(t,this.class,u,IceScrumTaskEvent.EVENT_STATE_WAIT))
       }
       t.state = state
       updateTask(t, u, p)

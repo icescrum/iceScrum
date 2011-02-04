@@ -31,6 +31,9 @@ import org.icescrum.core.domain.User
 import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
 import grails.plugin.attachmentable.Attachment
+import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.Actor
 
 class IceScrumEvent extends ApplicationEvent {
 
@@ -113,6 +116,41 @@ class IceScrumSprintEvent extends IceScrumEvent {
     super(sprint, generatedBy, doneBy, type)
   }
 }
+
+class IceScrumActorEvent extends IceScrumEvent {
+
+  IceScrumActorEvent(Actor actor, Class generatedBy, User doneBy, def type){
+    super(actor, generatedBy, doneBy, type)
+  }
+}
+
+class IceScrumTaskEvent extends IceScrumEvent {
+
+  static final String EVENT_STATE_WAIT = 'Wait'
+  static final String EVENT_STATE_IN_PROGRESS = 'InProgress'
+  static final String EVENT_STATE_DONE = 'Done'
+  static final String EVENT_STATE_BLOCKED = 'Blocked'
+
+  IceScrumTaskEvent(Task task, Class generatedBy, User doneBy, def type){
+    super(task, generatedBy, doneBy, type)
+  }
+}
+
+class IceScrumFeatureEvent extends IceScrumEvent {
+
+  static final String EVENT_COPIED_AS_STORY = 'Copied'
+  def story
+
+  IceScrumFeatureEvent(Feature feature, Class generatedBy, User doneBy, def type){
+    super(feature, generatedBy, doneBy, type)
+  }
+
+  IceScrumFeatureEvent(Feature feature, Story story, Class generatedBy, User doneBy, def type){
+    super(feature, generatedBy, doneBy, type)
+    this.story = story
+  }
+}
+
 
 class IceScrumReleaseEvent extends IceScrumEvent {
 
