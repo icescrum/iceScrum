@@ -32,6 +32,7 @@ import org.icescrum.core.event.IceScrumEvent
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.Feature
+import org.icescrum.core.support.ApplicationSupport
 
 
 class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent>{
@@ -65,6 +66,11 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
   }
 
   private void sendAlertCUD(Story story, User user, String type){
+
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.alerts.enable)){
+      return
+    }
+
     def listTo = []
     def subjectArgs = [story.backlog.name,story.id]
     def permalink = grailsApplication.config.grails.serverURL+'/p/'+story.backlog.pkey+'-'+story.id
@@ -85,7 +91,7 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
     def event = (IceScrumEvent.EVENT_CREATED == type)?'Created':(IceScrumEvent.EVENT_UPDATED == type?'Updated':'Deleted')
     listTo?.unique()?.groupBy{it.locale}?.each{ locale,  group ->
       if (log.debugEnabled) {
-          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+        log.debug "Send email, event:${type} to : ${group*.email.toArray()} with locale : ${locale}"
       }
       send([
               bcc:group*.email.toArray(),
@@ -97,6 +103,11 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
   }
 
   private void sendAlertState(Story story, User user, String type){
+
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.alerts.enable)){
+      return
+    }
+
     def listTo = []
     def subjectArgs = [story.backlog.name,story.id]
     def permalink = grailsApplication.config.grails.serverURL+'/p/'+story.backlog.pkey+'-'+story.id
@@ -105,7 +116,7 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
     story.followers?.findAll{it.id != user.id}?.each{ listTo << [email:it.email,locale:new Locale(it.preferences.language)] }
     listTo?.unique()?.groupBy{it.locale}?.each{ locale, group ->
       if (log.debugEnabled) {
-          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+          log.debug "Send email, event:${type} to : ${group*.email.toArray()} with locale : ${locale}"
       }
       send([
               bcc:group*.email.toArray(),
@@ -118,6 +129,11 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
   }
 
   private void sendAlertComment(Story story, User user, String type, Comment comment){
+
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.alerts.enable)){
+      return
+    }
+
     def listTo = []
     def subjectArgs = [story.backlog.name,story.id]
     def permalink = grailsApplication.config.grails.serverURL+'/p/'+story.backlog.pkey+'-'+story.id
@@ -127,7 +143,7 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
       story.followers?.findAll{it.id != user.id}?.each{ listTo << [email:it.email,locale:new Locale(it.preferences.language)] }
       listTo?.unique()?.groupBy{it.locale}?.each{ locale, group ->
         if (log.debugEnabled) {
-          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+          log.debug "Send email, event:${type} to : ${group*.email.toArray()} with locale : ${locale}"
         }
         send([
                 bcc:group*.email.toArray(),
@@ -140,7 +156,7 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
       story.followers?.findAll{it.id != user.id}?.each{ listTo << [email:it.email,locale:new Locale(it.preferences.language)] }
       listTo?.unique()?.groupBy{it.locale}?.each{ locale, group ->
         if (log.debugEnabled) {
-          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+          log.debug "Send email, event:${type} to : ${group*.email.toArray()} with locale : ${locale}"
         }
         send([
                 bcc:group*.email.toArray(),
@@ -160,6 +176,11 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
   }
 
   private void sendAlertAcceptedAs(BacklogElement element, User user, String type){
+
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.alerts.enable)){
+      return
+    }
+
     def listTo = []
     def product = element instanceof Feature ? element.backlog : element.backlog.parentRelease.parentProduct
     def subjectArgs = [product.name,element.id]
@@ -170,7 +191,7 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
       def acceptedAs = getMessage(element instanceof Feature ? 'is.feature' : 'is.task',(Locale)locale)
       subjectArgs << acceptedAs
       if (log.debugEnabled) {
-          log.debug "Send email, event:${type} to : ${group*.email.toArray()}"
+        log.debug "Send email, event:${type} to : ${group*.email.toArray()} with locale : ${locale}"
       }
       send([
               bcc:group*.email.toArray(),
@@ -182,17 +203,17 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
   }
 
   void sendNewPassword(User user,String password){
-      def link = grailsApplication.config.grails.serverURL+'/login'
-      def request = RCH.currentRequestAttributes().getRequest()
-      if (log.debugEnabled) {
-          log.debug "Send email, retrieve password to : ${user.email} (${user.username})"
-      }
-      send([
-              to:user.email,
-              subject:getMessage('is.template.email.user.retrieve.subject',new Locale(user.preferences.language),[user.username]),
-              view:"/emails-templates/retrieve",
-              model:[locale:new Locale(user.preferences.language),user:user,password:password,ip:request.getHeader('X-Forwarded-For')?:request.getRemoteAddr(),link:link]
-      ])
+    def link = grailsApplication.config.grails.serverURL+'/login'
+    def request = RCH.currentRequestAttributes().getRequest()
+    if (log.debugEnabled) {
+        log.debug "Send email, retrieve password to : ${user.email} (${user.username})"
+    }
+    send([
+            to:user.email,
+            subject:getMessage('is.template.email.user.retrieve.subject',new Locale(user.preferences.language),[user.username]),
+            view:"/emails-templates/retrieve",
+            model:[locale:new Locale(user.preferences.language),user:user,password:password,ip:request.getHeader('X-Forwarded-For')?:request.getRemoteAddr(),link:link]
+    ])
   }
 
   void send(def options){

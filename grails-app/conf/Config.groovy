@@ -69,6 +69,12 @@ icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalP
 
 
 /*
+  Notification email administation
+ */
+icescrum.alerts.enable=true
+icescrum.alerts.default.from="webmaster@icescrum.org"
+
+/*
   Mail section
 
 grails.mail.host = "smtp.gmail.com"
@@ -78,9 +84,9 @@ grails.mail.password = ""
 grails.mail.props = ["mail.smtp.auth":"true",
         "mail.smtp.socketFactory.port":"465",
         "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-        "mail.smtp.socketFactory.fallback":"false"]
-grails.mail.default.from="webmaster@icescrum.org"
+        "mail.smtp.socketFactory.fallback":"false"
 */
+grails.mail.default.from=icescrum.alerts.default.from
 
 /*
   Push section

@@ -273,7 +273,7 @@ class SprintService {
 
     sprint.stories.each {
       it.inProgressDate = new Date()
-      publishEvent(new IceScrumStoryEvent(it,this.class,User.load(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_INPROGRESS))
+      publishEvent(new IceScrumStoryEvent(it,this.class,User.get(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_INPROGRESS))
     }
 
     //retrieve last done definition if no done definition in the current sprint
