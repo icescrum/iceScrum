@@ -21,6 +21,6 @@
 <%@ page contentType="text/html"%>
 <g:message
         locale="${locale}"
-        code='is.template.email.user.retrieve.text'
-        args="[user.firstName,user.username,password,ip,link]"/>
-<g:message locale="${locale}" code='is.template.email.footer'/>
+        code='is.template.email.story.deleted.text'
+        args="[storyName,permalink]"/>
+<g:message locale="${locale}" code='is.template.email.footer' args="[link,linkName]"/>

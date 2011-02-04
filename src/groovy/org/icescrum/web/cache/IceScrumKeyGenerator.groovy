@@ -1,21 +1,28 @@
+/*
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Vincent Barrier (vincent.barrier@icescrum.com)
+ */
 package org.icescrum.web.cache
 
 import grails.plugin.springcache.web.key.AbstractKeyGenerator
 import grails.plugin.springcache.key.CacheKeyBuilder
 import grails.plugin.springcache.web.FilterContext
-
-/**
- * Created by IntelliJ IDEA.
- * User: vbarrier
- * Date: 03/02/11
- * Time: 09:49
- * To change this template use File | Settings | File Templates.
- */
-
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-import grails.plugins.springsecurity.SpringSecurityService
-import org.icescrum.core.services.SecurityService
-import org.springframework.context.i18n.LocaleContextHolder
 
 class IceScrumKeyGenerator extends AbstractKeyGenerator{
 

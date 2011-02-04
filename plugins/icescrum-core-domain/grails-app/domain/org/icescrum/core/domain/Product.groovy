@@ -67,7 +67,6 @@ class Product extends TimeBox {
   def productOwners = null
 
   static mapping = {
-    cache true
     table 'icescrum2_product'
     actors cascade: 'all-delete-orphan', batchSize: 10, cache: true
     features cascade: 'all-delete-orphan', sort:'rank', batchSize: 10, cache: true

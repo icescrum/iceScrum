@@ -42,13 +42,13 @@
             autoleave="false"
             callback="document.location='${createLink(uri:'/')}'"
             group="${params.product}-product-delete"/>
-
+    <plugin:isAvailable name="icescrum-plugin-planning-poker">
       <icep:notifications
                   name="pluginPlanningPoker"
                   callback="jQuery.icescrum.forPlanningTest();"
                   autoleave="false"
                   group="${params.product}-plugin-planning-poker"/>
-
+    </plugin:isAvailable>
   </g:if>
   <g:else>
     <g:if test="${params.team}">
