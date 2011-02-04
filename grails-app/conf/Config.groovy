@@ -70,7 +70,7 @@ icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalP
 
 /*
   Mail section
-*/
+
 grails.mail.host = "smtp.gmail.com"
 grails.mail.port = 465
 grails.mail.username = "barrier.vincent@gmail.com"
@@ -80,6 +80,7 @@ grails.mail.props = ["mail.smtp.auth":"true",
         "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
         "mail.smtp.socketFactory.fallback":"false"]
 grails.mail.default.from="webmaster@icescrum.org"
+*/
 
 /*
   Push section
@@ -173,9 +174,10 @@ log4j = {
           'org.springframework',
           'org.hibernate',
           'net.sf.ehcache.hibernate'
+
   warn 'org.mortbay.log'
 
-  //debug 'grails.plugin.springcache'
+  debug 'grails.app.service.org.icescrum.core.services'
 
   appenders {
     appender new DailyRollingFileAppender(name: "icescrumFileLog",
