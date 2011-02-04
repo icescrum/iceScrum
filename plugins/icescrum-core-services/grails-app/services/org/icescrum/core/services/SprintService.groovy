@@ -83,7 +83,7 @@ class SprintService {
       throw new RuntimeException()
     
     release.addToSprints(sprint)
-    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
   }
   
   /**
@@ -151,7 +151,7 @@ class SprintService {
     // Finally save the sprint
     if(!sprint.save())
       throw new RuntimeException()
-    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }
 
   /**
@@ -174,9 +174,9 @@ class SprintService {
 
     nextSprints.each {
       release.removeFromSprints(it)
-      publishEvent(new IceScrumSprintEvent(it,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
+      publishEvent(new IceScrumSprintEvent(it,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
     }
-    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
   }
 
 
@@ -224,7 +224,7 @@ class SprintService {
         throw new RuntimeException()
 
       firstDate.time = endDate.time + day
-      publishEvent(new IceScrumSprintEvent(newSprint,this.class,User.load(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
+      publishEvent(new IceScrumSprintEvent(newSprint,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
     }
   }
 
@@ -288,7 +288,7 @@ class SprintService {
       throw new RuntimeException()
     }
 
-    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.load(springSecurityService.principal?.id),IceScrumSprintEvent.EVENT_ACTIVATED))
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.get(springSecurityService.principal?.id),IceScrumSprintEvent.EVENT_ACTIVATED))
 
     // Create a cliché
     clicheService.createSprintCliche(sprint, new Date(),Cliche.TYPE_ACTIVATION)
@@ -330,7 +330,7 @@ class SprintService {
     if(!sprint.save(flush:true)){
       throw new RuntimeException()
     }
-    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.load(springSecurityService.principal?.id),IceScrumSprintEvent.EVENT_CLOSED))
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.get(springSecurityService.principal?.id),IceScrumSprintEvent.EVENT_CLOSED))
     // Create cliché
     clicheService.createSprintCliche(sprint, new Date(),Cliche.TYPE_CLOSE)
     clicheService.createOrUpdateDailyTasksCliche(sprint)
@@ -367,14 +367,14 @@ class SprintService {
     if(!sprint.save()){
       throw new RuntimeException()
     }
-    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.load(springSecurityService.principal?.id),IceScrumSprintEvent.EVENT_UPDATED_DONE_DEFINITION))
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.get(springSecurityService.principal?.id),IceScrumSprintEvent.EVENT_UPDATED_DONE_DEFINITION))
   }
 
   void updateRetrospective(Sprint sprint) {
     if(!sprint.save()){
       throw new RuntimeException()
     }
-    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.load(springSecurityService.principal?.id),IceScrumSprintEvent.EVENT_UPDATED_RETROSPECTIVE))
+    publishEvent(new IceScrumSprintEvent(sprint,this.class,User.get(springSecurityService.principal?.id),IceScrumSprintEvent.EVENT_UPDATED_RETROSPECTIVE))
   }
 
   def sprintBurndownHoursValues(Sprint sprint) {

@@ -228,7 +228,7 @@ class BacklogElementController {
       comment.save()
       forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
       pushOthers "${params.product}-${id}-${params.comment.ref}-activities"
-      publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,User.load(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
+      publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,User.get(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
     } catch (RuntimeException e) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
     }
@@ -254,7 +254,7 @@ class BacklogElementController {
       commentable.removeComment(comment)
       render include(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: [product: params.product, 'tab': 'comments'])
       pushOthers "${params.product}-backlogElement-${params.backlogelement}-activities"
-      publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,User.load(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_COMMENT_DELETED))
+      publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,User.get(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_COMMENT_DELETED))
     } catch (RuntimeException e) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
     }

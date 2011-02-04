@@ -282,7 +282,7 @@ class ProductBacklogService {
         throw new RuntimeException()
       setRank(pbi, 1)
 
-      publishEvent(new IceScrumStoryEvent(pbi,this.class,User.load(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_UNPLANNED))
+      publishEvent(new IceScrumStoryEvent(pbi,this.class,User.get(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_UNPLANNED))
     } else {
       throw new IllegalStateException('is.sprint.error.dissociate.story.done')
     }
@@ -488,7 +488,7 @@ class ProductBacklogService {
           task.notes = (task.notes?:'') + '\n --- \n ' + comment.body  + '\n --- \n '
         }
         this.deleteStory(pbi,(Product)pbi.backlog,false)
-        publishEvent(new IceScrumStoryEvent(task,this.class,User.load(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_ACCEPTED_AS_TASK))
+        publishEvent(new IceScrumStoryEvent(task,this.class,User.get(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_ACCEPTED_AS_TASK))
       }else{
         throw new IllegalStateException('is.story.error.notacceptedAsUrgentTask')
       }
