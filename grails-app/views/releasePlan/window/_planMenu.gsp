@@ -55,6 +55,15 @@
           history="false"
           remote="true"/>
 </is:postitMenuItem>
+<is:postitMenuItem renderedOnAccess="inProduct()">
+  <is:link id="${story.id}"
+          action="cloneStory"
+          controller="sandbox"
+          remote="true"
+          history="false"
+          onSuccess="jQuery.icescrum.renderNotice(data.notice)"
+          value="${message(code:'is.ui.releasePlan.menu.story.clone')}"/>
+</is:postitMenuItem>
 <is:postitMenuItem rendered="${(productOwner || scrumMaster) && story.state != org.icescrum.core.domain.Story.STATE_DONE}">
   <is:link
           history="false"

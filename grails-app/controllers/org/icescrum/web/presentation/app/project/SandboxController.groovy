@@ -531,4 +531,26 @@ class SandboxController {
     forward(action:'download',controller:'attachmentable',id:params.id)
     return
   }
+
+  @Secured('inProduct()')
+  def cloneStory = {
+    if(!params.id) {
+      render (status: 400, contentType:'application/json', text:[notice:[text:'is.story.error.not.exist']] as JSON)
+      return
+    }
+    def story = Story.get(params.long('id'))
+
+    if(!story) {
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:'is.story.error.not.exist')]] as JSON)
+      return
+    }
+    try {
+      productBacklogService.cloneStory(story)
+      render(status: 200, contentType:'application/json', text: [notice: [text:message(code:'is.story.cloned')]] as JSON)
+      pushOthers "${params.product}-${id}"
+    }catch(RuntimeException e){
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text:message(code:'is.story.error.not.cloned')]] as JSON)
+    }
+  }
 }

@@ -605,6 +605,39 @@ class ProductBacklogService {
       throw new RuntimeException()
   }
 
+  void cloneStory(Story story){
+
+    def clonedStory = new Story(
+            name:story.name+'_1',
+            state:Story.STATE_SUGGESTED,
+            description: story.description,
+            notes:story.notes,
+            dateCreated:new Date(),
+            type:story.type,
+            textAs:story.textAs,
+            textICan:story.textICan,
+            textTo:story.textTo,
+            backlog:story.backlog,
+            affectVersion:story.affectVersion,
+            origin:story.name,
+            feature:story.feature,
+            actor:story.actor
+    )
+
+    clonedStory.validate()
+    def i = 1
+    while(clonedStory.hasErrors()){
+      if (clonedStory.errors.getFieldError('name')){
+        i += 1
+        clonedStory.name = story.name+'_'+i
+        clonedStory.validate()
+      }else{
+        throw new RuntimeException()
+      }
+    }
+    saveStory(clonedStory, story.backlog, User.get(springSecurityService.principal.id))
+  }
+
   @Transactional(readOnly = true)
   def unMarshallProductBacklog(NodeChild story,Product p = null, Sprint sp = null){
     try{

@@ -64,6 +64,15 @@
           history="false"
           remote="true"/>
 </is:postitMenuItem>
+<is:postitMenuItem renderedOnAccess="inProduct()">
+  <is:link id="${story.id}"
+          action="cloneStory"
+          controller="sandbox"
+          remote="true"
+          history="false"
+          onSuccess="jQuery.icescrum.renderNotice(data.notice)"
+          value="${message(code:'is.ui.sprintBacklog.menu.postit.clone')}"/>
+</is:postitMenuItem>
 <is:postitMenuItem rendered="${(productOwner || scrumMaster) && story.state <= Story.STATE_INPROGRESS}">
   <is:link id="${story.id}"
           action="dissociate"

@@ -65,7 +65,7 @@ class ProjectController {
     def currentProduct = Product.get(params.product)
     def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
 
-    def privateOption = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.disable.private)
+    def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
     if(SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
       privateOption = false
     }
@@ -124,7 +124,7 @@ class ProjectController {
 
     //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
     currentProduct.properties = params.productd
-    if(params.productd.preferences.hidden && ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.disable.private) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
+    if(params.productd.preferences.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
       currentProduct.preferences.hidden = true
     }
 
@@ -148,7 +148,7 @@ class ProjectController {
 
   @Secured('isAuthenticated()')
   def openWizard = {
-    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.creation)){
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)){
         if(!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
         render(status:403)
         return
@@ -164,7 +164,7 @@ class ProjectController {
     product.preferences = new ProductPreferences()
     def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
 
-    def privateOption = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.disable.private)
+    def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
     if(SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
       privateOption = false
     }
@@ -174,7 +174,7 @@ class ProjectController {
 
   @Secured('isAuthenticated()')
   def save = {
-    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.creation)){
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)){
         if(!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
         render(status:403)
         return
@@ -190,7 +190,7 @@ class ProjectController {
 
     product.properties = params.product
 
-    if(params.product.preferences.hidden && ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.disable.private) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
+    if(params.product.preferences.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
       currentProduct.preferences.hidden = true
     }
 
@@ -380,7 +380,7 @@ class ProjectController {
 
   @Secured('productOwner() or scrumMaster()')
   def exportProject = {
-    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.export)){
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)){
         if(!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
         render(status:403)
         return
@@ -408,7 +408,7 @@ class ProjectController {
 
   @Secured('isAuthenticated()')
   def importProject = {
-    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.import)){
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)){
         if(!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
         render(status:403)
         return
@@ -470,7 +470,7 @@ class ProjectController {
 
   @Secured('isAuthenticated()')
   def saveImport = {
-    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.import)){
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)){
         if(!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
         render(status:403)
         return

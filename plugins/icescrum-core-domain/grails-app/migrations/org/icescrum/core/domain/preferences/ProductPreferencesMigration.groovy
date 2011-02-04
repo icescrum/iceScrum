@@ -24,7 +24,14 @@ package org.icescrum.core.domain.preferences
 
 
 class ProductPreferencesMigration {
-		static migration = {
-		}
-	}
+    static migration = {
+      changeSet(id:'product_preferences_constraint_releasePlanningHour_column', author:'vbarrier') {
+          addNotNullConstraint(tableName:"icescrum2_product_preferences",columnName:'release_planning_hour',columnDataType:'varchar(255)',defaultNullValue:'9:00')
+          addNotNullConstraint(tableName:"icescrum2_product_preferences",columnName:'daily_meeting_hour',columnDataType:'varchar(255)',defaultNullValue:'11:00')
+          addNotNullConstraint(tableName:"icescrum2_product_preferences",columnName:'sprint_planning_hour',columnDataType:'varchar(255)',defaultNullValue:'9:00')
+          addNotNullConstraint(tableName:"icescrum2_product_preferences",columnName:'sprint_retrospective_hour',columnDataType:'varchar(255)',defaultNullValue:'15:00')
+          addNotNullConstraint(tableName:"icescrum2_product_preferences",columnName:'sprint_review_hour',columnDataType:'varchar(255)',defaultNullValue:'14:00')
+      }
+    }
+}
 

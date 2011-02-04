@@ -79,6 +79,15 @@
           value="${message(code:'is.ui.sandbox.menu.update')}"
           remote="true"/>
 </is:postitMenuItem>
+<is:postitMenuItem renderedOnAccess="inProduct()">
+  <is:link id="${story.id}"
+          action="cloneStory"
+          controller="sandbox"
+          remote="true"
+          history="false"
+          onSuccess="jQuery.icescrum.renderNotice(data.notice)"
+          value="${message(code:'is.ui.sandbox.menu.clone')}"/>
+</is:postitMenuItem>
 <is:postitMenuItem rendered="${productOwner || story.creator.id == user?.id}">
   <is:link id="${story.id}"
           action="delete"

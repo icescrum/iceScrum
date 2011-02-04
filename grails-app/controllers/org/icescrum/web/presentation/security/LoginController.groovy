@@ -90,7 +90,7 @@ class LoginController {
 
         String view = 'auth'
 		String postUrl = "${config.apf.filterProcessesUrl}"
-		render view: view, model: [postUrl: postUrl, rememberMeParameter: config.rememberMe.parameter, activeLostPassword:ApplicationSupport.booleanValue(grailsApplication.config.icescrum.enable.login.retrieve), enableRegistration:ApplicationSupport.booleanValue(grailsApplication.config.icescrum.enable.registration)]
+		render view: view, model: [postUrl: postUrl, rememberMeParameter: config.rememberMe.parameter, activeLostPassword:ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable), enableRegistration:ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)]
 	}
 
 	/**

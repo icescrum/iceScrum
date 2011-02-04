@@ -35,7 +35,7 @@ import org.icescrum.core.domain.Feature
 import org.icescrum.core.support.ApplicationSupport
 
 
-class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent>{
+class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent> {
 
   def mailService
   def grailsApplication
@@ -77,9 +77,6 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
     def projectLink = grailsApplication.config.grails.serverURL+'/p/'+story.backlog.pkey+'#project'
 
     if (type == IceScrumEvent.EVENT_CREATED){
-      Product.get(story.backlog.id)?.teams?.each{
-        it.members?.findAll{it.id != user.id}?.each{ listTo << [email:it.email,locale:new Locale(it.preferences.language)] }
-      }
       story.backlog.productOwners.findAll{it.id != user.id}.each{
         listTo << [email:it.email,locale:new Locale(it.preferences.language)]
       }

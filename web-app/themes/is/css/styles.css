@@ -1721,6 +1721,10 @@ li#li-roles{
     width:165px;
 }
 
+#team-tab .member-mini{
+    width:170px;
+}
+
 .members-medium {
     padding: 5Px;
 }

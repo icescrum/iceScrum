@@ -284,7 +284,7 @@ class TaskService {
     }
 
     def clonedTask = new Task(
-            name:task.name+'_r',
+            name:task.name+'_1',
             rank:(((Sprint)task.backlog).tasks.findAll{it.type == task.type && it.parentStory == task.parentStory}?.size()?:0)+1,
             state:clonedState,
             creator:user,
@@ -301,9 +301,11 @@ class TaskService {
 
     clonedTask.validate()
 
+    def i = 1
     while(clonedTask.hasErrors()){
       if (clonedTask.errors.getFieldError('name')){
-        clonedTask.name += '_r'
+        i += 1
+        clonedTask.name = task.name+'_'+i
         clonedTask.validate()
       }else{
         throw new RuntimeException()

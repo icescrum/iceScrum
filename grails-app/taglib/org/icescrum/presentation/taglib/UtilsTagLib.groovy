@@ -132,10 +132,10 @@ class UtilsTagLib {
   def mainMenu = { attrs, body ->
     out << g.render(template: '/scrumOS/navigation',
             model:[
-              importEnable:(ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.import) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
-              exportEnable:(ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.export) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
-              creationProjectEnable:(ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.creation) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
-              creationTeamEnable:(ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.enable.creation) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN))
+              importEnable:(ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
+              exportEnable:(ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
+              creationProjectEnable:(ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
+              creationTeamEnable:(ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN))
             ]
           )
   }

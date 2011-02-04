@@ -20,9 +20,9 @@
 - Vincent Barrier (vincent.barrier@icescrum.com)
 --}%
 <is:tabs elementId="about-tabs">
-  <is:tab elementId="company-tab" class="about-tab" title="is.dialog.about.services">
+  %{--<is:tab elementId="company-tab" class="about-tab" title="is.dialog.about.services">
     <g:include view="${id}/about/_services.gsp" model="[services:about.services]"/>
-  </is:tab>
+  </is:tab>--}%
   <is:tab elementId="team-tab" class="about-tab" title="is.dialog.about.team">
     <g:include view="${id}/about/_team.gsp" model="[team:about.team]"/>
   </is:tab>

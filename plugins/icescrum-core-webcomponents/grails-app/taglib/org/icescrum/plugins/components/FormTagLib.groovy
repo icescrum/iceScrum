@@ -34,6 +34,7 @@ import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
 import org.springframework.context.MessageSourceResolvable
 import org.codehaus.groovy.grails.web.util.StreamCharBuffer
 import org.springframework.beans.SimpleTypeConverter
+import org.icescrum.core.support.ApplicationSupport
 
 class FormTagLib {
 
@@ -584,6 +585,9 @@ class FormTagLib {
   }
 
    def fieldFile = {attrs, body ->
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.attachements.enable)){
+      return
+    }
     attrs."class" = attrs."class"?attrs."class"+' field-input clearfix':'field-input clearfix'
     if (attrs.remove("noborder") == "true")
       attrs."class" += " field-noseparator"
@@ -678,12 +682,18 @@ class FormTagLib {
     if (attrs.description) {
       attrs.description = message(code: attrs.description)
     }
+
+    def content = body()
+    if (content.trim() == ''){
+      return
+    }
+
     attrs."class" = attrs."class"?attrs."class"+' panel ui-corner-all':"panel ui-corner-all"
     if (attrs.remove('nolegend'))
       attrs."class" += " panel-nolegend"
     out << "<div ${attrs.id?'id=\"'+attrs.id+'\"':''} class=\"${attrs."class"}\" ${attrs.description?'description=\"'+attrs.description+'\"':''}>"
     out << "<h3 class=\"panel-title\">${attrs.title}</h3>"
-    out << body()
+    out << content
     out << "</div>"
   }
 

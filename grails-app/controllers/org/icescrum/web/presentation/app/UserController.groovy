@@ -51,7 +51,7 @@ class UserController {
   static window = [title: 'is.user', toolbar: false, init: 'profile']
 
   def register = {
-    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.enable.registration)){
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)){
         render(status:403)
         return
     }
@@ -73,7 +73,7 @@ class UserController {
 
 
   def save = {
-    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.enable.registration)){
+    if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)){
         render(status:403)
         return
     }
@@ -271,7 +271,7 @@ class UserController {
   }
 
   def retrieve = {
-    def activated = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.enable.login.retrieve)
+    def activated = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)
     if (!activated){
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:'is.login.retrieve.not.activated')]] as JSON)
     }

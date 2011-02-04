@@ -34,21 +34,24 @@ grails.serverURL = "http://localhost:8080/${appName}"
 /*
 Administration section
  */
-icescrum.enable.registration=true
-icescrum.enable.login.retrieve=true
+icescrum.registration.enable=true
+icescrum.login.retrieve.enable=true
+icescrum.alerts.enable=true
+icescrum.alerts.default.from="webmaster@icescrum.org"
+icescrum.attachements.enable=false
 
 /*
 Project administration section
  */
-icescrum.project.enable.import=true
-icescrum.project.enable.export=true
-icescrum.project.enable.creation=true
-icescrum.project.disable.private=false
+icescrum.project.import.enable=true
+icescrum.project.export.enable=true
+icescrum.project.creation.enable=true
+icescrum.project.private.enable=true
 
 /*
 Team administration section
  */
-icescrum.team.enable.creation = true
+icescrum.team.creation.enable = true
 
 /*
   Images section
@@ -66,13 +69,6 @@ icescrum.theme = 'is'
   IceScrum base dir
 */
 icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
-
-
-/*
-  Notification email administation
- */
-icescrum.alerts.enable=true
-icescrum.alerts.default.from="webmaster@icescrum.org"
 
 /*
   Mail section

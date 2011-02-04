@@ -46,11 +46,11 @@
               </div>
             </g:if>
           </is:panelLine>
+          <g:if test="${story.totalAttachments}">
             <is:panelLine legend="${message(code:'is.ui.backlogelement.attachment',args:[story.totalAttachments > 1 ?'s':''])}">
-            <g:if test="${story.totalAttachments}">
                 <is:attachedFiles bean="${story}" width="120" deletable="${false}" params="[product:params.product]" action="download" controller="${(story.state > Story.STATE_SUGGESTED)?'productBacklog':'sandbox'}" size="20"/>
-            </g:if>
-          </is:panelLine>
+            </is:panelLine>
+          </g:if>
           <is:panelLine legend="${message(code:'is.permalink')}"><a href="${permalink}">${permalink}</a></is:panelLine>
         </is:panelContext>
       </is:panel>

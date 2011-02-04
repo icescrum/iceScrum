@@ -22,11 +22,11 @@ package org.icescrum.core.domain
 
 class TaskMigration {
 
-		static migration = {
-			    // List of changesets
-			    changeSet(id:'task_constraint_block_column', author:'vbarrier') {
-                    addNotNullConstraint(tableName:"icescrum2_task",columnName:'blocked',columnDataType:'bit',defaultNullValue:"")
-				}
-		}
-	}
+    static migration = {
+            // List of changesets
+            changeSet(id:'task_constraint_block_column', author:'vbarrier') {
+                addNotNullConstraint(tableName:"icescrum2_task",columnName:'blocked',columnDataType:'bit',defaultNullValue:"")
+            }
+    }
+}
 
