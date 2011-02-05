@@ -81,6 +81,7 @@
                             jQuery.ajax({type:'GET',
                                 url: self.data('settings').url,
                                 global:false,
+                                cache:false,
                                 beforeSend:self.data('settings').before,
                                 data:self.data('settings').params,
                                 success:function(data, textStatus) {

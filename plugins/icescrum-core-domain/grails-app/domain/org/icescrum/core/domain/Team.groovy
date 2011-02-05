@@ -126,8 +126,8 @@ class Team {
   def aclUtilService
   def getScrumMasters(){
     if (this.scrumMasters){
-      return this.scrumMasters
-    }else {
+      this.scrumMasters
+    }else if(this.id) {
       def acl = aclUtilService.readAcl(this.getClass(), this.id)
       def scrumMastersList = User.withCriteria {
         or{
@@ -136,7 +136,9 @@ class Team {
           }
         }
       }
-      return scrumMastersList
+      scrumMastersList
+    }else{
+      null
     }
   }
 

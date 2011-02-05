@@ -120,18 +120,29 @@ class ProductService {
         if (t.id == null)
           teamService.saveImportedTeam(t)
       }
-      _product.productOwners.each {
+
+      def productOwners = _product.productOwners
+
+      productOwners?.each {
         if (it.id == null)
           it.save()
       }
+
       if (!_product.save()) {
         throw new RuntimeException()
       }
       securityService.secureDomain(_product)
-      _product.productOwners.eachWithIndex{it,index ->
-         securityService.createProductOwnerPermissions(it, _product)
+
+      if (productOwners){
+        productOwners?.eachWithIndex{it,index ->
+           securityService.createProductOwnerPermissions(it, _product)
+        }
+        securityService.changeOwner(productOwners.first(),_product)
+      }else{
+        def u = User.get(springSecurityService.principal.id)
+        securityService.createProductOwnerPermissions(u, _product)
+        securityService.changeOwner(u,_product)
       }
-      securityService.changeOwner(_product.productOwners.first(),_product)
       publishEvent(new IceScrumProductEvent(_product,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_CREATED))
     } catch (Exception e) {
       throw new RuntimeException(e)

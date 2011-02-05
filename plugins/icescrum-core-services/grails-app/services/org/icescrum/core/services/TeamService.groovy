@@ -173,15 +173,24 @@ class TeamService {
       throw new RuntimeException('is.team.error.not.saved')
     }
 
+    def scrumMasters = team.scrumMasters
     securityService.secureDomain(team)
+
+    def u = User.get(springSecurityService.principal?.id)
     for (member in team.members) {
-      if (!(member in team.scrumMasters))
+      if (!(member in scrumMasters))
         securityService.createTeamMemberPermissions member, team
     }
-    team.scrumMasters.eachWithIndex {it,index ->
-      securityService.createScrumMasterPermissions it, team
+    if (scrumMasters){
+      scrumMasters.eachWithIndex {it,index ->
+        securityService.createScrumMasterPermissions it, team
+      }
+      securityService.changeOwner(team.scrumMasters.first(),team)
+    }else{
+      securityService.createScrumMasterPermissions u, team
+      securityService.changeOwner(u,team)
     }
-    securityService.changeOwner(team.scrumMasters.first(),team)
+    publishEvent(new IceScrumTeamEvent(team,this.class,u,IceScrumEvent.EVENT_CREATED))
   }
 
   @Secured(['ROLE_USER', 'RUN_AS_PERMISSIONS_MANAGER'])

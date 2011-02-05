@@ -137,9 +137,9 @@ class Product extends TimeBox {
   def getProductOwners() {
     //Only used when product is being imported
     if (this.productOwners) {
-      return this.productOwners
+      this.productOwners
     }
-    else {
+    else if(this.id) {
       def acl = aclUtilService.readAcl(this.getClass(), this.id)
       def productOwnersList = User.withCriteria {
         or {
@@ -148,7 +148,9 @@ class Product extends TimeBox {
           }
         }
       }
-      return productOwnersList
+      productOwnersList
+    }else{
+      null
     }
   }
 }

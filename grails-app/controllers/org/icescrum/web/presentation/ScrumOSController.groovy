@@ -244,7 +244,7 @@ class ScrumOSController {
     assert params.stackError
     try {
       notificationEmailService.send([
-              to:"support@icescrum.org",
+              to:grailsApplication.config.icescrum.alerts.errors.to,
               subject:"[iceScrum][report] Rapport d'erreur",
               view:'/emails-templates/reportError',
               model:[error:params.stackError,

@@ -38,7 +38,8 @@ icescrum.registration.enable=true
 icescrum.login.retrieve.enable=true
 icescrum.alerts.enable=true
 icescrum.alerts.default.from="webmaster@icescrum.org"
-icescrum.attachements.enable=false
+icescrum.attachements.enable=true
+icescrum.alerts.errors.to="dev@icescrum.org"
 
 /*
 Project administration section
