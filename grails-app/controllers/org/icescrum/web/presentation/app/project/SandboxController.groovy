@@ -460,7 +460,6 @@ class SandboxController {
 
   def print = {
     def user = User.load(springSecurityService.principal.id)
-
     def currentProduct = Product.get(params.product)
     def data = []
     def stories = Story.findAllByBacklogAndState(currentProduct, Story.STATE_SUGGESTED, [sort:'suggestedDate',order:'desc'])
@@ -534,19 +533,25 @@ class SandboxController {
 
   @Secured('inProduct()')
   def cloneStory = {
-    if(!params.id) {
-      render (status: 400, contentType:'application/json', text:[notice:[text:'is.story.error.not.exist']] as JSON)
-      return
-    }
-    def story = Story.get(params.long('id'))
 
-    if(!story) {
-      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:'is.story.error.not.exist')]] as JSON)
+    if(params.list('id').size() == 0){
+      render (status: 400, contentType:'application/json', text:[notice:[text:message(code:'is.ui.sandbox.menu.accept.error.no.selection')]] as JSON)
       return
     }
+    def stories = Story.getAll(params.list('id'))
+
     try {
-      productBacklogService.cloneStory(story)
-      render(status: 200, contentType:'application/json', text: [notice: [text:message(code:'is.story.cloned')]] as JSON)
+      stories?.each{
+        productBacklogService.cloneStory(it)
+      }
+
+      def message = stories.size() > 1 ?message(code:'is.story.selection.cloned'):message(code:'is.story.cloned')
+      if (params.reload){
+        flash.notice = [text: message, type: 'notice']
+        redirect(action: 'list', params:[product:params.product])
+      }else{
+        render(status: 200, contentType:'application/json', text: [notice: [text:message]] as JSON)
+      }
       pushOthers "${params.product}-${id}"
     }catch(RuntimeException e){
       e.printStackTrace()

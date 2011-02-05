@@ -66,6 +66,22 @@
   ${message(code: 'is.ui.sandbox.toolbar.accept')}
 </is:iconButton>
 
+<is:separatorSmall/>
+
+%{--Delete button (note-view)--}%
+<is:iconButton
+        renderedOnAccess="inProduct()"
+        action="cloneStory"
+        shortcut="[key:'ctrl+shift+c',scope:id]"
+        controller="${id}"
+        onclick="jQuery.icescrum.selectableAction('cloneStory?reload=true',true);"
+        disablable="true"
+        disabled="true"
+        alt="${message(code:'is.ui.sandbox.toolbar.alt.clone')}"
+        title="${message(code:'is.ui.sandbox.toolbar.alt.clone')}">
+  ${message(code: 'is.ui.sandbox.toolbar.clone')}
+</is:iconButton>
+
 <is:separatorSmall rendered="${productOwner}"/>
 
 %{--Delete button (note-view)--}%

@@ -61,7 +61,7 @@
           controller="sandbox"
           remote="true"
           history="false"
-          onSuccess="jQuery.icescrum.renderNotice(data.notice)"
+          onSuccess="jQuery.icescrum.renderNotice(data.notice.text)"
           value="${message(code:'is.ui.releasePlan.menu.story.clone')}"/>
 </is:postitMenuItem>
 <is:postitMenuItem rendered="${(productOwner || scrumMaster) && story.state != org.icescrum.core.domain.Story.STATE_DONE}">

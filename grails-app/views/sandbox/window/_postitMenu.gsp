@@ -85,7 +85,9 @@
           controller="sandbox"
           remote="true"
           history="false"
-          onSuccess="jQuery.icescrum.renderNotice(data.notice)"
+          params="[reload:true]"
+          update="window-content-${id}"
+          onSuccess="jQuery.icescrum.renderNotice(data.notice.text)"
           value="${message(code:'is.ui.sandbox.menu.clone')}"/>
 </is:postitMenuItem>
 <is:postitMenuItem rendered="${productOwner || story.creator.id == user?.id}">

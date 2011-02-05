@@ -59,7 +59,7 @@
           controller="sandbox"
           remote="true"
           history="false"
-          onSuccess="jQuery.icescrum.renderNotice(data.notice)"
+          onSuccess="jQuery.icescrum.renderNotice(data.notice.text)"
           value="${message(code:'is.ui.sandbox.menu.clone')}"/>
 </is:postitMenuItem>
 

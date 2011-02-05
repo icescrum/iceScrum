@@ -25,6 +25,21 @@
 
 <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
 
+%{--Delete button (note-view)--}%
+<is:iconButton
+        renderedOnAccess="inProduct()"
+        action="cloneStory"
+        shortcut="[key:'ctrl+shift+c',scope:id]"
+        onclick="\$.icescrum.selectableAction('sandbox/cloneStory',true,'id',function(data){jQuery.icescrum.renderNotice(data.notice.text);});"
+        disablable="true"
+        disabled="true"
+        alt="${message(code:'is.ui.productBacklog.toolbar.alt.clone')}"
+        title="${message(code:'is.ui.productBacklog.toolbar.alt.clone')}">
+  ${message(code: 'is.ui.productBacklog.toolbar.clone')}
+</is:iconButton>
+
+<is:separatorSmall/>
+
 %{--Delete button--}%
 <is:iconButton
         icon="delete"

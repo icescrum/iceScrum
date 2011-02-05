@@ -70,7 +70,7 @@
           controller="sandbox"
           remote="true"
           history="false"
-          onSuccess="jQuery.icescrum.renderNotice(data.notice)"
+          onSuccess="jQuery.icescrum.renderNotice(data.notice.text)"
           value="${message(code:'is.ui.sprintBacklog.menu.postit.clone')}"/>
 </is:postitMenuItem>
 <is:postitMenuItem rendered="${(productOwner || scrumMaster) && story.state <= Story.STATE_INPROGRESS}">
