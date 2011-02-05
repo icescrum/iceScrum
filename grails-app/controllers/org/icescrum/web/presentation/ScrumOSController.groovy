@@ -40,6 +40,7 @@ import org.apache.commons.io.FilenameUtils
 import org.icescrum.core.domain.Product
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugin.springcache.annotations.CacheFlush
+import org.springframework.mail.MailException
 
 class ScrumOSController {
 
@@ -48,6 +49,7 @@ class ScrumOSController {
   def teamService
   def userService
   def menuBarSupport
+  def notificationEmailService
 
   def index = {
     def currentUserInstance = null
@@ -188,10 +190,6 @@ class ScrumOSController {
     }
   }
 
-  def blame = {
-    render(status: 200,contentType:'application/json', text: [notice: [text: message(code:'is.blame.sended'),type:'notice']] as JSON)
-  }
-
   def changeView = {
     if (!params.view) return
     session['currentView'] = params.view
@@ -240,5 +238,31 @@ class ScrumOSController {
 
   def textileParser = {
     render(status:200, template:'textileParser')
+  }
+
+  def reportError = {
+    assert params.stackError
+    try {
+      notificationEmailService.send([
+              to:"support@icescrum.org",
+              subject:"[iceScrum][report] Rapport d'erreur",
+              view:'/emails-templates/reportError',
+              model:[error:params.stackError,
+                      comment:params.comments,
+                      ip:request.getHeader('X-Forwarded-For')?:request.getRemoteAddr(),
+                      date:g.formatDate(date:new Date(),formatName:'is.date.format.short.time'),
+                      version:g.meta(name:'app.version')]
+      ]);
+      render(status: 200,contentType:'application/json', text: [notice: [text: message(code:'is.blame.sended'),type:'notice']] as JSON)
+    }catch(MailException e){
+      render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:'is.mail.error')]] as JSON)
+      return
+    }catch(RuntimeException re){
+      render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:re.getMessage())]] as JSON)
+      return
+    }catch(Exception e){
+      render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:'is.mail.error')]] as JSON)
+      return
+    }
   }
 }

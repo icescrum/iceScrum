@@ -396,11 +396,14 @@ $(document).ready(function($) {
                         jQuery.ajax({
                             type:'POST',
                             data:jQuery('#window-dialog form:first').serialize(),
-                            url:$.icescrum.o.baseUrl+'blame',
+                            url:$.icescrum.o.baseUrl+'reportError',
                             success:function(data,textStatus){
                                 $.icescrum.renderNotice(data.notice.text,data.notice.type);
                                 $('#window-dialog').dialog('close');
-                             }
+                             },
+                            error:function(){
+                                $('#window-dialog').dialog('close');
+                            }
                         });
                     }
                 }
