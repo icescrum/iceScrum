@@ -60,7 +60,7 @@
           remote="true"
           history="false"
           onSuccess="jQuery.icescrum.renderNotice(data.notice.text)"
-          value="${message(code:'is.ui.sandbox.menu.clone')}"/>
+          value="${message(code:'is.ui.productBacklog.menu.clone')}"/>
 </is:postitMenuItem>
 
 <is:postitMenuItem renderedOnAccess="scrumMaster() or teamMember()" rendered="${story.state >= 2 && session.currentView == 'postitsView'}">

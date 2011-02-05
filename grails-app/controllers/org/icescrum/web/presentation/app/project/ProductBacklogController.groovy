@@ -54,6 +54,7 @@ class ProductBacklogController {
 
           [code:'is.ui.shortcut.del.code',text:'is.ui.shortcut.productBacklog.del.text'],
           [code:'is.ui.shortcut.ctrla.code',text:'is.ui.shortcut.productBacklog.ctrla.text'],
+          [code:'is.ui.shortcut.ctrlshiftc.code',text:'is.ui.shortcut.productBacklog.ctrlshiftc.text'],
           [code:'is.ui.shortcut.space.code',text:'is.ui.shortcut.productBacklog.space.text']
   ]
 
