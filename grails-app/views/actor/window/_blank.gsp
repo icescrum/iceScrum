@@ -47,7 +47,6 @@
   <icep:notifications
         name="${id}Window"
         reload="[update:'#window-content-'+id,action:'list',params:[product:params.product]]"
-        disabled="!jQuery('#backlog-layout-window-${id}, .view-table').is(':hidden')"
         group="${params.product}-${id}"
         listenOn="#window-content-${id}"/>
 </jq:jquery>

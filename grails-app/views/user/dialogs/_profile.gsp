@@ -31,7 +31,7 @@
       <is:input id="userlastName" name="user.lastName" value="${user.lastName}"/>
     </is:fieldInput>
     <is:fieldInput for="userusername" label="is.user.username">
-      <is:input id="userusername" name="user.username" value="${user.username}"/>
+      <is:input id="userusername" disabled="disabled" name="username" value="${user.username}"/>
     </is:fieldInput>
     <is:fieldInput for="userpassword" label="is.user.password">
       <is:password id="userpassword" name="user.password"/>

@@ -150,6 +150,7 @@ class UserController {
     if (params.user.preferences.language != currentUser.preferences.language) {
       forceRefresh = true
     }
+    params.remove('user.username')
     currentUser.properties = params.user
     try {
       userService.updateUser(currentUser, pwd, avatar?.canonicalPath, scale)

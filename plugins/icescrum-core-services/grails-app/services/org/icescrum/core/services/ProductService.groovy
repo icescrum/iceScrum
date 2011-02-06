@@ -463,7 +463,7 @@ class ProductService {
   }
 
   def deleteProduct(Product p) {
-    p.delete()
+    p.delete(flush:true)
     securityService.unsecureDomain p
     publishEvent(new IceScrumProductEvent(p,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_DELETED))
   }
