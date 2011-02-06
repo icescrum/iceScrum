@@ -275,6 +275,12 @@
         reload="[update:'#window-content-'+id,action:'index',id:sprint.id,params:[product:params.product]]"
         group="${params.product}-${id}-${sprint.id}"
         listenOn="#window-content-${id}"/>
+  <icep:notifications
+        name="${id}Window"
+        disabled="!jQuery('.view-table').is(':hidden')"
+        reload="[update:'#window-content-'+id,action:'index',id:sprint.id,params:[product:params.product]]"
+        group="${params.product}-${id}"
+        listenOn="#window-content-${id}"/>
 </jq:jquery>
 <is:editable
         on=".mini-value.editable"

@@ -35,7 +35,7 @@
               value="${team.description}"/>
     </is:fieldArea>
   </is:fieldset>
-  <is:fieldset nolegend="true" title="is.dialog.team.preferences.title">
+  <is:fieldset nolegend="true" title="is.dialog.team.permissions.title">
     <is:accordion id="preferences" autoHeight="false">
 
       <is:accordionSection title="is.dialog.team.preferences.title">
@@ -48,20 +48,5 @@
       </is:accordionSection>
     </is:accordion>
   </is:fieldset>
-  <sec:access expression="owner()">
-    <is:fieldset title="is.dialog.project.others.title" nolegend="true">
-      <button onClick="
-        if (confirm('${message(code:'is.dialog.team.others.delete.button').encodeAsJavaScript()}')) {
-          ${g.remoteFunction(action:'delete',
-                             controller:'team',
-                             params:[team:params.team],
-                             onSuccess:'document.location=data.url;')
-           };
-        }
-        return false;" class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>
-        <g:message code="is.dialog.team.others.delete.button"/>
-      </button>
-    </is:fieldset>
-  </sec:access>
 </form>
 <is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-project" listenOn="'#form-project input'"/>

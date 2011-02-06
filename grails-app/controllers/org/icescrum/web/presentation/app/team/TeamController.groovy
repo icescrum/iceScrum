@@ -35,8 +35,6 @@ import org.icescrum.web.support.MenuBarSupport
 import org.icescrum.core.domain.security.Authority
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.core.support.ApplicationSupport
-import grails.plugin.springcache.annotations.Cacheable
-import grails.plugin.springcache.annotations.CacheFlush
 
 @Secured('isAuthenticated()')
 class TeamController {
@@ -84,9 +82,9 @@ class TeamController {
 
   }
 
-  def openProperties = {
+  def edit = {
     def currentTeam = Team.get(params.long('team'))
-    render(template: "dialogs/properties", model: [team: currentTeam])
+    render(template: "dialogs/edit", model: [team: currentTeam])
   }
 
 

@@ -61,17 +61,6 @@ class ProjectController {
     chain(controller: 'scrumOS', action: 'index', params: params)
   }
 
-  def openProperties = {
-    def currentProduct = Product.get(params.product)
-    def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
-
-    def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
-    if(SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
-      privateOption = false
-    }
-    render(template: "dialogs/properties", model: [id: id, product: currentProduct, estimationSuitSelect: estimationSuitSelect, privateOption:privateOption])
-  }
-
   static ReleaseStateBundle = [
           (Release.STATE_WAIT):'is.release.state.wait',
           (Release.STATE_INPROGRESS):'is.release.state.inprogress',
@@ -103,6 +92,24 @@ class ProjectController {
   }
 
   @Secured('productOwner() or ScrumMaster()')
+  def edit = {
+    def currentProduct = Product.get(params.product)
+    render(template: "dialogs/edit", model: [id: id, product: currentProduct])
+  }
+
+  @Secured('productOwner() or ScrumMaster()')
+  def editPractices ={
+    def currentProduct = Product.get(params.product)
+    def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
+    def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
+    if(SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
+      privateOption = false
+    }
+    render(template: "dialogs/editPractices", model: [id: id, product: currentProduct, estimationSuitSelect: estimationSuitSelect, privateOption:privateOption])
+
+  }
+
+  @Secured('productOwner() or ScrumMaster()')
   def update = {
 
     def msg
@@ -114,17 +121,21 @@ class ProjectController {
     }
 
     def reloadSprintBacklog = false
-    if (currentProduct.preferences.displayUrgentTasks != params.productd.preferences.displayUrgentTasks || currentProduct.preferences.displayRecurrentTasks != params.productd.preferences.displayRecurrentTasks) {
-      reloadSprintBacklog = true
-    }
-
     def reloadProductBacklog = false
-    if (currentProduct.planningPokerGameType != params.productd.planningPokerGameType)
-      reloadProductBacklog = true
+
+    if (params.productd.preferences){
+      if (currentProduct.preferences.displayUrgentTasks != params.productd.preferences.displayUrgentTasks || currentProduct.preferences.displayRecurrentTasks != params.productd.preferences?.displayRecurrentTasks) {
+        reloadSprintBacklog = true
+      }
+
+      if (currentProduct.planningPokerGameType != params.productd.planningPokerGameType){
+        reloadProductBacklog = true
+      }
+    }
 
     //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
     currentProduct.properties = params.productd
-    if(params.productd.preferences.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
+    if(params.productd.preferences?.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)){
       currentProduct.preferences.hidden = true
     }
 

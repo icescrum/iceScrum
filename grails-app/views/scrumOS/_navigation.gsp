@@ -23,6 +23,10 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 <g:setProvider library="jquery"/>
+<g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
+<g:set var="scrumMaster" value="${sec.access([expression:'scrumMaster()'], {true})}"/>
+<g:set var="owner" value="${sec.access([expression:'owner()'], {true})}"/>
+
 <div id="navigation">
   <div class="left">
     <ul class="navigation-content clearfix">
@@ -44,7 +48,6 @@
       <li class="navigation-line">
         <is:dropMenu id="menu-project" title="${message(code:'is.projectmenu.title')}">
           <ul>
-            <li class="first menu-label"><g:message code="is.projectmenu.submenu.project.title"/></li>
             <g:if test="${creationProjectEnable}">
               <li>
                 <is:remoteDialog
@@ -82,6 +85,50 @@
                 </is:remoteDialog>
               </li>
             </g:if>
+            <g:if test="${poOrSm && product}">
+              <li>
+                <is:remoteDialog
+                        action="edit"
+                        controller="project"
+                        params="[product:product.id]"
+                        valid="[action:'update',controller:'project',onSuccess:'\$(\'#project-details ul li:first strong\').text(data.name); \$.icescrum.renderNotice(data.notice);']"
+                        title="is.dialog.project.title"
+                        width="600"
+                        resizable="false"
+                        draggable="false">
+                  <g:message code='is.projectmenu.submenu.project.edit'/>
+                </is:remoteDialog>
+              </li>
+            </g:if>
+            <g:if test="${poOrSm && product}">
+              <li>
+                <is:remoteDialog
+                        action="editPractices"
+                        controller="project"
+                        params="[product:product.id]"
+                        valid="[action:'update',controller:'project',onSuccess:'\$.icescrum.renderNotice(data.notice);']"
+                        title="is.dialog.project.title"
+                        width="600"
+                        resizable="false"
+                        draggable="false">
+                  <g:message code='is.projectmenu.submenu.project.editPractices'/>
+                </is:remoteDialog>
+              </li>
+            </g:if>
+            <g:if test="${owner && product}">
+              <li>
+                 <a href="#" onClick="if (confirm('${message(code:'is.dialog.project.others.delete.button').encodeAsJavaScript()}')) {
+                      ${g.remoteFunction(action:'delete',
+                                         controller:'project',
+                                         params:[product:params.product],
+                                         onSuccess:'document.location=data.url;')
+                       };
+                    }
+                    return false;">
+                   <g:message code="is.projectmenu.submenu.project.delete"/>
+                 </a>
+              </li>
+            </g:if>
             <g:if test="${exportEnable && product != null && sec.access(expression:'scrumMaster() or productOwner()',{true})}">
               <li>
                 <is:remoteDialog
@@ -95,6 +142,17 @@
                   <g:message code="is.projectmenu.submenu.project.export"/>
               </is:remoteDialog>
               </li>
+            </g:if>
+            <g:if test="${productFilteredsList}">
+              <li class="menu-label">
+                ${message(code:'is.projectmenu.submenu.project.my.title')}
+              </li>
+              <g:each var="curProduct" in="${productFilteredsList}">
+                <li><g:link class="${(product?.id == curProduct.id) ? 'active' : ''}" controller="scrumOS" fragment="project" params="[product:curProduct.pkey]" onClick="${(product?.id == curProduct.id) ? is.notice(text:g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')]))+'return false;' : ''}">
+                      <is:truncated encodedHTML="true" size="25">${curProduct.name.encodeAsHTML()}</is:truncated>
+                    </g:link>
+                </li>
+              </g:each>
             </g:if>
             <g:if test="${publicProductsExists}">
               <li>
@@ -114,26 +172,6 @@
                 </is:remoteDialog>
               </li>
             </g:if>
-
-            <g:if test="${product?.id}">
-              <li>
-                <is:link disabled="true" onClick="document.location=\$.icescrum.o.baseUrl;">
-                  <g:message code="is.closeProduct" args="${[is.truncated([encodedHTML:true,size:25],{product.name.encodeAsHTML()})]}"/>
-                </is:link>
-              </li>
-            </g:if>
-
-            <g:if test="${productFilteredsList}">
-              <li class="menu-label">
-                <g:message code="is.projectmenu.submenu.choose.title"/>
-              </li>
-              <g:each var="curProduct" in="${productFilteredsList}">
-                <li><g:link class="${(product?.id == curProduct.id) ? 'active' : ''}" controller="scrumOS" fragment="project" params="[product:curProduct.pkey]" onClick="${(product?.id == curProduct.id) ? is.notice(text:g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')]))+'return false;' : ''}">
-                      <is:truncated encodedHTML="true" size="25">${curProduct.name.encodeAsHTML()}</is:truncated>
-                    </g:link>
-                </li>
-              </g:each>
-            </g:if>
           </ul>
         </is:dropMenu>
       </li>
@@ -141,7 +179,6 @@
         <li class="navigation-line">
           <is:dropMenu id="menu-project-2" title="${message(code: 'is.team')}">
             <ul>
-              <li class="menu-label"><g:message code="is.projectmenu.submenu.team.title"/></li>
               <g:if test="${creationTeamEnable}">
                 <li>
                   <is:remoteDialog
@@ -157,6 +194,47 @@
                   </is:remoteDialog>
                 </li>
               </g:if>
+              <g:if test="${scrumMaster && team}">
+                <li>
+                  <is:remoteDialog
+                        action="edit"
+                        controller="team"
+                        params="[team:team.id]"
+                        valid="[action:'update',controller:'team',onSuccess:'\$(\'#team-details ul li:first strong\').text(data.name); \$.icescrum.renderNotice(data.notice);']"
+                        title="is.dialog.team.title"
+                        width="600"
+                        resizable="false"
+                        draggable="false">
+                      <g:message code='is.projectmenu.submenu.team.edit' />
+                  </is:remoteDialog>
+                </li>
+              </g:if>
+              <g:if test="${owner && team}">
+                <li>
+                   <a href="#" onClick="if (confirm('${message(code:'is.dialog.team.others.delete.button').encodeAsJavaScript()}')) {
+                              ${g.remoteFunction(action:'delete',
+                                                 controller:'team',
+                                                 params:[team:params.team],
+                                                 onSuccess:'document.location=data.url;')
+                               };
+                            }
+                            return false;">
+                     <g:message code="is.projectmenu.submenu.project.delete"/>
+                   </a>
+                </li>
+              </g:if>
+              <g:if test="${teamsList}">
+                <li class="menu-label">
+                  <g:message code="is.projectmenu.submenu.team.my.title"/>
+                </li>
+                <g:each var="curTeam" in="${teamsList}">
+                  <li>
+                      <g:link class="${(team?.id == curTeam.id) ? 'active' : ''}" controller="team" params="[team:curTeam.id]" fragment="team" onClick="${(team?.id == curTeam.id) ? is.notice(text:g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.team')]))+'return false;' : ''}">
+                        <is:truncated encodedHTML="true" size="25">${curTeam.name.encodeAsHTML()}</is:truncated>
+                      </g:link>
+                  </li>
+                </g:each>
+              </g:if>
               <li>
                 <is:remoteDialog
                         action="join"
@@ -169,19 +247,6 @@
                   <g:message code="is.projectmenu.submenu.team.join"/>
                 </is:remoteDialog>
               </li>
-
-              <g:if test="${teamsList}">
-                <li class="menu-label">
-                  <g:message code="is.projectmenu.submenu.team.choose.title"/>
-                </li>
-                <g:each var="curTeam" in="${teamsList}">
-                  <li>
-                      <g:link class="${(team?.id == curTeam.id) ? 'active' : ''}" controller="team" params="[team:curTeam.id]" fragment="team" onClick="${(team?.id == curTeam.id) ? is.notice(text:g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.team')]))+'return false;' : ''}">
-                        <is:truncated encodedHTML="true" size="25">${curTeam.name.encodeAsHTML()}</is:truncated>
-                      </g:link>
-                  </li>
-                </g:each>
-              </g:if>
             </ul>
           </is:dropMenu>
         </li>

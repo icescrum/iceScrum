@@ -38,22 +38,28 @@ class UtilsTagLib {
 
   def loadJsVar = { attrs, body ->
     def opts = ''
-    def currentProduct
+    def current
     if (params.product) {
-      currentProduct = pageScope.product
-      opts = """currentProductName :'${currentProduct.name.encodeAsJavaScript()}',"""
+      current = pageScope.product
+      opts = """currentProductName :'${current.name.encodeAsJavaScript()}',"""
+
+    }
+    if (params.team) {
+      current = pageScope.team
+      opts = """currentTeamName :'${current.name.encodeAsJavaScript()}',"""
 
     }
     def p = []
     def widgetsList = session.widgetsList
     def controllerSpace = 'scrumOS'
     if (params.product) {
-      p = [product: currentProduct.id]
+      p = [product: current.id]
     } else if (params.team) {
-      p = [team: params.team]
+      p = [team: current.id]
       controllerSpace = 'team'
       widgetsList = session.widgetsTeamList
     }
+
     def locale = attrs.locale ? attrs.locale.replace('_', '-') : RCU.getLocale(request).toString().replace('_', '-')
     def jsCode = """var icescrum = {
                           grailsServer:"${grailsApplication.config.grails.serverURL}",

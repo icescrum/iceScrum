@@ -99,7 +99,7 @@
             closeable:${titleBarActions?.closeable}
           }
     );
-    document.title = 'iceScrum - ${title.encodeAsJavaScript()} - '+ $.icescrum.o.currentProductName;
+    document.title = 'iceScrum - ${title.encodeAsJavaScript()} - '+ ($.icescrum.o.currentProductName ? $.icescrum.o.currentProductName : ($.icescrum.o.currentTeamName ? $.icescrum.o.currentTeamName : ''));
     $("#${type}-id-${id}").focus();
   </jq:jquery>
 </g:if>
