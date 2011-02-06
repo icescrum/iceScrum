@@ -23,7 +23,6 @@
         id="release-timeline"
         name="timelineTl"
         container="#window-id-${id}"
-        startVisibleDate="new Date()"
         height="100%"
         onScroll="\$('#selectOnRoadmap').changeSelectDate(band.getMinVisibleDate().getTime())">
   <is:customBubble

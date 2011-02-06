@@ -85,13 +85,16 @@ class TimelineTagLib {
           jqCode += "bandInfos[${it.index}].highlight = ${it.highlight};"
     }
 
+    def visible
     if (!attrs.startVisibleDate){
-      attrs.startVisibleDate = "new Date()"
+      visible = "${attrs.name}.getBand(0).setCenterVisibleDate(new Date());"
+    }else{
+      visible = "${attrs.name}.getBand(0).setMinVisibleDate(${attrs.startVisibleDate});"
     }
 
     jqCode += """
               ${attrs.name} = Timeline.create(document.getElementById('${attrs.id}'), bandInfos);
-              ${attrs.name}.getBand(0).setMinVisibleDate(${attrs.startVisibleDate});
+              ${visible}
               var resizeTimerID = null;
                 function onResize() {
                     if (resizeTimerID == null) {
