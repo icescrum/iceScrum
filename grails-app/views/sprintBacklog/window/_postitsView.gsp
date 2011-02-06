@@ -24,6 +24,7 @@
 <%@ page import="org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;org.icescrum.core.domain.Story;" %>
 
 <g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
+<g:set var="nodropMessage" value="${g.message(code:'is.ui.sprintBacklog.no.drop')}"/>
 
 <is:tableView>
 <is:kanban selectable="[filter:'.postit-rect',
@@ -48,10 +49,11 @@
       <is:kanbanColumn
               elementId="column-recurrent-${column.key}"
               key="${column.key}"
-              class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop':''}"
+              class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop wait':''}"
               sortable='[handle:".postit-label",
                       cancel: ".ui-selectable-disabled",
                       connectWith:".kanban-cell",
+                      over:"if(\$(this).hasClass(\"no-drop wait\")){\$(ui.placeholder).html(\"${nodropMessage}\");}else{\$(ui.placeholder).html(\"\");}",
                       update:"if(\$(\"#column-recurrent-${column.key} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#column-recurrent-${column.key} .postit-rect",controller:id,action:"changeRank",params:"&product=${params.product}")}}",
                       placeholder:"postit-placeholder ui-corner-all",
                       receive:remoteFunction(
@@ -98,6 +100,8 @@
   </is:kanbanRow>
 
 %{-- Urgent Tasks --}%
+
+  <g:set var="nodropMessageUrgent" value="${message(code: 'is.ui.sprintBacklog.kanban.urgentTasks.limit', args:[limitValueUrgentTasks])}"/>
   <is:kanbanRow rendered="${displayUrgentTasks}">
     <is:kanbanColumn key="story">
       <g:message code="is.ui.sprintBacklog.kanban.urgentTasks"/>
@@ -105,16 +109,17 @@
         <is:menu yoffset="3" class="dropmenu-action" id="menu-urgent" contentView="window/recurrentOrUrgentTask" params="[sprint:sprint,type:'urgent',id:id]" rendered="${sprint.state != Sprint.STATE_DONE}"/>
       </g:if>
       <br/>
-      <span>${(limitValueUrgentTasks)?message(code: 'is.ui.sprintBacklog.kanban.urgentTasks.limit', args:[limitValueUrgentTasks]):''}</span>
+      <span>${(limitValueUrgentTasks)?nodropMessageUrgent:''}</span>
     </is:kanbanColumn>
     <g:each in="${columns}" var="column">
       <is:kanbanColumn
                       elementId="column-urgent-${column.key}"
                       key="${column.key}"
-                      class="${((sprint.state != Sprint.STATE_INPROGRESS && column.key != Task.STATE_WAIT) || (urgentTasksLimited && limitValueUrgentTasks && column.key == Task.STATE_BUSY))?'no-drop':''}"
+                      class="${(sprint.state != Sprint.STATE_INPROGRESS && column.key != Task.STATE_WAIT)?'no-drop wait':(urgentTasksLimited && limitValueUrgentTasks && column.key == Task.STATE_BUSY)?'no-drop':''}"
                       sortable='[handle:".postit-label",
                                 update:"if(\$(\"#column-urgent-${column.key} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#column-urgent-${column.key} .postit-rect",controller:id,action:"changeRank",params:"&product=${params.product}")}}",                                                      
                                 cancel: ".ui-selectable-disabled",
+                                over:"if(\$(this).hasClass(\"no-drop wait\")){\$(ui.placeholder).html(\"${nodropMessage}\");}else{\$(ui.placeholder).html(\"\");} if(\$(this).hasClass(\"no-drop\")){\$(ui.placeholder).html(\"${nodropMessageUrgent}\");}else{\$(ui.placeholder).html(\"\");}",
                                 connectWith:".kanban-cell",
                                 placeholder:"postit-placeholder ui-corner-all",
                                 receive:remoteFunction(
@@ -203,10 +208,11 @@
       <is:kanbanColumn
                 elementId="column-story-${story.id}-${column.key}"
                 key="${column.key}"
-                class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop':''}"
+                class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop wait':''}"
                 sortable='[handle:".postit-label",
                       cancel: ".ui-selectable-disabled",
                       connectWith:".kanban-cell",
+                      over:"if(\$(this).hasClass(\"no-drop wait\")){\$(ui.placeholder).html(\"${nodropMessage}\");}else{\$(ui.placeholder).html(\"\");}",
                       update:"if(\$(\"#column-story-${story.id}-${column.key} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#column-story-${story.id}-${column.key} .postit-rect",controller:id,action:"changeRank",params:"&product=${params.product}")}}",
                       placeholder:"postit-placeholder ui-corner-all",
                       receive:remoteFunction(

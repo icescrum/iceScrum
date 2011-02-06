@@ -174,6 +174,8 @@ class KanbanTagLib {
               start: "function(event,ui){${attrs.sortable.start}}",
               stop: "function(event,ui){${attrs.sortable.stop}}",
               update: "function(event,ui){${attrs.sortable.update}}",
+              over: "function(event,ui){${attrs.sortable.over}}",
+              change: "function(event,ui){${attrs.sortable.change}}",
               receive: "function(event,ui){${attrs.sortable.receive}}",
               cancel: UtilsWebComponents.wrap(attrs.sortable.cancel),
               connectWith: UtilsWebComponents.wrap(attrs.sortable.connectWith),

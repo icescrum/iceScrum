@@ -457,6 +457,12 @@ body, #main .box .box-title .start, #main .box .box-title .end,
 
 .no-drop .postit-placeholder {
     background:#ffa656;
+    padding:3px;
+    text-align:center;
+    color:#FFF;
+    width: 147px;
+	height: 83px;
+    font-weight:bold;
 }
 
 #dropmenu .content-help {
