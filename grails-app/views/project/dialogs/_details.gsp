@@ -20,10 +20,10 @@
 - Vincent Barrier (vincent.barrier@icescrum.com)
 --}%
 <ul>
-  <li>${message(code: "is.product")}:
+  <li>${message(code: "is.ui.details.product.name")}
     <strong>${currentProduct.name.encodeAsHTML()}</strong>
   </li>
-  <li>${message(code:"is.role")}: <is:scrumLink controller="members"><strong> <is:displayRole /> </strong></is:scrumLink></li>
+  <li>${message(code:"is.ui.details.role.name")}<is:scrumLink controller="members"><strong> <is:displayRole /> </strong></is:scrumLink></li>
   <g:if test="${user}">
     <li><is:avatar userid="${user.id}"/></li>
   </g:if>

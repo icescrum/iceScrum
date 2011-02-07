@@ -119,7 +119,7 @@
                       sortable='[handle:".postit-label",
                                 update:"if(\$(\"#column-urgent-${column.key} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#column-urgent-${column.key} .postit-rect",controller:id,action:"changeRank",params:"&product=${params.product}")}}",                                                      
                                 cancel: ".ui-selectable-disabled",
-                                over:"if(\$(this).hasClass(\"no-drop wait\")){\$(ui.placeholder).html(\"${nodropMessage}\");}else{\$(ui.placeholder).html(\"\");} if(\$(this).hasClass(\"no-drop\")){\$(ui.placeholder).html(\"${nodropMessageUrgent}\");}else{\$(ui.placeholder).html(\"\");}",
+                                over:"if(\$(this).hasClass(\"no-drop\")){ if(\$(this).hasClass(\"wait\")){\$(ui.placeholder).html(\"${nodropMessage}\");}else{\$(ui.placeholder).html(\"${nodropMessageUrgent}\");}}else{\$(ui.placeholder).html(\"\");}",
                                 connectWith:".kanban-cell",
                                 placeholder:"postit-placeholder ui-corner-all",
                                 receive:remoteFunction(

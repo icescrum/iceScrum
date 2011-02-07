@@ -260,7 +260,7 @@ class SprintService {
 
     sprint.stories?.each { pbi ->
       pbi.state = Story.STATE_INPROGRESS
-      if (autoCreateTaskOnEmptyStory && !pbi.tasks){
+      if (autoCreateTaskOnEmptyStory && pbi.tasks?.size() == 0){
         def emptyTask = new Task(name:pbi.name,state:Task.STATE_WAIT,description: pbi.description,creator:user,backlog:sprint)
         pbi.addToTasks(emptyTask).save()
         emptyTask.save()

@@ -20,10 +20,10 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 <ul>
-  <li>${message(code:"is.team")}:
+  <li>${message(code:"is.ui.details.team.name")}:
   <strong>${currentTeam.name.encodeAsHTML()}</strong>
   </li>
-  <li>${message(code:"is.role")}: <is:scrumLink controller="members"><strong> <is:displayRole /> </strong></is:scrumLink></li>
+  <li>${message(code:"is.ui.details.role.name")}: <is:scrumLink controller="members"><strong> <is:displayRole /> </strong></is:scrumLink></li>
   <g:if test="${user}">
     <li><is:avatar userid="${user.id}"/></li>
   </g:if>

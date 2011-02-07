@@ -320,12 +320,18 @@ class FormTagLib {
   }
 
   def typed = { attrs ->
+
+    if (attrs.onlyletters){
+      attrs.ichars = (attrs.ichars?:'')+"ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ!@#\$%^&€*()+=[]\\\';,/{}|\":<>?~`.- "
+    }
+
     def param = [
       allow:attrs.allow?'\''+attrs.allow+'\'':null,
       nocaps:attrs.nocaps?:null,
       allcaps:attrs.allcaps?:null,
       ichars:attrs.ichars?'\''+attrs.ichars+'\'':null,
     ]
+
     def jqTyped = '{'+param.findAll {k, v -> v != null}.collect {k, v -> " $k:$v"}.join(',')+'}'
     def jqCode = "\$('#${attrs.elementId}').${attrs.type}(${jqTyped});"
     out << jqCode
