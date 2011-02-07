@@ -43,7 +43,7 @@
     params="[team:params.team]"
     overview="true"
     intervalPixels="90">
-      <is:bandOptions syncWith="0" highlight="true" />
+      <is:bandOptions showToday="true" syncWith="0" highlight="true" />
   </is:timelineBand>
 
 </is:timeline>

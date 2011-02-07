@@ -41,7 +41,7 @@ class TimelineTagLib {
     def jqCode = ""
 
     pageScope.timelineRoot.band.eachWithIndex{ it, index ->
-        jqCode += "var eventSource${index} = new Timeline.DefaultEventSource();"
+       jqCode += "var eventSource${index} = new Timeline.DefaultEventSource();"
         if (it.themeOptions != null){
            jqCode += "var theme${index} = Timeline.ClassicTheme.create();"
            it.themeOptions.split(",").each{
@@ -83,6 +83,22 @@ class TimelineTagLib {
           jqCode += "bandInfos[${it.index}].syncWith = ${it.syncWith};"
         if(it.highlight != null)
           jqCode += "bandInfos[${it.index}].highlight = ${it.highlight};"
+
+        if (it.showToday){
+          jqCode += """var dateS = new Date();
+                      dateS.setHours(0,0,0,0);
+
+                      var dateE = new Date();
+                      dateE.setHours(0,0,0,0);
+                      dateE.setDate(dateE.getDate() + 1);
+                      bandInfos[${it.index}].decorators = [
+                      new Timeline.SpanHighlightDecorator({
+                          startDate:  dateS.toGMTString(),
+                          endDate:  dateE.toGMTString(),
+                          color: "#FFC080",
+                          opacity:    50
+                      })];"""
+        }
     }
 
     def visible
@@ -155,7 +171,8 @@ class TimelineTagLib {
     if(!pageScope.timelineBand) return
     def params = [
             syncWith:attrs.syncWith?:null,
-            highlight:attrs.highlight?:null
+            highlight:attrs.highlight?:null,
+            showToday:attrs.showToday?:null
     ]
     pageScope.timelineBand.options = params.findAll{k, v -> v}
   }
