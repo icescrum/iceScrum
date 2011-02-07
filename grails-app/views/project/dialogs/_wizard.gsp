@@ -25,8 +25,8 @@
     <is:fieldInput for="productname" label="is.product.name">
       <is:input id="productname" name="product.name" value="${product.name}"/>
     </is:fieldInput>
-    <is:fieldInput for="productpkey" label="is.product.pkey">
-      <is:input id="productpkey" name="product.pkey" value="${product.pkey}"/>
+    <is:fieldInput for="productpkey" label="is.dialog.wizard.project.pkey">
+      <is:input id="productpkey" typed="[type:'alphanumeric',onlyletters:true,allcaps:true]" name="product.pkey" value="${product.pkey}"/>
     </is:fieldInput>
     <is:fieldArea for="productdescription" label="is.product.description" optional="true">
       <is:area rich="[preview:true,width:335]"
