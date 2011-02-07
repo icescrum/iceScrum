@@ -379,7 +379,7 @@ class SandboxController {
       return
     }
     def data = params.data
-    def currentProduct = Product.get(params.product)
+    def currentProduct = Product.get(params.long('product'))
     // The actual story field available to import
     def mapping = [
             name: 'is.story.name',
