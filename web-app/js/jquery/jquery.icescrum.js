@@ -875,14 +875,6 @@ $(document).ready(function($) {
                     $.doTimeout(200,function(){$('#autoCmpTxt').focus()})
                 }
             });
-        },
-
-
-        forPlanningTest:function(){
-            jQuery.icescrum.renderNotice("New planning poker session! " +
-                    "<a href=\"javascript:;\" disabled=\"true\" onClick=\"jQuery.icescrum.openWindow(\'planningPoker/display\')\">" +
-                    "<button>Join</button>" +
-                    "</a>","notice");
         }
 
     },
