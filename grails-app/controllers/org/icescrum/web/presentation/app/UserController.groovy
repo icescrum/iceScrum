@@ -306,8 +306,8 @@ class UserController {
         render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:'is.mail.error')]] as JSON)
         return
       }
+      render(status:200, contentType:'application/json', text:[text:message(code:'is.dialog.retrieve.success', args:[user.email])] as JSON)
     }
-    render(status:200, contentType:'application/json', text:[text:message(code:'is.dialog.retrieve.success', args:[user.email])] as JSON)
   }
 
   @Secured('isAuthenticated()')

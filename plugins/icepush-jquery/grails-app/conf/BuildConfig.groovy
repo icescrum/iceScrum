@@ -47,7 +47,7 @@ grails.project.dependency.resolution = {
         mavenRepo "http://anonsvn.icefaces.org/repo/maven2/snapshots/"
     }
     dependencies {
-        compile 'org.icepush:icepush:2.0-Beta2'
+        compile 'org.icepush:icepush:2.0.0.RC2'
         // runtime 'mysql:mysql-connector-java:5.1.5'
     }
 
