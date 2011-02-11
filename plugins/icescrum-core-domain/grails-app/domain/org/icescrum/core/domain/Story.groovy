@@ -269,28 +269,31 @@ class Story extends BacklogElement implements Cloneable {
       parentSprint{
         eq 'id', s.id
       }
-      tasks {
-        if (term){
-          or {
-            ilike 'name', term
-            ilike 'description', term
-            ilike 'notes', term
-          }
-        }
-        if (u){
-          responsible{
-            if(u.preferences.filterTask == 'myTasks'){
-              eq 'id', u.id
+
+      or {
+        tasks {
+          if (term){
+            or {
+              ilike 'name', term
+              ilike 'description', term
+              ilike 'notes', term
             }
           }
-          if (u.preferences.filterTask == 'freeTasks'){
-            isNull('responsible')
+          if (u){
+            responsible{
+              if(u.preferences.filterTask == 'myTasks'){
+                eq 'id', u.id
+              }
+            }
+            if (u.preferences.filterTask == 'freeTasks'){
+              isNull('responsible')
+            }
           }
         }
-      }
-      if (term){
-        feature {
-          ilike 'name', term
+        if (term){
+          feature {
+            ilike 'name', term
+          }
         }
       }
       if (u?.preferences?.hideDoneState){
