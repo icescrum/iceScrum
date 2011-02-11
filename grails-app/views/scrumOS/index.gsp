@@ -45,7 +45,7 @@
     <plugin:isAvailable name="icescrum-plugin-planning-poker">
       <icep:notifications
                   name="pluginPlanningPoker"
-                  callback="jQuery.icescrum.planningpoker.forPlanningTest();"
+                  callback="jQuery.icescrum.planningpoker.notifyPlanningPoker();"
                   autoleave="false"
                   group="${params.product}-plugin-planning-poker"/>
     </plugin:isAvailable>
