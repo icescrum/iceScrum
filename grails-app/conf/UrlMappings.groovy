@@ -53,18 +53,6 @@ class UrlMappings {
     name privateURL:"/private/$controller/$action/$id?" {
     }
 
-    "/services/mylyn/$action?/$id?"(controller: 'mylynWebService')
-
-    "/services/stories/suggest/$id?"(controller: 'storyWebService', parseRequest: true) {
-      action = [POST: "suggestStory"]
-    }
-
-    "/services/stories/add/$id?"(controller: 'storyWebService', parseRequest: true) {
-      action = [POST: "addStory"]
-    }
-
-    "/services/stories/$action?/$id?"(controller: 'storyWebService', parseRequest: true)
-
     "/login"(controller: 'login', action: 'auth')
 
     "500"(view: '/error')

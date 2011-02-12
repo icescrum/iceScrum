@@ -54,11 +54,13 @@ class ScrumOSController {
   def index = {
     def currentUserInstance = null
 
-    def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
     def locale = params.lang?:null
-    if (localeAccept?.size() > 0){
-      locale = params.lang?:localeAccept[0].toString()
-    }
+    try {
+      def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
+      if (localeAccept?.size() > 0){
+        locale = params.lang?:localeAccept[0].toString()
+      }
+    }catch(Exception e){}
 
     if (springSecurityService.isLoggedIn()) {
       currentUserInstance = User.get(springSecurityService.principal.id)

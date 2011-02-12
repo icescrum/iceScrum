@@ -78,11 +78,13 @@ class LoginController {
 		}
         session.invalidate()
 
-        def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
         def locale = params.lang?:null
-        if (localeAccept?.size() > 0){
-          locale = params.lang?:localeAccept[0].toString()
-        }
+        try {
+          def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
+          if (localeAccept?.size() > 0){
+            locale = params.lang?:localeAccept[0].toString()
+          }
+        }catch(Exception e){}
 
         if (locale){
           RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))

@@ -122,6 +122,7 @@ public class WebScrumExpressionRoot extends WebSecurityExpressionRoot implements
         return securityService.owner(o, super.authentication);
     }
 
-    
-
+    public boolean admin() {
+        return securityService.admin(super.authentication);
+    }
 }

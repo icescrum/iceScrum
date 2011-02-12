@@ -290,6 +290,13 @@ class SecurityService {
     isProductOwner(product, auth, p)
   }
 
+  boolean admin(auth) {
+    if (!springSecurityService.isLoggedIn())
+      return false
+
+    return SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)
+  }
+
   boolean isProductOwner(product, auth, p = null) {
     if (product) {
       return springcacheService.doWithCache(CACHE_PRODUCTOWNER, new CacheKeyBuilder().append(product).append(auth.principal.id).toCacheKey()) {
