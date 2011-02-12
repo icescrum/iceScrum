@@ -55,7 +55,10 @@ class ApplicationSupport {
           return value
       } else if(value.class == ConfigObject){
         return value.asBoolean()
-      } else {
+      } else if(value.class == Closure){
+        return value()
+      }
+      else {
           return value.toBoolean()
       }
   }

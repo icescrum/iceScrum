@@ -48,7 +48,11 @@ class AttachmentableService {
         def mimetypesFileTypeMap = new MimetypesFileTypeMap()
         def name = originalName?:file.name
 
-        def a = new Attachment(posterId: poster.id,
+        def delegateClass = delegate.class.name
+        i = delegateClass.indexOf('_$$_javassist')
+        if (i > -1) delegateClass = delegateClass[0..i - 1]
+
+         def a = new Attachment(posterId: poster.id,
                                posterClass: posterClass,
                                inputName:name,
                                name: FilenameUtils.getBaseName(name),
@@ -58,20 +62,21 @@ class AttachmentableService {
         if (!a.validate()) throw new AttachmentException("Cannot create attachment for arguments [$poster, $file], they are invalid.")
         a.save()
 
-        def delegateClass = delegate.class.name
-        i = delegateClass.indexOf('_$$_javassist')
-        if (i > -1) delegateClass = delegateClass[0..i - 1]
-
         def link = new AttachmentLink(attachment: a, attachmentRef: delegate.id, type: GrailsNameUtils.getPropertyName(delegate.class), attachmentRefClass:delegateClass)
         link.save()
 
-        //save the file on disk
-        def diskFile = new File(getFileDir(delegate),"${a.id + (a.ext?'.'+a.ext:'')}")
-        FileUtils.moveFile(file,diskFile)
-
         try {
-          delegate.onAddAttachment(a)
-        } catch (MissingMethodException e) {}
+            //save the file on disk
+            def diskFile = new File(getFileDir(delegate),"${a.id + (a.ext?'.'+a.ext:'')}")
+            FileUtils.moveFile(file,diskFile)
+
+            try {
+              delegate.onAddAttachment(a)
+            } catch (MissingMethodException e) {}
+
+        }catch(Exception e){
+            throw new AttachmentException(e.getMessage())
+        }
 
         return delegate
     }

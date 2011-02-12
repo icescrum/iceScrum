@@ -67,12 +67,6 @@ class AttachmentableGrailsPlugin {
               service.addAttachment(poster, delegate, file, originalName)
             }
 
-            /*addAttachments{ poster, List<File> files ->
-              files.each { file ->
-                addAttachment(poster, file)
-              }
-            }*/
-
             addAttachments{ poster, def tmpFiles ->
               tmpFiles.each { tmpFile ->
                 if (tmpFile instanceof File)

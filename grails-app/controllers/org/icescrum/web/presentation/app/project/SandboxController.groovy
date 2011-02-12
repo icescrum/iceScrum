@@ -35,6 +35,7 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.support.ProgressSupport
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugin.attachmentable.AttachmentException
 
 @Secured('stakeHolder() or inProduct()')
 class SandboxController {
@@ -187,6 +188,9 @@ class SandboxController {
       }
       pushOthers "${params.product}-${id}"
 
+    } catch (AttachmentException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException e) {
       e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
@@ -275,7 +279,10 @@ class SandboxController {
       redirect(action: params.referrer?.action ?: 'list',controller: params.referrer?.controller ?: controllerName, id:params.referrer?.id, params:[product:params.product])
       pushOthers "${params.product}-${params.referrer?.controller ?: id}${params.referrer?.id ? '-'+params.referrer.id : ''}"
 
-    } catch (RuntimeException e) {
+    } catch (AttachmentException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
+    }catch (RuntimeException e) {
       e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }

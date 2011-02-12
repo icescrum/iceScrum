@@ -153,4 +153,17 @@ class Product extends TimeBox {
       null
     }
   }
+
+  def getOwner() {
+      if (this.id){
+         def acl = aclUtilService.readAcl(this.getClass(), this.id)
+         def owner = User.withCriteria{
+             eq('username', acl.owner.principal)
+             maxResults(1)
+         }
+         owner
+      }else{
+         null
+      }
+  }
 }

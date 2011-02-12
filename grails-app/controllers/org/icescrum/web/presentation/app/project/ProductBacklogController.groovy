@@ -35,6 +35,7 @@ import org.icescrum.core.domain.Feature
 
 import org.icescrum.web.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
+import grails.plugin.attachmentable.AttachmentException
 
 @Secured('stakeHolder() or inProduct()')
 class ProductBacklogController {
@@ -210,6 +211,9 @@ class ProductBacklogController {
         redirect(action: params.referrer?.action ?: 'list',controller: params.referrer?.controller ?: controllerName, id:params.referrer?.id, params:[product:params.product])
         pushOthers "${params.product}-${params.referrer?.controller ?: id}${params.referrer?.id ? '-'+params.referrer.id : ''}"
       }
+    } catch (AttachmentException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException e) {
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }catch(IllegalStateException e){

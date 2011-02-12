@@ -35,6 +35,7 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
+import grails.plugin.attachmentable.AttachmentException
 
 @Secured('inProduct()')
 class SprintBacklogController {
@@ -231,6 +232,9 @@ class SprintBacklogController {
       }
       pushOthers "${params.product}-${id}-${sprint.id}"
 
+    } catch (AttachmentException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (IllegalStateException ise) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
@@ -361,6 +365,9 @@ class SprintBacklogController {
         redirect(action: 'index', params: [product: params.product, id: task.backlog.id])
       }
       pushOthers "${params.product}-${id}-${task.backlog.id}"
+    } catch (AttachmentException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (IllegalStateException ise) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {

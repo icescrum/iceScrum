@@ -33,6 +33,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.web.support.MenuBarSupport
 import org.icescrum.core.domain.User
 import org.icescrum.core.support.ProgressSupport
+import grails.plugin.attachmentable.AttachmentException
 
 @Secured('inProduct()')
 class FeatureController {
@@ -85,6 +86,9 @@ class FeatureController {
         redirect(action: 'list', params:[product:params.product])
       }
       pushOthers "${params.product}-${id}"
+    } catch (AttachmentException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     }catch(RuntimeException e){
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:feature)]] as JSON)
     }
@@ -161,6 +165,9 @@ class FeatureController {
         }
         pushOthers "${params.product}-${id}"
 
+      } catch (AttachmentException e) {
+        e.printStackTrace()
+        render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
       }catch(RuntimeException e){
         render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:feature)]] as JSON)
       }

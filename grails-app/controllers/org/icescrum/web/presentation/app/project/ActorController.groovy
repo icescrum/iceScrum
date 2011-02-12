@@ -32,6 +32,7 @@ import grails.converters.JSON
 import org.icescrum.core.domain.Story
 import org.icescrum.web.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
+import grails.plugin.attachmentable.AttachmentException
 
 @Secured('inProduct()')
 class ActorController {
@@ -104,6 +105,9 @@ class ActorController {
         redirect(action: 'list', params:[product:params.product])
       }
       pushOthers "${params.product}-${id}"
+    } catch (AttachmentException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException re) {
       re.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:actor)]] as JSON)
@@ -164,6 +168,9 @@ class ActorController {
       } else {
         redirect(action: 'list',params:[product:params.product])
       }
+    } catch (AttachmentException e) {
+      e.printStackTrace()
+      render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException re) {
       re.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:actor)]] as JSON)
