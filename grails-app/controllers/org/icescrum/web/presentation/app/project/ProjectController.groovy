@@ -91,13 +91,13 @@ class ProjectController {
     }
   }
 
-  @Secured('productOwner() or ScrumMaster()')
+  @Secured('productOwner() or scrumMaster()')
   def edit = {
     def currentProduct = Product.get(params.product)
     render(template: "dialogs/edit", model: [id: id, product: currentProduct])
   }
 
-  @Secured('productOwner() or ScrumMaster()')
+  @Secured('productOwner() or scrumMaster()')
   def editPractices ={
     def currentProduct = Product.get(params.product)
     def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
@@ -109,7 +109,7 @@ class ProjectController {
 
   }
 
-  @Secured('productOwner() or ScrumMaster()')
+  @Secured('productOwner() or scrumMaster()')
   def update = {
 
     def msg
@@ -224,7 +224,7 @@ class ProjectController {
           team = new Team()
           team.preferences = new TeamPreferences()
           team.properties = params.team
-          teamService.saveTeam team, params.userid
+          teamService.saveTeam team, params.userid, springSecurityService.principal?.id
         }
 
         productService.saveProduct(product, User.get(springSecurityService.principal.id))

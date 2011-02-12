@@ -59,7 +59,7 @@ class TeamService {
     return Team.list(cache: true)
   }
 
-  void saveTeam(Team team, memberIds) {
+  void saveTeam(Team team, memberIds, userid) {
     if (!team)
       throw new RuntimeException('is.team.error.not.exist')
 
@@ -69,7 +69,7 @@ class TeamService {
 
     else {
       securityService.secureDomain(team)
-      def currentUser = User.get(springSecurityService.principal.id)
+      def currentUser = User.get(userid)
       if (memberIds) {
         for (member in User.getAll(memberIds*.toLong())) {
           if (currentUser.id != member.id) {

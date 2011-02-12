@@ -25,7 +25,6 @@
 <g:setProvider library="jquery"/>
 <g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
 <g:set var="scrumMaster" value="${sec.access([expression:'scrumMaster()'], {true})}"/>
-<g:set var="owner" value="${sec.access([expression:'owner()'], {true})}"/>
 
 <div id="navigation">
   <div class="left">
@@ -115,7 +114,7 @@
                 </is:remoteDialog>
               </li>
             </g:if>
-            <g:if test="${owner && product}">
+            <g:if test="${sec.access(expression:'owner()',{true}) && product}">
               <li>
                  <a href="#" onClick="if (confirm('${message(code:'is.dialog.project.others.delete.button').encodeAsJavaScript()}')) {
                       ${g.remoteFunction(action:'delete',
@@ -209,7 +208,7 @@
                   </is:remoteDialog>
                 </li>
               </g:if>
-              <g:if test="${owner && team}">
+              <g:if test="${sec.access(expression:'owner()',{true}) && team}">
                 <li>
                    <a href="#" onClick="if (confirm('${message(code:'is.dialog.team.others.delete.button').encodeAsJavaScript()}')) {
                               ${g.remoteFunction(action:'delete',

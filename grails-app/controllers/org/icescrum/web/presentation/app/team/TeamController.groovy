@@ -72,7 +72,7 @@ class TeamController {
     def team = new Team(params.team)
     team.preferences = new TeamPreferences()
     try {
-      teamService.saveTeam team, params.searchid
+      teamService.saveTeam team, params.searchid, springSecurityService.principal?.id
       flash.message = "is.team.saved"
       render(text: jq.jquery(null, "document.location='${createLink(controller: 'team', params: [team: team.id])}';"))
     } catch (e) {
