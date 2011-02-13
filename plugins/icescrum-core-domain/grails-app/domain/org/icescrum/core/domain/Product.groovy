@@ -161,7 +161,7 @@ class Product extends TimeBox {
              eq('username', acl.owner.principal)
              maxResults(1)
          }
-         owner
+         owner[0]
       }else{
          null
       }
