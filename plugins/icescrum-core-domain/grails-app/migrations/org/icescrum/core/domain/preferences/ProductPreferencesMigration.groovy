@@ -32,6 +32,9 @@ class ProductPreferencesMigration {
           addNotNullConstraint(tableName:"icescrum2_product_preferences",columnName:'sprint_retrospective_hour',columnDataType:'varchar(255)',defaultNullValue:'15:00')
           addNotNullConstraint(tableName:"icescrum2_product_preferences",columnName:'sprint_review_hour',columnDataType:'varchar(255)',defaultNullValue:'14:00')
       }
+        changeSet(id:'product_preferences_constraint_hideweekend_column', author:'vbarrier') {
+          addNotNullConstraint(tableName:"icescrum2_product_preferences",columnName:'hide_weekend',columnDataType:'bit',defaultNullValue:"")
+      }
     }
 }
 

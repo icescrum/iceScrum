@@ -23,6 +23,9 @@ package org.icescrum.core.domain.preferences
 
 class UserPreferencesMigration {
 		static migration = {
+            changeSet(id:'user_preferences_constraint_hideDoneState', author:'vbarrier') {
+                  addNotNullConstraint(tableName:"icescrum2_user_preferences",columnName:'hide_done_state',columnDataType:'bit',defaultNullValue:"")
+              }
 		}
 	}
 
