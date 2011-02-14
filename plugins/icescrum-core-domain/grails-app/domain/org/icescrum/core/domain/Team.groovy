@@ -62,8 +62,8 @@ class Team {
     cache true
     preferences lazy: true
     table 'icescrum2_team'
-    members cache: true
     products cache: true
+    members lazy:false, cache:true
   }
 
   static members(Team team, params) {
