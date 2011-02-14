@@ -117,7 +117,6 @@
                 });
             }
             else {
-                debugger;
                 var self = $(this);
                 var originalWidth = self.width();
                 var contentHeight_init = params.contentWidth;

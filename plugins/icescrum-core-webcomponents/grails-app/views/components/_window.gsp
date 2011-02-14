@@ -108,7 +108,7 @@
     jQuery("#${type}-id-${id}").isWidget({
             windowable:${titleBarActions?.windowable},
             closeable:${titleBarActions?.closeable},
-            height:'${height}'
+            height:${height}
         }
     );
   </jq:jquery>

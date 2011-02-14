@@ -1164,7 +1164,7 @@ $.fn.isWindow.defaults = {
 
 $.fn.isWidget.defaults = {
     windowable:false,
-    scrollable:true,
+    height:true,
     closeable:true,
     onClose:null
 };
