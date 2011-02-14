@@ -382,8 +382,7 @@ class ProductBacklogController {
   }
 
   def print = {
-    def user = User.load(springSecurityService.principal.id)
-
+    def user = User.load(springSecurityService.principal?.id)
     def currentProduct = Product.get(params.product)
     def data = []
     def stories = Story.findAllByBacklogAndStateBetween(currentProduct, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
