@@ -533,7 +533,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
 }
 
 .members-medium .ui-selected {
-    background: white;
+    background: pink;
 }
 
 .panel-tab-button .selected {

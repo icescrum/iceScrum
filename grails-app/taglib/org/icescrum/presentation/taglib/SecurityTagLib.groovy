@@ -58,9 +58,6 @@ class SecurityTagLib {
         if (securityService.productOwner(attrs.product, SCH.context.authentication)) {
           res << message(code: 'is.role.productOwner')
         }
-        if (securityService.owner(null, SCH.context.authentication)) {
-          res << message(code: 'is.role.owner')
-        }
         if (!res && securityService.stakeHolder(attrs.product, SCH.context.authentication)) {
           res << message(code: 'is.role.stakeHolder')
         }
@@ -77,13 +74,6 @@ class SecurityTagLib {
         if (securityService.isProductOwner(attrs.product, auth)) {
           res << message(code: 'is.role.productOwner')
         }
-        if (attrs.product && securityService.isOwner(attrs.product, auth, Product)) {
-          res << message(code: 'is.role.owner')+' ('+message(code:'is.product')+')'
-        }
-        if (attrs.team && securityService.isOwner(attrs.team, auth, Team)) {
-          res << message(code: 'is.role.owner')+' ('+message(code:'is.team')+')'
-        }
-
       }
     }
     out << res.join(', ')
