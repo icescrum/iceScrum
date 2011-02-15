@@ -467,7 +467,7 @@ class SandboxController {
   }
 
   def print = {
-    def user = User.load(springSecurityService.principal.id)
+    def user = User.load(springSecurityService.principal?.id)
     def currentProduct = Product.get(params.product)
     def data = []
     def stories = Story.findAllByBacklogAndState(currentProduct, Story.STATE_SUGGESTED, [sort:'suggestedDate',order:'desc'])
