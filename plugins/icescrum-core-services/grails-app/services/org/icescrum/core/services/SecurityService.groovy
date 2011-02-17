@@ -359,7 +359,7 @@ class SecurityService {
     if (!res) {
       def param = SRH.request.getParameter(PRODUCT_URL_ATTR)
       if (!param) {
-        def mappingInfo = grailsUrlMappingsHolder.match(SRH.request.requestURI.replaceFirst(SRH.request.contextPath, ''))
+        def mappingInfo = grailsUrlMappingsHolder.match(SRH.request.forwardURI.replaceFirst(SRH.request.contextPath, ''))
         res = mappingInfo?.parameters?.getAt(PRODUCT_URL_ATTR)?.decodeProductKey()?.toLong()
       } else {
         res = param?.decodeProductKey()?.toLong()
@@ -375,7 +375,7 @@ class SecurityService {
     if (!res) {
       def param = SRH.request.getParameter(TEAM_URL_ATTR)
       if (!param) {
-        def mappingInfo = grailsUrlMappingsHolder.match(SRH.request.requestURI.replaceFirst(SRH.request.contextPath, ''))
+        def mappingInfo = grailsUrlMappingsHolder.match(SRH.request.forwardURI.replaceFirst(SRH.request.contextPath, ''))
         res = mappingInfo?.parameters?.getAt(TEAM_URL_ATTR)?.toLong()
       } else {
         res = param?.toLong()

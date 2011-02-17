@@ -216,10 +216,6 @@ springcache {
   }
 }
 
-beans {
-    springcacheFilter.keyGenerator = new IceScrumKeyGenerator()
-}
-
 /*
 
 SECURITY SECTION

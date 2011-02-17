@@ -55,7 +55,7 @@ grails.project.dependency.resolution = {
     plugins {
       compile ':commentable:0.7.5'
       compile ':followable:0.3'
-      compile ':autobase:0.10.0'
+      compile ':autobase:0.11.0'
       compile ':jdbc-pool:0.3'
     }
 }

@@ -23,12 +23,11 @@ package org.icescrum.web.cache
 import grails.plugin.springcache.web.key.AbstractKeyGenerator
 import grails.plugin.springcache.key.CacheKeyBuilder
 import grails.plugin.springcache.web.FilterContext
+import grails.plugin.springcache.web.ContentCacheParameters
 
 class IceScrumKeyGenerator extends AbstractKeyGenerator{
 
-  @Override
-  protected void generateKeyInternal(CacheKeyBuilder builder, FilterContext context) {
-
+    @Override protected void generateKeyInternal(CacheKeyBuilder builder, ContentCacheParameters context) {
         def currentLocale = context.request.session?.getAttribute("org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE")
 		currentLocale = currentLocale?currentLocale:context.request?.getLocale()
 
@@ -41,5 +40,5 @@ class IceScrumKeyGenerator extends AbstractKeyGenerator{
 				builder << entry
 			}
 		}
-  }
+    }
 }
