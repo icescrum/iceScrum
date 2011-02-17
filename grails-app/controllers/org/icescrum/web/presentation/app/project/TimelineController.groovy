@@ -228,11 +228,11 @@ class TimelineController {
       push "${params.product}-releasePlan"
 
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
 
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:release)]] as JSON)
     }
   }
@@ -555,7 +555,7 @@ class TimelineController {
       )
       session.progress?.completeProgress(message(code: 'is.report.complete'))
       } catch(Exception e){
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         session.progress.progressError(message(code: 'is.report.error'))
       }
     }  else if(params.status){

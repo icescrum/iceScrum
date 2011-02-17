@@ -300,7 +300,7 @@ class TeamService {
         return t
       }
     } catch (Exception e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       progress?.progressError(g.message(code: 'is.parse.error', args: [g.message(code: 'is.team')]))
       throw new RuntimeException(e)
     }

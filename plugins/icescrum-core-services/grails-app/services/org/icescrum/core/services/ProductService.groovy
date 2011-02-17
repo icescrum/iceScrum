@@ -411,7 +411,7 @@ class ProductService {
 
       return p
     } catch (Exception e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       progress?.progressError(g.message(code: 'is.parse.error', args: [g.message(code: 'is.product')]))
       throw new RuntimeException(e)
     }
@@ -433,7 +433,7 @@ class ProductService {
     try {
       p = this.unMarshallProduct(prod, progress)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       progress?.progressError(g.message(code: 'is.parse.error', args: [g.message(code: 'is.product')]))
       return
     }
@@ -457,7 +457,7 @@ class ProductService {
         progress?.updateProgress(100, g.message(code: 'is.validate', args: [g.message(code: 'is.product')]))
       }
     } catch (Exception e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       progress?.progressError(g.message(code: 'is.validate.error', args: [g.message(code: 'is.product')]))
     }
   }

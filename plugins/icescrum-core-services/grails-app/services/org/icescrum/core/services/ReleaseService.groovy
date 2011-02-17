@@ -353,7 +353,7 @@ class ReleaseService {
       }
       return r  
     }catch (Exception e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       progress?.progressError(g.message(code:'is.parse.error', args:[g.message(code:'is.sprint')]))
       throw new RuntimeException(e)
     }

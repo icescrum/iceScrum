@@ -296,10 +296,10 @@ class BacklogElementController {
       pushOthers "${params.product}-sandbox"
       pushOthers "${params.product}-${id}-${params.id}"
     } catch (IllegalStateException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
     }
   }
@@ -390,7 +390,7 @@ class BacklogElementController {
       def followers = story.getTotalFollowers()
       render(status: 200, contentType: 'application/json', text: [followers:followers+" "+message(code:'is.followable.followers',args:[followers > 1 ? 's' : ''])] as JSON)
     }catch(FollowException e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.follow.error')]] as JSON)
     }
     pushOthers "${params.product}-${id}-${story.id}-followers"
@@ -414,7 +414,7 @@ class BacklogElementController {
       def followers = story.getTotalFollowers()
       render(status: 200, contentType: 'application/json', text: [followers:followers+" "+message(code:'is.followable.followers',args:[followers > 1 ? 's' : ''])] as JSON)
     }catch(FollowException e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.unfollow.error')]] as JSON)
     }
     pushOthers "${params.product}-${id}-${story.id}-followers"

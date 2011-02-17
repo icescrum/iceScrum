@@ -155,9 +155,12 @@ grails.spring.bean.packages = []
 grails.views.javascript.library = 'jquery'
 
 
+icescrum.debug.enable=true
+
 environments {
   production {
     grails.config.locations = ["classpath:config.properties"]
+    icescrum.debug.enable = false
   }
 }
 // log4j configuration
@@ -181,7 +184,9 @@ log4j = {
 
   warn 'org.mortbay.log'
 
-  //debug 'grails.app.service.org.icescrum.core.services'
+  if (icescrum.debug.enable){
+      debug 'grails.app.service.org.icescrum'
+  }
 
   appenders {
     appender new DailyRollingFileAppender(name: "icescrumFileLog",

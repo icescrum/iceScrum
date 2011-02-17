@@ -60,7 +60,7 @@ class NotificationEmailService implements ApplicationListener<IceScrumStoryEvent
 
       }
     }catch(Exception expt){
-      expt.printStackTrace()
+      if (log.debugEnabled) expt.printStackTrace()
     }
 
   }

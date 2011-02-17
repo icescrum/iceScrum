@@ -94,7 +94,7 @@ class UserController {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
       return
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: user)]] as JSON)
       return
     }
@@ -158,7 +158,7 @@ class UserController {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
       return
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       if (re.getMessage())
         render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: re.getMessage())]] as JSON)
       else
@@ -293,16 +293,16 @@ class UserController {
         userService.resetPassword(user)
       }catch(MailException e){
         status.setRollbackOnly()
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:'is.mail.error')]] as JSON)
         return
       }catch(RuntimeException re){
-        re.printStackTrace()
+        if (log.debugEnabled) re.printStackTrace()
         render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:re.getMessage())]] as JSON)
         return
       }catch(Exception e){
         status.setRollbackOnly()
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:'is.mail.error')]] as JSON)
         return
       }
@@ -322,7 +322,7 @@ class UserController {
       userService.changeMenuOrder(currentUser, id, position, params.boolean('hidden')?:false)
       render(status: 200)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code: 'is.user.preferences.error.menuBar')]] as JSON)
     }
   }

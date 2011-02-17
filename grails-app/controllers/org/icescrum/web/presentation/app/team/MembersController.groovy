@@ -140,7 +140,7 @@ class MembersController {
       flash.notice = [text: message(code: 'is.team.saved'), type: 'notice']
       render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
     } catch (e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.denied')]] as JSON)
     }
   }
@@ -158,7 +158,7 @@ class MembersController {
       redirect action: 'browse', params: [product: params.product]
       //pushOthers "$params.product-members"
     } catch (e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.denied')]] as JSON)
     }
   }
@@ -181,7 +181,7 @@ class MembersController {
       redirect action: 'browse', params: product ? [product: params.product] : [team: params.team]
       //pushOthers "$params.product-members"
     } catch (e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.denied')]] as JSON)
     }
   }

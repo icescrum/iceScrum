@@ -76,7 +76,7 @@ class TeamController {
       flash.message = "is.team.saved"
       render(text: jq.jquery(null, "document.location='${createLink(controller: 'team', params: [team: team.id])}';"))
     } catch (e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
     }
 
@@ -107,7 +107,7 @@ class TeamController {
       render(status: 400, contentType: 'application/json', text: message(code: ise.getMessage()))
       return
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: currentTeam)]] as JSON)
       return
     }
@@ -170,7 +170,7 @@ class TeamController {
       }
       render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.deleted')]] as JSON)
     }
   }
@@ -254,7 +254,7 @@ class TeamController {
       flash.message = "is.team.saved"
       render(text: jq.jquery(null, "document.location='${createLink(controller: 'team', params: [team: team.id])}';"))
     } catch (e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.exist')]] as JSON)
     }
   }

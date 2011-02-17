@@ -145,7 +145,7 @@ class ProjectController {
       render(status: 400, contentType: 'application/json', text: message(code: ise.getMessage()))
       return
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: currentProduct)]] as JSON)
       return
     }
@@ -248,7 +248,7 @@ class ProjectController {
         return
       } catch (RuntimeException re) {
         status.setRollbackOnly()
-        re.printStackTrace()
+        if (log.debugEnabled) re.printStackTrace()
         render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: product) + renderErrors(bean: team)]] as JSON)
         return
       }
@@ -409,7 +409,7 @@ class ProjectController {
         render(contentType: 'text/xml', template: '/export/xml/product', model: [object: product, deep: true, root: true])
         session.progress?.completeProgress(message(code: 'is.export.complete'))
       } catch (Exception e) {
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         session.progress.progressError(message(code: 'is.export.error'))
       }
     } else {
@@ -549,7 +549,7 @@ class ProjectController {
       }
       catch (RuntimeException e) {
         status.setRollbackOnly()
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.import.error')]] as JSON)
         return
       }
@@ -698,7 +698,7 @@ class ProjectController {
         )
         session.progress?.completeProgress(message(code: 'is.report.complete'))
       } catch (Exception e) {
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         session.progress.progressError(message(code: 'is.report.error'))
       }
     } else if (params.status) {
@@ -722,7 +722,7 @@ class ProjectController {
       pushOthers "${params.product}-product-delete"
       render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
     }
   }

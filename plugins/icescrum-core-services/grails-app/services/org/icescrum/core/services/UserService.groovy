@@ -84,7 +84,7 @@ class UserService {
       }
     }
     catch(RuntimeException e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       throw new RuntimeException('is.convert.image.error')
     }
 
@@ -207,7 +207,7 @@ class UserService {
       }
       return u
     }catch(Exception e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       throw new RuntimeException(e)
     }
   }

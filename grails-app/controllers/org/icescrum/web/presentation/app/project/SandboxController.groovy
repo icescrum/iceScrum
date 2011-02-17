@@ -109,7 +109,7 @@ class SandboxController {
       } catch (IllegalStateException e) {
         render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
       } catch (RuntimeException e) {
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:e.getMessage())]] as JSON)
       }
     }else if(params.task || params.int('acceptAs') == 2){
@@ -124,7 +124,7 @@ class SandboxController {
       } catch (IllegalStateException e) {
         render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
       } catch (RuntimeException e) {
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:e.getMessage())]] as JSON)
       }
     }
@@ -189,10 +189,10 @@ class SandboxController {
       pushOthers "${params.product}-${id}"
 
     } catch (AttachmentException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }
   }
@@ -280,10 +280,10 @@ class SandboxController {
       pushOthers "${params.product}-${params.referrer?.controller ?: id}${params.referrer?.id ? '-'+params.referrer.id : ''}"
 
     } catch (AttachmentException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     }catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }
   }
@@ -311,7 +311,7 @@ class SandboxController {
       pushOthers "${params.product}-${id}"
       
     } catch (Exception e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
     }
   }
@@ -443,7 +443,7 @@ class SandboxController {
       pushOthers "${params.product}-${id}"
       redirect(action: 'list', params:[product:params.product])
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }
   }
@@ -501,7 +501,7 @@ class SandboxController {
                       _name:fileName])
         session.progress?.completeProgress(message(code: 'is.report.complete'))
       } catch (Exception e) {
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         session.progress.progressError(message(code: 'is.report.error'))
       }
     } else if(params.status){
@@ -562,7 +562,7 @@ class SandboxController {
       }
       pushOthers "${params.product}-${id}"
     }catch(RuntimeException e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text:message(code:'is.story.error.not.cloned')]] as JSON)
     }
   }

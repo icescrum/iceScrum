@@ -243,7 +243,6 @@ class ScrumOSController {
   }
 
   def reportError = {
-    assert params.stackError
     try {
       notificationEmailService.send([
               to:grailsApplication.config.icescrum.alerts.errors.to,

@@ -188,7 +188,7 @@ class FeatureService {
        )
       return f
     }catch (Exception e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       throw new RuntimeException(e)
     }
   }

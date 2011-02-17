@@ -233,12 +233,12 @@ class SprintBacklogController {
       pushOthers "${params.product}-${id}-${sprint.id}"
 
     } catch (AttachmentException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (IllegalStateException ise) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:task)]] as JSON)
     }
   }
@@ -303,7 +303,7 @@ class SprintBacklogController {
     } catch (IllegalStateException ise) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:task)]] as JSON)
     }
   }
@@ -366,12 +366,12 @@ class SprintBacklogController {
       }
       pushOthers "${params.product}-${id}-${task.backlog.id}"
     } catch (AttachmentException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (IllegalStateException ise) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:task)]] as JSON)
     }
   }
@@ -474,7 +474,7 @@ class SprintBacklogController {
       redirect(action: 'index', params: [product: params.product, id: task.backlog.id])
       pushOthers "${params.product}-${id}-${task.backlog.id}"
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:task)]] as JSON)
     }
   }
@@ -498,10 +498,10 @@ class SprintBacklogController {
       redirect(action: 'index', params: [product: params.product, id: task.backlog.id])
       pushOthers "${params.product}-${id}-${task.backlog.id}"
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:task)]] as JSON)
     }
   }
@@ -525,10 +525,10 @@ class SprintBacklogController {
       redirect(action: 'index', params: [product: params.product, id: parentSprintId])
       pushOthers "${params.product}-${id}-${parentSprintId}"
       } catch (IllegalStateException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: e.message]] as JSON)
     }
    }
@@ -548,10 +548,10 @@ class SprintBacklogController {
       redirect(action: 'index', params: [product: params.product, id: task.backlog.id])
       pushOthers "${params.product}-${id}-${task.backlog.id}"
       } catch (IllegalStateException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     }
    }
@@ -602,7 +602,7 @@ class SprintBacklogController {
     } catch (IllegalStateException ise) {
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:task)]] as JSON)
     }
   }
@@ -646,10 +646,10 @@ class SprintBacklogController {
       push "${params.product}-timeline"
       push "${params.product}-releasePlan-${sprint.parentRelease.id}"
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:sprint)]] as JSON)
     }
   }
@@ -691,10 +691,10 @@ class SprintBacklogController {
       push "${params.product}-timeline"
       push "${params.product}-releasePlan-${sprint.parentRelease.id}"
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:sprint)]] as JSON)
     }
   }
@@ -878,10 +878,10 @@ class SprintBacklogController {
       push "${params.product}-productBacklog"
       push "${params.product}-releasePlan-${parentSprint.parentRelease.id}"
     } catch (IllegalStateException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e)]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }
   }
@@ -907,10 +907,10 @@ class SprintBacklogController {
       pushOthers "${params.product}-${id}-${story.parentSprint.id}"
       pushOthers "${params.product}-releasePlan-${story.parentSprint.parentRelease.id}"
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }
   }
@@ -936,10 +936,10 @@ class SprintBacklogController {
       pushOthers "${params.product}-${id}-${story.parentSprint.id}"
       pushOthers "${params.product}-releasePlan-${story.parentSprint.parentRelease.id}"
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }
   }
@@ -1097,10 +1097,10 @@ class SprintBacklogController {
     try {
       taskService.updateTask(task, currentUserInstance, product)
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:task)]] as JSON)
     }
     pushOthers "${params.product}-${id}-${task.backlog.id}"
@@ -1148,7 +1148,7 @@ class SprintBacklogController {
     }catch(IllegalStateException ise){
       render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
     }catch(RuntimeException e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:sprint)]] as JSON)
     }
   }
@@ -1257,7 +1257,7 @@ class SprintBacklogController {
       )
       session.progress?.completeProgress(message(code: 'is.report.complete'))
       } catch(Exception e){
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         session.progress.progressError(message(code: 'is.report.error'))
       }
     }  else if(params.status){

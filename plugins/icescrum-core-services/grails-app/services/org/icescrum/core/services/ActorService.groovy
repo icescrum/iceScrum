@@ -75,7 +75,7 @@ class ActorService {
        )
       return a
     }catch (Exception e){
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       throw new RuntimeException(e)
     }
   }

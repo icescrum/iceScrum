@@ -106,10 +106,10 @@ class ActorController {
       }
       pushOthers "${params.product}-${id}"
     } catch (AttachmentException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:actor)]] as JSON)
     }                                                           
   }
@@ -169,10 +169,10 @@ class ActorController {
         redirect(action: 'list',params:[product:params.product])
       }
     } catch (AttachmentException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException re) {
-      re.printStackTrace()
+      if (log.debugEnabled) re.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:actor)]] as JSON)
     }
   }
@@ -340,7 +340,7 @@ class ActorController {
 
         session.progress?.completeProgress(message(code: 'is.report.complete'))
       } catch (Exception e) {
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         session.progress.progressError(message(code: 'is.report.error'))
       }
     } else if(params.status){

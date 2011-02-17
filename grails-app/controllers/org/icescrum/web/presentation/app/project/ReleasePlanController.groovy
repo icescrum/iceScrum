@@ -405,10 +405,10 @@ class ReleasePlanController {
       push "${params.product}-productBacklog"
       push "${params.product}-sprintBacklog-${sprint.id}"
     } catch (IllegalStateException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text:message(code: e)]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }
   }
@@ -605,7 +605,7 @@ class ReleasePlanController {
     } catch (IllegalStateException ise) {
       render(status: 400, contentType:'application/json', text: [notice: [text:message(code: ise.getMessage())]] as JSON)
     } catch(RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:sprint)]] as JSON)
     }
   }
@@ -630,7 +630,7 @@ class ReleasePlanController {
       pushOthers "${params.product}-${id}-${story.parentSprint.parentRelease.id}"
       pushOthers "${params.product}-sprintBacklog-${story.parentSprint}"
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
@@ -658,10 +658,10 @@ class ReleasePlanController {
       pushOthers "${params.product}-${id}-${story.parentSprint.parentRelease.id}"
       pushOthers "${params.product}-sprintBacklog-${story.parentSprint}"
     } catch (IllegalStateException ise) {
-      ise.printStackTrace()
+      if (log.debugEnabled) ise.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
     }
   }

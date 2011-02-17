@@ -212,7 +212,7 @@ class ProductBacklogController {
         pushOthers "${params.product}-${params.referrer?.controller ?: id}${params.referrer?.id ? '-'+params.referrer.id : ''}"
       }
     } catch (AttachmentException e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
       render(status: 400, contentType:'application/json', text: [notice: [text: message(code:e.getMessage())]] as JSON)
     } catch (RuntimeException e) {
       render(status: 400, contentType:'application/json', text: [notice: [text: renderErrors(bean:story)]] as JSON)
@@ -415,7 +415,7 @@ class ProductBacklogController {
                 params: [locale:user.preferences.language,_format:params.format,_file:'backlog',_name:fileName])
         session.progress?.completeProgress(message(code: 'is.report.complete'))
       } catch (Exception e) {
-        e.printStackTrace()
+        if (log.debugEnabled) e.printStackTrace()
         session.progress.progressError(message(code: 'is.report.error'))
       }
     } else if(params.status){

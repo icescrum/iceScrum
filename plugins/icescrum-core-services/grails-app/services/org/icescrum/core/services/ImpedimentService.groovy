@@ -67,7 +67,7 @@ class ImpedimentService {
       if (!_impediment.save(flush:true))
         return ERROR
     } catch(Exception e) {
-      e.printStackTrace()
+      if (log.debugEnabled) e.printStackTrace()
     }
     return VALIDATE
   }
