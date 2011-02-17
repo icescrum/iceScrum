@@ -406,7 +406,7 @@ class ProjectController {
         session.progress = new ProgressSupport()
         session.progress.updateProgress(0, message(code: 'is.export.start'))
         response.setHeader "Content-disposition", "attachment; filename=${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}.xml"
-        render(contentType: 'text/xml', template: '/export/xml/product', model: [object: product, deep: true, root: true])
+        render(contentType: 'text/xml', template: '/export/xml/product', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
         session.progress?.completeProgress(message(code: 'is.export.complete'))
       } catch (Exception e) {
         if (log.debugEnabled) e.printStackTrace()

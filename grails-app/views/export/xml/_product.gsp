@@ -26,7 +26,7 @@
           cdata="true"/>
   <is:propertyAsXML
           object ="preferences"
-          name="['newTeams','lockPo','hidden','url','noEstimation','autoDoneStory','displayRecurrentTasks','displayUrgentTasks','assignOnCreateTask','assignOnBeginTask','autoCreateTaskOnEmptyStory','limitUrgentTasks','estimatedSprintsDuration','hideWeekend']"/>
+          name="['newTeams','lockPo','hidden','url','noEstimation','autoDoneStory','displayRecurrentTasks','displayUrgentTasks','assignOnCreateTask','assignOnBeginTask','autoCreateTaskOnEmptyStory','limitUrgentTasks','estimatedSprintsDuration','hideWeekend','sprintPlanningHour','releasePlanningHour','dailyMeetingHour','sprintReviewHour','sprintRetrospectiveHour']"/>
   <% session.progress?.updateProgress(10,message(code:'is.export.inprogress', args:[message(code:'is.team')])) %>
   <is:listAsXML
           name="teams"

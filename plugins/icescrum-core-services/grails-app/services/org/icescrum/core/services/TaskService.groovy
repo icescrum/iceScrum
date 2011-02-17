@@ -478,6 +478,7 @@ class TaskService {
               inProgressDate:inProgressDate,
               state:task.state.text().toInteger(),
               creationDate:new SimpleDateFormat('yyyy-MM-dd HH:mm:ss').parse(task.creationDate.text()),
+              blocked:task.blocked.text()?.toBoolean()?:false
       )
 
       if (task.creator?.@id != '' && p){

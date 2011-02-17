@@ -351,7 +351,12 @@ class ProductService {
               estimatedSprintsDuration: product.preferences.estimatedSprintsDuration.text().toInteger(),
               displayUrgentTasks: product.preferences.displayUrgentTasks.text().toBoolean(),
               displayRecurrentTasks: product.preferences.displayRecurrentTasks.text().toBoolean(),
-              hideWeekend: product.preferences.hideWeekend.text()?.toBoolean()?:false
+              hideWeekend: product.preferences.hideWeekend.text()?.toBoolean()?:false,
+              releasePlanningHour:product.preferences.releasePlanningHour.text()?:"9:00",
+              sprintPlanningHour:product.preferences.sprintPlanningHour.text()?:"9:00",
+              dailyMeetingHour:product.preferences.dailyMeetingHour.text()?:"11:00",
+              sprintReviewHour:product.preferences.sprintReviewHour.text()?:"14:00",
+              sprintRetrospectiveHour:product.preferences.sprintRetrospectiveHour.text()?:"15:00"
       )
 
       Product pExist = (Product) Product.findByPkey(p.pkey)
