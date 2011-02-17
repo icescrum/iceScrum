@@ -20,9 +20,9 @@
 - Vincent Barrier (vincent.barrier@icescrum.com)
 --}%<is:objectAsXML object ="${object}" node="product" root="${root}">
   <is:propertyAsXML
-          name="['name','pkey','planningPokerGameType','startDate','endDate']"/>
+          name="['pkey','planningPokerGameType','startDate','endDate']"/>
   <is:propertyAsXML
-          name="['description']"
+          name="['name','description']"
           cdata="true"/>
   <is:propertyAsXML
           object ="preferences"

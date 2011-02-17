@@ -19,8 +19,8 @@
 -
 - Vincent Barrier (vincent.barrier@icescrum.com)
 --}%<is:objectAsXML object ="${object}" node="team" indentLevel="${indentLevel}" root="${root}">
-  <is:propertyAsXML name="['name','velocity','dateCreated']"/>
-  <is:propertyAsXML name="['description']" cdata="true"/>
+  <is:propertyAsXML name="['velocity','dateCreated']"/>
+  <is:propertyAsXML name="['name','description']" cdata="true"/>
     <is:propertyAsXML
             object ="preferences"
             name="['allowNewMembers','allowRoleChange']"/>
