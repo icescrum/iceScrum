@@ -46,7 +46,7 @@ $(document).ready(function($) {
     $.icescrum = {
 
         defaults:{
-            debug:true,
+            debug:false,
             baseUrlProduct:null,
             baseUrl:null,
             grailsServer:null,
