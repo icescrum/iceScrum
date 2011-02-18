@@ -35,7 +35,7 @@
                 id="submitForm" type="submitToRemote"
                 url="[controller:'backlogElement', action:'addComment', params:[product:params.product]]"
                 update="${update ?: 'activities-wrapper'}"
-                onSuccess="jQuery('#commentBody').text('');"
+                onSuccess="jQuery('#commentBody').text('');jQuery('#start-follow').hide();jQuery('#stop-follow').show();"
                 value="${message(code:'is.ui.backlogelement.comment.post.button')}"
                 history="false"/>
       </g:if>
