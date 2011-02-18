@@ -54,7 +54,7 @@ class ProductPreferences {
     String sprintPlanningHour = "9:00"
     String dailyMeetingHour = "11:00"
     String sprintReviewHour = "14:00"
-    String sprintRetrospectiveHour = "15:00"
+    String sprintRetrospectiveHour = "16:00"
 
     static constraints = {
       url(nullable:true,url:true)
