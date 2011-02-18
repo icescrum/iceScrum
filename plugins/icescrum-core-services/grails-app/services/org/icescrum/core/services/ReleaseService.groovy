@@ -188,7 +188,7 @@ class ReleaseService {
 
     _release.endDate = endDate
     _release.startDate = startDate
-    if (!_release.save())
+    if (!_release.save(flush:true))
       throw new RuntimeException()
     publishEvent(new IceScrumReleaseEvent(_release,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }

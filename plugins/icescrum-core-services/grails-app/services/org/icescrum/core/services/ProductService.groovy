@@ -180,7 +180,7 @@ class ProductService {
     if (!_product.planningPokerGameType in [0, 1]) {
       throw new IllegalStateException("is.product.error.no.estimationSuite")
     }
-    if (!_product.save()) {
+    if (!_product.save(flush:true)) {
       throw new RuntimeException()
     }
     removeInCache(SecurityService.CACHE_STAKEHOLDER, _product.id)

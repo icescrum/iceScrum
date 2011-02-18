@@ -88,7 +88,7 @@ class UserService {
       throw new RuntimeException('is.convert.image.error')
     }
 
-    if (!_user.save())
+    if (!_user.save(flush:true))
       throw new RuntimeException()
     publishEvent(new IceScrumUserEvent(_user,this.class,_user,IceScrumEvent.EVENT_UPDATED))
   }

@@ -93,7 +93,7 @@ class TeamService {
       throw new IllegalStateException("is.product.error.no.name")
     }
 
-    if (!_team.save()) {
+    if (!_team.save(flush:true)) {
       throw new RuntimeException()
     }
     publishEvent(new IceScrumTeamEvent(_team,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))

@@ -54,7 +54,7 @@ class ActorService {
 
   void updateActor(Actor act) {
     act.name = act.name?.trim()
-    if (!act.save())
+    if (!act.save(flush:true))
       throw new RuntimeException()
     publishEvent(new IceScrumActorEvent(act,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }

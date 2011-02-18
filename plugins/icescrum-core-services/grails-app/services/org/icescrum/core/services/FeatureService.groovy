@@ -93,7 +93,7 @@ class FeatureService {
   void updateFeature(Feature _feature, Product p) {
     _feature.name = _feature.name.trim()
 
-    if (!_feature.save()){
+    if (!_feature.save(flush:true)){
       throw new RuntimeException()
     }
     publishEvent(new IceScrumFeatureEvent(_feature,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))

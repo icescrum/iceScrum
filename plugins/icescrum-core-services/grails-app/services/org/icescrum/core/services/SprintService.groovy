@@ -149,7 +149,7 @@ class SprintService {
     sprint.startDate = startDate
     sprint.endDate = endDate
     // Finally save the sprint
-    if(!sprint.save())
+    if(!sprint.save(flush:true))
       throw new RuntimeException()
     publishEvent(new IceScrumSprintEvent(sprint,this.class,User.get(springSecurityService.principal?.id),IceScrumEvent.EVENT_UPDATED))
   }
