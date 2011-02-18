@@ -37,7 +37,7 @@ class ScrumTagLib {
     try {
       pageScope.menu = ''
     } catch (e) {}
-    params.title = is.truncated([size:17,encodedHTML:true],attrs.title)
+    params.title = is.truncated([size:17,encodedHTML:false],attrs.title)
     params.content = body()
     params.type = attrs.type ? attrs.type : ""
     params.color = params.color ?: "yellow"
