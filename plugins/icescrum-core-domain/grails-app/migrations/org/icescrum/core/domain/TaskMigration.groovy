@@ -25,7 +25,8 @@ class TaskMigration {
     static migration = {
             // List of changesets
             changeSet(id:'task_constraint_block_column', author:'vbarrier') {
-                addNotNullConstraint(tableName:"icescrum2_task",columnName:'blocked',columnDataType:'bit',defaultNullValue:"")
+                sql('UPDATE icescrum2_task set blocked = false WHERE blocked is NULL')
+                addNotNullConstraint(tableName:"icescrum2_task",columnName:'blocked',columnDataType:'BOOLEAN')
             }
     }
 }
