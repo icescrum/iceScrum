@@ -356,7 +356,7 @@ class ProductService {
               sprintPlanningHour:product.preferences.sprintPlanningHour.text()?:"9:00",
               dailyMeetingHour:product.preferences.dailyMeetingHour.text()?:"11:00",
               sprintReviewHour:product.preferences.sprintReviewHour.text()?:"14:00",
-              sprintRetrospectiveHour:product.preferences.sprintRetrospectiveHour.text()?:"15:00"
+              sprintRetrospectiveHour:product.preferences.sprintRetrospectiveHour.text()?:"16:00"
       )
 
       Product pExist = (Product) Product.findByPkey(p.pkey)
