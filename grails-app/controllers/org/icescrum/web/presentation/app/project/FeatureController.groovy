@@ -395,7 +395,7 @@ class FeatureController {
         session.progress = new ProgressSupport()
         session.progress.updateProgress(99,message(code:'is.report.processing'))
         def model = [[product:currentProduct.name,features:data?:null]]
-        def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'features'+'-'+(g.formatDate(value:new Date(),formatName:'is.date.file'))
+        def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'features'+'-'+(g.formatDate(formatName:'is.date.file'))
         chain(controller: 'jasper',
                 action: 'index',
                 model: [data: model],

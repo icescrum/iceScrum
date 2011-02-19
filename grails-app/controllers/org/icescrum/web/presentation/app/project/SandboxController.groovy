@@ -491,7 +491,7 @@ class SandboxController {
               session.progress.updateProgress(99,message(code:'is.report.processing'))
 
       def model = [[product:currentProduct.name,stories:data?:null]]
-      def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'sandbox'+'-'+(g.formatDate(value:new Date(),formatName:'is.date.file'))
+      def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'sandbox'+'-'+(g.formatDate(formatName:'is.date.file'))
       chain(controller: 'jasper',
               action: 'index',
               model: [data: model],

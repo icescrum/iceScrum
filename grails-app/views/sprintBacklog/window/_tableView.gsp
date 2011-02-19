@@ -66,8 +66,8 @@
           <is:tableColumn editable="[type:'richarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'notes']">${task.notes}</is:tableColumn>
 
           <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
-          <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',value:task.inProgressDate):''}</is:tableColumn>
-          <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',value:task.doneDate):''}</is:tableColumn>
+          <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',date:task.inProgressDate):''}</is:tableColumn>
+          <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',date:task.doneDate):''}</is:tableColumn>
         </is:tableRows>
       </is:tableGroup>
 
@@ -98,8 +98,8 @@
           <is:tableColumn editable="[type:'richarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'notes']">${task.notes}</is:tableColumn>
 
           <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
-          <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',value:task.inProgressDate):''}</is:tableColumn>
-          <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',value:task.doneDate):''}</is:tableColumn>
+          <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',date:task.inProgressDate):''}</is:tableColumn>
+          <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',date:task.doneDate):''}</is:tableColumn>
         </is:tableRows>
       </is:tableGroup>
 
@@ -135,8 +135,8 @@
           <is:tableColumn editable="[type:'richarea',disabled:!(disableEdit),name:'notes']">${task.notes}</is:tableColumn>
 
           <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
-          <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',value:task.inProgressDate):''}</is:tableColumn>
-          <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',value:task.doneDate):''}</is:tableColumn>
+          <is:tableColumn>${task.inProgressDate?g.formatDate(formatName:'is.date.format.short',date:task.inProgressDate):''}</is:tableColumn>
+          <is:tableColumn>${task.doneDate?g.formatDate(formatName:'is.date.format.short',date:task.doneDate):''}</is:tableColumn>
         </is:tableRows>
       </is:tableGroup>
 

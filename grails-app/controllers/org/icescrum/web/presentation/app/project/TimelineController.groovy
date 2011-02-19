@@ -540,7 +540,7 @@ class TimelineController {
       session.progress = new ProgressSupport()
       session.progress.updateProgress(99,message(code:'is.report.processing'))
       try {
-     def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+(chart ?: 'timeline')+'-'+(g.formatDate(value:new Date(),formatName:'is.date.file'))
+     def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+(chart ?: 'timeline')+'-'+(g.formatDate(formatName:'is.date.file'))
       chain(controller: 'jasper',
               action: 'index',
               model: [data: values],

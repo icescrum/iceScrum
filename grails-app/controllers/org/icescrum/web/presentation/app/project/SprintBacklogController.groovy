@@ -1241,7 +1241,7 @@ class SprintBacklogController {
     } else if(params.get) {
       session.progress = new ProgressSupport()
       session.progress.updateProgress(99,message(code:'is.report.processing'))
-      def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+(chart ?: 'sprintBacklog')+'-'+(g.formatDate(value:new Date(),formatName:'is.date.file'))
+      def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+(chart ?: 'sprintBacklog')+'-'+(g.formatDate(formatName:'is.date.file'))
 
       try {
       chain(controller: 'jasper',
