@@ -80,3 +80,4 @@
         update="window-content-${id}"
         value="${message(code:'is.ui.productBacklog.menu.delete')}"/>
 </is:postitMenuItem>
+<entry:point id="${id}-${actionName}-postitMenu" model="[story:story]"/>

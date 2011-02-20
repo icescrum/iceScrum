@@ -91,5 +91,6 @@
   </g:if>
 </jq:jquery>
 <r:layoutResources />
+<entry:point id="icescrum-footer"/>
 </body>
 </html>

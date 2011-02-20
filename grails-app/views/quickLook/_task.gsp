@@ -62,6 +62,7 @@
         <strong><g:message code="is.task.responsible"/> :</strong> <is:scrumLink controller="user" action='profile' onclick="\$('#dialog').dialog('close');" id="${task.responsible.username}">${task.responsible.firstName.encodeAsHTML()} ${task.responsible.lastName.encodeAsHTML()}</is:scrumLink>
       </p>
       </g:if>
+      <entry:point id="quicklook-task-left" model="[task:task]"/>
     </div>
     <div class="col2">
         <is:postit title="${task.name}"
@@ -82,6 +83,7 @@
           <is:attachedFiles bean="${task}" width="120" deletable="${false}" action="download" params="[product:params.product]" controller="sprintBacklog" size="20"/>
         </div>
       </g:if>
+      <entry:point id="quicklook-task-right" model="[task:task]"/>
     </div>
   </div>
 </div>

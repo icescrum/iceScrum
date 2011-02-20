@@ -98,3 +98,4 @@
           value="${message(code:'is.ui.sandbox.menu.delete')}"
           history='false'/>
 </is:postitMenuItem>
+<entry:point id="${id}-${actionName}-postitMenu" model="[story:story]"/>

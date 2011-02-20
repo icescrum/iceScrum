@@ -95,3 +95,4 @@
           remote="true"
           value="${message(code:'is.ui.releasePlan.menu.story.undone')}"/>
 </is:postitMenuItem>
+<entry:point id="${id}-${actionName}-postitMenu" model="[story:story]"/>

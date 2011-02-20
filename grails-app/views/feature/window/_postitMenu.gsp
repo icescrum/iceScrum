@@ -44,3 +44,4 @@
         update="window-content-${id}"
         value="${message(code:'is.ui.feature.menu.delete')}"/>
 </is:postitMenuItem>
+<entry:point id="${id}-${actionName}-postitMenu" model="[feature:feature]"/>

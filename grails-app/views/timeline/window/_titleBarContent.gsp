@@ -20,6 +20,7 @@
 - Vincent Barrier (vincent.barrier@icescrum.com)
 --}%
 <li>
+<entry:point id="${id}-${actionName}" model="[currentRelease:currentRelease]"/>
 <is:select
           width="200"
           rendered="${releasesName.size() > 0}"

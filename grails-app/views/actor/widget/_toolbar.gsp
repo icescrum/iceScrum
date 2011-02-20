@@ -26,3 +26,4 @@
         renderedOnAccess="productOwner()"
         params="[product:params.product]"
         action="add">${message(code:"is.ui.feature.toolbar.new")}</is:iconButton>
+<entry:point id="${id}-${actionName}-widget-toolbar"/>

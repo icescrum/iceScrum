@@ -156,6 +156,7 @@ grails.views.javascript.library = 'jquery'
 
 
 icescrum.debug.enable=true
+grails.entryPoints.debug=false
 
 environments {
   production {
@@ -183,6 +184,8 @@ log4j = {
           'net.sf.ehcache.hibernate'
 
   warn 'org.mortbay.log'
+
+  debug 'org.icescrum.plugins.entryPoints'
 
   if (icescrum.debug.enable){
       debug 'grails.app.service.org.icescrum'

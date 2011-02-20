@@ -45,3 +45,4 @@
     ${message(code: 'is.ui.sprintBacklog.kanban.copyRecurrentTasks')}
   </is:link>
 </is:postitMenuItem>
+<entry:point id="${id}-${actionName}-recurrentOrUrgentTask" model="[sprint:sprint,type:type]"/>

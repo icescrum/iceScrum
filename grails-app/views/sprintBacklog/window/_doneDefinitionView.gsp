@@ -34,7 +34,7 @@
               value="${sprint?.doneDefinition}"/>
     </is:fieldArea>
   </is:fieldset>
-
+  <entry:point id="${id}-${actionName}" model="[sprint:sprint]"/>
   <is:buttonBar>
     <sec:access expression="productOwner() or scrumMaster()">
       <is:button

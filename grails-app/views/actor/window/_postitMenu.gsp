@@ -37,3 +37,4 @@
           update="window-content-${id}"
           value="${message(code:'is.ui.actor.menu.delete')}"/>
 </is:postitMenuItem>
+<entry:point id="${id}-${actionName}-actorMenu" model="[actor:actor]"/>

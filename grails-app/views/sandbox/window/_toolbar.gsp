@@ -23,6 +23,7 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
+<g:set var="inProduct" value="${sec.access([expression:'inProduct()'], {true})}"/>
 
 %{--Add button--}%
 <is:iconButton
@@ -66,11 +67,10 @@
   ${message(code: 'is.ui.sandbox.toolbar.accept')}
 </is:iconButton>
 
-<is:separatorSmall/>
+<is:separatorSmall rendered="${inProduct}"/>
 
-%{--Delete button (note-view)--}%
 <is:iconButton
-        renderedOnAccess="inProduct()"
+        rendered="${inProduct}"
         action="cloneStory"
         shortcut="[key:'ctrl+shift+c',scope:id]"
         controller="${id}"
@@ -84,7 +84,7 @@
 
 <is:separatorSmall rendered="${productOwner}"/>
 
-%{--Delete button (note-view)--}%
+%{--Delete button --}%
 <is:iconButton
         icon="delete"
         rendered="${productOwner}"
@@ -154,7 +154,7 @@
                   ['DOCX', message(code:'is.report.format.docx')],
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"/>
-
+<entry:point id="${id}-${actionName}"/>
 %{--Textfield for the auto completion search--}%
 <is:panelSearch id="search-ui">
   <is:autoCompleteSearch elementId="autoCmpTxt" controller="${id}" action="list" update="window-content-${id}"/>

@@ -66,3 +66,5 @@
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"
         params="locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
+
+<entry:point id="${id}-${actionName}"/>

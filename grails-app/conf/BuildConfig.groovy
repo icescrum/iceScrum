@@ -38,7 +38,6 @@ grails.plugin.location.'icescrum-core-webcomponents' =  'plugins/icescrum-core-w
 
 grails.plugin.location.'fluxiable' =  'plugins/fluxiable'
 grails.plugin.location.'attachmentable' =  'plugins/attachmentable'
-grails.plugin.location.'icepush-jquery' =  'plugins/icepush-jquery'
 
 coverage {
   enabledByDefault = false
@@ -63,6 +62,7 @@ grails.project.dependency.resolution = {
     mavenCentral()
     //mavenRepo "http://snapshots.repository.codehaus.org"
     mavenRepo "http://repository.codehaus.org"
+    mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
   }
 
 //  plugins {
@@ -80,6 +80,11 @@ grails.project.dependency.resolution = {
         include(name: "report*")
       }
     }
+  }
+
+  plugins {
+      compile "org.icescrum.plugins:entry-points:0.1"
+      compile "org.icescrum.plugins:icepush-jquery:0.1"
   }
 }
 

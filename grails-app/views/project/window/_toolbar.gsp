@@ -84,6 +84,8 @@
 
 <is:separator elementId="menu-report-separator"/>
 
+<entry:point id="${id}-${actionName}"/>
+
 %{--Print button--}%
 <is:reportPanel
         action="print"

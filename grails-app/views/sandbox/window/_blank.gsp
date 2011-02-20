@@ -38,6 +38,7 @@
       <td class="empty">&nbsp;</td>
     </tr>
   </table>
+  <entry:point id="${id}-${actionName}-blank"/>
 </div>
 <jq:jquery>
   jQuery("#window-content-${id}").removeClass('window-content-toolbar');
