@@ -20,10 +20,9 @@
  */
 package org.icescrum.web.cache
 
-import grails.plugin.springcache.web.key.AbstractKeyGenerator
 import grails.plugin.springcache.key.CacheKeyBuilder
-import grails.plugin.springcache.web.FilterContext
 import grails.plugin.springcache.web.ContentCacheParameters
+import grails.plugin.springcache.web.key.AbstractKeyGenerator
 
 class IceScrumKeyGenerator extends AbstractKeyGenerator{
 

@@ -20,8 +20,8 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
-import org.springframework.security.acls.model.NotFoundException
 import org.springframework.security.access.AccessDeniedException
+import org.springframework.security.acls.model.NotFoundException
 
 class UrlMappings {
   static mappings = {

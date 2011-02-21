@@ -23,14 +23,13 @@
 
 package org.icescrum.web.presentation.app
 
-import org.icescrum.core.domain.Story
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
-import org.springframework.web.servlet.support.RequestContextUtils
-import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Actor
-import grails.plugin.springcache.annotations.Cacheable
+import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Task
+import org.springframework.web.servlet.support.RequestContextUtils
 
 class QuickLookController {
 

@@ -27,11 +27,10 @@ import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
-
 import org.icescrum.core.domain.Sprint
-import org.icescrum.web.support.MenuBarSupport
-import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.domain.User
+import org.icescrum.core.support.MenuBarSupport
+import org.icescrum.core.support.ProgressSupport
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class TimelineController {

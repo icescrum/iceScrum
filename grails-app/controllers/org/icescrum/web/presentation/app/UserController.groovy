@@ -23,19 +23,18 @@
  */
 package org.icescrum.web.presentation.app
 
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
+
 import grails.converters.JSON
+import grails.plugin.fluxiable.Activity
 import grails.plugins.springsecurity.Secured
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
-import org.icescrum.core.domain.Task
-import grails.plugin.fluxiable.Activity
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Product
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-import org.springframework.mail.MailException
 import org.icescrum.core.support.ApplicationSupport
-import grails.plugin.springcache.annotations.Cacheable
-import grails.plugin.springcache.annotations.CacheFlush
+import org.springframework.mail.MailException
 
 class UserController {
 

@@ -23,8 +23,8 @@
 
 package org.icescrum.web.presentation.app
 
-import org.icescrum.web.support.MenuBarSupport
 import grails.plugins.springsecurity.Secured
+import org.icescrum.core.support.MenuBarSupport
 
 @Secured('ROLE_ADMIN')
 class AdminController {

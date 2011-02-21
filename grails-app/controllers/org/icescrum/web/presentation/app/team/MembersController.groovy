@@ -28,8 +28,7 @@ import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
-import org.icescrum.web.support.MenuBarSupport
-import grails.plugin.springcache.annotations.Cacheable
+import org.icescrum.core.support.MenuBarSupport
 
 @Secured('isAuthenticated() and (stakeHolder() or inProduct() or inTeam())')
 class MembersController {

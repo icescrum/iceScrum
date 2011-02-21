@@ -27,14 +27,14 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.TeamPreferences
-import org.icescrum.web.support.MenuBarSupport
 import org.icescrum.core.domain.security.Authority
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.support.MenuBarSupport
 
 @Secured('isAuthenticated()')
 class TeamController {
@@ -191,7 +191,7 @@ class TeamController {
       ]
     }
 
-    render template: "/components/browserColumn", plugin: 'icescrum-core-webcomponents', model: [name: 'team-join', max: max, total: total, term: params.term, offset: params.int('offset') ?: 0, browserCollection: results, actionDetails: 'details']
+    render template: "/components/browserColumn", plugin: 'icescrum-core', model: [name: 'team-join', max: max, total: total, term: params.term, offset: params.int('offset') ?: 0, browserCollection: results, actionDetails: 'details']
   }
 
   def detailsMembers = {

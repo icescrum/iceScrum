@@ -21,14 +21,13 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
-import org.icescrum.core.security.WebScrumExpressionHandler
-import org.icescrum.core.security.MethodScrumExpressionHandler
-import org.icescrum.web.support.MenuBarSupport
-import org.icescrum.web.upload.AjaxMultipartResolver
-import org.icescrum.core.security.ScrumDetailsService
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.icescrum.core.security.MethodScrumExpressionHandler
+import org.icescrum.core.security.ScrumDetailsService
+import org.icescrum.core.security.WebScrumExpressionHandler
+import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.web.security.ScrumAuthenticationProcessingFilter
-
+import org.icescrum.web.upload.AjaxMultipartResolver
 
 beans = {
 

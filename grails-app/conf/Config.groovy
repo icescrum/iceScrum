@@ -24,7 +24,6 @@
 
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
-import org.icescrum.web.cache.IceScrumKeyGenerator
 
 /*
  Public URL

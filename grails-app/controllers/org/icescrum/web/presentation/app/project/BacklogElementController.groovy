@@ -28,16 +28,11 @@ import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
-import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Task
-import org.icescrum.core.domain.User
-import org.springframework.web.servlet.support.RequestContextUtils
-import org.icescrum.core.domain.Sprint
-import org.icescrum.core.event.IceScrumStoryEvent
 import org.grails.followable.FollowException
 import org.grails.followable.FollowLink
-import grails.plugin.springcache.annotations.Cacheable
+import org.icescrum.core.event.IceScrumStoryEvent
+import org.springframework.web.servlet.support.RequestContextUtils
+import org.icescrum.core.domain.*
 
 class BacklogElementController {
 

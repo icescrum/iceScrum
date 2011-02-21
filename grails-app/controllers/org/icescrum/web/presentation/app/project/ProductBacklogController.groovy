@@ -24,18 +24,12 @@
 
 package org.icescrum.web.presentation.app.project
 
+import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import grails.converters.JSON
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.User
 import grails.plugins.springsecurity.Secured
-
-import org.icescrum.core.domain.PlanningPokerGame
-import org.icescrum.core.domain.Feature
-
-import org.icescrum.web.support.MenuBarSupport
+import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
-import grails.plugin.attachmentable.AttachmentException
+import org.icescrum.core.domain.*
 
 @Secured('stakeHolder() or inProduct()')
 class ProductBacklogController {

@@ -22,7 +22,6 @@
  * Manuarii Stein (manuarii.stein@icescrum.com)
  */
 
-import org.codehaus.groovy.grails.cli.GrailsScriptRunner
 import grails.util.GrailsNameUtils
 
 grails.project.class.dir = "target/classes"
@@ -31,13 +30,6 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
-
-grails.plugin.location.'icescrum-core-domain' =  'plugins/icescrum-core-domain'
-grails.plugin.location.'icescrum-core-services' =  'plugins/icescrum-core-services'
-grails.plugin.location.'icescrum-core-webcomponents' =  'plugins/icescrum-core-webcomponents'
-
-grails.plugin.location.'fluxiable' =  'plugins/fluxiable'
-grails.plugin.location.'attachmentable' =  'plugins/attachmentable'
 
 coverage {
   enabledByDefault = false
@@ -83,8 +75,9 @@ grails.project.dependency.resolution = {
   }
 
   plugins {
-      compile "org.icescrum.plugins:entry-points:0.1"
-      compile "org.icescrum.plugins:icepush-jquery:0.1"
+      compile "org.icescrum:icescrum-core:1.2"
+      compile "org.icescrum:entry-points:0.2"
+      compile "org.icescrum:icepush-jquery:0.2"
   }
 }
 
