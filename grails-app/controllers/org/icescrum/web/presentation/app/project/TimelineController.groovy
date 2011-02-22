@@ -27,11 +27,10 @@ import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
-
 import org.icescrum.core.domain.Sprint
-import org.icescrum.web.support.MenuBarSupport
-import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.domain.User
+import org.icescrum.core.support.MenuBarSupport
+import org.icescrum.core.support.ProgressSupport
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class TimelineController {
@@ -540,7 +539,7 @@ class TimelineController {
       session.progress = new ProgressSupport()
       session.progress.updateProgress(99,message(code:'is.report.processing'))
       try {
-     def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+(chart ?: 'timeline')+'-'+(g.formatDate(value:new Date(),formatName:'is.date.file'))
+     def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+(chart ?: 'timeline')+'-'+(g.formatDate(formatName:'is.date.file'))
       chain(controller: 'jasper',
               action: 'index',
               model: [data: values],

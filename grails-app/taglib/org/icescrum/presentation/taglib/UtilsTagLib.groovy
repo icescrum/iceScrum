@@ -23,11 +23,13 @@
  */
 
 package org.icescrum.presentation.taglib
-import grails.converters.JSON
-import org.icescrum.components.UtilsWebComponents
+
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
-  import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
-  import org.icescrum.core.domain.security.Authority
+
+import grails.converters.JSON
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.icescrum.components.UtilsWebComponents
+import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 
 class UtilsTagLib {

@@ -39,6 +39,7 @@
     ${message(code:'is.widget.actor.empty')}
   </div>
 </g:else>
+<entry:point id="${id}-${actionName}-widget" model="[actors:actors]"/>
 <jq:jquery>
   <icep:notifications
         name="${id}Widget"

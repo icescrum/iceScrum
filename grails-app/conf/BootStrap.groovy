@@ -21,10 +21,8 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
-import grails.util.Environment
 import grails.util.Metadata
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
-import org.icescrum.core.test.DummyPopulator
 
 class BootStrap {
 

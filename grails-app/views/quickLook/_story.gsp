@@ -88,6 +88,7 @@
         <strong><g:message code="is.feature"/> :</strong> ${story.feature.name.encodeAsHTML()}
       </p>
       </g:if>
+      <entry:point id="quicklook-story-left" model="[story:story]"/>
     </div>
     <div class="col2">
         <is:postit title="${story.name}"
@@ -120,6 +121,7 @@
           <is:attachedFiles bean="${story}" width="120" deletable="${false}" params="[product:params.product]" action="download" controller="${(story.state > org.icescrum.core.domain.Story.STATE_SUGGESTED)?'productBacklog':'sandbox'}" size="20"/>
         </div>
       </g:if>
+      <entry:point id="quicklook-story-right" model="[story:story]"/>
     </div>
   </div>
 </div>

@@ -142,6 +142,7 @@
               </is:remoteDialog>
               </li>
             </g:if>
+            <entry:point id="menu-project" model="[curProduct:curProduct]"/>
             <g:if test="${productFilteredsList}">
               <li class="menu-label">
                 ${message(code:'is.projectmenu.submenu.project.my.title')}
@@ -222,6 +223,7 @@
                    </a>
                 </li>
               </g:if>
+              <entry:point id="menu-team" model="[curTeam:curTeam]"/>
               <g:if test="${teamsList}">
                 <li class="menu-label">
                   <g:message code="is.projectmenu.submenu.team.my.title"/>
@@ -286,6 +288,7 @@
           </is:buttonNavigation>
         </li>
       </sec:ifNotLoggedIn>
+      <entry:point id="menu-right" model="[curProduct:curProduct,curTeam:curTeam]"/>
     </ul>
   </div>
 </div>

@@ -49,6 +49,7 @@
     ${message(code:'is.widget.productBacklog.empty')}
   </div>
 </g:else>
+<entry:point id="${id}-${actionName}-widget" model="[stories:stories]"/>
 <jq:jquery>
   <icep:notifications
         name="${id}Widget"

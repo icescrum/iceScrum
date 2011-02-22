@@ -25,6 +25,7 @@
 <div class="dashboard">
   <div class="colset-2 clearfix">
     <div class="col1">
+      <entry:point id="${id}-${actionName}-top-left" model="[sprint:sprint,release:release,product:product]"/>
       <is:panel id="panel-chart">
         <is:panelTitle>
           <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
@@ -116,9 +117,11 @@
             </div>
         </g:if>
       </is:panel>
+      <entry:point id="${id}-${actionName}-bottom-left" model="[sprint:sprint,release:release,product:product]"/>
     </div>
 
     <div class="col2">
+      <entry:point id="${id}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
       <is:panel id="panel-activity">
         <is:panelTitle>
           <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
@@ -153,6 +156,7 @@
           </div>
         </g:else>
       </is:panel>
+      <entry:point id="${id}-${actionName}-bottom-right" model="[sprint:sprint,release:release,product:product,activities:activities]"/>
     </div>
   </div>
 </div>

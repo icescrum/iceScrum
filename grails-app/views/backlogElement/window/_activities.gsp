@@ -38,7 +38,7 @@
           <g:each in="${summary}" var="entry" status="i">
             <g:if test="${entry instanceof Comment}">
               <g:render template="/components/comment"
-                      plugin="icescrum-core-webcomponents"
+                      plugin="icescrum-core"
                       model="[noEscape:true, backlogelement:story.id, comment:entry, commentId:'summary']"/>
             </g:if>
             <g:elseif test="${entry instanceof Activity && entry.code != 'comment'}">

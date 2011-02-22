@@ -70,3 +70,4 @@
           value="${message(code:'is.ui.timeline.menu.delete')}"
           confirmBeforeSubmit="${message(code:'is.ui.timeline.menu.confirm.delete')}"/>
 </is:menuItem>
+<entry:point id="${id}-${actionName}-menu" model="[release:release]"/>

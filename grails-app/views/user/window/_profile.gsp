@@ -68,6 +68,8 @@
         </is:panelContext>
       </is:panel>
 
+      <entry:point id="profile-right" model="[user:user]"/>
+
     </div>
   </div>
 </div>

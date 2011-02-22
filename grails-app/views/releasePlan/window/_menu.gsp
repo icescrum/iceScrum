@@ -76,3 +76,4 @@
           remote="true"
           history="false"/>
 </is:menuItem>
+<entry:point id="${id}-${actionName}-sprintMenu" model="[sprint:sprint]"/>

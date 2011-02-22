@@ -56,6 +56,7 @@
       <p class="last">
         <strong><g:message code="is.actor.nb.stories"/> :</strong> ${stories}
       </p>
+      <entry:point id="quicklook-actor-left" model="[actor:actor]"/>
     </div>
     <div class="col2">
       <is:postit id="${actor.id}"
@@ -71,6 +72,7 @@
           <is:attachedFiles bean="${actor}" width="120" deletable="${false}" action="download" controller="actor" params="[product:params.product]" size="20"/>
         </div>
       </g:if>
+      <entry:point id="quicklook-actor-right" model="[actor:actor]"/>
     </div>
   </div>
 </div>

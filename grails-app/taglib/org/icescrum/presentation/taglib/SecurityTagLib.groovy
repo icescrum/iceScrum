@@ -27,12 +27,10 @@ import org.springframework.security.core.context.SecurityContextHolder as SCH
 
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.icescrum.core.domain.security.Authority
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.GrantedAuthorityImpl
-import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.Team
-import org.icescrum.core.domain.security.Authority
 
 class SecurityTagLib {
   static namespace = 'is'

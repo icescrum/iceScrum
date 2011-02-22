@@ -23,10 +23,10 @@
 
 package org.icescrum.web.upload
 
-import org.apache.commons.fileupload.ProgressListener
-import javax.servlet.http.HttpSession
-import org.icescrum.core.support.ProgressSupport
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpSession
+import org.apache.commons.fileupload.ProgressListener
+import org.icescrum.core.support.ProgressSupport
 
 class AjaxProgressListener implements ProgressListener {
 

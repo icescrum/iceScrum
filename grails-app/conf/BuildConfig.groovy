@@ -22,7 +22,6 @@
  * Manuarii Stein (manuarii.stein@icescrum.com)
  */
 
-import org.codehaus.groovy.grails.cli.GrailsScriptRunner
 import grails.util.GrailsNameUtils
 
 grails.project.class.dir = "target/classes"
@@ -31,14 +30,6 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
-
-grails.plugin.location.'icescrum-core-domain' =  'plugins/icescrum-core-domain'
-grails.plugin.location.'icescrum-core-services' =  'plugins/icescrum-core-services'
-grails.plugin.location.'icescrum-core-webcomponents' =  'plugins/icescrum-core-webcomponents'
-
-grails.plugin.location.'fluxiable' =  'plugins/fluxiable'
-grails.plugin.location.'attachmentable' =  'plugins/attachmentable'
-grails.plugin.location.'icepush-jquery' =  'plugins/icepush-jquery'
 
 coverage {
   enabledByDefault = false
@@ -63,6 +54,7 @@ grails.project.dependency.resolution = {
     mavenCentral()
     //mavenRepo "http://snapshots.repository.codehaus.org"
     mavenRepo "http://repository.codehaus.org"
+    mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
   }
 
 //  plugins {
@@ -80,6 +72,12 @@ grails.project.dependency.resolution = {
         include(name: "report*")
       }
     }
+  }
+
+  plugins {
+      compile "org.icescrum:icescrum-core:1.2"
+      compile "org.icescrum:entry-points:0.2"
+      compile "org.icescrum:icepush-jquery:0.2"
   }
 }
 

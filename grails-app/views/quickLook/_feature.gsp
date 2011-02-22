@@ -61,8 +61,8 @@
       <p class="last">
         <strong><g:message code="is.feature.stories.finish"/> :</strong> ${finishedStories}
       </p>
+      <entry:point id="quicklook-feature-left" model="[feature:feature]"/>
     </div>
-
     <div class="col2">
       <is:postit
         id="${feature.id}"
@@ -81,6 +81,7 @@
           <is:attachedFiles bean="${feature}" width="120" deletable="${false}" action="download" controller="feature" params="[product:params.product]" size="20"/>
         </div>
       </g:if>
+      <entry:point id="quicklook-feature-right" model="[feature:feature]"/>
     </div>
   </div>
 </div>

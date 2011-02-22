@@ -60,6 +60,7 @@
       <td class="empty">&nbsp;</td>
     </tr>
   </table>
+  <entry:point id="${id}-${actionName}-blankSprint" model="[release:release]"/>
 </div>
 <jq:jquery>
   jQuery("#window-content-${id}").removeClass('window-content-toolbar');

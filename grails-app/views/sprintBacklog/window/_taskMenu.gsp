@@ -91,3 +91,4 @@
                      };"
           value="${task.blocked?message(code:'is.ui.sprintBacklog.menu.task.unblock'):message(code:'is.ui.sprintBacklog.menu.task.block')}"/>
 </is:postitMenuItem>
+<entry:point id="${id}-${actionName}-taskMenu" model="[task:task]"/>

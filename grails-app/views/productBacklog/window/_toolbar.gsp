@@ -24,10 +24,10 @@
 --}%
 
 <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
+<g:set var="inProduct" value="${sec.access([expression:'inProduct()'], {true})}"/>
 
-%{--Delete button (note-view)--}%
 <is:iconButton
-        renderedOnAccess="inProduct()"
+        rendered="${inProduct}"
         action="cloneStory"
         shortcut="[key:'ctrl+shift+c',scope:id]"
         onclick="\$.icescrum.selectableAction('sandbox/cloneStory',true,'id',function(data){jQuery.icescrum.renderNotice(data.notice.text);});"
@@ -38,7 +38,7 @@
   ${message(code: 'is.ui.productBacklog.toolbar.clone')}
 </is:iconButton>
 
-<is:separatorSmall/>
+<is:separatorSmall rendered="${inProduct}"/>
 
 %{--Delete button--}%
 <is:iconButton
@@ -97,6 +97,9 @@
                 ]"/>
 
 %{--Search--}%
+
+<entry:point id="${id}-${actionName}"/>
+
 <is:panelSearch id="search-ui">
     <is:autoCompleteSearch elementId="autoCmpTxt" controller="productBacklog" action="list" update="window-content-${id}"/>
 </is:panelSearch>

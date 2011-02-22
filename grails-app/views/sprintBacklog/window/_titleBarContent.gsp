@@ -21,6 +21,7 @@
 --}%
 %{-- Sprints lists --}%
 <li>
+  <entry:point id="${id}-${actionName}" model="[sprintsName:sprintsName]"/>
   <is:select
           rendered="${sprintsName.size() > 0}"
           maxHeight="150"

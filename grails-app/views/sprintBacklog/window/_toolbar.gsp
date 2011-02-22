@@ -258,6 +258,7 @@
           params="id=${sprint.id}&locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
 --}%
 </g:if>
+<entry:point id="${id}-${actionName}" model="[sprint:sprint]"/>
 
 <g:if test="${sprint?.id}">
 %{--Search--}%

@@ -138,5 +138,5 @@
           alt="${message(code:'is.ui.toolbar.alt.print')}">
     <g:message code="is.ui.toolbar.print"/> 
   </is:iconButton>--}%
-
+  <entry:point id="${id}-${actionName}"/>
 </g:if>

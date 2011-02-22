@@ -123,6 +123,8 @@
         </is:panelContext>
       </is:panel>
 
+      <entry:point id="${id}-${actionName}-right" model="[story:story]"/>
+
     </div>
   </div>
 </div>

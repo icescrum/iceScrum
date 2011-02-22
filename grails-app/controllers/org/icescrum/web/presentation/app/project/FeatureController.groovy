@@ -23,17 +23,12 @@
  */
 package org.icescrum.web.presentation.app.project
 
+import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
-import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.PlanningPokerGame
-import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.Story
-
-import org.icescrum.web.support.MenuBarSupport
-import org.icescrum.core.domain.User
+import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
-import grails.plugin.attachmentable.AttachmentException
+import org.icescrum.core.domain.*
 
 @Secured('inProduct()')
 class FeatureController {
@@ -395,7 +390,7 @@ class FeatureController {
         session.progress = new ProgressSupport()
         session.progress.updateProgress(99,message(code:'is.report.processing'))
         def model = [[product:currentProduct.name,features:data?:null]]
-        def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'features'+'-'+(g.formatDate(value:new Date(),formatName:'is.date.file'))
+        def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'features'+'-'+(g.formatDate(formatName:'is.date.file'))
         chain(controller: 'jasper',
                 action: 'index',
                 model: [data: model],

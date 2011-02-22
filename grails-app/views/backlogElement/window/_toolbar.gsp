@@ -122,6 +122,7 @@
   ${message(code:'is.ui.backlogelement.toolbar.comment')}
 </is:iconButton>
 
+<entry:point id="${id}-${actionName}-toolbar"/>
 
 <div class="navigation-right-toolbar">
 
