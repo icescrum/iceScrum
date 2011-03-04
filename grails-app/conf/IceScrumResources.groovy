@@ -165,6 +165,7 @@ modules = {
     dependsOn 'jquery-ui'
     resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-en.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
     resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-fr.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
+    resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-de.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
   }
 
   'timepicker' {
