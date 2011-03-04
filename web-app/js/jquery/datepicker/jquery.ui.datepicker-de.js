@@ -3,12 +3,12 @@
 jQuery(function($){
 	$.datepicker.regional['de'] = {
 		closeText: 'Fertig',
-		prevText: 'Zurück',
+		prevText: 'Zur\u00fcck',
 		nextText: 'Weiter',
 		currentText: 'Heute',
-		monthNames: ['Januar','Februar','März','April','Mai','Juni',
+		monthNames: ['Januar','Februar','M\u00e4rz','April','Mai','Juni',
 		'Juli','August','September','Oktober','November','Dezember'],
-		monthNamesShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun',
+		monthNamesShort: ['Jan', 'Feb', 'M\u00e4r', 'Apr', 'Mai', 'Jun',
 		'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
 		dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
 		dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
