@@ -172,6 +172,8 @@ class UserController {
 
     def name = currentUser.firstName + ' ' + currentUser.lastName
 
+    entryPoints(id+'-'+'openProfile',[user:currentUser])
+
     render(status: 200, contentType: 'application/json',
             text: [name: name.encodeAsHTML().encodeAsJavaScript(),
                     forceRefresh: forceRefresh,

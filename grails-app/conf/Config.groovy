@@ -155,7 +155,7 @@ grails.views.javascript.library = 'jquery'
 
 
 icescrum.debug.enable=true
-grails.entryPoints.debug=false
+grails.entryPoints.debug=true
 
 environments {
   production {

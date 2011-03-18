@@ -65,5 +65,6 @@
       <is:localeSelecter width="170" styleSelect="dropdown" name="user.preferences.language" id="user.preferences.language" value="${user.preferences.language}"/>
     </is:fieldSelect>
   </is:fieldset>
+  <entry:point id="user-${actionName}" model="[user:user]"/>
 </form>
 <is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-profile" listenOn="'#form-profile input'"/>

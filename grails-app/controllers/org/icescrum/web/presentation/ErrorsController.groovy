@@ -46,4 +46,8 @@ class ErrorsController {
     
   }
 
+  def handle = {
+        println "dans le handle"
+  }
+
 }
