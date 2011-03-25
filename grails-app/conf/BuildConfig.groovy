@@ -31,7 +31,8 @@ grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
 
-grails.plugin.location.'entry-points' =  '../plugins/entry-points'
+//grails.plugin.location.'entry-points' =  '../plugins/entry-points'
+//grails.plugin.location.'icescrum-core' =  '../plugins/icescrum-core'
 
 coverage {
   enabledByDefault = false
@@ -77,8 +78,8 @@ grails.project.dependency.resolution = {
   }
 
   plugins {
-      compile "org.icescrum:icescrum-core:1.2"
-      //compile "org.icescrum:entry-points:0.2"
+      compile "org.icescrum:icescrum-core:1.2.2"
+      compile "org.icescrum:entry-points:0.3-BETA"
       compile "org.icescrum:icepush-jquery:0.2"
   }
 }

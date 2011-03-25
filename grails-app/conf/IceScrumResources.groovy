@@ -27,7 +27,7 @@ modules = {
 
   overrides {
      'jquery' {
-        resource id:'js', url: [plugin: 'jquery', dir:'js/jquery', file:"jquery-1.4.3.min.js"]
+        resource id:'js', url: [plugin: 'jquery', dir:'js/jquery', file:"jquery-1.5.1.min.js"]
      }
 
      'jquery-ui' {
