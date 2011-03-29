@@ -37,15 +37,15 @@
     </is:fieldInput>
 
     <is:fieldSelect label="is.story.type" for="story.type">
-      <is:select container="#window-content-${referrer?.controller ?: id}" width="195" maxHeight="100" styleSelect="dropdown" from="${typesLabels}" keys="${typesKeys}" name="story.type" value="${story.type}"/>
+      <is:select container="#window-content-${referrer?.controller ?: id}" width="195" maxHeight="200" styleSelect="dropdown" from="${typesLabels}" keys="${typesKeys}" name="story.type" value="${story.type}"/>
     </is:fieldSelect>
 
     <is:fieldSelect label="is.feature" for="story.feature">
-      <is:select container="#window-content-${referrer?.controller ?: id}" width="195" maxHeight="100" styleSelect="dropdown" name="feature.id" noSelection="['':message(code:'is.ui.productBacklog.choose.feature')]" optionValue="name" optionKey="id" from="${featureSelect}" value="${story.feature?.id}"/>
+      <is:select container="#window-content-${referrer?.controller ?: id}" width="195" maxHeight="200" styleSelect="dropdown" name="feature.id" noSelection="['':message(code:'is.ui.productBacklog.choose.feature')]" optionValue="name" optionKey="id" from="${featureSelect}" value="${story.feature?.id}"/>
     </is:fieldSelect>
     <g:if test="${referrer == null}">
       <is:fieldSelect label="is.story.rank" for="story.rank">
-        <is:select container="#window-content-${id}" width="100" maxHeight="100" styleSelect="dropdown" from="${rankList}" name="story.rank" value="${story.rank}"/>
+        <is:select container="#window-content-${id}" width="100" maxHeight="200" styleSelect="dropdown" from="${rankList}" name="story.rank" value="${story.rank}"/>
       </is:fieldSelect>
     </g:if>
     <is:fieldArea for="storydescription" label="${message(code:'is.backlogelement.description')}" noborder="true">

@@ -24,7 +24,7 @@
   <entry:point id="${id}-${actionName}" model="[sprintsName:sprintsName]"/>
   <is:select
           rendered="${sprintsName.size() > 0}"
-          maxHeight="150"
+          maxHeight="200"
           styleSelect="dropdown"
           class="window-toolbar-selectmenu-button window-toolbar-selectmenu"
           from="${sprintsName}"

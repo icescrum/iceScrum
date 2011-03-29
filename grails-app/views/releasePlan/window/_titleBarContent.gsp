@@ -24,7 +24,7 @@
   <is:select
           width="160"
           rendered="${releases*.name.size() > 0}"
-          maxHeight="150"
+          maxHeight="200"
           styleSelect="dropdown"
           class="window-toolbar-selectmenu-button window-toolbar-selectmenu"
           from="${releases*.name}"

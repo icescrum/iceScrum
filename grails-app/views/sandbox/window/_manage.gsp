@@ -41,7 +41,7 @@
       <is:select
               container="#window-content-${referrer?.controller ?: id}"
               width="240"
-              maxHeight="100"
+              maxHeight="200"
               styleSelect="dropdown"
               from="${typesLabels}"
               keys="${typesKeys}"
@@ -53,7 +53,8 @@
     <is:fieldSelect for="feature.id" label="is.feature">
       <is:select
               container="#window-content-${referrer?.controller ?: id}"
-              width="240" maxHeight="100"
+              width="240"
+              maxHeight="200"
               styleSelect="dropdown"
               from="${featureSelect}"
               optionKey="id"

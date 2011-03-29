@@ -24,7 +24,7 @@
 <is:select
           width="200"
           rendered="${releasesName.size() > 0}"
-          maxHeight="150"
+          maxHeight="200"
           styleSelect="dropdown"
           name="selectOnRoadmap"
           from="${releasesName}"
