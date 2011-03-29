@@ -25,6 +25,10 @@ $.widget("ui.selectmenu", {
 
         this.container = (o.container == undefined)?'body':o.container;
 
+        if (this.element.attr('id').indexOf('.') != -1){
+            this.element.attr('id', this.element.attr('id').replace('.','_'));
+        }
+
 		//quick array of button and menu id's
 		this.ids = [this.element.attr('id') + '-' + 'button', this.element.attr('id') + '-' + 'menu'];
 
@@ -325,8 +329,8 @@ $.widget("ui.selectmenu", {
 		this.element.removeData(this.widgetName)
 			.removeClass(this.widgetBaseClass + '-disabled' + ' ' + this.namespace + '-state-disabled')
 			.removeAttr('aria-disabled');
-	
-		//unbind click on label, reset its for attr
+
+        //unbind click on label, reset its for attr
 		$('label[for='+this.newelement.attr('id')+']')
 			.attr('for',this.element.attr('id'))
 			.unbind('click');
