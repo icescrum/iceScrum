@@ -367,11 +367,21 @@ $(document).ready(function($) {
         }
         ,
 
-        dialogError:function(error) {
+        dialogError:function(xhr) {
+
+            var ct = xhr.getResponseHeader("content-type") || "";
+            if (ct.indexOf('json') > -1) {
+                var text = $.parseJSON(xhr.responseText);
+                if(text.error != undefined){
+                    $.icescrum.renderNotice(text.error,'error');
+                    return;
+                }
+            }
+
             $('#window-dialog').dialog('destroy');
             $(document.body).append(this.o.dialogErrorContent);
             $('#comments').focus();
-            $('#stackError').val(error);
+            $('#stackError').val(text);
             $('#stackError-field').input({className:'area'});
             $('#comments-field').input({className:'area'});
             $('#window-dialog').dialog({

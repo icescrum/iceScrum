@@ -22,6 +22,8 @@
 
 package org.icescrum.web.presentation
 
+import grails.converters.JSON
+
 class ErrorsController {
 
   def springSecurityService
@@ -46,8 +48,12 @@ class ErrorsController {
     
   }
 
-  def handle = {
-        println "dans le handle"
+  def handleDatabase = {
+        render(status:500, contentType:'application/json', text:[error:message(code: 'is.error.database')] as JSON)
+  }
+
+  def handleMemory = {
+        render(status:500, contentType:'application/json', text:[error:message(code: 'is.error.permgen')] as JSON)
   }
 
 }

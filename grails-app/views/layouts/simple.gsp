@@ -38,7 +38,10 @@
 </head>
 <body class="simple">
 <g:layoutBody/>
-<is:spinner on400="${is.notice(data: '$.parseJSON(xhr.responseText)')}" on403="${is.notice(text:message('is.denied'),type:'error')}"/>
+<is:spinner
+        on400="${is.notice(data: '$.parseJSON(xhr.responseText)')}"
+        on500="\$.icescrum.dialogError(xhr)"
+        on403="${is.notice(text:message('is.denied'),type:'error')}"/>
 <r:layoutResources/>
 <entry:point id="icescrum-footer"/>
 </body>
