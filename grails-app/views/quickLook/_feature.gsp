@@ -45,7 +45,7 @@
       </div>
       <p>
         <strong><g:message code="is.backlogelement.creationDate"/> :</strong>
-        <g:formatDate date="${feature.creationDate}" formatName="is.date.format.short.time"/>
+        <g:formatDate date="${feature.creationDate}" formatName="is.date.format.short.time" timeZone="${user?.preferences?.timezone?:null}"/>
       </p>
      <g:if test="${feature.value}">
       <p>

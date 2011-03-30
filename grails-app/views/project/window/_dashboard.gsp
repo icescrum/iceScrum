@@ -144,7 +144,7 @@
                       <strong>${a.cachedLabel.encodeAsHTML()}</strong>
                     </g:else>
                   </p>
-                  <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"/></p>
+                  <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time" timeZone="${user?.preferences?.timezone?:null}"/></p>
                 </div>
               </li>
             </g:each>

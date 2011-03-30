@@ -26,7 +26,7 @@ $.widget("ui.selectmenu", {
         this.container = (o.container == undefined)?'body':o.container;
 
         if (this.element.attr('id').indexOf('.') != -1){
-            this.element.attr('id', this.element.attr('id').replace('.','_'));
+            this.element.attr('id', this.element.attr('id').replace(/\./g,'_'));
         }
 
 		//quick array of button and menu id's

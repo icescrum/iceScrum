@@ -48,7 +48,7 @@
                   <g:message code="is.fluxiable.${entry.code}"/>
                   <g:message code="is.${entry.code.startsWith('task') ? 'task' : 'story'}"/>
                     <strong>${entry.cachedLabel.encodeAsHTML()}</strong></p>
-                  <p><g:formatDate date="${entry.dateCreated}" formatName="is.date.format.short.time"/></p>
+                  <p><g:formatDate date="${entry.dateCreated}" formatName="is.date.format.short.time" timeZone="${user?.preferences?.timezone?:null}"/></p>
                 </div>
               </li>
             </g:elseif>
@@ -97,7 +97,7 @@
                 <g:message code="is.fluxiable.${a.code}"/>
                 <g:message code="is.${a.code.startsWith('task') ? 'task' : 'story'}"/>
                   <strong>${a.cachedLabel.encodeAsHTML()}</strong></p>
-                <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"/></p>
+                <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time" timeZone="${user?.preferences?.timezone?:null}"/></p>
               </div>
             </li>
           </g:each>

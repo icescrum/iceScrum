@@ -61,8 +61,11 @@
     <is:fieldInput for="activity" label="is.user.preferences.activity">
       <is:input name='user.preferences.activity' id='activity' value="${user.preferences.activity}"/>
     </is:fieldInput>
-    <is:fieldSelect for="user.preferences.language" label="is.user.preferences.language" noborder="true">
+    <is:fieldSelect for="user.preferences.language" label="is.user.preferences.language">
       <is:localeSelecter width="170" styleSelect="dropdown" name="user.preferences.language" id="user.preferences.language" value="${user.preferences.language}"/>
+    </is:fieldSelect>
+    <is:fieldSelect for="user.preferences.timezone" label="is.user.preferences.timezone" noborder="true">
+      <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown" name="user.preferences.timezone" id="user.preferences.timezone" value="${user.preferences.timezone}"/>
     </is:fieldSelect>
   </is:fieldset>
   <entry:point id="user-${actionName}" model="[user:user]"/>

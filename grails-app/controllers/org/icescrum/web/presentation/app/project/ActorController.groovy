@@ -229,7 +229,12 @@ class ActorController {
     def instancesSelect = instancesBundle.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
     def levelsSelect = levelsBundle.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
 
-    render(template: template, model: [actors: actors, id: id, frequenciesSelect:frequenciesSelect, instancesSelect:instancesSelect, levelsSelect:levelsSelect])
+    render(template: template, model: [
+            actors: actors,
+            id: id,
+            frequenciesSelect:frequenciesSelect,
+            instancesSelect:instancesSelect,
+            levelsSelect:levelsSelect])
   }
 
   @Secured('productOwner()')

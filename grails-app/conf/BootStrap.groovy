@@ -34,6 +34,7 @@ class BootStrap {
 
     localeResolver.defaultLocale = Locale.ENGLISH
     java.util.Locale.setDefault(Locale.ENGLISH)
+    TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
 
     println("------------------");
     println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"

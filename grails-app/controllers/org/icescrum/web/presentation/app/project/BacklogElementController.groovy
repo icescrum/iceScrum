@@ -109,9 +109,7 @@ class BacklogElementController {
       return
     }
 
-    def user = null
-    if (springSecurityService.isLoggedIn())
-      user = User.load(springSecurityService.principal.id)
+    def user = springSecurityService.currentUser
 
     Product product = (Product) story.backlog
     if (product.preferences.hidden && !user) {
@@ -205,7 +203,7 @@ class BacklogElementController {
     }
     def comment = Comment.get(params.long('id'))
     def story = Story.get(params.long('commentable'))
-    render(template: '/components/commentEditor', plugin: 'icescrum-core-webcomponents', model: [comment: comment, mode: 'edit', commentable: story])
+    render(template: '/components/commentEditor', plugin: 'icescrum-core', model: [comment: comment, mode: 'edit', commentable: story])
   }
 
   /**
@@ -340,9 +338,7 @@ class BacklogElementController {
       render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
       return
     }
-    def user = null
-    if (springSecurityService.isLoggedIn())
-      user = User.load(springSecurityService.principal.id)
+    def user = springSecurityService.currentUser
     def activities = story.getActivities()
     // Retrieve the tasks activity links
     if (story.tasks) {

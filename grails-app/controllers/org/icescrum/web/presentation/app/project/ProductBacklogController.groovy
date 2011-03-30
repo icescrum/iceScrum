@@ -106,7 +106,15 @@ class ProductBacklogController {
     currentSuite = currentSuite.eachWithIndex { t,i ->
       suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size()-1 ? ',' : '')
     }
-    render(template: template, model: [stories: stories, id: id, featureSelect:featureSelect, typeSelect:typeSelect,suiteSelect:suiteSelect, rankSelect:rankSelect], params:[product:params.product])
+    render(template: template, model: [
+            stories: stories,
+            id: id,
+            featureSelect:featureSelect,
+            typeSelect:typeSelect,
+            suiteSelect:suiteSelect,
+            rankSelect:rankSelect],
+            user:springSecurityService.currentUser,
+            params:[product:params.product])
   }
 
   @Secured('productOwner(#p) or scrumMaster(#p)')

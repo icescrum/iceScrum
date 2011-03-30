@@ -35,6 +35,8 @@ class QuickLookController {
 
     static ui = true
 
+    def springSecurityService
+
     static StoryStateBundle = [
             (Story.STATE_SUGGESTED):'is.story.state.suggested',
             (Story.STATE_ACCEPTED):'is.story.state.accepted',
@@ -95,6 +97,7 @@ class QuickLookController {
       render(template:"story",model:[
               story:story,
               typeCode: StoryTypesBundle[story.type],
+              user:springSecurityService.currentUser,
               locale: RequestContextUtils.getLocale(request)
       ])
     }
@@ -113,6 +116,7 @@ class QuickLookController {
               feature: feature,
               type: FeatureTypesBundle[feature.type],
               effort: effort,
+              user:springSecurityService.currentUser,
               finishedStories: finished
       ])
     }
@@ -127,6 +131,7 @@ class QuickLookController {
 
       render(template: "task", model: [
               task: task,
+              user:springSecurityService.currentUser,
               locale: RequestContextUtils.getLocale(request)
       ])
     }
@@ -144,7 +149,8 @@ class QuickLookController {
               instancesCode: ActorInstancesBundle[actor.instances],
               useFrequencyCode: ActorFrequenciesBundle[actor.useFrequency],
               expertnessLevelCode: ActorLevelsBundle[actor.expertnessLevel],
-              stories:Story.findAllByTextAsIlike(actor.name).size()
+              stories:Story.findAllByTextAsIlike(actor.name).size(),
+              user:springSecurityService.currentUser
       ])
     }
   }

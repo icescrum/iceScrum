@@ -39,7 +39,7 @@
       </div>
       <p>
         <strong><g:message code="is.backlogelement.creationDate"/> :</strong>
-        <g:formatDate date="${actor.creationDate}" formatName="is.date.format.short.time"/>
+        <g:formatDate date="${actor.creationDate}" formatName="is.date.format.short.time" timeZone="${user?.preferences?.timezone?:null}"/>
       </p>
       <p>
         <strong><g:message code="is.actor.satisfaction.criteria"/> :</strong> ${actor.satisfactionCriteria?.encodeAsHTML()?.encodeAsNL2BR()}

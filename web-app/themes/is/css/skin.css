@@ -643,3 +643,11 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     background-color:#F5F5F5;
     cursor:pointer;
 }
+
+.comment-body blockquote {
+    font-style: italic;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-top: 5px;
+    font-style:italic;
+}

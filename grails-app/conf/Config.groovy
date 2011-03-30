@@ -39,6 +39,7 @@ icescrum.alerts.enable=true
 icescrum.alerts.default.from="webmaster@icescrum.org"
 icescrum.attachements.enable=true
 icescrum.alerts.errors.to="dev@icescrum.org"
+icescrum.timezone.default="UTC"
 
 /*
 Project administration section
@@ -184,10 +185,14 @@ log4j = {
 
   warn 'org.mortbay.log'
 
-  debug 'org.icescrum.plugins.entryPoints'
+  if (grails.entryPoints.debug){
+      debug 'org.icescrum.plugins.entryPoints'
+  }
 
   if (icescrum.debug.enable){
       debug 'grails.app.service.org.icescrum'
+      debug 'grails.app.controller.org.icescrum'
+      debug 'grails.app.domain.org.icescrum'
   }
 
   appenders {

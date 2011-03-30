@@ -66,8 +66,8 @@
       <is:tableColumn editable="[type:'selectui',id:'effort',disabled:!inProduct,name:'effort',values:suiteSelect]">${story.effort?:'?'}</is:tableColumn>
       <is:tableColumn editable="[type:'textarea',disabled:!productOwner,name:'description']">${story.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
       <is:tableColumn editable="[type:'richarea',disabled:!productOwner,name:'notes']"><wikitext:renderHtml markup="Textile">${story.notes}</wikitext:renderHtml></is:tableColumn>
-      <is:tableColumn>${story.acceptedDate?g.formatDate(date:story.acceptedDate,formatName:'is.date.format.short'):''}</is:tableColumn>
-      <is:tableColumn>${story.estimatedDate?g.formatDate(date:story.estimatedDate,formatName:'is.date.format.short'):''}</is:tableColumn>
+      <is:tableColumn>${story.acceptedDate?g.formatDate(date:story.acceptedDate,formatName:'is.date.format.short',timezone:user?.preferences?.timezone?:null):''}</is:tableColumn>
+      <is:tableColumn>${story.estimatedDate?g.formatDate(date:story.estimatedDate,formatName:'is.date.format.short',timezone:user?.preferences?.timezone?:null):''}</is:tableColumn>
     </is:tableRows>
   </is:table>
 </is:tableView>

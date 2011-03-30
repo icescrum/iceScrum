@@ -273,6 +273,7 @@ class ProjectController {
                     activities: activities,
                     sprint: sprint,
                     release:release,
+                    user:springSecurityService.currentUser,
                     lang:RCU.getLocale(request).toString().substring(0,2),
                     id:id
             ]
