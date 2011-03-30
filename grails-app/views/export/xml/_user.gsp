@@ -23,6 +23,6 @@
   <is:propertyAsXML name="['lastName','firstName']" cdata="true"/>
   <is:propertyAsXML
             object ="preferences"
-            name="['language','activity','filterTask','menu','menuHidden','hideDoneState']"/>
+            name="['language','activity','filterTask','menu','menuHidden','hideDoneState','timezone']"/>
   <is:listAsXML name="teams" template="/export/xml/team" child="team" deep="false" indentLevel="${indentLevel  + 1}"/>
 </is:objectAsXML>
