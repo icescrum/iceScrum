@@ -400,6 +400,8 @@ comment-button-wrapper .button-s {
     float:left;
     margin-left:-48px;
     padding:2px;
+    width:40px;
+    height:40px;
 }
 
 .file-avatar .is-multifiles-select {

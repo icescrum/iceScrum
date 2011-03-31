@@ -86,7 +86,7 @@ grails.mail.default.from=icescrum.alerts.default.from
 /*
   Push section
  */
-icepush.disabled=false
+icepush.disabled=true
 
 /*
  Attachmentable section
@@ -155,7 +155,7 @@ grails.spring.bean.packages = []
 grails.views.javascript.library = 'jquery'
 
 
-icescrum.debug.enable=false
+icescrum.debug.enable=true
 grails.entryPoints.debug=false
 
 environments {
