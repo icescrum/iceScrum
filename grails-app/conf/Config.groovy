@@ -155,7 +155,7 @@ grails.spring.bean.packages = []
 grails.views.javascript.library = 'jquery'
 
 
-icescrum.debug.enable=true
+icescrum.debug.enable=false
 grails.entryPoints.debug=false
 
 environments {
