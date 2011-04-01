@@ -594,7 +594,7 @@ $(document).ready(function($) {
                 };
 
             obj.effect('blind', null, 'fast', callback);
-            if (opts.onClose)
+            if (opts && opts.onClose)
                 opts.onClose();
 
             if (event)

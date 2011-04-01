@@ -93,8 +93,11 @@ class ScrumOSController {
       it.shortName.toLowerCase() == controllerRequested.toLowerCase()
     }
     if (controller) {
-
-      def url = createLink(controller:params.window, action:controller.getPropertyValue('widget')?.init ?: 'indexWidget', params:[product:params.product]).toString() - request.contextPath
+       def paramsWidget = null
+      if (params.product){
+          paramsWidget = [product:params.product]
+      }
+      def url = createLink(controller:params.window, action:controller.getPropertyValue('widget')?.init ?: 'indexWidget', params:paramsWidget).toString() - request.contextPath
       if(!menuBarSupport.permissionDynamicBar(url)){
         session['widgetsList'].remove(params.window)
         render(status: 400)
