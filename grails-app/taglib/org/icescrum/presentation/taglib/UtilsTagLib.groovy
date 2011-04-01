@@ -173,7 +173,7 @@ class UtilsTagLib {
   }
 
   def bundleFromController = {attrs, body ->
-    def controllerRequested = "${controllerName}Controller"
+    def controllerRequested = "${attrs.controller?:controllerName}Controller"
     def controller = grailsApplication.uIControllerClasses.find { it.shortName.toLowerCase() == controllerRequested.toLowerCase()}
     out << g.message(code: controller.getPropertyValue(attrs.bundle).get(attrs.value))
   }
