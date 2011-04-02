@@ -30,7 +30,16 @@
 <is:kanban selectable="[filter:'.postit-rect',
                         cancel:'.postit-label, .postit-story, a, .mini-value, select, input',
                         selected:'\$.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'task.id=\'+\$(obj.selected).icescrum(\'postit\').id()')+';})',
-                        onload:'\$(\'.window-toolbar\').icescrum(\'toolbar\', \'buttons\', 0).toggleEnabled(\'.backlog\');']">
+                        onload:'\$(\'.window-toolbar\').icescrum(\'toolbar\', \'buttons\', 0).toggleEnabled(\'.backlog\');']"
+           droppable='[selector:"tbody .table-line.row-story",
+                       hoverClass: "active",
+                       drop: remoteFunction(controller:"releasePlan",
+                                           action:"associateStory",
+                                           update:"window-content-${id}",
+                                           onSuccess:"ui.draggable.remove()",
+                                           params:"\"origin=${id}&product=${params.product}&story.id=\"+ui.draggable.attr(\"elemId\")+\"&position=\"+(\$(\".kanban tbody tr.row-story\").index(this)+1)+\"&sprint.id=${sprint.id}\""
+                                           ),
+                       accept: ".postit-row-story"]'>
 %{-- Columns' headers --}%
   <is:kanbanHeader name="Story" key="story"/>
   <g:each in="${columns}" var="column">
@@ -38,7 +47,7 @@
   </g:each>
 
 %{-- Recurrent Tasks --}%
-  <is:kanbanRow rendered="${displayRecurrentTasks}">
+  <is:kanbanRow rendered="${displayRecurrentTasks}" class="row-recurrent-task">
     <is:kanbanColumn key="story">
       <g:message code="is.ui.sprintBacklog.kanban.recurrentTasks"/>
       <g:if test="${inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
@@ -102,7 +111,7 @@
 %{-- Urgent Tasks --}%
 
   <g:set var="nodropMessageUrgent" value="${message(code: 'is.ui.sprintBacklog.kanban.urgentTasks.limit', args:[limitValueUrgentTasks])}"/>
-  <is:kanbanRow rendered="${displayUrgentTasks}">
+  <is:kanbanRow rendered="${displayUrgentTasks}" class="row-urgent-task">
     <is:kanbanColumn key="story">
       <g:message code="is.ui.sprintBacklog.kanban.urgentTasks"/>
       <g:if test="${inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
@@ -166,7 +175,7 @@
   </is:kanbanRow>
 
 %{-- Stories Rows --}%
-  <is:kanbanRows in="${stories.sort{it.rank}}" var="story">
+  <is:kanbanRows in="${stories.sort{it.rank}}" var="story" class="row-story">
     <is:kanbanColumn
             elementId="column-story-${story.id}"
             key="story">

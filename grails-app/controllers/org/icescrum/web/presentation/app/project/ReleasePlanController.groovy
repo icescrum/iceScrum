@@ -285,12 +285,12 @@ class ReleasePlanController {
       if(params.position && params.int('position') != 0){
           sprintService.changeRank(sprint, story, params.int('position'))
       }
-      redirect(action: 'index', params:[product:params.product,id:sprint.parentRelease.id])
+      redirect(action:'index',controller:params.origin?:controllerName, params:[product:params.product,id:params.origin?sprint.id:sprint.parentRelease.id])
       pushOthers "${params.product}-${id}-${sprint.parentRelease.id}"
       pushOthers "${params.product}-productBacklog"
-      push "${params.product}-sprintBacklog-${sprint.id}"
+      pushOthers "${params.product}-sprintBacklog-${sprint.id}"
       if (oldSprint)
-        push "${params.product}-sprintBacklog-${oldSprint}"
+        pushOthers "${params.product}-sprintBacklog-${oldSprint}"
     } catch (IllegalStateException ise) {
       render(status: 400, contentType:'application/json', text: [notice: [text:message(code: ise.getMessage())]] as JSON)
     } catch (RuntimeException e) {

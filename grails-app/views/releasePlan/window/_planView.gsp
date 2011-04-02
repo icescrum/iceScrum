@@ -75,8 +75,7 @@
                         accept:'.postit-row-story',
                         drop:remoteFunction(action:'associateStory',
                                   controller:'releasePlan',
-                                  onFailure: is.notice(xhr:'XMLHttpRequest'),
-                                  onSuccess:'\$(\'#backlog-layout-widget-productBacklog .postit-row[elemid=\'+ui.draggable.attr(\'elemId\')+\']\').remove()',
+                                  onSuccess:'ui.draggable.remove()',
                                   update:'window-content-'+id,
                                   id:params.id,
                                   params: '\'product='+params.product+'&story.id=\'+ui.draggable.attr(\'elemId\')+\'&sprint.id=\'+$(this).attr(\'elemId\')')]">

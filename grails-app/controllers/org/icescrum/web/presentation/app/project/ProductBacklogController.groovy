@@ -364,14 +364,14 @@ class ProductBacklogController {
 
   def associateFeature = {
     if(!params.feature || !params.story) {
-      render (status: 400, contentType:'application/json', text:[notice:[text:'is.ui.productBacklog.associateFeature.error']] as JSON)
+      render (status: 400, contentType:'application/json', text:[notice:[text:message(code:'is.ui.productBacklog.associateFeature.error')]] as JSON)
       return
     }
     def feature = Feature.get(params.long('feature.id'))
     def story = Story.get(params.long('story.id'))
 
     if(!feature || !story) {
-      render (status: 400, contentType:'application/json', text:[notice:[text:'is.ui.productBacklog.associateFeature.error']] as JSON)
+      render (status: 400, contentType:'application/json', text:[notice:[text:message(code:'is.ui.productBacklog.associateFeature.error')]] as JSON)
       return
     }
     try {

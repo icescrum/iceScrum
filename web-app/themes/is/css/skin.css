@@ -451,7 +451,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
 .view-release .event-container-event .ui-drop-hover,
     .ui-drop-hover, .view-release .ui-drop-hover-postit-rect,
     .view-postit .postit-placeholder, .kanban .postit-placeholder,
-    .local-active, .main-active {
+    .local-active, .main-active, .row-story.active td,.row-story.active .kanban-col-0 {
    background-color:#FFFAAE;
 }
 
