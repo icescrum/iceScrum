@@ -25,6 +25,7 @@
 
 <g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
 <g:set var="nodropMessage" value="${g.message(code:'is.ui.sprintBacklog.no.drop')}"/>
+<g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
 
 <is:tableView>
 <is:kanban selectable="[filter:'.postit-rect',
@@ -33,6 +34,7 @@
                         onload:'\$(\'.window-toolbar\').icescrum(\'toolbar\', \'buttons\', 0).toggleEnabled(\'.backlog\');']"
            droppable='[selector:"tbody .table-line.row-story",
                        hoverClass: "active",
+                       rendered:(poOrSm && sprint.state != Sprint.STATE_DONE),
                        drop: remoteFunction(controller:"releasePlan",
                                            action:"associateStory",
                                            update:"window-content-${id}",
