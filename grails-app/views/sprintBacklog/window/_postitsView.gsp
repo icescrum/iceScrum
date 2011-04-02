@@ -27,12 +27,13 @@
 <g:set var="nodropMessage" value="${g.message(code:'is.ui.sprintBacklog.no.drop')}"/>
 <g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
 
+
 <is:tableView>
 <is:kanban selectable="[filter:'.postit-rect',
                         cancel:'.postit-label, .postit-story, a, .mini-value, select, input',
                         selected:'\$.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'task.id=\'+\$(obj.selected).icescrum(\'postit\').id()')+';})',
                         onload:'\$(\'.window-toolbar\').icescrum(\'toolbar\', \'buttons\', 0).toggleEnabled(\'.backlog\');']"
-           droppable='[selector:"tbody .table-line.row-story",
+           droppable='[selector:stories?".kanban tbody .table-line.row-story":".kanban",
                        hoverClass: "active",
                        rendered:(poOrSm && sprint.state != Sprint.STATE_DONE),
                        drop: remoteFunction(controller:"releasePlan",
