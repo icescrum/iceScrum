@@ -20,15 +20,6 @@
 - Vincent Barrier (vincent.barrier@icescrum.com)
 --}%
 <is:tabs elementId="about-tabs">
-  %{--<is:tab elementId="company-tab" class="about-tab" title="is.dialog.about.services">
-    <g:include view="${id}/about/_services.gsp" model="[services:about.services]"/>
-  </is:tab>--}%
-  <is:tab elementId="team-tab" class="about-tab" title="is.dialog.about.team">
-    <g:include view="${id}/about/_team.gsp" model="[team:about.team]"/>
-  </is:tab>
-  <is:tab elementId="contributors-tab" class="about-tab" title="is.dialog.about.contributors">
-    <g:include view="${id}/about/_contributor.gsp" model="[contributors:about.contributors]"/>
-  </is:tab>
   <is:tab elementId="version-tab" class="about-tab" title="is.dialog.about.version">
     <g:include view="${id}/about/_version.gsp" model="[version:about.version]"/>
   </is:tab>

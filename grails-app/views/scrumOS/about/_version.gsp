@@ -19,8 +19,10 @@
 -
 - Vincent Barrier (vincent.barrier@icescrum.com)
 --}%
-<h3>
-<g:message code="is.dialog.about.version.build.title"/></h3>
+<p class="last">
+  <strong><g:message code="is.dialog.about.version.link"/></strong> : <a href="${version.link}">${version.link}</a>
+</p>
+<h3><g:message code="is.dialog.about.version.build.title"/></h3>
 <p>
   <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : <g:meta name="app.version"/>
 </p>

@@ -86,7 +86,7 @@ grails.mail.default.from=icescrum.alerts.default.from
 /*
   Push section
  */
-icepush.disabled=false
+icepush.disabled=true
 
 /*
  Attachmentable section
@@ -154,16 +154,18 @@ grails.spring.bean.packages = []
 
 grails.views.javascript.library = 'jquery'
 
-
-icescrum.debug.enable=false
-grails.entryPoints.debug=false
-
 environments {
+  development {
+    icescrum.debug.enable=true
+    grails.entryPoints.debug=true
+  }
   production {
     grails.config.locations = ["classpath:config.properties"]
     icescrum.debug.enable = false
+    grails.entryPoints.debug=false
   }
 }
+
 // log4j configuration
 log4j = {
   def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
