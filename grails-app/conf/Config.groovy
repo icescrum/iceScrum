@@ -86,7 +86,7 @@ grails.mail.default.from=icescrum.alerts.default.from
 /*
   Push section
  */
-icepush.disabled=true
+icepush.disabled=false
 
 /*
  Attachmentable section
