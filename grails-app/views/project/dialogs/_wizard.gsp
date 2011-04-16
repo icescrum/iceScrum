@@ -71,7 +71,7 @@
       <is:radio id="product.preferences.noEstimation" name="product.preferences.noEstimation" value="${product.preferences.noEstimation}"/>
     </is:fieldRadio>
     <is:fieldRadio for="productpreferenceshideweekend" label="is.product.preferences.project.hideWeekend">
-        <is:radio id="productpreferenceshideweekend" name="productd.preferences.hideWeekend" value="${product.preferences.hideWeekend}"/>
+        <is:radio id="product.preferences.hideWeekend" name="product.preferences.hideWeekend" value="${product.preferences.hideWeekend}"/>
       </is:fieldRadio>
     <is:fieldRadio for="product.preferences.autoDoneStory" label="is.product.preferences.sprint.autoDoneStory">
       <is:radio id="product.preferences.autoDoneStory" name="product.preferences.autoDoneStory" value="${product.preferences.noEstimation}"/>
@@ -91,8 +91,8 @@
     <is:fieldRadio for="product.preferences.displayUrgentTasks" label="is.product.preferences.sprint.displayUrgentTasks">
       <is:radio id="product.preferences.displayUrgentTasks" name="product.preferences.displayUrgentTasks" value="${product.preferences.displayUrgentTasks}"/>
     </is:fieldRadio>
-    <is:fieldRadio for="productpreferenceslimitUrgentTasks" label="is.product.preferences.sprint.limitUrgentTasks" noborder="true">
-         <is:input id="productpreferenceslimitUrgentTasks" name="product.preferences.limitUrgentTasks" typed="[type:'numeric',allow:'-']" value="${product.preferences.limitUrgentTasks}" />
+    <is:fieldRadio for="product.preferences.limitUrgentTasks" label="is.product.preferences.sprint.limitUrgentTasks" noborder="true">
+         <is:input id="product.preferences.limitUrgentTasks" name="product.preferences.limitUrgentTasks" typed="[type:'numeric',allow:'-']" value="${product.preferences.limitUrgentTasks}" />
     </is:fieldRadio>
   </is:fieldset>
 
