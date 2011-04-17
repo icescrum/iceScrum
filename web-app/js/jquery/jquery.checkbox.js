@@ -1,21 +1,3 @@
-/*
- * Copyright (c) 2010 iceScrum Technologies.
- *
- * This file is part of iceScrum.
- *
- * iceScrum is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * iceScrum is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 /**
  * @author alexander.farkas
  * @version 1.4.1
@@ -26,7 +8,7 @@
 		options: {
 	        hideInput: true,
 			addVisualElement: true,
-			addLabel: true,
+			addLabel: false,
 			_delegated: false
 	    },
         _create: function(){
@@ -62,7 +44,7 @@
             }
 
 			if(opts.addLabel){
-				this.labels = $('label[for=' + this.element.attr('id') + ']')
+				this.labels = $('label[for=' +  this.element.attr('id') + ']')
 					.addClass(this.radio ? 'ui-radio' : 'ui-checkbox')
 				;
 			}
