@@ -683,7 +683,7 @@ Timeline.IceScrumEventPainter.prototype._showBubble = function(x, y, evt) {
                   }
                },
                style: {
-                  name: 'icescrum',
+                  name: 'classic',
                   tip : {
                       size:{
                           width:300,

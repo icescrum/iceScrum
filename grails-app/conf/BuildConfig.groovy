@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  * Stephane Maldini (stephane.maldini@icescrum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  */
@@ -32,7 +32,7 @@ grails.project.war.file = "target/${appName}.war"
 grails.project.war.osgi.headers = false
 
 //grails.plugin.location.'entry-points' =  '../plugins/entry-points'
-//grails.plugin.location.'icescrum-core' =  '../plugins/icescrum-core'
+grails.plugin.location.'icescrum-core' =  '../plugins/icescrum-core'
 
 coverage {
   enabledByDefault = false
@@ -78,7 +78,7 @@ grails.project.dependency.resolution = {
   }
 
   plugins {
-      compile "org.icescrum:icescrum-core:1.3.1"
+      //compile "org.icescrum:icescrum-core:1.3.1"
       compile "org.icescrum:entry-points:0.3-BETA"
       compile "org.icescrum:icepush-jquery:0.2"
   }

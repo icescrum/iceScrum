@@ -42,6 +42,7 @@ class TimelinesController {
   def releaseService
   def productService
   def featureService
+  def springSecurityService
 
   static SprintStateBundle = [
           (Sprint.STATE_WAIT):'is.sprint.state.wait',

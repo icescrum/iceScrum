@@ -1184,7 +1184,7 @@ $.fn.isWidget.defaults = {
     onClose:null
 };
 
-$.fn.qtip.styles.icescrum = {
+$.fn.qtip.styles.classic = {
     border: {
         width: 0,
         radius: 5,
@@ -1204,13 +1204,25 @@ $.fn.qtip.styles.icescrum = {
         min: '200',
         max: '400'
     },
+    name: 'light' // Inherit the rest of the attributes from the preset light style
+};
 
+$.fn.qtip.styles.icescrum = {
+    classes: {
+        title: 'qtip-title break-word',
+        content: 'qtip-title break-word',
+        tooltip: 'css3-shadow qtip-icescrum'
+    },
+    name: 'classic'
+};
+
+$.fn.qtip.styles.timeline = {
     classes: {
         title: 'qtip-title',
         content: 'qtip-title',
         tooltip: 'css3-shadow qtip-icescrum'
     },
-    name: 'light' // Inherit the rest of the attributes from the preset dark style
+    name: 'classic'
 };
 
 $.icescrum.init();
