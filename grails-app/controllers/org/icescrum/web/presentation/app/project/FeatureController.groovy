@@ -249,7 +249,7 @@ class FeatureController {
     if (featureMoved == null || position == null) {
       render(status: 400, contentType:'application/json',text: [notice: [text: message(code:'is.feature.rank.error')]] as JSON)
     }
-    if (featureService.changeRank(Product.get(params.product), featureMoved, position)) {
+    if (featureService.changeRank(featureMoved, position)) {
       render(status: 200)
       pushOthers "${params.product}-${id}"
     } else {

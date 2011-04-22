@@ -291,7 +291,7 @@ class ReleasePlanController {
       productBacklogService.associateStory(sprint, story)
 
       if(params.position && params.int('position') != 0){
-          sprintService.changeRank(sprint, story, params.int('position'))
+          productBacklogService.changeRank(story, params.int('position'))
       }
       redirect(action:'index',controller:params.origin?:controllerName, params:[product:params.product,id:params.origin?sprint.id:sprint.parentRelease.id])
       pushOthers "${params.product}-${id}-${sprint.parentRelease.id}"
@@ -694,7 +694,7 @@ class ReleasePlanController {
       return
     }
 
-    if (sprintService.changeRank(sprint, movedItem, position)) {
+    if (productBacklogService.changeRank(movedItem, position)) {
       pushOthers "${params.product}-${id}-${sprint.parentRelease.id}"
       push "${params.product}-sprintBacklog-${sprint.id}"
       render(status: 200)
