@@ -96,15 +96,8 @@
                                       onFailure: "\$(ui).sortable(\"cancel\");" + is.notice(xhr:"XMLHttpRequest"),
                                       params: "\"product=${params.product}&story.id=\"+ui.item.attr(\"elemId\")+\"&sprint.id=${sprint.id}&position=\"+(\$(\"#backlog-layout-plan-${sprint.id} .postit-rect\").index(ui.item)+1)")
                   ]'
-                dblclickable="[rendered:!productOwner,
-                               selector:'.postit-rect',
+                dblclickable="[selector:'.postit-rect',
                                callback:is.quickLook(params:'\'story.id=\'+$(obj).icescrum(\'postit\').id()')]"
-
-                selectable="[rendered:!poOrSm,
-                    selected:'\$.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'story.id=\'+\$(obj.selected).icescrum(\'postit\').id()')+';})',
-                    filter:'div.postit-story',
-                    cancel:'.postit-label, a',
-                    onload:'\$(\'.window-toolbar\').icescrum(\'toolbar\', \'buttons\', 1).toggleEnabled(\'.backlog\');']"
                 value="${sprint.stories?.sort{it.rank}}"
 
                 var="story"
@@ -120,6 +113,7 @@
                   typeTitle="${is.bundleFromController(bundle:'StoryTypesBundle',value:story.type)}"
                   sortable='[rendered:productOwner, disabled:story.state == Story.STATE_DONE]'
                   miniValue="${story.effort >= 0 ? story.effort :'?'}"
+                  editableEstimation="${story?.state != Story.STATE_DONE}"
                   color="${story.feature?.color ?: 'yellow'}"
                   stateText="${is.bundleFromController(bundle:'StoryStateBundle',value:story.state)}"
                   comment="${story.totalComments >= 0 ? story.totalComments : ''}">
@@ -130,7 +124,7 @@
                             id="${story.id}"
                             title="${story.name.encodeAsHTML()}"
                             text="${is.storyTemplate(story:story)}"
-                            apiBeforeShow="if(\$('#dropmenu').is(':visible')) return false;if(\$('#postit-id-${story.id}').hasClass('ui-sortable-helper')) return false;"
+                            apiBeforeShow="if(\$('#dropmenu').is(':visible') || \$('#postit-story-${story.id} .mini-value.editable').hasClass('editable-hover') || \$('#postit-story-${story.id}').hasClass('ui-sortable-helper')) return false;"
                             container="\$('#window-content-${id}')"/>
         </is:backlogElementLayout>
       </is:eventContent>
@@ -150,5 +144,17 @@
         group="${params.product}-${id}-${releaseId}"
         listenOn="#window-content-${id}"/>
   <is:renderJavascript />
+  <is:editable controller="productBacklog"
+             action='estimate'
+             on='.postit-story .mini-value.editable'
+             findId="\$(this).parent().parent().parent().attr(\'elemID\')"
+             type="selectui"
+             before="\$(this).next().hide();"
+             cancel="\$(original).next().show();"
+             values="${suiteSelect}"
+             restrictOnNotAccess='teamMember() or scrumMaster()'
+             callback="\$(this).next().show();"
+             params="[product:params.product]"/>
 </jq:jquery>
+
 <is:shortcut key="space" callback="if(\$('#dialog').dialog('isOpen') == true){\$('#dialog').dialog('close'); return false;}\$.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery(obj.selected).icescrum(\'postit\').id()')},true);" scope="${id}"/>

@@ -31,6 +31,7 @@ import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
 import org.icescrum.core.support.MenuBarSupport
+import org.icescrum.core.domain.PlanningPokerGame
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class ReleasePlanController {
@@ -141,7 +142,14 @@ class ReleasePlanController {
     def activeSprint = release?.sprints?.find { it.state == Sprint.STATE_INPROGRESS }
     def nextSprint = releaseService.nextSprintActivable(release)?:0
 
-    render(template: 'window/planView', model: [sprints: sprints, id: id, activeSprint: activeSprint, nextSprint:nextSprint,releaseId:release.id])
+    def suiteSelect = ''
+    def currentSuite = PlanningPokerGame.getInteger(release.parentProduct.planningPokerGameType)
+
+    currentSuite = currentSuite.eachWithIndex { t,i ->
+      suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size()-1 ? ',' : '')
+    }
+
+    render(template: 'window/planView', model: [sprints: sprints, id: id, activeSprint: activeSprint, nextSprint:nextSprint,releaseId:release.id, suiteSelect:suiteSelect])
   }
 
   @Secured('productOwner() or scrumMaster()')

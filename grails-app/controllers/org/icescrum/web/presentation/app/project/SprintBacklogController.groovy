@@ -173,6 +173,14 @@ class SprintBacklogController {
       recurrentTasks = Task.findRecurrentTasksFilter(sprint,null,user).listDistinct()
       urgentTasks = Task.findUrgentTasksFilter(sprint,null,user).listDistinct()
     }
+
+    def suiteSelect = ''
+    def currentSuite = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
+
+    currentSuite = currentSuite.eachWithIndex { t,i ->
+      suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size()-1 ? ',' : '')
+    }
+
     def template = session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
     render(template: template,
             model: [id: id,
@@ -182,6 +190,7 @@ class SprintBacklogController {
                     urgentTasks:urgentTasks,
                     columns: columns,
                     stateSelect:stateSelect,
+                    suiteSelect:suiteSelect,
                     hideDoneState:user.preferences.hideDoneState,
                     previousSprintExist:(sprint.orderNumber > 1)?:false,
                     nextSprintExist:Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease,sprint.orderNumber + 1)?:false,

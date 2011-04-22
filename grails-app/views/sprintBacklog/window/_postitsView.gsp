@@ -194,7 +194,7 @@
                 miniValue="${story.effort >= 0 ? story.effort :'?'}"
                 color="${story.feature?.color}"
                 stateText="${is.bundleFromController(bundle:'stateBundle',value:story.state)}"
-                editableEstimation="${(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE)}"
+                editableEstimation="${story?.state != Story.STATE_DONE}"
                 controller="${id}"
                 comment="${story.totalComments >= 0 ? story.totalComments : ''}">
           <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
@@ -208,7 +208,7 @@
                     id="${story.id}"
                     title="${story.name.encodeAsHTML()}"
                     text="${is.storyTemplate(story:story)}"
-                    apiBeforeShow="if(\$('#dropmenu').is(':visible')){return false;}"
+                    apiBeforeShow="if(\$('#dropmenu').is(':visible') || \$('#postit-story-${story.id} .mini-value.editable').hasClass('editable-hover')) return false;"
                     container="\$('#window-content-${id} .view-table')"/>
           </g:if>
         </is:postit>
@@ -278,7 +278,7 @@
 </is:kanban>
 </is:tableView>
 <jq:jquery>
-  jQuery('.postit-story').dblclick(function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params:'\'story.id=\'+obj.attr(\"elemId\")')}});
+  //jQuery('.postit-story').dblclick(function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params:'\'story.id=\'+obj.attr(\"elemId\")')}});
   jQuery("#window-content-${id}").removeClass('window-content-toolbar');
   if(!jQuery("#dropmenu").is(':visible')){
     jQuery("#window-id-${id}").focus();
@@ -299,11 +299,20 @@
         reload="[update:'#window-content-'+id,action:'index',id:sprint.id,params:[product:params.product]]"
         group="${params.product}-${id}"
         listenOn="#window-content-${id}"/>
-</jq:jquery>
-<is:editable
+  <is:editable controller="productBacklog"
+             action='estimate'
+             on='.postit-story .mini-value.editable'
+             findId="\$(this).parent().parent().parent().attr(\'elemID\')"
+             type="selectui"
+             before="\$(this).next().hide();"
+             cancel="\$(original).next().show();"
+             values="${suiteSelect}"
+             restrictOnNotAccess='teamMember() or scrumMaster()'
+             callback="\$(this).next().show();"
+             params="[product:params.product]"/>
+  <is:editable
         on=".mini-value.editable"
         typed="[type:'numeric',allow:'?']"
-        wrap="true"
         onExit="submit"
         action="estimateTask"
         controller="${id}"
@@ -313,5 +322,7 @@
         callback="\$(this).next().show();"
         params="[product:params.product]"
         findId="\$(this).parent().parent().parent().attr(\'elemID\')"/>
+</jq:jquery>
+
 <is:shortcut key="space" callback="if(\$('#dialog').dialog('isOpen') == true){\$('#dialog').dialog('close'); return false;}\$.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'task.id=\'+jQuery(obj.selected).icescrum(\'postit\').id()')}},true);" scope="${id}"/>
 <is:shortcut key="ctrl+a" callback="\$('#window-content-${id} .ui-selectee').addClass('ui-selected');"/>
