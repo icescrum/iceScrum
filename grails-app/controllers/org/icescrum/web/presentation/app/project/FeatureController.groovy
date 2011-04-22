@@ -115,8 +115,12 @@ class FeatureController {
     def product = Product.get(params.product)
 
     def successRank = true
+
+    println params.int('feature.rank')
+    println feature.rank
+
     if (params.int('feature.rank') && feature.rank != params.int('feature.rank')) {
-      if (!featureService.changeRank(product, feature, params.int('feature.rank'))) {
+      if (!featureService.changeRank(feature, params.int('feature.rank'))) {
         msg = message(code: 'is_feature_error')
         successRank = false
       }
@@ -290,9 +294,10 @@ class FeatureController {
     def currentProduct = Product.get(params.product.toLong())
     def valuesList = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
 
-    def rankList = ''
-    def maxRank = currentProduct.features.size()
-    maxRank.times { rankList += "${it + 1}" }
+    def rankList = []
+    def maxRank = currentProduct.features?.size()
+    maxRank.times { rankList << (it + 1) }
+    println rankList
     def feature = Feature.get(params.long('id'))
 
     if(!feature) {
