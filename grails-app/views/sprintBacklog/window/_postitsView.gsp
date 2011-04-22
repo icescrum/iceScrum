@@ -278,7 +278,7 @@
 </is:kanban>
 </is:tableView>
 <jq:jquery>
-  //jQuery('.postit-story').dblclick(function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params:'\'story.id=\'+obj.attr(\"elemId\")')}});
+  jQuery('.postit-story').dblclick(function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params:'\'story.id=\'+obj.attr(\"elemId\")')}});
   jQuery("#window-content-${id}").removeClass('window-content-toolbar');
   if(!jQuery("#dropmenu").is(':visible')){
     jQuery("#window-id-${id}").focus();

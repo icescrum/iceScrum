@@ -149,7 +149,7 @@ class ReleasePlanController {
       suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size()-1 ? ',' : '')
     }
 
-    render(template: 'window/planView', model: [sprints: sprints, id: id, activeSprint: activeSprint, nextSprint:nextSprint,releaseId:release.id, suiteSelect:suiteSelect])
+    render(template: 'window/planView', model: [release:release, sprints: sprints, id: id, activeSprint: activeSprint, nextSprint:nextSprint,releaseId:release.id, suiteSelect:suiteSelect])
   }
 
   @Secured('productOwner() or scrumMaster()')

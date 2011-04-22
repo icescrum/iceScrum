@@ -137,6 +137,7 @@
 <jq:jquery>
   jQuery("#window-content-${id}").removeClass('window-content-toolbar');
   jQuery("#window-id-${id}").focus();
+  jQuery('#window-title-bar-${id} .content').html('${message(code:"is.ui."+id)} - ${release.name}  - ${is.bundleFromController(bundle:'ReleaseStateBundle',value:release.state)} - [${g.formatDate(date:release.startDate, formatName:'is.date.format.short')} -> ${g.formatDate(date:release.endDate, formatName:'is.date.format.short')}]');
   <is:renderNotice />
   <icep:notifications
         name="${id}Window"
