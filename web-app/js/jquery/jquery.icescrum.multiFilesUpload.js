@@ -30,7 +30,7 @@
             onSelect: function(input,form){},
             accept: null,
             size:23,
-            multi:5,
+            multi:-1,
             imageheight : 22,
             imagewidth : 65,
             name:'file',
@@ -56,7 +56,7 @@
         var input = $('<input>').attr('type','file').attr('name','file').css({"position": "relative","height": settings.imageheight + "px","width": settings.width + "px","display": "inline","cursor": "pointer","opacity": "0.0"});
         var button = $("<div>").css({"width": settings.imagewidth + "px","height": settings.imageheight + "px","background": "url(" + settings.image + ") 0 0 no-repeat"}).addClass('is-multifiles-button');
 
-        if((root.find('.is-multifiles-filename').size() >= settings.multi)){
+        if((settings.multi != -1 && root.find('.is-multifiles-filename').size() >= settings.multi)){
             multiFilesUploadDiv.hide();
         }
 
