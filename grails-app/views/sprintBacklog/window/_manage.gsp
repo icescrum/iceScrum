@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <g:form action="save" name="${id}-form" method="post" class="box-form box-form-250 box-form-200-legend" tabindex="1">

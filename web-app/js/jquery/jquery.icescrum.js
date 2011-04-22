@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  * Stéphane Maldini (stephane.maldini@icescrum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  *
@@ -1206,8 +1206,8 @@ $.fn.qtip.styles.icescrum = {
     },
 
     classes: {
-        title: 'qtip-title break-word',
-        content: 'qtip-title break-word',
+        title: 'qtip-title',
+        content: 'qtip-title',
         tooltip: 'css3-shadow qtip-icescrum'
     },
     name: 'light' // Inherit the rest of the attributes from the preset dark style

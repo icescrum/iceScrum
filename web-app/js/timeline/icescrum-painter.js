@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
 
@@ -683,7 +683,13 @@ Timeline.IceScrumEventPainter.prototype._showBubble = function(x, y, evt) {
                   }
                },
                style: {
-                  name: 'icescrum'
+                  name: 'icescrum',
+                  tip : {
+                      size:{
+                          width:300,
+                          height:200
+                      }
+                  }
                },
                api:{
                   beforeShow:function(){ if($('#dropmenu').is(':visible')){return false;}}

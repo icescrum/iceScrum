@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object ="${object}" node="sprint" indentLevel="${indentLevel}" root="${root}">
   <is:propertyAsXML name="['state','dailyWorkTime','velocity','capacity','resource','endDate','startDate','orderNumber','activationDate','closeDate']"/>
   <is:propertyAsXML name="['retrospective','doneDefinition','description','goal']" cdata="true"/>

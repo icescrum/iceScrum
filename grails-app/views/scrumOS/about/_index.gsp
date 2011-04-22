@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:tabs elementId="about-tabs">
   <is:tab elementId="version-tab" class="about-tab" title="is.dialog.about.version">

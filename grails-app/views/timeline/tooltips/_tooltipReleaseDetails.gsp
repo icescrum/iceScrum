@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2011 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -17,24 +17,23 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Release" %>
-<p>
-  <span class="important"><g:message code="is.release.goal"/> :</span>
-  ${release.goal.encodeAsHTML()}
-</p>
-<g:if test="${release.state == Release.STATE_DONE}">
-  <p>
-    <span class="important"><g:message code="is.release.velocity"/> :</span>
-    ${release.releaseVelocity}
-  </p>
-</g:if>
-<div class="drap-container" style="width:100%;float:left;margin-top:10px;">
-  <div class="drap date-start" style="float:left;margin:0px">
-    <g:formatDate date="${release.startDate}" formatName="is.date.format.short"/>
-  </div>
-  <div class="drap date-end" style="float:right;margin:0px">
-    <g:formatDate date="${release.endDate}" formatName="is.date.format.short"/>
-  </div>
-</div>
+<strong><g:message code="is.release.goal"/>: </strong>${release.goal.encodeAsHTML()}
+<table class="table-tooltip-sprint">
+    <g:if test="${release.state != Release.STATE_WAIT}">
+    <tr>
+        <td class="entry-title"><g:message code="is.release.velocity"/>: </td>
+        <td class="entry-value">${release.releaseVelocity}</td>
+    </tr>
+    </g:if>
+    <tr>
+        <td class="entry-title"><g:message code="is.release.startDate"/>: </td>
+        <td class="entry-value"><g:formatDate date="${release.startDate}" formatName="is.date.format.short" timeZone="${user?.preferences?.timezone?:null}"/></td>
+    </tr>
+    <tr>
+        <td class="entry-title"><g:message code="is.release.endDate"/>: </td>
+        <td class="entry-value"><g:formatDate date="${release.endDate}" formatName="is.date.format.short" timeZone="${user?.preferences?.timezone?:null}"/></td>
+    </tr>
+</table>

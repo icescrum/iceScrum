@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object ="${object}" node="team" indentLevel="${indentLevel}" root="${root}">
   <is:propertyAsXML name="['velocity','dateCreated']"/>
   <is:propertyAsXML name="['name','description']" cdata="true"/>

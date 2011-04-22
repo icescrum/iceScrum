@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <div class="box-blank clearfix">
   <p>${message(code:'is.ui.feature.blank.description')}</p>

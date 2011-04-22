@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
 
@@ -150,7 +150,7 @@ class TimelineController {
             colorS = "#C1FF89"
             break
         }
-        templateTooltip = include(view: "$controllerName/tooltips/_tooltipSprintDetails.gsp", model: [sprint: it2])
+        templateTooltip = include(view: "$controllerName/tooltips/_tooltipSprintDetails.gsp", model: [sprint: it2, user:springSecurityService.currentUser])
         def tlS = [window:"sprintBacklog/${it2.id}",
                 start:it2.startDate,
                 end:it2.endDate,

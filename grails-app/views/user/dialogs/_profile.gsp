@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <form id="form-profile" method="post" class='box-form box-form-250 box-form-200-legend' onsubmit="jQuery('.ui-dialog-buttonpane button:eq(1)').click();return false;">
   <input type="hidden" id="user.id" name="user.id" value="${user.id}"/>
