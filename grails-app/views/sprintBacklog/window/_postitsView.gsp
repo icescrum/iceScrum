@@ -244,7 +244,7 @@
         }}" var="task">
 
         %{-- Task postit --}%
-          <is:postit title="${task.rank} - ${task.name}"
+          <is:postit title="${task.name}"
                   id="${task.id}"
                   miniId="${task.id}"
                   styleClass="story task${((task.state == Task.STATE_DONE) || (task.responsible && task.responsible.id != user.id))? ' ui-selectable-disabled':''}"
