@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object ="${object}" node="user" indentLevel="${indentLevel}" root="${root}">
   <is:propertyAsXML name="['username','password','email','dateCreated','enabled','accountExpired','accountLocked','passwordExpired']"/>
   <is:propertyAsXML name="['lastName','firstName']" cdata="true"/>

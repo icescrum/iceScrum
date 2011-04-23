@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object ="${object}" node="product" root="${root}">
   <is:propertyAsXML
           name="['pkey','planningPokerGameType','startDate','endDate']"/>

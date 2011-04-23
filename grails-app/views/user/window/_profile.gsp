@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="grails.plugin.fluxiable.ActivityLink; grails.plugin.fluxiable.Activity; org.grails.comments.Comment; org.icescrum.core.domain.Story" %>
 <div class="dashboard">

@@ -18,6 +18,7 @@
  * Authors:
  *
  * Stéphane Maldini (stephane.maldini@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
 
@@ -41,6 +42,7 @@ class TimelinesController {
   def releaseService
   def productService
   def featureService
+  def springSecurityService
 
   static SprintStateBundle = [
           (Sprint.STATE_WAIT):'is.sprint.state.wait',
@@ -86,7 +88,7 @@ class TimelinesController {
               colorS = "#C1FF89"
               break
           }
-          templateTooltip = include(view: "$controllerName/tooltips/_tooltipSprintDetails.gsp", model: [sprint: it2])
+          templateTooltip = include(view: "$controllerName/tooltips/_tooltipSprintDetails.gsp", model: [sprint: it2,user:springSecurityService.currentUser])
           def tlS = [url: createLink(controller:'scrumOS',params:[product:it.parentProduct.id])+"#sprintBacklog/${it2.id}",
                   start: it2.startDate,
                   end: it2.endDate,

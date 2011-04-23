@@ -16,7 +16,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  */
 package org.icescrum.web.cache
 

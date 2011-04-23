@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%

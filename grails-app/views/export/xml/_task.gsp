@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object ="${object}" node="task" indentLevel="${indentLevel}" root="${root}">
   <is:propertyAsXML name="['estimation','type','state','rank','creationDate','inProgressDate','doneDate','blocked']"/>
   <is:propertyAsXML object="creator"/>

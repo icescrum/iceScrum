@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <form class="box-form box-form-160 box-form-160-legend">
   <input type="hidden" value="${params.product}" name="product"/>

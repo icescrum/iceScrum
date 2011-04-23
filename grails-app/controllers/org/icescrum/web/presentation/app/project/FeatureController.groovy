@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  *
  */
@@ -115,8 +115,9 @@ class FeatureController {
     def product = Product.get(params.product)
 
     def successRank = true
+
     if (params.int('feature.rank') && feature.rank != params.int('feature.rank')) {
-      if (!featureService.changeRank(product, feature, params.int('feature.rank'))) {
+      if (!featureService.changeRank(feature, params.int('feature.rank'))) {
         msg = message(code: 'is_feature_error')
         successRank = false
       }
@@ -249,7 +250,7 @@ class FeatureController {
     if (featureMoved == null || position == null) {
       render(status: 400, contentType:'application/json',text: [notice: [text: message(code:'is.feature.rank.error')]] as JSON)
     }
-    if (featureService.changeRank(Product.get(params.product), featureMoved, position)) {
+    if (featureService.changeRank(featureMoved, position)) {
       render(status: 200)
       pushOthers "${params.product}-${id}"
     } else {
@@ -290,9 +291,9 @@ class FeatureController {
     def currentProduct = Product.get(params.product.toLong())
     def valuesList = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
 
-    def rankList = ''
-    def maxRank = currentProduct.features.size()
-    maxRank.times { rankList += "${it + 1}" }
+    def rankList = []
+    def maxRank = currentProduct.features?.size()
+    maxRank.times { rankList << (it + 1) }
     def feature = Feature.get(params.long('id'))
 
     if(!feature) {

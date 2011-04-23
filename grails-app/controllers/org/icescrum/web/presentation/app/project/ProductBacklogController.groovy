@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  *
  */
@@ -149,7 +149,7 @@ class ProductBacklogController {
 
     try {
       if (params.story.rank && story.rank != params.int('story.rank')) {
-        productBacklogService.changeRank(product, story, params.int('story.rank'))
+        productBacklogService.changeRank(story, params.int('story.rank'))
       }
 
       if(params.story.effort && !params.story.effort.isNumber())
@@ -336,7 +336,7 @@ class ProductBacklogController {
     def position = params.int('position')
     if (movedItem == null || position == null)
        render(status: 400, contentType:'application/json',text: [notice: [text: message(code:'is.story.rank.error')]] as JSON)
-    if (productBacklogService.changeRank(Product.get(params.product), movedItem, position)) {
+    if (productBacklogService.changeRank(movedItem, position)) {
       render(status: 200)
       pushOthers "${params.product}-${id}"
     } else {

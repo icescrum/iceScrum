@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:wizard next="is.dialog.wizard.next" cancel="is.button.cancel" previous="is.dialog.wizard.previous" submit="is.dialog.wizard.submit" id="project-wizard" controller="project" before="\$('#choose-select-is-team-teams').empty();\$('#choose-select-is-team-members').empty();" onSuccess="\$('#dialog').dialog('close');" update="dialog" action="save">
 

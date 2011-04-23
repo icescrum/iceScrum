@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <form id="form-project" name="form-project" method="post" class='box-form box-form-250 box-form-200-legend'>
   <input type="hidden" name="productd.id" value="${params.product}">

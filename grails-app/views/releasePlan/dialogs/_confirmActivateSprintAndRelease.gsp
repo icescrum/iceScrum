@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:dialog valid="[action:'activate',controller:id,id:sprint.id,update:'window-content-'+id,button:'is.dialog.confirmActivateSprintAndRelease.button']">
    <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Authors: Vincent Barrier (vincent.barrier@icescrum.com)
+ * Authors: Vincent Barrier (vbarrier@kagilum.com)
  *  Stéphane Maldini (stephane.maldini@icescrum.com)
  *
  */

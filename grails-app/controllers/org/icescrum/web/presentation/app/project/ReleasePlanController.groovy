@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  *
  */
@@ -31,6 +31,7 @@ import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
 import org.icescrum.core.support.MenuBarSupport
+import org.icescrum.core.domain.PlanningPokerGame
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class ReleasePlanController {
@@ -141,7 +142,14 @@ class ReleasePlanController {
     def activeSprint = release?.sprints?.find { it.state == Sprint.STATE_INPROGRESS }
     def nextSprint = releaseService.nextSprintActivable(release)?:0
 
-    render(template: 'window/planView', model: [sprints: sprints, id: id, activeSprint: activeSprint, nextSprint:nextSprint,releaseId:release.id])
+    def suiteSelect = ''
+    def currentSuite = PlanningPokerGame.getInteger(release.parentProduct.planningPokerGameType)
+
+    currentSuite = currentSuite.eachWithIndex { t,i ->
+      suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size()-1 ? ',' : '')
+    }
+
+    render(template: 'window/planView', model: [release:release, sprints: sprints, id: id, activeSprint: activeSprint, nextSprint:nextSprint,releaseId:release.id, suiteSelect:suiteSelect])
   }
 
   @Secured('productOwner() or scrumMaster()')
@@ -283,7 +291,7 @@ class ReleasePlanController {
       productBacklogService.associateStory(sprint, story)
 
       if(params.position && params.int('position') != 0){
-          sprintService.changeRank(sprint, story, params.int('position'))
+          productBacklogService.changeRank(story, params.int('position'))
       }
       redirect(action:'index',controller:params.origin?:controllerName, params:[product:params.product,id:params.origin?sprint.id:sprint.parentRelease.id])
       pushOthers "${params.product}-${id}-${sprint.parentRelease.id}"
@@ -686,7 +694,7 @@ class ReleasePlanController {
       return
     }
 
-    if (sprintService.changeRank(sprint, movedItem, position)) {
+    if (productBacklogService.changeRank(movedItem, position)) {
       pushOthers "${params.product}-${id}-${sprint.parentRelease.id}"
       push "${params.product}-sprintBacklog-${sprint.id}"
       render(status: 200)

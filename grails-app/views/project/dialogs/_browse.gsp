@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <form id="form-project-browse" name="form-project-browse" method="post">
 <is:browser detailsLabel="is.dialog.browseProject.details"

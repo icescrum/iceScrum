@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vincent.barrier@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  * Stéphane Maldini (stephane.maldini@icescrum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  * Damien Vitrac (damien@oocube.com)
@@ -2037,4 +2037,19 @@ li#li-roles{
 
 .file-avatar label {
     height:33px;
+}
+
+.table-tooltip-sprint {
+    width:100%;
+    margin-top:10px;
+}
+
+.table-tooltip-sprint .entry-title {
+    width:40%;
+    font-weight:bold;
+}
+
+.table-tooltip-sprint .entry-value {
+    width:60%;
+    text-align:right;
 }

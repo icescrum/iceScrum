@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:dialog valid="[action:'autoPlan',controller:'releasePlan',id:params.id,update:'window-content-'+id,button:'is.dialog.promptCapacityAutoPlan.button']">
    <form method="post" class="box-form box-form-160 box-form-160-legend" onsubmit="if(jQuery('#capacity').val() != ''){jQuery('.ui-dialog-buttonpane button:eq(1)').click();} return false;">

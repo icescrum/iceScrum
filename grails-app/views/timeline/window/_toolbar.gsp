@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Vincent Barrier (vincent.barrier@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <g:set var="poOrsm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
 
