@@ -116,9 +116,6 @@ class FeatureController {
 
     def successRank = true
 
-    println params.int('feature.rank')
-    println feature.rank
-
     if (params.int('feature.rank') && feature.rank != params.int('feature.rank')) {
       if (!featureService.changeRank(feature, params.int('feature.rank'))) {
         msg = message(code: 'is_feature_error')
@@ -297,7 +294,6 @@ class FeatureController {
     def rankList = []
     def maxRank = currentProduct.features?.size()
     maxRank.times { rankList << (it + 1) }
-    println rankList
     def feature = Feature.get(params.long('id'))
 
     if(!feature) {
