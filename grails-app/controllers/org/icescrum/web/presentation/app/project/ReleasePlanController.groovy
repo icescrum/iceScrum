@@ -291,7 +291,11 @@ class ReleasePlanController {
       productBacklogService.associateStory(sprint, story)
 
       if(params.position && params.int('position') != 0){
-          productBacklogService.changeRank(story, params.int('position'))
+          def maxRankInProgress = sprint.stories.findAll {it.state != Story.STATE_DONE}?.size()
+          if (maxRankInProgress > params.int('position'))
+            productBacklogService.changeRank(story, params.int('position'))
+          else
+            productBacklogService.changeRank(story, maxRankInProgress)
       }
       redirect(action:'index',controller:params.origin?:controllerName, params:[product:params.product,id:params.origin?sprint.id:sprint.parentRelease.id])
       pushOthers "${params.product}-${id}-${sprint.parentRelease.id}"
