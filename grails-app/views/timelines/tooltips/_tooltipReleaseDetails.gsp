@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Release" %>
-<strong><g:message code="is.release.goal"/>: </strong>${release.goal.encodeAsHTML()}
+<strong><g:message code="is.release.goal"/>: </strong>${release.goal?.encodeAsHTML()}
 <table class="table-tooltip-sprint">
     <g:if test="${release.state != Release.STATE_WAIT}">
     <tr>

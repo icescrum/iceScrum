@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Sprint" %>
-<strong><g:message code="is.sprint.goal"/>: </strong>${sprint.goal.encodeAsHTML()}
+<strong><g:message code="is.sprint.goal"/>: </strong>${sprint.goal?.encodeAsHTML()}
 <table class="table-tooltip-sprint">
     <tr>
         <td class="entry-title"><g:message code="is.sprint.capacity"/>: </td>
