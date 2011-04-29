@@ -78,7 +78,7 @@ grails.project.dependency.resolution = {
   }
 
   plugins {
-      compile "org.icescrum:icescrum-core:1.3.5"
+      compile "org.icescrum:icescrum-core:1.3.6"
       compile "org.icescrum:entry-points:0.3-BETA"
       compile "org.icescrum:icepush-jquery:0.2"
   }

@@ -39,7 +39,7 @@ icescrum.alerts.enable=true
 icescrum.alerts.default.from="webmaster@icescrum.org"
 icescrum.attachements.enable=true
 icescrum.alerts.errors.to="dev@icescrum.org"
-icescrum.timezone.default="UTC"
+icescrum.timezone.default=System.getProperty('user.timezone')?:'UTC'
 
 /*
 Project administration section

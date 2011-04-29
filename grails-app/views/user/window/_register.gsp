@@ -71,6 +71,10 @@
         <is:fieldSelect for="language" label="is.user.preferences.language" noborder="true">
           <is:localeSelecter container="#registerForm" width="170" styleSelect="dropdown" name="preferences.language"/>
         </is:fieldSelect>
+
+        <is:fieldSelect for="timezone" label="is.user.preferences.timezone" noborder="true">
+          <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown" name="preferences.timezone" value="UTC"/>
+        </is:fieldSelect>
         
         <is:fieldInformation>
           <g:message code="is.dialog.register.description"/>
