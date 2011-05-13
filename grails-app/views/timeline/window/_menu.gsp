@@ -35,7 +35,8 @@
   <is:link id="${release.id}"
           action="activate"
           update="window-content-${id}"
-          onclick="\$.icescrum.stopEvent(event)"
+          onclick="\$.icescrum.stopEvent(event);"
+          before="if (!confirm('${g.message(code:'is.ui.timeline.menu.activate.confirm')}')){ return false; };"
           value="${message(code:'is.ui.timeline.menu.activate')}"
           history='false'
           remote="true"/>
@@ -45,7 +46,8 @@
   <is:link id="${release.id}"
           action="close"
           update="window-content-${id}"
-          onclick="\$.icescrum.stopEvent(event)"
+          before="if (!confirm('${g.message(code:'is.ui.timeline.menu.close.confirm')}')){ return false; };"
+          onClick="\$.icescrum.stopEvent(event);"
           history='false'
           value="${message(code:'is.ui.timeline.menu.close')}"
           remote="true"/>
@@ -67,7 +69,6 @@
           history='false'
           onSuccess="\$('#window-toolbar').icescrum('toolbar').reload('${id}');"
           onclick="\$.icescrum.stopEvent(event);"
-          value="${message(code:'is.ui.timeline.menu.delete')}"
-          confirmBeforeSubmit="${message(code:'is.ui.timeline.menu.confirm.delete')}"/>
+          value="${message(code:'is.ui.timeline.menu.delete')}"/>
 </is:menuItem>
 <entry:point id="${id}-${actionName}-menu" model="[release:release]"/>

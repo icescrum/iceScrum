@@ -56,7 +56,16 @@
           remote="true"/>
 </is:postitMenuItem>
 <is:postitMenuItem
-        first="${scrumMaster && task.state == Task.STATE_DONE}"
+        first="${task.state == Task.STATE_DONE}">
+  <is:link id="${task.id}"
+          action="cloneTask"
+          controller="${id}"
+          remote="true"
+          history="false"
+          update="window-content-${id}"
+          value="${message(code:'is.ui.sprintBacklog.menu.task.copy')}"/>
+</is:postitMenuItem>
+<is:postitMenuItem
         rendered="${((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE) || (scrumMaster && task.state == Task.STATE_DONE)}">
   <is:link id="${task.id}"
           action="delete"
@@ -65,16 +74,6 @@
           history="false"
           update="window-content-${id}"
           value="${message(code:'is.ui.sprintBacklog.menu.task.delete')}"/>
-</is:postitMenuItem>
-<is:postitMenuItem
-        first="${!scrumMaster}" rendered="${task.state == Task.STATE_DONE}">
-  <is:link id="${task.id}"
-          action="cloneTask"
-          controller="${id}"
-          remote="true"
-          history="false"
-          update="window-content-${id}"
-          value="${message(code:'is.ui.sprintBacklog.menu.task.recreate')}"/>
 </is:postitMenuItem>
 <is:postitMenuItem rendered="${(task.responsible?.id == user.id || scrumMaster) && task.state != Task.STATE_DONE && task.backlog.state == Sprint.STATE_INPROGRESS}">
   <is:link id="${task.id}"

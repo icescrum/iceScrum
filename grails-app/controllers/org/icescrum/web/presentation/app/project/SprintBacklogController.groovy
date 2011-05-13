@@ -547,7 +547,7 @@ class SprintBacklogController {
 
     try {
       taskService.cloneTask(task, currentUserInstance, product)
-      flash.notice = [text: message(code: 'is.task.recreated'), type: 'notice']
+      flash.notice = [text: message(code: 'is.task.copied'), type: 'notice']
       redirect(action: 'index', params: [product: params.product, id: task.backlog.id])
       pushOthers "${params.product}-${id}-${task.backlog.id}"
       } catch (IllegalStateException e) {

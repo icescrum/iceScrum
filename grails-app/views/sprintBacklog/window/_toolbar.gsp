@@ -157,6 +157,7 @@
           history="false"
           id="${sprint.id}"
           update="window-content-${id}"
+          before="if (!confirm('${g.message(code:'is.ui.sprintBacklog.toolbar.activate.confirm')}')){ return false; };"
           alt="${message(code:'is.ui.sprintBacklog.toolbar.alt.activate')}"
           title="${message(code:'is.ui.sprintBacklog.toolbar.alt.activate')}">
     ${message(code: 'is.ui.sprintBacklog.toolbar.activate')}
@@ -174,6 +175,7 @@
           success="\$('#window-toolbar').icescrum('toolbar').reload('${id}');"
           id="${sprint.id}"
           update="window-content-${id}"
+          before="if (!confirm('${g.message(code:'is.ui.sprintBacklog.toolbar.close.confirm')}')){ return false; };"
           alt="${message(code:'is.ui.sprintBacklog.toolbar.alt.close')}"
           title="${message(code:'is.ui.sprintBacklog.toolbar.alt.close')}">
     ${message(code: 'is.ui.sprintBacklog.toolbar.close')}

@@ -44,5 +44,8 @@
         on403="${is.notice(text:message('is.denied'),type:'error')}"/>
 <r:layoutResources/>
 <entry:point id="icescrum-footer"/>
+<jq:jquery>
+    $.icescrum.init();
+</jq:jquery>
 </body>
 </html>

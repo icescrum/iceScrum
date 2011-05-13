@@ -1225,8 +1225,6 @@ $.fn.qtip.styles.timeline = {
     name: 'classic'
 };
 
-$.icescrum.init();
-
 /**
  * Cookie plugin
  *

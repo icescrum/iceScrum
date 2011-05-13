@@ -47,7 +47,6 @@
           shortcut="[key:'del',scope:id]"
           disabled="true"
           disablable="true"
-          confirmBeforeSubmit="${message(code:'is.ui.feature.toolbar.delete.confirmation')}"
           title="${message(code:'is.ui.actor.toolbar.alt.delete')}"
           alt="${message(code:'is.ui.actor.toolbar.alt.delete')}">
     <g:message code="is.ui.actor.toolbar.delete"/>

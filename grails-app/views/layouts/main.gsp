@@ -35,13 +35,11 @@
   <r:use modules="jquery,jquery-ui,datepicker-locales, resize, qtip, pnotify, ui-selectmenu, hotkeys, history, mousewheel, eventline, dotimeout, jqplot,
    browser, table, dropmenu, jeditable, progress, input, checkbox, alphanumeric, markitup, scrollbar, dnd, ui-jeditable" />
   <r:use module="icescrum"/>
-
   <sec:ifLoggedIn>
     <script src="${resource(dir:'js/timeline/timeline_ajax', file:'simile-ajax-api.js?bundle=true')}" type="text/javascript"></script>
     <script src="${resource(dir:'js/timeline/timeline_js', file:'timeline-api.js?bundle=true')}" type="text/javascript"></script>
     <script src="${resource(dir:'js/timeline', file:'icescrum-painter.js')}" type="text/javascript"></script>
   </sec:ifLoggedIn>
-
   <r:layoutResources />
   <icep:bridge/>
   <g:layoutHead/>
@@ -92,5 +90,8 @@
 </jq:jquery>
 <r:layoutResources />
 <entry:point id="icescrum-footer"/>
+<jq:jquery>
+    $.icescrum.init();
+</jq:jquery>
 </body>
 </html>

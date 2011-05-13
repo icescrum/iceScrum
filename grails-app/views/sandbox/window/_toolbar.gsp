@@ -94,7 +94,6 @@
         onclick="\$.icescrum.selectableAction();"
         disablable="true"
         disabled="true"
-        confirmBeforeSubmit="${message(code:'is.ui.sandbox.toolbar.delete.confirmation')}"
         alt="${message(code:'is.ui.sandbox.toolbar.alt.delete')}"
         title="${message(code:'is.ui.sandbox.toolbar.alt.delete')}">
   ${message(code: 'is.ui.sandbox.toolbar.delete')}

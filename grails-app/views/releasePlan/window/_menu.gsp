@@ -37,6 +37,7 @@
           action="activate"
           id="${sprint.id}"
           update="window-content-${id}"
+          before="if (!confirm('${g.message(code:'is.ui.releasePlan.menu.sprint.activate.confirm')}')){ return false; };"
           value="${message(code:'is.ui.releasePlan.menu.sprint.activate')}"
           remote="true"
           history="false"/>
@@ -46,6 +47,7 @@
           action="close"
           id="${sprint.id}"
           update="window-content-${id}"
+          before="if (!confirm('${g.message(code:'is.ui.releasePlan.menu.sprint.close.confirm')}')){ return false; };"
           value="${message(code:'is.ui.releasePlan.menu.sprint.close')}"
           remote="true"
           history="false"/>

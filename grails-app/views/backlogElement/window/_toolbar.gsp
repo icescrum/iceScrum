@@ -104,7 +104,6 @@
         rendered="${productOwner}"
         title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
         alt="${message(code:'is.ui.backlogelement.toolbar.delete')}"
-        confirmBeforeSubmit="${message(code:'is.ui.backlogelement.toolbar.delete.confirmation')}"
         onSuccess="\$.icescrum.openWindow('${story.state > Story.STATE_SUGGESTED ? 'productBacklog' : 'sandbox'}');
           \$.icescrum.renderNotice('${message(code:'is.story.deleted').encodeAsJavaScript()}');"
         icon="delete">

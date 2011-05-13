@@ -26,6 +26,7 @@
 <g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
 <g:set var="nodropMessage" value="${g.message(code:'is.ui.sprintBacklog.no.drop')}"/>
 <g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
+<g:set var="scrumMaster" value="${sec.access([expression:'scrumMaster()'], {true})}"/>
 
 
 <is:tableView>
@@ -82,14 +83,14 @@
           <is:postit title="${task.name}"
                   id="${task.id}"
                   miniId="${task.id}"
-                  styleClass="story task${((task.state == Task.STATE_DONE) || (task.responsible && task.responsible.id != user.id))?' ui-selectable-disabled':''}"
+                  styleClass="story task${((task.state == Task.STATE_DONE) || (task.responsible?.id != user.id && !scrumMaster))?' ui-selectable-disabled':''}"
                   type="task"
                   typeNumber="${task.blocked ? 1 : 0}"
                   typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
                   attachment="${task.totalAttachments}"
                   stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
-                  miniValue="${task.estimation ?: task.estimation == 0?'0':'?'}"
-                  editableEstimation="${(task.responsible && task.responsible.id == user.id  && task.state != Task.STATE_DONE) || (!task.responsible && task.creator.id == user.id && task.state != Task.STATE_DONE)}"
+                  miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
+                  editableEstimation="${((task.responsible?.id == user.id) || (!task.responsible && task.creator.id == user.id) || scrumMaster) && task.state != Task.STATE_DONE}"
                   color="yellow"
                   rect="true">
             <g:if test="${inProduct}">
@@ -149,14 +150,14 @@
         %{-- Task postit --}%
           <is:postit title="${task.name}"
                   id="${task.id}" miniId="${task.id}"
-                  styleClass="story task${((task.state == Task.STATE_DONE) || (task.responsible && task.responsible.id != user.id))? ' ui-selectable-disabled':''}"
+                  styleClass="story task${((task.state == Task.STATE_DONE) || (task.responsible?.id != user.id && !scrumMaster))? ' ui-selectable-disabled':''}"
                   type="task"
                   typeNumber="${task.blocked ? 1 : 0}"
                   typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
                   attachment="${task.totalAttachments}"
                   stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
-                  miniValue="${task.estimation ?: task.estimation == 0?'0':'?'}"
-                  editableEstimation="${(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE)}"
+                  miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
+                  editableEstimation="${((task.responsible?.id == user.id) || (!task.responsible && task.creator.id == user.id) || scrumMaster) && task.state != Task.STATE_DONE}"
                   color="yellow"
                   rect="true">
             <g:if test="${inProduct}">
@@ -247,15 +248,15 @@
           <is:postit title="${task.name}"
                   id="${task.id}"
                   miniId="${task.id}"
-                  styleClass="story task${((task.state == Task.STATE_DONE) || (task.responsible && task.responsible.id != user.id))? ' ui-selectable-disabled':''}"
+                  styleClass="story task${((task.state == Task.STATE_DONE) || (task.responsible?.id != user.id && !scrumMaster))? ' ui-selectable-disabled':''}"
                   type="task"
                   typeNumber="${task.blocked ? 1 : 0}"
                   typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
                   attachment="${task.totalAttachments}"
                   rect="true"
-                  miniValue="${task.estimation ?: task.estimation == 0?'0':'?'}"
+                  miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
                   stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
-                  editableEstimation="${(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE)}"
+                  editableEstimation="${((task.responsible?.id == user.id) || (!task.responsible && task.creator.id == user.id) || scrumMaster) && task.state != Task.STATE_DONE}"
                   color="yellow">
             <g:if test="${inProduct}">
               <is:postitMenu id="story-task-${task.id}" contentView="window/taskMenu" params="[id:id, task:task, story:story, user:user]" rendered="${sprint.state != Sprint.STATE_DONE}"/>
