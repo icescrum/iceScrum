@@ -196,10 +196,6 @@ log4j = {
       debug 'grails.app.service.org.icescrum'
       debug 'grails.app.controller.org.icescrum'
       debug 'grails.app.domain.org.icescrum'
-  }else{
-    appenders {
-        null name:'stacktrace'
-    }
   }
 
   appenders {
