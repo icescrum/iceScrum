@@ -29,18 +29,23 @@
       <is:panel id="panel-chart">
         <is:panelTitle>
           <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
-            <is:link class="right" disabled="true" onClick="jQuery.icescrum.displayChart('sprintBacklog/sprintBurnupTasksChart/${sprint?.id}','#panel-chart-container');">${message(code:'is.ui.project.chart.option.tasks')}</is:link>
+            <is:link class="right" disabled="true" onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintBacklog/sprintBurnupTasksChart/${sprint?.id}',true);">${message(code:'is.ui.project.chart.option.tasks')}</is:link>
             <span class="right"> | </span>
-            <is:link rendered="${sprint}" class="right" disabled="true" onClick="jQuery.icescrum.displayChart('sprintBacklog/sprintBurnupStoriesChart/${sprint?.id}','#panel-chart-container');">${message(code:'is.ui.project.chart.option.stories')}</is:link>
+            <is:link rendered="${sprint}" class="right" disabled="true" onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintBacklog/sprintBurnupStoriesChart/${sprint?.id}',true);">${message(code:'is.ui.project.chart.option.stories')}</is:link>
             <span class="right"> | </span>
           </g:if>
-          <is:link class="right" disabled="true" onClick="jQuery.icescrum.displayChart('${controllerName}/productBurnupChart','#panel-chart-container');">${message(code:'is.ui.project.chart.option.project')}</is:link>
+          <is:link class="right" disabled="true" onClick="jQuery.icescrum.displayChart('#panel-chart-container','${controllerName}/productBurnupChart',true);">${message(code:'is.ui.project.chart.option.project')}</is:link>
           <g:message code="is.ui.project.chart.title"/>
         </is:panelTitle>
           <div id="panel-chart-container" class="panel-box-content">
-           <jq:jquery>
-              jQuery.icescrum.displayChart('${controllerName}/productBurnupChart','#panel-chart-container');
-            </jq:jquery>
+          <jq:jquery>
+               <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
+                    jQuery.icescrum.displayChartFromCookie('#panel-chart-container','${controllerName}/productBurnupChart');
+               </g:if>
+               <g:else>
+                    jQuery.icescrum.displayChart('#panel-chart-container','${controllerName}/productBurnupChart');
+               </g:else>
+          </jq:jquery>
           </div>
       </is:panel>
       <is:panel id="panel-description">

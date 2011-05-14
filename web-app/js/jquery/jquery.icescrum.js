@@ -626,7 +626,7 @@ $(document).ready(function($) {
             }
         },
 
-        displayChart:function(url,container){
+        displayChart:function(container,url,save){
             jQuery.ajax({
                 type:'GET',
                 global:false,
@@ -639,6 +639,9 @@ $(document).ready(function($) {
                     $(container)
                             .removeClass('loading-chart')
                             .html(data);
+                    if (typeof save != 'undefined' && save){
+                        $.cookie(container,url);
+                    }
                 },
                 error:function(XMLHttpRequest, textStatus, errorThrown){
                     var data = $.parseJSON(XMLHttpRequest.responseText);
@@ -649,6 +652,17 @@ $(document).ready(function($) {
                 }
             });
         },
+
+        displayChartFromCookie:function(container,url,save){
+            var saveChartType = $.cookie(container);
+            if (saveChartType){
+                this.displayChart(container,saveChartType,false);
+            }else{
+                this.displayChart(container,url,save);
+            }
+        },
+
+
 
         isValidEmail:function(email) {
             var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
