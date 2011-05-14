@@ -92,6 +92,38 @@
             <name>jQuery jqplot</name>
             <version>2.0</version>
         </library>
+        <library>
+            <name>jQuery</name>
+            <version>1.5.2</version>
+        </library>
+        <library>
+            <name>jQuery cookie</name>
+            <version>1.0</version>
+        </library>
+        <library>
+            <name>jQuery mousewheel</name>
+            <version>1.0</version>
+        </library>
+        <library>
+            <name>jQuery jeditable</name>
+            <version>1.7.1</version>
+        </library>
+        <library>
+            <name>jQuery alphanumeric</name>
+            <version>N/C</version>
+        </library>
+        <library>
+            <name>jQuery UI</name>
+            <version>1.8.10</version>
+        </library>
+        <library>
+            <name>jQuery UI - timepicker</name>
+            <version>0.9</version>
+        </library>
+        <library>
+            <name>jQuery UI - selectmenu (by iceScrum)</name>
+            <version>1.0</version>
+        </library>
     </version>
     <license><![CDATA[
                     GNU AFFERO GENERAL PUBLIC LICENSE
