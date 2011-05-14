@@ -642,6 +642,12 @@ $(document).ready(function($) {
                     if (typeof save != 'undefined' && save){
                         $.cookie(container,url);
                     }
+                    var test = /\/(.*)\//;
+                    var match = test.exec(url);
+                    if (match[1]){
+                        $('#panel-chart .right').removeClass('selected');
+                        $('#chart-'+match[1]).addClass('selected');
+                    }
                 },
                 error:function(XMLHttpRequest, textStatus, errorThrown){
                     var data = $.parseJSON(XMLHttpRequest.responseText);

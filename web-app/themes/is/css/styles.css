@@ -2003,6 +2003,10 @@ li#li-roles{
     margin-left:2px;
 }
 
+.panel-box-title .right.selected {
+    font-weight:bold;
+}
+
 .help-shortcut-title {
     display:block;
     margin-top: 5px;
