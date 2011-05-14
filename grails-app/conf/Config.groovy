@@ -166,6 +166,7 @@ environments {
   }
 }
 
+icescrum.log.dir = 'logs'
 // log4j configuration
 log4j = {
   def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
@@ -195,11 +196,15 @@ log4j = {
       debug 'grails.app.service.org.icescrum'
       debug 'grails.app.controller.org.icescrum'
       debug 'grails.app.domain.org.icescrum'
+  }else{
+    appenders {
+        null name:'stacktrace'
+    }
   }
 
   appenders {
     appender new DailyRollingFileAppender(name: "icescrumFileLog",
-            fileName: "logs/${appName}.log",
+            fileName: "${icescrum.log.dir}/${appName}.log",
             datePattern: "'.'yyyy-MM-dd",
             layout: logLayoutPattern
     )
