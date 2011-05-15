@@ -168,12 +168,12 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="95" y="0" width="172" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{description}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="267" y="0" width="154" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{notes}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{notes}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="626" y="0" width="86" height="20"/>
