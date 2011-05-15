@@ -822,23 +822,23 @@ class ProjectController {
               session.progress = new ProgressSupport()
               session.progress.updateProgress(99,message(code:'is.report.processing'))
 
-      def model = [[product:currentProduct.name,stories1:stories1?:null,stories2:stories2?:null]]
-      def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'allStories'+'-'+(g.formatDate(formatName:'is.date.file'))
-    chain(controller: 'jasper',
-              action: 'index',
-              model: [data: model],
-              params: [locale:user.preferences.language,
-                      _format:params.format,
-                      _file:'stories',
-                      SUBREPORT_DIR:"${servletContext.getRealPath('reports/subreports')}/",
-                      _name:fileName])
-        session.progress?.completeProgress(message(code: 'is.report.complete'))
+              def model = [[product:currentProduct.name,stories1:stories1?:null,stories2:stories2?:null]]
+              def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'allStories'+'-'+(g.formatDate(formatName:'is.date.file'))
+            chain(controller: 'jasper',
+                      action: 'index',
+                      model: [data: model],
+                      params: [locale:user.preferences.language,
+                              _format:params.format,
+                              _file:'stories',
+                              SUBREPORT_DIR:"${servletContext.getRealPath('reports/subreports')}/",
+                              _name:fileName])
+                session.progress?.completeProgress(message(code: 'is.report.complete'))
       } catch (Exception e) {
         if (log.debugEnabled) e.printStackTrace()
         session.progress.progressError(message(code: 'is.report.error'))
       }
     } else if(params.status){
-      render(status:200,contentType: 'application/json', text:session.progress?session.progress:'' as JSON)
+      render(status:200,contentType: 'application/json', text:session.progress as JSON)
     } else {
       render(template: 'dialogs/report', model: [id: id])
     }
