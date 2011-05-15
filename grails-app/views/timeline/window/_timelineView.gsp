@@ -53,8 +53,6 @@
 <jq:jquery>
   jQuery("#window-content-${id}").removeClass('window-content-toolbar');
   jQuery("#window-id-${id}").focus();
-  $('#menu-report-navigation-item').hide();
-  $('#menu-report-separator').hide();
   <is:renderNotice />
   <icep:notifications
         name="${id}Window"

@@ -97,3 +97,13 @@
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"
         params="locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
+
+%{--Print button--}%
+<is:reportPanel
+        action="printPostits"
+        id="all"
+        formats="[
+                    ['PDF', message(code:'is.report.format.pdf')]
+                ]"
+        text="${message(code: 'is.ui.project.toolbar.print.allStories')}"
+        params="locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="postit" language="groovy" pageWidth="405" pageHeight="283" orientation="Landscape" columnWidth="405" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="grails-app/i18n/report">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="featureColor">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{featureColor}.equals("red")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#FF0033"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{featureColor}.equals("blue")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#0000FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{featureColor}.equals("green")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#00CC33"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{featureColor}.equals("violet")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#FF33FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{featureColor}.equals("gray")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#CCCCCC"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{featureColor}.equals("pink")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#FFCCCC"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{featureColor}.equals("bluelight")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#CCFFFF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{featureColor}.equals("orange")]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#FFCC33"/>
+		</conditionalStyle>
+	</style>
+	<field name="name" class="java.lang.String"/>
+	<field name="effort" class="java.lang.String"/>
+	<field name="state" class="java.lang.String"/>
+	<field name="feature" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="notes" class="java.lang.String"/>
+	<field name="creator" class="java.lang.String"/>
+	<field name="featureColor" class="java.lang.String"/>
+	<field name="id" class="java.lang.String"/>
+	<field name="suggestedDate" class="java.lang.String"/>
+	<field name="acceptedDate" class="java.lang.String"/>
+	<field name="estimatedDate" class="java.lang.String"/>
+	<field name="plannedDate" class="java.lang.String"/>
+	<field name="inProgressDate" class="java.lang.String"/>
+	<field name="doneDate" class="java.lang.String"/>
+	<field name="sprint" class="java.lang.String"/>
+	<field name="rank" class="java.lang.String"/>
+	<field name="type" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="283" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="6" width="252" height="47"/>
+				<textElement verticalAlignment="Top">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="26" width="138" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{effort}!=null?$F{effort}+" - ":"")+($F{state})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="262" y="258" width="116" height="20" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{featureColor}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{feature}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="52" width="252" height="226" isRemoveLineWhenBlank="true"/>
+				<textElement verticalAlignment="Top" markup="html"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{description}!=null?$F{description}+"\n\n":""+$F{notes}!=null?$F{notes}:""]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="259" y="53" width="1" height="225"/>
+			</line>
+			<rectangle>
+				<reportElement style="featureColor" x="378" y="258" width="22" height="19" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{featureColor}!=null]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="262" y="6" width="138" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ID: "+$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="92" width="71" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="92" width="67" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="112" width="67" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.creator}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="112" width="71" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{creator}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="132" width="67" height="20">
+					<printWhenExpression><![CDATA[$F{suggestedDate}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.date.suggested}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="132" width="71" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{suggestedDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="172" width="67" height="20">
+					<printWhenExpression><![CDATA[$F{estimatedDate}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.date.estimated}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="152" width="67" height="20">
+					<printWhenExpression><![CDATA[$F{acceptedDate}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.date.accepted}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="212" width="67" height="20">
+					<printWhenExpression><![CDATA[$F{inProgressDate}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.date.inprogress}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="192" width="67" height="20">
+					<printWhenExpression><![CDATA[$F{plannedDate}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.date.planned}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="232" width="67" height="20">
+					<printWhenExpression><![CDATA[$F{doneDate}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.date.done}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="152" width="71" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{acceptedDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="172" width="71" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{estimatedDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="192" width="71" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{plannedDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="212" width="71" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{inProgressDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="232" width="71" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{doneDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="69" width="67" height="20">
+					<printWhenExpression><![CDATA[$F{rank}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.postit.rank}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="329" y="69" width="71" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{rank}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="262" y="50" width="138" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sprint}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -183,7 +183,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="712" y="0" width="90" height="20"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{parentStory} != null ? $F{parentStory}.name : ($F{type} == 10 ? $R{is.task.type.recurrent} : $R{is.task.type.urgent}))]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{parentStory} != null ? $F{parentStory}.name : ($F{type} == 10 ? $R{is.report.task.type.recurrent} : $R{is.report.task.type.recurrent}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -172,8 +172,6 @@
   }, function(){
     $(this).removeClass('news-item-hover');
   });
-  $('#menu-report-navigation-item').hide();
-  $('#menu-report-separator').hide();
   <icep:notifications
         name="${id}Dashboard"
         reload="[update:'#window-content-'+id,action:'dashboard',params:[product:params.product]]"

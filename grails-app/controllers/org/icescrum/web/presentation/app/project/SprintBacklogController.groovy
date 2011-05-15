@@ -1255,7 +1255,7 @@ class SprintBacklogController {
                       _file: chart ?: 'sprintBacklog',
                       'labels.projectName':currentProduct.name,
                       _name: fileName,
-                      SUBREPORT_DIR: grailsApplication.config.jasper.dir.reports + './subreports/'
+                      SUBREPORT_DIR:"${servletContext.getRealPath('reports/subreports')}/",
               ]
       )
       session.progress?.completeProgress(message(code: 'is.report.complete'))

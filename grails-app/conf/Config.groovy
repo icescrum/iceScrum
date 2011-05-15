@@ -103,17 +103,6 @@ grails.attachmentable.taskDir = {
 }
 
 /*
-  Report jasper section
-*/
-
-if (baseDir) {
-  jasper.dir.reports = "${baseDir}${File.separator}src${File.separator}java${File.separator}org${File.separator}icescrum${File.separator}reports"
-} else {
-  jasper.dir.reports = "classpath:org${File.separator}icescrum${File.separator}reports"
-}
-jasper.dir.projects.reports = {(new File(System.getProperty('user.home'),appName).canonicalPath) + "${File.separator + it.backlog.id + File.separator}reports${File.separator}"}
-
-/*
   Default grails config
  */
 

@@ -689,11 +689,10 @@ class ProjectController {
                 params: [
                         locale: User.get(springSecurityService.principal.id).preferences.language,
                         _format: params.format,
-                        _name: message(code: 'is.ui.project'),
                         _file: chart ?: 'timeline',
                         _name: fileName,
                         'labels.projectName': currentProduct.name,
-                        SUBREPORT_DIR: grailsApplication.config.jasper.dir.reports + File.separator + 'subreports' + File.separator
+                        SUBREPORT_DIR:"${servletContext.getRealPath('reports/subreports')}/"
                 ]
         )
         session.progress?.completeProgress(message(code: 'is.report.complete'))
@@ -778,5 +777,70 @@ class ProjectController {
     }
 
     render template: "dialogs/browseDetails", model: [product: product]
+  }
+
+  def printPostits = {
+    def user = springSecurityService.currentUser
+    def currentProduct = Product.get(params.product)
+    def stories1 = []
+    def stories2 = []
+    def first = 0
+    def stories = Story.findAllByBacklog(currentProduct, [sort:'state',order:'asc'])
+    if(!stories){
+      render(status: 400, contentType:'application/json', text: [notice: [text:message(code: 'is.report.error.no.data')]] as JSON)
+      return
+    } else if(params.get){
+      stories.each {
+        def story = [name:it.name,
+                    id:it.id,
+                    effort:it.effort,
+                    state:message(code:ProductBacklogController.stateBundle[it.state]),
+                    description:is.storyTemplate([story:it,displayBR:true]),
+                    notes:wikitext.renderHtml([markup:'Textile'],it.notes).decodeHTML(),
+                    type:message(code:SandboxController.typesBundle[it.type]),
+                    suggestedDate:it.suggestedDate?g.formatDate([formatName:'is.date.format.short',timeZone:user?.preferences?.timezone?:null,date:it.suggestedDate]):null,
+                    acceptedDate:it.acceptedDate?g.formatDate([formatName:'is.date.format.short',timeZone:user?.preferences?.timezone?:null,date:it.acceptedDate]):null,
+                    estimatedDate:it.estimatedDate?g.formatDate([formatName:'is.date.format.short',timeZone:user?.preferences?.timezone?:null,date:it.estimatedDate]):null,
+                    plannedDate:it.plannedDate?g.formatDate([formatName:'is.date.format.short',timeZone:user?.preferences?.timezone?:null,date:it.plannedDate]):null,
+                    inProgressDate:it.inProgressDate?g.formatDate([formatName:'is.date.format.short',timeZone:user?.preferences?.timezone?:null,date:it.inProgressDate]):null,
+                    doneDate:it.doneDate?g.formatDate([formatName:'is.date.format.short',timeZone:user?.preferences?.timezone?:null,date:it.doneDate?:null]):null,
+                    rank:it.rank?:null,
+                    sprint:it.parentSprint?.orderNumber?g.message(code:'is.release')+" "+it.parentSprint.parentRelease.orderNumber+" - "+g.message(code:'is.sprint')+" "+it.parentSprint.orderNumber:null,
+                    creator:it.creator.firstName + ' ' + it.creator.lastName,
+                    feature:it.feature?.name?:null,
+                    featureColor:it.feature?.color?:null]
+        if (first == 0){
+            stories1 << story
+            first = 1
+        }else{
+            stories2 << story
+            first = 0
+        }
+
+      }
+      try {
+              session.progress = new ProgressSupport()
+              session.progress.updateProgress(99,message(code:'is.report.processing'))
+
+      def model = [[product:currentProduct.name,stories1:stories1?:null,stories2:stories2?:null]]
+      def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")+'-'+'allStories'+'-'+(g.formatDate(formatName:'is.date.file'))
+    chain(controller: 'jasper',
+              action: 'index',
+              model: [data: model],
+              params: [locale:user.preferences.language,
+                      _format:params.format,
+                      _file:'stories',
+                      SUBREPORT_DIR:"${servletContext.getRealPath('reports/subreports')}/",
+                      _name:fileName])
+        session.progress?.completeProgress(message(code: 'is.report.complete'))
+      } catch (Exception e) {
+        if (log.debugEnabled) e.printStackTrace()
+        session.progress.progressError(message(code: 'is.report.error'))
+      }
+    } else if(params.status){
+      render(status:200,contentType: 'application/json', text:session.progress?:'' as JSON)
+    } else {
+      render(template: 'dialogs/report', model: [id: id])
+    }
   }
 }

@@ -549,7 +549,7 @@ class TimelineController {
                       _file: chart ?: 'timeline',
                       _name: fileName,
                       'labels.projectName':currentProduct.name,
-                      SUBREPORT_DIR: grailsApplication.config.jasper.dir.reports + File.separator + 'subreports' + File.separator
+                      SUBREPORT_DIR:"${servletContext.getRealPath('reports/subreports')}/"
               ]
       )
       session.progress?.completeProgress(message(code: 'is.report.complete'))

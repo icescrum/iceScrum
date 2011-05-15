@@ -246,7 +246,6 @@
     </ul>
   </is:panelButton>
 
-%{--Print button
   <is:separatorSmall/>
   <is:reportPanel
           action="print"
@@ -258,7 +257,6 @@
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"
           params="id=${sprint.id}&locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
---}%
 </g:if>
 <entry:point id="${id}-${actionName}" model="[sprint:sprint]"/>
 

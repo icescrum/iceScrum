@@ -95,8 +95,4 @@
             url="[controller:params.referrer?.controller?:id,action:params.referrer?.action?:'list',params:[product:params.product]]"
             value="${message(code: 'is.button.close')}"/>
   </is:buttonBar>
-   <jq:jquery>
-      $('#menu-report-navigation-item').show();
-      $('#menu-report-separator').show();
-    </jq:jquery>
 </g:if>
