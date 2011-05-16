@@ -67,6 +67,7 @@ $(document).ready(function($) {
             dialogErrorContent:null,
             openWindow:false,
             locale:'en',
+            currentProductName:null,
             selectedObject:{obj:'',time:'',callback:''}
         },
         o:{},
@@ -640,7 +641,7 @@ $(document).ready(function($) {
                             .removeClass('loading-chart')
                             .html(data);
                     if (typeof save != 'undefined' && save){
-                        $.cookie(container,url);
+                        $.cookie(container+$.icescrum.o.currentProductName,url);
                     }
                     var test = /\/(.*)\//;
                     var match = test.exec(url);
@@ -660,7 +661,7 @@ $(document).ready(function($) {
         },
 
         displayChartFromCookie:function(container,url,save){
-            var saveChartType = $.cookie(container);
+            var saveChartType = $.cookie(container+$.icescrum.o.currentProductName);
             if (saveChartType){
                 this.displayChart(container,saveChartType,false);
             }else{
