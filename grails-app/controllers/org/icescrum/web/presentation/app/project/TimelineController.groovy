@@ -270,9 +270,6 @@ class TimelineController {
     release.startDate = new Date().parse(message(code:'is.date.format.short'), params.startDate)
     release.endDate = new Date().parse(message(code:'is.date.format.short'), params.endDate)
 
-    if (release.startDate == new Date().parse('yyyy-MM-dd', currentProduct.startDate.toString()) && currentProduct.releases?.size() == 0)
-      release.startDate =  currentProduct.startDate
-
     try {
 
       releaseService.saveRelease(release,currentProduct)
