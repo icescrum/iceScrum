@@ -21,49 +21,43 @@
 --}%
 
 <g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
-
-<div class="box-blank clearfix">
-  <p>${message(code:'is.ui.releasePlan.blankSprint.description')}</p>
-  <table cellpadding="0" cellspacing="0" border="0" class="box-blank-button">
-    <tr>
-      <td class="empty">&nbsp;</td>
-      <td>
-          <is:button
-            type="link"
-            button="button-s button-s-light"
-            history="false"
-            remote="true"
-            id="${release.id}"
-            rendered="${poOrSm}"
-            controller="${id}"
-            update="window-content-${id}"
-            action="generateSprints"
-            title="${message(code:'is.ui.releasePlan.blankSprint.generateSprints')}"
-            alt="${message(code:'is.ui.releasePlan.blankSprint.generateSprints')}"
-            icon="create" >
-          <strong>${message(code:'is.ui.releasePlan.blankSprint.generateSprints')}</strong>
-          </is:button>
-      </td>
-      <td class="empty">&nbsp;</td>      
-      <td>
-          <is:button
-            type="link"
-            button="button-s button-s-light"
-            rendered="${poOrSm}"
-            href="#${id}/add/${release.id}"
-            title="${message(code:'is.ui.releasePlan.blankSprint.new')}"
-            alt="${message(code:'is.ui.releasePlan.blankSprint.new')}"
-            icon="create" >
-          <strong>${message(code:'is.ui.releasePlan.blankSprint.new')}</strong>
-          </is:button>
-      </td>
-      <td class="empty">&nbsp;</td>
-    </tr>
-  </table>
-  <entry:point id="${id}-${actionName}-blankSprint" model="[release:release]"/>
+<div class="box-blank clearfix" style="display:${sprints ? 'none' : 'block'};">
+    <p>${message(code: 'is.ui.releasePlan.blankSprint.description')}</p>
+    <table cellpadding="0" cellspacing="0" border="0" class="box-blank-button">
+        <tr>
+            <td class="empty">&nbsp;</td>
+            <td>
+                <is:button
+                        type="link"
+                        button="button-s button-s-light"
+                        history="false"
+                        remote="true"
+                        id="${release.id}"
+                        rendered="${poOrSm}"
+                        controller="release"
+                        action="generateSprints"
+                        onSuccess="jQuery.event.trigger('add_sprint',[data]); jQuery.icescrum.renderNotice('${g.message(code:'is.release.sprints.generated')}')"
+                        title="${message(code:'is.ui.releasePlan.blankSprint.generateSprints')}"
+                        alt="${message(code:'is.ui.releasePlan.blankSprint.generateSprints')}"
+                        icon="create">
+                    <strong>${message(code: 'is.ui.releasePlan.blankSprint.generateSprints')}</strong>
+                </is:button>
+            </td>
+            <td class="empty">&nbsp;</td>
+            <td>
+                <is:button
+                        type="link"
+                        button="button-s button-s-light"
+                        rendered="${poOrSm}"
+                        href="#${id}/add/${release.id}"
+                        title="${message(code:'is.ui.releasePlan.blankSprint.new')}"
+                        alt="${message(code:'is.ui.releasePlan.blankSprint.new')}"
+                        icon="create">
+                    <strong>${message(code: 'is.ui.releasePlan.blankSprint.new')}</strong>
+                </is:button>
+            </td>
+            <td class="empty">&nbsp;</td>
+        </tr>
+    </table>
+    <entry:point id="${id}-${actionName}-blankSprint" model="[release:release]"/>
 </div>
-<jq:jquery>
-  jQuery("#window-content-${id}").removeClass('window-content-toolbar');
-  jQuery("#window-id-${id}").focus();
-  <is:renderNotice />
-</jq:jquery>

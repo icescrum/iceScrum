@@ -1,173 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sprintBacklog" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20" isSummaryNewPage="true" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
-	<property name="ireport.zoom" value="0.9090909090909113"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<style name="table">
-		<box>
-			<pen lineWidth="1.0" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1">
-		<box>
-			<pen lineWidth="1.0" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 2">
-		<box>
-			<pen lineWidth="1.0" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="_name" class="java.lang.String"/>
-	<parameter name="labels.projectName" class="java.lang.String"/>
-	<field name="sprintBurndownHoursChart" class="java.util.List"/>
-	<field name="sprintBurnupTasksChart" class="java.util.List"/>
-	<field name="sprintBurnupStoriesChart" class="java.util.List"/>
-	<field name="productParkingLotChart" class="java.util.List"/>
-	<field name="productVelocityChart" class="java.util.List"/>
-	<field name="productVelocityCapacityChart" class="java.util.List"/>
-	<field name="tasks" class="java.lang.Object"/>
-	<field name="taskStateBundle" class="java.util.Map"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="42" splitType="Stretch">
-			<textField>
-				<reportElement x="24" y="9" width="351" height="27" forecolor="#0066CC"/>
-				<textElement>
-					<font size="20" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.sprintBacklog}]]></textFieldExpression>
-			</textField>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="26" splitType="Stretch">
-			<textField>
-				<reportElement x="593" y="0" width="227" height="15" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Right">
-					<font size="11" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{labels.projectName}]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageHeader>
-	<detail>
-		<band height="100">
-			<subreport>
-				<reportElement x="0" y="0" width="802" height="100"/>
-				<subreportParameter name="labels.projectName"/>
-				<subreportParameter name="_isSubreport">
-					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="_name"/>
-				<subreportParameter name="taskStateBundle">
-					<subreportParameterExpression><![CDATA[$F{taskStateBundle}]]></subreportParameterExpression>
-				</subreportParameter>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{tasks})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sprintBacklogTasksList.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="100">
-			<subreport>
-				<reportElement x="0" y="0" width="802" height="100" isPrintInFirstWholeBand="true"/>
-				<subreportParameter name="_isSubreport">
-					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
-				</subreportParameter>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sprintBurndownHoursChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sprintBurndownHoursChart.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="103">
-			<subreport>
-				<reportElement x="0" y="0" width="802" height="103"/>
-				<subreportParameter name="_isSubreport">
-					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
-				</subreportParameter>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sprintBurnupTasksChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sprintBurnupTasksChart.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="93">
-			<subreport>
-				<reportElement x="0" y="0" width="802" height="93"/>
-				<subreportParameter name="_isSubreport">
-					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
-				</subreportParameter>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sprintBurnupStoriesChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sprintBurnupStoriesChart.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-	</detail>
-	<pageFooter>
-		<band height="41" splitType="Stretch">
-			<textField>
-				<reportElement x="24" y="20" width="279" height="20"/>
-				<textElement markup="none"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.footer.credit}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="700" y="20" width="80" height="20"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.footer.page}+" "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="780" y="20" width="40" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="303" y="20" width="397" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageFooter>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="sprintPlan" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape"
+              columnWidth="842" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20" isSummaryNewPage="true"
+              isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
+    <property name="ireport.zoom" value="0.9090909090909113"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
+    <style name="table">
+        <box>
+            <pen lineWidth="1.0" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table 1">
+        <box>
+            <pen lineWidth="1.0" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table 2">
+        <box>
+            <pen lineWidth="1.0" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+    <parameter name="_name" class="java.lang.String"/>
+    <parameter name="labels.projectName" class="java.lang.String"/>
+    <field name="sprintBurndownHoursChart" class="java.util.List"/>
+    <field name="sprintBurnupTasksChart" class="java.util.List"/>
+    <field name="sprintBurnupStoriesChart" class="java.util.List"/>
+    <field name="productParkingLotChart" class="java.util.List"/>
+    <field name="productVelocityChart" class="java.util.List"/>
+    <field name="productVelocityCapacityChart" class="java.util.List"/>
+    <field name="tasks" class="java.lang.Object"/>
+    <field name="taskStateBundle" class="java.util.Map"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="42" splitType="Stretch">
+            <textField>
+                <reportElement x="24" y="9" width="351" height="27" forecolor="#0066CC"/>
+                <textElement>
+                    <font size="20" isBold="true"/>
+                </textElement>
+                <textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.sprintPlan}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="26" splitType="Stretch">
+            <textField>
+                <reportElement x="593" y="0" width="227" height="15" isPrintWhenDetailOverflows="true"/>
+                <textElement textAlignment="Right">
+                    <font size="11" isBold="true"/>
+                </textElement>
+                <textFieldExpression class="java.lang.String"><![CDATA[$P{labels.projectName}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+    <detail>
+        <band height="100">
+            <subreport>
+                <reportElement x="0" y="0" width="802" height="100"/>
+                <subreportParameter name="labels.projectName"/>
+                <subreportParameter name="_isSubreport">
+                    <subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
+                </subreportParameter>
+                <subreportParameter name="_name"/>
+                <subreportParameter name="taskStateBundle">
+                    <subreportParameterExpression><![CDATA[$F{taskStateBundle}]]></subreportParameterExpression>
+                </subreportParameter>
+                <dataSourceExpression>
+                    <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{tasks})]]></dataSourceExpression>
+                <subreportExpression class="java.lang.String">
+                    <![CDATA[$P{SUBREPORT_DIR} + "sprintPlanTasksList.jasper"]]></subreportExpression>
+            </subreport>
+        </band>
+        <band height="100">
+            <subreport>
+                <reportElement x="0" y="0" width="802" height="100" isPrintInFirstWholeBand="true"/>
+                <subreportParameter name="_isSubreport">
+                    <subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
+                </subreportParameter>
+                <dataSourceExpression>
+                    <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sprintBurndownHoursChart})]]></dataSourceExpression>
+                <subreportExpression class="java.lang.String">
+                    <![CDATA[$P{SUBREPORT_DIR} + "sprintBurndownHoursChart.jasper"]]></subreportExpression>
+            </subreport>
+        </band>
+        <band height="103">
+            <subreport>
+                <reportElement x="0" y="0" width="802" height="103"/>
+                <subreportParameter name="_isSubreport">
+                    <subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
+                </subreportParameter>
+                <dataSourceExpression>
+                    <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sprintBurnupTasksChart})]]></dataSourceExpression>
+                <subreportExpression class="java.lang.String">
+                    <![CDATA[$P{SUBREPORT_DIR} + "sprintBurnupTasksChart.jasper"]]></subreportExpression>
+            </subreport>
+        </band>
+        <band height="93">
+            <subreport>
+                <reportElement x="0" y="0" width="802" height="93"/>
+                <subreportParameter name="_isSubreport">
+                    <subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
+                </subreportParameter>
+                <dataSourceExpression>
+                    <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sprintBurnupStoriesChart})]]></dataSourceExpression>
+                <subreportExpression class="java.lang.String">
+                    <![CDATA[$P{SUBREPORT_DIR} + "sprintBurnupStoriesChart.jasper"]]></subreportExpression>
+            </subreport>
+        </band>
+    </detail>
+    <pageFooter>
+        <band height="41" splitType="Stretch">
+            <textField>
+                <reportElement x="24" y="20" width="279" height="20"/>
+                <textElement markup="none"/>
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$R{is.report.footer.credit}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="700" y="20" width="80" height="20"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression class="java.lang.String">
+                    <![CDATA[$R{is.report.footer.page}+" "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="780" y="20" width="40" height="20"/>
+                <textElement/>
+                <textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField pattern="EEEEE dd MMMMM yyyy">
+                <reportElement x="303" y="20" width="397" height="20"/>
+                <textElement/>
+                <textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
 </jasperReport>

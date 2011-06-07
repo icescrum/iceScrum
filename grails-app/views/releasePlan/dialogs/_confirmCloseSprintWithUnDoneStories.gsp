@@ -19,19 +19,26 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:dialog width="400" valid="[action:'close',controller:id,id:sprint.id,update:'window-content-'+id,button:'is.dialog.closeSprint.button']">
-  <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
-    <input type="hidden" value="true" name="confirm"/>
-    <input type="hidden" value="${params.product}" name="product"/>
-    <is:fieldset title="is.dialog.closeSprint.title">
-      <is:fieldInformation noborder="true">
-        <g:message code="is.dialog.closeSprint.description"/>
-      </is:fieldInformation>
-      <g:each in="${stories}" var="story" status="u">
-        <is:fieldRadio noborder="${(u + 1) == stories.size()?'true':'false'}" for="undonestory-${story.id}" label="${story.id} - ${story.name.encodeAsHTML()} (${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})">
-         <is:radio from="[(message(code: 'is.dialog.closeSprint.done')): '1', (message(code: 'is.dialog.closeSprint.notDone')): '0']" id="undonestory-${story.id}" value="0" name="story.id.${story.id}"/>
-        </is:fieldRadio>
-      </g:each>
-    </is:fieldset>
-  </form>
+<is:dialog width="400" valid="[action:'close',
+                               controller:id,
+                               id:sprint.id,
+                               onSuccess:'jQuery.event.trigger(\'close_sprint\',data.sprint); jQuery.event.trigger(\'done_story\',[data.stories]); jQuery.event.trigger(\'update_story\',[data.unDoneStories]);jQuery.icescrum.renderNotice(\''+g.message(code:'is.sprint.closed')+'\')',
+                               button:'is.dialog.closeSprint.button']">
+    <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
+        <input type="hidden" value="true" name="confirm"/>
+        <input type="hidden" value="${params.product}" name="product"/>
+        <is:fieldset title="is.dialog.closeSprint.title">
+            <is:fieldInformation noborder="true">
+                <g:message code="is.dialog.closeSprint.description"/>
+            </is:fieldInformation>
+            <g:each in="${stories}" var="story" status="u">
+                <is:fieldRadio noborder="${(u + 1) == stories.size()?'true':'false'}" for="undonestory-${story.id}"
+                               label="${story.id} - ${story.name.encodeAsHTML()} (${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})">
+                    <is:radio
+                            from="[(message(code: 'is.dialog.closeSprint.done')): '1', (message(code: 'is.dialog.closeSprint.notDone')): '0']"
+                            id="undonestory-${story.id}" value="0" name="story.id.${story.id}"/>
+                </is:fieldRadio>
+            </g:each>
+        </is:fieldset>
+    </form>
 </is:dialog>

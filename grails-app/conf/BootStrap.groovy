@@ -26,21 +26,20 @@ import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 
 class BootStrap {
 
-  def messageSource
-  def localeResolver
-  DefaultGrailsApplication grailsApplication
+    def messageSource
+    def localeResolver
+    DefaultGrailsApplication grailsApplication
 
-  def init = { servletContext ->
+    def init = { servletContext ->
 
-    localeResolver.defaultLocale = Locale.ENGLISH
-    java.util.Locale.setDefault(Locale.ENGLISH)
-    TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
+        localeResolver.defaultLocale = Locale.ENGLISH
+        java.util.Locale.setDefault(Locale.ENGLISH)
+        TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
+        println("------------------");
+        println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
+        println("------------------");
+    }
+    def destroy = {
 
-    println("------------------");
-    println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
-    println("------------------");
-  }
-  def destroy = {
-
-  }
+    }
 }

@@ -19,14 +19,18 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:dialog valid="[action:'delete',controller:'releasePlan',id:sprint.id,update:'window-content-'+id,button:'is.dialog.confirmDeleteSprint.button']">
-   <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
-    <input type="hidden" value="${params.product}" name="product"/>
-    <input type="hidden" value="true" name="confirm"/>
-    <is:fieldset title="is.dialog.confirmDeleteSprint.title">
-        <is:fieldInformation noborder="true">
-          <g:message code="is.dialog.confirmDeleteSprint.description"/>
-        </is:fieldInformation>
-    </is:fieldset>
-  </form>
+<is:dialog valid="[action:'delete',
+                   controller:'releasePlan',
+                   id:sprint.id,
+                   onSuccess:' jQuery.event.trigger(\'remove_sprint\',[data]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.sprint.deleted')+'\');',
+                   button:'is.dialog.confirmDeleteSprint.button']">
+    <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
+        <input type="hidden" value="${params.product}" name="product"/>
+        <input type="hidden" value="true" name="confirm"/>
+        <is:fieldset title="is.dialog.confirmDeleteSprint.title">
+            <is:fieldInformation noborder="true">
+                <g:message code="is.dialog.confirmDeleteSprint.description"/>
+            </is:fieldInformation>
+        </is:fieldset>
+    </form>
 </is:dialog>

@@ -22,49 +22,99 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Sprint;" %>
-<g:setProvider library="jquery"/>
 <g:form action="save" method="post" name="${id}-form" class="box-form box-form-250 box-form-200-legend" tabindex="1">
-  <is:fieldset title="is.ui.releasePlan.sprint.properties.title">
-    <is:fieldArea for="sprintgoal" label="is.sprint.goal">
-      <is:area id="sprintgoal" large="true" name="sprint.goal" value="${sprint?.goal}"/>
-    </is:fieldArea>
+    <is:fieldset title="is.ui.releasePlan.sprint.properties.title">
+        <is:fieldArea for="sprintgoal" label="is.sprint.goal">
+            <is:area id="sprintgoal" large="true" name="sprint.goal" value="${sprint?.goal}" focus="true"/>
+        </is:fieldArea>
 
     %{-- Start Date --}%
-    <is:fieldDatePicker for="startDate" label="is.sprint.startDate">
-      <is:datePicker id="startDate" name="startDate" mode="read-input" changeMonth="true" changeYear="true" minDate="${previousSprint && !sprint ? previousSprint.endDate + 1 : release.startDate}" maxDate="${release.endDate}" defaultDate="${sprint ? sprint.startDate : (previousSprint ? previousSprint.endDate + 1 : release.startDate)}" disabled="${sprint ? sprint.state >= org.icescrum.core.domain.Sprint.STATE_INPROGRESS : false}"/>
-    </is:fieldDatePicker>
+        <is:fieldDatePicker for="startDate" label="is.sprint.startDate">
+            <is:datePicker id="startDate" name="startDate" mode="read-input" changeMonth="true" changeYear="true"
+                           minDate="${previousSprint && !sprint ? previousSprint.endDate + 1 : release.startDate}"
+                           maxDate="${release.endDate}"
+                           defaultDate="${sprint ? sprint.startDate : (previousSprint ? previousSprint.endDate + 1 : release.startDate)}"
+                           disabled="${sprint ? sprint.state >= org.icescrum.core.domain.Sprint.STATE_INPROGRESS : false}"/>
+        </is:fieldDatePicker>
 
     %{-- End Date --}%
-    <is:fieldDatePicker for="endDate" label="is.sprint.endDate">
-      <is:datePicker id="endDate" name="endDate" mode="read-input" changeMonth="true" changeYear="true" minDate="${previousSprint && !sprint ? previousSprint.endDate + 2 : release.startDate+1}" maxDate="${release.endDate}" defaultDate="${sprint ? sprint.endDate : (previousSprint ? previousSprint.endDate : release.startDate) + product.preferences.estimatedSprintsDuration}"/>
-    </is:fieldDatePicker>
+        <is:fieldDatePicker for="endDate" label="is.sprint.endDate">
+            <is:datePicker id="endDate" name="endDate" mode="read-input" changeMonth="true" changeYear="true"
+                           minDate="${previousSprint && !sprint ? previousSprint.endDate + 2 : release.startDate+1}"
+                           maxDate="${release.endDate}"
+                           defaultDate="${sprint ? sprint.endDate : (previousSprint ? previousSprint.endDate : release.startDate) + product.preferences.estimatedSprintsDuration}"/>
+        </is:fieldDatePicker>
 
-    <is:fieldInput for="sprintresource" label="is.sprint.resource" noborder="true">
-        <is:input id="sprintresource" name="sprint.resource" value="${sprint?.resource}" typed="[type:'numeric']"/>
-    </is:fieldInput>
-  </is:fieldset>                         
+        <is:fieldInput for="sprintresource" label="is.sprint.resource" noborder="true">
+            <is:input id="sprintresource" name="sprint.resource" value="${sprint?.resource}" typed="[type:'numeric']"/>
+        </is:fieldInput>
+    </is:fieldset>
 
-  <is:buttonBar>
-    <g:if test="${currentPanel == 'add'}">
-      <is:button targetLocation="${controllerName+'/'+actionName}/${release.id}" id="submitAndContinueForm" type="submitToRemote" url="[controller:id, action:'save',id:release.id, params:[continue:true,product:params.product]]" update="window-content-${id}" value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
-      <is:button targetLocation="${controllerName+'/'+release.id}" id="submitForm" type="submitToRemote" url="[controller:id, action:'save',id:release.id,params:[product:params.product]]" update="window-content-${id}" value="${message(code:'is.button.add')}"/>
-    </g:if>
-    <g:if test="${currentPanel == 'edit'}">
-      <g:hiddenField name="sprint.version" value="${sprint.version}"/>
-      <g:hiddenField name="sprint.id" value="${sprint.id}"/>
-      <g:if test="${nextSprintId}">
-        <is:button targetLocation="${controllerName+'/'+actionName}/${nextSprintId}" id="submitAndContinueForm" type="submitToRemote" url="[controller:id, action:'update',id:sprint.id, params:[continue:true,product:params.product]]" update="window-content-${id}" value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
-      </g:if>
-      <is:button targetLocation="${controllerName+'/'+release.id}" id="submitForm" type="submitToRemote" url="[controller:id, action:'update',id:sprint.id,params:[product:params.product]]" update="window-content-${id}" value="${message(code:'is.button.update')}"/>
-    </g:if>
-    <is:button targetLocation="${controllerName+'/'+release.id}" id="cancelForm" type="link" button="button-s button-s-black" remote="true" url="[controller:id, action:'index',id:release.id, params:[product:params.product]]" update="window-content-${id}" value="${message(code: 'is.button.cancel')}"/>
-  </is:buttonBar>
+    <is:buttonBar>
+        <g:if test="${!sprint}">
+            <is:button
+                    id="submitAndContinueForm"
+                    type="submitToRemote"
+                    url="[controller:'sprint', action:'save',id:release.id, params:[product:params.product]]"
+                    onSuccess="jQuery.icescrum.form.reset('#${id}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,${product.preferences.estimatedSprintsDuration}); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.saved')}')"
+                    value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
+            <is:button
+                    id="submitForm"
+                    type="submitToRemote"
+                    url="[controller:'sprint', action:'save',id:release.id,params:[product:params.product]]"
+                    onSuccess="jQuery.icescrum.navigateTo('${controllerName}/${release.id}'); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.saved')}')"
+                    value="${message(code:'is.button.add')}"/>
+        </g:if>
+        <g:else>
+            <g:hiddenField name="sprint.version" value="${sprint.version}"/>
+            <g:hiddenField name="sprint.id" value="${sprint.id}"/>
+            <g:if test="${next}">
+                <is:button
+                        id="submitAndContinueForm"
+                        type="submitToRemote"
+                        url="[controller:'sprint', action:'update',id:sprint.id, params:[continue:true,product:params.product]]"
+                        onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+(params.subid?'/'+params.id:'')+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName+'/'+release.id}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.sprint.updated')}')"
+                        value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
+            </g:if>
+            <is:button
+                    id="submitForm"
+                    type="submitToRemote"
+                    url="[controller:'sprint', action:'update',id:sprint.id,params:[product:params.product]]"
+                    onSuccess="jQuery.icescrum.navigateTo('${controllerName+'/'+release.id}'); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.updated')}')"
+                    value="${message(code:'is.button.update')}"/>
+        </g:else>
+        <is:button
+                id="cancelForm"
+                type="link"
+                button="button-s button-s-black"
+                href="#${controllerName+'/'+release.id}"
+                value="${message(code: 'is.button.cancel')}"/>
+    </is:buttonBar>
 </g:form>
-<jq:jquery>
-  $("#sprintresource").focus();
-  jQuery("#window-content-${id}").addClass('window-content-toolbar');
-  <is:renderNotice />
-</jq:jquery>
-<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="esc" callback="\$.icescrum.cancelForm();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${id}"
+             listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${id}"
+             listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="esc" callback="\$.icescrum.form.cancel();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
+
+<g:if test="${sprint}">
+    <is:onStream
+            on="#${id}-form"
+            events="[[object:'sprint',events:['update']]]"
+            callback="alert('${message(code:'is.sprint.updated')}'); jQuery.icescrum.navigateTo('${controllerName+(params.subid?'/'+params.id:'')+'/edit/'+sprint.id}');"/>
+    <is:onStream
+            on="#${id}-form"
+            events="[[object:'sprint',events:['remove']]]"
+            callback="alert('${message(code:'is.sprint.deleted')}'); jQuery.icescrum.navigateTo('${controllerName+'/'+release.id}');"/>
+</g:if>
+
+<g:if test="${sprint}">
+    <is:onStream
+            on="#${id}-form"
+            events="[[object:'sprint',events:['update','activate','close']]]"
+            callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.sprint.updated')}','${controllerName}/${release.id}',true);"/>
+    <is:onStream
+            on="#${id}-form"
+            events="[[object:'sprint',events:['remove']]]"
+            callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.sprint.deleted')}','${controllerName}/${release.id}',true);"/>
+</g:if>

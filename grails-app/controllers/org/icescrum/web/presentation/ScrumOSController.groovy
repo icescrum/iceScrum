@@ -36,232 +36,256 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.web.upload.AjaxMultipartResolver
 import org.springframework.mail.MailException
 import org.springframework.security.access.AccessDeniedException
+import org.icescrum.core.domain.Sprint
 
 class ScrumOSController {
 
-  def springSecurityService
-  def productService
-  def teamService
-  def userService
-  def menuBarSupport
-  def notificationEmailService
+    def springSecurityService
+    def productService
+    def teamService
+    def userService
+    def menuBarSupport
+    def notificationEmailService
 
-  def index = {
-    def currentUserInstance = null
+    def index = {
+        def currentUserInstance = null
 
-    def locale = params.lang?:null
-    try {
-      def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
-      if (localeAccept?.size() > 0){
-        locale = params.lang?:localeAccept[0].toString()
-      }
-    }catch(Exception e){}
+        def locale = params.lang ?: null
+        try {
+            def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
+            if (localeAccept?.size() > 0) {
+                locale = params.lang ?: localeAccept[0].toString()
+            }
+        } catch (Exception e) {}
 
-    if (springSecurityService.isLoggedIn()) {
-      currentUserInstance = User.get(springSecurityService.principal.id)
-      if (locale != currentUserInstance.preferences.language || RCU.getLocale(request).toString() != currentUserInstance.preferences.language) {
-        RCU.getLocaleResolver(request).setLocale(request, response, new Locale(currentUserInstance.preferences.language))
-        locale = currentUserInstance.preferences.language
-      }
-    }else{
-      if (locale){
-        RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
-      }
-    }
-    def currentProductInstance = params.product ? productService.openProduct(params.long('product')) : null
-    def currentTeamInstance = params.team ? teamService.openTeam(params.long('team')) : null
+        if (springSecurityService.isLoggedIn()) {
+            currentUserInstance = User.get(springSecurityService.principal.id)
+            if (locale != currentUserInstance.preferences.language || RCU.getLocale(request).toString() != currentUserInstance.preferences.language) {
+                RCU.getLocaleResolver(request).setLocale(request, response, new Locale(currentUserInstance.preferences.language))
+                locale = currentUserInstance.preferences.language
+            }
+        } else {
+            if (locale) {
+                RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
+            }
+        }
+        def currentProductInstance = params.product ? Product.get(params.long('product')) : null
+        def currentTeamInstance = params.team ? teamService.openTeam(params.long('team')) : null
 
-    [user: currentUserInstance,
-            team: currentTeamInstance,
-            lang:RCU.getLocale(request).toString().substring(0,2),
-            product: currentProductInstance,
-            publicProductsExists:Product.count()?true:false,
-            productFilteredsList: productService.getByMemberProductList(),
-            teamsList: teamService.teamList]
-  }
-
-
-  def openWidget = {
-    if (!params.window) {
-      render(status: 400, contentType:'application/json', text: [notice: [text: message(code: 'is.error.no.widget')]] as JSON)
-      return
+        [user: currentUserInstance,
+                team: currentTeamInstance,
+                lang: RCU.getLocale(request).toString().substring(0, 2),
+                product: currentProductInstance,
+                publicProductsExists: Product.count() ? true : false,
+                productFilteredsList: productService.getByMemberProductList(),
+                teamsList: teamService.teamList]
     }
 
 
-    def controllerRequested = "${params.window}Controller"
-    def controller = grailsApplication.uIControllerClasses.find {
-      it.shortName.toLowerCase() == controllerRequested.toLowerCase()
+    def openWidget = {
+        if (!params.window) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.widget')]] as JSON)
+            return
+        }
+
+
+        def controllerRequested = "${params.window}Controller"
+        def controller = grailsApplication.uIControllerClasses.find {
+            it.shortName.toLowerCase() == controllerRequested.toLowerCase()
+        }
+        if (controller) {
+            def paramsWidget = null
+            if (params.product) {
+                paramsWidget = [product: params.product]
+            }
+            def url = createLink(controller: params.window, action: controller.getPropertyValue('widget')?.init ?: 'indexWidget', params: paramsWidget).toString() - request.contextPath
+            if (!menuBarSupport.permissionDynamicBar(url)) {
+                session['widgetsList'].remove(params.window)
+                render(status: 400)
+                return
+            }
+
+            if (!
+            session['widgetsList']?.contains(params.window)) {
+                session['widgetsList'] = session['widgetsList'] ?: []
+                session['widgetsList'].add(params.window)
+            }
+            render is.widget([
+                    id: params.window,
+                    hasToolbar: controller.getPropertyValue('widget')?.toolbar ?: false,
+                    closeable: (controller.getPropertyValue('widget')?.closeable == null) ? true : controller.getPropertyValue('widget').closeable,
+                    sortable: (controller.getPropertyValue('widget')?.sortable == null) ? true : controller.getPropertyValue('widget').sortable,
+                    windowable: controller.getPropertyValue('window') ? true : false,
+                    height: controller.getPropertyValue('widget')?.height ?: false,
+                    hasTitleBarContent: controller.getPropertyValue('widget')?.titleBarContent ?: false,
+                    title: message(code: controller.getPropertyValue('widget')?.title ?: ''),
+                    init: controller.getPropertyValue('widget')?.init ?: 'indexWidget',
+            ], {})
+        }
     }
-    if (controller) {
-       def paramsWidget = null
-      if (params.product){
-          paramsWidget = [product:params.product]
-      }
-      def url = createLink(controller:params.window, action:controller.getPropertyValue('widget')?.init ?: 'indexWidget', params:paramsWidget).toString() - request.contextPath
-      if(!menuBarSupport.permissionDynamicBar(url)){
-        session['widgetsList'].remove(params.window)
-        render(status: 400)
-        return
-      }
 
-      if (!
-      session['widgetsList']?.contains(params.window)) {
-        session['widgetsList'] = session['widgetsList'] ?: []
-        session['widgetsList'].add(params.window)
-      }
-      render is.widget([
-              id: params.window,
-              pushDisabled: grailsApplication.config?.icepush?.disabled?:true,
-              hasToolbar: controller.getPropertyValue('widget')?.toolbar ?: false,
-              closeable:(controller.getPropertyValue('widget')?.closeable == null) ? true : controller.getPropertyValue('widget').closeable,
-              sortable:(controller.getPropertyValue('widget')?.sortable == null) ? true : controller.getPropertyValue('widget').sortable,
-              windowable:controller.getPropertyValue('window')? true : false,
-              height:controller.getPropertyValue('widget')?.height ?: false,
-              hasTitleBarContent: controller.getPropertyValue('widget')?.titleBarContent ?: false,
-              title: message(code: controller.getPropertyValue('widget')?.title ?: ''),
-              init: controller.getPropertyValue('widget')?.init ?: 'indexWidget',
-      ], {})
+    def closeWindow = {
+        session['currentWindow'] = null
+        render(status: '200')
     }
-  }
 
-  def closeWindow = {
-    session['currentWindow'] = null
-    render(status: '200')
-  }
-
-  def closeWidget = {
-    if (session['widgetsList']?.contains(params.window))
-      session['widgetsList'].remove(params.window);
-    render(status: 200)
-  }
-
-  def openWindow = {
-    if (!params.window) {
-      render(status: 400, contentType:'application/json', text: [notice: [text: message(code: 'is.error.no.window')]] as JSON)
-      return
+    def closeWidget = {
+        if (session['widgetsList']?.contains(params.window))
+            session['widgetsList'].remove(params.window);
+        render(status: 200)
     }
-    session['currentWindow'] = params.window
-    session['currentView'] = session['currentView'] ?: springSecurityService.isLoggedIn() ? 'postitsView' : 'tableView'
 
-    if (session['widgetsList']?.contains(params.window))
-      session['widgetsList'].remove(params.window);
+    def openWindow = {
+        if (!params.window) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window')]] as JSON)
+            return
+        }
+        session['currentWindow'] = params.window
+        session['currentView'] = session['currentView'] ?: springSecurityService.isLoggedIn() ? 'postitsView' : 'tableView'
 
-    def controllerRequested = "${params.window}Controller"
-    def controller = grailsApplication.uIControllerClasses.find {
-      it.shortName.toLowerCase() == controllerRequested.toLowerCase()
+        if (session['widgetsList']?.contains(params.window))
+            session['widgetsList'].remove(params.window);
+
+        def controllerRequested = "${params.window}Controller"
+        def controller = grailsApplication.uIControllerClasses.find {
+            it.shortName.toLowerCase() == controllerRequested.toLowerCase()
+        }
+        if (controller) {
+
+            def param = [:]
+            if (params.product)
+                param = [product: params.product]
+            def url = createLink(controller: params.window, action: params.actionWindow ?: controller.getPropertyValue('window').init ?: 'index', params: param).toString() - request.contextPath
+
+            if (!menuBarSupport.permissionDynamicBar(url))
+                throw new AccessDeniedException('denied')
+
+            render is.window([
+                    window: params.window,
+                    title: message(code: controller.getPropertyValue('window')?.title ?: ''),
+                    help: message(code: controller.getPropertyValue('window')?.help ?: null),
+                    shortcuts: controller.getPropertyValue('shortcuts') ?: null,
+                    hasToolbar: (controller.getPropertyValue('window')?.toolbar != null) ? controller.getPropertyValue('window')?.toolbar : true,
+                    hasTitleBarContent: controller.getPropertyValue('window')?.titleBarContent ?: false,
+                    maximizeable: controller.getPropertyValue('window')?.maximizeable ?: true,
+                    closeable: (controller.getPropertyValue('window')?.closeable == null) ? true : controller.getPropertyValue('widget').closeable,
+                    widgetable: controller.getPropertyValue('widget') ? true : false,
+                    init: params.actionWindow ?: controller.getPropertyValue('window').init ?: 'index',
+            ], {})
+        }
     }
-    if (controller) {
 
-      def param = [:]
-      if (params.product)
-        param = [product:params.product]
-      def url = createLink(controller:params.window, action:params.actionWindow ?: controller.getPropertyValue('window').init ?: 'index', params:param).toString() - request.contextPath
-
-      if(!menuBarSupport.permissionDynamicBar(url))
-        throw new AccessDeniedException('denied')
-
-      render is.window([
-              window: params.window,
-              pushDisabled: grailsApplication.config?.icepush?.disabled?:true,
-              title: message(code: controller.getPropertyValue('window')?.title ?: ''),
-              help: message(code: controller.getPropertyValue('window')?.help ?: null),
-              shortcuts : controller.getPropertyValue('shortcuts')?:null,
-              hasToolbar: (controller.getPropertyValue('window')?.toolbar != null) ?controller.getPropertyValue('window')?.toolbar: true,
-              hasTitleBarContent: controller.getPropertyValue('window')?.titleBarContent ?: false,
-              maximizeable:controller.getPropertyValue('window')?.maximizeable ?: true,
-              closeable:(controller.getPropertyValue('window')?.closeable == null) ? true : controller.getPropertyValue('widget').closeable,
-              widgetable:controller.getPropertyValue('widget')? true : false,
-              init: params.actionWindow ?: controller.getPropertyValue('window').init ?: 'index',
-      ], {})
+    def reloadToolbar = {
+        if (!params.window) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window.toolbar')]] as JSON)
+            return
+        }
+        def controllerRequested = "${params.window}Controller"
+        def controller = grailsApplication.uIControllerClasses.find {
+            it.shortName.toLowerCase() == controllerRequested.toLowerCase()
+        }
+        if (controller) {
+            forward(controller: params.window, action: 'toolbar', params: params)
+        }
     }
-  }
 
-  def reloadToolbar = {
-    if (!params.window) {
-      render(status: 400, contentType:'application/json', text: [notice: [text: message(code: 'is.error.no.window.toolbar')]] as JSON)
-      return
+    def changeView = {
+        if (!params.view) return
+        session['currentView'] = params.view
+        forward(action: params.actionWindow, controller: params.window, params: [product: params.product, id: params.id ?: null])
     }
-    def controllerRequested = "${params.window}Controller"
-    def controller = grailsApplication.uIControllerClasses.find {
-      it.shortName.toLowerCase() == controllerRequested.toLowerCase()
+
+    @Secured('isAuthenticated()')
+    def upload = {
+        def upfile = request.getFile('file')
+        def filename = FilenameUtils.getBaseName(upfile.originalFilename)
+        def ext = FilenameUtils.getExtension(upfile.originalFilename)
+        def tmpF = session.createTempFile(filename, '.' + ext)
+        request.getFile("file").transferTo(tmpF)
+        if (!session.uploadedFiles)
+            session.uploadedFiles = [:]
+        session.uploadedFiles["${params."X-Progress-ID"}"] = tmpF.toString()
+        log.info "upload done for session: ${session?.id} / fileID: ${params."X-Progress-ID"}"
+        render(status: 200)
     }
-    if (controller) {
-      forward(controller: params.window, action: 'toolbar', params: params)
+
+    @Secured('isAuthenticated()')
+    def uploadStatus = {
+        log.debug "upload status for session: ${session?.id} / fileID: ${params?."X-Progress-ID" ?: 'null'}"
+        if (params."X-Progress-ID" && session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")]) {
+            if (((ProgressSupport) session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])?.complete) {
+                render(status: 200, contentType: 'application/json', text: session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
+                session.removeAttribute([AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])
+            } else {
+                render(status: 200, contentType: 'application/json', text: session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
+            }
+        } else {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.upload.error')]] as JSON)
+        }
     }
-  }
 
-  def changeView = {
-    if (!params.view) return
-    session['currentView'] = params.view
-    forward(action:params.actionWindow,controller:params.window, params:[product:params.product,id:params.id?:null])
-  }
-
-  @Secured('isAuthenticated()')
-  def upload = {
-    def upfile = request.getFile('file')
-    def filename = FilenameUtils.getBaseName(upfile.originalFilename)
-    def ext = FilenameUtils.getExtension(upfile.originalFilename)
-    def tmpF = session.createTempFile(filename,'.'+ext)
-    request.getFile("file").transferTo(tmpF)
-    if (!session.uploadedFiles)
-        session.uploadedFiles = [:]
-    session.uploadedFiles["${params."X-Progress-ID"}"] = tmpF.toString()
-    log.info "upload done for session: ${session?.id} / fileID: ${params."X-Progress-ID"}"
-    render(status:200)
-  }
-
-  @Secured('isAuthenticated()')
-  def uploadStatus = {
-    log.debug "upload status for session: ${session?.id} / fileID: ${params?."X-Progress-ID"?:'null'}"
-    if (params."X-Progress-ID" && session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")]){
-      if(((ProgressSupport) session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])?.complete){
-        render(status:200,contentType: 'application/json', text:session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
-        session.removeAttribute([AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])
-      }else{
-        render(status:200,contentType: 'application/json', text:session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
-      }
-    }else{
-       render(status:400, contentType:'application/json', text: [notice: [text: message(code:'is.upload.error')]] as JSON)
+    def about = {
+        def locale = RCU.getLocale(request)
+        def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${locale}.xml")
+        if (!file.exists()) {
+            file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
+        }
+        def aboutXml = new XmlSlurper().parse(file)
+        def license
+        render(status: 200, template: "about/index", model: [id: controllerName, about: aboutXml])
     }
-  }
 
-  def about = {
-    def locale = RCU.getLocale(request)
-    def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${locale}.xml")
-    if (!file.exists()){
-      file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
+    def textileParser = {
+        if (params.truncate) {
+            params.data = is.truncated([size: params.int('truncate')], params.data)
+        }
+        if (params.withoutHeader) {
+            render(text: wikitext.renderHtml([markup: "Textile"], params.data))
+        } else {
+            render(status: 200, template: 'textileParser')
+        }
     }
-    def aboutXml = new XmlSlurper().parse(file)
-    def license
-    render(status:200, template:"about/index", model:[id:controllerName,about:aboutXml])
-  }
 
-  def textileParser = {
-    render(status:200, template:'textileParser')
-  }
-
-  def reportError = {
-    try {
-      notificationEmailService.send([
-              to:grailsApplication.config.icescrum.alerts.errors.to,
-              subject:"[iceScrum][report] Rapport d'erreur",
-              view:'/emails-templates/reportError',
-              model:[error:params.stackError,
-                      comment:params.comments,
-                      ip:request.getHeader('X-Forwarded-For')?:request.getRemoteAddr(),
-                      date:g.formatDate(date:new Date(),formatName:'is.date.format.short.time'),
-                      version:g.meta(name:'app.version')]
-      ]);
-      render(status: 200,contentType:'application/json', text: [notice: [text: message(code:'is.blame.sended'),type:'notice']] as JSON)
-    }catch(MailException e){
-      render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:'is.mail.error')]] as JSON)
-      return
-    }catch(RuntimeException re){
-      render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:re.getMessage())]] as JSON)
-      return
-    }catch(Exception e){
-      render(status: 400, contentType: 'application/json', text: [notice: [text:message(code:'is.mail.error')]] as JSON)
-      return
+    def reportError = {
+        try {
+            notificationEmailService.send([
+                    to: grailsApplication.config.icescrum.alerts.errors.to,
+                    subject: "[iceScrum][report] Rapport d'erreur",
+                    view: '/emails-templates/reportError',
+                    model: [error: params.stackError,
+                            comment: params.comments,
+                            ip: request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
+                            date: g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
+                            version: g.meta(name: 'app.version')]
+            ]);
+            render(status: 200, contentType: 'application/json', text: [notice: [text: message(code: 'is.blame.sended'), type: 'notice']] as JSON)
+        } catch (MailException e) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+            return
+        } catch (RuntimeException re) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: re.getMessage())]] as JSON)
+            return
+        } catch (Exception e) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+            return
+        }
     }
-  }
+
+    def templates = {
+
+        def currentSprint = null
+        if (params.long('product')) {
+            def product = Product.get(params.product)
+            currentSprint = Sprint.findCurrentSprint(product.id).list()[0] ?: null
+        }
+        def tmpl = g.render(
+                template: 'templatesJS',
+                model: [id: controllerName,
+                        currentSprint: currentSprint
+                ])
+
+        tmpl = "${tmpl}".split("<div class='templates'>")
+        tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=').replaceAll('<script type="text/javascript">', '<js>').replaceAll('</script>', '</js>').replaceAll('<template ', '<script type="text/x-jqote-template" ').replaceAll('</template>', '</script>')
+        render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
+    }
 }

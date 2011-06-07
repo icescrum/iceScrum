@@ -25,80 +25,82 @@
  */
 
 jQuery.editable.addInputType('datepicker', {
-    element: function(settings, original) {
+            element: function(settings, original) {
 
-        var input = jQuery('<input size=8 />');
+                var input = jQuery('<input size=8 />');
 
-        // Catch the blur event on month change
-        settings.onblur = function(e) {
-        };
+                // Catch the blur event on month change
+                settings.onblur = function(e) {
+                };
 
-        input.datepicker({
-            dateFormat: 'yy-mm-dd',
-            onSelect: function(dateText, inst) {
-                jQuery(this).parents("form").submit();
-            },
-            onClose: function(dateText, inst) {
-                jQuery(this).parents("form").submit();
+                input.datepicker({
+                            dateFormat: 'yy-mm-dd',
+                            onSelect: function(dateText, inst) {
+                                jQuery(this).parents("form").submit();
+                            },
+                            onClose: function(dateText, inst) {
+                                jQuery(this).parents("form").submit();
+                            }
+
+                        });
+
+                input.datepicker('option', 'showAnim', 'slide');
+
+                jQuery(this).append(input);
+                return (input);
             }
-
         });
-
-        input.datepicker('option', 'showAnim', 'slide');
-
-        jQuery(this).append(input);
-        return (input);
-    }
-});
 
 
 $.editable.addInputType('richarea', {
-    element : $.editable.types.textarea.element,
-    plugin  : function(settings, original) {
-        settings.markitup.resizeHandle = false;
-        $('textarea', this).markItUp(settings.markitup);
-        settings.placeholder='';
-        $('textarea', this).css('height','100px');
-    }
-});
+            element : $.editable.types.textarea.element,
+            plugin  : function(settings, original) {
+                settings.markitup.resizeHandle = false;
+                $('textarea', this).markItUp(settings.markitup);
+                settings.placeholder = '';
+                $('textarea', this).css('height', '100px');
+            }
+        });
 
 
 $.editable.addInputType('selectui', {
-       element : function(settings, original) {
-            var select = $('<select />');
-            $(this).append(select);
-            return(select);
-        },
-        content : function(data, settings, original) {
-            /* If it is string assume it is json. */
-            if (String == data.constructor) {
-                eval ('var json = ' + data);
-            } else {
-            /* Otherwise assume it is a hash already. */
-                var json = data;
-            }
-            for (var key in json) {
-                if (!json.hasOwnProperty(key)) {
-                    continue;
+            element : function(settings, original) {
+                var select = $('<select id="' + new Date().getTime() + '"/>');
+                $(this).append(select);
+                return(select);
+            },
+            content : function(data, settings, original) {
+                /* If it is string assume it is json. */
+                if (String == data.constructor) {
+                    eval('var json = ' + data);
+                } else {
+                    /* Otherwise assume it is a hash already. */
+                    var json = data;
                 }
-                if ('selected' == key) {
-                    continue;
+                for (var key in json) {
+                    if (!json.hasOwnProperty(key)) {
+                        continue;
+                    }
+                    if ('selected' == key) {
+                        continue;
+                    }
+                    var option = $('<option />').attr('value', key).append($('<div/>').text(json[key]).html());
+                    $('select', this).append(option);
                 }
-                var option = $('<option />').val(key).append($('<div/>').text(json[key]).html());
-                $('select', this).append(option);
-            }
-            /* Loop option again to set selected. IE needed this... */
-            $('select', this).children().each(function() {
-                if ($(this).val() == json['selected'] ||
-                    $(this).text() == $.trim(original.revert)) {
+                /* Loop option again to set selected. IE needed this... */
+                $('select', this).children().each(function() {
+                    if ($(this).val() == json['selected'] ||
+                            $(this).text() == $.trim(original.revert)) {
                         $(this).attr('selected', 'selected');
+                    }
                 }
+                );
+            },
+            plugin: function(settings, original) {
+                $('select', this).selectmenu({style:"dropdown",maxHeight:200, transferClasses:true});
+                $('select', this).bind('close', function() {
+                    jQuery(this).parents("form").submit();
+                });
+                $('select', this).selectmenu('open');
             }
-            );
-        },
-        plugin: function(settings, original){
-            $('select', this).selectmenu({style:"dropdown",maxHeight:200, transferClasses:true});
-            $('select', this).bind('close',function(){jQuery(this).parents("form").submit();});
-            $('select', this).selectmenu('open');
-        }
-});
+        });

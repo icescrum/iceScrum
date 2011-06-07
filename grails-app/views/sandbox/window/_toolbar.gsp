@@ -34,7 +34,7 @@
         alt="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
         update="window-content-${id}"
         icon="create">
-  ${message(code: 'is.ui.sandbox.toolbar.new')}
+    ${message(code: 'is.ui.sandbox.toolbar.new')}
 </is:iconButton>
 
 
@@ -44,7 +44,6 @@
 <is:iconButton
         rendered="${productOwner}"
         shortcut="[key:'ctrl+shift+a',scope:id]"
-        controller="${id}"
         history="false"
         disabled="true"
         onClick="${is.remoteDialogFunction(
@@ -53,33 +52,30 @@
                           controller:id,
                           height:125,
                           width:360,
-                          before:'if (\$(\'.postit.ui-selected,.table-row-focus\').icescrum(\'postit\').requestIds() == false) return false;',
+                          before:'if (jQuery.icescrum.postit.ids($(\'.postit.ui-selected,.table-row-focus\')) == false) return false;',
                           valid:[
                               action:'accept',
-                              controller:id,
-                              params:'\$(\'.postit.ui-selected,.table-row-focus\').icescrum(\'postit\').requestIds()',
-                              update:'window-content-'+id,
+                              controller:'story',
+                              params:'jQuery.icescrum.postit.ids($(\'.postit.ui-selected,.table-row-focus\'))',
+                              onSuccess:'var type = jQuery(\'input[name=type]:checked\', \'#dialog form\').val(); $.event.trigger(\'accept_story\',data)',
                               button:'is.dialog.acceptAs.button'
                           ])
                   }"
         alt="${message(code:'is.ui.sandbox.toolbar.alt.accept')}"
         title="${message(code:'is.ui.sandbox.toolbar.alt.accept')}">
-  ${message(code: 'is.ui.sandbox.toolbar.accept')}
+    ${message(code: 'is.ui.sandbox.toolbar.accept')}
 </is:iconButton>
 
 <is:separatorSmall rendered="${inProduct}"/>
 
 <is:iconButton
         rendered="${inProduct}"
-        action="cloneStory"
         shortcut="[key:'ctrl+shift+c',scope:id]"
-        controller="${id}"
-        onclick="jQuery.icescrum.selectableAction('cloneStory?reload=true',true);"
-        disablable="true"
+        onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');});"
         disabled="true"
         alt="${message(code:'is.ui.sandbox.toolbar.alt.clone')}"
         title="${message(code:'is.ui.sandbox.toolbar.alt.clone')}">
-  ${message(code: 'is.ui.sandbox.toolbar.clone')}
+    ${message(code: 'is.ui.sandbox.toolbar.clone')}
 </is:iconButton>
 
 <is:separatorSmall rendered="${productOwner}"/>
@@ -88,62 +84,44 @@
 <is:iconButton
         icon="delete"
         rendered="${productOwner}"
-        action="delete"
         shortcut="[key:'del',scope:id]"
-        controller="${id}"
-        onclick="\$.icescrum.selectableAction();"
-        disablable="true"
+        onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
         disabled="true"
         alt="${message(code:'is.ui.sandbox.toolbar.alt.delete')}"
         title="${message(code:'is.ui.sandbox.toolbar.alt.delete')}">
-  ${message(code: 'is.ui.sandbox.toolbar.delete')}
+    ${message(code: 'is.ui.sandbox.toolbar.delete')}
 </is:iconButton>
 
 <is:separator/>
 
 %{--View--}%
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">
-  <ul>
-    <li class="first">
-      <is:link
-              controller="scrumOS"
-              action="changeView"
-              params="'product=${params.product}&view=postitsView&window=${id}&actionWindow=list&term='+\$(\'#autoCmpTxt\').val()"
-              history="false"
-              update="window-content-${id}"
-              remote="true"
-              onSuccess="\$.icescrum.displayView('${message(code:'is.view.postitsView')}')"
-              value="${message(code:'is.view.postitsView')}"/>
-    </li>
-    <li class="last">
-      <is:link controller="scrumOS"
-              action="changeView"
-              params="'product=${params.product}&view=tableView&window=${id}&actionWindow=list&term='+\$(\'#autoCmpTxt\').val()"
-              update="window-content-${id}"
-              history="false"
-              onSuccess="\$.icescrum.displayView('${message(code:'is.view.tableView')}')"
-              remote="true"
-              value="${message(code:'is.view.tableView')}"/>
-    </li>
-  </ul>
+    <ul>
+        <li class="first">
+            <is:link
+                    controller="scrumOS"
+                    action="changeView"
+                    params="'product=${params.product}&view=postitsView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                    history="false"
+                    update="window-content-${id}"
+                    remote="true"
+                    onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.postitsView')}')"
+                    value="${message(code:'is.view.postitsView')}"/>
+        </li>
+        <li class="last">
+            <is:link controller="scrumOS"
+                     action="changeView"
+                     params="'product=${params.product}&view=tableView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                     update="window-content-${id}"
+                     history="false"
+                     onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.tableView')}')"
+                     remote="true"
+                     value="${message(code:'is.view.tableView')}"/>
+        </li>
+    </ul>
 </is:panelButton>
 
 <is:separator/>
-
-%{--Xml stories importer
-<sec:ifLoggedIn>
-  <is:iconButton
-          action="uploadStoriesPanel"
-          controller="sandbox"
-          alt="${message(code:'is.ui.sandbox.toolbar.alt.import')}"
-          title="${message(code:'is.ui.sandbox.toolbar.alt.import')}">
-    ${message(code: 'is.ui.sandbox.toolbar.import')}
-  </is:iconButton>
-
-  <is:separator/>
-</sec:ifLoggedIn>
-                --}%
-%{--Print button--}%
 <is:reportPanel
         action="print"
         text="${message(code: 'is.ui.toolbar.print')}"
@@ -156,5 +134,5 @@
 <entry:point id="${id}-${actionName}"/>
 %{--Textfield for the auto completion search--}%
 <is:panelSearch id="search-ui">
-  <is:autoCompleteSearch elementId="autoCmpTxt" controller="${id}" action="list" update="window-content-${id}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="${id}" action="list" update="window-content-${id}"/>
 </is:panelSearch>

@@ -59,19 +59,20 @@
 .window-fullscreen .window-content-toolbar {
     height: expression(document.body.clientHeight-98);
 }
+
 .window-fullscreen #button-bar {
-bottom:auto;
-top: expression(document.body.clientHeight-37);
+    bottom: auto;
+    top: expression(document.body.clientHeight-37);
 }
 
 .window-fullscreen .box-navigation {
     width: expression(document.body.clientWidth - 8);
-    right:auto;
+    right: auto;
 }
 
 #main .box .box-navigation {
     width: expression(document.body.clientWidth-272);
-    right:auto;
+    right: auto;
 }
 
 .panel-box {
@@ -120,7 +121,7 @@ top: expression(document.body.clientHeight-37);
 }
 
 .button-ico .ico {
-	left: 5px;
+    left: 5px;
 }
 
 #main .box #button-bar, .window-fullscreen #button-bar {
@@ -133,7 +134,7 @@ top: expression(document.body.clientHeight-37);
 }
 
 #window-toolbar .button-ico .content {
-    padding-left:12px !important;
+    padding-left: 12px !important;
 }
 
 #window-toolbar .button-ico .ico {
@@ -145,7 +146,7 @@ top: expression(document.body.clientHeight-37);
     padding-top: 11px;
 }
 
-.dropmenu .content{
+.dropmenu .content {
     padding-right: 12px !important;
 }
 
@@ -194,7 +195,7 @@ top: expression(document.body.clientHeight-37);
 }
 
 .panel-box .panel-tab-contents, .panel-box .panel-texte {
-    padding-bottom: 1Px;
+    padding-bottom: 1 Px;
 }
 
 .event-header-label .event-header-velocity {
@@ -214,26 +215,25 @@ top: expression(document.body.clientHeight-37);
     text-indent: 10px;
 }
 
-.window-fullscreen .box-title .start,  .window-fullscreen .box-title .end,
-    #main .box .box-title .start,  #main .box .box-title .end {
+.window-fullscreen .box-title .start, .window-fullscreen .box-title .end,
+#main .box .box-title .start, #main .box .box-title .end {
     background-color: white !important;
 }
 
-#local .box .box-title .start,  #local .box .box-title .end {
+#local .box .box-title .start, #local .box .box-title .end {
     background-color: #f5f5f5 !important;
 }
 
 #local .postit-rows .postit-icon {
-    left:-19px;
+    left: -19px;
     top: 3px;
 }
 
-
 .postit-rect .postit-layout {
-	background-image: url(../../images/ie/postit-rectangle.png);
+    background-image: url(../../images/ie/postit-rectangle.png);
 }
 
-.view-release .ui-selected, .kanban .ui-selected {
+.event-content-list .ui-selected, .kanban .ui-selected {
     background: url(../../images/ie/postit-rectangle-selectable.png) no-repeat 0 0;
 }
 
@@ -242,21 +242,20 @@ top: expression(document.body.clientHeight-37);
 }
 
 .postit .postit-layout {
-	background-image: url(../../images/ie/postit.png);
+    background-image: url(../../images/ie/postit.png);
 }
 
 #navigation .button-s .start, #navigation .button-s .end, #navigation .button-s .content {
-    background-image:url(../../images/ie/small-top.png) !important;
+    background-image: url(../../images/ie/small-top.png) !important;
 }
 
-
 #window-toolbar a.button-n .start, #window-toolbar a.button-n .end,
-    #window-toolbar a.button-n .content, #window-toolbar a.button-n {
+#window-toolbar a.button-n .content, #window-toolbar a.button-n {
     background-image: url(../../images/ie/small-nav.png) !important;
 }
 
 #window-toolbar a.button-n .start, #window-toolbar a.button-n .end,
-    #window-toolbar a.button-n .content, #window-toolbar a.button-n {
+#window-toolbar a.button-n .content, #window-toolbar a.button-n {
     background-position: 0 -190px;
 }
 
@@ -276,11 +275,9 @@ top: expression(document.body.clientHeight-37);
     background-position: right 0;
 }
 
-
 #window-toolbar a.button-n:hover .end {
     right: -1px;
 }
-
 
 #window-toolbar .tool-button .content {
     margin: 0 6px !important;
@@ -288,19 +285,19 @@ top: expression(document.body.clientHeight-37);
 }
 
 #window-toolbar .button-ico .content {
-    padding-left:12px !important;
+    padding-left: 12px !important;
 }
 
 .postit .dropmenu-action .dropmenu-arrow, .postit-rect .dropmenu-action .dropmenu-arrow {
-    background-image:url("../../images/ie/arrow-bullet.png");
+    background-image: url("../../images/ie/arrow-bullet.png");
 }
 
 .postit .ico-feature-1, .postit .ico-story-3, .postit-rect .ico-feature-1, .postit-rect .ico-story-3 {
-background:url("../../images/ie/type/tech.png") repeat scroll 0 0 transparent;
+    background: url("../../images/ie/type/tech.png") repeat scroll 0 0 transparent;
 }
 
 .postit .ico-story-2, .postit-rect .ico-story-2 {
-background:url("../../images/ie/type/bug.png") repeat scroll 0 0 transparent;
+    background: url("../../images/ie/type/bug.png") repeat scroll 0 0 transparent;
 }
 
 #window-toolbar .dropmenu-button .content {
@@ -328,7 +325,6 @@ background:url("../../images/ie/type/bug.png") repeat scroll 0 0 transparent;
     right: -1px;
     background: url(../../images/ie/small-nav.png) right 0 repeat-x !important;
 }
-
 
 .dropmenu-hover .dropmenu-button .arrow {
     background: url("../../images/application/arrow.png") 0 -25px no-repeat !important;
@@ -363,7 +359,7 @@ span.ui-checkbox, span.ui-radio {
 
 .box .box-navigation ul .search .search-button, #dropmenu .search-content, #dropmenu .search-content input {
     background-image: url(../../images/ie/search.png) !important;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
 }
 
 #spinner-app .spinner-loading {
@@ -376,9 +372,9 @@ span.ui-checkbox, span.ui-radio {
 }
 
 .postit-ipsum {
-   
+
 }
 
 #panel-chart-container .view-chart {
-    height:300px;
+    height: 300px;
 }

@@ -25,77 +25,76 @@
 
 
 %{--New--}%
-  <is:iconButton
-          controller="feature"
-          action="add"
-          rendered="${productOwner}"
-          shortcut="[key:'ctrl+n',scope:id]"
-          update="window-content-${id}"
-          icon="create"
-          alt="${message(code:'is.ui.feature.toolbar.alt.new')}"
-          title="${message(code:'is.ui.feature.toolbar.alt.new')}">
+<is:iconButton
+        controller="feature"
+        action="add"
+        rendered="${productOwner}"
+        shortcut="[key:'ctrl+n',scope:id]"
+        update="window-content-${id}"
+        icon="create"
+        alt="${message(code:'is.ui.feature.toolbar.alt.new')}"
+        title="${message(code:'is.ui.feature.toolbar.alt.new')}">
     <g:message code="is.ui.feature.toolbar.new"/>
-  </is:iconButton>
+</is:iconButton>
 
-  <is:separatorSmall rendered="${productOwner}"/>
+<is:separatorSmall rendered="${productOwner}"/>
 
 %{--Delete button (note-view)--}%
-  <is:iconButton
-          icon="delete"
-          onclick="\$.icescrum.selectableAction();"
-          history='false'
-          rendered="${productOwner}"
-          shortcut="[key:'del',scope:id]"
-          disabled="true"
-          disablable="true"
-          title="${message(code:'is.ui.feature.toolbar.alt.delete')}"
-          alt="${message(code:'is.ui.feature.toolbar.alt.delete')}">
+<is:iconButton
+        icon="delete"
+        onclick="jQuery.icescrum.selectableAction(null,null,null,function(data){jQuery.event.trigger('remove_feature',[data]); jQuery.icescrum.renderNotice('${message(code:'is.feature.deleted')}'); });"
+        history='false'
+        rendered="${productOwner}"
+        shortcut="[key:'del',scope:id]"
+        disabled="true"
+        title="${message(code:'is.ui.feature.toolbar.alt.delete')}"
+        alt="${message(code:'is.ui.feature.toolbar.alt.delete')}">
     <g:message code="is.ui.sandbox.toolbar.delete"/>
-  </is:iconButton>
+</is:iconButton>
 
-  <is:separator rendered="${productOwner}"/>
+<is:separator rendered="${productOwner}"/>
 
 %{--View--}%
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">
-  <ul>
-    <li class="first">
-      <is:link
-              controller="scrumOS"
-              action="changeView"
-              params="'product=${params.product}&view=postitsView&window=${id}&actionWindow=list&term='+\$(\'#autoCmpTxt\').val()"
-              history="false"
-              update="window-content-${id}"
-              remote="true"
-              onSuccess="\$.icescrum.displayView('${message(code:'is.view.postitsView')}')"
-              value="${message(code:'is.view.postitsView')}"/>
-    </li>
-    <li class="last">
-      <is:link controller="scrumOS"
-              action="changeView"
-              params="'product=${params.product}&view=tableView&window=${id}&actionWindow=list&term='+\$(\'#autoCmpTxt\').val()"
-              update="window-content-${id}"
-              history="false"
-              onSuccess="\$.icescrum.displayView('${message(code:'is.view.tableView')}')"
-              remote="true"
-              value="${message(code:'is.view.tableView')}"/>
-    </li>
-  </ul>
+    <ul>
+        <li class="first">
+            <is:link
+                    controller="scrumOS"
+                    action="changeView"
+                    params="'product=${params.product}&view=postitsView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                    history="false"
+                    update="window-content-${id}"
+                    remote="true"
+                    onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.postitsView')}')"
+                    value="${message(code:'is.view.postitsView')}"/>
+        </li>
+        <li class="last">
+            <is:link controller="scrumOS"
+                     action="changeView"
+                     params="'product=${params.product}&view=tableView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                     update="window-content-${id}"
+                     history="false"
+                     onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.tableView')}')"
+                     remote="true"
+                     value="${message(code:'is.view.tableView')}"/>
+        </li>
+    </ul>
 </is:panelButton>
 
 <is:separator/>
 
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
-  <ul>
-    <li class="first">
-      <is:link
-              action="productParkingLotChart"
-              controller="feature"
-              update="window-content-${id}"
-              title="${message(code:'is.ui.feature.charts.productParkingLot')}"
-              remote="true"
-              value="${message(code:'is.ui.feature.charts.productParkingLot')}"/>
-    </li>
-  </ul>
+    <ul>
+        <li class="first">
+            <is:link
+                    action="productParkingLotChart"
+                    controller="feature"
+                    update="window-content-${id}"
+                    title="${message(code:'is.ui.feature.charts.productParkingLot')}"
+                    remote="true"
+                    value="${message(code:'is.ui.feature.charts.productParkingLot')}"/>
+        </li>
+    </ul>
 </is:panelButton>
 
 <is:separatorSmall/>
@@ -113,5 +112,5 @@
 <entry:point id="${id}-${actionName}-toolbar"/>
 %{--Search--}%
 <is:panelSearch id="search-ui">
-  <is:autoCompleteSearch elementId="autoCmpTxt" controller="feature" action="list" update="window-content-${id}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="feature" action="list" update="window-content-${id}"/>
 </is:panelSearch>

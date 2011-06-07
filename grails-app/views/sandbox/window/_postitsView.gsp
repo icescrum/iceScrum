@@ -26,65 +26,40 @@
 <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
 
 <is:backlogElementLayout
+        emptyRendering="true"
+        style="display:${stories ? 'block' : 'none'};"
         id="window-${id}"
         selectable="[rendered:productOwner,
                     filter:'div.postit-story',
                     cancel:'.postit-label, a',
-                    selected:'\$.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'story.id=\'+\$(obj.selected).icescrum(\'postit\').id()')+';})',
-                    onload:'\$(\'.window-toolbar\').icescrum(\'toolbar\', \'buttons\', 1).toggleEnabled(\'.backlog\');']"
-        droppable='[selector:".postit",
+                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
+        droppable='[selector:"div.postit",
                   hoverClass: "ui-selected",
-                  drop: remoteFunction(controller:"sandbox",
+                  drop: remoteFunction(controller:"story",
                                        action:"associateFeature",
-                                       update:"window-content-${id}",
-                                       params:"\"product=${params.product}&feature.id=\"+ui.draggable.attr(\"elemId\")+\"&story.id=\"+\$(this).attr(\"elemId\")"
+                                       onSuccess:"jQuery.event.trigger(\"update_story\",data)",
+                                       params:"\"product=${params.product}&feature.id=\"+ui.draggable.attr(\"elemid\")+\"&story.id=\"+jQuery(this).attr(\"elemid\")"
                                        ),
                   accept: ".postit-row-feature"]'
-        dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemId\")")]'
+        dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
         value="${stories}"
         var="story">
-
-  <is:postit id="${story.id}"
-          miniId="${story.id}"
-          title="${story.name}"
-          attachment="${story.totalAttachments}"
-          styleClass="story type-story-${story.type}"
-          type="story"
-          typeNumber="${story.type}"
-          typeTitle="${is.bundleFromController(bundle:'typesBundle',value:story.type)}"
-          color="${story.feature?.color}"
-          controller="sandbox"
-          comment="${story.totalComments >= 0 ? story.totalComments : ''}">
-    <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
-
-  %{--Embedded menu--}%
-    <is:postitMenu id="${story.id}" contentView="window/postitMenu" params="[id:id, story:story, sprint:sprint, user:user]" />
-
-    <g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story).length() > 50}">
-      <is:tooltipPostit
-              type="story"
-              id="${story.id}"
-              title="${story.name.encodeAsHTML()}"
-              text="${is.storyTemplate([story:story])}"
-              apiBeforeShow="if(\$('#dropmenu').is(':visible')){return false;}"
-              container="\$('#window-content-${id}')"/>
-    </g:if>
-  </is:postit>
+    <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user, sprint:sprint]"
+               params="[product:params.product]"/>
 </is:backlogElementLayout>
 
-<jq:jquery>
-  jQuery("#window-content-${id}").removeClass('window-content-toolbar');
-  if(!jQuery("#dropmenu").is(':visible')){
-    jQuery("#window-id-${id}").focus();
-  }
-  <is:renderNotice />
-  <icep:notifications
-        name="${id}Window"
-        reload="[update:'#window-content-'+id,action:'list',params:[product:params.product]]"
-        disabled="jQuery('#backlog-layout-window-${id}, .view-table').length"
-        group="${params.product}-${id}"
-        listenOn="#window-content-${id}"/>
-</jq:jquery>
+<g:include view="/sandbox/window/_blank.gsp" model="[stories:stories,id:id]"/>
+
 <is:dropImport id="${id}" description="is.ui.sandbox.drop.import" action="dropImport"/>
-<is:shortcut key="space" callback="if(\$('#dialog').dialog('isOpen') == true){\$('#dialog').dialog('close'); return false;}\$.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery(obj.selected).icescrum(\'postit\').id()')}},true);" scope="${id}"/>
-<is:shortcut key="ctrl+a" callback="\$('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+<is:shortcut key="space"
+             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
+             scope="${id}"/>
+<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+<is:onStream
+        on="#backlog-layout-window-${id}"
+        events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']]]"
+        template="sandbox"/>
+
+<is:onStream
+        on="#backlog-layout-window-${id}"
+        events="[[object:'sprint',events:['close','activate']]]"/>

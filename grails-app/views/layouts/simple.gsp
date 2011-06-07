@@ -23,29 +23,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>iceScrum - <g:layoutTitle/></title>
-  <r:resourceLink uri="/${is.currentThemeImage()}favicon.ico"/>
-  <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
-
-  <is:loadJsVar/>
-
-  <r:use modules="jquery-ui, datepicker-locales, resize, qtip, pnotify, ui-selectmenu, hotkeys, history, mousewheel, eventline, dotimeout, jqplot,
-   browser, table, dropmenu, jeditable, progress, input, checkbox, alphanumeric, scrollbar"/>
-  <r:use module="icescrum"/>
-
-  <r:layoutResources/>
-  <g:layoutHead/>
+    <title>iceScrum - <g:layoutTitle/></title>
+    <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
+    <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
+    <is:loadJsVar/>
+    <r:require modules="jquery,jquery-ui,jquery-plugins,jquery-ui-plugins,jqplot,icescrum"/>
+    <r:layoutResources/>
+    <g:layoutHead/>
 </head>
+
 <body class="simple">
 <g:layoutBody/>
 <is:spinner
         on400="${is.notice(data: '$.parseJSON(xhr.responseText)')}"
-        on500="\$.icescrum.dialogError(xhr)"
+        on500="jQuery.icescrum.dialogError(xhr)"
         on403="${is.notice(text:message('is.denied'),type:'error')}"/>
 <r:layoutResources/>
 <entry:point id="icescrum-footer"/>
-<jq:jquery>
-    $.icescrum.init();
-</jq:jquery>
 </body>
 </html>

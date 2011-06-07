@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.Release" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -23,120 +24,109 @@
 
 <g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
 
-<g:if test="${params.id}">
-%{-- Add button --}%
-  <is:iconButton
-          rendered='${poOrSm}'
-          controller="${id}"
-          action="add"
-          shortcut="[key:'ctrl+n',scope:id]"
-          update="window-content-${id}"
-          icon="create"
-          id="${params.id}"
-          class="${(currentPanel == 'add') ? 'select' : ''}"
-          alt="${message(code:'is.ui.releasePlan.toolbar.alt.new')}"
-          title="${message(code:'is.ui.releasePlan.toolbar.alt.new')}">
-    ${message(code: 'is.ui.releasePlan.toolbar.new')}
-  </is:iconButton>
+<g:if test="${release.id}">
+    <g:if test="${release.state <= Release.STATE_INPROGRESS && poOrSm}">
+    %{-- Add button --}%
+        <is:iconButton
+                controller="${id}"
+                action="add"
+                shortcut="[key:'ctrl+n',scope:id]"
+                update="window-content-${id}"
+                icon="create"
+                id="${release.id}"
+                class="select close-release-${release.id}"
+                alt="${message(code:'is.ui.releasePlan.toolbar.alt.new')}"
+                title="${message(code:'is.ui.releasePlan.toolbar.alt.new')}">
+            ${message(code: 'is.ui.releasePlan.toolbar.new')}
+        </is:iconButton>
 
-  <is:separator rendered="${poOrSm}"/>
+        <is:separator class="close-release-${release.id}"/>
 
-%{-- Sprints generation --}%
-  <is:iconButton
-          rendered='${poOrSm}'
-          alt="${message(code:'is.ui.releasePlan.toolbar.alt.generateSprints')}"
-          title="${message(code:'is.ui.releasePlan.toolbar.alt.generateSprints')}"
-          action="generateSprints"
-          history='false'
-          shortcut="[key:'ctrl+g',scope:id]"
-          id="${params.id}"
-          controller="${id}"
-          update="window-content-${id}"
-          onFailure="${is.notice(xhr:'XMLHttpRequest')}">
-    ${message(code: 'is.ui.releasePlan.toolbar.generateSprints')}
-  </is:iconButton>
+    %{-- Sprints generation --}%
+        <is:iconButton
+                alt="${message(code:'is.ui.releasePlan.toolbar.alt.generateSprints')}"
+                title="${message(code:'is.ui.releasePlan.toolbar.alt.generateSprints')}"
+                action="generateSprints"
+                history='false'
+                shortcut="[key:'ctrl+g',scope:id]"
+                id="${release.id}"
+                controller="release"
+                class="close-release-${release.id}"
+                onSuccess="jQuery.event.trigger('add_sprint',[data]); jQuery.icescrum.renderNotice('${g.message(code:'is.release.sprints.generated')}')">
+            ${message(code: 'is.ui.releasePlan.toolbar.generateSprints')}
+        </is:iconButton>
 
-  <is:separatorSmall rendered='${poOrSm}'/>
+        <is:separatorSmall class="close-release-${release.id}"/>
 
-%{-- Automatic planification --}%
-  <is:iconButton
-          rendered='${poOrSm}'
-          alt="${message(code:'is.ui.releasePlan.toolbar.alt.autoPlan')}"
-          title="${message(code:'is.ui.releasePlan.toolbar.alt.autoPlan')}"
-          action="autoPlan"
-          controller="${id}"
-          shortcut="[key:'ctrl+shift+a',scope:id]"
-          history='false'
-          id="${params.id}"
-          update="window-content-${id}">
-    ${message(code: 'is.ui.releasePlan.toolbar.autoPlan')}
-  </is:iconButton>
+    %{-- Automatic planification --}%
+        <is:iconButton
+                alt="${message(code:'is.ui.releasePlan.toolbar.alt.autoPlan')}"
+                title="${message(code:'is.ui.releasePlan.toolbar.alt.autoPlan')}"
+                action="autoPlan"
+                controller="releasePlan"
+                shortcut="[key:'ctrl+shift+a',scope:id]"
+                history='false'
+                id="${params.id}"
+                class="close-release-${release.id}"
+                onSuccess="jQuery(document.body).append(data.dialog);">
+            ${message(code: 'is.ui.releasePlan.toolbar.autoPlan')}
+        </is:iconButton>
 
-  <is:separatorSmall rendered='${poOrSm}'/>
+        <is:separatorSmall class="close-release-${release.id}"/>
 
-%{-- Dissociate All --}%
-  <is:iconButton rendered='${poOrSm}'
-          alt="${message(code:'is.ui.releasePlan.toolbar.alt.dissociateAll')}"
-          title="${message(code:'is.ui.releasePlan.toolbar.alt.dissociateAll')}"
-          action="dissociateAll"
-          history='false'
-          shortcut="[key:'ctrl+shift+d',scope:id]"
-          id="${params.id}"
-          controller="${id}"
-          update="window-content-${id}">
-    ${message(code: 'is.ui.releasePlan.toolbar.dissociateAll')}
-  </is:iconButton>
+    %{-- Dissociate All --}%
+        <is:iconButton
+                alt="${message(code:'is.ui.releasePlan.toolbar.alt.dissociateAll')}"
+                title="${message(code:'is.ui.releasePlan.toolbar.alt.dissociateAll')}"
+                action="unPlan"
+                history='false'
+                shortcut="[key:'ctrl+shift+d',scope:id]"
+                id="${params.id}"
+                controller="release"
+                class="close-release-${release.id}"
+                onSuccess="jQuery.event.trigger('sprintMesure_sprint',[data.sprints]); jQuery.event.trigger('unPlan_story',[data.stories]); jQuery.icescrum.renderNotice('${g.message(code:'is.release.stories.dissociated')}')">
+            ${message(code: 'is.ui.releasePlan.toolbar.dissociateAll')}
+        </is:iconButton>
 
-  <is:separator rendered='${poOrSm}'/>
+        <is:separator class="close-release-${release.id}"/>
+    </g:if>
 
 %{-- Vision --}%
-  <is:iconButton
-          alt="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
-          title="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
-          action="vision"
-          shortcut="[key:'ctrl+shift+v',scope:id]"
-          id="${params.id}"
-          controller="${id}"
-          update="window-content-${id}">
-    ${message(code: 'is.ui.releasePlan.toolbar.vision')}
-  </is:iconButton>
+    <is:iconButton
+            alt="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
+            title="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
+            action="vision"
+            shortcut="[key:'ctrl+shift+v',scope:id]"
+            id="${release.id}"
+            controller="${id}"
+            update="window-content-${id}">
+        ${message(code: 'is.ui.releasePlan.toolbar.vision')}
+    </is:iconButton>
 
-  <is:separator/>
+    <is:separator/>
 
-  <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
-    <ul>
-      <li class="first">
-        <is:link id="${params.id}"
-                action="releaseBurndownChart"
-                controller="${id}"
-                update="window-content-${id}"
-                title="${message(code:'is.ui.releaseplan.charts.burndown')}"
-                remote="true"
-                value="${message(code:'is.ui.releaseplan.charts.burndown')}"/>
-      </li>
-      <li class="last">
-        <is:link id="${params.id}"
-                action="releaseParkingLotChart"
-                controller="${id}"
-                update="window-content-${id}"
-                title="${message(code:'is.ui.releaseplan.charts.parkingLot')}"
-                remote="true"
-                value="${message(code:'is.ui.releaseplan.charts.parkingLot')}"/>
-      </li>
-    </ul>
-  </is:panelButton>
-
-  %{--Print button
-
-  <is:separator/>
-
-  <is:iconButton
-          onClick="window.print();return false;"
-          disabled="true"
-          shortcut="[key:'ctrl+p',scope:id]"
-          icon="print"
-          alt="${message(code:'is.ui.toolbar.alt.print')}">
-    <g:message code="is.ui.toolbar.print"/> 
-  </is:iconButton>--}%
-  <entry:point id="${id}-${actionName}"/>
+    <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph"
+                    text="${message(code:'is.ui.toolbar.charts')}">
+        <ul>
+            <li class="first">
+                <is:link id="${release.id}"
+                         action="releaseBurndownChart"
+                         controller="${id}"
+                         update="window-content-${id}"
+                         title="${message(code:'is.ui.releaseplan.charts.burndown')}"
+                         remote="true"
+                         value="${message(code:'is.ui.releaseplan.charts.burndown')}"/>
+            </li>
+            <li class="last">
+                <is:link id="${release.id}"
+                         action="releaseParkingLotChart"
+                         controller="${id}"
+                         update="window-content-${id}"
+                         title="${message(code:'is.ui.releaseplan.charts.parkingLot')}"
+                         remote="true"
+                         value="${message(code:'is.ui.releaseplan.charts.parkingLot')}"/>
+            </li>
+        </ul>
+    </is:panelButton>
+    <entry:point id="${id}-${actionName}" model="[release:release]"/>
 </g:if>

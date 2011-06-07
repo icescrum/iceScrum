@@ -20,11 +20,12 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 
-<g:if test="${features}">
-  <is:backlogElementLayout id="widget-${id}"
-          container="ul"
-          containerClass="list postit-rows"
-          draggable='[
+<is:backlogElementLayout id="widget-${id}"
+                         container="ul"
+                         emptyRendering="true"
+                         style="display:${features ? 'block' : 'none'};"
+                         containerClass="list postit-rows"
+                         draggable='[
             restrictOnAccess:"productOwner() or scrumMaster()",
             selector:".postit-row",
             helper:"clone",
@@ -32,25 +33,21 @@
             start:"jQuery(this).hide();",
             stop:"jQuery(this).show();"
           ]'
-          value="${features}"
-          var="feature"
-          dblclickable='[restrictOnAccess:"inProduct()", selector:".postit-row", callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'>
+                         value="${features}"
+                         var="feature"
+                         dblclickable='[restrictOnAccess:"inProduct()", selector:".postit-row", callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'>
     <li elemId="${feature.id}" class="postit-row postit-row-feature">
-      <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
-      <is:truncated size="30" encodedHTML="true">${feature.name.encodeAsHTML()}</is:truncated>
+        <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
+        <is:truncated size="30" encodedHTML="true">${feature.name.encodeAsHTML()}</is:truncated>
     </li>
-  </is:backlogElementLayout>
-</g:if>
-<g:else>
-  <div class="box-content-layout">
+</is:backlogElementLayout>
+
+<div class="box-blank" style="display:${features ? 'none' : 'block'};">
     ${message(code: 'is.widget.feature.empty')}
-  </div>
-</g:else>
+</div>
+
 <entry:point id="${id}-${actionName}-widget" model="[feature:feature]"/>
- <jq:jquery>
-  <icep:notifications
-        name="${id}Widget"
-        reload="[update:'#widget-content-'+id,action:'list',params:[product:params.product]]"
-        group="${params.product}-${id}"
-        listenOn="#widget-content-${id}"/>
-</jq:jquery>
+<is:onStream
+        on="#backlog-layout-widget-${id}"
+        events="[[object:'feature',events:['add','update','remove']]]"
+        template="widget"/>

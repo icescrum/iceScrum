@@ -33,393 +33,343 @@ import org.grails.followable.FollowLink
 import org.icescrum.core.event.IceScrumStoryEvent
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.icescrum.core.domain.*
+import org.icescrum.core.utils.BundleUtils
 
 class BacklogElementController {
 
-  static ui = true
+    static ui = true
 
-  static final id = 'backlogElement'
-  static menuBar = [title: 'is.ui.backlogelement', show: {false}]
-  static window = [title: 'is.ui.backlogelement', toolbar: true, init: 'details']
+    static final id = 'backlogElement'
+    static menuBar = [title: 'is.ui.backlogelement', show: {false}]
+    static window = [title: 'is.ui.backlogelement', toolbar: true, init: 'details']
 
-  def productBacklogService
-  def commentService
-  def springSecurityService
-  def securityService
+    def storyService
+    def commentService
+    def springSecurityService
+    def securityService
 
-  /**
-   * Render the toolbar of the window
-   */
-  def toolbar = {
-    if (!params.id) {
-      render(text: '')
-      return
-    }
-    def user = null
-    if (springSecurityService.isLoggedIn())
-      user = User.load(springSecurityService.principal.id)
-    def story = Story.get(params.long('id'))
-    // Cannot proceed if we don't have a story
-    if (!story) {
-      render(text: '')
-      return
-    }
+    /**
+     * Render the toolbar of the window
+     */
+    def toolbar = {
+        if (!params.id) {
+            render(text: '')
+            return
+        }
+        def user = null
+        if (springSecurityService.isLoggedIn())
+            user = User.load(springSecurityService.principal.id)
+        def story = Story.get(params.long('id'))
+        // Cannot proceed if we don't have a story
+        if (!story) {
+            render(text: '')
+            return
+        }
 
-    def next = null
-    def previous = null
+        def next
+        def previous
 
-    switch(story.state){
-      case Story.STATE_SUGGESTED:
-        next = Story.findNextSuggested(story.backlog.id,story.suggestedDate).list()[0]?:null
-        previous = Story.findPreviousSuggested(story.backlog.id,story.suggestedDate).list()[0]?:null
-        break
-      case Story.STATE_ACCEPTED:
-      case Story.STATE_ESTIMATED:
-        next = Story.findNextAcceptedOrEstimated(story.backlog.id,story.rank + 1).list()[0]?:null
-        previous = Story.findNextAcceptedOrEstimated(story.backlog.id,story.rank - 1).list()[0]?:null
-        break
-      case Story.STATE_PLANNED:
-      case Story.STATE_INPROGRESS:
-      case Story.STATE_DONE:
-        previous = Story.findByParentSprintAndRank(story.parentSprint,story.rank-1)?:null
-        next = Story.findByParentSprintAndRank(story.parentSprint,story.rank+1)?:null
-      break
-    }
-    def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
-    render(template: 'window/toolbar',model: [id: id, story: story, user: user,next:next,previous:previous,sprint:sprint])
-  }
-
-  /**
-   * Display the story's information, activities & comments
-   */
-  def details = {
-    if (!params.id) {
-      if (springSecurityService.isAjax(request)) {
-        def jqCode = jq.jquery(null, "\$.icescrum.renderNotice('${message(code: 'is.story.error.not.exist')}','error');");
-        render(status: 400, text: jqCode);
-      }else{
-        render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      }
-      return
+        switch (story.state) {
+            case Story.STATE_SUGGESTED:
+                next = Story.findNextSuggested(story.backlog.id, story.suggestedDate).list()[0] ?: null
+                previous = Story.findPreviousSuggested(story.backlog.id, story.suggestedDate).list()[0] ?: null
+                break
+            case Story.STATE_ACCEPTED:
+            case Story.STATE_ESTIMATED:
+                next = Story.findNextAcceptedOrEstimated(story.backlog.id, story.rank).list()[0] ?: null
+                previous = Story.findPreviousAcceptedOrEstimated(story.backlog.id, story.rank).list()[0] ?: null
+                break
+            case Story.STATE_PLANNED:
+            case Story.STATE_INPROGRESS:
+            case Story.STATE_DONE:
+                previous = Story.findByParentSprintAndRank(story.parentSprint, story.rank - 1) ?: null
+                next = Story.findByParentSprintAndRank(story.parentSprint, story.rank + 1) ?: null
+                break
+        }
+        def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
+        render(template: 'window/toolbar', model: [id: id, story: story, user: user, next: next, previous: previous, sprint: sprint])
     }
 
-    def story = Story.get(params.long('id'))
-    if (!story) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      return
-    }
-
-    def user = springSecurityService.currentUser
-
-    Product product = (Product) story.backlog
-    if (product.preferences.hidden && !user) {
-      redirect(controller: 'login', params:[ref:"p/${product.pkey}@backlogElement/$story.id"])
-      return
-    } else if (product.preferences.hidden && !securityService.inProduct(story.backlog.id, springSecurityService.authentication)) {
-      render(status: 403)
-    } else {
-      def activities = story.getActivities()
-      // Retrieve the tasks activity links
-      if (story.tasks) {
-        story.tasks*.getActivities()*.each { activities << it }
-      }
-      activities = activities.sort { it1, it2 -> it2.dateCreated <=> it1.dateCreated }
-
-      def summary = story.comments + activities
-      def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.id)
-
-      def criteria = FollowLink.createCriteria()
-
-      def isFollower = false
-      if (user){
-        isFollower = criteria.get {
-            projections {
-                    rowCount()
+    /**
+     * Display the story's information, activities & comments
+     */
+    def details = {
+        if (!params.id) {
+            if (springSecurityService.isAjax(request)) {
+                def jqCode = jq.jquery(null, "\$.icescrum.renderNotice('${message(code: 'is.story.error.not.exist')}','error');");
+                render(status: 400, text: jqCode);
+            } else {
+                render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             }
-            eq 'followRef', story.id
-            eq 'followerId', user.id
-            eq 'type', GrailsNameUtils.getPropertyName(Story.class)
-            cache true
+            return
         }
-        isFollower = isFollower == 1
-      }
 
-      summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
-      render(view: 'details', model: [
-              story: story,
-              tasksDone: story.tasks?.findAll {it.state == Task.STATE_DONE}?.size() ?: 0,
-              typeCode: ProductBacklogController.typesBundle[story.type],
-              storyStateCode: ProductBacklogController.stateBundle[story.state],
-              taskStateBundle: SprintBacklogController.taskStateBundle,
-              activities: activities,
-              comments: story.comments,
-              user: user,
-              summary: summary,
-              pkey: product.pkey,
-              permalink: permalink,
-              locale: RequestContextUtils.getLocale(request),
-              isFollower : isFollower,
-              id: id
-      ])
-    }
-  }
-
-  @Secured('isAuthenticated()')
-  def addComment = {
-    def poster = User.load(springSecurityService.principal.id)
-    try {
-      if (params['comment'] instanceof Map) {
-        Comment.withTransaction { status ->
-          try {
-              def story = Story.get(params.comment.ref)
-              story.addComment(poster,params.comment.body)
-              story.addActivity(poster, 'comment', story.name)
-              story.addFollower(poster)
-          }catch(Exception e){
-            status.setRollbackOnly()
-          }
+        def story = Story.get(params.long('id'))
+        if (!story) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            return
         }
-      }
-    } catch (Exception e) {
-      log.error "Error posting comment: ${e.message}"
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error')]] as JSON)
-      return
-    }
 
-    // Reload the comments
-    forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments'])
-    pushOthers "${params.product}-${id}-${params.comment.ref}-activities"
-    push "${params.product}-${id}-${params.comment.ref}-followers"
-  }
+        def user = springSecurityService.currentUser
 
-  /**
-   * Render a editor for the specified comment.
-   */
-  @Secured('isAuthenticated()')
-  def editCommentEditor = {
-    if (params.id == null) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
-      return
-    }
-    def comment = Comment.get(params.long('id'))
-    def story = Story.get(params.long('commentable'))
-    render(template: '/components/commentEditor', plugin: 'icescrum-core', model: [comment: comment, mode: 'edit', commentable: story])
-  }
+        Product product = (Product) story.backlog
+        if (product.preferences.hidden && !user) {
+            redirect(controller: 'login', params: [ref: "p/${product.pkey}@backlogElement/$story.id"])
+            return
+        } else if (product.preferences.hidden && !securityService.inProduct(story.backlog.id, springSecurityService.authentication)) {
+            render(status: 403)
+        } else {
+            def activities = story.getActivities()
+            // Retrieve the tasks activity links
+            if (story.tasks) {
+                story.tasks*.getActivities()*.each { activities << it }
+            }
+            activities = activities.sort { it1, it2 -> it2.dateCreated <=> it1.dateCreated }
 
-  /**
-   * Update a comment content
-   */
-  def editComment = {
-    if (params.comment.id == null) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
-      return
-    }
-    def comment = Comment.get(params.long('comment.id'))
-    def commentable = Story.get(params.long('comment.ref'))
-    comment.body = params.comment.body
-    try{
-      comment.save()
-      forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
-      pushOthers "${params.product}-${id}-${params.comment.ref}-activities"
-      publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,User.get(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
-    } catch (RuntimeException e) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-    }
-  }
+            def summary = story.comments + activities
+            def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.id)
 
-  /**
-   * Remove a comment from the comment list of a story
-   */
-  @Secured('productOwner() or scrumMaster()')
-  def deleteComment = {
-    if (params.id == null) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
-      return
-    }
-    if (params.backlogelement == null) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
-      return
-    }
-    def comment = Comment.get(params.long('id'))
-    def commentable = Story.get(params.long('backlogelement'))
+            def criteria = FollowLink.createCriteria()
 
-    try {
-      commentable.removeComment(comment)
-      render include(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: [product: params.product, 'tab': 'comments'])
-      pushOthers "${params.product}-backlogElement-${params.backlogelement}-activities"
-      publishEvent(new IceScrumStoryEvent(commentable,comment,this.class,User.get(springSecurityService.principal?.id),IceScrumStoryEvent.EVENT_COMMENT_DELETED))
-    } catch (RuntimeException e) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-    }
-  }
+            def isFollower = false
+            if (user) {
+                isFollower = criteria.get {
+                    projections {
+                        rowCount()
+                    }
+                    eq 'followRef', story.id
+                    eq 'followerId', user.id
+                    eq 'type', GrailsNameUtils.getPropertyName(Story.class)
+                    cache true
+                }
+                isFollower = isFollower == 1
+            }
 
-  @Secured('productOwner()')
-  def accept = {
-    if (params.id == null) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.sandbox.menu.accept.error.no.selection')]] as JSON)
-      return
-    }
-    def story = Story.get(params.long('id'))
-    try {
-      // Call the proper service depending of the type of acceptation
-      switch (params.int('acceptAs')) {
-        case 0:
-          productBacklogService.acceptStoryToProductBacklog(story)
-          push "${params.product}-productBacklog"
-          break
-        case 1:
-          productBacklogService.acceptStoryToFeature(story)
-          push "${params.product}-feature"
-          break
-        case 2:
-          productBacklogService.acceptStoryToUrgentTask(story)
-          push "${params.product}-sprintBacklog"
-          break
-      }
-
-      // If we're accepting as a story, the details is reloaded with the updated data
-      if (!(params.int('acceptAs') in [1, 2])) {
-        forward(controller: id, action: 'details', id: params.id, params: [product: params.product])
-        // If we're accepting as a feature or a task, the GSP will redirect to the sandbox
-      } else {
-        render(status: 200)
-      }
-
-      // Send update notice to the sandbox & the eventual user that were reading the details page 
-      pushOthers "${params.product}-sandbox"
-      pushOthers "${params.product}-${id}-${params.id}"
-    } catch (IllegalStateException e) {
-      if (log.debugEnabled) e.printStackTrace()
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-    } catch (RuntimeException e) {
-      if (log.debugEnabled) e.printStackTrace()
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-    }
-  }
-
-  def shortURL = {
-    redirect(url: is.createScrumLink(controller: 'backlogElement', id: params.id))
-  }
-
-
-  def idURL = {
-
-    if (!params.id) {
-      if (springSecurityService.isAjax(request)) {
-        def jqCode = jq.jquery(null, "\$.icescrum.renderNotice('${message(code: 'is.story.error.not.exist')}','error');");
-        render(status: 400, text: jqCode);
-      }
-      return
-    }
-
-    def story = Story.get(params.id)
-
-    if (!story) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      return
-    }
-
-    params.product = story.backlog.id
-
-    redirect(url: is.createScrumLink(controller: 'backlogElement', id: params.id))
-  }
-
-  /**
-   * Content of the activities panel
-   */
-
-  def activitiesPanel = {
-    if (params.id == null) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      return
-    }
-    def story = Story.get(params.long('id'))
-    if (!story) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      return
-    }
-    def user = springSecurityService.currentUser
-    def activities = story.getActivities()
-    // Retrieve the tasks activity links
-    if (story.tasks) {
-      story.tasks*.getActivities()*.each { activities << it }
-    }
-    activities = activities.sort { it1, it2 -> it2.dateCreated <=> it1.dateCreated }
-
-    def summary = story.comments + activities
-    summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
-    render(template: "window/activities",
-            model: [activities: activities,
-                    taskStateBundle: SprintBacklogController.taskStateBundle,
-                    summary: summary,
-                    user: user,
-                    comments: story.comments,
+            summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
+            render(view: 'details', model: [
                     story: story,
-                    id: id,
-                    product: params.product
+                    tasksDone: Task.countByParentStoryAndState(story, Task.STATE_DONE),
+                    typeCode: BundleUtils.storyTypes[story.type],
+                    storyStateCode: BundleUtils.storyStates[story.state],
+                    taskStateBundle: BundleUtils.taskStates,
+                    activities: activities,
+                    comments: story.comments,
+                    user: user,
+                    summary: summary,
+                    pkey: product.pkey,
+                    permalink: permalink,
+                    locale: RequestContextUtils.getLocale(request),
+                    isFollower: isFollower,
+                    id: id
             ])
-
-  }
-
-  @Secured('isAuthenticated()')
-  def follow = {
-    if (params.id == null) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      return
+        }
     }
 
-    def story = Story.get(params.long('id'))
-    if (!story) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      return
+    @Secured('isAuthenticated()')
+    def addComment = {
+        def poster = User.load(springSecurityService.principal.id)
+        try {
+            if (params['comment'] instanceof Map) {
+                Comment.withTransaction { status ->
+                    try {
+                        def story = Story.get(params.comment.ref)
+                        story.addComment(poster, params.comment.body)
+                        story.addActivity(poster, 'comment', story.name)
+                        story.addFollower(poster)
+                    } catch (Exception e) {
+                        status.setRollbackOnly()
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error "Error posting comment: ${e.message}"
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error')]] as JSON)
+            return
+        }
+        // Reload the comments
+        forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments'])
     }
 
-    def user = User.load(springSecurityService.principal.id)
-
-    try {
-      story.addFollower(user)
-      def followers = story.getTotalFollowers()
-      render(status: 200, contentType: 'application/json', text: [followers:followers+" "+message(code:'is.followable.followers',args:[followers > 1 ? 's' : ''])] as JSON)
-    }catch(FollowException e){
-      if (log.debugEnabled) e.printStackTrace()
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.follow.error')]] as JSON)
-    }
-    pushOthers "${params.product}-${id}-${story.id}-followers"
-  }
-
-  @Secured('isAuthenticated()')
-  def unfollow = {
-    if (params.id == null) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      return
+    /**
+     * Render a editor for the specified comment.
+     */
+    @Secured('isAuthenticated()')
+    def editCommentEditor = {
+        if (params.id == null) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
+            return
+        }
+        def comment = Comment.get(params.long('id'))
+        def story = Story.get(params.long('commentable'))
+        render(template: '/components/commentEditor', plugin: 'icescrum-core', model: [comment: comment, mode: 'edit', commentable: story])
     }
 
-    def story = Story.get(params.long('id'))
-    if (!story) {
-      render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-      return
+    /**
+     * Update a comment content
+     */
+    def editComment = {
+        if (params.comment.id == null) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
+            return
+        }
+        def comment = Comment.get(params.long('comment.id'))
+        def commentable = Story.get(params.long('comment.ref'))
+        comment.body = params.comment.body
+        try {
+            comment.save()
+            forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
+            publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
+        } catch (RuntimeException e) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+        }
     }
 
-    try {
-      story.removeLink(springSecurityService.principal.id)
-      def followers = story.getTotalFollowers()
-      render(status: 200, contentType: 'application/json', text: [followers:followers+" "+message(code:'is.followable.followers',args:[followers > 1 ? 's' : ''])] as JSON)
-    }catch(FollowException e){
-      if (log.debugEnabled) e.printStackTrace()
-      render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.unfollow.error')]] as JSON)
-    }
-    pushOthers "${params.product}-${id}-${story.id}-followers"
-  }
+    /**
+     * Remove a comment from the comment list of a story
+     */
+    @Secured('productOwner() or scrumMaster()')
+    def deleteComment = {
+        if (params.id == null) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
+            return
+        }
+        if (params.backlogelement == null) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            return
+        }
+        def comment = Comment.get(params.long('id'))
+        def commentable = Story.get(params.long('backlogelement'))
 
-  def followers = {
-    if (params.id == null) {
-      return
+        try {
+            commentable.removeComment(comment)
+            render(text: include(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: [product: params.product, 'tab': 'comments']))
+            publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_DELETED))
+        } catch (RuntimeException e) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+        }
     }
-    def story = Story.get(params.long('id'))
-    if (!story) {
-      return
+
+    def shortURL = {
+        redirect(url: is.createScrumLink(controller: 'backlogElement', id: params.id))
     }
-    def followers = story.getTotalFollowers()
-    render(status: 200, contentType: 'application/json', text: [followers:followers+" "+message(code:'is.followable.followers',args:[followers > 1 ? 's' : ''])] as JSON)
-  }
+
+
+    def idURL = {
+
+        if (!params.id) {
+            if (springSecurityService.isAjax(request)) {
+                def jqCode = jq.jquery(null, "\$.icescrum.renderNotice('${message(code: 'is.story.error.not.exist')}','error');");
+                render(status: 400, text: jqCode);
+            }
+            return
+        }
+
+        def story = Story.get(params.id)
+
+        if (!story) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            return
+        }
+
+        params.product = story.backlog.id
+
+        redirect(url: is.createScrumLink(controller: 'backlogElement', id: params.id))
+    }
+
+    /**
+     * Content of the activities panel
+     */
+
+    def activitiesPanel = {
+        if (params.id == null) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            return
+        }
+        def story = Story.get(params.long('id'))
+        if (!story) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            return
+        }
+        def user = springSecurityService.currentUser
+        def activities = story.getActivities()
+        // Retrieve the tasks activity links
+        if (story.tasks) {
+            story.tasks*.getActivities()*.each { activities << it }
+        }
+        activities = activities.sort { it1, it2 -> it2.dateCreated <=> it1.dateCreated }
+
+        def summary = story.comments + activities
+        summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
+        render(template: "window/activities",
+                model: [activities: activities,
+                        taskStateBundle: BundleUtils.taskStates,
+                        summary: summary,
+                        user: user,
+                        comments: story.comments,
+                        story: story,
+                        id: id,
+                        product: params.product
+                ])
+
+    }
+
+    @Secured('isAuthenticated()')
+    def follow = {
+        if (params.id == null) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            return
+        }
+
+        def story = Story.get(params.long('id'))
+        if (!story) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            return
+        }
+
+        def user = User.load(springSecurityService.principal.id)
+
+        try {
+            story.addFollower(user)
+            def followers = story.getTotalFollowers()
+            render(status: 200, contentType: 'application/json', text: [followers: followers + " " + message(code: 'is.followable.followers', args: [followers > 1 ? 's' : ''])] as JSON)
+        } catch (FollowException e) {
+            if (log.debugEnabled) e.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.follow.error')]] as JSON)
+        }
+    }
+
+    @Secured('isAuthenticated()')
+    def unfollow = {
+        if (params.id == null) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            return
+        }
+
+        def story = Story.get(params.long('id'))
+        if (!story) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            return
+        }
+
+        try {
+            story.removeLink(springSecurityService.principal.id)
+            def followers = story.getTotalFollowers()
+            render(status: 200, contentType: 'application/json', text: [followers: followers + " " + message(code: 'is.followable.followers', args: [followers > 1 ? 's' : ''])] as JSON)
+        } catch (FollowException e) {
+            if (log.debugEnabled) e.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.unfollow.error')]] as JSON)
+        }
+    }
+
+    def followers = {
+        if (params.id == null) {
+            return
+        }
+        def story = Story.get(params.long('id'))
+        if (!story) {
+            return
+        }
+        def followers = story.getTotalFollowers()
+        render(status: 200, contentType: 'application/json', text: [followers: followers + " " + message(code: 'is.followable.followers', args: [followers > 1 ? 's' : ''])] as JSON)
+    }
 }

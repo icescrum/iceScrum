@@ -29,25 +29,26 @@ import org.apache.log4j.PatternLayout
  Public URL
 */
 grails.serverURL = "http://localhost:8080/${appName}"
+grails.tomcat.nio = true
 
 /*
 Administration section
  */
-icescrum.registration.enable=true
-icescrum.login.retrieve.enable=true
-icescrum.alerts.enable=true
-icescrum.alerts.default.from="webmaster@icescrum.org"
-icescrum.attachements.enable=true
-icescrum.alerts.errors.to="dev@icescrum.org"
-icescrum.timezone.default=System.getProperty('user.timezone')?:'UTC'
+icescrum.registration.enable = true
+icescrum.login.retrieve.enable = true
+icescrum.alerts.enable = true
+icescrum.alerts.default.from = "webmaster@icescrum.org"
+icescrum.attachements.enable = true
+icescrum.alerts.errors.to = "dev@icescrum.org"
+icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
 
 /*
 Project administration section
  */
-icescrum.project.import.enable=true
-icescrum.project.export.enable=true
-icescrum.project.creation.enable=true
-icescrum.project.private.enable=true
+icescrum.project.import.enable = true
+icescrum.project.export.enable = true
+icescrum.project.creation.enable = true
+icescrum.project.private.enable = true
 
 /*
 Team administration section
@@ -81,25 +82,35 @@ grails.mail.props = ["mail.smtp.auth":"true",
         "mail.smtp.socketFactory.port":"465",
         "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
         "mail.smtp.socketFactory.fallback":"false"]*/
-grails.mail.default.from=icescrum.alerts.default.from
 
 /*
   Push section
  */
-icepush.disabled=false
+icescrum.json.backlogElement = ['totalAttachments', 'attachments']
+icescrum.json.actor = icescrum.json.backlogElement.clone()
+icescrum.json.feature = icescrum.json.backlogElement.clone()
+icescrum.json.story = icescrum.json.backlogElement.clone()
+icescrum.json.story << 'totalComments' << 'comments' << 'tasks'
+icescrum.json.sprint = ['activable']
+icescrum.json.task = []
+
+icescrum.json.shortObject.feature = ['color', 'name']
+icescrum.json.shortObject.release = ['name', 'state', 'endDate', 'startDate', 'orderNumber']
+icescrum.json.shortObject.sprint = ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']
+icescrum.json.shortObject.user = ['firstName', 'lastName']
+icescrum.json.shortObject.story = ['state']
 
 /*
  Attachmentable section
  */
-grails.attachmentable.baseDir = icescrum.baseDir
 grails.attachmentable.storyDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}stories${File.separator + it.id + File.separator}"}
 grails.attachmentable.featureDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}features${File.separator + it.id + File.separator}"}
 grails.attachmentable.actorDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}actors${File.separator + it.id + File.separator}"}
 grails.attachmentable.taskDir = {
-  if (it.parentStory)
-    return "${File.separator + it.parentStory?.backlog?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
-  else
-    return "${File.separator + it.backlog?.parentRelease?.parentProduct?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
+    if (it.parentStory)
+        return "${File.separator + it.parentStory?.backlog?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
+    else
+        return "${File.separator + it.backlog?.parentRelease?.parentProduct?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
 }
 
 /*
@@ -119,7 +130,7 @@ grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
         csv: 'text/csv',
         all: '*/*',
         json: ['application/json', 'text/json'],
-        form: 'application/x-www-form-urlencoded',
+        //form: 'application/x-www-form-urlencoded',
         multipartForm: 'multipart/form-data'
 ]
 
@@ -144,63 +155,65 @@ grails.spring.bean.packages = []
 grails.views.javascript.library = 'jquery'
 
 environments {
-  development {
-    icescrum.debug.enable=true
-    grails.entryPoints.debug=true
-  }
-  production {
-    grails.config.locations = ["classpath:config.properties"]
-    icescrum.debug.enable = false
-    grails.entryPoints.debug=false
-  }
+    development {
+        icescrum.debug.enable = true
+        grails.entryPoints.debug = false
+    }
+    production {
+        grails.config.locations = ["classpath:config.properties"]
+        icescrum.debug.enable = false
+        grails.entryPoints.debug = false
+    }
 }
 
 icescrum.log.dir = 'logs'
 // log4j configuration
 log4j = {
-  def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
+    def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
-  error 'org.codehaus.groovy.grails.plugins',
-        'org.grails.plugin',
-        'grails.app'
+    error 'org.codehaus.groovy.grails.plugins',
+            'org.grails.plugin',
+            'grails.app'
 
-  error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-          'org.codehaus.groovy.grails.web.pages', //  GSP
-          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-          'org.codehaus.groovy.grails.web.mapping', // URL mapping
-          'org.codehaus.groovy.grails.commons', // core / classloading
-          'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-          'org.springframework',
-          'org.hibernate',
-          'net.sf.ehcache.hibernate'
+    error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+            'org.codehaus.groovy.grails.web.pages', //  GSP
+            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping', // URL mapping
+            'org.codehaus.groovy.grails.commons', // core / classloading
+            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+            'org.springframework',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate'
 
-  warn 'org.mortbay.log'
+    warn 'org.mortbay.log'
 
-  if (grails.entryPoints.debug){
-      debug 'org.icescrum.plugins.entryPoints'
-  }
+    if (grails.entryPoints.debug) {
+        debug 'org.icescrum.plugins.entryPoints'
+    }
 
-  if (icescrum.debug.enable){
-      debug 'grails.app.service.org.icescrum'
-      debug 'grails.app.controller.org.icescrum'
-      debug 'grails.app.domain.org.icescrum'
-  }
+    if (icescrum.debug.enable) {
+        debug 'grails.app.service.org.icescrum'
+        debug 'grails.app.controller.org.icescrum'
+        debug 'grails.app.domain.org.icescrum'
+        debug 'grails.app.org.icescrum'
+        debug 'org.icescrum.atmosphere'
+    }
 
-  appenders {
-    appender new DailyRollingFileAppender(name: "icescrumFileLog",
-            fileName: "${icescrum.log.dir}/${appName}.log",
-            datePattern: "'.'yyyy-MM-dd",
-            layout: logLayoutPattern
-    )
-  }
+    appenders {
+        appender new DailyRollingFileAppender(name: "icescrumFileLog",
+                fileName: "logs/${appName}.log",
+                datePattern: "'.'yyyy-MM-dd",
+                layout: logLayoutPattern
+        )
+    }
 
-  root {
-    debug 'stdout', 'icescrumFileLog'
-    error 'stdout', 'icescrumFileLog'
-    info 'stdout', 'icescrumFileLog'
-    additivity = true
-  }
+    root {
+        debug 'stdout', 'icescrumFileLog'
+        error 'stdout', 'icescrumFileLog'
+        info 'stdout', 'icescrumFileLog'
+        additivity = true
+    }
 }
 
 /*
@@ -210,14 +223,17 @@ log4j = {
  */
 
 springcache {
-  defaults {
-    timeToLive = 600
-  }
-  caches {
-    activitiesFeed {
-      timeToLive = 120
+    defaults {
+        timeToLive = 600
     }
-  }
+    caches {
+        activitiesFeed {
+            timeToLive = 120
+        }
+        postitsCache {
+            timeToLive = 3600
+        }
+    }
 }
 
 /*
@@ -227,31 +243,31 @@ SECURITY SECTION
 */
 
 grails {
-  plugins {
-    springsecurity {
-      userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
-      userLookup.authorityJoinClassName = 'org.icescrum.core.domain.security.UserAuthority'
-      authority.className = 'org.icescrum.core.domain.security.Authority'
-      successHandler.alwaysUseDefault = false
+    plugins {
+        springsecurity {
+            userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
+            userLookup.authorityJoinClassName = 'org.icescrum.core.domain.security.UserAuthority'
+            authority.className = 'org.icescrum.core.domain.security.Authority'
+            successHandler.alwaysUseDefault = false
 
-      useBasicAuth = true
-      basic.realmName = "iceScrum authentication for private stuff"
-      filterChain.chainMap = [
-              '/private/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
-              '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
-      ]
+            useBasicAuth = true
+            basic.realmName = "iceScrum authentication for private stuff"
+            filterChain.chainMap = [
+                    '/ws/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
+                    '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+            ]
 
-      auth.loginFormUrl = '/login'
-      rememberMe {
-        cookieName = 'iceScrum_doh_twelve_me'
-        key = 'twelveMe'
-      }
-      useRunAs = true
-      runAs.key = 'tw3lv3Scrum!'
-      acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
+            auth.loginFormUrl = '/login'
+            rememberMe {
+                cookieName = 'iceScrum_doh_twelve_me'
+                key = 'twelveMe'
+            }
+            useRunAs = true
+            runAs.key = 'tw3lv3Scrum!'
+            acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
 
+        }
     }
-  }
 }
 
 /*
@@ -276,8 +292,8 @@ if (System.getProperty(ENV_NAME) && new File(System.getProperty(ENV_NAME)).exist
 }
 // 2: If this is a developer machine, then they will have their own config and I should use that.
 else if (new File("${userHome}/.grails/${appName}-config.groovy").exists()) {
-        println "*** User defined config: file:${userHome}/.grails/${appName}-config.groovy. ***"
-        grails.config.locations = ["file:${userHome}/.grails/${appName}-config.groovy"]
+    println "*** User defined config: file:${userHome}/.grails/${appName}-config.groovy. ***"
+    grails.config.locations = ["file:${userHome}/.grails/${appName}-config.groovy"]
 }
 // 3: Most QA and PROD machines should define a System Environment variable that will define where we should look.
 else if (System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) {
@@ -286,11 +302,11 @@ else if (System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) 
 }
 // 4: Last resort is looking for a properties based configuration on the developer machine.
 else if (new File("${userHome}/.grails/${appName}.properties").exists()) {
-        println "*** User defined config: file:${userHome}/.grails/${appName}.properties. ***"
-        grails.config.locations = ["file:${userHome}/.grails/${appName}.properties"]
+    println "*** User defined config: file:${userHome}/.grails/${appName}.properties. ***"
+    grails.config.locations = ["file:${userHome}/.grails/${appName}.properties"]
 }
 else {
-        println "*** No external configuration file defined (${ENV_NAME}). ***"
+    println "*** No external configuration file defined (${ENV_NAME}). ***"
 }
 println "(*) grails.config.locations = ${grails.config.locations}"
 println "--------------------------------------------------------"

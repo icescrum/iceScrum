@@ -25,50 +25,57 @@
 <%@ page import="org.icescrum.core.domain.Story" %>
 
 <is:tableView>
-  <is:table id="feature-table"
-          editable="[controller:id,action:'update',params:[product:params.product],onExitCell:'submit']">
-    <is:tableHeader width="5%" class="table-cell-checkbox" name="">
-      <g:checkBox name="checkbox-header"/>
-    </is:tableHeader>
-    <is:tableHeader width="10%" name="${message(code:'is.actor.name')}"/>
-    <is:tableHeader width="20%" name="${message(code:'is.backlogelement.description')}"/>
-    <is:tableHeader width="15%" name="${message(code:'is.actor.it.level')}"/>
-    <is:tableHeader width="15%" name="${message(code:'is.actor.satisfaction.criteria')}"/>
-    <is:tableHeader width="14%" name="${message(code:'is.actor.use.frequency')}"/>
-    <is:tableHeader width="10%" name="${message(code:'is.actor.instances')}"/>
-    <is:tableHeader width="10%" name="${message(code:'is.actor.nb.stories')}"/>
+    <is:table id="actor-table"
+              style="${actors ? '' : 'display:none'};"
+              editable="[controller:id,action:'update',params:[product:params.product],onExitCell:'submit']">
+        <is:tableHeader width="5%" class="table-cell-checkbox" name="">
+            <g:checkBox name="checkbox-header"/>
+        </is:tableHeader>
+        <is:tableHeader width="10%" name="${message(code:'is.actor.name')}"/>
+        <is:tableHeader width="20%" name="${message(code:'is.backlogelement.description')}"/>
+        <is:tableHeader width="15%" name="${message(code:'is.actor.it.level')}"/>
+        <is:tableHeader width="15%" name="${message(code:'is.actor.satisfaction.criteria')}"/>
+        <is:tableHeader width="14%" name="${message(code:'is.actor.use.frequency')}"/>
+        <is:tableHeader width="10%" name="${message(code:'is.actor.instances')}"/>
+        <is:tableHeader width="10%" name="${message(code:'is.actor.nb.stories')}"/>
 
-    <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
+        <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
 
-    <is:tableRows in="${actors}" var="actor" elemID="id">
-      <is:tableColumn class="table-cell-checkbox">
-        <g:checkBox name="check-${actor.id}" />
-        <is:menu class="dropmenu-action" yoffset="4" id="${actor.id}" contentView="window/postitMenu" params="[id:id, actor:actor]" rendered="${productOwner}"/>
-        <g:set var="attachment" value="${actor.totalAttachments}"/>
-        <g:if test="${attachment}">
-          <span class="table-attachment" title="${message(code:'is.postit.attachment', args:[attachment,attachment > 1 ? 's' : ''])}"></span>
-        </g:if>
-      </is:tableColumn>
-      <is:tableColumn editable="[type:'text',disabled:!productOwner,name:'name']">${actor.name.encodeAsHTML()}</is:tableColumn>
-      <is:tableColumn editable="[type:'textarea',disabled:!productOwner,name:'description']">${actor.description?.encodeAsHTML()}</is:tableColumn>
-      <is:tableColumn editable="[type:'selectui',id:'level',name:'expertnessLevel',values:levelsSelect,disabled:!productOwner]"><is:bundleFromController bundle="levelsBundle" value="${actor.expertnessLevel}"/></is:tableColumn>
-      <is:tableColumn editable="[type:'textarea',disabled:!productOwner,name:'satisfactionCriteria']">${actor.satisfactionCriteria?.encodeAsHTML()}</is:tableColumn>
-      <is:tableColumn editable="[type:'selectui',id:'useFrequency',name:'useFrequency',values:frequenciesSelect,disabled:!productOwner]"><is:bundleFromController bundle="frequenciesBundle" value="${actor.useFrequency}"/></is:tableColumn>
-      <is:tableColumn editable="[type:'selectui',id:'instances',name:'instances',values:instancesSelect,disabled:!productOwner]"><is:bundleFromController bundle="instancesBundle" value="${actor.instances}"/></is:tableColumn>
-      <is:tableColumn>${actor.stories.size()?:0}</is:tableColumn>
-    </is:tableRows>
-  </is:table>
+        <is:tableRows in="${actors}" var="actor" elemid="id" rowid="table-row-actor-">
+            <is:tableColumn class="table-cell-checkbox">
+                <g:checkBox name="check-${actor.id}"/>
+                <is:menu class="dropmenu-action" yoffset="4" id="${actor.id}" contentView="/actor/menu"
+                         params="[id:id, actor:actor]" rendered="${productOwner}"/>
+                <g:set var="attachment" value="${actor.totalAttachments}"/>
+                <g:if test="${attachment}">
+                    <span class="table-attachment"
+                          title="${message(code: 'is.postit.attachment', args: [attachment, attachment instanceof Integer && attachment > 1 ? 's' : ''])}"></span>
+                </g:if>
+            </is:tableColumn>
+            <is:tableColumn
+                    editable="[type:'text',disabled:!productOwner,name:'name']">${actor.name.encodeAsHTML()}</is:tableColumn>
+            <is:tableColumn
+                    editable="[type:'textarea',disabled:!productOwner,name:'description']">${actor.description?.encodeAsHTML()}</is:tableColumn>
+            <is:tableColumn
+                    editable="[type:'selectui',id:'level',name:'expertnessLevel',values:levelsSelect,disabled:!productOwner]"><is:bundle
+                    bundle="actorLevels" value="${actor.expertnessLevel}"/></is:tableColumn>
+            <is:tableColumn
+                    editable="[type:'textarea',disabled:!productOwner,name:'satisfactionCriteria']">${actor.satisfactionCriteria?.encodeAsHTML()}</is:tableColumn>
+            <is:tableColumn
+                    editable="[type:'selectui',id:'useFrequency',name:'useFrequency',values:frequenciesSelect,disabled:!productOwner]"><is:bundle
+                    bundle="actorFrequencies" value="${actor.useFrequency}"/></is:tableColumn>
+            <is:tableColumn
+                    editable="[type:'selectui',id:'instances',name:'instances',values:instancesSelect,disabled:!productOwner]"><is:bundle
+                    bundle="actorInstances" value="${actor.instances}"/></is:tableColumn>
+            <is:tableColumn>${actor.stories.size() ?: 0}</is:tableColumn>
+        </is:tableRows>
+    </is:table>
 </is:tableView>
-<jq:jquery>
-  jQuery("#window-content-${id}").removeClass('window-content-toolbar');
-  if(!jQuery("#dropmenu").is(':visible')){
-    jQuery("#window-id-${id}").focus();
-  }
-  <is:renderNotice />
-  <icep:notifications
-        name="${id}Window"
-        reload="[update:'#window-content-'+id,action:'list',params:[product:params.product]]"
-        disabled="jQuery('#backlog-layout-window-${id}, .view-table').length"
-        group="${params.product}-${id}"
-        listenOn="#window-content-${id}"/>
-</jq:jquery>
+
+<g:include view="/actor/window/_blank.gsp" model="[actors:actors,id:id]"/>
+
+<is:onStream
+        on="#actor-table"
+        events="[[object:'actors',events:['add','update','remove']]]"
+        template="window"/>
+

@@ -25,39 +25,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>iceScrum -
-<g:layoutTitle/></title>
-  <r:resourceLink uri="/${is.currentThemeImage()}favicon.ico"/>
-  <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
-
-  <is:loadJsVar/>
-
-  <r:use modules="jquery,jquery-ui,datepicker-locales, resize, qtip, pnotify, ui-selectmenu, hotkeys, history, mousewheel, eventline, dotimeout, jqplot,
-   browser, table, dropmenu, jeditable, progress, input, checkbox, alphanumeric, markitup, scrollbar, dnd, ui-jeditable" />
-  <r:use module="icescrum"/>
-  <sec:ifLoggedIn>
-    <script src="${resource(dir:'js/timeline/timeline_ajax', file:'simile-ajax-api.js?bundle=true')}" type="text/javascript"></script>
-    <script src="${resource(dir:'js/timeline/timeline_js', file:'timeline-api.js?bundle=true')}" type="text/javascript"></script>
-    <script src="${resource(dir:'js/timeline', file:'icescrum-painter.js')}" type="text/javascript"></script>
-  </sec:ifLoggedIn>
-  <r:layoutResources />
-  <icep:bridge/>
-  <g:layoutHead/>
+    <title>iceScrum -
+        <g:layoutTitle/></title>
+    <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
+<!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
+    <is:loadJsVar/>
+    <r:require modules="jquery,jquery-ui,jquery-plugins,jquery-ui-plugins,jqplot,icescrum"/>
+    <sec:ifLoggedIn>
+        <script src="${resource(dir: 'js/timeline/timeline_ajax', file: 'simile-ajax-api.js?bundle=true')}"
+                type="text/javascript"></script>
+        <script src="${resource(dir: 'js/timeline/timeline_js', file: 'timeline-api.js?bundle=true')}"
+                type="text/javascript"></script>
+        <script src="${resource(dir: 'js/timeline', file: 'icescrum-painter.js')}" type="text/javascript"></script>
+    </sec:ifLoggedIn>
+    <r:layoutResources/>
+    <g:layoutHead/>
 </head>
+
 <body class="icescrum">
 
 <div id="application">
-  <div id="head" class="${product ? 'is_header-normal' : 'is_header-full'}">
-    <is:mainMenu/>
-  </div>
-  <div id="local">
-    <is:widgetBar/>
-  </div>
-  <is:desktop>
-    <g:layoutBody/>
-  </is:desktop>
-</div>
+    <div id="head" class="${product ? 'is_header-normal' : 'is_header-full'}">
+        <is:mainMenu/>
+    </div>
 
+    <div id="local">
+        <is:widgetBar/>
+    </div>
+    <is:desktop>
+        <g:layoutBody/>
+    </is:desktop>
+</div>
 <is:shortcut
         key="ctrl+shift+n"
         callback="${is.remoteDialogFunction(
@@ -71,27 +69,25 @@
         on401="document.location='${createLink(controller:'login',action:'auth')}?ref=${params.product?'p/'+product.pkey:params.team?'t/'+params.team:''}'+document.location.hash.replace('#','@');"
         on400="${is.notice(data:'$.parseJSON(xhr.responseText)',type:'error')}"
         on403="${is.notice(text:message(code:'is.error.denied'),type:'error')}"
-        on500="\$.icescrum.dialogError(xhr)"/>
+        on500="jQuery.icescrum.dialogError(xhr)"/>
+<r:layoutResources/>
 <jq:jquery>
-  $("#main-content").droppable({
-    drop:function(event, ui){
-      var id = ui.draggable.attr('id').replace('widget-id-','');
-      if (id == ui.draggable.attr('id')){
-        id = ui.draggable.attr('id').replace('elem_','');
-      }
-      $.icescrum.openWindow(id);
-    },
-    hoverClass: 'main-active',
-    accept: '.draggable-to-desktop'
-  });
-  <g:if test="${flash.message}">
-    <is:notice text="${message(code: flash.message)}"/>
-  </g:if>
+    $("#main-content").droppable({
+      drop:function(event, ui){
+        var id = ui.draggable.attr('id').replace('widget-id-','');
+        if (id == ui.draggable.attr('id')){
+          id = ui.draggable.attr('id').replace('elem_','');
+        }
+        $.icescrum.openWindow(id);
+      },
+      hoverClass: 'main-active',
+      accept: '.draggable-to-desktop'
+    });
+    <g:if test="${flash.message}">
+        <is:notice text="${message(code: flash.message)}"/>
+    </g:if>
 </jq:jquery>
-<r:layoutResources />
 <entry:point id="icescrum-footer"/>
-<jq:jquery>
-    $.icescrum.init();
-</jq:jquery>
+<g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
 </body>
 </html>

@@ -26,52 +26,26 @@
 
 <is:backlogElementLayout
         id="window-${id}"
+        emptyRendering="true"
+        style="display:${actors ? 'block' : 'none'};"
         selectable="[rendered:productOwner,
                     filter:'div.postit-actor',
-                    selected:'\$.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'actor.id=\'+\$(obj.selected).icescrum(\'postit\').id()')+';})',
-                    cancel:'a',
-                    onload:'\$(\'.window-toolbar\').icescrum(\'toolbar\', \'buttons\', 1).toggleEnabled(\'.backlog\');']"
+                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'actor.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
         value="${actors}"
         dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'
         var="actor">
 
-  <is:postit id="${actor.id}"
-          miniId="${actor.id}"
-          title="${actor.name}"
-          type="actor"
-          attachment="${actor.totalAttachments}"
-          controller="actor">
-    <is:truncated size="50" encodedHTML="true">${actor.description?.encodeAsHTML()}</is:truncated>
-
-  %{--Embedded menu--}%
-    <is:postitMenu id="${actor.id}" contentView="window/postitMenu" params="[id:id, actor:actor]" rendered="${productOwner}"/>
-
-    <g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
-    <is:tooltipPostit
-            type="actor"
-            id="${actor.id}"
-            title="${actor.name.encodeAsHTML()}"
-            text="${actor.description.encodeAsHTML()}"
-            apiBeforeShow="if(\$('#dropmenu').is(':visible')){return false;}"
-            container="\$('#window-content-${id}')"/>
-    </g:if>
-
-  </is:postit>
-
+    <g:include view="/actor/_postit.gsp" model="[id:id,actor:actor,user:user]" params="[product:params.product]"/>
 </is:backlogElementLayout>
-<jq:jquery>
-  jQuery("#window-content-${id}").removeClass('window-content-toolbar');
-  if(!jQuery("#dropmenu").is(':visible')){
-    jQuery("#window-id-${id}").focus();
-  }
-  <is:renderNotice />
-  <icep:notifications
-        name="${id}Window"
-        reload="[update:'#window-content-'+id,action:'list',params:[product:params.product]]"
-        disabled="jQuery('#backlog-layout-window-${id}, .view-table').length"
-        group="${params.product}-${id}"
-        listenOn="#window-content-${id}"/>
-</jq:jquery>
-<is:shortcut key="ctrl+n" callback="\$.icescrum.openWindow('${id}/add');" scope="${id}" listenOn="#window-id-${id}"/>
-<is:shortcut key="space" callback="if(\$('#dialog').dialog('isOpen') == true){\$('#dialog').dialog('close'); return false;}\$.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'actor.id=\'+jQuery(obj.selected).icescrum(\'postit\').id()')}},true);" scope="${id}"/>
-<is:shortcut key="ctrl+a" callback="\$('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+
+<g:include view="/actor/window/_blank.gsp" model="[actors:actors,id:id]"/>
+
+
+<is:shortcut key="space"
+             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'actor.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
+             scope="${id}"/>
+<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+<is:onStream
+        on="#backlog-layout-window-${id}"
+        events="[[object:'actor',events:['add','update','remove']]]"
+        template="window"/>

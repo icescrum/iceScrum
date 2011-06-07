@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2011 Kagilum / 2010 iceScrum Technlogies.
  *
  * This file is part of iceScrum.
  *
@@ -18,160 +18,105 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
+ *
  */
-
 icescrum.theme = 'is'
 
 modules = {
 
-  overrides {
-     'jquery' {
-        resource id:'js', url: [plugin: 'jquery', dir:'js/jquery', file:"jquery-1.5.1.min.js"]
-     }
+    overrides {
 
-     'jquery-ui' {
-          resource id:'js', disposition: 'head'
-          resource id:'theme', url: [dir: "themes/$icescrum.theme/css", file: 'ui.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-     }
-  }
+        'jquery-theme' {
+            resource id: 'theme', url: [dir: "themes/$icescrum.theme/css", file: 'ui.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        }
+    }
 
-  'app-css' {
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'reset.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'checkbox.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'styles.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'clearfix.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'forms.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'skin.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'text.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'css3.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'typo.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'bacasable.css'], attrs: [media: 'screen,projection'], bundle:'icescrum'
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'ie/ie8.css'], attrs: [media: 'screen,projection'], wrapper: { s -> "<!--[if IE 8]>$s<![endif]-->" }
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'ie/ie7.css'], attrs: [media: 'screen,projection'], wrapper: { s -> "<!--[if IE 7]>$s<![endif]-->" }
-    resource url: [dir: "themes/$icescrum.theme/css", file: 'ie/ie6.css'], attrs: [media: 'screen,projection'], wrapper: { s -> "<!--[if IE 6]>$s<![endif]-->" }
-  }
+    'app-css' {
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'reset.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'checkbox.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'styles.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'clearfix.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'forms.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'skin.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'text.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'css3.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'typo.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'bacasable.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'ie/ie8.css'], attrs: [media: 'screen,projection'], wrapper: { s -> "<!--[if IE 8]>$s<![endif]-->" }
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'ie/ie7.css'], attrs: [media: 'screen,projection'], wrapper: { s -> "<!--[if IE 7]>$s<![endif]-->" }
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'ie/ie6.css'], attrs: [media: 'screen,projection'], wrapper: { s -> "<!--[if IE 6]>$s<![endif]-->" }
+        resource url: [dir: "js/jquery", file: 'jqplot/css/jquery.jqplot.min.css'], attrs: [media: 'screen,projection'], undle: 'icescrum'
+    }
 
-  'icescrum' {
-    dependsOn 'app-css', 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.icescrum.js'],disposition: 'head', bundle:'icescrum'
-    resource url: [dir: 'js/jquery', file: 'jquery.icescrum.postit.js'], disposition: 'head', bundle:'icescrum'
-    resource url: [dir: 'js/jquery', file: 'jquery.icescrum.multiFilesUpload.js'], disposition: 'head', bundle:'icescrum'
-  }
+    'icescrum' {
+        dependsOn 'app-css', 'jquery'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.form.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.history.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.menubar.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.postit.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.qtip.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.search.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.touch.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.utils.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.widget.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.window.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.wizard.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.progress.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.scrollbar.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.multiFilesUpload.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.push.js'], bundle: 'icescrum'
+    }
 
-  'qtip' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.qtip-1.0.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'history' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.history.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'pnotify' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.pnotify.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-  }
-  'ui-selectmenu' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.ui.selectmenu.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'mousewheel' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.mousewheel.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-  }
-  'hotkeys' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.hotkeys.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
+    'jqplot' {
+        dependsOn 'jquery'
+        resource url: [dir: "js/jquery", file: 'excanvas.min.js'], wrapper: { s -> "<!--[if IE]>$s<![endif]-->" }, bundle: 'jquery-plugins'
+        resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.barRenderer.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.categoryAxisRenderer.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.canvasTextRenderer.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.enhancedLegendRenderer.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.pointLabels.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.cursor.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.highlighter.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+    }
 
-  'dotimeout' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.dotimeout.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'jqplot' {
-    dependsOn 'jquery'
-    resource url: [dir: "js/jquery", file: 'excanvas.min.js'], wrapper: { s -> "<!--[if IE]>$s<![endif]-->" },disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: "js/jquery", file: 'jqplot/css/jquery.jqplot.min.css'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'],disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.barRenderer.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.categoryAxisRenderer.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.canvasTextRenderer.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.enhancedLegendRenderer.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.pointLabels.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.cursor.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.highlighter.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-  }
-  'eventline' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.eventline.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'browser' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'browser/const.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'progress' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.icescrum.progress.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'table' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.table.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'dropmenu' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.dropmenu.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'jeditable' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.jeditable.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-  }
-  'ui-jeditable' {
-    dependsOn 'jeditable'
-    resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], disposition: 'head',bundle:'jquery-plugins'
-  }
-  'input' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.input.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'dnd' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.dnd.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'checkbox' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.checkbox.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'alphanumeric' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.alphanumeric.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-  }
-  'markitup' {
-    resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'],disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'],disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/markitup/sets/textile', file: 'style.css'], attrs:[media: 'screen,projection'],disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/markitup/skins/simple', file: 'style.css'], attrs:[media: 'screen,projection'],disposition: 'head',bundle:'jquery-plugins'
-  }
-  'resize' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.resize.min.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-  }
-  'scrollbar' {
-    dependsOn 'jquery'
-    resource url: [dir: 'js/jquery', file: 'jquery.icescrum.scrollbar.js'],disposition: 'head',bundle:'jquery-plugins'
-  }
+    'jquery-plugins' {
+        dependsOn 'jquery'
+        resource url: [dir: 'js/jquery', file: 'jquery.pnotify.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.history.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.mousewheel.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.hotkeys.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.dotimeout.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.qtip-1.0.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.eventline.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.dropmenu.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.dnd.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.checkbox.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.alphanumeric.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.resize.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.atmosphere.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.jqote2.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.cookie.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.input.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.table.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.jeditable.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.ui.selectmenu.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/markitup/sets/textile', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/markitup/skins/simple', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'jquery-plugins'
+    }
 
-  'datepicker-locales' {
-    dependsOn 'jquery-ui'
-    resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-en.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-fr.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-de.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-es.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-    resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-cn.js'], nominify: true,disposition: 'head',bundle:'jquery-plugins'
-  }
-
-  'timepicker' {
-    dependsOn 'jquery-ui'
-    resource url: [dir: 'js/jquery', file: 'jquery-ui.timepicker.js'], disposition: 'head',bundle:'jquery-plugins'
-  }
+    'jquery-ui-plugins' {
+        dependsOn 'jquery-ui'
+        resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-en.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-fr.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-es.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-de.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-cn.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery-ui.timepicker.js'], bundle: 'jquery-plugins'
+    }
 }

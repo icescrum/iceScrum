@@ -19,14 +19,18 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:dialog valid="[action:'activate',controller:id,id:sprint.id,update:'window-content-'+id,button:'is.dialog.confirmActivateSprintAndRelease.button']">
-   <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
-    <input type="hidden" value="${params.product}" name="product"/>
-    <input type="hidden" value="true" name="confirm"/>
-    <is:fieldset title="is.dialog.confirmActivateSprintAndRelease.title">
-        <is:fieldInformation noborder="true">
-          <g:message code="is.dialog.confirmActivateSprintAndRelease.description"/>
-        </is:fieldInformation>
-    </is:fieldset>
-  </form>
+<is:dialog valid="[
+                action:'activate',
+                controller:id,
+                id:sprint.id,
+                onSuccess:'jQuery.event.trigger(\'activate_sprint\',data.sprint); jQuery.event.trigger(\'inProgress_story\',[data.stories]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.sprint.activated')+'\');',button:'is.dialog.confirmActivateSprintAndRelease.button']">
+    <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
+        <input type="hidden" value="${params.product}" name="product"/>
+        <input type="hidden" value="true" name="confirm"/>
+        <is:fieldset title="is.dialog.confirmActivateSprintAndRelease.title">
+            <is:fieldInformation noborder="true">
+                <g:message code="is.dialog.confirmActivateSprintAndRelease.description"/>
+            </is:fieldInformation>
+        </is:fieldset>
+    </form>
 </is:dialog>

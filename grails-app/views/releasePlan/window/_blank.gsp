@@ -19,31 +19,30 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<div class="box-blank clearfix">
-  <p>${message(code:'is.ui.releasePlan.blank.description')}</p>
-  <table cellpadding="0" cellspacing="0" border="0" class="box-blank-button">
-    <tr>
-      <td class="empty">&nbsp;</td>
-      <td>
-          <is:button
-            type="link"
-            renderedOnAccess="productOwner() or scrumMaster()"
-            button="button-s button-s-light"
-            update="window-content-${id}"
-            href="#${id}/add"
-            title="${message(code:'is.ui.releasePlan.blank.new')}"
-            alt="${message(code:'is.ui.releasePlan.blank.new')}"
-            icon="create" >
-          <strong>${message(code:'is.ui.releasePlan.blank.new')}</strong>
-          </is:button>
-      </td>
-      <td class="empty">&nbsp;</td>
-    </tr>
-  </table>
-  <entry:point id="${id}-${actionName}-blank"/>
+<div id="blank-release" class="box-blank clearfix">
+    <p>${message(code: 'is.ui.releasePlan.blank.description')}</p>
+    <table cellpadding="0" cellspacing="0" border="0" class="box-blank-button">
+        <tr>
+            <td class="empty">&nbsp;</td>
+            <td>
+                <is:button
+                        type="link"
+                        renderedOnAccess="productOwner() or scrumMaster()"
+                        button="button-s button-s-light"
+                        update="window-content-${id}"
+                        href="#timeline/add"
+                        title="${message(code:'is.ui.releasePlan.blank.new')}"
+                        alt="${message(code:'is.ui.releasePlan.blank.new')}"
+                        icon="create">
+                    <strong>${message(code: 'is.ui.releasePlan.blank.new')}</strong>
+                </is:button>
+            </td>
+            <td class="empty">&nbsp;</td>
+        </tr>
+    </table>
+    <entry:point id="${id}-${actionName}-blank"/>
 </div>
-<jq:jquery>
-  jQuery("#window-content-${id}").removeClass('window-content-toolbar');
-  jQuery("#window-id-${id}").focus();
-  <is:renderNotice />
-</jq:jquery>
+<is:onStream
+        on="#blank-release"
+        events="[[object:'release',events:['add']]]"
+        callback="jQuery.icescrum.navigateTo('${id}/'+release.id);"/>

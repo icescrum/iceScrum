@@ -21,41 +21,43 @@
  */
 
 dataSource {
-	driverClassName = "org.hsqldb.jdbcDriver"
-	username = "sa"
-	password = ""
+    driverClassName = "org.hsqldb.jdbcDriver"
+    username = "sa"
+    password = ""
+    pooled = true
 }
 hibernate {
-    cache.use_second_level_cache=true
-    cache.use_query_cache=true
-    cache.provider_class='net.sf.ehcache.hibernate.EhCacheProvider'
+    cache.use_second_level_cache = true
+    cache.use_query_cache = true
+    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
 }
 
 // environment specific settings
 environments {
-	development {
-		dataSource {
+    development {
+        dataSource {
             /*driverClassName="org.gjt.mm.mysql.Driver"
             dialect="org.hibernate.dialect.MySQLInnoDBDialect"
             url="jdbc:mysql://localhost:3306/test4?useUnicode=true&characterEncoding=utf8"
             username="root"
             password="root"
             dbCreate = "update"*/
-			dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-			url = "jdbc:hsqldb:mem:devDba"
+            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            //url = "jdbc:hsqldb:mem:devDba"
+            url = "jdbc:hsqldb:file:prodDba;shutdown=true"
             loggingSql = false
-		}
-	}
-	test {
-		dataSource {
-			dbCreate = "update"
-			url = "jdbc:hsqldb:mem:testDba"
-		}
-	}
-	production {
-		dataSource {
-			dbCreate = "update"
-			url = "jdbc:hsqldb:file:prodDba;shutdown=true"
-		}
-	}
+        }
+    }
+    test {
+        dataSource {
+            dbCreate = "update"
+            url = "jdbc:hsqldb:mem:testDba"
+        }
+    }
+    production {
+        dataSource {
+            dbCreate = "update"
+            url = "jdbc:hsqldb:file:prodDba;shutdown=true"
+        }
+    }
 }

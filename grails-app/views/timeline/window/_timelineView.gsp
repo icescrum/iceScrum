@@ -24,39 +24,35 @@
         name="timelineTl"
         container="#window-id-${id}"
         height="100%"
-        onScroll="\$('#selectOnRoadmap').changeSelectDate(band.getMinVisibleDate().getTime())">
-  <is:customBubble
-          enable="true"
-          container="#window-content-${id}"/>
-  
-  <is:timelineBand
-    action="timeLineList"
-    height="80%"
-    intervalUnit="MONTH"
-    params="[product:params.product]"
-    eventPainter="Timeline.IceScrumEventPainter"
-    themeOptions="event.track.height = 45,event.tape.height = 40"
-    intervalPixels="150">
-  </is:timelineBand>
+        onScroll="\$('#selectOnTimeline').changeSelectDate(band.getMinVisibleDate().getTime())">
+    <is:customBubble
+            enable="true"
+            container="#window-content-${id}"/>
 
-  <is:timelineBand
-    action="timeLineList"
-    height="20%"
-    intervalUnit="MONTH"
-    params="[product:params.product]"
-    overview="true"
-    intervalPixels="90">
-      <is:bandOptions showToday="true" syncWith="0" highlight="true" />
-  </is:timelineBand>
+    <is:timelineBand
+            action="timeLineList"
+            height="80%"
+            intervalUnit="MONTH"
+            params="[product:params.product]"
+            eventPainter="Timeline.IceScrumEventPainter"
+            themeOptions="event.track.height = 45,event.tape.height = 40"
+            intervalPixels="150">
+    </is:timelineBand>
+
+    <is:timelineBand
+            action="timeLineList"
+            height="20%"
+            intervalUnit="MONTH"
+            params="[product:params.product]"
+            overview="true"
+            intervalPixels="90">
+        <is:bandOptions showToday="true" syncWith="0" highlight="true"/>
+    </is:timelineBand>
 
 </is:timeline>
-<jq:jquery>
-  jQuery("#window-content-${id}").removeClass('window-content-toolbar');
-  jQuery("#window-id-${id}").focus();
-  <is:renderNotice />
-  <icep:notifications
-        name="${id}Window"
-        reload="[update:'#window-content-'+id,action:'index',params:[product:params.product]]"
-        group="${params.product}-${id}"
-        listenOn="#window-content-${id}"/>
-</jq:jquery>
+
+<is:onStream
+        on="#release-timeline"
+        events="[[object:'release',events:['add','update','remove','activate','close']],[object:'sprint',events:['add','update','remove','activate','close']]]"
+        callback="Timeline.refresh();"/>
+

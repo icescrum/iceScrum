@@ -25,7 +25,7 @@
 
 <is:iconButton
         action="edit"
-        controller="${story.state > Story.STATE_SUGGESTED ? 'productBacklog' : 'sandbox'}"
+        controller="${story.state > Story.STATE_SUGGESTED ? 'backlog' : 'sandbox'}"
         id="${params.id}"
         rendered="${productOwner  || story.creator.id == user?.id}"
         history="false"
@@ -33,10 +33,10 @@
         title="${message(code:'is.ui.backlogelement.toolbar.update')}"
         alt="${message(code:'is.ui.backlogelement.toolbar.update')}"
         update="window-content-${id}">
-        ${message(code:'is.ui.backlogelement.toolbar.update')}
+    ${message(code: 'is.ui.backlogelement.toolbar.update')}
 </is:iconButton>
 
-<is:separatorSmall rendered="${productOwner  || story.creator.id == user?.id}" />
+<is:separatorSmall rendered="${productOwner  || story.creator.id == user?.id}"/>
 
 %{--View--}%
 <is:panelButton
@@ -44,73 +44,69 @@
         arrow="true"
         text="${message(code:'is.ui.backlogelement.toolbar.accept')}"
         rendered="${productOwner && story.state == Story.STATE_SUGGESTED}">
-  <ul>
-    <li class="first">
-      <is:link
-              controller="backlogElement"
-              action="accept"
-              id="${params.id}"
-              params="['acceptAs':0]"
-              history="false"
-              update="window-content-${id}"
-              remote="true"
-              onSuccess="\$.icescrum.renderNotice('${message(code:'is.story.acceptedAsStory').encodeAsJavaScript()}');
-              \$('#window-toolbar').icescrum('toolbar').reload('${id}', {'id':'${params.id}'});"
-              value="${message(code:'is.ui.backlogelement.toolbar.acceptAsStory')}"/>
-    </li>
+    <ul>
+        <li class="first">
+            <is:link
+                    controller="story"
+                    action="accept"
+                    id="${params.id}"
+                    params="[type:'story']"
+                    history="false"
+                    remote="true"
+                    onSuccess="jQuery.icescrum.story.accept(data,'story'); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsStory').encodeAsJavaScript()}')"
+                    value="${message(code:'is.ui.backlogelement.toolbar.acceptAsStory')}"/>
+        </li>
 
-    <g:if test="${!sprint}">
-      <li class="last">
-    </g:if>
-    <g:else>
-      <li>
-    </g:else>
-      <is:link
-              controller="backlogElement"
-              action="accept"
-              id="${params.id}"
-              params="['acceptAs':1]"
-              history="false"
-              remote="true"
-              onSuccess="\$.icescrum.openWindow('sandbox');
-              \$.icescrum.renderNotice('${message(code:'is.story.acceptedAsFeature').encodeAsJavaScript()}');"
-              value="${message(code:'is.ui.backlogelement.toolbar.acceptAsFeature')}"/>
-    </li>
-
-    <g:if test="${sprint}">
-      <li class="last">
+        <g:if test="${!sprint}">
+            <li class="last">
+        </g:if>
+        <g:else>
+            <li>
+        </g:else>
         <is:link
-                controller="backlogElement"
-                action="accept"
-                id="${params.id}"
-                params="['acceptAs':2]"
-                history="false"
-                remote="true"
-                onSuccess="\$.icescrum.openWindow('sandbox');
-                 \$.icescrum.renderNotice('${message(code:'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}');"
-                value="${message(code:'is.ui.backlogelement.toolbar.acceptAsUrgentTask')}"/>
-      </li>
-    </g:if>
+        controller="story"
+        action="accept"
+        id="${params.id}"
+        params="[type:'feature']"
+        history="false"
+        remote="true"
+        onSuccess="jQuery.icescrum.openWindow('feature'); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsFeature').encodeAsJavaScript()}')"
+        value="${message(code:'is.ui.backlogelement.toolbar.acceptAsFeature')}"/>
+    </li>
 
-  </ul>
+        <g:if test="${sprint}">
+            <li class="last">
+                <is:link
+                        controller="story"
+                        action="accept"
+                        id="${params.id}"
+                        params="[type:'task']"
+                        history="false"
+                        remote="true"
+                        onSuccess="jQuery.icescrum.openWindow('sprintPlan'); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}')"
+                        value="${message(code:'is.ui.backlogelement.toolbar.acceptAsUrgentTask')}"/>
+            </li>
+        </g:if>
+
+    </ul>
 </is:panelButton>
 
-<is:separatorSmall rendered="${productOwner && story.state == Story.STATE_SUGGESTED}" />
+<is:separatorSmall rendered="${productOwner && story.state == Story.STATE_SUGGESTED}"/>
 
 <is:iconButton
         action="delete"
-        controller="${story.state > Story.STATE_SUGGESTED ? 'productBacklog' : 'sandbox'}"
+        controller="story"
         id="${params.id}"
         rendered="${productOwner}"
         title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
         alt="${message(code:'is.ui.backlogelement.toolbar.delete')}"
-        onSuccess="\$.icescrum.openWindow('${story.state > Story.STATE_SUGGESTED ? 'productBacklog' : 'sandbox'}');
-          \$.icescrum.renderNotice('${message(code:'is.story.deleted').encodeAsJavaScript()}');"
+        onSuccess="jQuery.icescrum.openWindow('${story.state > Story.STATE_SUGGESTED ? 'backlog' : 'sandbox'}');
+          jQuery.icescrum.renderNotice('${message(code:'is.story.deleted').encodeAsJavaScript()}');"
         icon="delete">
-  ${message(code:'is.ui.backlogelement.toolbar.delete')}
+    ${message(code: 'is.ui.backlogelement.toolbar.delete')}
 </is:iconButton>
 
-<is:separator rendered="${productOwner}" />
+<is:separator rendered="${productOwner}"/>
 
 <is:iconButton
         onclick="jQuery.icescrum.openCommentTab('#comments');"
@@ -118,31 +114,31 @@
         alt="${message(code:'is.ui.backlogelement.toolbar.comment')}"
         renderedOnAccess="isAuthenticated()"
         disabled="true">
-  ${message(code:'is.ui.backlogelement.toolbar.comment')}
+    ${message(code: 'is.ui.backlogelement.toolbar.comment')}
 </is:iconButton>
 
 <entry:point id="${id}-${actionName}-toolbar"/>
 
 <div class="navigation-right-toolbar">
 
-  <g:if test="${previous}">
-    <is:iconButton
-            href="#${id}/${previous.id}"
-            title="${message(code:'is.ui.backlogelement.toolbar.previous')}"
-            alt="${message(code:'is.ui.backlogelement.toolbar.previous')}">
-      ${message(code:'is.ui.backlogelement.toolbar.previous')}
-    </is:iconButton>
-  </g:if>
+    <g:if test="${previous}">
+        <is:iconButton
+                href="#${id}/${previous.id}"
+                title="${message(code:'is.ui.backlogelement.toolbar.previous')}"
+                alt="${message(code:'is.ui.backlogelement.toolbar.previous')}">
+            ${message(code: 'is.ui.backlogelement.toolbar.previous')}
+        </is:iconButton>
+    </g:if>
 
-  <is:separatorSmall rendered="${previous != null && next != null}"/>
+    <is:separatorSmall rendered="${previous != null && next != null}"/>
 
-  <g:if test="${next}">
-    <is:iconButton
-            href="#${id}/${next.id}"
-            title="${message(code:'is.ui.backlogelement.toolbar.next')}"
-            alt="${message(code:'is.ui.backlogelement.toolbar.next')}">
-      ${message(code:'is.ui.backlogelement.toolbar.next')}
-    </is:iconButton>
-  </g:if>
+    <g:if test="${next}">
+        <is:iconButton
+                href="#${id}/${next.id}"
+                title="${message(code:'is.ui.backlogelement.toolbar.next')}"
+                alt="${message(code:'is.ui.backlogelement.toolbar.next')}">
+            ${message(code: 'is.ui.backlogelement.toolbar.next')}
+        </is:iconButton>
+    </g:if>
 
 </div>

@@ -28,13 +28,13 @@
 */
 
 .ltr {
-	float: left;
-	padding: 5px 10px 5px 0;
+    float: left;
+    padding: 5px 10px 5px 0;
 }
 
 .rtl {
-	float: right;
-	padding: 5px 0 5px 10px;
+    float: right;
+    padding: 5px 0 5px 10px;
 }
 
 /*
@@ -44,58 +44,58 @@
 */
 
 h1 {
-	font-size: 1.6em;
-	font-weight: bold;
-	padding: 10px 0;
+    font-size: 1.6em;
+    font-weight: bold;
+    padding: 10px 0;
 }
 
 h2 {
-	font-size: 1.5em;
-	font-weight: bold;
-	padding: 10px 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 10px 0;
 }
 
 h3 {
-	font-size: 1.4em;
-	font-weight: bold;
-	padding: 10px 0 5px 0;
+    font-size: 1.4em;
+    font-weight: bold;
+    padding: 10px 0 5px 0;
 }
 
 h4 {
-	font-size: 1.3em;
-	font-weight: bold;
-	padding: 20px 0;
-	text-decoration: underline;
+    font-size: 1.3em;
+    font-weight: bold;
+    padding: 20px 0;
+    text-decoration: underline;
 }
 
 h5 {
-	font-size: 1.2em;
-	font-weight: bold;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 h6 {
-	font-size: 1.1em;
-	font-weight: bold;
+    font-size: 1.1em;
+    font-weight: bold;
 }
 
 h1+h2, h1+h3, h1+h4, h1+h5, h1+h6 {
-	padding-top: 5px;
+    padding-top: 5px;
 }
 
 h2+h3, h2+h4, h2+h5, h2+h6 {
-	padding-top: 5px;
+    padding-top: 5px;
 }
 
 h3+h4, h3+h5, h3+h6 {
-	padding-top: 5px;
+    padding-top: 5px;
 }
 
 h4>h5, h4>h6 {
-	padding-top: 5px;
+    padding-top: 5px;
 }
 
 h5>h6 {
-	padding-top: 5px;
+    padding-top: 5px;
 }
 
 /*
@@ -105,7 +105,7 @@ h5>h6 {
 */
 
 q {
-	font-style: italic;
+    font-style: italic;
 }
 
 /*
@@ -115,7 +115,7 @@ q {
 */
 
 p {
-	padding: 8px 0;
+    padding: 8px 0;
 }
 
 /*
@@ -125,7 +125,7 @@ p {
 */
 
 em {
-	font-style: italic;
+    font-style: italic;
 }
 
 /*
@@ -135,7 +135,7 @@ em {
 */
 
 strong {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 /*
@@ -145,7 +145,7 @@ strong {
 */
 
 s {
-	text-decoration: line-through;
+    text-decoration: line-through;
 }
 
 /*
@@ -155,7 +155,7 @@ s {
 */
 
 samp {
-	font-style: italic;
+    font-style: italic;
 }
 
 /*
@@ -165,9 +165,9 @@ samp {
 */
 
 sub {
-	font-size: 0.8em;
-	text-transform: uppercase;
-	vertical-align: sub;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    vertical-align: sub;
 }
 
 /*
@@ -177,9 +177,9 @@ sub {
 */
 
 sup {
-	font-size: 0.8em;
-	text-transform: uppercase;
-	vertical-align: super;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    vertical-align: super;
 }
 
 /*
@@ -189,7 +189,7 @@ sup {
 */
 
 big {
-	font-size: 1.2em;
+    font-size: 1.2em;
 }
 
 /*
@@ -199,7 +199,7 @@ big {
 */
 
 medium {
-	font-size: 1.1em;
+    font-size: 1.1em;
 }
 
 /*
@@ -209,7 +209,7 @@ medium {
 */
 
 small {
-	font-size: 0.8em;
+    font-size: 0.8em;
 }
 
 /*
@@ -219,7 +219,7 @@ small {
 */
 
 address {
-	
+
 }
 
 /*
@@ -229,13 +229,13 @@ address {
 */
 
 acronym {
-	border-bottom: 1px dotted #444;
-	cursor: help;
+    border-bottom: 1px dotted #444;
+    cursor: help;
 }
 
 acronym:hover {
-	color: #94ad3c;
-	border-bottom: 1px dotted #94ad3c;
+    color: #94ad3c;
+    border-bottom: 1px dotted #94ad3c;
 }
 
 /*
@@ -245,9 +245,9 @@ acronym:hover {
 */
 
 abbr {
-	text-transform: uppercase;
-	color: #111;
-	font-style: italic;
+    text-transform: uppercase;
+    color: #111;
+    font-style: italic;
 }
 
 /*
@@ -260,13 +260,13 @@ dl {
 }
 
 dl dt {
-	padding-top: 10px;
-	font-weight: bold;
-	font-size: 1.1em;
+    padding-top: 10px;
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 dl dd {
-	padding: 0 20px;
+    padding: 0 20px;
 }
 
 /*
@@ -276,10 +276,9 @@ dl dd {
 */
 
 pre {
-	display: block;
-	margin: 0;
-	padding: 0;	
-	padding: 5px 0;
+    display: block;
+    margin: 0;
+    padding: 5px 0;
 }
 
 /*
@@ -289,21 +288,21 @@ pre {
 */
 
 code {
-	margin: 0;
-	padding: 0;
-	font: 13px "Verdana", Geneva, Arial, Helvetica, sans-serif;
-	color: #6a7447;
-	letter-spacing: 1px;
-	cursor: text;
+    margin: 0;
+    padding: 0;
+    font: 13px "Verdana", Geneva, Arial, Helvetica, sans-serif;
+    color: #6a7447;
+    letter-spacing: 1px;
+    cursor: text;
 }
 
 pre code {
-	display: block;
-	border: 1px solid #d1dda9;
-	padding: 10px;
-	background-color: #e8ecda;
-	border-radius: 5px;
-} 
+    display: block;
+    border: 1px solid #d1dda9;
+    padding: 10px;
+    background-color: #e8ecda;
+    border-radius: 5px;
+}
 
 /*
 ////////////////////////////////////////
@@ -312,15 +311,15 @@ pre code {
 */
 
 a {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
-a.noline:hover{
-   text-decoration: none; 
+a.noline:hover {
+    text-decoration: none;
 }
 
 /*
@@ -330,21 +329,20 @@ a.noline:hover{
 */
 
 ul, ol {
-	margin-left: 15px;	
+    margin-left: 15px;
 }
 
 ul, ol {
-	padding: 8px 0;
+    padding: 8px 0;
 }
 
 ul li {
-	padding: 5px 0;
-	list-style: circle;
-	list-style-type: disc;	
+    padding: 5px 0;
+    list-style-type: disc;
 }
 
 ol li {
-	list-style-type: decimal;
-	margin-left: 10px;
-	font-weight: bold;
+    list-style-type: decimal;
+    margin-left: 10px;
+    font-weight: bold;
 }

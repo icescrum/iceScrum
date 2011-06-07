@@ -23,158 +23,167 @@
 
 <%@ page import="grails.plugin.fluxiable.Activity" %>
 <div class="dashboard">
-  <div class="colset-2 clearfix">
-    <div class="col1">
-      <entry:point id="${id}-${actionName}-top-left" model="[sprint:sprint,release:release,product:product]"/>
-      <is:panel id="panel-chart">
-        <is:panelTitle>
-          <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
-            <is:link class="right" id="chart-sprintBurnupTasksChart" disabled="true" onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintBacklog/sprintBurnupTasksChart/${sprint?.id}',true);">${message(code:'is.ui.project.chart.option.tasks')}</is:link>
-            <span class="right"> | </span>
-            <is:link rendered="${sprint}" id="chart-sprintBurnupStoriesChart" class="right" disabled="true" onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintBacklog/sprintBurnupStoriesChart/${sprint?.id}',true);">${message(code:'is.ui.project.chart.option.stories')}</is:link>
-            <span class="right"> | </span>
-          </g:if>
-          <is:link class="right" disabled="true" id="chart-productBurnupChart" onClick="jQuery.icescrum.displayChart('#panel-chart-container','${controllerName}/productBurnupChart/',true);">${message(code:'is.ui.project.chart.option.project')}</is:link>
-          <g:message code="is.ui.project.chart.title"/>
-        </is:panelTitle>
-          <div id="panel-chart-container" class="panel-box-content">
-          <jq:jquery>
-               <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
-                    jQuery.icescrum.displayChartFromCookie('#panel-chart-container','${controllerName}/productBurnupChart/');
-               </g:if>
-               <g:else>
-                    jQuery.icescrum.displayChart('#panel-chart-container','${controllerName}/productBurnupChart/');
-               </g:else>
-          </jq:jquery>
-          </div>
-      </is:panel>
-      <is:panel id="panel-description">
-        <is:panelTitle><g:message code="is.ui.project.description.title"/></is:panelTitle>
-          <div class="panel-box-content">
-            <g:if test="${product.description}">
-              <wikitext:renderHtml markup="Textile">${product.description}</wikitext:renderHtml>
-            </g:if>
-            <g:else>
-              <g:message code="is.product.empty.description"/>
-            </g:else>
-          </div>
-      </is:panel>
-      <is:panel id="panel-vision">
-        <is:panelTitle><g:message code="is.ui.project.vision.title"/></is:panelTitle>
-        <div class="panel-box-content">
-          <g:if test="${release?.vision}">
-            <wikitext:renderHtml markup="Textile">${is.truncated(value:release.vision,size:1000,encodedHTML:false)}</wikitext:renderHtml>
-          </g:if>
-          <g:else>
-            <g:message code="is.release.empty.vision"/>
-          </g:else>
-        </div>
-        <g:if test="${release?.vision?.length() > 1000}">
-            <div class="read-more">
-             <is:scrumLink
-                controller="releasePlan"
-                action="vision"
-                id="${release.id}">
-                  <g:message code="is.ui.project.link.more"/>
-                </is:scrumLink>
-            </div>
-        </g:if>
-      </is:panel>
-      <is:panel id="panel-doneDefinition">
-        <is:panelTitle><g:message code="is.ui.project.doneDefinition.title"/></is:panelTitle>
-        <div class="panel-box-content">
-          <g:if test="${sprint?.doneDefinition}">
-            <wikitext:renderHtml markup="Textile">${is.truncated(value:sprint.doneDefinition,size:1000,encodedHTML:false)}</wikitext:renderHtml>
-          </g:if>
-          <g:else>
-            <g:message code="is.sprint.empty.doneDefinition"/>
-          </g:else>
-        </div>
-        <g:if test="${sprint?.doneDefinition?.length() > 1000}">
-            <div class="read-more">
-              <is:scrumLink
-                controller="sprintBacklog"
-                action="doneDefinition"
-                id="${sprint.id}">
-                  <g:message code="is.ui.project.link.more"/>
-                </is:scrumLink>
-            </div>
-        </g:if>
-      </is:panel>
-      <is:panel id="panel-retrospective">
-        <is:panelTitle><g:message code="is.ui.project.retrospective.title"/></is:panelTitle>
-        <div class="panel-box-content">
-          <g:if test="${sprint?.retrospective}">
-            <wikitext:renderHtml markup="Textile">${is.truncated(value:sprint.retrospective,size:1000,encodedHTML:false)}</wikitext:renderHtml>
-          </g:if>
-          <g:else>
-            <g:message code="is.sprint.empty.retrospective"/>
-          </g:else>
-        </div>
-        <g:if test="${sprint?.retrospective?.length() > 1000}">
-            <div class="read-more">
-              <is:scrumLink
-                controller="sprintBacklog"
-                action="retrospective"
-                id="${sprint.id}">
-                  <g:message code="is.ui.project.link.more"/>
-                </is:scrumLink>
-            </div>
-        </g:if>
-      </is:panel>
-      <entry:point id="${id}-${actionName}-bottom-left" model="[sprint:sprint,release:release,product:product]"/>
-    </div>
-
-    <div class="col2">
-      <entry:point id="${id}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
-      <is:panel id="panel-activity">
-        <is:panelTitle>
-          <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
-            <span class='ico'></span>
-          </g:link>
-          <g:message code="is.ui.project.activity.title"/>
-        </is:panelTitle>
-        <g:if test="${activities.size() > 0}">
-          <ul class="list-news">
-            <g:each in="${activities}" var="a" status="i">
-              <li ${(activities.size() == (i + 1)) ? 'class="last"' : ''}>
-                <div class="news-item news-${a.code}">
-                  <p>
-                    <is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
-                    <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.story"/>
-                    <g:if test="${a.code != Activity.CODE_DELETE}">
-                      <is:scrumLink controller="backlogElement" id="${a.cachedId}" params="${a.code == 'comment' ? ['tab':'comments'] : []}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink>
+    <div class="colset-2 clearfix">
+        <div class="col1">
+            <entry:point id="${id}-${actionName}-top-left" model="[sprint:sprint,release:release,product:product]"/>
+            <is:panel id="panel-chart">
+                <is:panelTitle>
+                    <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
+                        <is:link class="right" id="chart-sprintBurnupTasksChart" disabled="true"
+                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupTasksChart/${sprint?.id}',true);">${message(code: 'is.ui.project.chart.option.tasks')}</is:link>
+                        <span class="right">|</span>
+                        <is:link rendered="${sprint}" id="chart-sprintBurnupStoriesChart" class="right" disabled="true"
+                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupStoriesChart/${sprint?.id}',true);">${message(code: 'is.ui.project.chart.option.stories')}</is:link>
+                        <span class="right">|</span>
+                    </g:if>
+                    <is:link class="right" disabled="true" id="chart-productBurnupChart"
+                             onClick="jQuery.icescrum.displayChart('#panel-chart-container','${controllerName}/productBurnupChart/',true);">${message(code: 'is.ui.project.chart.option.project')}</is:link>
+                    <g:message code="is.ui.project.chart.title"/>
+                </is:panelTitle>
+                <div id="panel-chart-container" class="panel-box-content">
+                </div>
+            </is:panel>
+            <is:panel id="panel-description">
+                <is:panelTitle><g:message code="is.ui.project.description.title"/></is:panelTitle>
+                <div class="panel-box-content">
+                    <g:if test="${product.description}">
+                        <wikitext:renderHtml markup="Textile">${product.description}</wikitext:renderHtml>
                     </g:if>
                     <g:else>
-                      <strong>${a.cachedLabel.encodeAsHTML()}</strong>
+                        <g:message code="is.product.empty.description"/>
                     </g:else>
-                  </p>
-                  <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time" timeZone="${user?.preferences?.timezone?:null}"/></p>
                 </div>
-              </li>
-            </g:each>
-          </ul>
-        </g:if>
-        <g:else>
-          <div class="panel-box-empty">
-            <g:message code="is.fluxiable.no"/>
-          </div>
-        </g:else>
-      </is:panel>
-      <entry:point id="${id}-${actionName}-bottom-right" model="[sprint:sprint,release:release,product:product,activities:activities]"/>
+            </is:panel>
+            <is:panel class="panel-vision" id="panel-vision-${release?.id}">
+                <is:panelTitle><g:message code="is.ui.project.vision.title"/></is:panelTitle>
+                <div class="panel-box-content">
+                    <g:if test="${release?.vision}">
+                        <wikitext:renderHtml
+                                markup="Textile">${is.truncated(value: release.vision, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
+                    </g:if>
+                    <g:else>
+                        <g:message code="is.release.empty.vision"/>
+                    </g:else>
+                </div>
+                <g:if test="${release?.vision?.length() > 1000}">
+                    <div class="read-more">
+                        <is:scrumLink
+                                controller="releasePlan"
+                                action="vision"
+                                id="${release.id}">
+                            <g:message code="is.ui.project.link.more"/>
+                        </is:scrumLink>
+                    </div>
+                </g:if>
+            </is:panel>
+            <is:panel class="panel-doneDefinition" id="panel-doneDefinition-${sprint?.id}">
+                <is:panelTitle><g:message code="is.ui.project.doneDefinition.title"/></is:panelTitle>
+                <div class="panel-box-content">
+                    <g:if test="${sprint?.doneDefinition}">
+                        <wikitext:renderHtml
+                                markup="Textile">${is.truncated(value: sprint.doneDefinition, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
+                    </g:if>
+                    <g:else>
+                        <g:message code="is.sprint.empty.doneDefinition"/>
+                    </g:else>
+                </div>
+                <g:if test="${sprint?.doneDefinition?.length() > 1000}">
+                    <div class="read-more">
+                        <is:scrumLink
+                                controller="sprintPlan"
+                                action="doneDefinition"
+                                id="${sprint.id}">
+                            <g:message code="is.ui.project.link.more"/>
+                        </is:scrumLink>
+                    </div>
+                </g:if>
+            </is:panel>
+            <is:panel class="panel-retrospective" id="panel-retrospective-${sprint?.id}">
+                <is:panelTitle><g:message code="is.ui.project.retrospective.title"/></is:panelTitle>
+                <div class="panel-box-content">
+                    <g:if test="${sprint?.retrospective}">
+                        <wikitext:renderHtml
+                                markup="Textile">${is.truncated(value: sprint.retrospective, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
+                    </g:if>
+                    <g:else>
+                        <g:message code="is.sprint.empty.retrospective"/>
+                    </g:else>
+                </div>
+                <g:if test="${sprint?.retrospective?.length() > 1000}">
+                    <div class="read-more">
+                        <is:scrumLink
+                                controller="sprintPlan"
+                                action="retrospective"
+                                id="${sprint.id}">
+                            <g:message code="is.ui.project.link.more"/>
+                        </is:scrumLink>
+                    </div>
+                </g:if>
+            </is:panel>
+            <entry:point id="${id}-${actionName}-bottom-left" model="[sprint:sprint,release:release,product:product]"/>
+        </div>
+
+        <div class="col2">
+            <entry:point id="${id}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
+            <is:panel id="panel-activity">
+                <is:panelTitle>
+                    <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed"
+                            params="[product:product.pkey,lang:lang]">
+                        <span class='ico'></span>
+                    </g:link>
+                    <g:message code="is.ui.project.activity.title"/>
+                </is:panelTitle>
+                <g:if test="${activities.size() > 0}">
+                    <ul class="list-news">
+                        <g:each in="${activities}" var="a" status="i">
+                            <li ${(activities.size() == (i + 1)) ? 'class="last"' : ''}>
+                                <div class="news-item news-${a.code}">
+                                    <p>
+                                        <is:scrumLink controller="user" action='profile'
+                                                      id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
+                                        <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.story"/>
+                                        <g:if test="${a.code != Activity.CODE_DELETE}">
+                                            <is:scrumLink controller="backlogElement" id="${a.cachedId}"
+                                                          params="${a.code == 'comment' ? ['tab':'comments'] : []}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink>
+                                        </g:if>
+                                        <g:else>
+                                            <strong>${a.cachedLabel.encodeAsHTML()}</strong>
+                                        </g:else>
+                                    </p>
+
+                                    <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"
+                                                     timeZone="${user?.preferences?.timezone?:null}"/></p>
+                                </div>
+                            </li>
+                        </g:each>
+                    </ul>
+                </g:if>
+                <g:else>
+                    <div class="panel-box-empty">
+                        <g:message code="is.fluxiable.no"/>
+                    </div>
+                </g:else>
+            </is:panel>
+            <entry:point id="${id}-${actionName}-bottom-right"
+                         model="[sprint:sprint,release:release,product:product,activities:activities]"/>
+        </div>
     </div>
-  </div>
 </div>
 
 <jq:jquery>
-  $('.list-news .news-item').hover(function(){
-    $(this).addClass('news-item-hover');
-  }, function(){
-    $(this).removeClass('news-item-hover');
-  });
-  <icep:notifications
-        name="${id}Dashboard"
-        reload="[update:'#window-content-'+id,action:'dashboard',params:[product:params.product]]"
-        group="${params.product}-product"
-        listenOn="#window-content-${id}"/>
+    $('.list-news .news-item').hover(function(){
+      $(this).addClass('news-item-hover');
+    }, function(){
+      $(this).removeClass('news-item-hover');
+    });
+    <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
+        jQuery.icescrum.displayChartFromCookie('#panel-chart-container','${controllerName}/productBurnupChart/');
+    </g:if>
+    <g:else>
+        jQuery.icescrum.displayChart('#panel-chart-container','${controllerName}/productBurnupChart/');
+    </g:else>
 </jq:jquery>
+
+<is:onStream on=".panel-vision" events="[[object:'release',events:['vision']]]"/>
+<is:onStream on=".panel-retrospective" events="[[object:'sprint',events:['retrospective']]]"/>
+<is:onStream on=".panel-doneDefinition" events="[[object:'sprint',events:['doneDefinition']]]"/>

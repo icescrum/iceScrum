@@ -21,7 +21,9 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
+import org.codehaus.groovy.grails.plugins.springsecurity.ReflectionUtils
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
@@ -31,44 +33,44 @@ import org.icescrum.web.upload.AjaxMultipartResolver
 
 beans = {
 
-  authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
-    def conf = SpringSecurityUtils.securityConfig
-    authenticationManager = ref('authenticationManager')
-    sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
-    authenticationSuccessHandler = ref('authenticationSuccessHandler')
-    authenticationFailureHandler = ref('authenticationFailureHandler')
-    rememberMeServices = ref('rememberMeServices')
-    authenticationDetailsSource = ref('authenticationDetailsSource')
-    filterProcessesUrl = conf.apf.filterProcessesUrl
-    usernameParameter = conf.apf.usernameParameter
-    passwordParameter = conf.apf.passwordParameter
-    continueChainBeforeSuccessfulAuthentication = conf.apf.continueChainBeforeSuccessfulAuthentication
-    allowSessionCreation = conf.apf.allowSessionCreation
-    postOnly = conf.apf.postOnly
- }
+    authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
+        ReflectionUtils.application = ApplicationHolder.application
+        def conf = SpringSecurityUtils.securityConfig
+        authenticationManager = ref('authenticationManager')
+        sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
+        authenticationSuccessHandler = ref('authenticationSuccessHandler')
+        authenticationFailureHandler = ref('authenticationFailureHandler')
+        rememberMeServices = ref('rememberMeServices')
+        authenticationDetailsSource = ref('authenticationDetailsSource')
+        filterProcessesUrl = conf.apf.filterProcessesUrl
+        usernameParameter = conf.apf.usernameParameter
+        passwordParameter = conf.apf.passwordParameter
+        continueChainBeforeSuccessfulAuthentication = conf.apf.continueChainBeforeSuccessfulAuthentication
+        allowSessionCreation = conf.apf.allowSessionCreation
+        postOnly = conf.apf.postOnly
+    }
 
-  webExpressionHandler(WebScrumExpressionHandler) {
-    roleHierarchy = ref('roleHierarchy')
-  }
+    webExpressionHandler(WebScrumExpressionHandler) {
+        roleHierarchy = ref('roleHierarchy')
+    }
 
-  expressionHandler(MethodScrumExpressionHandler) {
-    parameterNameDiscoverer = ref('parameterNameDiscoverer')
-    permissionEvaluator = ref('permissionEvaluator')
-    roleHierarchy = ref('roleHierarchy')
-    trustResolver = ref('authenticationTrustResolver')
-  }
+    expressionHandler(MethodScrumExpressionHandler) {
+        parameterNameDiscoverer = ref('parameterNameDiscoverer')
+        permissionEvaluator = ref('permissionEvaluator')
+        roleHierarchy = ref('roleHierarchy')
+        trustResolver = ref('authenticationTrustResolver')
+    }
 
-  menuBarSupport(MenuBarSupport){innerBean->
-    innerBean.autowire = "byName"
-  }
+    menuBarSupport(MenuBarSupport) {innerBean ->
+        innerBean.autowire = "byName"
+    }
 
-  userDetailsService(ScrumDetailsService){
-    sessionFactory = ref('sessionFactory')
-    transactionManager = ref('transactionManager')
-  }
+    userDetailsService(ScrumDetailsService) {
+        grailsApplication = ref('grailsApplication')
+    }
 
-  multipartResolver(AjaxMultipartResolver){
-    maxInMemorySize = 10240
-    maxUploadSize = 1024000000
-  }
+    multipartResolver(AjaxMultipartResolver) {
+        maxInMemorySize = 10240
+        maxUploadSize = 1024000000
+    }
 }

@@ -1,8 +1,3 @@
-import grails.util.PluginBuildSettings
-import java.util.regex.Matcher
-import grails.util.GrailsNameUtils
-import org.codehaus.groovy.grails.cli.GrailsScriptRunner
-
 /*
 * Copyright (c) 2010 iceScrum Technologies.
 *
@@ -21,11 +16,16 @@ import org.codehaus.groovy.grails.cli.GrailsScriptRunner
 * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import grails.util.PluginBuildSettings
+import java.util.regex.Matcher
+import grails.util.GrailsNameUtils
+import org.codehaus.groovy.grails.cli.GrailsScriptRunner
+
 eventCreateWarStart = {warname, stagingDir ->
     Ant.propertyfile(file: "${stagingDir}/WEB-INF/classes/application.properties") {
-		Ant.antProject.properties.findAll({k,v-> k.startsWith('environment')}).each { k,v->
+        Ant.antProject.properties.findAll({k, v -> k.startsWith('environment')}).each { k, v ->
             entry(key: k, value: v)
-		}
+        }
         entry(key: 'scm.version', value: getRevision())
         entry(key: 'build.date', value: new Date())
     }

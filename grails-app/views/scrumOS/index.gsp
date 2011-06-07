@@ -22,47 +22,13 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 <head>
-  <meta name='layout' content='main'/>
-  <g:if test="${params.product}">
-    <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[product:params.product,lang:lang]"/>
-    <title>${product?.name ?: ''}</title>
-  </g:if>
-</head>
-<body>
-
-<jq:jquery>
-  <g:if test="${params.product}">
-    <icep:notifications
-            name="projectGlobal"
-            reload="[update:'#project-details',controller:'project',action:'projectDetails',params:[product:params.product]]"
-            autoleave="false"
-            group="${params.product}-product"/>
-    <icep:notifications
-            name="projectDelete"
-            autoleave="false"
-            callback="document.location='${createLink(uri:'/')}'"
-            group="${params.product}-product-delete"/>
-    <plugin:isAvailable name="icescrum-plugin-planning-poker">
-      <icep:notifications
-                  name="pluginPlanningPoker"
-                  callback="jQuery.icescrum.planningpoker.notifyPlanningPoker(${params.product});"
-                  autoleave="false"
-                  group="${params.product}-plugin-planning-poker"/>
-    </plugin:isAvailable>
-  </g:if>
-  <g:else>
-    <g:if test="${params.team}">
-      <icep:notifications
-            name="projectGlobal"
-            reload="[update:'#team-details',controller:'project',action:'teamDetails',params:[team:params.team]]"
-            autoleave="false"
-            group="${params.team}-product"/>
-      <icep:notifications
-            name="projectDelete"
-            autoleave="false"
-            callback="document.location='${createLink(uri:'/')}'"
-            group="${params.team}-team-delete"/>
+    <meta name='layout' content='main'/>
+    <g:if test="${params.product}">
+        <feed:meta kind="rss" version="2.0" controller="project" action="feed"
+                   params="[product:params.product,lang:lang]"/>
+        <title>${product?.name ?: ''}</title>
     </g:if>
-  </g:else>
-</jq:jquery>
+</head>
+
+<body>
 </body>

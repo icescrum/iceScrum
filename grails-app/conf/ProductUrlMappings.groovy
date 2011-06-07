@@ -22,85 +22,107 @@
  */
 
 class ProductUrlMappings {
-  static mappings = {
+    static mappings = {
 
-    "/p/textileParser" {
-      controller = 'scrumOS'
-      action = 'textileParser'
+        "/p/textileParser" {
+            controller = 'scrumOS'
+            action = 'textileParser'
+        }
+
+
+        "/p/$product/" {
+            controller = 'scrumOS'
+            action = 'index'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+
+        name shortURL: "/p/$product-$id/" {
+            controller = 'backlogElement'
+            action = 'shortURL'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /[0-9]*/)
+            }
+        }
+
+        name profile: "/profile/$id/" {
+            controller = 'user'
+            action = 'profileURL'
+            constraints {
+                id(matches: /[a-zA-Z0-9]*/)
+            }
+        }
+
+        "/$action/user/$actionWindow/$id" {
+            controller = 'scrumOS'
+            window = 'user'
+            constraints {
+                actionWindow(matches: /[a-zA-Z]*/)
+                action(matches: /[a-zA-Z]*/)
+            }
+        }
+
+        "/b/$id" {
+            controller = 'backlogElement'
+            action = 'idURL'
+            constraints {
+                id(matches: /[0-9]*/)
+            }
+        }
+
+        "/p/$product/$action/$window?/$actionWindow?/$id?" {
+            controller = 'scrumOS'
+            constraints {
+                actionWindow(matches: /[a-zA-Z]*/)
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/$action/$window?/$id/$actionWindow?/$subid?" {
+            controller = 'scrumOS'
+            constraints {
+                actionWindow(matches: /[a-zA-Z]*/)
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/$action/$window?/$id?" {
+            controller = 'scrumOS'
+            constraints {
+                id(matches: /\d*/)
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/$controller/$id?" {
+            constraints {
+                id(matches: /\d*/)
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/$controller/$id?/$action?/$subid?" {
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+                subid(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/$controller/$action?/$id?/$type?" {
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/ws/p/$product/$controller/$action?/$id?/$type?"(parseRequest: true) {
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
     }
-
-
-    "/p/$product/" {
-      controller = 'scrumOS'
-      action = 'index'
-      constraints {
-        product(matches: /[0-9A-Z]*/)
-      }
-    }
-
-
-    name shortURL: "/p/$product-$id/" {
-      controller = 'backlogElement'
-      action = 'shortURL'
-      constraints {
-        product(matches: /[0-9A-Z]*/)
-        id(matches: /[0-9]*/)
-      }
-    }
-
-    name profile: "/profile/$id/" {
-      controller = 'user'
-      action = 'profileURL'
-      constraints {
-        id(matches: /[a-zA-Z0-9]*/)
-      }
-    }
-
-    "/$action/user/$actionWindow/$id" {
-      controller = 'scrumOS'
-      window = 'user'
-      constraints {
-        actionWindow(matches: /[a-zA-Z]*/)
-        action(matches: /[a-zA-Z]*/)
-      }
-    }
-
-    "/b/$id" {
-      controller = 'backlogElement'
-      action = 'idURL'
-      constraints {
-        id(matches: /[0-9]*/)
-      }
-    }
-
-    "/p/$product/$action/$window?/$actionWindow?/$id?" {
-      controller = 'scrumOS'
-      constraints {
-        actionWindow(matches: /[a-zA-Z]*/)
-        product(matches: /[0-9A-Z]*/)
-      }
-    }
-
-    "/p/$product/$action/$window?/$id?" {
-      controller = 'scrumOS'
-      constraints {
-        id(matches: /\d*/)
-        product(matches: /[0-9A-Z]*/)
-      }
-    }
-
-    "/p/$product/$controller/$id?" {
-      constraints {
-        id(matches: /\d*/)
-        product(matches: /[0-9A-Z]*/)
-      }
-    }
-
-    "/p/$product/$controller/$action?/$id?" {
-      constraints {
-        product(matches: /[0-9A-Z]*/)
-      }
-    }
-
-  }
 }

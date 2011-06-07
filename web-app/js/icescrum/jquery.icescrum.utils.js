@@ -1,0 +1,282 @@
+/*
+ * Copyright (c) 2011 Kagilum SAS.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Vincent Barrier (vbarrier@kagilum.com)
+ *
+ */
+(function($) {
+    jQuery.extend($.icescrum, {
+
+                loading:function(load) {
+                    if (load != undefined && !load) {
+                        $("#is-logo").stop(true).css('opacity', 1.0).removeClass().addClass('connected');
+                    } else {
+                        $("#is-logo").removeClass().addClass('working')
+                                .animate({opacity: 1.0}, {duration: 250})
+                                .animate({opacity: 0}, {duration: 250})
+                                .animate({opacity: 1.0}, {duration: 250, complete:$.icescrum.loading});
+                    }
+                },
+                loadingError:function() {
+                    $("#is-logo").stop(true).css('opacity', 1.0).removeClass().addClass('disconnected');
+                },
+
+                debug:function(value) {
+                    if (value) {
+                        this.o.debug = value;
+                    } else {
+                        return this.o.debug;
+                    }
+                },
+
+                htmlEncode:function(value) {
+                    return $('<div/>').text(value).html();
+                },
+
+                htmlDecode:function(value) {
+                    return $('<div/>').html(value).text();
+                },
+
+                isValidEmail:function(email) {
+                    var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+                    return filter.test(email);
+                },
+
+                dateLocaleFormat:function(date, year, month, day) {
+                    var a;
+                    if (typeof date === 'string') {
+                        date = this.jsonToDate(date);
+                    }
+                    var format = $.datepicker.regional[$.icescrum.o.locale].dateFormat;
+                    return $.datepicker.formatDate(format, date);
+                },
+
+                jsonToDate:function(date) {
+                    var a;
+                    if (typeof date === 'string') {
+                        a = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)(Z|([+\-])(\d{2}):(\d{2}))$/.exec(date);
+                        if (a) {
+                            date = new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4], +a[5], +a[6]));
+                        }
+                    }
+                    return date;
+                },
+
+                stopEvent:function(event) {
+                    event = jQuery.event.fix(event || window.event);
+                    event.stopPropagation();
+                    return this;
+                },
+
+                dialogError:function(xhr) {
+                    var text;
+                    if (xhr.status) {
+                        var ct = xhr.getResponseHeader("content-type") || "";
+                        if (ct.indexOf('json') > -1) {
+                            text = $.parseJSON(xhr.responseText);
+                            if (text.error != undefined) {
+                                $.icescrum.renderNotice(text.error, 'error');
+                                return;
+                            }
+                        } else {
+                            text = this.htmlDecode(xhr.responseText);
+                        }
+                    } else {
+                        text = xhr;
+                    }
+
+                    $('#window-dialog').dialog('destroy');
+                    $(document.body).append(this.o.dialogErrorContent);
+                    $('#comments').focus();
+                    $('#stackError').val(text);
+                    $('#stackError-field').input({className:'area'});
+                    $('#comments-field').input({className:'area'});
+                    $('#window-dialog').dialog({
+                                dialogClass: 'no-titlebar',
+                                closeOnEscape:true,
+                                closeText:'Close',
+                                draggable:false,
+                                modal:true,
+                                position:'top',
+                                resizable:false,
+                                stack:true,
+                                width:600,
+                                zindex:1000,
+                                close:function(ev, ui) {
+                                    $(this).remove();
+                                },
+                                buttons:{
+                                    'Cancel': function() {
+                                        $(this).dialog('close');
+                                    },
+                                    'OK': function() {
+                                        jQuery.ajax({
+                                                    type:'POST',
+                                                    data:jQuery('#window-dialog form:first').serialize(),
+                                                    url:$.icescrum.o.baseUrl + 'reportError',
+                                                    success:function(data, textStatus) {
+                                                        $.icescrum.renderNotice(data.notice.text, data.notice.type);
+                                                        $('#window-dialog').dialog('close');
+                                                    },
+                                                    error:function() {
+                                                        $('#window-dialog').dialog('close');
+                                                    }
+                                                });
+                                    }
+                                }
+                            });
+                },
+
+                addHistory:function(hash) {
+                    var url = location.hash.replace(/^.*#/, '');
+                    if (url != hash) {
+                        $.icescrum.o.openWindow = true;
+                        location.hash = hash;
+                    }
+                },
+
+                navigateTo:function(hash) {
+                    var url = location.hash.replace(/^.*#/, '');
+                    if (url != hash) {
+                        location.hash = hash;
+                    }
+                },
+
+                initHistory:function() {
+                    $(window).hashchange(function() {
+                        if ($.icescrum.o.openWindow) {
+                            $.icescrum.o.openWindow = false;
+                        } else {
+                            var url = location.hash.replace(/^.*#/, '');
+                            if (url != '') {
+                                $.icescrum.openWindow(url);
+                            } else {
+                                if ($.icescrum.o.currentOpenedWindow) {
+                                    $.icescrum.closeWindow($.icescrum.o.currentOpenedWindow);
+                                }
+                            }
+                        }
+                    });
+                },
+
+                updateStartDateDatePicker:function(data) {
+                    var date = this.jsonToDate(data.endDate);
+                    date.setDate(date.getDate() + 1);
+                    date = this.dateLocaleFormat(date);
+                    $('#datepicker-startDate').datepicker('option', {minDate:date, defaultDate:date});
+                    $('#datepicker-startDate').datepicker('setDate', date);
+                },
+
+                updateEndDateDatePicker:function(data, delta) {
+                    var date = this.jsonToDate(data.endDate);
+                    date.setDate(date.getDate() + 2);
+                    var date2 = new Date(date);
+                    date2.setDate(date.getDate() + (delta - 1));
+                    $('#datepicker-endDate').datepicker('option', {minDate:this.dateLocaleFormat(date), defaultDate:this.dateLocaleFormat(date2)});
+                    $('#datepicker-endDate').datepicker('setDate', this.dateLocaleFormat(date2));
+                }
+            });
+
+    $.fn.changeSelectDate = function(date) {
+        var obj = $(this);
+        var id = obj.attr('id');
+        var select = $('#' + id + ' option');
+        var moveTo = -1;
+        select.each(function () {
+            var option = $(this).val();
+            if (option <= date && date >= option) {
+                moveTo += 1;
+            }
+        });
+        if (moveTo != -1) {
+            obj.selectmenu('value', moveTo);
+        } else {
+            obj.selectmenu('value', 0);
+        }
+    };
+
+    $.fn.liveDraggable = function (opts) {
+        this.die('hover').live("hover", function() {
+            if (!$(this).data("init")) {
+                $(this).data("init", true).draggable(opts);
+            }
+        });
+    };
+
+    $.fn.liveDroppable = function (opts) {
+        var obj = this.selector;
+        $(opts.accept).live('dragstart', function() {
+            $(obj).each(function() {
+                var drp = $(this);
+                if (!drp.data("init")) {
+                    drp.data("init", true).droppable(opts);
+                }
+            });
+        });
+    };
+
+    $.fn.liveEditable = function (url, opts) {
+        this.live("hover", function() {
+            if (!$(this).data("init")) {
+                $(this).data("init", true).editable(url, opts);
+            }
+        });
+    };
+
+    String.prototype.formatLine = function(remove) {
+        debugger;
+        remove = remove ? "" : "<br/>";
+        return this.replace(/\r\n/g, remove).replace(/\n/g, remove).replace(/"/g, '\\"');
+    };
+
+    $.constbrowser = {
+
+        defaults:{
+            'dropmenuleft': 0
+        },
+        settings:{},
+
+        getDropMenuTopLeft:function() {
+            var o = $.constbrowser.getConstBrowser();
+            return o.dropmenuleft;
+        },
+
+        getConstBrowser:function() {
+            var o = $.constbrowser.defaults;
+            if ($.browser.msie) {
+                if (jQuery.browser.version.substr(0, 1) == "7") {
+                    o = $.constbrowser.ie7;
+                }
+                else if (jQuery.browser.version.substr(0, 1) == "6") {
+                    o = $.constbrowser.ie6;
+                }
+            }
+            return o;
+        }
+    };
+
+    $.constbrowser.ie7 = {
+        'dropmenuleft': 70
+    };
+
+    $.constbrowser.ie6 = {
+        'dropmenuleft': 70
+    };
+
+})(jQuery);

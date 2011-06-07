@@ -21,29 +21,26 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 
-<g:if test="${actors}">
-  <is:backlogElementLayout id="widget-${id}"
-          container="ul"
-          containerClass="list postit-rows"
-          value="${actors}"
-          var="actor"
-          dblclickable='[restrictOnAccess:"inProduct()", selector:".postit-row", callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'>
-    <li elemId="${actor.id}" class="postit-row postit-row-actor">
-      <is:postitIcon/>
-      <is:truncated size="30" encodedHTML="true">${actor.name.encodeAsHTML()}</is:truncated>
+<is:backlogElementLayout id="widget-${id}"
+                         style="display:${actors ? 'block' : 'none'};"
+                         container="ul"
+                         emptyRendering="true"
+                         containerClass="list postit-rows"
+                         value="${actors}"
+                         var="actor"
+                         dblclickable='[restrictOnAccess:"inProduct()", selector:".postit-row", callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'>
+    <li elemid="${actor.id}" id="postit-row-actor-${actor.id}" class="postit-row postit-row-actor">
+        <is:postitIcon/>
+        <is:truncated size="30" encodedHTML="true">${actor.name.encodeAsHTML()}</is:truncated>
     </li>
-  </is:backlogElementLayout>
-</g:if>
-<g:else>
-  <div class="box-content-layout">
-    ${message(code:'is.widget.actor.empty')}
-  </div>
-</g:else>
+</is:backlogElementLayout>
+
+<div class="box-blank" style="display:${actors ? 'none' : 'block'};">
+    ${message(code: 'is.widget.actor.empty')}
+</div>
+
 <entry:point id="${id}-${actionName}-widget" model="[actors:actors]"/>
-<jq:jquery>
-  <icep:notifications
-        name="${id}Widget"
-        reload="[update:'#widget-content-'+id,action:'list',params:[product:params.product]]"
-        group="${params.product}-${id}"
-        listenOn="#widget-content-${id}"/>
-</jq:jquery>
+<is:onStream
+        on="#backlog-layout-widget-${id}"
+        events="[[object:'actor',events:['add','update','remove']]]"
+        template="widget"/>

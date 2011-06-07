@@ -20,18 +20,17 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <div class="box-form">
-<is:fieldset title="is.dialog.exportProject.title">
-      <is:fieldInformation noborder="true">
-        <g:message code="is.dialog.exportProject.description"/>
-      </is:fieldInformation>
-      <is:progressBar
-              elementId="progress"
-              label="${message(code:'is.export.start')}"
-              iframe="true"
-              showOnCreate="true"
-              iframeSrc="${createLink(action:'exportProject',controller:'project',params:[product:params.product,get:true])}"
-              onComplete="\$.doTimeout(2000,function(){\$('#dialog').dialog('close')})"
-              url="${createLink(action:'exportProject',controller:'project',params:[product:params.product,status:true])}"
-              />
-  </is:fieldset>
+    <is:fieldset title="is.dialog.exportProject.title">
+        <is:fieldInformation noborder="true">
+            <g:message code="is.dialog.exportProject.description"/>
+        </is:fieldInformation>
+        <is:progressBar
+                elementId="progress"
+                label="${message(code:'is.export.start')}"
+                iframe="true"
+                showOnCreate="true"
+                iframeSrc="${createLink(action:'export',controller:'project',params:[product:params.product,get:true])}"
+                onComplete="\$.doTimeout(2000,function(){\$('#dialog').dialog('close')})"
+                url="${createLink(action:'export',controller:'project',params:[product:params.product,status:true])}"/>
+    </is:fieldset>
 </div>

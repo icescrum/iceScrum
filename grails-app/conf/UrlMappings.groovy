@@ -26,45 +26,45 @@ import org.springframework.transaction.CannotCreateTransactionException
 import com.mysql.jdbc.CommunicationsException
 
 class UrlMappings {
-  static mappings = {
+    static mappings = {
 
-    "/$controller/$action/$id?" {
+        "/$controller/$action/$id?" {
+        }
+
+        "/$action" {
+            controller = 'scrumOS'
+        }
+
+        "/$action/$window?/$id?" {
+            controller = 'scrumOS'
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
+        "/" {
+            controller = 'scrumOS'
+            action = 'index'
+        }
+
+        "/textileParser" {
+            controller = 'scrumOS'
+            action = 'textileParser'
+        }
+
+        name privateURL: "/ws/$controller/$action/$id?" {
+        }
+
+        "/login"(controller: 'login', action: 'auth')
+
+        "/attachmentable/download/$id?"(controller: "errors", action: "error403")
+        "403"(controller: "errors", action: "error403")
+        "400"(controller: "errors", action: "fakeError")
+        "302"(controller: "errors", action: "fakeError")
+        "500"(controller: "errors", action: "error403", exception: AccessDeniedException)
+        "500"(controller: "errors", action: "error403", exception: NotFoundException)
+        "500"(controller: 'errors', action: 'handleMemory', exception: OutOfMemoryError)
+        "500"(controller: 'errors', action: 'handleDatabase', exception: CannotCreateTransactionException)
+        "500"(controller: 'errors', action: 'handleDatabase', exception: CommunicationsException)
     }
-
-    "/$action" {
-      controller = 'scrumOS'
-    }
-
-    "/$action/$window?/$id?" {
-      controller = 'scrumOS'
-      constraints {
-        id(matches: /\d*/)
-      }
-    }
-
-    "/" {
-      controller = 'scrumOS'
-      action='index'
-    }
-
-    "/textileParser" {
-      controller = 'scrumOS'
-      action='textileParser'
-    }
-
-    name privateURL:"/private/$controller/$action/$id?" {
-    }
-
-    "/login"(controller: 'login', action: 'auth')
-
-    "/attachmentable/download/$id?"(controller: "errors", action: "error403")
-    "403"(controller: "errors", action: "error403")
-    "400"(controller: "errors", action: "fakeError")
-    "302"(controller: "errors", action: "fakeError")
-    "500"(controller: "errors", action: "error403", exception: AccessDeniedException)
-    "500"(controller: "errors", action: "error403", exception: NotFoundException)
-    "500"(controller: 'errors', action: 'handleMemory', exception: OutOfMemoryError)
-    "500"(controller: 'errors', action: 'handleDatabase', exception: CannotCreateTransactionException)
-    "500"(controller: 'errors', action: 'handleDatabase', exception: CommunicationsException)
-  }
 }

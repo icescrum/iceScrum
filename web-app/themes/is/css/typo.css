@@ -22,53 +22,53 @@
  */
 
 a {
-	text-decoration: none;	
+    text-decoration: none;
 }
 
 a:hover {
-	text-decoration: underline;
-	
+    text-decoration: underline;
+
 }
 
 body, input, textarea {
-	font-size: 12px;
-	font-family: Arial, "Trebuchet MS", Verdana, Geneva, Helvetica, sans-serif;
-	line-height: 16px;
+    font-size: 12px;
+    font-family: Arial, "Trebuchet MS", Verdana, Geneva, Helvetica, sans-serif;
+    line-height: 16px;
 }
 
 .button-s, .button-n, #local {
-	font-size: 11px;
-	line-height: 17px;
+    font-size: 11px;
+    line-height: 17px;
 }
 
 .box .box-title .content, .window-help {
-	font-size: 11px;
-	font-weight: bold;
-	line-height: 24px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 24px;
 }
 
 #navigation .navigation-content {
-	line-height: 20px;
-	font-size: 11px;
+    line-height: 20px;
+    font-size: 11px;
 }
 
 .table, .box .box-content .list {
-	font-size: 11px;
+    font-size: 11px;
 }
 
 .table .table-legend th .table-cell, .field-choose .field-choose-legend,
-    .table-lines .table-lines-head th {
-	font-size: 9px;
-	font-weight: bold;
+.table-lines .table-lines-head th {
+    font-size: 9px;
+    font-weight: bold;
 }
 
 .pagination a:hover {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .postit .postit-label, .postit .postit-excerpt {
-	font-family: Georgia, Arial, Verdana;
-	font-size: 13px;
+    font-family: Georgia, Arial, Verdana;
+    font-size: 13px;
     line-height: 12px;
 }
 
@@ -79,17 +79,17 @@ body, input, textarea {
 .postit .postit-id {
     line-height: 20px;
     font-size: 11px;
-	font-weight: bold;
+    font-weight: bold;
 }
 
 .postit .postit-excerpt {
-	font-size: 11px;
+    font-size: 11px;
     line-height: 12px;
 }
 
 .dropmenu .dropmenu-content ul li, .box .box-navigation ul .search .search-content input,
-    .box-form label, .input input, .box-form .field-information, .area textarea, .input textarea,
-    .field-file {
+.box-form label, .input input, .box-form .field-information, .area textarea, .input textarea,
+.field-file {
     font-size: 11px;
     line-height: 16px;
 }
@@ -101,18 +101,18 @@ body, input, textarea {
 }
 
 .panel .panel-title, #dropmenu .dropmenu-content .menu-label, .panel-box .panel-box-title,
-    .event-line-sub .event-sub, .kanban .kanban-label, .chat-content .chat-group {
+.event-line-sub .event-sub, .kanban .kanban-label, .chat-content .chat-group, .event-select-item {
     font-size: 11px;
     font-weight: bold;
 }
 
- #steps .current p, .list-news, .panel-box, #spinner-app, .dropmenu-content ul li a,
-    .chat-content .chat-users a, .chat-content .chat-status, .box-blank {
-     font-size: 11px;
- }
+#steps .current p, .list-news, .panel-box, #spinner-app, .dropmenu-content ul li a,
+.chat-content .chat-users a, .chat-content .chat-status, .box-blank {
+    font-size: 11px;
+}
 
 .field-choose .field-choose-finder .list-selectable-item, .event-header .drap-container,
-    .field-choose .pagination a, .browse .browse-filter input, .browse .browse-filter label {
+.field-choose .pagination a, .browse .browse-filter input, .browse .browse-filter label {
     font-size: 10px;
 }
 
@@ -127,7 +127,7 @@ body, input, textarea {
 }
 
 .view-chart .jqplot-yaxis-tick, .view-chart .jqplot-xaxis-tick {
-  font-size: 12px;
+    font-size: 12px;
 }
 
 #dropmenu .content-help {
@@ -144,6 +144,6 @@ body, input, textarea {
 }
 
 #license {
-    font-family:monospace;
-    font-size:12px;
+    font-family: monospace;
+    font-size: 12px;
 }

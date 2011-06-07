@@ -28,16 +28,16 @@
 */
 
 .list li {
-	display: block;
-	list-style: none;
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
+    display: block;
+    list-style: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 .list {
-	padding: 0;
-	margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 /*
@@ -47,13 +47,13 @@
 */
 
 .file-icon {
-    height:15px;
-    width:auto;
-    padding-bottom:1px;
-    line-height:16px;
-    padding-left:22px;
+    height: 15px;
+    width: auto;
+    padding-bottom: 1px;
+    line-height: 16px;
+    padding-left: 22px;
     margin: 4px 0 3px 4px;
-    margin-right:5px;
+    margin-right: 5px;
     background-position: 0 -176px;
 }
 
@@ -83,7 +83,6 @@
     width: 49%;
 }
 
-
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //	Buttons
@@ -97,115 +96,115 @@
 */
 
 .button-n, .button-s {
-	cursor: pointer;
-	display: block;
-	height: 19px;
-	float: left;
-	position: relative;
+    cursor: pointer;
+    display: block;
+    height: 19px;
+    float: left;
+    position: relative;
     white-space: nowrap;
 }
 
 .button-n span, .button-s span {
-	padding: 0;
-	margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .button-n:hover, .button-n:hover span, .button-s:hover, .button-s:hover span {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .button-n .content, .button-s .content {
-	display: block;
-	float: left;
-	height: 19px;
-	background-position: 0 -19px;
+    display: block;
+    float: left;
+    height: 19px;
+    background-position: 0 -19px;
     margin: 0 9px;
 }
 
 .button-n .content b, .button-s .content b {
     font-style: normal;
     text-decoration: underline;
-    font-weight:normal;
+    font-weight: normal;
 }
 
 .button-n .start, .button-s .start {
-	height: 19px;
-	width: 9px;
+    height: 19px;
+    width: 9px;
     position: absolute;
     left: 0;
     top: 0;
-	background-position: 0 0;
+    background-position: 0 0;
 }
 
 .button-n .end, .button-s .end {
-	height: 19px;
-	width: 9px;
+    height: 19px;
+    width: 9px;
     position: absolute;
     right: 0;
     padding: 0;
     margin: 0;
     top: 0;
-	background-position: right 0;
+    background-position: right 0;
 }
 
 .button-s:hover .end {
-	background-position: right -38px;
+    background-position: right -38px;
 }
 
 .button-s:hover .start {
-	background-position: 0 -38px;
+    background-position: 0 -38px;
 }
 
 .button-s:hover .content {
-	background-position: 0 -57px;
+    background-position: 0 -57px;
 }
 
 .button-n-black .end, .button-s-black .end {
-	background-position: right -76px;
+    background-position: right -76px;
 }
 
 .button-n-black .start, .button-s-black .start {
-	background-position: 0 -76px;
+    background-position: 0 -76px;
 }
 
 .button-n-black .content, .button-s-black .content {
-	background-position: 0 -95px;
+    background-position: 0 -95px;
 }
 
 .button-s-black:hover .end {
-	background-position: right -114px;
+    background-position: right -114px;
 }
 
 .button-s-black:hover .start {
-	background-position: 0 -114px;
+    background-position: 0 -114px;
 }
 
 .button-s-black:hover .content {
-	background-position: 0 -133px;
+    background-position: 0 -133px;
 }
 
 .button-s-light .end, .button-s-light .end {
-	background-position: right -152px;
+    background-position: right -152px;
 }
 
 .button-s-light, .button-s-light .start {
-	background-position: 0 -152px;
+    background-position: 0 -152px;
 }
 
 .button-s-light .content, .button-s-light .content {
-	background-position: 0 -171px;
+    background-position: 0 -171px;
 }
 
 .button-s-light:hover .end {
-	background-position: right 0;
+    background-position: right 0;
 }
 
 .button-s-light:hover .start {
-	background-position: 0 0;
+    background-position: 0 0;
 }
 
 .button-s-light:hover .content {
-	background-position: 0 -19px;
+    background-position: 0 -19px;
 }
 
 .button-s-light strong {
@@ -220,8 +219,8 @@
 
 .button-s .button-action {
     display: block;
-    height:12px;
-    width:12px;
+    height: 12px;
+    width: 12px;
     text-indent: -6000em;
     position: absolute;
     z-index: 999;
@@ -230,9 +229,8 @@
 }
 
 .button-s .button-delete {
-    background-position:-24px 0;
+    background-position: -24px 0;
 }
-
 
 /*
 /////////////////////////////////////////
@@ -241,49 +239,49 @@
 */
 
 .button-ico .content {
-	padding-left: 12px;
+    padding-left: 12px;
 }
 
 .button-ico .ico {
-	position: absolute;
-	height: 10px;
-	width: 12px;
-	padding: 0;
-	margin: 0;
-	top: 3px;
-	left: 6px;
-	background-position: 0 0;
-	background-repeat: no-repeat;
-	font-size: 0;
-	line-height: 0;
+    position: absolute;
+    height: 10px;
+    width: 12px;
+    padding: 0;
+    margin: 0;
+    top: 3px;
+    left: 6px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    font-size: 0;
+    line-height: 0;
 }
 
 .button-ico:hover .ico {
-	background-position: 0 -10px;
+    background-position: 0 -10px;
 }
 
 .button-n:hover .end {
-	background-position: right 0;
+    background-position: right 0;
 }
 
 .button-n:hover .start {
-	background-position: 0 0;
+    background-position: 0 0;
 }
 
 .button-n:hover .content {
-	background-position: 0 -19px;
+    background-position: 0 -19px;
 }
 
 .button-n-black:hover .end {
-	background-position: right -114px;
+    background-position: right -114px;
 }
 
 .button-n-black:hover .start {
-	background-position: 0 -114px;
+    background-position: 0 -114px;
 }
 
 .button-n-black:hover .content {
-	background-position: 0 -133px;
+    background-position: 0 -133px;
 }
 
 /*
@@ -301,11 +299,11 @@
 }
 
 .table td {
-	white-space: normal;
+    white-space: normal;
 }
 
 .table .table-cell {
-	padding: 3px 2px 5px 4px;
+    padding: 3px 2px 5px 4px;
 }
 
 .table td.table-cell-checkbox {
@@ -330,8 +328,8 @@
 }
 
 .table th.table-cell-checkbox.first .table-cell {
-    padding:0 0 0 2px;
-    text-align:left;
+    padding: 0 0 0 2px;
+    text-align: left;
 }
 
 .table td.table-cell-checkbox .table-cell {
@@ -340,66 +338,66 @@
 }
 
 .table .table-line td {
-	border-bottom-width: 1px;
-	border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
 }
 
 .table .table-line .first {
-	background: 0 none;
-	padding-left: 0;
+    background: 0 none;
+    padding-left: 0;
 }
 
 .table .table-line td {
-	padding-left: 2px;
-	padding-bottom: 2px;
+    padding-left: 2px;
+    padding-bottom: 2px;
 }
 
 .table .line-last {
-	background: 0 none;
+    background: 0 none;
 }
 
 .table .line-last td {
-	padding-bottom: 0;
-	border-bottom-width: 0;
+    padding-bottom: 0;
+    border-bottom-width: 0;
 }
 
 .table .table-filters td {
-	background-position: 0 -66px;
-	background-repeat: repeat-x;
+    background-position: 0 -66px;
+    background-repeat: repeat-x;
     padding: 0;
 }
 
 .table .table-filters .table-cell {
     padding: 0;
-	padding-left: 8px;
+    padding-left: 8px;
     height: 24px;
 }
 
 .table th {
-	background-position: 0 -131px;
-	border-bottom-width: 1px;
-	text-align: center;
+    background-position: 0 -131px;
+    border-bottom-width: 1px;
+    text-align: center;
 }
 
 .table th .table-cell {
-	padding: 2px 2px 2px 6px;
+    padding: 2px 2px 2px 6px;
 }
 
 .table .table-legend .first .table-cell {
-	padding-left: 4px;
+    padding-left: 4px;
 }
 
 .table .table-foot {
-	background-position: 0 -131px;
-	border-top-width: 1px;
+    background-position: 0 -131px;
+    border-top-width: 1px;
 }
 
 .table .table-foot .table-cell {
-	padding: 2px 4px;
+    padding: 2px 4px;
 }
 
 .table .table-filters-bottom td {
-	border-top-width: 1px;
+    border-top-width: 1px;
 }
 
 .table .table-pagination .table-cell {
@@ -407,11 +405,11 @@
 }
 
 .table .table-cell-editable {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .table tr.table-group td {
-	padding: 3px 2px 5px 15px;
+    padding: 3px 2px 5px 15px;
 }
 
 /*
@@ -421,88 +419,87 @@
 */
 
 .pagination {
-	padding: 0;
-	margin: 0;
-	height: 20px;
-	padding: 2px 0;
-	overflow: hidden;
+    margin: 0;
+    height: 20px;
+    padding: 2px 0;
+    overflow: hidden;
     position: relative;
 }
 
 .pagination li {
-	float: left;
-	list-style: none;
-	list-style-type: none;
-	padding: 0 4px;
-	margin: 0;
+    float: left;
+    list-style: none;
+    list-style-type: none;
+    padding: 0 4px;
+    margin: 0;
 }
 
 .pagination .pagination-next {
-	float: right;
-	background-position: -1
+    float: right;
+    background-position: -1
 }
 
 .pagination .pagination-last {
-	float: right;
+    float: right;
 }
 
 .pagination .pagination-first a, .pagination .pagination-previous a {
-	padding-left: 14px;
+    padding-left: 14px;
 }
 
 .pagination .pagination-first a {
-	background-position: 0 0;
+    background-position: 0 0;
 }
 
 .pagination .pagination-previous a {
-	background-position: 0 -16px;
+    background-position: 0 -16px;
 }
 
 .pagination .pagination-next a {
-	background-position: right -96px;
+    background-position: right -96px;
 }
 
 .pagination .pagination-last a {
-	background-position: right -80px;
+    background-position: right -80px;
 }
 
 .pagination .pagination-first a:hover {
-	background-position: 0 -32px;
+    background-position: 0 -32px;
 }
 
 .pagination .pagination-previous a:hover {
-	background-position: 0 -48px;
+    background-position: 0 -48px;
 }
 
 .pagination .pagination-next a:hover {
-	background-position: right -128px;
+    background-position: right -128px;
 }
 
 .pagination .pagination-last a:hover {
-	background-position: right -112px;
+    background-position: right -112px;
 }
 
 .pagination .pagination-next a, .pagination .pagination-last a {
-	padding-right: 14px;
+    padding-right: 14px;
 }
 
 .pagination .separator {
-	background-position: right -99px;
-	background-repeat: no-repeat;
-	width: 2px;
-	height: 16px;
-	padding: 0;
-	margin: 2px 3px;
-	margin-right: 0;
-	padding-right: 4px;
-	float: left;
+    background-position: right -99px;
+    background-repeat: no-repeat;
+    width: 2px;
+    height: 16px;
+    padding: 0;
+    margin: 2px 3px;
+    margin-right: 0;
+    padding-right: 4px;
+    float: left;
 }
 
 .pagination .separator-right {
-	float: right;
-	padding: 0;
-	margin: 2px 5px;
-	margin-left: 0;
+    float: right;
+    padding: 0;
+    margin: 2px 5px;
+    margin-left: 0;
 }
 
 .pagination .pagination-action {
@@ -517,8 +514,6 @@
     font-weight: bold;
 }
 
-
-
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //	Simple Select
@@ -526,15 +521,15 @@
 */
 
 .simple-select p {
-	padding: 0;
-	margin: 0;
-	cursor: pointer;
-	position: relative;
-	display: block;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    position: relative;
+    display: block;
 }
 
 .simple-select ul {
-	display: none;
+    display: none;
 }
 
 /*
@@ -562,19 +557,19 @@
 }
 
 .dropmenu-hover .dropmenu-button {
-    
+
 }
 
 .dropmenu-hover .dropmenu-button .end {
-	background-position: right 0;
+    background-position: right 0;
 }
 
 .dropmenu-hover .dropmenu-button .start {
-	background-position: 0 0;
+    background-position: 0 0;
 }
 
 .dropmenu-hover .dropmenu-button .content {
-	background-position: 0 -19px;
+    background-position: 0 -19px;
 }
 
 #dropmenu .dropmenu-content {
@@ -592,7 +587,7 @@
 }
 
 #dropmenu .dropmenu-content a {
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
 #dropmenu .dropmenu-content ul {
@@ -614,6 +609,12 @@
 
 #dropmenu .dropmenu-content ul.small li a {
     padding: 0px 6px;
+}
+
+#dropmenu .dropmenu-content ul.small li.hidden,
+.tool-button.hidden,
+.separator.hidden {
+    display: none;
 }
 
 #dropmenu .dropmenu-content ul li a:hover {
@@ -655,14 +656,14 @@
 }
 
 .dropmenu-hover .ico {
-	background-position: 0 -10px;
+    background-position: 0 -10px;
 }
 
 #dropmenu .dropmenu-content .menu-label {
     display: block;
     padding: 2px 0;
     padding-left: 5px;
-    background-position:0 -38px;
+    background-position: 0 -38px;
 }
 
 /*
@@ -672,7 +673,7 @@
 */
 
 .input {
-    
+
 }
 
 .input span {
@@ -735,7 +736,7 @@
 
 .rich-large .area-rich {
     width: 500px;
-    overflow-x:hidden;
+    overflow-x: hidden;
 }
 
 /*
@@ -903,7 +904,6 @@
     border: 0 none;
 }
 
-
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //	Liste
@@ -911,7 +911,7 @@
 */
 
 .list {
-    
+
 }
 
 /*
@@ -968,10 +968,8 @@
     border-width: 1px;
     display: block;
     float: left;
-    padding:0;
-    margin:0;
+    margin: 0 5px 0 0;
     line-height: 20px;
-    margin-right: 5px;
     padding: 0 10px;
 }
 
@@ -989,7 +987,7 @@
 }
 
 .tab-selected {
-    display:block;
+    display: block;
 }
 
 .panel-texte {
@@ -1020,15 +1018,14 @@
     width: 110px;
 }
 
-
 .box-form .field-input, .box-form .field-area, .box-form .field-select, .box-form .field-rich,
-    .box-form .field-checkbox, .box-form .field-color {
+.box-form .field-checkbox, .box-form .field-color {
     padding: 0;
     margin: 0;
     padding-bottom: 2px;
 }
 
-.box-form .field-input .input,.box-form .field-input .inputfile, .box-form .field-color .input {
+.box-form .field-input .input, .box-form .field-input .inputfile, .box-form .field-color .input {
     float: left;
     padding: 3px 0 2px 0;
     padding-left: 5px;
@@ -1067,7 +1064,7 @@
     padding-left: 5px;
 }
 
-.box-form .field-information {
+.box-form .field-information, #window-dialog .field-information {
     border-width: 1px 0;
     background-repeat: repeat-x;
     background-position: 0 -83px;
@@ -1102,10 +1099,10 @@
 }
 
 .mask-submit {
-    display:block;
-    overflow:hidden;
-    height:0;
-    width:0;
+    display: block;
+    overflow: hidden;
+    height: 0;
+    width: 0;
 }
 
 .mask-submit * {
@@ -1115,7 +1112,7 @@
 }
 
 .field-file .ui-progressbar .label {
-    margin:0;
+    margin: 0;
 }
 
 .field-buttons {
@@ -1201,30 +1198,28 @@
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-
 .field-file .inputfile {
-    padding:4px 0 2px 5px;
+    padding: 4px 0 2px 5px;
 }
 
 .box-form-250 .field-file .input {
-    width:350px;
+    width: 350px;
 }
 
 .box-form-180 .field-file .input {
-    width:280px;
+    width: 280px;
 }
 
 .box-form-160 .field-file .input {
-    width:260px;
+    width: 260px;
 }
 
 .box-form-200 .field-file .input {
-    width:300px;
+    width: 300px;
 }
 
-
 .field-file .ui-progressbar-value {
-    background-position:0 -52px;
+    background-position: 0 -52px;
 }
 
 /*
@@ -1233,7 +1228,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.box-form .field-choose  {
+.box-form .field-choose {
     width: 100%;
     position: relative;
     border-top-width: 1px;
@@ -1259,27 +1254,27 @@
     padding-left: 180px
 }
 
-.field-choose-finder{
+.field-choose-finder {
     height: 168px;
 }
 
-.field-choose-list{
+.field-choose-list {
     height: 188px;
 }
 
 .field-choose .field-choose-finder .list-selectable-item .ico {
     float: left;
     padding: 0px 7px 0 0;
-    width:28px;
-    height:28px;
-    cursor:move;
+    width: 28px;
+    height: 28px;
+    cursor: move;
 }
 
-.field-choose-state-hover{
-   background-color:#FFFAAE;
+.field-choose-state-hover {
+    background-color: #FFFAAE;
 }
 
-.field-choose .field-choose-finder .list-selectable-item  {
+.field-choose .field-choose-finder .list-selectable-item {
     width: 169px;
     padding-top: 4px;
     padding-left: 4px;
@@ -1429,41 +1424,40 @@
 */
 
 .ui-progressbar {
-    display:block;
+    display: block;
     padding: 1px;
-    height:22px;
+    height: 22px;
     line-height: 22px;
 }
 
 .ui-progressbar .label {
-    left:0;
-    line-height:18px;
-    position:absolute;
-    right:0;
-    text-align:center;
+    left: 0;
+    line-height: 18px;
+    position: absolute;
+    right: 0;
+    text-align: center;
 }
 
 .field-file .ui-progressbar {
-    position:relative;
-    float:right;
-    width:115px;
-    height:22px;
+    position: relative;
+    float: right;
+    width: 115px;
+    height: 22px;
     line-height: 22px;
-    border:none;
+    border: none;
     display: block;
 }
 
 .ui-progressbar-value {
-    background-image:url("../images/bar/blue.png");
+    background-image: url("../images/bar/blue.png");
     background-position: 0 -27px;
 }
 
 .ui-progressbar-value.animated {
-    background-image:url("../images/bar/blue.png");
+    background-image: url("../images/bar/blue.png");
     background-position: 0 -27px;
 }
 
-
 .ui-progressbar-value-error {
-    background:#FD8900
+    background: #FD8900
 }

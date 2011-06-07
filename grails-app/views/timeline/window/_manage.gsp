@@ -23,68 +23,105 @@
 <g:setProvider library="jquery"/>
 <g:form action="save" method="post" name="${id}-form" class="box-form box-form-250 box-form-200-legend" tabindex="1">
 
-  <is:fieldset title="is.ui.timeline.release.properties.title">
+    <is:fieldset title="is.ui.timeline.release.properties.title">
 
-    <is:fieldInput for="releasename" label="is.release.name">
-      <is:input id="releasename" name="release.name" value="${release?.name}"/>
-    </is:fieldInput>
+        <is:fieldInput for="releasename" label="is.release.name">
+            <is:input id="releasename" name="release.name" value="${release?.name}" focus="true"/>
+        </is:fieldInput>
 
-    <is:fieldDatePicker for="startDate" label="is.release.startDate">
-      <is:datePicker
-              id="startDate"
-              name="startDate"
-              mode="read-input"
-              changeMonth="true"
-              changeYear="true"
-              minDate="${previousRelease && !release ? previousRelease.endDate + 1 : (previousRelease && release ? previousRelease.endDate + 1: product.startDate)}"
-              defaultDate="${release ? release.startDate : (previousRelease ? previousRelease.endDate + 1 : product.startDate)}"
-              disabled="${release ? release.state == Release.STATE_DONE : false}"/>
-    </is:fieldDatePicker>
+        <is:fieldDatePicker for="startDate" label="is.release.startDate">
+            <is:datePicker
+                    id="startDate"
+                    name="startDate"
+                    mode="read-input"
+                    changeMonth="true"
+                    changeYear="true"
+                    minDate="${previousRelease && !release ? previousRelease.endDate + 1 : (previousRelease && release ? previousRelease.endDate + 1: product.startDate)}"
+                    defaultDate="${release ? release.startDate : (previousRelease ? previousRelease.endDate + 1 : product.startDate)}"
+                    disabled="${release ? release.state == Release.STATE_DONE : false}"/>
+        </is:fieldDatePicker>
 
-    <is:fieldDatePicker for="endDate" label="is.release.endDate" noborder="true">
-      <is:datePicker
-              id="endDate"
-              name="endDate"
-              minDate="${previousRelease && !release ? previousRelease.endDate + 2 : (previousRelease && release ? previousRelease.endDate + 2: product.startDate + 1)}"
-              defaultDate="${release ? release.endDate : (previousRelease ? previousRelease.endDate + 2 : product.startDate + 1)}"
-              disabled="${release ? release.state == Release.STATE_DONE : false}"
-              mode="read-input"
-              changeMonth="true"
-              changeYear="true"/>
-    </is:fieldDatePicker>
+        <is:fieldDatePicker for="endDate" label="is.release.endDate" noborder="true">
+            <is:datePicker
+                    id="endDate"
+                    name="endDate"
+                    minDate="${previousRelease && !release ? previousRelease.endDate + 2 : (previousRelease && release ? previousRelease.endDate + 2: product.startDate + 1)}"
+                    defaultDate="${release ? release.endDate : (previousRelease ? previousRelease.endDate + 2 : product.startDate + 1)}"
+                    disabled="${release ? release.state == Release.STATE_DONE : false}"
+                    mode="read-input"
+                    changeMonth="true"
+                    changeYear="true"/>
+        </is:fieldDatePicker>
 
-  </is:fieldset>
+    </is:fieldset>
 
-  <is:fieldset title="is.ui.timeline.release.details.title">
-    <is:fieldArea label="is.release.goal" noborder="true" for="releasegoal">
-      <is:area id="releasegoal" name="release.goal" value="${release?.goal}" rows="3" />
-    </is:fieldArea>
-  </is:fieldset>
-  
-  <g:if test="${currentPanel == 'edit'}">
-    <g:hiddenField name="release.version" value="${release.version}"/>
-    <g:hiddenField name="release.id" value="${release.id}"/>
-  </g:if>
+    <is:fieldset title="is.ui.timeline.release.details.title">
+        <is:fieldArea label="is.release.goal" noborder="true" for="releasegoal">
+            <is:area id="releasegoal" name="release.goal" value="${release?.goal}" rows="3"/>
+        </is:fieldArea>
+    </is:fieldset>
 
-  <is:buttonBar>
-    <g:if test="${currentPanel == 'add'}">
-      <is:button targetLocation="${controllerName+'/'+actionName}" id="submitAndContinueForm" type="submitToRemote" url="[controller:'timeline', action:'save', params:[continue:true,product:params.product]]" update="window-content-${id}" onSuccess="\$('#window-toolbar').icescrum('toolbar').reload('${id}');">${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}</is:button>
-      <is:button targetLocation="${controllerName}" id="submitForm" type="submitToRemote" url="[controller:'timeline', action:'save',params:[product:params.product]]" update="window-content-${id}" onSuccess="\$('#window-toolbar').icescrum('toolbar').reload('${id}');">${message(code:'is.button.add')}</is:button>
+    <g:if test="${release}">
+        <g:hiddenField name="release.version" value="${release.version}"/>
+        <g:hiddenField name="release.id" value="${release.id}"/>
     </g:if>
-    <g:if test="${currentPanel == 'edit'}">
-      <g:if test="${nextReleaseId}">
-        <is:button targetLocation="${controllerName+'/'+actionName+'/'+nextReleaseId}" id="submitAndContinueForm" type="submitToRemote" url="[controller:'timeline', action:'update', params:[continue:true,product:params.product]]" update="window-content-${id}" onSuccess="\$('#window-toolbar').icescrum('toolbar').reload('${id}');">${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}</is:button>
-      </g:if>
-      <is:button targetLocation="${controllerName}" id="submitForm" type="submitToRemote" url="[controller:'timeline', action:'update',params:[product:params.product]]" update="window-content-${id}" onSuccess="\$('#window-toolbar').icescrum('toolbar').reload('${id}');">${message(code:'is.button.update')}</is:button>
-    </g:if>
-    <is:button targetLocation="${controllerName}" id="cancelForm" type="link" button="button-s button-s-black" remote="true" url="[controller:id, action:'index',params:[product:params.product]]" update="window-content-${id}" value="${message(code: 'is.button.cancel')}"/>
-   </is:buttonBar>
+
+    <is:buttonBar>
+        <g:if test="${!release?.id}">
+            <is:button
+                    id="submitAndContinueForm"
+                    type="submitToRemote"
+                    url="[controller:'release', action:'save', params:[product:params.product]]"
+                    onSuccess="jQuery.icescrum.form.reset('#${id}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,90); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.saved')}')">
+                ${message(code: 'is.button.add')} ${message(code: 'is.button.andContinue')}
+            </is:button>
+            <is:button
+                    id="submitForm"
+                    type="submitToRemote"
+                    url="[controller:'release', action:'save',params:[product:params.product]]"
+                    onSuccess="jQuery.icescrum.navigateTo('${id}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.saved')}')">
+                ${message(code: 'is.button.add')}
+            </is:button>
+        </g:if>
+        <g:else>
+            <g:if test="${next}">
+                <is:button
+                        id="submitAndContinueForm"
+                        type="submitToRemote"
+                        url="[controller:'release', action:'update', params:[continue:true,product:params.product]]"
+                        onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.release.updated')}')">
+                    ${message(code: 'is.button.update')} ${message(code: 'is.button.andContinue')}
+                </is:button>
+            </g:if>
+            <is:button
+                    id="submitForm"
+                    type="submitToRemote"
+                    url="[controller:'release', action:'update',params:[product:params.product]]"
+                    onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.updated')}')">
+                ${message(code: 'is.button.update')}
+            </is:button>
+        </g:else>
+        <is:button
+                id="cancelForm"
+                type="link"
+                button="button-s button-s-black"
+                href="#${controllerName}"
+                value="${message(code: 'is.button.cancel')}"/>
+    </is:buttonBar>
 </g:form>
-<jq:jquery>
-  $("#releasename").focus();
-  jQuery("#window-content-${id}").addClass('window-content-toolbar');
-  <is:renderNotice />  
-</jq:jquery>
-<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="esc" callback="\$.icescrum.cancelForm();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${id}"
+             listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${id}"
+             listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="esc" callback="\$.icescrum.form.cancel();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
+
+<g:if test="${release}">
+    <is:onStream
+            on="#${id}-form"
+            events="[[object:'release',events:['update','close','activate']]]"
+            callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.release.updated')}','${controllerName}',false);"/>
+    <is:onStream
+            on="#${id}-form"
+            events="[[object:'release',events:['remove']]]"
+            callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.release.deleted')}','${controllerName}',false);"/>
+</g:if>

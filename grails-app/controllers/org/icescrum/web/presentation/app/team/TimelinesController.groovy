@@ -29,83 +29,78 @@ import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Team
 import org.icescrum.core.support.MenuBarSupport
+import org.icescrum.core.utils.BundleUtils
 
 @Secured('inTeam()')
 class TimelinesController {
 
-  static ui = true
+    static ui = true
 
-  static final id = 'timelines'
-  static menuBar = MenuBarSupport.teamDynamicBar('is.ui.timeline', id, true, 102)
-  static window = [title: 'is.ui.timeline',help:'is.ui.timeline.help', toolbar: true]
+    static final id = 'timelines'
+    static menuBar = MenuBarSupport.teamDynamicBar('is.ui.timeline', id, true, 102)
+    static window = [title: 'is.ui.timeline', help: 'is.ui.timeline.help', toolbar: true]
 
-  def releaseService
-  def productService
-  def featureService
-  def springSecurityService
+    def releaseService
+    def productService
+    def featureService
+    def springSecurityService
 
-  static SprintStateBundle = [
-          (Sprint.STATE_WAIT):'is.sprint.state.wait',
-          (Sprint.STATE_INPROGRESS):'is.sprint.state.inprogress',
-          (Sprint.STATE_DONE):'is.sprint.state.done'
-  ]
-
-  def index = {
-    render(template: 'window/timelineView', model: [id: id])
-  }
-
-  def toolbar = {
-    render(template:'window/toolbar')
-  }
-
-  def timeLineList = {
-
-    def list = []
-    def team = Team.get(params.long('team'))
-
-    for (currentProduct in team.products) {
-
-      def date = new Date(currentProduct.startDate.getTime() - 1000)
-      def startProject = [start: date, end: date, durationEvent: false, classname: "timeline-startproject"]
-
-      list.add(startProject)
-
-      currentProduct.releases.each {
-        def templateTooltip = include(view: "$controllerName/tooltips/_tooltipReleaseDetails.gsp", model: [release: it])
-
-
-        it.sprints.eachWithIndex { it2, index ->
-          def colorS
-          def textColorS = "#444"
-          switch (it2.state) {
-            case Sprint.STATE_WAIT:
-              colorS = "#BBBBBB"
-              break
-            case Sprint.STATE_INPROGRESS:
-              colorS = "#C8E5FC"
-              break
-            case Sprint.STATE_DONE:
-              colorS = "#C1FF89"
-              break
-          }
-          templateTooltip = include(view: "$controllerName/tooltips/_tooltipSprintDetails.gsp", model: [sprint: it2,user:springSecurityService.currentUser])
-          def tlS = [url: createLink(controller:'scrumOS',params:[product:it.parentProduct.id])+"#sprintBacklog/${it2.id}",
-                  start: it2.startDate,
-                  end: it2.endDate,
-                  durationEvent: true,
-                  title: "#${index + 1}",
-                  color: colorS,
-                  textColor: textColorS,
-                  classname: "timeline-sprint",
-                  eventID: it2.id,
-                  tooltipContent: templateTooltip,
-                  tooltipTitle: "${message(code: 'is.sprint')} ${index + 1} (${message(code: SprintStateBundle[it2.state])})"]
-          list.add(tlS)
-        }
-      }
+    def index = {
+        render(template: 'window/timelineView', model: [id: id])
     }
-    render([dateTimeFormat: "iso8601", events: list] as JSON)
-  }
+
+    def toolbar = {
+        render(template: 'window/toolbar')
+    }
+
+    def timeLineList = {
+
+        def list = []
+        def team = Team.get(params.long('team'))
+
+        for (currentProduct in team.products) {
+
+            def date = new Date(currentProduct.startDate.getTime() - 1000)
+            def startProject = [start: date, end: date, durationEvent: false, classname: "timeline-startproject"]
+
+            list.add(startProject)
+
+            currentProduct.releases.each {
+                def templateTooltip = include(view: "$controllerName/tooltips/_tooltipReleaseDetails.gsp", model: [release: it])
+
+
+                it.sprints.eachWithIndex { it2, index ->
+                    def colorS
+                    def textColorS = "#444"
+                    switch (it2.state) {
+                        case Sprint.STATE_WAIT:
+                            colorS = "#BBBBBB"
+                            break
+                        case Sprint.STATE_INPROGRESS:
+                            colorS = "#C8E5FC"
+                            break
+                        case Sprint.STATE_DONE:
+                            colorS = "#C1FF89"
+                            break
+                    }
+                    templateTooltip = include(view: "$controllerName/tooltips/_tooltipSprintDetails.gsp", model: [sprint: it2, user: springSecurityService.currentUser])
+                    def tlS = [url: createLink(controller: 'scrumOS', params: [product: it.parentProduct.id]) + "#sprintPlan/${it2.id}",
+                            start: it2.startDate,
+                            end: it2.endDate,
+                            durationEvent: true,
+                            title: "#${index + 1}",
+                            color: colorS,
+                            textColor: textColorS,
+                            classname: "timeline-sprint",
+                            eventID: it2.id,
+                            tooltipContent: templateTooltip,
+                            tooltipTitle: "${message(code: 'is.sprint')} ${index + 1} (${message(code: BundleUtils.sprintStates[it2.state])})"]
+                    list.add(tlS)
+                }
+            }
+        }
+        render([dateTimeFormat: "iso8601", events: list] as JSON)
+    }
 
 
 }

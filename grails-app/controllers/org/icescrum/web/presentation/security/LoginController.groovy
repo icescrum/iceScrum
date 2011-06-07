@@ -39,149 +39,149 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 class LoginController {
 
-	/**
-	 * Dependency injection for the authenticationTrustResolver.
-	 */
-	def authenticationTrustResolver
-
-	/**
-	 * Dependency injection for the springSecurityService.
-	 */
-	def springSecurityService
+    /**
+     * Dependency injection for the authenticationTrustResolver.
+     */
+    def authenticationTrustResolver
 
     /**
-    * Dependency injection to look in config options
-    */
+     * Dependency injection for the springSecurityService.
+     */
+    def springSecurityService
+
+    /**
+     * Dependency injection to look in config options
+     */
     def grailsApplication
 
-	/**
-	 * Default action; redirects to 'defaultTargetUrl' if logged in, /username/auth otherwise.
-	 */
-	def index = {
-		if (springSecurityService.isLoggedIn()) {
-			redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
-		}
-		else {
-			redirect action: auth, params: params
-		}
-	}
+    /**
+     * Default action; redirects to 'defaultTargetUrl' if logged in, /username/auth otherwise.
+     */
+    def index = {
+        if (springSecurityService.isLoggedIn()) {
+            redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
+        }
+        else {
+            redirect action: auth, params: params
+        }
+    }
 
-	/**
-	 * Show the username page.
-	 */
-	def auth = {
+    /**
+     * Show the username page.
+     */
+    def auth = {
 
-		def config = SpringSecurityUtils.securityConfig
+        def config = SpringSecurityUtils.securityConfig
 
-		if (springSecurityService.isLoggedIn()) {
-			redirect uri: config.successHandler.defaultTargetUrl
-			return
-		}
+        if (springSecurityService.isLoggedIn()) {
+            redirect uri: config.successHandler.defaultTargetUrl
+            return
+        }
         session.invalidate()
 
-        def locale = params.lang?:null
+        def locale = params.lang ?: null
         try {
-          def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
-          if (localeAccept?.size() > 0){
-            locale = params.lang?:localeAccept[0].toString()
-          }
-        }catch(Exception e){}
+            def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
+            if (localeAccept?.size() > 0) {
+                locale = params.lang ?: localeAccept[0].toString()
+            }
+        } catch (Exception e) {}
 
-        if (locale){
-          RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
+        if (locale) {
+            RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         }
 
         String view = 'auth'
-		String postUrl = "${config.apf.filterProcessesUrl}"
-		render view: view, model: [postUrl: postUrl, rememberMeParameter: config.rememberMe.parameter, activeLostPassword:ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable), enableRegistration:ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)]
-	}
-
-	/**
-	 * Show denied page.
-	 */
-	def denied = {
-		if (springSecurityService.isLoggedIn() &&
-				authenticationTrustResolver.isRememberMe(SecurityContextHolder.context?.authentication)) {
-			// have cookie but the page is guarded with IS_AUTHENTICATED_FULLY
-			redirect action: full, params: params
-		}
-	}
-
-	/**
-	 * Login page for users with a remember-me cookie but accessing a IS_AUTHENTICATED_FULLY page.
-	 */
-	def full = {
-		def config = SpringSecurityUtils.securityConfig
-		render view: 'auth', params: params,
-			model: [hasCookie: authenticationTrustResolver.isRememberMe(SecurityContextHolder.context?.authentication),
-			        postUrl: "${request.contextPath}${config.apf.filterProcessesUrl}"]
-	}
-
-    def authAjax = {
-      render(status:401, text:[error: message(code:'is.denied')] as JSON)
+        String postUrl = "${config.apf.filterProcessesUrl}"
+        render view: view, model: [postUrl: postUrl, rememberMeParameter: config.rememberMe.parameter, activeLostPassword: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable), enableRegistration: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)]
     }
 
-	/**
-	 * Callback after a failed username. Redirects to the auth page with a warning message.
-	 */
-	def authfail = {
+    /**
+     * Show denied page.
+     */
+    def denied = {
+        if (springSecurityService.isLoggedIn() &&
+                authenticationTrustResolver.isRememberMe(SecurityContextHolder.context?.authentication)) {
+            // have cookie but the page is guarded with IS_AUTHENTICATED_FULLY
+            redirect action: full, params: params
+        }
+    }
+
+    /**
+     * Login page for users with a remember-me cookie but accessing a IS_AUTHENTICATED_FULLY page.
+     */
+    def full = {
+        def config = SpringSecurityUtils.securityConfig
+        render view: 'auth', params: params,
+                model: [hasCookie: authenticationTrustResolver.isRememberMe(SecurityContextHolder.context?.authentication),
+                        postUrl: "${request.contextPath}${config.apf.filterProcessesUrl}"]
+    }
+
+    def authAjax = {
+        render(status: 401, text: [error: message(code: 'is.denied')] as JSON)
+    }
+
+    /**
+     * Callback after a failed username. Redirects to the auth page with a warning message.
+     */
+    def authfail = {
 
         //IF the password is encode in MD5 (like an user imported
         // from IS2, on first connect it changes is password to SHA)
-		def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
+        def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
         def password = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY]
-        def u = User.findByUsernameAndPasswordExpired(username.toString(),true)
-        if (u && u.password == password.toString().encodeAsMD5()){
-          u.passwordExpired = false
-          u.password = springSecurityService.encodePassword(password.toString())
-          u.save()
-          springSecurityService.reauthenticate(username.toString(),password.toString())
-          if (springSecurityService.isLoggedIn()){
-            redirect(action:'ajaxSuccess')
-          }
+        def u = User.findByUsernameAndPasswordExpired(username.toString(), true)
+        if (u && u.password == password.toString().encodeAsMD5()) {
+            u.passwordExpired = false
+            u.password = springSecurityService.encodePassword(password.toString())
+            u.save()
+            springSecurityService.reauthenticate(username.toString(), password.toString())
+            if (springSecurityService.isLoggedIn()) {
+                redirect(action: 'ajaxSuccess')
+            }
         }
 
-		String msg = ''
-		def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
-		if (exception) {
-			if (exception instanceof AccountExpiredException) {
-				msg = SpringSecurityUtils.securityConfig.errors.login.expired
-			}
-			else if (exception instanceof CredentialsExpiredException) {
-				msg = SpringSecurityUtils.securityConfig.errors.login.passwordExpired
-			}
-			else if (exception instanceof DisabledException) {
-				msg = SpringSecurityUtils.securityConfig.errors.login.disabled
-			}
-			else if (exception instanceof LockedException) {
-				msg = SpringSecurityUtils.securityConfig.errors.login.locked
-			}
-			else {
-				msg = SpringSecurityUtils.securityConfig.errors.login.fail
-			}
-		}
+        String msg = ''
+        def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
+        if (exception) {
+            if (exception instanceof AccountExpiredException) {
+                msg = SpringSecurityUtils.securityConfig.errors.login.expired
+            }
+            else if (exception instanceof CredentialsExpiredException) {
+                msg = SpringSecurityUtils.securityConfig.errors.login.passwordExpired
+            }
+            else if (exception instanceof DisabledException) {
+                msg = SpringSecurityUtils.securityConfig.errors.login.disabled
+            }
+            else if (exception instanceof LockedException) {
+                msg = SpringSecurityUtils.securityConfig.errors.login.locked
+            }
+            else {
+                msg = SpringSecurityUtils.securityConfig.errors.login.fail
+            }
+        }
 
-		if (springSecurityService.isAjax(request)) {
-			render(status: 400, contentType:'application/json', text: [notice: [text: message(code:'is.dialog.login.error')]] as JSON)
+        if (springSecurityService.isAjax(request)) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.dialog.login.error')]] as JSON)
             return
-		}
-		else {
-			flash.message = msg
-			redirect action: auth, params: params
-		}                                      
-	}
+        }
+        else {
+            flash.message = msg
+            redirect action: auth, params: params
+        }
+    }
 
-	/**
-	 * The Ajax success redirect url.
-	 */
-	def ajaxSuccess = {
-      render('')
-	}
+    /**
+     * The Ajax success redirect url.
+     */
+    def ajaxSuccess = {
+        render('')
+    }
 
-	/**
-	 * The Ajax denied redirect url.
-	 */
-	def ajaxDenied = {
-      render(status:403, text:message(code:'is.denied'))
+    /**
+     * The Ajax denied redirect url.
+     */
+    def ajaxDenied = {
+        render(status: 403, text: message(code: 'is.denied'))
     }
 }
