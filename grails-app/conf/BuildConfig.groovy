@@ -32,7 +32,7 @@ grails.project.war.file = "target/${appName}.war"
 grails.project.war.osgi.headers = false
 
 //grails.plugin.location.'entry-points' =  '../plugins/entry-points'
-grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+//grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 
 coverage {
     enabledByDefault = false
@@ -78,7 +78,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        //compile "org.icescrum:icescrum-core:1.3.9"
+        compile "org.icescrum:icescrum-core:1.4.1"
         compile "org.icescrum:entry-points:0.3-BETA"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
