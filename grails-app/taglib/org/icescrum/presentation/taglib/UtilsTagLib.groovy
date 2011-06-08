@@ -105,6 +105,7 @@ class UtilsTagLib {
      */
     def desktop = { attrs, body ->
         out << '<div id="main">'
+        out << '<div id="main-loading"></div>'
         out << '<div id="main-content">'
         out << body()
         out << '</div>'

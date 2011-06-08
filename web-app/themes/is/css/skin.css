@@ -645,6 +645,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     background-image: url(../images/application/loading.gif);
     background-position: center;
     background-repeat: no-repeat;
+    background-color:gray;
 }
 
 .table .table-line.table-group td.collapse {

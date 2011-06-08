@@ -58,6 +58,16 @@
                     jQuery.ajax({
                                 type:'GET',
                                 url:this.o.urlOpenWindow + '/' + id,
+                                beforeSend:function(){
+                                    var loading = $('<div/>').attr('id','window-loading').css('opacity',0).css('z-index',998);
+                                    if ($.icescrum.o.fullscreen) {
+                                        $(document.body).prepend(loading);
+                                        loading.addClass('window-fullscreen loading').animate({opacity:0.2},250);
+                                    }else{
+                                        $('#main').prepend(loading);
+                                        loading.addClass('modal-background loading').animate({opacity:0.2},250);
+                                    }
+                                },
                                 success:function(data, textStatus) {
                                     if ($.icescrum.o.fullscreen) {
                                         $.icescrum.o.currentOpenedWindow.remove();
@@ -66,6 +76,7 @@
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
                                     }
+                                    $('#window-loading').stop().animate({opacity:0.0},250,function(){  $(this).remove(); });
                                     if (callback) {
                                         callback();
                                     }

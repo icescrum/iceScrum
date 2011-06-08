@@ -33,7 +33,7 @@
     left: 3px;
     right: 3px;
     top: 40px;
-    z-index: 999;
+    z-index: 997;
     bottom: 3px;
 }
 
@@ -1548,8 +1548,9 @@ li#li-roles {
     padding: 5px;
 }
 
-.loading {
+#panel-chart-container.loading {
     height: 50px;
+    background-color:#ffffff;
 }
 
 .view-chart {
