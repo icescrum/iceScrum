@@ -78,7 +78,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile "org.icescrum:icescrum-core:1.4.2"
+        compile "org.icescrum:icescrum-core:1.4.2.1"
         compile "org.icescrum:entry-points:0.3-BETA"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
