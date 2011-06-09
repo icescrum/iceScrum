@@ -206,7 +206,9 @@
                             },
                             window:'#window-content-sandbox',
                             afterTmpl:function(tmpl, container, newObject) {
-                                $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
+                                if (this.rank){
+                                    $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
+                                }
                                 if ($.icescrum.o.currentView == 'postitsView') {
                                     return;
                                 }
@@ -419,6 +421,7 @@
                         }
                         if (this.state < $.icescrum.story.STATE_PLANNED || this.state == $.icescrum.story.STATE_DONE) {
                             $('#menu-unplan-' + this.id, newObject).remove();
+                            $('#menu-add-task-'+this.id,newObject).remove();
                         }
                         if (this.state != $.icescrum.story.STATE_DONE || (this.parentSprint && this.parentSprint.state != $.icescrum.sprint.STATE_INPROGRESS)) {
                             $('#menu-undone-' + this.id, newObject).remove();

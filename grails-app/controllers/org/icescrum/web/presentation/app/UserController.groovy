@@ -313,13 +313,13 @@ class UserController {
 
     @Secured('isAuthenticated()')
     def changeMenuOrder = {
-        if (!params.idmoved && !params.position) {
+        if (!params.id && !params.position) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.preferences.error.menuBar')]] as JSON)
             return
         }
 
         def currentUser = User.get(springSecurityService.principal.id)
-        String id = "${params.idmoved}".split("_")[1]
+        String id = "${params.id}".split("_")[1]
         String position = params.position
         try {
             userService.changeMenuOrder(currentUser, id, position, params.boolean('hidden') ?: false)

@@ -41,6 +41,13 @@ class StoryController {
     def springSecurityService
     def securityService
 
+    def allowedMethods = [
+            ['save','rank','estimate','unPlan','plan','done','unDone','accept','copy','associateFeature']:['POST'],
+            ['edit','list','show','download']:['GET'],
+            ['update']:['PUT','POST'],
+            ['delete']:['DELETE','POST']
+    ]
+
     @Secured('isAuthenticated()')
     def save = {
         def story = new Story(params.story as Map)
@@ -51,9 +58,15 @@ class StoryController {
         }
 
         if (params.feature?.id) {
-            story.feature = Feature.get(params.long('feature.id'))
+            def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
+            if (!feature){
+                returnError(text:message(code: 'is.feature.error.not.exist'))
+                return
+            }else{
+                story.feature = feature
+            }
         }
-        def user = User.get(springSecurityService.principal.id)
+        def user = springSecurityService.currentUser
         def product = Product.get(params.product)
 
         try {
@@ -61,29 +74,27 @@ class StoryController {
             this.manageAttachments(story)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
-                json { render story as JSON }
-                xml { render story as XML }
+                json { render status: 200, text: story as JSON }
+                xml { render status: 200, text: story as XML }
             }
         } catch (AttachmentException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
+            returnError(object:story, exception:e)
         }
     }
 
     @Secured('productOwner(#p) or scrumMaster(#p)')
     def update = {
-        if (!params.long('story.id')) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+        if (!params.story?.id) {
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
-        def story = Story.get(params.long('story.id'))
+        def story = Story.getInProduct(params.long('product'),params.long('story.id')).list()[0]
 
         if (!story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
@@ -93,8 +104,8 @@ class StoryController {
         }
 
         // If the version is different, the feature has been modified since the last loading
-        if (params.long('story.version') != story.version) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.stale.object', args: [message(code: 'is.story')])]] as JSON)
+        if (params.story.version && params.story.version.toLong() != story.version) {
+            returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.story')]))
             return
         }
         try {
@@ -113,19 +124,23 @@ class StoryController {
                 params.story.effort = null
 
 
-            if (params.story.rank && story.rank != params.int('story.rank')) {
-                storyService.rank(story, params.int('story.rank'))
+            if (params.story.rank && story.rank != params.story.rank.toInteger()) {
+                storyService.rank(story, params.story.rank.toInteger())
             }
 
             if (params.sprint?.id != null) {
                 if (!params.sprint.id.isNumber() && story.parentSprint)
                     storyService.unPlan(story)
-                else if (params.long('sprint.id') != story.parentSprint?.id)
-                    storyService.plan(Sprint.get(params.long('sprint.id')), story)
+                else if (params.long('sprint.id') != story.parentSprint?.id){
+                    def sprint = Sprint.getInProduct(params.long('product'),params.long('sprint.id')).list()[0]
+                    if (!sprint){
+                        returnError(text:message(code: 'is.sprint.error.not.exist'))
+                    }else{
+                        storyService.plan(sprint, story)
+                    }
+                }
                 params.story.rank = story.rank
             }
-
-
 
             story.properties = params.story
 
@@ -137,7 +152,10 @@ class StoryController {
             }
 
             if (params.feature?.id && story.feature?.id != params.long('feature.id')) {
-                storyService.associateFeature(Feature.get(params.long('feature.id')), story)
+                def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list[0]
+                if (!feature)
+                    returnError(text:message(code: 'is.feature.error.not.exist'))
+                storyService.associateFeature(feature, story)
             } else if (story.feature && params.feature?.id == '') {
                 storyService.dissociateFeature(story)
             }
@@ -170,29 +188,28 @@ class StoryController {
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [story: story, next: next?.id ?: null] as JSON }
-                json { render story as JSON }
-                xml { render story as XML }
+                json { render status: 200, text:story as JSON }
+                xml { render status: 200, text:story as XML }
             }
         } catch (AttachmentException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
+            returnError(object:story, exception:e)
         } catch (IllegalStateException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner()')
     def delete = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
         def stories = Story.getAll(params.list('id'))
 
         if (!stories) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
         try {
@@ -205,26 +222,26 @@ class StoryController {
                 xml { render(status: 200, text: [result: 'success'] as XML) }
             }
         } catch (Exception e) {
-            render(status: 400, contentType: 'application/json', text: message(code: 'is.story.error.not.deleted'))
+            returnError(exception:e,text:message(code: 'is.story.error.not.deleted'))
         }
     }
 
     def edit = {
         def id = params.long('subid') ?: params.long('id')
         if (!id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
-        def story = Story.get(id)
+        def story = Story.getInProduct(params.long('product'),id).list()[0]
 
         if (!story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
         if (story.state == Story.STATE_DONE) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.done')]] as JSON)
+            returnError(text:message(code: 'is.story.error.done'))
             return
         }
 
@@ -283,65 +300,72 @@ class StoryController {
     @Secured('productOwner()')
     def rank = {
 
-        if (!params.idmoved) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+        if (!params.id) {
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
-        def movedItem = Story.get(params.long('idmoved'))
+        def movedItem = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!movedItem) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
-        def position = params.int('position')
+        def position = params.story.rank.toInteger()
+
         if (movedItem == null || position == null)
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.rank.error')]] as JSON)
+            returnError(text:message(code: 'is.story.rank.error'))
+
         if (storyService.rank(movedItem, position)) {
-            render(status: 200)
+            withFormat {
+                html { render(status: 200)  }
+                json { render(status: 200, text: [result: 'success'] as JSON) }
+                xml { render(status: 200, text: [result: 'success'] as XML) }
+            }
         } else {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.rank.error')]] as JSON)
+            returnError(text:message(code: 'is.story.rank.error'))
         }
     }
 
     @Secured('teamMember() or scrumMaster()')
     def estimate = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
         try {
-            storyService.estimate(story, params.value)
-        } catch (IllegalStateException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e)]] as JSON)
+            storyService.estimate(story,params.story.effort)
+            withFormat {
+                html { render(status: 200, text: story.effort)  }
+                json { render(status: 200, text: story as JSON) }
+                xml { render(status: 200, text: story as XML) }
+            }
+        }catch (IllegalStateException e) {
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
+            returnError(object:story, exception:e)
         }
-        render(status: 200, text: params.value)
     }
 
     @Secured('productOwner() or scrumMaster()')
     def unPlan = {
         if (!params.id) {
-            def msg = message(code: 'is.story.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
@@ -354,49 +378,50 @@ class StoryController {
                 if (nextSprint) {
                     storyService.plan(nextSprint, story)
                 } else {
-                    render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.shiftedToNext')]] as JSON)
+                    returnError(text:message(code: 'is.story.error.not.shiftedToNext'))
                     return
                 }
             } else {
                 storyService.unPlan(story)
             }
-            render(status: 200, contentType: 'application/json', text: [story: story, sprint: sprint] as JSON)
-        } catch (IllegalStateException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e)]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [story: story, sprint: sprint] as JSON)  }
+                json { render(status: 200, text: story as JSON) }
+                xml { render(status: 200, text: story as XML) }
+            }
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
+            returnError(object:story, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def plan = {
-        if (!params.sprint.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        if (!params.sprint?.id) {
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
         if (!params.id) {
-            def msg = message(code: 'is.story.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.get(params.long('sprint.id'))
-
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
-        if (story.parentSprint?.id == params.sprint.id) {
+        def sprint = Sprint.getInProduct(params.long('product'),params.sprint.id?.toLong()).list()[0]
+
+        if (!sprint) {
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
+            return
+        }
+
+        if (story.parentSprint?.id == params.sprint.id?.toLong()) {
             render(status: 200)
             return
         }
@@ -411,91 +436,102 @@ class StoryController {
             if (params.position && params.int('position') != 0) {
                 storyService.rank(story, params.int('position'))
             }
-            render(status: 200, contentType: 'application/json', text: [story: story, oldSprint: oldSprint] as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [story: story, oldSprint: oldSprint] as JSON)  }
+                json { render(status: 200, text: story as JSON) }
+                xml { render(status: 200, text: story as XML) }
+            }
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
+            returnError(object:story, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('isAuthenticated()')
     def associateFeature = {
         if (!params.feature || !params.story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlog.associateFeature.error')]] as JSON)
+            returnError(text:message(code: 'is.ui.backlog.associateFeature.error'))
             return
         }
-        def feature = Feature.get(params.long('feature.id'))
-        def story = Story.get(params.long('story.id'))
+        def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
+        def story = Story.getInProduct(params.long('product'),params.long('story.id')).list()[0]
 
         if (!feature || !story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlog.associateFeature.error')]] as JSON)
+            returnError(text:message(code: 'is.ui.backlog.associateFeature.error'))
             return
         }
         try {
             storyService.associateFeature(feature, story)
-            render(status: 200, contentType: 'application/json', text: story as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
+                json { render(status: 200, text: story as JSON) }
+                xml { render(status: 200, text: story as XML) }
+            }
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
+            returnError(object:story, exception:e)
         }
     }
 
     @Secured('productOwner()')
     def done = {
         if (!params.id) {
-            def msg = message(code: 'is.story.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
         try {
             storyService.done(story)
-            render(status: 200, contentType: 'application/json', text: story as JSON)
-        } catch (IllegalStateException ise) {
-            if (log.debugEnabled) ise.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
+                json { render(status: 200, text: story as JSON) }
+                xml { render(status: 200, text: story as XML) }
+            }
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
+            returnError(object:story, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner()')
     def unDone = {
         if (!params.id) {
-            def msg = message(code: 'is.story.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
         try {
             storyService.unDone(story)
-            render(status: 200, contentType: 'application/json', text: story as JSON)
-        } catch (IllegalStateException ise) {
-            if (log.debugEnabled) ise.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
+                json { render(status: 200, text: story as JSON) }
+                xml { render(status: 200, text: story as XML) }
+            }
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
+            returnError(object:story, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner()')
     def accept = {
         if (params.list('id').size() == 0) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.sandbox.menu.accept.error.no.selection')]] as JSON)
+            returnError(text:message(code: 'is.ui.sandbox.menu.accept.error.no.selection'))
             return
         }
         def stories = Story.getAll(params.list('id'))
@@ -509,11 +545,15 @@ class StoryController {
             } else if (params.type == 'task') {
                 storiesJ = storyService.acceptToUrgentTask(stories)
             }
-            render(status: 200, contentType: 'application/json', text: [id: storiesIds, objects: storiesJ] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [id: storiesIds, objects: storiesJ] as JSON)  }
+                json { render(status: 200, text: storiesJ as JSON) }
+                xml { render(status: 200, text: storiesJ as XML) }
+            }
+       } catch (RuntimeException e) {
+            returnError(exception:e)
         } catch (IllegalStateException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-        } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+            returnError(exception:e)
         }
     }
 
@@ -526,21 +566,67 @@ class StoryController {
     def copy = {
 
         if (params.list('id').size() == 0) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.sandbox.menu.accept.error.no.selection')]] as JSON)
+            returnError(text:message(code: 'is.ui.sandbox.menu.accept.error.no.selection'))
             return
         }
         def stories = Story.getAll(params.list('id'))
         try {
             def copiedStories = storyService.copy(stories)
-            render(status: 200, contentType: 'application/json', text: copiedStories as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON)  }
+                json { render(status: 200, text: copiedStories as JSON) }
+                xml { render(status: 200, text: copiedStories as XML) }
+            }
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.cloned')]] as JSON)
+            returnError(exception:e,text:message(code: 'is.story.error.not.cloned'))
         }
     }
 
+    @Secured('inProduct()')
+    def show = {
+        if (params.format == 'html'){
+            render(status:404)
+            return
+        }
+
+        if (!params.id) {
+            returnError(text:message(code: 'is.story.error.not.exist'))
+            return
+        }
+
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
+
+        if (!story) {
+            returnError(text:message(code: 'is.story.error.not.exist'))
+            return
+        }
+
+        withFormat {
+                json { render(status: 200, text: story as JSON) }
+                xml { render(status: 200, text: story as XML) }
+            }
+    }
+
+    @Secured('inProduct()')
+    def list = {
+
+        if (params.format == 'html'){
+            render(status:404)
+            return
+        }
+
+        def currentProduct = Product.load(params.product)
+        def stories = (params.term) ? Story.findInStories(params.long('product'), '%' + params.term + '%').list() : Story.findAllByBacklog(currentProduct, [sort: 'id', order: 'asc'])
+
+        withFormat {
+                json { render(status: 200, text: stories as JSON) }
+                xml { render(status: 200, text: stories as XML) }
+            }
+    }
+
+
     private manageAttachments(def story) {
-        def user = User.load(springSecurityService.principal.id)
+        def user = springSecurityService.currentUser
         if (params.story.attachments && story.id && !params.story.list('attachments') && story.attachments*.id.size() > 0) {
             story.removeAllAttachments()
         } else if (story.attachments*.id.size() > 0) {

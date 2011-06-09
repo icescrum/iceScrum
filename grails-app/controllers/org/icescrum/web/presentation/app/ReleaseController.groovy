@@ -27,6 +27,7 @@ import org.icescrum.core.domain.Release
 import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Product
+import grails.converters.XML
 
 class ReleaseController {
 
@@ -36,14 +37,21 @@ class ReleaseController {
 
     @Secured('productOwner() or scrumMaster()')
     def update = {
-        if (!params.release.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+        if (!params.release?.id) {
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
-        def release = Release.get(params.long('release.id'))
+        def release = Release.getInProduct(params.long('product'),params.long('release.id')).list()[0]
 
         if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
+            return
+        }
+
+        // If the version is different, the release has been modified since the last loading
+        if (params.long('release.version') != release.version) {
+            msg = message(code: 'is.release.object', args: [message(code: 'is.release')])
+            returnError(text:msg)
             return
         }
 
@@ -57,14 +65,15 @@ class ReleaseController {
             if (params.continue) {
                 next = release.parentProduct.releases.find {it.orderNumber == release.orderNumber + 1}
             }
-            render(status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON)
-        } catch (IllegalStateException ise) {
-            if (log.debugEnabled) ise.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: release)]] as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON }
+                json { render status: 200, text: release as JSON }
+                xml { render status: 200, text: release as XML }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
@@ -81,138 +90,172 @@ class ReleaseController {
         try {
             releaseService.save(release, currentProduct)
             render(status: 200, contentType: 'application/json', text: release as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: release)]] as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: release as JSON }
+                json { render status: 200, text: release as JSON }
+                xml { render status: 200, text: release as XML }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def delete = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
         }
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
 
         try {
             releaseService.delete(release)
-            render(status: 200, contentType: 'application/json', text: release as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: release)]] as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: release as JSON }
+                json { render status: 200, text: release as JSON }
+                xml { render status: 200, text: release as XML }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def close = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
         }
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
 
         try {
             releaseService.close(release)
-            render(status: 200, contentType: 'application/json', text: release as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: release)]] as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: release as JSON }
+                json { render status: 200, text: release as JSON }
+                xml { render status: 200, text: release as XML }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def activate = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
         }
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
         try {
             releaseService.activate(release)
-            render(status: 200, contentType: 'application/json', text: release as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: release)]] as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: release as JSON }
+                json { render status: 200, text: release as JSON }
+                xml { render status: 200, text: release as XML }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def autoPlan = {
         if (!params.id) {
-            def msg = message(code: 'is.release.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
 
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
 
         try {
             def plannedStories = storyService.autoPlan(release, params.double('capacity'))
-            render(status: 200, contentType: 'application/json', text: plannedStories as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: plannedStories as JSON }
+                json { render status: 200, text: [result: 'success'] as JSON }
+                xml { render status: 200, text: [result: 'success'] as XML }
+            }
         } catch (Exception e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.autoplan')]] as JSON)
+            returnError(exception:e,text:message(code: 'is.release.error.not.autoplan'))
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def unPlan = {
         if (!params.id) {
-            def msg = message(code: 'is.release.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
-        def sprints = Sprint.findAllByParentRelease(Release.get(params.long('id')))
+
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
+        if (!release) {
+            returnError(text:message(code: 'is.release.error.not.exist'))
+            return
+        }
+
+        def sprints = Sprint.findAllByParentRelease(release)
         try {
             def unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
-            render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON }
+                json { render status: 200, text: [result: 'success'] as JSON }
+                xml { render status: 200, text: [result: 'success'] as XML }
+            }
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.stories.error.not.dissociate')]] as JSON)
+            returnError(exception:e,text:message(code: 'is.release.stories.error.not.dissociate'))
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def generateSprints = {
         if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
 
         try {
             def sprints = sprintService.generateSprints(release)
-            render(status: 200, contentType: 'application/json', text: sprints as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: sprints as JSON }
+                json { render status: 200, text: [result: 'success'] as JSON }
+                xml { render status: 200, text: [result: 'success'] as XML }
+            }
+         } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 }

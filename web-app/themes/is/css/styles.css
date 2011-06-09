@@ -631,13 +631,13 @@ li#li-roles {
     position: absolute;
     left: 5px;
     top: 5px;
-    width: 15 Px;
+    width: 15px;
 }
 
 .postit-icon {
     display: block;
     height: 13px;
-    width: 15 Px;
+    width: 15px;
     padding: 0;
     margin: 0;
 }
@@ -1077,7 +1077,7 @@ li#li-roles {
 */
 
 .select-lorem {
-    height: 110 Px;
+    height: 110px;
     position: relative;
 }
 
@@ -1685,7 +1685,7 @@ li#li-roles {
 }
 
 .members-medium {
-    padding: 5 Px;
+    padding: 5px;
 }
 
 .member-medium {
@@ -1696,7 +1696,7 @@ li#li-roles {
     border-width: 1px;
     margin: 5px;
     float: left;
-    padding-bottom: 10 Px;
+    padding-bottom: 10px;
     padding-left: 8px;
 }
 

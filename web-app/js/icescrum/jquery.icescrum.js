@@ -169,12 +169,12 @@ $.ajaxSetup({ cache: false  });
             return true;
         },
 
-        changeRank:function(container, source, ui, call) {
+        changeRank:function(container, source, ui, name, call) {
             var postitid = ui.attr('id');
             var idmoved = postitid.substring(postitid.lastIndexOf("-") + 1, postitid.length);
             var newPosition = $(container).index(ui);
             //finally we send the update to server
-            var params = "idmoved=" + idmoved + "&position=" + (newPosition + 1);
+            var params = "id=" + idmoved + "&"+name+"=" + (newPosition + 1);
             call(params, source);
         },
 

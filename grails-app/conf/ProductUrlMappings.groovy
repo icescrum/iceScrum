@@ -121,6 +121,7 @@ class ProductUrlMappings {
         "/ws/p/$product/$controller/$action?/$id?/$type?"(parseRequest: true) {
             constraints {
                 product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
             }
         }
 

@@ -65,7 +65,7 @@ class ReleasePlanController {
                 params.id = release.id
             }
         } else {
-            release = Release.get(params.long('id'))
+            release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
         }
         def releases
         if (!release) {
@@ -91,7 +91,7 @@ class ReleasePlanController {
                 params.id = release.id
             }
         } else {
-            release = Release.get(params.long('id'))
+            release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
         }
         if (!release) {
             render(status: 200)
@@ -111,7 +111,7 @@ class ReleasePlanController {
                 return
             }
         } else {
-            release = Release.get(params.long('id'))
+            release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
         }
         if (!release || !(release instanceof Release)) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.release.not.exist')]] as JSON)
@@ -138,7 +138,7 @@ class ReleasePlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -174,7 +174,7 @@ class ReleasePlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
@@ -209,7 +209,7 @@ class ReleasePlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
@@ -255,7 +255,13 @@ class ReleasePlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
+
+        if (!release) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            return
+        }
+
         def previousSprint = release?.sprints?.max {s1, s2 -> s1.orderNumber <=> s2.orderNumber}
 
         render(template: 'window/manage', model: [
@@ -274,7 +280,7 @@ class ReleasePlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('subid'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('subid')).list()[0]
 
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
@@ -304,7 +310,7 @@ class ReleasePlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
             return
         }
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!release) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
             return
@@ -319,7 +325,7 @@ class ReleasePlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!release) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
             return
@@ -341,7 +347,7 @@ class ReleasePlanController {
             return
         }
 
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!release) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
@@ -369,7 +375,7 @@ class ReleasePlanController {
             return
         }
 
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!release) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)

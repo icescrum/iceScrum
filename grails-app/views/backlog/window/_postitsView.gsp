@@ -47,13 +47,14 @@
                        selector:".postit",
                        callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
 
-        changeRank='[selector:".postit-story",controller:"story",action:"rank",params:[product:params.product]]'
+        changeRank='[selector:".postit-story",controller:"story",action:"rank",name:"story.rank",params:[product:params.product]]'
         editable="[controller:'story',
                   action:'estimate',
                   on:'.postit-story .mini-value.editable',
                   restrictOnAccess:'teamMember() or scrumMaster()',
                   findId:'jQuery(this).parents(\'.postit-story:first\').attr(\'elemID\')',
                   type:'selectui',
+                  name:'story.effort',
                   before:'$(this).next().hide();',
                   cancel:'jQuery(original).next().show();',
                   values:suiteSelect,

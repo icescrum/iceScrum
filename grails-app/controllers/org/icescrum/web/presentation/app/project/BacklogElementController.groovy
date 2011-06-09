@@ -59,7 +59,7 @@ class BacklogElementController {
         def user = null
         if (springSecurityService.isLoggedIn())
             user = User.load(springSecurityService.principal.id)
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
         // Cannot proceed if we don't have a story
         if (!story) {
             render(text: '')
@@ -104,7 +104,7 @@ class BacklogElementController {
             return
         }
 
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!story) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             return
@@ -167,12 +167,12 @@ class BacklogElementController {
 
     @Secured('isAuthenticated()')
     def addComment = {
-        def poster = User.load(springSecurityService.principal.id)
+        def poster = springSecurityService.currentUser
         try {
             if (params['comment'] instanceof Map) {
                 Comment.withTransaction { status ->
                     try {
-                        def story = Story.get(params.comment.ref)
+                        def story = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()[0]
                         story.addComment(poster, params.comment.body)
                         story.addActivity(poster, 'comment', story.name)
                         story.addFollower(poster)
@@ -200,7 +200,7 @@ class BacklogElementController {
             return
         }
         def comment = Comment.get(params.long('id'))
-        def story = Story.get(params.long('commentable'))
+        def story = Story.getInProduct(params.long('product'),params.long('commentable')).list()[0]
         render(template: '/components/commentEditor', plugin: 'icescrum-core', model: [comment: comment, mode: 'edit', commentable: story])
     }
 
@@ -213,7 +213,7 @@ class BacklogElementController {
             return
         }
         def comment = Comment.get(params.long('comment.id'))
-        def commentable = Story.get(params.long('comment.ref'))
+        def commentable = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()[0]
         comment.body = params.comment.body
         try {
             comment.save()
@@ -238,8 +238,7 @@ class BacklogElementController {
             return
         }
         def comment = Comment.get(params.long('id'))
-        def commentable = Story.get(params.long('backlogelement'))
-
+        def commentable = Story.getInProduct(params.long('product'),params.long('backlogelement')).list()[0]
         try {
             commentable.removeComment(comment)
             render(text: include(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: [product: params.product, 'tab': 'comments']))
@@ -264,7 +263,7 @@ class BacklogElementController {
             return
         }
 
-        def story = Story.get(params.id)
+        def story = Story.getInProduct(params.long('product'),params.id).list()[0]
 
         if (!story) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
@@ -285,7 +284,7 @@ class BacklogElementController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             return
         }
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!story) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             return
@@ -320,13 +319,13 @@ class BacklogElementController {
             return
         }
 
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!story) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             return
         }
 
-        def user = User.load(springSecurityService.principal.id)
+        def user = springSecurityService.currentUser
 
         try {
             story.addFollower(user)
@@ -345,7 +344,7 @@ class BacklogElementController {
             return
         }
 
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!story) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             return
@@ -365,7 +364,7 @@ class BacklogElementController {
         if (params.id == null) {
             return
         }
-        def story = Story.get(params.long('id'))
+        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!story) {
             return
         }

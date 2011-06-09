@@ -29,6 +29,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Sprint
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import grails.plugins.springsecurity.Secured
+import grails.converters.XML
 
 class TaskController {
 
@@ -37,9 +38,9 @@ class TaskController {
     def taskService
 
     def save = {
-        def story = !(params.story.id in ['recurrent', 'urgent']) ? Story.get(params.long('story.id')) : null
+        def story = !(params.story.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'),params.long('story.id')).list()[0] : null
         if (!story && !(params.story.id in ['recurrent', 'urgent'])) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
@@ -49,7 +50,7 @@ class TaskController {
         User user = (User) springSecurityService.currentUser
         def sprint = Sprint.load(params.id)
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
 
@@ -62,25 +63,27 @@ class TaskController {
                 taskService.saveStoryTask(task, story, user)
 
             this.manageAttachments(task)
-            render(status: 200, contentType: 'application/json', text: task as JSON)
+            withFormat {
+                html { render(status: 200,contentType: 'application/json', text:task as JSON)  }
+                json { render(status: 200, text: task as JSON) }
+                xml { render(status: 200, text: task as XML) }
+            }
         } catch (AttachmentException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            returnError(object:task, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: task)]] as JSON)
+            returnError(object:task,exception:e)
         }
     }
 
     def update = {
         if (!params.task) return
 
-        def story = !(params.story.id in ['recurrent', 'urgent']) ? Story.get(params.long('story.id')) : null
+        def story = !(params.story.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'),params.long('story.id')).list()[0] : null
 
         if (!story && !(params.story?.id in ['recurrent', 'urgent'])) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.story.error.not.exist'))
             return
         }
 
@@ -88,9 +91,17 @@ class TaskController {
 
         def task = Task.get(params.long('task.id'))
         if (!task) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
+
+        // If the version is different, the task has been modified since the last loading
+        if (params.long('task.version') != task.version) {
+            msg = message(code: 'is.stale.object', args: [message(code: 'is.task')])
+            returnError(text:msg)
+            return
+        }
+
         task.properties = params.task
         User user = (User) springSecurityService.currentUser
 
@@ -120,67 +131,74 @@ class TaskController {
             if (params.continue) {
                 next = Task.findNextTask(task, user).list()[0]
             }
-            render(status: 200, contentType: 'application/json', text: [task: task, next: next?.id] as JSON)
+            withFormat {
+                html { render(status: 200,contentType: 'application/json', text:[task: task, next: next?.id] as JSON)  }
+                json { render(status: 200, text: task as JSON) }
+                xml { render(status: 200, text: task as XML) }
+            }
         } catch (AttachmentException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            returnError(object:task, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: task)]] as JSON)
+            returnError(object:task, exception:e)
         }
     }
 
     def take = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
         if (!task) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         User user = (User) springSecurityService.currentUser
 
         try {
             taskService.assign([task], user)
-            render(status: 200, contentType: 'application/json', text: task as JSON)
+            withFormat {
+                html { render(status: 200,contentType: 'application/json', text:task as JSON)  }
+                json { render(status: 200, text: task as JSON) }
+                xml { render(status: 200, text: task as XML) }
+            }
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: task)]] as JSON)
+            returnError(object:task, exception:e)
         }
     }
 
     def unassign = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
         if (!task) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         User user = (User) springSecurityService.currentUser
 
         try {
             taskService.unassign([task], user)
-            render(status: 200, contentType: 'application/json', text: task as JSON)
-        } catch (IllegalStateException ise) {
-            if (log.debugEnabled) ise.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            withFormat {
+                html { render(status: 200,contentType: 'application/json', text:task as JSON)  }
+                json { render(status: 200, text: task as JSON) }
+                xml { render(status: 200, text: task as XML) }
+            }
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: task)]] as JSON)
+            returnError(object:task, exception:e)
         }
     }
 
 
     def delete = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         def tasks = Task.getAll(params.list('id'))
@@ -193,19 +211,21 @@ class TaskController {
             }
             def ids = []
             params.list('id').each { ids << [id: it] }
-            render(status: 200, contentType: 'application/json', text: ids as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: ids as JSON)  }
+                json { render(status: 200, text: [result:'success'] as JSON) }
+                xml { render(status: 200, text: [result:'success'] as JSON) }
+            }
         } catch (IllegalStateException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: e.message]] as JSON)
+            returnError(exception:e)
         }
     }
 
     def copy = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
@@ -213,81 +233,93 @@ class TaskController {
 
         try {
             def copiedTask = taskService.copy(task, user)
-            render(status: 200, contentType: 'application/json', text: copiedTask as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: copiedTask as JSON)  }
+                json { render(status: 200, text: copiedTask as JSON) }
+                xml { render(status: 200, text: copiedTask as XML) }
+            }
         } catch (IllegalStateException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+            returnError(exception:e)
         }
     }
 
     def estimateTask = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.task.error.not.exist']] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
 
         if (!task) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         User user = (User) springSecurityService.currentUser
         task.estimation = params.int('value') ?: (params.int('value') == 0) ? 0 : null
         try {
             taskService.update(task, user)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: task.estimation ?: '?')  }
+                json { render(status: 200, text: task as JSON) }
+                xml { render(status: 200, text: task as XML) }
+            }
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: task)]] as JSON)
+            returnError(object:task, exception:e)
         }
-        render(status: 200, text: task.estimation ?: '?')
     }
 
     def changeBlockState = {
         if (!params.id) {
             def msg = message(code: 'is.task.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
         if (!task) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         task.blocked = !task.blocked
         User user = (User) springSecurityService.currentUser
         try {
             taskService.update(task, user)
-        } catch (IllegalStateException ise) {
-            if (log.debugEnabled) ise.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            withFormat {
+                html { render(status: 200)  }
+                json { render(status: 200, text: task as JSON) }
+                xml { render(status: 200, text: task as XML) }
+            }
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: task)]] as JSON)
+            returnError(object:task, exception:e)
         }
-        render(status: 200)
     }
 
     def rank = {
-        def position = params.int('position')
+        def position = params.int('task.rank')
         if (position == 0) {
             render(status: 200)
             return
         }
 
-        def movedItem = Task.get(params.long('idmoved'))
+        def movedItem = Task.get(params.long('id'))
 
         if (!movedItem) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         try {
             taskService.rank(movedItem, position)
-        } catch (Exception e) {
-            render(status: 500, text: e.getMessage())
+            withFormat {
+                html { render(status: 200)  }
+                json { render(status: 200, text: movedItem as JSON) }
+                xml { render(status: 200, text: movedItem as XML) }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:movedItem, exception:e)
         }
-        render(status: 200)
     }
 
     def download = {
@@ -320,15 +352,15 @@ class TaskController {
     def state = {
         // params.id represent the targeted state (STATE_WAIT, STATE_INPROGRESS, STATE_DONE)
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.sprintPlan.state.no.exist')]] as JSON)
+            returnError(text:message(code: 'is.ui.sprintPlan.state.no.exist'))
         }
         if (!params.task.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('task.id'))
         if (!task) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.task.error.not.exist'))
             return
         }
         User user = (User) springSecurityService.currentUser
@@ -355,12 +387,15 @@ class TaskController {
             }
             taskService.state(task, params.int('id'), user)
             taskService.rank(task, params.int('position'))
-            render(status: 200, contentType: 'application/json', text: task as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
+                json { render(status: 200, text: task as JSON) }
+                xml { render(status: 200, text: task as XML) }
+            }
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: task)]] as JSON)
+            returnError(object:task, exception:e)
         }
     }
 }

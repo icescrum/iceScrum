@@ -30,6 +30,7 @@
                           creator:[id:'?**=user_id**?'],
                           effort:'?**=this.effort**?',
                           name:'?**=name**?',
+                          parentSprint:[id:'?**=parentSprint**?'],
                           description:'?**=description**?',
                           totalComments:'?**=this.totalComments**?',
                           totalAttachments:'?**=this.totalAttachments**?']"/>
@@ -45,6 +46,7 @@
     var typeTitle = $.icescrum.story.types[this.type];
     var parentReleaseID = this.parentSprint ? this.parentSprint.parentReleaseId : '';
     var sprintOrderNumber = this.parentSprint ? this.parentSprint.orderNumber + 1 : '';
+    var parentSprint = this.parentSprint ? this.parentSprint.id : '';
     description = description.formatLine();
 **?
 <is:postit id="${story.id}"
@@ -61,7 +63,7 @@
            color="?**=color**?"
            editableEstimation="${editable}"
            stateText="?**=textState**?"
-           cacheKey="story"
+           cacheKey="stosdry"
            comment="${story.totalComments}">
     ?**=truncatedDescription**?
     <is:postitMenu id="${story.id}" contentView="/story/menu"

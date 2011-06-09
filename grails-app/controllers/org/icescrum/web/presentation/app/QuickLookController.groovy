@@ -41,9 +41,11 @@ class QuickLookController {
     @Secured("stakeHolder() or inProduct()")
     def index = {
         if (params.story?.id) {
-            def story = Story.get(params.long('story.id'))
+
+            def story = Story.getInProduct(params.long('product'),params.long('story.id')).list()[0]
+
             if (!story) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
+                returnError(text:message(code: 'is.story.error.not.exist'))
                 return
             }
             render(template: "/story/quicklook", model: [
@@ -55,9 +57,9 @@ class QuickLookController {
         }
 
         else if (params.feature?.id) {
-            def feature = Feature.get(params.long('feature.id'))
+            def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
             if (!feature) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.not.exist')]] as JSON)
+                returnError(text:message(code: 'is.feature.error.not.exist'))
                 return
             }
             def sum = feature.stories?.sum { story -> story.effort ?: 0 }
@@ -74,10 +76,10 @@ class QuickLookController {
         }
 
         else if (params.task?.id) {
-            def task = Task.get(params.long('task.id'))
+            def task = Task.getInProduct(params.long('product'),params.long('task.id')).list()[0]
 
             if (!task) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
+                returnError(text:message(code: 'is.task.error.not.exist'))
                 return
             }
 
@@ -89,10 +91,10 @@ class QuickLookController {
         }
 
         else if (params.actor?.id) {
-            def actor = Actor.get(params.long('actor.id'))
+            def actor = Actor.getInProduct(params.long('product'),params.long('actor.id')).list()[0]
 
             if (!actor) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.actor.error.not.exist')]] as JSON)
+                returnError(text:message(code: 'is.actor.error.not.exist'))
                 return
             }
 

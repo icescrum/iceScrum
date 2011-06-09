@@ -30,6 +30,7 @@ import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.domain.*
 import org.icescrum.core.utils.BundleUtils
+import grails.converters.XML
 
 @Secured('inProduct()')
 class FeatureController {
@@ -58,13 +59,15 @@ class FeatureController {
         try {
             featureService.save(feature, Product.get(params.product))
             this.manageAttachments(feature)
-            render(status: 200, contentType: 'application/json', text: feature as JSON)
-        } catch (AttachmentException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: feature as JSON }
+                json { render status: 200, text: feature as JSON }
+                xml { render status: 200, text: feature  as XML }
+            }
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: feature)]] as JSON)
+                returnError(exception:e, object:feature)
+        } catch (AttachmentException e) {
+            returnError(exception:e)
         }
     }
 
@@ -72,22 +75,21 @@ class FeatureController {
     def update = {
         def msg
         if (!params.long('feature.id')) {
-            msg = message(code: 'is.feature.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.feature.error.not.exist'))
             return
         }
 
-        def feature = Feature.get(params.long('feature.id'))
+        def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
 
         if (!feature) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.feature.error.not.exist'))
             return
         }
 
         // If the version is different, the feature has been modified since the last loading
         if (params.long('feature.version') != feature.version) {
             msg = message(code: 'is.stale.object', args: [message(code: 'is.feature')])
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:msg)
             return
         }
 
@@ -122,13 +124,15 @@ class FeatureController {
                 if (params.continue) {
                     next = Feature.findByBacklogAndRank(feature.backlog, feature.rank + 1, [cache: true])
                 }
-                render(status: 200, contentType: 'application/json', text: [feature: feature, next: next?.id ?: null] as JSON)
-            } catch (AttachmentException e) {
-                if (log.debugEnabled) e.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
+                withFormat {
+                    html { render status: 200, contentType: 'application/json', text: [feature: feature, next: next?.id ?: null] as JSON }
+                    json { render status: 200, text: feature as JSON }
+                    xml { render status: 200, text: feature  as XML }
+                }
             } catch (RuntimeException e) {
-                if (log.debugEnabled) e.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: feature)]] as JSON)
+                returnError(exception:e, object:feature)
+            } catch (AttachmentException e) {
+                returnError(exception:e)
             }
         }
     }
@@ -137,13 +141,13 @@ class FeatureController {
     def delete = {
 
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.feature.error.not.exist'))
             return
         }
 
         def features = Feature.getAll(params.list('id'))
         if (!features) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.feature.error.not.exist'))
             return
         }
 
@@ -153,10 +157,13 @@ class FeatureController {
             }
             def ids = []
             params.list('id').each { ids << [id: it] }
-            render(status: 200, contentType: 'application/json', text: ids as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: ids as JSON }
+                json { render status: 200, text: [result:'success'] as JSON }
+                xml { render status: 200, text: [result:'success']  as XML }
+            }
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.linked.story')]] as JSON)
+            returnError(exception:e,text: message(code: 'is.feature.error.linked.story'))
         }
     }
 
@@ -187,22 +194,26 @@ class FeatureController {
     }
 
     @Secured('productOwner()')
-    def changeRank = {
-        def featureMoved = Feature.get(params.long('idmoved'))
+    def rank = {
+        def featureMoved = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!featureMoved) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.feature.error.not.exist'))
             return
         }
 
-        def position = params.int('position')
+        def position = params.int('feature.rank')
         if (featureMoved == null || position == null) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.rank.error')]] as JSON)
+            returnError(text:message(code: 'is.feature.rank.error'))
         }
         if (featureService.rank(featureMoved, position)) {
-            render(status: 200)
+           withFormat {
+                html { render status: 200, text:'success' }
+                json { render status: 200, text: featureMoved as JSON }
+                xml { render status: 200, text: featureMoved as XML }
+            }
         } else {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.rank.error')]] as JSON)
+            returnError(text:message(code: 'is.feature.rank.error'))
         }
     }
 
@@ -229,14 +240,14 @@ class FeatureController {
     def edit = {
 
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.feature.error.not.exist'))
             return
         }
 
-        def feature = Feature.get(params.long('id'))
+        def feature = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!feature) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.feature.error.not.exist'))
             return
         }
 
@@ -263,15 +274,26 @@ class FeatureController {
     @Secured('productOwner()')
     def copyFeatureToBacklog = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.feature.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.feature.error.not.exist'))
+            return
+        }
+
+        def feature = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
+
+        if (!feature) {
+            returnError(text:message(code: 'is.feature.error.not.exist'))
             return
         }
 
         try {
-            featureService.copyToBacklog(params.long('id'), springSecurityService.principal.id)
-            render(status: 200, text: "success")
+            def story = featureService.copyToBacklog(feature)
+            withFormat {
+                html { render status: 200, text:'success' }
+                json { render status: 200, text: story as JSON }
+                xml { render status: 200, text: story as XML }
+            }
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'story.name.unique')]] as JSON)
+            returnError(text: message(code: 'story.name.unique'), exception:e)
         }
     }
 
@@ -294,13 +316,12 @@ class FeatureController {
                     values: valueToDisplay as JSON,
                     featuresNames: values.label as JSON])
         else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text: message(code: 'is.chart.error.no.values'))
         }
     }
 
     def print = {
-        def user = User.load(springSecurityService.principal.id)
+        def user = springSecurityService.currentUser
 
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)
@@ -351,7 +372,7 @@ class FeatureController {
     }
 
     private manageAttachments(def feature) {
-        def user = User.load(springSecurityService.principal.id)
+        def user = springSecurityService.currentUser
         if (feature.id && !params.feature.list('attachments') && feature.attachments*.id.size() > 0) {
             feature.removeAllAttachments()
         } else if (feature.attachments*.id.size() > 0) {

@@ -25,7 +25,7 @@
     <is:fieldset title="is.ui.sprintPlan.task.properties.title">
 
         <is:fieldInput for="taskname" label="is.task.name">
-            <is:input id="taskname" name="task.name" value="${task?.name}"/>
+            <is:input id="taskname" name="task.name" value="${task?.name}" focus="true"/>
         </is:fieldInput>
 
         <is:fieldSelect label="is.task.story">

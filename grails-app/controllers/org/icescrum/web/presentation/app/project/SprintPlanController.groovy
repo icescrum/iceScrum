@@ -60,14 +60,13 @@ class SprintPlanController {
     def releaseService
     def userService
 
-
     def titleBarContent = {
         def currentProduct = Product.load(params.product)
         def sprint
         if (!params.id) {
             sprint = Sprint.findCurrentOrNextSprint(currentProduct.id).list()[0]
         } else {
-            sprint = Sprint.load(params.long('id'))
+            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         }
 
         def sprintsName = []
@@ -91,7 +90,7 @@ class SprintPlanController {
             if (sprint)
                 params.id = sprint.id
         } else {
-            sprint = Sprint.get(params.long('id'))
+            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         }
 
         User user = (User) springSecurityService.currentUser
@@ -117,8 +116,9 @@ class SprintPlanController {
                 render(template: 'window/blank', model: [id: id, release: release ?: null])
                 return
             }
+        }else{
+            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         }
-        sprint = Sprint.get(params.long('id'))
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.not.exist')]] as JSON)
             return
@@ -175,7 +175,7 @@ class SprintPlanController {
     def updateTable = {
 
         def task = Task.get(params.long('task.id'))
-        if (!task) {
+        if (!task || task.backlog?.parentRelease?.parentProduct?.id != params.long('product')) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
             return
         }
@@ -234,7 +234,7 @@ class SprintPlanController {
 
 
     def add = {
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -243,7 +243,7 @@ class SprintPlanController {
 
         def selected = null
         if (params.story?.id && !(params.story.id in ['recurrent', 'urgent']))
-            selected = Story.get(params.long('story.id'))
+            selected = Story.getInProduct(params.long('product'),params.long('story.id')).list()[0]
         else if (params.story?.id && (params.story.id in ['recurrent', 'urgent']))
             selected = [id: params.story?.id]
 
@@ -271,7 +271,7 @@ class SprintPlanController {
         }
 
         def task = Task.get(params.long('subid'))
-        if (!task) {
+        if (!task || task.backlog?.parentRelease?.parentProduct?.id != params.long('product')) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
             return
         }
@@ -311,7 +311,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -326,7 +326,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -357,7 +357,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -372,7 +372,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -400,7 +400,7 @@ class SprintPlanController {
 
     @Secured('productOwner() or scrumMaster()')
     def updateDoneDefinition = {
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -425,7 +425,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -446,7 +446,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
@@ -472,7 +472,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
@@ -498,7 +498,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
@@ -553,7 +553,7 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -574,7 +574,7 @@ class SprintPlanController {
      */
     def print = {
         def currentProduct = Product.load(params.product)
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         def values
         def chart = null
 

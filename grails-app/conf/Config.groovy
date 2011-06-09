@@ -28,7 +28,7 @@ import org.apache.log4j.PatternLayout
 /*
  Public URL
 */
-grails.serverURL = "http://localhost:8080/${appName}"
+grails.serverURL = "http://88.188.129.81:8080/${appName}"
 grails.tomcat.nio = true
 
 /*
@@ -232,6 +232,7 @@ springcache {
         }
         postitsCache {
             timeToLive = 3600
+            timeToIdle = 3600
         }
     }
 }

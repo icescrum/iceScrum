@@ -116,7 +116,6 @@ class ProjectController {
 
         def reloadsprintPlan = false
         def reloadProductBacklog = false
-
         if (params.productd.preferences) {
             if (currentProduct.preferences.displayUrgentTasks != params.productd.preferences.displayUrgentTasks || currentProduct.preferences.displayRecurrentTasks != params.productd.preferences?.displayRecurrentTasks) {
                 reloadsprintPlan = true

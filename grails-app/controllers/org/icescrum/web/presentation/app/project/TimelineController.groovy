@@ -189,7 +189,7 @@ class TimelineController {
         if (!params.id) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
         }
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.product,params.long('id')).list()[0]
         if (!release) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
             return
@@ -207,10 +207,6 @@ class TimelineController {
                 previousRelease: previousRelease,
         ])
     }
-
-
-
-
 
     def productCumulativeFlowChart = {
         def currentProduct = Product.get(params.product)

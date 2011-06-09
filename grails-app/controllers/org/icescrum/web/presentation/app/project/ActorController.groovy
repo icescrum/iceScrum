@@ -30,10 +30,10 @@ import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.User
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
+import grails.converters.XML
 
 @Secured('inProduct()')
 class ActorController {
@@ -76,25 +76,27 @@ class ActorController {
         try {
             actorService.save(actor, product)
             this.manageAttachments(actor)
-            render(status: 200, contentType: 'application/json', text: actor as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: actor as JSON }
+                json { render status: 200, text: actor as JSON }
+                xml { render status: 200, text: actor  as XML }
+            }
+        } catch (RuntimeException e) {
+            returnError(exception:e, object:actor)
         } catch (AttachmentException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: actor)]] as JSON)
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner()')
     def update = {
         if (!params.actor) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.actor.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.actor.error.not.exist'))
             return
         }
-        def actor = Actor.get(params.actor.id)
+        def actor = Actor.getInProduct(params.long('product'),params.actor.id).list()[0]
         if (!actor) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.actor.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.actor.error.not.exist'))
             return
         }
 
@@ -127,26 +129,27 @@ class ActorController {
                 if (actors.size() > actorIndex + 1)
                     next = actors[actorIndex + 1].id
             }
-            render(status: 200, contentType: 'application/json', text: [actor: actor, next: next] as JSON)
-
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: [actor: actor, next: next] as JSON }
+                json { render status: 200, text: actor as JSON }
+                xml { render status: 200, text: actor  as XML }
+            }
+        } catch (RuntimeException e) {
+            returnError(exception:e, object:actor)
         } catch (AttachmentException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: actor)]] as JSON)
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner()')
     def delete = {
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.actor.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.actor.error.not.exist'))
             return
         }
         def actors = Actor.getAll(params.list('id'))
         if (!actors) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.actor.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.actor.error.not.exist'))
             return
         }
 
@@ -157,10 +160,15 @@ class ActorController {
             }
             def ids = []
             params.list('id').each { ids << [id: it] }
-            render(status: 200, contentType: 'application/json', text: ids as JSON)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: ids as JSON }
+                json { render status: 200, text: [result:'success'] as JSON }
+                xml { render status: 200, text: [result:'success']  as XML }
+            }
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.actor.error.not.deleted')]] as JSON)
+            returnError(exception:e, text:message(code: 'is.actor.error.not.deleted'))
+        } catch (AttachmentException e) {
+            returnError(exception:e)
         }
     }
 
@@ -202,14 +210,14 @@ class ActorController {
     def edit = {
 
         if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.actor.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.actor.error.not.exist'))
             return
         }
 
-        def actor = Actor.get(params.long('id'))
+        def actor = Actor.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!actor) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.actor.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.actor.error.not.exist'))
             return
         }
 
@@ -233,7 +241,7 @@ class ActorController {
     }
 
     private manageAttachments(def actor) {
-        def user = User.load(springSecurityService.principal.id)
+        def user = springSecurityService.currentUser
         if (actor.id && !params.actor.list('attachments') && actor.attachments*.id.size() > 0) {
             actor.removeAllAttachments()
         } else if (actor.attachments*.id.size() > 0) {
@@ -255,7 +263,7 @@ class ActorController {
     }
 
     def print = {
-        def user = User.load(springSecurityService.principal.id)
+        def user = springSecurityService.currentUser
 
         def currentProduct = Product.load(params.product)
         def data = []

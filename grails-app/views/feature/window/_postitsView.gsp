@@ -34,7 +34,7 @@
         sortable='[rendered:productOwner,
                   handle:".postit-sortable",
                   placeholder:"postit-placeholder ui-corner-all"]'
-        changeRank='[selector:".postit", controller:id,action:"changeRank",params:[product:params.product]]'
+        changeRank='[selector:".postit", controller:id,action:"rank",name:"feature.rank",params:[product:params.product]]'
         dblclickable='[rendered:!productOwner,
                                selector:".postit",
                                callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'

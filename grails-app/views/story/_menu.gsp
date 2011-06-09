@@ -22,6 +22,7 @@
 --}%
 
 <%@ page import="org.icescrum.core.domain.Story;org.icescrum.core.domain.Sprint;" %>
+<g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
 <g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
 <g:set var="scrumMaster" value="${sec.access(expression:'scrumMaster()',{true})}"/>
 <g:set var="creator" value="${story.creator.id == user?.id}"/>
@@ -81,6 +82,21 @@
                  history='false'/>
     </is:postitMenuItem>
 </g:if>
+
+<is:postitMenuItem
+        rendered="${inProduct && (story.state == Story.STATE_PLANNED || story.state == Story.STATE_INPROGRESS || template)}">
+    <is:link
+            elementId="menu-add-task-${story.id}"
+            action="add"
+            id="${story.parentSprint.id}"
+            controller="sprintPlan"
+            params="['story.id':story.id]"
+            remote="true"
+            alt="${message(code:'is.ui.sprintPlan.kanban.recurrentTasks.add')}"
+            update="window-content-${id}">
+        ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks.add')}
+    </is:link>
+</is:postitMenuItem>
 
 <is:postitMenuItem
         rendered="${((productOwner && story.state != Story.STATE_DONE) || (creator && story.state == Story.STATE_SUGGESTED)) || template}"

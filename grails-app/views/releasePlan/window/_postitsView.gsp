@@ -88,7 +88,7 @@
                           handle:".postit-layout .postit-sortable",
                           connectWith:".backlog",
                           placeholder:"ui-drop-hover-postit-rect ui-corner-all",
-                          update:"if(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${id}-${sprint.id} .postit-rect",controller:"story",action:"rank",params:"&product=${params.product}")}}",
+                          update:"if(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${id}-${sprint.id} .postit-rect",controller:"story",action:"rank",name:"story.rank",params:"&product=${params.product}")}}",
                           receive:"event.stopPropagation();"+remoteFunction(action:"plan",
                                       controller:"story",
                                       onFailure: "jQuery(ui).sortable(\"cancel\");",
@@ -119,6 +119,7 @@
                  on='.postit-story .mini-value.editable'
                  findId="jQuery(this).parents('.postit-story:first').attr(\'elemid\')"
                  type="selectui"
+                 name="story.effort"
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
                  values="${suiteSelect}"

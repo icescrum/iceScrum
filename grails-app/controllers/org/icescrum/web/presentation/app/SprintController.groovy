@@ -27,6 +27,7 @@ import org.icescrum.core.domain.Release
 import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
+import grails.converters.XML
 
 class SprintController {
 
@@ -38,15 +39,22 @@ class SprintController {
     @Secured('productOwner() or scrumMaster()')
     def update = {
         if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
+
+        // If the version is different, the sprint has been modified since the last loading
+        if (params.long('sprint.version') != sprint.version) {
+            msg = message(code: 'is.stale.object', args: [message(code: 'is.sprint')])
+            returnError(text:msg)
+            return
+        }
+
         sprint.properties = params.sprint
         def startDate = params.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.startDate) : sprint.startDate
         def endDate = new Date().parse(message(code: 'is.date.format.short'), params.endDate)
@@ -57,11 +65,15 @@ class SprintController {
             if (params.continue) {
                 next = Sprint.findByOrderNumberAndParentRelease(sprint.orderNumber + 1, sprint.parentRelease)
             }
-            render(status: 200, contentType: 'application/json', text: [sprint: sprint, next: next?.id ?: null] as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, next: next?.id ?: null] as JSON)  }
+                json { render(status: 200, text: sprint as JSON) }
+                xml { render(status: 200, text: sprint as XML) }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:sprint, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
@@ -69,7 +81,12 @@ class SprintController {
     def save = {
         def sprint = new Sprint()
         sprint.properties = params.sprint
-        def release = Release.get(params.long('id'))
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
+
+        if (!release) {
+            returnError(text:message(code: 'is.release.error.not.exist'))
+            return
+        }
 
         if (params.startDate)
             sprint.startDate = new Date().parse(message(code: 'is.date.format.short'), params.startDate)
@@ -77,35 +94,42 @@ class SprintController {
             sprint.endDate = new Date().parse(message(code: 'is.date.format.short'), params.endDate)
         try {
             sprintService.save(sprint, release)
-            render(status: 200, contentType: 'application/json', text: sprint as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: sprint as JSON)  }
+                json { render(status: 200, text: sprint as JSON) }
+                xml { render(status: 200, text: sprint as XML) }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:sprint, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def delete = {
         if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
 
         try {
             def deletedSprints = sprintService.delete(sprint)
-            render(status: 200, contentType: 'application/json', text: deletedSprints as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: deletedSprints as JSON)  }
+                json { render(status: 200, text: 'success' as JSON) }
+                xml { render(status: 200, text: 'success' as XML) }
+            }
+        } catch (RuntimeException e) {
+            returnError(object:sprint, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
 
     }
@@ -115,71 +139,79 @@ class SprintController {
     @Secured('productOwner() or scrumMaster()')
     def unPlan = {
         if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
 
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
 
         try {
             def unPlanAllStories = storyService.unPlanAll([sprint])
-            render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)  }
+                json { render(status: 200, text: sprint as JSON) }
+                xml { render(status: 200, text: sprint as XML) }
+            }
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.stories.error.not.dissociate')]] as JSON)
+            returnError(text:message(code: 'is.release.stories.error.not.dissociate'), exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def activate = {
         if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
 
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
 
         try {
             sprintService.activate(sprint)
-            render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)  }
+                json { render(status: 200, text: sprint as JSON) }
+                xml { render(status: 200, text: sprint as XML) }
+            }
         } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
+            returnError(object:sprint, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def close = {
         if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
-        def sprint = Sprint.get(params.long('id'))
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
         try {
             def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
             sprintService.close(sprint)
-            render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)  }
+                json { render(status: 200, text: sprint as JSON) }
+                xml { render(status: 200, text: sprint as XML) }
+            }
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
+            returnError(object:sprint, exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception:e)
         }
     }
 }

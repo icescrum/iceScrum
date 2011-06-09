@@ -23,6 +23,7 @@
 package org.icescrum.web.presentation
 
 import grails.converters.JSON
+import grails.converters.XML
 
 class ErrorsController {
 
@@ -55,5 +56,4 @@ class ErrorsController {
     def handleMemory = {
         render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.permgen')] as JSON)
     }
-
 }

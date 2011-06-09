@@ -138,6 +138,7 @@
                  on='div.postit-story span.mini-value.editable'
                  findId="jQuery(this).parents('.postit-story:first').attr('elemid')"
                  type="selectui"
+                 name="story.effort"
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
                  values="${suiteSelect}"
@@ -167,7 +168,7 @@
                  revert="true"
                  live="true"
                  over="if(jQuery(this).hasClass('no-drop wait')){ jQuery(ui.placeholder).html('${nodropMessage}'); }else{ jQuery(ui.placeholder).html(''); }"
-                 update="var container = jQuery(this).find('.postit-rect'); if(container.index(ui.item) != -1 && ui.sender == undefined){${is.changeRank(controller:'task',action:'rank',params:'&product='+params.product+'')}}"
+                 update="var container = jQuery(this).find('.postit-rect'); if(container.index(ui.item) != -1 && ui.sender == undefined){${is.changeRank(controller:'task',action:'rank',name:'task.rank',params:'&product='+params.product+'')}}"
                  placeholder="postit-placeholder ui-corner-all"
                  receive="${remoteFunction(controller:'task',
                                    action:'state',

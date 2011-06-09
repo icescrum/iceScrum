@@ -93,7 +93,7 @@
                               handle:".postit-layout .postit-sortable",
                               connectWith:".backlog",
                               placeholder:"ui-drop-hover-postit-rect ui-corner-all",
-                              update:"if(jQuery(\"#backlog-layout-plan-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${id}-${sprint.id} .postit-rect",controller:id,action:"changeRank",params:"&product=${params.product}")}}",
+                              update:"if(jQuery(\"#backlog-layout-plan-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${id}-${sprint.id} .postit-rect",controller:id,action:"changeRank",name:"sprint.rank",params:"&product=${params.product}")}}",
                               receive:"event.stopPropagation();"+remoteFunction(action:"plan",
                                           controller:"story",
                                           onFailure: "jQuery(ui).sortable(\"cancel\");",
