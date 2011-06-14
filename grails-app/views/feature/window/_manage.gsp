@@ -38,7 +38,7 @@
         </is:fieldSelect>
 
         <is:fieldSelect for="feature.value" label="is.feature.value">
-            <is:select container="#window-content-${id}" width="100" maxHeight="200" styleSelect="dropdown"
+            <is:select container="#window-content-feature" width="100" maxHeight="200" styleSelect="dropdown"
                        from="${valuesList}" name="feature.value" value="${feature?.value}"/>
         </is:fieldSelect>
 

@@ -61,5 +61,5 @@
     <is:onStream on="#window-title-bar-content-sprintPlan"
                  events="[[object:'sprint',events:['update','activate','close']]]"
                  constraint="sprint.id == ${sprint.id}"
-                 callback=" debugger; jQuery('#window-title-bar-sprintPlan .content').html('Sprint plan - ${message(code:'is.sprint')} ' + sprint.orderNumber + ' - ' + jQuery.icescrum.sprint.states[sprint.state] + ' - [' + jQuery.icescrum.dateLocaleFormat(sprint.startDate) + ' -&gt; ' + jQuery.icescrum.dateLocaleFormat(sprint.endDate) + ']');"/>
+                 callback="jQuery('#window-title-bar-sprintPlan .content').html('Sprint plan - ${message(code:'is.sprint')} ' + sprint.orderNumber + ' - ' + jQuery.icescrum.sprint.states[sprint.state] + ' - [' + jQuery.icescrum.dateLocaleFormat(sprint.startDate) + ' -&gt; ' + jQuery.icescrum.dateLocaleFormat(sprint.endDate) + ']');"/>
 </g:if>

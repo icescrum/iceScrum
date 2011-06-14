@@ -29,7 +29,7 @@
         </is:fieldInput>
 
         <is:fieldSelect label="is.task.story">
-            <is:select name="story.id" container="#window-content-${id}" width="240" maxHeight="200"
+            <is:select name="story.id" container=".window-content" width="240" maxHeight="200"
                        styleSelect="dropdown" from="${stories}" value="${selected?.id}" optionValue="name"
                        optionKey="id"/>
         </is:fieldSelect>

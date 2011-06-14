@@ -82,6 +82,7 @@ class BacklogController {
         currentSuite = currentSuite.eachWithIndex { t, i ->
             suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
         }
+
         render(template: template, model: [
                 stories: stories,
                 id: id,

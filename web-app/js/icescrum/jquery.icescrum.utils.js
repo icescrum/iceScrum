@@ -232,7 +232,7 @@
     };
 
     $.fn.liveEditable = function (url, opts) {
-        this.live("hover", function() {
+        this.die('hover').live("hover", function() {
             if (!$(this).data("init")) {
                 $(this).data("init", true).editable(url, opts);
             }
@@ -240,7 +240,6 @@
     };
 
     String.prototype.formatLine = function(remove) {
-        debugger;
         remove = remove ? "" : "<br/>";
         return this.replace(/\r\n/g, remove).replace(/\n/g, remove).replace(/"/g, '\\"');
     };

@@ -68,7 +68,7 @@
           <is:input name='preferences.activity' id='activity' />
         </is:fieldInput>
 
-        <is:fieldSelect for="language" label="is.user.preferences.language" noborder="true">
+        <is:fieldSelect for="language" label="is.user.preferences.language">
           <is:localeSelecter container="#registerForm" width="170" styleSelect="dropdown" name="preferences.language"/>
         </is:fieldSelect>
 

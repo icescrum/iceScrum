@@ -404,7 +404,7 @@
                         if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state != $.icescrum.story.STATE_DONE && $.icescrum.user.productOwner))) {
                             $('#menu-edit-' + this.id, newObject).remove();
                         }
-                        if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state <= $.icescrum.story.STATE_ESTIMATED && $.icescrum.user.productOwner))) {
+                        if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state <= $.icescrum.story.STATE_ESTIMATED && $.icescrum.user.productOwner)) || this.state > $.icescrum.story.STATE_PLANNED) {
                             $('#menu-delete-' + this.id, newObject).remove();
                         }
                         if (this.state != $.icescrum.story.STATE_SUGGESTED) {

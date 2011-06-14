@@ -24,6 +24,7 @@
 <%@ page import="org.icescrum.core.domain.Story;org.icescrum.core.domain.Sprint;" %>
 <g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
 <g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
+<g:set var="teamMember" value="${sec.access(expression:'teamMember()',{true})}"/>
 <g:set var="scrumMaster" value="${sec.access(expression:'scrumMaster()',{true})}"/>
 <g:set var="creator" value="${story.creator.id == user?.id}"/>
 
@@ -82,6 +83,28 @@
                  history='false'/>
     </is:postitMenuItem>
 </g:if>
+
+<!--<g:if test="${(scrumMaster || teamMember) && ((story.state >= Story.STATE_ACCEPTED && story.state < Story.STATE_DONE && session.currentView == 'postitsView' ) || template)}">
+    <is:postitMenuItem rendered="${session.currentView == 'postitsView'}">
+      <is:link
+            elementId="menu-estimate-${story.id}"
+            disabled="true"
+            history="false"
+            value="${message(code:'is.ui.backlog.menu.estimate')}"
+            onclick="jQuery('#postit-story-${story.id}').find('.mini-value').click();"
+            />
+    </is:postitMenuItem>
+
+    <is:postitMenuItem rendered="${session.currentView == 'tableView'}">
+      <is:link
+            elementId="menu-estimate-${story.id}"
+            disabled="true"
+            history="false"
+            value="${message(code:'is.ui.backlog.menu.estimate')}"
+            onclick="jQuery('#postit-story-${story.id}').find('.mini-value').click();"
+            />
+    </is:postitMenuItem>
+</g:if>-->
 
 <is:postitMenuItem
         rendered="${inProduct && (story.state == Story.STATE_PLANNED || story.state == Story.STATE_INPROGRESS || template)}">

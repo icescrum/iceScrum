@@ -82,7 +82,7 @@
         rendered="${((responsible || scrumMaster) && task.state != Task.STATE_DONE && task.backlog?.state == Sprint.STATE_INPROGRESS) || template}"
         elementId="menu-blocked-${task.id}">
     <is:link id="${task.id}"
-             action="changeBlockState"
+             action="block"
              controller="task"
              remote="true"
              history="false"

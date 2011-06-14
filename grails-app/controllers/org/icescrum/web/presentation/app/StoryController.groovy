@@ -344,7 +344,7 @@ class StoryController {
         try {
             storyService.estimate(story,params.story.effort)
             withFormat {
-                html { render(status: 200, text: story.effort)  }
+                html { render(status: 200, text: params.story.effort)  }
                 json { render(status: 200, text: story as JSON) }
                 xml { render(status: 200, text: story as XML) }
             }
@@ -584,7 +584,7 @@ class StoryController {
 
     @Secured('inProduct()')
     def show = {
-        if (params.format == 'html'){
+        if (request?.format == 'html'){
             render(status:404)
             return
         }
@@ -610,7 +610,7 @@ class StoryController {
     @Secured('inProduct()')
     def list = {
 
-        if (params.format == 'html'){
+        if (request?.format == 'html'){
             render(status:404)
             return
         }

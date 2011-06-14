@@ -31,16 +31,24 @@ import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import grails.plugins.springsecurity.Secured
 import grails.converters.XML
 
+@Secured('inProduct()')
 class TaskController {
 
     def sprintService
     def springSecurityService
     def taskService
 
+    def allowedMethods = [
+            ['save', 'take', 'unassign', 'copy', 'estimate', 'rank', 'block', 'unblock', 'state']: ['POST'],
+            ['list', 'show', 'download']: ['GET'],
+            ['update']: ['PUT', 'POST'],
+            ['delete']: ['DELETE', 'POST']
+    ]
+
     def save = {
-        def story = !(params.story.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'),params.long('story.id')).list()[0] : null
-        if (!story && !(params.story.id in ['recurrent', 'urgent'])) {
-            returnError(text:message(code: 'is.story.error.not.exist'))
+        def story = !(params.story?.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'), params.long('story.id')).list()[0] : null
+        if (!story && !(params.story?.id in ['recurrent', 'urgent'])) {
+            returnError(text: message(code: 'is.story.error.not.exist'))
             return
         }
 
@@ -50,7 +58,7 @@ class TaskController {
         User user = (User) springSecurityService.currentUser
         def sprint = Sprint.load(params.id)
         if (!sprint) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
+            returnError(text: message(code: 'is.sprint.error.not.exist'))
             return
         }
 
@@ -64,41 +72,45 @@ class TaskController {
 
             this.manageAttachments(task)
             withFormat {
-                html { render(status: 200,contentType: 'application/json', text:task as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, text: task as JSON) }
                 xml { render(status: 200, text: task as XML) }
             }
         } catch (AttachmentException e) {
-            returnError(object:task, exception:e)
+            returnError(object: task, exception: e)
         } catch (IllegalStateException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:task,exception:e)
+            returnError(object: task, exception: e)
         }
     }
 
     def update = {
         if (!params.task) return
 
-        def story = !(params.story.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'),params.long('story.id')).list()[0] : null
+        def story = !(params.story?.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'), params.long('story.id')).list()[0] : null
 
         if (!story && !(params.story?.id in ['recurrent', 'urgent'])) {
-            returnError(text:message(code: 'is.story.error.not.exist'))
+            returnError(text: message(code: 'is.story.error.not.exist'))
             return
         }
 
         def sprintTask = (params.story.id in ['recurrent', 'urgent']) ? params.story.id == 'recurrent' ? Task.TYPE_RECURRENT : Task.TYPE_URGENT : null
 
-        def task = Task.get(params.long('task.id'))
+        if (!params.task?.id) {
+            returnError(text: message(code: 'is.task.error.not.exist'))
+        }
+
+        def task = Task.get(params.task.id.toLong())
         if (!task) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
 
         // If the version is different, the task has been modified since the last loading
-        if (params.long('task.version') != task.version) {
+        if (params.task.version && params.long('task.version') != task.version) {
             msg = message(code: 'is.stale.object', args: [message(code: 'is.task')])
-            returnError(text:msg)
+            returnError(text: msg)
             return
         }
 
@@ -132,27 +144,27 @@ class TaskController {
                 next = Task.findNextTask(task, user).list()[0]
             }
             withFormat {
-                html { render(status: 200,contentType: 'application/json', text:[task: task, next: next?.id] as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text: [task: task, next: next?.id] as JSON)  }
                 json { render(status: 200, text: task as JSON) }
                 xml { render(status: 200, text: task as XML) }
             }
         } catch (AttachmentException e) {
-            returnError(object:task, exception:e)
+            returnError(object: task, exception: e)
         } catch (IllegalStateException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:task, exception:e)
+            returnError(object: task, exception: e)
         }
     }
 
     def take = {
         if (!params.id) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
         if (!task) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         User user = (User) springSecurityService.currentUser
@@ -160,23 +172,25 @@ class TaskController {
         try {
             taskService.assign([task], user)
             withFormat {
-                html { render(status: 200,contentType: 'application/json', text:task as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, text: task as JSON) }
                 xml { render(status: 200, text: task as XML) }
             }
+        } catch (IllegalStateException e) {
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:task, exception:e)
+            returnError(object: task, exception: e)
         }
     }
 
     def unassign = {
         if (!params.id) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
         if (!task) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         User user = (User) springSecurityService.currentUser
@@ -184,21 +198,21 @@ class TaskController {
         try {
             taskService.unassign([task], user)
             withFormat {
-                html { render(status: 200,contentType: 'application/json', text:task as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, text: task as JSON) }
                 xml { render(status: 200, text: task as XML) }
             }
         } catch (IllegalStateException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:task, exception:e)
+            returnError(object: task, exception: e)
         }
     }
 
 
     def delete = {
         if (!params.id) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         def tasks = Task.getAll(params.list('id'))
@@ -213,19 +227,19 @@ class TaskController {
             params.list('id').each { ids << [id: it] }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: ids as JSON)  }
-                json { render(status: 200, text: [result:'success'] as JSON) }
-                xml { render(status: 200, text: [result:'success'] as JSON) }
+                json { render(status: 200, text: [result: 'success'] as JSON) }
+                xml { render(status: 200, text: [result: 'success'] as JSON) }
             }
         } catch (IllegalStateException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         }
     }
 
     def copy = {
         if (!params.id) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
@@ -239,21 +253,21 @@ class TaskController {
                 xml { render(status: 200, text: copiedTask as XML) }
             }
         } catch (IllegalStateException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         }
     }
 
-    def estimateTask = {
+    def estimate = {
         if (!params.id) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
 
         if (!task) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         User user = (User) springSecurityService.currentUser
@@ -261,24 +275,26 @@ class TaskController {
         try {
             taskService.update(task, user)
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: task.estimation ?: '?')  }
+                html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, text: task as JSON) }
                 xml { render(status: 200, text: task as XML) }
             }
+        } catch (IllegalStateException e) {
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:task, exception:e)
+            returnError(object: task, exception: e)
         }
     }
 
-    def changeBlockState = {
+    def block = {
         if (!params.id) {
             def msg = message(code: 'is.task.error.not.exist')
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('id'))
         if (!task) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         task.blocked = !task.blocked
@@ -291,10 +307,14 @@ class TaskController {
                 xml { render(status: 200, text: task as XML) }
             }
         } catch (IllegalStateException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:task, exception:e)
+            returnError(object: task, exception: e)
         }
+    }
+
+    def unblock = {
+        forward(action: 'block', params: [id: params.id])
     }
 
     def rank = {
@@ -307,7 +327,7 @@ class TaskController {
         def movedItem = Task.get(params.long('id'))
 
         if (!movedItem) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         try {
@@ -318,7 +338,7 @@ class TaskController {
                 xml { render(status: 200, text: movedItem as XML) }
             }
         } catch (RuntimeException e) {
-            returnError(object:movedItem, exception:e)
+            returnError(object: movedItem, exception: e)
         }
     }
 
@@ -329,7 +349,7 @@ class TaskController {
 
     private manageAttachments(def task) {
         User user = (User) springSecurityService.currentUser
-        if (task.id && !params.task.list('attachments') && task.attachments*.id.size() > 0) {
+        if (params.task.attachments && task.id && !params.task.list('attachments') && task.attachments*.id.size() > 0) {
             task.removeAllAttachments()
         } else if (task.attachments*.id.size() > 0) {
             task.attachments*.id.each {
@@ -352,15 +372,15 @@ class TaskController {
     def state = {
         // params.id represent the targeted state (STATE_WAIT, STATE_INPROGRESS, STATE_DONE)
         if (!params.id) {
-            returnError(text:message(code: 'is.ui.sprintPlan.state.no.exist'))
+            returnError(text: message(code: 'is.ui.sprintPlan.state.no.exist'))
         }
         if (!params.task.id) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         def task = Task.get(params.long('task.id'))
         if (!task) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
+            returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
         User user = (User) springSecurityService.currentUser
@@ -393,9 +413,61 @@ class TaskController {
                 xml { render(status: 200, text: task as XML) }
             }
         } catch (IllegalStateException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:task, exception:e)
+            returnError(object: task, exception: e)
+        }
+    }
+
+    def show = {
+        if (request?.format == 'html') {
+            render(status: 404)
+            return
+        }
+
+        if (!params.id) {
+            returnError(text: message(code: 'is.story.error.not.exist'))
+            return
+        }
+
+        def task = Task.get(params.long('id')).list()[0]
+
+        if (!task) {
+            returnError(text: message(code: 'is.task.error.not.exist'))
+            return
+        }
+
+        withFormat {
+            json { render(status: 200, text: task as JSON) }
+            xml { render(status: 200, text: task as XML) }
+        }
+    }
+
+    def list = {
+
+        if (request?.format == 'html') {
+            render(status: 404)
+            return
+        }
+
+        def sprint = Sprint.load(params.id)
+        if (!sprint) {
+            returnError(text: message(code: 'is.sprint.error.not.exist'))
+            return
+        }
+
+        def tasks = null
+        if (params.filter == 'user') {
+            tasks = Task.getUserTasks(sprint.id, springSecurityService.principal.id).list()
+        } else if (params.filter == 'free') {
+            tasks = Task.getFreeTasks(sprint.id).list()
+        } else {
+            tasks = Task.getAllTasksInSprint(sprint.id).list()
+        }
+
+        withFormat {
+            json { render(status: 200, text: tasks as JSON) }
+            xml { render(status: 200, text: tasks as XML) }
         }
     }
 }
