@@ -97,10 +97,18 @@
                 <div>
                     <strong>${message(code: 'is.postit.attachment', args: [task.totalAttachments, task.totalAttachments > 1 ? 's' : ''])} :</strong>
                     <is:attachedFiles bean="${task}" width="120" deletable="${false}" action="download"
-                                      params="[product:params.product]" controller="sprintPlan" size="20"/>
+                                      params="[product:params.product]" controller="task" size="20"/>
                 </div>
             </g:if>
             <entry:point id="quicklook-task-right" model="[task:task]"/>
         </div>
     </div>
 </div>
+<is:onStream
+        on=".postit-details-task[elemid=${task.id}]"
+        events="[[object:'task',events:['update']]]"
+        callback="jQuery('#dialog .quicklook').load('${createLink(controller:'quickLook', action:'index', params:[product:params.product,'task.id':task.id])}');"/>
+<is:onStream
+        on=".postit-details-task[elemid=${task.id}]"
+        events="[[object:'task',events:['remove']]]"
+        callback="alert('${message(code:'is.task.deleted')}'); jQuery('#dialog').dialog('close');"/>

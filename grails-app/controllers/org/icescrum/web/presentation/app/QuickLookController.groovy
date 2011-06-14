@@ -76,7 +76,7 @@ class QuickLookController {
         }
 
         else if (params.task?.id) {
-            def task = Task.getInProduct(params.long('product'),params.long('task.id')).list()[0]
+            def task = Task.get(params.long('task.id'))
 
             if (!task) {
                 returnError(text:message(code: 'is.task.error.not.exist'))
