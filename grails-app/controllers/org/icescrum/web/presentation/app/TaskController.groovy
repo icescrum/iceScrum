@@ -430,7 +430,7 @@ class TaskController {
             return
         }
 
-        def task = Task.get(params.long('id')).list()[0]
+        def task = Task.get(params.long('id'))
 
         if (!task) {
             returnError(text: message(code: 'is.task.error.not.exist'))
