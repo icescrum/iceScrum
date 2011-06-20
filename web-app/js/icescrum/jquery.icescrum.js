@@ -25,13 +25,6 @@
 
 var stack_bottomleft = {"dir1": "up", "dir2": "right"};
 
-if (typeof console != "object") {
-    var console = {
-        'log':function() {
-        }
-    };
-}
-
 $.ajaxSetup({ cache: false  });
 
 (function($) {
@@ -69,12 +62,6 @@ $.ajaxSetup({ cache: false  });
                 icescrum = options;
             }
             this.o = jQuery.extend({}, this.defaults, icescrum);
-            var old_console_log = console.log;
-            console.log = function() {
-                if ($.icescrum.o.debug) {
-                    old_console_log.apply(this, arguments);
-                }
-            };
 
             if (this.o.widgetsList.length > 0) {
                 var tmp = this.o.widgetsList;
@@ -94,6 +81,12 @@ $.ajaxSetup({ cache: false  });
             $(window).load(function () {
                 setTimeout($.icescrum.listenServer, 500);
             });
+        },
+
+        log:function() {
+            if (window.console) {
+                console.log.apply(console, arguments);
+            }
         },
 
         uploading:function() {

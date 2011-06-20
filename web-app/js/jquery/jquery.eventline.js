@@ -70,6 +70,21 @@
                     size();
                 }).trigger('resize');
 
+        rootContainer.mousewheel(function(event, delta) {
+            var pixels = delta * 30;
+            var overflow = $('.event-overflow');
+            var currentMargin = parseInt(overflow.css('margin-left').replace('px',''));
+            var newMargin = currentMargin + pixels;
+            if(newMargin >= 0){
+                overflow.css('margin-left',0);
+            }else if((newMargin + overflow.width()) < 181){
+                overflow.css('margin-left','-' + $('.event-container:last').position().left + 'px');
+            }else{
+                overflow.css('margin-left',newMargin);
+            }
+            event.preventDefault();
+        });
+
         $('.event-select-item').live('click.eventline', function() {
             var elemid = $(this).attr('elemid');
             $('.event-overflow').css('margin-left', '-' + $('.event-container[elemid=' + elemid + ']').position().left + 'px');

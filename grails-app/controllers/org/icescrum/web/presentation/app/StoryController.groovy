@@ -160,7 +160,7 @@ class StoryController {
             }
 
             if (params.feature?.id && story.feature?.id != params.long('feature.id')) {
-                def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list[0]
+                def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
                 if (!feature)
                     returnError(text:message(code: 'is.feature.error.not.exist'))
                 storyService.associateFeature(feature, story)
