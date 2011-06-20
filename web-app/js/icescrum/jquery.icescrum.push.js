@@ -562,7 +562,7 @@
                             },
                             remove:function() {
                                 $('div.event-container[elemid=' + this.id + ']').remove();
-                                $('div.event-select-item[elemid=' + this.id + ']').remove();
+                                $('span.event-select-item[elemid=' + this.id + ']').remove();
                                 $(window).trigger('resize.eventline');
                             },
                             beforeTmpl:function(tmpl, container) {

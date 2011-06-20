@@ -41,8 +41,23 @@
             if (realWidth > rootContainer.width()) {
                 adjust = 28;
                 selectList.show();
+                rootContainer.bind('mousewheel',function(event, delta) {
+                    var pixels = delta * 30;
+                    var currentMargin = parseInt(overflow.css('margin-left').replace('px',''));
+                    var newMargin = currentMargin + pixels;
+                    if(newMargin >= 0){
+                        overflow.css('margin-left',0);
+                    }else if((newMargin + overflow.width()) < 181){
+                        overflow.css('margin-left','-' + $('.event-container:last').position().left + 'px');
+                    }else{
+                        overflow.css('margin-left',newMargin);
+                    }
+                    event.preventDefault();
+                });
             } else {
                 selectList.hide();
+                overflow.css('margin-left',0);
+                rootContainer.unbind('mousewheel');
             }
             rootContainer.css('overflow-x', 'hidden');
             var height = rootContainer.height() - 50 - adjust;
@@ -69,21 +84,6 @@
                     }
                     size();
                 }).trigger('resize');
-
-        rootContainer.mousewheel(function(event, delta) {
-            var pixels = delta * 30;
-            var overflow = $('.event-overflow');
-            var currentMargin = parseInt(overflow.css('margin-left').replace('px',''));
-            var newMargin = currentMargin + pixels;
-            if(newMargin >= 0){
-                overflow.css('margin-left',0);
-            }else if((newMargin + overflow.width()) < 181){
-                overflow.css('margin-left','-' + $('.event-container:last').position().left + 'px');
-            }else{
-                overflow.css('margin-left',newMargin);
-            }
-            event.preventDefault();
-        });
 
         $('.event-select-item').live('click.eventline', function() {
             var elemid = $(this).attr('elemid');
