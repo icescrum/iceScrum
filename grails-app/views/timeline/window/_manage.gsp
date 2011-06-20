@@ -29,6 +29,10 @@
             <is:input id="releasename" name="release.name" value="${release?.name}" focus="true"/>
         </is:fieldInput>
 
+        <is:fieldArea label="is.release.goal" for="releasegoal">
+            <is:area large="true" id="releasegoal" name="release.goal" value="${release?.goal}"/>
+        </is:fieldArea>
+
         <is:fieldDatePicker for="startDate" label="is.release.startDate">
             <is:datePicker
                     id="startDate"
@@ -53,12 +57,6 @@
                     changeYear="true"/>
         </is:fieldDatePicker>
 
-    </is:fieldset>
-
-    <is:fieldset title="is.ui.timeline.release.details.title">
-        <is:fieldArea label="is.release.goal" noborder="true" for="releasegoal">
-            <is:area id="releasegoal" name="release.goal" value="${release?.goal}" rows="3"/>
-        </is:fieldArea>
     </is:fieldset>
 
     <g:if test="${release}">

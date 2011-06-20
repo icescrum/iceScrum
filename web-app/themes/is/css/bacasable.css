@@ -254,6 +254,10 @@ body, html {
     height: 25px;
 }
 
+.table.kanban .table-legend .table-cell {
+    font-size: 13px;
+}
+
 .choose {
     height: 80px;
     display: block;

@@ -36,7 +36,7 @@
            stateText="${story.state > Story.STATE_SUGGESTED ? is.bundle(bundle:'storyStates',value:story.state) : ''}"
            editableEstimation="${tMOrSm && story.state != Story.STATE_DONE}"
            sortable="[disabled:!sortable]"
-           cacheKey="${story.lastUpdated}${story.totalComments}${story.state == Story.STATE_SUGGESTED ? user.id == story.creator.id : ''}"
+           cacheKey="${story.lastUpdated}${story.totalComments}${story.state == Story.STATE_SUGGESTED ? user?.id == story.creator.id : ''}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
     <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
 %{--Embedded menu--}%

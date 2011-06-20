@@ -94,7 +94,7 @@ class ActorController {
             returnError(text:message(code: 'is.actor.error.not.exist'))
             return
         }
-        def actor = Actor.getInProduct(params.long('product'),params.actor.id).list()[0]
+        def actor = Actor.getInProduct(params.long('product'),params.long('actor.id')).list()[0]
         if (!actor) {
             returnError(text:message(code: 'is.actor.error.not.exist'))
             return

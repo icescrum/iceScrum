@@ -9,7 +9,10 @@
                             return false;
                         }
                     },
-                    reset:function(id) {
+                    reset:function(id,preserve) {
+                        if (!preserve){
+                            preserve = [];
+                        }
                         $(':input', id)
                                 .not(':button, :submit, :reset, :hidden')
                                 .val('')
@@ -21,7 +24,10 @@
                                 var nextRank = $(this).find('option').size() + 1;
                                 $(this).selectmenu('add', nextRank, nextRank, true);
                             } else {
-                                $(this).selectmenu('value', 0);
+                                debugger;
+                                if ($.inArray(this.id,preserve) == -1){
+                                    $(this).selectmenu('value', 0);
+                                }
                             }
                         });
 

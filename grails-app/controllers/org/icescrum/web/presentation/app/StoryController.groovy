@@ -84,7 +84,6 @@ class StoryController {
         }
     }
 
-    @Secured('productOwner(#p) or scrumMaster(#p)')
     def update = {
         if (!params.story?.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -95,6 +94,15 @@ class StoryController {
 
         if (!story) {
             returnError(text:message(code: 'is.story.error.not.exist'))
+            return
+        }
+
+        def user = springSecurityService.currentUser
+        if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !securityService.productOwner(story.backlog.id, springSecurityService.authentication)) {
+            render(status: 403, contentType: 'application/json')
+            return
+        } else if (story.state > Story.STATE_SUGGESTED && !securityService.productOwner(story.backlog.id, springSecurityService.authentication)) {
+            render(status: 403, contentType: 'application/json')
             return
         }
 

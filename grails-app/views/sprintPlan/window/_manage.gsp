@@ -80,7 +80,7 @@
                     type="submitToRemote"
                     url="[controller:'task', action:'save',id:sprint.id,params:[product:params.product]]"
                     before='if (\$.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
-                    onSuccess="jQuery.icescrum.form.reset('#${id}-form'); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.saved')}')"
+                    onSuccess="jQuery.icescrum.form.reset('#${id}-form',['story_id']); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.saved')}')"
                     value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
             <is:button
                     id="submitForm"
