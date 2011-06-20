@@ -64,7 +64,7 @@
                 <is:select container="#${referrer}-form" width="195" maxHeight="200"
                            styleSelect="dropdown"
                            keys="${sprints*.id}"
-                           noSelection="['':message(code:'is.ui.backlog.choose.feature')]"
+                           noSelection="['':message(code:'is.ui.backlog.choose.sprint')]"
                            from="${sprints*.name}" name="sprint.id" value="${story.parentSprint?.id}"/>
             </is:fieldSelect>
         </g:if>

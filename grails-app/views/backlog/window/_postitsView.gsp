@@ -35,7 +35,8 @@
         sortable='[rendered:productOwner,
                   handle:".postit-sortable",
                   placeholder:"postit-placeholder ui-corner-all"]'
-        droppable='[selector:".postit",
+        droppable='[rendered:productOwner,
+                  selector:".postit",
                   hoverClass: "ui-selected",
                   drop: remoteFunction(controller:"story",
                                        action:"associateFeature",
