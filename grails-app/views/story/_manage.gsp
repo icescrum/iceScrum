@@ -33,7 +33,7 @@
     %{-- Type --}%
         <is:fieldSelect for="story.type" label="is.story.type">
             <is:select
-                    container="#${referrer}-form"
+                    container=".window-content"
                     width="240"
                     maxHeight="200"
                     styleSelect="dropdown"
@@ -44,7 +44,7 @@
         </is:fieldSelect>
 
         <is:fieldSelect label="is.feature" for="story.feature">
-            <is:select container="#${referrer}-form" width="195" maxHeight="200"
+            <is:select container=".window-content" width="195" maxHeight="200"
                        styleSelect="dropdown"
                        name="feature.id" noSelection="['':message(code:'is.ui.backlog.choose.feature')]"
                        optionValue="name" optionKey="id" from="${featureSelect}"
@@ -53,7 +53,7 @@
 
         <g:if test="${rankList}">
             <is:fieldSelect label="is.story.rank" for="story.rank">
-                <is:select container="#${referrer}-form" width="100" maxHeight="200"
+                <is:select container=".window-content" width="100" maxHeight="200"
                            styleSelect="dropdown"
                            from="${rankList}" name="story.rank" value="${story.rank}"/>
             </is:fieldSelect>
@@ -61,7 +61,7 @@
 
         <g:if test="${sprints}">
             <is:fieldSelect label="is.sprint" for="sprint.id">
-                <is:select container="#${referrer}-form" width="195" maxHeight="200"
+                <is:select container=".window-content" width="195" maxHeight="200"
                            styleSelect="dropdown"
                            keys="${sprints*.id}"
                            noSelection="['':message(code:'is.ui.backlog.choose.sprint')]"
@@ -164,13 +164,13 @@
                     url="[controller:'story', action:'update', params:[product:params.product]]"
                     value="${message(code:'is.button.update')}"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
-                    onSuccess="jQuery.icescrum.navigateTo('${referrer+(params.subid?'/'+params.id:'')}'); jQuery.icescrum.renderNotice('${message(code: 'is.story.updated')}')"/>
+                    onSuccess="jQuery.icescrum.navigateTo('${referrerUrl?:referrer+(params.subid?'/'+params.id:'')}'); jQuery.icescrum.renderNotice('${message(code: 'is.story.updated')}')"/>
         </g:else>
         <is:button
                 id="cancelForm"
                 type="link"
                 button="button-s button-s-black"
-                href="#${referrer}"
+                href="#${referrerUrl?:referrer}"
                 value="${message(code: 'is.button.cancel')}"/>
     </is:buttonBar>
 

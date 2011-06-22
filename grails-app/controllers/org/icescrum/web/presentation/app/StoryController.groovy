@@ -301,7 +301,8 @@ class StoryController {
                 typesLabels: BundleUtils.storyTypes.values().collect {v -> message(code: v)},
                 typesKeys: BundleUtils.storyTypes.keySet().asList(),
                 featureSelect: product.features.asList(),
-                referrer: params.referrer
+                referrer: params.referrer,
+                referrerUrl: params.referrerUrl
         ])
     }
 

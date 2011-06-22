@@ -224,6 +224,10 @@ class BacklogElementController {
         }
     }
 
+    def editStory = {
+        forward(action: 'edit', controller: 'story', params: [referrer: id, referrerUrl:id+'/'+params.id, id: params.id, product: params.product])
+    }
+
     /**
      * Remove a comment from the comment list of a story
      */

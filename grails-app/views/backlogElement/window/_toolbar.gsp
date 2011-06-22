@@ -24,12 +24,11 @@
 <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
 
 <is:iconButton
-        action="edit"
-        controller="${story.state > Story.STATE_SUGGESTED ? 'backlog' : 'sandbox'}"
-        id="${params.id}"
+        action="editStory"
+        controller="backlogElement"
         rendered="${productOwner  || story.creator.id == user?.id}"
-        history="false"
-        params="['referrer.controller':id, 'referrer.action':'details', 'referrer.id':params.id, product:params.product]"
+        id="${story.id}"
+        params="[product:params.product]"
         title="${message(code:'is.ui.backlogelement.toolbar.update')}"
         alt="${message(code:'is.ui.backlogelement.toolbar.update')}"
         update="window-content-${id}">
