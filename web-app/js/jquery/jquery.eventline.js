@@ -41,7 +41,10 @@
             if (realWidth > rootContainer.width()) {
                 adjust = 28;
                 selectList.show();
-                rootContainer.bind('mousewheel',function(event, delta) {
+                rootContainer.bind('mousewheel',function(event, delta, x, y) {
+                    if (y != 0){
+                        return;
+                    }
                     var pixels = delta * 30;
                     var currentMargin = parseInt(overflow.css('margin-left').replace('px',''));
                     var newMargin = currentMargin + pixels;
