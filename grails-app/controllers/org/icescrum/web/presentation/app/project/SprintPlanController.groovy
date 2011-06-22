@@ -641,7 +641,7 @@ class SprintPlanController {
                                 _file: chart ?: 'sprintPlan',
                                 'labels.projectName': currentProduct.name,
                                 _name: fileName,
-                                SUBREPORT_DIR: grailsApplication.config.jasper.dir.reports + './subreports/'
+                                SUBREPORT_DIR: "${servletContext.getRealPath('reports/subreports')}/"
                         ]
                 )
                 session.progress?.completeProgress(message(code: 'is.report.complete'))
@@ -650,7 +650,7 @@ class SprintPlanController {
                 session.progress.progressError(message(code: 'is.report.error'))
             }
         } else if (params.status) {
-            render(status: 200, contentType: 'application/json', text: session.progress as JSON)
+            render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
             render(template: 'dialogs/report', model: [id: id, sprint: sprint])
         }

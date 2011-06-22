@@ -836,7 +836,7 @@ class ProjectController {
                 session.progress.progressError(message(code: 'is.report.error'))
             }
         } else if (params.status) {
-            render(status: 200, contentType: 'application/json', text: session.progress as JSON)
+            render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
             render(template: 'dialogs/report', model: [id: id])
         }
