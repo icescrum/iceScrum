@@ -35,7 +35,7 @@
     <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
 
 %{--Embedded menu--}%
-    <is:postitMenu id="${feature.id}" contentView="/feature/menu" model="[id:id, feature:feature]"
+    <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" model="[id:id, feature:feature]"
                    rendered="${productOwner}"/>
 
     <g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">

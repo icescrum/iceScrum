@@ -63,7 +63,7 @@
            color="?**=color**?"
            editableEstimation="${editable}"
            stateText="?**=textState**?"
-           cacheKey="stosdry"
+           cacheKey="story-${params.product}"
            comment="${story.totalComments}">
     ?**=truncatedDescription**?
     <is:postitMenu id="${story.id}" contentView="/story/menu"

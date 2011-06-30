@@ -42,7 +42,7 @@
                title="?**=truncatedName**?"
                type="feature"
                notruncate="true"
-               cacheKey="feature"
+               cacheKey="feature-${params.product}"
                sortable='[rendered:productOwner]'
                attachment="${feature.totalAttachments}"
                typeNumber="${feature.type}"

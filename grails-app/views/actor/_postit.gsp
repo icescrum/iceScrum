@@ -30,7 +30,7 @@
     <is:truncated size="50" encodedHTML="true">${actor.description?.encodeAsHTML()}</is:truncated>
 
 %{--Embedded menu--}%
-    <is:postitMenu id="${actor.id}" contentView="/actor/menu" model="[id:id, actor:actor]" rendered="${productOwner}"/>
+    <is:postitMenu id="actor-${actor.id}" contentView="/actor/menu" model="[id:id, actor:actor]" rendered="${productOwner}"/>
 
     <g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
         <is:tooltipPostit

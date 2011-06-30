@@ -43,7 +43,7 @@
            cacheKey="${task.lastUpdated}${responsible}${creator}"
            rect="true">
     <g:if test="${inProduct}">
-        <is:postitMenu id="${task.id}"
+        <is:postitMenu id="task-${task.id}"
                        contentView="/task/menu"
                        model="[id:id, task:task, user:user]"
                        rendered="${task.backlog.state != Sprint.STATE_DONE}"/>

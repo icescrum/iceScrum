@@ -38,9 +38,11 @@ icescrum.registration.enable = true
 icescrum.login.retrieve.enable = true
 icescrum.alerts.enable = true
 icescrum.alerts.default.from = "webmaster@icescrum.org"
-icescrum.attachements.enable = true
+icescrum.attachments.enable = true
 icescrum.alerts.errors.to = "dev@icescrum.org"
 icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
+
+println "Server Timezone : ${icescrum.timezone.default}"
 
 /*
 Project administration section
@@ -56,13 +58,6 @@ Team administration section
 icescrum.team.creation.enable = true
 
 /*
-  Images section
- */
-icescrum.images.products.dir = ""
-icescrum.images.teams.dir = ""
-icescrum.images.users.dir = ""
-
-/*
   IceScrum css theme
  */
 icescrum.theme = 'is'
@@ -71,6 +66,13 @@ icescrum.theme = 'is'
   IceScrum base dir
 */
 icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
+
+/*
+  Images section not intended to be modify
+ */
+icescrum.images.products.dir = ""
+icescrum.images.teams.dir = ""
+icescrum.images.users.dir = ""
 
 /*
   Mail section
@@ -166,8 +168,10 @@ environments {
     }
 }
 
-icescrum.log.dir = 'logs'
 // log4j configuration
+icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
+println "log dir : ${icescrum.log.dir}"
+
 log4j = {
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
@@ -202,10 +206,12 @@ log4j = {
 
     appenders {
         appender new DailyRollingFileAppender(name: "icescrumFileLog",
-                fileName: "logs/${appName}.log",
+                fileName: "${icescrum.log.dir}/${appName}.log",
                 datePattern: "'.'yyyy-MM-dd",
                 layout: logLayoutPattern
         )
+
+        rollingFile name: "stacktrace", maxFileSize: 1024, file: "${icescrum.log.dir}/stacktrace.log"
     }
 
     root {

@@ -58,7 +58,7 @@
                attachment="${task.totalAttachments}"
                miniValue="?**=estimation**?"
                color="yellow"
-               cacheKey="${params.product}"
+               cacheKey="task-${params.product}"
                rect="true">
         <g:if test="${inProduct}">
             <is:postitMenu id="${task.id}"

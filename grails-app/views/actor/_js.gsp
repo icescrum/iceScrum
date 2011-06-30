@@ -39,7 +39,7 @@
                title="?**=truncatedName**?"
                type="actor"
                notruncate="true"
-               cacheKey="actor"
+               cacheKey="actor-${params.product}"
                attachment="${actor.totalAttachments}"
                controller="${id}">
         ?**=truncatedDescription**?

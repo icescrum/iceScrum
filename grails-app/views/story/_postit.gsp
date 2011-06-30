@@ -40,7 +40,7 @@
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
     <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
 %{--Embedded menu--}%
-    <is:postitMenu id="${story.id}"
+    <is:postitMenu id="story-${story.id}"
                    contentView="/story/menu"
                    model="[id:id, story:story, user:user, nextSprint:nextSprint]"/>
     <g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
