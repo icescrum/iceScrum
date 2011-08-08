@@ -105,7 +105,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.ui.selectmenu.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'jquery-plugins'
-        resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'], exclude: 'minify', bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup/sets/textile', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup/skins/simple', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'jquery-plugins'
     }

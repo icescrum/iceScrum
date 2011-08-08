@@ -37,15 +37,14 @@ hibernate {
 environments {
     development {
         dataSource {
-            driverClassName="com.mysql.jdbc.Driver"
+            /*driverClassName="com.mysql.jdbc.Driver"
             dialect="org.hibernate.dialect.MySQL5InnoDBDialect"
             url="jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
             username="root"
             password="root"
-            dbCreate = "update"
-            //dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            //url = "jdbc:hsqldb:mem:devDba"
-            //url = "jdbc:hsqldb:file:prodDba;shutdown=true"
+            dbCreate = "update"*/
+            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            url = "jdbc:hsqldb:mem:devDba"
             loggingSql = false
         }
     }
