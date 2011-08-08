@@ -88,7 +88,10 @@ grails.project.dependency.resolution = {
         compile ":jquery-ui:1.8.11"
         compile ":resources:1.0.2"
         compile ":session-temp-files:1.0"
-        compile ":tomcatnio:1.3.4"
+        //uncomment in dev / comment in prod
+        //compile ":tomcatnio:1.3.4"
+        //uncomment in prod / comment in dev
+        compile ":tomcat:1.3.7"
         compile ":wikitext:0.1.2"
         compile ":zipped-resources:1.0"
         compile ":minify-resources:0.1"
