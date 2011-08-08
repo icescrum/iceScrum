@@ -94,7 +94,6 @@ grails.project.dependency.resolution = {
         compile ":tomcat:1.3.7"
         compile ":wikitext:0.1.2"
         compile ":zipped-resources:1.0"
-        compile ":minify-resources:0.1"
     }
 }
 
