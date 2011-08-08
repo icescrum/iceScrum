@@ -284,9 +284,6 @@ CLIENT MODULES SECTION
 
 grails.resources.caching.excludes = ['js/timeline**/*.js']
 grails.resources.zip.excludes = ['/**/*.png', '/**/*.gif', '/**/*.jpg', '/**/*.gz']
-grails.resources.mappers.minify.noMunge = true
-grails.resources.mappers.minify.js.disableOptimizations = true
-grails.resources.mappers.minify.js.preserveAllSemicolons = true
 
 def ENV_NAME = "icescrum_config_location"
 if (!grails.config.locations || !(grails.config.locations instanceof List)) {
