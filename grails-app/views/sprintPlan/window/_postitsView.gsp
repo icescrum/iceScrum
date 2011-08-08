@@ -23,9 +23,7 @@
 
 <%@ page import="org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;org.icescrum.core.domain.Story;" %>
 
-<g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
-<g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
-<g:set var="scrumMaster" value="${sec.access([expression:'scrumMaster()'], {true})}"/>
+<g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 <g:set var="nodropMessage" value="${g.message(code:'is.ui.sprintPlan.no.drop')}"/>
 <g:set var="nodropMessageUrgent"
        value="${message(code: 'is.ui.sprintPlan.kanban.urgentTasks.limit', args:[limitValueUrgentTasks])}"/>
@@ -55,7 +53,7 @@
 
         <is:kanbanColumn>
             <g:message code="is.ui.sprintPlan.kanban.recurrentTasks"/>
-            <g:if test="${inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
+            <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
                 <is:menu yoffset="3" class="dropmenu-action" id="menu-recurrent"
                          contentView="window/recurrentOrUrgentTask"
                          params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent',id:id]"
@@ -68,8 +66,10 @@
                              class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop wait':''}">
 
                 <g:each in="${recurrentTasks?.sort{it.rank}?.findAll{ it.state == column.key} }" var="task">
-                    <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]"
-                               params="[product:params.product]"/>
+                    <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+                        <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]"
+                                   params="[product:params.product]"/>
+                    </is:cache>
                 </g:each>
 
             </is:kanbanColumn>
@@ -81,7 +81,7 @@
     <is:kanbanRow rendered="${displayUrgentTasks}" class="row-urgent-task" type="${Task.TYPE_URGENT}">
         <is:kanbanColumn>
             <g:message code="is.ui.sprintPlan.kanban.urgentTasks"/>
-            <g:if test="${inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
+            <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
                 <is:menu yoffset="3"
                          class="dropmenu-action"
                          id="menu-urgent"
@@ -96,8 +96,9 @@
             <is:kanbanColumn key="${column.key}"
                              class="${(sprint.state != Sprint.STATE_INPROGRESS && column.key != Task.STATE_WAIT)?'no-drop wait':(urgentTasksLimited && limitValueUrgentTasks && column.key == Task.STATE_BUSY)?'no-drop':''}">
                 <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
-                    <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]"
-                               params="[product:params.product]"/>
+                    <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+                        <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
+                    </is:cache>
                 </g:each>
 
             </is:kanbanColumn>
@@ -105,25 +106,32 @@
     </is:kanbanRow>
 
 %{-- Stories Rows --}%
-    <is:kanbanRows in="${stories.sort{it.rank}}" var="story" class="row-story" elemid="id" type="story"
+    <is:kanbanRows in="${stories.sort{it.rank}}"
+                   var="story"
+                   class="row-story"
+                   elemid="id"
+                   type="story"
                    emptyRendering="true">
-        <is:kanbanColumn elementId="column-story-${story.id}">
-            <g:include view="/story/_postit.gsp"
-                       model="[id:id,story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
-                       params="[product:params.product]"/>
-        </is:kanbanColumn>
-
-    %{-- Workflow Columns --}%
-        <g:each in="${columns}" var="column">
-            <is:kanbanColumn key="${column.key}"
-                             class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop wait':''}">
-                <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
-                        var="task">
-                    <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]"
+            <is:kanbanColumn elementId="column-story-${story.id}">
+                <is:cache  cache="storyCache-${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+                    <g:include view="/story/_postit.gsp"
+                               model="[id:id,story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
                                params="[product:params.product]"/>
-                </g:each>
+                </is:cache>
             </is:kanbanColumn>
-        </g:each>
+
+        %{-- Workflow Columns --}%
+            <g:each in="${columns}" var="column">
+                <is:kanbanColumn key="${column.key}"
+                                 class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop wait':''}">
+                    <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
+                            var="task">
+                            <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+                                <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
+                            </is:cache>
+                    </g:each>
+                </is:kanbanColumn>
+            </g:each>
     </is:kanbanRows>
 
 </is:kanban>
@@ -132,7 +140,7 @@
     jQuery('div.postit-story').die('dblclick').live('dblclick',function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params: '\'story.id=\'+obj.attr(\"elemId\")')}});
     jQuery('#window-title-bar-${id} .content').html('${message(code: "is.ui." + id)} - ${message(code: "is.sprint")} ${sprint.orderNumber}  - ${is.bundle(bundle: 'sprintStates', value: sprint.state)} - [${g.formatDate(date: sprint.startDate, formatName: 'is.date.format.short')} -> ${g.formatDate(date: sprint.endDate, formatName: 'is.date.format.short')}]');
 
-    <is:editable rendered="${sprint.state != Sprint.STATE_DONE}"
+    <is:editable rendered="${sprint.state != Sprint.STATE_DONE && (request.teamMember || request.scrumMaster)}"
                  controller="story"
                  action='estimate'
                  on='div.postit-story span.mini-value.editable'
@@ -142,7 +150,6 @@
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
                  values="${suiteSelect}"
-                 restrictOnNotAccess='teamMember() or scrumMaster()'
                  callback="jQuery(this).next().show();"
                  params="[product:params.product]"/>
 

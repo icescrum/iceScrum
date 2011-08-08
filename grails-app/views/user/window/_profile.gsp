@@ -53,7 +53,7 @@
             <is:panel id="panel-progress">
                 <is:panelContext>
                     <is:panelLine legend="">
-                        <is:avatar userid="${user.id}"/>
+                        <is:avatar user="${user}"/>
                     </is:panelLine>
                 </is:panelContext>
             </is:panel>

@@ -33,6 +33,7 @@
                 value="${sprint.id}"
                 history='false'
                 name="selectOnSprintPlan"
+                width="200"
                 onchange=" \$.icescrum.openWindow('${id}/'+this.value)"/>
         <is:link
                 rendered="${sprintsName.size() > 0}"

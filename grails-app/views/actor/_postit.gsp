@@ -19,18 +19,16 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
 <is:postit id="${actor.id}"
            miniId="${actor.id}"
            title="${actor.name}"
            type="actor"
-           cacheKey="${actor.lastUpdated}"
            attachment="${actor.totalAttachments}"
            controller="actor">
     <is:truncated size="50" encodedHTML="true">${actor.description?.encodeAsHTML()}</is:truncated>
 
 %{--Embedded menu--}%
-    <is:postitMenu id="actor-${actor.id}" contentView="/actor/menu" model="[id:id, actor:actor]" rendered="${productOwner}"/>
+    <is:postitMenu id="actor-${actor.id}" contentView="/actor/menu" model="[id:id, actor:actor]" rendered="${request.productOwner}"/>
 
     <g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
         <is:tooltipPostit

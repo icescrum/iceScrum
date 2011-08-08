@@ -20,9 +20,8 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Task" %>
-<g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
-<g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
-<g:set var="tMOrSm" value="${sec.access([expression:'teamMember() or scrumMaster()'], {true})}"/>
+<g:set var="inProduct" value="${request.inProduct}"/>
+<g:set var="tMOrSm" value="${request.teamMember || request.scrumMaster}"/>
 <g:set var="columns"
        value="[[key: (Task.STATE_WAIT), name: 'is.task.state.wait'],[key: (Task.STATE_BUSY), name: 'is.task.state.inprogress'],[key: (Task.STATE_DONE), name: 'is.task.state.done']]"/>
 <g:set var="story" value="[id:'?**=this.id**?',
@@ -35,7 +34,7 @@
 
 <template id="postit-story-sandbox-tmpl">
     <g:include view="/story/_jsPostit.gsp" params="[product:params.product]"
-               model="[id:'sandbox',sortable:productOwner,editable:tMOrSm]"/>
+               model="[id:'sandbox',sortable:request.productOwner,editable:tMOrSm]"/>
 </template>
 
 <template id="table-row-story-sandbox-tmpl">
@@ -73,16 +72,16 @@
                 </is:scrumLink>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'text',highlight:true,disabled:!productOwner,name:'name']">${story.name}</is:tableColumn>
+                    editable="[type:'text',highlight:true,disabled:!request.productOwner,name:'name']">${story.name}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'type',disabled:!productOwner,name:'type']">?**=typeTitle**?</is:tableColumn>
+                    editable="[type:'selectui',id:'type',disabled:!request.productOwner,name:'type']">?**=typeTitle**?</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'feature',disabled:!productOwner,detach:true,name:'feature.id']"><is:postitIcon
+                    editable="[type:'selectui',id:'feature',disabled:!request.productOwner,detach:true,name:'feature.id']"><is:postitIcon
                     name="${story.name}" color="${story.feature.color}"/>?**=feature**?</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'textarea',disabled:!productOwner,name:'description']">?**=description**?</is:tableColumn>
+                    editable="[type:'textarea',disabled:!request.productOwner,name:'description']">?**=description**?</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'richarea',disabled:!productOwner,name:'notes']">?**=notes**?</is:tableColumn>
+                    editable="[type:'richarea',disabled:!request.productOwner,name:'notes']">?**=notes**?</is:tableColumn>
         </is:tableRow>
     </is:table>
     ]]>
@@ -90,7 +89,7 @@
 
 <template id="postit-story-backlog-tmpl">
     <g:include view="/story/_jsPostit.gsp" params="[product:params.product]"
-               model="[id:'backlog',sortable:productOwner,editable:tMOrSm]"/>
+               model="[id:'backlog',sortable:request.productOwner,editable:tMOrSm]"/>
 </template>
 
 <template id="table-row-story-backlog-tmpl">
@@ -131,19 +130,19 @@
                 </is:scrumLink>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',disabled:!productOwner,name:'rank']">${story.rank}</is:tableColumn>
-            <is:tableColumn editable="[type:'text',disabled:!productOwner,name:'name']">${story.name}</is:tableColumn>
+                    editable="[type:'selectui',id:'rank',disabled:!request.productOwner,name:'rank']">${story.rank}</is:tableColumn>
+            <is:tableColumn editable="[type:'text',disabled:!request.productOwner,name:'name']">${story.name}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'type',disabled:!productOwner,name:'type']">?**=typeTitle**?</is:tableColumn>
+                    editable="[type:'selectui',id:'type',disabled:!request.productOwner,name:'type']">?**=typeTitle**?</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'feature',disabled:!productOwner,detach:true,name:'feature.id']"><is:postitIcon
+                    editable="[type:'selectui',id:'feature',disabled:!request.productOwner,detach:true,name:'feature.id']"><is:postitIcon
                     name="${story.name}" color="${story.feature.color}"/>?**=feature**?</is:tableColumn>
             <is:tableColumn
                     editable="[type:'selectui',id:'effort',disabled:!inProduct,name:'effort']">?**=effort**?</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'textarea',disabled:!productOwner,name:'description']">?**=description**?</is:tableColumn>
+                    editable="[type:'textarea',disabled:!request.productOwner,name:'description']">?**=description**?</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'richarea',disabled:!productOwner,name:'notes']">?**=notes**?</is:tableColumn>
+                    editable="[type:'richarea',disabled:!request.productOwner,name:'notes']">?**=notes**?</is:tableColumn>
             <is:tableColumn>?**=acceptedDate**?</is:tableColumn>
             <is:tableColumn>?**=estimatedDate**?</is:tableColumn>
         </is:tableRow>

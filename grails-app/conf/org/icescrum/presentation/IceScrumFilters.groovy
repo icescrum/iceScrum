@@ -22,7 +22,10 @@
 
 package org.icescrum.presentation
 
-class PkeyFilters {
+class IceScrumFilters {
+
+  def securityService
+  def springSecurityService
 
   def filters = {
     pkey(controller: 'scrumOS', action: 'index') {
@@ -37,6 +40,14 @@ class PkeyFilters {
         }
       }
     }
+
+    permissions(controller: '*', action: '*') {
+      before = {
+        securityService.filterRequest()
+        return
+      }
+    }
+
     pkeyFeed(controller: 'project', action: 'feed') {
       before = {
         if (params.product) {

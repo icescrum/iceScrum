@@ -20,8 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Story" %>
-<g:set var="tMOrSm" value="${sec.access([expression:'teamMember() or scrumMaster()'], {true})}"/>
-
+<g:set var="tMOrSm" value="${request.teamMember || request.scrumMaster}"/>
 <is:postit id="${story.id}"
            miniId="${story.id}"
            title="${story.name}"
@@ -36,7 +35,6 @@
            stateText="${story.state > Story.STATE_SUGGESTED ? is.bundle(bundle:'storyStates',value:story.state) : ''}"
            editableEstimation="${tMOrSm && story.state != Story.STATE_DONE}"
            sortable="[disabled:!sortable]"
-           cacheKey="${story.lastUpdated}${story.totalComments}${story.state == Story.STATE_SUGGESTED ? user?.id == story.creator.id : ''}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
     <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
 %{--Embedded menu--}%

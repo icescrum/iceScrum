@@ -65,9 +65,6 @@
 
     </g:formRemote>
   </div>
-  <jq:jquery>
-    <is:renderNotice />
-  </jq:jquery>
 </is:simpleDesktop>
 <is:shortcut key="return" callback="\$('#retrieveSubmit').click();"/>
 </body>

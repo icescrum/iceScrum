@@ -38,13 +38,11 @@
         <is:tableHeader width="11%" name="${message(code:'is.feature.stories')}"/>
         <is:tableHeader width="15%" name="${message(code:'is.feature.stories.finish')}"/>
 
-        <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
-
         <is:tableRows in="${features}" var="feature" elemid="id">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
-                         params="[id:id, feature:feature]" rendered="${productOwner}"/>
+                         params="[id:id, feature:feature]" rendered="${request.productOwner}"/>
                 <g:set var="attachment" value="${feature.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment"
@@ -55,16 +53,16 @@
                 <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!productOwner]">${feature.rank}</is:tableColumn>
+                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!request.productOwner]">${feature.rank}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',disabled:!productOwner,name:'value',values:suiteSelect]">${feature.value}</is:tableColumn>
+                    editable="[type:'selectui',disabled:!request.productOwner,name:'value',values:suiteSelect]">${feature.value}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'type',disabled:!productOwner,name:'type',values:typeSelect]"><is:bundle
+                    editable="[type:'selectui',id:'type',disabled:!request.productOwner,name:'type',values:typeSelect]"><is:bundle
                     bundle="featureTypes" value="${feature.type}"/></is:tableColumn>
             <is:tableColumn
-                    editable="[type:'text',disabled:!productOwner,name:'name']">${feature.name.encodeAsHTML()}</is:tableColumn>
+                    editable="[type:'text',disabled:!request.productOwner,name:'name']">${feature.name.encodeAsHTML()}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'textarea',disabled:!productOwner,name:'description']">${feature.description?.encodeAsHTML()}</is:tableColumn>
+                    editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${feature.description?.encodeAsHTML()}</is:tableColumn>
             <is:tableColumn>${effortFeature(feature)}</is:tableColumn>
             <is:tableColumn>${feature.stories?.size() ?: 0}</is:tableColumn>
             <is:tableColumn>${linkedDoneStories(feature)}</is:tableColumn>

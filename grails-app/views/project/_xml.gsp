@@ -26,11 +26,11 @@
             cdata="true"/>
     <is:propertyAsXML
             object="preferences"
-            name="['newTeams','lockPo','hidden','url','noEstimation','autoDoneStory','displayRecurrentTasks','displayUrgentTasks','assignOnCreateTask','assignOnBeginTask','autoCreateTaskOnEmptyStory','limitUrgentTasks','estimatedSprintsDuration','hideWeekend','sprintPlanningHour','releasePlanningHour','dailyMeetingHour','sprintReviewHour','sprintRetrospectiveHour']"/>
+            name="['hidden','url','noEstimation','autoDoneStory','displayRecurrentTasks','displayUrgentTasks','assignOnCreateTask','assignOnBeginTask','autoCreateTaskOnEmptyStory','limitUrgentTasks','estimatedSprintsDuration','hideWeekend','sprintPlanningHour','releasePlanningHour','dailyMeetingHour','sprintReviewHour','sprintRetrospectiveHour']"/>
     <% session.progress?.updateProgress(10, message(code: 'is.export.inprogress', args: [message(code: 'is.team')])) %>
     <is:listAsXML
             name="teams"
-            template="/team/xml"
+            template="/members/xml"
             deep="['team','user']"
             child="team"/>
     <% session.progress?.updateProgress(20, message(code: 'is.export.inprogress', args: [message(code: 'is.release')])) %>
@@ -38,7 +38,7 @@
             name="releases"
             child="release"
             deep="['release','sprint','task','cliche','story']"
-            template="/export/xml/release"/>
+            template="/release/xml"/>
     <% session.progress?.updateProgress(30, message(code: 'is.export.inprogress', args: [message(code: 'is.actor')])) %>
     <is:listAsXML
             name="actors"
@@ -61,7 +61,7 @@
     <% session.progress?.updateProgress(80, message(code: 'is.export.inprogress', args: [message(code: 'is.cliche')])) %>
     <is:listAsXML
             name="cliches"
-            template="/export/xml/cliche"
+            template="/project/cliche"
             child="cliche"/>
     <is:listAsXML
             name="productOwners"

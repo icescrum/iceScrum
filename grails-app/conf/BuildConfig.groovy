@@ -60,13 +60,13 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
     }
 
-//  plugins {
-    //	runtime ':cached-resources:latest.integration'
-    //  }
-
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         test 'xmlunit:xmlunit:1.3'
+        //TODO fix when new release of minify resources
+        compile('com.yahoo.platform.yui:yuicompressor:2.4.6') {
+          export = false
+        }
     }
 
     grails.war.resources = { stagingDir ->
@@ -78,7 +78,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile "org.icescrum:icescrum-core:1.4.2.9"
+        compile "org.icescrum:icescrum-core:1.4.2.11"
         compile "org.icescrum:entry-points:0.3-BETA"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
@@ -86,11 +86,12 @@ grails.project.dependency.resolution = {
         compile ":hibernate:1.3.7"
         compile ":jquery:1.6.1.1"
         compile ":jquery-ui:1.8.11"
-        compile ":resources:1.0"
+        compile ":resources:1.0.2"
         compile ":session-temp-files:1.0"
-        compile ":tomcat:1.3.7"
+        compile ":tomcatnio:1.3.4"
         compile ":wikitext:0.1.2"
         compile ":zipped-resources:1.0"
+        compile ":minify-resources:0.1"
     }
 }
 

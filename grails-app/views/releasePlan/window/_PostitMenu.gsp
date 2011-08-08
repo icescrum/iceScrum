@@ -22,9 +22,6 @@
 --}%
 
 <%@ page import="org.icescrum.core.domain.Story;org.icescrum.core.domain.Sprint;" %>
-<g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
-<g:set var="scrumMaster" value="${sec.access(expression:'scrumMaster()',{true})}"/>
-
 <is:postitMenuItem first="true">
  <is:scrumLink
         id="${story.id}"
@@ -44,7 +41,7 @@
   </is:scrumLink>
 </is:postitMenuItem>
 
-<is:postitMenuItem rendered="${productOwner && story.state != Story.STATE_DONE}">
+<is:postitMenuItem rendered="${request.productOwner && story.state != Story.STATE_DONE}">
   <is:link
           action="edit"
           controller="productBacklog"
@@ -55,7 +52,7 @@
           history="false"
           remote="true"/>
 </is:postitMenuItem>
-<is:postitMenuItem renderedOnAccess="inProduct()">
+<is:postitMenuItem rendered="${request.inProduct}">
   <is:link id="${story.id}"
           action="cloneStory"
           controller="sandbox"
@@ -64,7 +61,7 @@
           onSuccess="jQuery.icescrum.renderNotice('${g.message(code:'is.story.cloned')}')"
           value="${message(code:'is.ui.releasePlan.menu.story.clone')}"/>
 </is:postitMenuItem>
-<is:postitMenuItem rendered="${(productOwner || scrumMaster) && story.state != Story.STATE_DONE}">
+<is:postitMenuItem rendered="${(request.productOwner || request.scrumMaster) && story.state != Story.STATE_DONE}">
   <is:link
           history="false"
           id="${story.id}"
@@ -74,7 +71,7 @@
           onSuccess="jQuery.icescrum.renderNotice('${g.message(code:'is.sprint.stories.dissociated')}')"
           value="${message(code:'is.ui.releasePlan.menu.story.dissociate')}"/>
 </is:postitMenuItem>
-<is:postitMenuItem rendered="${productOwner && story.state == Story.STATE_INPROGRESS}">
+<is:postitMenuItem rendered="${request.productOwner && story.state == Story.STATE_INPROGRESS}">
   <is:link
           history="false"
           id="${story.id}"
@@ -85,7 +82,7 @@
           value="${message(code:'is.ui.releasePlan.menu.story.done')}"/>
 </is:postitMenuItem>
 
-<is:postitMenuItem rendered="${productOwner && story.state == Story.STATE_DONE && story.parentSprint.state == Sprint.STATE_INPROGRESS}">
+<is:postitMenuItem rendered="${request.productOwner && story.state == Story.STATE_DONE && story.parentSprint.state == Sprint.STATE_INPROGRESS}">
   <is:link
           history="false"
           id="${story.id}"

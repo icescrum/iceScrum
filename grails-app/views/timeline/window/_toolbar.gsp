@@ -19,10 +19,10 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:set var="poOrsm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
+<g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
 
 <is:iconButton
-        rendered="${poOrsm}"
+        rendered="${poOrSm}"
         action="add"
         shortcut="[key:'ctrl+n',scope:id]"
         update="window-content-${id}"
@@ -33,7 +33,7 @@
   <g:message code="is.ui.timeline.toolbar.new"/>
 </is:iconButton>
 
-<is:separator rendered="${poOrsm}"/>
+<is:separator rendered="${poOrSm}"/>
 
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
   <ul>

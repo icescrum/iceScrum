@@ -20,9 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Task; org.icescrum.core.domain.Sprint" %>
-<g:set var="scrumMaster" value="${sec.access(expression:'scrumMaster()',{true})}"/>
-<g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
-
 <g:set var="task" value="[id:'?**=this.id**?',
                            name:'?**=name**?',
                            creator:[id:'?**=user_id**?'],
@@ -58,9 +55,8 @@
                attachment="${task.totalAttachments}"
                miniValue="?**=estimation**?"
                color="yellow"
-               cacheKey="task-${params.product}"
                rect="true">
-        <g:if test="${inProduct}">
+        <g:if test="${request.inProduct}">
             <is:postitMenu id="${task.id}"
                            contentView="/task/menu"
                            params="[id:id, task:task, user:user, template:true]"/>

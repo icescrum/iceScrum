@@ -27,7 +27,7 @@
             <td>
                 <is:button
                         type="link"
-                        renderedOnAccess="productOwner() or scrumMaster()"
+                        rendered="${request.productOwner || request.scrumMaster}"
                         button="button-s button-s-light"
                         update="window-content-${id}"
                         href="#timeline/add"

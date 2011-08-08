@@ -57,6 +57,7 @@
 
                     jQuery.ajax({
                                 type:'GET',
+                                cache:true,
                                 url:this.o.urlOpenWindow + '/' + id,
                                 beforeSend:function(){
                                     var loading = $('<div/>').attr('id','window-loading').css('opacity',0).css('z-index',998);

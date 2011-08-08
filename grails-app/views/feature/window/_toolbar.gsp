@@ -20,15 +20,11 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
-
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
-
-
 %{--New--}%
 <is:iconButton
         controller="feature"
         action="add"
-        rendered="${productOwner}"
+        rendered="${request.productOwner}"
         shortcut="[key:'ctrl+n',scope:id]"
         update="window-content-${id}"
         icon="create"
@@ -37,14 +33,14 @@
     <g:message code="is.ui.feature.toolbar.new"/>
 </is:iconButton>
 
-<is:separatorSmall rendered="${productOwner}"/>
+<is:separatorSmall rendered="${request.productOwner}"/>
 
 %{--Delete button (note-view)--}%
 <is:iconButton
         icon="delete"
         onclick="jQuery.icescrum.selectableAction(null,null,null,function(data){jQuery.event.trigger('remove_feature',[data]); jQuery.icescrum.renderNotice('${message(code:'is.feature.deleted')}'); });"
         history='false'
-        rendered="${productOwner}"
+        rendered="${request.productOwner}"
         shortcut="[key:'del',scope:id]"
         disabled="true"
         title="${message(code:'is.ui.feature.toolbar.alt.delete')}"
@@ -52,7 +48,7 @@
     <g:message code="is.ui.sandbox.toolbar.delete"/>
 </is:iconButton>
 
-<is:separator rendered="${productOwner}"/>
+<is:separator rendered="${request.productOwner}"/>
 
 %{--View--}%
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">

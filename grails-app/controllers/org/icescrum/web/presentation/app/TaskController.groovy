@@ -30,6 +30,8 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import grails.plugins.springsecurity.Secured
 import grails.converters.XML
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 @Secured('inProduct()')
 class TaskController {
@@ -45,6 +47,7 @@ class TaskController {
             ['delete']: ['DELETE', 'POST']
     ]
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def save = {
         def story = !(params.story?.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'), params.long('story.id')).list()[0] : null
         if (!story && !(params.story?.id in ['recurrent', 'urgent'])) {
@@ -85,6 +88,7 @@ class TaskController {
         }
     }
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.task) return
 
@@ -101,7 +105,7 @@ class TaskController {
             returnError(text: message(code: 'is.task.error.not.exist'))
         }
 
-        def task = Task.get(params.task.id.toLong())
+        def task = Task.getInProduct(params.long('product'),params.task.id.toLong())
         if (!task) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
@@ -157,12 +161,13 @@ class TaskController {
         }
     }
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def take = {
         if (!params.id) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
-        def task = Task.get(params.long('id'))
+        def task = Task.getInProduct(params.product.toLong(),params.long('id'))
         if (!task) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
@@ -183,12 +188,13 @@ class TaskController {
         }
     }
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def unassign = {
         if (!params.id) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
-        def task = Task.get(params.long('id'))
+        def task = Task.getInProduct(params.product.toLong(),params.long('id'))
         if (!task) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
@@ -209,24 +215,24 @@ class TaskController {
         }
     }
 
-
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
-        def tasks = Task.getAll(params.list('id'))
+        def ids = params.list('id').collect{ it.toLong() }
+        def tasks = Task.getAllInProduct(params.long('product'), ids)
         User user = (User) springSecurityService.currentUser
 
         try {
-
+            def idj = []
             tasks.each {
+                idj << [id:it.id]
                 taskService.delete(it, user)
             }
-            def ids = []
-            params.list('id').each { ids << [id: it] }
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: ids as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text: idj as JSON)  }
                 json { render(status: 200, text: [result: 'success'] as JSON) }
                 xml { render(status: 200, text: [result: 'success'] as JSON) }
             }
@@ -237,12 +243,13 @@ class TaskController {
         }
     }
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def copy = {
         if (!params.id) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
-        def task = Task.get(params.long('id'))
+        def task = Task.getInProduct(params.long('product'),params.long('id'))
         User user = (User) springSecurityService.currentUser
 
         try {
@@ -259,12 +266,13 @@ class TaskController {
         }
     }
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def estimate = {
         if (!params.id) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
-        def task = Task.get(params.long('id'))
+        def task = Task.getInProduct(params.long('product'),params.long('id'))
 
         if (!task) {
             returnError(text: message(code: 'is.task.error.not.exist'))
@@ -286,13 +294,14 @@ class TaskController {
         }
     }
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def block = {
         if (!params.id) {
             def msg = message(code: 'is.task.error.not.exist')
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
-        def task = Task.get(params.long('id'))
+        def task = Task.getInProduct(params.long('product'),params.id.toLong())
         if (!task) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
@@ -317,6 +326,7 @@ class TaskController {
         forward(action: 'block', params: [id: params.id])
     }
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def rank = {
         def position = params.int('task.rank')
         if (position == 0) {
@@ -324,7 +334,7 @@ class TaskController {
             return
         }
 
-        def movedItem = Task.get(params.long('id'))
+        def movedItem = Task.getInProduct(params.long('product'),params.long('id'))
 
         if (!movedItem) {
             returnError(text: message(code: 'is.task.error.not.exist'))
@@ -369,6 +379,7 @@ class TaskController {
         session.uploadedFiles = null
     }
 
+    @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def state = {
         // params.id represent the targeted state (STATE_WAIT, STATE_INPROGRESS, STATE_DONE)
         if (!params.id) {
@@ -378,7 +389,7 @@ class TaskController {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
         }
-        def task = Task.get(params.long('task.id'))
+        def task = Task.getInProduct(params.long('product'),params.long('task.id'))
         if (!task) {
             returnError(text: message(code: 'is.task.error.not.exist'))
             return
@@ -419,6 +430,7 @@ class TaskController {
         }
     }
 
+    @Cacheable(cache = 'taskCache', cacheResolver = 'projectCacheResolver')
     def show = {
         if (request?.format == 'html') {
             render(status: 404)
@@ -430,7 +442,7 @@ class TaskController {
             return
         }
 
-        def task = Task.get(params.long('id'))
+        def task = Task.getInProduct(params.long('product'),params.long('id'))
 
         if (!task) {
             returnError(text: message(code: 'is.task.error.not.exist'))
@@ -443,6 +455,7 @@ class TaskController {
         }
     }
 
+    @Cacheable(cache = 'tasksList', cacheResolver = 'projectCacheResolver')
     def list = {
 
         if (request?.format == 'html') {

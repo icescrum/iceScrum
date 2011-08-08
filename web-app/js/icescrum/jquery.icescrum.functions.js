@@ -30,6 +30,49 @@
                     stackHolder:true,
                     poOrSm:function() {
                         return (this.scrumMaster || this.productOwner);
+                    },
+                    add:function() {
+                        //TODO ?
+                    },
+
+                    update:function() {
+                        alert('update user');
+                    },
+
+                    remove:function() {
+                        alert('remove user');
+                    }
+                },
+
+
+                product: {
+                    currentProduct:null,
+                    deleted:'Project deleted',
+                    updated:'Project settings updated',
+                    add:function() {
+                        //TODO ?
+                    },
+
+                    update:function() {
+                        if (this.id == $.icescrum.product.currentProduct){
+                            if (this.refresh){
+                                alert($.icescrum.product.updated);
+                                document.location = $.icescrum.o.baseUrl;
+                            }else{
+                                $('#project-details ul li:first strong').text(this.name);
+                            }
+                        }
+                    },
+
+                    remove:function() {
+                        if (this.id == $.icescrum.product.currentProduct){
+                            alert($.icescrum.product.deleted);
+                            document.location = $.icescrum.o.baseUrl;
+                        }
+                    },
+
+                    redirect:function() {
+                        document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey;
                     }
                 },
 
@@ -477,7 +520,9 @@
                     },
 
                     remove:function(template) {
-                        $.icescrum.task.templates[template].remove.apply(this);
+                        $(this).each(function() {
+                            $.icescrum.task.templates[template].remove.apply(this);
+                        });
                     },
 
                     _postRendering:function(tmpl, postit) {
@@ -591,7 +636,7 @@
                         $(sprints).each(function() {
                             $('.menu-shift-' + this.parentRelease.id + '-' + (this.orderNumber)).removeClass('hidden');
                             if (selectOnSprintPlan.length) {
-                                selectOnSprintPlan.selectmenu('add', this.id, 'R' + this.parentRelease.orderNumber + 'S' + this.orderNumber);
+                                selectOnSprintPlan.selectmenu('add', this.id, this.parentRelease.name + ' - ' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber);
                             }
                             if (selectOnTimeline.length) {
                                 selectOnTimeline.selectmenu('add', $.icescrum.jsonToDate(this.startDate).getTime(), this.parentRelease.name + ' - ' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber, this.id);

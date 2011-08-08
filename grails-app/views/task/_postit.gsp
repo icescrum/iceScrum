@@ -21,8 +21,6 @@
 --}%
 
 <%@ page import="org.icescrum.core.domain.Sprint; org.icescrum.core.domain.Task" %>
-<g:set var="scrumMaster" value="${sec.access([expression:'scrumMaster()'], {true})}"/>
-<g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
 <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
 <g:set var="creator" value="${task.creator.id == user.id}"/>
 
@@ -32,7 +30,7 @@
            miniId="${task.id}"
            styleClass="task"
            type="task"
-           sortable='[rendered:(scrumMaster || responsible),disabled:task.state == Task.STATE_DONE]'
+           sortable='[rendered:(request.scrumMaster || responsible),disabled:task.state == Task.STATE_DONE]'
            typeNumber="${task.blocked ? 1 : 0}"
            typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
            attachment="${task.totalAttachments}"
@@ -40,9 +38,8 @@
            miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
            editableEstimation="${(responsible || (!responsible && creator) || scrumMaster) && task.state != Task.STATE_DONE}"
            color="yellow"
-           cacheKey="${task.lastUpdated}${responsible}${creator}"
            rect="true">
-    <g:if test="${inProduct}">
+    <g:if test="${request.inProduct}">
         <is:postitMenu id="task-${task.id}"
                        contentView="/task/menu"
                        model="[id:id, task:task, user:user]"

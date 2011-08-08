@@ -24,7 +24,6 @@
                                 var nextRank = $(this).find('option').size() + 1;
                                 $(this).selectmenu('add', nextRank, nextRank, true);
                             } else {
-                                debugger;
                                 if ($.inArray(this.id,preserve) == -1){
                                     $(this).selectmenu('value', 0);
                                 }

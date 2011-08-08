@@ -1117,15 +1117,14 @@ li#li-roles {
 }
 
 #project-wizard .panel {
-    width: 560px;
+    width: 610px;
     padding: 0;
     margin: 0;
 }
 
 .wizard-buttons {
-    bottom: 10px;
-    position: absolute;
-    width: 96%;
+    float: right;
+    margin-top: 5px;
 }
 
 .wizard-buttons button {
@@ -1874,7 +1873,17 @@ li#li-roles {
 
 .selector-avatars {
     float: left;
+    width: 305px;
 }
+
+.profile-avatar .avatar {
+    margin:4px;
+}
+
+.profile-avatar label {
+    height:35px;
+}
+
 
 .selector-avatars span {
     float: left;
@@ -2000,6 +2009,11 @@ li#li-roles {
     height: 33px;
 }
 
+.file-avatar-selector label {
+    height: 80px;
+
+}
+
 .table-tooltip-sprint {
     width: 100%;
     margin-top: 10px;
@@ -2021,4 +2035,56 @@ li#li-roles {
 
 .window-content .box-form-200-legend {
     padding-bottom: 40px;
+}
+
+.members-list {
+    width:100%;
+    height:316px;
+    background:#fff;
+    overflow: auto;
+}
+
+#member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item img {
+    margin:4px;
+    float:left;
+    width:40px;
+}
+
+#member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item a {
+    padding: 0;
+    float: left;
+    width: 100%;
+    cursor: pointer;
+}
+
+.members-list .member {
+    border-width: 1px;
+    cursor: default;
+    margin: 7px;
+    padding: 7px;
+    position: relative;
+    width: 166px;
+}
+
+.members-list .member .avatar {
+    float:left;
+    margin:2px;
+}
+
+.members-list .member .fullname,.members-list .member .activity {
+    float:left;
+    width: 112px;
+    line-height:14px;
+}
+
+.member:hover .button-s {
+    top:3px;
+    right:0;
+    display:block;
+}
+
+.member .button-s {
+    top:3px;
+    display:none;
+    position:absolute;
 }

@@ -28,21 +28,23 @@
         style="display:${stories ? 'block' : 'none'};"
         containerClass="list postit-rows"
         draggable="[
-                    restrictOnAccess:'productOwner() or scrumMaster()',
+                    rendered:(request.productOwner || request.scrumMaster),
                     selector:'.postit-row',
                     helper:'clone',
                     appendTo:'body',
                     start:'jQuery(this).hide();',
                     stop:'if (jQuery(this).attr(\'remove\') == \'true\') { jQuery(this).remove(); } else { jQuery(this).show(); }'
                   ]"
-        dblclickable='[restrictOnAccess:"inProduct()", selector:".postit-row", callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
+        dblclickable='[rendered:(request.stakeHolder || request.inProduct), selector:".postit-row", callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
         value="${stories}"
         var="story">
-    <li class="postit-row postit-row-story" elemId="${story.id}">
-    <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
-    </span>${story.id} - <is:truncated encodedHTML="true"
-                                       size="30">${story.name.encodeAsHTML()}</is:truncated> <em>(${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})</em>
-    </li>
+    <is:cache  cache="storyCache-${story.id}" cacheResolver="backlogElementCacheResolver" key="postit-small">
+        <li class="postit-row postit-row-story" elemId="${story.id}">
+            <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
+            </span>${story.id} - <is:truncated encodedHTML="true" size="30">${story.name.encodeAsHTML()}</is:truncated>
+            <em>(${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})</em>
+        </li>
+    </is:cache>
 </is:backlogElementLayout>
 
 <div class="box-blank" style="display:${stories ? 'none' : 'block'};">

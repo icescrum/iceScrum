@@ -21,9 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
-
-<g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
-
+<g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 <g:if test="${release.id}">
     <g:if test="${release.state <= Release.STATE_INPROGRESS && poOrSm}">
     %{-- Add button --}%

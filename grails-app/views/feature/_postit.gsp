@@ -19,7 +19,6 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
 <is:postit
         id="${feature.id}"
         miniId="${feature.id}"
@@ -27,16 +26,15 @@
         color="${feature.color}"
         type="feature"
         attachment="${feature.totalAttachments}"
-        sortable='[rendered:productOwner]'
+        sortable='[rendered:request.productOwner]'
         typeNumber="${feature.type}"
         typeTitle="${is.bundle(bundle:'featureTypes',value:feature.type)}"
-        cacheKey="${feature.lastUpdated}"
         controller="feature">
     <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
 
 %{--Embedded menu--}%
     <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" model="[id:id, feature:feature]"
-                   rendered="${productOwner}"/>
+                   rendered="${request.productOwner}"/>
 
     <g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">
         <is:tooltipPostit

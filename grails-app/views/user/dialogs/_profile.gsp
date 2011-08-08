@@ -46,22 +46,31 @@
                 <is:fieldInput for="useremail" label="is.user.email">
                     <is:input id="useremail" name="user.email" value="${user.email}"/>
                 </is:fieldInput>
-                <is:fieldFile class="file-avatar" for="avatar" label="" noborder="true">
-                    <is:avatar elementId="preview-avatar" userid="${user.id}" nocache="true"/>
-                    <is:multiFilesUpload
-                            name="avatar"
-                            accept="['jpg','png','gif']"
-                            urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
-                            multi="1"
-                            onUploadComplete="jQuery('#avatar-selected').val('');jQuery('#preview-avatar').attr('src','${createLink(action:'previewAvatar',controller:'user')}?fileID='+fileID);"
-                            progress="[
-                  url:createLink(action:'uploadStatus',controller:'scrumOS'),
-                  label:message(code:'is.upload.wait'),
-                ]"/>
-                </is:fieldFile>
-                <is:fieldInput class="file-avatar">
-                    <is:avatarSelector/>
-                </is:fieldInput>
+
+                <g:if test="${grailsApplication.config.icescrum.gravatar}">
+                    <is:fieldInput for="avatar" label="is.dialog.profile.gravatar" class="profile-avatar">
+                        <a href="http://gravatar.com/emails"><is:avatar user="${user}"/></a>
+                    </is:fieldInput>
+                </g:if>
+                <g:else>
+                    <is:fieldFile class="file-avatar" for="avatar" label="" noborder="true">
+                        <is:avatar elementId="preview-avatar" user="${user}" nocache="true"/>
+                        <is:multiFilesUpload
+                                name="avatar"
+                                accept="['jpg','png','gif']"
+                                urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
+                                multi="1"
+                                onUploadComplete="jQuery('#avatar-selected').val('');jQuery('#preview-avatar').attr('src','${createLink(action:'previewAvatar',controller:'user')}?fileID='+fileID);"
+                                progress="[
+                      url:createLink(action:'uploadStatus',controller:'scrumOS'),
+                      label:message(code:'is.upload.wait'),
+                    ]"/>
+                    </is:fieldFile>
+                    <is:fieldInput class="file-avatar">
+                        <is:avatarSelector/>
+                    </is:fieldInput>
+                </g:else>
+
                 <is:fieldInput for="activity" label="is.user.preferences.activity">
                     <is:input name='user.preferences.activity' id='activity' value="${user.preferences.activity}"/>
                 </is:fieldInput>

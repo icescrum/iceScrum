@@ -22,10 +22,10 @@
 --}%
 
 <%@ page import="org.icescrum.core.domain.Story;org.icescrum.core.domain.Sprint;" %>
-<g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
-<g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
-<g:set var="teamMember" value="${sec.access(expression:'teamMember()',{true})}"/>
-<g:set var="scrumMaster" value="${sec.access(expression:'scrumMaster()',{true})}"/>
+<g:set var="inProduct" value="${request.inProduct}"/>
+<g:set var="productOwner" value="${request.productOwner}"/>
+<g:set var="teamMember" value="${request.teamMember}"/>
+<g:set var="scrumMaster" value="${request.scrumMaster}"/>
 <g:set var="creator" value="${story.creator.id == user?.id}"/>
 
 <is:postitMenuItem first="true">
@@ -135,7 +135,7 @@
             remote="true"/>
 </is:postitMenuItem>
 
-<is:postitMenuItem renderedOnAccess="inProduct()">
+<is:postitMenuItem rendered="${inProduct}">
     <is:link id="${story.id}"
              action="copy"
              controller="story"

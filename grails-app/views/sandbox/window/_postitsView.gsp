@@ -23,7 +23,7 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
+<g:set var="productOwner" value="${request.productOwner}"/>
 
 <is:backlogElementLayout
         emptyRendering="true"
@@ -44,8 +44,10 @@
         dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
         value="${stories}"
         var="story">
-    <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user, sprint:sprint]"
-               params="[product:params.product]"/>
+        <is:cache  cache="storyCache-${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+            <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user, sprint:sprint]"
+                       params="[product:params.product]"/>
+        </is:cache>
 </is:backlogElementLayout>
 
 <g:include view="/sandbox/window/_blank.gsp" model="[stories:stories,id:id]"/>

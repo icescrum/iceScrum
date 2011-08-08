@@ -19,7 +19,6 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
 <g:set var="actor" value="[id:'?**=this.id**?',
                            name:'?**=name**?',
                            description:'?**=description**?',
@@ -39,12 +38,11 @@
                title="?**=truncatedName**?"
                type="actor"
                notruncate="true"
-               cacheKey="actor-${params.product}"
                attachment="${actor.totalAttachments}"
                controller="${id}">
         ?**=truncatedDescription**?
         <is:postitMenu id="${actor.id}" contentView="/actor/menu" params="[id:id, actor:actor]"
-                       rendered="${productOwner}"/>
+                       rendered="${request.productOwner}"/>
         ?**if(truncatedDescription.length > 50 || truncatedName.length > 17) {**?
         <is:tooltipPostit
                 type="actor"

@@ -51,12 +51,3 @@ def getRevision() {
 
     return scmVersion ?: 'UNKNOWN'
 }
-
-eventConfigureTomcat = {tomcat ->
-    def ajpConnector = new Connector("org.apache.coyote.http11.Http11NioProtocol")
-    ajpConnector.port = 8009
-    ajpConnector.setProperty("redirectPort", "8443")
-    ajpConnector.setProperty("protocol", "AJP/1.3")
-    ajpConnector.setProperty("enableLookups", "false")
-    tomcat.service.addConnector ajpConnector
-}

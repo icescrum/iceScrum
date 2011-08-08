@@ -24,7 +24,7 @@
  */
 
 var stack_bottomleft = {"dir1": "up", "dir2": "right"};
-
+var autoCompleteCache = {}, autoCompleteLastXhr;
 $.ajaxSetup({ cache: false  });
 
 (function($) {
@@ -238,6 +238,7 @@ $.ajaxSetup({ cache: false  });
             jQuery.ajax({
                         type:'GET',
                         global:false,
+                        cache:true,
                         url:$.icescrum.o.baseUrlProduct + url,
                         data:'withButtonBar=false',
                         beforeSend:function() {

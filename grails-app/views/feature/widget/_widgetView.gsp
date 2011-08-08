@@ -26,7 +26,7 @@
                          style="display:${features ? 'block' : 'none'};"
                          containerClass="list postit-rows"
                          draggable='[
-            restrictOnAccess:"productOwner() or scrumMaster()",
+            rendered:request.productOwner || request.scrumMaster,
             selector:".postit-row",
             helper:"clone",
             appendTo:"body",
@@ -35,11 +35,13 @@
           ]'
                          value="${features}"
                          var="feature"
-                         dblclickable='[restrictOnAccess:"inProduct()", selector:".postit-row", callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'>
-    <li elemId="${feature.id}" class="postit-row postit-row-feature">
-        <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
-        <is:truncated size="30" encodedHTML="true">${feature.name.encodeAsHTML()}</is:truncated>
-    </li>
+                         dblclickable='[rendered:request.inProduct, selector:".postit-row", callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'>
+    <is:cache  cache="featureCache-${feature.id}" cacheResolver="backlogElementCacheResolver" key="postit-small">
+        <li elemId="${feature.id}" class="postit-row postit-row-feature">
+            <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
+            <is:truncated size="30" encodedHTML="true">${feature.name.encodeAsHTML()}</is:truncated>
+        </li>
+    </is:cache>
 </is:backlogElementLayout>
 
 <div class="box-blank" style="display:${features ? 'none' : 'block'};">

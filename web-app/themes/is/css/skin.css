@@ -543,6 +543,16 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     border-style: dashed;
 }
 
+.members-list .member:hover {
+    border: 1px solid #2890f0;
+    background: #56a9f6 url(../images/ui/ui-bg_highlight-soft_40_56a9f6_1x100.png) 50% 50% repeat-x;
+}
+
+.members-list .member {
+    border-style: solid;
+    border-color: #ffffff;
+}
+
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //	File type

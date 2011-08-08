@@ -31,6 +31,8 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.domain.*
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.XML
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 @Secured('inProduct()')
 class FeatureController {
@@ -54,6 +56,7 @@ class FeatureController {
     ]
 
     @Secured('productOwner()')
+    @CacheFlush(caches = 'addStory', cacheResolver = 'projectCacheResolver')
     def save = {
         def feature = new Feature(params.feature as Map)
         try {
@@ -72,6 +75,7 @@ class FeatureController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = 'addSandbox', cacheResolver = 'projectCacheResolver')
     def update = {
         def msg
         if (!params.long('feature.id')) {
@@ -297,6 +301,7 @@ class FeatureController {
         }
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
     def productParkingLotChart = {
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)

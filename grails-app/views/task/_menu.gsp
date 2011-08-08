@@ -20,8 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;" %>
-<g:set var="poOrSm" value="${sec.access(expression:'productOwner() or scrumMaster()',{true})}"/>
-<g:set var="scrumMaster" value="${sec.access(expression:'scrumMaster()',{true})}"/>
+<g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
 <g:set var="creator" value="${task.creator.id == user.id}"/>
 <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
 
@@ -68,7 +67,7 @@
              value="${message(code:'is.ui.sprintPlan.menu.task.copy')}"/>
 </is:postitMenuItem>
 <is:postitMenuItem
-        rendered="${((poOrSm || creator || responsible) && task.state != Task.STATE_DONE) || (scrumMaster && task.state == Task.STATE_DONE) || template}"
+        rendered="${((poOrSm || creator || responsible) && task.state != Task.STATE_DONE) || (request.scrumMaster && task.state == Task.STATE_DONE) || template}"
         elementId="menu-delete-${task.id}">
     <is:link id="${task.id}"
              action="delete"
@@ -79,7 +78,7 @@
              value="${message(code:'is.ui.sprintPlan.menu.task.delete')}"/>
 </is:postitMenuItem>
 <is:postitMenuItem
-        rendered="${((responsible || scrumMaster) && task.state != Task.STATE_DONE && task.backlog?.state == Sprint.STATE_INPROGRESS) || template}"
+        rendered="${((responsible || request.scrumMaster) && task.state != Task.STATE_DONE && task.backlog?.state == Sprint.STATE_INPROGRESS) || template}"
         elementId="menu-blocked-${task.id}">
     <is:link id="${task.id}"
              action="block"

@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Release" %>
-<g:set var="poOrsm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
+<g:set var="poOrsm" value="${request.productOwner || request.scrumMaster}"/>
 
 <is:menuItem first="true">
     <is:link id="${release.id}"

@@ -21,21 +21,51 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
-import org.codehaus.groovy.grails.plugins.springsecurity.ReflectionUtils
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
-import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.web.security.ScrumAuthenticationProcessingFilter
 import org.icescrum.web.upload.AjaxMultipartResolver
+import org.icescrum.cache.ProjectCacheResolver
+import org.icescrum.cache.UserCacheResolver
+import org.icescrum.cache.BacklogElementCacheResolver
+import org.icescrum.cache.RoleAndLocaleKeyGenerator
+import org.icescrum.cache.LocaleKeyGenerator
+import org.icescrum.cache.UserKeyGenerator
+import org.icescrum.cache.UserProjectCacheResolver
+import grails.plugin.springcache.web.key.WebContentKeyGenerator
 
 beans = {
 
+    projectCacheResolver(ProjectCacheResolver)
+    backlogElementCacheResolver(BacklogElementCacheResolver)
+    userCacheResolver(UserCacheResolver) {
+        springSecurityService = ref('springSecurityService')
+    }
+
+    userProjectCacheResolver(UserProjectCacheResolver) {
+        springSecurityService = ref('springSecurityService')
+    }
+
+    userKeyGenerator(UserKeyGenerator) {
+        contentType = true
+        springSecurityService = ref('springSecurityService')
+    }
+    localeKeyGenerator(LocaleKeyGenerator) {
+        contentType = true
+    }
+    roleAndLocaleKeyGenerator(RoleAndLocaleKeyGenerator) {
+        contentType = true
+        securityService = ref('securityService')
+    }
+    springcacheDefaultKeyGenerator(WebContentKeyGenerator){
+        contentType = true
+    }
+
     authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
-        ReflectionUtils.application = ApplicationHolder.application
-        def conf = SpringSecurityUtils.securityConfig
+    def conf = SpringSecurityUtils.securityConfig
         authenticationManager = ref('authenticationManager')
         sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
         authenticationSuccessHandler = ref('authenticationSuccessHandler')

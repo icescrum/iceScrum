@@ -29,7 +29,7 @@
                         type="link"
                         button="button-s button-s-light"
                         href="#releasePlan"
-                        renderedOnAccess="productOwner() or scrumMaster()"
+                        rendered="${request.productOwner || request.scrumMaster}"
                         title="${message(code:'is.ui.sprintPlan.blank.new')}"
                         alt="${message(code:'is.ui.sprintPlan.blank.sprint.new')}"
                         icon="create">
@@ -42,7 +42,7 @@
                         type="link"
                         button="button-s button-s-light"
                         href="#timeline/add"
-                        renderedOnAccess="productOwner() or scrumMaster()"
+                        rendered="${request.productOwner || request.scrumMaster}"
                         title="${message(code:'is.ui.sprintPlan.blank.release.new')}"
                         alt="${message(code:'is.ui.sprintPlan.blank.release.new')}"
                         icon="create">

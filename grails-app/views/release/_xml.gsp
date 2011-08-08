@@ -18,13 +18,19 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
---}%<is:objectAsXML object="${object}" node="team" indentLevel="${indentLevel}" root="${root}">
-    <is:propertyAsXML name="['velocity','dateCreated']"/>
-    <is:propertyAsXML name="['name','description']" cdata="true"/>
-    <is:propertyAsXML
-            object="preferences"
-            name="['allowNewMembers','allowRoleChange']"/>
-    <is:listAsXML name="members" template="/user/xml" child="user" deep="${deep}" indentLevel="${indentLevel  + 1}"/>
-    <is:listAsXML name="scrumMasters" template="/user/xml" deep="false" child="scrumMaster"
-                  indentLevel="${indentLevel  + 1}"/>
+--}%<is:objectAsXML object ="${object}" node="release" indentLevel="${indentLevel}" root="${root}">
+  <is:propertyAsXML name="['state','releaseVelocity','endDate','startDate','orderNumber']"/>
+  <is:propertyAsXML name="['name','vision','description','goal']" cdata="true"/>
+  <is:listAsXML
+          name="sprints"
+          template="/sprint/xml"
+          child="sprint"
+          deep="${deep}"
+          indentLevel="${indentLevel + 1}"/>
+  <is:listAsXML
+        name="cliches"
+        template="/project/cliche"
+        deep="${deep}"
+        indentLevel="${indentLevel  + 1}"
+        child="cliche"/>
 </is:objectAsXML>

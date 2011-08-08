@@ -22,12 +22,8 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
-
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
-<g:set var="inProduct" value="${sec.access([expression:'inProduct()'], {true})}"/>
-
 <is:iconButton
-        rendered="${inProduct}"
+        rendered="${request.inProduct}"
         shortcut="[key:'ctrl+shift+c',scope:id]"
         onclick="jQuery.icescrum.selectableAction('story/copy',true,'id',function(data){jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');})"
         disabled="true"
@@ -36,12 +32,12 @@
     ${message(code: 'is.ui.backlog.toolbar.clone')}
 </is:iconButton>
 
-<is:separatorSmall rendered="${inProduct}"/>
+<is:separatorSmall rendered="${request.inProduct}"/>
 
 %{--Delete button--}%
 <is:iconButton
         icon="delete"
-        rendered="${productOwner}"
+        rendered="${request.productOwner}"
         onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
         history='false'
         shortcut="[key:'del',scope:id]"
@@ -51,7 +47,7 @@
     ${message(code: 'is.ui.backlog.toolbar.delete')}
 </is:iconButton>
 
-<is:separator rendered="${productOwner}"/>
+<is:separator rendered="${request.productOwner}"/>
 
 %{--View--}%
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">

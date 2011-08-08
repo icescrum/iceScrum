@@ -46,10 +46,6 @@
       <th class="last"><g:message code='is.dialog.wizard.project.value'/></th>
     </tr>
     <tr class="table-lines-item table-lines-odd">
-      <td class="first"><g:message code='is.product.preferences.project.newTeams'/></td>
-      <td class="last"><g:formatBoolean boolean="${product.preferences.newTeams}"/></td>
-    </tr>
-    <tr class="table-lines-item table-lines-odd">
       <td class="first"><g:message code='is.product.preferences.planification.estimatedSprintsDuration'/></td>
       <td class="last">${product.preferences.estimatedSprintsDuration}</td>
     </tr>

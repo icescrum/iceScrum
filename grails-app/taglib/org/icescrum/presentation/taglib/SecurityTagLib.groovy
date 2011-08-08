@@ -41,39 +41,27 @@ class SecurityTagLib {
 
   def displayRole = {attrs ->
     def res = []
-    def user = attrs.remove('user')
-
-    if (!user) {
-      if (SpringSecurityUtils.ifAllGranted(Authority.ROLE_ADMIN)) {
+      if (request.admin) {
         res << message(code: 'is.role.admin')
-      } else {
-        if (securityService.scrumMaster(attrs.team, SCH.context.authentication)) {
+      }
+      else
+      {
+        if (request.owner) {
+          res << message(code: 'is.role.owner')
+        }
+        if (request.scrumMaster) {
           res << message(code: 'is.role.scrumMaster')
         }
-        if (securityService.teamMember(attrs.team, SCH.context.authentication)) {
+        if (request.teamMember) {
           res << message(code: 'is.role.teamMember')
         }
-        if (securityService.productOwner(attrs.product, SCH.context.authentication)) {
+        if (request.productOwner) {
           res << message(code: 'is.role.productOwner')
         }
-        if (!res && securityService.stakeHolder(attrs.product, SCH.context.authentication)) {
+        if (!res && request.stakeHolder) {
           res << message(code: 'is.role.stakeHolder')
         }
       }
-    } else {
-      if (securityService.hasRoleAdmin(user)) {
-        res << message(code: 'is.role.admin')
-      } else {
-        def grailsUser = new GrailsUser(user.username, '', user.enabled, true, true, true, userAuthorities, user.id)
-        def auth = new UsernamePasswordAuthenticationToken(grailsUser, null, userAuthorities as GrantedAuthority[])
-        if (securityService.isScrumMaster(attrs.team, auth)) {
-          res << message(code: 'is.role.scrumMaster')
-        }
-        if (securityService.isProductOwner(attrs.product, auth)) {
-          res << message(code: 'is.role.productOwner')
-        }
-      }
-    }
     out << res.join(', ')
   }
 

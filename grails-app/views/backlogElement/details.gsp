@@ -72,9 +72,7 @@
                 </is:panelContext>
             </is:panel>
             <div id="activities-wrapper">
-
-                <g:render template="window/activities"
-                          model="[activities:activities, summary:summary, comments:comments, story:story, user:user]"/>
+                <g:include  action="activitiesPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
             </div>
 
         </div>

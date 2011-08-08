@@ -70,7 +70,6 @@
   </div>
   <jq:jquery>
     $("#username").focus();
-    <is:renderNotice />
   </jq:jquery>
 </is:simpleDesktop>
 <is:shortcut key="return" callback="\$('#loginSubmit').click();"/>

@@ -21,21 +21,19 @@
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
-
-<g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
-
 <is:backlogElementLayout
         id="window-${id}"
         emptyRendering="true"
         style="display:${actors ? 'block' : 'none'};"
-        selectable="[rendered:productOwner,
+        selectable="[rendered:request.productOwner,
                     filter:'div.postit-actor',
                     selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'actor.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
         value="${actors}"
-        dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'
+        dblclickable='[rendered:!request.productOwner,selector:".postit",callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'
         var="actor">
-
-    <g:include view="/actor/_postit.gsp" model="[id:id,actor:actor,user:user]" params="[product:params.product]"/>
+        <is:cache  cache="actorCache-${actor.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+            <g:include view="/actor/_postit.gsp" model="[id:id,actor:actor,user:user]" params="[product:params.product]"/>
+        </is:cache>
 </is:backlogElementLayout>
 
 <g:include view="/actor/window/_blank.gsp" model="[actors:actors,id:id]"/>

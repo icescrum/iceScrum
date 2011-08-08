@@ -32,6 +32,7 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
+import grails.plugin.springcache.annotations.Cacheable
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class TimelineController {
@@ -52,6 +53,7 @@ class TimelineController {
     def featureService
     def springSecurityService
 
+    @Cacheable(cache = 'releaseCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'roleAndLocaleKeyGenerator')
     def titleBarContent = {
         def currentProduct = Product.get(params.product);
         def releasesName = []
@@ -71,6 +73,7 @@ class TimelineController {
         render(template: 'window/titleBarContent', model: [id: id, releasesName: releasesName, releasesDate: releasesDate, currentRelease: params.long('id'), releasesIds: releasesIds])
     }
 
+    @Cacheable(cache = 'releaseCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'roleAndLocaleKeyGenerator')
     def index = {
 
         def currentProduct = Product.get(params.product)
@@ -82,6 +85,7 @@ class TimelineController {
         render(template: 'window/timelineView', model: [id: id])
     }
 
+    @Cacheable(cache = "releaseCache", cacheResolver = "projectCacheResolver", keyGenerator = 'roleAndLocaleKeyGenerator')
     def timeLineList = {
         def currentProduct = Product.get(params.product)
         def list = []
@@ -189,7 +193,7 @@ class TimelineController {
         if (!params.id) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
         }
-        def release = Release.getInProduct(params.product,params.long('id')).list()[0]
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!release) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
             return
@@ -208,6 +212,7 @@ class TimelineController {
         ])
     }
 
+    @Cacheable(cache = 'productChartCache', cacheResolver = 'projectCacheResolver', keyGenerator='localeKeyGenerator')
     def productCumulativeFlowChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.cumulativeFlowValues(currentProduct)
@@ -228,6 +233,7 @@ class TimelineController {
         }
     }
 
+    @Cacheable(cache = 'productChartCache', cacheResolver = 'projectCacheResolver', keyGenerator='localeKeyGenerator')
     def productVelocityCapacityChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productVelocityCapacityValues(currentProduct)
@@ -244,6 +250,7 @@ class TimelineController {
         }
     }
 
+    @Cacheable(cache = 'productChartCache', cacheResolver = 'projectCacheResolver', keyGenerator='localeKeyGenerator')
     def productBurnupChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productBurnupValues(currentProduct)
@@ -260,6 +267,7 @@ class TimelineController {
         }
     }
 
+    @Cacheable(cache = 'productChartCache', cacheResolver = 'projectCacheResolver', keyGenerator='localeKeyGenerator')
     def productBurndownChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productBurndownValues(currentProduct)
@@ -277,6 +285,7 @@ class TimelineController {
         }
     }
 
+    @Cacheable(cache = 'productChartCache', cacheResolver = 'projectCacheResolver', keyGenerator='localeKeyGenerator')
     def productVelocityChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productVelocityValues(currentProduct)
@@ -294,6 +303,7 @@ class TimelineController {
         }
     }
 
+    @Cacheable(cache = 'productChartCache', cacheResolver = 'projectCacheResolver', keyGenerator='localeKeyGenerator')
     def productParkingLotChart = {
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)

@@ -21,9 +21,9 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Sprint;" %>
-<g:set var="poOrSm" value="${sec.access(expression:'productOwner() or scrumMaster()',{true})}"/>
+<g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 
-<is:menuItem first="true" renderedOnAccess="inProduct()">
+<is:menuItem first="true" rendered="${request.inProduct}">
     <is:link id="${sprint.id}"
              action="open"
              controller="sprintPlan"

@@ -19,12 +19,13 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<ul>
-  <li>${message(code: "is.ui.details.product.name")}
-    <strong>${currentProduct.name.encodeAsHTML()}</strong>
-  </li>
-  <li>${message(code:"is.ui.details.role.name")}<is:scrumLink controller="members"><strong> <is:displayRole /> </strong></is:scrumLink></li>
-  <g:if test="${user}">
-    <li><is:avatar userid="${user.id}"/></li>
-  </g:if>
-</ul>
+<is:objectAsXML object="${object}" node="team" indentLevel="${indentLevel}" root="${root}">
+    <is:propertyAsXML name="['velocity','dateCreated']"/>
+    <is:propertyAsXML name="['name','description']" cdata="true"/>
+    <is:propertyAsXML
+            object="preferences"
+            name="['allowNewMembers']"/>
+    <is:listAsXML name="members" template="/user/xml" child="user" deep="${deep}" indentLevel="${indentLevel  + 1}"/>
+    <is:listAsXML name="scrumMasters" template="/user/xml" deep="false" child="scrumMaster"
+                  indentLevel="${indentLevel  + 1}"/>
+</is:objectAsXML>

@@ -34,6 +34,8 @@ import org.icescrum.core.event.IceScrumStoryEvent
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.icescrum.core.domain.*
 import org.icescrum.core.utils.BundleUtils
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 class BacklogElementController {
 
@@ -104,7 +106,7 @@ class BacklogElementController {
             return
         }
 
-        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
+        def story = Story.get(params.long('id'))
         if (!story) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             return
@@ -116,21 +118,12 @@ class BacklogElementController {
         if (product.preferences.hidden && !user) {
             redirect(controller: 'login', params: [ref: "p/${product.pkey}@backlogElement/$story.id"])
             return
-        } else if (product.preferences.hidden && !securityService.inProduct(story.backlog.id, springSecurityService.authentication)) {
+        } else if (product.preferences.hidden && !securityService.inProduct(story.backlog, springSecurityService.authentication) && !securityService.stakeHolder(story.backlog,springSecurityService.authentication,false)) {
             render(status: 403)
         } else {
-            def activities = story.getActivities()
-            // Retrieve the tasks activity links
-            if (story.tasks) {
-                story.tasks*.getActivities()*.each { activities << it }
-            }
-            activities = activities.sort { it1, it2 -> it2.dateCreated <=> it1.dateCreated }
-
-            def summary = story.comments + activities
             def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.id)
 
             def criteria = FollowLink.createCriteria()
-
             def isFollower = false
             if (user) {
                 isFollower = criteria.get {
@@ -145,17 +138,13 @@ class BacklogElementController {
                 isFollower = isFollower == 1
             }
 
-            summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
             render(view: 'details', model: [
                     story: story,
                     tasksDone: Task.countByParentStoryAndState(story, Task.STATE_DONE),
                     typeCode: BundleUtils.storyTypes[story.type],
                     storyStateCode: BundleUtils.storyStates[story.state],
                     taskStateBundle: BundleUtils.taskStates,
-                    activities: activities,
-                    comments: story.comments,
                     user: user,
-                    summary: summary,
                     pkey: product.pkey,
                     permalink: permalink,
                     locale: RequestContextUtils.getLocale(request),
@@ -186,8 +175,8 @@ class BacklogElementController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error')]] as JSON)
             return
         }
-        // Reload the comments
-        forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments'])
+        flushCache(cache:'storyCache-'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
+        redirect(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments', product:params.product])
     }
 
     /**
@@ -217,8 +206,9 @@ class BacklogElementController {
         comment.body = params.comment.body
         try {
             comment.save()
-            forward(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
+            flushCache(cache:'storyCache-'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
+            redirect(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
         } catch (RuntimeException e) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
         }
@@ -245,8 +235,9 @@ class BacklogElementController {
         def commentable = Story.getInProduct(params.long('product'),params.long('backlogelement')).list()[0]
         try {
             commentable.removeComment(comment)
-            render(text: include(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: [product: params.product, 'tab': 'comments']))
+            flushCache(cache:'storyCache-'+params.backlogelement, cacheResolver:'backlogElementCacheResolver')
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_DELETED))
+            redirect(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: ['tab': 'comments', product:params.product])
         } catch (RuntimeException e) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
         }
@@ -283,6 +274,7 @@ class BacklogElementController {
      * Content of the activities panel
      */
 
+    @Cacheable(cache = 'storyCache', cacheResolver = 'backlogElementCacheResolver', keyGenerator = 'userKeyGenerator')
     def activitiesPanel = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
@@ -317,6 +309,7 @@ class BacklogElementController {
     }
 
     @Secured('isAuthenticated()')
+    @CacheFlush(caches = 'storyCache', cacheResolver = 'backlogElementCacheResolver')
     def follow = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
@@ -342,6 +335,7 @@ class BacklogElementController {
     }
 
     @Secured('isAuthenticated()')
+    @CacheFlush(caches = 'storyCache', cacheResolver = 'backlogElementCacheResolver')
     def unfollow = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)

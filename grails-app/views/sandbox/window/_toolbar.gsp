@@ -22,8 +22,8 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
-<g:set var="inProduct" value="${sec.access([expression:'inProduct()'], {true})}"/>
+<g:set var="productOwner" value="${request.productOwner}"/>
+<g:set var="inProduct" value="${request.inProduct}"/>
 
 %{--Add button--}%
 <is:iconButton

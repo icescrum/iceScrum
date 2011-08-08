@@ -22,90 +22,93 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Sprint;" %>
-<g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
+<g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 
 <is:eventline container="#window-content-${id}" elemid="${release.id}"
               focus="${activeSprint ? activeSprint.id : sprints ? sprints.last().id : null}"
               style="display:${sprints?'block':'none'};">
     <g:each in="${sprints}" var="sprint" status="u">
-        <g:set var="nextSprintExist" value="${sprint.hasNextSprint}"/>
-        <is:event title="${message(code:'is.sprint')} ${sprint.orderNumber}" elemid="${sprint.id}">
-        %{-- Header of the sprint column --}%
-            <is:eventHeader class="state-${sprint.state}">
-                <sec:access expression="inProduct()">
-                    <div class="event-header-label" onclick="$.icescrum.stopEvent(event).openWindow('sprintPlan/${sprint.id}');">
-                </sec:access>
-                <sec:noAccess expression="inProduct()">
-                    <div class="event-header-label">
-                </sec:noAccess>
-                ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state"><is:bundle
-                    bundle="sprintStates" value="${sprint.state}"/></span>
-
-                <div class="event-header-velocity">
-                    <g:if test="${Sprint.STATE_WAIT == sprint.state}">
-                        ${sprint.capacity?.toInteger()}
+            <g:set var="nextSprintExist" value="${sprint.hasNextSprint}"/>
+            <is:event title="${message(code:'is.sprint')} ${sprint.orderNumber}"
+                      elemid="${sprint.id}"
+                      cacheable="[cache:'SprintCache-'+sprint.id,cacheResolver:'projectCacheResolver',key:'sprintEvent',disabled:sprint.state != Sprint.STATE_DONE]">
+            %{-- Header of the sprint column --}%
+                <is:eventHeader class="state-${sprint.state}">
+                    <g:if test="${request.inProduct}">
+                        <div class="event-header-label" onclick="$.icescrum.stopEvent(event).openWindow('sprintPlan/${sprint.id}');">
                     </g:if>
                     <g:else>
-                        ${sprint.velocity?.toInteger()} / ${sprint.capacity?.toInteger()}
+                        <div class="event-header-label">
                     </g:else>
-                </div>
+                    ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state"><is:bundle
+                        bundle="sprintStates" value="${sprint.state}"/></span>
 
-                </div>
+                    <div class="event-header-velocity">
+                        <g:if test="${Sprint.STATE_WAIT == sprint.state}">
+                            ${sprint.capacity?.toInteger()}
+                        </g:if>
+                        <g:else>
+                            ${sprint.velocity?.toInteger()} / ${sprint.capacity?.toInteger()}
+                        </g:else>
+                    </div>
 
-                <div class="drap-container">
-                    ${message(code: 'is.ui.releasePlan.from')} <strong><g:formatDate date="${sprint.startDate}"
-                                                                                     formatName="is.date.format.short"/></strong>
-                    ${message(code: 'is.ui.releasePlan.to')} <strong><g:formatDate date="${sprint.endDate}"
-                                                                                   formatName="is.date.format.short"/></strong>
-                    <is:menu class="dropmenu-action" id="${sprint.id}" contentView="/sprint/menu"
-                             params="[id:id,sprint:sprint]"/>
-                </div>
+                    </div>
 
-                <g:if test="${sprint.goal}">
-                    <is:tooltipSprint
-                            id="releasePlan-${sprint.orderNumber}"
-                            title="${message(code:'is.sprint')} ${sprint.orderNumber}"
-                            text="${sprint.goal.encodeAsHTML()}"
-                            container="jQuery('.event-line-limiter')"/>
-                </g:if>
-            </is:eventHeader>
+                    <div class="drap-container">
+                        ${message(code: 'is.ui.releasePlan.from')} <strong><g:formatDate date="${sprint.startDate}"
+                                                                                         formatName="is.date.format.short"/></strong>
+                        ${message(code: 'is.ui.releasePlan.to')} <strong><g:formatDate date="${sprint.endDate}"
+                                                                                       formatName="is.date.format.short"/></strong>
+                        <is:menu class="dropmenu-action" id="${sprint.id}" contentView="/sprint/menu"
+                                 params="[id:id,sprint:sprint]"/>
+                    </div>
 
-        %{-- Content of the sprint column --}%
-            <is:eventContent
-                    droppable="[
-                        rendered:(poOrSm && sprint.state != Sprint.STATE_DONE),
-                        hoverClass:'ui-drop-hover',
-                        accept:'.postit-row-story',
-                        drop:remoteFunction(action:'plan',
-                                  controller:'story',
-                                  onSuccess:'ui.draggable.attr(\'remove\',\'true\'); jQuery.event.trigger(\'plan_story\',data.story)',
-                                  params: '\'product='+params.product+'&id=\'+ui.draggable.attr(\'elemid\')+\'&sprint.id='+sprint.id+'\'')]">
-                <is:backlogElementLayout
-                        id="plan-${id}-${sprint.id}"
-                        sortable='[
-                          rendered:poOrSm && sprint.state != Sprint.STATE_DONE,
-                          handle:".postit-layout .postit-sortable",
-                          connectWith:".backlog",
-                          placeholder:"ui-drop-hover-postit-rect ui-corner-all",
-                          update:"if(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${id}-${sprint.id} .postit-rect",controller:"story",action:"rank",name:"story.rank",params:"&product=${params.product}")}}",
-                          receive:"event.stopPropagation();"+remoteFunction(action:"plan",
-                                      controller:"story",
-                                      onFailure: "jQuery(ui).sortable(\"cancel\");",
-                                      onSuccess:"jQuery.event.trigger(\"plan_story\",data.story); if(data.oldSprint){ jQuery.event.trigger(\"sprintMesure_sprint\",data.oldSprint); }",
-                                      params: "\"product=${params.product}&id=\"+ui.item.attr(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item)+1)")
-                  ]'
-                        dblclickable="[selector:'.postit-rect',callback:is.quickLook(params:'\'story.id=\'+$.icescrum.postit.id(obj)')]"
-                        value="${sprint.stories?.sort{it.rank}}"
-                        var="story"
-                        emptyRendering="true">
-                    <g:include view="/story/_postit.gsp"
-                               model="[id:id,story:story,rect:true,user:user,sortable:(productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"
-                               params="[product:params.product]"/>
-                </is:backlogElementLayout>
-            </is:eventContent>
+                    <g:if test="${sprint.goal}">
+                        <is:tooltipSprint
+                                id="releasePlan-${sprint.orderNumber}"
+                                title="${message(code:'is.sprint')} ${sprint.orderNumber}"
+                                text="${sprint.goal.encodeAsHTML()}"
+                                container="jQuery('.event-line-limiter')"/>
+                    </g:if>
+                </is:eventHeader>
 
-        </is:event>
+            %{-- Content of the sprint column --}%
+                <is:eventContent
+                        droppable="[
+                            rendered:(poOrSm && sprint.state != Sprint.STATE_DONE),
+                            hoverClass:'ui-drop-hover',
+                            accept:'.postit-row-story',
+                            drop:remoteFunction(action:'plan',
+                                      controller:'story',
+                                      onSuccess:'ui.draggable.attr(\'remove\',\'true\'); jQuery.event.trigger(\'plan_story\',data.story)',
+                                      params: '\'product='+params.product+'&id=\'+ui.draggable.attr(\'elemid\')+\'&sprint.id='+sprint.id+'\'')]">
+                    <is:backlogElementLayout
+                            id="plan-${id}-${sprint.id}"
+                            sortable='[
+                              rendered:poOrSm && sprint.state != Sprint.STATE_DONE,
+                              handle:".postit-layout .postit-sortable",
+                              connectWith:".backlog",
+                              placeholder:"ui-drop-hover-postit-rect ui-corner-all",
+                              update:"if(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${id}-${sprint.id} .postit-rect",controller:"story",action:"rank",name:"story.rank",params:"&product=${params.product}")}}",
+                              receive:"event.stopPropagation();"+remoteFunction(action:"plan",
+                                          controller:"story",
+                                          onFailure: "jQuery(ui).sortable(\"cancel\");",
+                                          onSuccess:"jQuery.event.trigger(\"plan_story\",data.story); if(data.oldSprint){ jQuery.event.trigger(\"sprintMesure_sprint\",data.oldSprint); }",
+                                          params: "\"product=${params.product}&id=\"+ui.item.attr(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item)+1)")
+                      ]'
+                            dblclickable="[selector:'.postit-rect',callback:is.quickLook(params:'\'story.id=\'+$.icescrum.postit.id(obj)')]"
+                            value="${sprint.stories?.sort{it.rank}}"
+                            var="story"
+                            emptyRendering="true">
+                            <is:cache  cache="storyCache-${story.id}" cacheResolver="backlogElementCacheResolver" key="postit-rect">
+                                <g:include view="/story/_postit.gsp"
+                                           model="[id:id,story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"
+                                           params="[product:params.product]"/>
+                            </is:cache>
+                    </is:backlogElementLayout>
+                </is:eventContent>
+
+            </is:event>
     </g:each>
 </is:eventline>
 

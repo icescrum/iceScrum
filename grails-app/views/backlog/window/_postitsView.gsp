@@ -22,20 +22,18 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
-
 <is:backlogElementLayout
         emptyRendering="true"
         style="display:${stories ? 'block' : 'none'};"
         id="window-${id}"
-        selectable="[rendered:productOwner,
+        selectable="[rendered:request.productOwner,
                     filter:'div.postit-story',
                     cancel:'.postit .postit-sortable, a, .mini-value, select, input',
                     selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
-        sortable='[rendered:productOwner,
+        sortable='[rendered:request.productOwner,
                   handle:".postit-sortable",
                   placeholder:"postit-placeholder ui-corner-all"]'
-        droppable='[rendered:productOwner,
+        droppable='[rendered:request.productOwner,
                   selector:".postit",
                   hoverClass: "ui-selected",
                   drop: remoteFunction(controller:"story",
@@ -44,7 +42,7 @@
                                        params:"\"product="+params.product+"&feature.id=\"+ui.draggable.attr(\"elemid\")+\"&story.id=\"+jQuery(\".postit-layout .postit-id\", jQuery(this)).text()"
                                        ),
                   accept: ".postit-row-feature"]'
-        dblclickable='[rendered:!productOwner,
+        dblclickable='[rendered:!request.productOwner,
                        selector:".postit",
                        callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
 
@@ -52,7 +50,7 @@
         editable="[controller:'story',
                   action:'estimate',
                   on:'.postit-story .mini-value.editable',
-                  restrictOnAccess:'teamMember() or scrumMaster()',
+                  rendered:(request.teamMember || request.scrumMaster),
                   findId:'jQuery(this).parents(\'.postit-story:first\').attr(\'elemID\')',
                   type:'selectui',
                   name:'story.effort',
@@ -63,8 +61,9 @@
                   params:[product:params.product]]"
         value="${stories}"
         var="story">
-    <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user,sortable:productOwner]"
-               params="[product:params.product]"/>
+    <is:cache  cache="storyCache-${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+        <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user,sortable:request.productOwner]" params="[product:params.product]"/>
+    </is:cache>
 </is:backlogElementLayout>
 
 <g:include view="/backlog/window/_blank.gsp" model="[stories:stories,id:id]"/>

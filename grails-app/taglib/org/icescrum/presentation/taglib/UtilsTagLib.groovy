@@ -36,13 +36,19 @@ import org.icescrum.core.utils.BundleUtils
 import org.apache.commons.lang.StringEscapeUtils
 import groovy.xml.MarkupBuilder
 import org.springframework.validation.Errors
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.key.CacheKeyBuilder
+import org.codehaus.groovy.grails.commons.ApplicationHolder
+import org.codehaus.groovy.grails.web.pages.GroovyPageOutputStack
+import org.codehaus.groovy.grails.web.pages.FastStringWriter
+import grails.plugin.springcache.taglib.ResultAndBuffer
 
 class UtilsTagLib {
 
     static namespace = 'is'
 
     def grailsApplication
-
+    def springcacheService
     def loadJsVar = { attrs, body ->
         def opts = ''
         def current
@@ -148,16 +154,8 @@ class UtilsTagLib {
                         importEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         exportEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         creationProjectEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
-                        creationTeamEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN))
                 ]
         )
-    }
-
-    def renderNotice = {attrs ->
-        def notice = attrs.remove('notice') ?: 'notice'
-        def noticeAttrs = request."$notice" ?: flash."$notice"
-        if (noticeAttrs)
-            out << is.notice(noticeAttrs)
     }
 
     def savedRequest = {attrs, body ->
@@ -238,21 +236,42 @@ class UtilsTagLib {
     }
 
     def avatar = { attrs, body ->
-        assert attrs.userid
-        def avat = new File(grailsApplication.config.icescrum.images.users.dir + attrs.userid + '.png')
-        if (avat.exists()) {
-            out << "<img src='${createLink(controller: 'user', action: 'avatar', id: attrs.userid)}${attrs.nocache ? '?nocache=' + new Date().getTime() : ''}' ${attrs.elementId ? 'id=\'' + attrs.elementId + '\'' : ''} class='avatar avatar-user-${attrs.userid} ${attrs."class" ? attrs."class" : ''}' title='${message(code: "is.user.avatar")}' alt='${message(code: "is.user.avatar")}'/>"
-        } else {
-            out << r.img(
-                    id: attrs.elementId ?: '',
-                    uri: "/${is.currentThemeImage()}avatars/avatar.png",
-                    class: "avatar avatar-user-${attrs.userid} ${attrs."class" ? attrs."class" : ''}",
-                    title: message(code: "is.user.avatar")
-            )
+        assert attrs.user
+        if (grailsApplication.config.icescrum.gravatar){
+            def hash = attrs.user.email.encodeAsMD5()
+            def dgu = createLink(uri: '/' + is.currentThemeImage()) + "avatars/avatar.png"
+            def gravatarBaseUrl = request.isSecure() ? "https://secure.gravatar.com/avatar/" : "http://gravatar.com/avatar/"
+            String gravatarUrl = "$gravatarBaseUrl$hash"
+            gravatarUrl += dgu.matches(/404|mm|identicon|monsterid|wavatar|retro|http.*/) ? "?d=${dgu}&s=40" : ''
+            if (attrs.link){
+                out << gravatarUrl
+            }else {
+                out << "<img src='$gravatarUrl' height='40' width='40' class='avatar avatar-user-${attrs.user.id} ${attrs."class" ? attrs."class" : ''}' title='${message(code: "is.user.avatar")}' alt='${message(code: "is.user.avatar")}'/>"
+            }
+        }
+        else {
+            def avat = new File(grailsApplication.config.icescrum.images.users.dir + attrs.user.id + '.png')
+            if (avat.exists()) {
+                if (attrs.link){
+                    out << createLink(controller: 'user', action: 'avatar', id: attrs.user.id) + (attrs.nocache ? '?nocache=' + new Date().getTime() : '')
+                }else{
+                    out << "<img src='${createLink(controller: 'user', action: 'avatar', id: attrs.user.id)}${attrs.nocache ? '?nocache=' + new Date().getTime() : ''}' ${attrs.elementId ? 'id=\'' + attrs.elementId + '\'' : ''} class='avatar avatar-user-${attrs.user.id} ${attrs."class" ? attrs."class" : ''}' title='${message(code: "is.user.avatar")}' alt='${message(code: "is.user.avatar")}'/>"
+                }
+            } else {
+                if (attrs.link){
+                    out <<  "${grailsApplication.config.grails.serverURL}/${is.currentThemeImage()}avatars/avatar.png"
+                }else{
+                    out << r.img(
+                            id: attrs.elementId ?: '',
+                            uri: "/${is.currentThemeImage()}avatars/avatar.png",
+                            class: "avatar avatar-user-${attrs.user.id} ${attrs."class" ? attrs."class" : ''}",
+                            title: message(code: "is.user.avatar")
+                    )
+                }
+            }
         }
     }
-
-    def avatarSelector = {
+    def avatarSelector = { attrs ->
         def avatarsDir = grailsApplication.parentContext.getResource(is.currentThemeImage().toString() + 'avatars').file
         if (avatarsDir.isDirectory()) {
             out << "<span class=\"selector-avatars\">"
@@ -263,7 +282,7 @@ class UtilsTagLib {
                     </span>"""
                 }
             }
-            out << "<input type='text' style='display:none;' id='avatar-selected' name='avatar-selected'/>"
+            out << "<input type='hidden' id='avatar-selected' name='avatar-selected'/>"
             out << "</span>"
         }
     }
@@ -422,5 +441,48 @@ class UtilsTagLib {
         }
 
         resultErrorsList
+    }
+
+    def cache = { attrs, body ->
+        if (attrs.disabled){
+            out << body()
+            return
+        }
+
+        attrs.role = attrs.role ?: true
+        attrs.locale = attrs.locale ?: true
+        def cacheResolver = ApplicationHolder.application.mainContext[attrs.cacheResolver ?: 'springcacheDefaultCacheResolver']
+        def role = ''
+
+        def key  = new CacheKeyBuilder()
+        key.append(attrs.key)
+
+        if (attrs.role){
+            if (request.admin) {
+            role = 'adm'
+            } else {
+                if (request.scrumMaster)  {  role += 'scm'  }
+                if (request.teamMember)   {  role += 'tm'  }
+                if (request.productOwner) {  role += 'po'  }
+                if (!role && request.stakeHolder) {  role += 'sh'  }
+            }
+            role = role ?: 'anonymous'
+            key.append(role)
+        }
+
+        if (attrs.locale)
+            key.append(RCU.getLocale(request).toString().substring(0, 2))
+
+        def resultAndBuffer = springcacheService.doWithCache(cacheResolver.resolveCacheName(attrs.cache), key.toCacheKey()) {
+            def outputStack = GroovyPageOutputStack.currentStack()
+            def writer = new FastStringWriter()
+            outputStack.push(writer, true)
+            def result = body()
+            outputStack.pop()
+            new ResultAndBuffer(result: result, buffer: writer.buffer)
+        }
+
+        GroovyPageOutputStack.currentWriter() << resultAndBuffer.buffer
+        out << resultAndBuffer.result
     }
 }

@@ -37,6 +37,7 @@ import org.icescrum.web.upload.AjaxMultipartResolver
 import org.springframework.mail.MailException
 import org.springframework.security.access.AccessDeniedException
 import org.icescrum.core.domain.Sprint
+import grails.plugin.springcache.annotations.Cacheable
 
 class ScrumOSController {
 
@@ -46,6 +47,7 @@ class ScrumOSController {
     def userService
     def menuBarSupport
     def notificationEmailService
+    def securityService
 
     def index = {
         def currentUserInstance = null
@@ -70,15 +72,17 @@ class ScrumOSController {
             }
         }
         def currentProductInstance = params.product ? Product.get(params.long('product')) : null
-        def currentTeamInstance = params.team ? teamService.openTeam(params.long('team')) : null
+
+        if (currentProductInstance?.preferences?.hidden && !securityService.inProduct(currentProductInstance, springSecurityService.authentication) && !securityService.stakeHolder(currentProductInstance,springSecurityService.authentication,false)){
+            redirect(action:'error403',controller:'errors')
+            return
+        }
 
         [user: currentUserInstance,
-                team: currentTeamInstance,
                 lang: RCU.getLocale(request).toString().substring(0, 2),
                 product: currentProductInstance,
                 publicProductsExists: Product.count() ? true : false,
-                productFilteredsList: productService.getByMemberProductList(),
-                teamsList: teamService.teamList]
+                productFilteredsList: productService.getByMemberProductList()]
     }
 
 
@@ -224,6 +228,7 @@ class ScrumOSController {
         }
     }
 
+    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
     def about = {
         def locale = RCU.getLocale(request)
         def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${locale}.xml")
@@ -271,8 +276,8 @@ class ScrumOSController {
         }
     }
 
+    @Cacheable(cache = 'projectTemplateCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'userKeyGenerator')
     def templates = {
-
         def currentSprint = null
         if (params.long('product')) {
             def product = Product.get(params.product)

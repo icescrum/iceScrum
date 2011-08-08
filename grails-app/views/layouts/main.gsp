@@ -83,11 +83,11 @@
       hoverClass: 'main-active',
       accept: '.draggable-to-desktop'
     });
-    <g:if test="${flash.message}">
-        <is:notice text="${message(code: flash.message)}"/>
-    </g:if>
 </jq:jquery>
 <entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
+<is:onStream
+            on="#application"
+            events="[[object:'product',events:['add','remove','update','redirect']]]"/>
 </body>
 </html>

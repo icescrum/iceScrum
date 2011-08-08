@@ -20,28 +20,26 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
-
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
-
 <is:backlogElementLayout
         id="window-${id}"
         emptyRendering="true"
         style="display:${!features ? 'none' : 'block'};"
-        selectable="[rendered:productOwner,
+        selectable="[rendered:request.productOwner,
                     filter:'div.postit-feature',
                     cancel:'.postit .postit-sortable, a',
                     selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'feature.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
-        sortable='[rendered:productOwner,
+        sortable='[rendered:request.productOwner,
                   handle:".postit-sortable",
                   placeholder:"postit-placeholder ui-corner-all"]'
         changeRank='[selector:".postit", controller:id,action:"rank",name:"feature.rank",params:[product:params.product]]'
-        dblclickable='[rendered:!productOwner,
+        dblclickable='[rendered:!request.productOwner,
                                selector:".postit",
                                callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'
         value="${features}"
         var="feature">
-
-    <g:include view="/feature/_postit.gsp" model="[id:id,feature:feature,user:user]" params="[product:params.product]"/>
+        <is:cache  cache="featureCache-${feature.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+            <g:include view="/feature/_postit.gsp" model="[id:id,feature:feature,user:user]" params="[product:params.product]"/>
+        </is:cache>
 </is:backlogElementLayout>
 
 <g:include view="/feature/window/_blank.gsp" model="[features:features,id:id]"/>

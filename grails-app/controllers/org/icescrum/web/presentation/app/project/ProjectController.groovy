@@ -39,6 +39,8 @@ import org.icescrum.core.support.ProgressSupport
 import org.springframework.security.access.AccessDeniedException
 import org.icescrum.core.domain.*
 import org.icescrum.core.utils.BundleUtils
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
@@ -56,12 +58,14 @@ class ProjectController {
     def springSecurityService
     def featureService
     def securityService
+    def springcacheService
 
     def index = {
+        println "test"
         chain(controller: 'scrumOS', action: 'index', params: params)
     }
 
-    //@Cacheable('activitiesFeed')
+    @Cacheable(cache = 'feedCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
     def feed = {
         def currentProduct = Product.get(params.product)
 
@@ -85,13 +89,13 @@ class ProjectController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('owner() or scrumMaster()')
     def edit = {
         def currentProduct = Product.get(params.product)
         render(template: "dialogs/edit", model: [id: id, product: currentProduct])
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('owner() or scrumMaster()')
     def editPractices = {
         def currentProduct = Product.get(params.product)
         def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
@@ -103,7 +107,8 @@ class ProjectController {
 
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('owner() or scrumMaster()')
+    @CacheFlush(caches = 'projectCache', cacheResolver = 'projectCacheResolver')
     def update = {
 
         def msg
@@ -113,19 +118,6 @@ class ProjectController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
         }
-
-        def reloadsprintPlan = false
-        def reloadProductBacklog = false
-        if (params.productd.preferences) {
-            if (currentProduct.preferences.displayUrgentTasks != params.productd.preferences.displayUrgentTasks || currentProduct.preferences.displayRecurrentTasks != params.productd.preferences?.displayRecurrentTasks) {
-                reloadsprintPlan = true
-            }
-
-            if (currentProduct.planningPokerGameType != params.productd.planningPokerGameType) {
-                reloadProductBacklog = true
-            }
-        }
-
         //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
         currentProduct.properties = params.productd
         if (params.productd.preferences?.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
@@ -142,7 +134,7 @@ class ProjectController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: currentProduct)]] as JSON)
             return
         }
-        render(status: 200, contentType: 'application/json', text: [name: currentProduct.name, notice: message(code: 'is.product.updated')] as JSON)
+        render(status: 200, contentType: 'application/json', text:currentProduct as JSON)
     }
 
     @Secured('isAuthenticated()')
@@ -168,7 +160,14 @@ class ProjectController {
             privateOption = false
         }
 
-        render(template: "dialogs/wizard", model: [id: id, product: product, estimationSuitSelect: estimationSuitSelect, privateOption: privateOption])
+        render(template: "dialogs/wizard", model: [id: id,
+                                                    product: product,
+                                                    estimationSuitSelect: estimationSuitSelect,
+                                                    privateOption: privateOption,
+                                                    user:springSecurityService.currentUser,
+                                                    rolesLabels: BundleUtils.roles.values().collect {v -> message(code: v)},
+                                                    rolesKeys: BundleUtils.roles.keySet().asList()]
+        )
     }
 
     @Secured('isAuthenticated()')
@@ -208,28 +207,52 @@ class ProjectController {
         def team
         Product.withTransaction { status ->
             try {
-                if (params.int('team.newTeam') == 1) {
-                    team = new Team()
-                    team.preferences = new TeamPreferences()
-                    team.properties = params.team
-                    teamService.save team, params.userid, springSecurityService.principal?.id
+                team = new Team()
+                team.name = params.product.name+" team"
+                team.preferences = new TeamPreferences()
+                team.properties = params.team
+
+                def members  = []
+                def productOwners = []
+                def scrumMasters  = []
+                def stakeHolders = []
+                params.members?.each{ k,v ->
+                    switch(params.role."${k}"){
+                        case Authority.MEMBER.toString():
+                            members.add(v.toLong())
+                            break;
+                        case Authority.SCRUMMASTER.toString():
+                            scrumMasters.add(v.toLong())
+                            break;
+                        case Authority.PRODUCTOWNER.toString():
+                            productOwners.add(v.toLong())
+                            break;
+                        case Authority.STAKEHOLER.toString():
+                            stakeHolders.add(v.toLong())
+                            break;
+                        case Authority.PO_AND_SM.toString():
+                            scrumMasters.add(v.toLong())
+                            productOwners.add(v.toLong())
+                            break;
+                    }
                 }
 
-                productService.save(product, (User) springSecurityService.currentUser)
-
-                if (params.int('team.newTeam') == 1)
-                    productService.addTeamsToProduct product, [team.id]
-                else {
-                    productService.addTeamsToProduct(product, params.teamid in String ? [params.teamid] : params.teamid)
+                if (!productOwners || (!scrumMasters && !members)){
+                    throw new RuntimeException('is.error.')
                 }
+
+                teamService.save team, members, scrumMasters
+                productService.save(product, productOwners, stakeHolders)
+                productService.addTeamsToProduct product, [team.id]
 
                 def release = new Release(name: "R1",
                         startDate: product.startDate,
+                        vision: params.vision,
                         endDate: product.endDate)
                 releaseService.save(release, product)
                 sprintService.generateSprints(release, params.firstSprint)
-                flash.message = "is.product.saved.redirect"
-                render(text: jq.jquery(null, "document.location='${createLink(controller: 'scrumOS', params: [product: product.pkey])}#project';"))
+                render(status:200, contentType: 'application/json', text:product as JSON)
+
             } catch (IllegalStateException ise) {
                 render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
                 status.setRollbackOnly()
@@ -241,13 +264,6 @@ class ProjectController {
                 return
             }
         }
-    }
-
-    def projectDetails = {
-        if (!params.currentProduct) {
-            params.currentProduct = Product.get(params.product)
-        }
-        render(template: "dialogs/details", model: [id: id, currentProduct: params.currentProduct])
     }
 
     def dashboard = {
@@ -269,6 +285,7 @@ class ProjectController {
                 ]
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
     def productCumulativeFlowChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.cumulativeFlowValues(currentProduct)
@@ -289,6 +306,7 @@ class ProjectController {
         }
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
     def productVelocityCapacityChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productVelocityCapacityValues(currentProduct)
@@ -305,6 +323,7 @@ class ProjectController {
         }
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
     def productBurnupChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productBurnupValues(currentProduct)
@@ -321,6 +340,7 @@ class ProjectController {
         }
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
     def productBurndownChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productBurndownValues(currentProduct)
@@ -338,6 +358,7 @@ class ProjectController {
         }
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
     def productVelocityChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productVelocityValues(currentProduct)
@@ -355,6 +376,7 @@ class ProjectController {
         }
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
     def productParkingLotChart = {
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)
@@ -399,7 +421,7 @@ class ProjectController {
                         session.progress = new ProgressSupport()
                         session.progress.updateProgress(0, message(code: 'is.export.start'))
                         response.setHeader "Content-disposition", "attachment; filename=${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}.xml"
-                        render(contentType: 'text/xml', template: '/export/xml/product', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+                        render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
                         session.progress?.completeProgress(message(code: 'is.export.complete'))
                     } catch (Exception e) {
                         if (log.debugEnabled) e.printStackTrace()
@@ -411,7 +433,7 @@ class ProjectController {
             }
             xml {
                 def product = Product.get(params.product)
-                render(contentType: 'text/xml', template: '/export/xml/product', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+                render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
             }
         }
     }
@@ -553,7 +575,7 @@ class ProjectController {
                 return
             }
             def link = g.createLink(action: 'index', controller: 'scrumOS', params: [product: session.tmpP.pkey])
-            render(text: jq.jquery(null, "\$('#dialog').dialog('close');" + is.notice(text: message(code: "is.dialog.importProject.success"), after_close: "function(){document.location='${link}#project';}", delay: '500')))
+            render(status:200, contentType:'application/json', text:session.tmpP as JSON)
             session.tmpP = null
         }
     }
@@ -715,9 +737,10 @@ class ProjectController {
         assert params.product
 
         def product = Product.get(params.product)
+        def id = product.id
         try {
             productService.delete(product)
-            render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
+            render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
         } catch (RuntimeException re) {
             if (log.debugEnabled) re.printStackTrace()
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
@@ -738,6 +761,7 @@ class ProjectController {
     }
 
     @Secured('permitAll')
+    @Cacheable(cache = 'applicationCache', keyGenerator = 'localeKeyGenerator')
     def browse = {
         render template: 'dialogs/browse'
     }
@@ -762,6 +786,7 @@ class ProjectController {
     }
 
     @Secured('permitAll')
+    @Cacheable(cache = 'projectCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
     def browseDetails = {
         def product = Product.get(params.id)
 

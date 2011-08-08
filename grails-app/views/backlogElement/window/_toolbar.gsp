@@ -21,12 +21,11 @@
 --}%
 
 <%@ page import="org.icescrum.core.domain.Story;" %>
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
 
 <is:iconButton
         action="editStory"
         controller="backlogElement"
-        rendered="${productOwner  || story.creator.id == user?.id}"
+        rendered="${request.productOwner  || story.creator.id == user?.id}"
         id="${story.id}"
         params="[product:params.product]"
         title="${message(code:'is.ui.backlogelement.toolbar.update')}"
@@ -35,14 +34,14 @@
     ${message(code: 'is.ui.backlogelement.toolbar.update')}
 </is:iconButton>
 
-<is:separatorSmall rendered="${productOwner  || story.creator.id == user?.id}"/>
+<is:separatorSmall rendered="${request.productOwner  || story.creator.id == user?.id}"/>
 
 %{--View--}%
 <is:panelButton
         id="accept-display"
         arrow="true"
         text="${message(code:'is.ui.backlogelement.toolbar.accept')}"
-        rendered="${productOwner && story.state == Story.STATE_SUGGESTED}">
+        rendered="${request.productOwner && story.state == Story.STATE_SUGGESTED}">
     <ul>
         <li class="first">
             <is:link
@@ -90,13 +89,13 @@
     </ul>
 </is:panelButton>
 
-<is:separatorSmall rendered="${productOwner && story.state == Story.STATE_SUGGESTED}"/>
+<is:separatorSmall rendered="${request.productOwner && story.state == Story.STATE_SUGGESTED}"/>
 
 <is:iconButton
         action="delete"
         controller="story"
         id="${params.id}"
-        rendered="${productOwner}"
+        rendered="${request.productOwner}"
         title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
         alt="${message(code:'is.ui.backlogelement.toolbar.delete')}"
         onSuccess="jQuery.icescrum.openWindow('${story.state > Story.STATE_SUGGESTED ? 'backlog' : 'sandbox'}');
@@ -105,7 +104,7 @@
     ${message(code: 'is.ui.backlogelement.toolbar.delete')}
 </is:iconButton>
 
-<is:separator rendered="${productOwner}"/>
+<is:separator rendered="${request.productOwner}"/>
 
 <is:iconButton
         onclick="jQuery.icescrum.openCommentTab('#comments');"

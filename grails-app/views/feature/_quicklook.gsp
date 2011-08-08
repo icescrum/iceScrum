@@ -85,7 +85,7 @@
                     typeNumber="${feature.type}"
                     typeTitle="${is.bundle(bundle:'featureTypes',value:feature.type)}"
                     rect="true"
-                    sortable='[restrictOnAccess:"productOwner()"]'>
+                    sortable='[rendered:request.productOwner]'>
             </is:postit>
             <g:if test="${feature.totalAttachments}">
                 <div>

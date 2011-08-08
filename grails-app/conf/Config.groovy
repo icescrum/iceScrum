@@ -29,7 +29,6 @@ import org.apache.log4j.PatternLayout
  Public URL
 */
 grails.serverURL = "http://localhost:8080/${appName}"
-grails.tomcat.nio = true
 
 /*
 Administration section
@@ -53,14 +52,10 @@ icescrum.project.creation.enable = true
 icescrum.project.private.enable = true
 
 /*
-Team administration section
- */
-icescrum.team.creation.enable = true
-
-/*
   IceScrum css theme
  */
 icescrum.theme = 'is'
+icescrum.gravatar = false
 
 /*
   IceScrum base dir
@@ -160,6 +155,7 @@ environments {
     development {
         icescrum.debug.enable = true
         grails.entryPoints.debug = false
+        grails.tomcat.nio = true
     }
     production {
         grails.config.locations = ["classpath:config.properties"]
@@ -202,6 +198,8 @@ log4j = {
         debug 'grails.app.domain.org.icescrum'
         debug 'grails.app.org.icescrum'
         debug 'org.icescrum.atmosphere'
+        debug 'org.icescrum.cache'
+        debug 'grails.plugin.springcache'
     }
 
     appenders {
@@ -230,15 +228,16 @@ log4j = {
 
 springcache {
     defaults {
-        timeToLive = 600
+        //eternal = true
+        timeToLive = 432000
+        timeToIdle = 0
     }
     caches {
         activitiesFeed {
             timeToLive = 120
         }
-        postitsCache {
-            timeToLive = 3600
-            timeToIdle = 3600
+        applicationCache {
+            eternal = true
         }
     }
 }

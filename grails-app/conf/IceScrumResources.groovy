@@ -65,13 +65,13 @@ modules = {
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.progress.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.scrollbar.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.multiFilesUpload.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.push.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.functions.js'], bundle: 'icescrum'
     }
 
     'jqplot' {
         dependsOn 'jquery'
         resource url: [dir: "js/jquery", file: 'excanvas.min.js'], wrapper: { s -> "<!--[if IE]>$s<![endif]-->" }, bundle: 'jquery-plugins'
-        resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'], bundle: 'jquery-plugins'
+        resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.barRenderer.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.categoryAxisRenderer.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.canvasTextRenderer.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
@@ -101,7 +101,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.cookie.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.input.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.table.js'], bundle: 'jquery-plugins'
-        resource url: [dir: 'js/jquery', file: 'jquery.jeditable.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.jeditable.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.selectmenu.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'jquery-plugins'

@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.security.Authority; org.icescrum.core.utils.BundleUtils" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -22,7 +23,7 @@
 <is:wizard next="is.dialog.wizard.next" cancel="is.button.cancel" previous="is.dialog.wizard.previous"
            submit="is.dialog.wizard.submit" id="project-wizard" controller="project"
            before="\$('#choose-select-is-team-teams').empty();\$('#choose-select-is-team-members').empty();"
-           onSuccess="\$('#dialog').dialog('close');" update="dialog" action="save">
+           onSuccess="jQuery('#dialog').dialog('close'); jQuery.icescrum.renderNotice('${message(code:'is.product.saved.redirect')}'); jQuery.event.trigger('redirect_product',data);" update="dialog" action="save">
 
     <is:fieldset title="is.dialog.wizard.section.project" description="is.dialog.wizard.section.project.description">
         <is:fieldInput for="productname" label="is.product.name">
@@ -32,47 +33,51 @@
             <is:input id="productpkey" typed="[type:'alphanumeric',onlyletters:true,allcaps:true]" maxlength="10"
                       name="product.pkey" value="${product.pkey}"/>
         </is:fieldInput>
-        <is:fieldArea for="productdescription" label="is.product.description" optional="true">
-            <is:area rich="[preview:true,width:335]"
-                     id="productdescription"
-                     name="product.description"/>
-        </is:fieldArea>
-        <is:fieldDatePicker noborder="${privateOption?'true':''}" for="productstartDate"
-                            label="is.dialog.wizard.project.startDate">
-            <is:datePicker id="productstartDate" defaultDate="${product.startDate}"
-                           onSelect="jQuery.icescrum.updateWizardDate(this);" name="product.startDate" mode="read-input"
-                           changeMonth="true" changeYear="true"/>
-        </is:fieldDatePicker>
         <is:fieldRadio rendered="${!privateOption}" for="product.preferences.hidden"
-                       label="is.product.preferences.project.hidden" noborder="true">
+                       label="is.product.preferences.project.hidden">
             <is:radio id="product.preferences.hidden" name="product.preferences.hidden"
                       value="${product.preferences.hidden}"/>
         </is:fieldRadio>
+        <is:fieldArea for="productdescription" label="is.product.description" noborder="true" optional="true">
+            <is:area rich="[preview:true,width:335,height:200]" id="productdescription" name="product.description"/>
+        </is:fieldArea>
     </is:fieldset>
 
-    <is:fieldset title="is.dialog.wizard.section.team" description="is.dialog.wizard.section.team.description">
-
-        <is:fieldRadio for="team.newTeam" label="is.product.team.new">
-            <is:radio id="team.newTeam" name="team.newTeam" value="${true}"
-                      onClick="if(this.value == 1){\$('#newTeamFieldSet').show();\$('#existingTeamFieldSet').hide();}else{\$('#newTeamFieldSet').hide();\$('#existingTeamFieldSet').show();}"/>
-        </is:fieldRadio>
-        <span id="newTeamFieldSet">
-            <is:fieldInput for="team.name" label="is.team.name">
-                <is:input id="team.name" name="team.name" value="${product.name} Team"/>
-            </is:fieldInput>
-            <is:fieldArea for="team.description" optional="true" label="is.team.description" noborder="true">
-                <is:area rich="[preview:true,width:335]"
-                         id="teamdescription"
-                         name="team.description"/>
-            </is:fieldArea>
-
-            <is:autoCompleteChoose elementLabel="is.ui.autocompletechoose.users" controller="team" action="findMembers"
-                                   minLength="0" name="is.team.members" resultId="userid"/>
-        </span>
-        <span id="existingTeamFieldSet" style="display:none">
-            <is:autoCompleteChoose elementLabel="is.ui.autocompletechoose.teams" controller="team" action="findTeams"
-                                   minLength="0" name="is.team.teams" resultId="teamid"/>
-        </span>
+    <is:fieldset title="is.dialog.wizard.section.team" description="is.dialog.wizard.section.team.description" id="member-autocomplete">
+        <is:fieldInput for="team.members" label="Find members" class="members">
+            <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
+            <is:autoCompleteSkin
+                        controller="user"
+                        action="findUsers"
+                        cache="true"
+                        filter="jQuery('#member'+object.id).length == 0 ? true : false"
+                        id="members"
+                        name="team.members"
+                        appendTo="#member-autocomplete"
+                        onSelect="jQuery('.members-list').jqoteapp('#user-tmpl', ui.item)"
+                        renderItem="${link}"
+                        minLength="2"/>
+        </is:fieldInput>
+        <div class="members-list">
+            <span class="member ui-corner-all" id='member${user.id}'>
+                <span class="button-s">
+                    <span style="display: block;" class="button-action button-delete" onclick="jQuery(this).closest('.member').remove();">del</span>
+                </span>
+                <img src="${is.avatar([user:user,link:true])}" height="48" class="avatar" width="48"/>
+                <span class="fullname">${is.truncated(value:user.firstName+" "+user.lastName,size:17)}</span>
+                <span class="activity">${user.preferences.activity?:'&nbsp;'}</span>
+                <input type="hidden" name="members.${user.id}" value="${user.id}"/>
+                 <is:select container="#member${user.id}"
+                            width="110"
+                            maxHeight="200"
+                            id="${new Date().time}"
+                            styleSelect="dropdown"
+                            from="${BundleUtils.roles.values().collect {v -> message(code: v)}}"
+                            keys="${BundleUtils.roles.keySet().asList()}"
+                            name="role.${user.id}"
+                            value="${Authority.PO_AND_SM}"/>
+            </span>
+        </div>
     </is:fieldset>
 
     <is:fieldset title="is.dialog.wizard.section.options" description="is.dialog.wizard.section.options.description">
@@ -128,23 +133,40 @@
     </is:fieldset>
 
     <is:fieldset title="is.dialog.wizard.section.starting" description="is.dialog.wizard.section.starting.description">
+
+        <is:fieldDatePicker noborder="${privateOption?'true':''}" for="productstartDate"
+                            label="is.dialog.wizard.project.startDate">
+            <is:datePicker id="productstartDate" defaultDate="${product.startDate}"
+                           onSelect="jQuery.icescrum.updateWizardDate(this);" name="product.startDate" mode="read-input"
+                           changeMonth="true" changeYear="true"/>
+        </is:fieldDatePicker>
+
+        <is:fieldDatePicker for="firstSprint" label="is.dialog.wizard.firstSprint">
+            <is:datePicker id="firstSprint" name="firstSprint" defaultDate="${product.startDate}"
+                           minDate="${product.startDate}" maxDate="${product.endDate - 1}" mode="read-input"
+                           changeMonth="true" changeYear="true"/>
+        </is:fieldDatePicker>
+
+         <is:fieldInput for="productpreferencesestimatedSprintsDuration"
+                       label="is.product.preferences.planification.estimatedSprintsDuration">
+            <is:input id="productpreferencesestimatedSprintsDuration"
+                      name="product.preferences.estimatedSprintsDuration" typed="[type:'numeric']"
+                      value="${product.preferences.estimatedSprintsDuration}"/>
+        </is:fieldInput>
+
         <is:fieldDatePicker for="productendDate" label="is.dialog.wizard.project.endDate">
             <is:datePicker id="productendDate" name="product.endDate" defaultDate="${product.endDate}"
                            minDate="${product.startDate}" onSelect="
       \$('#datepicker-firstSprint').datepicker('option', {maxDate:new Date(new Date(dateText).getTime() - 1*24*60*60*1000)});"
                            mode="read-input" changeMonth="true" changeYear="true"/>
         </is:fieldDatePicker>
-        <is:fieldDatePicker for="firstSprint" label="is.dialog.wizard.firstSprint">
-            <is:datePicker id="firstSprint" name="firstSprint" defaultDate="${product.startDate}"
-                           minDate="${product.startDate}" maxDate="${product.endDate - 1}" mode="read-input"
-                           changeMonth="true" changeYear="true"/>
-        </is:fieldDatePicker>
-        <is:fieldInput for="productpreferencesestimatedSprintsDuration"
-                       label="is.product.preferences.planification.estimatedSprintsDuration" noborder="true">
-            <is:input id="productpreferencesestimatedSprintsDuration"
-                      name="product.preferences.estimatedSprintsDuration" typed="[type:'numeric']"
-                      value="${product.preferences.estimatedSprintsDuration}"/>
-        </is:fieldInput>
+
+        <is:fieldArea for="vision" label="is.release.vision" noborder="true" optional="true">
+            <is:area rich="[preview:true,width:335,height:200]"
+                     id="vision"
+                     name="vision"/>
+        </is:fieldArea>
+
     </is:fieldset>
 
 </is:wizard>

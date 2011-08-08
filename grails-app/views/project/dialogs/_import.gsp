@@ -140,7 +140,3 @@
         jQuery('.ui-dialog-buttonpane button:eq(1)').show();
       </jq:jquery>
     </g:else>
-
-    <jq:jquery>
-      <is:renderNotice />
-    </jq:jquery>

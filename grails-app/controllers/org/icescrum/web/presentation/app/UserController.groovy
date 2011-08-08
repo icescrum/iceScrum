@@ -35,6 +35,8 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 class UserController {
 
@@ -66,6 +68,7 @@ class UserController {
 
 
     @Secured('isAuthenticated()')
+    @Cacheable(cache = 'profileCache', cacheResolver = 'userCacheResolver')
     def openProfile = {
         render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)], id: id)
     }
@@ -101,6 +104,7 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
+    @CacheFlush(caches = 'profileCache', cacheResolver = 'userCacheResolver')
     def update = {
         def msg
         if (params.long('user.id') != springSecurityService.principal.id) {
@@ -131,22 +135,26 @@ class UserController {
         else
             params.user.password = currentUser.password
 
+        def gravatar = grailsApplication.config.icescrum.gravatar
+
         File avatar = null
         def scale = true
-        if (params.avatar) {
-            "${params.avatar}"?.split(":")?.each {
-                if (session.uploadedFiles[it[0]])
-                    avatar = new File((String) session.uploadedFiles[it[0]])
+        if (!gravatar){
+            if (params.avatar) {
+                "${params.avatar}"?.split(":")?.each {
+                    if (session.uploadedFiles[it[0]])
+                        avatar = new File((String) session.uploadedFiles[it[0]])
+                }
+            }
+            if (params."avatar-selected") {
+                def file = grailsApplication.parentContext.getResource(is.currentThemeImage().toString() + 'avatars/' + params."avatar-selected").file
+                if (file.exists()) {
+                    avatar = file
+                    scale = false
+                }
             }
         }
 
-        if (params."avatar-selected") {
-            def file = grailsApplication.parentContext.getResource(is.currentThemeImage().toString() + 'avatars/' + params."avatar-selected").file
-            if (file.exists()) {
-                avatar = file
-                scale = false
-            }
-        }
         def forceRefresh = false
         if (params.user.preferences.language != currentUser.preferences.language) {
             forceRefresh = true
@@ -154,7 +162,7 @@ class UserController {
         params.remove('user.username')
         currentUser.properties = params.user
         try {
-            userService.update(currentUser, pwd, avatar?.canonicalPath, scale)
+            userService.update(currentUser, pwd, (gravatar ? null : avatar?.canonicalPath), scale)
         } catch (IllegalStateException ise) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
             return
@@ -174,13 +182,11 @@ class UserController {
 
         def name = currentUser.firstName + ' ' + currentUser.lastName
 
-        entryPoints(id + '-' + 'openProfile', [user: currentUser])
-
         render(status: 200, contentType: 'application/json',
                 text: [name: name.encodeAsHTML().encodeAsJavaScript(),
                         forceRefresh: forceRefresh,
                         refreshLink: link ?: null,
-                        updateAvatar: createLink(action: 'avatar', id: currentUser.id),
+                        updateAvatar: gravatar ?: createLink(action: 'avatar', id: currentUser.id),
                         userid: currentUser.id,
                         notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
                 ] as JSON)
@@ -218,12 +224,12 @@ class UserController {
         def pId
         tasks = tasks.findAll {
             pId = it.backlog.parentRelease.parentProduct.id
-            securityService.stakeHolder(pId, currentAuth) || securityService.inProduct(pId, currentAuth)
+            securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
         }
 
         stories = stories.findAll {
             pId = it.backlog.id
-            securityService.stakeHolder(pId, currentAuth) || securityService.inProduct(pId, currentAuth)
+            securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
         }
 
         //Refactor using SpringSecurity ACL on all domains
@@ -261,13 +267,17 @@ class UserController {
     def avatar = {
         def user = User.load(params.id)
         if (user) {
-            def avat = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
-            if (!avat.exists()) {
-                avat = grailsApplication.parentContext.getResource("/${is.currentThemeImage()}avatars/avatar.png").file
+            if (grailsApplication.config.icescrum.gravatar){
+
+            }else{
+                def avat = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
+                if (!avat.exists()) {
+                    avat = grailsApplication.parentContext.getResource("/${is.currentThemeImage()}avatars/avatar.png").file
+                }
+                OutputStream out = response.getOutputStream()
+                out.write(avat.bytes)
+                out.close()
             }
-            OutputStream out = response.getOutputStream()
-            out.write(avat.bytes)
-            out.close()
         }
         render(status: 404)
     }
@@ -312,6 +322,7 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
+    @CacheFlush(caches = 'userMenuCache', cacheResolver = 'userProjectCacheResolver')
     def changeMenuOrder = {
         if (!params.id && !params.position) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.preferences.error.menuBar')]] as JSON)
@@ -328,5 +339,20 @@ class UserController {
             if (log.debugEnabled) e.printStackTrace()
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.preferences.error.menuBar')]] as JSON)
         }
+    }
+
+    @Secured('isAuthenticated()')
+    def findUsers = {
+        def users
+        def results = []
+        users = org.icescrum.core.domain.User.findUsersLike(params.term ?: '',false).list()
+        users?.each {
+            results << [id: it.id,
+                        name: "$it.firstName $it.lastName",
+                        avatar: is.avatar([user:it,link:true]),
+                        activity: "${it.preferences.activity ?: ''}"]
+        }
+
+        render(results as JSON)
     }
 }

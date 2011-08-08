@@ -22,8 +22,7 @@
 --}%
 <is:tableView>
 
-    <g:set var="poOrSm" value="${sec.access(expression:'productOwner() or scrumMaster()',{true})}"/>
-    <g:set var="inProduct" value="${sec.access(expression:'inProduct()',{true})}"/>
+    <g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
 
     <is:table id="tasks-table">
 
@@ -45,7 +44,7 @@
                 rendered="${displayRecurrentTasks}"
                 editable="[controller:id,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
             <is:tableGroupHeader>
-                <is:menu rendered="${inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
+                <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                          class="dropmenu-action" id="menu-recurrent" contentView="window/recurrentOrUrgentTask"
                          params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent',id:id]"/>
                 <strong>${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</strong>
@@ -55,7 +54,7 @@
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
-                    <is:menu rendered="${inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
+                    <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                              class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu"
                              params="[id:id, task:task, story:story, user:user]"/>
                     <g:set var="attachment" value="${task.totalAttachments}"/>
@@ -89,7 +88,7 @@
                 rendered="${displayUrgentTasks}"
                 editable="[controller:id,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
             <is:tableGroupHeader>
-                <is:menu rendered="${inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
+                <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                          class="dropmenu-action" id="menu-urgent" contentView="window/recurrentOrUrgentTask"
                          params="[sprint:sprint,type:'urgent',id:id]"/>
                 <strong>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</strong>
@@ -99,7 +98,7 @@
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
-                    <is:menu rendered="${inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
+                    <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                              class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu"
                              params="[id:id, task:task, story:story, user:user]"/>
                     <g:set var="attachment" value="${task.totalAttachments}"/>
@@ -133,7 +132,7 @@
                     elementId="${story.id}"
                     editable="[controller:id,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
                 <is:tableGroupHeader>
-                    <is:menu rendered="${inProduct}" yoffset="4" class="dropmenu-action" id="${story.id}"
+                    <is:menu rendered="${request.inProduct}" yoffset="4" class="dropmenu-action" id="${story.id}"
                              contentView="/story/menu" params="[id:id,story:story,nextSprintExist:nextSprintExist]"/>
                     <is:scrumLink id="${story.id}" controller="backlogElement">
                         ${story.id}
@@ -145,7 +144,7 @@
                               var="task" elemID="id">
                     <is:tableColumn class="table-cell-checkbox">
                         <g:checkBox name="check-${task.id}"/>
-                        <is:menu rendered="${inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
+                        <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                                  class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu"
                                  params="[id:id, task:task, story:story, user:user]"/>
                         <g:set var="attachment" value="${task.totalAttachments}"/>

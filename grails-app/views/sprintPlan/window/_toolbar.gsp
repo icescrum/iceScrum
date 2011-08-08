@@ -22,8 +22,8 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Sprint;" %>
-<g:set var="inTeam" value="${sec.access([expression:'teamMember() or productOwner() or scrumMaster()'], {true})}"/>
-<g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
+<g:set var="inTeam" value="${request.teamMember || request.scrumMaster || request.productOwner}"/>
+<g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
 
 <g:if test="${sprint?.id}">
 %{--Add button--}%
@@ -49,7 +49,7 @@
         icon="delete"
         class="close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}"
         rendered="${inTeam && sprint.state != Sprint.STATE_DONE}"
-        onclick="jQuery.icescrum.selectableAction('task/delete',null,null,function(data){jQuery.event.trigger('remove_task',[data]); jQuery.icescrum.renderNotice('${message(code:'is.task.deleted')}'); });"
+        onclick="jQuery.icescrum.selectableAction('task/delete',null,null,function(data){ jQuery.event.trigger('remove_task',[data]); jQuery.icescrum.renderNotice('${message(code:'is.task.deleted')}'); });"
         history='false'
         shortcut="[key:'del',scope:id]"
         disabled="true"

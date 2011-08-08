@@ -33,6 +33,7 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
+import grails.plugin.springcache.annotations.Cacheable
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class ReleasePlanController {
@@ -119,6 +120,10 @@ class ReleasePlanController {
         }
         def sprints = release?.sprints?.asList()
         def activeSprint = release?.sprints?.find { it.state == Sprint.STATE_INPROGRESS }
+
+        if (!activeSprint){
+             activeSprint = release?.sprints?.find { it.activable }
+        }
 
         def suiteSelect = ''
         def currentSuite = PlanningPokerGame.getInteger(release.parentProduct.planningPokerGameType)
@@ -340,6 +345,7 @@ class ReleasePlanController {
         }
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeCacheResolver')
     def releaseBurndownChart = {
         if (!params.id) {
             def msg = message(code: 'is.release.error.not.exist')
@@ -368,6 +374,7 @@ class ReleasePlanController {
         }
     }
 
+    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeCacheResolver')
     def releaseParkingLotChart = {
         if (!params.id) {
             def msg = message(code: 'is.release.error.not.exist')

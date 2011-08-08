@@ -72,7 +72,7 @@ class SprintPlanController {
         def sprintsName = []
         def sprintsId = []
         currentProduct.releases?.each {
-            sprintsName.addAll(it.sprints.collect {v -> "R${it.orderNumber}S${v.orderNumber}"})
+            sprintsName.addAll(it.sprints.collect {v -> "${it.name} - Sprint ${v.orderNumber}"})
             sprintsId.addAll(it.sprints.id)
         }
         render(template: 'window/titleBarContent',
@@ -174,7 +174,7 @@ class SprintPlanController {
 
     def updateTable = {
 
-        def task = Task.get(params.long('task.id'))
+        def task = Task.getInProduct(params.long('product'),params.long('task.id'))
         if (!task || task.backlog?.parentRelease?.parentProduct?.id != params.long('product')) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
             return
@@ -229,10 +229,6 @@ class SprintPlanController {
         }
     }
 
-
-
-
-
     def add = {
         def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!sprint) {
@@ -263,14 +259,13 @@ class SprintPlanController {
         ])
     }
 
-
     def edit = {
         if (!params.subid) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
             return
         }
 
-        def task = Task.get(params.long('subid'))
+        def task = Task.getInProduct(params.long('product'),params.long('subid'))
         if (!task || task.backlog?.parentRelease?.parentProduct?.id != params.long('product')) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
             return
@@ -304,7 +299,6 @@ class SprintPlanController {
     def editStory = {
         forward(action: 'edit', controller: 'story', params: [referrer: id, id: params.id, product: params.product])
     }
-
 
     def doneDefinition = {
         if (!params.id) {
@@ -440,6 +434,7 @@ class SprintPlanController {
         }
     }
 
+    @Cacheable(cache = "sprintChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeKeyGenerator')
     def sprintBurndownHoursChart = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -466,6 +461,7 @@ class SprintPlanController {
         }
     }
 
+    @Cacheable(cache = "sprintChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeKeyGenerator')
     def sprintBurnupTasksChart = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -492,6 +488,7 @@ class SprintPlanController {
         }
     }
 
+    @Cacheable(cache = "sprintChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeKeyGenerator')
     def sprintBurnupStoriesChart = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')

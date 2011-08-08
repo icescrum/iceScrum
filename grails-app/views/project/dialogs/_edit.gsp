@@ -30,29 +30,16 @@
     <is:fieldInput for="productkey" label="is.dialog.project.properties.pkey">
       <is:input typed="[type:'alphanumeric',onlyletters:true,allcaps:true]" id="productkey" name="productd.pkey" value="${product.pkey}"/>
     </is:fieldInput>
-    <is:fieldArea for="productdescription" label="is.product.description" noborder="true">
+    <is:fieldArea for="productdescription" label="is.product.description">
       <is:area
               rich="[preview:true,width:330]"
               id="productdescription"
               name="productd.description"
               value="${product.description}"/>
     </is:fieldArea>
-  </is:fieldset>
-
-  <is:fieldset nolegend="true" title="is.dialog.project.permissions.title">
-    <is:accordion id="preferences" autoHeight="false">
-      <is:accordionSection title="is.dialog.project.permissions.title">
-        <is:fieldRadio rendered="${!privateOption}" for="productpreferenceshidden" label="is.product.preferences.project.hidden">
-          <is:radio id="productpreferenceshidden" name="productd.preferences.hidden" value="${product.preferences.hidden}"/>
-        </is:fieldRadio>
-        <is:fieldRadio for="productpreferencesnewTeams" label="is.product.preferences.project.newTeams">
-          <is:radio id="productpreferencesnewTeams" name="productd.preferences.newTeams" value="${product.preferences.newTeams}"/>
-        </is:fieldRadio>
-        <is:fieldRadio for="productpreferenceslockPo" noborder="true" label="is.product.preferences.project.lockPo">
-          <is:radio id="productpreferenceslockPo" name="productd.preferences.lockPo" value="${product.preferences.lockPo}"/>
-        </is:fieldRadio>
-      </is:accordionSection>
-    </is:accordion>
+    <is:fieldRadio rendered="${!privateOption}" for="productpreferenceshidden" label="is.product.preferences.project.hidden" noborder="true">
+        <is:radio id="productpreferenceshidden" name="productd.preferences.hidden" value="${product.preferences.hidden}"/>
+    </is:fieldRadio>
   </is:fieldset>
 </form>
 <is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-project" listenOn="'#form-project input'"/>

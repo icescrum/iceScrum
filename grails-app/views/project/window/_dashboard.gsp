@@ -28,7 +28,7 @@
             <entry:point id="${id}-${actionName}-top-left" model="[sprint:sprint,release:release,product:product]"/>
             <is:panel id="panel-chart">
                 <is:panelTitle>
-                    <g:if test="${sprint && sec.access(expression:'inProduct()',{true})}">
+                    <g:if test="${sprint && request.inProduct}">
                         <is:link class="right" id="chart-sprintBurnupTasksChart" disabled="true"
                                  onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupTasksChart/${sprint?.id}',true);">${message(code: 'is.ui.project.chart.option.tasks')}</is:link>
                         <span class="right">|</span>
@@ -125,45 +125,47 @@
 
         <div class="col2">
             <entry:point id="${id}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
-            <is:panel id="panel-activity">
-                <is:panelTitle>
-                    <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed"
-                            params="[product:product.pkey,lang:lang]">
-                        <span class='ico'></span>
-                    </g:link>
-                    <g:message code="is.ui.project.activity.title"/>
-                </is:panelTitle>
-                <g:if test="${activities.size() > 0}">
-                    <ul class="list-news">
-                        <g:each in="${activities}" var="a" status="i">
-                            <li ${(activities.size() == (i + 1)) ? 'class="last"' : ''}>
-                                <div class="news-item news-${a.code}">
-                                    <p>
-                                        <is:scrumLink controller="user" action='profile'
-                                                      id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
-                                        <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.story"/>
-                                        <g:if test="${a.code != Activity.CODE_DELETE}">
-                                            <is:scrumLink controller="backlogElement" id="${a.cachedId}"
-                                                          params="${a.code == 'comment' ? ['tab':'comments'] : []}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink>
-                                        </g:if>
-                                        <g:else>
-                                            <strong>${a.cachedLabel.encodeAsHTML()}</strong>
-                                        </g:else>
-                                    </p>
+            <is:cache cache="feedCache" role="false" cacheResolver="projectCacheResolver">
+                <is:panel id="panel-activity">
+                    <is:panelTitle>
+                        <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed"
+                                params="[product:product.pkey,lang:lang]">
+                            <span class='ico'></span>
+                        </g:link>
+                        <g:message code="is.ui.project.activity.title"/>
+                    </is:panelTitle>
+                    <g:if test="${activities.size() > 0}">
+                        <ul class="list-news">
+                            <g:each in="${activities}" var="a" status="i">
+                                <li ${(activities.size() == (i + 1)) ? 'class="last"' : ''}>
+                                    <div class="news-item news-${a.code}">
+                                        <p>
+                                            <is:scrumLink controller="user" action='profile'
+                                                          id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
+                                            <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.story"/>
+                                            <g:if test="${a.code != Activity.CODE_DELETE}">
+                                                <is:scrumLink controller="backlogElement" id="${a.cachedId}"
+                                                              params="${a.code == 'comment' ? ['tab':'comments'] : []}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink>
+                                            </g:if>
+                                            <g:else>
+                                                <strong>${a.cachedLabel.encodeAsHTML()}</strong>
+                                            </g:else>
+                                        </p>
 
-                                    <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"
-                                                     timeZone="${user?.preferences?.timezone?:null}"/></p>
-                                </div>
-                            </li>
-                        </g:each>
-                    </ul>
-                </g:if>
-                <g:else>
-                    <div class="panel-box-empty">
-                        <g:message code="is.fluxiable.no"/>
-                    </div>
-                </g:else>
-            </is:panel>
+                                        <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"
+                                                         timeZone="${user?.preferences?.timezone?:null}"/></p>
+                                    </div>
+                                </li>
+                            </g:each>
+                        </ul>
+                    </g:if>
+                    <g:else>
+                        <div class="panel-box-empty">
+                            <g:message code="is.fluxiable.no"/>
+                        </div>
+                    </g:else>
+                </is:panel>
+            </is:cache>
             <entry:point id="${id}-${actionName}-bottom-right"
                          model="[sprint:sprint,release:release,product:product,activities:activities]"/>
         </div>

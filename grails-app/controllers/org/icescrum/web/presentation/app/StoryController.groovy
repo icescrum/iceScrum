@@ -29,11 +29,12 @@ import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.icescrum.core.utils.BundleUtils
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Product
 import grails.converters.XML
-import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.User
+import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugin.springcache.annotations.Cacheable
 
 class StoryController {
 
@@ -49,6 +50,7 @@ class StoryController {
     ]
 
     @Secured('isAuthenticated()')
+    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def save = {
         def story = new Story(params.story as Map)
         if (params.int('displayTemplate') != 1) {
@@ -70,7 +72,7 @@ class StoryController {
         def product = Product.get(params.product)
 
         try {
-            storyService.save(story, product, user)
+            storyService.save(story, product, (User)user)
             this.manageAttachments(story)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
@@ -84,6 +86,7 @@ class StoryController {
         }
     }
 
+    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.story?.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -209,6 +212,7 @@ class StoryController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -307,6 +311,7 @@ class StoryController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def rank = {
 
         if (!params.id) {
@@ -338,6 +343,7 @@ class StoryController {
     }
 
     @Secured('teamMember() or scrumMaster()')
+    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def estimate = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -365,6 +371,7 @@ class StoryController {
     }
 
     @Secured('productOwner() or scrumMaster()')
+    @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def unPlan = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -406,6 +413,7 @@ class StoryController {
     }
 
     @Secured('productOwner() or scrumMaster()')
+    @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def plan = {
         if (!params.sprint?.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -458,6 +466,7 @@ class StoryController {
     }
 
     @Secured('isAuthenticated()')
+    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def associateFeature = {
         if (!params.feature || !params.story) {
             returnError(text:message(code: 'is.ui.backlog.associateFeature.error'))
@@ -483,6 +492,7 @@ class StoryController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def done = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -510,6 +520,7 @@ class StoryController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def unDone = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -538,6 +549,7 @@ class StoryController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def accept = {
         if (params.list('id').size() == 0) {
             returnError(text:message(code: 'is.ui.sandbox.menu.accept.error.no.selection'))
@@ -572,6 +584,7 @@ class StoryController {
     }
 
     @Secured('inProduct()')
+    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def copy = {
 
         if (params.list('id').size() == 0) {
@@ -592,6 +605,7 @@ class StoryController {
     }
 
     @Secured('inProduct()')
+    @Cacheable(cache = 'storyCache', cacheResolver = 'projectCacheResolver')
     def show = {
         if (request?.format == 'html'){
             render(status:404)
@@ -617,6 +631,7 @@ class StoryController {
     }
 
     @Secured('inProduct()')
+    @Cacheable(cache = 'storiesList', cacheResolver = 'projectCacheResolver')
     def list = {
 
         if (request?.format == 'html'){

@@ -39,8 +39,6 @@
         <is:tableHeader width="8%" name="${message(code:'is.story.date.accepted')}"/>
         <is:tableHeader width="8%" name="${message(code:'is.story.date.estimated')}"/>
 
-        <g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
-        <g:set var="inProduct" value="${sec.access([expression:'inProduct()'], {true})}"/>
 
         <is:tableRows in="${stories}" var="story" elemid="id">
             <is:tableColumn class="table-cell-checkbox">
@@ -64,21 +62,21 @@
                 </is:scrumLink>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',disabled:!productOwner,name:'rank',values:rankSelect]">${story.rank}</is:tableColumn>
+                    editable="[type:'selectui',id:'rank',disabled:!request.productOwner,name:'rank',values:rankSelect]">${story.rank}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'text',disabled:!productOwner,name:'name']">${story.name.encodeAsHTML()}</is:tableColumn>
+                    editable="[type:'text',disabled:!request.productOwner,name:'name']">${story.name.encodeAsHTML()}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'type',disabled:!productOwner,name:'type',values:typeSelect]"><is:bundle
+                    editable="[type:'selectui',id:'type',disabled:!request.productOwner,name:'type',values:typeSelect]"><is:bundle
                     bundle="storyTypes" value="${story.type}"/></is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'feature',disabled:!productOwner,detach:true,name:'feature.id',values:featureSelect]"><is:postitIcon
+                    editable="[type:'selectui',id:'feature',disabled:!request.productOwner,detach:true,name:'feature.id',values:featureSelect]"><is:postitIcon
                     name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/><g:message
                     code="${story.feature?.name?.encodeAsHTML()?:message(code:'is.ui.backlog.choose.feature')}"/></is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'effort',disabled:!inProduct,name:'effort',values:suiteSelect]">${story.effort >= 0 ? story.effort : '?'}</is:tableColumn>
+                    editable="[type:'selectui',id:'effort',disabled:!request.inProduct,name:'effort',values:suiteSelect]">${story.effort >= 0 ? story.effort : '?'}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'textarea',disabled:!productOwner,name:'description']">${story.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
-            <is:tableColumn editable="[type:'richarea',disabled:!productOwner,name:'notes']"><wikitext:renderHtml
+                    editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${story.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
+            <is:tableColumn editable="[type:'richarea',disabled:!request.productOwner,name:'notes']"><wikitext:renderHtml
                     markup="Textile">${story.notes}</wikitext:renderHtml></is:tableColumn>
             <is:tableColumn>${story.acceptedDate ? g.formatDate(date: story.acceptedDate, formatName: 'is.date.format.short', timezone: user?.preferences?.timezone ?: null) : ''}</is:tableColumn>
             <is:tableColumn>${story.estimatedDate ? g.formatDate(date: story.estimatedDate, formatName: 'is.date.format.short', timezone: user?.preferences?.timezone ?: null) : ''}</is:tableColumn>

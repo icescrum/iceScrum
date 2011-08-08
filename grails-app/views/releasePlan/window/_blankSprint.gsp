@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 
-<g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
+<g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 <div class="box-blank clearfix" style="display:${sprints ? 'none' : 'block'};">
     <p>${message(code: 'is.ui.releasePlan.blankSprint.description')}</p>
     <table cellpadding="0" cellspacing="0" border="0" class="box-blank-button">

@@ -20,8 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Sprint" %>
-<g:set var="poOrSm" value="${sec.access([expression:'productOwner() or scrumMaster()'], {true})}"/>
-<g:set var="productOwner" value="${sec.access([expression:'productOwner()'], {true})}"/>
+<g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
 
 <g:set var="sprint" value="[id:'?**=this.id**?',
                           orderNumber:'?**=this.orderNumber**?',
@@ -46,12 +45,12 @@
         <is:event title="sprint ${sprint.orderNumber}" elemid="${sprint.id}">
         %{-- Header of the sprint column --}%
             <is:eventHeader class="state-${sprint.state}" style="position:relative;">
-                <sec:access expression="inProduct()">
+                <g:if test="${request.inProduct}">
                     <div class="event-header-label" onclick="$.icescrum.stopEvent(event).openWindow('sprintPlan/${sprint.id}');">
-                </sec:access>
-                <sec:noAccess expression="inProduct()">
+                </g:if>
+                <g:else>
                     <div class="event-header-label">
-                </sec:noAccess>
+                </g:else>
                 ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state">?**=textState**?</span>
 
                 <div class="event-header-velocity">
@@ -89,7 +88,7 @@
                 <is:backlogElementLayout
                         id="plan-${id}-${sprint.id}"
                         sortable='[
-                              rendered:productOwner,
+                              rendered:request.productOwner,
                               handle:".postit-layout .postit-sortable",
                               connectWith:".backlog",
                               placeholder:"ui-drop-hover-postit-rect ui-corner-all",
@@ -107,6 +106,7 @@
 
         </is:event>
     </is:eventline>
+    ]]>
 </template>
 
 <template id="sprint-${id}-update-tmpl">
@@ -119,12 +119,12 @@
     **?
     <div class="event-header state-?**=this.state**?" class="state-${sprint.state}" style="position:relative;"
          elemid="${sprint.id}">
-        <sec:access expression="inProduct()">
+        <g:if test="${request.inProduct}">
             <div class="event-header-label" onclick="$.icescrum.stopEvent(event).openWindow('sprintPlan/${sprint.id}');">
-        </sec:access>
-        <sec:noAccess expression="inProduct()">
+        </g:if>
+        <g:else>
             <div class="event-header-label">
-        </sec:noAccess>
+        </g:else>
         ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state">?**=textState**?</span>
 
         <div class="event-header-velocity">
@@ -147,4 +147,5 @@
                     container="jQuery('.event-line-limiter')"/>
         </g:if>
     </div>
+    ]]>
 </template>

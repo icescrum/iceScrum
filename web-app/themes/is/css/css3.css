@@ -40,7 +40,7 @@
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-.box, #dropmenu .dropmenu-content, .panel, #local .box-simple, .keyboard-mappings .code {
+.box, #dropmenu .dropmenu-content, .panel, #local .box-simple, .keyboard-mappings .code,.members-list .member:hover {
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);

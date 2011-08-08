@@ -17,6 +17,7 @@
  *
  * Authors:
  *
+ * Vincent Barrier (vbarrier@kagilum.com)
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
@@ -36,15 +37,15 @@ hibernate {
 environments {
     development {
         dataSource {
-            /*driverClassName="org.gjt.mm.mysql.Driver"
-            dialect="org.hibernate.dialect.MySQLInnoDBDialect"
-            url="jdbc:mysql://localhost:3306/test4?useUnicode=true&characterEncoding=utf8"
+            driverClassName="com.mysql.jdbc.Driver"
+            dialect="org.hibernate.dialect.MySQL5InnoDBDialect"
+            url="jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
             username="root"
             password="root"
-            dbCreate = "update"*/
-            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            dbCreate = "update"
+            //dbCreate = "create-drop" // one of 'create', 'create-drop','update'
             //url = "jdbc:hsqldb:mem:devDba"
-            url = "jdbc:hsqldb:file:prodDba;shutdown=true"
+            //url = "jdbc:hsqldb:file:prodDba;shutdown=true"
             loggingSql = false
         }
     }

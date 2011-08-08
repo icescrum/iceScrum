@@ -19,7 +19,6 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:set var="productOwner" value="${sec.access(expression:'productOwner()',{true})}"/>
 <g:set var="feature" value="[type:'?**=this.type**?',
                              color:'?**=this.color**?',
                              id:'?**=this.id**?',
@@ -42,15 +41,14 @@
                title="?**=truncatedName**?"
                type="feature"
                notruncate="true"
-               cacheKey="feature-${params.product}"
-               sortable='[rendered:productOwner]'
+               sortable='[rendered:request.productOwner]'
                attachment="${feature.totalAttachments}"
                typeNumber="${feature.type}"
                color="${feature.color}"
                controller="${id}">
         ?**=truncatedDescription**?
         <is:postitMenu id="${feature.id}" contentView="/feature/menu" params="[id:id, feature:feature]"
-                       rendered="${productOwner}"/>
+                       rendered="${request.productOwner}"/>
         ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
         <is:tooltipPostit
                 type="feature"
@@ -99,7 +97,7 @@
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
-                         params="[id:id, feature:feature]" rendered="${productOwner}"/>
+                         params="[id:id, feature:feature]" rendered="${request.productOwner}"/>
                 <g:set var="attachment" value="${feature.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment"
@@ -110,15 +108,15 @@
                 <is:postitIcon name="${feature.name}" color="${feature.color}"/>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!productOwner]">${feature.rank}</is:tableColumn>
+                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!request.productOwner]">${feature.rank}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',disabled:!productOwner,name:'value',values:suiteSelect]">${feature.value}</is:tableColumn>
+                    editable="[type:'selectui',disabled:!request.productOwner,name:'value',values:suiteSelect]">${feature.value}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'type',disabled:!productOwner,name:'type',values:typeSelect]">?**=type**?</is:tableColumn>
+                    editable="[type:'selectui',id:'type',disabled:!request.productOwner,name:'type',values:typeSelect]">?**=type**?</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'text',disabled:!productOwner,name:'name']">${feature.name.encodeAsHTML()}</is:tableColumn>
+                    editable="[type:'text',disabled:!request.productOwner,name:'name']">${feature.name.encodeAsHTML()}</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'textarea',disabled:!productOwner,name:'description']">${feature.description}</is:tableColumn>
+                    editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${feature.description}</is:tableColumn>
             <is:tableColumn>?**=effort**?</is:tableColumn>
             <is:tableColumn>?**=stories**?</is:tableColumn>
             <is:tableColumn>?**=storiesDone**?</is:tableColumn>

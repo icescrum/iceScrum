@@ -34,6 +34,8 @@ import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.XML
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.springcache.annotations.CacheFlush
 
 @Secured('inProduct()')
 class ActorController {
@@ -58,6 +60,7 @@ class ActorController {
 
     def index = { }
 
+    @Cacheable(cache = 'searchActors', cacheResolver = 'projectCacheResolver')
     def search = {
         def actors = Actor.findActorByProductAndTerm(params.long('product'), '%' + params.term + '%').list()
         def result = []
@@ -68,6 +71,7 @@ class ActorController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def save = {
         if (!params.actor) return
 
@@ -89,6 +93,7 @@ class ActorController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.actor) {
             returnError(text:message(code: 'is.actor.error.not.exist'))
@@ -142,6 +147,7 @@ class ActorController {
     }
 
     @Secured('productOwner()')
+    @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
             returnError(text:message(code: 'is.actor.error.not.exist'))
@@ -194,6 +200,7 @@ class ActorController {
     }
 
     @Secured('productOwner()')
+    @Cacheable(cache = 'addActor', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
     def add = {
         render(template: 'window/manage', model: [
                 id: id,
