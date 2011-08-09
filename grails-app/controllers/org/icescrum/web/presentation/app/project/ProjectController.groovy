@@ -208,7 +208,7 @@ class ProjectController {
         Product.withTransaction { status ->
             try {
                 team = new Team()
-                team.name = params.product.name+" team"
+                team.name = params.product.name+" team "+new Date().toTimestamp()
                 team.preferences = new TeamPreferences()
                 team.properties = params.team
 
