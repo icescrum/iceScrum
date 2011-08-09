@@ -22,7 +22,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Sprint;" %>
-<g:form action="save" method="post" name="${id}-form" class="box-form box-form-250 box-form-200-legend" tabindex="1">
+<g:form action="save" method="post" name="${id}-form" elemid="${sprint?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
     <is:fieldset title="is.ui.releasePlan.sprint.properties.title">
         <is:fieldArea for="sprintgoal" label="is.sprint.goal">
             <is:area id="sprintgoal" large="true" name="sprint.goal" value="${sprint?.goal}" focus="true"/>
@@ -112,9 +112,9 @@
     <is:onStream
             on="#${id}-form"
             events="[[object:'sprint',events:['update','activate','close']]]"
-            callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.sprint.updated')}','${controllerName}/${release.id}',true);"/>
+            callback="if ( sprint.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.sprint.updated')}','${controllerName}/${release.id}',true);"/>
     <is:onStream
             on="#${id}-form"
             events="[[object:'sprint',events:['remove']]]"
-            callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.sprint.deleted')}','${controllerName}/${release.id}',true);"/>
+            callback="if ( sprint.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.sprint.deleted')}','${controllerName}/${release.id}',true);"/>
 </g:if>

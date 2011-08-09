@@ -30,7 +30,7 @@
            miniId="${task.id}"
            styleClass="task"
            type="task"
-           sortable='[rendered:(request.scrumMaster || responsible),disabled:task.state == Task.STATE_DONE]'
+           sortable='[rendered:(request.scrumMaster || responsible || (!responsible && )),disabled:task.state == Task.STATE_DONE]'
            typeNumber="${task.blocked ? 1 : 0}"
            typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
            attachment="${task.totalAttachments}"

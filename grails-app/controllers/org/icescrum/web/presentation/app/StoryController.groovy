@@ -211,7 +211,6 @@ class StoryController {
         }
     }
 
-    @Secured('productOwner()')
     @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {

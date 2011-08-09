@@ -23,7 +23,7 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 
-<g:form action="save" method="post" name="${referrer}-form" class="box-form box-form-250 box-form-200-legend"
+<g:form action="save" method="post" name="${referrer}-form" elemid="${story?.id?:null}" class="box-form box-form-250 box-form-200-legend"
         tabindex="1">
     <is:fieldset title="is.ui.backlog.story.properties.title">
         <is:fieldInput for="storyname" label="is.story.name">
@@ -187,9 +187,9 @@
     <is:onStream
             on="#${referrer}-form"
             events="[[object:'story',events:['update','estimate','unPlan','plan','done','unDone','inProgress','associated','dissociated']]]"
-            callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.updated')}','${createLink(controller:controllerName,action:'edit',id:params.id,params:[product:params.product,subid:params.subid,referrer:referrer])}',false,'#window-content-${referrer}');"/>
+            callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.updated')}','${createLink(controller:controllerName,action:'edit',id:params.id,params:[product:params.product,subid:params.subid,referrer:referrer])}',false,'#window-content-${referrer}');"/>
     <is:onStream
-            on="#${id}-form"
+            on="#${referrer}-form"
             events="[[object:'story',events:['remove']]]"
-            callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','${referrer+(params.subid?'/'+params.id:'')}',true);"/>
+            callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','${referrer+(params.subid?'/'+params.id:'')}',true);"/>
 </g:if>
