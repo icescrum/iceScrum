@@ -60,6 +60,7 @@
                                 document.location = $.icescrum.o.baseUrl;
                             }else{
                                 $('#project-details ul li:first strong').text(this.name);
+                                $('#panel-description .panel-box-content').load($.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
                             }
                         }
                     },
@@ -72,7 +73,7 @@
                     },
 
                     redirect:function() {
-                        document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey;
+                        document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey+'#project';
                     }
                 },
 

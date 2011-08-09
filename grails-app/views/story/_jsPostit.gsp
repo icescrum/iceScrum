@@ -38,7 +38,8 @@
 ?**
     var color = this.feature ? this.feature.color : '';
     var name =  this.name ? this.name : '';
-    var truncatedName = name.length > 17 ? name.substring(0,14)+'...' : name;
+    var size = this.state == $.icescrum.story.STATE_SUGGESTED ? 24 : 17;
+    var truncatedName = name.length > size ? name.substring(0,size - 1)+'...' : name;
     var description =  this.description ? this.description : '&nbsp;';
     var effort = this.state > 1 ? (this.effort ? this.effort : '?') : '';
     var truncatedDescription = description.length > 50 ? description.substring(0,50)+'...' : description;

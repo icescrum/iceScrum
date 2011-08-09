@@ -32,7 +32,7 @@ grails.project.war.file = "target/${appName}.war"
 grails.project.war.osgi.headers = false
 
 //grails.plugin.location.'entry-points' =  '../plugins/entry-points'
-//grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 
 coverage {
     enabledByDefault = false
@@ -63,10 +63,6 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         test 'xmlunit:xmlunit:1.3'
-        //TODO fix when new release of minify resources
-        compile('com.yahoo.platform.yui:yuicompressor:2.4.6') {
-          export = false
-        }
     }
 
     grails.war.resources = { stagingDir ->
@@ -78,7 +74,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile "org.icescrum:icescrum-core:1.4.2.12"
+        //compile "org.icescrum:icescrum-core:1.4.2.12"
         compile "org.icescrum:entry-points:0.3-BETA"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"

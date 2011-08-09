@@ -24,6 +24,7 @@
 <is:postit id="${story.id}"
            miniId="${story.id}"
            title="${story.name}"
+           titleSize="${story.state == Story.STATE_SUGGESTED ? 24 : 17}"
            styleClass="story type-story-${story.type}"
            type="story"
            rect="${rect?:false}"

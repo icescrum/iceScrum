@@ -51,7 +51,7 @@
         </g:if>
 
         <g:if test="${ownerOrSm}">
-            <is:fieldInput for="team.members" label="Find members" class="members">
+            <is:fieldInput for="team.members" label="is.dialog.members.find" class="members">
                 <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
                     <is:autoCompleteSkin
                                 controller="user"
