@@ -70,36 +70,25 @@ class MembersController {
                                                     rolesKeys:BundleUtils."${listRoles}".keySet().asList()])
     }
 
-    @CacheFlush(caches = 'projectMembersCache', cacheResolver = 'projectCacheResolver')
+    @Secured(['owner() or scrumMaster()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    @CacheFlush(caches = ['projectMembersCache','projectTemplateCache'], cacheResolver = 'projectCacheResolver')
     def update = {
         def product = Product.get(params.product)
-        def user = springSecurityService.currentUser
         def team = Team.get(product.teams.asList()[0].id)
         def currentMembers = allMembersProduct(product)
         try{
-            def change = false
             def idmembers = []
             params.members?.each{ k,v ->
                 def id = v.toLong()
-                if (id != user.id){
                     def found = currentMembers.find{ it.id == id}
                     if (found){
                         if (found.role.toString() != params.role."${k}"){
                             removeRole(found,team,product)
                             addRole([id:id,role:params.role."${k}"],team,product)
-                            change = true
                         }
                     }else{
                         addRole([id:id,role:params.role."${k}"],team,product)
-                        change = true
                     }
-                }else{
-                    def found = currentMembers.find{ it.id == id}
-                    if (!found){
-                        addRole([id:id,role:params.role."${k}"],team,product)
-                        change = true
-                    }
-                }
                 idmembers << id
             }
             def commons = currentMembers*.id.intersect(idmembers)
@@ -121,7 +110,7 @@ class MembersController {
     }
 
     @Secured('inProduct() or stakeHolder()')
-    @CacheFlush(caches = 'projectMembersCache', cacheResolver = 'projectCacheResolver')
+    @CacheFlush(caches = ['projectMembersCache','projectTemplateCache'], cacheResolver = 'projectCacheResolver')
      def leaveTeam = {
         def product = Product.get(params.product)
         def user = springSecurityService.currentUser

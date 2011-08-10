@@ -351,7 +351,6 @@
                     },
 
                     add:function(template) {
-                        debugger;
                         $(this).each(function() {
                             $.icescrum.addOrUpdate(this, $.icescrum.story.templates[template], $.icescrum.story._postRendering);
                         });
@@ -386,7 +385,6 @@
                         });
                         var data = this.objects ? this.objects : this;
                         var type = this.objects ? this.objects[0]['class'].toLowerCase() : this['class'].toLowerCase();
-                        debugger;
                         jQuery.event.trigger('add_' + type, [data]);
                     },
 
@@ -833,18 +831,15 @@
                                 zindex:1000,
                                 close:function(ev, ui) {
                                     $(this).remove();
+                                    if (deleted) {
+                                        $.icescrum.navigateTo(url);
+                                    } else {
+                                        $(container).load(url);
+                                    }
                                 },
                                 buttons:{
-                                    'Ok':function() {
-                                        $(this).dialog('close');
-                                    },
                                     'Refresh':function() {
                                         $(this).dialog('close');
-                                        if (deleted) {
-                                            $.icescrum.navigateTo(url);
-                                        } else {
-                                            $(container).load(url);
-                                        }
                                     }
                                 }
                             });

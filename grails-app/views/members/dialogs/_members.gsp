@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 Kagilum.
+- Copyright (c) 2011 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -69,7 +69,7 @@
         <div class="members-list">
             <g:each in="${members}" var="member">
                 <span class="member ui-corner-all" id='member${member.id}'>
-                    <g:if test="${ownerOrSm && user.id != member.id}">
+                    <g:if test="${ownerOrSm}">
                         <span class="button-s">
                             <span style="display: block;" class="button-action button-delete" onclick="jQuery(this).closest('.member').remove();">del</span>
                         </span>
@@ -83,7 +83,7 @@
                                 maxHeight="200"
                                 id="${new Date().time}"
                                 styleSelect="dropdown"
-                                disabled="${!ownerOrSm || user.id == member.id}"
+                                disabled="${!ownerOrSm}"
                                 from="${rolesNames}"
                                 keys="${rolesKeys}"
                                 name="role.${member.id}"

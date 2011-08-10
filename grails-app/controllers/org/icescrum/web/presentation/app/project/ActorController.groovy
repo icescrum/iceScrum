@@ -249,12 +249,15 @@ class ActorController {
 
     private manageAttachments(def actor) {
         def user = springSecurityService.currentUser
+        def needPush = false
         if (actor.id && !params.actor.list('attachments') && actor.attachments*.id.size() > 0) {
             actor.removeAllAttachments()
+            needPush = true
         } else if (actor.attachments*.id.size() > 0) {
             actor.attachments*.id.each {
                 if (!params.actor.list('attachments').contains(it.toString()))
                     actor.removeAttachment(it)
+                    needPush = true
             }
         }
         def uploadedFiles = []
@@ -264,9 +267,15 @@ class ActorController {
                     uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), name: it[1]]
             }
         }
-        if (uploadedFiles)
+        if (uploadedFiles){
             actor.addAttachments(user, uploadedFiles)
+            needPush = true
+        }
         session.uploadedFiles = null
+        if (needPush){
+            flushCache(cache:'actorCache-'+actor.id, cacheResolver:'backlogElementCacheResolver')
+            broadcast(function: 'update', message: actor)
+        }
     }
 
     def print = {

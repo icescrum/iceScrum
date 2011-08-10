@@ -378,12 +378,16 @@ class FeatureController {
 
     private manageAttachments(def feature) {
         def user = springSecurityService.currentUser
+        def needPush = false
+
         if (feature.id && !params.feature.list('attachments') && feature.attachments*.id.size() > 0) {
             feature.removeAllAttachments()
+            needPush = true
         } else if (feature.attachments*.id.size() > 0) {
             feature.attachments*.id.each {
                 if (!params.feature.list('attachments').contains(it.toString()))
                     feature.removeAttachment(it)
+                    needPush = true
             }
         }
         def uploadedFiles = []
@@ -393,9 +397,16 @@ class FeatureController {
                     uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), name: it[1]]
             }
         }
-        if (uploadedFiles)
+        if (uploadedFiles){
             feature.addAttachments(user, uploadedFiles)
+            needPush = true
+        }
         session.uploadedFiles = null
+
+        if (needPush){
+            flushCache(cache:'featureCache-'+feature.id, cacheResolver:'backlogElementCacheResolver')
+            broadcast(function: 'update', message: feature)
+        }
     }
 
     def download = {

@@ -157,11 +157,11 @@ class BacklogElementController {
     @Secured('isAuthenticated()')
     def addComment = {
         def poster = springSecurityService.currentUser
+        def story = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()[0]
         try {
             if (params['comment'] instanceof Map) {
                 Comment.withTransaction { status ->
                     try {
-                        def story = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()[0]
                         story.addComment(poster, params.comment.body)
                         story.addActivity(poster, 'comment', story.name)
                         story.addFollower(poster)
@@ -176,6 +176,7 @@ class BacklogElementController {
             return
         }
         flushCache(cache:'storyCache-'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
+        broadcast(function: 'update', message: story)
         redirect(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments', product:params.product])
     }
 
@@ -207,6 +208,7 @@ class BacklogElementController {
         try {
             comment.save()
             flushCache(cache:'storyCache-'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
+            broadcast(function: 'update', message: commentable)
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
             redirect(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
         } catch (RuntimeException e) {
@@ -236,6 +238,7 @@ class BacklogElementController {
         try {
             commentable.removeComment(comment)
             flushCache(cache:'storyCache-'+params.backlogelement, cacheResolver:'backlogElementCacheResolver')
+            broadcast(function: 'update', message: commentable)
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_DELETED))
             redirect(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: ['tab': 'comments', product:params.product])
         } catch (RuntimeException e) {

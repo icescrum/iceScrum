@@ -25,9 +25,6 @@
 
 <g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 <g:set var="nodropMessage" value="${g.message(code:'is.ui.sprintPlan.no.drop')}"/>
-<g:set var="nodropMessageUrgent"
-       value="${message(code: 'is.ui.sprintPlan.kanban.urgentTasks.limit', args:[limitValueUrgentTasks])}"/>
-
 <is:kanban id="kanban-sprint-${sprint.id}"
            elemid="${sprint.id}"
            selectable="[filter:'div.postit-rect',
@@ -90,7 +87,7 @@
                          rendered="${sprint.state != Sprint.STATE_DONE}"/>
             </g:if>
             <br/>
-            <span>${(limitValueUrgentTasks) ? nodropMessageUrgent : ''}</span>
+            <span>${(limitValueUrgentTasks) ? message(code: 'is.ui.sprintPlan.kanban.urgentTasks.limit', args:[limitValueUrgentTasks]) : ''}</span>
         </is:kanbanColumn>
         <g:each in="${columns}" var="column">
             <is:kanbanColumn key="${column.key}"

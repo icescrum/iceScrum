@@ -650,12 +650,15 @@ class StoryController {
 
     private manageAttachments(def story) {
         def user = springSecurityService.currentUser
+        def needPush = false
         if (params.story.attachments && story.id && !params.story.list('attachments') && story.attachments*.id.size() > 0) {
             story.removeAllAttachments()
+            needPush = true
         } else if (story.attachments*.id.size() > 0) {
             story.attachments*.id.each {
                 if (!params.story.list('attachments').contains(it.toString()))
                     story.removeAttachment(it)
+                    needPush = true
             }
         }
         def uploadedFiles = []
@@ -665,8 +668,15 @@ class StoryController {
                     uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), name: it[1]]
             }
         }
-        if (uploadedFiles)
+        if (uploadedFiles){
             story.addAttachments(user, uploadedFiles)
+            needPush = true
+        }
         session.uploadedFiles = null
+
+        if (needPush){
+            flushCache(cache:'storyCache-'+story.id, cacheResolver:'backlogElementCacheResolver')
+            broadcast(function: 'update', message: story)
+        }
     }
 }

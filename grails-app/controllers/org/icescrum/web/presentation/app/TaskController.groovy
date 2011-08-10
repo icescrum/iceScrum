@@ -359,12 +359,15 @@ class TaskController {
 
     private manageAttachments(def task) {
         User user = (User) springSecurityService.currentUser
+        def needPush = false
         if (params.task.attachments && task.id && !params.task.list('attachments') && task.attachments*.id.size() > 0) {
             task.removeAllAttachments()
+            needPush = true
         } else if (task.attachments*.id.size() > 0) {
             task.attachments*.id.each {
                 if (!params.task.list('attachments').contains(it.toString()))
                     task.removeAttachment(it)
+                    needPush = true
             }
         }
         def uploadedFiles = []
@@ -374,9 +377,15 @@ class TaskController {
                     uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), name: it[1]]
             }
         }
-        if (uploadedFiles)
+        if (uploadedFiles){
             task.addAttachments(user, uploadedFiles)
+            needPush = true
+        }
         session.uploadedFiles = null
+        if (needPush){
+            flushCache(cache:'taskCache-'+task.id, cacheResolver:'backlogElementCacheResolver')
+            broadcast(function: 'update', message: task)
+        }
     }
 
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')

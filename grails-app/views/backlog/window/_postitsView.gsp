@@ -74,5 +74,5 @@
 <is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream
         on="#backlog-layout-window-${id}"
-        events="[[object:'story',events:['accept','update','remove','estimate','unPlan','plan','associated','dissociated']]]"
+        events="[[object:'story',events:['add','accept','update','remove','estimate','unPlan','plan','associated','dissociated']]]"
         template="backlogWindow"/>
