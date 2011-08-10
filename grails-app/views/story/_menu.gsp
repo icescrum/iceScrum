@@ -106,10 +106,9 @@
     </is:postitMenuItem>
 </g:if>-->
 
-<is:postitMenuItem
-        rendered="${inProduct && (story.state == Story.STATE_PLANNED || story.state == Story.STATE_INPROGRESS || template)}">
+<is:postitMenuItem rendered="${inProduct && (story.state == Story.STATE_PLANNED || story.state == Story.STATE_INPROGRESS || template)}"
+                   elementId="menu-add-task-${story.id}">
     <is:link
-            elementId="menu-add-task-${story.id}"
             action="add"
             id="${story.parentSprint.id}"
             controller="sprintPlan"

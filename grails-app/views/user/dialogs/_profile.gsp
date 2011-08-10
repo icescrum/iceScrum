@@ -25,7 +25,7 @@
     <input type="hidden" id="user.id" name="user.id" value="${user.id}"/>
     <input type="hidden" id="product" name="product" value="${params.product}"/>
     <input type="hidden" id="user.version" name="user.version" value="${user.version}"/>
-    <is:fieldset nolegend="true" title="is.dialog.profile.title">
+    <is:fieldset nolegend="true" title="is.dialog.profile">
         <is:accordion id="profile" autoHeight="false">
             <is:accordionSection title="is.dialog.profile.general.title">
                 <is:fieldInput for="userfirstName" label="is.user.firstname">

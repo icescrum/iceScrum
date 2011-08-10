@@ -122,7 +122,7 @@
                                 action="editPractices"
                                 controller="project"
                                 params="[product:product.id]"
-                                valid="[action:'update',controller:'project',onSuccess:'jQuery.icescrum.renderNotice(data.notice); jQuery.event.trigger(\'update_product\',[data]);']"
+                                valid="[action:'update',controller:'project',onSuccess:'jQuery.event.trigger(\'update_product\',[data]);  jQuery.icescrum.renderNotice(\''+message(code:'is.product.updated')+'\');']"
                                 title="is.dialog.project.title"
                                 width="600"
                                 resizable="false"

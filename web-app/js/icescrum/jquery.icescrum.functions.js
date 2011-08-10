@@ -351,6 +351,7 @@
                     },
 
                     add:function(template) {
+                        debugger;
                         $(this).each(function() {
                             $.icescrum.addOrUpdate(this, $.icescrum.story.templates[template], $.icescrum.story._postRendering);
                         });
@@ -385,7 +386,8 @@
                         });
                         var data = this.objects ? this.objects : this;
                         var type = this.objects ? this.objects[0]['class'].toLowerCase() : this['class'].toLowerCase();
-                        $.event.trigger('add_' + type, [data]);
+                        debugger;
+                        jQuery.event.trigger('add_' + type, [data]);
                     },
 
                     estimate:function(template) {
@@ -433,11 +435,11 @@
                     },
 
                     _postRendering:function(tmpl, newObject, container) {
-                        if (this.totalComments == undefined || !newObject.totalComments) {
+                        if (this.comments == undefined || this.comments.length <= 0 ) {
                             newObject.find('.postit-comment,.table-comment').hide();
                         }
 
-                        if (this.totalAttachments == undefined || !newObject.totalAttachments) {
+                        if (this.attachments == undefined || this.attachments.length <= 0) {
                             newObject.find('.postit-attachment,.table-attachment').hide()
                         }
                         if (container.hasClass('ui-selectable')) {
@@ -463,7 +465,7 @@
                         if (this.state != $.icescrum.story.STATE_INPROGRESS) {
                             $('#menu-done-' + this.id, newObject).remove();
                         }
-                        if (this.state < $.icescrum.story.STATE_PLANNED || this.state == $.icescrum.story.STATE_DONE) {
+                        if ( this.state < $.icescrum.story.STATE_PLANNED || this.state == $.icescrum.story.STATE_DONE) {
                             $('#menu-unplan-' + this.id, newObject).remove();
                             $('#menu-add-task-'+this.id,newObject).remove();
                         }
@@ -538,10 +540,11 @@
                         if ((this.state == $.icescrum.task.STATE_DONE && !$.icescrum.user.scrumMaster) || (!(responsible || creator || $.icescrum.user.poOrSm) && this.state != $.icescrum.task.STATE_DONE)) {
                             $('#menu-delete-' + this.id, postit).remove();
                         }
-                        if (!(responsible || creator) || this.state == $.icescrum.task.STATE_DONE || $.icescrum.sprint.current == null || ($.icescrum.sprint.current && this.backlog.id != $.icescrum.sprint.current.id)) {
+
+                        if (!((responsible || $.icescrum.user.scrumMaster) && this.state != $.icescrum.task.STATE_DONE && ($.icescrum.sprint.current && this.backlog.id != $.icescrum.sprint.current.id))) {
                             $('#menu-blocked-' + this.id, postit).remove();
                         }
-                        if (this.state == $.icescrum.task.STATE_DONE || !($.icescrum.user.poOrSm || responsible || creator)) {
+                        if (this.state == $.icescrum.task.STATE_DONE) {
                             $('#menu-edit-' + this.id, postit).remove();
                         }
                         if (this.state == $.icescrum.task.STATE_DONE || responsible) {
