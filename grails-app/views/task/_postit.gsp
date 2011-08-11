@@ -23,14 +23,13 @@
 <%@ page import="org.icescrum.core.domain.Sprint; org.icescrum.core.domain.Task" %>
 <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
 <g:set var="creator" value="${task.creator.id == user.id}"/>
-
 %{-- Task postit --}%
 <is:postit title="${task.name}"
            id="${task.id}"
            miniId="${task.id}"
-           styleClass="task"
+           styleClass="task ${responsible ? 'hasResponsible' : ''}"
            type="task"
-           sortable='[rendered:(request.scrumMaster || responsible),disabled:task.state == Task.STATE_DONE]'
+           sortable='[rendered:((request.scrumMaster || responsible) || (!responsible && assignOnBeginTask && task.state == Task.STATE_WAIT)),disabled:(task.state == Task.STATE_DONE || task.backlog.state == Sprint.STATE_DONE)]'
            typeNumber="${task.blocked ? 1 : 0}"
            typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
            attachment="${task.totalAttachments}"
@@ -39,12 +38,12 @@
            editableEstimation="${(responsible || (!responsible && creator) || scrumMaster) && task.state != Task.STATE_DONE}"
            color="yellow"
            rect="true">
-    <g:if test="${request.inProduct}">
-        <is:postitMenu id="task-${task.id}"
-                       contentView="/task/menu"
-                       model="[id:id, task:task, user:user]"
-                       rendered="${task.backlog.state != Sprint.STATE_DONE}"/>
-    </g:if>
+            <g:if test="${request.inProduct}">
+                <is:postitMenu id="task-${task.id}"
+                               contentView="/task/menu"
+                               model="[id:id, task:task, user:user]"
+                               rendered="${task.backlog.state != Sprint.STATE_DONE}"/>
+            </g:if>
 </is:postit>
 <g:if test="${task.name?.length() > 17 || task.description?.length() > 0}">
     <is:tooltipPostit

@@ -35,7 +35,7 @@
             indentLevel="${indentLevel + 1}"/>
     <is:listAsXML
             name="cliches"
-            template="/export/xml/cliche"
+            template="/project/cliche"
             child="cliche"
             deep="${deep}"
             indentLevel="${indentLevel  + 1}"/>

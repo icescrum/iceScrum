@@ -47,6 +47,11 @@
 
                 product: {
                     currentProduct:null,
+                    displayUrgentTasks:true,
+                    displayRecurrentTasks:true,
+                    assignOnBeginTask:false,
+                    hidden:false,
+                    limitUrgentTasks:0,
                     deleted:'Project deleted',
                     updated:'Project settings updated',
                     add:function() {
@@ -55,11 +60,37 @@
 
                     update:function() {
                         if (this.id == $.icescrum.product.currentProduct){
-                            if (this.refresh){
+                            if (this.preferences.hidden != $.icescrum.product.hidden){
                                 alert($.icescrum.product.updated);
                                 document.location = $.icescrum.o.baseUrl;
-                            }else{
-                                $('#project-details ul li:first strong').text(this.name);
+                            }
+                            if ($.icescrum.product.displayUrgentTasks != this.preferences.displayUrgentTasks){
+                                $('tr.row-urgent-task').toggle();
+                                $('tr.table-line.table-group[elemid=urgent]').toggle();
+                                $.icescrum.product.displayUrgentTasks = this.preferences.displayUrgentTasks;
+                            }
+                            if (this.preferences.displayRecurrentTasks != $.icescrum.product.displayRecurrentTasks){
+                                $('tr.row-recurrent-task').toggle();
+                                $('tr.table-line.table-group[elemid=recurrent]').toggle();
+                                $.icescrum.product.displayRecurrentTasks = this.preferences.displayRecurrentTasks;
+                            }
+                            if (this.preferences.limitUrgentTasks != $.icescrum.product.limitUrgentTasks){
+                                var text = $('span.#limit-urgent-tasks').text();
+                                var reg=new RegExp($.icescrum.product.limitUrgentTasks, "g");
+                                $('span.#limit-urgent-tasks').text(text.replace(reg,this.preferences.limitUrgentTasks));
+                                if (this.preferences.limitUrgentTasks > 0){
+                                    $('span.#limit-urgent-tasks').show();
+                                }else{
+                                    $('span.#limit-urgent-tasks').hide();
+                                }
+                                $.icescrum.product.limitUrgentTasks = this.preferences.limitUrgentTasks;
+                            }
+                            if ($.icescrum.product.assignOnBeginTask != this.preferences.assignOnBeginTask){
+                                $.icescrum.product.assignOnBeginTask = this.preferences.assignOnBeginTask;
+                                $.icescrum.sprint.sortableTasks();
+                            }
+                            $('#project-details ul li:first strong').text(this.name);
+                            if (this.description){
                                 $('#panel-description .panel-box-content').load($.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
                             }
                         }
@@ -433,11 +464,11 @@
                     },
 
                     _postRendering:function(tmpl, newObject, container) {
-                        if (this.comments == undefined || this.comments.length <= 0 ) {
+                        if (this.totalComments <= 0 ) {
                             newObject.find('.postit-comment,.table-comment').hide();
                         }
 
-                        if (this.attachments == undefined || this.attachments.length <= 0) {
+                        if (this.totalAttachments <= 0) {
                             newObject.find('.postit-attachment,.table-attachment').hide()
                         }
                         if (container.hasClass('ui-selectable')) {
@@ -508,7 +539,6 @@
                     },
                     add:function(template) {
                         $(this).each(function() {
-                            var task = this;
                             $.icescrum.addOrUpdate(this, $.icescrum.task.templates[template], $.icescrum.task._postRendering);
                         });
                     },
@@ -572,6 +602,9 @@
                                 }
                             }
                         }
+                        if (!responsible && $.icescrum.product.assignOnBeginTask && $.icescrum.task.STATE_WAIT == this.state && this.backlog.state != $.icescrum.sprint.STATE_DONE){
+                            $('.postit-label', postit).addClass('postit-sortable');
+                        }
                     },
 
                     toggleBlocked:function(id) {
@@ -587,7 +620,9 @@
 
                 sprint:{
                     i18n:{
-                        name:'Sprint'
+                        name:'Sprint',
+                        noDropMessage:'',
+                        noDropMessageLimitedTasks:''
                     },
                     current: null,
                     STATE_WAIT : 1,
@@ -694,19 +729,26 @@
                         if (template) {
                             $.icescrum.sprint.update.apply(this, [template]);
                         }
-                        this.current = null;
+                        $.icescrum.sprint.current = null;
                         $('li.menu-accept-task').hide();
-                        $('#kanban-sprint-' + this.id + ' td:not(.first)').sortable('destroy');
+                        var kanban = $('table.#kanban-sprint-' + this.id);
+                        $('td:not(.first)',kanban).sortable('destroy');
+                        $('.row-urgent-task td:not(.last) .postit-task',kanban).remove();
+                        $('.row-urgent-task',kanban).removeClass('postit-sortable');
+                        $('.postit-label',kanban).removeClass('postit-sortable');
+                        $('.postit-task .dropmenu-action',kanban).remove();
+                        $('div#dropmenu-menu-recurrent',kanban).remove();
+                        $('div#dropmenu-menu-urgent',kanban).remove();
                         $('.close-sprint-' + this.parentRelease.id + '-' + (this.orderNumber)).remove();
                         $('.activate-sprint-' + this.parentRelease.id + '-' + (this.orderNumber + 1)).removeClass('hidden');
+                        $('table.#kanban-sprint-' + this.id).addClass('done');
                     },
 
                     activate:function(template) {
                         if (template) {
                             $.icescrum.sprint.update.apply(this, [template]);
                         }
-                        this.current = this;
-                        $('#kanban-sprint-' + this.id + ' td.no-drop').removeClass('no-drop');
+                        $.icescrum.sprint.current = this;
                         $('.menu-accept-task').show();
                         $('.activate-sprint-' + this.parentRelease.id + '-' + (this.orderNumber)).remove();
                         $('.close-sprint-' + this.parentRelease.id + '-' + (this.orderNumber)).removeClass('hidden');
@@ -764,6 +806,45 @@
                     retrospective:function() {
                         if ($('#panel-retrospective-' + this.id).length) {
                             $('#panel-retrospective-' + this.id + ' .panel-box-content').load($.icescrum.o.baseUrl + 'textileParser', {data:this.retrospective,withoutHeader:true,truncate:1000});
+                        }
+                    },
+
+                    sortableTasks:function(){
+                        debugger;
+                        if ($.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
+                            $('table.kanban :not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').addClass('postit-sortable');
+                        }else if(!$.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
+                            $('table.kanban :not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').removeClass('postit-sortable');
+                        }
+                    },
+
+                    droppableTasks:function(object,ui){
+                        var obj = $(object);
+                        var placeholder = $(ui.placeholder);
+                        if (this.current){
+                            if(this.current.state != this.STATE_INPROGRESS){
+                                placeholder.html(this.i18n.noDropMessage);
+                                placeholder.addClass('no-drop');
+                            }else if($.icescrum.product.limitUrgentTasks > 0 && this.current.state == this.STATE_INPROGRESS){
+                                if (obj.closest('tr').hasClass('row-urgent-task') && obj.attr('type') && obj.find('.postit-task').length >= $.icescrum.product.limitUrgentTasks > 0){
+                                    placeholder.html(this.i18n.noDropMessageLimitedTasks);
+                                    placeholder.addClass('no-drop');
+                                }else{
+                                    placeholder.removeClass('no-drop');
+                                    placeholder.html('');
+                                }
+                            }else{
+                                placeholder.removeClass('no-drop');
+                                placeholder.html('');
+                            }
+                        }else{
+                            if (obj.attr('type') >= 1){
+                                placeholder.addClass('no-drop');
+                                placeholder.html(this.i18n.noDropMessage);
+                            }else{
+                                placeholder.removeClass('no-drop');
+                                placeholder.html('');
+                            }
                         }
                     }
                 },

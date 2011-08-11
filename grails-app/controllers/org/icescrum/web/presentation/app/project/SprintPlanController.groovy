@@ -167,6 +167,7 @@ class SprintPlanController {
                         displayUrgentTasks: sprint.parentRelease.parentProduct.preferences.displayUrgentTasks,
                         displayRecurrentTasks: sprint.parentRelease.parentProduct.preferences.displayRecurrentTasks,
                         limitValueUrgentTasks: sprint.parentRelease.parentProduct.preferences.limitUrgentTasks,
+                        assignOnBeginTask:currentProduct.preferences.assignOnBeginTask,
                         urgentTasksLimited: (urgentTasks.findAll {it.state == Task.STATE_BUSY}.size() >= sprint.parentRelease.parentProduct.preferences.limitUrgentTasks),
                         user: user])
     }

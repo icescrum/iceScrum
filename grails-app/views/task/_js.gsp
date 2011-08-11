@@ -39,6 +39,7 @@
     var estimation = this.estimation != null ? this.estimation : '?';
     var resp = this.responsible ? (this.responsible.firstName +' '+this.responsible.lastName) : '';
     resp = resp.length > 16 ? resp.substring(0,13)+'...' : resp;
+    var styleClass = 'task ' + (resp ? 'hasResponsible' : '');
     description = description.formatLine();
     **?
     ]]>
@@ -47,7 +48,7 @@
                id="${task.id}"
                notruncate="true"
                miniId="${task.id}"
-               styleClass="task"
+               styleClass="?**=styleClass**?"
                type="task"
                typeNumber="?**=typeNumber**?"
                typeTitle="?**=typeTitle**?"

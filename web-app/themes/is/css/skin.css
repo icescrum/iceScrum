@@ -455,7 +455,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     background-color: #FFFAAE;
 }
 
-.no-drop .postit-placeholder {
+.postit-placeholder.no-drop {
     background: #ffa656;
     padding: 3px;
     text-align: center;

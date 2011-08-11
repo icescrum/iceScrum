@@ -24,8 +24,8 @@
 <%@ page import="org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;org.icescrum.core.domain.Story;" %>
 
 <g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
-<g:set var="nodropMessage" value="${g.message(code:'is.ui.sprintPlan.no.drop')}"/>
 <is:kanban id="kanban-sprint-${sprint.id}"
+           class="${sprint.state == Sprint.STATE_DONE ? 'done' : ''}"
            elemid="${sprint.id}"
            selectable="[filter:'div.postit-rect',
                         cancel:'span.postit-label, div.postit-story, a, span.mini-value, select, input',
@@ -59,9 +59,7 @@
         </is:kanbanColumn>
 
         <g:each in="${columns}" var="column" status="i">
-            <is:kanbanColumn key="${column.key}"
-                             class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop wait':''}">
-
+            <is:kanbanColumn key="${column.key}">
                 <g:each in="${recurrentTasks?.sort{it.rank}?.findAll{ it.state == column.key} }" var="task">
                     <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
                         <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]"
@@ -87,11 +85,10 @@
                          rendered="${sprint.state != Sprint.STATE_DONE}"/>
             </g:if>
             <br/>
-            <span>${(limitValueUrgentTasks) ? message(code: 'is.ui.sprintPlan.kanban.urgentTasks.limit', args:[limitValueUrgentTasks]) : ''}</span>
+            <span id='limit-urgent-tasks' style='display:${limitValueUrgentTasks > 0 ? 'block' : 'none'}'>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks.limit', args:[limitValueUrgentTasks])}</span>
         </is:kanbanColumn>
         <g:each in="${columns}" var="column">
-            <is:kanbanColumn key="${column.key}"
-                             class="${(sprint.state != Sprint.STATE_INPROGRESS && column.key != Task.STATE_WAIT)?'no-drop wait':(urgentTasksLimited && limitValueUrgentTasks && column.key == Task.STATE_BUSY)?'no-drop':''}">
+            <is:kanbanColumn key="${column.key}">
                 <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
                     <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
                         <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
@@ -119,8 +116,7 @@
 
         %{-- Workflow Columns --}%
             <g:each in="${columns}" var="column">
-                <is:kanbanColumn key="${column.key}"
-                                 class="${(column.key != Task.STATE_WAIT && sprint.state != Sprint.STATE_INPROGRESS)?'no-drop wait':''}">
+                <is:kanbanColumn key="${column.key}">
                     <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                             var="task">
                             <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
@@ -136,7 +132,9 @@
 <jq:jquery>
     jQuery('div.postit-story').die('dblclick').live('dblclick',function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params: '\'story.id=\'+obj.attr(\"elemId\")')}});
     jQuery('#window-title-bar-${id} .content').html('${message(code: "is.ui." + id)} - ${message(code: "is.sprint")} ${sprint.orderNumber}  - ${is.bundle(bundle: 'sprintStates', value: sprint.state)} - [${g.formatDate(date: sprint.startDate, formatName: 'is.date.format.short')} -> ${g.formatDate(date: sprint.endDate, formatName: 'is.date.format.short')}]');
-
+    <g:if test="${assignOnBeginTask && !request.scrumMaster && sprint.state != Sprint.STATE_DONE}">
+        jQuery.icescrum.sprint.sortableTasks();
+    </g:if>
     <is:editable rendered="${sprint.state != Sprint.STATE_DONE && (request.teamMember || request.scrumMaster)}"
                  controller="story"
                  action='estimate'
@@ -172,7 +170,7 @@
                  items="div.postit-rect"
                  revert="true"
                  live="true"
-                 over="if(jQuery(this).hasClass('no-drop wait')){ jQuery(ui.placeholder).html('${nodropMessage}'); }else{ jQuery(ui.placeholder).html(''); }"
+                 over="jQuery.icescrum.sprint.droppableTasks(this, ui)"
                  update="var container = jQuery(this).find('.postit-rect'); if(container.index(ui.item) != -1 && ui.sender == undefined){${is.changeRank(controller:'task',action:'rank',name:'task.rank',params:'&product='+params.product+'')}}"
                  placeholder="postit-placeholder ui-corner-all"
                  receive="${remoteFunction(controller:'task',
@@ -180,7 +178,7 @@
                                    onFailure:'jQuery(ui.sender).sortable(\'cancel\');',
                                    onSuccess:'jQuery.event.trigger(\'update_task\',data)',
                                    params:'\'id=\'+jQuery(this).attr(\'type\')+\'&product='+params.product+'&task.id=\'+ui.item.attr(\'elemid\')+\'&position=\'+(jQuery(this).find(\'.postit-rect\').index(ui.item)+1)+ (jQuery(this).parent().attr(\'type\') ? \'&task.type=\'+jQuery(this).parent().attr(\'type\') : \'\') + (jQuery(this).parent().attr(\'elemid\') ? \'&story.id=\'+jQuery(this).parent().attr(\'elemid\') : \'\')',
-                                   before:'if(jQuery(this).hasClass(\'no-drop\')){jQuery(ui.sender).sortable(\'cancel\'); return;}')}"/>
+                                   before:'if(jQuery(ui.placeholder).hasClass(\'no-drop\')){jQuery(ui.sender).sortable(\'cancel\'); return;}')}"/>
 </jq:jquery>
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'task.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"

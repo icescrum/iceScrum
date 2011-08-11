@@ -34,7 +34,11 @@
         },
         sprint:{
             ${currentSprint ? 'current:' + (currentSprint as JSON) + ',' : ''}
-            i18n:{ name:'${g.message(code: 'is.sprint')}' },
+            i18n:{
+                   name:'${g.message(code: 'is.sprint')}',
+                   noDropMessage:'${g.message(code:'is.ui.sprintPlan.no.drop')}',
+                   noDropMessageLimitedTasks:'${g.message(code:'is.task.error.limitTasksUrgent')}'
+            },
             states:${is.bundleLocaleToJs(bundle: BundleUtils.sprintStates)}
         },
         release:{
@@ -52,11 +56,20 @@
         },
         feature:{
             types:${is.bundleLocaleToJs(bundle: BundleUtils.featureTypes)}
-        },
+        }
+        <g:if test="${product}">
+        ,
         product:{
-            currentProduct:${params.product},
+            currentProduct:${product.id},
+            limitUrgentTasks:${product.preferences.limitUrgentTasks},
+            hidden:${product.preferences.hidden},
+            displayUrgentTasks:${product.preferences.displayUrgentTasks},
+            displayRecurrentTasks:${product.preferences.displayRecurrentTasks},
+            limitUrgentTasks:${product.preferences.limitUrgentTasks},
+            assignOnBeginTask:${product.preferences.assignOnBeginTask},
             deleted:'${g.message(code: 'is.product.deleted')}'
         }
+        </g:if>
     });
 </jq:jquery>
 

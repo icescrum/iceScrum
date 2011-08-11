@@ -276,17 +276,18 @@ class ScrumOSController {
         }
     }
 
-    @Cacheable(cache = 'projectTemplateCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'userKeyGenerator')
     def templates = {
         def currentSprint = null
+        def product = null
         if (params.long('product')) {
-            def product = Product.get(params.product)
+            product = Product.get(params.product)
             currentSprint = Sprint.findCurrentSprint(product.id).list()[0] ?: null
         }
         def tmpl = g.render(
                 template: 'templatesJS',
                 model: [id: controllerName,
-                        currentSprint: currentSprint
+                        currentSprint: currentSprint,
+                        product:product
                 ])
 
         tmpl = "${tmpl}".split("<div class='templates'>")

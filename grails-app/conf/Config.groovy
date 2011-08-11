@@ -83,20 +83,21 @@ grails.mail.props = ["mail.smtp.auth":"true",
 /*
   Push section
  */
-icescrum.json.backlogElement = ['totalAttachments', 'attachments']
+icescrum.json.backlogElement = ['totalAttachments']
 icescrum.json.actor = icescrum.json.backlogElement.clone()
 icescrum.json.feature = icescrum.json.backlogElement.clone()
 icescrum.json.story = icescrum.json.backlogElement.clone()
-icescrum.json.story << 'totalComments' << 'comments' << 'tasks'
+icescrum.json.story << 'totalComments' << 'tasks'
 icescrum.json.sprint = ['activable']
-icescrum.json.task = []
+icescrum.json.task = icescrum.json.backlogElement.clone()
+icescrum.json.productPreferences = []
 
 icescrum.json.shortObject.feature = ['color', 'name']
 icescrum.json.shortObject.release = ['name', 'state', 'endDate', 'startDate', 'orderNumber']
 icescrum.json.shortObject.sprint = ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']
 icescrum.json.shortObject.user = ['firstName', 'lastName']
 icescrum.json.shortObject.story = ['state']
-
+icescrum.json.shortObject.productpreferences = ['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']
 /*
  Attachmentable section
  */
