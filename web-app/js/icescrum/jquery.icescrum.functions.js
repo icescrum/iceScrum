@@ -24,6 +24,12 @@
     $.extend($.icescrum, {
 
                 user: {
+                    i18n:{
+                        removeRoleProduct:'You have been removed from the project:',
+                        addRoleProduct:'You have been added to the project:',
+                        updateRoleProduct:'Your role has changed on the project:'
+                    },
+
                     scrumMaster:false,
                     productOwner:false,
                     teamMember:false,
@@ -31,16 +37,47 @@
                     poOrSm:function() {
                         return (this.scrumMaster || this.productOwner);
                     },
-                    add:function() {
-                        //TODO ?
+
+                    addRoleProduct:function(){
+                        if ($('li#product-'+this.product.id).length == 0){
+                            var newProduct = $('<li></li>').attr('id','product-'+this.product.id);
+                            var a = $('<a></a>').attr('href',$.icescrum.o.baseUrl +'p/'+ this.product.pkey +'#project');
+                            a.text(this.product.name);
+                            a.appendTo(newProduct);
+                            var projects = $('div#menu-project li#my-projects');
+                            newProduct.insertAfter(projects);
+                            if (projects.is(':hidden')){
+                                projects.show();
+                            }
+                        }
+                        $.icescrum.renderNotice($.icescrum.user.i18n.addRoleProduct+' '+this.product.name);
+                        if ($.icescrum.product.currentProduct && $.icescrum.product.currentProduct == this.product.id){
+                            $.doTimeout(500, function() {
+                                document.location.reload(true);
+                            });
+                        }
                     },
 
-                    update:function() {
-                        alert('update user');
+                    removeRoleProduct:function(){
+                        $('li#product-'+this.product.id+':not(.owner)').remove();
+                        if ($('div#menu-project li.projects').length == 0){
+                            $('div#menu-project li#my-projects').hide();
+                        }
+                        $.icescrum.renderNotice($.icescrum.user.i18n.removeRoleProduct+' '+this.product.name);
+                        if ($.icescrum.product.currentProduct && $.icescrum.product.currentProduct == this.product.id){
+                            $.doTimeout(500, function() {
+                                document.location = $.icescrum.o.baseUrl;
+                            });
+                        }
                     },
 
-                    remove:function() {
-                        alert('remove user');
+                    updateRoleProduct:function(){
+                        $.icescrum.renderNotice($.icescrum.user.i18n.updateRoleProduct+' '+this.product.name);
+                        if ($.icescrum.product.currentProduct && $.icescrum.product.currentProduct == this.product.id){
+                            $.doTimeout(500, function() {
+                                document.location.reload(true);
+                            });
+                        }
                     }
                 },
 
@@ -56,6 +93,10 @@
                     updated:'Project settings updated',
                     add:function() {
                         //TODO ?
+                    },
+
+                    test:function(){
+                        alert('totto');
                     },
 
                     update:function() {

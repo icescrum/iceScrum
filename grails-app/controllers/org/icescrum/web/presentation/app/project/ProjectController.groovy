@@ -61,7 +61,6 @@ class ProjectController {
     def springcacheService
 
     def index = {
-        println "test"
         chain(controller: 'scrumOS', action: 'index', params: params)
     }
 

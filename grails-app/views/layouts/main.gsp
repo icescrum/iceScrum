@@ -88,6 +88,9 @@
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
 <is:onStream
             on="#application"
-            events="[[object:'product',events:['add','remove','update','redirect']]]"/>
+            events="[[object:'product',events:['add','remove','update','redirect','test']]]"/>
+<is:onStream
+            on="#application"
+            events="[[object:'user',events:['addRoleProduct','removeRoleProduct','updateRoleProduct']]]"/>
 </body>
 </html>

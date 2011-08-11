@@ -80,7 +80,6 @@ class SandboxController {
         def user = null
         if (springSecurityService.isLoggedIn())
             user = springSecurityService.currentUser
-        println stories.size()
         render(template: template, model: [stories: stories, id: id, typeSelect: typeSelect, featureSelect: featureSelect, sprint: sprint, user: user])
     }
 

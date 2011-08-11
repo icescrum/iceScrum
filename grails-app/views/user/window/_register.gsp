@@ -41,7 +41,7 @@
         </is:fieldInformation>
 
         <is:fieldInput for="firstName" label="is.user.firstname">
-          <is:input id="firstName" name="firstName" value="${user.firstName}" />
+          <is:input id="firstName" name="firstName" value="${user.firstName}" focus="true" />
         </is:fieldInput>
 
         <is:fieldInput for="lastName" label="is.user.lastname">
@@ -81,14 +81,11 @@
         </is:fieldInformation>
 
         <is:buttonBar id="login-button-bar">
-          <is:button name='registerButton' type="submitToRemote" action='save' value="${message(code:'is.button.register')}" onSuccess="window.location.href='${createLink(controller:'login',action:'auth')}/?lang='+data.lang+'&username='+data.username;"/>
+          <is:button name="registerButton" type="submitToRemote" action='save' value="${message(code:'is.button.register')}" onSuccess="window.location.href='${createLink(controller:'login',action:'auth')}/?lang='+data.lang+'&username='+data.username;"/>
           <is:button type="link" button="button-s button-s-black" url="[controller:'login', action:'auth']" value="${message(code: 'is.button.cancel')}"/>
         </is:buttonBar>
     </form>
   </div>
-  <jq:jquery>
-    $("#firstName").focus();
-  </jq:jquery>
-  <is:shortcut key="return" callback="\$('#registerButton').click();"/>
+  <is:shortcut key="return" listenOn="'input'" callback="jQuery('input[name=registerButton]').click();"/>
 </is:simpleDesktop>
 </body>

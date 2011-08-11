@@ -36,17 +36,29 @@ import org.icescrum.cache.LocaleKeyGenerator
 import org.icescrum.cache.UserKeyGenerator
 import org.icescrum.cache.UserProjectCacheResolver
 import grails.plugin.springcache.web.key.WebContentKeyGenerator
+import org.icescrum.cache.IceScrumCacheResolver
 
 beans = {
 
-    projectCacheResolver(ProjectCacheResolver)
-    backlogElementCacheResolver(BacklogElementCacheResolver)
-    userCacheResolver(UserCacheResolver) {
+    projectCacheResolver(ProjectCacheResolver){
+        springcacheCacheManager = ref('springcacheCacheManager')
         springSecurityService = ref('springSecurityService')
+        grailsApplication = ref('grailsApplication')
     }
-
-    userProjectCacheResolver(UserProjectCacheResolver) {
+    backlogElementCacheResolver(BacklogElementCacheResolver){
+        springcacheCacheManager = ref('springcacheCacheManager')
         springSecurityService = ref('springSecurityService')
+        grailsApplication = ref('grailsApplication')
+    }
+    userCacheResolver(UserCacheResolver){
+        springcacheCacheManager = ref('springcacheCacheManager')
+        springSecurityService = ref('springSecurityService')
+        grailsApplication = ref('grailsApplication')
+    }
+    userProjectCacheResolver(UserProjectCacheResolver){
+        springcacheCacheManager = ref('springcacheCacheManager')
+        springSecurityService = ref('springSecurityService')
+        grailsApplication = ref('grailsApplication')
     }
 
     userKeyGenerator(UserKeyGenerator) {

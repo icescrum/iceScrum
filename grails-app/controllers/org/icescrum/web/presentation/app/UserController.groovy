@@ -51,6 +51,7 @@ class UserController {
 
     static window = [title: 'is.user', toolbar: false, init: 'profile']
 
+    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
     def register = {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
             render(status: 403)
@@ -282,6 +283,7 @@ class UserController {
         render(status: 404)
     }
 
+    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
     def retrieve = {
         def activated = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)
         if (!activated) {

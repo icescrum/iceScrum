@@ -26,7 +26,12 @@
             id:${sec.loggedInUserInfo(field: 'id') ?: 'null'},
             productOwner:${request.productOwner},
             scrumMaster:${request.scrumMaster},
-            teamMember:${request.teamMember}
+            teamMember:${request.teamMember},
+            i18n:{
+                addRoleProduct:'${message(code:'is.user.role.added.product')}',
+                updateRoleProduct:'${message(code:'is.user.role.updated.product')}',
+                removeRoleProduct:'${message(code:'is.user.role.removed.product')}'
+            }
         },
         story:{
             states: ${is.bundleLocaleToJs(bundle: BundleUtils.storyStates)},

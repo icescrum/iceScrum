@@ -173,21 +173,21 @@ log4j = {
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
     error 'org.codehaus.groovy.grails.plugins',
-            'org.grails.plugin',
-            'grails.app'
+          'org.grails.plugin',
+          'grails.app'
 
     error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-            'org.codehaus.groovy.grails.web.pages', //  GSP
-            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-            'org.codehaus.groovy.grails.web.mapping', // URL mapping
-            'org.codehaus.groovy.grails.commons', // core / classloading
-            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-            'org.springframework',
-            'org.hibernate',
-            'net.sf.ehcache.hibernate'
+          'org.codehaus.groovy.grails.web.pages', //  GSP
+          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+          'org.codehaus.groovy.grails.web.mapping', // URL mapping
+          'org.codehaus.groovy.grails.commons', // core / classloading
+          'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+          'org.springframework',
+          'org.hibernate',
+          'net.sf.ehcache.hibernate'
 
-    warn 'org.mortbay.log'
+    warn  'org.mortbay.log'
 
     if (grails.entryPoints.debug) {
         debug 'org.icescrum.plugins.entryPoints'
@@ -201,6 +201,8 @@ log4j = {
         debug 'org.icescrum.atmosphere'
         debug 'org.icescrum.cache'
         debug 'grails.plugin.springcache'
+    }else{
+        off 'grails.plugin.springcache'
     }
 
     appenders {
@@ -214,9 +216,15 @@ log4j = {
     }
 
     root {
-        debug 'stdout', 'icescrumFileLog'
-        error 'stdout', 'icescrumFileLog'
-        info 'stdout', 'icescrumFileLog'
+        if (icescrum.debug.enable) {
+            debug 'stdout', 'icescrumFileLog'
+            error 'stdout', 'icescrumFileLog'
+            info 'stdout', 'icescrumFileLog'
+        }else{
+            debug 'icescrumFileLog'
+            error 'icescrumFileLog'
+            info 'icescrumFileLog'
+        }
         additivity = true
     }
 }
@@ -234,7 +242,7 @@ springcache {
         timeToIdle = 0
     }
     caches {
-        activitiesFeed {
+        feedCache {
             timeToLive = 120
         }
         applicationCache {

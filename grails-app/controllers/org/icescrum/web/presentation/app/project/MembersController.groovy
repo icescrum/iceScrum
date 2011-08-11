@@ -79,24 +79,24 @@ class MembersController {
         try{
             def idmembers = []
             params.members?.each{ k,v ->
-                def id = v.toLong()
-                    def found = currentMembers.find{ it.id == id}
+                    def u = User.get(v.toLong())
+                    def found = currentMembers.find{ it.id == u.id}
                     if (found){
                         if (found.role.toString() != params.role."${k}"){
-                            removeRole(found,team,product)
-                            addRole([id:id,role:params.role."${k}"],team,product)
+                            productService.changeRole(product,team,u,Integer.parseInt(params.role."${k}"))
                         }
                     }else{
-                        addRole([id:id,role:params.role."${k}"],team,product)
+                        productService.addRole(product,team,u,Integer.parseInt(params.role."${k}"))
                     }
-                idmembers << id
+                idmembers << u.id
             }
             def commons = currentMembers*.id.intersect(idmembers)
             def difference = currentMembers*.id.plus(commons)
             difference.removeAll(commons)
             difference?.each{
                 def found = currentMembers.find{ it2 -> it == it2.id}
-                removeRole(found,team,product)
+                def u = User.get(found.id)
+                productService.removeRole(product,team,u,found.role)
             }
 
             if (params.creator && params.creator?.toLong() != product.owner.id){
@@ -118,7 +118,8 @@ class MembersController {
         def currentMembers = allMembersProduct(product)
         try {
             def found = currentMembers.find{ it.id == user.id}
-            removeRole(found,team,product)
+            def u = User.get(found.id)
+            productService.removeRole(product,team,u,found.role)
             flushCache(cacheResolver:'projectCacheResolver', cache:'projectMembersCache')
             render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
         } catch (e) {
@@ -168,47 +169,5 @@ class MembersController {
                          role: Authority.STAKEHOLER])
         }
         members.sort{ a,b -> a.role > b.role ? -1 : 1  }
-    }
-
-    private removeRole(user, team, product){
-        switch (user.role){
-            case Authority.SCRUMMASTER.toString():
-                teamService.removeMemberOrScrumMaster(team,User.get(user.id))
-                break
-            case Authority.MEMBER.toString():
-                teamService.removeMemberOrScrumMaster(team,User.get(user.id))
-                break
-            case Authority.PRODUCTOWNER.toString():
-                productService.removeProductOwner(product,User.get(user.id))
-                break
-            case Authority.STAKEHOLER.toString():
-                productService.removeStakeHolder(product,User.get(user.id))
-                break
-            case Authority.PO_AND_SM.toString():
-                teamService.removeMemberOrScrumMaster(team,User.get(user.id))
-                productService.removeProductOwner(product,User.get(user.id))
-                break
-        }
-    }
-
-    private addRole(user, team, product){
-        switch (user.role){
-            case Authority.SCRUMMASTER.toString():
-                teamService.addScrumMaster(team,User.get(user.id))
-                break
-            case Authority.MEMBER.toString():
-                teamService.addMember(team,User.get(user.id))
-                break
-            case Authority.PRODUCTOWNER.toString():
-                productService.addProductOwner(product,User.get(user.id))
-                break
-            case Authority.STAKEHOLER.toString():
-                productService.addStakeHolder(product,User.get(user.id))
-                break
-            case Authority.PO_AND_SM.toString():
-                teamService.addScrumMaster(team,User.get(user.id))
-                productService.addProductOwner(product,User.get(user.id))
-                break
-        }
     }
 }

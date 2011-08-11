@@ -161,12 +161,12 @@
                     </li>
                 </g:if>
                 <entry:point id="menu-project" model="[curProduct:curProduct]"/>
+                <li class="menu-label" id="my-projects" style='display:${productFilteredsList ?'block':'none'}'>
+                    ${message(code: 'is.projectmenu.submenu.project.my.title')}
+                </li>
                 <g:if test="${productFilteredsList}">
-                    <li class="menu-label">
-                        ${message(code: 'is.projectmenu.submenu.project.my.title')}
-                    </li>
                     <g:each var="curProduct" in="${productFilteredsList}">
-                        <li><g:link class="${(product?.id == curProduct.id) ? 'active' : ''}" controller="scrumOS"
+                        <li id='product-${curProduct.id}' class="projects ${(curProduct.owner.id == user?.id) ? 'owner' : ''}"><g:link class="${(product?.id == curProduct.id) ? 'active' : ''}" controller="scrumOS"
                                     fragment="project" params="[product:curProduct.pkey]"
                                     onClick="${(product?.id == curProduct.id) ? is.notice(text:g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')]))+'return false;' : ''}">
                             <is:truncated encodedHTML="true" size="25">${curProduct.name.encodeAsHTML()}</is:truncated>
@@ -197,7 +197,7 @@
     </li>
     <li class="navigation-line separator"></li>
     <entry:point id="menu-left" model="[product:product]"/>
-    <is:cache cache="userMenuCache" cacheResolver="userProjectCacheResolver" key="user-${sec.username()}" disabled="${product ? false : true}" role="false" locale="false">
+    <is:cache cache="userMenuCache" cacheResolver="userProjectCacheResolver" key="user-${user?.username?:'anonymous'}" disabled="${product ? false : true}" role="false" locale="false">
         <is:menuBar/>
     </is:cache>
 </ul>
