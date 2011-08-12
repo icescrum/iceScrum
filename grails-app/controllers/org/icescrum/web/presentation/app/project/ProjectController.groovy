@@ -226,7 +226,7 @@ class ProjectController {
                         case Authority.PRODUCTOWNER.toString():
                             productOwners.add(v.toLong())
                             break;
-                        case Authority.STAKEHOLER.toString():
+                        case Authority.STAKEHOLDER.toString():
                             stakeHolders.add(v.toLong())
                             break;
                         case Authority.PO_AND_SM.toString():

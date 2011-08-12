@@ -28,9 +28,9 @@
             scrumMaster:${request.scrumMaster},
             teamMember:${request.teamMember},
             i18n:{
-                addRoleProduct:'${message(code:'is.user.role.added.product')}',
-                updateRoleProduct:'${message(code:'is.user.role.updated.product')}',
-                removeRoleProduct:'${message(code:'is.user.role.removed.product')}'
+                addRoleProduct:"${message(code:'is.user.role.added.product')}",
+                updateRoleProduct:"${message(code:'is.user.role.updated.product')}",
+                removeRoleProduct:"${message(code:'is.user.role.removed.product')}"
             }
         },
         story:{
@@ -40,9 +40,9 @@
         sprint:{
             ${currentSprint ? 'current:' + (currentSprint as JSON) + ',' : ''}
             i18n:{
-                   name:'${g.message(code: 'is.sprint')}',
-                   noDropMessage:'${g.message(code:'is.ui.sprintPlan.no.drop')}',
-                   noDropMessageLimitedTasks:'${g.message(code:'is.task.error.limitTasksUrgent')}'
+                   name:"${g.message(code: 'is.sprint')}",
+                   noDropMessage:"${g.message(code:'is.ui.sprintPlan.no.drop')}",
+                   noDropMessageLimitedTasks:"${g.message(code:'is.task.error.limitTasksUrgent')}"
             },
             states:${is.bundleLocaleToJs(bundle: BundleUtils.sprintStates)}
         },
@@ -50,9 +50,9 @@
             states:${is.bundleLocaleToJs(bundle: BundleUtils.releaseStates)}
         },
         task:{
-            BLOCKED:'${g.message(code: 'is.task.blocked')}',
-            UNBLOCK:'${g.message(code: 'is.ui.sprintPlan.menu.task.unblock')}',
-            BLOCK:'${g.message(code: 'is.ui.sprintPlan.menu.task.block')}'
+            BLOCKED:"${g.message(code: 'is.task.blocked')}",
+            UNBLOCK:"${g.message(code: 'is.ui.sprintPlan.menu.task.unblock')}",
+            BLOCK:"${g.message(code: 'is.ui.sprintPlan.menu.task.block')}"
         },
         actor:{
             instances:${is.bundleLocaleToJs(bundle: BundleUtils.actorInstances)},
@@ -72,7 +72,7 @@
             displayRecurrentTasks:${product.preferences.displayRecurrentTasks},
             limitUrgentTasks:${product.preferences.limitUrgentTasks},
             assignOnBeginTask:${product.preferences.assignOnBeginTask},
-            deleted:'${g.message(code: 'is.product.deleted')}'
+            deleted:"${g.message(code: 'is.product.deleted')}"
         }
         </g:if>
     });

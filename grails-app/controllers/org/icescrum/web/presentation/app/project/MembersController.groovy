@@ -166,7 +166,7 @@ class MembersController {
                          activity:it.preferences.activity?:'&nbsp;',
                          id: it.id,
                          avatar:is.avatar(user:it,link:true),
-                         role: Authority.STAKEHOLER])
+                         role: Authority.STAKEHOLDER])
         }
         members.sort{ a,b -> a.role > b.role ? -1 : 1  }
     }

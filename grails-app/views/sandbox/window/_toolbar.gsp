@@ -66,10 +66,10 @@
     ${message(code: 'is.ui.sandbox.toolbar.accept')}
 </is:iconButton>
 
-<is:separatorSmall rendered="${inProduct}"/>
+<is:separatorSmall rendered="${productOwner}"/>
 
 <is:iconButton
-        rendered="${inProduct}"
+        rendered="${productOwner}"
         shortcut="[key:'ctrl+shift+c',scope:id]"
         onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');});"
         disabled="true"
