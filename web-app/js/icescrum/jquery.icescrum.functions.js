@@ -599,7 +599,6 @@
 
                     _postRendering:function(tmpl, postit) {
 
-                        debugger;
                         if ($(tmpl.view + '-' + this.backlog.id).hasClass('ui-selectable') && this.backlog.state != $.icescrum.sprint.STATE_DONE) {
                             postit.addClass('ui-selectee');
                         }
@@ -853,7 +852,6 @@
                     },
 
                     sortableTasks:function(){
-                        debugger;
                         if ($.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
                             $('table.kanban:not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').addClass('postit-sortable');
                         }else if(!$.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
