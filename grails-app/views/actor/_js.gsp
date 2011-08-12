@@ -41,7 +41,7 @@
                attachment="${actor.totalAttachments}"
                controller="${id}">
         ?**=truncatedDescription**?
-        <is:postitMenu id="${actor.id}" contentView="/actor/menu" params="[id:id, actor:actor]"
+        <is:postitMenu id="actor-${actor.id}" contentView="/actor/menu" params="[id:id, actor:actor]"
                        rendered="${request.productOwner}"/>
         ?**if(truncatedDescription.length > 50 || truncatedName.length > 17) {**?
         <is:tooltipPostit

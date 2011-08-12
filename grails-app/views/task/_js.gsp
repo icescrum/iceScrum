@@ -58,7 +58,7 @@
                color="yellow"
                rect="true">
         <g:if test="${request.inProduct}">
-            <is:postitMenu id="${task.id}"
+            <is:postitMenu id="task-${task.id}"
                            contentView="/task/menu"
                            params="[id:id, task:task, user:user, template:true]"/>
         </g:if>

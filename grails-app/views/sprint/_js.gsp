@@ -62,7 +62,7 @@
                 <div class="drap-container">
                     ${message(code: 'is.ui.releasePlan.from')} <strong>?**=startDate**?</strong>
                     ${message(code: 'is.ui.releasePlan.to')} <strong>?**=endDate**?</strong>
-                    <is:menu class="dropmenu-action" id="${sprint.id}" contentView="/sprint/menu"
+                    <is:menu class="dropmenu-action" id="sprint-${sprint.id}" contentView="/sprint/menu"
                              params="[id:id,sprint:sprint,template:true]"/>
                 </div>
 

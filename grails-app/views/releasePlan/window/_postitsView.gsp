@@ -59,7 +59,7 @@
                                                                                          formatName="is.date.format.short"/></strong>
                         ${message(code: 'is.ui.releasePlan.to')} <strong><g:formatDate date="${sprint.endDate}"
                                                                                        formatName="is.date.format.short"/></strong>
-                        <is:menu class="dropmenu-action" id="${sprint.id}" contentView="/sprint/menu"
+                        <is:menu class="dropmenu-action" id="sprint-${sprint.id}" contentView="/sprint/menu"
                                  params="[id:id,sprint:sprint]"/>
                     </div>
 

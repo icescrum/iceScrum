@@ -66,7 +66,7 @@
            stateText="?**=textState**?"
            comment="${story.totalComments}">
     ?**=truncatedDescription**?
-    <is:postitMenu id="${story.id}" contentView="/story/menu"
+    <is:postitMenu id="story-${story.id}" contentView="/story/menu"
                    params="[id:id, story:story, sprint:sprint, template:true, referrer:referrer]"/>
     ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
     <is:tooltipPostit

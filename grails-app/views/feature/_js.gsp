@@ -47,7 +47,7 @@
                color="${feature.color}"
                controller="${id}">
         ?**=truncatedDescription**?
-        <is:postitMenu id="${feature.id}" contentView="/feature/menu" params="[id:id, feature:feature]"
+        <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" params="[id:id, feature:feature]"
                        rendered="${request.productOwner}"/>
         ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
         <is:tooltipPostit
