@@ -598,6 +598,8 @@
                     },
 
                     _postRendering:function(tmpl, postit) {
+
+                        debugger;
                         if ($(tmpl.view + '-' + this.backlog.id).hasClass('ui-selectable') && this.backlog.state != $.icescrum.sprint.STATE_DONE) {
                             postit.addClass('ui-selectee');
                         }
@@ -610,7 +612,7 @@
                             $('#menu-delete-' + this.id, postit).remove();
                         }
 
-                        if (!((responsible || $.icescrum.user.scrumMaster) && this.state != $.icescrum.task.STATE_DONE && ($.icescrum.sprint.current && this.backlog.id != $.icescrum.sprint.current.id))) {
+                        if (!((responsible || $.icescrum.user.scrumMaster) && this.state != $.icescrum.task.STATE_DONE && ($.icescrum.sprint.current && this.backlog.id == $.icescrum.sprint.current.id))) {
                             $('#menu-blocked-' + this.id, postit).remove();
                         }
                         if (this.state == $.icescrum.task.STATE_DONE) {
@@ -853,9 +855,9 @@
                     sortableTasks:function(){
                         debugger;
                         if ($.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
-                            $('table.kanban :not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').addClass('postit-sortable');
+                            $('table.kanban:not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').addClass('postit-sortable');
                         }else if(!$.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
-                            $('table.kanban :not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').removeClass('postit-sortable');
+                            $('table.kanban:not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').removeClass('postit-sortable');
                         }
                     },
 
