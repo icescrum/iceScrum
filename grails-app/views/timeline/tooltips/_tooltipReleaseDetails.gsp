@@ -30,10 +30,10 @@
     </g:if>
     <tr>
         <td class="entry-title"><g:message code="is.release.startDate"/>: </td>
-        <td class="entry-value"><g:formatDate date="${release.startDate}" formatName="is.date.format.short" timeZone="${user?.preferences?.timezone?:null}"/></td>
+        <td class="entry-value"><g:formatDate date="${release.startDate}" formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></td>
     </tr>
     <tr>
         <td class="entry-title"><g:message code="is.release.endDate"/>: </td>
-        <td class="entry-value"><g:formatDate date="${release.endDate}" formatName="is.date.format.short" timeZone="${user?.preferences?.timezone?:null}"/></td>
+        <td class="entry-value"><g:formatDate date="${release.endDate}" formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></td>
     </tr>
 </table>

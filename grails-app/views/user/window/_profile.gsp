@@ -62,11 +62,9 @@
                 <is:panelTitle>${message(code: 'is.ui.backlogelement.dates')}</is:panelTitle>
                 <is:panelContext>
                     <is:panelLine legend="${message(code:'is.user.dateCreated')}"><g:formatDate
-                            date="${user.dateCreated}" formatName="is.date.format.short"
-                            timeZone="${user?.preferences?.timezone?:null}"/></is:panelLine>
+                            date="${user.dateCreated}" formatName="is.date.format.short"/></is:panelLine>
                     <is:panelLine legend="${message(code:'is.user.lastUpdated')}"><g:formatDate
-                            date="${user.lastUpdated}" formatName="is.date.format.short"
-                            timeZone="${user?.preferences?.timezone?:null}"/></is:panelLine>
+                            date="${user.lastUpdated}" formatName="is.date.format.short"/></is:panelLine>
                 </is:panelContext>
             </is:panel>
 

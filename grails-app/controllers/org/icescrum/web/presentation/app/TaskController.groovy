@@ -32,8 +32,8 @@ import grails.plugins.springsecurity.Secured
 import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugin.springcache.annotations.CacheFlush
+import org.icescrum.core.utils.BundleUtils
 
-@Secured('inProduct()')
 class TaskController {
 
     def sprintService
@@ -76,8 +76,8 @@ class TaskController {
             this.manageAttachments(task)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, text: task as JSON) }
-                xml { render(status: 200, text: task as XML) }
+                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
         } catch (AttachmentException e) {
             returnError(object: task, exception: e)
@@ -149,8 +149,8 @@ class TaskController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [task: task, next: next?.id] as JSON)  }
-                json { render(status: 200, text: task as JSON) }
-                xml { render(status: 200, text: task as XML) }
+                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
         } catch (AttachmentException e) {
             returnError(object: task, exception: e)
@@ -178,8 +178,8 @@ class TaskController {
             taskService.assign([task], user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, text: task as JSON) }
-                xml { render(status: 200, text: task as XML) }
+                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
         } catch (IllegalStateException e) {
             returnError(exception: e)
@@ -205,8 +205,8 @@ class TaskController {
             taskService.unassign([task], user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, text: task as JSON) }
-                xml { render(status: 200, text: task as XML) }
+                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
         } catch (IllegalStateException e) {
             returnError(exception: e)
@@ -233,8 +233,8 @@ class TaskController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: idj as JSON)  }
-                json { render(status: 200, text: [result: 'success'] as JSON) }
-                xml { render(status: 200, text: [result: 'success'] as JSON) }
+                json { render(status: 200, contentType: 'application/json', text: [result: 'success'] as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: [result: 'success'] as JSON) }
             }
         } catch (IllegalStateException e) {
             returnError(exception: e)
@@ -256,8 +256,8 @@ class TaskController {
             def copiedTask = taskService.copy(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: copiedTask as JSON)  }
-                json { render(status: 200, text: copiedTask as JSON) }
-                xml { render(status: 200, text: copiedTask as XML) }
+                json { render(status: 200, contentType: 'application/json', text: copiedTask as JSON) }
+                xml { render(status: 200,  contentType: 'text/xml',  text: copiedTask as XML) }
             }
         } catch (IllegalStateException e) {
             returnError(exception: e)
@@ -284,8 +284,8 @@ class TaskController {
             taskService.update(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, text: task as JSON) }
-                xml { render(status: 200, text: task as XML) }
+                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
         } catch (IllegalStateException e) {
             returnError(exception: e)
@@ -312,8 +312,8 @@ class TaskController {
             taskService.update(task, user)
             withFormat {
                 html { render(status: 200)  }
-                json { render(status: 200, text: task as JSON) }
-                xml { render(status: 200, text: task as XML) }
+                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
         } catch (IllegalStateException e) {
             returnError(exception: e)
@@ -344,8 +344,8 @@ class TaskController {
             taskService.rank(movedItem, position)
             withFormat {
                 html { render(status: 200)  }
-                json { render(status: 200, text: movedItem as JSON) }
-                xml { render(status: 200, text: movedItem as XML) }
+                json { render(status: 200, contentType: 'application/json', text: movedItem as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: movedItem as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object: movedItem, exception: e)
@@ -429,8 +429,8 @@ class TaskController {
             taskService.rank(task, params.int('position'))
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, text: task as JSON) }
-                xml { render(status: 200, text: task as XML) }
+                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
         } catch (IllegalStateException e) {
             returnError(exception: e)
@@ -439,7 +439,7 @@ class TaskController {
         }
     }
 
-    @Cacheable(cache = 'taskCache', cacheResolver = 'projectCacheResolver')
+    @Cacheable(cache = 'taskCache', cacheResolver = 'backlogElementCacheResolver')
     def show = {
         if (request?.format == 'html') {
             render(status: 404)
@@ -459,8 +459,8 @@ class TaskController {
         }
 
         withFormat {
-            json { render(status: 200, text: task as JSON) }
-            xml { render(status: 200, text: task as XML) }
+            json { render(status: 200, contentType: 'appplication/json', text: task as JSON) }
+            xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
         }
     }
 
@@ -472,7 +472,13 @@ class TaskController {
             return
         }
 
-        def sprint = Sprint.load(params.id)
+        def sprint
+
+        if (params.id)
+            sprint = Sprint.getInProduct(params.product.toLong(),params.id.toLong()).list()[0]
+        else
+            sprint = Sprint.findCurrentOrNextSprint(params.product.toLong()).list()[0]
+
         if (!sprint) {
             returnError(text: message(code: 'is.sprint.error.not.exist'))
             return
@@ -488,8 +494,49 @@ class TaskController {
         }
 
         withFormat {
-            json { render(status: 200, text: tasks as JSON) }
-            xml { render(status: 200, text: tasks as XML) }
+            json { render(status: 200, contentType: 'appplication/json', text: tasks as JSON) }
+            xml {
+                render(status: 200, contentType: 'text/xml', text: tasks as XML)
+            }
+            html {
+                render(status: 200, contentType: 'text/xml', text: tasks as XML)
+            }
+        }
+    }
+
+    @Cacheable(cache = 'tasksList', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
+    def mylyn = {
+
+        def sprint
+        if (params.id)
+            sprint = Sprint.getInProduct(params.product.toLong(),params.id.toLong()).list()[0]
+        else
+            sprint = Sprint.findCurrentOrNextSprint(params.product.toLong()).list()[0]
+
+        if (!sprint) {
+            returnError(text: message(code: 'is.sprint.error.not.exist'))
+            return
+        }
+
+        def results
+        if (params.filter == 'user') {
+            results = Task.getUserTasks(sprint.id, springSecurityService.principal.id).list()
+        } else if (params.filter == 'free') {
+            results = Task.getFreeTasks(sprint.id).list()
+        } else {
+            results = Task.getAllTasksInSprint(sprint.id).list()
+        }
+        render(status: 200, contentType: 'text/xml'){
+            tasks {
+                for(t in results) {
+                    task(id:t.id){
+                        description(t.name)
+                        responsible(t.responsible? t.responsible.firstName + ' '+ t.responsible.lastName :' ')
+                        status(g.message(code:BundleUtils.taskStates.get(t.state)))
+                        type(t.type == Task.TYPE_RECURRENT ? g.message(code:'is.task.type.recurrent') : t.type == Task.TYPE_URGENT ? g.message(code:'is.task.type.urgent') : t.parentStory.name)
+                    }
+                }
+            }
         }
     }
 }

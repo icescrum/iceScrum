@@ -64,16 +64,12 @@
           <is:input name='email' id='email' value="${user.email}" />
         </is:fieldInput>
 
-        <is:fieldInput for="activity" label="is.user.preferences.activity">
+        <is:fieldInput for="activity" label="is.user.preferences.activity" optional="true">
           <is:input name='preferences.activity' id='activity' />
         </is:fieldInput>
 
-        <is:fieldSelect for="language" label="is.user.preferences.language">
+        <is:fieldSelect for="language" label="is.user.preferences.language" noborder="true">
           <is:localeSelecter container="#registerForm" width="170" styleSelect="dropdown" name="preferences.language"/>
-        </is:fieldSelect>
-
-        <is:fieldSelect for="timezone" label="is.user.preferences.timezone" noborder="true">
-          <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown" name="preferences.timezone" value="UTC"/>
         </is:fieldSelect>
         
         <is:fieldInformation>

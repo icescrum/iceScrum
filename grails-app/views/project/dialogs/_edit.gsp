@@ -30,16 +30,21 @@
     <is:fieldInput for="productkey" label="is.dialog.project.properties.pkey">
       <is:input typed="[type:'alphanumeric',onlyletters:true,allcaps:true]" id="productkey" name="productd.pkey" value="${product.pkey}"/>
     </is:fieldInput>
-    <is:fieldArea for="productdescription" label="is.product.description">
+    <is:fieldRadio rendered="${!privateOption}" for="productpreferenceshidden" label="is.product.preferences.project.hidden">
+        <is:radio id="productpreferenceshidden" name="productd.preferences.hidden" value="${product.preferences.hidden}"/>
+    </is:fieldRadio>
+    <is:fieldSelect for="productpreferencestimezone" label="is.product.preferences.timezone">
+        <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown"
+                           name="productd.preferences.timezone" id="productpreferencestimezone"
+                           value="${product.preferences.timezone}"/>
+    </is:fieldSelect>
+    <is:fieldArea for="productdescription" label="is.product.description" noborder="true">
       <is:area
               rich="[preview:true,width:330]"
               id="productdescription"
               name="productd.description"
               value="${product.description}"/>
     </is:fieldArea>
-    <is:fieldRadio rendered="${!privateOption}" for="productpreferenceshidden" label="is.product.preferences.project.hidden" noborder="true">
-        <is:radio id="productpreferenceshidden" name="productd.preferences.hidden" value="${product.preferences.hidden}"/>
-    </is:fieldRadio>
   </is:fieldset>
 </form>
 <is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-project" listenOn="'#form-project input'"/>

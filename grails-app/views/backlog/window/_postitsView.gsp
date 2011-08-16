@@ -51,7 +51,7 @@
                   action:'estimate',
                   on:'.postit-story .mini-value.editable',
                   rendered:(request.teamMember || request.scrumMaster),
-                  findId:'jQuery(this).parents(\'.postit-story:first\').attr(\'elemID\')',
+                  findId:'jQuery(this).parents(\'.postit-story:first\').attr(\'elemid\')',
                   type:'selectui',
                   name:'story.effort',
                   before:'$(this).next().hide();',

@@ -46,7 +46,7 @@
             <p>
                 <strong><g:message code="is.backlogelement.creationDate"/> :</strong>
                 <g:formatDate date="${actor.creationDate}" formatName="is.date.format.short.time"
-                              timeZone="${user?.preferences?.timezone?:null}"/>
+                              timeZone="${actor.backlog.preferences.timezone}"/>
             </p>
 
             <p>

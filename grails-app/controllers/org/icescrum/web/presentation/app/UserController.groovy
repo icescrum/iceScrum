@@ -46,6 +46,7 @@ class UserController {
     def userService
     def securityService
     def springSecurityService
+    def productService
     def grailsApplication
     def notificationEmailService
 

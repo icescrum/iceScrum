@@ -48,20 +48,20 @@
             <p>
                 <strong><g:message code="is.backlogelement.creationDate"/> :</strong>
                 <g:formatDate date="${task.creationDate}" formatName="is.date.format.short.time"
-                              timeZone="${user?.preferences?.timezone?:null}"/>
+                              timeZone="${task.backlog.parentRelease.parentProduct.preferences.timezone}"/>
             </p>
             <g:if test="${task.state >= Task.STATE_BUSY}">
                 <p>
                     <strong><g:message code="is.task.date.inprogress"/> :</strong>
                     <g:formatDate date="${task.inProgressDate}" formatName="is.date.format.short.time"
-                                  timeZone="${user?.preferences?.timezone?:null}"/>
+                                  timeZone="${task.backlog.parentRelease.parentProduct.preferences.timezone}"/>
                 </p>
             </g:if>
             <g:if test="${task.state == Task.STATE_DONE}">
                 <p>
                     <strong><g:message code="is.task.date.done"/> :</strong>
                     <g:formatDate date="${task.doneDate}" formatName="is.date.format.short.time"
-                                  timeZone="${user?.preferences?.timezone?:null}"/>
+                                  timeZone="${task.backlog.parentRelease.parentProduct.preferences.timezone}"/>
                 </p>
             </g:if>
             <p class="${task.responsible ?: 'last'}">

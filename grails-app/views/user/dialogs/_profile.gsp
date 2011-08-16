@@ -71,17 +71,12 @@
                     </is:fieldInput>
                 </g:else>
 
-                <is:fieldInput for="activity" label="is.user.preferences.activity">
+                <is:fieldInput for="activity" label="is.user.preferences.activity" optional="true">
                     <is:input name='user.preferences.activity' id='activity' value="${user.preferences.activity}"/>
                 </is:fieldInput>
-                <is:fieldSelect for="user.preferences.language" label="is.user.preferences.language">
+                <is:fieldSelect for="user.preferences.language" label="is.user.preferences.language" noborder="true">
                     <is:localeSelecter width="170" styleSelect="dropdown" name="user.preferences.language"
                                        id="user.preferences.language" value="${user.preferences.language}"/>
-                </is:fieldSelect>
-                <is:fieldSelect for="user.preferences.timezone" label="is.user.preferences.timezone" noborder="true">
-                    <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown"
-                                       name="user.preferences.timezone" id="user.preferences.timezone"
-                                       value="${user.preferences.timezone}"/>
                 </is:fieldSelect>
             </is:accordionSection>
             <entry:point id="user-${actionName}" model="[user:user]"/>

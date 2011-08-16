@@ -23,6 +23,7 @@
 <is:tableView>
 
     <g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
+    <g:set var="timezone" value="${sprint.parentRelease.parentProduct.preferences.timezone}"/>
 
     <is:table id="tasks-table">
 
@@ -50,13 +51,12 @@
                 <strong>${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</strong>
             </is:tableGroupHeader>
             <is:tableRows in="${recurrentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
-                          var="task" elemID="id">
+                          var="task" elemid="id">
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
                     <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
-                             class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu"
-                             params="[id:id, task:task, story:story, user:user]"/>
+                             class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu" params="[id:id, task:task, story:story, user:user]"/>
                     <g:set var="attachment" value="${task.totalAttachments}"/>
                     <g:if test="${attachment}">
                         <span class="table-attachment"
@@ -77,8 +77,8 @@
                         editable="[type:'richarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'notes']">${task.notes}</is:tableColumn>
 
                 <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
-                <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate, timezone: user?.preferences?.timezone ?: null) : ''}</is:tableColumn>
-                <is:tableColumn>${task.doneDate ? g.formatDate(formatName: 'is.date.format.short', date: task.doneDate, timezone: user?.preferences?.timezone ?: null) : ''}</is:tableColumn>
+                <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate, timezone: timezone) : ''}</is:tableColumn>
+                <is:tableColumn>${task.doneDate ? g.formatDate(formatName: 'is.date.format.short', date: task.doneDate, timezone: timezone) : ''}</is:tableColumn>
             </is:tableRows>
         </is:tableGroup>
 
@@ -94,7 +94,7 @@
                 <strong>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</strong>
             </is:tableGroupHeader>
             <is:tableRows in="${urgentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
-                          var="task" elemID="id">
+                          var="task" elemid="id">
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
@@ -141,7 +141,7 @@
                     <strong>${story.name.encodeAsHTML()} - ${story.effort} - ${is.bundle(bundle: 'storyStates', value: story.state)}</strong>
                 </is:tableGroupHeader>
                 <is:tableRows in="${story.tasks.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
-                              var="task" elemID="id">
+                              var="task" elemid="id">
                     <is:tableColumn class="table-cell-checkbox">
                         <g:checkBox name="check-${task.id}"/>
                         <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"

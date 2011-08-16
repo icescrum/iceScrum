@@ -34,10 +34,10 @@
     </g:if>
     <tr>
         <td class="entry-title"><g:message code="is.sprint.startDate"/>: </td>
-        <td class="entry-value"><g:formatDate date="${sprint.startDate}" formatName="is.date.format.short" timeZone="${user?.preferences?.timezone?:null}"/></td>
+        <td class="entry-value"><g:formatDate date="${sprint.startDate}" formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></td>
     </tr>
     <tr>
         <td class="entry-title"><g:message code="is.sprint.endDate"/>: </td>
-        <td class="entry-value"><g:formatDate date="${sprint.endDate}" formatName="is.date.format.short" timeZone="${user?.preferences?.timezone?:null}"/></td>
+        <td class="entry-value"><g:formatDate date="${sprint.endDate}" formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></td>
     </tr>
 </table>

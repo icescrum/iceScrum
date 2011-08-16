@@ -17,7 +17,8 @@
 -
 - Authors:
 -
-- Stephane Maldini (stephane.maldini@icescrum.com)
+- Stephane Maldini (stephane.maldini@icescrum.com)-
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
 
 <%@ page import="grails.plugin.fluxiable.Activity; grails.plugin.fluxiable.ActivityLink; org.grails.comments.Comment" %>
@@ -43,7 +44,7 @@
                         <g:if test="${entry instanceof Comment}">
                             <g:render template="/components/comment"
                                       plugin="icescrum-core"
-                                      model="[noEscape:true, backlogelement:story.id, comment:entry, commentId:'summary']"/>
+                                      model="[noEscape:true, backlogelement:story, comment:entry, commentId:'summary']"/>
                         </g:if>
                         <g:elseif test="${entry instanceof Activity && entry.code != 'comment'}">
                             <li ${(summary?.size() == (i + 1)) ? 'class="last"' : ''}>
@@ -55,7 +56,7 @@
                                         <strong>${entry.cachedLabel.encodeAsHTML()}</strong></p>
 
                                     <p><g:formatDate date="${entry.dateCreated}" formatName="is.date.format.short.time"
-                                                     timeZone="${user?.preferences?.timezone?:null}"/></p>
+                                                     timeZone="${story.backlog.preferences.timezone}"/></p>
                                 </div>
                             </li>
                         </g:elseif>
@@ -109,7 +110,7 @@
                                     <strong>${a.cachedLabel.encodeAsHTML()}</strong></p>
 
                                 <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"
-                                                 timeZone="${user?.preferences?.timezone?:null}"/></p>
+                                                 timeZone="${story.backlog.preferences?.timezone}"/></p>
                             </div>
                         </li>
                     </g:each>
@@ -136,8 +137,7 @@
                              onClick="jQuery.icescrum.openCommentTab('#comments');">${message(code: 'is.ui.backlogelement.comment.add')}</is:link>
                 </sec:ifLoggedIn>
             </div>
-            <isComment:render noEscape="true" bean="${story}"
-                              noComment="${message(code:'is.ui.backlogelement.activity.comments.no')}"/>
+            <isComment:render noEscape="true" bean="${story}" noComment="${message(code:'is.ui.backlogelement.activity.comments.no')}"/>
         </is:panelTab>
     </div>
 

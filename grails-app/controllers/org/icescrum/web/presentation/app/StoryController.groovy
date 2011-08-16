@@ -76,8 +76,8 @@ class StoryController {
             this.manageAttachments(story)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
-                json { render status: 200, text: story as JSON }
-                xml { render status: 200, text: story as XML }
+                json { render status: 200, contentType: 'application/json', text: story as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: story as XML }
             }
         } catch (AttachmentException e) {
             returnError(exception:e)
@@ -199,8 +199,8 @@ class StoryController {
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [story: story, next: next?.id ?: null] as JSON }
-                json { render status: 200, text:story as JSON }
-                xml { render status: 200, text:story as XML }
+                json { render status: 200, contentType: 'application/json', text:story as JSON }
+                xml { render status: 200, contentType: 'text/xml', text:story as XML }
             }
         } catch (AttachmentException e) {
             returnError(exception:e)
@@ -229,8 +229,8 @@ class StoryController {
             storyService.delete(stories)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: ids as JSON)  }
-                json { render(status: 200, text: [result: 'success'] as JSON) }
-                xml { render(status: 200, text: [result: 'success'] as XML) }
+                json { render(status: 200, contentType: 'application/json', text: [result: 'success'] as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: [result: 'success'] as XML) }
             }
         } catch (Exception e) {
             returnError(exception:e,text:message(code: 'is.story.error.not.deleted'))
@@ -333,8 +333,8 @@ class StoryController {
         if (storyService.rank(movedItem, position)) {
             withFormat {
                 html { render(status: 200)  }
-                json { render(status: 200, text: [result: 'success'] as JSON) }
-                xml { render(status: 200, text: [result: 'success'] as XML) }
+                json { render(status: 200, contentType: 'application/json', text: [result: 'success'] as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: [result: 'success'] as XML) }
             }
         } else {
             returnError(text:message(code: 'is.story.rank.error'))
@@ -359,8 +359,8 @@ class StoryController {
             storyService.estimate(story,params.story.effort)
             withFormat {
                 html { render(status: 200, text: params.story.effort)  }
-                json { render(status: 200, text: story as JSON) }
-                xml { render(status: 200, text: story as XML) }
+                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
         }catch (IllegalStateException e) {
             returnError(exception:e)
@@ -401,8 +401,8 @@ class StoryController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [story: story, sprint: sprint] as JSON)  }
-                json { render(status: 200, text: story as JSON) }
-                xml { render(status: 200, text: story as XML) }
+                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:story, exception:e)
@@ -454,8 +454,8 @@ class StoryController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [story: story, oldSprint: oldSprint] as JSON)  }
-                json { render(status: 200, text: story as JSON) }
-                xml { render(status: 200, text: story as XML) }
+                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:story, exception:e)
@@ -482,8 +482,8 @@ class StoryController {
             storyService.associateFeature(feature, story)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                json { render(status: 200, text: story as JSON) }
-                xml { render(status: 200, text: story as XML) }
+                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:story, exception:e)
@@ -508,8 +508,8 @@ class StoryController {
             storyService.done(story)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                json { render(status: 200, text: story as JSON) }
-                xml { render(status: 200, text: story as XML) }
+                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:story, exception:e)
@@ -537,8 +537,8 @@ class StoryController {
             storyService.unDone(story)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                json { render(status: 200, text: story as JSON) }
-                xml { render(status: 200, text: story as XML) }
+                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:story, exception:e)
@@ -567,8 +567,8 @@ class StoryController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [id: storiesIds, objects: storiesJ] as JSON)  }
-                json { render(status: 200, text: storiesJ as JSON) }
-                xml { render(status: 200, text: storiesJ as XML) }
+                json { render(status: 200, contentType: 'application/json', text: storiesJ as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: storiesJ as XML) }
             }
        } catch (RuntimeException e) {
             returnError(exception:e)
@@ -595,8 +595,8 @@ class StoryController {
             def copiedStories = storyService.copy(stories)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON)  }
-                json { render(status: 200, text: copiedStories as JSON) }
-                xml { render(status: 200, text: copiedStories as XML) }
+                json { render(status: 200, contentType: 'application/json', text: copiedStories as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: copiedStories as XML) }
             }
         } catch (RuntimeException e) {
             returnError(exception:e,text:message(code: 'is.story.error.not.cloned'))
@@ -624,8 +624,8 @@ class StoryController {
         }
 
         withFormat {
-                json { render(status: 200, text: story as JSON) }
-                xml { render(status: 200, text: story as XML) }
+                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
     }
 
@@ -642,8 +642,8 @@ class StoryController {
         def stories = (params.term) ? Story.findInStories(params.long('product'), '%' + params.term + '%').list() : Story.findAllByBacklog(currentProduct, [sort: 'id', order: 'asc'])
 
         withFormat {
-                json { render(status: 200, text: stories as JSON) }
-                xml { render(status: 200, text: stories as XML) }
+                json { render(status: 200, contentType: 'application/json', text: stories as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: stories as XML) }
             }
     }
 

@@ -56,9 +56,9 @@
 
                     <div class="drap-container">
                         ${message(code: 'is.ui.releasePlan.from')} <strong><g:formatDate date="${sprint.startDate}"
-                                                                                         formatName="is.date.format.short"/></strong>
+                                                                                         formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></strong>
                         ${message(code: 'is.ui.releasePlan.to')} <strong><g:formatDate date="${sprint.endDate}"
-                                                                                       formatName="is.date.format.short"/></strong>
+                                                                                       formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></strong>
                         <is:menu class="dropmenu-action" id="sprint-${sprint.id}" contentView="/sprint/menu"
                                  params="[id:id,sprint:sprint]"/>
                     </div>
@@ -116,7 +116,7 @@
            params="[product:params.product]"/>
 
 <jq:jquery>
-    jQuery('#window-title-bar-${id} .content').html('${message(code: "is.ui." + id)} - ${release.name}  - ${is.bundle(bundle: 'releaseStates', value: release.state)} - [${g.formatDate(date: release.startDate, formatName: 'is.date.format.short')} -> ${g.formatDate(date: release.endDate, formatName: 'is.date.format.short')}]');
+    jQuery('#window-title-bar-${id} .content').html('${message(code: "is.ui." + id)} - ${release.name}  - ${is.bundle(bundle: 'releaseStates', value: release.state)} - [${g.formatDate(date: release.startDate, formatName: 'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} -> ${g.formatDate(date: release.endDate, formatName: 'is.date.format.short',timeZone:release.parentProduct.preferences.timezone)}]');
     <is:editable controller="story"
                  action='estimate'
                  on='.postit-story .mini-value.editable'

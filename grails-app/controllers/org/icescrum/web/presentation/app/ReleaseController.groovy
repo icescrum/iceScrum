@@ -69,8 +69,8 @@ class ReleaseController {
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON }
-                json { render status: 200, text: release as JSON }
-                xml { render status: 200, text: release as XML }
+                json { render status: 200, contentType: 'application/json', text: release as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
         } catch (RuntimeException e) {
             returnError(object:release, exception:e)
@@ -95,8 +95,8 @@ class ReleaseController {
             render(status: 200, contentType: 'application/json', text: release as JSON)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 200, text: release as JSON }
-                xml { render status: 200, text: release as XML }
+                json { render status: 200, contentType: 'application/json', text: release as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
         } catch (RuntimeException e) {
             returnError(object:release, exception:e)
@@ -122,8 +122,8 @@ class ReleaseController {
             releaseService.delete(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 200, text: release as JSON }
-                xml { render status: 200, text: release as XML }
+                json { render status: 200, contentType: 'application/json', text: release as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
         } catch (RuntimeException e) {
             returnError(object:release, exception:e)
@@ -149,8 +149,8 @@ class ReleaseController {
             releaseService.close(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 200, text: release as JSON }
-                xml { render status: 200, text: release as XML }
+                json { render status: 200, contentType: 'application/json', text: release as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
         } catch (RuntimeException e) {
             returnError(object:release, exception:e)
@@ -175,8 +175,8 @@ class ReleaseController {
             releaseService.activate(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 200, text: release as JSON }
-                xml { render status: 200, text: release as XML }
+                json { render status: 200, contentType: 'application/json', text: release as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
         } catch (RuntimeException e) {
             returnError(object:release, exception:e)
@@ -203,8 +203,8 @@ class ReleaseController {
             def plannedStories = storyService.autoPlan(release, params.double('capacity'))
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: plannedStories as JSON }
-                json { render status: 200, text: [result: 'success'] as JSON }
-                xml { render status: 200, text: [result: 'success'] as XML }
+                json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
             }
         } catch (Exception e) {
             returnError(exception:e,text:message(code: 'is.release.error.not.autoplan'))
@@ -230,8 +230,8 @@ class ReleaseController {
             def unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON }
-                json { render status: 200, text: [result: 'success'] as JSON }
-                xml { render status: 200, text: [result: 'success'] as XML }
+                json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
             }
         } catch (RuntimeException e) {
             returnError(exception:e,text:message(code: 'is.release.stories.error.not.dissociate'))
@@ -258,8 +258,8 @@ class ReleaseController {
             def sprints = sprintService.generateSprints(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: sprints as JSON }
-                json { render status: 200, text: [result: 'success'] as JSON }
-                xml { render status: 200, text: [result: 'success'] as XML }
+                json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
             }
          } catch (RuntimeException e) {
             returnError(object:release, exception:e)

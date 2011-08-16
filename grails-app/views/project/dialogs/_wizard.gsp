@@ -41,6 +41,9 @@
         <is:fieldArea for="productdescription" label="is.product.description" noborder="true" optional="true">
             <is:area rich="[preview:true,width:335,height:200]" id="productdescription" name="product.description"/>
         </is:fieldArea>
+        <is:fieldSelect for="product.preferences.timezone" label="is.product.preferences.timezone" noborder="true">
+          <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown" name="product.preferences.timezone" value="UTC"/>
+        </is:fieldSelect>
     </is:fieldset>
 
     <is:fieldset title="is.dialog.wizard.section.team" description="is.dialog.wizard.section.team.description" id="member-autocomplete">

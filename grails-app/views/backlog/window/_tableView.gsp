@@ -78,8 +78,8 @@
                     editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${story.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
             <is:tableColumn editable="[type:'richarea',disabled:!request.productOwner,name:'notes']"><wikitext:renderHtml
                     markup="Textile">${story.notes}</wikitext:renderHtml></is:tableColumn>
-            <is:tableColumn>${story.acceptedDate ? g.formatDate(date: story.acceptedDate, formatName: 'is.date.format.short', timezone: user?.preferences?.timezone ?: null) : ''}</is:tableColumn>
-            <is:tableColumn>${story.estimatedDate ? g.formatDate(date: story.estimatedDate, formatName: 'is.date.format.short', timezone: user?.preferences?.timezone ?: null) : ''}</is:tableColumn>
+            <is:tableColumn>${story.acceptedDate ? g.formatDate(date: story.acceptedDate, formatName: 'is.date.format.short', timezone: story.backlog.preferences.timezone) : ''}</is:tableColumn>
+            <is:tableColumn>${story.estimatedDate ? g.formatDate(date: story.estimatedDate, formatName: 'is.date.format.short', timezone: story.backlog.preferences.timezone) : ''}</is:tableColumn>
         </is:tableRows>
     </is:table>
 </is:tableView>
@@ -88,5 +88,5 @@
 
 <is:onStream
         on="#story-table"
-        events="[[object:'story',events:['accept','update','estimate','remove','unPlan','plan','associated','dissociated']]]"
+        events="[[object:'story',events:['add','accept','update','estimate','remove','unPlan','plan','associated','dissociated']]]"
         template="backlogWindow"/>

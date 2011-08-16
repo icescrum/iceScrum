@@ -64,8 +64,8 @@ class FeatureController {
             this.manageAttachments(feature)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: feature as JSON }
-                json { render status: 200, text: feature as JSON }
-                xml { render status: 200, text: feature  as XML }
+                json { render status: 200, contentType: 'application/json', text: feature as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: feature  as XML }
             }
         } catch (RuntimeException e) {
                 returnError(exception:e, object:feature)
@@ -130,8 +130,8 @@ class FeatureController {
                 }
                 withFormat {
                     html { render status: 200, contentType: 'application/json', text: [feature: feature, next: next?.id ?: null] as JSON }
-                    json { render status: 200, text: feature as JSON }
-                    xml { render status: 200, text: feature  as XML }
+                    json { render status: 200, contentType: 'application/json', text: feature as JSON }
+                    xml { render status: 200, contentType: 'text/xml', text: feature  as XML }
                 }
             } catch (RuntimeException e) {
                 returnError(exception:e, object:feature)
@@ -163,8 +163,8 @@ class FeatureController {
             params.list('id').each { ids << [id: it] }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: ids as JSON }
-                json { render status: 200, text: [result:'success'] as JSON }
-                xml { render status: 200, text: [result:'success']  as XML }
+                json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
             }
         } catch (RuntimeException e) {
             returnError(exception:e,text: message(code: 'is.feature.error.linked.story'))
@@ -213,8 +213,8 @@ class FeatureController {
         if (featureService.rank(featureMoved, position)) {
            withFormat {
                 html { render status: 200, text:'success' }
-                json { render status: 200, text: featureMoved as JSON }
-                xml { render status: 200, text: featureMoved as XML }
+                json { render status: 200, contentType: 'application/json', text: featureMoved as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: featureMoved as XML }
             }
         } else {
             returnError(text:message(code: 'is.feature.rank.error'))
@@ -293,8 +293,8 @@ class FeatureController {
             def story = featureService.copyToBacklog(feature)
             withFormat {
                 html { render status: 200, text:'success' }
-                json { render status: 200, text: story as JSON }
-                xml { render status: 200, text: story as XML }
+                json { render status: 200, contentType: 'application/json', text: story as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: story as XML }
             }
         } catch (RuntimeException e) {
             returnError(text: message(code: 'story.name.unique'), exception:e)

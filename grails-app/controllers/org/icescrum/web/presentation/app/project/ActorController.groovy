@@ -82,8 +82,8 @@ class ActorController {
             this.manageAttachments(actor)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: actor as JSON }
-                json { render status: 200, text: actor as JSON }
-                xml { render status: 200, text: actor  as XML }
+                json { render status: 200, contentType: 'application/json', text: actor as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: actor  as XML }
             }
         } catch (RuntimeException e) {
             returnError(exception:e, object:actor)
@@ -136,8 +136,8 @@ class ActorController {
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [actor: actor, next: next] as JSON }
-                json { render status: 200, text: actor as JSON }
-                xml { render status: 200, text: actor  as XML }
+                json { render status: 200, contentType: 'application/json', text: actor as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: actor  as XML }
             }
         } catch (RuntimeException e) {
             returnError(exception:e, object:actor)

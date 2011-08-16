@@ -57,41 +57,41 @@
             <p>
                 <strong><g:message code="is.story.date.suggested"/> :</strong>
                 <g:formatDate date="${story.suggestedDate}" formatName="is.date.format.short.time"
-                              timeZone="${user?.preferences?.timezone?:null}"/>
+                              timeZone="${story.backlog.preferences.timezone}"/>
             </p>
             <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_ACCEPTED}">
                 <p>
                     <strong><g:message code="is.story.date.accepted"/> :</strong>
                     <g:formatDate date="${story.acceptedDate}" formatName="is.date.format.short.time"
-                                  timeZone="${user?.preferences?.timezone?:null}"/>
+                                  timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
             <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_ESTIMATED}">
                 <p>
                     <strong><g:message code="is.story.date.estimated"/> :</strong>
                     <g:formatDate date="${story.estimatedDate}" formatName="is.date.format.short.time"
-                                  timeZone="${user?.preferences?.timezone?:null}"/>
+                                  timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
             <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_PLANNED}">
                 <p>
                     <strong><g:message code="is.story.date.planned"/> :</strong>
                     <g:formatDate date="${story.plannedDate}" formatName="is.date.format.short.time"
-                                  timeZone="${user?.preferences?.timezone?:null}"/>
+                                  timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
             <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_INPROGRESS}">
                 <p>
                     <strong><g:message code="is.story.date.inprogress"/> :</strong>
                     <g:formatDate date="${story.inProgressDate}" formatName="is.date.format.short.time"
-                                  timeZone="${user?.preferences?.timezone?:null}"/>
+                                  timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
             <g:if test="${story.state == org.icescrum.core.domain.Story.STATE_DONE}">
                 <p>
                     <strong><g:message code="is.story.date.done"/> :</strong>
                     <g:formatDate date="${story.doneDate}" formatName="is.date.format.short.time"
-                                  timeZone="${user?.preferences?.timezone?:null}"/>
+                                  timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
             <p class="${story.feature ? '' : 'last'}">

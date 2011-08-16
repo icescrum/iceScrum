@@ -51,8 +51,7 @@
                                 <g:else>
                                     <strong>${a.cachedLabel.encodeAsHTML()}</strong>
                                 </g:else>
-                                <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"
-                                                 timeZone="${user?.preferences?.timezone?:null}"/></p>
+                                <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"/></p>
                             </div>
                         </li>
                     </g:each>
@@ -82,7 +81,7 @@
                             <is:tableColumn>${is.bundle(bundle: 'storyStates', value: story.state)}</is:tableColumn>
                             <is:tableColumn><g:formatDate date="${story.lastUpdated}"
                                                           formatName="is.date.format.short.time"
-                                                          timeZone="${user?.preferences?.timezone?:null}"/></is:tableColumn>
+                                                          timeZone="${story.backlog.preferences.timezone}"/></is:tableColumn>
                         </is:tableRows>
                     </is:table>
                 </is:tableView>

@@ -860,16 +860,23 @@
                     },
 
                     droppableTasks:function(object,ui){
-                        var obj = $(object);
+                        var to = $(object);
                         var placeholder = $(ui.placeholder);
+                        var from = $(ui.sender);
+
                         if (this.current){
                             if(this.current.state != this.STATE_INPROGRESS){
                                 placeholder.html(this.i18n.noDropMessage);
                                 placeholder.addClass('no-drop');
                             }else if($.icescrum.product.limitUrgentTasks > 0 && this.current.state == this.STATE_INPROGRESS){
-                                if (obj.closest('tr').hasClass('row-urgent-task') && obj.attr('type') && obj.find('.postit-task').length >= $.icescrum.product.limitUrgentTasks > 0){
-                                    placeholder.html(this.i18n.noDropMessageLimitedTasks);
-                                    placeholder.addClass('no-drop');
+                                if (to.closest('tr').hasClass('row-urgent-task') && to.attr('type') == 1 && to.find('.postit-task').length >= $.icescrum.product.limitUrgentTasks > 0){
+                                    if (from.closest('tr').hasClass('row-urgent-task') && from.attr('type') == 1){
+                                        placeholder.removeClass('no-drop');
+                                        placeholder.html('');
+                                    }else{
+                                        placeholder.html(this.i18n.noDropMessageLimitedTasks);
+                                        placeholder.addClass('no-drop');
+                                    }
                                 }else{
                                     placeholder.removeClass('no-drop');
                                     placeholder.html('');
@@ -879,7 +886,7 @@
                                 placeholder.html('');
                             }
                         }else{
-                            if (obj.attr('type') >= 1){
+                            if (to.attr('type') >= 1){
                                 placeholder.addClass('no-drop');
                                 placeholder.html(this.i18n.noDropMessage);
                             }else{
@@ -968,7 +975,6 @@
                 },
 
                 addOrUpdate:function(object, _tmpl, after, app) {
-
                     if ($.isFunction(_tmpl.constraintTmpl)) {
                         if (_tmpl.constraintTmpl.apply(object) == false) {
                             return false;

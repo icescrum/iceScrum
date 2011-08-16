@@ -153,7 +153,7 @@
                                         </p>
 
                                         <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"
-                                                         timeZone="${user?.preferences?.timezone?:null}"/></p>
+                                                         timeZone="${product.preferences.timezone}"/></p>
                                     </div>
                                 </li>
                             </g:each>

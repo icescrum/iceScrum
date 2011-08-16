@@ -45,6 +45,7 @@
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
     var feature = this.feature ? this.feature.name : '${message(code: 'is.ui.sandbox.manage.chooseFeature')}';
+    this.parentSprint = this.parentSprint ? this.parentSprint.id : '';
     var notes = '&nbsp;';
     if (this.notes) {
     var id = this.id;
@@ -57,7 +58,7 @@
         <is:tableRow elemid="${story.id}">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="${story.id}" contentView="/story/menu"
+                <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"
                          params="[id:id, story:story, sprint:sprint, template:true]"/>
                 <g:set var="comment" value="${story.totalComments}"/>
                 <span class="table-comment"
@@ -103,6 +104,7 @@
     var effort = this.state > 1 ? (this.effort ? this.effort : '?') : '';
     var acceptedDate = jQuery.icescrum.dateLocaleFormat(this.acceptedDate);
     var estimatedDate = this.estimatedDate ? jQuery.icescrum.dateLocaleFormat(this.estimatedDate) : '';
+    this.parentSprint = this.parentSprint ? this.parentSprint.id : '';
     var notes = '&nbsp;';
     if (this.notes) {
     var id = this.id;

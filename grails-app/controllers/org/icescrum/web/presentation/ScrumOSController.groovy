@@ -276,6 +276,7 @@ class ScrumOSController {
         }
     }
 
+    @Cacheable(cache = 'projectTemplateCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'userKeyGenerator')
     def templates = {
         def currentSprint = null
         def product = null

@@ -125,7 +125,7 @@ $.ajaxSetup({ cache: false  });
         },
 
         displayView:function(view) {
-            $.icescrum.currentView = view;
+            $.icescrum.o.currentView = view;
             $('#menu-display-list .content').html('<span class="ico"></span>' + view);
         },
 

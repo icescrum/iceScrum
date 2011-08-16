@@ -69,8 +69,8 @@ class SprintController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, next: next?.id ?: null] as JSON)  }
-                json { render(status: 200, text: sprint as JSON) }
-                xml { render(status: 200, text: sprint as XML) }
+                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:sprint, exception:e)
@@ -99,8 +99,8 @@ class SprintController {
             sprintService.save(sprint, release)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: sprint as JSON)  }
-                json { render(status: 200, text: sprint as JSON) }
-                xml { render(status: 200, text: sprint as XML) }
+                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:sprint, exception:e)
@@ -127,8 +127,8 @@ class SprintController {
             def deletedSprints = sprintService.delete(sprint)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: deletedSprints as JSON)  }
-                json { render(status: 200, text: 'success' as JSON) }
-                xml { render(status: 200, text: 'success' as XML) }
+                json { render(status: 200, contentType: 'application/json', text: 'success' as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: 'success' as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:sprint, exception:e)
@@ -159,8 +159,8 @@ class SprintController {
             def unPlanAllStories = storyService.unPlanAll([sprint])
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)  }
-                json { render(status: 200, text: sprint as JSON) }
-                xml { render(status: 200, text: sprint as XML) }
+                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
         } catch (RuntimeException e) {
             returnError(text:message(code: 'is.release.stories.error.not.dissociate'), exception:e)
@@ -168,7 +168,7 @@ class SprintController {
     }
 
     @Secured('productOwner() or scrumMaster()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
+    @CacheFlush(caches = ['releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
     def activate = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -185,8 +185,8 @@ class SprintController {
             sprintService.activate(sprint)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)  }
-                json { render(status: 200, text: sprint as JSON) }
-                xml { render(status: 200, text: sprint as XML) }
+                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:sprint, exception:e)
@@ -196,7 +196,7 @@ class SprintController {
     }
 
     @Secured('productOwner() or scrumMaster()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
+    @CacheFlush(caches = ['releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
     def close = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -212,8 +212,8 @@ class SprintController {
             sprintService.close(sprint)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)  }
-                json { render(status: 200, text: sprint as JSON) }
-                xml { render(status: 200, text: sprint as XML) }
+                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
         } catch (RuntimeException e) {
             returnError(object:sprint, exception:e)
