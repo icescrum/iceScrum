@@ -71,14 +71,14 @@ icescrum.images.users.dir = ""
 
 
 /*  Mail section  */
-grails.mail.host = "smtp.gmail.com"
+/*grails.mail.host = "smtp.gmail.com"
 grails.mail.port = 465
 grails.mail.username = "barrier.vincent@gmail.com"
-grails.mail.password = "bahz3lol"
+grails.mail.password = ""
 grails.mail.props = ["mail.smtp.auth":"true",
         "mail.smtp.socketFactory.port":"465",
         "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-        "mail.smtp.socketFactory.fallback":"false"]
+        "mail.smtp.socketFactory.fallback":"false"]*/
 
 /*
   Push section
@@ -98,6 +98,15 @@ icescrum.json.shortObject.sprint = ['state', 'capacity', 'velocity', 'orderNumbe
 icescrum.json.shortObject.user = ['firstName', 'lastName']
 icescrum.json.shortObject.story = ['state']
 icescrum.json.shortObject.productpreferences = ['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']
+
+/*
+    Check for update
+*/
+icescrum.check.enable   = true
+icescrum.check.url      = 'http://www.icescrum.org'
+icescrum.check.path     = 'check.php'
+icescrum.check.interval = 30
+
 /*
  Attachmentable section
  */
