@@ -37,7 +37,7 @@
                                callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'
         value="${features}"
         var="feature">
-        <is:cache  cache="featureCache-${feature.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+        <is:cache  cache="featureCache_${feature.id}" cacheResolver="backlogElementCacheResolver" key="postit">
             <g:include view="/feature/_postit.gsp" model="[id:id,feature:feature,user:user]" params="[product:params.product]"/>
         </is:cache>
 </is:backlogElementLayout>

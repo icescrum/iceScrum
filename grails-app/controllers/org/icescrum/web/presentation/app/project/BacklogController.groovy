@@ -24,12 +24,12 @@
 
 package org.icescrum.web.presentation.app.project
 
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
-import org.icescrum.core.domain.*
+
 import org.icescrum.core.utils.BundleUtils
+import grails.converters.JSON
+import grails.plugins.springsecurity.Secured
 
 @Secured('stakeHolder() or inProduct()')
 class BacklogController {
@@ -97,35 +97,6 @@ class BacklogController {
 
     def editStory = {
         forward(action: 'edit', controller: 'story', params: [referrer: id, id: params.id, product: params.product])
-    }
-
-    @Secured('productOwner()')
-    def dropImport = {
-        if (!params.data) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.import.no.data')]] as JSON)
-            return
-        }
-        try {
-            def parsedData = params.data.replace("\n", "\t").split("\t")
-            def processedData = [
-                    (parsedData[0]): [],
-                    (parsedData[1]): [],
-                    (parsedData[2]): []
-            ]
-            for (int i = 3; i < parsedData.size(); i++) {
-                processedData[parsedData[i % 3]] << parsedData[i]
-            }
-            def currentUserInstance = User.get(springSecurityService.principal.id)
-            def stories = []
-            for (int i = 0; i < processedData['ID'].size(); i++) {
-                def story = new Story(name: processedData['Name'][i], description: processedData['Desc'][i])
-                storyService.save(story, Product.get(params.product), currentUserInstance)
-                stories.add(story)
-            }
-            render(status: 200, contentType: 'application/json', text: stories as JSON)
-        } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)
-        }
     }
 
     def print = {

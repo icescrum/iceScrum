@@ -33,17 +33,15 @@
             <is:input id="productpkey" typed="[type:'alphanumeric',onlyletters:true,allcaps:true]" maxlength="10"
                       name="product.pkey" value="${product.pkey}"/>
         </is:fieldInput>
-        <is:fieldRadio rendered="${!privateOption}" for="product.preferences.hidden"
-                       label="is.product.preferences.project.hidden">
-            <is:radio id="product.preferences.hidden" name="product.preferences.hidden"
-                      value="${product.preferences.hidden}"/>
+        <is:fieldRadio rendered="${!privateOption}" for="product.preferences.hidden" label="is.product.preferences.project.hidden">
+            <is:radio id="product.preferences.hidden" name="product.preferences.hidden" value="${product.preferences.hidden}"/>
         </is:fieldRadio>
+        <is:fieldSelect for="product.preferences.timezone" label="is.product.preferences.timezone">
+          <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown" name="product.preferences.timezone" value="UTC"/>
+        </is:fieldSelect>
         <is:fieldArea for="productdescription" label="is.product.description" noborder="true" optional="true">
             <is:area rich="[preview:true,width:335,height:200]" id="productdescription" name="product.description"/>
         </is:fieldArea>
-        <is:fieldSelect for="product.preferences.timezone" label="is.product.preferences.timezone" noborder="true">
-          <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown" name="product.preferences.timezone" value="UTC"/>
-        </is:fieldSelect>
     </is:fieldset>
 
     <is:fieldset title="is.dialog.wizard.section.team" description="is.dialog.wizard.section.team.description" id="member-autocomplete">

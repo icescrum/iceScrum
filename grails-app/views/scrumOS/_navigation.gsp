@@ -134,7 +134,7 @@
                 <g:if test="${request.owner && product}">
                     <li>
                         <a href="#"
-                           onClick="if (confirm('${message(code:'is.dialog.project.others.delete.button').encodeAsJavaScript()}')) {
+                           onClick="if (confirm('${message(code:'is.projectmenu.submenu.project.delete').encodeAsJavaScript()}')) {
                                ${g.remoteFunction(action:'delete',
                                              controller:'project',
                                              params:[product:params.product],

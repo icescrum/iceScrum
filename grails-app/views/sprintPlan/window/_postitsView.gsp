@@ -61,7 +61,7 @@
         <g:each in="${columns}" var="column" status="i">
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${recurrentTasks?.sort{it.rank}?.findAll{ it.state == column.key} }" var="task">
-                    <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+                    <is:cache  cache="taskCache_${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
                         <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]"
                                    params="[product:params.product]"/>
                     </is:cache>
@@ -90,7 +90,7 @@
         <g:each in="${columns}" var="column">
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
-                    <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+                    <is:cache  cache="taskCache_${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
                         <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
                     </is:cache>
                 </g:each>
@@ -107,7 +107,7 @@
                    type="story"
                    emptyRendering="true">
             <is:kanbanColumn elementId="column-story-${story.id}">
-                <is:cache  cache="storyCache-${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+                <is:cache  cache="storyCache_${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
                     <g:include view="/story/_postit.gsp"
                                model="[id:id,story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
                                params="[product:params.product]"/>
@@ -119,7 +119,7 @@
                 <is:kanbanColumn key="${column.key}">
                     <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                             var="task">
-                            <is:cache  cache="taskCache-${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+                            <is:cache  cache="taskCache_${task.id}" cacheResolver="backlogElementCacheResolver" key="postit">
                                 <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
                             </is:cache>
                     </g:each>

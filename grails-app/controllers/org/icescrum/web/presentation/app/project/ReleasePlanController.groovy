@@ -24,8 +24,6 @@
 
 package org.icescrum.web.presentation.app.project
 
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -33,7 +31,10 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
+
+import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class ReleasePlanController {
@@ -136,7 +137,7 @@ class ReleasePlanController {
     }
 
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -172,7 +173,7 @@ class ReleasePlanController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def activate = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -207,7 +208,7 @@ class ReleasePlanController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def delete = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -237,7 +238,7 @@ class ReleasePlanController {
 
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def autoPlan = {
         if (!params.id) {
             def msg = message(code: 'is.release.error.not.exist')
@@ -253,7 +254,7 @@ class ReleasePlanController {
     }
 
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def add = {
         if (!params.id) {
             def msg = message(code: 'is.release.error.not.exist')
@@ -278,7 +279,7 @@ class ReleasePlanController {
         ])
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def edit = {
         if (!params.subid) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -305,7 +306,7 @@ class ReleasePlanController {
         ])
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def editStory = {
         forward(action: 'edit', controller: 'story', params: [referrer: id])
     }
@@ -323,7 +324,7 @@ class ReleasePlanController {
         render(template: 'window/visionView', model: [release: release, id: id])
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     def updateVision = {
         if (!params.id) {
             def msg = message(code: 'is.release.error.not.exist')

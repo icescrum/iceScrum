@@ -20,7 +20,7 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
-package org.icescrum.web.presentation
+package org.icescrum.codecs
 
 import org.icescrum.core.domain.Product
 

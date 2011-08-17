@@ -89,20 +89,21 @@
                     assignOnBeginTask:false,
                     hidden:false,
                     limitUrgentTasks:0,
-                    deleted:'Project deleted',
-                    updated:'Project settings updated',
-                    add:function() {
-                        //TODO ?
+                    i18n : {
+                        deleted:'Project deleted',
+                        updated:'Project settings updated',
+                        archived:'Project archived',
+                        unArchived:'Project unarchived'
                     },
 
-                    test:function(){
-                        alert('totto');
+                    add:function() {
+                        //TODO ?
                     },
 
                     update:function() {
                         if (this.id == $.icescrum.product.currentProduct){
                             if (this.preferences.hidden != $.icescrum.product.hidden){
-                                alert($.icescrum.product.updated);
+                                alert($.icescrum.product.i18n.updated);
                                 document.location = $.icescrum.o.baseUrl;
                             }
                             if ($.icescrum.product.displayUrgentTasks != this.preferences.displayUrgentTasks){
@@ -139,8 +140,26 @@
 
                     remove:function() {
                         if (this.id == $.icescrum.product.currentProduct){
-                            alert($.icescrum.product.deleted);
+                            alert($.icescrum.product.i18n.deleted);
                             document.location = $.icescrum.o.baseUrl;
+                        }
+                    },
+
+                    archive:function() {
+                        if (this.id == $.icescrum.product.currentProduct){
+                            alert($.icescrum.product.i18n.archived);
+                            $.doTimeout(500, function() {
+                                document.location.reload(true);
+                            });
+                        }
+                    },
+
+                    unarchive:function() {
+                        if (this.id == $.icescrum.product.currentProduct){
+                            alert($.icescrum.product.i18n.unArchived);
+                            $.doTimeout(500, function() {
+                                document.location.reload(true);
+                            });
                         }
                     },
 

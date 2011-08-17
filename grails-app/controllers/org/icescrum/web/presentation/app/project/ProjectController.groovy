@@ -24,23 +24,24 @@
 
 package org.icescrum.web.presentation.app.project
 
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-
-import grails.converters.JSON
-import grails.plugin.fluxiable.Activity
-import grails.plugins.springsecurity.Secured
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.preferences.TeamPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
-import org.springframework.security.access.AccessDeniedException
-import org.icescrum.core.domain.*
+
 import org.icescrum.core.utils.BundleUtils
-import grails.plugin.springcache.annotations.Cacheable
+
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
+
+import grails.converters.JSON
+import grails.plugin.fluxiable.Activity
 import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.springframework.security.access.AccessDeniedException
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
@@ -94,7 +95,7 @@ class ProjectController {
         render(template: "dialogs/edit", model: [id: id, product: currentProduct])
     }
 
-    @Secured('owner() or scrumMaster()')
+    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
     def editPractices = {
         def currentProduct = Product.get(params.product)
         def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
@@ -106,7 +107,7 @@ class ProjectController {
 
     }
 
-    @Secured('owner() or scrumMaster()')
+    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = 'projectCache', cacheResolver = 'projectCacheResolver')
     def update = {
 
@@ -743,6 +744,44 @@ class ProjectController {
         } catch (RuntimeException re) {
             if (log.debugEnabled) re.printStackTrace()
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
+        }
+    }
+
+    @Secured('owner() or scrumMaster()')
+    def archive = {
+        if (!params.product) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.exist')]] as JSON)
+
+        }
+        assert params.product
+
+        def product = Product.get(params.product)
+        def id = product.id
+        try {
+            productService.archive(product)
+            render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
+        }
+    }
+
+    @Secured("hasRole('ROLE_ADMIN')")
+    def unArchive = {
+        if (!params.product) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.exist')]] as JSON)
+
+        }
+        assert params.product
+
+        def product = Product.get(params.product)
+        def id = product.id
+        try {
+            productService.unArchive(product)
+            render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
         }
     }
 

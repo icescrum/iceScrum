@@ -24,18 +24,19 @@
 
 package org.icescrum.web.presentation.app.project
 
+import org.icescrum.core.event.IceScrumStoryEvent
+
+import org.icescrum.core.utils.BundleUtils
+
 import grails.converters.JSON
+import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
 import org.grails.followable.FollowException
 import org.grails.followable.FollowLink
-import org.icescrum.core.event.IceScrumStoryEvent
 import org.springframework.web.servlet.support.RequestContextUtils
-import org.icescrum.core.domain.*
-import org.icescrum.core.utils.BundleUtils
-import grails.plugin.springcache.annotations.Cacheable
-import grails.plugin.springcache.annotations.CacheFlush
 
 class BacklogElementController {
 
@@ -154,7 +155,7 @@ class BacklogElementController {
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('isAuthenticated() and !archivedProduct()')
     def addComment = {
         def poster = springSecurityService.currentUser
         def story = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()[0]
@@ -175,7 +176,7 @@ class BacklogElementController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error')]] as JSON)
             return
         }
-        flushCache(cache:'storyCache-'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
+        flushCache(cache:'storyCache_'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
         broadcast(function: 'update', message: story)
         redirect(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments', product:params.product])
     }
@@ -183,7 +184,7 @@ class BacklogElementController {
     /**
      * Render a editor for the specified comment.
      */
-    @Secured('isAuthenticated()')
+    @Secured('isAuthenticated() and !archivedProduct()')
     def editCommentEditor = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
@@ -207,7 +208,7 @@ class BacklogElementController {
         comment.body = params.comment.body
         try {
             comment.save()
-            flushCache(cache:'storyCache-'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
+            flushCache(cache:'storyCache_'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
             broadcast(function: 'update', message: commentable)
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
             redirect(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
@@ -223,7 +224,7 @@ class BacklogElementController {
     /**
      * Remove a comment from the comment list of a story
      */
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def deleteComment = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
@@ -237,7 +238,7 @@ class BacklogElementController {
         def commentable = Story.getInProduct(params.long('product'),params.long('backlogelement')).list()[0]
         try {
             commentable.removeComment(comment)
-            flushCache(cache:'storyCache-'+params.backlogelement, cacheResolver:'backlogElementCacheResolver')
+            flushCache(cache:'storyCache_'+params.backlogelement, cacheResolver:'backlogElementCacheResolver')
             broadcast(function: 'update', message: commentable)
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_DELETED))
             redirect(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: ['tab': 'comments', product:params.product])

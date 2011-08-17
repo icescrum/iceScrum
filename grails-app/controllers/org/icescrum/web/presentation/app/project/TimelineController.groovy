@@ -23,8 +23,6 @@
 
 package org.icescrum.web.presentation.app.project
 
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -32,7 +30,10 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
+
+import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class TimelineController {
@@ -163,7 +164,7 @@ class TimelineController {
         render([dateTimeFormat: "iso8601", events: list] as JSON)
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def add = {
         def currentProduct = Product.get(params.product)
         def previousRelease = currentProduct.releases.max {s1, s2 -> s1.orderNumber <=> s2.orderNumber}
@@ -188,7 +189,7 @@ class TimelineController {
 
 
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def edit = {
         if (!params.id) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)

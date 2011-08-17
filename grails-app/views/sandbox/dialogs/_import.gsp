@@ -20,7 +20,11 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <g:if test="${columns && mapping}">
-  <is:dialog width="400" valid="[action:'dropImport',controller:id,update:'window-content-'+id,button:'is.dialog.drop.import.button']">
+  <is:dialog width="400" valid="[
+  action:'dropImport',
+  controller:id,
+  onSuccess:'jQuery.event.trigger(\'add_story\',[data]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.story.imported')+'\');',
+  button:'is.dialog.drop.import.button']">
     <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
       <input type="hidden" value="true" name="confirm"/>
       <input type="hidden" value="${data}" name="data"/>

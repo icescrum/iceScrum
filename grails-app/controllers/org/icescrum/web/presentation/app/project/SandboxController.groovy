@@ -24,13 +24,14 @@
 
 package org.icescrum.web.presentation.app.project
 
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
-import org.icescrum.core.domain.*
+
 import org.icescrum.core.utils.BundleUtils
+
+import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
 
 @Secured('stakeHolder() or inProduct()')
 class SandboxController {
@@ -57,7 +58,7 @@ class SandboxController {
     def dropImportService
     def securityService
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     def openDialogAcceptAs = {
         def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
         render(template: 'dialogs/acceptAs', model: [id: id, sprint: sprint])
@@ -83,7 +84,7 @@ class SandboxController {
         render(template: template, model: [stories: stories, id: id, typeSelect: typeSelect, featureSelect: featureSelect, sprint: sprint, user: user])
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('isAuthenticated() and !archivedProduct()')
     @Cacheable(cache = 'addStory', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
     def add = {
         def currentProduct = Product.get(params.product)
@@ -104,7 +105,7 @@ class SandboxController {
     /**
      * Import stories via drag&drop (and more)
      */
-    @Secured('isAuthenticated()')
+    @Secured('isAuthenticated() and !archivedProduct()')
     def dropImport = {
         if (!params.data) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.import.no.data')]] as JSON)
@@ -134,13 +135,14 @@ class SandboxController {
                 // if the data is considered valid, then we ask the user to match his columns with
                 // the actual mapping
                 if (parsedData.columns.size() > 0 && !params.confirm) {
-                    render(text: include(action: 'list', params: [product: params.product]))
-                    render(template: "dialogs/import", model: [id: id,
+
+                    def dialog = g.render(template: "dialogs/import", model: [id: id,
                             data: data,
                             columns: parsedData.columns,
                             mapping: mapping,
-                            matchValues: dropImportService.matchBundle(mapping, parsedData.columns)
-                    ])
+                            matchValues: dropImportService.matchBundle(mapping, parsedData.columns)])
+
+                    render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
                     return
                 }
             }
@@ -151,6 +153,7 @@ class SandboxController {
         try {
             def currentUserInstance = User.get(springSecurityService.principal.id)
             def propertiesMap
+            def stories = []
             for (int i = 0; i < parsedData.count; i++) {
                 propertiesMap = [:]
 
@@ -163,9 +166,9 @@ class SandboxController {
                 }
                 story = new Story(propertiesMap)
                 storyService.save(story, currentProduct, currentUserInstance)
+                stories << story
             }
-            request.notice = [text: message(code: 'is.story.imported')]
-            redirect(action: 'list', params: [product: params.product])
+            render(status:200, contentType: 'application/json', text: stories as JSON)
         } catch (RuntimeException e) {
             if (log.debugEnabled) e.printStackTrace()
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: story)]] as JSON)

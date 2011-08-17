@@ -100,7 +100,7 @@
                             value="${sprint.stories?.sort{it.rank}}"
                             var="story"
                             emptyRendering="true">
-                            <is:cache  cache="storyCache-${story.id}" cacheResolver="backlogElementCacheResolver" key="postit-rect">
+                            <is:cache  cache="storyCache_${story.id}" cacheResolver="backlogElementCacheResolver" key="postit-rect">
                                 <g:include view="/story/_postit.gsp"
                                            model="[id:id,story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"
                                            params="[product:params.product]"/>

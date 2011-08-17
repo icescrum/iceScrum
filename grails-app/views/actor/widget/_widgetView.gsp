@@ -29,7 +29,7 @@
                          value="${actors}"
                          var="actor"
                          dblclickable='[rendered:request.inProduct, selector:".postit-row", callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'>
-    <is:cache cache="actorCache-${actor.id}" cacheResolver="backlogElementCacheResolver" key="postit-small">
+    <is:cache cache="actorCache_${actor.id}" cacheResolver="backlogElementCacheResolver" key="postit-small">
         <li elemid="${actor.id}" id="postit-row-actor-${actor.id}" class="postit-row postit-row-actor">
             <is:postitIcon/>
             <is:truncated size="30" encodedHTML="true">${actor.name.encodeAsHTML()}</is:truncated>

@@ -61,7 +61,7 @@
                   params:[product:params.product]]"
         value="${stories}"
         var="story">
-    <is:cache  cache="storyCache-${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+    <is:cache  cache="storyCache_${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
         <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user,sortable:request.productOwner]" params="[product:params.product]"/>
     </is:cache>
 </is:backlogElementLayout>

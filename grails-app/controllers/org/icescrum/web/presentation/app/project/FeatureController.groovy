@@ -23,16 +23,17 @@
  */
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
-import org.icescrum.core.domain.*
+
 import org.icescrum.core.utils.BundleUtils
+
+import grails.converters.JSON
 import grails.converters.XML
-import grails.plugin.springcache.annotations.Cacheable
 import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
+import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 
 @Secured('inProduct()')
 class FeatureController {
@@ -55,7 +56,7 @@ class FeatureController {
             [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.feature.space.text']
     ]
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = 'addStory', cacheResolver = 'projectCacheResolver')
     def save = {
         def feature = new Feature(params.feature as Map)
@@ -74,7 +75,7 @@ class FeatureController {
         }
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = 'addSandbox', cacheResolver = 'projectCacheResolver')
     def update = {
         def msg
@@ -141,7 +142,7 @@ class FeatureController {
         }
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     def delete = {
 
         if (!params.id) {
@@ -197,7 +198,7 @@ class FeatureController {
         render(template: template, model: [features: features, effortFeature: effortFeature, linkedDoneStories: linkedDoneStories, id: id, typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     def rank = {
         def featureMoved = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
 
@@ -221,7 +222,7 @@ class FeatureController {
         }
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     def add = {
         def currentProduct = Product.get(params.product)
         def valuesList = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
@@ -240,7 +241,7 @@ class FeatureController {
         ])
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     def edit = {
 
         if (!params.id) {
@@ -275,7 +276,7 @@ class FeatureController {
         ])
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     def copyFeatureToBacklog = {
         if (!params.id) {
             returnError(text:message(code: 'is.feature.error.not.exist'))
@@ -404,7 +405,7 @@ class FeatureController {
         session.uploadedFiles = null
 
         if (needPush){
-            flushCache(cache:'featureCache-'+feature.id, cacheResolver:'backlogElementCacheResolver')
+            flushCache(cache:'featureCache_'+feature.id, cacheResolver:'backlogElementCacheResolver')
             broadcast(function: 'update', message: feature)
         }
     }

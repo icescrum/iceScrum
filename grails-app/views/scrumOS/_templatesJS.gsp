@@ -72,7 +72,12 @@
             displayRecurrentTasks:${product.preferences.displayRecurrentTasks},
             limitUrgentTasks:${product.preferences.limitUrgentTasks},
             assignOnBeginTask:${product.preferences.assignOnBeginTask},
-            deleted:"${g.message(code: 'is.product.deleted')}"
+            i18n: {
+                deleted:"${g.message(code: 'is.product.deleted')}",
+                updated:"${g.message(code: 'is.product.updated')}",
+                archived:"${g.message(code: 'is.product.archived')}",
+                unArchived:"${g.message(code: 'is.product.unArchived')}"
+            }
         }
         </g:if>
     });

@@ -24,14 +24,14 @@
 
 package org.icescrum.web.presentation.app.project
 
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
-import org.icescrum.core.domain.*
-import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
+
 import org.icescrum.core.utils.BundleUtils
+
+import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
 
 @Secured('inProduct()')
 class SprintPlanController {
@@ -314,7 +314,7 @@ class SprintPlanController {
         render(template: 'window/doneDefinitionView', model: [sprint: sprint, id: id])
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def copyFromPreviousDoneDefinition = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -360,7 +360,7 @@ class SprintPlanController {
         render(template: 'window/retrospectiveView', model: [sprint: sprint, id: id])
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def copyFromPreviousRetrospective = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -393,7 +393,7 @@ class SprintPlanController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def updateDoneDefinition = {
         def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
         if (!params.id) {
@@ -413,7 +413,7 @@ class SprintPlanController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def updateRetrospective = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')

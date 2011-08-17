@@ -24,18 +24,19 @@
 
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
+
+import grails.converters.JSON
 import grails.converters.XML
-import grails.plugin.springcache.annotations.Cacheable
 import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
+import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 
 @Secured('inProduct()')
 class ActorController {
@@ -70,7 +71,7 @@ class ActorController {
         render(result as JSON)
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def save = {
         if (!params.actor) return
@@ -92,7 +93,7 @@ class ActorController {
         }
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.actor) {
@@ -146,7 +147,7 @@ class ActorController {
         }
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
@@ -199,7 +200,7 @@ class ActorController {
                 levelsSelect: levelsSelect])
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @Cacheable(cache = 'addActor', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
     def add = {
         render(template: 'window/manage', model: [
@@ -213,7 +214,7 @@ class ActorController {
         ])
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     def edit = {
 
         if (!params.id) {
@@ -273,7 +274,7 @@ class ActorController {
         }
         session.uploadedFiles = null
         if (needPush){
-            flushCache(cache:'actorCache-'+actor.id, cacheResolver:'backlogElementCacheResolver')
+            flushCache(cache:'actorCache_'+actor.id, cacheResolver:'backlogElementCacheResolver')
             broadcast(function: 'update', message: actor)
         }
     }

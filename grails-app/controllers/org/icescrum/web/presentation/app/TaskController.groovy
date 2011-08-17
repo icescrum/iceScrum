@@ -23,17 +23,20 @@
 package org.icescrum.web.presentation.app
 
 import org.icescrum.core.domain.User
-import grails.converters.JSON
+
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Sprint
-import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
-import grails.plugins.springsecurity.Secured
-import grails.converters.XML
-import grails.plugin.springcache.annotations.Cacheable
-import grails.plugin.springcache.annotations.CacheFlush
-import org.icescrum.core.utils.BundleUtils
 
+import org.icescrum.core.utils.BundleUtils
+import grails.converters.JSON
+import grails.converters.XML
+import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
+import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
+
+@Secured('inProduct()')
 class TaskController {
 
     def sprintService
@@ -47,6 +50,7 @@ class TaskController {
             ['delete']: ['DELETE', 'POST']
     ]
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def save = {
         def story = !(params.story?.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'), params.long('story.id')).list()[0] : null
@@ -88,6 +92,7 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.task) return
@@ -161,6 +166,7 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def take = {
         if (!params.id) {
@@ -188,6 +194,7 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def unassign = {
         if (!params.id) {
@@ -215,6 +222,7 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
@@ -243,6 +251,7 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def copy = {
         if (!params.id) {
@@ -266,6 +275,7 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def estimate = {
         if (!params.id) {
@@ -294,6 +304,7 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def block = {
         if (!params.id) {
@@ -322,10 +333,12 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     def unblock = {
         forward(action: 'block', params: [id: params.id])
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def rank = {
         def position = params.int('task.rank')
@@ -383,11 +396,12 @@ class TaskController {
         }
         session.uploadedFiles = null
         if (needPush){
-            flushCache(cache:'taskCache-'+task.id, cacheResolver:'backlogElementCacheResolver')
+            flushCache(cache:'taskCache_'+task.id, cacheResolver:'backlogElementCacheResolver')
             broadcast(function: 'update', message: task)
         }
     }
 
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['tasksList'], cacheResolver = 'projectCacheResolver')
     def state = {
         // params.id represent the targeted state (STATE_WAIT, STATE_INPROGRESS, STATE_DONE)

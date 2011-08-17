@@ -22,19 +22,22 @@
  */
 package org.icescrum.web.presentation.app
 
-import grails.converters.JSON
 import org.icescrum.core.domain.Story
-import grails.plugins.springsecurity.Secured
-import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
+
 import org.icescrum.core.utils.BundleUtils
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Product
-import grails.converters.XML
+
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.User
+
+import grails.converters.JSON
+import grails.converters.XML
 import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugin.springcache.annotations.Cacheable
+import grails.plugins.springsecurity.Secured
+import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 
 class StoryController {
 
@@ -49,7 +52,7 @@ class StoryController {
             ['delete']:['DELETE','POST']
     ]
 
-    @Secured('isAuthenticated()')
+    @Secured('isAuthenticated() and !archivedProduct()')
     @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def save = {
         def story = new Story(params.story as Map)
@@ -101,6 +104,10 @@ class StoryController {
         }
 
         def user = springSecurityService.currentUser
+        if (story.backlog.preferences.archived){
+            render(status: 403, contentType: 'application/json')
+            return
+        }
         if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !securityService.productOwner(story.backlog.id, springSecurityService.authentication)) {
             render(status: 403, contentType: 'application/json')
             return
@@ -309,7 +316,7 @@ class StoryController {
         ])
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def rank = {
 
@@ -341,7 +348,7 @@ class StoryController {
         }
     }
 
-    @Secured('teamMember() or scrumMaster()')
+    @Secured('(teamMember() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def estimate = {
         if (!params.id) {
@@ -369,7 +376,7 @@ class StoryController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def unPlan = {
         if (!params.id) {
@@ -411,7 +418,7 @@ class StoryController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def plan = {
         if (!params.sprint?.id) {
@@ -464,7 +471,7 @@ class StoryController {
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('(isAuthenticated()) and !archivedProduct()')
     @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def associateFeature = {
         if (!params.feature || !params.story) {
@@ -490,7 +497,7 @@ class StoryController {
         }
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def done = {
         if (!params.id) {
@@ -518,7 +525,7 @@ class StoryController {
         }
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def unDone = {
         if (!params.id) {
@@ -547,7 +554,7 @@ class StoryController {
         }
     }
 
-    @Secured('productOwner()')
+    @Secured('productOwner() and !archivedProduct()')
     @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def accept = {
         if (params.list('id').size() == 0) {
@@ -582,7 +589,7 @@ class StoryController {
         return
     }
 
-    @Secured('inProduct()')
+    @Secured('inProduct() and !archivedProduct()')
     @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def copy = {
 
@@ -675,7 +682,7 @@ class StoryController {
         session.uploadedFiles = null
 
         if (needPush){
-            flushCache(cache:'storyCache-'+story.id, cacheResolver:'backlogElementCacheResolver')
+            flushCache(cache:'storyCache_'+story.id, cacheResolver:'backlogElementCacheResolver')
             broadcast(function: 'update', message: story)
         }
     }

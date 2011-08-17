@@ -38,13 +38,36 @@
                            name="productd.preferences.timezone" id="productpreferencestimezone"
                            value="${product.preferences.timezone}"/>
     </is:fieldSelect>
-    <is:fieldArea for="productdescription" label="is.product.description" noborder="true">
+    <is:fieldArea for="productdescription" label="is.product.description" noborder="${!product.preferences.archived && (request.owner || request.scrumMaster) || (product.preferences.archived && request.admin)}">
       <is:area
               rich="[preview:true,width:330]"
               id="productdescription"
               name="productd.description"
               value="${product.description}"/>
     </is:fieldArea>
+    <g:if test="${!product.preferences.archived && (request.owner || request.scrumMaster)}">
+        <is:fieldInput for="archivedProject" label="is.dialog.project.archive" class="productcreator" noborder="true">
+            <button onClick="if (confirm('${message(code:'is.dialog.project.archive.confirm').encodeAsJavaScript()}')) {
+                                  ${g.remoteFunction(action:'archive',
+                                                     controller:'project',
+                                                     params:[product:params.product],
+                                                     onSuccess:'jQuery.event.trigger(\'archive_product\',data);')
+                                   };}return false;" class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>
+                <g:message code="is.dialog.project.archive.button"/>
+            </button>
+        </is:fieldInput>
+    </g:if>
+    <g:if test="${product.preferences.archived && request.admin}">
+        <is:fieldInput for="archivedProject" label="is.dialog.project.unArchive" class="productcreator" noborder="true">
+            <button onClick="${g.remoteFunction(action:'unArchive',
+                                                     controller:'project',
+                                                     params:[product:params.product],
+                                                     onSuccess:'jQuery.event.trigger(\'unarchive_product\',data);')
+                                   } return false;" class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>
+                <g:message code="is.dialog.project.unArchive.button"/>
+            </button>
+        </is:fieldInput>
+    </g:if>
   </is:fieldset>
 </form>
 <is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-project" listenOn="'#form-project input'"/>

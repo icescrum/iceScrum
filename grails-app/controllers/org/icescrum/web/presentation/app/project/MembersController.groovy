@@ -23,15 +23,15 @@
 
 package org.icescrum.web.presentation.app.project
 
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.utils.BundleUtils
 import org.icescrum.core.domain.security.Authority
-import grails.plugin.springcache.annotations.Cacheable
+
+import grails.converters.JSON
 import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugins.springsecurity.Secured
 
 @Secured('isAuthenticated() and (stakeHolder() or inProduct() or owner())')
 class MembersController {
@@ -42,7 +42,6 @@ class MembersController {
     def securityService
     def springcacheService
 
-    @Cacheable(cache = "projectMembersCache", cacheResolver = "projectCacheResolver", keyGenerator= 'roleAndLocaleKeyGenerator')
     def edit = {
         def product = Product.get(params.product)
         def members = allMembersProduct(product)
@@ -69,7 +68,7 @@ class MembersController {
                                                     rolesKeys:BundleUtils."${listRoles}".keySet().asList()])
     }
 
-    @Secured(['owner() or scrumMaster()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
     @CacheFlush(caches = ['projectMembersCache','projectTemplateCache'], cacheResolver = 'projectCacheResolver')
     def update = {
         def product = Product.get(params.product)
@@ -119,7 +118,7 @@ class MembersController {
             def found = currentMembers.find{ it.id == user.id}
             def u = User.get(found.id)
             productService.removeRole(product,team,u,found.role)
-            flushCache(cacheResolver:'projectCacheResolver', cache:'projectMembersCache')
+            flushCache(cache:'projectMembersCache',cacheResolver:'projectCacheResolver')
             render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
         } catch (e) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)

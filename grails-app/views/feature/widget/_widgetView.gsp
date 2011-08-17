@@ -36,7 +36,7 @@
                          value="${features}"
                          var="feature"
                          dblclickable='[rendered:request.inProduct, selector:".postit-row", callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'>
-    <is:cache  cache="featureCache-${feature.id}" cacheResolver="backlogElementCacheResolver" key="postit-small">
+    <is:cache  cache="featureCache_${feature.id}" cacheResolver="backlogElementCacheResolver" key="postit-small">
         <li elemId="${feature.id}" class="postit-row postit-row-feature">
             <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
             <is:truncated size="30" encodedHTML="true">${feature.name.encodeAsHTML()}</is:truncated>

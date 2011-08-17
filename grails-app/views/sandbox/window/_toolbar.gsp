@@ -28,6 +28,7 @@
 %{--Add button--}%
 <is:iconButton
         action="add"
+        rendered="${!request.productArchived}"
         controller="${id}"
         shortcut="[key:'ctrl+n',scope:id]"
         title="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
@@ -92,7 +93,7 @@
     ${message(code: 'is.ui.sandbox.toolbar.delete')}
 </is:iconButton>
 
-<is:separator/>
+<is:separator rendered="${!request.productArchived}"/>
 
 %{--View--}%
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">

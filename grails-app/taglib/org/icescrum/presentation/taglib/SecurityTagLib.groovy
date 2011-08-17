@@ -23,13 +23,8 @@
 
 package org.icescrum.presentation.taglib
 
-import org.springframework.security.core.context.SecurityContextHolder as SCH
-
-import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.security.Authority
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
+
 import org.springframework.security.core.authority.GrantedAuthorityImpl
 
 class SecurityTagLib {
@@ -46,20 +41,24 @@ class SecurityTagLib {
       }
       else
       {
-        if (request.owner) {
-          res << message(code: 'is.role.owner')
-        }
-        if (request.scrumMaster) {
-          res << message(code: 'is.role.scrumMaster')
-        }
-        if (request.teamMember) {
-          res << message(code: 'is.role.teamMember')
-        }
-        if (request.productOwner) {
-          res << message(code: 'is.role.productOwner')
-        }
-        if (!res && request.stakeHolder) {
-          res << message(code: 'is.role.stakeHolder')
+        if (securityService.archivedProduct(params.product)){
+            res << message(code:'is.product.archived')
+        }else{
+            if (request.owner) {
+              res << message(code: 'is.role.owner')
+            }
+            if (request.scrumMaster) {
+              res << message(code: 'is.role.scrumMaster')
+            }
+            if (request.teamMember) {
+              res << message(code: 'is.role.teamMember')
+            }
+            if (request.productOwner) {
+              res << message(code: 'is.role.productOwner')
+            }
+            if (!res && request.stakeHolder) {
+              res << message(code: 'is.role.stakeHolder')
+            }
         }
       }
     out << res.join(', ')

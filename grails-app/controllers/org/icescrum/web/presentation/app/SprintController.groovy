@@ -22,13 +22,15 @@
  */
 package org.icescrum.web.presentation.app
 
-import grails.converters.JSON
 import org.icescrum.core.domain.Release
-import grails.plugins.springsecurity.Secured
+
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
+
+import grails.converters.JSON
 import grails.converters.XML
 import grails.plugin.springcache.annotations.CacheFlush
+import grails.plugins.springsecurity.Secured
 
 class SprintController {
 
@@ -37,7 +39,7 @@ class SprintController {
     def storyService
     def springSecurityService
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.id) {
@@ -79,7 +81,7 @@ class SprintController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def save = {
         def sprint = new Sprint()
@@ -109,7 +111,7 @@ class SprintController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
@@ -140,7 +142,7 @@ class SprintController {
 
 
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def unPlan = {
         if (!params.id) {
@@ -167,7 +169,7 @@ class SprintController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = ['releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
     def activate = {
         if (!params.id) {
@@ -195,7 +197,7 @@ class SprintController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     @CacheFlush(caches = ['releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
     def close = {
         if (!params.id) {
