@@ -31,6 +31,9 @@ import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.PlanningPokerGame
 
 @Secured('stakeHolder() or inProduct()')
 class BacklogController {

@@ -48,6 +48,7 @@ import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.User
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
