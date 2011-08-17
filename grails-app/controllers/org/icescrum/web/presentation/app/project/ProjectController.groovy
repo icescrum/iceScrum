@@ -45,6 +45,9 @@ import org.springframework.security.access.AccessDeniedException
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.PlanningPokerGame
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Sprint
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
