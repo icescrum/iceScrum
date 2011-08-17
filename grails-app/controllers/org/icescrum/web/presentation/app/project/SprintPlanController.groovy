@@ -32,6 +32,11 @@ import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
+import org.icescrum.core.domain.User
+import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.PlanningPokerGame
+import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.Story
 
 @Secured('inProduct()')
 class SprintPlanController {

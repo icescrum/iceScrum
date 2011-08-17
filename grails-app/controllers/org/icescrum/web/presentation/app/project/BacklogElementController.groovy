@@ -37,6 +37,10 @@ import org.grails.comments.Comment
 import org.grails.followable.FollowException
 import org.grails.followable.FollowLink
 import org.springframework.web.servlet.support.RequestContextUtils
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.User
 
 class BacklogElementController {
 

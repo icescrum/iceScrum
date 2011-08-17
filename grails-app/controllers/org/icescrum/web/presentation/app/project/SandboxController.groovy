@@ -32,6 +32,11 @@ import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.User
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Sprint
 
 @Secured('stakeHolder() or inProduct()')
 class SandboxController {

@@ -34,6 +34,9 @@ import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.PlanningPokerGame
 
 @Secured('inProduct()')
 class FeatureController {

@@ -42,6 +42,9 @@ import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.springframework.security.access.AccessDeniedException
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Team
+import org.icescrum.core.domain.Release
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
