@@ -54,7 +54,10 @@ class ScrumOSController {
 
         def locale = params.lang ?: null
         try {
-            def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
+            def localeAccept = request.getHeader("accept-language")?.split(",")
+            if (localeAccept)
+                localeAccept = localeAccept[0]?.split("-")
+
             if (localeAccept?.size() > 0) {
                 locale = params.lang ?: localeAccept[0].toString()
             }
