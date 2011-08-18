@@ -44,6 +44,7 @@
                     code="is.shortname"/></span>
         </is:remoteDialog>
     </li>
+    <is:newVersion/>
     <li class="navigation-line separator"></li>
     <li class="navigation-line">
         <is:dropMenu id="menu-project" title="${message(code:'is.projectmenu.title')}">

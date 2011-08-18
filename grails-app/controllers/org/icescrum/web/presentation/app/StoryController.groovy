@@ -211,10 +211,10 @@ class StoryController {
             }
         } catch (AttachmentException e) {
             returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:story, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:story, exception:e)
         }
     }
 
@@ -369,7 +369,7 @@ class StoryController {
                 json { render(status: 200, contentType: 'application/json', text: story as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
-        }catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             returnError(exception:e)
         } catch (RuntimeException e) {
             returnError(object:story, exception:e)
@@ -411,10 +411,10 @@ class StoryController {
                 json { render(status: 200, contentType: 'application/json', text: story as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:story, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:story, exception:e)
         }
     }
 
@@ -464,10 +464,10 @@ class StoryController {
                 json { render(status: 200, contentType: 'application/json', text: story as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:story, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:story, exception:e)
         }
     }
 
@@ -518,10 +518,10 @@ class StoryController {
                 json { render(status: 200, contentType: 'application/json', text: story as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:story, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:story, exception:e)
         }
     }
 
@@ -547,10 +547,10 @@ class StoryController {
                 json { render(status: 200, contentType: 'application/json', text: story as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:story, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:story, exception:e)
         }
     }
 
@@ -577,11 +577,11 @@ class StoryController {
                 json { render(status: 200, contentType: 'application/json', text: storiesJ as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: storiesJ as XML) }
             }
+       } catch (IllegalStateException e) {
+            returnError(exception:e)
        } catch (RuntimeException e) {
             returnError(exception:e)
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        }
+       }
     }
 
     def download = {

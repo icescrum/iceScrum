@@ -485,4 +485,18 @@ class UtilsTagLib {
         GroovyPageOutputStack.currentWriter() << resultAndBuffer.buffer
         out << resultAndBuffer.result
     }
+
+    def newVersion = {
+        def info = grailsApplication.config.icescrum.check?.available?:null
+        if (info){
+            def v = 'R'+info?.version?.replaceFirst('\\.','#')
+            out << """<a href='${info.url}' target='_blank'>
+                        <li class='navigation-line new-version' title='${info.message?:g.message(code:'is.new.version')} ${v}'></li>
+                      </a>"""
+        }
+    }
+
+    def appId = {
+        out << grailsApplication.config.icescrum.appID
+    }
 }

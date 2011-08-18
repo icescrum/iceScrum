@@ -674,6 +674,11 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     cursor: pointer;
 }
 
+.new-version {
+    background: url(../images/icons/warning.png) no-repeat;
+}
+
+
 .comment-body blockquote {
     font-style: italic;
     padding-bottom: 5px;

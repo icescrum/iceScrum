@@ -39,6 +39,7 @@ class BootStrap {
         println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
         println("------------------");
     }
+
     def destroy = {
 
     }

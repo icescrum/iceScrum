@@ -74,10 +74,10 @@ class ReleaseController {
                 json { render status: 200, contentType: 'application/json', text: release as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        }catch (RuntimeException e) {
+            returnError(object:release, exception:e)
         }
     }
 
@@ -94,16 +94,15 @@ class ReleaseController {
 
         try {
             releaseService.save(release, currentProduct)
-            render(status: 200, contentType: 'application/json', text: release as JSON)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
                 json { render status: 200, contentType: 'application/json', text: release as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
+        }catch (IllegalStateException e) {
+            returnError(exception:e)
         } catch (RuntimeException e) {
             returnError(object:release, exception:e)
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
         }
     }
 
@@ -127,10 +126,10 @@ class ReleaseController {
                 json { render status: 200, contentType: 'application/json', text: release as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
         }
     }
 
@@ -154,10 +153,10 @@ class ReleaseController {
                 json { render status: 200, contentType: 'application/json', text: release as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
         }
     }
 
@@ -180,10 +179,10 @@ class ReleaseController {
                 json { render status: 200, contentType: 'application/json', text: release as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
         }
     }
 
@@ -235,10 +234,10 @@ class ReleaseController {
                 json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(exception:e,text:message(code: 'is.release.stories.error.not.dissociate'))
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(exception:e,text:message(code: 'is.release.stories.error.not.dissociate'))
         }
     }
 
@@ -263,10 +262,10 @@ class ReleaseController {
                 json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
             }
-         } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
         }
     }
 }

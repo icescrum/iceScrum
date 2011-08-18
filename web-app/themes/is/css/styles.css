@@ -2088,3 +2088,13 @@ li#li-roles {
     display:none;
     position:absolute;
 }
+
+.new-version {
+    height: 16px;
+    left: -5px;
+    padding: 0;
+    position: relative;
+    top: 0;
+    width: 16px;
+    z-index: 998;
+}

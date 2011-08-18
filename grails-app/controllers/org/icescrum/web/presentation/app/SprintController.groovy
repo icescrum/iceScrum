@@ -74,10 +74,10 @@ class SprintController {
                 json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:sprint, exception:e)
         }
     }
 
@@ -104,10 +104,10 @@ class SprintController {
                 json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:sprint, exception:e)
         }
     }
 
@@ -132,10 +132,10 @@ class SprintController {
                 json { render(status: 200, contentType: 'application/json', text: 'success' as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: 'success' as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:sprint, exception:e)
         }
 
     }
@@ -190,10 +190,10 @@ class SprintController {
                 json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:sprint, exception:e)
         }
     }
 
@@ -217,10 +217,10 @@ class SprintController {
                 json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         } catch (IllegalStateException e) {
             returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:sprint, exception:e)
         }
     }
 }

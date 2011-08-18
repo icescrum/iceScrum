@@ -53,8 +53,11 @@
 <p>
   <strong><g:message code="is.dialog.about.version.grailsVersion"/></strong> : <g:meta name="app.grails.version"/>
 </p>
-<p class="last">
+<p>
   <strong><g:message code="is.dialog.about.version.javaVersion"/></strong> : ${System.getProperty('java.version')}
+</p>
+<p class="last">
+  <strong><g:message code="is.dialog.about.appID"/></strong> : <is:appId/>
 </p>
 <h3><g:message code="is.dialog.about.version.plugins.title"/></h3>
 <g:set var="pluginManager" value="${applicationContext.getBean('pluginManager').allPlugins.sort({it.name.toUpperCase()})}"/>

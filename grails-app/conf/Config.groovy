@@ -105,7 +105,7 @@ icescrum.json.shortObject.productpreferences = ['displayRecurrentTasks','display
 icescrum.check.enable   = true
 icescrum.check.url      = 'http://www.icescrum.org'
 icescrum.check.path     = 'check.php'
-icescrum.check.interval = 30
+icescrum.check.interval = 1440 //in minutes (24h)
 
 /*
  Attachmentable section
@@ -209,6 +209,7 @@ log4j = {
         debug 'grails.app.org.icescrum'
         debug 'org.icescrum.atmosphere'
         debug 'org.icescrum.cache'
+        debug 'org.icescrum.core'
         debug 'grails.plugin.springcache'
     }else{
         off 'grails.plugin.springcache'
