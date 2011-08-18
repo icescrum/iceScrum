@@ -105,7 +105,7 @@ icescrum.json.shortObject.productpreferences = ['displayRecurrentTasks','display
 icescrum.check.enable   = true
 icescrum.check.url      = 'http://www.icescrum.org'
 icescrum.check.path     = 'check.php'
-icescrum.check.interval = 1440 //in minutes (24h)
+icescrum.check.interval = 360 //in minutes (6h)
 
 /*
  Attachmentable section
