@@ -108,10 +108,11 @@ class StoryController {
             render(status: 403, contentType: 'application/json')
             return
         }
-        if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !securityService.productOwner(story.backlog.id, springSecurityService.authentication)) {
+        def productOwner = securityService.productOwner(story.backlog.id, springSecurityService.authentication)
+        if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !productOwner) {
             render(status: 403, contentType: 'application/json')
             return
-        } else if (story.state > Story.STATE_SUGGESTED && !securityService.productOwner(story.backlog.id, springSecurityService.authentication)) {
+        } else if (story.state > Story.STATE_SUGGESTED && !productOwner) {
             render(status: 403, contentType: 'application/json')
             return
         }
@@ -131,7 +132,7 @@ class StoryController {
             def next = null
             if (params.continue) {
                 if (story.state == Story.STATE_SUGGESTED)
-                    next = Story.findNextSuggested(params.long('product'), story.suggestedDate).list()[0]
+                    next = Story.findNextSuggested(params.long('product'), story.suggestedDate, !productOwner ? user.id : null).list()[0]
                 else if (story.state <= Story.STATE_ESTIMATED)
                     next = Story.findNextAcceptedOrEstimated(params.long('product'), story.rank).list()[0]
                 else if (story.state < Story.STATE_DONE)
@@ -264,10 +265,12 @@ class StoryController {
         }
 
         def user = springSecurityService.currentUser
-        if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user.id) && !securityService.productOwner(story.backlog.id, springSecurityService.authentication)) {
+        def productOwner = securityService.productOwner(story.backlog.id, springSecurityService.authentication)
+
+        if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user.id) && !productOwner) {
             render(status: 403, contentType: 'application/json')
             return
-        } else if (story.state > Story.STATE_SUGGESTED && !securityService.productOwner(story.backlog.id, springSecurityService.authentication)) {
+        } else if (story.state > Story.STATE_SUGGESTED && !productOwner) {
             render(status: 403, contentType: 'application/json')
             return
         }
@@ -296,7 +299,7 @@ class StoryController {
 
         def next = null
         if (story.state == Story.STATE_SUGGESTED)
-            next = Story.findNextSuggested(params.long('product'), story.suggestedDate).list()[0]
+            next = Story.findNextSuggested(params.long('product'), story.suggestedDate, !productOwner ? user.id : null).list()[0]
         else if (story.state <= Story.STATE_ESTIMATED)
             next = Story.findNextAcceptedOrEstimated(params.long('product'), story.rank).list()[0]
         else if (story.state < Story.STATE_DONE)
