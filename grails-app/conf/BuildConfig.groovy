@@ -63,15 +63,6 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         test 'xmlunit:xmlunit:1.3'
-        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.0') {
-            excludes 'junit',
-                    'log4j',
-                    'json-lib',
-                    'groovy',
-                    'xercesImpl',
-                    'xml-resolver'
-        }
-
     }
 
     grails.war.resources = { stagingDir ->
@@ -83,7 +74,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile "org.icescrum:icescrum-core:1.4.4.1"
+        compile "org.icescrum:icescrum-core:1.4.4.2"
         compile "org.icescrum:entry-points:0.3-BETA"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
