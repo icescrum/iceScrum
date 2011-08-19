@@ -63,6 +63,15 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         test 'xmlunit:xmlunit:1.3'
+        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.0') {
+            excludes 'junit',
+                    'log4j',
+                    'json-lib',
+                    'groovy',
+                    'xercesImpl',
+                    'xml-resolver'
+        }
+
     }
 
     grails.war.resources = { stagingDir ->
