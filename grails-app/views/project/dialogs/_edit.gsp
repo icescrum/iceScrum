@@ -38,6 +38,9 @@
                            name="productd.preferences.timezone" id="productpreferencestimezone"
                            value="${product.preferences.timezone}"/>
     </is:fieldSelect>
+    <is:fieldRadio for="productpreferenceswebservices" label="is.product.preferences.project.webservices">
+        <is:radio id="productpreferenceswebservices" name="productd.preferences.webservices" value="${product.preferences.webservices}"/>
+    </is:fieldRadio>
     <is:fieldArea for="productdescription" label="is.product.description" noborder="${!product.preferences.archived && (request.owner || request.scrumMaster) || (product.preferences.archived && request.admin)}">
       <is:area
               rich="[preview:true,width:330]"

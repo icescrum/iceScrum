@@ -22,6 +22,8 @@
 
 package org.icescrum.presentation
 
+import org.icescrum.core.domain.Product
+
 class IceScrumFilters {
 
   def securityService
@@ -37,6 +39,26 @@ class IceScrumFilters {
             return
           }
 
+        }
+      }
+    }
+
+    webservices(uri: '/ws/**') {
+      before = {
+        if (params.product) {
+            def webservices = Product.createCriteria().get {
+                              eq 'id', params.product.toLong()
+                                preferences {
+                                    projections {
+                                        property 'webservices'
+                                    }
+                                }
+                              cache true
+                            }
+            if (!webservices){
+                render(status: 404)
+                return webservices
+            }
         }
       }
     }
