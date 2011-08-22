@@ -32,7 +32,7 @@ grails.project.war.file = "target/${appName}.war"
 grails.project.war.osgi.headers = false
 
 //grails.plugin.location.'entry-points' =  '../plugins/entry-points'
-grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+//grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 
 coverage {
     enabledByDefault = false
