@@ -26,7 +26,7 @@ import grails.util.GrailsNameUtils
 import grails.util.Environment
 
 //Workaround to detect grails environment
-def environment = System.getProperty('grails.env').toUpperCase()
+def environment = Environment.getCurrent()
 
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
