@@ -39,7 +39,7 @@ environments {
         dataSource {
             driverClassName="com.mysql.jdbc.Driver"
             dialect="org.hibernate.dialect.MySQL5InnoDBDialect"
-            url="jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
+            url="jdbc:mysql://localhost:3306/kagilum?useUnicode=true&characterEncoding=utf8"
             username="root"
             password="root"
             dbCreate = "update"

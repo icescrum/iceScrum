@@ -34,6 +34,10 @@
             }
         },
         story:{
+            i18n : {
+                stories:"${message(code:'is.ui.backlog.title.details.stories')}",
+                points:"${message(code:'is.ui.backlog.title.details.points')}"
+            },
             states: ${is.bundleLocaleToJs(bundle: BundleUtils.storyStates)},
             types: ${is.bundleLocaleToJs(bundle: BundleUtils.storyTypes)}
         },

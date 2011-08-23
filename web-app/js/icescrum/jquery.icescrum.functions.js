@@ -320,6 +320,10 @@
                     STATE_PLANNED:4,
                     STATE_INPROGRESS:5,
                     STATE_DONE:7,
+                    i18n : {
+                        stories:'stories',
+                        points:'points'
+                    },
                     templates:{
                         sandbox:{
                             selector:function() {
@@ -366,11 +370,14 @@
                                 return this.state == $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_ESTIMATED;
                             },
                             remove:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? $('.postit-story[elemid=' + this.id + ']').remove() : $('#story-table .table-line[elemid=' + this.id + ']').remove();
+                                var selector = $.icescrum.o.currentView == 'postitsView' ? 'div.postit-story' : 'table.#story-table tr.table-line';
+                                var removed = $(selector+'[elemid=' + this.id + ']').remove();
+                                $.icescrum.story.backlogTitleDetails();
                             },
                             window:'#window-content-backlog',
                             afterTmpl:function(tmpl, container, newObject) {
                                 $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
+                                $.icescrum.story.backlogTitleDetails();
                                 if ($.icescrum.o.currentView == 'postitsView') {
                                     return;
                                 }
@@ -573,6 +580,13 @@
                         if (this.state < $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_DONE || !$.icescrum.user.productOwner) {
                             newObject.find('.postit-label').removeClass('postit-sortable');
                         }
+                    },
+
+                    backlogTitleDetails:function(){
+                        var effort = 0, size = 0;
+                        var stories = $.icescrum.o.currentView == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort');
+                        stories.each(function() { size += 1; if ($(this).text() != '?') effort += Number($(this).text());});
+                        jQuery('#window-title-bar-backlog .content .details').html(' - <span id="stories-backlog-size">'+size+'</span> '+$.icescrum.story.i18n.stories+' / <span id="stories-backlog-effort">'+effort+'</span> '+$.icescrum.story.i18n.points);
                     }
                 },
 

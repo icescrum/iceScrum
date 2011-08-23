@@ -21,6 +21,7 @@
 --}%
 
 <%@ page import="org.icescrum.core.domain.Story" %>
+<g:set var="sumEfforts" value="${0}"/>
 <is:tableView>
     <is:table id="story-table"
               style="${stories ? '' : 'display:none'};"
@@ -41,6 +42,7 @@
 
 
         <is:tableRows in="${stories}" var="story" elemid="id">
+            <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${story.id}" contentView="/story/menu"
@@ -85,6 +87,10 @@
 </is:tableView>
 
 <g:include view="/backlog/window/_blank.gsp" model="[stories:stories,id:id]"/>
+
+<jq:jquery>
+    jQuery('#window-title-bar-${id} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');
+</jq:jquery>
 
 <is:onStream
         on="#story-table"

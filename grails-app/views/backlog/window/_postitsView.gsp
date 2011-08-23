@@ -22,6 +22,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
+<g:set var="sumEfforts" value="${0}"/>
 <is:backlogElementLayout
         emptyRendering="true"
         style="display:${stories ? 'block' : 'none'};"
@@ -57,16 +58,21 @@
                   before:'$(this).next().hide();',
                   cancel:'jQuery(original).next().show();',
                   values:suiteSelect,
-                  callback:'if (value == \'?\'){jQuery(this).next().html(\''+message(code:'is.story.state.accepted')+'\');}else{jQuery(this).next().html(\''+message(code:'is.story.state.estimated')+'\')} $(this).next().show();',
+                  callback:'if (value == \'?\'){jQuery(this).next().html(\''+message(code:'is.story.state.accepted')+'\');}else{jQuery(this).next().html(\''+message(code:'is.story.state.estimated')+'\')} $(this).next().show(); $.icescrum.story.backlogTitleDetails();',
                   params:[product:params.product]]"
         value="${stories}"
         var="story">
+        <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
     <is:cache  cache="storyCache_${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
         <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user,sortable:request.productOwner]" params="[product:params.product]"/>
     </is:cache>
 </is:backlogElementLayout>
 
 <g:include view="/backlog/window/_blank.gsp" model="[stories:stories,id:id]"/>
+
+<jq:jquery>
+    jQuery('#window-title-bar-${id} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');
+</jq:jquery>
 
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"

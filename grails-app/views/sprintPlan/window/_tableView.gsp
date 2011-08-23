@@ -180,5 +180,5 @@
     </is:table>
 </is:tableView>
 <jq:jquery>
-    jQuery('#window-title-bar-${id} .content').html('${message(code: "is.ui." + id)} - ${message(code: "is.sprint")} ${sprint.orderNumber}  - ${is.bundle(bundle: 'sprintStates', value: sprint.state)} - [${g.formatDate(date: sprint.startDate, formatName: 'is.date.format.short')} -> ${g.formatDate(date: sprint.endDate, formatName: 'is.date.format.short')}]');
+    jQuery('#window-title-bar-${id} .content .details').html(' - ${message(code: "is.sprint")} ${sprint.orderNumber}  - ${is.bundle(bundle: 'sprintStates', value: sprint.state)} - [${g.formatDate(date: sprint.startDate, formatName: 'is.date.format.short')} -> ${g.formatDate(date: sprint.endDate, formatName: 'is.date.format.short')}]');
 </jq:jquery>
