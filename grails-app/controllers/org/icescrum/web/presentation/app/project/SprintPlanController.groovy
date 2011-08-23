@@ -205,7 +205,8 @@ class SprintPlanController {
             task.properties = params.task
         }
         else {
-            task.estimation = params.int('task.estimation') ?: (params.int('task.estimation') == 0) ? 0 : null
+            params.task.estimation = params.task?.estimation?.replace(/,/,'.')
+            task.estimation = params.task?.estimation?.toFloat() ?: (params.task.estimation.toFloat() == 0) ? 0 : null
         }
 
         User user = (User) springSecurityService.currentUser

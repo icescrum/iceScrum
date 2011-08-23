@@ -150,7 +150,7 @@
 
     <is:editable rendered="${sprint.state != Sprint.STATE_DONE}"
                  on="div.postit-task span.mini-value.editable"
-                 typed="[type:'numeric',allow:'?']"
+                 typed="[type:'numeric',allow:'?.,']"
                  onExit="submit"
                  action="estimate"
                  controller="task"

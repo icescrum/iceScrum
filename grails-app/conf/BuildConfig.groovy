@@ -23,6 +23,10 @@
  */
 
 import grails.util.GrailsNameUtils
+import grails.util.Environment
+
+//Workaround to detect grails environment
+def environment = System.getProperty('grails.env').toUpperCase()
 
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
@@ -31,13 +35,17 @@ grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
 
-//grails.plugin.location.'entry-points' =  '../plugins/entry-points'
-//grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+if (environment != Environment.PRODUCTION){
+    println "use inline plugin in env: ${environment}"
+    grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+    //grails.plugin.location.'entry-points' =  '../plugins/entry-points'
+}
 
 coverage {
     enabledByDefault = false
     xml = true
 }
+
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
@@ -73,8 +81,20 @@ grails.project.dependency.resolution = {
         }
     }
 
+    if (environment == Environment.PRODUCTION){
+        plugins {
+            println "use plugin tomcat / icescrum-core.latest.integration in env:  ${environment}"
+            compile "org.icescrum:icescrum-core:latest.integration"
+            compile ":tomcat:1.3.7"
+        }
+    }else{
+        plugins {
+            println "use plugin tomcatnio in env:  ${environment}"
+            compile ":tomcatnio:1.3.4"
+        }
+    }
+
     plugins {
-        compile "org.icescrum:icescrum-core:1.4.4.6"
         compile "org.icescrum:entry-points:0.3-BETA"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
@@ -84,10 +104,6 @@ grails.project.dependency.resolution = {
         compile ":jquery-ui:1.8.11"
         compile ":resources:1.0.2"
         compile ":session-temp-files:1.0"
-        //uncomment in dev / comment in prod
-        //compile ":tomcatnio:1.3.4"
-        //uncomment in prod / comment in dev
-        compile ":tomcat:1.3.7"
         compile ":wikitext:0.1.2"
         compile ":zipped-resources:1.0"
     }

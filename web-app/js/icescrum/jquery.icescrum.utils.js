@@ -232,7 +232,7 @@
     };
 
     $.fn.liveEditable = function (url, opts) {
-        this.die('hover').live("hover", function() {
+        $(this).die('hover.editable').live("hover.editable", function() {
             if (!$(this).data("init")) {
                 $(this).data("init", true).editable(url, opts);
             }
