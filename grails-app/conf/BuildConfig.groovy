@@ -65,7 +65,7 @@ grails.project.dependency.resolution = {
         mavenCentral()
         //mavenRepo "http://snapshots.repository.codehaus.org"
         mavenRepo "http://repository.codehaus.org"
-        mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
+        //mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
     }
 
