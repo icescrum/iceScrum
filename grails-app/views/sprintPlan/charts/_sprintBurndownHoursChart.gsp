@@ -71,7 +71,7 @@
             yaxis:{
               min:0,
               label:'${message(code: 'is.chart.sprintBurndownHoursChart.yaxis.label')}',
-              tickOptions:{formatString:'%d'}
+              tickOptions:{formatString:'%.1f'}
             }
         },
         cursor: {
