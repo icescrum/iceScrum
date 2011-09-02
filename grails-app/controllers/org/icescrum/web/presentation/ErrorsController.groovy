@@ -23,7 +23,6 @@
 package org.icescrum.web.presentation
 
 import grails.converters.JSON
-import grails.converters.XML
 
 class ErrorsController {
 

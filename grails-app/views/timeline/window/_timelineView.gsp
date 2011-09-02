@@ -24,7 +24,7 @@
         name="timelineTl"
         container="#window-id-${id}"
         height="100%"
-        onScroll="\$('#selectOnTimeline').changeSelectDate(band.getMinVisibleDate().getTime())">
+        onScroll="jQuery('#selectOnTimeline').changeSelectDate(band.getMinVisibleDate().getTime())">
     <is:customBubble
             enable="true"
             container="#window-content-${id}"/>

@@ -37,6 +37,7 @@ import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.PlanningPokerGame
+import org.icescrum.core.domain.Story
 
 @Secured('inProduct()')
 class FeatureController {

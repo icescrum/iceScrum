@@ -272,9 +272,7 @@ class UserController {
     def avatar = {
         def user = User.load(params.id)
         if (user) {
-            if (grailsApplication.config.icescrum.gravatar){
-
-            }else{
+            if (!grailsApplication.config.icescrum.gravatar){
                 def avat = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
                 if (!avat.exists()) {
                     avat = grailsApplication.parentContext.getResource("/${is.currentThemeImage()}avatars/avatar.png").file

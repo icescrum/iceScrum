@@ -67,7 +67,6 @@ class ScrumOSController {
             currentUserInstance = User.get(springSecurityService.principal.id)
             if (locale != currentUserInstance.preferences.language || RCU.getLocale(request).toString() != currentUserInstance.preferences.language) {
                 RCU.getLocaleResolver(request).setLocale(request, response, new Locale(currentUserInstance.preferences.language))
-                locale = currentUserInstance.preferences.language
             }
         } else {
             if (locale) {
@@ -262,6 +261,7 @@ class ScrumOSController {
                     view: '/emails-templates/reportError',
                     model: [error: params.stackError,
                             comment: params.comments,
+                            appID: grailsApplication.config.icescrum.appID,
                             ip: request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
                             date: g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
                             version: g.meta(name: 'app.version')]

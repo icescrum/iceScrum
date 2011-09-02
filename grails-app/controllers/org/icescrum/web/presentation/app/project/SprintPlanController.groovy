@@ -38,6 +38,7 @@ import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Release
 
 @Secured('inProduct()')
 class SprintPlanController {

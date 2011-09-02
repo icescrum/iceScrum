@@ -25,7 +25,7 @@
         <div class="col1 postit-details-information">
             <p>
                 <strong><g:message code="is.backlogelement.id"/></strong> <is:scrumLink
-                    onclick="\$('#dialog').dialog('close');" controller="backlogElement"
+                    onclick="jQuery('#dialog').dialog('close');" controller="backlogElement"
                     id="${story.id}">${story.id}</is:scrumLink>
             </p>
 

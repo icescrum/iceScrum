@@ -30,7 +30,7 @@
                 iframe="true"
                 showOnCreate="true"
                 iframeSrc="${createLink(action:'export',controller:'project',params:[product:params.product,get:true])}"
-                onComplete="\$.doTimeout(2000,function(){\$('#dialog').dialog('close')})"
+                onComplete="jQuery.doTimeout(2000,function(){\$('#dialog').dialog('close')})"
                 url="${createLink(action:'export',controller:'project',params:[product:params.product,status:true])}"/>
     </is:fieldset>
 </div>
