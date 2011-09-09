@@ -116,6 +116,7 @@ class BacklogController {
                 data << [
                         name: it.name,
                         rank: it.rank,
+                        effort: it.effort,
                         description: it.description,
                         notes: wikitext.renderHtml([markup: 'Textile', text: it.notes], null),
                         type: message(code: BundleUtils.storyTypes[it.type]),

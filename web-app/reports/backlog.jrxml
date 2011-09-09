@@ -90,6 +90,7 @@
     </style>
     <subDataset name="story">
         <field name="name" class="java.lang.String"/>
+        <field name="effort" class="java.lang.Integer"/>
         <field name="rank" class="java.lang.Integer"/>
         <field name="description" class="java.lang.String"/>
         <field name="type" class="java.lang.String"/>
@@ -132,10 +133,10 @@
                         <dataSourceExpression>
                             <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{stories})]]></dataSourceExpression>
                     </datasetRun>
-                    <jr:column width="66">
+                    <jr:column width="65">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
-                                <reportElement x="0" y="0" width="66" height="30"/>
+                                <reportElement x="0" y="0" width="65" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$R{is.report.story.name}]]></textFieldExpression>
@@ -143,9 +144,27 @@
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
                             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="66" height="30"/>
+                                <reportElement x="0" y="0" width="65" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="39">
+                        <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+                            <textField>
+                                <reportElement x="0" y="0" width="39" height="30"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                                <textFieldExpression class="java.lang.String">
+                                    <![CDATA[$R{is.report.story.effort}]]></textFieldExpression>
+                            </textField>
+                        </jr:columnHeader>
+                        <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+                            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                                <reportElement x="0" y="0" width="39" height="30"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                                <textFieldExpression class="java.lang.Integer">
+                                    <![CDATA[$F{effort}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
@@ -184,10 +203,10 @@
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="138">
+                    <jr:column width="128">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
-                                <reportElement x="3" y="5" width="130" height="20"/>
+                                <reportElement x="3" y="5" width="120" height="20"/>
                                 <textElement verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$R{is.report.backlogelement.description}]]></textFieldExpression>
@@ -195,17 +214,17 @@
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
                             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                <reportElement x="4" y="5" width="130" height="20"/>
+                                <reportElement x="4" y="5" width="120" height="20"/>
                                 <textElement verticalAlignment="Middle" markup="none"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$F{description}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="124">
+                    <jr:column width="114">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
-                                <reportElement x="4" y="5" width="116" height="20"/>
+                                <reportElement x="4" y="5" width="108" height="20"/>
                                 <textElement verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$R{is.report.backlogelement.notes}]]></textFieldExpression>
@@ -213,28 +232,10 @@
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
                             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                                <reportElement x="4" y="5" width="116" height="20"/>
+                                <reportElement x="4" y="5" width="108" height="20"/>
                                 <textElement verticalAlignment="Middle" markup="html"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$F{notes}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-                    <jr:column width="83">
-                        <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
-                            <textField>
-                                <reportElement x="0" y="0" width="83" height="30"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
-                                <textFieldExpression class="java.lang.String">
-                                    <![CDATA[$R{is.report.story.date.accepted}]]></textFieldExpression>
-                            </textField>
-                        </jr:columnHeader>
-                        <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
-                            <textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="83" height="30"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
-                                <textFieldExpression class="java.util.Date">
-                                    <![CDATA[$F{acceptedDate}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
@@ -244,7 +245,7 @@
                                 <reportElement x="0" y="0" width="76" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
-                                    <![CDATA[$R{is.report.story.date.estimated}]]></textFieldExpression>
+                                    <![CDATA[$R{is.report.story.date.accepted}]]></textFieldExpression>
                             </textField>
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
@@ -252,14 +253,32 @@
                                 <reportElement x="0" y="0" width="76" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.util.Date">
+                                    <![CDATA[$F{acceptedDate}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="75">
+                        <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+                            <textField>
+                                <reportElement x="0" y="0" width="75" height="30"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                                <textFieldExpression class="java.lang.String">
+                                    <![CDATA[$R{is.report.story.date.estimated}]]></textFieldExpression>
+                            </textField>
+                        </jr:columnHeader>
+                        <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+                            <textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+                                <reportElement x="0" y="0" width="75" height="30"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                                <textFieldExpression class="java.util.Date">
                                     <![CDATA[$F{estimatedDate}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="81">
+                    <jr:column width="80">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
-                                <reportElement x="0" y="0" width="81" height="30"/>
+                                <reportElement x="0" y="0" width="80" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$R{is.report.story.creator}]]></textFieldExpression>
@@ -267,17 +286,17 @@
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
                             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="81" height="30"/>
+                                <reportElement x="0" y="0" width="80" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$F{creator}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="87">
+                    <jr:column width="77">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
-                                <reportElement x="0" y="0" width="87" height="30"/>
+                                <reportElement x="0" y="0" width="77" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$R{is.report.feature}]]></textFieldExpression>
@@ -285,7 +304,7 @@
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
                             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="87" height="30"/>
+                                <reportElement x="0" y="0" width="77" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$F{feature}]]></textFieldExpression>
