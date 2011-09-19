@@ -247,7 +247,6 @@ log4j = {
 
 springcache {
     defaults {
-        //eternal = true
         timeToLive = 432000
         timeToIdle = 0
     }

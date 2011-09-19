@@ -29,7 +29,7 @@
 </is:postitMenuItem>
 <is:postitMenuItem>
     <is:link id="${feature.id}"
-             action="copyFeatureToProductBacklog"
+             action="copyFeatureToBacklog"
              remote="true"
              controller="${id}"
              history="false"

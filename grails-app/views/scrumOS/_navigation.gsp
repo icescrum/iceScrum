@@ -98,7 +98,7 @@
                                 width="650"
                                 resizable="false"
                                 draggable="false">
-                            <g:message code='is.projectmenu.submenu.project.members'/>
+                            <g:message code='is.projectmenu.submenu.project.team'/>
                         </is:remoteDialog>
                     </li>
                 </g:if>

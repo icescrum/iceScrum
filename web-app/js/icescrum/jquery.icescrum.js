@@ -53,6 +53,7 @@ $.ajaxSetup({ cache: false  });
             locale:'en',
             currentProductName:null,
             currentTeamName:null,
+            push:true,
             selectedObject:{obj:'',time:'',callback:''}
         },
         o:{},
@@ -78,9 +79,11 @@ $.ajaxSetup({ cache: false  });
                 $.icescrum.openWindow(url);
             }
             $.icescrum.initHistory();
-            $(window).load(function () {
-                setTimeout($.icescrum.listenServer, 500);
-            });
+            if (this.o.push){
+                $(window).load(function () {
+                    setTimeout($.icescrum.listenServer, 500);
+                });
+            }
         },
 
         log:function() {

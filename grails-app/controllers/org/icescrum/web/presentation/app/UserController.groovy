@@ -251,7 +251,7 @@ class UserController {
             } else {
                 pId = Story.get(it.cachedId)?.backlog
             }
-            securityService.stakeHolder(pId, currentAuth) || securityService.inProduct(pId, currentAuth)
+            securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
         }
 
 

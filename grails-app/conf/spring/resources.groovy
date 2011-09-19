@@ -28,53 +28,8 @@ import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.web.security.ScrumAuthenticationProcessingFilter
 import org.icescrum.web.upload.AjaxMultipartResolver
-import org.icescrum.cache.ProjectCacheResolver
-import org.icescrum.cache.UserCacheResolver
-import org.icescrum.cache.BacklogElementCacheResolver
-import org.icescrum.cache.RoleAndLocaleKeyGenerator
-import org.icescrum.cache.LocaleKeyGenerator
-import org.icescrum.cache.UserKeyGenerator
-import org.icescrum.cache.UserProjectCacheResolver
-import grails.plugin.springcache.web.key.WebContentKeyGenerator
-import org.icescrum.cache.IceScrumCacheResolver
 
 beans = {
-
-    projectCacheResolver(ProjectCacheResolver){
-        springcacheCacheManager = ref('springcacheCacheManager')
-        springSecurityService = ref('springSecurityService')
-        grailsApplication = ref('grailsApplication')
-    }
-    backlogElementCacheResolver(BacklogElementCacheResolver){
-        springcacheCacheManager = ref('springcacheCacheManager')
-        springSecurityService = ref('springSecurityService')
-        grailsApplication = ref('grailsApplication')
-    }
-    userCacheResolver(UserCacheResolver){
-        springcacheCacheManager = ref('springcacheCacheManager')
-        springSecurityService = ref('springSecurityService')
-        grailsApplication = ref('grailsApplication')
-    }
-    userProjectCacheResolver(UserProjectCacheResolver){
-        springcacheCacheManager = ref('springcacheCacheManager')
-        springSecurityService = ref('springSecurityService')
-        grailsApplication = ref('grailsApplication')
-    }
-
-    userKeyGenerator(UserKeyGenerator) {
-        contentType = true
-        springSecurityService = ref('springSecurityService')
-    }
-    localeKeyGenerator(LocaleKeyGenerator) {
-        contentType = true
-    }
-    roleAndLocaleKeyGenerator(RoleAndLocaleKeyGenerator) {
-        contentType = true
-        securityService = ref('securityService')
-    }
-    springcacheDefaultKeyGenerator(WebContentKeyGenerator){
-        contentType = true
-    }
 
     authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
     def conf = SpringSecurityUtils.securityConfig
