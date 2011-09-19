@@ -63,7 +63,7 @@
                                 legend="${message(code:'is.ui.backlogelement.attachment',args:[story.totalAttachments > 1 ?'s':''])}">
                             <is:attachedFiles bean="${story}" width="120" deletable="${false}"
                                               params="[product:params.product]" action="download"
-                                              controller="${(story.state > Story.STATE_SUGGESTED)?'backlog':'story'}"
+                                              controller="story"
                                               size="20"/>
                         </is:panelLine>
                     </g:if>
