@@ -302,9 +302,6 @@ class UtilsTagLib {
     }
 
     def onStream = { attrs ->
-        if (!grailsApplication.config.icescrum.push?.enable){
-            return
-        }
         def jqCode = ""
         attrs.events.each { it ->
             def events = [];
