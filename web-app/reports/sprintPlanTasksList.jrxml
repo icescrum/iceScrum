@@ -204,7 +204,7 @@
                                height="20"/>
                 <textElement textAlignment="Center"/>
                 <textFieldExpression class="java.lang.String">
-                    <![CDATA[($F{parentStory} != null ? $F{parentStory}.name : ($F{type} == 10 ? $R{is.report.task.type.recurrent} : $R{is.report.task.type.recurrent}))]]></textFieldExpression>
+                    <![CDATA[($F{parentStory} != null ? $F{parentStory}.name : ($F{type} == 10 ? $R{is.report.task.type.recurrent} : $R{is.report.task.type.urgent}))]]></textFieldExpression>
             </textField>
         </band>
     </detail>
