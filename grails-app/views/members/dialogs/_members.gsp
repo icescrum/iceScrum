@@ -26,7 +26,7 @@
         <g:if test="${request.admin}">
             <is:fieldSelect for="creator" label="is.role.owner" class="productcreator">
                 <is:select
-                        container=".productcreator"
+                        container="#form-project"
                         width="240"
                         maxHeight="200"
                         styleSelect="dropdown"
