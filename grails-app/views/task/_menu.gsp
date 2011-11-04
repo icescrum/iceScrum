@@ -46,7 +46,7 @@
              remote="true"/>
 </is:postitMenuItem>
 <is:postitMenuItem
-        rendered="${(task.state != Task.STATE_DONE) || template}"
+        rendered="${((responsible || (!responsible && creator) || scrumMaster) && task.state != Task.STATE_DONE) || template}"
         elementId="menu-edit-${task.id}">
     <is:link id="${task.backlog?.id}"
              action="edit"

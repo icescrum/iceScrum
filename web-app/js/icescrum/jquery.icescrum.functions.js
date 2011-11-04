@@ -640,14 +640,14 @@
                         }
                         var responsible = (this.responsible && this.responsible.id == $.icescrum.user.id) ? true : false;
                         var creator = (this.creator.id == $.icescrum.user.id);
-                        if ((this.state == $.icescrum.task.STATE_DONE && !$.icescrum.user.scrumMaster) || (!(responsible || creator || $.icescrum.user.poOrSm) && this.state != $.icescrum.task.STATE_DONE)) {
+                        if ((this.state == $.icescrum.task.STATE_DONE && !$.icescrum.user.scrumMaster) || (!(responsible || creator || $.icescrum.user.poOrSm()) && this.state != $.icescrum.task.STATE_DONE)) {
                             $('#menu-delete-' + this.id, postit).remove();
                         }
 
                         if (!((responsible || $.icescrum.user.scrumMaster) && this.state != $.icescrum.task.STATE_DONE && ($.icescrum.sprint.current && this.backlog.id == $.icescrum.sprint.current.id))) {
                             $('#menu-blocked-' + this.id, postit).remove();
                         }
-                        if (this.state == $.icescrum.task.STATE_DONE) {
+                        if ((!responsible && !creator && !$.icescrum.user.scrumMaster) || this.state == $.icescrum.task.STATE_DONE) {
                             $('#menu-edit-' + this.id, postit).remove();
                         }
                         if (this.state == $.icescrum.task.STATE_DONE || responsible) {
