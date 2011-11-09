@@ -158,7 +158,7 @@
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
                  ajaxoptions = "{dataType:'json'}"
-                 callback="jQuery(this).next().show(); jQuery(this).html(value.estimation != null ? value.estimation : '?'); if(value.state == ${Task.STATE_DONE}){ jQuery.event.trigger('update_task',value); }"
+                 callback="jQuery(this).next().show(); jQuery(this).html(jQuery.icescrum.formattedTaskEstimation(value.estimation)); if(value.state == ${Task.STATE_DONE}){ jQuery.event.trigger('update_task',value); }"
                  params="[product:params.product]"
                  findId="jQuery(this).parents('.postit-task:first').attr('elemid')"/>
 

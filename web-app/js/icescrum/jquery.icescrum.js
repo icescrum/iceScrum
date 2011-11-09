@@ -310,6 +310,13 @@ $.ajaxSetup({ cache: false  });
                             }
                         }
                     });
+        },
+
+        formattedTaskEstimation:function(estimation) {
+            if(estimation == null)
+                return '?';
+            else
+                return estimation.toString().indexOf('.') == -1 ? estimation.toString().concat('.0') : estimation;
         }
     }
 

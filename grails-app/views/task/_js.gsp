@@ -36,7 +36,7 @@
     var description =  this.description ? this.description : '';
     var typeTitle = this.blocked ? '${message(code: 'is.task.blocked')}' : '';
     var typeNumber = this.blocked ? 1 : 0;
-    var estimation = this.estimation != null ? this.estimation : '?';
+    var estimation = jQuery.icescrum.formattedTaskEstimation(this.estimation);
     var resp = this.responsible ? (this.responsible.firstName +' '+this.responsible.lastName) : '';
     resp = resp.length > 16 ? resp.substring(0,13)+'...' : resp;
     var styleClass = 'task ' + (resp ? 'hasResponsible' : '');
