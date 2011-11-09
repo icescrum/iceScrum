@@ -35,7 +35,7 @@
         </is:fieldSelect>
 
         <is:fieldInput for="taskestimation" label="is.task.estimation">
-            <is:input id="taskestimation" name="task.estimation" value="${task?.estimation}" typed="[type:'numeric']"/>
+            <is:input id="taskestimation" name="task.estimation" value="${task?.estimation}" typed="[type:'numeric',allow:'?.,']"/>
         </is:fieldInput>
 
         <is:fieldArea for="taskdescription" label="is.backlogelement.description" noborder="true">

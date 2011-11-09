@@ -123,6 +123,9 @@ class TaskController {
             return
         }
 
+        params.task.estimation = params.task.estimation?.replace(/,/,'.')
+        params.task.estimation = params.task.float('estimation') ?: (params.task.float('estimation') == 0) ? 0 : null
+
         task.properties = params.task
         User user = (User) springSecurityService.currentUser
 
