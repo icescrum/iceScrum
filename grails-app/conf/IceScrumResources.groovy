@@ -96,7 +96,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.checkbox.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.alphanumeric.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.resize.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
-        resource url: [dir: 'js/jquery', file: 'jquery.stream.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.stream-1.2.min.js'], exclude: 'minify', bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.jqote2.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.cookie.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.input.js'], bundle: 'jquery-plugins'

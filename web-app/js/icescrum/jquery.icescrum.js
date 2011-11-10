@@ -23,9 +23,24 @@
  *
  */
 
+(function($) {
+        $.stream.setup({
+                enableXDR: true,
+                handleOpen: function(text, message) {
+                        if (!(window.MozWebSocket || window.WebSocket)){
+                            message.index = text.indexOf("<!-- EOD -->") + 12;
+                        }
+                },
+                handleSend: function(type) {
+                        if (type !== "send") {
+                                return false;
+                        }
+                }
+        });
+})(jQuery);
+
 var stack_bottomleft = {"dir1": "up", "dir2": "right"};
 var autoCompleteCache = {}, autoCompleteLastXhr;
-$.ajaxSetup({ cache: false  });
 
 (function($) {
 
@@ -52,8 +67,7 @@ $.ajaxSetup({ cache: false  });
             openWindow:false,
             locale:'en',
             currentProductName:null,
-            currentTeamName:null,
-            push:true,
+            push:{enable:true,websocket:false},
             selectedObject:{obj:'',time:'',callback:''}
         },
         o:{},
@@ -79,10 +93,8 @@ $.ajaxSetup({ cache: false  });
                 $.icescrum.openWindow(url);
             }
             $.icescrum.initHistory();
-            if (this.o.push){
-                $(window).load(function () {
-                    setTimeout($.icescrum.listenServer, 500);
-                });
+            if (this.o.push.enable){
+                $.icescrum.listenServer();
             }
         },
 
@@ -283,8 +295,12 @@ $.ajaxSetup({ cache: false  });
         },
 
         listenServer:function() {
+            if (!$.icescrum.o.push.websocket){
+                 $.stream.options.type = 'http';
+            }
             $.stream($.icescrum.o.streamUrl, {
                         dataType: "json",
+                        openData: {useWebSocket: ($.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket)) ? "true" : "false"},
                         throbber: {type:'lazy',delay:0},
                         open: function() {
                             $("#is-logo").removeClass().addClass('connected');
@@ -339,7 +355,8 @@ $(document).ready(function($) {
     $.ajaxSetup({
                 timeout:45000,
                 jsonp: null,
-                jsonpCallback: null
+                jsonpCallback: null,
+                cache: false
             });
 
     $.icescrum.init();

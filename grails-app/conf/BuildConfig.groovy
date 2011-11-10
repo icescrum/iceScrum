@@ -35,6 +35,9 @@ grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
 
+//grails.plugin.location.'kagilum' = '../plugins/kagilum'
+//grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+
 if (environment != Environment.PRODUCTION){
     println "use inline plugin in env: ${environment}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
@@ -45,7 +48,6 @@ coverage {
     enabledByDefault = false
     xml = true
 }
-
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
@@ -84,14 +86,15 @@ grails.project.dependency.resolution = {
 
     if (environment == Environment.PRODUCTION){
         plugins {
-            println "use plugin tomcat / icescrum-core.latest.integration in env:  ${environment}"
+            println "icescrum-core.latest.integration in env:  ${environment}"
             compile "org.icescrum:icescrum-core:latest.integration"
-            compile ":tomcat:1.3.7"
+            //compile ":tomcat:1.3.7"
         }
     }else{
         plugins {
             println "use plugin tomcatnio in env:  ${environment}"
-            compile ":tomcatnio:1.3.4"
+            //compile ":tomcatnio:1.3.4"
+            compile ":jetty7:0.3.2"
         }
     }
 

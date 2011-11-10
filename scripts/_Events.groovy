@@ -2,7 +2,6 @@ import grails.util.PluginBuildSettings
 import java.util.regex.Matcher
 import grails.util.GrailsNameUtils
 import org.codehaus.groovy.grails.cli.GrailsScriptRunner
-import org.apache.catalina.connector.Connector
 
 /*
 * Copyright (c) 2010 iceScrum Technologies.

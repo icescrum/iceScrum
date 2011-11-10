@@ -32,7 +32,7 @@ import org.icescrum.web.upload.AjaxMultipartResolver
 beans = {
 
     authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
-    def conf = SpringSecurityUtils.securityConfig
+        def conf = SpringSecurityUtils.securityConfig
         authenticationManager = ref('authenticationManager')
         sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
         authenticationSuccessHandler = ref('authenticationSuccessHandler')
