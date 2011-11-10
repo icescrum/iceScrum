@@ -23,22 +23,6 @@
  *
  */
 
-(function($) {
-        $.stream.setup({
-                enableXDR: true,
-                handleOpen: function(text, message) {
-                        if (!(window.MozWebSocket || window.WebSocket)){
-                            message.index = text.indexOf("<!-- EOD -->") + 12;
-                        }
-                },
-                handleSend: function(type) {
-                        if (type !== "send") {
-                                return false;
-                        }
-                }
-        });
-})(jQuery);
-
 var stack_bottomleft = {"dir1": "up", "dir2": "right"};
 var autoCompleteCache = {}, autoCompleteLastXhr;
 
@@ -298,6 +282,21 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if (!$.icescrum.o.push.websocket){
                  $.stream.options.type = 'http';
             }
+
+            $.stream.setup({
+                enableXDR: true,
+                handleOpen: function(text, message) {
+                        if (!$.icescrum.o.push.websocket){
+                            message.index = text.indexOf("<!-- EOD -->") + 12;
+                        }
+                },
+                handleSend: function(type) {
+                        if (type !== "send") {
+                                return false;
+                        }
+                }
+            });
+
             $.stream($.icescrum.o.streamUrl, {
                         dataType: "json",
                         openData: {useWebSocket: ($.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket)) ? "true" : "false"},
