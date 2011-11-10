@@ -126,13 +126,11 @@ class ProjectController {
             return
         }
         //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
+        boolean hasHiddenChanged = currentProduct.preferences.hidden != params.productd.preferences.hidden
         currentProduct.properties = params.productd
-        if (params.productd.preferences?.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-            currentProduct.preferences.hidden = true
-        }
 
         try {
-            productService.update(currentProduct)
+            productService.update(currentProduct, hasHiddenChanged)
         } catch (IllegalStateException ise) {
             render(status: 400, contentType: 'application/json', text: message(code: ise.getMessage()))
             return

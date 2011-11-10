@@ -94,7 +94,7 @@ class MembersController {
             difference?.each{
                 def found = currentMembers.find{ it2 -> it == it2.id}
                 def u = User.get(found.id)
-                productService.removeRole(product,team,u,found.role)
+                productService.removeAllRoles(product,team,u)
             }
 
             if (params.creator && params.creator?.toLong() != product.owner.id){
@@ -117,7 +117,7 @@ class MembersController {
         try {
             def found = currentMembers.find{ it.id == user.id}
             def u = User.get(found.id)
-            productService.removeRole(product,team,u,found.role)
+            productService.removeAllRoles(product,team,u, false)
             flushCache(cache:'projectMembersCache',cacheResolver:'projectCacheResolver')
             render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
         } catch (e) {

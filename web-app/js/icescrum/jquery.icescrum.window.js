@@ -69,6 +69,9 @@
                                         loading.addClass('modal-background loading').animate({opacity:0.2},250);
                                     }
                                 },
+                                error:function() {
+                                    $('#window-loading').stop().animate({opacity:0.0},250,function(){  $(this).remove(); });
+                                },
                                 success:function(data, textStatus) {
                                     if ($.icescrum.o.fullscreen) {
                                         $.icescrum.o.currentOpenedWindow.remove();
