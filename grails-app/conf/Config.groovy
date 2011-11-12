@@ -88,7 +88,7 @@ icescrum.json.actor = icescrum.json.backlogElement.clone()
 icescrum.json.feature = icescrum.json.backlogElement.clone()
 icescrum.json.story = icescrum.json.backlogElement.clone()
 icescrum.json.story << 'totalComments' << 'tasks'
-icescrum.json.sprint = ['activable']
+icescrum.json.sprint = ['activable','totalRemainingHours']
 icescrum.json.task = icescrum.json.backlogElement.clone()
 icescrum.json.productPreferences = []
 

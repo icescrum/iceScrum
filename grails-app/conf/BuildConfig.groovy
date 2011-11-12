@@ -93,8 +93,8 @@ grails.project.dependency.resolution = {
     }else{
         plugins {
             println "use plugin tomcatnio in env:  ${environment}"
-            //compile ":tomcatnio:1.3.4"
-            compile ":jetty7:0.3.2"
+            compile ":tomcatnio:1.3.4"
+            //compile ":jetty7:0.3.2"
         }
     }
 

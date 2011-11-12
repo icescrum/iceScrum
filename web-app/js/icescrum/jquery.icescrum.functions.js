@@ -628,6 +628,7 @@
                         $(this).each(function() {
                             $.icescrum.task.templates[template].remove.apply(this);
                         });
+                        $.icescrum.sprint.updateRemaining();
                     },
 
                     _postRendering:function(tmpl, postit) {
@@ -680,6 +681,7 @@
                         if (!responsible && $.icescrum.product.assignOnBeginTask && $.icescrum.task.STATE_WAIT == this.state && this.backlog.state != $.icescrum.sprint.STATE_DONE){
                             $('.postit-label', postit).addClass('postit-sortable');
                         }
+                        $.icescrum.sprint.updateRemaining();
                     },
 
                     toggleBlocked:function(id) {
@@ -697,7 +699,9 @@
                     i18n:{
                         name:'Sprint',
                         noDropMessage:'',
-                        noDropMessageLimitedTasks:''
+                        noDropMessageLimitedTasks:'',
+                        totalRemainingHours:'',
+                        hours:''
                     },
                     current: null,
                     STATE_WAIT : 1,
@@ -855,6 +859,23 @@
                             $('#menu-unplan-sprint-' + this.id, newObject).remove();
                             $('#menu-edit-sprint-' + this.id, newObject).remove();
                         }
+                    },
+
+                    updateWindowTitle:function(sprint){
+                        if ($("#selectOnSprintPlan") && $("#selectOnSprintPlan").val() == sprint.id){
+                            $('#window-title-bar-sprintPlan .content .details').html(' - '+$.icescrum.sprint.i18n.name+' '+sprint.orderNumber+' - '+$.icescrum.sprint.states[sprint.state]+' - ['+$.icescrum.dateLocaleFormat(sprint.startDate)+' -> '+$.icescrum.dateLocaleFormat(sprint.startDate)+'] - '+$.icescrum.sprint.i18n.totalRemainingHours+' <span class="remaining">'+sprint.totalRemainingHours+'</span> '+$.icescrum.sprint.i18n.hours);
+                        }
+                    },
+
+                    updateRemaining:function(){
+                        var remaining = 0;
+                        $('table.table.kanban div.postit-task span.mini-value').each(function(){
+                            var val = $(this).text();
+                            if (val != '?'){
+                                remaining += parseFloat(val);
+                            }
+                        });
+                        $('#window-title-bar-sprintPlan span.remaining').html(remaining);
                     },
 
                     sprintMesure:function() {

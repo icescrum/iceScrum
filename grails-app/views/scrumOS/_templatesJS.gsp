@@ -46,7 +46,9 @@
             i18n:{
                    name:"${g.message(code: 'is.sprint')}",
                    noDropMessage:"${g.message(code:'is.ui.sprintPlan.no.drop')}",
-                   noDropMessageLimitedTasks:"${g.message(code:'is.task.error.limitTasksUrgent')}"
+                   noDropMessageLimitedTasks:"${g.message(code:'is.task.error.limitTasksUrgent')}",
+                   totalRemainingHours:"${g.message(code:'is.ui.sprintPlan.totalRemainingHours')}",
+                   hours:"${g.message(code:'is.ui.sprintPlan.hours')}"
             },
             states:${is.bundleLocaleToJs(bundle: BundleUtils.sprintStates)}
         },

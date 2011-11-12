@@ -21,7 +21,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 
-<%@ page import="org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;org.icescrum.core.domain.Story;" %>
+<%@ page import="grails.converters.JSON; org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;org.icescrum.core.domain.Story;" %>
 
 <g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 <is:kanban id="kanban-sprint-${sprint.id}"
@@ -131,7 +131,7 @@
 
 <jq:jquery>
     jQuery('div.postit-story').die('dblclick').live('dblclick',function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params: '\'story.id=\'+obj.attr(\"elemId\")')}});
-    jQuery('#window-title-bar-${id} .content .details').html(' - ${message(code: "is.sprint")} ${sprint.orderNumber}  - ${is.bundle(bundle: 'sprintStates', value: sprint.state)} - [${g.formatDate(date: sprint.startDate, formatName: 'is.date.format.short')} -> ${g.formatDate(date: sprint.endDate, formatName: 'is.date.format.short')}]');
+    jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
     <g:if test="${assignOnBeginTask && !request.scrumMaster && sprint.state != Sprint.STATE_DONE}">
         jQuery.icescrum.sprint.sortableTasks();
     </g:if>
@@ -158,7 +158,7 @@
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
                  ajaxoptions = "{dataType:'json'}"
-                 callback="jQuery(this).next().show(); jQuery(this).html(jQuery.icescrum.formattedTaskEstimation(value.estimation)); if(value.state == ${Task.STATE_DONE}){ jQuery.event.trigger('update_task',value); }"
+                 callback="jQuery(this).next().show(); jQuery(this).html(jQuery.icescrum.formattedTaskEstimation(value.estimation)); jQuery.icescrum.sprint.updateRemaining(); if(value.state == ${Task.STATE_DONE}){ jQuery.event.trigger('update_task',value); }"
                  params="[product:params.product]"
                  findId="jQuery(this).parents('.postit-task:first').attr('elemid')"/>
 
