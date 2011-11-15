@@ -170,7 +170,7 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = ['releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
+    @CacheFlush(caches = ['projectTemplateCache','releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
     def activate = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -198,7 +198,7 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = ['releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
+    @CacheFlush(caches = ['projectTemplateCache','releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
     def close = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
