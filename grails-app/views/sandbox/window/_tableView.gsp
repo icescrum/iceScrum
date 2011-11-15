@@ -27,17 +27,18 @@
 <is:tableView>
     <is:table style="${stories ? '' : 'display:none'};"
               id="story-table"
+              sortableCols="true"
               editable="[controller:'story',action:'update',params:[product:params.product],onExitCell:'submit']">
 
         <is:tableHeader width="5%" class="table-cell-checkbox" name="">
             <g:checkBox name="checkbox-header" checked="false"/>
         </is:tableHeader>
-        <is:tableHeader width="3%" name="${message(code:'is.backlogelement.id')}"/>
+        <is:tableHeader width="5%" name="${message(code:'is.backlogelement.id')}"/>
         <is:tableHeader width="10%" name="${message(code:'is.story.name')}"/>
         <is:tableHeader width="10%" name="${message(code:'is.story.type')}"/>
         <is:tableHeader width="10%" name="${message(code:'is.feature')}"/>
         <is:tableHeader width="30%" name="${message(code:'is.backlogelement.description')}"/>
-        <is:tableHeader width="32%" name="${message(code:'is.backlogelement.notes')}"/>
+        <is:tableHeader width="30%" name="${message(code:'is.backlogelement.notes')}"/>
 
         <is:tableRows in="${stories}" var="story" elemid="id">
             <is:tableColumn class="table-cell-checkbox">

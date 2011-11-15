@@ -185,12 +185,11 @@
                             },
                             window:'#window-content-actor',
                             afterTmpl:function(tmpl) {
-                                if ($.icescrum.o.currentView == 'postitsView') {
-                                    return;
+                                if ($.icescrum.o.currentView != 'postitsView') {
+                                    var table = $('#actor-table');
+                                    table.trigger("update");
+                                    table.trigger("sorton",[table.get(0).config.sortList]);
                                 }
-                                var lines = $(tmpl.view + ' .table-line');
-                                lines.filter('.line-last').removeClass('line-last');
-                                lines.last().addClass('line-last');
                             }
                         },
                         widget:{
@@ -253,12 +252,11 @@
                             },
                             window:'#window-content-feature',
                             afterTmpl:function(tmpl) {
-                                if ($.icescrum.o.currentView == 'postitsView') {
-                                    return;
+                                if ($.icescrum.o.currentView != 'postitsView') {
+                                    var table = $('#feature-table');
+                                    table.trigger("update");
+                                    table.trigger("sorton",[table.get(0).config.sortList]);
                                 }
-                                var lines = $(tmpl.view + ' .table-line');
-                                lines.filter('.line-last').removeClass('line-last');
-                                lines.last().addClass('line-last');
                             }
                         },
                         widget:{
@@ -348,12 +346,11 @@
                                 if (this.rank){
                                     $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 }
-                                if ($.icescrum.o.currentView == 'postitsView') {
-                                    return;
+                                if ($.icescrum.o.currentView != 'postitsView') {
+                                    var table = $('#story-table');
+                                    table.trigger("update");
+                                    table.trigger("sorton",[table.get(0).config.sortList]);
                                 }
-                                var lines = $(tmpl.view + ' .table-line');
-                                lines.filter('.line-last').removeClass('line-last');
-                                lines.last().addClass('line-last');
                             }
                         },
                         backlogWindow:{
@@ -378,12 +375,11 @@
                             afterTmpl:function(tmpl, container, newObject) {
                                 $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 $.icescrum.story.backlogTitleDetails();
-                                if ($.icescrum.o.currentView == 'postitsView') {
-                                    return;
+                                if ($.icescrum.o.currentView != 'postitsView') {
+                                    var table = $('#story-table');
+                                    table.trigger("update");
+                                    table.trigger("sorton",[table.get(0).config.sortList]);
                                 }
-                                var lines = $(tmpl.view + ' .table-line');
-                                lines.filter('.line-last').removeClass('line-last');
-                                lines.last().addClass('line-last');
                             }
                         },
                         backlogWidget:{
@@ -811,8 +807,8 @@
                         $.icescrum.sprint.current = null;
                         $('li.menu-accept-task').hide();
                         var kanban = $('table.#kanban-sprint-' + this.id);
-                        $('td:not(.first)',kanban).sortable('destroy');
-                        $('.row-urgent-task td:not(.last) .postit-task',kanban).remove();
+                        $('td:not(:first-child)',kanban).sortable('destroy');
+                        $('.row-urgent-task td:not(:last-child) .postit-task',kanban).remove();
                         $('.row-urgent-task',kanban).removeClass('postit-sortable');
                         $('.postit-label',kanban).removeClass('postit-sortable');
                         $('.postit-task .dropmenu-action',kanban).remove();

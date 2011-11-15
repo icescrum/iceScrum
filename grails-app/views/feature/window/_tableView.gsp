@@ -23,20 +23,21 @@
 <is:tableView>
     <is:table id="feature-table"
               style="${features ? '' : 'display:none'};"
+              sortableCols="true"
               editable="[controller:id,action:'update',params:[product:params.product],onExitCell:'submit']">
 
         <is:tableHeader width="5%" class="table-cell-checkbox" name="">
             <g:checkBox name="checkbox-header"/>
         </is:tableHeader>
-        <is:tableHeader width="3%" name=""/>
-        <is:tableHeader width="4%" name="${message(code:'is.feature.rank')}"/>
-        <is:tableHeader width="4%" name="${message(code:'is.feature.value')}"/>
+        <is:tableHeader width="5%"  name=""/>
+        <is:tableHeader width="6%"  name="${message(code:'is.feature.rank')}"/>
+        <is:tableHeader width="8%"  name="${message(code:'is.feature.value')}"/>
         <is:tableHeader width="10%" name="${message(code:'is.feature.type')}"/>
         <is:tableHeader width="15%" name="${message(code:'is.feature')}"/>
-        <is:tableHeader width="28%" name="${message(code:'is.backlogelement.description')}"/>
-        <is:tableHeader width="5%" name="${message(code:'is.feature.effort')}"/>
-        <is:tableHeader width="11%" name="${message(code:'is.feature.stories')}"/>
-        <is:tableHeader width="15%" name="${message(code:'is.feature.stories.finish')}"/>
+        <is:tableHeader width="24%" name="${message(code:'is.backlogelement.description')}"/>
+        <is:tableHeader width="6%"  name="${message(code:'is.feature.effort')}"/>
+        <is:tableHeader width="12%" name="${message(code:'is.feature.stories')}"/>
+        <is:tableHeader width="10%" name="${message(code:'is.feature.stories.finish')}"/>
 
         <is:tableRows in="${features}" var="feature" elemid="id">
             <is:tableColumn class="table-cell-checkbox">

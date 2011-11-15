@@ -1359,7 +1359,7 @@ li#li-roles {
     padding: 0;
 }
 
-.kanban .kanban-col.first {
+.kanban .kanban-col:first-child {
     width: 150px;
 }
 

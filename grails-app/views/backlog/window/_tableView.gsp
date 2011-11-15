@@ -25,20 +25,21 @@
 <is:tableView>
     <is:table id="story-table"
               style="${stories ? '' : 'display:none'};"
+              sortableCols="true"
               editable="[controller:'story',action:'update',params:[product:params.product],onExitCell:'submit']">
         <is:tableHeader width="5%" class="table-cell-checkbox" name="">
             <g:checkBox name="checkbox-header"/>
         </is:tableHeader>
-        <is:tableHeader width="3%" name="${message(code:'is.backlogelement.id')}"/>
-        <is:tableHeader width="4%" name="${message(code:'is.story.rank')}"/>
+        <is:tableHeader width="5%" name="${message(code:'is.backlogelement.id')}"/>
+        <is:tableHeader width="6%" name="${message(code:'is.story.rank')}"/>
         <is:tableHeader width="10%" name="${message(code:'is.story.name')}"/>
-        <is:tableHeader width="10%" name="${message(code:'is.story.type')}"/>
+        <is:tableHeader width="8%" name="${message(code:'is.story.type')}"/>
         <is:tableHeader width="10%" name="${message(code:'is.feature')}"/>
-        <is:tableHeader width="4%" name="${message(code:'is.story.effort')}"/>
-        <is:tableHeader width="19%" name="${message(code:'is.backlogelement.description')}"/>
-        <is:tableHeader width="19%" name="${message(code:'is.backlogelement.notes')}"/>
-        <is:tableHeader width="8%" name="${message(code:'is.story.date.accepted')}"/>
-        <is:tableHeader width="8%" name="${message(code:'is.story.date.estimated')}"/>
+        <is:tableHeader width="6%" name="${message(code:'is.story.effort')}"/>
+        <is:tableHeader width="15%" name="${message(code:'is.backlogelement.description')}"/>
+        <is:tableHeader width="15%" name="${message(code:'is.backlogelement.notes')}"/>
+        <is:tableHeader width="10%" name="${message(code:'is.story.date.accepted')}"/>
+        <is:tableHeader width="10%" name="${message(code:'is.story.date.estimated')}"/>
 
 
         <is:tableRows in="${stories}" var="story" elemid="id">

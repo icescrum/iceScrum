@@ -50,13 +50,13 @@
     visibility: hidden;
 }
 
-.ui-helper-clearfix {
-    display: inline-block;
-}
-
 /* required comment for clearfix to work in Opera \*/
 * html .ui-helper-clearfix {
     height: 1%;
+}
+
+.ui-helper-clearfix {
+    display: inline-block;
 }
 
 .ui-helper-clearfix {

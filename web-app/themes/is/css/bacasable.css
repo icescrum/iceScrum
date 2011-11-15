@@ -82,7 +82,7 @@ body, html {
     cursor: pointer;
 }
 
-.kanban-col.first .postit-story {
+table.kanban .table-line .kanban-col:first-child .postit-story {
     cursor: pointer;
 }
 

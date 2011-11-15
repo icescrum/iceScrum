@@ -400,8 +400,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.table .line-last, .table .table-legend .first .table-cell,
-.table .table-filters .first .table-cell, .table .table-foot td,
+.table .line-last,.table .table-filters .first .table-cell, .table .table-foot td,
 .box-form .field-noseparator, .box-form-200-legend .panel-nolegend,
 .simple #spinner-app, .pagination .pagination-action a,
 .postit-details .postit-details-information .last,
@@ -417,7 +416,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 */
 
 #local .box .box-title .start, #local .box .box-title .end, .table .table-line td,
-.box .box-content .list .blur, .table .table-line .first, .box-form .field-input label,
+.box .box-content .list .blur, .box-form .field-input label,
 .box-form .field-select label, .box-form .field-checkbox label, .box-form .field-rich label,
 .box-form .field-area label, .box-form .field-color label, .list-news .news-item-hover,
 .event-content-list-odd, .table-lines .table-lines-odd,
@@ -427,12 +426,11 @@ event-content-list .ui-selected, .kanban .ui-selected {
 
 body, #main .box .box-title .start, #main .box .box-title .end,
 .box .box-content, #footer, .table .table-line .cell-focus,
-.table .table-hover td, .table .table-hover .first,
+.table .table-hover td,
 #login_form .box-title .start, #login_form .box-title .end, #login_form .box-title .content,
 #dropmenu .dropmenu-content, #local .box-simple, #register-form .box-title .content,
-.table .table-row-focus td, .table .table-row-focus .first,
-.box-form .field-choose, .postit-row.ui-draggable-dragging,
-.kanban .table-line .kanban-col.first, .panel-tab-button .selected,
+.table .table-row-focus td, .table .table-row-focus:first-child,
+.box-form .field-choose, .postit-row.ui-draggable-dragging, .panel-tab-button .selected,
 .panel-tab-button a:hover {
     background-color: white;
 }
@@ -685,4 +683,36 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     padding-left: 15px;
     padding-top: 5px;
     font-style: italic;
+}
+
+table.kanban .table-line .kanban-col:first-child{
+    background-color: white;
+}
+
+table  th.header {
+    cursor:pointer;
+}
+
+table  th.header .sorter {
+    background: url(../images/application/un_sorted.png) no-repeat;
+    width:18px;
+    height:10px;
+    margin-left:2px;
+    display:inline-block;
+}
+
+table th.header.table-cell-checkbox {
+    cursor:default;
+}
+
+table th.header.table-cell-checkbox .sorter {
+    display:none;
+}
+
+table  th.header.headerSortUp .sorter {
+    background: url(../images/application/sort_up.png) no-repeat;
+}
+
+table  th.header.headerSortDown .sorter {
+    background: url(../images/application/sort_down.png) no-repeat;
 }

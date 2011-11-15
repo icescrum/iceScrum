@@ -4,7 +4,8 @@
 
     $.table = {
         defaults: {
-            'classNameFocus' : 'table-row-focus'
+            'classNameFocus' : 'table-row-focus',
+            'sortable':false
         }
     };
 
@@ -68,6 +69,10 @@
                             $('tr.table-line:visible').removeClass(settings.classNameFocus);
                         }
                     });
+
+                    if (settings.sortable){
+                        $(this).tablesorter();
+                    }
                     return this;
                 }
             });

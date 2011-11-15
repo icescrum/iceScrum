@@ -27,17 +27,18 @@
 <is:tableView>
     <is:table id="actor-table"
               style="${actors ? '' : 'display:none'};"
+              sortableCols="true"
               editable="[controller:id,action:'update',params:[product:params.product],onExitCell:'submit']">
-        <is:tableHeader width="5%" class="table-cell-checkbox" name="">
+        <is:tableHeader width="6%" class="table-cell-checkbox" name="">
             <g:checkBox name="checkbox-header"/>
         </is:tableHeader>
         <is:tableHeader width="10%" name="${message(code:'is.actor.name')}"/>
         <is:tableHeader width="20%" name="${message(code:'is.backlogelement.description')}"/>
-        <is:tableHeader width="15%" name="${message(code:'is.actor.it.level')}"/>
+        <is:tableHeader width="10%" name="${message(code:'is.actor.it.level')}"/>
         <is:tableHeader width="15%" name="${message(code:'is.actor.satisfaction.criteria')}"/>
         <is:tableHeader width="14%" name="${message(code:'is.actor.use.frequency')}"/>
         <is:tableHeader width="10%" name="${message(code:'is.actor.instances')}"/>
-        <is:tableHeader width="10%" name="${message(code:'is.actor.nb.stories')}"/>
+        <is:tableHeader width="15%" name="${message(code:'is.actor.nb.stories')}"/>
 
         <is:tableRows in="${actors}" var="actor" elemid="id" rowid="table-row-actor-">
             <is:tableColumn class="table-cell-checkbox">

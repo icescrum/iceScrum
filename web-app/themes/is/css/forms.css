@@ -327,7 +327,7 @@
     position: absolute;
 }
 
-.table th.table-cell-checkbox.first .table-cell {
+.table th.table-cell-checkbox:first-child .table-cell {
     padding: 0 0 0 2px;
     text-align: left;
 }
@@ -342,8 +342,18 @@
     border-top-width: 1px;
 }
 
-.table .table-line .first {
-    background: 0 none;
+.table .table-line:last-child td {
+    border-bottom-width: 0;
+    border-top-width: 1px;
+}
+
+.table .table-line.row-urgent-task:last-child td,.table .table-line.row-recurrent-task:last-child td {
+    border-bottom-width: 1px;
+    padding-left:4px;
+}
+
+.table .table-line td:first-child {
+    background-image: none;
     padding-left: 0;
 }
 
@@ -352,7 +362,7 @@
     padding-bottom: 2px;
 }
 
-.table .line-last {
+.table .table-line:last-child {
     background: 0 none;
 }
 
@@ -383,8 +393,9 @@
     padding: 2px 2px 2px 6px;
 }
 
-.table .table-legend .first .table-cell {
+.table .table-legend th:first-child .table-cell {
     padding-left: 4px;
+    background-image: none;
 }
 
 .table .table-foot {
