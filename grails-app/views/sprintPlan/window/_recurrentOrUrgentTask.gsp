@@ -41,7 +41,7 @@
             remote="true"
             history="false"
             alt="${message(code:'is.ui.sprintPlan.kanban.copyRecurrentTasks')}"
-            onSuccess="jQuery.event.trigger('add_task',data); jQuery.icescrum.renderNotice('${g.message(code: 'is.sprint.copyRecurrentTasks.copied')}')">
+            onSuccess="jQuery.event.trigger('add_task',[data]); jQuery.icescrum.renderNotice('${g.message(code: 'is.sprint.copyRecurrentTasks.copied')}')">
         ${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}
     </is:link>
 </is:postitMenuItem>
