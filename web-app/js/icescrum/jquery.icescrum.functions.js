@@ -637,32 +637,30 @@
                         }
                         var responsible = (this.responsible && this.responsible.id == $.icescrum.user.id) ? true : false;
                         var creator = (this.creator.id == $.icescrum.user.id);
-                        if ((this.state == $.icescrum.task.STATE_DONE && !$.icescrum.user.scrumMaster) || (!(responsible || creator || $.icescrum.user.poOrSm()) && this.state != $.icescrum.task.STATE_DONE)) {
-                            $('#menu-delete-' + this.id, postit).remove();
-                        }
 
-                        if (!((responsible || $.icescrum.user.scrumMaster) && this.state != $.icescrum.task.STATE_DONE && ($.icescrum.sprint.current && this.backlog.id == $.icescrum.sprint.current.id))) {
-                            $('#menu-blocked-' + this.id, postit).remove();
-                        }
-                        if ((!responsible && !creator && !$.icescrum.user.scrumMaster) || this.state == $.icescrum.task.STATE_DONE) {
-                            $('#menu-edit-' + this.id, postit).remove();
-                        }
-                        if (this.state == $.icescrum.task.STATE_DONE || responsible) {
-                            $('#menu-take-' + this.id, postit).remove();
-                        }
-                        if (this.state == $.icescrum.task.STATE_DONE || !responsible) {
-                            $('#menu-unassign-' + this.id, postit).remove();
-                        }
-
-                        if (this.state != $.icescrum.task.STATE_DONE) {
-                            responsible ? $('#menu-unassign-' + this.id, postit).addClass('first') : $('#menu-take-' + this.id, postit).addClass('first');
+                        if(this.backlog.state == $.icescrum.sprint.STATE_DONE) {
+                            $('.dropmenu-action', postit).remove();
                         } else {
-                            $('#menu-copy-' + this.id, postit).addClass('first')
-                        }
-
-                        this.blocked ? $('#menu-blocked-' + this.id + ' a', postit).text($.icescrum.task.UNBLOCK) : $('#menu-blocked-' + this.id + ' a', postit).text($.icescrum.task.BLOCK);
-
-                        if (this.backlog.state != $.icescrum.sprint.STATE_DONE) {
+                            if ((this.state == $.icescrum.task.STATE_DONE && !$.icescrum.user.scrumMaster) || (!(responsible || creator || $.icescrum.user.poOrSm()) && this.state != $.icescrum.task.STATE_DONE)) {
+                                $('#menu-delete-' + this.id, postit).remove();
+                            }
+                            if (!((responsible || $.icescrum.user.scrumMaster) && this.state != $.icescrum.task.STATE_DONE && ($.icescrum.sprint.current && this.backlog.id == $.icescrum.sprint.current.id))) {
+                                $('#menu-blocked-' + this.id, postit).remove();
+                            }
+                            if ((!responsible && !creator && !$.icescrum.user.scrumMaster) || this.state == $.icescrum.task.STATE_DONE) {
+                                $('#menu-edit-' + this.id, postit).remove();
+                            }
+                            if (this.state == $.icescrum.task.STATE_DONE || responsible) {
+                                $('#menu-take-' + this.id, postit).remove();
+                            }
+                            if (this.state == $.icescrum.task.STATE_DONE || !responsible) {
+                                $('#menu-unassign-' + this.id, postit).remove();
+                            }
+                            if (this.state != $.icescrum.task.STATE_DONE) {
+                                responsible ? $('#menu-unassign-' + this.id, postit).addClass('first') : $('#menu-take-' + this.id, postit).addClass('first');
+                            } else {
+                                $('#menu-copy-' + this.id, postit).addClass('first')
+                            }
                             if (this.state != $.icescrum.task.STATE_DONE && (responsible || (!responsible && creator) || $.icescrum.user.scrumMaster)) {
                                 $('.mini-value', postit).addClass('editable editable-hover');
                                 if ((responsible || $.icescrum.user.scrumMaster)) {
@@ -674,6 +672,9 @@
                                 }
                             }
                         }
+
+                        this.blocked ? $('#menu-blocked-' + this.id + ' a', postit).text($.icescrum.task.UNBLOCK) : $('#menu-blocked-' + this.id + ' a', postit).text($.icescrum.task.BLOCK);
+
                         if (!responsible && $.icescrum.product.assignOnBeginTask && $.icescrum.task.STATE_WAIT == this.state && this.backlog.state != $.icescrum.sprint.STATE_DONE){
                             $('.postit-label', postit).addClass('postit-sortable');
                         }
