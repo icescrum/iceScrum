@@ -53,7 +53,6 @@ grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
         // uncomment to disable ehcache
-         excludes 'spring-test'
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
@@ -74,14 +73,6 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         test 'xmlunit:xmlunit:1.3'
         runtime 'mysql:mysql-connector-java:5.1.17'
-    }
-
-    grails.war.resources = { stagingDir ->
-        copy(todir: "${stagingDir}/WEB-INF/classes/grails-app/i18n") {
-            fileset(dir: "grails-app/i18n") {
-                include(name: "report*")
-            }
-        }
     }
 
     if (environment == Environment.PRODUCTION){
@@ -105,7 +96,7 @@ grails.project.dependency.resolution = {
         compile ":feeds:1.5"
         compile ":hibernate:1.3.7"
         compile ":jquery:1.6.1.1"
-        compile ":jquery-ui:1.8.15"
+        compile ":jquery-ui:1.8.11"
         compile ":resources:1.1"
         compile ":session-temp-files:1.0"
         compile ":wikitext:0.1.2"

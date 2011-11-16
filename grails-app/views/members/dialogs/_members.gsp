@@ -81,7 +81,7 @@
                      <is:select container="#member${member.id}"
                                 width="110"
                                 maxHeight="200"
-                                id="${new Date().time}"
+                                id="member-role-select-${member.id}"
                                 styleSelect="dropdown"
                                 disabled="${!ownerOrSm}"
                                 from="${rolesNames}"
