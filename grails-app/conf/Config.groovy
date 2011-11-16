@@ -202,7 +202,7 @@ log4j = {
         debug 'org.icescrum.plugins.entryPoints'
     }
 
-    if (icescrum.debug.enable) {
+    //if (icescrum.debug.enable) {
         debug 'grails.app.service.org.icescrum'
         debug 'grails.app.controller.org.icescrum'
         debug 'grails.app.domain.org.icescrum'
@@ -211,9 +211,9 @@ log4j = {
         debug 'org.icescrum.cache'
         debug 'org.icescrum.core'
         debug 'grails.plugin.springcache'
-    }else{
-        off 'grails.plugin.springcache'
-    }
+    //}else{
+        //off 'grails.plugin.springcache'
+    //}
 
     appenders {
         appender new DailyRollingFileAppender(name: "icescrumFileLog",

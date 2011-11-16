@@ -51,9 +51,7 @@ coverage {
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
-    inherits("global") {
-        excludes 'spring-test'
-    }
+    inherits("global")
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
         grailsPlugins()
