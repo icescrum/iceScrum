@@ -347,6 +347,11 @@
     border-top-width: 1px;
 }
 
+.table.kanban .table-line:last-child td {
+    border-bottom-width: 1px;
+}
+
+
 .table .table-line.row-urgent-task:last-child td,.table .table-line.row-recurrent-task:last-child td {
     border-bottom-width: 1px;
     padding-left:4px;
