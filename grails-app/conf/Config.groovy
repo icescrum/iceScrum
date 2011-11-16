@@ -210,7 +210,7 @@ log4j = {
         debug 'org.icescrum.atmosphere'
         debug 'org.icescrum.cache'
         debug 'org.icescrum.core'
-        //debug 'grails.plugin.springcache'
+        debug 'grails.plugin.springcache'
     }else{
         off 'grails.plugin.springcache'
     }

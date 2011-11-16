@@ -30,7 +30,7 @@
     <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
 <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
     <is:loadJsVar/>
-    <r:require modules="jquery,jquery-ui,jquery-plugins,jquery-ui-plugins,jqplot,icescrum"/>
+    <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum"/>
     <sec:ifLoggedIn>
         <script src="${resource(dir: 'js/timeline/timeline_ajax', file: 'simile-ajax-api.js?bundle=true')}"
                 type="text/javascript"></script>

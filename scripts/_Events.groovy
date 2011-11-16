@@ -1,8 +1,3 @@
-import grails.util.PluginBuildSettings
-import java.util.regex.Matcher
-import grails.util.GrailsNameUtils
-import org.codehaus.groovy.grails.cli.GrailsScriptRunner
-
 /*
 * Copyright (c) 2010 iceScrum Technologies.
 *
@@ -21,9 +16,25 @@ import org.codehaus.groovy.grails.cli.GrailsScriptRunner
 * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+eventClasspathStart = {
+    addResourceBundlesToClasspath()
+}
+
+private def addResourceBundlesToClasspath(){
+    classpathSet = false
+    File reportsDir = new File("grails-app/i18n")
+    reportsDir.eachFile { File file ->
+        if( file.name.contains("report") ){
+            println "Adding ${file.getAbsolutePath()} to classpath"
+            rootLoader.addURL( file.toURL() )
+        }
+    }
+}
+
+
 eventCreateWarStart = {warname, stagingDir ->
-    Ant.propertyfile(file: "${stagingDir}/WEB-INF/classes/application.properties") {
-        Ant.antProject.properties.findAll({k, v -> k.startsWith('environment')}).each { k, v ->
+    ant.propertyfile(file: "${stagingDir}/WEB-INF/classes/application.properties") {
+        ant.antProject.properties.findAll({k, v -> k.startsWith('environment')}).each { k, v ->
             entry(key: k, value: v)
         }
         entry(key: 'scm.version', value: getRevision())
@@ -38,7 +49,7 @@ def getRevision() {
     }
 
     // try to get revision from Hudson
-    def scmVersion = Ant.antProject.properties."environment.SVN_REVISION"
+    def scmVersion = ant.antProject.properties."environment.SVN_REVISION"
 
     // if Hudson env variable not found, try file system (for SVN)
     if (!scmVersion) {
