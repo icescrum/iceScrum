@@ -53,7 +53,7 @@ grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
         // uncomment to disable ehcache
-        // excludes 'ehcache'
+         excludes 'spring-test'
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
@@ -111,6 +111,7 @@ grails.project.dependency.resolution = {
         compile ":wikitext:0.1.2"
         compile ":zipped-resources:1.0"
         compile ":yui-minify-resources:0.1.4"
+
     }
 }
 
