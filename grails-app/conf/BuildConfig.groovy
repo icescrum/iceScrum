@@ -35,7 +35,6 @@ grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
 
-//grails.plugin.location.'kagilum' = '../plugins/kagilum'
 //grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 
 if (environment != Environment.PRODUCTION){
@@ -47,6 +46,14 @@ if (environment != Environment.PRODUCTION){
 coverage {
     enabledByDefault = false
     xml = true
+}
+
+grails.war.resources = { stagingDir ->
+    copy(todir: "${stagingDir}/WEB-INF/classes/grails-app/i18n") {
+        fileset(dir: "grails-app/i18n") {
+            include(name: "report*")
+        }
+    }
 }
 
 grails.project.dependency.resolution = {

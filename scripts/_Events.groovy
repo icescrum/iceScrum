@@ -15,23 +15,6 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-eventClasspathStart = {
-    addResourceBundlesToClasspath()
-}
-
-private def addResourceBundlesToClasspath(){
-    classpathSet = false
-    File reportsDir = new File("grails-app/i18n")
-    reportsDir.eachFile { File file ->
-        if( file.name.contains("report") ){
-            println "Adding ${file.getAbsolutePath()} to classpath"
-            rootLoader.addURL( file.toURL() )
-        }
-    }
-}
-
-
 eventCreateWarStart = {warname, stagingDir ->
     ant.propertyfile(file: "${stagingDir}/WEB-INF/classes/application.properties") {
         ant.antProject.properties.findAll({k, v -> k.startsWith('environment')}).each { k, v ->
