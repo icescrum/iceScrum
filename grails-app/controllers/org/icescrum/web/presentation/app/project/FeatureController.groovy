@@ -30,7 +30,6 @@ import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
 import grails.converters.XML
-import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
@@ -61,7 +60,6 @@ class FeatureController {
     ]
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = 'addStory', cacheResolver = 'projectCacheResolver')
     def save = {
         def feature = new Feature(params.feature as Map)
         try {
@@ -80,7 +78,6 @@ class FeatureController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = 'addSandbox', cacheResolver = 'projectCacheResolver')
     def update = {
         def msg
         if (!params.long('feature.id')) {
@@ -178,29 +175,34 @@ class FeatureController {
     }
 
     def list = {
-
         def features = (params.term && params.term != '') ? Feature.findInAll(params.long('product'), '%' + params.term + '%').list() : Feature.findAllByBacklog(Product.load(params.product), [cache: true, sort: 'rank'])
-        def template = (session['widgetsList']?.contains(id)) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+        withFormat{
+            html {
+                def template = (session['widgetsList']?.contains(id)) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
 
-        def currentProduct = Product.get(params.product)
-        def maxRank = Feature.countByBacklog(currentProduct)
-        def effortFeature = { feature ->
-            feature.stories?.sum {it.effort ?: 0}
-        }
-        def linkedDoneStories = { feature ->
-            feature.stories?.sum {(it.state == Story.STATE_DONE) ? 1 : 0}
-        }
-        //Pour la vue tableau
-        def rankSelect = ''
-        maxRank.times { rankSelect += "'${it + 1}':'${it + 1}'" + (it < maxRank - 1 ? ',' : '') }
-        def typeSelect = BundleUtils.featureTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-        def suiteSelect = "'?':'?',"
-        def currentSuite = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
+                def currentProduct = Product.get(params.product)
+                def maxRank = Feature.countByBacklog(currentProduct)
+                def effortFeature = { feature ->
+                    feature.stories?.sum {it.effort ?: 0}
+                }
+                def linkedDoneStories = { feature ->
+                    feature.stories?.sum {(it.state == Story.STATE_DONE) ? 1 : 0}
+                }
+                //Pour la vue tableau
+                def rankSelect = ''
+                maxRank.times { rankSelect += "'${it + 1}':'${it + 1}'" + (it < maxRank - 1 ? ',' : '') }
+                def typeSelect = BundleUtils.featureTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
+                def suiteSelect = "'?':'?',"
+                def currentSuite = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
 
-        currentSuite = currentSuite.eachWithIndex { t, i ->
-            suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
+                currentSuite = currentSuite.eachWithIndex { t, i ->
+                    suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
+                }
+                render(template: template, model: [features: features, effortFeature: effortFeature, linkedDoneStories: linkedDoneStories, id: id, typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
+            }
+            json { render status: 200, contentType: 'application/json', text: features as JSON }
+            xml { render status: 200, contentType: 'text/xml', text: features  as XML }
         }
-        render(template: template, model: [features: features, effortFeature: effortFeature, linkedDoneStories: linkedDoneStories, id: id, typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -307,7 +309,7 @@ class FeatureController {
         }
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
+    @Cacheable(cache = "projectCache", keyGenerator= 'featuresKeyGenerator')
     def productParkingLotChart = {
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)
@@ -382,6 +384,31 @@ class FeatureController {
         }
     }
 
+    @Cacheable(cache = 'featureCache', keyGenerator='featureKeyGenerator')
+    def show = {
+        if (request?.format == 'html'){
+            render(status:404)
+            return
+        }
+
+        if (!params.id) {
+            returnError(text:message(code: 'is.feature.error.not.exist'))
+            return
+        }
+
+        def feature = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
+
+        if (!feature) {
+            returnError(text:message(code: 'is.feature.error.not.exist'))
+            return
+        }
+
+        withFormat {
+                json { render(status: 200, contentType: 'application/json', text: feature as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: feature as XML) }
+            }
+    }
+
     private manageAttachments(def feature) {
         def user = springSecurityService.currentUser
         def needPush = false
@@ -410,7 +437,7 @@ class FeatureController {
         session.uploadedFiles = null
 
         if (needPush){
-            flushCache(cache:'featureCache_'+feature.id, cacheResolver:'backlogElementCacheResolver')
+            feature.lastUpdated = new Date()
             broadcast(function: 'update', message: feature)
         }
     }

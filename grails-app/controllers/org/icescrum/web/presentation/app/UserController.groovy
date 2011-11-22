@@ -36,7 +36,6 @@ import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
 import grails.plugin.springcache.annotations.Cacheable
-import grails.plugin.springcache.annotations.CacheFlush
 
 class UserController {
 
@@ -73,7 +72,7 @@ class UserController {
 
 
     @Secured('isAuthenticated()')
-    @Cacheable(cache = 'profileCache', cacheResolver = 'userCacheResolver')
+    @Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
     def openProfile = {
         render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)], id: id)
     }
@@ -109,7 +108,6 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    @CacheFlush(caches = 'profileCache', cacheResolver = 'userCacheResolver')
     def update = {
         def msg
         if (params.long('user.id') != springSecurityService.principal.id) {
@@ -326,7 +324,6 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    @CacheFlush(caches = 'userMenuCache', cacheResolver = 'userProjectCacheResolver')
     def changeMenuOrder = {
         if (!params.id && !params.position) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.preferences.error.menuBar')]] as JSON)

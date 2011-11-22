@@ -230,8 +230,8 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="262" y="50" width="138" height="20" isRemoveLineWhenBlank="true"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="13" isBold="true"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{sprint}]]></textFieldExpression>
 			</textField>

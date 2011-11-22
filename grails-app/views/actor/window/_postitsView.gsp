@@ -31,7 +31,7 @@
         value="${actors}"
         dblclickable='[rendered:!request.productOwner,selector:".postit",callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'
         var="actor">
-        <is:cache  cache="actorCache_${actor.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+        <is:cache  cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
             <g:include view="/actor/_postit.gsp" model="[id:id,actor:actor,user:user]" params="[product:params.product]"/>
         </is:cache>
 </is:backlogElementLayout>

@@ -29,8 +29,8 @@ import org.icescrum.core.domain.Product
 
 import grails.converters.JSON
 import grails.converters.XML
-import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugins.springsecurity.Secured
+import grails.plugin.springcache.annotations.Cacheable
 
 class ReleaseController {
 
@@ -39,7 +39,6 @@ class ReleaseController {
     def storyService
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.release?.id) {
             returnError(text:message(code: 'is.release.error.not.exist'))
@@ -82,7 +81,6 @@ class ReleaseController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def save = {
         def release = new Release(params.release as Map)
         def currentProduct = Product.get(params.product)
@@ -107,7 +105,6 @@ class ReleaseController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
             returnError(text:message(code: 'is.release.error.not.exist'))
@@ -134,7 +131,6 @@ class ReleaseController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def close = {
         if (!params.id) {
             returnError(text:message(code: 'is.release.error.not.exist'))
@@ -161,7 +157,6 @@ class ReleaseController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def activate = {
         if (!params.id) {
             returnError(text:message(code: 'is.release.error.not.exist'))
@@ -187,7 +182,6 @@ class ReleaseController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def autoPlan = {
         if (!params.id) {
             returnError(text:message(code: 'is.release.error.not.exist'))
@@ -213,7 +207,6 @@ class ReleaseController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def unPlan = {
         if (!params.id) {
             returnError(text:message(code: 'is.release.error.not.exist'))
@@ -242,7 +235,6 @@ class ReleaseController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def generateSprints = {
         if (!params.id) {
             returnError(text:message(code: 'is.release.error.not.exist'))
@@ -267,5 +259,31 @@ class ReleaseController {
         } catch (RuntimeException e) {
             returnError(object:release, exception:e)
         }
+    }
+
+    @Secured('inProduct()')
+    @Cacheable(cache = 'releaseCache', keyGenerator='releaseKeyGenerator')
+    def show = {
+        if (request?.format == 'html'){
+            render(status:404)
+            return
+        }
+
+        if (!params.id) {
+            returnError(text:message(code: 'is.release.error.not.exist'))
+            return
+        }
+
+        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
+
+        if (!release) {
+            returnError(text:message(code: 'is.release.error.not.exist'))
+            return
+        }
+
+        withFormat {
+                json { render(status: 200, contentType: 'application/json', text: release as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: release as XML) }
+            }
     }
 }

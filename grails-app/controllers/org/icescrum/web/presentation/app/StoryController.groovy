@@ -34,7 +34,6 @@ import org.icescrum.core.domain.User
 
 import grails.converters.JSON
 import grails.converters.XML
-import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
@@ -53,7 +52,6 @@ class StoryController {
     ]
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def save = {
         def story = new Story(params.story as Map)
         if (params.int('displayTemplate') != 1) {
@@ -89,7 +87,6 @@ class StoryController {
         }
     }
 
-    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.story?.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -143,8 +140,12 @@ class StoryController {
                 params.story.effort = null
 
 
+            def skipUpdate = false
+
             if (params.story.rank && story.rank != params.story.rank.toInteger()) {
                 storyService.rank(story, params.story.rank.toInteger())
+                if (params.table && params.boolean('table'))
+                    skipUpdate = true
             }
 
             if (params.sprint?.id != null) {
@@ -175,12 +176,18 @@ class StoryController {
                 if (!feature)
                     returnError(text:message(code: 'is.feature.error.not.exist'))
                 storyService.associateFeature(feature, story)
+                if (params.table && params.boolean('table'))
+                    skipUpdate = true
             } else if (story.feature && params.feature?.id == '') {
                 storyService.dissociateFeature(story)
+                if (params.table && params.boolean('table'))
+                    skipUpdate = true
             }
 
-            storyService.update(story)
-            this.manageAttachments(story)
+            if (!skipUpdate){
+                storyService.update(story)
+                this.manageAttachments(story)
+            }
 
             //if success for table view
             if (params.table && params.boolean('table')) {
@@ -219,7 +226,6 @@ class StoryController {
         }
     }
 
-    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -320,7 +326,6 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def rank = {
 
         if (!params.id) {
@@ -352,7 +357,6 @@ class StoryController {
     }
 
     @Secured('(teamMember() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def estimate = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -380,7 +384,6 @@ class StoryController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def unPlan = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -422,7 +425,6 @@ class StoryController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def plan = {
         if (!params.sprint?.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -475,7 +477,6 @@ class StoryController {
     }
 
     @Secured('(isAuthenticated()) and !archivedProduct()')
-    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def associateFeature = {
         if (!params.feature || !params.story) {
             returnError(text:message(code: 'is.ui.backlog.associateFeature.error'))
@@ -501,7 +502,6 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def done = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -529,7 +529,6 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = ['releaseCache','storiesList'], cacheResolver = 'projectCacheResolver')
     def unDone = {
         if (!params.id) {
             returnError(text:message(code: 'is.story.error.not.exist'))
@@ -558,7 +557,6 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def accept = {
         if (params.list('id').size() == 0) {
             returnError(text:message(code: 'is.ui.sandbox.menu.accept.error.no.selection'))
@@ -593,7 +591,6 @@ class StoryController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    @CacheFlush(caches = ['storiesList'], cacheResolver = 'projectCacheResolver')
     def copy = {
 
         if (params.list('id').size() == 0) {
@@ -614,7 +611,7 @@ class StoryController {
     }
 
     @Secured('inProduct()')
-    @Cacheable(cache = 'storyCache', cacheResolver = 'projectCacheResolver')
+    @Cacheable(cache = 'storyCache', keyGenerator='storyKeyGenerator')
     def show = {
         if (request?.format == 'html'){
             render(status:404)
@@ -640,7 +637,7 @@ class StoryController {
     }
 
     @Secured('inProduct()')
-    @Cacheable(cache = 'storiesList', cacheResolver = 'projectCacheResolver')
+    @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
     def list = {
 
         if (request?.format == 'html'){
@@ -685,7 +682,7 @@ class StoryController {
         session.uploadedFiles = null
 
         if (needPush){
-            flushCache(cache:'storyCache_'+story.id, cacheResolver:'backlogElementCacheResolver')
+            story.lastUpdated = new Date()
             broadcast(function: 'update', message: story)
         }
     }

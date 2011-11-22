@@ -31,14 +31,11 @@ import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
-import org.icescrum.web.presentation.app.project.ActorController
 import org.icescrum.core.utils.BundleUtils
 import org.apache.commons.lang.StringEscapeUtils
 import groovy.xml.MarkupBuilder
 import org.springframework.validation.Errors
-import grails.plugin.springcache.annotations.Cacheable
 import grails.plugin.springcache.key.CacheKeyBuilder
-import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.web.pages.GroovyPageOutputStack
 import org.codehaus.groovy.grails.web.pages.FastStringWriter
 import grails.plugin.springcache.taglib.ResultAndBuffer
@@ -447,7 +444,6 @@ class UtilsTagLib {
 
         attrs.role = attrs.role ?: true
         attrs.locale = attrs.locale ?: true
-        def cacheResolver = ApplicationHolder.application.mainContext[attrs.cacheResolver ?: 'springcacheDefaultCacheResolver']
         def role = ''
 
         def key  = new CacheKeyBuilder()
@@ -469,7 +465,7 @@ class UtilsTagLib {
         if (attrs.locale)
             key.append(RCU.getLocale(request).toString().substring(0, 2))
 
-        def resultAndBuffer = springcacheService.doWithCache(cacheResolver.resolveCacheName(attrs.cache), key.toCacheKey()) {
+        def resultAndBuffer = springcacheService.doWithCache(attrs.cache, key.toCacheKey()) {
             def outputStack = GroovyPageOutputStack.currentStack()
             def writer = new FastStringWriter()
             outputStack.push(writer, true)

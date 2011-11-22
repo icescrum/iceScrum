@@ -443,7 +443,7 @@ class SprintPlanController {
         }
     }
 
-    @Cacheable(cache = "sprintChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurndownHoursChart = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -470,7 +470,7 @@ class SprintPlanController {
         }
     }
 
-    @Cacheable(cache = "sprintChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupTasksChart = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')
@@ -497,7 +497,7 @@ class SprintPlanController {
         }
     }
 
-    @Cacheable(cache = "sprintChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupStoriesChart = {
         if (!params.id) {
             def msg = message(code: 'is.sprint.error.not.exist')

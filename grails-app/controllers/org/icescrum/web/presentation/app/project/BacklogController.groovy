@@ -34,6 +34,7 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.PlanningPokerGame
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 @Secured('stakeHolder() or inProduct()')
 class BacklogController {
@@ -135,7 +136,7 @@ class BacklogController {
                 chain(controller: 'jasper',
                         action: 'index',
                         model: [data: model],
-                        params: [locale: user.preferences.language, _format: params.format, _file: 'backlog', _name: fileName])
+                        params: [locale: user?.preferences?.language?:RCU.getLocale(request).toString().substring(0, 2), _format: params.format, _file: 'backlog', _name: fileName])
                 session.progress?.completeProgress(message(code: 'is.report.complete'))
             } catch (Exception e) {
                 if (log.debugEnabled) e.printStackTrace()

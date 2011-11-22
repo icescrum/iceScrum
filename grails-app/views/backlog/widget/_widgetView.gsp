@@ -38,7 +38,7 @@
         dblclickable='[rendered:(request.stakeHolder || request.inProduct), selector:".postit-row", callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
         value="${stories}"
         var="story">
-    <is:cache  cache="storyCache_${story.id}" cacheResolver="backlogElementCacheResolver" key="postit-small">
+    <is:cache  cache="storyCache" key="postit-small-${story.id}-${story.lastUpdated}">
         <li class="postit-row postit-row-story" elemId="${story.id}">
             <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
             </span>${story.id} - <is:truncated encodedHTML="true" size="30">${story.name.encodeAsHTML()}</is:truncated>

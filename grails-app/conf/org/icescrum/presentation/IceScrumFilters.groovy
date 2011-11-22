@@ -56,7 +56,7 @@ class IceScrumFilters {
                               cache true
                             }
             if (!webservices){
-                render(status: 404)
+                render(status: 503)
                 return webservices
             }
         }

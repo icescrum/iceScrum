@@ -63,7 +63,7 @@
         value="${stories}"
         var="story">
         <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
-    <is:cache  cache="storyCache_${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+    <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
         <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user,sortable:request.productOwner]" params="[product:params.product]"/>
     </is:cache>
 </is:backlogElementLayout>

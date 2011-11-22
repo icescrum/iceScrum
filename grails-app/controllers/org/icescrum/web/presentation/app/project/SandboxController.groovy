@@ -37,6 +37,7 @@ import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Sprint
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 @Secured('stakeHolder() or inProduct()')
 class SandboxController {
@@ -90,7 +91,7 @@ class SandboxController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    @Cacheable(cache = 'addStory', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'storyCache', keyGenerator = 'localeKeyGenerator')
     def add = {
         def currentProduct = Product.get(params.product)
         render(template: '/story/manage', model: [
@@ -181,7 +182,6 @@ class SandboxController {
     }
 
     def print = {
-        def user = User.load(springSecurityService.principal?.id)
         def currentProduct = Product.get(params.product)
         def data = []
         def stories = Story.findAllByBacklogAndState(currentProduct, Story.STATE_SUGGESTED, [sort: 'suggestedDate', order: 'desc'])
@@ -209,7 +209,7 @@ class SandboxController {
                 chain(controller: 'jasper',
                         action: 'index',
                         model: [data: model],
-                        params: [locale: user.preferences.language,
+                        params: [locale: springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal?.id)?.preferences?.language : RCU.getLocale(request).toString().substring(0, 2),
                                 _format: params.format,
                                 _file: 'sandbox',
                                 _name: fileName])

@@ -30,7 +30,6 @@ import org.icescrum.core.utils.BundleUtils
 import org.icescrum.core.domain.security.Authority
 
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugins.springsecurity.Secured
 
 @Secured('isAuthenticated() and (stakeHolder() or inProduct() or owner())')
@@ -69,7 +68,6 @@ class MembersController {
     }
 
     @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
-    @CacheFlush(caches = ['projectMembersCache','projectTemplateCache'], cacheResolver = 'projectCacheResolver')
     def update = {
         def product = Product.get(params.product)
         def team = Team.get(product.teams.asList()[0].id)
@@ -108,7 +106,6 @@ class MembersController {
     }
 
     @Secured('inProduct() or stakeHolder()')
-    @CacheFlush(caches = ['projectMembersCache','projectTemplateCache'], cacheResolver = 'projectCacheResolver')
      def leaveTeam = {
         def product = Product.get(params.product)
         def user = springSecurityService.currentUser
@@ -118,7 +115,6 @@ class MembersController {
             def found = currentMembers.find{ it.id == user.id}
             def u = User.get(found.id)
             productService.removeAllRoles(product,team,u, false)
-            flushCache(cache:'projectMembersCache',cacheResolver:'projectCacheResolver')
             render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
         } catch (e) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)

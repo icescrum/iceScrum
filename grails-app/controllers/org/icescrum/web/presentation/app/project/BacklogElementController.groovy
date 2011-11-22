@@ -29,7 +29,6 @@ import org.icescrum.core.event.IceScrumStoryEvent
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import grails.util.GrailsNameUtils
@@ -171,6 +170,7 @@ class BacklogElementController {
                         story.addComment(poster, params.comment.body)
                         story.addActivity(poster, 'comment', story.name)
                         story.addFollower(poster)
+                        story.lastUpdated = new Date()
                     } catch (Exception e) {
                         status.setRollbackOnly()
                     }
@@ -181,7 +181,6 @@ class BacklogElementController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error')]] as JSON)
             return
         }
-        flushCache(cache:'storyCache_'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
         broadcast(function: 'update', message: story)
         redirect(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: ['tab': 'comments', product:params.product])
     }
@@ -213,7 +212,7 @@ class BacklogElementController {
         comment.body = params.comment.body
         try {
             comment.save()
-            flushCache(cache:'storyCache_'+params.comment.ref, cacheResolver:'backlogElementCacheResolver')
+            commentable.lastUpdated = new Date()
             broadcast(function: 'update', message: commentable)
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
             redirect(controller: controllerName, action: 'activitiesPanel', id: params.comment.ref, params: [product: params.product, 'tab': 'comments'])
@@ -243,7 +242,7 @@ class BacklogElementController {
         def commentable = Story.getInProduct(params.long('product'),params.long('backlogelement')).list()[0]
         try {
             commentable.removeComment(comment)
-            flushCache(cache:'storyCache_'+params.backlogelement, cacheResolver:'backlogElementCacheResolver')
+            commentable.lastUpdated = new Date()
             broadcast(function: 'update', message: commentable)
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_DELETED))
             redirect(controller: controllerName, action: 'activitiesPanel', id: params.backlogelement, params: ['tab': 'comments', product:params.product])
@@ -283,7 +282,7 @@ class BacklogElementController {
      * Content of the activities panel
      */
 
-    @Cacheable(cache = 'storyCache', cacheResolver = 'backlogElementCacheResolver', keyGenerator = 'userKeyGenerator')
+    @Cacheable(cache = 'storyCache', keyGenerator = 'storyKeyGenerator')
     def activitiesPanel = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
@@ -318,7 +317,6 @@ class BacklogElementController {
     }
 
     @Secured('isAuthenticated()')
-    @CacheFlush(caches = 'storyCache', cacheResolver = 'backlogElementCacheResolver')
     def follow = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
@@ -344,7 +342,6 @@ class BacklogElementController {
     }
 
     @Secured('isAuthenticated()')
-    @CacheFlush(caches = 'storyCache', cacheResolver = 'backlogElementCacheResolver')
     def unfollow = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)

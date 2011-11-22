@@ -57,7 +57,7 @@ class QuickLookController {
         }
     }
 
-    @Cacheable(cache = 'storyCache', cacheResolver = 'backlogElementCacheResolver', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'storyCache', keyGenerator = 'storyKeyGenerator')
     def story = {
         def story = Story.getInProduct(params.long('product'),params.long('story.id')).list()[0]
         if (!story) {
@@ -72,7 +72,7 @@ class QuickLookController {
         ])
     }
 
-    @Cacheable(cache = 'taskCache', cacheResolver = 'backlogElementCacheResolver', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'taskCache', keyGenerator = 'taskKeyGenerator')
     def task = {
         def task = Task.getInProduct(params.long('product'),params.long('task.id'))
         if (!task) {
@@ -86,7 +86,7 @@ class QuickLookController {
         ])
     }
 
-    @Cacheable(cache = 'featureCache', cacheResolver = 'backlogElementCacheResolver', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'featureCache', keyGenerator = 'featureKeyGenerator')
     def feature = {
         def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
         if (!feature) {
@@ -106,7 +106,7 @@ class QuickLookController {
         ])
     }
 
-    @Cacheable(cache = 'actorCache', cacheResolver = 'backlogElementCacheResolver', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'actorCache', keyGenerator = 'actorKeyGenerator')
     def actor = {
         def actor = Actor.getInProduct(params.long('product'),params.long('actor.id')).list()[0]
         if (!actor) {

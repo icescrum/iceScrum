@@ -31,7 +31,7 @@
             <g:set var="nextSprintExist" value="${sprint.hasNextSprint}"/>
             <is:event title="${message(code:'is.sprint')} ${sprint.orderNumber}"
                       elemid="${sprint.id}"
-                      cacheable="[cache:'SprintCache-'+sprint.id,cacheResolver:'projectCacheResolver',key:'sprintEvent',disabled:sprint.state != Sprint.STATE_DONE]">
+                      cacheable="[cache:'SprintCache',key:'sprintEvent',disabled:sprint.state != Sprint.STATE_DONE]">
             %{-- Header of the sprint column --}%
                 <is:eventHeader class="state-${sprint.state}">
                     <g:if test="${request.inProduct}">
@@ -100,7 +100,7 @@
                             value="${sprint.stories?.sort{it.rank}}"
                             var="story"
                             emptyRendering="true">
-                            <is:cache  cache="storyCache_${story.id}" cacheResolver="backlogElementCacheResolver" key="postit-rect">
+                            <is:cache cache="storyCache" key="postit-rect-${story.id}-${story.lastUpdated}">
                                 <g:include view="/story/_postit.gsp"
                                            model="[id:id,story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"
                                            params="[product:params.product]"/>

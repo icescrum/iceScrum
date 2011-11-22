@@ -29,8 +29,8 @@ import org.icescrum.core.domain.Story
 
 import grails.converters.JSON
 import grails.converters.XML
-import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugins.springsecurity.Secured
+import grails.plugin.springcache.annotations.Cacheable
 
 class SprintController {
 
@@ -40,7 +40,6 @@ class SprintController {
     def springSecurityService
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -82,7 +81,6 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def save = {
         def sprint = new Sprint()
         sprint.properties = params.sprint
@@ -112,7 +110,6 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -143,7 +140,6 @@ class SprintController {
 
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'releaseCache', cacheResolver = 'projectCacheResolver')
     def unPlan = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -170,7 +166,6 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = ['projectTemplateCache','releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
     def activate = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -198,7 +193,6 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = ['projectTemplateCache','releaseCache','tasksList'], cacheResolver = 'projectCacheResolver')
     def close = {
         if (!params.id) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -222,5 +216,31 @@ class SprintController {
         } catch (RuntimeException e) {
             returnError(object:sprint, exception:e)
         }
+    }
+
+    @Secured('inProduct()')
+    @Cacheable(cache = 'sprintCache', keyGenerator='sprintKeyGenerator')
+    def show = {
+        if (request?.format == 'html'){
+            render(status:404)
+            return
+        }
+
+        if (!params.id) {
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
+            return
+        }
+
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
+
+        if (!sprint) {
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
+            return
+        }
+
+        withFormat {
+                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
+            }
     }
 }

@@ -198,7 +198,7 @@
     </li>
     <li class="navigation-line separator"></li>
     <entry:point id="menu-left" model="[product:product]"/>
-    <is:cache cache="userMenuCache" cacheResolver="userProjectCacheResolver" key="user-${user?.username?:'anonymous'}" disabled="${product ? false : true}" role="false" locale="false">
+    <is:cache cache="userCache" key="user-${user?.username?:'anonymous'}-${user?.lastUpdated}" disabled="${product ? false : true}" role="false" locale="false">
         <is:menuBar/>
     </is:cache>
 </ul>

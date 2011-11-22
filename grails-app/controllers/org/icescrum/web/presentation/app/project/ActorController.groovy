@@ -33,7 +33,6 @@ import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
 import grails.converters.XML
-import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
@@ -59,9 +58,7 @@ class ActorController {
             [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.actor.space.text']
     ]
 
-    def index = { }
-
-    @Cacheable(cache = 'searchActors', cacheResolver = 'projectCacheResolver')
+    @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
     def search = {
         def actors = Actor.findActorByProductAndTerm(params.long('product'), '%' + params.term + '%').list()
         def result = []
@@ -72,7 +69,6 @@ class ActorController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def save = {
         if (!params.actor) return
 
@@ -94,7 +90,6 @@ class ActorController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def update = {
         if (!params.actor) {
             returnError(text:message(code: 'is.actor.error.not.exist'))
@@ -148,7 +143,6 @@ class ActorController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @CacheFlush(caches = 'searchActors', cacheResolver = 'projectCacheResolver')
     def delete = {
         if (!params.id) {
             returnError(text:message(code: 'is.actor.error.not.exist'))
@@ -188,20 +182,26 @@ class ActorController {
 
     def list = {
         def actors = params.term ? Actor.findActorByProductAndTerm(params.long('product'), '%' + params.term + '%').list() : Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc'])
-        def template = session.widgetsList?.contains(id) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
-        def frequenciesSelect = BundleUtils.actorFrequencies.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-        def instancesSelect = BundleUtils.actorInstances.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-        def levelsSelect = BundleUtils.actorLevels.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-        render(template: template, model: [
-                actors: actors,
-                id: id,
-                frequenciesSelect: frequenciesSelect,
-                instancesSelect: instancesSelect,
-                levelsSelect: levelsSelect])
+        withFormat{
+            html {
+                def template = session.widgetsList?.contains(id) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+                def frequenciesSelect = BundleUtils.actorFrequencies.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
+                def instancesSelect = BundleUtils.actorInstances.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
+                def levelsSelect = BundleUtils.actorLevels.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
+                render(template: template, model: [
+                        actors: actors,
+                        id: id,
+                        frequenciesSelect: frequenciesSelect,
+                        instancesSelect: instancesSelect,
+                        levelsSelect: levelsSelect])
+            }
+            json { render status: 200, contentType: 'application/json', text: actors as JSON }
+            xml { render status: 200, contentType: 'text/xml', text: actors  as XML }
+         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @Cacheable(cache = 'addActor', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'addActor', keyGenerator = 'localeKeyGenerator')
     def add = {
         render(template: 'window/manage', model: [
                 id: id,
@@ -274,9 +274,34 @@ class ActorController {
         }
         session.uploadedFiles = null
         if (needPush){
-            flushCache(cache:'actorCache_'+actor.id, cacheResolver:'backlogElementCacheResolver')
+            actor.lastUpdated = new Date()
             broadcast(function: 'update', message: actor)
         }
+    }
+
+    @Cacheable(cache = 'actorCache', keyGenerator='actorKeyGenerator')
+    def show = {
+        if (request?.format == 'html'){
+            render(status:404)
+            return
+        }
+
+        if (!params.id) {
+            returnError(text:message(code: 'is.actor.error.not.exist'))
+            return
+        }
+
+        def actor = Actor.getInProduct(params.long('product'),params.long('id')).list()[0]
+
+        if (!actor) {
+            returnError(text:message(code: 'is.actor.error.not.exist'))
+            return
+        }
+
+        withFormat {
+                json { render(status: 200, contentType: 'application/json', text: actor as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: actor as XML) }
+            }
     }
 
     def print = {

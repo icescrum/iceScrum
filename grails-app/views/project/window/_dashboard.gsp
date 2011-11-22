@@ -125,7 +125,7 @@
 
         <div class="col2">
             <entry:point id="${id}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
-            <is:cache cache="feedCache" role="false" cacheResolver="projectCacheResolver">
+            <is:cache cache="projectCache" role="false" key="${product.id}-${activities.size() ? activities?.last()?.dateCreated :''}">
                 <is:panel id="panel-activity">
                     <is:panelTitle>
                         <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed"

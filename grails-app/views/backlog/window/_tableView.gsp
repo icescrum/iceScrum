@@ -82,7 +82,7 @@
             <is:tableColumn editable="[type:'richarea',disabled:!request.productOwner,name:'notes']"><wikitext:renderHtml
                     markup="Textile">${story.notes}</wikitext:renderHtml></is:tableColumn>
             <is:tableColumn>${story.acceptedDate ? g.formatDate(date: story.acceptedDate, formatName: 'is.date.format.short', timezone: story.backlog.preferences.timezone) : ''}</is:tableColumn>
-            <is:tableColumn>${story.estimatedDate ? g.formatDate(date: story.estimatedDate, formatName: 'is.date.format.short', timezone: story.backlog.preferences.timezone) : ''}</is:tableColumn>
+            <is:tableColumn>${g.formatDate(date: story.estimatedDate, formatName: 'is.date.format.short', timezone: story.backlog.preferences.timezone)}</is:tableColumn>
         </is:tableRows>
     </is:table>
 </is:tableView>

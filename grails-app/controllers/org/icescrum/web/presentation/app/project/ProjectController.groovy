@@ -37,7 +37,6 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
-import grails.plugin.springcache.annotations.CacheFlush
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
@@ -72,7 +71,7 @@ class ProjectController {
         chain(controller: 'scrumOS', action: 'index', params: params)
     }
 
-    @Cacheable(cache = 'feedCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'projectCache', keyGenerator = 'localeKeyGenerator')
     def feed = {
         def currentProduct = Product.get(params.product)
 
@@ -115,7 +114,6 @@ class ProjectController {
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
-    @CacheFlush(caches = 'projectCache', cacheResolver = 'projectCacheResolver')
     def update = {
 
         def msg
@@ -290,7 +288,7 @@ class ProjectController {
                 ]
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
+    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productCumulativeFlowChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.cumulativeFlowValues(currentProduct)
@@ -311,7 +309,7 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
+    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productVelocityCapacityChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productVelocityCapacityValues(currentProduct)
@@ -328,7 +326,7 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
+    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productBurnupChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productBurnupValues(currentProduct)
@@ -345,7 +343,7 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
+    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productBurndownChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productBurndownValues(currentProduct)
@@ -363,7 +361,7 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
+    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productVelocityChart = {
         def currentProduct = Product.get(params.product)
         def values = productService.productVelocityValues(currentProduct)
@@ -381,7 +379,7 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator= 'localeKeyGenerator')
+    @Cacheable(cache = "projectCache", keyGenerator= 'featuresKeyGenerator')
     def productParkingLotChart = {
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)
@@ -713,7 +711,7 @@ class ProjectController {
                         action: 'index',
                         model: [data: values],
                         params: [
-                                locale: User.get(springSecurityService.principal.id).preferences.language,
+                                locale: springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id).preferences.language : RCU.getLocale(request).toString().substring(0, 2),
                                 _format: params.format,
                                 _file: chart ?: 'timeline',
                                 _name: fileName,
@@ -829,7 +827,7 @@ class ProjectController {
     }
 
     @Secured('permitAll')
-    @Cacheable(cache = 'projectCache', cacheResolver = 'projectCacheResolver', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'projectCache', keyGenerator = 'localeKeyGenerator')
     def browseDetails = {
         def product = Product.get(params.id)
 
@@ -893,7 +891,7 @@ class ProjectController {
                 chain(controller: 'jasper',
                         action: 'index',
                         model: [data: model],
-                        params: [locale: user.preferences.language,
+                        params: [locale: user?.preferences?.language?:RCU.getLocale(request).toString().substring(0, 2),
                                 _format: params.format,
                                 _file: 'stories',
                                 SUBREPORT_DIR: "${servletContext.getRealPath('reports/subreports')}/",

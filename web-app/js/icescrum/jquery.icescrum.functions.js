@@ -348,7 +348,9 @@
                                 }
                                 if ($.icescrum.o.currentView != 'postitsView') {
                                     var table = $('#story-table');
+                                    var currentSort = [table.get(0).config.sortList];
                                     table.trigger("update");
+                                    table.trigger("appendCache");
                                     table.trigger("sorton",[table.get(0).config.sortList]);
                                 }
                             }
@@ -370,12 +372,17 @@
                                 var selector = $.icescrum.o.currentView == 'postitsView' ? 'div.postit-story' : 'table.#story-table tr.table-line';
                                 var removed = $(selector+'[elemid=' + this.id + ']').remove();
                                 $.icescrum.story.backlogTitleDetails();
+                                if ($.icescrum.o.currentView == 'tableView') {
+                                    var table = $('#story-table');
+                                    table.trigger("update");
+                                    table.trigger("sorton",[table.get(0).config.sortList]);
+                                }
                             },
                             window:'#window-content-backlog',
                             afterTmpl:function(tmpl, container, newObject) {
                                 $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 $.icescrum.story.backlogTitleDetails();
-                                if ($.icescrum.o.currentView != 'postitsView') {
+                                if ($.icescrum.o.currentView == 'tableView') {
                                     var table = $('#story-table');
                                     table.trigger("update");
                                     table.trigger("sorton",[table.get(0).config.sortList]);
@@ -452,6 +459,7 @@
 
                     update:function(template) {
                         $(this).each(function() {
+                            alert('toto');
                             $.icescrum.story.remove.apply(this, [template]);
                             $.icescrum.story.add.apply(this, [template]);
                         });

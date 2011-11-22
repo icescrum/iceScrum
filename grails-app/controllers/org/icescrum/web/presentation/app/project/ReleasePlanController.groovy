@@ -346,7 +346,7 @@ class ReleasePlanController {
         }
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeCacheResolver')
+    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def releaseBurndownChart = {
         if (!params.id) {
             def msg = message(code: 'is.release.error.not.exist')
@@ -375,7 +375,7 @@ class ReleasePlanController {
         }
     }
 
-    @Cacheable(cache = "productChartCache", cacheResolver = "projectCacheResolver", keyGenerator = 'localeCacheResolver')
+    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def releaseParkingLotChart = {
         if (!params.id) {
             def msg = message(code: 'is.release.error.not.exist')

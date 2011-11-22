@@ -44,7 +44,7 @@
         dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
         value="${stories}"
         var="story">
-        <is:cache  cache="storyCache_${story.id}" cacheResolver="backlogElementCacheResolver" key="postit">
+        <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${sprint ? sprint.id : ''}">
             <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user, sprint:sprint]"
                        params="[product:params.product]"/>
         </is:cache>
