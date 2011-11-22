@@ -46,8 +46,7 @@
                          params="[id:id, feature:feature]" rendered="${request.productOwner}"/>
                 <g:set var="attachment" value="${feature.totalAttachments}"/>
                 <g:if test="${attachment}">
-                    <span class="table-attachment"
-                          title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
+                    <span class="table-attachment" title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
                 </g:if>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">

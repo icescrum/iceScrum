@@ -128,6 +128,7 @@ class FeatureController {
 
                     def version = feature.isDirty() ? feature.version + 1 : feature.version
                     render(status: 200, text: [version: version, value: returnValue ?: ''] as JSON)
+                    return
                 }
                 def next = null
                 if (params.continue) {

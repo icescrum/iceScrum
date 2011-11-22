@@ -809,7 +809,22 @@
                         $('li.menu-accept-task').hide();
                         var kanban = $('table.#kanban-sprint-' + this.id);
                         $('td:not(:first-child)',kanban).sortable('destroy');
-                        $('.row-urgent-task td:not(:last-child) .postit-task',kanban).remove();
+                         if (this.tasks){
+                            var tasks = this.tasks;
+                            $('.row-urgent-task td:not(:last-child) .postit-task,.row-recurrent-task td:not(:last-child) .postit-task',kanban).each(function(){
+                                var id = $(this).attr('elemid');
+                                var found = false;
+                                $(tasks).each(function(){
+                                    if (this.id == id){
+                                        found = true;
+                                        return false;
+                                    }
+                                });
+                                if (!found){
+                                    $(this).remove();
+                                }
+                            });
+                        }
                         $('.row-urgent-task',kanban).removeClass('postit-sortable');
                         $('.postit-label',kanban).removeClass('postit-sortable');
                         $('.postit-task .dropmenu-action',kanban).remove();
@@ -860,7 +875,7 @@
 
                     updateWindowTitle:function(sprint){
                         if ($("#selectOnSprintPlan") && $("#selectOnSprintPlan").val() == sprint.id){
-                            $('#window-title-bar-sprintPlan .content .details').html(' - '+$.icescrum.sprint.i18n.name+' '+sprint.orderNumber+' - '+$.icescrum.sprint.states[sprint.state]+' - ['+$.icescrum.dateLocaleFormat(sprint.startDate)+' -> '+$.icescrum.dateLocaleFormat(sprint.startDate)+'] - '+$.icescrum.sprint.i18n.totalRemainingHours+' <span class="remaining">'+sprint.totalRemainingHours+'</span> '+$.icescrum.sprint.i18n.hours);
+                            $('#window-title-bar-sprintPlan .content .details').html(' - '+$.icescrum.sprint.i18n.name+' '+sprint.orderNumber+' - '+$.icescrum.sprint.states[sprint.state]+' - ['+$.icescrum.dateLocaleFormat(sprint.startDate)+' -> '+$.icescrum.dateLocaleFormat(sprint.endDate)+'] - '+$.icescrum.sprint.i18n.totalRemainingHours+' <span class="remaining">'+sprint.totalRemainingHours+'</span> '+$.icescrum.sprint.i18n.hours);
                         }
                     },
 
