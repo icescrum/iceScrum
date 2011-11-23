@@ -84,13 +84,12 @@ grails.project.dependency.resolution = {
         plugins {
             println "icescrum-core.latest.integration in env:  ${environment}"
             compile "org.icescrum:icescrum-core:latest.integration"
-            //compile ":tomcat:1.3.7"
+            compile ":tomcat:1.3.7"
         }
     }else{
         plugins {
             println "use plugin tomcatnio in env:  ${environment}"
             compile ":tomcatnio:1.3.4"
-            //compile ":jetty7:0.3.2"
         }
     }
 

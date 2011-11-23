@@ -207,9 +207,9 @@ class SprintController {
             def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
             sprintService.close(sprint)
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
+                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint.refresh(), unDoneStories: unDoneStories, stories: sprint.stories] as JSON)  }
+                json { render(status: 200, contentType: 'application/json', text: sprint.refresh() as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: sprint.refresh() as XML) }
             }
         } catch (IllegalStateException e) {
             returnError(exception:e)

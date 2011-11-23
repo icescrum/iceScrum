@@ -181,14 +181,15 @@
                                 return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-actor' : '#actor-table';
                             },
                             remove:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? $('.postit-actor[elemid=' + this.id + ']').remove() : $('#actor-table .table-line[elemid=' + this.id + ']').remove();
+                                $.icescrum.o.currentView == 'postitsView' ? $('.postit-actor[elemid=' + this.id + ']').remove() : $('#actor-table .table-line[elemid=' + this.id + ']').remove();
+                                if ($.icescrum.o.currentView == 'tableView') {
+                                    $('#actor-table').trigger("update");
+                                }
                             },
                             window:'#window-content-actor',
                             afterTmpl:function(tmpl) {
-                                if ($.icescrum.o.currentView != 'postitsView') {
-                                    var table = $('#actor-table');
-                                    table.trigger("update");
-                                    table.trigger("sorton",[table.get(0).config.sortList]);
+                                if ($.icescrum.o.currentView == 'tableView') {
+                                    $('#actor-table').trigger("update");
                                 }
                             }
                         },
@@ -248,14 +249,15 @@
                                 return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-feature' : '#feature-table';
                             },
                             remove:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? $('.postit-feature[elemid=' + this.id + ']').remove() : $('#feature-table .table-line[elemid=' + this.id + ']').remove();
+                                $.icescrum.o.currentView == 'postitsView' ? $('.postit-feature[elemid=' + this.id + ']').remove() : $('#feature-table .table-line[elemid=' + this.id + ']').remove();
+                                if ($.icescrum.o.currentView == 'tableView') {
+                                    $('#feature-table').trigger("update");
+                                }
                             },
                             window:'#window-content-feature',
                             afterTmpl:function(tmpl) {
-                                if ($.icescrum.o.currentView != 'postitsView') {
-                                    var table = $('#feature-table');
-                                    table.trigger("update");
-                                    table.trigger("sorton",[table.get(0).config.sortList]);
+                                if ($.icescrum.o.currentView == 'tableView') {
+                                    $('#feature-table').trigger("update");
                                 }
                             }
                         },
@@ -336,7 +338,10 @@
                             remove:function() {
                                 var story = $.icescrum.o.currentView == 'postitsView' ? $('.postit-story[elemid=' + this.id + ']') : $('#story-table .table-line[elemid=' + this.id + ']');
                                 this.rank = story.index() + 1;
-                                return story.remove();
+                                story.remove();
+                                if ($.icescrum.o.currentView == 'tableView') {
+                                    $('#story-table').trigger("update");
+                                }
                             },
                             constraintTmpl:function() {
                                 return this.state == $.icescrum.story.STATE_SUGGESTED;
@@ -346,12 +351,8 @@
                                 if (this.rank){
                                     $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 }
-                                if ($.icescrum.o.currentView != 'postitsView') {
-                                    var table = $('#story-table');
-                                    var currentSort = [table.get(0).config.sortList];
-                                    table.trigger("update");
-                                    table.trigger("appendCache");
-                                    table.trigger("sorton",[table.get(0).config.sortList]);
+                                if ($.icescrum.o.currentView == 'tableView') {
+                                    $('#story-table').trigger("update");
                                 }
                             }
                         },
@@ -373,9 +374,7 @@
                                 var removed = $(selector+'[elemid=' + this.id + ']').remove();
                                 $.icescrum.story.backlogTitleDetails();
                                 if ($.icescrum.o.currentView == 'tableView') {
-                                    var table = $('#story-table');
-                                    table.trigger("update");
-                                    table.trigger("sorton",[table.get(0).config.sortList]);
+                                    $('#story-table').trigger("update");
                                 }
                             },
                             window:'#window-content-backlog',
@@ -383,9 +382,7 @@
                                 $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 $.icescrum.story.backlogTitleDetails();
                                 if ($.icescrum.o.currentView == 'tableView') {
-                                    var table = $('#story-table');
-                                    table.trigger("update");
-                                    table.trigger("sorton",[table.get(0).config.sortList]);
+                                    $('#story-table').trigger("update");
                                 }
                             }
                         },
