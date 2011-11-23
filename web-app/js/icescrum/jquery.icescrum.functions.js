@@ -459,7 +459,6 @@
 
                     update:function(template) {
                         $(this).each(function() {
-                            alert('toto');
                             $.icescrum.story.remove.apply(this, [template]);
                             $.icescrum.story.add.apply(this, [template]);
                         });
