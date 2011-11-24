@@ -50,7 +50,7 @@
         changeRank='[selector:".postit-story",controller:"story",action:"rank",name:"story.rank",params:[product:params.product]]'
         editable="[controller:'story',
                   action:'estimate',
-                  on:'.postit-story .mini-value.editable',
+                  on:'div.backlog .postit-story .mini-value.editable',
                   rendered:(request.teamMember || request.scrumMaster),
                   findId:'jQuery(this).parents(\'.postit-story:first\').attr(\'elemid\')',
                   type:'selectui',

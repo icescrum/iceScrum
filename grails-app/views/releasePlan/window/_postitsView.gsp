@@ -119,7 +119,7 @@
     jQuery('#window-title-bar-${id} .content').html('${message(code: "is.ui." + id)} - ${release.name}  - ${is.bundle(bundle: 'releaseStates', value: release.state)} - [${g.formatDate(date: release.startDate, formatName: 'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} -> ${g.formatDate(date: release.endDate, formatName: 'is.date.format.short',timeZone:release.parentProduct.preferences.timezone)}]');
     <is:editable controller="story"
                  action='estimate'
-                 on='.postit-story .mini-value.editable'
+                 on='div.backlog .postit-story .mini-value.editable'
                  findId="jQuery(this).parents('.postit-story:first').attr(\'elemid\')"
                  type="selectui"
                  name="story.effort"

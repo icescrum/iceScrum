@@ -138,7 +138,7 @@
     <is:editable rendered="${sprint.state != Sprint.STATE_DONE && (request.teamMember || request.scrumMaster)}"
                  controller="story"
                  action='estimate'
-                 on='div.postit-story span.mini-value.editable'
+                 on='table.kanban div.postit-story span.mini-value.editable'
                  findId="jQuery(this).parents('.postit-story:first').attr('elemid')"
                  type="selectui"
                  name="story.effort"
