@@ -83,7 +83,7 @@ grails.mail.props = ["mail.smtp.auth":"true",
 /*
   Push section
  */
-icescrum.json.backlogElement = ['totalAttachments']
+icescrum.json.backlogElement = ['totalAttachments','version']
 icescrum.json.actor = icescrum.json.backlogElement.clone()
 icescrum.json.feature = icescrum.json.backlogElement.clone()
 icescrum.json.story = icescrum.json.backlogElement.clone()

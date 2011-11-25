@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object="${object}" node="product" root="${root}">
     <is:propertyAsXML
-            name="['pkey','planningPokerGameType','startDate','endDate']"/>
+            name="['pkey','planningPokerGameType','startDate','endDate','lastUpdated','dateCreated']"/>
     <is:propertyAsXML
             name="['name','description']"
             cdata="true"/>

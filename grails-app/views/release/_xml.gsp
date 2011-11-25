@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object ="${object}" node="release" indentLevel="${indentLevel}" root="${root}">
-  <is:propertyAsXML name="['state','releaseVelocity','endDate','startDate','orderNumber']"/>
+  <is:propertyAsXML name="['state','releaseVelocity','endDate','startDate','orderNumber','lastUpdated','dateCreated']"/>
   <is:propertyAsXML name="['name','vision','description','goal']" cdata="true"/>
   <is:listAsXML
           name="sprints"

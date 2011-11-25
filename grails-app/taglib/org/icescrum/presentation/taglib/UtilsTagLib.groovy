@@ -78,7 +78,7 @@ class UtilsTagLib {
                           urlCloseWindow:"${createLink(controller: controllerSpace, action: 'closeWindow', params: p)}",
                           deleteConfirmMessage:"${message(code: 'is.confirm.delete').encodeAsJavaScript()}",
                           cancelFormConfirmMessage:"${message(code: 'is.confirm.cancel.form').encodeAsJavaScript()}",
-                          widgetsList:${widgetsList as JSON ?: []},
+                          widgetsList:${params.product ? widgetsList as JSON ?: [] : []},
                           currentView:"${session.currentView ?: 'postitsView'}",
                           locale:'${locale}',
                           push:{enable:${grailsApplication.config.icescrum.push.enable?:false}, websocket:${grailsApplication.config.icescrum.push.websocket?:false}},

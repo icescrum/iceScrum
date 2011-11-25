@@ -93,7 +93,7 @@
     storiesDone = storiesDone == 0 ? '' : storiesDone;
     **?
     <is:table onlyRows="true">
-        <is:tableRow elemid="${feature.id}" rowid="table-row-feature-">
+        <is:tableRow elemid="${feature.id}" rowid="table-row-feature-" version="?**=this.version**?">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
