@@ -9,6 +9,49 @@
                         }
                     },
 
+                    updateRankAndVersion:function(selector, container, oldPosition, position) {
+                        var wantedIndex = position ? position - 1 : null;
+                        var oldIndex = oldPosition ? oldPosition - 1 : null;
+                        if(wantedIndex != null) {
+                            // Update
+                            if(oldIndex != null) {
+                                if(wantedIndex > oldIndex) {
+                                    $(selector, container).each(function(currentIndex, it) {
+                                        if(oldIndex <= currentIndex && currentIndex < wantedIndex) {
+                                            $('* [name="rank"]', it).text(currentIndex + 1);
+                                            $(it).attr('version', parseInt($(it).attr('version')) + 1);
+                                        }
+                                    });
+                                } else if (wantedIndex < oldIndex) {
+                                    $(selector, container).each(function(currentIndex, it) {
+                                        if(wantedIndex < currentIndex && currentIndex <= oldIndex) {
+                                            $('* [name="rank"]', it).text(currentIndex + 1);
+                                            $(it).attr('version', parseInt($(it).attr('version')) + 1);
+                                        }
+                                    });
+                                }
+                            }
+                            // Insert
+                            else {
+                                $(selector, container).each(function(currentIndex, it) {
+                                    if(currentIndex > wantedIndex) {
+                                        $('* [name="rank"]', it).text(currentIndex + 1);
+                                        $(it).attr('version', parseInt($(it).attr('version')) + 1);
+                                    }
+                                });
+                            }
+                        }
+                        else {
+                            // Delete
+                            $(selector, container).each(function(currentIndex, it) {
+                                if(currentIndex >= oldIndex) {
+                                    $('* [name="rank"]', it).text(currentIndex + 1);
+                                    $(it).attr('version', parseInt($(it).attr('version')) + 1);
+                                }
+                            });
+                        }
+                    },
+
                     id:function(object) {
                         if ($(object).hasClass('postit') || $(object).hasClass('postit-rect')) {
                             var elem = $(object).attr('elemId');

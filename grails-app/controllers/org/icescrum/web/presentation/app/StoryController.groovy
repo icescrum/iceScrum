@@ -209,7 +209,7 @@ class StoryController {
                         returnValue = story."${params.name}".encodeAsHTML()
                 }
                 def version = story.isDirty() ? story.version + 1 : story.version
-                render(status: 200, text: [version: version, value: returnValue ?: ''] as JSON)
+                render(status: 200, text: [version: version, value: returnValue ?: '', object: story] as JSON)
                 return
             }
             withFormat {

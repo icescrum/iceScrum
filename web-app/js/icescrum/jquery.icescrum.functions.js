@@ -248,16 +248,27 @@
                             view:function() {
                                 return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-feature' : '#feature-table';
                             },
-                            remove:function() {
-                                $.icescrum.o.currentView == 'postitsView' ? $('.postit-feature[elemid=' + this.id + ']').remove() : $('#feature-table .table-line[elemid=' + this.id + ']').remove();
+                            remove:function(template) {
                                 if ($.icescrum.o.currentView == 'tableView') {
+                                    var tableline = $('#feature-table .table-line[elemid=' + this.id + ']');
+                                    var oldRank = tableline.index() + 1;
+                                    tableline.remove();
+                                    $.icescrum.postit.updateRankAndVersion($.icescrum.feature.templates[template].selector(), $.icescrum.feature.templates[template].view(), oldRank);
                                     $('#feature-table').trigger("update");
+                                }else{
+                                    $('.postit-feature[elemid=' + this.id + ']').remove();
                                 }
                             },
                             window:'#window-content-feature',
                             afterTmpl:function(tmpl) {
                                 if ($.icescrum.o.currentView == 'tableView') {
+                                    $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank);
                                     $('#feature-table').trigger("update");
+                                }
+                            },
+                            beforeTmpl:function(tmpl,container,current) {
+                                if(current.index() != -1) {
+                                    this.oldRank = current.index() + 1;
                                 }
                             }
                         },
@@ -292,7 +303,7 @@
                         tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
                         tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
                         $(this).each(function() {
-                            tmpl.remove.apply(this);
+                            tmpl.remove.apply(this,[template]);
                         });
                         if ($(tmpl.selector, $(tmpl.view)).length == 0) {
                             $(tmpl.view).hide();
@@ -302,7 +313,7 @@
 
                     _postRendering:function(tmpl, newObject, container) {
                         if (this.rank && this.rank != 0) {
-                            $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank);
+                            $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                         }
                         if (this.totalAttachments == undefined || !this.totalAttachments) {
                             newObject.find('.postit-attachment,.table-attachment').hide()
@@ -369,20 +380,30 @@
                             constraintTmpl:function() {
                                 return this.state == $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_ESTIMATED;
                             },
-                            remove:function() {
-                                var selector = $.icescrum.o.currentView == 'postitsView' ? 'div.postit-story' : 'table.#story-table tr.table-line';
-                                var removed = $(selector+'[elemid=' + this.id + ']').remove();
-                                $.icescrum.story.backlogTitleDetails();
+                            remove:function(template) {
                                 if ($.icescrum.o.currentView == 'tableView') {
+                                    var tableline = $('table.#story-table tr.table-line'+'[elemid=' + this.id + ']');
+                                    var oldRank = tableline.index() + 1;
+                                    tableline.remove();
+                                    $.icescrum.postit.updateRankAndVersion($.icescrum.story.templates[template].selector(), $.icescrum.story.templates[template].view(), oldRank);
                                     $('#story-table').trigger("update");
+                                }else{
+                                     $('div.postit-story'+'[elemid=' + this.id + ']').remove();
                                 }
+                                $.icescrum.story.backlogTitleDetails();
                             },
                             window:'#window-content-backlog',
                             afterTmpl:function(tmpl, container, newObject) {
                                 $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 $.icescrum.story.backlogTitleDetails();
                                 if ($.icescrum.o.currentView == 'tableView') {
+                                    $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank);
                                     $('#story-table').trigger("update");
+                                }
+                            },
+                            beforeTmpl:function(tmpl,container,current) {
+                                if(current.index() != -1 && this.oldRank == null) {
+                                    this.oldRank = current.index() + 1;
                                 }
                             }
                         },
@@ -466,7 +487,7 @@
                         tmpl = $.extend(tmpl, $.icescrum.story.templates[template]);
                         tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
                         $(this).each(function() {
-                            tmpl.remove.apply(this);
+                            tmpl.remove.apply(this,[template]);
                         });
                         if (!tmpl.noblank) {
                             tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;

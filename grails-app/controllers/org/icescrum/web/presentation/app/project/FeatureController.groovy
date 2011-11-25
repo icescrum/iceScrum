@@ -124,7 +124,7 @@ class FeatureController {
                         returnValue = feature."${params.name}".encodeAsHTML()
 
                     def version = feature.isDirty() ? feature.version + 1 : feature.version
-                    render(status: 200, text: [version: version, value: returnValue ?: ''] as JSON)
+                    render(status: 200, text: [version: version, value: returnValue ?: '', object: feature] as JSON)
                     return
                 }
                 def next = null

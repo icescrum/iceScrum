@@ -24,7 +24,7 @@
     <is:table id="feature-table"
               style="${features ? '' : 'display:none'};"
               sortableCols="true"
-              editable="[controller:id,action:'update',params:[product:params.product],onExitCell:'submit']">
+              editable="[controller:id,action:'update',params:[product:params.product],onExitCell:'submit',success:'jQuery.event.trigger(\'update_feature\',value.object);']">
 
         <is:tableHeader width="5%" class="table-cell-checkbox" name="">
             <g:checkBox name="checkbox-header"/>

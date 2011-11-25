@@ -114,7 +114,7 @@
     }
     **?
     <is:table onlyRows="true">
-        <is:tableRow elemid="${story.id}">
+        <is:tableRow elemid="${story.id}" version="?**=this.version**?">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"

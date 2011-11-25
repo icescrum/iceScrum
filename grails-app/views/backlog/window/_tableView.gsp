@@ -26,7 +26,7 @@
     <is:table id="story-table"
               style="${stories ? '' : 'display:none'};"
               sortableCols="true"
-              editable="[controller:'story',action:'update',params:[product:params.product],onExitCell:'submit']">
+              editable="[controller:'story',action:'update',params:[product:params.product],onExitCell:'submit',success:'jQuery.event.trigger(\'update_story\',value.object);']">
         <is:tableHeader width="5%" class="table-cell-checkbox" name="">
             <g:checkBox name="checkbox-header"/>
         </is:tableHeader>
