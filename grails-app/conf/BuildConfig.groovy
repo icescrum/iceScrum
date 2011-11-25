@@ -83,7 +83,7 @@ grails.project.dependency.resolution = {
     if (environment == Environment.PRODUCTION){
         plugins {
             println "icescrum-core.latest.integration in env:  ${environment}"
-            compile "org.icescrum:icescrum-core:latest.integration"
+            compile "org.icescrum:icescrum-core:1.5-SNAPSHOT"
             compile ":tomcat:1.3.7"
         }
     }else{
