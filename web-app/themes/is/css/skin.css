@@ -183,7 +183,7 @@ body {
     background: url(../images/application/bg-simple.png) repeat-x 0 0;
 }
 
-.input span, .input input, .area textarea, .area span {
+.input span, .input input {
     background-image: url(../images/form/input.png);
 }
 

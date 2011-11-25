@@ -761,163 +761,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.area {
-
-}
-
-.area span {
-    display: block;
-    height: 50px;
-    float: left;
-}
-
-.area .start, .area .end {
-    width: 11px;
-    background-repeat: no-repeat;
-}
-
-.area .content {
-    height: 46px;
-    padding-top: 4px;
-    background-position: 0 -138px;
-    background-repeat: repeat-x;
-}
-
-.area .start {
-    background-position: 0 -88px;
-}
-
-.area .end {
-    background-position: right -88px;
-}
-
 .area textarea {
-    background-position: 0 -142px;
-    border: 0 none;
-    height: 44px;
-}
-
-.area-focus .content {
-    background-position: 0 -238px;
-}
-
-.area-focus .start {
-    background-position: 0 -188px;
-}
-
-.area-focus .end {
-    background-position: right -188px;
+    height: 34px;
+	background: -moz-linear-gradient(90deg, #ebebeb, #fff); /* Firefox */
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ebebeb)); /* Webkit */
+    background: linear-gradient(#ffffff, #ebebeb); /* W3C */
+	border: 1px solid #cfcccc;
+	-moz-border-radius: 10px; /* Firefox */
+	-webkit-border-radius: 10px; /* Webkit */
+    border-radius: 10px; /* W3C */
+	padding: 7px 10px;
 }
 
 .area-focus textarea {
-    background-position: 0 -242px;
-    border: 0 none;
-}
-
-.area-medium {
-
-}
-
-.area-medium span {
-    display: block;
-    height: 100px;
-    float: left;
-}
-
-.area-medium .start, .area-medium .end {
-    width: 11px;
-    background-repeat: no-repeat;
-}
-
-.area-medium .content {
-    height: 96px;
-    padding-top: 4px;
-    background-position: 0 -388px;
-    background-repeat: repeat-x;
-}
-
-.area-medium .start {
-    background-position: 0 -288px;
-}
-
-.area-medium .end {
-    background-position: right -288px;
+	background: -moz-linear-gradient(90deg, #cfe6fc, #e6f1fc); /* Firefox */
+	background: -webkit-gradient(linear, left top, left bottom, from(#e6f1fc), to(#cfe6fc)); /* Webkit */
+    background: linear-gradient(#e6f1fc, #cfe6fc); /* W3C */
+	border: 1px solid #90afcd;
 }
 
 .area-medium textarea {
-    background-position: 0 -392px;
-    border: 0 none;
-    height: 94px;
-}
-
-.area-medium-focus .content {
-    background-position: 0 -588px;
-}
-
-.area-medium-focus .start {
-    background-position: 0 -488px;
-}
-
-.area-medium-focus .end {
-    background-position: right -488px;
-}
-
-.area-medium-focus textarea {
-    background-position: 0 -592px;
-    border: 0 none;
-}
-
-.area-large {
-
-}
-
-.area-large span {
-    display: block;
-    height: 150px;
-    float: left;
-}
-
-.area-large .start, .area-medium .end {
-    width: 11px;
-    background-repeat: no-repeat;
-}
-
-.area-large .content {
-    height: 146px;
-    padding-top: 4px;
-    background-position: 0 -838px;
-    background-repeat: repeat-x;
-}
-
-.area-large .start {
-    background-position: 0 -688px;
-}
-
-.area-large .end {
-    background-position: right -688px;
+    height: 84px;
 }
 
 .area-large textarea {
-    background-position: 0 -842px;
-    border: 0 none;
-    height: 144px;
-}
-
-.area-large-focus .content {
-    background-position: 0 -1138px;
-}
-
-.area-large-focus .start {
-    background-position: 0 -988px;
-}
-
-.area-large-focus .end {
-    background-position: right -988px;
-}
-
-.area-large-focus textarea {
-    background-position: 0 -1142px;
-    border: 0 none;
+    height: 134px;
 }
 
 /*
