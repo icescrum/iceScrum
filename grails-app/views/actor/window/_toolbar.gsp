@@ -66,7 +66,7 @@
                     history="false"
                     update="window-content-${id}"
                     remote="true"
-                    onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.postitsView')}')"
+                    onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.postitsView')}','postitsView')"
                     value="${message(code:'is.view.postitsView')}"/>
         </li>
         <li class="last">
@@ -75,7 +75,7 @@
                      params="'product=${params.product}&view=tableView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
                      update="window-content-${id}"
                      history="false"
-                     onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.tableView')}')"
+                     onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.tableView')}','tableView')"
                      remote="true"
                      value="${message(code:'is.view.tableView')}"/>
         </li>

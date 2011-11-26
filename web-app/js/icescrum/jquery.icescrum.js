@@ -123,8 +123,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
         },
 
-        displayView:function(view) {
-            $.icescrum.o.currentView = view;
+        displayView:function(view,id) {
+            $.icescrum.o.currentView = id;
             $('#menu-display-list .content').html('<span class="ico"></span>' + view);
         },
 

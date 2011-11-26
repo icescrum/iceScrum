@@ -72,7 +72,7 @@
                     history="false"
                     update="window-content-${id}"
                     remote="true"
-                    onSuccess="\$.icescrum.displayView('${message(code:'is.view.postitsView')}')"
+                    onSuccess="\$.icescrum.displayView('${message(code:'is.view.postitsView')}','postitsView')"
                     value="${message(code:'is.view.postitsView')}"/>
         </li>
         <li class="last">
@@ -81,7 +81,7 @@
                      params="'product=${params.product}&view=tableView&window=${id}&id=${sprint.id}&actionWindow=index&term='+\$(\'#autoCmpTxt\').val()"
                      update="window-content-${id}"
                      history="false"
-                     onSuccess="\$.icescrum.displayView('${message(code:'is.view.tableView')}')"
+                     onSuccess="\$.icescrum.displayView('${message(code:'is.view.tableView')}','tableView')"
                      remote="true"
                      value="${message(code:'is.view.tableView')}"/>
         </li>
