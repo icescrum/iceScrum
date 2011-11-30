@@ -34,7 +34,6 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
-grails.plugin.location.'kagilum' = '../plugins/kagilum'
 
 if (environment != Environment.PRODUCTION){
     println "use inline plugin in env: ${environment}"
