@@ -44,7 +44,7 @@ environments {
             password="root"
             dbCreate = "update"*/
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            url = "jdbc:hsqldb:mem:devDba"
+            url = "jdbc:hsqldb:file:devDba"
             loggingSql = false
         }
     }
