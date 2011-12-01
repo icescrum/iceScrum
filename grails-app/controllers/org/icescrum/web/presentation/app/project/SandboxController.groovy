@@ -91,6 +91,7 @@ class SandboxController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
+    @Cacheable(cache = 'storyCache', keyGenerator = 'featuresKeyGenerator')
     def add = {
         def currentProduct = Product.get(params.product)
         render(template: '/story/manage', model: [
