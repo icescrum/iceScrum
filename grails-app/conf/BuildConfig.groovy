@@ -100,7 +100,7 @@ grails.project.dependency.resolution = {
         compile ":hibernate:1.3.7"
         compile ":jquery:1.6.1.1"
         compile ":jquery-ui:1.8.11"
-        compile ":resources:1.1"
+        compile ":resources:1.1.3"
         compile ":session-temp-files:1.0"
         compile ":wikitext:0.1.2"
         compile ":zipped-resources:1.0"
