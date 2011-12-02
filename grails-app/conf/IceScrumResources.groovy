@@ -49,7 +49,7 @@ modules = {
     }
 
     'icescrum' {
-        dependsOn 'app-css', 'jquery-plugins'
+        dependsOn 'app-css', 'jquery'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.form.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.history.js'], bundle: 'icescrum'
