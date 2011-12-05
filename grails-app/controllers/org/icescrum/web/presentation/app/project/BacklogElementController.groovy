@@ -282,7 +282,7 @@ class BacklogElementController {
      * Content of the activities panel
      */
 
-    @Cacheable(cache = 'storyCache', keyGenerator = 'storyKeyGenerator')
+    //@Cacheable(cache = 'storyCache', keyGenerator = 'storyKeyGenerator')
     def activitiesPanel = {
         if (params.id == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
