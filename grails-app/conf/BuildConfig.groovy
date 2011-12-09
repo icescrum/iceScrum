@@ -76,18 +76,16 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         test 'xmlunit:xmlunit:1.3'
-        runtime 'mysql:mysql-connector-java:5.1.17'
+        runtime 'mysql:mysql-connector-java:5.1.18'
     }
 
     if (environment == Environment.PRODUCTION){
         plugins {
-            println "icescrum-core.latest.integration in env:  ${environment}"
             compile "org.icescrum:icescrum-core:1.5-SNAPSHOT"
             compile ":tomcat:1.3.7"
         }
     }else{
         plugins {
-            println "use plugin tomcatnio in env:  ${environment}"
             compile ":tomcatnio:1.3.4"
         }
     }
@@ -100,7 +98,7 @@ grails.project.dependency.resolution = {
         compile ":hibernate:1.3.7"
         compile ":jquery:1.7"
         compile ":jquery-ui:1.8.11"
-        compile ":resources:1.1.3"
+        compile ":resources:1.1.4"
         compile ":session-temp-files:1.0"
         compile ":wikitext:0.1.2"
         compile ":zipped-resources:1.0"

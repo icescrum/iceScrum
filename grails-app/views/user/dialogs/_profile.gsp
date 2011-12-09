@@ -37,10 +37,10 @@
                 <is:fieldInput for="userusername" label="is.user.username">
                     <is:input id="userusername" disabled="disabled" name="username" value="${user.username}"/>
                 </is:fieldInput>
-                <is:fieldInput for="userpassword" label="is.user.password">
+                <is:fieldInput for="userpassword" label="is.user.password" class="user-password">
                     <is:password id="userpassword" name="user.password"/>
                 </is:fieldInput>
-                <is:fieldInput for="confirmPassword" label="is.dialog.profile.confirmPassword">
+                <is:fieldInput for="confirmPassword" label="is.dialog.profile.confirmPassword" class="user-password-confirm">
                     <is:password id="confirmPassword" name="confirmPassword"/>
                 </is:fieldInput>
                 <is:fieldInput for="useremail" label="is.user.email">

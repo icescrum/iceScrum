@@ -43,7 +43,7 @@ class MembersController {
 
     def edit = {
         def product = Product.get(params.product)
-        def members = allMembersProduct(product)
+        def members = productService.getAllMembersProduct(product)
         def ownerSelect = product.owner
 
         def possibleOwners = members.clone()
@@ -71,7 +71,7 @@ class MembersController {
     def update = {
         def product = Product.get(params.product)
         def team = Team.get(product.teams.asList()[0].id)
-        def currentMembers = allMembersProduct(product)
+        def currentMembers = productService.getAllMembersProduct(product)
         try{
             def idmembers = []
             params.members?.each{ k,v ->
@@ -110,7 +110,7 @@ class MembersController {
         def product = Product.get(params.product)
         def user = springSecurityService.currentUser
         def team = Team.get(product.teams.asList()[0].id)
-        def currentMembers = allMembersProduct(product)
+        def currentMembers = productService.allMembersProduct(product)
         try {
             def found = currentMembers.find{ it.id == user.id}
             def u = User.get(found.id)
@@ -119,49 +119,5 @@ class MembersController {
         } catch (e) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
         }
-    }
-
-    private List allMembersProduct(def product) {
-        def team = product.teams.asList().first()
-        def productOwners = product.productOwners
-        def scrumMasters = team.scrumMasters
-        def members = []
-
-        team.members?.each{
-            def role = Authority.MEMBER
-            if (scrumMasters*.id?.contains(it.id) && productOwners*.id?.contains(it.id)){
-                role = Authority.PO_AND_SM
-            }
-            else if(scrumMasters*.id?.contains(it.id)){
-                role = Authority.SCRUMMASTER
-            }
-            else if(productOwners*.id?.contains(it.id)){
-                role = Authority.PRODUCTOWNER
-            }
-            members.add([name: it.firstName+' '+it.lastName,
-                         activity:it.preferences.activity?:'&nbsp;',
-                         id: it.id,
-                         avatar:is.avatar(user:it,link:true),
-                         role: role])
-        }
-
-        productOwners?.each{
-            if(!members*.id?.contains(it.id)){
-                members.add([name: it.firstName+' '+it.lastName,
-                         activity:it.preferences.activity?:'&nbsp;',
-                         id: it.id,
-                         avatar:is.avatar(user:it,link:true),
-                         role: Authority.PRODUCTOWNER])
-            }
-        }
-
-        product.stakeHolders?.each{
-            members.add([name: it.firstName+' '+it.lastName,
-                         activity:it.preferences.activity?:'&nbsp;',
-                         id: it.id,
-                         avatar:is.avatar(user:it,link:true),
-                         role: Authority.STAKEHOLDER])
-        }
-        members.sort{ a,b -> a.role > b.role ? -1 : 1  }
     }
 }

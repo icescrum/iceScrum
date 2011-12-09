@@ -228,42 +228,6 @@ class UtilsTagLib {
         out << is.tooltip(params)
     }
 
-    def avatar = { attrs, body ->
-        assert attrs.user
-        if (grailsApplication.config.icescrum.gravatar){
-            def hash = attrs.user.email.encodeAsMD5()
-            def dgu = createLink(uri: '/' + is.currentThemeImage()) + "avatars/avatar.png"
-            def gravatarBaseUrl = request.isSecure() ? "https://secure.gravatar.com/avatar/" : "http://gravatar.com/avatar/"
-            String gravatarUrl = "$gravatarBaseUrl$hash"
-            gravatarUrl += dgu.matches(/404|mm|identicon|monsterid|wavatar|retro|http.*/) ? "?d=${dgu}&s=40" : ''
-            if (attrs.link){
-                out << gravatarUrl
-            }else {
-                out << "<img src='$gravatarUrl' height='40' width='40' class='avatar avatar-user-${attrs.user.id} ${attrs."class" ? attrs."class" : ''}' title='${message(code: "is.user.avatar")}' alt='${message(code: "is.user.avatar")}'/>"
-            }
-        }
-        else {
-            def avat = new File(grailsApplication.config.icescrum.images.users.dir + attrs.user.id + '.png')
-            if (avat.exists()) {
-                if (attrs.link){
-                    out << createLink(controller: 'user', action: 'avatar', id: attrs.user.id) + (attrs.nocache ? '?nocache=' + new Date().getTime() : '')
-                }else{
-                    out << "<img src='${createLink(controller: 'user', action: 'avatar', id: attrs.user.id)}${attrs.nocache ? '?nocache=' + new Date().getTime() : ''}' ${attrs.elementId ? 'id=\'' + attrs.elementId + '\'' : ''} class='avatar avatar-user-${attrs.user.id} ${attrs."class" ? attrs."class" : ''}' title='${message(code: "is.user.avatar")}' alt='${message(code: "is.user.avatar")}'/>"
-                }
-            } else {
-                if (attrs.link){
-                    out <<  "${grailsApplication.config.grails.serverURL}/${is.currentThemeImage()}avatars/avatar.png"
-                }else{
-                    out << r.img(
-                            id: attrs.elementId ?: '',
-                            uri: "/${is.currentThemeImage()}avatars/avatar.png",
-                            class: "avatar avatar-user-${attrs.user.id} ${attrs."class" ? attrs."class" : ''}",
-                            title: message(code: "is.user.avatar")
-                    )
-                }
-            }
-        }
-    }
     def avatarSelector = { attrs ->
         def avatarsDir = grailsApplication.parentContext.getResource(is.currentThemeImage().toString() + 'avatars').file
         if (avatarsDir.isDirectory()) {
