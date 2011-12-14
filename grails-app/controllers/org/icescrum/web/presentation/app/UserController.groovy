@@ -145,8 +145,8 @@ class UserController {
         if (!gravatar){
             if (params.avatar) {
                 "${params.avatar}"?.split(":")?.each {
-                    if (session.uploadedFiles[it[0]])
-                        avatar = new File((String) session.uploadedFiles[it[0]])
+                    if (session.uploadedFiles[it])
+                        avatar = new File((String) session.uploadedFiles[it])
                 }
             }
             if (params."avatar-selected") {

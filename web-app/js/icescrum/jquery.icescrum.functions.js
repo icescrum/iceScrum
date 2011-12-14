@@ -380,12 +380,15 @@
                             constraintTmpl:function() {
                                 return this.state == $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_ESTIMATED;
                             },
-                            remove:function(template) {
+                            remove:function(template, noUpdate) {
                                 if ($.icescrum.o.currentView == 'tableView') {
                                     var tableline = $('table.#story-table tr.table-line'+'[elemid=' + this.id + ']');
-                                    var oldRank = tableline.index() + 1;
+                                    this.oldRank = tableline.index() + 1;
                                     tableline.remove();
-                                    $.icescrum.postit.updateRankAndVersion($.icescrum.story.templates[template].selector(), $.icescrum.story.templates[template].view(), oldRank);
+                                    debugger;
+                                    if (!noUpdate){
+                                        $.icescrum.postit.updateRankAndVersion($.icescrum.story.templates[template].selector(), $.icescrum.story.templates[template].view(), this.oldRank);
+                                    }
                                     $('#story-table').trigger("update");
                                 }else{
                                      $('div.postit-story'+'[elemid=' + this.id + ']').remove();
@@ -477,17 +480,17 @@
 
                     update:function(template) {
                         $(this).each(function() {
-                            $.icescrum.story.remove.apply(this, [template]);
+                            $.icescrum.story.remove.apply(this, [template, true]);
                             $.icescrum.story.add.apply(this, [template]);
                         });
                     },
 
-                    remove:function(template) {
+                    remove:function(template, noUpdate) {
                         var tmpl;
                         tmpl = $.extend(tmpl, $.icescrum.story.templates[template]);
                         tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
                         $(this).each(function() {
-                            tmpl.remove.apply(this,[template]);
+                            tmpl.remove.apply(this,[template, noUpdate]);
                         });
                         if (!tmpl.noblank) {
                             tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;

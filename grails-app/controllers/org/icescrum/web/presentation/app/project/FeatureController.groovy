@@ -232,7 +232,7 @@ class FeatureController {
     @Secured('productOwner() and !archivedProduct()')
     def add = {
         def currentProduct = Product.get(params.product)
-        def valuesList = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
+        def valuesList = PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)
 
         def rankList = []
         def maxRank = Feature.countByBacklog(currentProduct) + 1
@@ -264,7 +264,7 @@ class FeatureController {
         }
 
         Product product = (Product) feature.backlog
-        def valuesList = PlanningPokerGame.getInteger(product.planningPokerGameType)
+        def valuesList = PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)
 
         def rankList = []
         def maxRank = Feature.countByBacklog(product)
