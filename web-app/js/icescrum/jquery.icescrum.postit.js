@@ -44,7 +44,6 @@
                         else {
                             // Delete
                             $(selector, container).each(function(currentIndex, it) {
-                                debugger;
                                 if(currentIndex >= oldIndex) {
                                     $('* [name="rank"]', it).text(currentIndex + 1);
                                     $(it).attr('version', parseInt($(it).attr('version')) + 1);

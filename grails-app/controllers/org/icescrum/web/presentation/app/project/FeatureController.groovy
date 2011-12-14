@@ -158,20 +158,17 @@ class FeatureController {
             return
         }
 
-        try {
-            features.each { feature ->
-                featureService.delete(feature)
-            }
-            def ids = []
-            params.list('id').each { ids << [id: it] }
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: ids as JSON }
-                json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
-            }
-        } catch (RuntimeException e) {
-            returnError(exception:e,text: message(code: 'is.feature.error.linked.story'))
+        features.each { feature ->
+            featureService.delete(feature)
         }
+        def ids = []
+        params.list('id').each { ids << [id: it] }
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: ids as JSON }
+            json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
+            xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
+        }
+
     }
 
     def list = {

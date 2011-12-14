@@ -385,7 +385,6 @@
                                     var tableline = $('table.#story-table tr.table-line'+'[elemid=' + this.id + ']');
                                     this.oldRank = tableline.index() + 1;
                                     tableline.remove();
-                                    debugger;
                                     if (!noUpdate){
                                         $.icescrum.postit.updateRankAndVersion($.icescrum.story.templates[template].selector(), $.icescrum.story.templates[template].view(), this.oldRank);
                                     }
