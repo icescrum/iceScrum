@@ -30,6 +30,11 @@ import org.apache.log4j.PatternLayout
 */
 grails.serverURL = "http://localhost:8080/${appName}"
 
+icescrum.push.broadcaster = 'com.kagilum.atmosphere.ExcludeSessionBroadcaster'
+
+kagilum.url= 'http://www.kagilum.com/'
+kagilum.path.quota = 'hosting/quota'
+
 /*
 Administration section
  */
