@@ -346,12 +346,12 @@
                             view:function() {
                                 return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-sandbox' : '#story-table';
                             },
-                            remove:function() {
-                                var story = $.icescrum.o.currentView == 'postitsView' ? $('.postit-story[elemid=' + this.id + ']') : $('#story-table .table-line[elemid=' + this.id + ']');
+                            remove:function(tmpl) {
+                                var story = $.icescrum.o.currentView == 'postitsView' ? $('.postit-story[elemid=' + this.id + ']') : $(tmpl.view+' .table-line[elemid=' + this.id + ']');
                                 this.rank = story.index() + 1;
                                 story.remove();
                                 if ($.icescrum.o.currentView == 'tableView') {
-                                    $('#story-table').trigger("update");
+                                    $(tmpl.view).trigger("update");
                                 }
                             },
                             constraintTmpl:function() {
@@ -380,17 +380,17 @@
                             constraintTmpl:function() {
                                 return this.state == $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_ESTIMATED;
                             },
-                            remove:function(template, noUpdate) {
+                            remove:function(tmpl) {
                                 if ($.icescrum.o.currentView == 'tableView') {
-                                    var tableline = $('table.#story-table tr.table-line'+'[elemid=' + this.id + ']');
+                                    var tableline = $(tmpl.view+' tr.table-line'+'[elemid=' + this.id + ']');
                                     this.oldRank = tableline.index() + 1;
                                     tableline.remove();
-                                    if (!noUpdate){
-                                        $.icescrum.postit.updateRankAndVersion($.icescrum.story.templates[template].selector(), $.icescrum.story.templates[template].view(), this.oldRank);
+                                    if (!this.rank && this.oldRank && !$.icescrum.story.templates['backlogWindow'].constraintTmpl()){
+                                        $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank);
                                     }
-                                    $('#story-table').trigger("update");
+                                    $(tmpl.view).trigger("update");
                                 }else{
-                                     $('div.postit-story'+'[elemid=' + this.id + ']').remove();
+                                     $(tmpl.selector+'[elemid=' + this.id + ']').remove();
                                 }
                                 $.icescrum.story.backlogTitleDetails();
                             },
@@ -400,7 +400,7 @@
                                 $.icescrum.story.backlogTitleDetails();
                                 if ($.icescrum.o.currentView == 'tableView') {
                                     $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank);
-                                    $('#story-table').trigger("update");
+                                    $(tmpl.view).trigger("update");
                                 }
                             },
                             beforeTmpl:function(tmpl,container,current) {
@@ -416,8 +416,12 @@
                             constraintTmpl:function() {
                                 return this.state == $.icescrum.story.STATE_ESTIMATED;
                             },
-                            remove:function(container) {
-                                $('.postit-row-story[elemid=' + this.id + ']:visible', container).remove();
+                            remove:function(tmpl) {
+                                $(tmpl.view+' .postit-row-story[elemid=' + this.id + ']:visible').remove();
+                                if ($(tmpl.selector+':visible', $(tmpl.view)).length == 0) {
+                                    $(tmpl.view).hide();
+                                    $(tmpl.window + ' .box-blank').show();
+                                }
                             },
                             window:'#widget-content-backlog',
                             afterTmpl:function(tmpl, container, newObject) {
@@ -427,17 +431,17 @@
                         releasePlan:{
                             selector:'div.postit-story',
                             id:'postit-story-releasePlan-tmpl',
+                            window:'#window-content-releasePlan',
                             view:function() {
                                 return this.parentSprint ? '#backlog-layout-plan-releasePlan' + '-' + this.parentSprint.id : '';
                             },
-                            remove:function() {
-                                $('#window-content-releasePlan .postit-story[elemid=' + this.id + ']').remove();
+                            remove:function(tmpl) {
+                                $(tmpl.window+' .postit-story[elemid=' + this.id + ']').remove();
                             },
                             constraintTmpl:function() {
                                 return this.state >= $.icescrum.story.STATE_PLANNED;
                             },
                             noblank:true,
-                            window:'#window-content-releasePlan',
                             afterTmpl:function(tmpl, container, newObject) {
                                 $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 $.event.trigger('sprintMesure_sprint', this.parentSprint);
@@ -479,20 +483,20 @@
 
                     update:function(template) {
                         $(this).each(function() {
-                            $.icescrum.story.remove.apply(this, [template, true]);
+                            $.icescrum.story.remove.apply(this, [template]);
                             $.icescrum.story.add.apply(this, [template]);
                         });
                     },
 
-                    remove:function(template, noUpdate) {
+                    remove:function(template) {
                         var tmpl;
                         tmpl = $.extend(tmpl, $.icescrum.story.templates[template]);
                         tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
+                        tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
                         $(this).each(function() {
-                            tmpl.remove.apply(this,[template, noUpdate]);
+                            tmpl.remove.apply(this,[tmpl]);
                         });
                         if (!tmpl.noblank) {
-                            tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
                             if ($(tmpl.selector, $(tmpl.view)).length == 0) {
                                 $(tmpl.view).hide();
                                 $(tmpl.window + ' .box-blank').show();
