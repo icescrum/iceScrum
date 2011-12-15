@@ -251,9 +251,6 @@ springcache {
         timeToIdle = 0
     }
     caches {
-        feedCache {
-            timeToLive = 120
-        }
         applicationCache {
             eternal = true
         }
