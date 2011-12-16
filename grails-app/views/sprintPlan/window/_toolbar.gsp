@@ -101,6 +101,7 @@
                     params="[filter:'allTasks']"
                     history="false"
                     id="${params.id}"
+                    onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}');"
                     update="window-content-${id}"
                     remote="true"
                     value="${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}"/>
@@ -111,6 +112,7 @@
                      params="[filter:'myTasks']"
                      update="window-content-${id}"
                      history="false"
+                     onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}');"
                      id="${params.id}"
                      remote="true"
                      value="${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}"/>
@@ -125,6 +127,7 @@
         action="changeFilterTasks"
         params="[filter:'freeTasks']"
         update="window-content-${id}"
+        onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}');"
         history="false"
         id="${params.id}"
         remote="true"
@@ -136,6 +139,7 @@
                     controller="${id}"
                     history="false"
                     remote="true"
+                    onSuccess="jQuery.icescrum.updateHideDoneState('${message(code: 'is.ui.sprintPlan.toolbar.showDoneState')}','${message(code: 'is.ui.sprintPlan.toolbar.hideDoneState')}');"
                     id="${params.id}"
                     update="window-content-${id}">
                 ${hideDoneState ? message(code: 'is.ui.sprintPlan.toolbar.showDoneState') : message(code: 'is.ui.sprintPlan.toolbar.hideDoneState')}

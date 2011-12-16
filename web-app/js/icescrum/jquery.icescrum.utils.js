@@ -190,6 +190,19 @@
                     date2.setDate(date.getDate() + (delta - 1));
                     $('#datepicker-endDate').datepicker('option', {minDate:this.dateLocaleFormat(date), defaultDate:this.dateLocaleFormat(date2)});
                     $('#datepicker-endDate').datepicker('setDate', this.dateLocaleFormat(date2));
+                },
+
+                updateFilterTask:function(text){
+                    jQuery('#menu-filter-task-navigation-item .content').html('<span class="ico"></span>'+text);
+                },
+
+                updateHideDoneState:function(show,hide){
+                    var filter = jQuery('#menu-filter-task-list .dropmenu-content li.last');
+                    if(filter.text().trim() == show){
+                        filter.find('a').text(hide);
+                    }else{
+                        filter.find('a').text(show);
+                    }
                 }
             });
 
