@@ -80,11 +80,18 @@ class ScrumOSController {
             return
         }
 
+        def products = productService.getByMemberProductList()
+        def pCount = products?.size()
+        if (pCount > 10){
+            products = products.subList(0,9)
+        }
+
         [user: currentUserInstance,
                 lang: RCU.getLocale(request).toString().substring(0, 2),
                 product: currentProductInstance,
                 publicProductsExists: Product.count() ? true : false,
-                productFilteredsList: productService.getByMemberProductList()]
+                productFilteredsListCount: pCount,
+                productFilteredsList: products]
     }
 
 

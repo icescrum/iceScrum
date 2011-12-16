@@ -175,7 +175,7 @@
                         </li>
                     </g:each>
                 </g:if>
-                <g:if test="${publicProductsExists}">
+                <g:if test="${publicProductsExists || productFilteredsListCount > 10}">
                     <li>
                         <is:remoteDialog
                                 action="browse"
@@ -189,7 +189,12 @@
                                     controller:'scrumOS',
                                     before:'document.location=jQuery.icescrum.o.baseUrl+\'p/\'+jQuery(\'#product\').val()+\'#project\';jQuery(\'#dialog\').dialog(\'close\'); return false;',
                                     button:'is.dialog.browseProject.button']">
-                            <g:message code="is.projectmenu.submenu.project.browse"/>
+                            <g:if test="${productFilteredsListCount > 10}">
+                                <g:message code="is.projectmenu.submenu.project.more"/>
+                            </g:if>
+                            <g:else>
+                                <g:message code="is.projectmenu.submenu.project.browse"/>
+                            </g:else>
                         </is:remoteDialog>
                     </li>
                 </g:if>
