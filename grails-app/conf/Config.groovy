@@ -90,6 +90,7 @@ icescrum.json.story = icescrum.json.backlogElement.clone()
 icescrum.json.story << 'totalComments' << 'tasks'
 icescrum.json.sprint = ['activable','totalRemainingHours']
 icescrum.json.task = icescrum.json.backlogElement.clone()
+icescrum.json.task << 'sprint'
 icescrum.json.productPreferences = []
 
 icescrum.json.shortObject.feature = ['color', 'name']

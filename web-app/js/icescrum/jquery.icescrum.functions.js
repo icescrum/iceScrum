@@ -631,7 +631,7 @@
                             selector:'div.postit-task',
                             id:'postit-task-sprintPlan-tmpl',
                             view:function() {
-                                return (this.type == $.icescrum.task.TYPE_RECURRENT || this.type == $.icescrum.task.TYPE_URGENT) ? '#kanban-sprint' + '-' + this.backlog.id + ' .table-line[type=' + this.type + '] .kanban-col[type=' + this.state + ']' : '#kanban-sprint' + '-' + this.backlog.id + ' .row-story[elemid=' + this.parentStory.id + '] .kanban-col[type=' + this.state + ']';
+                                return (this.type == $.icescrum.task.TYPE_RECURRENT || this.type == $.icescrum.task.TYPE_URGENT) ? '#kanban-sprint' + '-' + this.sprint.id + ' .table-line[type=' + this.type + '] .kanban-col[type=' + this.state + ']' : '#kanban-sprint' + '-' + this.sprint.id + ' .row-story[elemid=' + this.parentStory.id + '] .kanban-col[type=' + this.state + ']';
                             },
                             remove:function() {
                                 $('.postit-task[elemid=' + this.id + ']').remove();
@@ -660,7 +660,7 @@
 
                     _postRendering:function(tmpl, postit) {
 
-                        if ($(tmpl.view + '-' + this.backlog.id).hasClass('ui-selectable') && this.backlog.state != $.icescrum.sprint.STATE_DONE) {
+                        if ($(tmpl.view + '-' + this.sprint.id).hasClass('ui-selectable') && this.sprint.state != $.icescrum.sprint.STATE_DONE) {
                             postit.addClass('ui-selectee');
                         }
                         if (this.totalAttachments == undefined || !this.totalAttachments) {
@@ -669,13 +669,13 @@
                         var responsible = (this.responsible && this.responsible.id == $.icescrum.user.id) ? true : false;
                         var creator = (this.creator.id == $.icescrum.user.id);
 
-                        if(this.backlog.state == $.icescrum.sprint.STATE_DONE) {
+                        if(this.sprint.state == $.icescrum.sprint.STATE_DONE) {
                             $('.dropmenu-action', postit).remove();
                         } else {
                             if ((this.state == $.icescrum.task.STATE_DONE && !$.icescrum.user.scrumMaster) || (!(responsible || creator || $.icescrum.user.poOrSm()) && this.state != $.icescrum.task.STATE_DONE)) {
                                 $('#menu-delete-' + this.id, postit).remove();
                             }
-                            if (!((responsible || $.icescrum.user.scrumMaster) && this.state != $.icescrum.task.STATE_DONE && ($.icescrum.sprint.current && this.backlog.id == $.icescrum.sprint.current.id))) {
+                            if (!((responsible || $.icescrum.user.scrumMaster) && this.state != $.icescrum.task.STATE_DONE && ($.icescrum.sprint.current && this.sprint.id == $.icescrum.sprint.current.id))) {
                                 $('#menu-blocked-' + this.id, postit).remove();
                             }
                             if ((!responsible && !creator && !$.icescrum.user.scrumMaster) || this.state == $.icescrum.task.STATE_DONE) {
@@ -692,7 +692,7 @@
                             } else {
                                 $('#menu-copy-' + this.id, postit).addClass('first')
                             }
-                            if (this.state != $.icescrum.task.STATE_DONE && (responsible || (!responsible && creator) || $.icescrum.user.scrumMaster)) {
+                            if (this.sprint.state != $.icescrum.sprint.STATE_DONE && this.state != $.icescrum.task.STATE_DONE && (responsible || (!responsible && creator) || $.icescrum.user.scrumMaster)) {
                                 $('.mini-value', postit).addClass('editable editable-hover');
                                 if ((responsible || $.icescrum.user.scrumMaster)) {
                                     if (this.parentStory && this.parentStory.state == $.icescrum.story.STATE_DONE) {
@@ -706,7 +706,7 @@
 
                         this.blocked ? $('#menu-blocked-' + this.id + ' a', postit).text($.icescrum.task.UNBLOCK) : $('#menu-blocked-' + this.id + ' a', postit).text($.icescrum.task.BLOCK);
 
-                        if (!responsible && $.icescrum.product.assignOnBeginTask && $.icescrum.task.STATE_WAIT == this.state && this.backlog.state != $.icescrum.sprint.STATE_DONE){
+                        if (!responsible && $.icescrum.product.assignOnBeginTask && $.icescrum.task.STATE_WAIT == this.state && this.sprint.state != $.icescrum.sprint.STATE_DONE){
                             $('.postit-label', postit).addClass('postit-sortable');
                         }
                         $.icescrum.sprint.updateRemaining();

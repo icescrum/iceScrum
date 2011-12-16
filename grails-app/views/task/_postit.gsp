@@ -35,7 +35,7 @@
            attachment="${task.totalAttachments}"
            stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
            miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
-           editableEstimation="${(responsible || (!responsible && creator) || scrumMaster) && task.state != Task.STATE_DONE}"
+           editableEstimation="${(responsible || (!responsible && creator) || scrumMaster) && task.state != Task.STATE_DONE && task.sprint?.state != Sprint.STATE_DONE}"
            color="yellow"
            rect="true">
             <g:if test="${request.inProduct}">
