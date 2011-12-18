@@ -138,7 +138,7 @@ class UserController {
         else
             params.user.password = currentUser.password
 
-        def gravatar = grailsApplication.config.icescrum.gravatar
+        def gravatar = grailsApplication.config.icescrum.gravatar?.enable
 
         File avatar = null
         def scale = true
@@ -270,7 +270,7 @@ class UserController {
     def avatar = {
         def user = User.load(params.id)
         if (user) {
-            if (!grailsApplication.config.icescrum.gravatar){
+            if (!grailsApplication.config.icescrum.gravatar?.enable){
                 def avat = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
                 if (!avat.exists()) {
                     avat = grailsApplication.parentContext.getResource("/${is.currentThemeImage()}avatars/avatar.png").file

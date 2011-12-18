@@ -55,7 +55,8 @@ icescrum.project.private.enable = true
   IceScrum css theme
  */
 icescrum.theme = 'is'
-icescrum.gravatar = false
+icescrum.gravatar.secure = true
+icescrum.gravatar.enable = true
 
 /*
   IceScrum base dir
