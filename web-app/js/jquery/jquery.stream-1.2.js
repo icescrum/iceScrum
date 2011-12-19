@@ -307,7 +307,10 @@
 					if (sizeEnd < 0) {
 						return false;
 					}
-
+                    //hack for nginx?? and atmosphere junk
+                    if (message.index < 2113){
+                        message.index = 2113;
+                    }
 					message.size = +text.substring(message.index, sizeEnd);
 					// index: sizeEnd + ";".length,
 					message.index = sizeEnd + 1;
