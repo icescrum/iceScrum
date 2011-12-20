@@ -115,8 +115,7 @@ class TaskController {
 
         // If the version is different, the task has been modified since the last loading
         if (params.task.version && params.long('task.version') != task.version) {
-            msg = message(code: 'is.stale.object', args: [message(code: 'is.task')])
-            returnError(text: msg)
+            returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.task')]))
             return
         }
 
