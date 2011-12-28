@@ -53,8 +53,7 @@ class ReleaseController {
 
         // If the version is different, the release has been modified since the last loading
         if (params.long('release.version') != release.version) {
-            msg = message(code: 'is.release.object', args: [message(code: 'is.release')])
-            returnError(text:msg)
+            returnError(text:message(code: 'is.release.object', args: [message(code: 'is.release')]))
             return
         }
 
