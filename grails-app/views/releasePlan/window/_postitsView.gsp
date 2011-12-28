@@ -88,6 +88,7 @@
                               rendered:poOrSm && sprint.state != Sprint.STATE_DONE,
                               handle:".postit-layout .postit-sortable",
                               connectWith:".backlog",
+                              containment:".event-overflow",
                               placeholder:"ui-drop-hover-postit-rect ui-corner-all",
                               update:"if(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${id}-${sprint.id} .postit-rect",controller:"story",action:"rank",name:"story.rank",params:"&product=${params.product}")}}",
                               receive:"event.stopPropagation();"+remoteFunction(action:"plan",

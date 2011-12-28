@@ -44,13 +44,13 @@
                                model="[id:id, task:task, user:user]"
                                rendered="${task.backlog.state != Sprint.STATE_DONE}"/>
             </g:if>
+            <g:if test="${task.name?.length() > 17 || task.description?.length() > 0}">
+                <is:tooltipPostit
+                        type="task"
+                        id="${task.id}"
+                        title="${task.name?.encodeAsHTML()}"
+                        text="${task.description?.encodeAsHTML()}"
+                        apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
+                        container="jQuery('#window-content-${id}')"/>
+            </g:if>
 </is:postit>
-<g:if test="${task.name?.length() > 17 || task.description?.length() > 0}">
-    <is:tooltipPostit
-            type="task"
-            id="${task.id}"
-            title="${task.name?.encodeAsHTML()}"
-            text="${task.description?.encodeAsHTML()}"
-            apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-            container="jQuery('#window-content-${id}')"/>
-</g:if>

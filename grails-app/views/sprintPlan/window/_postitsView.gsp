@@ -119,9 +119,7 @@
                 <is:kanbanColumn key="${column.key}">
                     <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                             var="task">
-                            <is:cache cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
                                 <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
-                            </is:cache>
                     </g:each>
                 </is:kanbanColumn>
             </g:each>
@@ -163,8 +161,9 @@
                  findId="jQuery(this).parents('.postit-task:first').attr('elemid')"/>
 
     <is:sortable rendered="${sprint.state != Sprint.STATE_DONE}"
-                 on="table.kanban td.kanban-col:not(.first)"
+                 on="table.kanban td.kanban-col:not(:first-child)"
                  handle="p.postit-sortable"
+                 containment="#window-content-sprintPlan table"
                  cancel=".ui-selectable-disabled"
                  connectWith="td.kanban-cell"
                  items="div.postit-rect"
