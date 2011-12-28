@@ -81,6 +81,7 @@
                 shortcut="[key:'ctrl+shift+d',scope:id]"
                 id="${params.id}"
                 controller="release"
+                before="if(!confirm('${message(code:'is.ui.releasePlan.toolbar.warning.dissociateAll')}')){ return false; }"
                 class="close-release-${release.id}"
                 onSuccess="jQuery.event.trigger('sprintMesure_sprint',[data.sprints]); jQuery.event.trigger('unPlan_story',[data.stories]); jQuery.icescrum.renderNotice('${g.message(code:'is.release.stories.dissociated')}')">
             ${message(code: 'is.ui.releasePlan.toolbar.dissociateAll')}

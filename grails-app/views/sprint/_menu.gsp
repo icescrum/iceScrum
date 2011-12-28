@@ -86,6 +86,7 @@
             action="unPlan"
             id="${sprint.id}"
             controller="sprint"
+            before="if(!confirm('${message(code:'is.ui.releasePlan.menu.sprint.warning.dissociateAll')}')){ return false; }"
             onSuccess=" jQuery.event.trigger('sprintMesure_sprint',data.sprint); jQuery.event.trigger('unPlan_story',[data.stories]); jQuery.icescrum.renderNotice('${g.message(code:'is.sprint.stories.dissociated')}')"
             value="${message(code:'is.ui.releasePlan.menu.sprint.dissociateAll')}"
             remote="true"
