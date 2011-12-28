@@ -175,7 +175,7 @@ class UtilsTagLib {
         }
 
         def params = [
-                for: "#event-id-${attrs.id} .event-header-label",
+                for: "div.event-header[elemid=${attrs.id}]",
                 contentTitleText: attrs.title,
                 contentText: attrs.text,
                 styleName: "icescrum",
@@ -196,6 +196,8 @@ class UtilsTagLib {
     }
 
     def tooltipPostit = { attrs ->
+
+        if (pageScope?.tooltip != '') return
 
         def hideText
         def hideBorder
@@ -225,7 +227,7 @@ class UtilsTagLib {
                 positionContainer: attrs.container,
                 apiBeforeShow: "function(){ if (jQuery('#postit-${attrs.type}-${attrs.id}').hasClass('ui-sortable-helper')) { return false; }; ${attrs.apiBeforeShow}}"
         ]
-        out << is.tooltip(params)
+        pageScope.tooltip = is.tooltip(params)
     }
 
     def avatarSelector = { attrs ->

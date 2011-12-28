@@ -65,10 +65,10 @@
 
                     <g:if test="${sprint.goal}">
                         <is:tooltipSprint
-                                id="releasePlan-${sprint.orderNumber}"
+                                id="${sprint.id}"
                                 title="${message(code:'is.sprint')} ${sprint.orderNumber}"
                                 text="${sprint.goal.encodeAsHTML()}"
-                                container="jQuery('.event-line-limiter')"/>
+                                container="jQuery('#window-content-releasePlan')"/>
                     </g:if>
                 </is:eventHeader>
 
