@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2011 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,12 +18,8 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
---}%<is:objectAsXML object="${object}" node="user" indentLevel="${indentLevel}" root="${root}">
-    <is:propertyAsXML
-            name="['id','username','password','email','dateCreated','enabled','accountExpired','accountLocked','passwordExpired']"/>
-    <is:propertyAsXML name="['lastName','firstName']" cdata="true"/>
-    <is:propertyAsXML
-            object="preferences"
-            name="['language','activity','filterTask','menu','menuHidden','hideDoneState']"/>
-    <is:listAsXML name="teams" template="/team/xml" child="team" deep="false" indentLevel="${indentLevel  + 1}"/>
+--}%
+<is:objectAsXML object="${object}" node="comment" indentLevel="${indentLevel}" root="${root}">
+    <is:propertyAsXML name="['dateCreated','lastUpdated','posterId','posterClass']"/>
+    <is:propertyAsXML name="['body']" cdata="true"/>
 </is:objectAsXML>

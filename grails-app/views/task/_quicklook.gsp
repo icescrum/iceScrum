@@ -24,7 +24,7 @@
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
-                <strong><g:message code="is.backlogelement.id"/></strong> ${task.id}
+                <strong><g:message code="is.backlogelement.id"/></strong> ${task.uid}
             </p>
 
             <p>
@@ -83,7 +83,7 @@
         <div class="col2">
             <is:postit title="${task.name}"
                        id="${task.id}"
-                       miniId="${task.id}"
+                       miniId="${task.uid}"
                        rect="true"
                        styleClass="story task ui-selectable-disabled"
                        type="task"

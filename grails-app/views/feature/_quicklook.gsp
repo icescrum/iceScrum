@@ -23,7 +23,7 @@
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
-                <strong><g:message code="is.backlogelement.id"/></strong> ${feature.id}
+                <strong><g:message code="is.backlogelement.id"/></strong> ${feature.uid}
             </p>
 
             <p>
@@ -78,7 +78,7 @@
         <div class="col2">
             <is:postit
                     id="${feature.id}"
-                    miniId="${feature.id}"
+                    miniId="${feature.uid}"
                     title="${feature.name}"
                     color="${feature.color}"
                     type="feature"

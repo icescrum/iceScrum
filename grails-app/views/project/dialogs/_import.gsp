@@ -92,13 +92,13 @@
                   </is:fieldInput>
                 </g:if>
                 <g:each in="${teamsErrors}" var="team" status="current">
-                  <is:fieldInput label="is.dialog.importProject.team.name" for="teamname${team.idFromImport}" noborder="${(!usersErrors).toString()}">
-                    <is:input id="teamname${team.idFromImport}"  name="team.name.${team.idFromImport}" value="${team.name}"/>
+                  <is:fieldInput label="is.dialog.importProject.team.name" for="teamname${team.uid}" noborder="${(!usersErrors).toString()}">
+                    <is:input id="teamname${team.uid}"  name="team.name.${team.uid}" value="${team.name}"/>
                   </is:fieldInput>
                 </g:each>
                 <g:each in="${usersErrors}" var="user" status="current">
-                  <is:fieldInput label="is.dialog.importProject.user.name" for="username${user.idFromImport}" noborder="${(current >= usersErrors.size() - 1).toString()}">
-                    <is:input id="username${user.idFromImport}"  name="user.username.${user.idFromImport}" value="${user.username}"/>
+                  <is:fieldInput label="is.dialog.importProject.user.name" for="username${user.uid}" noborder="${(current >= usersErrors.size() - 1).toString()}">
+                    <is:input id="username${user.uid}"  name="user.username.${user.uid}" value="${user.username}"/>
                   </is:fieldInput>
                 </g:each>
               </is:accordionSection>

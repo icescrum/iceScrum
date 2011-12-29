@@ -25,6 +25,7 @@
 <g:set var="columns"
        value="[[key: (Task.STATE_WAIT), name: 'is.task.state.wait'],[key: (Task.STATE_BUSY), name: 'is.task.state.inprogress'],[key: (Task.STATE_DONE), name: 'is.task.state.done']]"/>
 <g:set var="story" value="[id:'?**=this.id**?',
+                            uid:'?**=this.uid**?',
                             feature:[color:'?**=color**?'],
                             rank:'?**=this.rank**?',
                             creator:[id:'?**=user_id**?'],
@@ -69,7 +70,7 @@
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="backlogElement">
-                    ${story.id}
+                    ${story.uid}
                 </is:scrumLink>
             </is:tableColumn>
             <is:tableColumn
@@ -128,7 +129,7 @@
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="backlogElement">
-                    ${story.id}
+                    ${story.uid}
                 </is:scrumLink>
             </is:tableColumn>
             <is:tableColumn
@@ -161,7 +162,7 @@
     **?
     <li class="postit-row postit-row-story" elemid="${story.id}">
         <is:postitIcon name="${story.name}" color="${story.feature.color}"/>
-        ?**=this.id **? - ?**=truncatedName**? <em>(?**=this.effort **? pts)</em>
+        ?**=this.uid **? - ?**=truncatedName**? <em>(?**=this.effort **? pts)</em>
     </li>
     ]]>
 </template>

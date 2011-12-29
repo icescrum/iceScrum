@@ -21,7 +21,7 @@
 --}%
 <is:postit
         id="${feature.id}"
-        miniId="${feature.id}"
+        miniId="${feature.uid}"
         title="${feature.name}"
         color="${feature.color}"
         type="feature"

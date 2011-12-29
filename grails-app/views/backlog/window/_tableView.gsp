@@ -61,7 +61,7 @@
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="backlogElement">
-                    ${story.id}
+                    ${story.uid}
                 </is:scrumLink>
             </is:tableColumn>
             <is:tableColumn

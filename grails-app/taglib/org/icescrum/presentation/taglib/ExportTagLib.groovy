@@ -34,6 +34,7 @@ class ExportTagLib {
     attrs.indentLevel = attrs.indentLevel?attrs.indentLevel.toInteger():0
 
     def id = pageScope.object.id?:null
+    def uid = pageScope.object.hasProperty('uid')?pageScope.object.uid:null
 
     body()
     if (attrs.root){
@@ -41,7 +42,12 @@ class ExportTagLib {
     }else{
       (attrs.indentLevel).times{out << "\t"}      
     }
-    out << "<${attrs.node} ${id?'id=\''+id+'\'':''}>\n"
+
+    if (uid != null){
+        out << "<${attrs.node} ${uid != null ?'uid=\''+uid+'\'':''}>\n"
+    }else{
+        out << "<${attrs.node} ${id?'id=\''+id+'\'':''}>\n"
+    }
 
     pageScope.propertiesObject.each{
       if (it.value != null){
@@ -69,7 +75,7 @@ class ExportTagLib {
         (attrs.indentLevel+1).times{out << "\t"}
         out << "</${it.name}>\n"
       }else {
-        out << "<${it.name} ${it.id?'id=\''+it.id+'\'':''}/>\n"
+        out << "<${it.name} ${it.uid != null ?'uid=\''+it.uid+'\'': it.id?'id=\''+it.id+'\'':'' }/>\n"
       }
 
     }
@@ -90,6 +96,9 @@ class ExportTagLib {
        def object = [:]
        object.name = attrs.object
        object.id = pageScope.object."${attrs.object}"?.id?:null
+       if (pageScope.object."${attrs.object}"?.hasProperty('uid')){
+           object.uid = pageScope.object."${attrs.object}"?.uid?:null
+       }
        object.propertiesObject = []
        if (attrs.name){
         attrs.name.each {
@@ -145,7 +154,7 @@ class ExportTagLib {
           pageScope.listsObjects << render(template:attrs.template, model:[object:it,deep:attrs.deep,indentLevel:attrs.indentLevel+1])
         }else{
           (attrs.indentLevel+1).times{pageScope.listsObjects << "\t"}
-          pageScope.listsObjects << "<${attrs.child} id='${it.id}'/>\n"
+          pageScope.listsObjects << "<${attrs.child} ${it.hasProperty('uid') ? 'uid=\''+it.uid+'\'' : 'id=\''+it.id+'\''}/>\n"
         }
       }
       attrs.indentLevel.times{pageScope.listsObjects << "\t"}

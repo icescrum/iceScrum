@@ -23,7 +23,7 @@
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
-                <strong><g:message code="is.backlogelement.id"/> :</strong> ${actor.id}
+                <strong><g:message code="is.backlogelement.id"/> :</strong> ${actor.uid}
             </p>
 
             <p>
@@ -74,7 +74,7 @@
 
         <div class="col2">
             <is:postit id="${actor.id}"
-                       miniId="${actor.id}"
+                       miniId="${actor.uid}"
                        title="${actor.name}"
                        type="actor"
                        rect="true"

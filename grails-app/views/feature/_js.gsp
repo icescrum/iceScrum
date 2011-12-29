@@ -22,6 +22,7 @@
 <g:set var="feature" value="[type:'?**=this.type**?',
                              color:'?**=this.color**?',
                              id:'?**=this.id**?',
+                             uid:'?**=this.uid**?',
                              name:'?**=name**?',
                              rank:'?**=this.rank**?',
                              value:'?**=this.value**?',
@@ -37,7 +38,7 @@
     description = description.formatLine();
     **?
     <is:postit id="${feature.id}"
-               miniId="${feature.id}"
+               miniId="${feature.uid}"
                title="?**=truncatedName**?"
                type="feature"
                notruncate="true"

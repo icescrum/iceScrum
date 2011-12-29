@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:postit id="${actor.id}"
-           miniId="${actor.id}"
+           miniId="${actor.uid}"
            title="${actor.name}"
            type="actor"
            attachment="${actor.totalAttachments}"

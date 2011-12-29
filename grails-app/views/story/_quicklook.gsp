@@ -20,13 +20,13 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Story;" %>
-<div class="postit-details postit-details-story quicklook" elemid="${story.id}">
+<div class="postit-details postit-details-story quicklook" elemid="${story.uid}">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
                 <strong><g:message code="is.backlogelement.id"/></strong> <is:scrumLink
                     onclick="jQuery('#dialog').dialog('close');" controller="backlogElement"
-                    id="${story.id}">${story.id}</is:scrumLink>
+                    id="${story.id}">${story.uid}</is:scrumLink>
             </p>
 
             <p>
@@ -110,7 +110,7 @@
         <div class="col2">
             <is:postit title="${story.name}"
                        id="${story.id}"
-                       miniId="${story.id}"
+                       miniId="${story.uid}"
                        rect="true"
                        styleClass="story task${story.state == org.icescrum.core.domain.Story.STATE_DONE ? ' ui-selectable-disabled':''}"
                        type="story"

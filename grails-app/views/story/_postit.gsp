@@ -22,7 +22,7 @@
 <%@ page import="org.icescrum.core.domain.Story" %>
 <g:set var="tMOrSm" value="${request.teamMember || request.scrumMaster}"/>
 <is:postit id="${story.id}"
-           miniId="${story.id}"
+           miniId="${story.uid}"
            title="${story.name}"
            titleSize="${story.state == Story.STATE_SUGGESTED ? 24 : 17}"
            styleClass="story type-story-${story.type}"

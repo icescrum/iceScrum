@@ -25,6 +25,7 @@
                             orderNumber:'?**=sprintOrderNumber**?']"/>
 
 <g:set var="story" value="[id:'?**=this.id**?',
+                          uid:'?**=this.uid**?',
                           type:'?**=this.type**?',
                           feature:[color:'?**=color**?'],
                           creator:[id:'?**=user_id**?'],
@@ -51,7 +52,7 @@
     description = description.formatLine();
 **?
 <is:postit id="${story.id}"
-           miniId="${story.id}"
+           miniId="${story.uid}"
            title="?**=truncatedName**?"
            type="story"
            rect="${rect}"

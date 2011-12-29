@@ -21,6 +21,7 @@
 --}%
 <%@ page import="org.icescrum.core.domain.Task; org.icescrum.core.domain.Sprint" %>
 <g:set var="task" value="[id:'?**=this.id**?',
+                           uid:'?**=this.uid**?',
                            name:'?**=name**?',
                            creator:[id:'?**=user_id**?'],
                            responsible:[id:'?**=user_id**?'],
@@ -47,7 +48,7 @@
     <is:postit title="?**=truncatedName**?"
                id="${task.id}"
                notruncate="true"
-               miniId="${task.id}"
+               miniId="${task.uid}"
                styleClass="?**=styleClass**?"
                type="task"
                typeNumber="?**=typeNumber**?"

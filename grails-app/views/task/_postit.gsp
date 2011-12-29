@@ -26,7 +26,7 @@
 %{-- Task postit --}%
 <is:postit title="${task.name}"
            id="${task.id}"
-           miniId="${task.id}"
+           miniId="${task.uid}"
            styleClass="task ${responsible ? 'hasResponsible' : ''}"
            type="task"
            sortable='[rendered:((request.scrumMaster || responsible) || (!responsible && assignOnBeginTask && task.state == Task.STATE_WAIT)),disabled:(task.state == Task.STATE_DONE || task.backlog.state == Sprint.STATE_DONE)]'

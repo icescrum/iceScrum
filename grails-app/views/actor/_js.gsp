@@ -20,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <g:set var="actor" value="[id:'?**=this.id**?',
+                           uid:'?**=this.uid**?',
                            name:'?**=name**?',
                            description:'?**=description**?',
                            totalAttachments:'?**=this.totalAttachments**?']"/>
@@ -34,7 +35,7 @@
     description = description.formatLine();
     **?
     <is:postit id="${actor.id}"
-               miniId="${actor.id}"
+               miniId="${actor.uid}"
                title="?**=truncatedName**?"
                type="actor"
                notruncate="true"

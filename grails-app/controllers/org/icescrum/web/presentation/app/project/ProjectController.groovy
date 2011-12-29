@@ -458,7 +458,7 @@ class ProjectController {
             return
         }
         else if (params.file) {
-            def uploadedProject = null
+            File uploadedProject = null
             "${params.file}".split(":")?.with {
                 if (session.uploadedFiles[it[0]])
                     uploadedProject = new File((String) session.uploadedFiles[it[0]])
@@ -466,6 +466,7 @@ class ProjectController {
             if (uploadedProject) {
                 session.progress = new ProgressSupport()
                 session.tmpP = productService.parseXML(uploadedProject, session.progress)
+                session.tmpXmlPath = uploadedProject.absolutePath
             }
         }
         else if (params.status) {
@@ -519,8 +520,8 @@ class ProjectController {
 
         if (params.team?.name) {
             session.tmpP.teams.each {
-                if (params.team.name."${it.idFromImport}") {
-                    it.name = params.team.name."${it.idFromImport}"
+                if (params.team.name."${it.uid}") {
+                    it.name = params.team.name."${it.uid}"
                 }
             }
         }
@@ -528,13 +529,13 @@ class ProjectController {
         if (params.user?.username) {
             session.tmpP.teams.each {
                 it.members.each {it2 ->
-                    if (params.user.username."${it2.idFromImport}") {
-                        it2.username = params.user.username."${it2.idFromImport}"
+                    if (params.user.username."${it2.uid}") {
+                        it2.username = params.user.username."${it2.uid}"
                     }
                 }
                 it.scrumMasters.each {it2 ->
-                    if (params.user.username."${it2.idFromImport}") {
-                        it2.username = params.user.username."${it2.idFromImport}"
+                    if (params.user.username."${it2.uid}") {
+                        it2.username = params.user.username."${it2.uid}"
                     }
                 }
             }
@@ -542,8 +543,8 @@ class ProjectController {
 
         if (params.productOwner?.username) {
             session.tmpP.productOwners.each {
-                if (params.productOwner.username."${it.idFromImport}") {
-                    it.username = params.productOwner.username."${it.idFromImport}"
+                if (params.productOwner.username."${it.uid}") {
+                    it.username = params.productOwner.username."${it.uid}"
                 }
             }
         }
@@ -565,7 +566,7 @@ class ProjectController {
 
         Product.withTransaction { status ->
             try {
-                productService.saveImport(session.tmpP, params.productd?.name)
+                productService.saveImport(session.tmpP, params.productd?.name, session.tmpXmlPath)
             } catch (IllegalStateException ise) {
                 status.setRollbackOnly()
                 render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
@@ -580,6 +581,7 @@ class ProjectController {
             def link = g.createLink(action: 'index', controller: 'scrumOS', params: [product: session.tmpP.pkey])
             render(status:200, contentType:'application/json', text:session.tmpP as JSON)
             session.tmpP = null
+            session.tmpXmlPath = null
         }
     }
 
@@ -590,9 +592,9 @@ class ProjectController {
         def beansErrors = null
 
         if (p.hasErrors()) {
+            log.info("Product validation error (${p.name}): " + p.errors)
             if (full && !erasableByUser) {
                 beansErrors = renderErrors(bean: p)
-                log.info("Product validation error (${p.name}): " + p.errors)
             }
 
             def pass = true

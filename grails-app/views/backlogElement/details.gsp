@@ -30,6 +30,8 @@
                 <is:panelTitle>${message(code: 'is.ui.backlogelement.information')}</is:panelTitle>
                 <is:panelContext>
                     <is:panelLine
+                            legend="${message(code:'is.backlogelement.id')}">${story.uid}</is:panelLine>
+                    <is:panelLine
                             legend="${message(code:'is.backlogelement.name')}">${story.name.encodeAsHTML()}</is:panelLine>
                     <is:panelLine legend="${message(code:'is.story.type')}">${message(code: typeCode)}</is:panelLine>
                     <is:panelLine legend="${message(code:'is.feature')}" rendered="${story.feature != null}"
