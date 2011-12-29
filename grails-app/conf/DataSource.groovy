@@ -37,15 +37,15 @@ hibernate {
 environments {
     development {
         dataSource {
-            /*driverClassName="com.mysql.jdbc.Driver"
+            driverClassName="com.mysql.jdbc.Driver"
             dialect="org.hibernate.dialect.MySQL5InnoDBDialect"
             url="jdbc:mysql://localhost:3306/kagilum?useUnicode=true&characterEncoding=utf8"
             username="root"
             password="root"
-            dbCreate = "update"*/
-            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            url = "jdbc:hsqldb:file:devDba"
-            loggingSql = false
+            dbCreate = "update"
+            //dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            //url = "jdbc:hsqldb:file:devDba"
+            //loggingSql = false
         }
     }
     test {
