@@ -37,7 +37,7 @@
     <is:listAsXML
             name="releases"
             child="release"
-            deep="['release','sprint','task','cliche','story']"
+            deep="['release','sprint','task','cliche','story','comment','activity']"
             template="/release/xml"/>
     <% session.progress?.updateProgress(30, message(code: 'is.export.inprogress', args: [message(code: 'is.actor')])) %>
     <is:listAsXML
@@ -57,7 +57,7 @@
             name="stories"
             template="/story/xml"
             child="story"
-            deep="['story','task','comment']"/>
+            deep="['story','task','comment','activity']"/>
     <% session.progress?.updateProgress(80, message(code: 'is.export.inprogress', args: [message(code: 'is.cliche')])) %>
     <is:listAsXML
             name="cliches"

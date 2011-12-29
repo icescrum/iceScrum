@@ -101,7 +101,7 @@ class BacklogElementController {
      * Display the story's information, activities & comments
      */
     def details = {
-        if (!params.id) {
+        if (!params.id && !params.uid) {
             if (springSecurityService.isAjax(request)) {
                 def jqCode = jq.jquery(null, "\$.icescrum.renderNotice('${message(code: 'is.story.error.not.exist')}','error');");
                 render(status: 400, text: jqCode);
@@ -111,7 +111,7 @@ class BacklogElementController {
             return
         }
 
-        def story = Story.get(params.long('id'))
+        def story = params.id ? Story.getInProduct(params.long("product"), params.long('id')).list()[0] : Story.getInProductUid(params.long("product"), params.int('uid')).list()[0]
         if (!story) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             return
@@ -126,8 +126,7 @@ class BacklogElementController {
         } else if (product.preferences.hidden && !securityService.inProduct(story.backlog, springSecurityService.authentication) && !securityService.stakeHolder(story.backlog,springSecurityService.authentication,false)) {
             render(status: 403)
         } else {
-            def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.id)
-
+            def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.uid)
             def criteria = FollowLink.createCriteria()
             def isFollower = false
             if (user) {
@@ -252,7 +251,7 @@ class BacklogElementController {
     }
 
     def shortURL = {
-        redirect(url: is.createScrumLink(controller: 'backlogElement', id: params.id))
+        redirect(url: is.createScrumLink(controller: 'backlogElement', params:[uid: params.id]))
     }
 
 

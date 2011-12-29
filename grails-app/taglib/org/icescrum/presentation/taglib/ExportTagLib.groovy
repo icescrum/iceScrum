@@ -38,7 +38,7 @@ class ExportTagLib {
 
     body()
     if (attrs.root){
-      out << "<?xml version='1.0' encoding='UTF-8'?>\n"  
+      out << """<?xml version='1.0' encoding='UTF-8'?>\n<export version="${g.meta(name:"app.version")}">\n\t"""
     }else{
       (attrs.indentLevel).times{out << "\t"}      
     }
@@ -51,6 +51,8 @@ class ExportTagLib {
 
     pageScope.propertiesObject.each{
       if (it.value != null){
+         //be sure we have the date in the correct format
+        it.value = it.value instanceof Date ? g.formatDate(date:it.value, format:'yyyy-MM-dd HH:mm:ss') : it.value
         (attrs.indentLevel+1).times{out << "\t"}
         out << "<${it.node?:it.name}>"
         out << (it.cdata?'<![CDATA[':'')+it.value+(it.cdata?']]>':'')        
@@ -85,6 +87,9 @@ class ExportTagLib {
     }
     attrs.indentLevel.times{out << "\t"}
     out << "</${attrs.node}>\n"
+    if (attrs.root){
+      out << """</export>"""
+    }
   }
 
   def propertyAsXML = { attrs, body ->

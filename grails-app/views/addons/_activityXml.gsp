@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:objectAsXML object="${object}" node="comment" indentLevel="${indentLevel}" root="${root}">
-    <is:propertyAsXML name="['dateCreated','lastUpdated','posterId','posterClass']"/>
-    <is:propertyAsXML name="['body']" cdata="true"/>
+<is:objectAsXML object="${object}" node="activity" indentLevel="${indentLevel}" root="${root}">
+    <is:propertyAsXML name="['dateCreated','posterId','posterClass','code']"/>
+    <is:propertyAsXML name="['cachedLabel','cachedDescription']" cdata="true"/>
 </is:objectAsXML>

@@ -858,7 +858,7 @@ class ProjectController {
         } else if (params.get) {
             stories.each {
                 def story = [name: it.name,
-                        id: it.id,
+                        id: it.uid,
                         effort: it.effort,
                         state: message(code: BundleUtils.storyStates[it.state]),
                         description: is.storyTemplate([story: it, displayBR: true]),

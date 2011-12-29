@@ -34,8 +34,14 @@
             indentLevel="${indentLevel + 1}"/>
     <is:listAsXML
             name="comments"
-            template="/comment/xml"
+            template="/addons/commentXml"
             child="comment"
+            deep="${deep}"
+            indentLevel="${indentLevel + 1}"/>
+    <is:listAsXML
+            name="activities"
+            template="/addons/activityXml"
+            child="activity"
             deep="${deep}"
             indentLevel="${indentLevel + 1}"/>
 </is:objectAsXML>
