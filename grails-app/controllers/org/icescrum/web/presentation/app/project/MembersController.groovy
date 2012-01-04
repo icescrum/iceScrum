@@ -110,7 +110,7 @@ class MembersController {
         def product = Product.get(params.product)
         def user = springSecurityService.currentUser
         def team = Team.get(product.teams.asList()[0].id)
-        def currentMembers = productService.allMembersProduct(product)
+        def currentMembers = productService.getAllMembersProduct(product)
         try {
             def found = currentMembers.find{ it.id == user.id}
             def u = User.get(found.id)
