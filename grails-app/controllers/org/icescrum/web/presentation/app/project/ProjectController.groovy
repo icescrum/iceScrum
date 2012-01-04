@@ -240,7 +240,7 @@ class ProjectController {
                     }
                 }
 
-                if (!productOwners || (!scrumMasters && !members)){
+                if (!scrumMasters && !members && !productOwners){
                     render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.noMember')]] as JSON)
                     return
                 }
