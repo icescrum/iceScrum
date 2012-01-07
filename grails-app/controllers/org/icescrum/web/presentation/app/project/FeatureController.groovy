@@ -190,7 +190,8 @@ class FeatureController {
                 maxRank.times { rankSelect += "'${it + 1}':'${it + 1}'" + (it < maxRank - 1 ? ',' : '') }
                 def typeSelect = BundleUtils.featureTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
                 def suiteSelect = "'?':'?',"
-                def currentSuite = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
+
+                def currentSuite = PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)
 
                 currentSuite = currentSuite.eachWithIndex { t, i ->
                     suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
