@@ -29,7 +29,7 @@
                     cancel:'.postit .postit-sortable, a',
                     selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'feature.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
         sortable='[rendered:request.productOwner,
-                  containment:"#backlog-layout-window-feature",
+                  containment:"#window-content-feature",
                   handle:".postit-sortable",
                   placeholder:"postit-placeholder ui-corner-all"]'
         changeRank='[selector:".postit", controller:id,action:"rank",name:"feature.rank",params:[product:params.product]]'
