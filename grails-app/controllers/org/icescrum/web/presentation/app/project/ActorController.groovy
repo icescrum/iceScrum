@@ -201,7 +201,6 @@ class ActorController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    @Cacheable(cache = 'addActor', keyGenerator = 'localeKeyGenerator')
     def add = {
         render(template: 'window/manage', model: [
                 id: id,

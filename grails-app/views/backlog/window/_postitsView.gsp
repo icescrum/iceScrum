@@ -33,7 +33,7 @@
                     selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
         sortable='[rendered:request.productOwner,
                   handle:".postit-sortable",
-                  containment:"#backlog-layout-window-backlog",
+                  containment:"#window-content-backlog",
                   placeholder:"postit-placeholder ui-corner-all"]'
         droppable='[rendered:request.productOwner,
                   selector:".postit",

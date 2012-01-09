@@ -63,14 +63,14 @@
                            contentView="/task/menu"
                            params="[id:id, task:task, user:user, template:true]"/>
         </g:if>
+        ?**if (name.length > 17 || description.length > 0) {**?
+        <is:tooltipPostit
+                type="task"
+                id="${task.id}"
+                title="${task.name}"
+                text="${task.description}"
+                apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
+                container="jQuery('#window-content-${id}')"/>
+        ?**}**?
     </is:postit>
-    ?**if (name.length > 17 || description.length > 0) {**?
-    <is:tooltipPostit
-            type="task"
-            id="${task.id}"
-            title="${task.name}"
-            text="${task.description}"
-            apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-            container="jQuery('#window-content-${id}')"/>
-    ?**}**?
 </template>
