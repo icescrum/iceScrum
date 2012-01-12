@@ -1041,6 +1041,79 @@
                     }
                 },
 
+                comment:{
+
+                    i18n:{
+                        noComment:'No comment'
+                    },
+
+                    templates:{
+                        storyDetail:{
+                            selector:'li.comment',
+                            id:'comment-storydetail-tmpl',
+                            view:'ul.list-comments',
+                            remove:function(tmpl) {
+                                var commentList = $(tmpl.view);
+                                var comment = $(tmpl.selector + '[elemid=' + this.id + ']', commentList);
+                                comment.remove();
+                                if ($(tmpl.selector, commentList).length == 0) {
+                                    commentList.html('<li class="panel-box-empty">' + $.icescrum.comment.i18n.noComment + '</li>');
+                                }
+                            }
+                        },
+                        storyDetailSummary:{
+                            selector:'li.comment',
+                            id:'comment-storydetailsummary-tmpl',
+                            view:'ul.list-news',
+                            remove:function(tmpl) {
+                                var summary = $(tmpl.view);
+                                var comment = $(tmpl.selector + '[elemid=' + this.id + ']', summary);
+                                comment.remove();
+                            }
+                        }
+                    },
+
+                    add:function(template) {
+                        var tmpl = $.icescrum.comment.templates[template];
+                        var commentList = $(tmpl.view);
+                        if(commentList.find('li.panel-box-empty').length > 0) {
+                           commentList.html('');
+                        }
+                        $(this).each(function() {
+                            var comment = $.icescrum.addOrUpdate(this, $.icescrum.comment.templates[template], $.icescrum.comment._postRendering);
+                            comment.appendTo(commentList);
+                            $('.comment-lastUpdated', comment).hide();
+                        });
+                    },
+
+                    update:function(template) {
+                        $(this).each(function() {
+                            var comment = $.icescrum.addOrUpdate(this, $.icescrum.comment.templates[template], $.icescrum.comment._postRendering);
+                        });
+                    },
+
+                    remove:function(template) {
+                        var tmpl = $.icescrum.comment.templates[template];
+                        $(this).each(function() {
+                            $.icescrum.comment.templates[template].remove.apply(this, [tmpl]);
+                        });
+                    },
+
+                    _postRendering:function(tmpl, comment) {
+                        var isPoster = (this.poster.id == $.icescrum.user.id);
+                        if(!$.icescrum.user.poOrSm()) {
+                           comment.find('.delete-comment').hide();
+                        }
+                        if(!$.icescrum.user.poOrSm() && !isPoster) {
+                           comment.find('.edit-comment').hide();
+                        }
+                        $('.comment-body', comment).load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.body,withoutHeader:true});
+                        $('.comment-avatar', comment).load(jQuery.icescrum.o.baseUrlProduct + 'user/displayAvatar', {id:this.poster.id, email:this.poster.email});
+                    }
+
+                },
+
+
                 alertDeleteOrUpdateObject:function(message, url, deleted, container) {
                     $('#window-dialog').dialog('destroy');
                     $(document.body).append("<div id='window-dialog'/>");

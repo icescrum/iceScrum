@@ -356,4 +356,9 @@ class UserController {
 
         render(results as JSON)
     }
+
+    def displayAvatar = {
+        def user = [id:params.id, email:params.email]
+        render is.avatar(user:user)
+    }
 }

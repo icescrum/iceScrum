@@ -73,9 +73,43 @@
                             href="${permalink}">${permalink}</a></is:panelLine>
                 </is:panelContext>
             </is:panel>
-            <div id="activities-wrapper">
-                <g:include  action="activitiesPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
-            </div>
+
+            <is:panel id="panel-activity">
+                <is:panelTitle>${message(code: 'is.ui.backlogelement.activity')}</is:panelTitle>
+                <is:panelTabButton id="panel-box-1">
+                    <a rel="#summary" href="../"
+                       class="${!params.tab || 'summary' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.summary')}</a>
+                    <a rel="#tasks" href="../"
+                       class="${params.tab && 'tasks' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.task')}</a>
+                    <a rel="#tests" href="../"
+                       class="${params.tab && 'tests' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.test')}</a>
+                    <a rel="#comments" href="../"
+                       class="${params.tab && 'comments' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.comments')}</a>
+                </is:panelTabButton>
+                <div id="panel-tab-contents-1" class="panel-tab-contents">
+                    <g:include  action="summaryPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
+                    <g:include  action="taskPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
+                    <g:include  action="testsPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
+                    <g:include  action="commentsPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
+                </div>
+                <jq:jquery>
+                    $("#panel-box-1 a").live('hover',function(){
+                        $(this).each(function() {
+                          var item = $(this);
+                          var rel = $(item.attr('rel'));
+                          item.click(function(){
+                            $("#panel-tab-contents-1 .tab-selected").hide();
+                            $("#panel-tab-contents-1 .tab-selected").removeClass("tab-selected");
+                            $("#panel-box-1 .selected").removeClass("selected");
+                            item.addClass("selected");
+                            rel.addClass("tab-selected");
+                            rel.show();
+                            return false;
+                          });
+                        });
+                    });
+                </jq:jquery>
+            </is:panel>
 
         </div>
 
@@ -173,3 +207,11 @@
             on="#details-${story.id}"
             events="[[object:'story',events:['remove']]]"
             callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','project',true);"/>
+<is:onStream
+            on="#details-${story.id}"
+            events="[[object:'comment',events:['add','update','remove']]]"
+            template="storyDetail"/>
+<is:onStream
+            on="#details-${story.id}"
+            events="[[object:'comment',events:['add','update','remove']]]"
+            template="storyDetailSummary"/>

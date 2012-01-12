@@ -84,8 +84,13 @@
                 archived:"${g.message(code: 'is.product.archived')}",
                 unArchived:"${g.message(code: 'is.product.unArchived')}"
             }
-        }
+        },
         </g:if>
+        comment:{
+            i18n:{
+                noComment:"${message(code:'is.ui.backlogelement.activity.comments.no')}"
+            }
+        },
     });
 </jq:jquery>
 
@@ -95,5 +100,6 @@
     <g:include view="/story/_js.gsp" params="[product:params.product]"/>
     <g:include view="/task/_js.gsp" model="[id:'sprintPlan']" params="[product:params.product]"/>
     <g:include view="/sprint/_js.gsp" model="[id:'releasePlan']" params="[product:params.product]"/>
+    <g:include view="/comment/_js.gsp" params="[product:params.product]"/>
     <g:include view="/user/_js.gsp"/>
 </div>
