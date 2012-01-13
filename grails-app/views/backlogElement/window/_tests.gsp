@@ -19,7 +19,33 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
+<g:set var="acceptanceTests" value="${story.acceptanceTests}"/>
+<g:set var="access" value="${request.productOwner}"/>
 <is:panelTab id="tests" selected="${params.tab && 'tests' in params.tab ? 'true' : ''}">
-       Comming soon...
+    <div class="addorlogin">
+        <sec:ifNotLoggedIn>
+            <g:link
+                    controller="login"
+                    onClick="this.href=this.href+'?ref='+decodeURI('${params.product?'p/'+story.backlog.pkey:params.team?'t/'+params.team:''}')+decodeURI(document.location.hash.replace('#','@'));">
+                ${message(code: 'is.ui.backlogelement.comment.login')}
+            </g:link>
+        </sec:ifNotLoggedIn>
+        <sec:ifLoggedIn>
+            <is:link disabled="true"
+                     onClick="jQuery('#acceptance-test-form-container').show();jQuery.icescrum.openTab('tests', true);">${message(code: 'is.ui.acceptanceTest.add')}</is:link>
+        </sec:ifLoggedIn>
+    </div>
+    <ul class="list-acceptance-tests">
+        <g:if test="${!acceptanceTests || acceptanceTests.size() == 0}">
+            <li class="panel-box-empty">${message(code: 'is.ui.acceptanceTest.empty')}</li>
+        </g:if>
+        <g:render template="/acceptanceTest/acceptanceTest"
+                    collection="${acceptanceTests}"
+                    var="acceptanceTest"
+                    model="[access:access, user:user]"/>
+    </ul>
+    <div id="addComment" class="addComment">
+        <g:render template="/acceptanceTest/acceptanceTestForm"
+                  model="[parentStory:story, hidden:true]"/>
+    </div>
  </is:panelTab>

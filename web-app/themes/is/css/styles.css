@@ -1243,13 +1243,13 @@ li#li-roles {
     padding-left: 30px;
 }
 
-.list-news li, .list-comments li {
+.list-news li, .list-comments li, .list-acceptance-tests li {
     padding: 5px 0 7px 0;
     list-style: none;
     list-style-type: none;
 }
 
-.list-news li p, .list-comments li p {
+.list-news li p, .list-comments li p, .list-acceptance-tests li p {
     padding: 0;
     margin: 0;
     line-height: 15px;
@@ -1852,7 +1852,7 @@ li#li-roles {
     padding: 5px;
 }
 
-#comments .addorlogin {
+#comments .addorlogin, #tests .addorlogin {
     padding-left: 20px;
     padding-top: 5px;
 }

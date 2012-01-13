@@ -42,6 +42,7 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.AcceptanceTest
 
 class BacklogElementController {
 
@@ -55,6 +56,7 @@ class BacklogElementController {
     def commentService
     def springSecurityService
     def securityService
+    def acceptanceTestService
 
     /**
      * Render the toolbar of the window
@@ -373,7 +375,8 @@ class BacklogElementController {
         }
         render(template: "window/tests",
                 model: [story: story,
-                        product: params.product
+                        product: params.product,
+                        user: springSecurityService.currentUser
                 ])
     }
 
@@ -451,5 +454,112 @@ class BacklogElementController {
         }
         def followers = story.getTotalFollowers()
         render(status: 200, contentType: 'application/json', text: [followers: followers + " " + message(code: 'is.followable.followers', args: [followers > 1 ? 's' : ''])] as JSON)
+    }
+
+    @Secured('inProduct()')
+    def showAcceptanceTest = {
+        if (request?.format == 'html'){
+            render(status:404)
+            return
+        }
+        if (!params.id) {
+            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
+            return
+        }
+        AcceptanceTest acceptanceTest = AcceptanceTest.get(params.long('acceptanceTest.id'))
+        if (!acceptanceTest) {
+            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
+            return
+        }
+        withFormat {
+            json { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON) }
+            xml { render(status: 200, contentType: 'text/xml', text: acceptanceTest as XML) }
+        }
+    }
+
+    @Secured('inProduct() and !archivedProduct()')
+    def saveAcceptanceTest = {
+        def acceptanceTest = new AcceptanceTest(params.acceptanceTest as Map)
+        def parentStory = Story.getInProduct(params.long('product'),params.long('parentStoryId')).list()[0]
+        def user = springSecurityService.currentUser
+        try {
+            acceptanceTestService.save(acceptanceTest, parentStory, user)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
+                json { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: acceptanceTest as XML) }
+            }
+        }
+        catch (RuntimeException e) {
+            returnError(object: acceptanceTest, exception: e)
+        }
+    }
+
+    @Secured('inProduct() and !archivedProduct()')
+    def updateAcceptanceTest = {
+        if (!params.acceptanceTest.id) {
+            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
+            return
+        }
+        AcceptanceTest acceptanceTest = AcceptanceTest.get(params.long('acceptanceTest.id'))
+        if (!acceptanceTest) {
+            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
+            return
+        }
+        def productOwner = securityService.productOwner(acceptanceTest.parentStory.backlog.id, springSecurityService.authentication)
+        if (!(acceptanceTest.creator.id == springSecurityService.currentUser.id) && !productOwner) {
+            render(status: 403, contentType: 'application/json')
+            return
+        }
+        try {
+            acceptanceTest.properties = params.acceptanceTest
+            acceptanceTestService.update(acceptanceTest)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
+                json { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: acceptanceTest as XML) }
+            }
+        } catch (RuntimeException e) {
+            returnError(object: acceptanceTest, exception: e)
+        }
+    }
+
+    @Secured('inProduct() and !archivedProduct()')
+    def deleteAcceptanceTest = {
+        if (params.id == null) {
+            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
+            return
+        }
+        AcceptanceTest acceptanceTest = AcceptanceTest.get(params.long('id'))
+        if (!acceptanceTest) {
+            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
+            return
+        }
+        def productOwner = securityService.productOwner(acceptanceTest.parentStory.backlog.id, springSecurityService.authentication)
+        if (!(acceptanceTest.creator.id == springSecurityService.currentUser.id) && !productOwner) {
+            render(status: 403, contentType: 'application/json')
+            return
+        }
+        def ida = [id:acceptanceTest.id]
+        try {
+            acceptanceTestService.delete(acceptanceTest)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: ida as JSON }
+                json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
+            }
+        } catch (RuntimeException e) {
+            returnError(object: acceptanceTest, exception: e)
+        }
+    }
+
+    @Secured('inProduct() and !archivedProduct()')
+    def acceptanceTestEditor = {
+        if (params.id == null) {
+            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
+            return
+        }
+        def acceptanceTest = AcceptanceTest.get(params.long('id'))
+        render(template: '/acceptanceTest/acceptanceTestForm', model: [acceptanceTest: acceptanceTest, parentStory: acceptanceTest.parentStory])
     }
 }

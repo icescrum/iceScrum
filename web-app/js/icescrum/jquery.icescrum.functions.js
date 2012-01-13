@@ -1080,7 +1080,7 @@
                            commentList.html('');
                         }
                         $(this).each(function() {
-                            var comment = $.icescrum.addOrUpdate(this, $.icescrum.comment.templates[template], $.icescrum.comment._postRendering);
+                            var comment = $.icescrum.addOrUpdate(this, tmpl, $.icescrum.comment._postRendering);
                             comment.appendTo(commentList);
                             $('.comment-lastUpdated', comment).hide();
                         });
@@ -1088,14 +1088,14 @@
 
                     update:function(template) {
                         $(this).each(function() {
-                            var comment = $.icescrum.addOrUpdate(this, $.icescrum.comment.templates[template], $.icescrum.comment._postRendering);
+                            $.icescrum.addOrUpdate(this, $.icescrum.comment.templates[template], $.icescrum.comment._postRendering);
                         });
                     },
 
                     remove:function(template) {
                         var tmpl = $.icescrum.comment.templates[template];
                         $(this).each(function() {
-                            $.icescrum.comment.templates[template].remove.apply(this, [tmpl]);
+                            tmpl.remove.apply(this, [tmpl]);
                         });
                     },
 
@@ -1113,6 +1113,61 @@
 
                 },
 
+                acceptanceTest:{
+
+                    i18n:{
+                        noAcceptanceTest:'no acceptance test'
+                    },
+
+                    templates:{
+                        storyDetail:{
+                            selector:'li.acceptance-test',
+                            id:'acceptancetest-storydetail-tmpl',
+                            view:'ul.list-acceptance-tests',
+                            remove:function(tmpl) {
+                                var acceptanceTests = $(tmpl.view);
+                                var acceptanceTest = $(tmpl.selector + '[elemid=' + this.id + ']', acceptanceTests);
+                                acceptanceTest.remove();
+                                if ($(tmpl.selector, acceptanceTests).length == 0) {
+                                    acceptanceTests.html('<li class="panel-box-empty">' + $.icescrum.acceptanceTest.i18n.noAcceptanceTest + '</li>');
+                                }
+                            }
+                        }
+                    },
+
+                    add:function(template) {
+                        var tmpl = $.icescrum.acceptanceTest.templates[template];
+                        var acceptanceTests = $(tmpl.view);
+                        if(acceptanceTests.find('li.panel-box-empty').length > 0) {
+                           acceptanceTests.html('');
+                        }
+                        $(this).each(function() {
+                            var acceptanceTest = $.icescrum.addOrUpdate(this, tmpl, $.icescrum.acceptanceTest._postRendering);
+                            acceptanceTest.appendTo(acceptanceTests);
+                        });
+                    },
+
+                    update:function(template) {
+                        $(this).each(function() {
+                            $.icescrum.addOrUpdate(this, $.icescrum.acceptanceTest.templates[template], $.icescrum.acceptanceTest._postRendering);
+                        });
+                    },
+
+                    _postRendering:function(tmpl, acceptanceTest) {
+                        var isCreator = (this.creator.id == $.icescrum.user.id);
+                        if(!$.icescrum.user.scrumMaster && !isCreator) {
+                           acceptanceTest.find('.acceptance-test-menu').hide();
+                        }
+                        $('.acceptance-test-description', acceptanceTest).load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
+                    },
+
+                    remove:function(template) {
+                        var tmpl = $.icescrum.acceptanceTest.templates[template];
+                        $(this).each(function() {
+                            tmpl.remove.apply(this, [tmpl]);
+                        });
+                    }
+                },
 
                 alertDeleteOrUpdateObject:function(message, url, deleted, container) {
                     $('#window-dialog').dialog('destroy');

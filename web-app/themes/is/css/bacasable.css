@@ -446,3 +446,7 @@ td.jqplot-table-legend {
     min-width: 150px;
     text-align: center;
 }
+
+.acceptance-test-uid {
+    float:right;
+}

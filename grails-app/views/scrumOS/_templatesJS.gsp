@@ -91,6 +91,11 @@
                 noComment:"${message(code:'is.ui.backlogelement.activity.comments.no')}"
             }
         },
+        acceptanceTest:{
+            i18n:{
+                noAcceptanceTest:"${message(code:'is.ui.acceptanceTest.empty')}"
+            }
+        }
     });
 </jq:jquery>
 
@@ -101,5 +106,6 @@
     <g:include view="/task/_js.gsp" model="[id:'sprintPlan']" params="[product:params.product]"/>
     <g:include view="/sprint/_js.gsp" model="[id:'releasePlan']" params="[product:params.product]"/>
     <g:include view="/comment/_js.gsp" params="[product:params.product]"/>
+    <g:include view="/acceptanceTest/_js.gsp" params="[product:params.product]"/>
     <g:include view="/user/_js.gsp"/>
 </div>

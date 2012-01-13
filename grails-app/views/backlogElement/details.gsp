@@ -215,3 +215,7 @@
             on="#details-${story.id}"
             events="[[object:'comment',events:['add','update','remove']]]"
             template="storyDetailSummary"/>
+<is:onStream
+            on="#details-${story.id}"
+            events="[[object:'acceptanceTest',events:['add','update','remove']]]"
+            template="storyDetail"/>

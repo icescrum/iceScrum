@@ -20,7 +20,6 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.grails.comments.Comment" %>
-<g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
 
 <g:set var="comment" value="[id:'?**=this.id**?',
                              poster:[username:'?**=this.poster.username**?',firstName:'?**=this.poster.firstName**?',lastName:'?**=this.poster.lastName**?',id:'?**=this.poster.id**?'],
