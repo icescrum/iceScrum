@@ -362,6 +362,12 @@
     padding-left: 0;
 }
 
+.table .table-line.table-group td:first-child {
+    background-image: none;
+    padding-left: 20px;
+}
+
+
 .table .table-line td {
     padding-left: 2px;
     padding-bottom: 2px;

@@ -35,15 +35,12 @@
                         });
                     });
 
-                    $('tr.table-group').live('click', function() {
+                    $('tr.table-group').click(function(){
                         var self = $(this);
-                        if (self.data("init")) {
-                            return;
-                        }
-                        $(this).data("init", true);
                         var trs = $('.table-group-' + self.attr('elemid'));
                         var td = self.find('td');
                         trs.slideToggle('fast', function() {
+                            debugger;
                             if (trs.is(':visible')) {
                                 td.removeClass('expand');
                                 td.addClass('collapse');
