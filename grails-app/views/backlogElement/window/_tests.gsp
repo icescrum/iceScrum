@@ -27,7 +27,7 @@
             <g:link
                     controller="login"
                     onClick="this.href=this.href+'?ref='+decodeURI('${params.product?'p/'+story.backlog.pkey:params.team?'t/'+params.team:''}')+decodeURI(document.location.hash.replace('#','@'));">
-                ${message(code: 'is.ui.backlogelement.comment.login')}
+                ${message(code: 'is.ui.acceptanceTest.login')}
             </g:link>
         </sec:ifNotLoggedIn>
         <sec:ifLoggedIn>

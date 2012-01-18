@@ -367,7 +367,8 @@ event-content-list .ui-selected, .kanban .ui-selected {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.list-news .news-acceptAs, .list-news .news-update, .list-news .news-taskAssociateUrgent, .list-news .news-taskAssociateRecurrent, .list-news .news-taskUpdate, .list-news .news-taskWait, .list-news .news-taskInprogress {
+.list-news .news-acceptAs, .list-news .news-update, .list-news .news-taskAssociateUrgent, .list-news .news-taskAssociateRecurrent,
+.list-news .news-taskUpdate, .list-news .news-taskWait, .list-news .news-taskInprogress, .list-news .news-acceptanceTest {
     background-image: url(../images/news/edit.png);
 }
 

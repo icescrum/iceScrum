@@ -91,7 +91,7 @@
                 noComment:"${message(code:'is.ui.backlogelement.activity.comments.no')}"
             }
         },
-        acceptanceTest:{
+        acceptancetest:{
             i18n:{
                 noAcceptanceTest:"${message(code:'is.ui.acceptanceTest.empty')}"
             }

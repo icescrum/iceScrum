@@ -45,7 +45,7 @@
                                 controller="backlogElement"
                                 action="deleteAcceptanceTest"
                                 id="${acceptanceTest.id}"
-                                onSuccess="jQuery.event.trigger('remove_acceptanceTest',data);">
+                                onSuccess="jQuery.event.trigger('remove_acceptancetest',data);">
                             ${message(code:'is.ui.acceptanceTest.delete')}
                         </is:link>
                     )

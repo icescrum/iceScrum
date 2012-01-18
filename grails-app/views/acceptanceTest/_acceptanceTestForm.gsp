@@ -43,7 +43,7 @@
                 url="[controller:'backlogElement', action:'updateAcceptanceTest', params:[product:params.product]]"
                 onSuccess="jQuery('#acceptance-test-editor-wrapper${acceptanceTest.id}').hide();
                            jQuery('#acceptance-test${acceptanceTest.id} .acceptance-test-content').show();
-                           jQuery.event.trigger('update_acceptanceTest',data);"
+                           jQuery.event.trigger('update_acceptancetest',data);"
                 value="${message(code:'is.ui.acceptanceTest.edit')}"
                 history="false"/>
         </g:if>
@@ -54,7 +54,7 @@
             onSuccess="jQuery('#acceptance-test-form-container').hide();
                        jQuery('#acceptance-test-description-field').val('');
                        jQuery('#acceptance-test-name-field').val('');
-                       jQuery.event.trigger('add_acceptanceTest',data);"
+                       jQuery.event.trigger('add_acceptancetest',data);"
             value="${message(code:'is.button.add')}"
             history="false"/>
         </g:else>

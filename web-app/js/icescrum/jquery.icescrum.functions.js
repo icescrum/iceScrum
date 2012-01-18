@@ -1113,7 +1113,7 @@
 
                 },
 
-                acceptanceTest:{
+                acceptancetest:{
 
                     i18n:{
                         noAcceptanceTest:'no acceptance test'
@@ -1129,40 +1129,40 @@
                                 var acceptanceTest = $(tmpl.selector + '[elemid=' + this.id + ']', acceptanceTests);
                                 acceptanceTest.remove();
                                 if ($(tmpl.selector, acceptanceTests).length == 0) {
-                                    acceptanceTests.html('<li class="panel-box-empty">' + $.icescrum.acceptanceTest.i18n.noAcceptanceTest + '</li>');
+                                    acceptanceTests.html('<li class="panel-box-empty">' + $.icescrum.acceptancetest.i18n.noAcceptanceTest + '</li>');
                                 }
                             }
                         }
                     },
 
                     add:function(template) {
-                        var tmpl = $.icescrum.acceptanceTest.templates[template];
+                        var tmpl = $.icescrum.acceptancetest.templates[template];
                         var acceptanceTests = $(tmpl.view);
                         if(acceptanceTests.find('li.panel-box-empty').length > 0) {
                            acceptanceTests.html('');
                         }
                         $(this).each(function() {
-                            var acceptanceTest = $.icescrum.addOrUpdate(this, tmpl, $.icescrum.acceptanceTest._postRendering);
+                            var acceptanceTest = $.icescrum.addOrUpdate(this, tmpl, $.icescrum.acceptancetest._postRendering);
                             acceptanceTest.appendTo(acceptanceTests);
                         });
                     },
 
                     update:function(template) {
                         $(this).each(function() {
-                            $.icescrum.addOrUpdate(this, $.icescrum.acceptanceTest.templates[template], $.icescrum.acceptanceTest._postRendering);
+                            $.icescrum.addOrUpdate(this, $.icescrum.acceptancetest.templates[template], $.icescrum.acceptancetest._postRendering);
                         });
                     },
 
                     _postRendering:function(tmpl, acceptanceTest) {
                         var isCreator = (this.creator.id == $.icescrum.user.id);
                         if(!$.icescrum.user.scrumMaster && !isCreator) {
-                           acceptanceTest.find('.acceptance-test-menu').hide();
+                           acceptanceTest.find('.acceptance-test-menu').remove();
                         }
                         $('.acceptance-test-description', acceptanceTest).load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
                     },
 
                     remove:function(template) {
-                        var tmpl = $.icescrum.acceptanceTest.templates[template];
+                        var tmpl = $.icescrum.acceptancetest.templates[template];
                         $(this).each(function() {
                             tmpl.remove.apply(this, [tmpl]);
                         });
