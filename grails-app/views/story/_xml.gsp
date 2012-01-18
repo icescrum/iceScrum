@@ -44,4 +44,10 @@
             child="activity"
             deep="${deep}"
             indentLevel="${indentLevel + 1}"/>
+    <is:listAsXML
+            name="acceptanceTests"
+            template="/acceptanceTest/xml"
+            child="acceptanceTest"
+            deep="${deep}"
+            indentLevel="${indentLevel + 1}"/>
 </is:objectAsXML>

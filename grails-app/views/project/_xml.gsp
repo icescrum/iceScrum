@@ -57,7 +57,7 @@
             name="stories"
             template="/story/xml"
             child="story"
-            deep="['story','task','comment','activity']"/>
+            deep="['story','task','comment','activity', 'acceptanceTest']"/>
     <% session.progress?.updateProgress(80, message(code: 'is.export.inprogress', args: [message(code: 'is.cliche')])) %>
     <is:listAsXML
             name="cliches"

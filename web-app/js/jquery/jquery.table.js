@@ -40,7 +40,6 @@
                         var trs = $('.table-group-' + self.attr('elemid'));
                         var td = self.find('td');
                         trs.slideToggle('fast', function() {
-                            debugger;
                             if (trs.is(':visible')) {
                                 td.removeClass('expand');
                                 td.addClass('collapse');
