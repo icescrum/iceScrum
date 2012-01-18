@@ -201,10 +201,6 @@
 </div>
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'story',events:['update']]]"
-            callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.updated')}','${createLink(controller:controllerName,action:'details',id:story.id,params:[product:params.product])}',false,'#window-content-${id}');"/>
-<is:onStream
-            on="#details-${story.id}"
             events="[[object:'story',events:['remove']]]"
             callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','project',true);"/>
 <is:onStream

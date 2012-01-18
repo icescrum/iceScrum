@@ -200,15 +200,17 @@ class BacklogElementController {
                     }
                 }
             }
-            broadcast(function: 'update', message: story)
             def comments = story.getComments()
             Comment comment = comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }.last()
-            def myComment = [id:comment.id,
+            def myComment = [class:"Comment",
+                             id:comment.id,
                              poster:[username:poster.username, firstName:poster.firstName, lastName:poster.lastName, id:poster.id, email:poster.email],
                              dateCreated:comment.dateCreated,
                              backlogElement:story.id,
                              lastUpdated:comment.lastUpdated,
                              body:comment.body]
+            broadcast(function: 'update', message: story)
+            broadcast(function: 'add', message: myComment)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text:myComment as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: comment as JSON) }
@@ -244,15 +246,17 @@ class BacklogElementController {
         try {
             comment.save()
             commentable.lastUpdated = new Date()
-            broadcast(function: 'update', message: commentable)
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
             def poster = comment.getPoster()
-            def myComment = [id:comment.id,
+            def myComment = [class:"Comment",
+                             id:comment.id,
                              poster:[username:poster.username, firstName:poster.firstName, lastName:poster.lastName, id:poster.id, email:poster.email],
                              dateCreated:comment.dateCreated,
                              backlogElement:commentable.id,
                              lastUpdated:comment.lastUpdated,
                              body:comment.body]
+            broadcast(function: 'update', message: commentable)
+            broadcast(function: 'update', message: myComment)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text:myComment as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: comment as JSON) }
@@ -284,6 +288,7 @@ class BacklogElementController {
             commentable.removeComment(comment)
             commentable.lastUpdated = new Date()
             broadcast(function: 'update', message: commentable)
+            broadcast(function: 'delete', message: [class: comment.class, id: comment.id])
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_DELETED))
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: idc as JSON }

@@ -1102,10 +1102,12 @@
                     _postRendering:function(tmpl, comment) {
                         var isPoster = (this.poster.id == $.icescrum.user.id);
                         if(!$.icescrum.user.poOrSm()) {
-                           comment.find('.delete-comment').hide();
-                        }
-                        if(!$.icescrum.user.poOrSm() && !isPoster) {
-                           comment.find('.edit-comment').hide();
+                            if(!isPoster) {
+                                comment.find('.menu-comment').remove();
+                            }
+                            else {
+                                comment.find('.delete-comment').remove();
+                            }
                         }
                         $('.comment-body', comment).load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.body,withoutHeader:true});
                         $('.comment-avatar', comment).load(jQuery.icescrum.o.baseUrlProduct + 'user/displayAvatar', {id:this.poster.id, email:this.poster.email});
