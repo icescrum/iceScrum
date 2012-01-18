@@ -53,7 +53,7 @@ class SprintController {
 
         // If the version is different, the sprint has been modified since the last loading
         if (params.long('sprint.version') != sprint.version) {
-            msg = message(code: 'is.stale.object', args: [message(code: 'is.sprint')])
+            def msg = message(code: 'is.stale.object', args: [message(code: 'is.sprint')])
             returnError(text:msg)
             return
         }
