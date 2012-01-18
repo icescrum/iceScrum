@@ -47,6 +47,16 @@
     </is:scrumLink>
 </is:postitMenuItem>
 
+<is:postitMenuItem>
+    <is:scrumLink
+            id="${story.id}"
+            controller="backlogElement"
+            params="[tab:'tests']"
+            update="window-content-${id}">
+        <g:message code='is.ui.backlogelement.activity.test'/>
+    </is:scrumLink>
+</is:postitMenuItem>
+
 <g:if test="${story.state == Story.STATE_SUGGESTED || template}">
     <is:postitMenuItem rendered="${productOwner}" elementId="menu-accept-${story.id}">
         <is:link id="${story.id}"
