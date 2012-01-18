@@ -513,7 +513,8 @@ class BacklogElementController {
         }
         try {
             acceptanceTest.properties = params.acceptanceTest
-            acceptanceTestService.update(acceptanceTest)
+            def user = springSecurityService.currentUser
+            acceptanceTestService.update(acceptanceTest, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON) }
