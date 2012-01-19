@@ -19,7 +19,7 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
+<%@ page import="org.icescrum.core.domain.Story" %>
 <is:panelTab id="comments" selected="${params.tab && 'comments' in params.tab ? 'true' : ''}">
     <div class="addorlogin">
         <sec:ifNotLoggedIn>
@@ -34,5 +34,7 @@
                      onClick="jQuery.icescrum.openCommentTab('#comments');">${message(code: 'is.ui.backlogelement.comment.add')}</is:link>
         </sec:ifLoggedIn>
     </div>
-    <isComment:render noEscape="true" bean="${story}" noComment="${message(code:'is.ui.backlogelement.activity.comments.no')}"/>
+    <is:cache cache="storyCache" key="story-comments-${story.id}-${Story.findLastUpdatedComment(story.id)}">
+        <isComment:render noEscape="true" bean="${story}" noComment="${message(code:'is.ui.backlogelement.activity.comments.no')}"/>
+    </is:cache>
  </is:panelTab>
