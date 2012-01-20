@@ -48,6 +48,8 @@ import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
+import feedsplugin.FeedBuilder
+import com.sun.syndication.io.SyndFeedOutput
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
@@ -73,17 +75,16 @@ class ProjectController {
 
     @Cacheable(cache = 'projectCache', keyGenerator = 'localeKeyGenerator')
     def feed = {
-        def currentProduct = Product.get(params.product)
+        cache validFor: 300
 
+        def currentProduct = Product.get(params.product)
         def activities = Story.recentActivity(currentProduct)
         activities.addAll(Product.recentActivity(currentProduct))
         activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
 
-        render(feedType: "rss", feedVersion: "2.0") {  node ->
-            node.title = "$currentProduct.name ${message(code: 'is.ui.project.activity.title')}"
-            node.link = "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: currentProduct.pkey])}"
-            node.description = "${currentProduct.description ?: ''}"
-            activities.each() { a ->
+        def builder = new FeedBuilder()
+        builder.feed(description: "${currentProduct.description?:''}",title: "$currentProduct.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: currentProduct.pkey])}") {
+          activities.each() { a ->
                 entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is.story")} ${a.cachedLabel.encodeAsHTML()}") {e ->
                     if (a.code != Activity.CODE_DELETE)
                         e.link = "${is.createScrumLink(absolute: true, controller: 'backlogElement', id: a.cachedId)}"
@@ -93,6 +94,9 @@ class ProjectController {
                 }
             }
         }
+        def feed = builder.makeFeed(FeedBuilder.TYPE_RSS,FeedBuilder.DEFAULT_VERSIONS[FeedBuilder.TYPE_RSS])
+        def outFeed = new SyndFeedOutput()
+        render(contentType: 'text/xml', text:outFeed.outputString(feed))
     }
 
     @Secured('owner() or scrumMaster()')
