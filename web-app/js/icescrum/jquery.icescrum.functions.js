@@ -1160,7 +1160,12 @@
                         if(!$.icescrum.user.scrumMaster && !isCreator) {
                            acceptanceTest.find('.acceptance-test-menu').remove();
                         }
-                        $('.acceptance-test-description', acceptanceTest).load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
+                        var description = $('.acceptance-test-description', acceptanceTest);
+                        if(this.description != null) {
+                            description.load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
+                        } else {
+                            description.text('');
+                        }
                     },
 
                     remove:function(template) {
