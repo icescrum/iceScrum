@@ -67,9 +67,8 @@
         },
         feature:{
             types:${is.bundleLocaleToJs(bundle: BundleUtils.featureTypes)}
-        }
+        },
         <g:if test="${product}">
-        ,
         product:{
             currentProduct:${product.id},
             limitUrgentTasks:${product.preferences.limitUrgentTasks},
@@ -78,6 +77,7 @@
             displayRecurrentTasks:${product.preferences.displayRecurrentTasks},
             limitUrgentTasks:${product.preferences.limitUrgentTasks},
             assignOnBeginTask:${product.preferences.assignOnBeginTask},
+            timezoneOffset:${TimeZone.getTimeZone(product.preferences.timezone).rawOffset/3600000},
             i18n: {
                 deleted:"${g.message(code: 'is.product.deleted')}",
                 updated:"${g.message(code: 'is.product.updated')}",

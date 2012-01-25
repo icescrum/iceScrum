@@ -78,6 +78,22 @@
                     return date;
                 },
 
+                serverDate:function(date, withTime) {
+                    if (typeof date === 'string') {
+                        date = this.jsonToDate(date);
+                    }
+                    var utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                    var offset = parseInt($.icescrum.product.timezoneOffset);
+                    var serverMillis = utc + (3600000*offset);
+                    var serverDate = new Date(serverMillis);
+                    var dateFormat = $.datepicker.regional[$.icescrum.o.locale].dateFormat;
+                    var dateString = $.datepicker.formatDate(dateFormat, serverDate);
+                    if(withTime) {
+                        dateString += ' ' + serverDate.toLocaleTimeString();
+                    }
+                    return dateString;
+                },
+
                 stopEvent:function(event) {
                     event = jQuery.event.fix(event || window.event);
                     event.stopPropagation();

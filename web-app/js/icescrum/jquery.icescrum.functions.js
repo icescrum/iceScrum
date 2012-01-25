@@ -89,6 +89,7 @@
                     assignOnBeginTask:false,
                     hidden:false,
                     limitUrgentTasks:0,
+                    timezoneOffset:0,
                     i18n : {
                         deleted:'Project deleted',
                         updated:'Project settings updated',

@@ -23,8 +23,8 @@
 
 <g:set var="comment" value="[id:'?**=this.id**?',
                              poster:[username:'?**=this.poster.username**?',firstName:'?**=this.poster.firstName**?',lastName:'?**=this.poster.lastName**?',id:'?**=this.poster.id**?'],
-                             dateCreated:'?**=jQuery.icescrum.dateLocaleFormat(this.dateCreated)**?',
-                             lastUpdated:'?**=jQuery.icescrum.dateLocaleFormat(this.lastUpdated)**?',
+                             dateCreated:'?**=jQuery.icescrum.serverDate(this.dateCreated, true)**?',
+                             lastUpdated:'?**=jQuery.icescrum.serverDate(this.lastUpdated, true)**?',
                              body:'?**=this.body**?']"/>
 
 <g:set var="backlogelement" value="[id:'?**=this.backlogElement**?']"/>
