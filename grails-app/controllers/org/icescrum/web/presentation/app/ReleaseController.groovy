@@ -105,158 +105,74 @@ class ReleaseController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def delete = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-        }
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!release) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        try {
+        withRelease{ Release release ->
             releaseService.delete(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
                 json { render status: 200, contentType: 'application/json', text: release as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-        }
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!release) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        try {
+        withRelease{ Release release ->
             releaseService.close(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
                 json { render status: 200, contentType: 'application/json', text: release as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def activate = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-        }
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!release) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-        try {
+        withRelease{ Release release ->
             releaseService.activate(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
                 json { render status: 200, contentType: 'application/json', text: release as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: release as XML }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def autoPlan = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!release) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        try {
+        withRelease{ Release release ->
             def plannedStories = storyService.autoPlan(release, params.double('capacity'))
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: plannedStories as JSON }
                 json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
             }
-        } catch (Exception e) {
-            returnError(exception:e,text:message(code: 'is.release.error.not.autoplan'))
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def unPlan = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!release) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        def sprints = Sprint.findAllByParentRelease(release)
-        try {
+        withRelease{ Release release ->
+            def sprints = Sprint.findAllByParentRelease(release)
             def unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON }
                 json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(exception:e,text:message(code: 'is.release.stories.error.not.dissociate'))
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def generateSprints = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!release) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        try {
+        withRelease{ Release release ->
             def sprints = sprintService.generateSprints(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: sprints as JSON }
                 json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         }
     }
 
@@ -268,21 +184,11 @@ class ReleaseController {
             return
         }
 
-        if (!params.id) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!release) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        withFormat {
+        withRelease{ Release release ->
+            withFormat {
                 json { render(status: 200, contentType: 'application/json', text: release as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: release as XML) }
             }
+        }
     }
 }

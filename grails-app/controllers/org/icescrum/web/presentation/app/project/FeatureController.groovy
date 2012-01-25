@@ -79,37 +79,23 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def update = {
-        def msg
-        if (!params.long('feature.id')) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
-
-        if (!feature) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        // If the version is different, the feature has been modified since the last loading
-        if (params.long('feature.version') != feature.version) {
-            msg = message(code: 'is.stale.object', args: [message(code: 'is.feature')])
-            returnError(text:msg)
-            return
-        }
-
-        def successRank = true
-
-        if (params.int('feature.rank') && feature.rank != params.int('feature.rank')) {
-            if (!featureService.rank(feature, params.int('feature.rank'))) {
-                successRank = false
+        withFeature('feature.id'){ Feature feature ->
+             // If the version is different, the feature has been modified since the last loading
+            if (params.long('feature.version') != feature.version) {
+                returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.feature')]))
+                return
             }
-        }
 
-        if (successRank) {
-            feature.properties = params.feature
-            try {
+            def successRank = true
+
+            if (params.int('feature.rank') && feature.rank != params.int('feature.rank')) {
+                if (!featureService.rank(feature, params.int('feature.rank'))) {
+                    successRank = false
+                }
+            }
+
+            if (successRank) {
+                feature.properties = params.feature
                 this.manageAttachments(feature)
                 featureService.update(feature)
 
@@ -136,39 +122,24 @@ class FeatureController {
                     json { render status: 200, contentType: 'application/json', text: feature as JSON }
                     xml { render status: 200, contentType: 'text/xml', text: feature  as XML }
                 }
-            } catch (RuntimeException e) {
-                returnError(exception:e, object:feature)
-            } catch (AttachmentException e) {
-                returnError(exception:e)
             }
         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def delete = {
-
-        if (!params.id) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
+        withFeatures{ List<Feature> features ->
+            features.each { feature ->
+                featureService.delete(feature)
+            }
+            def ids = []
+            params.list('id').each { ids << [id: it] }
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: ids as JSON }
+                json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
+                xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
+            }
         }
-
-        def features = Feature.getAll(params.list('id'))
-        if (!features) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        features.each { feature ->
-            featureService.delete(feature)
-        }
-        def ids = []
-        params.list('id').each { ids << [id: it] }
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: ids as JSON }
-            json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
-            xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
-        }
-
     }
 
     def list = {
@@ -205,25 +176,20 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def rank = {
-        def featureMoved = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!featureMoved) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        def position = params.int('feature.rank')
-        if (featureMoved == null || position == null) {
-            returnError(text:message(code: 'is.feature.rank.error'))
-        }
-        if (featureService.rank(featureMoved, position)) {
-           withFormat {
-                html { render status: 200, text:'success' }
-                json { render status: 200, contentType: 'application/json', text: featureMoved as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: featureMoved as XML }
+        withFeature{ Feature feature ->
+            def position = params.int('feature.rank')
+            if (feature == null || position == null) {
+                returnError(text:message(code: 'is.feature.rank.error'))
             }
-        } else {
-            returnError(text:message(code: 'is.feature.rank.error'))
+            if (featureService.rank(feature, position)) {
+               withFormat {
+                    html { render status: 200, text:'success' }
+                    json { render status: 200, contentType: 'application/json', text: feature as JSON }
+                    xml { render status: 200, contentType: 'text/xml', text: feature as XML }
+                }
+            } else {
+                returnError(text:message(code: 'is.feature.rank.error'))
+            }
         }
     }
 
@@ -248,62 +214,37 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def edit = {
+        withFeature{ Feature feature ->
+            Product product = (Product) feature.backlog
+            def valuesList = PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)
 
-        if (!params.id) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
+            def rankList = []
+            def maxRank = Feature.countByBacklog(product)
+            maxRank.times { rankList << (it + 1) }
+
+            def next = Feature.findByBacklogAndRank(product, feature.rank + 1, [cache: true])
+            render(template: 'window/manage', model: [valuesList: valuesList,
+                    rankList: rankList,
+                    id: id,
+                    next: next?.id ?: '',
+                    colorsLabels: BundleUtils.colorsSelect.values().collect { message(code: it) },
+                    colorsKeys: BundleUtils.colorsSelect.keySet().asList(),
+                    feature: feature,
+                    typesNames: BundleUtils.featureTypes.values().collect {v -> message(code: v)},
+                    typesId: BundleUtils.featureTypes.keySet().asList()
+            ])
         }
-
-        def feature = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!feature) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        Product product = (Product) feature.backlog
-        def valuesList = PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)
-
-        def rankList = []
-        def maxRank = Feature.countByBacklog(product)
-        maxRank.times { rankList << (it + 1) }
-
-        def next = Feature.findByBacklogAndRank(product, feature.rank + 1, [cache: true])
-        render(template: 'window/manage', model: [valuesList: valuesList,
-                rankList: rankList,
-                id: id,
-                next: next?.id ?: '',
-                colorsLabels: BundleUtils.colorsSelect.values().collect { message(code: it) },
-                colorsKeys: BundleUtils.colorsSelect.keySet().asList(),
-                feature: feature,
-                typesNames: BundleUtils.featureTypes.values().collect {v -> message(code: v)},
-                typesId: BundleUtils.featureTypes.keySet().asList()
-        ])
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def copyFeatureToBacklog = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        def feature = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!feature) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        try {
+        withFeature{ Feature feature ->
             def story = featureService.copyToBacklog(feature)
             withFormat {
                 html { render status: 200, text:'success' }
                 json { render status: 200, contentType: 'application/json', text: story as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: story as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(text: message(code: 'story.name.unique'), exception:e)
         }
     }
 
@@ -389,22 +330,12 @@ class FeatureController {
             return
         }
 
-        if (!params.id) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        def feature = Feature.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!feature) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-
-        withFormat {
+        withFeature{ Feature feature ->
+            withFormat {
                 json { render(status: 200, contentType: 'application/json', text: feature as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: feature as XML) }
             }
+        }
     }
 
     private manageAttachments(def feature) {

@@ -91,18 +91,8 @@ class ActorController {
 
     @Secured('productOwner() and !archivedProduct()')
     def update = {
-        if (!params.actor) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
-        }
-        def actor = Actor.getInProduct(params.long('product'),params.long('actor.id')).list()[0]
-        if (!actor) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
-        }
-
-        actor.properties = params.actor
-        try {
+        withActor('actor.id'){Actor actor ->
+            actor.properties = params.actor
             actorService.update(actor)
             this.manageAttachments(actor)
             //if success for table view
@@ -135,27 +125,12 @@ class ActorController {
                 json { render status: 200, contentType: 'application/json', text: actor as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: actor  as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(exception:e, object:actor)
-        } catch (AttachmentException e) {
-            returnError(exception:e)
         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def delete = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
-        }
-        def actors = Actor.getAll(params.list('id'))
-        if (!actors) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
-        }
-
-        def msg
-        try {
+        withActors{List<Actor> actors ->
             actors.each { actor ->
                 actorService.delete(actor)
             }
@@ -166,10 +141,6 @@ class ActorController {
                 json { render status: 200, text: [result:'success'] as JSON }
                 xml { render status: 200, text: [result:'success']  as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(exception:e, text:message(code: 'is.actor.error.not.deleted'))
-        } catch (AttachmentException e) {
-            returnError(exception:e)
         }
     }
 
@@ -215,36 +186,25 @@ class ActorController {
 
     @Secured('productOwner() and !archivedProduct()')
     def edit = {
+        withActor{ Actor actor ->
+            def actors = Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc']);
+            def next = null
+            def actorIndex = actors.indexOf(actor)
+            if (actors.size() > actorIndex + 1)
+                next = actors[actorIndex + 1].id
 
-        if (!params.id) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
+            render(template: 'window/manage', model: [
+                    id: id,
+                    actor: actor,
+                    next: next ?: '',
+                    instancesValues: BundleUtils.actorInstances.values().collect {v -> message(code: v)},
+                    instancesKeys: BundleUtils.actorInstances.keySet().asList(),
+                    levelsValues: BundleUtils.actorLevels.values().collect {v -> message(code: v)},
+                    levelsKeys: BundleUtils.actorLevels.keySet().asList(),
+                    frequenciesValues: BundleUtils.actorFrequencies.values().collect {v -> message(code: v)},
+                    frequenciesKeys: BundleUtils.actorFrequencies.keySet().asList(),
+            ])
         }
-
-        def actor = Actor.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!actor) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
-        }
-
-        def actors = Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc']);
-        def next = null
-        def actorIndex = actors.indexOf(actor)
-        if (actors.size() > actorIndex + 1)
-            next = actors[actorIndex + 1].id
-
-        render(template: 'window/manage', model: [
-                id: id,
-                actor: actor,
-                next: next ?: '',
-                instancesValues: BundleUtils.actorInstances.values().collect {v -> message(code: v)},
-                instancesKeys: BundleUtils.actorInstances.keySet().asList(),
-                levelsValues: BundleUtils.actorLevels.values().collect {v -> message(code: v)},
-                levelsKeys: BundleUtils.actorLevels.keySet().asList(),
-                frequenciesValues: BundleUtils.actorFrequencies.values().collect {v -> message(code: v)},
-                frequenciesKeys: BundleUtils.actorFrequencies.keySet().asList(),
-        ])
     }
 
     private manageAttachments(def actor) {
@@ -285,22 +245,12 @@ class ActorController {
             return
         }
 
-        if (!params.id) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
-        }
-
-        def actor = Actor.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!actor) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
-        }
-
-        withFormat {
+        withActor{ Actor actor ->
+            withFormat {
                 json { render(status: 200, contentType: 'application/json', text: actor as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: actor as XML) }
             }
+        }
     }
 
     def print = {
@@ -310,7 +260,7 @@ class ActorController {
         def data = []
         def actors = Actor.findAllByBacklog(currentProduct, [sort: 'useFrequency', order: 'asc']);
         if (!actors) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.report.error.no.data')]] as JSON)
+            renderErrors(text:message(code: 'is.report.error.no.data'))
             return
         } else if (params.get) {
             actors.each {

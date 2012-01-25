@@ -41,28 +41,18 @@ class SprintController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def update = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
+        withSprint{ Sprint sprint ->
+            // If the version is different, the sprint has been modified since the last loading
+            if (params.long('sprint.version') != sprint.version) {
+                def msg = message(code: 'is.stale.object', args: [message(code: 'is.sprint')])
+                returnError(text:msg)
+                return
+            }
 
-        // If the version is different, the sprint has been modified since the last loading
-        if (params.long('sprint.version') != sprint.version) {
-            def msg = message(code: 'is.stale.object', args: [message(code: 'is.sprint')])
-            returnError(text:msg)
-            return
-        }
+            sprint.properties = params.sprint
+            def startDate = params.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.startDate) : sprint.startDate
+            def endDate = new Date().parse(message(code: 'is.date.format.short'), params.endDate)
 
-        sprint.properties = params.sprint
-        def startDate = params.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.startDate) : sprint.startDate
-        def endDate = new Date().parse(message(code: 'is.date.format.short'), params.endDate)
-
-        try {
             sprintService.update(sprint, startDate, endDate)
             def next = null
             if (params.continue) {
@@ -73,10 +63,6 @@ class SprintController {
                 json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         }
     }
 
@@ -111,99 +97,51 @@ class SprintController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def delete = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!sprint) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-
-        try {
-            def deletedSprints = sprintService.delete(sprint)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: deletedSprints as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: 'success' as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: 'success' as XML) }
+        withSprint{ Sprint sprint ->
+            try {
+                def deletedSprints = sprintService.delete(sprint)
+                withFormat {
+                    html { render(status: 200, contentType: 'application/json', text: deletedSprints as JSON)  }
+                    json { render(status: 200, contentType: 'application/json', text: 'success' as JSON) }
+                    xml { render(status: 200, contentType: 'text/xml', text: 'success' as XML) }
+                }
+            } catch (IllegalStateException e) {
+                returnError(exception:e)
+            } catch (RuntimeException e) {
+                returnError(object:sprint, exception:e)
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         }
-
     }
 
 
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def unPlan = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!sprint) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-
-        try {
+        withSprint{ Sprint sprint ->
             def unPlanAllStories = storyService.unPlanAll([sprint])
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(text:message(code: 'is.release.stories.error.not.dissociate'), exception:e)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def activate = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!sprint) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-
-        try {
+        withSprint{ Sprint sprint ->
             sprintService.activate(sprint)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close = {
-        if (!params.id) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-        try {
+        withSprint{ Sprint sprint ->
             def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
             sprintService.close(sprint)
             withFormat {
@@ -211,10 +149,6 @@ class SprintController {
                 json { render(status: 200, contentType: 'application/json', text: sprint.refresh() as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint.refresh() as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:sprint, exception:e)
         }
     }
 
@@ -226,21 +160,11 @@ class SprintController {
             return
         }
 
-        if (!params.id) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!sprint) {
-            returnError(text:message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-
-        withFormat {
+        withSprint{ Sprint sprint ->
+            withFormat {
                 json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
+        }
     }
 }

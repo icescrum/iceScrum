@@ -92,40 +92,31 @@ class TaskController {
 
     @Secured('inProduct() and !archivedProduct()')
     def update = {
-        if (!params.task) return
+        withTask('task.id'){Task task ->
+            def story = !(params.story?.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'), params.long('story.id')).list()[0] : null
 
-        def story = !(params.story?.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'), params.long('story.id')).list()[0] : null
+            if (!story && !(params.story?.id in ['recurrent', 'urgent'])) {
+                returnError(text: message(code: 'is.story.error.not.exist'))
+                return
+            }
 
-        if (!story && !(params.story?.id in ['recurrent', 'urgent'])) {
-            returnError(text: message(code: 'is.story.error.not.exist'))
-            return
-        }
+            def sprintTask = (params.story.id in ['recurrent', 'urgent']) ? params.story.id == 'recurrent' ? Task.TYPE_RECURRENT : Task.TYPE_URGENT : null
 
-        def sprintTask = (params.story.id in ['recurrent', 'urgent']) ? params.story.id == 'recurrent' ? Task.TYPE_RECURRENT : Task.TYPE_URGENT : null
+            if (!params.task?.id) {
+                returnError(text: message(code: 'is.task.error.not.exist'))
+            }
 
-        if (!params.task?.id) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-        }
+            // If the version is different, the task has been modified since the last loading
+            if (params.task.version && params.long('task.version') != task.version) {
+                returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.task')]))
+                return
+            }
 
-        def task = Task.getInProduct(params.long('product'),params.task.id.toLong())
-        if (!task) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
+            params.task.estimation = params.task.estimation?.replace(/,/,'.')
+            params.task.estimation = params.task.float('estimation') ?: (params.task.float('estimation') == 0) ? 0 : null
 
-        // If the version is different, the task has been modified since the last loading
-        if (params.task.version && params.long('task.version') != task.version) {
-            returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.task')]))
-            return
-        }
-
-        params.task.estimation = params.task.estimation?.replace(/,/,'.')
-        params.task.estimation = params.task.float('estimation') ?: (params.task.float('estimation') == 0) ? 0 : null
-
-        task.properties = params.task
-        User user = (User) springSecurityService.currentUser
-
-        try {
+            task.properties = params.task
+            User user = (User) springSecurityService.currentUser
 
             // If the task was moved to another story
             if (story && story.id != task.parentStory.id) {
@@ -156,80 +147,39 @@ class TaskController {
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
-        } catch (AttachmentException e) {
-            returnError(object: task, exception: e)
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: task, exception: e)
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def take = {
-        if (!params.id) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        def task = Task.getInProduct(params.product.toLong(),params.long('id'))
-        if (!task) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        User user = (User) springSecurityService.currentUser
-
-        try {
+        withTask{Task task ->
+            User user = (User) springSecurityService.currentUser
             taskService.assign([task], user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: task, exception: e)
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def unassign = {
-        if (!params.id) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        def task = Task.getInProduct(params.product.toLong(),params.long('id'))
-        if (!task) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        User user = (User) springSecurityService.currentUser
-
-        try {
+        withTask{Task task ->
+            User user = (User) springSecurityService.currentUser
             taskService.unassign([task], user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: task, exception: e)
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def delete = {
-        if (!params.id) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        def ids = params.list('id').collect{ it.toLong() }
-        def tasks = Task.getAllInProduct(params.long('product'), ids)
-        User user = (User) springSecurityService.currentUser
-
-        try {
+        withTasks{List<Task> tasks ->
+            User user = (User) springSecurityService.currentUser
             def idj = []
             tasks.each {
                 idj << [id:it.id]
@@ -240,90 +190,48 @@ class TaskController {
                 json { render(status: 200, contentType: 'application/json', text: [result: 'success'] as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: [result: 'success'] as JSON) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(exception: e)
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def copy = {
-        if (!params.id) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        def task = Task.getInProduct(params.long('product'),params.long('id'))
-        User user = (User) springSecurityService.currentUser
-
-        try {
+        withTask{Task task ->
+            User user = (User) springSecurityService.currentUser
             def copiedTask = taskService.copy(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: copiedTask as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: copiedTask as JSON) }
                 xml { render(status: 200,  contentType: 'text/xml',  text: copiedTask as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(exception: e)
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def estimate = {
-        if (!params.id) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        def task = Task.getInProduct(params.long('product'),params.long('id'))
-
-        if (!task) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        User user = (User) springSecurityService.currentUser
-        params.value = params.value?.replace(/,/,'.')
-        task.estimation = params.float('value') ?: (params.float('value') == 0) ? 0 : null
-        try {
+        withTask{Task task ->
+            User user = (User) springSecurityService.currentUser
+            params.value = params.value?.replace(/,/,'.')
+            task.estimation = params.float('value') ?: (params.float('value') == 0) ? 0 : null
             taskService.update(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: task, exception: e)
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def block = {
-        if (!params.id) {
-            def msg = message(code: 'is.task.error.not.exist')
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        def task = Task.getInProduct(params.long('product'),params.id.toLong())
-        if (!task) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        task.blocked = !task.blocked
-        User user = (User) springSecurityService.currentUser
-        try {
+        withTask{Task task ->
+            task.blocked = !task.blocked
+            User user = (User) springSecurityService.currentUser
             taskService.update(task, user)
             withFormat {
                 html { render(status: 200)  }
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: task, exception: e)
         }
     }
 
@@ -340,21 +248,13 @@ class TaskController {
             return
         }
 
-        def movedItem = Task.getInProduct(params.long('product'),params.long('id'))
-
-        if (!movedItem) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        try {
-            taskService.rank(movedItem, position)
+        withTask{Task task ->
+            taskService.rank(task, position)
             withFormat {
                 html { render(status: 200)  }
-                json { render(status: 200, contentType: 'application/json', text: movedItem as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: movedItem as XML) }
+                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
-        } catch (RuntimeException e) {
-            returnError(object: movedItem, exception: e)
         }
     }
 
@@ -400,19 +300,8 @@ class TaskController {
         if (!params.id) {
             returnError(text: message(code: 'is.ui.sprintPlan.state.no.exist'))
         }
-        if (!params.task.id) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        def task = Task.getInProduct(params.long('product'),params.long('task.id'))
-        if (!task) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-        User user = (User) springSecurityService.currentUser
-
-        try {
-
+        withTask('task.id'){Task task ->
+            User user = (User) springSecurityService.currentUser
             // If the task was moved to another story
             if (params.story?.id && task.parentStory && params.story.id != task.parentStory.id) {
                 def story = Story.get(params.long('story.id'))
@@ -438,10 +327,6 @@ class TaskController {
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: task, exception: e)
         }
     }
 
@@ -451,22 +336,11 @@ class TaskController {
             render(status: 404)
             return
         }
-
-        if (!params.id) {
-            returnError(text: message(code: 'is.story.error.not.exist'))
-            return
-        }
-
-        def task = Task.getInProduct(params.long('product'),params.long('id'))
-
-        if (!task) {
-            returnError(text: message(code: 'is.task.error.not.exist'))
-            return
-        }
-
-        withFormat {
-            json { render(status: 200, contentType: 'appplication/json', text: task as JSON) }
-            xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+        withTask('task.id'){Task task ->
+            withFormat {
+                json { render(status: 200, contentType: 'appplication/json', text: task as JSON) }
+                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+            }
         }
     }
 
@@ -501,12 +375,8 @@ class TaskController {
 
         withFormat {
             json { render(status: 200, contentType: 'appplication/json', text: tasks as JSON) }
-            xml {
-                render(status: 200, contentType: 'text/xml', text: tasks as XML)
-            }
-            html {
-                render(status: 200, contentType: 'text/xml', text: tasks as XML)
-            }
+            xml { render(status: 200, contentType: 'text/xml', text: tasks as XML) }
+            html { render(status: 200, contentType: 'text/xml', text: tasks as XML) }
         }
     }
 

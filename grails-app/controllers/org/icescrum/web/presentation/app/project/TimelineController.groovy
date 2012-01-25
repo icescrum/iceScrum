@@ -191,26 +191,19 @@ class TimelineController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def edit = {
-        if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
-        }
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
-            return
-        }
+        withRelease{ Release release ->
+            def product = release.parentProduct
+            def previousRelease = product.releases.find {it.orderNumber == release.orderNumber - 1}
+            def next = product.releases.find {it.orderNumber == release.orderNumber + 1}
 
-        def product = release.parentProduct
-        def previousRelease = product.releases.find {it.orderNumber == release.orderNumber - 1}
-        def next = product.releases.find {it.orderNumber == release.orderNumber + 1}
-
-        render(template: 'window/manage', model: [
-                id: id,
-                product: product,
-                release: release,
-                next: next?.id ?: null,
-                previousRelease: previousRelease,
-        ])
+            render(template: 'window/manage', model: [
+                    id: id,
+                    product: product,
+                    release: release,
+                    next: next?.id ?: null,
+                    previousRelease: previousRelease,
+            ])
+        }
     }
 
     @Cacheable(cache = 'projectCache', keyGenerator = 'releasesKeyGenerator')
@@ -229,8 +222,7 @@ class TimelineController {
                     done: values.done as JSON,
                     labels: values.label as JSON])
         } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            renderErrors(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -246,8 +238,7 @@ class TimelineController {
                     velocity: values.velocity as JSON,
                     labels: values.label as JSON])
         } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            renderErrors(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -263,8 +254,7 @@ class TimelineController {
                     done: values.done as JSON,
                     labels: values.label as JSON])
         } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            renderErrors(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -281,8 +271,7 @@ class TimelineController {
                     defectstories: values.defectstories as JSON,
                     labels: values.label as JSON])
         } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            renderErrors(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -299,8 +288,7 @@ class TimelineController {
                     defectstories: values.defectstories as JSON,
                     labels: values.label as JSON])
         } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            renderErrors(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -324,8 +312,7 @@ class TimelineController {
                     values: valueToDisplay as JSON,
                     featuresNames: values.label as JSON])
         else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+           renderErrors(text:message(code: 'is.chart.error.no.values'))
         }
     }
 

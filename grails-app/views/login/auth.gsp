@@ -33,7 +33,7 @@
 
     <is:boxTile><g:message code="is.dialog.login" /></is:boxTile>
 
-    <g:formRemote url="${[uri:postUrl]}" id="loginForm" name="loginForm" method="post" class="box-form box-form-small-legend box-content box-form-160" onSuccess="document.location='${params.ref?params.ref.replace('@','#'):''}'">
+    <g:formRemote url="${[uri:postUrl]}" id="loginForm" name="loginForm" method="post" class="box-form box-form-small-legend box-content box-form-160" onSuccess="document.location=jQuery.getUrlVar('ref')">
 
       <is:fieldInformation nobordertop="true" div="true">
         <div class="welcome">
@@ -62,7 +62,7 @@
       </p>
       
       <is:buttonBar id="login-button-bar">
-        <is:button id="loginSubmit" history="false" type="submitToRemote" url="${[uri:postUrl]}" onSuccess="document.location='${params.ref?params.ref.replace('@','#'):''}'" value="${message(code: 'is.button.connect')}"/>
+        <is:button id="loginSubmit" history="false" type="submitToRemote" url="${[uri:postUrl]}" onSuccess="document.location=jQuery.getUrlVar('ref');" value="${message(code: 'is.button.connect')}"/>
         <is:button rendered="${enableRegistration}" type="link" action="register" controller="user" remote="false" value="${message(code: 'is.button.register')}"/>
       </is:buttonBar>
 

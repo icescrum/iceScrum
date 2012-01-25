@@ -139,24 +139,13 @@ class ReleasePlanController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-
-        def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
-        if (unDoneStories?.size() > 0 && !params.confirm) {
-            def dialog = g.render(template: "dialogs/confirmCloseSprintWithUnDoneStories", model: [stories: unDoneStories, sprint: sprint, id: id])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-            return
-        }
-        try {
+        withSprint{Sprint sprint ->
+            def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
+            if (unDoneStories?.size() > 0 && !params.confirm) {
+                def dialog = g.render(template: "dialogs/confirmCloseSprintWithUnDoneStories", model: [stories: unDoneStories, sprint: sprint, id: id])
+                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+                return
+            }
             if (unDoneStories?.size() > 0 && params.confirm) {
                 params.story.id.each {
                     if (it.value.toInteger() == 1) {
@@ -165,35 +154,18 @@ class ReleasePlanController {
                 }
             }
             forward(action: 'close', controller: 'sprint', params: [product: params.product, id: sprint.id])
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def activate = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
+        withSprint{Sprint sprint ->
+            if (sprint.orderNumber == 1 && sprint.parentRelease.state == Release.STATE_WAIT && !params.confirm) {
+                def dialog = g.render(template: "dialogs/confirmActivateSprintAndRelease", model: [sprint: sprint, release: sprint.parentRelease, id: id])
+                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+                return
+            }
 
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-
-        if (sprint.orderNumber == 1 && sprint.parentRelease.state == Release.STATE_WAIT && !params.confirm) {
-            def dialog = g.render(template: "dialogs/confirmActivateSprintAndRelease", model: [sprint: sprint, release: sprint.parentRelease, id: id])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-            return
-        }
-
-        try {
             if (params.confirm) {
                 def currentRelease = sprint.parentRelease.parentProduct.releases?.find {it.state == Release.STATE_INPROGRESS}
                 if (currentRelease)
@@ -201,41 +173,19 @@ class ReleasePlanController {
                 releaseService.activate(sprint.parentRelease)
             }
             forward(action: 'activate', controller: 'sprint', params: [product: params.product, id: sprint.id])
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def delete = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-
-        if (sprint.orderNumber < sprint.parentRelease.sprints.size() && !params.confirm) {
-            def dialog = g.render(template: "dialogs/confirmDeleteSprint", model: [sprint: sprint, release: sprint.parentRelease, id: id])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-            return
-        }
-
-        try {
+        withSprint{Sprint sprint ->
+            if (sprint.orderNumber < sprint.parentRelease.sprints.size() && !params.confirm) {
+                def dialog = g.render(template: "dialogs/confirmDeleteSprint", model: [sprint: sprint, release: sprint.parentRelease, id: id])
+                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+                return
+            }
             forward(action: 'delete', controller: 'sprint', params: [product: params.product, id: sprint.id])
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
         }
-
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -312,100 +262,56 @@ class ReleasePlanController {
     }
 
     def vision = {
-        if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
-            return
+        withRelease{ Release release ->
+            render(template: 'window/visionView', model: [release: release, id: id])
         }
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
-            return
-        }
-        render(template: 'window/visionView', model: [release: release, id: id])
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def updateVision = {
-        if (!params.id) {
-            def msg = message(code: 'is.release.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
-            return
-        }
-        release.vision = params.vision
-
-        try {
+        withRelease{ Release release ->
+            release.vision = params.vision
             releaseService.updateVision(release)
             render(status: 200)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: release)]] as JSON)
         }
     }
 
     @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def releaseBurndownChart = {
-        if (!params.id) {
-            def msg = message(code: 'is.release.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
-            return
-        }
-
-        def values = releaseService.releaseBurndownValues(release)
-        if (values.size() > 0) {
-            render(template: 'charts/releaseBurndownChart', model: [
-                    id: id,
-                    userstories: values.userstories as JSON,
-                    technicalstories: values.technicalstories as JSON,
-                    defectstories: values.defectstories as JSON,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withRelease{ Release release ->
+            def values = releaseService.releaseBurndownValues(release)
+            if (values.size() > 0) {
+                render(template: 'charts/releaseBurndownChart', model: [
+                        id: id,
+                        userstories: values.userstories as JSON,
+                        technicalstories: values.technicalstories as JSON,
+                        defectstories: values.defectstories as JSON,
+                        labels: values.label as JSON])
+            } else {
+                renderError(text:message(code: 'is.chart.error.no.values'))
+            }
         }
     }
 
     @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def releaseParkingLotChart = {
-        if (!params.id) {
-            def msg = message(code: 'is.release.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
+        withRelease{ Release release ->
+            def values = featureService.releaseParkingLotValues(release)
 
-        def release = Release.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
-            return
-        }
-
-        def values = featureService.releaseParkingLotValues(release)
-
-        def valueToDisplay = []
-        def indexF = 1
-        values.value?.each {
-            def value = []
-            value << it.toString()
-            value << indexF
-            valueToDisplay << value
-            indexF++
-        }
-        if (valueToDisplay.size() > 0)
-            render(template: 'charts/releaseParkingLot', model: [id: id, values: valueToDisplay as JSON, featuresNames: values.label as JSON])
-        else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            def valueToDisplay = []
+            def indexF = 1
+            values.value?.each {
+                def value = []
+                value << it.toString()
+                value << indexF
+                valueToDisplay << value
+                indexF++
+            }
+            if (valueToDisplay.size() > 0)
+                render(template: 'charts/releaseParkingLot', model: [id: id, values: valueToDisplay as JSON, featuresNames: values.label as JSON])
+            else {
+                renderError(text:message(code: 'is.chart.error.no.values'))
+            }
         }
     }
 }

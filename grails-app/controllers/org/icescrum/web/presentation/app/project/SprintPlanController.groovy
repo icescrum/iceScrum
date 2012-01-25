@@ -182,36 +182,30 @@ class SprintPlanController {
 
     def updateTable = {
 
-        def task = Task.getInProduct(params.long('product'),params.long('task.id'))
-        if (!task || task.backlog?.parentRelease?.parentProduct?.id != params.long('product')) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
-            return
-        }
-
-        if (params.boolean('loadrich')) {
-            render(status: 200, text: task.notes ?: '')
-            return
-        }
-
-        if (!params.table) {
-            return
-        }
-
-        if (params.name != 'estimation') {
-            if (task.state == Task.STATE_WAIT && params.name == "state" && params.task.state >= Task.STATE_BUSY) {
-                task.inProgressDate = new Date()
-            } else if (task.state == Task.STATE_BUSY && params.name == "state" && params.task.state == Task.STATE_WAIT) {
-                task.inProgressDate = null
+        withTask('task.id'){ Task task ->
+            if (params.boolean('loadrich')) {
+                render(status: 200, text: task.notes ?: '')
+                return
             }
-            task.properties = params.task
-        }
-        else {
-            params.task.estimation = params.task?.estimation?.replace(/,/,'.')
-            task.estimation = params.task?.estimation?.toFloat() ?: (params.task.estimation.toFloat() == 0) ? 0 : null
-        }
 
-        User user = (User) springSecurityService.currentUser
-        try {
+            if (!params.table) {
+                return
+            }
+
+            if (params.name != 'estimation') {
+                if (task.state == Task.STATE_WAIT && params.name == "state" && params.task.state >= Task.STATE_BUSY) {
+                    task.inProgressDate = new Date()
+                } else if (task.state == Task.STATE_BUSY && params.name == "state" && params.task.state == Task.STATE_WAIT) {
+                    task.inProgressDate = null
+                }
+                task.properties = params.task
+            }
+            else {
+                params.task.estimation = params.task?.estimation?.replace(/,/,'.')
+                task.estimation = params.task?.estimation?.toFloat() ?: (params.task.estimation.toFloat() == 0) ? 0 : null
+            }
+
+            User user = (User) springSecurityService.currentUser
             taskService.update(task, user)
 
             def returnValue
@@ -229,12 +223,6 @@ class SprintPlanController {
 
             def version = task.isDirty() ? task.version + 1 : task.version
             render(status: 200, text: [version: version, value: returnValue ?: ''] as JSON)
-
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: task)]] as JSON)
         }
     }
 
@@ -269,40 +257,31 @@ class SprintPlanController {
     }
 
     def edit = {
-        if (!params.subid) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
-            return
+        withTask('subid'){Task task ->
+            def selected = (task.type == Task.TYPE_RECURRENT) ? [id: 'recurrent'] : (task.type == Task.TYPE_URGENT) ? [id: 'urgent'] : task.parentStory
+            def sprint = task.backlog
+            def stories = Story.findAllByParentSprintAndStateLessThanEquals((Sprint) sprint, Story.STATE_INPROGRESS, [sort: 'rank'])
+
+            def selectList = []
+            if (sprint.parentRelease.parentProduct.preferences.displayRecurrentTasks)
+                selectList << [id: 'recurrent', name: ' ** ' + message(code: 'is.task.type.recurrent') + ' ** ']
+            if (sprint.parentRelease.parentProduct.preferences.displayUrgentTasks)
+                selectList << [id: 'urgent', name: ' ** ' + message(code: 'is.task.type.urgent') + ' ** ']
+            selectList = selectList + stories
+
+            User user = (User) springSecurityService.currentUser
+            def next = Task.findNextTask(task, user).list()[0]
+
+            render(template: 'window/manage', model: [
+                    id: id,
+                    task: task,
+                    stories: selectList,
+                    selected: selected,
+                    next: next?.id ?: '',
+                    sprint: task.backlog,
+                    params: [product: params.product, id: task.id]
+            ])
         }
-
-        def task = Task.getInProduct(params.long('product'),params.long('subid'))
-        if (!task || task.backlog?.parentRelease?.parentProduct?.id != params.long('product')) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.task.error.not.exist')]] as JSON)
-            return
-        }
-
-        def selected = (task.type == Task.TYPE_RECURRENT) ? [id: 'recurrent'] : (task.type == Task.TYPE_URGENT) ? [id: 'urgent'] : task.parentStory
-        def sprint = task.backlog
-        def stories = Story.findAllByParentSprintAndStateLessThanEquals((Sprint) sprint, Story.STATE_INPROGRESS, [sort: 'rank'])
-
-        def selectList = []
-        if (sprint.parentRelease.parentProduct.preferences.displayRecurrentTasks)
-            selectList << [id: 'recurrent', name: ' ** ' + message(code: 'is.task.type.recurrent') + ' ** ']
-        if (sprint.parentRelease.parentProduct.preferences.displayUrgentTasks)
-            selectList << [id: 'urgent', name: ' ** ' + message(code: 'is.task.type.urgent') + ' ** ']
-        selectList = selectList + stories
-
-        User user = (User) springSecurityService.currentUser
-        def next = Task.findNextTask(task, user).list()[0]
-
-        render(template: 'window/manage', model: [
-                id: id,
-                task: task,
-                stories: selectList,
-                selected: selected,
-                next: next?.id ?: '',
-                sprint: task.backlog,
-                params: [product: params.product, id: task.id]
-        ])
     }
 
     def editStory = {
@@ -310,226 +289,125 @@ class SprintPlanController {
     }
 
     def doneDefinition = {
-        if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
+        withSprint{ Sprint sprint ->
+            render(template: 'window/doneDefinitionView', model: [sprint: sprint, id: id])
         }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-        render(template: 'window/doneDefinitionView', model: [sprint: sprint, id: id])
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def copyFromPreviousDoneDefinition = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-
-        if (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) {
-            def previous
-            if (sprint.orderNumber > 1) {
-                previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.orderNumber - 1)
+        withSprint{ Sprint sprint ->
+            if (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) {
+                def previous
+                if (sprint.orderNumber > 1) {
+                    previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.orderNumber - 1)
+                } else {
+                    previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.parentRelease.sprints.size())
+                }
+                sprint.doneDefinition = previous.doneDefinition
             } else {
-                previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.parentRelease.sprints.size())
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.doneDefinition.no.previous')]] as JSON)
             }
-            sprint.doneDefinition = previous.doneDefinition
-        } else {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.doneDefinition.no.previous')]] as JSON)
-        }
-
-        try {
             sprintService.updateDoneDefinition(sprint)
             redirect(action: 'doneDefinition', params: [product: params.product, id: sprint.id])
-        } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
         }
     }
 
     def retrospective = {
-        if (!params.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
+        withSprint{ Sprint sprint ->
+            render(template: 'window/retrospectiveView', model: [sprint: sprint, id: id])
         }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-        render(template: 'window/retrospectiveView', model: [sprint: sprint, id: id])
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def copyFromPreviousRetrospective = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-
-        if (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) {
-            def previous
-            if (sprint.orderNumber > 1) {
-                previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.orderNumber - 1)
+        withSprint{ Sprint sprint ->
+            if (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) {
+                def previous
+                if (sprint.orderNumber > 1) {
+                    previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.orderNumber - 1)
+                } else {
+                    previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.parentRelease.sprints.size())
+                }
+                sprint.retrospective = previous.retrospective
             } else {
-                previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.parentRelease.sprints.size())
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.retrospective.no.previous')]] as JSON)
             }
-            sprint.retrospective = previous.retrospective
-        } else {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.retrospective.no.previous')]] as JSON)
-        }
-
-        try {
             sprintService.updateRetrospective(sprint)
             redirect(action: 'retrospective', params: [product: params.product, id: sprint.id])
-        } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def updateDoneDefinition = {
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-        }
-        else if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-        } else {
+        withSprint{ Sprint sprint ->
             sprint.doneDefinition = params.doneDefinition
-            try {
-                sprintService.updateDoneDefinition(sprint)
-                render(status: 200)
-            } catch (RuntimeException re) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
-            }
+            sprintService.updateDoneDefinition(sprint)
+            render(status: 200)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def updateRetrospective = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-        sprint.retrospective = params.retrospective
-
-        try {
+        withSprint{ Sprint sprint ->
+            sprint.retrospective = params.retrospective
             sprintService.updateRetrospective(sprint)
             render(status: 200)
-        } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
         }
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurndownHoursChart = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-        def values = sprintService.sprintBurndownHoursValues(sprint)
-        if (values.size() > 0) {
-            render(template: 'charts/sprintBurndownHoursChart', model: [
-                    id: id,
-                    remainingHours: values.remainingHours as JSON,
-                    idealHours: values.idealHours as JSON,
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withSprint{ Sprint sprint ->
+            def values = sprintService.sprintBurndownHoursValues(sprint)
+            if (values.size() > 0) {
+                render(template: 'charts/sprintBurndownHoursChart', model: [
+                        id: id,
+                        remainingHours: values.remainingHours as JSON,
+                        idealHours: values.idealHours as JSON,
+                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                        labels: values.label as JSON])
+            } else {
+                renderErrors(text:message(code: 'is.chart.error.no.values'))
+            }
         }
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupTasksChart = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-        def values = sprintService.sprintBurnupTasksValues(sprint)
-        if (values.size() > 0) {
-            render(template: 'charts/sprintBurnupTasksChart', model: [
-                    id: id,
-                    tasks: values.tasks as JSON,
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    tasksDone: values.tasksDone as JSON,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withSprint{ Sprint sprint ->
+            def values = sprintService.sprintBurnupTasksValues(sprint)
+            if (values.size() > 0) {
+                render(template: 'charts/sprintBurnupTasksChart', model: [
+                        id: id,
+                        tasks: values.tasks as JSON,
+                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                        tasksDone: values.tasksDone as JSON,
+                        labels: values.label as JSON])
+            } else {
+                renderErrors(text:message(code: 'is.chart.error.no.values'))
+            }
         }
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupStoriesChart = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-        def values = sprintService.sprintBurnupStoriesValues(sprint)
-        if (values.size() > 0) {
-            render(template: 'charts/sprintBurnupStoriesChart', model: [
-                    id: id,
-                    stories: values.stories as JSON,
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    storiesDone: values.storiesDone as JSON,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withSprint{ Sprint sprint ->
+            def values = sprintService.sprintBurnupStoriesValues(sprint)
+            if (values.size() > 0) {
+                render(template: 'charts/sprintBurnupStoriesChart', model: [
+                        id: id,
+                        stories: values.stories as JSON,
+                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                        storiesDone: values.storiesDone as JSON,
+                        labels: values.label as JSON])
+            } else {
+                renderErrors(text:message(code: 'is.chart.error.no.values'))
+            }
         }
     }
 
     def changeFilterTasks = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
         if (!params.filter || !params.filter in ['allTasks', 'myTasks', 'freeTasks']) {
             def msg = message(code: 'is.user.preferences.error.not.filter')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -542,11 +420,6 @@ class SprintPlanController {
     }
 
     def changeHideDoneState = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
         User user = (User) springSecurityService.currentUser
         user.preferences.hideDoneState = !user.preferences.hideDoneState
         userService.update(user)
@@ -554,24 +427,16 @@ class SprintPlanController {
     }
 
     def copyRecurrentTasksFromPreviousSprint = {
-        if (!params.id) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
-            return
-        }
-        try {
-            def tasks = sprintService.copyRecurrentTasksFromPreviousSprint(sprint)
-            render(status: 200, contentType: 'application/json', text: tasks as JSON)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-        } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
+        withSprint{ Sprint sprint ->
+            try {
+                def tasks = sprintService.copyRecurrentTasksFromPreviousSprint(sprint)
+                render(status: 200, contentType: 'application/json', text: tasks as JSON)
+            } catch (IllegalStateException ise) {
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            } catch (RuntimeException e) {
+                if (log.debugEnabled) e.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
+            }
         }
     }
 

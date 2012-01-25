@@ -93,7 +93,6 @@ class UserController {
         def user = new User()
         user.preferences = new UserPreferences()
         user.properties = params
-        def msg
         try {
             userService.save(user)
         } catch (IllegalStateException ise) {
@@ -109,17 +108,14 @@ class UserController {
 
     @Secured('isAuthenticated()')
     def update = {
-        def msg
         if (params.long('user.id') != springSecurityService.principal.id) {
-            msg = message(code: 'is.stale.object', args: [message(code: 'is.user')])
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.stale.object', args: [message(code: 'is.user')])]] as JSON)
             return
         }
 
         if (params.confirmPassword || params.user.password) {
             if (params.confirmPassword != params.user.password) {
-                msg = message(code: 'is.user.error.password.check')
-                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.password.check')]] as JSON)
                 return
             }
         }
@@ -127,8 +123,7 @@ class UserController {
         def currentUser = User.get(springSecurityService.principal.id)
 
         if (params.long('user.version') != currentUser.version) {
-            msg = message(code: 'is.stale.object', args: [message(code: 'is.user')])
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.stale.object', args: [message(code: 'is.user')])]] as JSON)
             return
         }
 

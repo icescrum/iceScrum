@@ -66,7 +66,7 @@
                     width:'760',height:'460',
                     draggable:'false')}"/>
 <is:spinner
-        on401="document.location='${createLink(controller:'login',action:'auth')}?ref=${params.product?'p/'+product.pkey:params.team?'t/'+params.team:''}'+document.location.hash.replace('#','@');"
+        on401="var data = jQuery.parseJSON(xhr.responseText); document.location='${createLink(controller:'login',action:'auth')}?ref=${product ? 'p/'+product.pkey+'/' : ''}'+(data.url?data.url:'');"
         on400="${is.notice(data:'$.parseJSON(xhr.responseText)',type:'error')}"
         on403="${is.notice(text:message(code:'is.error.denied'),type:'error')}"
         on500="jQuery.icescrum.dialogError(xhr)"/>

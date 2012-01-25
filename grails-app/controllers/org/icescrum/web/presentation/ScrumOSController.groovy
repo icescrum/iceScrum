@@ -170,9 +170,11 @@ class ScrumOSController {
                 param = [product: params.product]
             def url = createLink(controller: params.window, action: params.actionWindow ?: controller.getPropertyValue('window').init ?: 'index', params: param).toString() - request.contextPath
 
-            if (!menuBarSupport.permissionDynamicBar(url))
-                throw new AccessDeniedException('denied')
-
+            if (!menuBarSupport.permissionDynamicBar(url)){
+                println url
+                render(status:401, contentType: 'application/json', text:[url:params.window ? '#'+params.window + (params.actionWindow ? '/'+params.actionWindow : '') : ''] as JSON)
+                return
+            }
             render is.window([
                     window: params.window,
                     title: message(code: controller.getPropertyValue('window')?.title ?: ''),

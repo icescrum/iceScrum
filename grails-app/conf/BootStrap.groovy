@@ -23,6 +23,7 @@
 
 import grails.util.Metadata
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
+import org.icescrum.core.domain.Story
 
 class BootStrap {
 

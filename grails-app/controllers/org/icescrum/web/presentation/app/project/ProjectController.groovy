@@ -834,7 +834,7 @@ class ProjectController {
     }
 
     @Secured('permitAll')
-    @Cacheable(cache = 'projectCache', keyGenerator = 'localeKeyGenerator')
+    @Cacheable(cache = 'projectCache', keyGenerator = 'projectKeyGenerator')
     def browseDetails = {
         def product = Product.get(params.id)
 

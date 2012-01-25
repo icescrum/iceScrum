@@ -59,68 +59,55 @@ class QuickLookController {
 
     @Cacheable(cache = 'storyCache', keyGenerator = 'storyKeyGenerator')
     def story = {
-        def story = Story.getInProduct(params.long('product'),params.long('story.id')).list()[0]
-        if (!story) {
-            returnError(text:message(code: 'is.story.error.not.exist'))
-            return
+        withStory('story.id'){ Story story ->
+            render(template: "/story/quicklook", model: [
+                    story: story,
+                    typeCode: BundleUtils.storyTypes[story.type],
+                    user: springSecurityService.currentUser,
+                    locale: RequestContextUtils.getLocale(request)
+            ])
         }
-        render(template: "/story/quicklook", model: [
-                story: story,
-                typeCode: BundleUtils.storyTypes[story.type],
-                user: springSecurityService.currentUser,
-                locale: RequestContextUtils.getLocale(request)
-        ])
     }
 
     @Cacheable(cache = 'taskCache', keyGenerator = 'taskKeyGenerator')
     def task = {
-        def task = Task.getInProduct(params.long('product'),params.long('task.id'))
-        if (!task) {
-            returnError(text:message(code: 'is.task.error.not.exist'))
-            return
+        withTask('task.id'){ Task task ->
+            render(template: "/task/quicklook", model: [
+                    task: task,
+                    user: springSecurityService.currentUser,
+                    locale: RequestContextUtils.getLocale(request)
+            ])
         }
-        render(template: "/task/quicklook", model: [
-                task: task,
-                user: springSecurityService.currentUser,
-                locale: RequestContextUtils.getLocale(request)
-        ])
     }
 
     @Cacheable(cache = 'featureCache', keyGenerator = 'featureKeyGenerator')
     def feature = {
-        def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
-        if (!feature) {
-            returnError(text:message(code: 'is.feature.error.not.exist'))
-            return
-        }
-        def sum = feature.stories?.sum { story -> story.effort ?: 0 }
-        def effort = sum ?: '?'
-        def finished = feature.stories?.findAll { story -> story.state == Story.STATE_DONE }?.size() ?: 0
+        withFeature('feature.id'){ Feature feature ->
+            def sum = feature.stories?.sum { story -> story.effort ?: 0 }
+            def effort = sum ?: '?'
+            def finished = feature.stories?.findAll { story -> story.state == Story.STATE_DONE }?.size() ?: 0
 
-        render(template: "/feature/quicklook", model: [
-                feature: feature,
-                type: BundleUtils.featureTypes[feature.type],
-                effort: effort,
-                user: springSecurityService.currentUser,
-                finishedStories: finished
-        ])
+            render(template: "/feature/quicklook", model: [
+                    feature: feature,
+                    type: BundleUtils.featureTypes[feature.type],
+                    effort: effort,
+                    user: springSecurityService.currentUser,
+                    finishedStories: finished
+            ])
+        }
     }
 
     @Cacheable(cache = 'actorCache', keyGenerator = 'actorKeyGenerator')
     def actor = {
-        def actor = Actor.getInProduct(params.long('product'),params.long('actor.id')).list()[0]
-        if (!actor) {
-            returnError(text:message(code: 'is.actor.error.not.exist'))
-            return
+        withActor('actor.id'){ Actor actor ->
+            render(template: "/actor/quicklook", model: [
+                    actor: actor,
+                    instancesCode: BundleUtils.actorInstances[actor.instances],
+                    useFrequencyCode: BundleUtils.actorFrequencies[actor.useFrequency],
+                    expertnessLevelCode: BundleUtils.actorLevels[actor.expertnessLevel],
+                    stories: Story.findAllByTextAsIlike(actor.name).size(),
+                    user: springSecurityService.currentUser
+            ])
         }
-
-        render(template: "/actor/quicklook", model: [
-                actor: actor,
-                instancesCode: BundleUtils.actorInstances[actor.instances],
-                useFrequencyCode: BundleUtils.actorFrequencies[actor.useFrequency],
-                expertnessLevelCode: BundleUtils.actorLevels[actor.expertnessLevel],
-                stories: Story.findAllByTextAsIlike(actor.name).size(),
-                user: springSecurityService.currentUser
-        ])
     }
 }
