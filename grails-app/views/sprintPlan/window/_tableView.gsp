@@ -22,7 +22,6 @@
 --}%
 <is:tableView>
 
-    <g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
     <g:set var="timezone" value="${sprint.parentRelease.parentProduct.preferences.timezone}"/>
 
     <is:table id="tasks-table">
@@ -53,6 +52,11 @@
             <is:tableRows in="${recurrentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
                           var="task" elemid="id">
 
+                <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
+                <g:set var="notDone" value="${task.state != Task.STATE_DONE && sprint?.state != Sprint.STATE_DONE}"/>
+                <g:set var="taskEditable" value="${(request.scrumMaster ||responsible || task.creator?.id == user.id) && notDone}"/>
+                <g:set var="taskStateEditable" value="${(request.scrumMaster ||responsible) && notDone}"/>
+
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
                     <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
@@ -65,16 +69,16 @@
                 </is:tableColumn>
 
                 <is:tableColumn
-                        editable="[type:'text', disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+                        editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundle
+                        editable="[type:'selectui',id:'state',disabled:!taskStateEditable,name:'state',values:stateSelect]"><is:bundle
                         bundle="taskStates" value="${task.state}"/></is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
+                        editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'textarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
+                        editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'richarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'notes']">${task.notes}</is:tableColumn>
+                        editable="[type:'richarea',disabled:!taskEditable,name:'notes']">${task.notes}</is:tableColumn>
 
                 <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate, timezone: timezone) : ''}</is:tableColumn>
@@ -96,6 +100,11 @@
             <is:tableRows in="${urgentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
                           var="task" elemid="id">
 
+                <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
+                <g:set var="notDone" value="${task.state != Task.STATE_DONE && sprint?.state != Sprint.STATE_DONE}"/>
+                <g:set var="taskEditable" value="${(request.scrumMaster ||responsible || task.creator?.id == user.id) && notDone}"/>
+                <g:set var="taskStateEditable" value="${(request.scrumMaster ||responsible) && notDone}"/>
+
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
                     <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
@@ -109,16 +118,16 @@
                 </is:tableColumn>
 
                 <is:tableColumn
-                        editable="[type:'text', disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+                        editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundle
+                        editable="[type:'selectui',id:'state',disabled:!taskStateEditable,name:'state',values:stateSelect]"><is:bundle
                         bundle="taskStates" value="${task.state}"/></is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
+                        editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'textarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
+                        editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'richarea',disabled:!((poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE),name:'notes']">${task.notes}</is:tableColumn>
+                        editable="[type:'richarea',disabled:!taskEditable,name:'notes']">${task.notes}</is:tableColumn>
 
                 <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate) : ''}</is:tableColumn>
@@ -142,6 +151,12 @@
                 </is:tableGroupHeader>
                 <is:tableRows in="${story.tasks.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
                               var="task" elemid="id">
+
+                    <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
+                    <g:set var="notDone" value="${task.state != Task.STATE_DONE && sprint?.state != Sprint.STATE_DONE}"/>
+                    <g:set var="taskEditable" value="${(request.scrumMaster ||responsible || task.creator?.id == user.id) && notDone}"/>
+                    <g:set var="taskStateEditable" value="${(request.scrumMaster ||responsible) && notDone}"/>
+
                     <is:tableColumn class="table-cell-checkbox">
                         <g:checkBox name="check-${task.id}"/>
                         <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
@@ -154,20 +169,17 @@
                         </g:if>
                     </is:tableColumn>
 
-                    <g:set value="${(poOrSm || task.responsible?.id == user.id || task.creator?.id == user.id) && task.state != Task.STATE_DONE}"
-                           var="disableEdit"/>
-
                     <is:tableColumn
-                            editable="[type:'text', disabled:!(disableEdit),name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+                            editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
                     <is:tableColumn
-                            editable="[type:'selectui',id:'state',disabled:!(task?.responsible?.id == user.id && task?.state != Task.STATE_DONE),name:'state',values:stateSelect]"><is:bundle
+                            editable="[type:'selectui',id:'state',disabled:!taskStateEditable,name:'state',values:stateSelect]"><is:bundle
                             bundle="taskStates" value="${task.state}"/></is:tableColumn>
                     <is:tableColumn
-                            editable="[type:'text',disabled:!(task?.responsible && task?.responsible?.id == user.id  && task?.state != Task.STATE_DONE) || (!task?.responsible && task?.creator?.id == user.id && task?.state != Task.STATE_DONE),name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
+                            editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
                     <is:tableColumn
-                            editable="[type:'textarea',disabled:!(disableEdit),name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
+                            editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
                     <is:tableColumn
-                            editable="[type:'richarea',disabled:!(disableEdit),name:'notes']">${task.notes}</is:tableColumn>
+                            editable="[type:'richarea',disabled:!taskEditable,name:'notes']">${task.notes}</is:tableColumn>
 
                     <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
                     <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate) : ''}</is:tableColumn>

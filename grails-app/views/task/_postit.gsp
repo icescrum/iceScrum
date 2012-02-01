@@ -29,13 +29,13 @@
            miniId="${task.uid}"
            styleClass="task ${responsible ? 'hasResponsible' : ''}"
            type="task"
-           sortable='[rendered:((request.scrumMaster || responsible) || (!responsible && assignOnBeginTask && task.state == Task.STATE_WAIT)),disabled:(task.state == Task.STATE_DONE || task.backlog.state == Sprint.STATE_DONE)]'
+           sortable='[rendered:(request.scrumMaster || responsible || (assignOnBeginTask && task.state == Task.STATE_WAIT)),disabled:(task.state == Task.STATE_DONE || task.backlog.state == Sprint.STATE_DONE)]'
            typeNumber="${task.blocked ? 1 : 0}"
            typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
            attachment="${task.totalAttachments}"
            stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
            miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
-           editableEstimation="${(responsible || (!responsible && creator) || scrumMaster) && task.state != Task.STATE_DONE && task.sprint?.state != Sprint.STATE_DONE}"
+           editableEstimation="${(responsible || creator || request.scrumMaster) && task.state != Task.STATE_DONE && task.sprint?.state != Sprint.STATE_DONE}"
            color="yellow"
            rect="true">
             <g:if test="${request.inProduct}">

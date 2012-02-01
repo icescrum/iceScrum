@@ -202,7 +202,7 @@ class SprintPlanController {
             }
             else {
                 params.task.estimation = params.task?.estimation?.replace(/,/,'.')
-                task.estimation = params.task?.estimation?.toFloat() ?: (params.task.estimation.toFloat() == 0) ? 0 : null
+                task.estimation = params.task?.estimation?.isNumber() ? params.task.estimation.toFloat() : null
             }
 
             User user = (User) springSecurityService.currentUser
@@ -211,18 +211,22 @@ class SprintPlanController {
             def returnValue
             if (params.name == 'notes') {
                 returnValue = wikitext.renderHtml(markup: 'Textile', text: task."${params.name}")
+                returnValue = returnValue ?: ''
             } else if (params.name == 'estimation') {
-                returnValue = task.estimation ?: '?'
+                returnValue = task.estimation != null ? task.estimation.toString() : '?'
             } else if (params.name == 'state') {
                 returnValue = g.message(code: BundleUtils.taskStates.get(task.state))
+                returnValue = returnValue ?: ''
             } else if (params.name == 'description') {
                 returnValue = task.description?.encodeAsHTML()?.encodeAsNL2BR()
+                returnValue = returnValue ?: ''
             } else {
                 returnValue = task."${params.name}".encodeAsHTML()
+                returnValue = returnValue ?: ''
             }
 
             def version = task.isDirty() ? task.version + 1 : task.version
-            render(status: 200, text: [version: version, value: returnValue ?: ''] as JSON)
+            render(status: 200, text: [version: version, value: returnValue] as JSON)
         }
     }
 
