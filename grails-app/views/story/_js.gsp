@@ -102,7 +102,7 @@
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
     var feature = this.feature ? this.feature.name : '${message(code: 'is.ui.sandbox.manage.chooseFeature')}';
-    var effort = this.state > 1 ? (this.effort ? this.effort : '?') : '';
+    var effort = this.state > 1 ? (this.effort != null ? this.effort : '?') : '';
     var acceptedDate = jQuery.icescrum.dateLocaleFormat(this.acceptedDate);
     var estimatedDate = this.estimatedDate ? jQuery.icescrum.dateLocaleFormat(this.estimatedDate) : '';
     this.parentSprint = this.parentSprint ? this.parentSprint.id : '';
