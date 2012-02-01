@@ -63,7 +63,7 @@
         actor:{
             instances:${is.bundleLocaleToJs(bundle: BundleUtils.actorInstances)},
             expertnessLevel:${is.bundleLocaleToJs(bundle: BundleUtils.actorLevels)},
-            useFrequency:${is.bundleLocaleToJs(bundle: BundleUtils.actorFrequencies)},
+            useFrequency:${is.bundleLocaleToJs(bundle: BundleUtils.actorFrequencies)}
         },
         feature:{
             types:${is.bundleLocaleToJs(bundle: BundleUtils.featureTypes)}
