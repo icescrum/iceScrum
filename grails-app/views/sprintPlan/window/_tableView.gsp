@@ -53,9 +53,12 @@
                           var="task" elemid="id">
 
                 <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
-                <g:set var="notDone" value="${task.state != Task.STATE_DONE && sprint?.state != Sprint.STATE_DONE}"/>
-                <g:set var="taskEditable" value="${(request.scrumMaster ||responsible || task.creator?.id == user.id) && notDone}"/>
-                <g:set var="taskStateEditable" value="${(request.scrumMaster ||responsible) && notDone}"/>
+                <g:set var="creator" value="${task.creator?.id == user.id}"/>
+                <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
+                <g:set var="sprintDone" value="${sprint?.state == Sprint.STATE_DONE}"/>
+
+                <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
+                <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && !sprintDone && !taskDone}"/>
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
@@ -71,7 +74,7 @@
                 <is:tableColumn
                         editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'selectui',id:'state',disabled:!taskStateEditable,name:'state',values:stateSelect]"><is:bundle
+                        editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                         bundle="taskStates" value="${task.state}"/></is:tableColumn>
                 <is:tableColumn
                         editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
@@ -101,9 +104,12 @@
                           var="task" elemid="id">
 
                 <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
-                <g:set var="notDone" value="${task.state != Task.STATE_DONE && sprint?.state != Sprint.STATE_DONE}"/>
-                <g:set var="taskEditable" value="${(request.scrumMaster ||responsible || task.creator?.id == user.id) && notDone}"/>
-                <g:set var="taskStateEditable" value="${(request.scrumMaster ||responsible) && notDone}"/>
+                <g:set var="creator" value="${task.creator?.id == user.id}"/>
+                <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
+                <g:set var="sprintDone" value="${sprint?.state == Sprint.STATE_DONE}"/>
+
+                <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
+                <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && !sprintDone && !taskDone}"/>
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
@@ -120,7 +126,7 @@
                 <is:tableColumn
                         editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'selectui',id:'state',disabled:!taskStateEditable,name:'state',values:stateSelect]"><is:bundle
+                        editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                         bundle="taskStates" value="${task.state}"/></is:tableColumn>
                 <is:tableColumn
                         editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
@@ -153,9 +159,12 @@
                               var="task" elemid="id">
 
                     <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
-                    <g:set var="notDone" value="${task.state != Task.STATE_DONE && sprint?.state != Sprint.STATE_DONE}"/>
-                    <g:set var="taskEditable" value="${(request.scrumMaster ||responsible || task.creator?.id == user.id) && notDone}"/>
-                    <g:set var="taskStateEditable" value="${(request.scrumMaster ||responsible) && notDone}"/>
+                    <g:set var="creator" value="${task.creator?.id == user.id}"/>
+                    <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
+                    <g:set var="sprintDone" value="${sprint?.state == Sprint.STATE_DONE}"/>
+
+                    <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
+                    <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && !sprintDone && !taskDone}"/>
 
                     <is:tableColumn class="table-cell-checkbox">
                         <g:checkBox name="check-${task.id}"/>
@@ -172,7 +181,7 @@
                     <is:tableColumn
                             editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
                     <is:tableColumn
-                            editable="[type:'selectui',id:'state',disabled:!taskStateEditable,name:'state',values:stateSelect]"><is:bundle
+                            editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                             bundle="taskStates" value="${task.state}"/></is:tableColumn>
                     <is:tableColumn
                             editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>

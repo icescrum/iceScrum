@@ -19,12 +19,21 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;" %>
-<g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
-<g:set var="creator" value="${task.creator.id == user.id}"/>
-<g:set var="responsible" value="${task.responsible?.id == user.id}"/>
+<%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;" %>
 
-<is:postitMenuItem first="${!responsible}" rendered="${(!responsible && task.state != Task.STATE_DONE) || template}"
+<g:set var="responsible" value="${task.responsible?.id == user.id}"/>
+<g:set var="creator" value="${task.creator.id == user.id}"/>
+<g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
+
+<g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !taskDone}"/>
+<g:set var="taskDeletable" value="${(request.scrumMaster || responsible || creator)}"/>
+<g:set var="taskBlockable" value="${(request.scrumMaster || responsible) && !taskDone && task.backlog?.state == Sprint.STATE_INPROGRESS}"/>
+<g:set var="taskTakable" value="${!responsible && !taskDone}"/>
+<g:set var="taskReleasable" value="${responsible && !taskDone}"/>
+<g:set var="taskCopyable" value="${!task.parentStory || task.parentStory.state != Story.STATE_DONE}"/>
+
+<is:postitMenuItem first="${!responsible}"
+                   rendered="${taskTakable || template}"
                    elementId="menu-take-${task.id}">
     <is:link id="${task.id}"
              action="take"
@@ -34,9 +43,9 @@
              history="false"
              value="${message(code:'is.ui.sprintPlan.menu.task.take')}"/>
 </is:postitMenuItem>
-<is:postitMenuItem
-        first="${responsible}"
-        rendered="${(responsible && task.state != Task.STATE_DONE) || template}" elementId="menu-unassign-${task.id}">
+<is:postitMenuItem first="${responsible}"
+                   rendered="${taskReleasable || template}"
+                   elementId="menu-unassign-${task.id}">
     <is:link id="${task.id}"
              action="unassign"
              controller="task"
@@ -45,9 +54,8 @@
              value="${message(code:'is.ui.sprintPlan.menu.task.unassign')}"
              remote="true"/>
 </is:postitMenuItem>
-<is:postitMenuItem
-        rendered="${((responsible || creator || request.scrumMaster) && task.state != Task.STATE_DONE) || template}"
-        elementId="menu-edit-${task.id}">
+<is:postitMenuItem rendered="${taskEditable || template}"
+                   elementId="menu-edit-${task.id}">
     <is:link id="${task.backlog?.id}"
              action="edit"
              subid="${task.id}"
@@ -57,7 +65,9 @@
              value="${message(code:'is.ui.sprintPlan.menu.task.update')}"
              remote="true"/>
 </is:postitMenuItem>
-<is:postitMenuItem first="${task.state == Task.STATE_DONE}" elementId="menu-copy-${task.id}">
+<is:postitMenuItem first="${taskDone}"
+                   rendered="${taskCopyable || template}"
+                   elementId="menu-copy-${task.id}">
     <is:link id="${task.id}"
              action="copy"
              controller="task"
@@ -66,9 +76,9 @@
              onSuccess="jQuery.event.trigger('add_task',data); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.copied')}')"
              value="${message(code:'is.ui.sprintPlan.menu.task.copy')}"/>
 </is:postitMenuItem>
-<is:postitMenuItem
-        rendered="${((poOrSm || creator || responsible) && task.state != Task.STATE_DONE) || (request.scrumMaster && task.state == Task.STATE_DONE) || template}"
-        elementId="menu-delete-${task.id}">
+<is:postitMenuItem first="${taskDone && !taskCopyable}"
+                   rendered="${taskDeletable || template}"
+                   elementId="menu-delete-${task.id}">
     <is:link id="${task.id}"
              action="delete"
              controller="task"
@@ -77,9 +87,8 @@
              onSuccess="jQuery.event.trigger('remove_task',data); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.deleted')}')"
              value="${message(code:'is.ui.sprintPlan.menu.task.delete')}"/>
 </is:postitMenuItem>
-<is:postitMenuItem
-        rendered="${((responsible || request.scrumMaster) && task.state != Task.STATE_DONE && task.backlog?.state == Sprint.STATE_INPROGRESS) || template}"
-        elementId="menu-blocked-${task.id}">
+<is:postitMenuItem rendered="${taskBlockable || template}"
+                   elementId="menu-blocked-${task.id}">
     <is:link id="${task.id}"
              action="block"
              controller="task"
