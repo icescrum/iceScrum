@@ -56,9 +56,10 @@
                 <g:set var="creator" value="${task.creator?.id == user.id}"/>
                 <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
                 <g:set var="sprintDone" value="${sprint?.state == Sprint.STATE_DONE}"/>
+                <g:set var="sprintInProgress" value="${sprint?.state == Sprint.STATE_DONE}"/>
 
                 <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
-                <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && !sprintDone && !taskDone}"/>
+                <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && sprintInProgress && !taskDone}"/>
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
@@ -107,9 +108,10 @@
                 <g:set var="creator" value="${task.creator?.id == user.id}"/>
                 <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
                 <g:set var="sprintDone" value="${sprint?.state == Sprint.STATE_DONE}"/>
+                <g:set var="sprintInProgress" value="${sprint?.state == Sprint.STATE_DONE}"/>
 
                 <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
-                <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && !sprintDone && !taskDone}"/>
+                <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && sprintInProgress && !taskDone}"/>
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
@@ -162,9 +164,10 @@
                     <g:set var="creator" value="${task.creator?.id == user.id}"/>
                     <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
                     <g:set var="sprintDone" value="${sprint?.state == Sprint.STATE_DONE}"/>
+                    <g:set var="sprintInProgress" value="${sprint?.state == Sprint.STATE_DONE}"/>
 
                     <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
-                    <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && !sprintDone && !taskDone}"/>
+                    <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && sprintInProgress && !taskDone}"/>
 
                     <is:tableColumn class="table-cell-checkbox">
                         <g:checkBox name="check-${task.id}"/>
