@@ -49,18 +49,18 @@
       </is:fieldInput>
 
       <is:buttonBar id="retrieve-button-bar">
-        <is:button id="retrieveSubmit"
+          <is:button type="link"
+                     action="auth"
+                     controller="login"
+                     remote="false"
+                     value="${message(code:'is.button.cancel')}"/>
+          <is:button id="retrieveSubmit"
                   history="false"
                   type="submitToRemote"
                   controller="user"
                   action="retrieve"
                   onSuccess="jQuery.icescrum.renderNotice(data.text); jQuery.doTimeout(1000,function(){window.location.href='${createLink(controller:'login',action:'auth')}';})"
                   value="${message(code:'is.dialog.retrieve.button.reset')}"/>
-        <is:button type="link"
-                action="auth"
-                controller="login"
-                remote="false"
-                value="${message(code:'is.button.cancel')}"/>
       </is:buttonBar>
 
     </g:formRemote>
