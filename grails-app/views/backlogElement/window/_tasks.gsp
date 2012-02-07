@@ -33,7 +33,7 @@
                     <is:tableHeader name="${message(code:'is.task.state')}"/>
                         <is:tableRows in="${story.tasks}" rowClass="${{task -> task.blocked?'ico-task-1':''}}" var="task">
                             <is:tableColumn>${task.name.encodeAsHTML()}</is:tableColumn>
-                            <is:tableColumn>${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
+                            <is:tableColumn>${task.estimation >= 0 ? task.estimation.round(2) : '?'}</is:tableColumn>
                             <is:tableColumn>${task.creator.firstName.encodeAsHTML()} ${task.creator.lastName.encodeAsHTML()}</is:tableColumn>
                             <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
                             <is:tableColumn>${is.bundle(bundle: 'taskStates', value: task.state)}</is:tableColumn>
