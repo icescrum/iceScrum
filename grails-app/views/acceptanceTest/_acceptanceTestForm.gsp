@@ -19,23 +19,20 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div id="acceptance-test-form-container${acceptanceTest?.id ?: ''}" ${hidden ? 'style="display:none;"' : ''}>
+<div id="acceptance-test-form-container${acceptanceTest?.id ?: ''}" ${hidden ? 'style="display:none;"' : ''} class="box-form box-form-250 box-form-200-legend">
     <g:form action="saveAcceptanceTest" name="acceptanceTestForm${acceptanceTest?.id ?: ''}">
-
-        <is:fieldInput for="acceptance-test-name-field" label="">
-            <is:input id="acceptance-test-name-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.name" value="${acceptanceTest?.name}"/>
-        </is:fieldInput>
-
-        <markitup:editor id="acceptance-test-description-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.description">
-            ${acceptanceTest?.description}
-        </markitup:editor>
-
-        <g:if test="${acceptanceTest}">
-            <g:hiddenField name="acceptanceTest.id" value="${acceptanceTest?.id}"/>
-        </g:if>
-        <g:else>
-            <g:hiddenField name="parentStoryId" value="${parentStory.id}"/>
-        </g:else>
+        <is:fieldset title="">
+            <is:fieldInput for="acceptanceTest.name" label="is.backlogelement.name">
+                <is:input id="acceptance-test-name-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.name" value="${acceptanceTest?.name}"/>
+            </is:fieldInput>
+            <is:fieldArea for="acceptanceTest.description" label="is.backlogelement.description" noborder="true">
+                <span class="area-rich">
+                    <markitup:editor id="acceptance-test-description-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.description" class="area-rich">
+                        ${acceptanceTest?.description}
+                    </markitup:editor>
+                </span>
+            </is:fieldArea>
+        </is:fieldset>
 
         <g:if test="${acceptanceTest}">
             <is:button
@@ -59,5 +56,11 @@
             history="false"/>
         </g:else>
 
+        <g:if test="${acceptanceTest}">
+            <g:hiddenField name="acceptanceTest.id" value="${acceptanceTest?.id}"/>
+        </g:if>
+        <g:else>
+            <g:hiddenField name="parentStoryId" value="${parentStory.id}"/>
+        </g:else>
     </g:form>
 </div>
