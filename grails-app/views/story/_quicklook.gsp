@@ -120,17 +120,34 @@
                        color="${story.feature?.color ?: 'yellow'}"
                        stateText="${is.bundle(bundle:'storyStates',value:story.state)}">
             </is:postit>
-            <g:if test="${story.comments?.size() >= 1}">
-                <strong>
+            <g:set var="acceptanceTestCount" value="${story.acceptanceTests.size()}"/>
+            <g:if test="${acceptanceTestCount > 0}">
+                <div>
+                    <strong>
                     <is:scrumLink
                             controller="backlogElement"
                             action="details"
                             id="${story.id}"
-                            params="['comment':'true']"
+                            params="['tab':'tests']"
+                            onclick="\$('#dialog').dialog('close');">
+                        ${message(code: 'is.postit.acceptanceTest.count', args: [acceptanceTestCount, acceptanceTestCount > 1 ? 's' : ''])}
+                    </is:scrumLink>
+                    </strong>
+                </div>
+            </g:if>
+            <g:if test="${story.comments?.size() >= 1}">
+                <div>
+                    <strong>
+                    <is:scrumLink
+                            controller="backlogElement"
+                            action="details"
+                            id="${story.id}"
+                            params="['tab':'comments']"
                             onclick="\$('#dialog').dialog('close');">
                         ${message(code: 'is.postit.comment.count', args: [story.comments.size(), story.comments.size() > 1 ? 's' : ''])}
                     </is:scrumLink>
-                </strong>
+                    </strong>
+                </div>
             </g:if>
             <g:if test="${story.totalAttachments}">
                 <div>
