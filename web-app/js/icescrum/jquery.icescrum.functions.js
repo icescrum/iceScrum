@@ -562,7 +562,9 @@
                         if (this.totalComments <= 0 ) {
                             newObject.find('.postit-comment,.table-comment').hide();
                         }
-
+                        if(this.acceptanceTests.length <= 0) {
+                            newObject.find('.postit-acceptance-test,.table-acceptance-test').hide();
+                        }
                         if (this.totalAttachments <= 0) {
                             newObject.find('.postit-attachment,.table-attachment').hide()
                         }

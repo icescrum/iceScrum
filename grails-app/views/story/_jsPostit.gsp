@@ -49,6 +49,7 @@
     var parentReleaseID = this.parentSprint ? this.parentSprint.parentReleaseId : '';
     var sprintOrderNumber = this.parentSprint ? this.parentSprint.orderNumber + 1 : '';
     var parentSprint = this.parentSprint ? this.parentSprint.id : '';
+    var acceptanceTestCount = this.acceptanceTests.length;
     description = description.formatLine();
 **?
 <is:postit id="${story.id}"
@@ -65,6 +66,7 @@
            color="?**=color**?"
            editableEstimation="${editable}"
            stateText="?**=textState**?"
+           acceptanceTestCount="?**=acceptanceTestCount**?"
            comment="${story.totalComments}">
     ?**=truncatedDescription**?
     <is:postitMenu id="story-${story.id}" contentView="/story/menu"

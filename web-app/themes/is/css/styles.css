@@ -757,15 +757,28 @@ li#li-roles {
     left: 8px;
 }
 
-.postit .postit-attachment, .postit-rect .postit-attachment, .postit .postit-comment, .postit-rect .postit-comment {
+.postit-rect .postit-attachment,
+.postit-rect .postit-comment {
     position: absolute;
     padding: 0;
     margin: 0;
 }
 
-.postit .postit-attachment {
+.postit .icon-container {
+    position: absolute;
+    padding: 0;
+    margin: 0;
     bottom: 4px;
-    left: 25px;
+    left: 8px;
+}
+
+.icon-container .icon {
+    float: left;
+    display: inline-block;
+    margin-right: 2px;
+}
+
+.postit .postit-attachment {
     height: 15px;
     width: 15px;
 }
@@ -778,8 +791,6 @@ li#li-roles {
 }
 
 .postit .postit-comment {
-    bottom: 4px;
-    left: 6px;
     height: 15px;
     width: 15px;
 }
@@ -789,6 +800,11 @@ li#li-roles {
     left: 5px;
     height: 15px;
     width: 15px;
+}
+
+.postit .postit-acceptance-test {
+    height: 14px;
+    width: 16px;
 }
 
 .postit .postit-sortable {
@@ -1947,6 +1963,12 @@ li#li-roles {
 .table-attachment, .table-comment {
     height: 15px;
     width: 15px;
+    display: inline-block;
+}
+
+.table-acceptance-test {
+    height: 14px;
+    width: 16px;
     display: inline-block;
 }
 

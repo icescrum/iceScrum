@@ -159,6 +159,12 @@ body {
     background-position: 0 0;
 }
 
+.postit .postit-acceptance-test, .table-acceptance-test {
+    background-image: url(../images/icons/test-grey.png);
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+
 .postit-rect .postit-layout {
     background-image: url(../images/view/postit-rectangle.png);
     background-repeat: no-repeat;

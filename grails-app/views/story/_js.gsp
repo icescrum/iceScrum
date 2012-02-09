@@ -30,7 +30,9 @@
                             rank:'?**=this.rank**?',
                             creator:[id:'?**=user_id**?'],
                             parentSprint:[id:'?**=this.parentSprint.id**?',parentRelease:'?**=this.parentSprint.parentReleaseId**?'],
-                            name:'?**=name**?']"/>
+                            name:'?**=name**?',
+                            totalComments:'?**=this.totalComments**?',
+                            totalAttachments:'?**=this.totalAttachments**?']"/>
 <g:set var="user" value="[id:'?**=this.id**?']"/>
 
 <template id="postit-story-sandbox-tmpl">
@@ -42,6 +44,7 @@
     <![CDATA[
     ?**
     var color = this.feature ? this.feature.color : '';
+    var acceptanceTestCount = this.acceptanceTests.length;
     var name =  this.name ? this.name : '';
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
@@ -61,12 +64,12 @@
                 <g:checkBox name="check-${story.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"
                          params="[id:id, story:story, sprint:sprint, template:true]"/>
-                <g:set var="comment" value="${story.totalComments}"/>
                 <span class="table-comment"
-                      title="${message(code: 'is.postit.comment.count', args: [comment, comment instanceof Integer && comment > 1 ? 's' : ''])}"></span>
-                <g:set var="attachment" value="${story.totalAttachments}"/>
+                      title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"
-                      title="${message(code: 'is.postit.attachment', args: [attachment, attachment instanceof Integer && attachment > 1 ? 's' : ''])}"></span>
+                      title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
+                <span class="table-acceptance-test"
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="backlogElement">
@@ -98,6 +101,7 @@
     <![CDATA[
     ?**
     var color = this.feature ? this.feature.color : '';
+    var acceptanceTestCount = this.acceptanceTests.length;
     var name =  this.name ? this.name : '';
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
@@ -120,12 +124,12 @@
                 <g:checkBox name="check-${story.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"
                          params="[id:id,story:story,template:true]"/>
-                <g:set var="comment" value="${story.totalComments}"/>
                 <span class="table-comment"
-                      title="${message(code: 'is.postit.comment.count', args: [comment, comment instanceof Integer && comment > 1 ? 's' : ''])}"></span>
-                <g:set var="attachment" value="${story.totalAttachments}"/>
+                      title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"
-                      title="${message(code: 'is.postit.attachment', args: [attachment, attachment instanceof Integer && attachment > 1 ? 's' : ''])}"></span>
+                      title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
+                <span class="table-acceptance-test"
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="backlogElement">

@@ -55,6 +55,11 @@
                     <span class="table-attachment"
                           title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
                 </g:if>
+                <g:set var="acceptanceTestCount" value="${story.acceptanceTests.size()}"/>
+                <g:if test="${acceptanceTestCount > 0}">
+                    <span class="table-acceptance-test"
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: [acceptanceTestCount, acceptanceTestCount > 1 ? 's' : ''])}"></span>
+                </g:if>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="backlogElement">
