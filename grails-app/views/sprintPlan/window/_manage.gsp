@@ -47,6 +47,7 @@
     <is:fieldset title="is.ui.sprintPlan.task.attachment.title">
         <is:fieldFile for='task.attachments' label="is.backlogelement.attachment" noborder="true">
             <is:multiFilesUpload elementId="taskattachments"
+                                 controller="task"
                                  name="attachments"
                                  bean="${task}"
                                  urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
