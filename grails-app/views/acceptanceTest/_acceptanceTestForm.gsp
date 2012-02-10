@@ -20,7 +20,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div id="acceptance-test-form-container${acceptanceTest?.id ?: ''}" ${hidden ? 'style="display:none;"' : ''} class="box-form box-form-250 box-form-200-legend">
-    <g:form action="saveAcceptanceTest" name="acceptanceTestForm${acceptanceTest?.id ?: ''}">
+    <form method="post" name="acceptanceTestForm${acceptanceTest?.id ?: ''}" onSubmit="return false;">
         <is:fieldset title="">
             <is:fieldInput for="acceptanceTest.name" label="is.backlogelement.name">
                 <is:input id="acceptance-test-name-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.name" value="${acceptanceTest?.name}"/>
@@ -62,5 +62,5 @@
         <g:else>
             <g:hiddenField name="parentStoryId" value="${parentStory.id}"/>
         </g:else>
-    </g:form>
+    </form>
 </div>
