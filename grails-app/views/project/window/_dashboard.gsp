@@ -58,8 +58,7 @@
                 <is:panelTitle><g:message code="is.ui.project.vision.title"/></is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${release?.vision}">
-                        <wikitext:renderHtml
-                                markup="Textile">${is.truncated(value: release.vision, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
+                        <wikitext:renderHtml markup="Textile">${is.truncated(value: release.vision, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
                     </g:if>
                     <g:else>
                         <g:message code="is.release.empty.vision"/>

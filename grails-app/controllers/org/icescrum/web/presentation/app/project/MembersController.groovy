@@ -105,7 +105,7 @@ class MembersController {
         }
     }
 
-    @Secured('inProduct() or stakeHolder()')
+    @Secured(['inProduct() or stakeHolder()', 'RUN_AS_PERMISSIONS_MANAGER'])
      def leaveTeam = {
         def product = Product.get(params.product)
         def user = springSecurityService.currentUser
@@ -117,6 +117,7 @@ class MembersController {
             productService.removeAllRoles(product,team,u, false)
             render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
         } catch (e) {
+            if (log.debugEnabled) e.printStackTrace()
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
         }
     }

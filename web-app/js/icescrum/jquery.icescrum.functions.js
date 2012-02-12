@@ -165,7 +165,11 @@
                     },
 
                     redirect:function() {
-                        document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey+'#project';
+                        if (document.location.href.indexOf($.icescrum.o.grailsServer+'/p/'+this.pkey) > -1 ){
+                            document.location.reload();
+                        }else{
+                            document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey+'#project';
+                        }
                     }
                 },
 

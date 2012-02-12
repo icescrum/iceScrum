@@ -294,7 +294,7 @@ class SprintPlanController {
 
     def doneDefinition = {
         withSprint{ Sprint sprint ->
-            render(template: 'window/doneDefinitionView', model: [sprint: sprint, id: id])
+            render(template: 'window/doneDefinition', model: [sprint: sprint, id: id])
         }
     }
 
@@ -319,7 +319,7 @@ class SprintPlanController {
 
     def retrospective = {
         withSprint{ Sprint sprint ->
-            render(template: 'window/retrospectiveView', model: [sprint: sprint, id: id])
+            render(template: 'window/retrospective', model: [sprint: sprint, id: id])
         }
     }
 
@@ -432,15 +432,8 @@ class SprintPlanController {
 
     def copyRecurrentTasksFromPreviousSprint = {
         withSprint{ Sprint sprint ->
-            try {
-                def tasks = sprintService.copyRecurrentTasksFromPreviousSprint(sprint)
-                render(status: 200, contentType: 'application/json', text: tasks as JSON)
-            } catch (IllegalStateException ise) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-            } catch (RuntimeException e) {
-                if (log.debugEnabled) e.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: sprint)]] as JSON)
-            }
+            def tasks = sprintService.copyRecurrentTasksFromPreviousSprint(sprint)
+            render(status: 200, contentType: 'application/json', text: tasks as JSON)
         }
     }
 

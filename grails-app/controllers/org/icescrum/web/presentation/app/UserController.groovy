@@ -214,7 +214,7 @@ class UserController {
         }
         def permalink = createLink(absolute: true, mapping: "profile", id: params.id)
         def stories = Story.findAllByCreator(user, [order: 'desc', sort: 'lastUpdated', max: 150])
-        def activities = Activity.findAllByPoster(user, [order: 'desc', sort: 'dateCreated', max: 15])
+        def activities = Activity.findAllByPoster(user, [order: 'desc', sort: 'dateCreated', max: 15, cache:false])
         def tasks = Task.findAllByResponsibleAndState(user, Task.STATE_BUSY, [order: 'desc', sort: 'lastUpdated'])
         def inProgressTasks = tasks.size()
 

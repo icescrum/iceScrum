@@ -314,16 +314,12 @@ class BacklogElementController {
             }
             return
         }
-
-        def story = Story.getInProduct(params.long('product'),params.id).list()[0]
-
+        def story = Story.get(params.id)
         if (!story) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
             return
         }
-
         params.product = story.backlog.id
-
         redirect(url: is.createScrumLink(controller: 'backlogElement', id: params.id))
     }
 
