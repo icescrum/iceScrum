@@ -316,7 +316,8 @@
             return vars;
           },
           getUrlVar: function(name){
-            return $.getUrlVars()[name];
+            var value = $.getUrlVars()[name];
+            return $.getUrlVars()[name] ? value : '';
           }
     });
 
