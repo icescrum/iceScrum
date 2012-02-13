@@ -308,7 +308,7 @@
               hash = hashes[i].split('=');
               vars.push(hash[0]);
               if (!hash[1]){
-                  vars[hash[0]] = "";
+                  vars[hash[0]] = null;
               }else{
                   vars[hash[0]] = hash[1];
               }
@@ -317,7 +317,7 @@
           },
           getUrlVar: function(name){
             var value = $.getUrlVars()[name];
-            return $.getUrlVars()[name] ? value : '';
+            return $.getUrlVars()[name] ? value : null;
           }
     });
 

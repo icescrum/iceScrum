@@ -332,6 +332,15 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 return '?';
             else
                 return estimation.toString().indexOf('.') == -1 ? estimation.toString().concat('.0') : estimation;
+        },
+
+        redirectOnLogin:function(){
+            var ref = jQuery.getUrlVar('ref');
+            if (ref){
+                document.location = jQuery.getUrlVar('ref')
+            }else{
+                document.location = jQuery.icescrum.o.baseUrl;
+            }
         }
     }
 
