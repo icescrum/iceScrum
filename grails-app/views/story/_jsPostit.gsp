@@ -49,7 +49,7 @@
     var parentReleaseID = this.parentSprint ? this.parentSprint.parentReleaseId : '';
     var sprintOrderNumber = this.parentSprint ? this.parentSprint.orderNumber + 1 : '';
     var parentSprint = this.parentSprint ? this.parentSprint.id : '';
-    var acceptanceTestCount = this.acceptanceTests.length;
+    var acceptanceTestCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
     description = description.formatLine();
 **?
 <is:postit id="${story.id}"

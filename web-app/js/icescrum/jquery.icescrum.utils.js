@@ -307,7 +307,11 @@
             {
               hash = hashes[i].split('=');
               vars.push(hash[0]);
-              vars[hash[0]] = hash[1];
+              if (!hash[1]){
+                  vars[hash[0]] = "";
+              }else{
+                  vars[hash[0]] = hash[1];
+              }
             }
             return vars;
           },
