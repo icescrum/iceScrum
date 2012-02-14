@@ -321,7 +321,7 @@ class TimelineController {
      */
     def print = {
         def currentProduct = Product.get(params.product)
-        def values
+        def data
         def chart = null
 
         if (params.locationHash) {
@@ -330,26 +330,26 @@ class TimelineController {
 
         switch (chart) {
             case 'productCumulativeFlowChart':
-                values = productService.cumulativeFlowValues(currentProduct)
+                data = productService.cumulativeFlowValues(currentProduct)
                 break
             case 'productBurnupChart':
-                values = productService.productBurnupValues(currentProduct)
+                data = productService.productBurnupValues(currentProduct)
                 break
             case 'productBurndownChart':
-                values = productService.productBurndownValues(currentProduct)
+                data = productService.productBurndownValues(currentProduct)
                 break
             case 'productParkingLotChart':
-                values = featureService.productParkingLotValues(currentProduct)
+                data = featureService.productParkingLotValues(currentProduct)
                 break
             case 'productVelocityChart':
-                values = productService.productVelocityValues(currentProduct)
+                data = productService.productVelocityValues(currentProduct)
                 break
             case 'productVelocityCapacityChart':
-                values = productService.productVelocityCapacityValues(currentProduct)
+                data = productService.productVelocityCapacityValues(currentProduct)
                 break
             default:
                 chart = 'timeline'
-                values = [
+                data = [
                         [
                                 releaseStateBundle: BundleUtils.releaseStates,
                                 releases: currentProduct.releases,
@@ -364,31 +364,10 @@ class TimelineController {
                 break
         }
 
-        if (values.size() <= 0) {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        if (data.size() <= 0) {
+            returnError(text:message(code: 'is.report.error.no.data'))
         } else if (params.get) {
-            session.progress = new ProgressSupport()
-            session.progress.updateProgress(99, message(code: 'is.report.processing'))
-            try {
-                def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "") + '-' + (chart ?: 'timeline') + '-' + (g.formatDate(formatName: 'is.date.file'))
-                chain(controller: 'jasper',
-                        action: 'index',
-                        model: [data: values],
-                        params: [
-                                locale: User.get(springSecurityService.principal.id).preferences.language,
-                                _format: params.format,
-                                _file: chart ?: 'timeline',
-                                _name: fileName,
-                                'labels.projectName': currentProduct.name,
-                                SUBREPORT_DIR: "${servletContext.getRealPath('reports/subreports')}/"
-                        ]
-                )
-                session.progress?.completeProgress(message(code: 'is.report.complete'))
-            } catch (Exception e) {
-                if (log.debugEnabled) e.printStackTrace()
-                session.progress.progressError(message(code: 'is.report.error'))
-            }
+            outputJasperReport(chart ?: 'timeline', params.format, data, currentProduct.name, ['labels.projectName': currentProduct.name])
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {

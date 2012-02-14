@@ -443,7 +443,7 @@ class SprintPlanController {
     def print = {
         def currentProduct = Product.load(params.product)
         def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
-        def values
+        def data
         def chart = null
 
         if (!sprint) {
@@ -457,13 +457,13 @@ class SprintPlanController {
 
         switch (chart) {
             case 'sprintBurndownHoursChart':
-                values = sprintService.sprintBurndownHoursValues(sprint)
+                data = sprintService.sprintBurndownHoursValues(sprint)
                 break
             case 'sprintBurnupTasksChart':
-                values = sprintService.sprintBurnupTasksValues(sprint)
+                data = sprintService.sprintBurnupTasksValues(sprint)
                 break
             case 'sprintBurnupStoriesChart':
-                values = sprintService.sprintBurnupStoriesValues(sprint)
+                data = sprintService.sprintBurnupStoriesValues(sprint)
                 break
             default:
                 chart = 'sprintPlan'
@@ -480,7 +480,7 @@ class SprintPlanController {
                     it.responsible?.lastName
                     it.creator?.lastName
                 }
-                values = [
+                data = [
                         [
                                 taskStateBundle: BundleUtils.taskStates,
                                 tasks: tasks,
@@ -492,34 +492,14 @@ class SprintPlanController {
                 break
         }
 
-        if (values.size() <= 0) {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        if (data.size() <= 0) {
+            returnError(text:message(code: 'is.report.error.no.data'))
         } else if (params.get) {
-            session.progress = new ProgressSupport()
-            session.progress.updateProgress(99, message(code: 'is.report.processing'))
-            def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "") + '-' + (chart ?: 'sprintPlan') + '-' + (g.formatDate(formatName: 'is.date.file'))
-
-            try {
-                chain(controller: 'jasper',
-                        action: 'index',
-                        model: [data: values],
-                        params: [
-                                _format: params.format,
-                                _file: chart ?: 'sprintPlan',
-                                'labels.projectName': currentProduct.name,
-                                _name: fileName,
-                                SUBREPORT_DIR: "${servletContext.getRealPath('reports/subreports')}/"
-                        ]
-                )
-                session.progress?.completeProgress(message(code: 'is.report.complete'))
-            } catch (Exception e) {
-                if (log.debugEnabled) e.printStackTrace()
-                session.progress.progressError(message(code: 'is.report.error'))
-            }
+            outputJasperReport(chart ?: 'sprintPlan', params.format, data, currentProduct.name, ['labels.projectName': currentProduct.name])
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
+            session.progress = new ProgressSupport()
             render(template: 'dialogs/report', model: [id: id, sprint: sprint])
         }
     }

@@ -273,8 +273,6 @@ class FeatureController {
     }
 
     def print = {
-        def user = springSecurityService.currentUser
-
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)
         def data = []
@@ -285,7 +283,7 @@ class FeatureController {
             feature.stories?.sum {(it.state == Story.STATE_DONE) ? 1 : 0}
         }
         if (!values) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.report.error.no.data')]] as JSON)
+            returnError(text:message(code: 'is.report.error.no.data'))
             return
         } else if (params.get) {
             currentProduct.features.eachWithIndex { feature, index ->
@@ -302,23 +300,11 @@ class FeatureController {
                         parkingLotValue: values[index].value
                 ]
             }
-            try {
-                session.progress = new ProgressSupport()
-                session.progress.updateProgress(99, message(code: 'is.report.processing'))
-                def model = [[product: currentProduct.name, features: data ?: null]]
-                def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "") + '-' + 'features' + '-' + (g.formatDate(formatName: 'is.date.file'))
-                chain(controller: 'jasper',
-                        action: 'index',
-                        model: [data: model],
-                        params: [locale: user.preferences.language, _format: params.format, _file: 'features', _name: fileName])
-                session.progress?.completeProgress(message(code: 'is.report.complete'))
-            } catch (Exception e) {
-                if (log.debugEnabled) e.printStackTrace()
-                session.progress.progressError(message(code: 'is.report.error'))
-            }
+            outputJasperReport('features', params.format, [[product: currentProduct.name, features: data ?: null]], currentProduct.name)
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
+            session.progress = new ProgressSupport()
             render(template: 'dialogs/report', model: [id: id])
         }
     }

@@ -68,6 +68,7 @@ class ProjectController {
     def featureService
     def securityService
     def springcacheService
+    def jasperService
 
     def index = {
         chain(controller: 'scrumOS', action: 'index', params: params)
@@ -583,7 +584,6 @@ class ProjectController {
                 render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.import.error')]] as JSON)
                 return
             }
-            def link = g.createLink(action: 'index', controller: 'scrumOS', params: [product: session.tmpP.pkey])
             render(status:200, contentType:'application/json', text:session.tmpP as JSON)
             session.tmpP = null
             session.tmpXmlPath = null
@@ -663,7 +663,7 @@ class ProjectController {
      */
     def print = {
         def currentProduct = Product.get(params.product)
-        def values
+        def data
         def chart = null
 
         if (params.locationHash) {
@@ -672,26 +672,26 @@ class ProjectController {
 
         switch (chart) {
             case 'productCumulativeFlowChart':
-                values = productService.cumulativeFlowValues(currentProduct)
+                data = productService.cumulativeFlowValues(currentProduct)
                 break
             case 'productBurnupChart':
-                values = productService.productBurnupValues(currentProduct)
+                data = productService.productBurnupValues(currentProduct)
                 break
             case 'productBurndownChart':
-                values = productService.productBurndownValues(currentProduct)
+                data = productService.productBurndownValues(currentProduct)
                 break
             case 'productParkingLotChart':
-                values = featureService.productParkingLotValues(currentProduct)
+                data = featureService.productParkingLotValues(currentProduct)
                 break
             case 'productVelocityChart':
-                values = productService.productVelocityValues(currentProduct)
+                data = productService.productVelocityValues(currentProduct)
                 break
             case 'productVelocityCapacityChart':
-                values = productService.productVelocityCapacityValues(currentProduct)
+                data = productService.productVelocityCapacityValues(currentProduct)
                 break
             default:
                 chart = 'timeline'
-                values = [
+                data = [
                         [
                                 releaseStateBundle: BundleUtils.releaseStates,
                                 releases: currentProduct.releases,
@@ -706,34 +706,14 @@ class ProjectController {
                 break
         }
 
-        if (values.size() <= 0) {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        if (data.size() <= 0) {
+            returnError(text:message(code: 'is.report.error.no.data'))
         } else if (params.get) {
-            session.progress = new ProgressSupport()
-            session.progress.updateProgress(99, message(code: 'is.report.processing'))
-            def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "") + '-' + (chart ?: 'timeline') + '-' + (g.formatDate(formatName: 'is.date.file'))
-            try {
-                chain(controller: 'jasper',
-                        action: 'index',
-                        model: [data: values],
-                        params: [
-                                locale: springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id).preferences.language : RCU.getLocale(request).toString().substring(0, 2),
-                                _format: params.format,
-                                _file: chart ?: 'timeline',
-                                _name: fileName,
-                                'labels.projectName': currentProduct.name,
-                                SUBREPORT_DIR: "${servletContext.getRealPath('reports/subreports')}/"
-                        ]
-                )
-                session.progress?.completeProgress(message(code: 'is.report.complete'))
-            } catch (Exception e) {
-                if (log.debugEnabled) e.printStackTrace()
-                session.progress.progressError(message(code: 'is.report.error'))
-            }
+            outputJasperReport(chart ?: 'timeline', params.format, data, currentProduct.name, ['labels.projectName': currentProduct.name])
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
+            session.progress = new ProgressSupport()
             render(template: 'dialogs/report', model: [id: id])
         }
     }
@@ -851,14 +831,13 @@ class ProjectController {
     }
 
     def printPostits = {
-        def user = springSecurityService.currentUser
         def currentProduct = Product.get(params.product)
         def stories1 = []
         def stories2 = []
         def first = 0
         def stories = Story.findAllByBacklog(currentProduct, [sort: 'state', order: 'asc'])
         if (!stories) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.report.error.no.data')]] as JSON)
+            returnError(text:message(code: 'is.report.error.no.data'))
             return
         } else if (params.get) {
             stories.each {
@@ -889,28 +868,11 @@ class ProjectController {
                 }
 
             }
-            try {
-                session.progress = new ProgressSupport()
-                session.progress.updateProgress(99, message(code: 'is.report.processing'))
-
-                def model = [[product: currentProduct.name, stories1: stories1 ?: null, stories2: stories2 ?: null]]
-                def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "") + '-' + 'allStories' + '-' + (g.formatDate(formatName: 'is.date.file'))
-                chain(controller: 'jasper',
-                        action: 'index',
-                        model: [data: model],
-                        params: [locale: user?.preferences?.language?:RCU.getLocale(request).toString().substring(0, 2),
-                                _format: params.format,
-                                _file: 'stories',
-                                SUBREPORT_DIR: "${servletContext.getRealPath('reports/subreports')}/",
-                                _name: fileName])
-                session.progress?.completeProgress(message(code: 'is.report.complete'))
-            } catch (Exception e) {
-                if (log.debugEnabled) e.printStackTrace()
-                session.progress.progressError(message(code: 'is.report.error'))
-            }
+            outputJasperReport('stories', params.format, [[product: currentProduct.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], currentProduct.name)
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
+            session.progress = new ProgressSupport()
             render(template: 'dialogs/report', model: [id: id])
         }
     }

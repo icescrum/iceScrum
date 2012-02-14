@@ -30,11 +30,9 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
-import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.PlanningPokerGame
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 @Secured('stakeHolder() or inProduct()')
 class BacklogController {
@@ -105,12 +103,11 @@ class BacklogController {
     }
 
     def print = {
-        def user = (User) springSecurityService.currentUser
         def currentProduct = Product.get(params.product)
         def data = []
         def stories = Story.findAllByBacklogAndStateBetween(currentProduct, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
         if (!stories) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.report.error.no.data')]] as JSON)
+            returnError(text:message(code: 'is.report.error.no.data'))
             return
         } else if (params.get) {
             stories.each {
@@ -127,24 +124,11 @@ class BacklogController {
                         feature: it.feature?.name,
                 ]
             }
-            try {
-                session.progress = new ProgressSupport()
-                session.progress.updateProgress(99, message(code: 'is.report.processing'))
-                def model = [[product: currentProduct.name, stories: data ?: null]]
-                def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "") + '-' + 'backlog' + '-' + (g.formatDate(formatName: 'is.date.file'))
-
-                chain(controller: 'jasper',
-                        action: 'index',
-                        model: [data: model],
-                        params: [locale: user?.preferences?.language?:RCU.getLocale(request).toString().substring(0, 2), _format: params.format, _file: 'backlog', _name: fileName])
-                session.progress?.completeProgress(message(code: 'is.report.complete'))
-            } catch (Exception e) {
-                if (log.debugEnabled) e.printStackTrace()
-                session.progress.progressError(message(code: 'is.report.error'))
-            }
+            outputJasperReport('backlog', params.format, [[product: currentProduct.name, stories: data ?: null]], currentProduct.name)
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
+            session.progress = new ProgressSupport()
             render(template: 'dialogs/report', model: [id: id])
         }
     }

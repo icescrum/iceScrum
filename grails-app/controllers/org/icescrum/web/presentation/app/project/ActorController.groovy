@@ -254,13 +254,11 @@ class ActorController {
     }
 
     def print = {
-        def user = springSecurityService.currentUser
-
         def currentProduct = Product.load(params.product)
         def data = []
         def actors = Actor.findAllByBacklog(currentProduct, [sort: 'useFrequency', order: 'asc']);
         if (!actors) {
-            renderErrors(text:message(code: 'is.report.error.no.data'))
+            returnError(text:message(code: 'is.report.error.no.data'))
             return
         } else if (params.get) {
             actors.each {
@@ -275,27 +273,11 @@ class ActorController {
                         associatedStories: Story.findAllByTextAsIlike(it.name).size() ?: 0
                 ]
             }
-            try {
-                session.progress = new ProgressSupport()
-                session.progress.updateProgress(99, message(code: 'is.report.processing'))
-                def model = [[product: currentProduct.name, actors: data ?: null]]
-                def fileName = currentProduct.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "") + '-' + 'actors' + '-' + (g.formatDate(formatName: 'is.date.file'))
-                chain(controller: 'jasper',
-                        action: 'index',
-                        model: [data: model],
-                        params: [locale: user.preferences.language,
-                                _format: params.format,
-                                _file: 'actors',
-                                _name: fileName])
-
-                session.progress?.completeProgress(message(code: 'is.report.complete'))
-            } catch (Exception e) {
-                if (log.debugEnabled) e.printStackTrace()
-                session.progress.progressError(message(code: 'is.report.error'))
-            }
+            outputJasperReport('actors', params.format, [[product: currentProduct.name, actors: data ?: null]], currentProduct.name)
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
+            session.progress = new ProgressSupport()
             render(template: 'dialogs/report', model: [id: id])
         }
     }
