@@ -504,6 +504,54 @@ class SprintPlanController {
         }
     }
 
+    def printPostits = {
+        def currentProduct = Product.load(params.product)
+        withSprint{ Sprint sprint ->
+            def stories1 = []
+            def stories2 = []
+            def first = 0
+            if (!sprint.stories) {
+                returnError(text:message(code: 'is.report.error.no.data'))
+                return
+            } else if (params.get) {
+                sprint.stories?.each {
+                    def story = [name: it.name,
+                            id: it.uid,
+                            effort: it.effort,
+                            state: message(code: BundleUtils.storyStates[it.state]),
+                            description: is.storyTemplate([story: it, displayBR: true]),
+                            notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
+                            type: message(code: BundleUtils.storyTypes[it.type]),
+                            suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.suggestedDate]) : null,
+                            acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.acceptedDate]) : null,
+                            estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.estimatedDate]) : null,
+                            plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.plannedDate]) : null,
+                            inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.inProgressDate]) : null,
+                            doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.doneDate ?: null]) : null,
+                            rank: it.rank ?: null,
+                            sprint: g.message(code: 'is.release') + " " + sprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + sprint.orderNumber,
+                            creator: it.creator.firstName + ' ' + it.creator.lastName,
+                            feature: it.feature?.name ?: null,
+                            featureColor: it.feature?.color ?: null]
+                    if (first == 0) {
+                        stories1 << story
+                        first = 1
+                    } else {
+                        stories2 << story
+                        first = 0
+                    }
+
+                }
+                outputJasperReport('stories', params.format, [[product: currentProduct.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], currentProduct.name)
+            } else if (params.status) {
+                render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
+            } else {
+                session.progress = new ProgressSupport()
+                render(template: 'dialogs/report', model: [id: id, sprint: sprint])
+            }
+        }
+    }
+
     /**
      * Parse the location hash string passed in argument
      * @param locationHash

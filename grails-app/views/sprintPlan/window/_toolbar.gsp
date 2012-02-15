@@ -254,6 +254,7 @@
 </is:panelButton>
 
 <is:separatorSmall/>
+
 <is:reportPanel
         action="print"
         text="${message(code: 'is.ui.toolbar.print')}"
@@ -264,6 +265,18 @@
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"
         params="id=${sprint.id}&locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
+
+<is:separatorSmall/>
+
+<is:reportPanel
+        action="printPostits"
+        id="all"
+        formats="[
+                    ['PDF', message(code:'is.report.format.pdf')]
+                ]"
+        text="${message(code: 'is.ui.sprintPlan.toolbar.print.stories')}"
+        params="id=${sprint.id}"/>
+
 </g:if>
 <entry:point id="${id}-${actionName}" model="[sprint:sprint]"/>
 

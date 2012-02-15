@@ -29,7 +29,7 @@
                 label="${message(code:'is.report.processing')}"
                 iframe="true"
                 showOnCreate="true"
-                iframeSrc="${createLink(action:'print',controller:'sprintPlan',params:[product:params.product,get:true,format:params.format, id:sprint.id, locationHash:params.locationHash])}"
-                url="${createLink(action:'print',controller:'sprintPlan',params:[product:params.product,status:true, id:sprint.id, locationHash:params.locationHash])}"/>
+                iframeSrc="${createLink(action:actionName,controller:'sprintPlan',params:[product:params.product,get:true,format:params.format, id:sprint.id, locationHash:params.locationHash])}"
+                url="${createLink(action:actionName,controller:'sprintPlan',params:[product:params.product,status:true, id:sprint.id, locationHash:params.locationHash])}"/>
     </is:fieldset>
 </div>
