@@ -221,6 +221,7 @@ log4j = {
         debug 'org.icescrum.cache'
         debug 'org.icescrum.core'
         debug 'grails.plugin.springcache'
+        debug 'net.sf.jasperreports'
     }else{
         off 'grails.plugin.springcache'
     }
