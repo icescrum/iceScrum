@@ -1,4 +1,5 @@
 *.iml
+*.project
 target/
 
 ompiled source #
@@ -9,6 +10,7 @@ ompiled source #
 *.exe
 *.o
 *.so
+
 
 # OS generated files #
 ######################
