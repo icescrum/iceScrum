@@ -78,7 +78,7 @@ class SprintPlanController {
 
         def sprintsName = []
         def sprintsId = []
-        currentProduct.releases?.each {
+        currentProduct.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
             sprintsName.addAll(it.sprints.collect {v -> "${it.name} - Sprint ${v.orderNumber}"})
             sprintsId.addAll(it.sprints.id)
         }

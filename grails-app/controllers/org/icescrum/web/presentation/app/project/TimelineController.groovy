@@ -60,7 +60,7 @@ class TimelineController {
         def releasesName = []
         def releasesDate = []
         def releasesIds = []
-        currentProduct.releases?.eachWithIndex { itt, index ->
+        currentProduct.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.eachWithIndex { itt, index ->
             releasesName << itt.name.encodeAsHTML()
             releasesDate << itt.startDate.getTime()
             releasesIds << itt.id
