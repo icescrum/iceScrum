@@ -428,10 +428,7 @@
                                     $(tmpl.window + ' .box-blank').show();
                                 }
                             },
-                            window:'#widget-content-backlog',
-                            afterTmpl:function(tmpl, container, newObject) {
-                                $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                            }
+                            window:'#widget-content-backlog'
                         },
                         releasePlan:{
                             selector:'div.postit-story',
