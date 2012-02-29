@@ -45,7 +45,7 @@
                                 <g:message code="is.fluxiable.${a.code}"/>
                                 <g:message code="is.${a.code.startsWith('task') ? 'task' : 'story'}"/>
                                 <g:if test="${!a.code.startsWith('task') && a.code != Activity.CODE_DELETE}">
-                                    <g:link class="scrum-link" action="idURL" controller="backlogElement" id="${a.cachedId}">${a.cachedLabel.encodeAsHTML()}</g:link></p>
+                                    <is:scrumLink class="scrum-link" controller="backlogElement" id="${a.cachedId}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink></p>
                                 </g:if>
                                 <g:else>
                                     <strong>${a.cachedLabel.encodeAsHTML()}</strong>
