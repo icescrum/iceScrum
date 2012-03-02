@@ -32,10 +32,12 @@
             <is:area id="featuredescription" large="true" name="feature.description" value="${feature?.description}"/>
         </is:fieldArea>
 
-        <is:fieldSelect for="feature.rank" label="is.feature.rank">
-            <is:select container="#window-content-feature" width="100" maxHeight="200" styleSelect="dropdown"
-                       from="${rankList}" name="feature.rank" value="${feature?.rank?:rankList.last()}"/>
-        </is:fieldSelect>
+        <g:if test="${rankList}">
+            <is:fieldSelect for="feature.rank" label="is.feature.rank">
+                <is:select container="#window-content-feature" width="100" maxHeight="200" styleSelect="dropdown"
+                           from="${rankList}" name="feature.rank" value="${feature.rank}"/>
+            </is:fieldSelect>
+        </g:if>
 
         <is:fieldSelect for="feature.value" label="is.feature.value">
             <is:select container="#window-content-feature" width="100" maxHeight="200" styleSelect="dropdown"

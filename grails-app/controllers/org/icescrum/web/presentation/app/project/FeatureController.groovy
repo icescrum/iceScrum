@@ -198,12 +198,7 @@ class FeatureController {
         def currentProduct = Product.get(params.product)
         def valuesList = PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)
 
-        def rankList = []
-        def maxRank = Feature.countByBacklog(currentProduct) + 1
-        maxRank.times { rankList << it + 1 }
-
         render(template: 'window/manage', model: [valuesList: valuesList,
-                rankList: rankList.asList(),
                 colorsLabels: BundleUtils.colorsSelect.values().collect { message(code: it) },
                 colorsKeys: BundleUtils.colorsSelect.keySet().asList(),
                 id: id,
