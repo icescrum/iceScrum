@@ -42,7 +42,7 @@
         <is:tableHeader width="10%" name="${message(code:'is.story.date.estimated')}"/>
 
 
-        <is:tableRows in="${stories}" var="story" elemid="id">
+        <is:tableRows in="${stories}" var="story" elemid="id" data-rank="rank">
             <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
@@ -70,7 +70,7 @@
                 </is:scrumLink>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',disabled:!request.productOwner,name:'rank',values:rankSelect]">${story.rank}</is:tableColumn>
+                    editable="[type:'selectui',id:'rank',disabled:!request.productOwner,name:'rank',values:rankSelect]"></is:tableColumn>
             <is:tableColumn
                     editable="[type:'text',disabled:!request.productOwner,name:'name']">${story.name.encodeAsHTML()}</is:tableColumn>
             <is:tableColumn
@@ -96,6 +96,9 @@
 
 <jq:jquery>
     jQuery('#window-title-bar-${id} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');
+    jQuery('tr[data-rank]').each(function() {
+        $('div[name=rank]', $(this)).text($(this).data('rank'));
+    });
 </jq:jquery>
 
 <is:onStream

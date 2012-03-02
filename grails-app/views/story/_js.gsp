@@ -119,7 +119,9 @@
     }
     **?
     <is:table onlyRows="true">
-        <is:tableRow elemid="${story.id}" version="?**=this.version**?">
+        <is:tableRow data-rank="${story.rank}"
+                     elemid="${story.id}"
+                     version="?**=this.version**?">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"
@@ -137,7 +139,7 @@
                 </is:scrumLink>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',disabled:!request.productOwner,name:'rank']">${story.rank}</is:tableColumn>
+                    editable="[type:'selectui',id:'rank',disabled:!request.productOwner,name:'rank']"></is:tableColumn>
             <is:tableColumn editable="[type:'text',disabled:!request.productOwner,name:'name']">${story.name}</is:tableColumn>
             <is:tableColumn
                     editable="[type:'selectui',id:'type',disabled:!request.productOwner,name:'type']">?**=typeTitle**?</is:tableColumn>

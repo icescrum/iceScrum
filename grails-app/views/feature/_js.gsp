@@ -94,7 +94,10 @@
     storiesDone = storiesDone == 0 ? '' : storiesDone;
     **?
     <is:table onlyRows="true">
-        <is:tableRow elemid="${feature.id}" rowid="table-row-feature-" version="?**=this.version**?">
+        <is:tableRow    data-rank="${feature.rank}"
+                        elemid="${feature.id}"
+                        rowid="table-row-feature-"
+                        version="?**=this.version**?">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
@@ -109,7 +112,7 @@
                 <is:postitIcon name="${feature.name}" color="${feature.color}"/>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!request.productOwner]">${feature.rank}</is:tableColumn>
+                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!request.productOwner]"></is:tableColumn>
             <is:tableColumn
                     editable="[type:'selectui',disabled:!request.productOwner,name:'value',values:suiteSelect]">${feature.value}</is:tableColumn>
             <is:tableColumn

@@ -70,6 +70,14 @@
                         $(this).tablesorter();
                     }
                     return this;
+                },
+                updateTableSorter: function(timeout) {
+                    var table = this;
+                    timeout = (timeout != null) ? timeout : 20;
+                    table.trigger("update");
+                    setTimeout(function () {
+                        table.trigger('sorton',[table[0].config.sortList]);
+                    }, timeout);
                 }
             });
 

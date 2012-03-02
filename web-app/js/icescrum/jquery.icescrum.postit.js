@@ -9,44 +9,50 @@
                         }
                     },
 
-                    updateRankAndVersion:function(selector, container, oldPosition, position) {
-                        var wantedIndex = position ? position - 1 : null;
-                        var oldIndex = oldPosition ? oldPosition - 1 : null;
-                        if(wantedIndex != null) {
+                    updateRankAndVersion:function(selector, container, oldRank, newRank, elemid) {
+                        var rows = $(selector, container);
+                        function updateRow(row, newRank) {
+                            if(elemid == null || row.attr('elemid') != elemid) {
+                                row.data('rank', newRank);
+                                $('div[name=rank]', row).text(newRank);
+                                row.attr('version', parseInt(row.attr('version')) + 1);
+                            }
+                        }
+                        if(newRank != null) {
                             // Update
-                            if(oldIndex != null) {
-                                if(wantedIndex > oldIndex) {
-                                    $(selector, container).each(function(currentIndex, it) {
-                                        if(oldIndex <= currentIndex && currentIndex < wantedIndex) {
-                                            $('* [name="rank"]', it).text(currentIndex + 1);
-                                            $(it).attr('version', parseInt($(it).attr('version')) + 1);
+                            if(oldRank != null) {
+                                if(newRank > oldRank) {
+                                    rows.each(function() {
+                                        var rank = parseInt($(this).data('rank'));
+                                        if(oldRank < rank && rank <= newRank) {
+                                            updateRow($(this), rank - 1);
                                         }
                                     });
-                                } else if (wantedIndex < oldIndex) {
-                                    $(selector, container).each(function(currentIndex, it) {
-                                        if(wantedIndex < currentIndex && currentIndex <= oldIndex) {
-                                            $('* [name="rank"]', it).text(currentIndex + 1);
-                                            $(it).attr('version', parseInt($(it).attr('version')) + 1);
+                                } else {
+                                    rows.each(function() {
+                                        var rank = parseInt($(this).data('rank'));
+                                        if(newRank <= rank && rank < oldRank) {
+                                            updateRow($(this), rank + 1);
                                         }
                                     });
                                 }
                             }
                             // Insert
                             else {
-                                $(selector, container).each(function(currentIndex, it) {
-                                    if(currentIndex > wantedIndex) {
-                                        $('* [name="rank"]', it).text(currentIndex + 1);
-                                        $(it).attr('version', parseInt($(it).attr('version')) + 1);
+                                rows.each(function() {
+                                    var rank = parseInt($(this).data('rank'));
+                                    if(rank >= newRank) {
+                                        updateRow($(this), rank + 1);
                                     }
                                 });
                             }
                         }
                         else {
                             // Delete
-                            $(selector, container).each(function(currentIndex, it) {
-                                if(currentIndex >= oldIndex) {
-                                    $('* [name="rank"]', it).text(currentIndex + 1);
-                                    $(it).attr('version', parseInt($(it).attr('version')) + 1);
+                            rows.each(function() {
+                                var rank = parseInt($(this).data('rank'));
+                                if(rank > oldRank) {
+                                    updateRow($(this), rank - 1);
                                 }
                             });
                         }

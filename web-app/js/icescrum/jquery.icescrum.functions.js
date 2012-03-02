@@ -256,7 +256,7 @@
                             remove:function(template) {
                                 if ($.icescrum.o.currentView == 'tableView') {
                                     var tableline = $('#feature-table .table-line[elemid=' + this.id + ']');
-                                    var oldRank = tableline.index() + 1;
+                                    var oldRank = tableline.data('rank');
                                     tableline.remove();
                                     $.icescrum.postit.updateRankAndVersion($.icescrum.feature.templates[template].selector(), $.icescrum.feature.templates[template].view(), oldRank);
                                     $('#feature-table').trigger("update");
@@ -265,16 +265,17 @@
                                 }
                             },
                             window:'#window-content-feature',
-                            afterTmpl:function(tmpl) {
+                            afterTmpl:function(tmpl, container, newObject) {
                                 if ($.icescrum.o.currentView == 'tableView') {
-                                    $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank);
-                                    $('#feature-table').trigger("update");
+                                    $('div[name=rank]', $(newObject)).text(this.rank);
+                                    if(this.oldRank != this.rank) {
+                                        $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank, this.id);
+                                    }
+                                    $('#feature-table').updateTableSorter();
                                 }
                             },
                             beforeTmpl:function(tmpl,container,current) {
-                                if(current.index() != -1) {
-                                    this.oldRank = current.index() + 1;
-                                }
+                                this.oldRank = current.data('rank');
                             }
                         },
                         widget:{
@@ -388,7 +389,7 @@
                             remove:function(tmpl) {
                                 if ($.icescrum.o.currentView == 'tableView') {
                                     var tableline = $(tmpl.view+' tr.table-line'+'[elemid=' + this.id + ']');
-                                    this.oldRank = tableline.index() + 1;
+                                    this.oldRank = tableline.data('rank');
                                     tableline.remove();
                                     if (!this.rank && this.oldRank && !$.icescrum.story.templates['backlogWindow'].constraintTmpl()){
                                         $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank);
@@ -404,13 +405,11 @@
                                 $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 $.icescrum.story.backlogTitleDetails();
                                 if ($.icescrum.o.currentView == 'tableView') {
-                                    $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank);
-                                    $(tmpl.view).trigger("update");
-                                }
-                            },
-                            beforeTmpl:function(tmpl,container,current) {
-                                if(current.index() != -1 && this.oldRank == null) {
-                                    this.oldRank = current.index() + 1;
+                                    $('div[name=rank]', $(newObject)).text(this.rank);
+                                    if(this.oldRank != this.rank) {
+                                        $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank, this.id);
+                                    }
+                                    $(tmpl.view).updateTableSorter();
                                 }
                             }
                         },
@@ -1241,7 +1240,6 @@
                     var container = $(tmpl.view);
                     var current = $(tmpl.selector + '[elemid=' + object.id + ']', container);
                     var beforeData = null;
-
                     if ($.isFunction(tmpl.beforeTmpl)) {
                         beforeData = tmpl.beforeTmpl.apply(object, [tmpl,container,current]);
                     }

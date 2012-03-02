@@ -39,7 +39,7 @@
         <is:tableHeader width="12%" name="${message(code:'is.feature.stories')}"/>
         <is:tableHeader width="10%" name="${message(code:'is.feature.stories.finish')}"/>
 
-        <is:tableRows in="${features}" var="feature" elemid="id">
+        <is:tableRows in="${features}" var="feature" elemid="id" data-rank="rank">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
@@ -53,7 +53,7 @@
                 <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!request.productOwner]">${feature.rank}</is:tableColumn>
+                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!request.productOwner]"></is:tableColumn>
             <is:tableColumn
                     editable="[type:'selectui',disabled:!request.productOwner,name:'value',values:suiteSelect]">${feature.value}</is:tableColumn>
             <is:tableColumn
@@ -71,6 +71,12 @@
 </is:tableView>
 
 <g:include view="/feature/window/_blank.gsp" model="[features:features,id:id]"/>
+
+<jq:jquery>
+    jQuery('tr[data-rank]').each(function() {
+        $('div[name=rank]', $(this)).text($(this).data('rank'));
+    });
+</jq:jquery>
 
 <is:onStream
         on="#feature-table"
