@@ -43,22 +43,7 @@ import org.icescrum.core.domain.Release
 @Secured('inProduct()')
 class SprintPlanController {
 
-    static ui = true
-
     static final id = 'sprintPlan'
-    static menuBar = MenuBarSupport.productDynamicBar('is.ui.sprintPlan', id, true, 5)
-    static window = [title: 'is.ui.sprintPlan', help: 'is.ui.sprintPlan.help', toolbar: true, titleBarContent: true]
-
-    static shortcuts = [
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.del.code', text: 'is.ui.shortcut.sprintPlan.del.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.sprintPlan.ctrln.text'],
-            [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.sprintPlan.ctrla.text'],
-            [code: 'is.ui.shortcut.ctrlshifta.code', text: 'is.ui.shortcut.sprintPlan.ctrlshifta.text'],
-            [code: 'is.ui.shortcut.ctrlshiftc.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftc.text'],
-            [code: 'is.ui.shortcut.ctrlshiftd.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftd.text'],
-            [code: 'is.ui.shortcut.ctrlshiftr.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftr.text']
-    ]
 
     def springSecurityService
     def storyService

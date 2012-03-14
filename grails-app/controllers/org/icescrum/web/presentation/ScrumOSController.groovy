@@ -35,7 +35,6 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.web.upload.AjaxMultipartResolver
 import org.springframework.mail.MailException
-import org.springframework.security.access.AccessDeniedException
 import org.icescrum.core.domain.Sprint
 import grails.plugin.springcache.annotations.Cacheable
 
@@ -48,6 +47,7 @@ class ScrumOSController {
     def menuBarSupport
     def notificationEmailService
     def securityService
+    def uiDefinitionService
 
     def index = {
         def currentUserInstance = null
@@ -102,16 +102,14 @@ class ScrumOSController {
         }
 
 
-        def controllerRequested = "${params.window}Controller"
-        def controller = grailsApplication.uIControllerClasses.find {
-            it.shortName.toLowerCase() == controllerRequested.toLowerCase()
-        }
-        if (controller) {
+        def uiRequested = params.window
+        def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
+        if (uiDefinition) {
             def paramsWidget = null
             if (params.product) {
                 paramsWidget = [product: params.product]
             }
-            def url = createLink(controller: params.window, action: controller.getPropertyValue('widget')?.init ?: 'indexWidget', params: paramsWidget).toString() - request.contextPath
+            def url = createLink(controller: params.window, action: uiDefinition.widget?.init, params: paramsWidget).toString() - request.contextPath
             if (!menuBarSupport.permissionDynamicBar(url)) {
                 session['widgetsList'].remove(params.window)
                 render(status: 400)
@@ -125,14 +123,14 @@ class ScrumOSController {
             }
             render is.widget([
                     id: params.window,
-                    hasToolbar: controller.getPropertyValue('widget')?.toolbar ?: false,
-                    closeable: (controller.getPropertyValue('widget')?.closeable == null) ? true : controller.getPropertyValue('widget').closeable,
-                    sortable: (controller.getPropertyValue('widget')?.sortable == null) ? true : controller.getPropertyValue('widget').sortable,
-                    windowable: controller.getPropertyValue('window') ? true : false,
-                    height: controller.getPropertyValue('widget')?.height ?: false,
-                    hasTitleBarContent: controller.getPropertyValue('widget')?.titleBarContent ?: false,
-                    title: message(code: controller.getPropertyValue('widget')?.title ?: ''),
-                    init: controller.getPropertyValue('widget')?.init ?: 'indexWidget',
+                    hasToolbar: uiDefinition.widget?.toolbar,
+                    closeable: uiDefinition.widget?.closeable,
+                    sortable: uiDefinition.widget?.sortable,
+                    windowable: uiDefinition.window ? true : false,
+                    height: uiDefinition.widget?.height,
+                    hasTitleBarContent: uiDefinition.widget?.titleBarContent,
+                    title: message(code: uiDefinition.widget?.title),
+                    init: uiDefinition.widget?.init,
             ], {})
         }
     }
@@ -159,16 +157,14 @@ class ScrumOSController {
         if (session['widgetsList']?.contains(params.window))
             session['widgetsList'].remove(params.window);
 
-        def controllerRequested = "${params.window}Controller"
-        def controller = grailsApplication.uIControllerClasses.find {
-            it.shortName.toLowerCase() == controllerRequested.toLowerCase()
-        }
-        if (controller) {
+        def uiRequested = params.window
+        def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
+        if (uiDefinition) {
 
             def param = [:]
             if (params.product)
                 param = [product: params.product]
-            def url = createLink(controller: params.window, action: params.actionWindow ?: controller.getPropertyValue('window').init ?: 'index', params: param).toString() - request.contextPath
+            def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: param).toString() - request.contextPath
 
             if (!menuBarSupport.permissionDynamicBar(url)){
                 println url
@@ -177,15 +173,15 @@ class ScrumOSController {
             }
             render is.window([
                     window: params.window,
-                    title: message(code: controller.getPropertyValue('window')?.title ?: ''),
-                    help: message(code: controller.getPropertyValue('window')?.help ?: null),
-                    shortcuts: controller.getPropertyValue('shortcuts') ?: null,
-                    hasToolbar: (controller.getPropertyValue('window')?.toolbar != null) ? controller.getPropertyValue('window')?.toolbar : true,
-                    hasTitleBarContent: controller.getPropertyValue('window')?.titleBarContent ?: false,
-                    maximizeable: controller.getPropertyValue('window')?.maximizeable ?: true,
-                    closeable: (controller.getPropertyValue('window')?.closeable == null) ? true : controller.getPropertyValue('widget').closeable,
-                    widgetable: controller.getPropertyValue('widget') ? true : false,
-                    init: params.actionWindow ?: controller.getPropertyValue('window').init ?: 'index',
+                    title: message(code: uiDefinition.window?.title),
+                    help: message(code: uiDefinition.window?.help),
+                    shortcuts: uiDefinition.shortcuts,
+                    hasToolbar: uiDefinition.window?.toolbar,
+                    hasTitleBarContent: uiDefinition.window?.titleBarContent,
+                    maximizeable: uiDefinition.window?.maximizeable,
+                    closeable: uiDefinition.window?.closeable,
+                    widgetable: uiDefinition.widget ? true : false,
+                    init: params.actionWindow ?: uiDefinition.window?.init,
             ], {})
         }
     }
@@ -195,11 +191,9 @@ class ScrumOSController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window.toolbar')]] as JSON)
             return
         }
-        def controllerRequested = "${params.window}Controller"
-        def controller = grailsApplication.uIControllerClasses.find {
-            it.shortName.toLowerCase() == controllerRequested.toLowerCase()
-        }
-        if (controller) {
+        def uiRequested = params.window
+        def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
+        if (uiDefinition) {
             forward(controller: params.window, action: 'toolbar', params: params)
         }
     }

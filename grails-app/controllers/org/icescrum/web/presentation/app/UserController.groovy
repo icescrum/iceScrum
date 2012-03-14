@@ -40,7 +40,6 @@ import grails.plugin.springcache.annotations.Cacheable
 class UserController {
 
     static final id = 'user'
-    static ui = true
 
     def userService
     def securityService
@@ -48,8 +47,6 @@ class UserController {
     def productService
     def grailsApplication
     def notificationEmailService
-
-    static window = [title: 'is.user', toolbar: false, init: 'profile']
 
     @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
     def register = {

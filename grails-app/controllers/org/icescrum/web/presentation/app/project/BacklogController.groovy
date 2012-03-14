@@ -39,22 +39,7 @@ class BacklogController {
     def storyService
     def springSecurityService
 
-    static ui = true
-
     static final id = 'backlog'
-    static menuBar = MenuBarSupport.productDynamicBar('is.ui.backlog', id, true, 3)
-    static window = [title: 'is.ui.backlog', help: 'is.ui.backlog.help', init: 'list', toolbar: true]
-    static widget = [title: 'is.ui.backlog', init: 'list', toolbar: false, height: 143]
-
-    static shortcuts = [
-            [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-
-            [code: 'is.ui.shortcut.del.code', text: 'is.ui.shortcut.backlog.del.text'],
-            [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.backlog.ctrla.text'],
-            [code: 'is.ui.shortcut.ctrlshiftc.code', text: 'is.ui.shortcut.backlog.ctrlshiftc.text'],
-            [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.backlog.space.text']
-    ]
 
     final featureTerm = /feature:(\w)/
     final typeTerm = /type:(\w)/

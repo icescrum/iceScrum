@@ -42,21 +42,7 @@ class ActorController {
     def actorService
     def springSecurityService
 
-    static ui = true
-
     static final id = 'actor'
-    static menuBar = MenuBarSupport.productDynamicBar('is.ui.actor', id, false, 3)
-    static window = [title: 'is.ui.actor', help: 'is.ui.actor.help', init: 'list', toolbar: true]
-    static widget = [title: 'is.ui.actor', init: 'list', toolbar: true, height: 143]
-
-    static shortcuts = [
-            [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.del.code', text: 'is.ui.shortcut.actor.del.text'],
-            [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.actor.ctrla.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.actor.ctrln.text'],
-            [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.actor.space.text']
-    ]
 
     @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
     def search = {

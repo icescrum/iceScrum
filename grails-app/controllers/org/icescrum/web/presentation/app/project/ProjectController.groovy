@@ -54,11 +54,7 @@ import com.sun.syndication.io.SyndFeedOutput
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
 
-    static ui = true
-
     static final id = 'project'
-    static menuBar = MenuBarSupport.productDynamicBar('is.ui.project', id, true, 1)
-    static window = [title: 'is.ui.project', help: 'is.ui.project.help', toolbar: true, init: 'dashboard']
 
     def productService
     def sprintService

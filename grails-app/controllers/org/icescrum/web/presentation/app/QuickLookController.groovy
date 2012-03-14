@@ -35,8 +35,6 @@ import grails.plugin.springcache.annotations.Cacheable
 @Secured("stakeHolder() or inProduct()")
 class QuickLookController {
 
-    static ui = true
-
     def springSecurityService
 
     def index = {

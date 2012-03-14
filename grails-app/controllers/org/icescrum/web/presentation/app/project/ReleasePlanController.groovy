@@ -44,20 +44,7 @@ class ReleasePlanController {
     def releaseService
     def featureService
 
-    static ui = true
-
     static final id = 'releasePlan'
-    static menuBar = MenuBarSupport.productDynamicBar('is.ui.releasePlan', id, true, 4)
-    static window = [title: 'is.ui.releasePlan', help: 'is.ui.releasePlan.help', init: 'index', toolbar: true, titleBarContent: true]
-
-    static shortcuts = [
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.releasePlan.ctrln.text'],
-            [code: 'is.ui.shortcut.ctrlg.code', text: 'is.ui.shortcut.releasePlan.ctrlg.text'],
-            [code: 'is.ui.shortcut.ctrlshifta.code', text: 'is.ui.shortcut.releasePlan.ctrlshifta.text'],
-            [code: 'is.ui.shortcut.ctrlshiftv.code', text: 'is.ui.shortcut.releasePlan.ctrlshiftv.text'],
-            [code: 'is.ui.shortcut.ctrlshiftd.code', text: 'is.ui.shortcut.releasePlan.ctrlshiftd.text']
-    ]
 
     def titleBarContent = {
         def release

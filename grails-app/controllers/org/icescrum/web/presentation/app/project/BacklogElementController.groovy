@@ -46,11 +46,7 @@ import org.icescrum.core.domain.AcceptanceTest
 
 class BacklogElementController {
 
-    static ui = true
-
     static final id = 'backlogElement'
-    static menuBar = [title: 'is.ui.backlogelement', show: {false}]
-    static window = [title: 'is.ui.backlogelement', toolbar: true, init: 'details']
 
     def storyService
     def commentService
