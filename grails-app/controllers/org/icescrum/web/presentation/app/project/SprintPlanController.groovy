@@ -126,15 +126,16 @@ class SprintPlanController {
         def stories
         def recurrentTasks
         def urgentTasks
+        def userid = params.long('userid')
 
         if (params.term && params.term != '') {
-            stories = Story.findStoriesFilter(sprint, '%' + params.term + '%', user).listDistinct()
-            recurrentTasks = Task.findRecurrentTasksFilter(sprint, '%' + params.term + '%', user).listDistinct()
-            urgentTasks = Task.findUrgentTasksFilter(sprint, '%' + params.term + '%', user).listDistinct()
+            stories = Story.findStoriesFilter(sprint, '%' + params.term + '%', user, userid).listDistinct()
+            recurrentTasks = Task.findRecurrentTasksFilter(sprint, '%' + params.term + '%', user, userid).listDistinct()
+            urgentTasks = Task.findUrgentTasksFilter(sprint, '%' + params.term + '%', user, userid).listDistinct()
         } else {
-            stories = Story.findStoriesFilter(sprint, null, user).listDistinct()
-            recurrentTasks = Task.findRecurrentTasksFilter(sprint, null, user).listDistinct()
-            urgentTasks = Task.findUrgentTasksFilter(sprint, null, user).listDistinct()
+            stories = Story.findStoriesFilter(sprint, null, user, userid).listDistinct()
+            recurrentTasks = Task.findRecurrentTasksFilter(sprint, null, user, userid).listDistinct()
+            urgentTasks = Task.findUrgentTasksFilter(sprint, null, user, userid).listDistinct()
         }
 
         def suiteSelect = ''

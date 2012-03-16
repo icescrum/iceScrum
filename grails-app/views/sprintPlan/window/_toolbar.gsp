@@ -117,6 +117,7 @@
                      remote="true"
                      value="${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}"/>
         </li>
+        <entry:point id="${id}-${actionName}-filters" model="[sprint:sprint]"/>
         <g:if test="${sprint.state == Sprint.STATE_INPROGRESS}">
             <li>
         </g:if>
