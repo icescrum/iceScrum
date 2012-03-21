@@ -724,3 +724,7 @@ table  th.header.headerSortUp .sorter {
 table  th.header.headerSortDown .sorter {
     background: url(../images/application/sort_down.png) no-repeat;
 }
+
+table.kanban:not(.done) tbody[type="storyDone"] {
+    opacity: 0.6;
+}

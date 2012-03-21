@@ -125,6 +125,32 @@
             </g:each>
     </is:kanbanRows>
 
+    <is:kanbanRows in="${storiesDone.sort{it.rank}}"
+                   var="story"
+                   class="row-story"
+                   elemid="id"
+                   data-state="state"
+                   type="storyDone"
+                   emptyRendering="true">
+        <is:kanbanColumn elementId="column-story-${story.id}">
+            <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
+                <g:include view="/story/_postit.gsp"
+                           model="[id:id,story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
+                           params="[product:params.product]"/>
+            </is:cache>
+        </is:kanbanColumn>
+
+    %{-- Workflow Columns --}%
+        <g:each in="${columns}" var="column">
+            <is:kanbanColumn key="${column.key}">
+                <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
+                        var="task">
+                    <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
+                </g:each>
+            </is:kanbanColumn>
+        </g:each>
+    </is:kanbanRows>
+
 </is:kanban>
 
 <jq:jquery>

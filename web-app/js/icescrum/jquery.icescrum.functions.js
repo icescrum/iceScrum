@@ -452,7 +452,8 @@
                             selector:'tr.row-story',
                             id:'postit-story-sprintPlan-tmpl',
                             view:function() {
-                                return this.parentSprint ? '#kanban-sprint' + '-' + this.parentSprint.id + ' tbody[type=story]' : '';
+                                var storyType = this.state < $.icescrum.story.STATE_DONE ? 'story' : 'storyDone';
+                                return this.parentSprint ? '#kanban-sprint' + '-' + this.parentSprint.id + ' tbody[type=' + storyType + ']' : '';
                             },
                             remove:function() {
                                 $('.kanban .row-story[elemid=' + this.id + ']').remove();
