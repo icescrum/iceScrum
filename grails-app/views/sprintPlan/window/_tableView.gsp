@@ -1,4 +1,4 @@
-<%@ page import="org.icescrum.core.domain.Sprint; org.icescrum.core.domain.Task" %>
+<%@ page import="grails.converters.JSON; org.icescrum.core.domain.Sprint; org.icescrum.core.domain.Task" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -152,7 +152,7 @@
                     <is:menu rendered="${request.inProduct}" yoffset="4" class="dropmenu-action" id="${story.id}"
                              contentView="/story/menu" params="[id:id,story:story,nextSprintExist:nextSprintExist]"/>
                     <is:scrumLink id="${story.id}" controller="backlogElement">
-                        ${story.id}
+                        ${story.uid}
                     </is:scrumLink> -
                     <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
                     <strong>${story.name.encodeAsHTML()} - ${story.effort} - ${is.bundle(bundle: 'storyStates', value: story.state)}</strong>
@@ -204,5 +204,5 @@
     </is:table>
 </is:tableView>
 <jq:jquery>
-    jQuery('#window-title-bar-${id} .content .details').html(' - ${message(code: "is.sprint")} ${sprint.orderNumber}  - ${is.bundle(bundle: 'sprintStates', value: sprint.state)} - [${g.formatDate(date: sprint.startDate, formatName: 'is.date.format.short')} -> ${g.formatDate(date: sprint.endDate, formatName: 'is.date.format.short')}]');
+    jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
 </jq:jquery>
