@@ -161,9 +161,12 @@ class ScrumOSController {
         def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
         if (uiDefinition) {
 
+            def projectName
             def param = [:]
-            if (params.product)
+            if (params.product) {
+                projectName = Product.get(params.long('product'))?.name
                 param = [product: params.product]
+            }
             def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: param).toString() - request.contextPath
 
             if (!menuBarSupport.permissionDynamicBar(url)){
@@ -173,6 +176,7 @@ class ScrumOSController {
             }
             render is.window([
                     window: params.window,
+                    projectName: projectName,
                     title: message(code: uiDefinition.window?.title),
                     help: message(code: uiDefinition.window?.help),
                     shortcuts: uiDefinition.shortcuts,
