@@ -124,7 +124,7 @@
 
         <div class="col2">
             <entry:point id="${id}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
-            <is:cache cache="projectCache" role="false" key="${product.id}-${activities.size() ? activities?.first()?.dateCreated :''}">
+            <is:cache cache="projectCache" role="false" key="${product.id}eef-${activities.size() ? activities?.first()?.dateCreated :''}">
                 <is:panel id="panel-activity">
                     <is:panelTitle>
                         <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed"
@@ -141,7 +141,7 @@
                                         <p>
                                             <is:scrumLink controller="user" action='profile'
                                                           id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
-                                            <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.story"/>
+                                            <g:message code="is.fluxiable.${a.code}"/> <g:message code="${a.code == 'taskDelete' ? 'is.task' : 'is.story'}"/>
                                             <g:if test="${a.code != Activity.CODE_DELETE}">
                                                 <is:scrumLink controller="backlogElement" id="${a.cachedId}"
                                                               params="${a.code == 'comment' ? ['tab':'comments'] : []}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink>
