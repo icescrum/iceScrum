@@ -47,7 +47,7 @@
     <is:newVersion/>
     <li class="navigation-line separator"></li>
     <li class="navigation-line">
-        <is:dropMenu id="menu-project" title="${message(code:'is.projectmenu.title')}">
+        <is:dropMenu id="menu-project" title="${product ? product.name.encodeAsHTML() : message(code:'is.projectmenu.title')}">
             <ul>
                 <g:if test="${creationProjectEnable}">
                     <li>
@@ -212,23 +212,49 @@
 <div class="right">
     <ul class="navigation-content clearfix">
         <sec:ifLoggedIn>
-            <li class="navigation-line"><is:buttonNavigation button="button-s button-s-black"
-                                                             controller="logout"><g:message
-                        code="is.logout"/></is:buttonNavigation></li>
-            <li class="navigation-line separator"></li>
+            <g:set var="username" value="${user?.firstName?.encodeAsHTML() + ' ' + user?.lastName?.encodeAsHTML()}"/>
             <li class="navigation-line" id="profile-name">
-                <is:remoteDialog
-                        action="openProfile"
-                        controller="user"
-                        valid="[action:'update',controller:'user',onSuccess:'jQuery.icescrum.updateProfile(data)']"
-                        title="is.dialog.profile"
-                        width="600"
-                        noprefix="true"
-                        resizable="false"
-                        draggable="false">
-                    ${user?.firstName?.encodeAsHTML()} ${user?.lastName?.encodeAsHTML()}
-                </is:remoteDialog>
+                <is:link class="with-arrow" disabled="true" onClick="jQuery.icescrum.showAndHideOnClickAnywhere('.user-tooltip')">
+                    ${username}
+                </is:link>
             </li>
+            <li class="navigation-line">
+                <is:avatar user="${user}" class="navigation-avatar"/>
+            </li>
+            <div class="user-tooltip">
+                <div id="user-tooltip-avatar">
+                    <is:avatar user="${user}" id="user-tooltip-avatar"/>
+                </div>
+                <div id="user-tooltip-username">
+                    ${username}
+                </div>
+                <g:if test="${product}">
+                    <div id="user-tooltip-role">
+                        ${message(code:"is.ui.details.role.name")}
+                        <a href="javascript:;" onclick="jQuery('#edit-members a').click();"><strong> <is:displayRole /> </strong></a>
+                    </div>
+                </g:if>
+                <div id="user-tooltip-buttons">
+                    <div id="user-tooltip-logout">
+                        <is:buttonNavigation button="button-s" controller="logout">
+                            <g:message code="is.logout"/>
+                        </is:buttonNavigation>
+                    </div>
+                    <div id="user-tooltip-profile">
+                        <is:remoteDialog
+                            action="openProfile"
+                            controller="user"
+                            valid="[action:'update',controller:'user',onSuccess:'jQuery.icescrum.updateProfile(data)']"
+                            title="is.dialog.profile"
+                            width="600"
+                            noprefix="true"
+                            resizable="false"
+                            draggable="false">
+                            <g:message code="is.dialog.profile"/>
+                        </is:remoteDialog>
+                    </div>
+                </div>
+            </div>
         </sec:ifLoggedIn>
         <sec:ifNotLoggedIn>
             <li class="navigation-line">

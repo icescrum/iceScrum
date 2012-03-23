@@ -204,6 +204,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
         updateProfile:function(data) {
             $('#profile-name a').html(data.name);
+            $('#user-tooltip-username').html(data.name);
             if (data.updateAvatar) {
                 $('.avatar-user-' + data.userid).each(
                         function() {
@@ -340,6 +341,20 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 document.location = jQuery.getUrlVar('ref')
             }else{
                 document.location = jQuery.icescrum.o.baseUrl;
+            }
+        },
+
+        showAndHideOnClickAnywhere:function(selector){
+            var element = $(selector);
+            if(element.css('display') == 'none') {
+                element.show();
+                var handler = function(event){
+                    element.hide();
+                    $(document).off("click", handler);
+                }
+                setTimeout(function () {
+                    $(document).on("click", handler)
+                ;}, 10);
             }
         }
     }

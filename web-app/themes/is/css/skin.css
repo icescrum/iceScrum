@@ -728,3 +728,55 @@ table  th.header.headerSortDown .sorter {
 table.kanban:not(.done) tbody[type="storyDone"] {
     opacity: 0.6;
 }
+
+.user-tooltip {
+    width: 315px;
+    position: relative;
+    z-index: 999;
+    margin-top: 33px;
+    margin-right: -10px;
+    padding: 9px 12px;
+    border: 1px solid #C4C4C4;
+    border-top:0px;
+    background: white;
+    -moz-box-shadow: -1px 1px 1px rgba(0,0,0,.2);
+    -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    display: none;
+}
+
+.user-tooltip ul li {
+    padding: 5px 0;
+    list-style-type: none;
+}
+
+.user-tooltip #user-tooltip-avatar {
+    margin-bottom: 10px;
+    float: right;
+}
+
+.user-tooltip #user-tooltip-logout {
+    float: right;
+}
+
+.user-tooltip #user-tooltip-buttons {
+    clear: both;
+}
+
+.user-tooltip #user-tooltip-username {
+    font-weight: bold;
+}
+
+.navigation-line .with-arrow {
+    background-image: url(../images/application/arrow.png);
+    background-repeat: no-repeat;
+    background-position: right -2px;
+    padding-right: 12px;
+    margin-right: 6px;
+}
+
+.navigation-avatar {
+    width: 26px;
+    height: 26px;
+    margin-top: -3px;
+}
