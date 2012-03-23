@@ -37,7 +37,7 @@
     <is:listAsXML
             name="releases"
             child="release"
-            deep="['release','sprint','task','cliche','story','comment','activity']"
+            deep="['release','sprint','task','cliche','story','comment','activity', 'acceptanceTest']"
             template="/release/xml"/>
     <% session.progress?.updateProgress(30, message(code: 'is.export.inprogress', args: [message(code: 'is.actor')])) %>
     <is:listAsXML
