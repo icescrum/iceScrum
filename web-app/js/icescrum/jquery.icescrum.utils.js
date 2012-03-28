@@ -317,7 +317,7 @@
           },
           getUrlVar: function(name){
             var value = $.getUrlVars()[name];
-            return $.getUrlVars()[name] ? value : null;
+            return value ? value : null;
           }
     });
 

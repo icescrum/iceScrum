@@ -337,11 +337,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
         redirectOnLogin:function(){
             var ref = jQuery.getUrlVar('ref');
-            if (ref){
-                document.location = jQuery.getUrlVar('ref')
-            }else{
-                document.location = jQuery.icescrum.o.baseUrl;
-            }
+            document.location = ref ? ref :  "";
         },
 
         showAndHideOnClickAnywhere:function(selector){
