@@ -218,7 +218,7 @@
                     ${username}
                 </is:link>
             </li>
-            <li class="navigation-line">
+            <li class="navigation-line" id="navigation-avatar">
                 <is:avatar user="${user}" class="navigation-avatar"/>
             </li>
             <div class="user-tooltip">
