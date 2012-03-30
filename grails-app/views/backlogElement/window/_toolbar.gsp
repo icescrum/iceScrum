@@ -51,7 +51,7 @@
                     params="[type:'story']"
                     history="false"
                     remote="true"
-                    onSuccess="jQuery.icescrum.story.accept(data,'story'); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsStory').encodeAsJavaScript()}')"
+                    onSuccess="jQuery.event.trigger('accept_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsStory').encodeAsJavaScript()}')"
                     value="${message(code:'is.ui.backlogelement.toolbar.acceptAsStory')}"/>
         </li>
 

@@ -205,6 +205,11 @@
             callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','project',true);"/>
 <is:onStream
             on="#details-${story.id}"
+            events="[[object:'story',events:['accept','estimate','inProgress','done','unDone','plan','unPlan','associated','dissociated']]]"
+            callback="if ( story.id != jQuery(this).attr('elemid') ) return; document.location.reload();"/>
+
+<is:onStream
+            on="#details-${story.id}"
             events="[[object:'comment',events:['add','update','remove']], [object:'acceptancetest',events:['add','update','remove']]]"
             template="storyDetail"/>
 <is:onStream
