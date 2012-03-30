@@ -81,6 +81,9 @@ class FeatureController {
             }
 
             if (successRank) {
+                if(!feature.color.equals(params.feature.color)) {
+                    feature.stories*.lastUpdated = new Date()
+                }
                 feature.properties = params.feature
                 this.manageAttachments(feature)
                 featureService.update(feature)
