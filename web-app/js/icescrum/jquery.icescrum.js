@@ -80,6 +80,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if (this.o.push.enable){
                 $.icescrum.listenServer();
             }
+
+            $(window).bind('resize',function(){$.icescrum.checkBars();});
         },
 
         log:function() {

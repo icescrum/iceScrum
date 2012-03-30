@@ -1,13 +1,11 @@
 (function($) {
 
-    function retrieveRightLimit(selector) {
-        var $leftElement = $(selector);
-        return ($leftElement.offset() != null) ? $leftElement.offset().left : null;
+    function retrieveRightLimit($rightElement) {
+        return $rightElement.size() > 0 ? $rightElement.offset().left : null;
     }
 
-    function retrieveBottomLimit(selector) {
-        var $bottomElement = $(selector);
-        return ($bottomElement.offset() != null) ? $bottomElement.offset().top : null;
+    function retrieveBottomLimit($bottomElement) {
+        return $bottomElement.size() > 0 ? $bottomElement.offset().top : null;
     }
 
     function retrieveRightEdge($element) {
@@ -18,7 +16,18 @@
         return $element.size() > 0 ? $element.offset().top + $element.height() : null;
     }
 
+    function updateTop($element, value) {
+        var offset = $element.offset();
+        offset.top += value;
+        $element.offset(offset);
+    }
+
     jQuery.extend($.icescrum, {
+
+        checkBars:function() {
+            $.icescrum.checkMenuBar();
+            $.icescrum.checkToolbar();
+        },
 
         checkMenuBar:function() {
             var $listHidden = $('#menubar-list-content > ul');
@@ -31,8 +40,8 @@
                 $arrow.before($candidateForShowing);
             });
             // Hide elements until it fits
-            var rightLimit = retrieveRightLimit("#navigation-avatar");
-            var bottomLimit = retrieveBottomLimit("#main");
+            var rightLimit = retrieveRightLimit($("#navigation-avatar"));
+            var bottomLimit = retrieveBottomLimit($("#main"));
             var arrowRightEdge = retrieveRightEdge($arrow);
             var arrowBottomEdge = retrieveBottomEdge($arrow);
             if(rightLimit && bottomLimit && arrowRightEdge && arrowBottomEdge) {
@@ -51,6 +60,28 @@
             // Update the arrow visibility
             var visibility = $('.menubar', $listHidden).size() == 0 ? 'hidden' : 'visible';
             $arrow.css('visibility', visibility)
+        },
+
+        checkToolbar:function() {
+            var $windowContent = $('.window-content');
+            var $overflowToolbar = $('#toolbar-overflow');
+            var $toolbar = $('.box-navigation:has(ul#window-toolbar)');
+            if($toolbar.size() > 0 && $overflowToolbar.size() > 0 && $windowContent.size() > 0) {
+                $toolbar.css('overflow', 'scroll');
+                var scrollHeight = $toolbar[0].scrollHeight;
+                $toolbar.css('overflow', 'visible');
+                if(scrollHeight > $toolbar.height()) {
+                    if($overflowToolbar.is(':hidden')) {
+                        $overflowToolbar.show();
+                        updateTop($windowContent, $overflowToolbar.height());
+                    }
+                } else {
+                    if($overflowToolbar.is(':visible')) {
+                        updateTop($windowContent, -$overflowToolbar.height());
+                        $overflowToolbar.hide();
+                    }
+                }
+            }
         }
     })
 })(jQuery);
