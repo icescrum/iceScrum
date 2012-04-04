@@ -91,7 +91,11 @@
 <is:separatorSmall/>
 
 %{--Filter--}%
-<is:panelButton alt="Filter" id="menu-filter-task" arrow="true" icon="filter"
+<is:panelButton alt="Filter"
+                id="menu-filter-task"
+                arrow="true"
+                icon="filter"
+                classDropmenu="${currentFilter == 'allTasks' ? '' : 'filter-active'}"
                 text="${message(code:'is.ui.sprintPlan.toolbar.filter.'+currentFilter)}">
     <ul>
         <li class="first">
@@ -101,7 +105,7 @@
                     params="[filter:'allTasks']"
                     history="false"
                     id="${params.id}"
-                    onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}');"
+                    onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}', false);"
                     update="window-content-${id}"
                     remote="true"
                     value="${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}"/>
@@ -112,7 +116,7 @@
                      params="[filter:'myTasks']"
                      update="window-content-${id}"
                      history="false"
-                     onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}');"
+                     onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}', true);"
                      id="${params.id}"
                      remote="true"
                      value="${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}"/>
@@ -125,15 +129,15 @@
             <li class="last">
         </g:else>
         <is:link controller="${id}"
-        action="changeFilterTasks"
-        params="[filter:'freeTasks']"
-        update="window-content-${id}"
-        onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}');"
-        history="false"
-        id="${params.id}"
-        remote="true"
-        value="${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}"/>
-    </li>
+            action="changeFilterTasks"
+            params="[filter:'freeTasks']"
+            update="window-content-${id}"
+            onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}', true);"
+            history="false"
+            id="${params.id}"
+            remote="true"
+            value="${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}"/>
+        </li>
         <li class="last activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ? '' : 'hidden'}">
             <is:link
                     action="changeHideDoneState"

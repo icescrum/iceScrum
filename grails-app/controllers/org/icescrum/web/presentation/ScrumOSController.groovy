@@ -80,6 +80,11 @@ class ScrumOSController {
             return
         }
 
+        if (currentProductInstance && currentUserInstance && currentUserInstance.preferences.lastProductOpened != currentProductInstance.pkey){
+            currentUserInstance.preferences.lastProductOpened = currentProductInstance.pkey
+            currentUserInstance.save()
+        }
+
         def products = productService.getByMemberProductList()
         def pCount = products?.size()
         if (pCount > 10){

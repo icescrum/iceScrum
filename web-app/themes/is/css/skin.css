@@ -55,7 +55,7 @@ a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover
 }
 
 .button-s, .button-s:hover, .box .box-title .content, .button-n:hover,
-.button-n:hover strong, .dropmenu-hover .dropmenu-button,
+.button-n:hover strong, .dropmenu-hover .dropmenu-button, .filter-active .dropmenu-button,
 #steps .current p, #spinner-app .spinner-loading,
 .ui-widget-content .button-s, .button-s-light:hover span,
 .browse .browse-item-active, .button-s-light:hover strong, .window-help,
@@ -278,7 +278,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 */
 
 .button-s span, .button-n:hover span, .button-s-black:hover span,
-.dropmenu-hover .dropmenu-button span,
+.dropmenu-hover .dropmenu-button span, .filter-active .dropmenu-button span,
 #dropmenu #menubar-list-content li.drag span {
     background-image: url(../images/buttons/small.png);
 }
@@ -293,7 +293,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
     background-image: url(../images/icons/create.png);
 }
 
-.button-filter .ico, .button-filter:hover .ico, .dropmenu-hover .button-filter .ico {
+.button-filter .ico, .button-filter:hover .ico, .dropmenu-hover .button-filter .ico, .filter-active .button-filter .ico {
     background-image: url(../images/icons/filter.png);
 }
 

@@ -23,11 +23,9 @@
 <is:panelTab id="comments" selected="${params.tab && 'comments' in params.tab ? 'true' : ''}">
     <div class="addorlogin">
         <sec:ifNotLoggedIn>
-            <g:link
-                    controller="login"
-                    onClick="this.href=this.href+'?ref='+decodeURI('${params.product?'p/'+story.backlog.pkey:params.team?'t/'+params.team:''}')+decodeURI(document.location.hash.replace('#','@'));">
+            <a href="${grailsApplication.config.grails.serverURL}/login?ref=p/${story.backlog.pkey}#backlogElement/${story.id}">
                 ${message(code: 'is.ui.backlogelement.comment.login')}
-            </g:link>
+            </a>
         </sec:ifNotLoggedIn>
         <sec:ifLoggedIn>
             <is:link disabled="true"

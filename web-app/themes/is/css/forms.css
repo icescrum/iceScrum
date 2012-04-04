@@ -578,19 +578,15 @@
     float: none;
 }
 
-.dropmenu-hover .dropmenu-button {
-
-}
-
-.dropmenu-hover .dropmenu-button .end {
+.dropmenu-hover .dropmenu-button .end,.filter-active .dropmenu-button .end {
     background-position: right 0;
 }
 
-.dropmenu-hover .dropmenu-button .start {
+.dropmenu-hover .dropmenu-button .start,.filter-active .dropmenu-button .start {
     background-position: 0 0;
 }
 
-.dropmenu-hover .dropmenu-button .content {
+.dropmenu-hover .dropmenu-button .content,.filter-active .dropmenu-button .content {
     background-position: 0 -19px;
 }
 
@@ -673,11 +669,11 @@
     background-position: 0 -5px;
 }
 
-.dropmenu-hover .arrow, .dropmenu .dropmenu-button:hover .arrow {
+.dropmenu-hover .arrow, .filter-active .arrow, .dropmenu .dropmenu-button:hover .arrow {
     background-position: 0 -25px;
 }
 
-.dropmenu-hover .ico {
+.dropmenu-hover .ico, .filter-active .ico {
     background-position: 0 -10px;
 }
 

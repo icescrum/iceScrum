@@ -71,11 +71,13 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
 
             $.datepicker.setDefaults($.datepicker.regional[this.o.locale]);
-            var url = location.hash.replace(/^.*#/, '');
-
-            if (url != '') {
-                $.icescrum.openWindow(url);
+            if (!$.getUrlVar('ref')){
+                var url = location.hash.replace(/^.*#/, '');
+                if (url != '') {
+                    $.icescrum.openWindow(url);
+                }
             }
+
             $.icescrum.initHistory();
             if (this.o.push.enable){
                 $.icescrum.listenServer();
@@ -337,9 +339,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 return estimation.toString().indexOf('.') == -1 ? estimation.toString().concat('.0') : estimation;
         },
 
-        redirectOnLogin:function(){
+        redirectOnLogin:function(data){
             var ref = jQuery.getUrlVar('ref');
-            document.location = ref ? ref :  "";
+            document.location = ref ? ref : data ? data.url : '';
         },
 
         showAndHideOnClickAnywhere:function(selector){

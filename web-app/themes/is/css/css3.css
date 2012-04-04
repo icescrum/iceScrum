@@ -22,7 +22,7 @@
  */
 
 .button-s, .box .box-title .content, .button-n:hover,
-.dropmenu-hover .dropmenu-button, #steps .current p, #spinner-app,
+.dropmenu-hover .dropmenu-button, .filter-active .dropmenu-button, #steps .current p, #spinner-app,
 .button-s-light:hover, .browse .browse-item-active, .window-help,
 #dropmenu #menubar-list-content li.drag .button-s,
 .members-active .ui-selected {

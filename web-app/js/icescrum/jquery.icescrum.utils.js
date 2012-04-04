@@ -208,8 +208,13 @@
                     $('#datepicker-endDate').datepicker('setDate', this.dateLocaleFormat(date2));
                 },
 
-                updateFilterTask:function(text){
-                    jQuery('#menu-filter-task-navigation-item .content').html('<span class="ico"></span>'+text);
+                updateFilterTask:function(text, visible){
+                    if (visible){
+                        $('#menu-filter-task-list').addClass('filter-active');
+                    }else {
+                        $('#menu-filter-task-list').removeClass('filter-active');
+                    }
+                    $('#menu-filter-task-navigation-item .content').html('<span class="ico"></span>'+text);
                 },
 
                 updateHideDoneState:function(show,hide){

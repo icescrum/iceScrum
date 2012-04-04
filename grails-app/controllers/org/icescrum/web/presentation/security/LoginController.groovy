@@ -36,6 +36,7 @@ import org.springframework.security.authentication.LockedException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.icescrum.core.domain.Product
 
 class LoginController {
 
@@ -176,7 +177,12 @@ class LoginController {
      * The Ajax success redirect url.
      */
     def ajaxSuccess = {
-        render('')
+        User u = springSecurityService.currentUser
+        if (u.preferences.lastProductOpened){
+            render(status:200, contentType: 'application/json', text:[url:grailsApplication.config.grails.serverURL+'/p/'+u.preferences.lastProductOpened+'#project'] as JSON)
+        }else{
+            render(status:200, text:'')
+        }
     }
 
     /**
