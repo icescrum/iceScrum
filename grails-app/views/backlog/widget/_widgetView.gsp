@@ -55,5 +55,5 @@
 
 <is:onStream
         on="#backlog-layout-widget-${id}"
-        events="[[object:'story',events:['add','update','remove','estimate','plan','unPlan','associated','dissociated']]]"
+        events="[[object:'story',events:['add','update','remove','estimate','plan','unPlan','associated','dissociated']],[object:'feature',events:['update']]]"
         template="backlogWidget"/>
