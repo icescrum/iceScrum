@@ -35,8 +35,11 @@ Administration section
  */
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = true
+
+icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = true
 icescrum.alerts.default.from = "webmaster@icescrum.org"
+
 icescrum.attachments.enable = true
 icescrum.alerts.errors.to = "dev@icescrum.org"
 icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
@@ -78,16 +81,15 @@ icescrum.auto_follow_stakeholder  = true
 icescrum.auto_follow_scrummaster  = true
 
 /*  Mail section  */
-/*grails.mail.host = "smtp.gmail.com"
+grails.mail.host = "smtp.gmail.com"
 grails.mail.port = 465
-grails.mail.username = "username@gmail.com"
-grails.mail.password = ""
+grails.mail.username = "barrier.vincent@gmail.com"
+grails.mail.password = "bahz4lol\$"
 grails.mail.props = ["mail.smtp.auth":"true",
         "mail.smtp.socketFactory.port":"465",
         "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
         "mail.smtp.socketFactory.fallback":"false"]
-               */
-grails.mail.subject_prefix = "[icescrum]"
+
 
 /*
   Push section
