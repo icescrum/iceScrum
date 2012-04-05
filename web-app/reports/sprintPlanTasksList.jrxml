@@ -1,238 +1,226 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="sprintPlanTasksList" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape"
-              columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"
-              isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
-    <property name="ireport.zoom" value="0.9090909090909113"/>
-    <property name="ireport.x" value="0"/>
-    <property name="ireport.y" value="0"/>
-    <style name="table">
-        <box>
-            <pen lineWidth="1.0" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table 1">
-        <box>
-            <pen lineWidth="1.0" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table 2">
-        <box>
-            <pen lineWidth="1.0" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
-        <box>
-            <pen lineWidth="0.5" lineColor="#000000"/>
-        </box>
-    </style>
-    <parameter name="_name" class="java.lang.String"/>
-    <parameter name="labels.projectName" class="java.lang.String"/>
-    <parameter name="_isSubreport" class="java.lang.Boolean"/>
-    <parameter name="taskStateBundle" class="java.util.Map"/>
-    <field name="name" class="java.lang.String"/>
-    <field name="description" class="java.lang.String"/>
-    <field name="state" class="java.lang.Number"/>
-    <field name="notes" class="java.lang.String"/>
-    <field name="creator" class="java.lang.Object"/>
-    <field name="responsible" class="java.lang.Object"/>
-    <field name="parentStory" class="java.lang.Object"/>
-    <field name="type" class="java.lang.Number"/>
-    <background>
-        <band splitType="Stretch"/>
-    </background>
-    <title>
-        <band height="42" splitType="Stretch">
-            <printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
-            <textField>
-                <reportElement x="0" y="9" width="351" height="27" forecolor="#0066CC"/>
-                <textElement>
-                    <font size="20" isBold="true"/>
-                </textElement>
-                <textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.sprintPlan}]]></textFieldExpression>
-            </textField>
-        </band>
-    </title>
-    <pageHeader>
-        <band height="26" splitType="Stretch">
-            <printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
-            <textField>
-                <reportElement x="575" y="0" width="227" height="15" isPrintWhenDetailOverflows="true"/>
-                <textElement textAlignment="Right">
-                    <font size="11" isBold="true"/>
-                </textElement>
-                <textFieldExpression class="java.lang.String"><![CDATA[$P{labels.projectName}]]></textFieldExpression>
-            </textField>
-        </band>
-    </pageHeader>
-    <columnHeader>
-        <band height="53">
-            <textField>
-                <reportElement x="0" y="0" width="185" height="20"/>
-                <textElement>
-                    <font size="12" isUnderline="true"/>
-                </textElement>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$R{is.report.sprintPlan.tasks.list}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement style="table_CH" x="0" y="33" width="95" height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.task.name}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement style="table_CH" x="95" y="33" width="172" height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$R{is.report.backlogelement.description}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement style="table_CH" x="267" y="33" width="154" height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$R{is.report.backlogelement.notes}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement style="table_CH" x="421" y="33" width="101" height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$R{is.report.task.creator}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement style="table_CH" x="522" y="33" width="104" height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$R{is.report.task.responsible}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement style="table_CH" x="626" y="33" width="86" height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.task.state}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement style="table_CH" x="712" y="33" width="90" height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.task.story}]]></textFieldExpression>
-            </textField>
-        </band>
-    </columnHeader>
-    <detail>
-        <band height="20">
-            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement style="table_TD" stretchType="RelativeToTallestObject" x="0" y="0" width="95"
-                               height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement style="table_TD" stretchType="RelativeToTallestObject" x="421" y="0" width="101"
-                               height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$F{creator}.firstName+" "+$F{creator}.lastName]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement style="table_TD" stretchType="RelativeToTallestObject" x="522" y="0" width="104"
-                               height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$F{responsible}.firstName+" "+$F{responsible}.lastName]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement style="table_TD" stretchType="RelativeToTallestObject" x="95" y="0" width="172"
-                               height="20"/>
-                <textElement/>
-                <textFieldExpression class="java.lang.String"><![CDATA[$F{description}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement style="table_TD" stretchType="RelativeToTallestObject" x="267" y="0" width="154"
-                               height="20"/>
-                <textElement/>
-                <textFieldExpression class="java.lang.String"><![CDATA[$F{notes}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement style="table_TD" stretchType="RelativeToTallestObject" x="626" y="0" width="86"
-                               height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$P{REPORT_RESOURCE_BUNDLE}.getString($P{taskStateBundle}.get($F{state}))]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                <reportElement style="table_TD" stretchType="RelativeToTallestObject" x="712" y="0" width="90"
-                               height="20"/>
-                <textElement textAlignment="Center"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[($F{parentStory} != null ? $F{parentStory}.name : ($F{type} == 10 ? $R{is.report.task.type.recurrent} : $R{is.report.task.type.urgent}))]]></textFieldExpression>
-            </textField>
-        </band>
-    </detail>
-    <pageFooter>
-        <band height="41" splitType="Stretch">
-            <printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
-            <textField>
-                <reportElement x="0" y="20" width="289" height="20"/>
-                <textElement markup="none"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$R{is.report.footer.credit}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="682" y="20" width="80" height="20"/>
-                <textElement textAlignment="Right"/>
-                <textFieldExpression class="java.lang.String">
-                    <![CDATA[$R{is.report.footer.page}+" "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
-            </textField>
-            <textField evaluationTime="Report">
-                <reportElement x="762" y="20" width="40" height="20"/>
-                <textElement/>
-                <textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-            </textField>
-            <textField pattern="EEEEE dd MMMMM yyyy">
-                <reportElement x="289" y="20" width="393" height="20"/>
-                <textElement/>
-                <textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
-            </textField>
-        </band>
-    </pageFooter>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sprintPlanTasksList" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
+	<property name="ireport.zoom" value="0.9090909090909113"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="_name" class="java.lang.String"/>
+	<parameter name="labels.projectName" class="java.lang.String"/>
+	<parameter name="_isSubreport" class="java.lang.Boolean"/>
+	<parameter name="taskStateBundle" class="java.util.Map"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="state" class="java.lang.Number"/>
+	<field name="estimation" class="java.lang.Float"/>
+	<field name="notes" class="java.lang.String"/>
+	<field name="creator" class="java.lang.Object"/>
+	<field name="responsible" class="java.lang.Object"/>
+	<field name="parentStory" class="java.lang.Object"/>
+	<field name="type" class="java.lang.Number"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="42" splitType="Stretch">
+			<printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="9" width="351" height="27" forecolor="#0066CC"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{is.report.sprintPlan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="26" splitType="Stretch">
+			<printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
+			<textField>
+				<reportElement x="575" y="0" width="227" height="15" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labels.projectName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="53">
+			<textField>
+				<reportElement x="0" y="0" width="185" height="20"/>
+				<textElement>
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{is.report.sprintPlan.tasks.list}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_CH" x="0" y="33" width="90" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.task.story}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_CH" x="90" y="33" width="95" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.task.name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_CH" x="185" y="33" width="55" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.task.state}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_CH" x="240" y="33" width="77" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.task.estimation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_CH" x="317" y="33" width="86" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.task.responsible}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_CH" x="403" y="33" width="157" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.backlogelement.description}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_CH" x="560" y="33" width="141" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.backlogelement.notes}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table_CH" x="701" y="33" width="101" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.task.creator}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="0" y="0" width="90" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[($F{parentStory} != null ? $F{parentStory}.name : ($F{type} == 10 ? $R{is.report.task.type.recurrent} : $R{is.report.task.type.urgent}))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="90" y="0" width="95" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="185" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}.getString($P{taskStateBundle}.get($F{state}))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="240" y="0" width="77" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{estimation}  != null ? $F{estimation} : "?"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="317" y="0" width="86" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{responsible}.firstName+" "+$F{responsible}.lastName]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="403" y="0" width="157" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="560" y="0" width="141" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{notes}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="701" y="0" width="101" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{creator}.firstName+" "+$F{creator}.lastName]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="41" splitType="Stretch">
+			<printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
+			<textField>
+				<reportElement x="0" y="20" width="289" height="20"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{is.report.footer.credit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="682" y="20" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$R{is.report.footer.page}+" "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="762" y="20" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="289" y="20" width="393" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>

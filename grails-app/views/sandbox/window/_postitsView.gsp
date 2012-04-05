@@ -57,9 +57,10 @@
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
              scope="${id}"/>
 <is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+
 <is:onStream
         on="#backlog-layout-window-${id}"
-        events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']]]"
+        events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']],[object:'feature',events:['add','update','remove']]]"
         template="sandbox"/>
 
 <is:onStream
