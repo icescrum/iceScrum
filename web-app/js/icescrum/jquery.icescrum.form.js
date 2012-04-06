@@ -27,6 +27,7 @@
                             } else {
                                 if ($.inArray(this.id,preserve) == -1){
                                     $(this).selectmenu('value', 0);
+                                    $(this).trigger('onchange');
                                 }
                             }
                         });
