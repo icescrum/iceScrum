@@ -81,14 +81,14 @@ icescrum.auto_follow_stakeholder  = true
 icescrum.auto_follow_scrummaster  = true
 
 /*  Mail section  */
-grails.mail.host = "smtp.gmail.com"
+/*grails.mail.host = "smtp.gmail.com"
 grails.mail.port = 465
-grails.mail.username = "barrier.vincent@gmail.com"
-grails.mail.password = "bahz4lol\$"
+grails.mail.username = "username@gmail.com"
+grails.mail.password = ""
 grails.mail.props = ["mail.smtp.auth":"true",
         "mail.smtp.socketFactory.port":"465",
         "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-        "mail.smtp.socketFactory.fallback":"false"]
+        "mail.smtp.socketFactory.fallback":"false"]*/
 
 
 /*
