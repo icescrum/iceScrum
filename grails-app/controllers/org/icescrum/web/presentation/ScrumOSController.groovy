@@ -42,8 +42,6 @@ class ScrumOSController {
 
     def springSecurityService
     def productService
-    def teamService
-    def userService
     def menuBarSupport
     def notificationEmailService
     def securityService
@@ -80,7 +78,7 @@ class ScrumOSController {
             return
         }
 
-        if (currentProductInstance && currentUserInstance && currentUserInstance.preferences.lastProductOpened != currentProductInstance.pkey){
+        if (currentProductInstance && currentUserInstance && !securityService.hasRoleAdmin(currentUserInstance) && currentUserInstance.preferences.lastProductOpened != currentProductInstance.pkey){
             currentUserInstance.preferences.lastProductOpened = currentProductInstance.pkey
             currentUserInstance.save()
         }

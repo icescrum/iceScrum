@@ -74,30 +74,28 @@ class UserController {
         render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)], id: id)
     }
 
-
     def save = {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
             render(status: 403)
             return
         }
-        if (params.confirmPassword || params.password) {
-            if (params.confirmPassword != params.password) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.password.check')]] as JSON)
-                return
-            }
+        if ((params.confirmPassword || params.password) && (params.confirmPassword != params.password)) {
+            returnError(text: message(code: 'is.user.error.password.check'))
+            return
         }
-
         def user = new User()
         user.preferences = new UserPreferences()
         user.properties = params
         try {
             userService.save(user)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+        } catch (IllegalStateException e) {
+            returnError(exception: e)
             return
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: user)]] as JSON)
+        } catch (RuntimeException e) {
+            if(user.errors)
+                returnError(object:user, exception:e)
+            else
+                returnError(exception:e)
             return
         }
         render(status: 200, contentType: 'application/json', text: [lang: user.preferences.language, username: user.username] as JSON)
@@ -106,86 +104,62 @@ class UserController {
     @Secured('isAuthenticated()')
     def update = {
         if (params.long('user.id') != springSecurityService.principal.id) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.stale.object', args: [message(code: 'is.user')])]] as JSON)
+            returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.user')]))
             return
         }
-
-        if (params.confirmPassword || params.user.password) {
-            if (params.confirmPassword != params.user.password) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.password.check')]] as JSON)
+        withUser('user.id') { User currentUser ->
+            if ((params.confirmPassword || params.user.password) && (params.confirmPassword != params.user.password)) {
+                returnError(text: message(code: 'is.user.error.password.check'))
                 return
             }
-        }
+            if (params.long('user.version') != currentUser.version) {
+                returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.user')]))
+                return
+            }
 
-        def currentUser = User.get(springSecurityService.principal.id)
+            def pwd = null
+            if (params.user.password.trim() != '') {
+                pwd = params.user.password
+            } else {
+                params.user.password = currentUser.password
+            }
 
-        if (params.long('user.version') != currentUser.version) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.stale.object', args: [message(code: 'is.user')])]] as JSON)
-            return
-        }
-
-        def pwd = null
-        if (params.user.password.trim() != '')
-            pwd = params.user.password
-        else
-            params.user.password = currentUser.password
-
-        def gravatar = grailsApplication.config.icescrum.gravatar?.enable
-
-        File avatar = null
-        def scale = true
-        if (!gravatar){
-            if (params.avatar) {
-                "${params.avatar}"?.split(":")?.each {
-                    if (session.uploadedFiles[it])
-                        avatar = new File((String) session.uploadedFiles[it])
+            def gravatar = grailsApplication.config.icescrum.gravatar?.enable
+            File avatar = null
+            def scale = true
+            if (!gravatar){
+                if (params.avatar) {
+                    "${params.avatar}"?.split(":")?.each {
+                        if (session.uploadedFiles[it])
+                            avatar = new File((String) session.uploadedFiles[it])
+                    }
+                }
+                if (params."avatar-selected") {
+                    def file = grailsApplication.parentContext.getResource(is.currentThemeImage().toString() + 'avatars/' + params."avatar-selected").file
+                    if (file.exists()) {
+                        avatar = file
+                        scale = false
+                    }
                 }
             }
-            if (params."avatar-selected") {
-                def file = grailsApplication.parentContext.getResource(is.currentThemeImage().toString() + 'avatars/' + params."avatar-selected").file
-                if (file.exists()) {
-                    avatar = file
-                    scale = false
-                }
-            }
-        }
 
-        def forceRefresh = false
-        if (params.user.preferences.language != currentUser.preferences.language) {
-            forceRefresh = true
-        }
-        params.remove('user.username')
-        currentUser.properties = params.user
-        try {
+            def forceRefresh = (params.user.preferences.language != currentUser.preferences.language)
+            params.remove('user.username')
+            currentUser.properties = params.user
             userService.update(currentUser, pwd, (gravatar ? null : avatar?.canonicalPath), scale)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-            return
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            if (re.getMessage())
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: re.getMessage())]] as JSON)
-            else
-                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: currentUser)]] as JSON)
-            return
+
+            def link = (params.product) ? createLink(controller: 'scrumOS', params: [product: params.product]) : createLink(uri: '/')
+            def name = currentUser.firstName + ' ' + currentUser.lastName
+
+            render(status: 200, contentType: 'application/json',
+                    text: [name: name.encodeAsHTML().encodeAsJavaScript(),
+                            forceRefresh: forceRefresh,
+                            refreshLink: link ?: null,
+                            updateAvatar: gravatar ?: createLink(action: 'avatar', id: currentUser.id),
+                            userid: currentUser.id,
+                            notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
+                    ] as JSON)
         }
-        def link
-        if (params.product)
-            link = createLink(controller: 'scrumOS', params: [product: params.product])
-        else
-            link = createLink(uri: '/')
-
-        def name = currentUser.firstName + ' ' + currentUser.lastName
-
-        render(status: 200, contentType: 'application/json',
-                text: [name: name.encodeAsHTML().encodeAsJavaScript(),
-                        forceRefresh: forceRefresh,
-                        refreshLink: link ?: null,
-                        updateAvatar: gravatar ?: createLink(action: 'avatar', id: currentUser.id),
-                        userid: currentUser.id,
-                        notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
-                ] as JSON)
-        return
     }
 
     def previewAvatar = {
