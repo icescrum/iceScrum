@@ -117,7 +117,7 @@
                         id="submitAndContinueForm"
                         type="submitToRemote"
                         url="[controller:'feature', action:'update', params:[continue:true,product:params.product]]"
-                        onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
+                        onSuccess="jQuery('#${id}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
                         before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                         value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
             </g:if>
@@ -126,7 +126,7 @@
                     type="submitToRemote"
                     url="[controller:'feature', action:'update',params:[product:params.product]]"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
-                    onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
+                    onSuccess="jQuery('#${id}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
                     value="${message(code:'is.button.update')}"/>
         </g:else>
         <is:button id="cancelForm"

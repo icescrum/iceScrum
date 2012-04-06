@@ -108,7 +108,7 @@ icescrum.json.shortObject.feature = ['color', 'name']
 icescrum.json.shortObject.release = ['name', 'state', 'endDate', 'startDate', 'orderNumber']
 icescrum.json.shortObject.sprint = ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']
 icescrum.json.shortObject.user = ['firstName', 'lastName']
-icescrum.json.shortObject.story = ['state']
+icescrum.json.shortObject.story = ['state', 'effort']
 icescrum.json.shortObject.productpreferences = ['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']
 
 /*

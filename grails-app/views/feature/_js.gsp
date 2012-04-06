@@ -86,9 +86,11 @@
     var stories = 0;
     var storiesDone = 0;
     $(this.stories).each(function(){
-    stories++;
-    effort += this.effort;
-    storiesDone += (this.state == 3 ? 1 : 0);
+        stories++;
+        if (this.effort != '?'){
+             effort += this.effort;
+        }
+        storiesDone += (this.state == $.icescrum.story.STATE_DONE ? 1 : 0);
     });
     effort = effort == 0 ? '' : effort;
     storiesDone = storiesDone == 0 ? '' : storiesDone;

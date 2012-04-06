@@ -60,9 +60,13 @@
 
 <is:onStream
         on="#backlog-layout-window-${id}"
-        events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']],[object:'feature',events:['update']]]"
+        events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']]]"
         template="sandbox"/>
 
 <is:onStream
         on="#backlog-layout-window-${id}"
         events="[[object:'sprint',events:['close','activate']]]"/>
+
+<is:onStream
+        on="#backlog-layout-window-${id}"
+        events="[[object:'feature',events:['update']]]"/>

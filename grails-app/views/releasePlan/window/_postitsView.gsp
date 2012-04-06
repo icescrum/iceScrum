@@ -150,3 +150,7 @@
         on=".event-overflow"
         events="[[object:'release',events:['close']]]"
         callback="jQuery('.close-release-' + release.id).remove();"/>
+
+<is:onStream
+        on=".event-overflow"
+        events="[[object:'feature',events:['update']]]"/>
