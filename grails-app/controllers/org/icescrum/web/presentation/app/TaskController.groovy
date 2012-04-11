@@ -323,7 +323,7 @@ class TaskController {
             taskService.state(task, params.int('id'), user)
             taskService.rank(task, params.int('position'))
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [task:task, story:task.parentStory.state == Story.STATE_DONE ? task.parentStory : null] as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text: [task:task, story:task.parentStory?.state == Story.STATE_DONE ? task.parentStory : null] as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }
                 xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
             }
