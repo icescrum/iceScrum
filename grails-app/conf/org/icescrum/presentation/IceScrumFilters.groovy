@@ -46,6 +46,7 @@ class IceScrumFilters {
     webservices(uri: '/ws/**') {
       before = {
         if (params.product) {
+            params.product = params.product.decodeProductKey()
             def webservices = Product.createCriteria().get {
                               eq 'id', params.product.toLong()
                                 preferences {
