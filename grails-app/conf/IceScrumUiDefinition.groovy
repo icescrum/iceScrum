@@ -82,7 +82,7 @@ uiDefinitions = {
         ]
     }
 
-    'backlogElement' {
+    'story' {
         menuBar {
             title 'is.ui.backlogelement'
             show {
@@ -91,9 +91,9 @@ uiDefinitions = {
         }
 
         window {
-            title 'is.ui.backlogelement'
+            title 'is.ui.story.details'
             toolbar true
-            init 'details'
+            init 'index'
         }
     }
 
@@ -246,6 +246,21 @@ uiDefinitions = {
             title 'is.user'
             toolbar false
             init 'profile'
+        }
+    }
+
+    'task' {
+        menuBar {
+            title 'is.ui.backlogelement'
+            show {
+                false
+            }
+        }
+
+        window {
+            title 'is.ui.task.details'
+            toolbar true
+            init 'index'
         }
     }
 }

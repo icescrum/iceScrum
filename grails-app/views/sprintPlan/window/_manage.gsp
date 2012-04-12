@@ -106,14 +106,14 @@
                     type="submitToRemote"
                     url="[controller:'task', action:'update',params:[product:params.product]]"
                     before='if (\$.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
-                    onSuccess="jQuery.icescrum.navigateTo('${controllerName+'/'+sprint.id}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.updated')}')"
+                    onSuccess="jQuery.icescrum.navigateTo('${referrerUrl ?: controllerName+'/'+sprint.id}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.updated')}')"
                     value="${message(code:'is.button.update')}"/>
         </g:else>
         <is:button
                 id="cancelForm"
                 type="link"
                 button="button-s button-s-black"
-                href="#${controllerName+'/'+sprint.id}"
+                href="#${referrerUrl ?: controllerName+'/'+sprint.id}"
                 value="${message(code: 'is.button.cancel')}"/>
     </is:buttonBar>
 

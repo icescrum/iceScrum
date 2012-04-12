@@ -84,7 +84,7 @@ class ProjectController {
           activities.each() { a ->
                 entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is.story")} ${a.cachedLabel.encodeAsHTML()}") {e ->
                     if (a.code != Activity.CODE_DELETE)
-                        e.link = "${is.createScrumLink(absolute: true, controller: 'backlogElement', id: a.cachedId)}"
+                        e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.cachedId)}"
                     else
                         e.link = "${is.createScrumLink(absolute: true, controller: 'project')}"
                     e.publishedDate = a.dateCreated

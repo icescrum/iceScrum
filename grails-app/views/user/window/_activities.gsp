@@ -45,7 +45,7 @@
                                 <g:message code="is.fluxiable.${a.code}"/>
                                 <g:message code="is.${a.code.startsWith('task') ? 'task' : 'story'}"/>
                                 <g:if test="${!a.code.startsWith('task') && a.code != Activity.CODE_DELETE}">
-                                    <is:scrumLink class="scrum-link" controller="backlogElement" id="${a.cachedId}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink></p>
+                                    <is:scrumLink class="scrum-link" controller="story" id="${a.cachedId}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink></p>
                                 </g:if>
                                 <g:else>
                                     <strong>${a.cachedLabel.encodeAsHTML()}</strong>
@@ -74,7 +74,7 @@
                         <is:tableHeader name="${message(code:'is.story.lastUpdated')}"/>
 
                         <is:tableRows in="${stories}" var="story">
-                            <is:tableColumn><is:scrumLink product="${story.backlog.pkey}" controller="backlogElement"
+                            <is:tableColumn><is:scrumLink product="${story.backlog.pkey}" controller="story"
                                                           id="${story.id}">${story.backlog.pkey}-${story.id}</is:scrumLink></is:tableColumn>
                             <is:tableColumn>${story.name.encodeAsHTML()}</is:tableColumn>
                             <is:tableColumn>${is.bundle(bundle: 'storyStates', value: story.state)}</is:tableColumn>
@@ -106,7 +106,7 @@
                                                           controller="sprintPlan"
                                                           id="${task.backlog.id}">${task.backlog.parentRelease.parentProduct.name.encodeAsHTML()} - ${task.backlog.orderNumber}</is:scrumLink></is:tableColumn>
                             <is:tableColumn><g:if test="${task.parentStory}"><is:scrumLink
-                                    product="${task.parentStory.backlog.pkey}" controller="backlogElement"
+                                    product="${task.parentStory.backlog.pkey}" controller="story"
                                     id="${task.parentStory.id}">${task.parentStory.name.encodeAsHTML()}</is:scrumLink></g:if></is:tableColumn>
                             <is:tableColumn>${task.name.encodeAsHTML()}</is:tableColumn>
                             <is:tableColumn>${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>

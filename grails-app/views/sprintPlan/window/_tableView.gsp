@@ -151,7 +151,7 @@
                 <is:tableGroupHeader>
                     <is:menu rendered="${request.inProduct}" yoffset="4" class="dropmenu-action" id="${story.id}"
                              contentView="/story/menu" params="[id:id,story:story,nextSprintExist:nextSprintExist]"/>
-                    <is:scrumLink id="${story.id}" controller="backlogElement">
+                    <is:scrumLink id="${story.id}" controller="story">
                         ${story.uid}
                     </is:scrumLink> -
                     <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>

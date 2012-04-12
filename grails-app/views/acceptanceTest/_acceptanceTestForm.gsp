@@ -37,7 +37,7 @@
         <g:if test="${acceptanceTest}">
             <is:button
                 id="acceptance-test-edit-button" type="submitToRemote"
-                url="[controller:'backlogElement', action:'updateAcceptanceTest', params:[product:params.product]]"
+                url="[controller:'story', action:'updateAcceptanceTest', params:[product:params.product]]"
                 onSuccess="jQuery('#acceptance-test-editor-wrapper${acceptanceTest.id}').hide();
                            jQuery('#acceptance-test${acceptanceTest.id} .acceptance-test-content').show();
                            jQuery.event.trigger('update_acceptancetest',data);"
@@ -47,7 +47,7 @@
         <g:else>
         <is:button
             id="acceptance-test-add-button" type="submitToRemote"
-            url="[controller:'backlogElement', action:'saveAcceptanceTest', params:[product:params.product]]"
+            url="[controller:'story', action:'saveAcceptanceTest', params:[product:params.product]]"
             onSuccess="jQuery('#acceptance-test-form-container').hide();
                        jQuery('#acceptance-test-description-field').val('');
                        jQuery('#acceptance-test-name-field').val('');

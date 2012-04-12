@@ -25,7 +25,7 @@
 <is:postitMenuItem first="true">
  <is:scrumLink
         id="${story.id}"
-        controller="backlogElement"
+        controller="story"
         update="window-content-${id}">
    <g:message code='is.ui.releasePlan.menu.story.details'/>
  </is:scrumLink>
@@ -34,7 +34,7 @@
 <is:postitMenuItem>
   <is:scrumLink
         id="${story.id}"
-        controller="backlogElement"
+        controller="story"
         params="[tab:'comments']"
         update="window-content-${id}">
     <g:message code='is.ui.releasePlan.menu.story.commentable'/>

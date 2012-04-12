@@ -72,7 +72,7 @@
                           title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
-                <is:scrumLink id="${story.id}" controller="backlogElement">
+                <is:scrumLink id="${story.id}" controller="story">
                     ${story.uid}
                 </is:scrumLink>
             </is:tableColumn>
@@ -134,7 +134,7 @@
                           title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
-                <is:scrumLink id="${story.id}" controller="backlogElement">
+                <is:scrumLink id="${story.id}" controller="story">
                     ${story.uid}
                 </is:scrumLink>
             </is:tableColumn>

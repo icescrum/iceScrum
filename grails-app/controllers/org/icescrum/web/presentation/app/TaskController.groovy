@@ -34,11 +34,15 @@ import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
+import org.icescrum.core.domain.Product
+import org.grails.followable.FollowLink
+import grails.util.GrailsNameUtils
+import org.springframework.web.servlet.support.RequestContextUtils
 
 @Secured('inProduct()')
 class TaskController {
 
-    def sprintService
+    def securityService
     def springSecurityService
     def taskService
 
@@ -48,6 +52,39 @@ class TaskController {
             ['update']: ['PUT', 'POST'],
             ['delete']: ['DELETE', 'POST']
     ]
+
+    def toolbar = {
+        withTask { Task task ->
+            def user = null
+            if (springSecurityService.isLoggedIn())
+                user = User.load(springSecurityService.principal.id)
+
+            def next = Task.findNextTaskInSprint(task).list()[0]
+            def previous = Task.findPreviousTaskInSprint(task).list()[0]
+
+            render(template: 'window/toolbar', model: [task: task, user: user, next: next, previous: previous])
+        }
+    }
+
+    def index = {
+        withTask { Task task ->
+            Product product = (Product.get(params.long('product')))
+            def user = springSecurityService.currentUser
+            if (product.preferences.hidden && !user) {
+                redirect(controller: 'login', params: [ref: "p/${product.pkey}@task/$story.id"])
+                return
+            } else if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product,springSecurityService.authentication,false)) {
+                render(status: 403)
+                return
+            } else {
+                render(view: 'details', model: [
+                        task: task,
+                        taskStateCode: BundleUtils.taskStates[task.state],
+                        taskTypeCode: BundleUtils.taskTypes[task.type]
+                ])
+            }
+        }
+    }
 
     @Secured('inProduct() and !archivedProduct()')
     def save = {
@@ -413,6 +450,18 @@ class TaskController {
                     }
                 }
             }
+        }
+    }
+
+    def summaryPanel = {
+        withTask { Task task ->
+            def summary = task.getActivities()
+            summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
+            render(template: "/backlogElement/summary",
+                    model: [summary: summary,
+                            backlogElement: task,
+                            product: Product.get(params.long('product'))
+                    ])
         }
     }
 }

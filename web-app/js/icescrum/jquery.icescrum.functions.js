@@ -713,14 +713,6 @@
                             if (taskSortable) {
                                 $('.postit-label', postit).addClass('postit-sortable');
                             }
-                            // First menu elem
-                            if (this.state != $.icescrum.task.STATE_DONE) {
-                                responsible ? $('#menu-unassign-' + this.id, postit).addClass('first') : $('#menu-take-' + this.id, postit).addClass('first');
-                            } else if(taskCopyable) {
-                                $('#menu-copy-' + this.id, postit).addClass('first');
-                            } else if(taskDeletable) {
-                                $('#menu-delete-' + this.id, postit).addClass('first');
-                            }
                         }
 
                         this.blocked ? $('#menu-blocked-' + this.id + ' a', postit).text($.icescrum.task.UNBLOCK) : $('#menu-blocked-' + this.id + ' a', postit).text($.icescrum.task.BLOCK);

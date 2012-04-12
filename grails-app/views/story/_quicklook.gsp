@@ -25,7 +25,7 @@
         <div class="col1 postit-details-information">
             <p>
                 <strong><g:message code="is.backlogelement.id"/></strong> <is:scrumLink
-                    onclick="jQuery('#dialog').dialog('close');" controller="backlogElement"
+                    onclick="jQuery('#dialog').dialog('close');" controller="story"
                     id="${story.id}">${story.uid}</is:scrumLink>
             </p>
 
@@ -125,7 +125,7 @@
                 <div>
                     <strong>
                     <is:scrumLink
-                            controller="backlogElement"
+                            controller="story"
                             action="details"
                             id="${story.id}"
                             params="['tab':'tests']"
@@ -139,7 +139,7 @@
                 <div>
                     <strong>
                     <is:scrumLink
-                            controller="backlogElement"
+                            controller="story"
                             action="details"
                             id="${story.id}"
                             params="['tab':'comments']"

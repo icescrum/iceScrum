@@ -143,7 +143,7 @@
                                                           id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
                                             <g:message code="is.fluxiable.${a.code}"/> <g:message code="${a.code == 'taskDelete' ? 'is.task' : 'is.story'}"/>
                                             <g:if test="${a.code != Activity.CODE_DELETE}">
-                                                <is:scrumLink controller="backlogElement" id="${a.cachedId}"
+                                                <is:scrumLink controller="story" id="${a.cachedId}"
                                                               params="${a.code == 'comment' ? ['tab':'comments'] : []}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink>
                                             </g:if>
                                             <g:else>

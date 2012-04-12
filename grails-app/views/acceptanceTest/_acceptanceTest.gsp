@@ -30,7 +30,7 @@
                     (
                         <is:link history="false"
                                   remote="true"
-                                  controller="backlogElement"
+                                  controller="story"
                                   action="acceptanceTestEditor"
                                   id="${acceptanceTest.id}"
                                   update="acceptance-test-editor-wrapper${acceptanceTest.id}"
@@ -42,7 +42,7 @@
                     -
                         <is:link history="false"
                                 remote="true"
-                                controller="backlogElement"
+                                controller="story"
                                 action="deleteAcceptanceTest"
                                 id="${acceptanceTest.id}"
                                 onSuccess="jQuery.event.trigger('remove_acceptancetest',data);">

@@ -29,7 +29,7 @@
                 <g:if test="${entry instanceof Comment}">
                     <g:render template="/components/comment"
                               plugin="icescrum-core"
-                              model="[noEscape:true, backlogelement:story, comment:entry, commentId:'summary']"/>
+                              model="[noEscape:true, backlogelement:backlogelement, comment:entry, commentId:'summary']"/>
                 </g:if>
                 <g:elseif test="${entry instanceof Activity && entry.code != 'comment'}">
                     <li ${(summary?.size() == (i + 1)) ? 'class="last"' : ''}>
@@ -41,7 +41,7 @@
                                 <strong>${entry.cachedLabel.encodeAsHTML()}</strong></p>
 
                             <p><g:formatDate date="${entry.dateCreated}" formatName="is.date.format.short.time"
-                                             timeZone="${story.backlog.preferences.timezone}"/></p>
+                                             timeZone="${product.preferences.timezone}"/></p>
                         </div>
                     </li>
                 </g:elseif>

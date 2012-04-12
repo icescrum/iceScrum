@@ -266,6 +266,7 @@ class SprintPlanController {
             render(template: 'window/manage', model: [
                     id: id,
                     task: task,
+                    referrerUrl: params.referrerUrl,
                     stories: selectList,
                     selected: selected,
                     next: next?.id ?: '',

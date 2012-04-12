@@ -40,7 +40,7 @@ class ProductUrlMappings {
 
 
         name shortURL: "/p/$product-$id/" {
-            controller = 'backlogElement'
+            controller = 'story'
             action = 'shortURL'
             constraints {
                 product(matches: /[0-9A-Z]*/)
@@ -66,7 +66,7 @@ class ProductUrlMappings {
         }
 
         "/b/$id" {
-            controller = 'backlogElement'
+            controller = 'story'
             action = 'idURL'
             constraints {
                 id(matches: /[0-9]*/)

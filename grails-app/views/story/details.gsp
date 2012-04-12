@@ -87,10 +87,10 @@
                        class="${params.tab && 'comments' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.comments')}</a>
                 </is:panelTabButton>
                 <div id="panel-tab-contents-1" class="panel-tab-contents">
-                    <g:include  action="summaryPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
-                    <g:include  action="taskPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
-                    <g:include  action="testsPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
-                    <g:include  action="commentsPanel" controller="backlogElement" params="[product:params.product, id:story.id]"/>
+                    <g:include  action="summaryPanel" controller="story" params="[product:params.product, id:story.id]"/>
+                    <g:include  action="taskPanel" controller="story" params="[product:params.product, id:story.id]"/>
+                    <g:include  action="testsPanel" controller="story" params="[product:params.product, id:story.id]"/>
+                    <g:include  action="commentsPanel" controller="story" params="[product:params.product, id:story.id]"/>
                 </div>
                 <jq:jquery>
                     $("#panel-box-1 a").live('hover',function(){

@@ -24,7 +24,7 @@
 
 <is:iconButton
         action="editStory"
-        controller="backlogElement"
+        controller="story"
         rendered="${request.productOwner  || story.creator.id == user?.id}"
         id="${story.id}"
         params="[product:params.product]"

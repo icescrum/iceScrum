@@ -32,8 +32,15 @@
 <g:set var="taskReleasable" value="${responsible && !taskDone}"/>
 <g:set var="taskCopyable" value="${!task.parentStory || task.parentStory.state != Story.STATE_DONE}"/>
 
-<is:postitMenuItem first="${!responsible}"
-                   rendered="${taskTakable || template}"
+<is:postitMenuItem first="true">
+    <is:scrumLink
+            id="${task.id}"
+            controller="task"
+            update="window-content-${controllerName}">
+        <g:message code='is.ui.sprintPlan.menu.task.details'/>
+    </is:scrumLink>
+</is:postitMenuItem>
+<is:postitMenuItem rendered="${taskTakable || template}"
                    elementId="menu-take-${task.id}">
     <is:link id="${task.id}"
              action="take"
@@ -43,8 +50,7 @@
              history="false"
              value="${message(code:'is.ui.sprintPlan.menu.task.take')}"/>
 </is:postitMenuItem>
-<is:postitMenuItem first="${responsible}"
-                   rendered="${taskReleasable || template}"
+<is:postitMenuItem rendered="${taskReleasable || template}"
                    elementId="menu-unassign-${task.id}">
     <is:link id="${task.id}"
              action="unassign"
