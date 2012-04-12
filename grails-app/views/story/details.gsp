@@ -85,12 +85,14 @@
                        class="${params.tab && 'tests' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.test')}</a>
                     <a rel="#comments" href="../"
                        class="${params.tab && 'comments' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.comments')}</a>
+                    <entry:point id="${controllerName}-${actionName}-tab-button" model="[tab:params.tab]"/>
                 </is:panelTabButton>
                 <div id="panel-tab-contents-1" class="panel-tab-contents">
                     <g:include  action="summaryPanel" controller="story" params="[product:params.product, id:story.id]"/>
                     <g:include  action="taskPanel" controller="story" params="[product:params.product, id:story.id]"/>
                     <g:include  action="testsPanel" controller="story" params="[product:params.product, id:story.id]"/>
                     <g:include  action="commentsPanel" controller="story" params="[product:params.product, id:story.id]"/>
+                    <entry:point id="${controllerName}-${actionName}-tab-entry" model="[product:params.product, id:story.id]"/>
                 </div>
                 <jq:jquery>
                     $("#panel-box-1 a").live('hover',function(){
