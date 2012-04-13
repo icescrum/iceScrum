@@ -71,8 +71,7 @@
              value="${message(code:'is.ui.sprintPlan.menu.task.update')}"
              remote="true"/>
 </is:postitMenuItem>
-<is:postitMenuItem first="${taskDone}"
-                   rendered="${taskCopyable || template}"
+<is:postitMenuItem rendered="${taskCopyable || template}"
                    elementId="menu-copy-${task.id}">
     <is:link id="${task.id}"
              action="copy"
@@ -82,8 +81,7 @@
              onSuccess="jQuery.event.trigger('add_task',data); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.copied')}')"
              value="${message(code:'is.ui.sprintPlan.menu.task.copy')}"/>
 </is:postitMenuItem>
-<is:postitMenuItem first="${taskDone && !taskCopyable}"
-                   rendered="${taskDeletable || template}"
+<is:postitMenuItem rendered="${taskDeletable || template}"
                    elementId="menu-delete-${task.id}">
     <is:link id="${task.id}"
              action="delete"
