@@ -92,7 +92,7 @@ class UserController {
             returnError(exception: e)
             return
         } catch (RuntimeException e) {
-            if(user.errors)
+            if(user.errors.hasErrors())
                 returnError(object:user, exception:e)
             else
                 returnError(exception:e)
