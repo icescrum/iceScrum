@@ -147,24 +147,24 @@ class LoginController {
         def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
         if (exception) {
             if (exception instanceof AccountExpiredException) {
-                msg = SpringSecurityUtils.securityConfig.errors.login.expired
+                msg = 'is.dialog.login.error.account.expired'
             }
             else if (exception instanceof CredentialsExpiredException) {
-                msg = SpringSecurityUtils.securityConfig.errors.login.passwordExpired
+                msg = 'is.dialog.login.error.credentials.expired'
             }
             else if (exception instanceof DisabledException) {
-                msg = SpringSecurityUtils.securityConfig.errors.login.disabled
+                msg = 'is.dialog.login.error.disabled'
             }
             else if (exception instanceof LockedException) {
-                msg = SpringSecurityUtils.securityConfig.errors.login.locked
+                msg = 'is.dialog.login.error.locked'
             }
             else {
-                msg = SpringSecurityUtils.securityConfig.errors.login.fail
+                msg = 'is.dialog.login.error'
             }
         }
 
         if (springSecurityService.isAjax(request)) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.dialog.login.error')]] as JSON)
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: msg)]] as JSON)
             return
         }
         else {
