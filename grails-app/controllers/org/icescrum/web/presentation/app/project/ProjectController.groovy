@@ -28,7 +28,6 @@ import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.preferences.TeamPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
-import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 
 import org.icescrum.core.utils.BundleUtils
@@ -73,72 +72,73 @@ class ProjectController {
     @Cacheable(cache = 'projectCache', keyGenerator = 'localeKeyGenerator')
     def feed = {
         cache validFor: 300
+        withProduct{ Product product ->
+            def activities = Story.recentActivity(product)
+            activities.addAll(Product.recentActivity(product))
+            activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
 
-        def currentProduct = Product.get(params.product)
-        def activities = Story.recentActivity(currentProduct)
-        activities.addAll(Product.recentActivity(currentProduct))
-        activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
-
-        def builder = new FeedBuilder()
-        builder.feed(description: "${currentProduct.description?:''}",title: "$currentProduct.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: currentProduct.pkey])}") {
-          activities.each() { a ->
-                entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is.story")} ${a.cachedLabel.encodeAsHTML()}") {e ->
-                    if (a.code != Activity.CODE_DELETE)
-                        e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.cachedId)}"
-                    else
-                        e.link = "${is.createScrumLink(absolute: true, controller: 'project')}"
-                    e.publishedDate = a.dateCreated
+            def builder = new FeedBuilder()
+            builder.feed(description: "${product.description?:''}",title: "$product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: product.pkey])}") {
+              activities.each() { a ->
+                    entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is.story")} ${a.cachedLabel.encodeAsHTML()}") {e ->
+                        if (a.code != Activity.CODE_DELETE)
+                            e.link = "${is.createScrumLink(absolute: true, controller: 'backlogElement', id: a.cachedId)}"
+                        else
+                            e.link = "${is.createScrumLink(absolute: true, controller: 'project')}"
+                        e.publishedDate = a.dateCreated
+                    }
                 }
             }
+            def feed = builder.makeFeed(FeedBuilder.TYPE_RSS,FeedBuilder.DEFAULT_VERSIONS[FeedBuilder.TYPE_RSS])
+            def outFeed = new SyndFeedOutput()
+            render(contentType: 'text/xml', text:outFeed.outputString(feed))
         }
-        def feed = builder.makeFeed(FeedBuilder.TYPE_RSS,FeedBuilder.DEFAULT_VERSIONS[FeedBuilder.TYPE_RSS])
-        def outFeed = new SyndFeedOutput()
-        render(contentType: 'text/xml', text:outFeed.outputString(feed))
     }
 
     @Secured('owner() or scrumMaster()')
     def edit = {
-        def currentProduct = Product.get(params.product)
-        render(template: "dialogs/edit", model: [id: id, product: currentProduct])
+        withProduct{ Product product ->
+            render(template: "dialogs/edit", model: [id: id, product: product])
+        }
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
     def editPractices = {
-        def currentProduct = Product.get(params.product)
-        def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
-        def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
-        if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-            privateOption = false
+        withProduct{ Product product ->
+            def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
+            def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
+            if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                privateOption = false
+            }
+            render(template: "dialogs/editPractices", model: [id: id, product: product, estimationSuitSelect: estimationSuitSelect, privateOption: privateOption])
         }
-        render(template: "dialogs/editPractices", model: [id: id, product: currentProduct, estimationSuitSelect: estimationSuitSelect, privateOption: privateOption])
-
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
     def update = {
+        withProduct('productd.id'){ Product product ->
+            def msg
+            if (params.long('productd.version') != product.version) {
+                msg = message(code: 'is.stale.object', args: [message(code: 'is.product')])
+                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+                return
+            }
+            //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
+            boolean hasHiddenChanged = product.preferences.hidden != params.productd.preferences.hidden
+            product.properties = params.productd
 
-        def msg
-        def currentProduct = Product.get(params.long('productd.id'))
-        if (params.long('productd.version') != currentProduct.version) {
-            msg = message(code: 'is.stale.object', args: [message(code: 'is.product')])
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
+            try {
+                productService.update(product, hasHiddenChanged)
+            } catch (IllegalStateException ise) {
+                render(status: 400, contentType: 'application/json', text: message(code: ise.getMessage()))
+                return
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: product)]] as JSON)
+                return
+            }
+            render(status: 200, contentType: 'application/json', text:product as JSON)
         }
-        //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
-        boolean hasHiddenChanged = currentProduct.preferences.hidden != params.productd.preferences.hidden
-        currentProduct.properties = params.productd
-
-        try {
-            productService.update(currentProduct, hasHiddenChanged)
-        } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: message(code: ise.getMessage()))
-            return
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: currentProduct)]] as JSON)
-            return
-        }
-        render(status: 200, contentType: 'application/json', text:currentProduct as JSON)
     }
 
     @Secured('isAuthenticated()')
@@ -193,7 +193,7 @@ class ProjectController {
         product.properties = params.product
 
         if (params.product.preferences.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-            currentProduct.preferences.hidden = true
+            product.preferences.hidden = true
         }
 
         if (params.firstSprint.after(product.endDate)) {
@@ -272,173 +272,180 @@ class ProjectController {
     }
 
     def dashboard = {
-        def currentProduct = Product.get(params.product)
-        def sprint = Sprint.findCurrentOrLastSprint(currentProduct.id).list()[0]
-        def release = Release.findCurrentOrNextRelease(currentProduct.id).list()[0]
-        def activities = Story.recentActivity(currentProduct)
-        activities.addAll(Product.recentActivity(currentProduct))
-        activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
+        withProduct{ Product product ->
+            def sprint = Sprint.findCurrentOrLastSprint(product.id).list()[0]
+            def release = Release.findCurrentOrNextRelease(product.id).list()[0]
+            def activities = Story.recentActivity(product)
+            activities.addAll(Product.recentActivity(product))
+            activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
 
-        render template: 'window/dashboard',
-                model: [product: currentProduct,
-                        activities: activities,
-                        sprint: sprint,
-                        release: release,
-                        user: springSecurityService.currentUser,
-                        lang: RCU.getLocale(request).toString().substring(0, 2),
-                        id: id
-                ]
+            render template: 'window/dashboard',
+                    model: [product: product,
+                            activities: activities,
+                            sprint: sprint,
+                            release: release,
+                            user: springSecurityService.currentUser,
+                            lang: RCU.getLocale(request).toString().substring(0, 2),
+                            id: id
+                    ]
+        }
     }
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productCumulativeFlowChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.cumulativeFlowValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: 'charts/productCumulativeFlowChart', model: [
-                    id: id,
-                    withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
-                    suggested: values.suggested as JSON,
-                    accepted: values.accepted as JSON,
-                    estimated: values.estimated as JSON,
-                    planned: values.planned as JSON,
-                    inprogress: values.inprogress as JSON,
-                    done: values.done as JSON,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withProduct{ Product product ->
+            def values = productService.cumulativeFlowValues(product)
+            if (values.size() > 0) {
+                render(template: 'charts/productCumulativeFlowChart', model: [
+                        id: id,
+                        withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
+                        suggested: values.suggested as JSON,
+                        accepted: values.accepted as JSON,
+                        estimated: values.estimated as JSON,
+                        planned: values.planned as JSON,
+                        inprogress: values.inprogress as JSON,
+                        done: values.done as JSON,
+                        labels: values.label as JSON])
+            } else {
+                def msg = message(code: 'is.chart.error.no.values')
+                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            }
         }
     }
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productVelocityCapacityChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.productVelocityCapacityValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: 'charts/productVelocityCapacityChart', model: [
-                    id: id,
-                    withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
-                    capacity: values.capacity as JSON,
-                    velocity: values.velocity as JSON,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withProduct{ Product product ->
+            def values = productService.productVelocityCapacityValues(product)
+            if (values.size() > 0) {
+                render(template: 'charts/productVelocityCapacityChart', model: [
+                        id: id,
+                        withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
+                        capacity: values.capacity as JSON,
+                        velocity: values.velocity as JSON,
+                        labels: values.label as JSON])
+            } else {
+                def msg = message(code: 'is.chart.error.no.values')
+                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            }
         }
     }
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productBurnupChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.productBurnupValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: 'charts/productBurnupChart', model: [
-                    id: id,
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    all: values.all as JSON,
-                    done: values.done as JSON,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withProduct{ Product product ->
+            def values = productService.productBurnupValues(product)
+            if (values.size() > 0) {
+                render(template: 'charts/productBurnupChart', model: [
+                        id: id,
+                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                        all: values.all as JSON,
+                        done: values.done as JSON,
+                        labels: values.label as JSON])
+            } else {
+                def msg = message(code: 'is.chart.error.no.values')
+                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            }
         }
     }
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productBurndownChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.productBurndownValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: 'charts/productBurndownChart', model: [
-                    id: id,
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    userstories: values.userstories as JSON,
-                    technicalstories: values.technicalstories as JSON,
-                    defectstories: values.defectstories as JSON,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withProduct{ Product product ->
+            def values = productService.productBurndownValues(product)
+            if (values.size() > 0) {
+                render(template: 'charts/productBurndownChart', model: [
+                        id: id,
+                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                        userstories: values.userstories as JSON,
+                        technicalstories: values.technicalstories as JSON,
+                        defectstories: values.defectstories as JSON,
+                        labels: values.label as JSON])
+            } else {
+                def msg = message(code: 'is.chart.error.no.values')
+                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            }
         }
     }
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productVelocityChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.productVelocityValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: 'charts/productVelocityChart', model: [
-                    id: id,
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    userstories: values.userstories as JSON,
-                    technicalstories: values.technicalstories as JSON,
-                    defectstories: values.defectstories as JSON,
-                    labels: values.label as JSON])
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withProduct{ Product product ->
+            def values = productService.productVelocityValues(product)
+            if (values.size() > 0) {
+                render(template: 'charts/productVelocityChart', model: [
+                        id: id,
+                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                        userstories: values.userstories as JSON,
+                        technicalstories: values.technicalstories as JSON,
+                        defectstories: values.defectstories as JSON,
+                        labels: values.label as JSON])
+            } else {
+                def msg = message(code: 'is.chart.error.no.values')
+                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            }
         }
     }
 
     @Cacheable(cache = "projectCache", keyGenerator= 'featuresKeyGenerator')
     def productParkingLotChart = {
-        def currentProduct = Product.get(params.product)
-        def values = featureService.productParkingLotValues(currentProduct)
-        def indexF = 1
-        def valueToDisplay = []
-        values.value?.each {
-            def value = []
-            value << it.toString()
-            value << indexF
-            valueToDisplay << value
-            indexF++
-        }
-        if (valueToDisplay.size() > 0)
-            render(template: '../feature/charts/productParkinglot', model: [
-                    id: id,
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    values: valueToDisplay as JSON,
-                    featuresNames: values.label as JSON])
-        else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+        withProduct{ Product product ->
+            def values = featureService.productParkingLotValues(product)
+            def indexF = 1
+            def valueToDisplay = []
+            values.value?.each {
+                def value = []
+                value << it.toString()
+                value << indexF
+                valueToDisplay << value
+                indexF++
+            }
+            if (valueToDisplay.size() > 0)
+                render(template: '../feature/charts/productParkinglot', model: [
+                        id: id,
+                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                        values: valueToDisplay as JSON,
+                        featuresNames: values.label as JSON])
+            else {
+                def msg = message(code: 'is.chart.error.no.values')
+                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            }
         }
     }
 
     @Secured('productOwner() or scrumMaster()')
     def export = {
-        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
-            if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                render(status: 403)
-                return
+        withProduct{ Product product ->
+            if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
+                if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                    render(status: 403)
+                    return
+                }
             }
-        }
 
-        withFormat {
-            html {
-                if (params.status) {
-                    render(status: 200, contentType: 'application/json', text: session.progress as JSON)
-                }
-                else if (params.get) {
-                    def product = Product.get(params.product)
-                    try {
-                        session.progress = new ProgressSupport()
-                        session.progress.updateProgress(0, message(code: 'is.export.start'))
-                        response.setHeader "Content-disposition", "attachment; filename=${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}.xml"
-                        render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
-                        session.progress?.completeProgress(message(code: 'is.export.complete'))
-                    } catch (Exception e) {
-                        if (log.debugEnabled) e.printStackTrace()
-                        session.progress.progressError(message(code: 'is.export.error'))
+            withFormat {
+                html {
+                    if (params.status) {
+                        render(status: 200, contentType: 'application/json', text: session.progress as JSON)
                     }
-                } else {
-                    render(template: 'dialogs/export', model: [id: id])
+                    else if (params.get) {
+                        try {
+                            session.progress = new ProgressSupport()
+                            session.progress.updateProgress(0, message(code: 'is.export.start'))
+                            response.setHeader "Content-disposition", "attachment; filename=${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}.xml"
+                            render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+                            session.progress?.completeProgress(message(code: 'is.export.complete'))
+                        } catch (Exception e) {
+                            if (log.debugEnabled) e.printStackTrace()
+                            session.progress.progressError(message(code: 'is.export.error'))
+                        }
+                    } else {
+                        render(template: 'dialogs/export', model: [id: id])
+                    }
                 }
-            }
-            xml {
-                def product = Product.get(params.product)
-                render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+                xml {
+                    render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+                }
             }
         }
     }
@@ -658,116 +665,100 @@ class ProjectController {
      * Export the project elements in multiple format (PDF, DOCX, RTF, ODT)
      */
     def print = {
-        def currentProduct = Product.get(params.product)
-        def data
-        def chart = null
+        withProduct{ Product product ->
+            def data
+            def chart = null
 
-        if (params.locationHash) {
-            chart = processLocationHash(params.locationHash.decodeURL()).action
-        }
+            if (params.locationHash) {
+                chart = processLocationHash(params.locationHash.decodeURL()).action
+            }
 
-        switch (chart) {
-            case 'productCumulativeFlowChart':
-                data = productService.cumulativeFlowValues(currentProduct)
-                break
-            case 'productBurnupChart':
-                data = productService.productBurnupValues(currentProduct)
-                break
-            case 'productBurndownChart':
-                data = productService.productBurndownValues(currentProduct)
-                break
-            case 'productParkingLotChart':
-                data = featureService.productParkingLotValues(currentProduct)
-                break
-            case 'productVelocityChart':
-                data = productService.productVelocityValues(currentProduct)
-                break
-            case 'productVelocityCapacityChart':
-                data = productService.productVelocityCapacityValues(currentProduct)
-                break
-            default:
-                chart = 'timeline'
-                data = [
-                        [
-                                releaseStateBundle: BundleUtils.releaseStates,
-                                releases: currentProduct.releases,
-                                productCumulativeFlowChart: productService.cumulativeFlowValues(currentProduct),
-                                productBurnupChart: productService.productBurnupValues(currentProduct),
-                                productBurndownChart: productService.productBurndownValues(currentProduct),
-                                productParkingLotChart: featureService.productParkingLotValues(currentProduct),
-                                productVelocityChart: productService.productVelocityValues(currentProduct),
-                                productVelocityCapacityChart: productService.productVelocityCapacityValues(currentProduct)
-                        ]
-                ]
-                break
-        }
+            switch (chart) {
+                case 'productCumulativeFlowChart':
+                    data = productService.cumulativeFlowValues(product)
+                    break
+                case 'productBurnupChart':
+                    data = productService.productBurnupValues(product)
+                    break
+                case 'productBurndownChart':
+                    data = productService.productBurndownValues(product)
+                    break
+                case 'productParkingLotChart':
+                    data = featureService.productParkingLotValues(product)
+                    break
+                case 'productVelocityChart':
+                    data = productService.productVelocityValues(product)
+                    break
+                case 'productVelocityCapacityChart':
+                    data = productService.productVelocityCapacityValues(product)
+                    break
+                default:
+                    chart = 'timeline'
+                    data = [
+                            [
+                                    releaseStateBundle: BundleUtils.releaseStates,
+                                    releases: product.releases,
+                                    productCumulativeFlowChart: productService.cumulativeFlowValues(product),
+                                    productBurnupChart: productService.productBurnupValues(product),
+                                    productBurndownChart: productService.productBurndownValues(product),
+                                    productParkingLotChart: featureService.productParkingLotValues(product),
+                                    productVelocityChart: productService.productVelocityValues(product),
+                                    productVelocityCapacityChart: productService.productVelocityCapacityValues(product)
+                            ]
+                    ]
+                    break
+            }
 
-        if (data.size() <= 0) {
-            returnError(text:message(code: 'is.report.error.no.data'))
-        } else if (params.get) {
-            outputJasperReport(chart ?: 'timeline', params.format, data, currentProduct.name, ['labels.projectName': currentProduct.name])
-        } else if (params.status) {
-            render(status: 200, contentType: 'application/json', text: session.progress as JSON)
-        } else {
-            session.progress = new ProgressSupport()
-            render(template: 'dialogs/report', model: [id: id])
+            if (data.size() <= 0) {
+                returnError(text:message(code: 'is.report.error.no.data'))
+            } else if (params.get) {
+                outputJasperReport(chart ?: 'timeline', params.format, data, product.name, ['labels.projectName': product.name])
+            } else if (params.status) {
+                render(status: 200, contentType: 'application/json', text: session.progress as JSON)
+            } else {
+                session.progress = new ProgressSupport()
+                render(template: 'dialogs/report', model: [id: id])
+            }
         }
     }
 
     @Secured('owner()')
     def delete = {
-        if (!params.product) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.exist')]] as JSON)
-
-        }
-        assert params.product
-
-        def product = Product.get(params.product)
-        def id = product.id
-        try {
-            productService.delete(product)
-            render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
+        withProduct{ Product product ->
+            def id = product.id
+            try {
+                productService.delete(product)
+                render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
+            }
         }
     }
 
     @Secured('owner() or scrumMaster()')
     def archive = {
-        if (!params.product) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.exist')]] as JSON)
-
-        }
-        assert params.product
-
-        def product = Product.get(params.product)
-        def id = product.id
-        try {
-            productService.archive(product)
-            render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
+        withProduct{ Product product ->
+            try {
+                productService.archive(product)
+                render(status: 200, contentType: 'application/json', text:[class:'Product',id:product.id] as JSON)
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
+            }
         }
     }
 
     @Secured("hasRole('ROLE_ADMIN')")
     def unArchive = {
-        if (!params.product) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.exist')]] as JSON)
-
-        }
-        assert params.product
-
-        def product = Product.get(params.product)
-        def id = product.id
-        try {
-            productService.unArchive(product)
-            render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
+        withProduct{ Product product ->
+            try {
+                productService.unArchive(product)
+                render(status: 200, contentType: 'application/json', text:[class:'Product',id:product.id] as JSON)
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
+            }
         }
     }
 
@@ -812,64 +803,60 @@ class ProjectController {
     @Secured('permitAll')
     @Cacheable(cache = 'projectCache', keyGenerator = 'projectKeyGenerator')
     def browseDetails = {
-        def product = Product.get(params.id)
+        withProduct{ Product product ->
+            if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication)) {
+                throw new AccessDeniedException('denied')
+            }
 
-        if (!product) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.exist')]] as JSON)
-            return
+            render template: "dialogs/browseDetails", model: [product: product]
         }
-
-        if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication)) {
-            throw new AccessDeniedException('denied')
-        }
-
-        render template: "dialogs/browseDetails", model: [product: product]
     }
 
     def printPostits = {
-        def currentProduct = Product.get(params.product)
-        def stories1 = []
-        def stories2 = []
-        def first = 0
-        def stories = Story.findAllByBacklog(currentProduct, [sort: 'state', order: 'asc'])
-        if (!stories) {
-            returnError(text:message(code: 'is.report.error.no.data'))
-            return
-        } else if (params.get) {
-            stories.each {
-                def story = [name: it.name,
-                        id: it.uid,
-                        effort: it.effort,
-                        state: message(code: BundleUtils.storyStates[it.state]),
-                        description: is.storyTemplate([story: it, displayBR: true]),
-                        notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
-                        type: message(code: BundleUtils.storyTypes[it.type]),
-                        suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.suggestedDate]) : null,
-                        acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.acceptedDate]) : null,
-                        estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.estimatedDate]) : null,
-                        plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.plannedDate]) : null,
-                        inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.inProgressDate]) : null,
-                        doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.doneDate ?: null]) : null,
-                        rank: it.rank ?: null,
-                        sprint: it.parentSprint?.orderNumber ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.orderNumber : null,
-                        creator: it.creator.firstName + ' ' + it.creator.lastName,
-                        feature: it.feature?.name ?: null,
-                        featureColor: it.feature?.color ?: null]
-                if (first == 0) {
-                    stories1 << story
-                    first = 1
-                } else {
-                    stories2 << story
-                    first = 0
-                }
+        withProduct{ Product product ->
+            def stories1 = []
+            def stories2 = []
+            def first = 0
+            def stories = Story.findAllByBacklog(product, [sort: 'state', order: 'asc'])
+            if (!stories) {
+                returnError(text:message(code: 'is.report.error.no.data'))
+                return
+            } else if (params.get) {
+                stories.each {
+                    def story = [name: it.name,
+                            id: it.uid,
+                            effort: it.effort,
+                            state: message(code: BundleUtils.storyStates[it.state]),
+                            description: is.storyTemplate([story: it, displayBR: true]),
+                            notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
+                            type: message(code: BundleUtils.storyTypes[it.type]),
+                            suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
+                            acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,
+                            estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.estimatedDate]) : null,
+                            plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.plannedDate]) : null,
+                            inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.inProgressDate]) : null,
+                            doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.doneDate ?: null]) : null,
+                            rank: it.rank ?: null,
+                            sprint: it.parentSprint?.orderNumber ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.orderNumber : null,
+                            creator: it.creator.firstName + ' ' + it.creator.lastName,
+                            feature: it.feature?.name ?: null,
+                            featureColor: it.feature?.color ?: null]
+                    if (first == 0) {
+                        stories1 << story
+                        first = 1
+                    } else {
+                        stories2 << story
+                        first = 0
+                    }
 
+                }
+                outputJasperReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
+            } else if (params.status) {
+                render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
+            } else {
+                session.progress = new ProgressSupport()
+                render(template: 'dialogs/report', model: [id: id])
             }
-            outputJasperReport('stories', params.format, [[product: currentProduct.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], currentProduct.name)
-        } else if (params.status) {
-            render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
-        } else {
-            session.progress = new ProgressSupport()
-            render(template: 'dialogs/report', model: [id: id])
         }
     }
 }
