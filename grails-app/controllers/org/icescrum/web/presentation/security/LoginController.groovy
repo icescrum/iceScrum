@@ -178,9 +178,9 @@ class LoginController {
      */
     def ajaxSuccess = {
         User u = springSecurityService.currentUser
-        if (u.preferences.lastProductOpened){
+        if (u.preferences.lastProductOpened && Product.findByPkey(u.preferences.lastProductOpened)){
             render(status:200, contentType: 'application/json', text:[url:grailsApplication.config.grails.serverURL+'/p/'+u.preferences.lastProductOpened+'#project'] as JSON)
-        }else{
+        } else{
             render(status:200, text:'')
         }
     }
