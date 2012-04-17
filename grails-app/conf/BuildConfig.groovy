@@ -38,7 +38,6 @@ grails.project.war.osgi.headers = false
 if (environment != Environment.PRODUCTION){
     println "use inline plugin in env: ${environment}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
-    //grails.plugin.location.'entry-points' =  '../plugins/entry-points'
 }
 
 coverage {
@@ -57,6 +56,7 @@ grails.war.resources = { stagingDir ->
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global")
+
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
         grailsPlugins()
@@ -91,7 +91,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile "org.icescrum:entry-points:0.3.1"
+        compile "org.icescrum:entry-points:0.3.2"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
         compile ":feeds:1.5"
