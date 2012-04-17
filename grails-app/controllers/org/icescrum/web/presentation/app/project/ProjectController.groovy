@@ -129,12 +129,12 @@ class ProjectController {
 
             try {
                 productService.update(product, hasHiddenChanged)
+                entry.hook(id:"${controllerName}-${actionName}")
             } catch (IllegalStateException ise) {
-                render(status: 400, contentType: 'application/json', text: message(code: ise.getMessage()))
+                returnError(exception:ise)
                 return
             } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: product)]] as JSON)
+                returnError(exception:re, object:product)
                 return
             }
             render(status: 200, contentType: 'application/json', text:product as JSON)

@@ -92,7 +92,7 @@
                     <g:include  action="taskPanel" controller="story" params="[product:params.product, id:story.id]"/>
                     <g:include  action="testsPanel" controller="story" params="[product:params.product, id:story.id]"/>
                     <g:include  action="commentsPanel" controller="story" params="[product:params.product, id:story.id]"/>
-                    <entry:point id="${controllerName}-${actionName}-tab-entry" model="[product:params.product, id:story.id]"/>
+                    <entry:point id="${controllerName}-${actionName}-tab-entry" model="[story:story]"/>
                 </div>
                 <jq:jquery>
                     $("#panel-box-1 a").live('hover',function(){

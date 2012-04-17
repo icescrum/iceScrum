@@ -80,11 +80,11 @@
                     <a rel="#summary" href="../" class="${!params.tab || 'summary' in params.tab ? 'selected' : ''}">
                         ${message(code: 'is.ui.backlogelement.activity.summary')}
                     </a>
-                    <entry:point id="${controllerName}-${actionName}-tab-button" model="[tab:params.tab]"/>
+                    <entry:point id="${controllerName}-${actionName}-tab-button"/>
                 </is:panelTabButton>
                 <div id="panel-tab-contents-1" class="panel-tab-contents">
                     <g:include  action="summaryPanel" controller="task" params="[product:params.product, id:task.id]"/>
-                    <entry:point id="${controllerName}-${actionName}-tab-entry" model="[product:params.product, id:task.id]"/>
+                    <entry:point id="${controllerName}-${actionName}-tab-entry" model="[task:task]"/>
                 </div>
                 <jq:jquery>
                     $("#panel-box-1 a").live('hover',function(){

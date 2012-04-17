@@ -71,6 +71,7 @@
             </button>
         </is:fieldInput>
     </g:if>
+    <entry:point id="project-${actionName}" model="[product:product]"/>
   </is:fieldset>
 </form>
 <is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-project" listenOn="'#form-project input'"/>
