@@ -40,7 +40,7 @@
           <g:message code="is.welcome"/>
         </div>
         <div class="retrieve-link">
-          <g:if test="activeLostPassword">
+          <g:if test="${activeLostPassword}">
             <g:link controller="user" action="retrieve">
               <g:message code="is.dialog.login.lostPassword"/>
             </g:link>

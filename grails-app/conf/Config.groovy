@@ -24,6 +24,7 @@
 
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
+import org.icescrum.core.support.ApplicationSupport
 
 /*
  Public URL
@@ -65,13 +66,6 @@ icescrum.gravatar.enable = false
   IceScrum base dir
 */
 icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
-
-/*
-  Images section not intended to be modify
- */
-icescrum.images.products.dir = ""
-icescrum.images.teams.dir = ""
-icescrum.images.users.dir = ""
 
 /*
 Autofollowing
@@ -214,7 +208,7 @@ log4j = {
         debug 'org.icescrum.plugins.entryPoints'
     }
 
-    if (icescrum.debug.enable) {
+    if (ApplicationSupport.booleanValue(icescrum.debug.enable)) {
         debug 'grails.app.service.org.icescrum'
         debug 'grails.app.controller.org.icescrum'
         debug 'grails.app.domain.org.icescrum'
@@ -224,6 +218,7 @@ log4j = {
         debug 'org.icescrum.core'
         debug 'grails.plugin.springcache'
         debug 'net.sf.jasperreports'
+        debug 'com.kagilum'
     }else{
         off 'grails.plugin.springcache'
     }
@@ -239,7 +234,7 @@ log4j = {
     }
 
     root {
-        if (icescrum.debug.enable) {
+        if (ApplicationSupport.booleanValue(icescrum.debug.enable)) {
             debug 'stdout', 'icescrumFileLog'
             error 'stdout', 'icescrumFileLog'
             info 'stdout', 'icescrumFileLog'
@@ -292,14 +287,22 @@ grails {
             ]
 
             auth.loginFormUrl = '/login'
+
             rememberMe {
                 cookieName = 'iceScrum_doh_twelve_me'
                 key = 'twelveMe'
+                persistent = true
+                persistentToken.domainClassName = 'PersistentLogin'
             }
+
             useRunAs = true
             runAs.key = 'tw3lv3Scrum!'
             acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
 
+            openid {
+                domainClass = 'openidtest.OpenID'
+                registration.requiredAttributes = [firstName: 'http://axschema.org/namePerson/last',lastName:'http://axschema.org/namePerson/first',username:'http://axschema.org/namePerson/friendly',activity:'http://axschema.org/company/title',email:'http://axschema.org/contact/email']
+            }
         }
     }
 }
@@ -313,34 +316,37 @@ CLIENT MODULES SECTION
 grails.resources.caching.excludes = ['js/timeline**/*.js']
 grails.resources.zip.excludes = ['/**/*.png', '/**/*.gif', '/**/*.jpg', '/**/*.gz']
 
-def ENV_NAME = "icescrum_config_location"
 if (!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
 println "--------------------------------------------------------"
 // 1: A command line option should override everything.
 // Like grails -Dicescrum_config_location=C:\temp\icescrum-config.groovy run-app
-if (System.getProperty(ENV_NAME) && new File(System.getProperty(ENV_NAME)).exists()) {
-    println "Including configuration file specified on command line: " + System.getProperty(ENV_NAME)
-    grails.config.locations << "file:" + System.getProperty(ENV_NAME)
+if (System.getProperty(ApplicationSupport.CONFIG_ENV_NAME) && new File(System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)).exists()) {
+    println "Including configuration file specified on command line: " + System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
+    grails.config.locations << "file:" + System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
 }
 // 2: If this is a developer machine, then they will have their own config and I should use that.
-else if (new File("${userHome}/.grails/${appName}-config.groovy").exists()) {
-    println "*** User defined config: file:${userHome}/.grails/${appName}-config.groovy. ***"
-    grails.config.locations = ["file:${userHome}/.grails/${appName}-config.groovy"]
+else if (new File("${userHome}${File.separator}.grails${File.separator}${appName}-config.groovy").exists()) {
+    println "*** User defined config: file:${userHome}${File.separator}.grails${File.separator}${appName}-config.groovy. ***"
+    grails.config.locations = ["file:${userHome}${File.separator}.grails${File.separator}${appName}-config.groovy"]
 }
 // 3: Most QA and PROD machines should define a System Environment variable that will define where we should look.
-else if (System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) {
-    println("Including System Environment configuration file: " + System.getenv(ENV_NAME))
-    grails.config.locations << "file:" + System.getenv(ENV_NAME)
+else if (System.getenv(ApplicationSupport.CONFIG_ENV_NAME) && new File(System.getenv(ApplicationSupport.CONFIG_ENV_NAME)).exists()) {
+    println("Including System Environment configuration file: " + System.getenv(ApplicationSupport.CONFIG_ENV_NAME))
+    grails.config.locations << "file:" + System.getenv(ApplicationSupport.CONFIG_ENV_NAME)
 }
 // 4: Last resort is looking for a properties based configuration on the developer machine.
-else if (new File("${userHome}/.grails/${appName}.properties").exists()) {
-    println "*** User defined config: file:${userHome}/.grails/${appName}.properties. ***"
-    grails.config.locations = ["file:${userHome}/.grails/${appName}.properties"]
+else if (new File("${userHome}${File.separator}.grails${File.separator}${appName}.properties").exists()) {
+    println "*** User defined config: file:${userHome}${File.separator}.grails${File.separator}${appName}.properties. ***"
+    grails.config.locations = ["file:${userHome}${File.separator}.grails${File.separator}${appName}.properties"]
+}
+else if (new File("${userHome}${File.separator}.icescrum${File.separator}config.properties").exists()) {
+    println "*** iceScrum home defined config: file:${userHome}${File.separator}.icescrum${File.separator}config.properties. ***"
+    grails.config.locations = ["file:${userHome}${File.separator}.icescrum${File.separator}config.properties"]
 }
 else {
-    println "*** No external configuration file defined (${ENV_NAME}). ***"
+    println "*** No external configuration file defined (${ApplicationSupport.CONFIG_ENV_NAME}). ***"
 }
 println "(*) grails.config.locations = ${grails.config.locations}"
 println "--------------------------------------------------------"

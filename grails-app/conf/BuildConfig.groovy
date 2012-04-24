@@ -55,8 +55,9 @@ grails.war.resources = { stagingDir ->
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
-    inherits("global")
-
+    inherits("global"){
+        excludes "xml-apis"
+    }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
         grailsPlugins()
@@ -101,7 +102,7 @@ grails.project.dependency.resolution = {
         compile ":resources:1.1.6"
         compile ":session-temp-files:1.0"
         compile ":zipped-resources:1.0"
-        compile ":yui-minify-resources:0.1.4"
+        compile ":yui-minify-resources:0.1.5"
     }
 }
 

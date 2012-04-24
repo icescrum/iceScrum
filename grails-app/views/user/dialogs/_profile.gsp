@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -47,7 +48,7 @@
                     <is:input id="useremail" name="user.email" value="${user.email}"/>
                 </is:fieldInput>
 
-                <g:if test="${grailsApplication.config.icescrum.gravatar}">
+                <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar.enable)}">
                     <is:fieldInput for="avatar" label="is.dialog.profile.gravatar" class="profile-avatar">
                         <a href="http://gravatar.com/emails"><is:avatar user="${user}"/></a>
                     </is:fieldInput>

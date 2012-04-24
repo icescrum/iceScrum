@@ -803,7 +803,7 @@ class ProjectController {
     @Secured('permitAll')
     @Cacheable(cache = 'projectCache', keyGenerator = 'projectKeyGenerator')
     def browseDetails = {
-        withProduct{ Product product ->
+        withProduct('id'){ Product product ->
             if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication)) {
                 throw new AccessDeniedException('denied')
             }

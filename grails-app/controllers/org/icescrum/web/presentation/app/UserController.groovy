@@ -124,7 +124,7 @@ class UserController {
                 params.user.password = currentUser.password
             }
 
-            def gravatar = grailsApplication.config.icescrum.gravatar?.enable
+            def gravatar = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)
             File avatar = null
             def scale = true
             if (!gravatar){
@@ -236,7 +236,7 @@ class UserController {
     def avatar = {
         def user = User.load(params.id)
         if (user) {
-            if (!grailsApplication.config.icescrum.gravatar?.enable){
+            if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)){
                 def avat = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
                 if (!avat.exists()) {
                     avat = grailsApplication.parentContext.getResource("/${is.currentThemeImage()}avatars/avatar.png").file
@@ -254,6 +254,7 @@ class UserController {
         def activated = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)
         if (!activated) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.login.retrieve.not.activated')]] as JSON)
+            return
         }
 
         if (!params.text) {
