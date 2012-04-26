@@ -42,6 +42,14 @@ class UrlMappings {
             }
         }
 
+        "/$action/$window?/$actionWindow?/$id?" {
+            controller = 'scrumOS'
+            constraints {
+                actionWindow(matches: /[a-zA-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+
         "/" {
             controller = 'scrumOS'
             action = 'index'

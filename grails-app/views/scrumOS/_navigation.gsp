@@ -161,7 +161,7 @@
                         </is:remoteDialog>
                     </li>
                 </g:if>
-                <entry:point id="menu-project" model="[curProduct:curProduct]"/>
+                <entry:point id="menu-project" model="[curProduct:product]"/>
                 <li class="menu-label" id="my-projects" style='display:${productFilteredsList ?'block':'none'}'>
                     ${message(code: 'is.projectmenu.submenu.project.my.title')}
                 </li>

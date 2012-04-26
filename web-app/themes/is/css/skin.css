@@ -126,7 +126,7 @@ body {
 .wizard #wizard-left #steps li, .postit-details .postit-details-information p,
 .list-news li, .box-blank .box-blank-button, #version-tab p,
 .panel-line .line-left, .panel-line .line-right, .list-comments .comment,
-.postit-details-information .line, .list-acceptance-tests .acceptance-test {
+.postit-details-information .line, .list-acceptance-tests .acceptance-test, .separable-h {
     background-image: url(../images/application/separator-h.png);
     background-repeat: repeat-x;
     background-position: 0 bottom;
