@@ -38,6 +38,8 @@ grails.project.war.osgi.headers = false
 if (environment != Environment.PRODUCTION){
     println "use inline plugin in env: ${environment}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+    grails.plugin.location.'icescrum-plugin-scm' =  '../plugins/icescrum-plugin-scm'
+    grails.plugin.location.'icescrum-plugin-management' =  '../plugins/icescrum-plugin-management'
 }
 
 coverage {

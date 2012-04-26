@@ -2120,3 +2120,7 @@ li#li-roles {
     width: 16px;
     z-index: 998;
 }
+
+label span.help {
+    cursor: help;
+}
