@@ -63,7 +63,7 @@
                                 appendTo="#member-autocomplete"
                                 onSelect="jQuery('.members-list').jqoteapp('#user-tmpl', ui.item)"
                                 renderItem="${link}"
-                                minLength="1"/>
+                                minLength="2"/>
             </is:fieldInput>
         </g:if>
         <div class="members-list">

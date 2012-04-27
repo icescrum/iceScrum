@@ -314,11 +314,13 @@ class UserController {
         def users
         def results = []
         users = org.icescrum.core.domain.User.findUsersLike(params.term ?: '',false).list()
-        users?.each {
-            results << [id: it.id,
-                        name: "$it.firstName $it.lastName",
-                        avatar: is.avatar([user:it,link:true]),
-                        activity: "${it.preferences.activity ?: ''}"]
+        users?.each { User user ->
+            if(user.enabled || params.showDisabled) {
+                results << [id: user.id,
+                            name: "$user.firstName $user.lastName",
+                            avatar: is.avatar([user:user,link:true]),
+                            activity: "${user.preferences.activity ?: ''}"]
+            }
         }
 
         render(results as JSON)
