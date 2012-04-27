@@ -70,7 +70,7 @@ class MembersController {
     @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def update = {
         def product = Product.get(params.product)
-        def team = Team.get(product.teams.asList()[0].id)
+        def team = Team.get(product.firstTeam.id)
         def currentMembers = productService.getAllMembersProduct(product)
         try{
             def idmembers = []
@@ -109,7 +109,7 @@ class MembersController {
      def leaveTeam = {
         def product = Product.get(params.product)
         def user = springSecurityService.currentUser
-        def team = Team.get(product.teams.asList()[0].id)
+        def team = Team.get(product.firstTeam.id)
         def currentMembers = productService.getAllMembersProduct(product)
         try {
             def found = currentMembers.find{ it.id == user.id}
