@@ -28,7 +28,7 @@
     <is:table id="actor-table"
               style="${actors ? '' : 'display:none'};"
               sortableCols="true"
-              editable="[controller:id,action:'update',params:[product:params.product],onExitCell:'submit']">
+              editable="[controller:controllerName,action:'update',params:[product:params.product],onExitCell:'submit']">
         <is:tableHeader width="6%" class="table-cell-checkbox" name="">
             <g:checkBox name="checkbox-header"/>
         </is:tableHeader>
@@ -44,7 +44,7 @@
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${actor.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${actor.id}" contentView="/actor/menu"
-                         params="[id:id, actor:actor]" rendered="${request.productOwner}"/>
+                         params="[actor:actor]" rendered="${request.productOwner}"/>
                 <g:set var="attachment" value="${actor.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment"
@@ -71,7 +71,7 @@
     </is:table>
 </is:tableView>
 
-<g:include view="/actor/window/_blank.gsp" model="[actors:actors,id:id]"/>
+<g:include view="/actor/window/_blank.gsp" model="[actors:actors]"/>
 
 <is:onStream
         on="#actor-table"

@@ -24,8 +24,8 @@
 <is:iconButton
         rendered="${poOrSm}"
         action="add"
-        shortcut="[key:'ctrl+n',scope:id]"
-        update="window-content-${id}"
+        shortcut="[key:'ctrl+n',scope:controllerName]"
+        update="window-content-${controllerName}"
         icon="create"
         class="${(currentPanel == 'add') ? 'select' : ''}"
         title="${message(code:'is.ui.timeline.toolbar.alt.new')}"
@@ -37,19 +37,19 @@
 
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
   <ul>
-    <li class="first"><is:link action="productCumulativeFlowChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.productCumulativeflow')}" remote="true" value="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}"/></li>
-    <li><is:link action="productBurnupChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.burnup')}" remote="true" value="${message(code:'is.ui.timeline.charts.productBurnup')}"/></li>
-    <li><is:link action="productBurndownChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.burndown')}" remote="true" value="${message(code:'is.ui.timeline.charts.productBurndown')}"/></li>
+    <li class="first"><is:link action="productCumulativeFlowChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productCumulativeflow')}" remote="true" value="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}"/></li>
+    <li><is:link action="productBurnupChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.burnup')}" remote="true" value="${message(code:'is.ui.timeline.charts.productBurnup')}"/></li>
+    <li><is:link action="productBurndownChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.burndown')}" remote="true" value="${message(code:'is.ui.timeline.charts.productBurndown')}"/></li>
     <li><is:link action="productParkingLotChart"
-            params="['referrer.action':'index','referrer.controller':id]"
-            controller="${id}"
-            update="window-content-${id}"
+            params="['referrer.action':'index','referrer.controller':controllerName]"
+            controller="${controllerName}"
+            update="window-content-${controllerName}"
             title="${message(code:'is.ui.timeline.charts.parkinglot')}"
             remote="true"
             value="${message(code:'is.ui.timeline.charts.productParkingLot')}"/>
     </li>
-    <li><is:link action="productVelocityChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.velocityType')}" remote="true" value="${message(code:'is.ui.timeline.charts.productVelocity')}"/></li>
-    <li class="last"><is:link action="productVelocityCapacityChart" controller="${id}" update="window-content-${id}" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}" remote="true" value="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}"/></li>
+    <li><is:link action="productVelocityChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.velocityType')}" remote="true" value="${message(code:'is.ui.timeline.charts.productVelocity')}"/></li>
+    <li class="last"><is:link action="productVelocityCapacityChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}" remote="true" value="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}"/></li>
   </ul>
 </is:panelButton>
 
@@ -67,4 +67,4 @@
                 ]"
         params="locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
 
-<entry:point id="${id}-${actionName}"/>
+<entry:point id="${controllerName}-${actionName}"/>

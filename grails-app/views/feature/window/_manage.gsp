@@ -21,7 +21,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <g:setProvider library="jquery"/>
-<g:form action="save" method="post" name="${id}-form" elemid="${feature?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
+<g:form action="save" method="post" name="${controllerName}-form" elemid="${feature?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
 
     <is:fieldset title="is.ui.feature.feature.properties.title">
         <is:fieldInput for="featurename" label="is.feature.name">
@@ -100,7 +100,7 @@
                     id="submitAndContinueForm"
                     type="submitToRemote"
                     url="[controller:'feature', action:'save', params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.form.reset('#${id}-form'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.saved')}')"
+                    onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.saved')}')"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                     value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
             <is:button
@@ -117,7 +117,7 @@
                         id="submitAndContinueForm"
                         type="submitToRemote"
                         url="[controller:'feature', action:'update', params:[continue:true,product:params.product]]"
-                        onSuccess="jQuery('#${id}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
+                        onSuccess="jQuery('#${controllerName}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
                         before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                         value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
             </g:if>
@@ -126,7 +126,7 @@
                     type="submitToRemote"
                     url="[controller:'feature', action:'update',params:[product:params.product]]"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
-                    onSuccess="jQuery('#${id}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
+                    onSuccess="jQuery('#${controllerName}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
                     value="${message(code:'is.button.update')}"/>
         </g:else>
         <is:button id="cancelForm"
@@ -137,19 +137,19 @@
     </is:buttonBar>
 
 </g:form>
-<is:shortcut key="shift+return" callback="jQuery('#submitAndContinueForm').click();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="esc" callback="jQuery.icescrum.form.cancel();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="shift+return" callback="jQuery('#submitAndContinueForm').click();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
+<is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
+<is:shortcut key="esc" callback="jQuery.icescrum.form.cancel();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 <g:if test="${feature}">
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'feature',events:['update']]]"
-            callback="if ( feature.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.feature.updated')}','${createLink(controller:controllerName,action:'edit',id:feature.id,params:[product:params.product])}',false,'#window-content-${id}');"/>
+            callback="if ( feature.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.feature.updated')}','${createLink(controller:controllerName,action:'edit',id:feature.id,params:[product:params.product])}',false,'#window-content-${controllerName}');"/>
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'feature',events:['remove']]]"
             callback="if ( feature.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.feature.deleted')}','${controllerName}',true);"/>
 </g:if>

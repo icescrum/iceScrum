@@ -34,13 +34,13 @@
                     value="${sprint?.doneDefinition}"/>
         </is:fieldArea>
     </is:fieldset>
-    <entry:point id="${id}-${actionName}" model="[sprint:sprint]"/>
+    <entry:point id="${controllerName}-${actionName}" model="[sprint:sprint]"/>
     <is:buttonBar>
         <sec:access expression="productOwner() or scrumMaster()">
             <is:button
                     targetLocation="${controllerName+'/'+actionName}/${sprint.id}"
                     id="submitForm" type="submitToRemote"
-                    url="[controller:id, action:'updateDoneDefinition', params:[product:params.product,id:params.id]]"
+                    url="[controller:controllerName, action:'updateDoneDefinition', params:[product:params.product,id:params.id]]"
                     value="${message(code:'is.ui.sprintPlan.doneDefinition.button.save')}"
                     onSuccess="${is.notice(text:message(code:'is.sprint.doneDefinition.saved'))}"/>
             <is:button
@@ -48,8 +48,8 @@
                     type="link"
                     remote="true"
                     history="false"
-                    url="[controller:id, action:'copyFromPreviousDoneDefinition',id:params.id,params:[product:params.product]]"
-                    update="window-content-${id}"
+                    url="[controller:controllerName, action:'copyFromPreviousDoneDefinition',id:params.id,params:[product:params.product]]"
+                    update="window-content-${controllerName}"
                     onSuccess="jQuery.icescrum.renderNotice('${message(code: 'is.sprint.doneDefinition.copied')}')">${message(code: 'is.ui.sprintPlan.button.copyFromPreviousDoneDefinition')}
             </is:button>
         </sec:access>
@@ -57,8 +57,8 @@
                 type="link"
                 button="button-s button-s-black"
                 remote="true"
-                url="[controller:id, action:'index',id:params.id,params:[product:params.product]]"
-                update="window-content-${id}">${message(code: 'is.button.close')}
+                url="[controller:controllerName, action:'index',id:params.id,params:[product:params.product]]"
+                update="window-content-${controllerName}">${message(code: 'is.button.close')}
         </is:button>
     </is:buttonBar>
 </g:form>

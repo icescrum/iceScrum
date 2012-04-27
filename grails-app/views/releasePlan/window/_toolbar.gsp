@@ -26,10 +26,10 @@
     <g:if test="${release.state <= Release.STATE_INPROGRESS && poOrSm}">
     %{-- Add button --}%
         <is:iconButton
-                controller="${id}"
+                controller="${controllerName}"
                 action="add"
-                shortcut="[key:'ctrl+n',scope:id]"
-                update="window-content-${id}"
+                shortcut="[key:'ctrl+n',scope:controllerName]"
+                update="window-content-${controllerName}"
                 icon="create"
                 id="${release.id}"
                 class="select close-release-${release.id}"
@@ -46,7 +46,7 @@
                 title="${message(code:'is.ui.releasePlan.toolbar.alt.generateSprints')}"
                 action="generateSprints"
                 history='false'
-                shortcut="[key:'ctrl+g',scope:id]"
+                shortcut="[key:'ctrl+g',scope:controllerName]"
                 id="${release.id}"
                 controller="release"
                 class="close-release-${release.id}"
@@ -62,7 +62,7 @@
                 title="${message(code:'is.ui.releasePlan.toolbar.alt.autoPlan')}"
                 action="autoPlan"
                 controller="releasePlan"
-                shortcut="[key:'ctrl+shift+a',scope:id]"
+                shortcut="[key:'ctrl+shift+a',scope:controllerName]"
                 history='false'
                 id="${params.id}"
                 class="close-release-${release.id}"
@@ -95,10 +95,10 @@
             alt="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
             title="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
             action="vision"
-            shortcut="[key:'ctrl+shift+v',scope:id]"
+            shortcut="[key:'ctrl+shift+v',scope:controllerName]"
             id="${release.id}"
-            controller="${id}"
-            update="window-content-${id}">
+            controller="${controllerName}"
+            update="window-content-${controllerName}">
         ${message(code: 'is.ui.releasePlan.toolbar.vision')}
     </is:iconButton>
 
@@ -110,8 +110,8 @@
             <li class="first">
                 <is:link id="${release.id}"
                          action="releaseBurndownChart"
-                         controller="${id}"
-                         update="window-content-${id}"
+                         controller="${controllerName}"
+                         update="window-content-${controllerName}"
                          title="${message(code:'is.ui.releaseplan.charts.burndown')}"
                          remote="true"
                          value="${message(code:'is.ui.releaseplan.charts.burndown')}"/>
@@ -119,13 +119,13 @@
             <li class="last">
                 <is:link id="${release.id}"
                          action="releaseParkingLotChart"
-                         controller="${id}"
-                         update="window-content-${id}"
+                         controller="${controllerName}"
+                         update="window-content-${controllerName}"
                          title="${message(code:'is.ui.releaseplan.charts.parkingLot')}"
                          remote="true"
                          value="${message(code:'is.ui.releaseplan.charts.parkingLot')}"/>
             </li>
         </ul>
     </is:panelButton>
-    <entry:point id="${id}-${actionName}" model="[release:release]"/>
+    <entry:point id="${controllerName}-${actionName}" model="[release:release]"/>
 </g:if>

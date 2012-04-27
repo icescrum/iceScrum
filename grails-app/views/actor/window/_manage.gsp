@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
-<g:form action="save" method="post" name="${id}-form" elemid="${actor?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
+<g:form action="save" method="post" name="${controllerName}-form" elemid="${actor?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
 
     <is:fieldset title="is.ui.actor.actor.properties.title">
         <is:fieldInput label="is.actor" for="actorname">
@@ -91,7 +91,7 @@
                     id="submitAndContinueForm"
                     type="submitToRemote"
                     url="[controller:'actor', action:'save', params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.form.reset('#${id}-form'); jQuery.icescrum.renderNotice('${message(code: 'is.actor.saved')}')"
+                    onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.renderNotice('${message(code: 'is.actor.saved')}')"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                     value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
             <is:button
@@ -128,20 +128,20 @@
                 value="${message(code: 'is.button.cancel')}"/>
     </is:buttonBar>
 </g:form>
-<is:shortcut key="shift+return" callback="jQuery('#submitAndContinueForm').click();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="esc" callback="alert('efzfezfz'); jQuery.icescrum.form.cancel();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="shift+return" callback="jQuery('#submitAndContinueForm').click();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
+<is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
+<is:shortcut key="esc" callback="alert('efzfezfz'); jQuery.icescrum.form.cancel();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 
 <g:if test="${actor}">
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'actor',events:['update']]]"
-            callback="if ( actor.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.updated')}','${createLink(controller:controllerName,action:'edit',id:actor.id,params:[product:params.product])}',false,'#window-content-${id}');"/>
+            callback="if ( actor.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.updated')}','${createLink(controller:controllerName,action:'edit',id:actor.id,params:[product:params.product])}',false,'#window-content-${controllerName}');"/>
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'actor',events:['remove']]]"
             callback="if ( actor.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.deleted')}','${controllerName}',true);"/>
 </g:if>

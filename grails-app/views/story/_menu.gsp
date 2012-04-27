@@ -32,7 +32,7 @@
     <is:scrumLink
             id="${story.id}"
             controller="story"
-            update="window-content-${id}">
+            update="window-content-${controllerName}">
         <g:message code='is.ui.releasePlan.menu.story.details'/>
     </is:scrumLink>
 </is:postitMenuItem>
@@ -42,7 +42,7 @@
             id="${story.id}"
             controller="story"
             params="[tab:'comments']"
-            update="window-content-${id}">
+            update="window-content-${controllerName}">
         <g:message code='is.ui.releasePlan.menu.story.commentable'/>
     </is:scrumLink>
 </is:postitMenuItem>
@@ -52,7 +52,7 @@
             id="${story.id}"
             controller="story"
             params="[tab:'tests']"
-            update="window-content-${id}">
+            update="window-content-${controllerName}">
         <g:message code='is.ui.backlogelement.activity.test'/>
     </is:scrumLink>
 </is:postitMenuItem>
@@ -125,7 +125,7 @@
             params="['story.id':story.id]"
             remote="true"
             alt="${message(code:'is.ui.sprintPlan.kanban.recurrentTasks.add')}"
-            update="window-content-${id}">
+            update="window-content-${controllerName}">
         ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks.add')}
     </is:link>
 </is:postitMenuItem>
@@ -135,9 +135,9 @@
         elementId="menu-edit-${story.id}">
     <is:link
             action="editStory"
-            controller="${id}"
+            controller="${controllerName}"
             id="${referrer?:story.id}"
-            update="window-content-${id}"
+            update="window-content-${controllerName}"
             subid="${referrer?story.id:null}"
             value="${message(code:'is.ui.releasePlan.menu.story.update')}"
             history="true"
@@ -218,4 +218,4 @@
             onSuccess="jQuery.event.trigger('unDone_story',data); jQuery.icescrum.renderNotice('${g.message(code:'is.story.declaredAsUnDone')}')"
             value="${message(code:'is.ui.releasePlan.menu.story.undone')}"/>
 </is:postitMenuItem>
-<entry:point id="${id}-${actionName}-postitMenu" model="[story:story]"/>
+<entry:point id="${controllerName}-${actionName}-postitMenu" model="[story:story]"/>

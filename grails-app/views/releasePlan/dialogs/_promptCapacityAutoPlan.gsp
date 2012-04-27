@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:dialog focusable="${false}" valid="[action:'autoPlan',
-                  controller:'releasePlan',
+                  controller:controllerName,
                   id:params.id,
                   onSuccess:'jQuery.event.trigger(\'plan_story\',[data]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.release.autoplan')+'\')',
                   button:'is.dialog.promptCapacityAutoPlan.button']">

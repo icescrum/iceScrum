@@ -61,7 +61,7 @@
         <g:if test="${request.inProduct}">
             <is:postitMenu id="task-${task.id}"
                            contentView="/task/menu"
-                           params="[id:id, task:task, user:user, template:true]"/>
+                           params="[controllerName:id, task:task, user:user, template:true]"/>
         </g:if>
         ?**if (name.length > 17 || description.length > 0) {**?
         <is:tooltipPostit

@@ -40,12 +40,12 @@
             <is:button
                     targetLocation="${controllerName+'/'+actionName}/${release.id}"
                     id="submitForm" type="submitToRemote"
-                    url="[controller:id, action:'updateVision', params:[product:params.product,id:params.id]]"
+                    url="[controller:controllerName, action:'updateVision', params:[product:params.product,id:params.id]]"
                     value="${message(code:'is.ui.releasePlan.vision.button.save')}"
                     onSuccess="${is.notice(text:message(code:'is.release.vision.saved'))}"/>
         </sec:access>
         <is:button type="link" button="button-s button-s-black" remote="true"
-                   url="[controller:id, action:'index',id:params.id,params:[product:params.product]]"
-                   update="window-content-${id}">${message(code: 'is.button.close')}</is:button>
+                   url="[controller:controllerName, action:'index',id:params.id,params:[product:params.product]]"
+                   update="window-content-${controllerName}">${message(code: 'is.button.close')}</is:button>
     </is:buttonBar>
 </g:form>

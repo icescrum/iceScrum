@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <li>
-    <entry:point id="${id}-${actionName}" model="[releases:releases]"/>
+    <entry:point id="${controllerName}-${actionName}" model="[releases:releases]"/>
     <is:select
             width="160"
             rendered="${releases*.name.size() > 0}"
@@ -31,7 +31,7 @@
             keys="${releases*.id}"
             name="selectOnReleasePlan" value="${params.id}"
             history='false'
-            onchange="\$.icescrum.openWindow('${id}/'+this.value)"/>
+            onchange="\$.icescrum.openWindow('${controllerName}/'+this.value)"/>
     <is:link
             rendered="${releases*.name.size() > 0}"
             class="ui-icon-triangle-1-w"

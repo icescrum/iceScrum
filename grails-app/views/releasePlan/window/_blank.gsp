@@ -29,7 +29,7 @@
                         type="link"
                         rendered="${request.productOwner || request.scrumMaster}"
                         button="button-s button-s-light"
-                        update="window-content-${id}"
+                        update="window-content-${controllerName}"
                         href="#timeline/add"
                         title="${message(code:'is.ui.releasePlan.blank.new')}"
                         alt="${message(code:'is.ui.releasePlan.blank.new')}"
@@ -40,9 +40,9 @@
             <td class="empty">&nbsp;</td>
         </tr>
     </table>
-    <entry:point id="${id}-${actionName}-blank"/>
+    <entry:point id="${controllerName}-${actionName}-blank"/>
 </div>
 <is:onStream
         on="#blank-release"
         events="[[object:'release',events:['add']]]"
-        callback="jQuery.icescrum.navigateTo('${id}/'+release.id);"/>
+        callback="jQuery.icescrum.navigateTo('${controllerName}/'+release.id);"/>

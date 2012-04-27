@@ -28,7 +28,7 @@
     <is:truncated size="50" encodedHTML="true">${actor.description?.encodeAsHTML()}</is:truncated>
 
 %{--Embedded menu--}%
-    <is:postitMenu id="actor-${actor.id}" contentView="/actor/menu" model="[id:id, actor:actor]" rendered="${request.productOwner}"/>
+    <is:postitMenu id="actor-${actor.id}" contentView="/actor/menu" model="[actor:actor]" rendered="${request.productOwner}"/>
 
     <g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
         <is:tooltipPostit
@@ -37,7 +37,7 @@
                 title="${actor.name.encodeAsHTML()}"
                 text="${actor.description?.encodeAsHTML()}"
                 apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                container="jQuery('#window-content-${id}')"/>
+                container="jQuery('#window-content-${controllerName}')"/>
     </g:if>
 
 </is:postit>

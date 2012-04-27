@@ -42,11 +42,11 @@
         <is:tableGroup
                 elementId="recurrent"
                 rendered="${displayRecurrentTasks}"
-                editable="[controller:id,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
+                editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
             <is:tableGroupHeader>
                 <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                          class="dropmenu-action" id="menu-recurrent" contentView="window/recurrentOrUrgentTask"
-                         params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent',id:id]"/>
+                         params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent']"/>
                 <strong>${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</strong>
             </is:tableGroupHeader>
             <is:tableRows in="${recurrentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
@@ -64,7 +64,7 @@
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
                     <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
-                             class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu" params="[id:id, task:task, story:story, user:user]"/>
+                             class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu" params="[task:task, story:story, user:user]"/>
                     <g:set var="attachment" value="${task.totalAttachments}"/>
                     <g:if test="${attachment}">
                         <span class="table-attachment"
@@ -94,11 +94,11 @@
         <is:tableGroup
                 elementId="urgent"
                 rendered="${displayUrgentTasks}"
-                editable="[controller:id,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
+                editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
             <is:tableGroupHeader>
                 <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                          class="dropmenu-action" id="menu-urgent" contentView="window/recurrentOrUrgentTask"
-                         params="[sprint:sprint,type:'urgent',id:id]"/>
+                         params="[sprint:sprint,type:'urgent']"/>
                 <strong>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</strong>
             </is:tableGroupHeader>
             <is:tableRows in="${urgentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
@@ -117,7 +117,7 @@
                     <g:checkBox name="check-${task.id}"/>
                     <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                              class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu"
-                             params="[id:id, task:task, story:story, user:user]"/>
+                             params="[task:task, story:story, user:user]"/>
                     <g:set var="attachment" value="${task.totalAttachments}"/>
                     <g:if test="${attachment}">
                         <span class="table-attachment"
@@ -147,10 +147,10 @@
         <g:each in="${stories.sort{it.rank}}" var="story">
             <is:tableGroup
                     elementId="${story.id}"
-                    editable="[controller:id,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
+                    editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
                 <is:tableGroupHeader>
                     <is:menu rendered="${request.inProduct}" yoffset="4" class="dropmenu-action" id="${story.id}"
-                             contentView="/story/menu" params="[id:id,story:story,nextSprintExist:nextSprintExist]"/>
+                             contentView="/story/menu" params="[story:story,nextSprintExist:nextSprintExist]"/>
                     <is:scrumLink id="${story.id}" controller="story">
                         ${story.uid}
                     </is:scrumLink> -
@@ -173,7 +173,7 @@
                         <g:checkBox name="check-${task.id}"/>
                         <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
                                  class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu"
-                                 params="[id:id, task:task, story:story, user:user]"/>
+                                 params="[task:task, story:story, user:user]"/>
                         <g:set var="attachment" value="${task.totalAttachments}"/>
                         <g:if test="${attachment}">
                             <span class="table-attachment"

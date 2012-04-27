@@ -27,8 +27,8 @@
     <li class="first">
       <is:link
               action="productCumulativeFlowChart"
-              controller="${id}"
-              update="window-content-${id}"
+              controller="${controllerName}"
+              update="window-content-${controllerName}"
               title="${message(code:'is.ui.project.charts.productCumulativeFlow')}"
               remote="true"
               value="${message(code:'is.ui.project.charts.productCumulativeFlow')}"/>
@@ -36,8 +36,8 @@
     <li>
       <is:link
               action="productBurnupChart"
-              controller="${id}"
-              update="window-content-${id}"
+              controller="${controllerName}"
+              update="window-content-${controllerName}"
               title="${message(code:'is.ui.project.charts.productBurnup')}"
               remote="true"
               value="${message(code:'is.ui.project.charts.productBurnup')}"/>
@@ -45,8 +45,8 @@
     <li>
       <is:link
               action="productBurndownChart"
-              controller="${id}"
-              update="window-content-${id}"
+              controller="${controllerName}"
+              update="window-content-${controllerName}"
               title="${message(code:'is.ui.project.charts.productBurndown')}"
               remote="true"
               value="${message(code:'is.ui.project.charts.productBurndown')}"/>
@@ -54,9 +54,9 @@
     <li>
       <is:link
               action="productParkingLotChart"
-              controller="${id}"
-              params="['referrer.action':'dashboard','referrer.controller':id]"
-              update="window-content-${id}"
+              controller="${controllerName}"
+              params="['referrer.action':'dashboard','referrer.controller':controllerName]"
+              update="window-content-${controllerName}"
               title="${message(code:'is.ui.project.charts.productParkingLot')}"
               remote="true"
               value="${message(code:'is.ui.project.charts.productParkingLot')}"/>
@@ -64,8 +64,8 @@
     <li>
       <is:link
               action="productVelocityChart"
-              controller="${id}"
-              update="window-content-${id}"
+              controller="${controllerName}"
+              update="window-content-${controllerName}"
               title="${message(code:'is.ui.project.charts.productVelocity')}"
               remote="true"
               value="${message(code:'is.ui.project.charts.productVelocity')}"/>
@@ -73,8 +73,8 @@
     <li class="last">
       <is:link
               action="productVelocityCapacityChart"
-              controller="${id}"
-              update="window-content-${id}"
+              controller="${controllerName}"
+              update="window-content-${controllerName}"
               title="${message(code:'is.ui.project.charts.productVelocityCapacity')}"
               remote="true"
               value="${message(code:'is.ui.project.charts.productVelocityCapacity')}"/>
@@ -84,7 +84,7 @@
 
 <is:separator elementId="menu-report-separator"/>
 
-<entry:point id="${id}-${actionName}"/>
+<entry:point id="${controllerName}-${actionName}"/>
 
 %{--Print button--}%
 <is:reportPanel

@@ -22,7 +22,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <is:backlogElementLayout
-        id="window-${id}"
+        id="window-${controllerName}"
         emptyRendering="true"
         style="display:${actors ? 'block' : 'none'};"
         selectable="[rendered:request.productOwner,
@@ -31,19 +31,19 @@
         value="${actors}"
         dblclickable='[rendered:!request.productOwner,selector:".postit",callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'
         var="actor">
-        <is:cache  cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
-            <g:include view="/actor/_postit.gsp" model="[id:id,actor:actor,user:user]" params="[product:params.product]"/>
+        <is:cache cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
+            <g:include view="/actor/_postit.gsp" model="[actor:actor]" params="[product:params.product]"/>
         </is:cache>
 </is:backlogElementLayout>
 
-<g:include view="/actor/window/_blank.gsp" model="[actors:actors,id:id]"/>
+<g:include view="/actor/window/_blank.gsp" model="[actors:actors]"/>
 
 
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'actor.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
-             scope="${id}"/>
-<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+             scope="${controllerName}"/>
+<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream
-        on="#backlog-layout-window-${id}"
+        on="#backlog-layout-window-${controllerName}"
         events="[[object:'actor',events:['add','update','remove']]]"
         template="window"/>

@@ -21,7 +21,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 
-<is:backlogElementLayout id="widget-${id}"
+<is:backlogElementLayout id="widget-${controllerName}"
                          style="display:${actors ? 'block' : 'none'};"
                          container="ul"
                          emptyRendering="true"
@@ -41,8 +41,8 @@
     ${message(code: 'is.widget.actor.empty')}
 </div>
 
-<entry:point id="${id}-${actionName}-widget" model="[actors:actors]"/>
+<entry:point id="${controllerName}-${actionName}-widget" model="[actors:actors]"/>
 <is:onStream
-        on="#backlog-layout-widget-${id}"
+        on="#backlog-layout-widget-${controllerName}"
         events="[[object:'actor',events:['add','update','remove']]]"
         template="widget"/>

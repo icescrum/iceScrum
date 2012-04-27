@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:dialog width="400" valid="[action:'close',
-                               controller:id,
+                               controller:controllerName,
                                id:sprint.id,
                                onSuccess:'jQuery.event.trigger(\'close_sprint\',data.sprint); jQuery.event.trigger(\'done_story\',[data.stories]); jQuery.event.trigger(\'update_story\',[data.unDoneStories]);jQuery.icescrum.renderNotice(\''+g.message(code:'is.sprint.closed')+'\')',
                                button:'is.dialog.closeSprint.button']">

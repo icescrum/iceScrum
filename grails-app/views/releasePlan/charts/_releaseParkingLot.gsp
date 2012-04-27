@@ -91,7 +91,7 @@
           type="link"
           button="button-s button-s-black"
           remote="true"
-          url="[controller:id, action:'index',id:params.id, params:[product:params.product]]"
-          update="window-content-${id}"
+          url="[controller:controllerName, action:'index',id:params.id, params:[product:params.product]]"
+          update="window-content-${controllerName}"
           value="${message(code: 'is.button.close')}"/>
 </is:buttonBar>

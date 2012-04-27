@@ -48,7 +48,7 @@
                color="${feature.color}"
                controller="${id}">
         ?**=truncatedDescription**?
-        <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" params="[id:id, feature:feature]"
+        <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" params="[controllerName:id, feature:feature]"
                        rendered="${request.productOwner}"/>
         ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
         <is:tooltipPostit
@@ -103,7 +103,7 @@
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
-                         params="[id:id, feature:feature]" rendered="${request.productOwner}"/>
+                         params="[controllerName:id, feature:feature]" rendered="${request.productOwner}"/>
                 <g:set var="attachment" value="${feature.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment"

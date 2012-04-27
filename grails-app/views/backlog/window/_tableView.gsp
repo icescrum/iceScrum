@@ -46,8 +46,7 @@
             <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="${story.id}" contentView="/story/menu"
-                         params="[id:id,story:story]"/>
+                <is:menu class="dropmenu-action" yoffset="4" id="${story.id}" contentView="/story/menu" params="[story:story]"/>
                 <g:set var="comment" value="${story.totalComments}"/>
                 <g:if test="${comment}">
                     <span class="table-comment"
@@ -92,10 +91,10 @@
     </is:table>
 </is:tableView>
 
-<g:include view="/backlog/window/_blank.gsp" model="[stories:stories,id:id]"/>
+<g:include view="/backlog/window/_blank.gsp" model="[stories:stories]"/>
 
 <jq:jquery>
-    jQuery('#window-title-bar-${id} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');
     jQuery('tr[data-rank]').each(function() {
         $('div[name=rank]', $(this)).text($(this).data('rank'));
     });

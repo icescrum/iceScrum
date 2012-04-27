@@ -24,7 +24,7 @@
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Sprint;" %>
 <g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 
-<is:eventline container="#window-content-${id}" elemid="${release.id}"
+<is:eventline container="#window-content-${controllerName}" elemid="${release.id}"
               focus="${activeSprint ? activeSprint.id : sprints ? sprints.last().id : null}"
               style="display:${sprints?'block':'none'};">
     <g:each in="${sprints}" var="sprint" status="u">
@@ -60,7 +60,7 @@
                         ${message(code: 'is.ui.releasePlan.to')} <strong><g:formatDate date="${sprint.endDate}"
                                                                                        formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></strong>
                         <is:menu class="dropmenu-action" id="sprint-${sprint.id}" contentView="/sprint/menu"
-                                 params="[id:id,sprint:sprint]"/>
+                                 params="[sprint:sprint]"/>
                     </div>
 
                     <g:if test="${sprint.goal}">
@@ -83,19 +83,19 @@
                                       onSuccess:'ui.draggable.attr(\'remove\',\'true\'); jQuery.event.trigger(\'plan_story\',data.story)',
                                       params: '\'product='+params.product+'&id=\'+ui.draggable.attr(\'elemid\')+\'&sprint.id='+sprint.id+'\'')]">
                     <is:backlogElementLayout
-                            id="plan-${id}-${sprint.id}"
+                            id="plan-${controllerName}-${sprint.id}"
                             sortable='[
                               rendered:poOrSm && sprint.state != Sprint.STATE_DONE,
                               handle:".postit-layout .postit-sortable",
                               connectWith:".backlog",
                               containment:".event-overflow",
                               placeholder:"ui-drop-hover-postit-rect ui-corner-all",
-                              update:"if(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${id}-${sprint.id} .postit-rect",controller:"story",action:"rank",name:"story.rank",params:"&product=${params.product}")}}",
+                              update:"if(jQuery(\"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect",controller:"story",action:"rank",name:"story.rank",params:"&product=${params.product}")}}",
                               receive:"event.stopPropagation();"+remoteFunction(action:"plan",
                                           controller:"story",
                                           onFailure: "jQuery(ui).sortable(\"cancel\");",
                                           onSuccess:"jQuery.event.trigger(\"plan_story\",data.story); if(data.oldSprint){ jQuery.event.trigger(\"sprintMesure_sprint\",data.oldSprint); }",
-                                          params: "\"product=${params.product}&id=\"+ui.item.attr(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item)+1)")
+                                          params: "\"product=${params.product}&id=\"+ui.item.attr(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect\").index(ui.item)+1)")
                       ]'
                             dblclickable="[selector:'.postit-rect',callback:is.quickLook(params:'\'story.id=\'+$.icescrum.postit.id(obj)')]"
                             value="${sprint.stories?.sort{it.rank}}"
@@ -103,7 +103,7 @@
                             emptyRendering="true">
                             <is:cache cache="storyCache" key="postit-rect-${story.id}-${story.lastUpdated}">
                                 <g:include view="/story/_postit.gsp"
-                                           model="[id:id,story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"
+                                           model="[story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"
                                            params="[product:params.product]"/>
                             </is:cache>
                     </is:backlogElementLayout>
@@ -113,11 +113,11 @@
     </g:each>
 </is:eventline>
 
-<g:include view="/releasePlan/window/_blankSprint.gsp" model="[sprints:sprints,id:id,release:release]"
+<g:include view="/releasePlan/window/_blankSprint.gsp" model="[sprints:sprints,release:release]"
            params="[product:params.product]"/>
 
 <jq:jquery>
-    jQuery('#window-title-bar-${id} .content').html('${message(code: "is.ui." + id)} - ${release.name}  - ${is.bundle(bundle: 'releaseStates', value: release.state)} - [${g.formatDate(date: release.startDate, formatName: 'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} -> ${g.formatDate(date: release.endDate, formatName: 'is.date.format.short',timeZone:release.parentProduct.preferences.timezone)}]');
+    jQuery('#window-title-bar-${controllerName} .content').html('${message(code: "is.ui." + controllerName)} - ${release.name}  - ${is.bundle(bundle: 'releaseStates', value: release.state)} - [${g.formatDate(date: release.startDate, formatName: 'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} -> ${g.formatDate(date: release.endDate, formatName: 'is.date.format.short',timeZone:release.parentProduct.preferences.timezone)}]');
     <is:editable controller="story"
                  action='estimate'
                  on='div.backlog .postit-story .mini-value.editable'
@@ -134,7 +134,7 @@
 
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;} jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
-             scope="${id}"/>
+             scope="${controllerName}"/>
 
 <is:onStream
         on=".event-overflow"

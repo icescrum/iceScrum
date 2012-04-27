@@ -53,8 +53,6 @@ class StoryController {
     def securityService
     def acceptanceTestService
 
-    static final id = 'story'
-
     def allowedMethods = [
             ['save','rank','estimate','unPlan','plan','done','unDone','accept','copy','associateFeature']:['POST'],
             ['edit','list','show','download']:['GET'],
@@ -63,42 +61,33 @@ class StoryController {
     ]
 
     def toolbar = {
-        if (!params.id) {
-            render(text: '')
-            return
-        }
-        def user = null
-        if (springSecurityService.isLoggedIn())
-            user = User.load(springSecurityService.principal.id)
-        def story = Story.getInProduct(params.long('product'),params.long('id')).list()[0]
-        // Cannot proceed if we don't have a story
-        if (!story) {
-            render(text: '')
-            return
-        }
+        withStory { Story story ->
+            def user = null
+            if (springSecurityService.isLoggedIn())
+                user = User.load(springSecurityService.principal.id)
+            def next
+            def previous
 
-        def next
-        def previous
-
-        switch (story.state) {
-            case Story.STATE_SUGGESTED:
-                next = Story.findNextSuggested(story.backlog.id, story.suggestedDate).list()[0] ?: null
-                previous = Story.findPreviousSuggested(story.backlog.id, story.suggestedDate).list()[0] ?: null
-                break
-            case Story.STATE_ACCEPTED:
-            case Story.STATE_ESTIMATED:
-                next = Story.findNextAcceptedOrEstimated(story.backlog.id, story.rank).list()[0] ?: null
-                previous = Story.findPreviousAcceptedOrEstimated(story.backlog.id, story.rank).list()[0] ?: null
-                break
-            case Story.STATE_PLANNED:
-            case Story.STATE_INPROGRESS:
-            case Story.STATE_DONE:
-                previous = Story.findByParentSprintAndRank(story.parentSprint, story.rank - 1) ?: null
-                next = Story.findByParentSprintAndRank(story.parentSprint, story.rank + 1) ?: null
-                break
+            switch (story.state) {
+                case Story.STATE_SUGGESTED:
+                    next = Story.findNextSuggested(story.backlog.id, story.suggestedDate).list()[0] ?: null
+                    previous = Story.findPreviousSuggested(story.backlog.id, story.suggestedDate).list()[0] ?: null
+                    break
+                case Story.STATE_ACCEPTED:
+                case Story.STATE_ESTIMATED:
+                    next = Story.findNextAcceptedOrEstimated(story.backlog.id, story.rank).list()[0] ?: null
+                    previous = Story.findPreviousAcceptedOrEstimated(story.backlog.id, story.rank).list()[0] ?: null
+                    break
+                case Story.STATE_PLANNED:
+                case Story.STATE_INPROGRESS:
+                case Story.STATE_DONE:
+                    previous = Story.findByParentSprintAndRank(story.parentSprint, story.rank - 1) ?: null
+                    next = Story.findByParentSprintAndRank(story.parentSprint, story.rank + 1) ?: null
+                    break
+            }
+            def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
+            render(template: 'window/toolbar', model: [story: story, user: user, next: next, previous: previous, sprint: sprint])
         }
-        def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
-        render(template: 'window/toolbar', model: [id: id, story: story, user: user, next: next, previous: previous, sprint: sprint])
     }
 
     def index = {
@@ -138,7 +127,6 @@ class StoryController {
                         permalink: permalink,
                         locale: RequestContextUtils.getLocale(request),
                         isFollower: isFollower,
-                        id: id
                 ])
             }
         }
@@ -706,7 +694,7 @@ class StoryController {
     }
 
     def editStory = {
-        forward(action: 'edit', controller: 'story', params: [referrer: id, referrerUrl:id+'/'+params.id, id: params.id, product: params.product])
+        forward(action: 'edit', controller: 'story', params: [referrer: controllerName, referrerUrl:controllerName+'/'+params.id, id: params.id, product: params.product])
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')

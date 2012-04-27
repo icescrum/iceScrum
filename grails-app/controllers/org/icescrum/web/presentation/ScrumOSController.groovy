@@ -249,7 +249,7 @@ class ScrumOSController {
         }
         def aboutXml = new XmlSlurper().parse(file)
         def license
-        render(status: 200, template: "about/index", model: [id: controllerName, about: aboutXml])
+        render(status: 200, template: "about/index", model: [about: aboutXml])
     }
 
     def textileParser = {

@@ -26,7 +26,7 @@
 <is:backlogElementLayout
         emptyRendering="true"
         style="display:${stories ? 'block' : 'none'};"
-        id="window-${id}"
+        id="window-${controllerName}"
         selectable="[rendered:request.productOwner,
                     filter:'div.postit-story',
                     cancel:'.postit .postit-sortable, a, .mini-value, select, input',
@@ -65,25 +65,25 @@
         var="story">
         <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
     <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
-        <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user,sortable:request.productOwner]" params="[product:params.product]"/>
+        <g:include view="/story/_postit.gsp" model="[story:story,user:user,sortable:request.productOwner]" params="[product:params.product]"/>
     </is:cache>
 </is:backlogElementLayout>
 
-<g:include view="/backlog/window/_blank.gsp" model="[stories:stories,id:id]"/>
+<g:include view="/backlog/window/_blank.gsp" model="[stories:stories]"/>
 
 <jq:jquery>
-    jQuery('#window-title-bar-${id} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');
 </jq:jquery>
 
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
-             scope="${id}"/>
-<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+             scope="${controllerName}"/>
+<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream
-        on="#backlog-layout-window-${id}"
+        on="#backlog-layout-window-${controllerName}"
         events="[[object:'story',events:['add','accept','update','remove','estimate','unPlan','plan','associated','dissociated']]]"
         template="backlogWindow"/>
 
 <is:onStream
-        on="#backlog-layout-window-${id}"
+        on="#backlog-layout-window-${controllerName}"
         events="[[object:'feature',events:['update']]]"/>

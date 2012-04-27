@@ -38,8 +38,6 @@ import grails.plugins.springsecurity.Secured
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class TimelineController {
 
-    static final id = 'timeline'
-
     def releaseService
     def productService
     def featureService
@@ -62,7 +60,7 @@ class TimelineController {
             }
         }
 
-        render(template: 'window/titleBarContent', model: [id: id, releasesName: releasesName, releasesDate: releasesDate, currentRelease: params.long('id'), releasesIds: releasesIds])
+        render(template: 'window/titleBarContent', model: [releasesName: releasesName, releasesDate: releasesDate, currentRelease: params.long('id'), releasesIds: releasesIds])
     }
 
     @Cacheable(cache = 'releaseCache', keyGenerator = 'releasesKeyGenerator')
@@ -70,11 +68,11 @@ class TimelineController {
 
         def currentProduct = Product.get(params.product)
         if (!currentProduct.releases) {
-            render(template: 'window/blank', model: [id: id])
+            render(template: 'window/blank')
             return
         }
 
-        render(template: 'window/timelineView', model: [id: id])
+        render(template: 'window/timelineView')
     }
 
     @Cacheable(cache = 'releaseCache', keyGenerator = 'releasesRoleKeyGenerator')
@@ -107,7 +105,7 @@ class TimelineController {
                 if (it.sprints.asList().last().state == Sprint.STATE_DONE)
                     isClosable = true
             }
-            def templateMenu = "<div class='dropmenu-action' onmouseover='if(jQuery(\"#dropmenu-rel-${it.id}\").dropMenuCreated() == false){jQuery(\"#dropmenu-rel-${it.id}\").dropmenu({top:10,showOnCreate:true});};'>" + is.menu(contentView: '/release/menu', id: "rel-${it.id}", params: [release: it, isClosable: isClosable, id: id, activeRelease: currentProduct.releases.find {it.state == Release.STATE_INPROGRESS}]) + "</div><span>${it.name.encodeAsJavaScript()}</span>"
+            def templateMenu = "<div class='dropmenu-action' onmouseover='if(jQuery(\"#dropmenu-rel-${it.id}\").dropMenuCreated() == false){jQuery(\"#dropmenu-rel-${it.id}\").dropmenu({top:10,showOnCreate:true});};'>" + is.menu(contentView: '/release/menu', id: "rel-${it.id}", params: [release: it, isClosable: isClosable, activeRelease: currentProduct.releases.find {it.state == Release.STATE_INPROGRESS}]) + "</div><span>${it.name.encodeAsJavaScript()}</span>"
             def templateTooltip = include(view: "$controllerName/tooltips/_tooltipReleaseDetails.gsp", model: [release: it])
 
             def tlR = [window: "releasePlan/${it.id}",
@@ -171,7 +169,6 @@ class TimelineController {
         }
 
         render(template: 'window/manage', model: [
-                id: id,
                 product: currentProduct,
                 release: release,
                 previousRelease: previousRelease,
@@ -188,7 +185,6 @@ class TimelineController {
             def next = product.releases.find {it.orderNumber == release.orderNumber + 1}
 
             render(template: 'window/manage', model: [
-                    id: id,
                     product: product,
                     release: release,
                     next: next?.id ?: null,
@@ -203,7 +199,6 @@ class TimelineController {
         def values = productService.cumulativeFlowValues(currentProduct)
         if (values.size() > 0) {
             render(template: '../project/charts/productCumulativeFlowChart', model: [
-                    id: id,
                     withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                     suggested: values.suggested as JSON,
                     accepted: values.accepted as JSON,
@@ -223,7 +218,6 @@ class TimelineController {
         def values = productService.productVelocityCapacityValues(currentProduct)
         if (values.size() > 0) {
             render(template: '../project/charts/productVelocityCapacityChart', model: [
-                    id: id,
                     withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                     capacity: values.capacity as JSON,
                     velocity: values.velocity as JSON,
@@ -239,7 +233,6 @@ class TimelineController {
         def values = productService.productBurnupValues(currentProduct)
         if (values.size() > 0) {
             render(template: '../project/charts/productBurnupChart', model: [
-                    id: id,
                     withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                     all: values.all as JSON,
                     done: values.done as JSON,
@@ -255,7 +248,6 @@ class TimelineController {
         def values = productService.productBurndownValues(currentProduct)
         if (values.size() > 0) {
             render(template: '../project/charts/productBurndownChart', model: [
-                    id: id,
                     withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                     userstories: values.userstories as JSON,
                     technicalstories: values.technicalstories as JSON,
@@ -272,7 +264,6 @@ class TimelineController {
         def values = productService.productVelocityValues(currentProduct)
         if (values.size() > 0) {
             render(template: '../project/charts/productVelocityChart', model: [
-                    id: id,
                     withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                     userstories: values.userstories as JSON,
                     technicalstories: values.technicalstories as JSON,
@@ -298,7 +289,6 @@ class TimelineController {
         }
         if (valueToDisplay.size() > 0)
             render(template: '../feature/charts/productParkinglot', model: [
-                    id: id,
                     withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                     values: valueToDisplay as JSON,
                     featuresNames: values.label as JSON])
@@ -362,7 +352,7 @@ class TimelineController {
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
-            render(template: 'dialogs/report', model: [id: id])
+            render(template: 'dialogs/report')
         }
     }
 

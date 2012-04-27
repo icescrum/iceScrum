@@ -21,7 +21,7 @@
 --}%
 <%@ page import="org.icescrum.core.domain.Release" %>
 <g:setProvider library="jquery"/>
-<g:form action="save" method="post" name="${id}-form" class="box-form box-form-250 box-form-200-legend" tabindex="1">
+<g:form action="save" method="post" name="${controllerName}-form" class="box-form box-form-250 box-form-200-legend" tabindex="1">
 
     <is:fieldset title="is.ui.timeline.release.properties.title">
 
@@ -70,14 +70,14 @@
                     id="submitAndContinueForm"
                     type="submitToRemote"
                     url="[controller:'release', action:'save', params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.form.reset('#${id}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,90); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.saved')}')">
+                    onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,90); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.saved')}')">
                 ${message(code: 'is.button.add')} ${message(code: 'is.button.andContinue')}
             </is:button>
             <is:button
                     id="submitForm"
                     type="submitToRemote"
                     url="[controller:'release', action:'save',params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.navigateTo('${id}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.saved')}')">
+                    onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.saved')}')">
                 ${message(code: 'is.button.add')}
             </is:button>
         </g:if>
@@ -107,19 +107,19 @@
                 value="${message(code: 'is.button.cancel')}"/>
     </is:buttonBar>
 </g:form>
-<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="esc" callback="\$.icescrum.form.cancel();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
+<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
+<is:shortcut key="esc" callback="\$.icescrum.form.cancel();" scope="${controllerName}" listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 
 <g:if test="${release}">
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'release',events:['update','close','activate']]]"
             callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.release.updated')}','${controllerName}',false);"/>
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'release',events:['remove']]]"
             callback="jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.release.deleted')}','${controllerName}',false);"/>
 </g:if>

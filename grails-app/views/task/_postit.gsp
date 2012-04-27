@@ -58,6 +58,6 @@
                         title="${task.name?.encodeAsHTML()}"
                         text="${task.description?.encodeAsHTML()}"
                         apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                        container="jQuery('#window-content-${id}')"/>
+                        container="jQuery('#window-content-${controllerName}')"/>
             </g:if>
 </is:postit>

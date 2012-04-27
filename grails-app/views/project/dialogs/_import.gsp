@@ -22,7 +22,7 @@
 <g:setProvider library="jquery"/>
 
    <g:if test="${!product}">
-     <g:formRemote url="[action:'importProject']" update="dialog" name="${id}-import-form" class="box-form box-form-180 box-form-180-legend">
+     <g:formRemote url="[action:'importProject']" update="dialog" name="${controllerName}-import-form" class="box-form box-form-180 box-form-180-legend">
         <is:fieldset title="is.dialog.importProject.choose.title">
           <is:fieldInformation noborder="true">
             <g:message code="is.dialog.importProject.choose.description"/>
@@ -34,13 +34,13 @@
                           urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
                           multi="1"
                           params="[product:params.product]"
-                          onUploadComplete="\$('#${id}-import-form-submit').click();\$('#${id}-import-form').hide();\$('#import-validate').show();"
+                          onUploadComplete="\$('#${controllerName}-import-form-submit').click();\$('#${controllerName}-import-form').hide();\$('#import-validate').show();"
                           progress="[
                             url:createLink(action:'uploadStatus',controller:'scrumOS'),
                             label:message(code:'is.upload.wait'),
                           ]"/>
           </is:fieldFile>
-          <input type="submit" style="display:none;" id="${id}-import-form-submit" value="submit"/>
+          <input type="submit" style="display:none;" id="${controllerName}-import-form-submit" value="submit"/>
         </is:fieldset>
      </g:formRemote>
      <div id="import-validate" class="box-form" style="display:none;">
@@ -51,7 +51,7 @@
             <is:progressBar
               elementId="progress"
               label="${message(code:'is.validate.start')}"
-              startOn="#${id}-import-form"
+              startOn="#${controllerName}-import-form"
               startOnWhen="submit"
               url="${createLink(action:'importProject',params:[status:true])}"
               />

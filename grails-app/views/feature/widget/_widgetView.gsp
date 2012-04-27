@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 
-<is:backlogElementLayout id="widget-${id}"
+<is:backlogElementLayout id="widget-${controllerName}"
                          container="ul"
                          emptyRendering="true"
                          style="display:${features ? 'block' : 'none'};"
@@ -48,8 +48,8 @@
     ${message(code: 'is.widget.feature.empty')}
 </div>
 
-<entry:point id="${id}-${actionName}-widget" model="[feature:feature]"/>
+<entry:point id="${controllerName}-${actionName}-widget" model="[feature:feature]"/>
 <is:onStream
-        on="#backlog-layout-widget-${id}"
+        on="#backlog-layout-widget-${controllerName}"
         events="[[object:'feature',events:['add','update','remove']]]"
         template="widget"/>

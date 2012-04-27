@@ -29,8 +29,8 @@
                 label="${message(code:'is.export.start')}"
                 iframe="true"
                 showOnCreate="true"
-                iframeSrc="${createLink(action:'export',controller:'project',params:[product:params.product,get:true])}"
+                iframeSrc="${createLink(action:'export',controller:controllerName,params:[product:params.product,get:true])}"
                 onComplete="jQuery.doTimeout(2000,function(){\$('#dialog').dialog('close')})"
-                url="${createLink(action:'export',controller:'project',params:[product:params.product,status:true])}"/>
+                url="${createLink(action:'export',controller:controllerName,params:[product:params.product,status:true])}"/>
     </is:fieldset>
 </div>

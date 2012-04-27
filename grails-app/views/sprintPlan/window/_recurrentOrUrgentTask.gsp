@@ -25,11 +25,11 @@
     <is:link
             action="add"
             id="${sprint.id}"
-            controller="${id}"
+            controller="${controllerName}"
             params="['story.id':type]"
             remote="true"
             alt="${message(code:'is.ui.sprintPlan.kanban.recurrentTasks.add')}"
-            update="window-content-${id}">
+            update="window-content-${controllerName}">
         ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks.add')}
     </is:link>
 </is:postitMenuItem>
@@ -37,7 +37,7 @@
     <is:link
             action="copyRecurrentTasksFromPreviousSprint"
             id="${sprint.id}"
-            controller="${id}"
+            controller="${controllerName}"
             remote="true"
             history="false"
             alt="${message(code:'is.ui.sprintPlan.kanban.copyRecurrentTasks')}"
@@ -45,4 +45,4 @@
         ${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}
     </is:link>
 </is:postitMenuItem>
-<entry:point id="${id}-${actionName}-recurrentOrUrgentTask" model="[sprint:sprint,type:type]"/>
+<entry:point id="${controllerName}-${actionName}-recurrentOrUrgentTask" model="[sprint:sprint,type:type]"/>

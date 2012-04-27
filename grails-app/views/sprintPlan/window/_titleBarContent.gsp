@@ -22,7 +22,7 @@
 %{-- Sprints lists --}%
 <g:if test="${sprint?.id}">
     <li>
-        <entry:point id="${id}-${actionName}" model="[sprintsName:sprintsName]"/>
+        <entry:point id="${controllerName}-${actionName}" model="[sprintsName:sprintsName]"/>
         <is:select
                 rendered="${sprintsName.size() > 0}"
                 maxHeight="200"
@@ -34,7 +34,7 @@
                 history='false'
                 name="selectOnSprintPlan"
                 width="200"
-                onchange=" \$.icescrum.openWindow('${id}/'+this.value)"/>
+                onchange=" \$.icescrum.openWindow('${controllerName}/'+this.value)"/>
         <is:link
                 rendered="${sprintsName.size() > 0}"
                 class="ui-icon-triangle-1-w"

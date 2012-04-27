@@ -7,7 +7,7 @@
                 <is:button
                         type="link"
                         button="button-s button-s-light"
-                        href="#${id}/add"
+                        href="#${controllerName}/add"
                         title="${message(code:'is.ui.sandbox.blank.new')}"
                         alt="${message(code:'is.ui.sandbox.blank.new')}"
                         icon="create">
@@ -17,5 +17,5 @@
             <td class="empty">&nbsp;</td>
         </tr>
     </table>
-    <entry:point id="${id}-${actionName}-blank"/>
+    <entry:point id="${controllerName}-${actionName}-blank"/>
 </div>

@@ -22,12 +22,12 @@
 <is:timeline
         id="release-timeline"
         name="timelineTl"
-        container="#window-id-${id}"
+        container="#window-id-${controllerName}"
         height="100%"
         onScroll="jQuery('#selectOnTimeline').changeSelectDate(band.getMinVisibleDate().getTime())">
     <is:customBubble
             enable="true"
-            container="#window-content-${id}"/>
+            container="#window-content-${controllerName}"/>
 
     <is:timelineBand
             action="timeLineList"

@@ -22,7 +22,7 @@
 <g:if test="${columns && mapping}">
   <is:dialog width="400" valid="[
   action:'dropImport',
-  controller:id,
+  controller:controllerName,
   onSuccess:'jQuery.event.trigger(\'add_story\',[data]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.story.imported')+'\');',
   button:'is.dialog.drop.import.button']">
     <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
@@ -43,7 +43,7 @@
   </is:dialog>
 </g:if>
 <g:else>
-  <is:dialog width="400" valid="[action:'add',controller:id,update:'window-content-'+id,button:'is.yes']">
+  <is:dialog width="400" valid="[action:'add',controller:controllerName,update:'window-content-'+controllerName,button:'is.yes']">
     <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
       <input type="hidden" value="${data}" name="story.description"/>
       <input type="hidden" value="${params.product}" name="product"/>

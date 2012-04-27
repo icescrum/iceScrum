@@ -21,7 +21,7 @@
 --}%
 <is:dialog valid="[
                 action:'activate',
-                controller:id,
+                controller:controllerName,
                 id:sprint.id,
                 onSuccess:'jQuery.event.trigger(\'activate_sprint\',data.sprint); jQuery.event.trigger(\'inProgress_story\',[data.stories]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.sprint.activated')+'\');',button:'is.dialog.confirmActivateSprintAndRelease.button']">
     <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">

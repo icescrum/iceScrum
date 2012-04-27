@@ -42,7 +42,7 @@
 %{--Embedded menu--}%
     <is:postitMenu id="story-${story.id}"
                    contentView="/story/menu"
-                   model="[id:id, story:story, user:user, nextSprint:nextSprint]"/>
+                   model="[story:story, user:user, nextSprint:nextSprint]"/>
     <g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
         <is:tooltipPostit
                 type="story"
@@ -50,6 +50,6 @@
                 title="${story.name.encodeAsHTML()}"
                 text="${is.storyTemplate(story:story)}"
                 apiBeforeShow="if(jQuery('#dropmenu').is(':visible') || jQuery('#postit-story-${story.id} .mini-value.editable').hasClass('editable-hover') ) return false;"
-                container="jQuery('#window-content-${id}')"/>
+                container="jQuery('#window-content-${controllerName}')"/>
     </g:if>
 </is:postit>

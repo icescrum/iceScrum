@@ -25,7 +25,7 @@
 <div class="dashboard">
     <div class="colset-2 clearfix">
         <div class="col1">
-            <entry:point id="${id}-${actionName}-top-left" model="[sprint:sprint,release:release,product:product]"/>
+            <entry:point id="${controllerName}-${actionName}-top-left" model="[sprint:sprint,release:release,product:product]"/>
             <is:panel id="panel-chart">
                 <is:panelTitle>
                     <g:if test="${sprint && request.inProduct}">
@@ -119,11 +119,11 @@
                     </div>
                 </g:if>
             </is:panel>
-            <entry:point id="${id}-${actionName}-bottom-left" model="[sprint:sprint,release:release,product:product]"/>
+            <entry:point id="${controllerName}-${actionName}-bottom-left" model="[sprint:sprint,release:release,product:product]"/>
         </div>
 
         <div class="col2">
-            <entry:point id="${id}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
+            <entry:point id="${controllerName}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
             <is:cache cache="projectCache" role="false" key="${product.id}eef-${activities.size() ? activities?.first()?.dateCreated :''}">
                 <is:panel id="panel-activity">
                     <is:panelTitle>
@@ -165,7 +165,7 @@
                     </g:else>
                 </is:panel>
             </is:cache>
-            <entry:point id="${id}-${actionName}-bottom-right"
+            <entry:point id="${controllerName}-${actionName}-bottom-right"
                          model="[sprint:sprint,release:release,product:product,activities:activities]"/>
         </div>
     </div>

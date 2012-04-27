@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:dialog valid="[action:'delete',
-                   controller:'releasePlan',
+                   controller:controllerName,
                    id:sprint.id,
                    onSuccess:' jQuery.event.trigger(\'remove_sprint\',[data]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.sprint.deleted')+'\');',
                    button:'is.dialog.confirmDeleteSprint.button']">

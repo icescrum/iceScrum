@@ -53,7 +53,7 @@
             <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
                 <is:menu yoffset="3" class="dropmenu-action" id="menu-recurrent"
                          contentView="window/recurrentOrUrgentTask"
-                         params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent',id:id]"
+                         params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent']"
                          rendered="${sprint.state != Sprint.STATE_DONE}"/>
             </g:if>
         </is:kanbanColumn>
@@ -62,7 +62,7 @@
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${recurrentTasks?.sort{it.rank}?.findAll{ it.state == column.key} }" var="task">
                     <is:cache cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]"
+                        <g:include view="/task/_postit.gsp" model="[task:task,user:user]"
                                    params="[product:params.product]"/>
                     </is:cache>
                 </g:each>
@@ -81,7 +81,7 @@
                          class="dropmenu-action"
                          id="menu-urgent"
                          contentView="window/recurrentOrUrgentTask"
-                         params="[sprint:sprint,type:'urgent',id:id]"
+                         params="[sprint:sprint,type:'urgent']"
                          rendered="${sprint.state != Sprint.STATE_DONE}"/>
             </g:if>
             <br/>
@@ -91,7 +91,7 @@
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
                     <is:cache  cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
+                        <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
                     </is:cache>
                 </g:each>
 
@@ -109,7 +109,7 @@
             <is:kanbanColumn elementId="column-story-${story.id}">
                 <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
                     <g:include view="/story/_postit.gsp"
-                               model="[id:id,story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
+                               model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
                                params="[product:params.product]"/>
                 </is:cache>
             </is:kanbanColumn>
@@ -119,7 +119,7 @@
                 <is:kanbanColumn key="${column.key}">
                     <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                             var="task">
-                                <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
+                                <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
                     </g:each>
                 </is:kanbanColumn>
             </g:each>
@@ -135,7 +135,7 @@
         <is:kanbanColumn elementId="column-story-${story.id}">
             <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
                 <g:include view="/story/_postit.gsp"
-                           model="[id:id,story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
+                           model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
                            params="[product:params.product]"/>
             </is:cache>
         </is:kanbanColumn>
@@ -145,7 +145,7 @@
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                         var="task">
-                    <g:include view="/task/_postit.gsp" model="[id:id,task:task,user:user]" params="[product:params.product]"/>
+                    <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
                 </g:each>
             </is:kanbanColumn>
         </g:each>
@@ -207,8 +207,8 @@
 </jq:jquery>
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'task.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
-             scope="${id}"/>
-<is:shortcut key="ctrl+a" callback="jQuery('#window-content-${id} .ui-selectee').addClass('ui-selected');"/>
+             scope="${controllerName}"/>
+<is:shortcut key="ctrl+a" callback="jQuery('#window-content-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 
 <is:onStream
         on="#kanban-sprint-${sprint.id}"

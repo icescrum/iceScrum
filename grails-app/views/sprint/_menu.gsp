@@ -62,10 +62,10 @@
              elementId="menu-edit-sprint-${sprint.id}">
     <is:link
             action="edit"
-            controller="${id}"
+            controller="${controllerName}"
             subid="${sprint.id}"
             id="${sprint.parentRelease.id}"
-            update="window-content-${id}"
+            update="window-content-${controllerName}"
             value="${message(code:'is.ui.releasePlan.menu.sprint.update')}"
             remote="true"/>
 </is:menuItem>
@@ -92,4 +92,4 @@
             remote="true"
             history="false"/>
 </is:menuItem>
-<entry:point id="${id}-${actionName}-sprintMenu" model="[sprint:sprint]"/>
+<entry:point id="${controllerName}-${actionName}-sprintMenu" model="[sprint:sprint]"/>

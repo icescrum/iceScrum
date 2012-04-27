@@ -29,8 +29,8 @@
                         type="link"
                         rendered="${request.productOwner}"
                         button="button-s button-s-light"
-                        update="window-content-${id}"
-                        href="#${id}/add"
+                        update="window-content-${controllerName}"
+                        href="#${controllerName}/add"
                         title="${message(code:'is.ui.timeline.blank.new')}"
                         alt="${message(code:'is.ui.timeline.blank.new')}"
                         icon="create">
@@ -40,5 +40,5 @@
             <td class="empty">&nbsp;</td>
         </tr>
     </table>
-    <entry:point id="${id}-${actionName}-blank"/>
+    <entry:point id="${controllerName}-${actionName}-blank"/>
 </div>

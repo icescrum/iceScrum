@@ -29,7 +29,7 @@
                 label="${message(code:'is.report.processing')}"
                 iframe="true"
                 showOnCreate="true"
-                iframeSrc="${createLink(action:'print',controller:'backlog',params:[product:params.product,get:true,format:params.format])}"
-                url="${createLink(action:'print',controller:'backlog',params:[product:params.product,status:true])}"/>
+                iframeSrc="${createLink(action:'print',controller:controllerName,params:[product:params.product,get:true,format:params.format])}"
+                url="${createLink(action:'print',controller:controllerName,params:[product:params.product,status:true])}"/>
     </is:fieldset>
 </div>

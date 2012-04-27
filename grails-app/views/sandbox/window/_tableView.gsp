@@ -44,7 +44,7 @@
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${story.id}" contentView="/story/menu"
-                         params="[id:id, story:story, sprint:sprint, user:user]"/>
+                         params="[story:story, sprint:sprint, user:user]"/>
                 <g:set var="comment" value="${story.totalComments}"/>
                 <g:if test="${comment}">
                     <span class="table-comment"
@@ -83,9 +83,9 @@
     </is:table>
 </is:tableView>
 
-<g:include view="/sandbox/window/_blank.gsp" model="[stories:stories,id:id]"/>
+<g:include view="/sandbox/window/_blank.gsp" model="[stories:stories]"/>
 
-<is:dropImport id="${id}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
+<is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
 <is:onStream
         on="#story-table"
         events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']]]"

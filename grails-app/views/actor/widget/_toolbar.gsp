@@ -21,9 +21,9 @@
 --}%
 
 <is:iconButton
-        controller="${id}"
-        href="#${id}/add"
+        controller="${controllerName}"
+        href="#${controllerName}/add"
         rendered="${request.productOwner}"
         params="[product:params.product]"
         action="add">${message(code:"is.ui.feature.toolbar.new")}</is:iconButton>
-<entry:point id="${id}-${actionName}-widget-toolbar"/>
+<entry:point id="${controllerName}-${actionName}-widget-toolbar"/>

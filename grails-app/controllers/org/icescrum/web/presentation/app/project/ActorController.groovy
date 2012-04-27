@@ -42,8 +42,6 @@ class ActorController {
     def actorService
     def springSecurityService
 
-    static final id = 'actor'
-
     @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
     def search = {
         def actors = Actor.findActorByProductAndTerm(params.long('product'), '%' + params.term + '%').list()
@@ -141,13 +139,12 @@ class ActorController {
         def actors = params.term ? Actor.findActorByProductAndTerm(params.long('product'), '%' + params.term + '%').list() : Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc'])
         withFormat{
             html {
-                def template = session.widgetsList?.contains(id) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+                def template = session.widgetsList?.contains(controllerName) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
                 def frequenciesSelect = BundleUtils.actorFrequencies.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
                 def instancesSelect = BundleUtils.actorInstances.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
                 def levelsSelect = BundleUtils.actorLevels.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
                 render(template: template, model: [
                         actors: actors,
-                        id: id,
                         frequenciesSelect: frequenciesSelect,
                         instancesSelect: instancesSelect,
                         levelsSelect: levelsSelect])
@@ -160,7 +157,6 @@ class ActorController {
     @Secured('productOwner() and !archivedProduct()')
     def add = {
         render(template: 'window/manage', model: [
-                id: id,
                 instancesValues: BundleUtils.actorInstances.values().collect {v -> message(code: v)},
                 instancesKeys: BundleUtils.actorInstances.keySet().asList(),
                 levelsValues: BundleUtils.actorLevels.values().collect {v -> message(code: v)},
@@ -180,7 +176,6 @@ class ActorController {
                 next = actors[actorIndex + 1].id
 
             render(template: 'window/manage', model: [
-                    id: id,
                     actor: actor,
                     next: next ?: '',
                     instancesValues: BundleUtils.actorInstances.values().collect {v -> message(code: v)},
@@ -264,7 +259,7 @@ class ActorController {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
             session.progress = new ProgressSupport()
-            render(template: 'dialogs/report', model: [id: id])
+            render(template: 'dialogs/report')
         }
     }
 

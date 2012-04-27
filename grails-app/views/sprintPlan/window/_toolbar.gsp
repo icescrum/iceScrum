@@ -33,11 +33,11 @@
         class="close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}"
         rendered="${inTeam && sprint.state != Sprint.STATE_DONE}"
         id="${sprint.id}"
-        controller="${id}"
-        shortcut="[key:'ctrl+n',scope:id]"
+        controller="${controllerName}"
+        shortcut="[key:'ctrl+n',scope:controllerName]"
         title="${message(code:'is.ui.sprintPlan.toolbar.alt.new')}"
         alt="${message(code:'is.ui.sprintPlan.toolbar.alt.new')}"
-        update="window-content-${id}">
+        update="window-content-${controllerName}">
     ${message(code: 'is.ui.sprintPlan.toolbar.new')}
 </is:iconButton>
 
@@ -51,7 +51,7 @@
         rendered="${inTeam && sprint.state != Sprint.STATE_DONE}"
         onclick="jQuery.icescrum.selectableAction('task/delete',null,null,function(data){ jQuery.event.trigger('remove_task',[data]); jQuery.icescrum.renderNotice('${message(code:'is.task.deleted')}'); });"
         history='false'
-        shortcut="[key:'del',scope:id]"
+        shortcut="[key:'del',scope:controllerName]"
         disabled="true"
         title="${message(code:'is.ui.sprintPlan.toolbar.alt.delete')}"
         alt="${message(code:'is.ui.sprintPlan.toolbar.alt.delete')}">
@@ -68,9 +68,9 @@
             <is:link
                     controller="scrumOS"
                     action="changeView"
-                    params="'product=${params.product}&view=postitsView&window=${id}&id=${sprint.id}&actionWindow=index&term='+\$(\'#autoCmpTxt\').val()"
+                    params="'product=${params.product}&view=postitsView&window=${controllerName}&id=${sprint.id}&actionWindow=index&term='+\$(\'#autoCmpTxt\').val()"
                     history="false"
-                    update="window-content-${id}"
+                    update="window-content-${controllerName}"
                     remote="true"
                     onSuccess="\$.icescrum.displayView('${message(code:'is.view.postitsView')}','postitsView')"
                     value="${message(code:'is.view.postitsView')}"/>
@@ -78,8 +78,8 @@
         <li class="last">
             <is:link controller="scrumOS"
                      action="changeView"
-                     params="'product=${params.product}&view=tableView&window=${id}&id=${sprint.id}&actionWindow=index&term='+\$(\'#autoCmpTxt\').val()"
-                     update="window-content-${id}"
+                     params="'product=${params.product}&view=tableView&window=${controllerName}&id=${sprint.id}&actionWindow=index&term='+\$(\'#autoCmpTxt\').val()"
+                     update="window-content-${controllerName}"
                      history="false"
                      onSuccess="\$.icescrum.displayView('${message(code:'is.view.tableView')}','tableView')"
                      remote="true"
@@ -100,38 +100,38 @@
     <ul>
         <li class="first">
             <is:link
-                    controller="${id}"
+                    controller="${controllerName}"
                     action="changeFilterTasks"
                     params="[filter:'allTasks']"
                     history="false"
                     id="${params.id}"
                     onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}', false);"
-                    update="window-content-${id}"
+                    update="window-content-${controllerName}"
                     remote="true"
                     value="${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}"/>
         </li>
         <li>
-            <is:link controller="${id}"
+            <is:link controller="${controllerName}"
                      action="changeFilterTasks"
                      params="[filter:'myTasks']"
-                     update="window-content-${id}"
+                     update="window-content-${controllerName}"
                      history="false"
                      onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}', true);"
                      id="${params.id}"
                      remote="true"
                      value="${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}"/>
         </li>
-        <entry:point id="${id}-${actionName}-filters" model="[sprint:sprint]"/>
+        <entry:point id="${controllerName}-${actionName}-filters" model="[sprint:sprint]"/>
         <g:if test="${sprint.state == Sprint.STATE_INPROGRESS}">
             <li>
         </g:if>
         <g:else>
             <li class="last">
         </g:else>
-        <is:link controller="${id}"
+        <is:link controller="${controllerName}"
             action="changeFilterTasks"
             params="[filter:'freeTasks']"
-            update="window-content-${id}"
+            update="window-content-${controllerName}"
             onSuccess="jQuery.icescrum.updateFilterTask('${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}', true);"
             history="false"
             id="${params.id}"
@@ -141,12 +141,12 @@
         <li class="last activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ? '' : 'hidden'}">
             <is:link
                     action="changeHideDoneState"
-                    controller="${id}"
+                    controller="${controllerName}"
                     history="false"
                     remote="true"
                     onSuccess="jQuery.icescrum.updateHideDoneState('${message(code: 'is.ui.sprintPlan.toolbar.showDoneState')}','${message(code: 'is.ui.sprintPlan.toolbar.hideDoneState')}');"
                     id="${params.id}"
-                    update="window-content-${id}">
+                    update="window-content-${controllerName}">
                 ${hideDoneState ? message(code: 'is.ui.sprintPlan.toolbar.showDoneState') : message(code: 'is.ui.sprintPlan.toolbar.hideDoneState')}
             </is:link>
         </li>
@@ -160,7 +160,7 @@
         class="activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'':'hidden'}"
         rendered="${poOrSm}"
         action="activate"
-        shortcut="[key:'ctrl+shift+a',scope:id]"
+        shortcut="[key:'ctrl+shift+a',scope:controllerName]"
         controller="releasePlan"
         history="false"
         id="${sprint.id}"
@@ -180,7 +180,7 @@
         class="close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'':'hidden'}"
         rendered="${poOrSm}"
         action="close"
-        shortcut="[key:'ctrl+shift+c',scope:id]"
+        shortcut="[key:'ctrl+shift+c',scope:controllerName]"
         controller="releasePlan"
         history="false"
         id="${sprint.id}"
@@ -200,10 +200,10 @@
         alt="${message(code:'is.ui.sprintPlan.toolbar.alt.doneDefinition')}"
         title="${message(code:'is.ui.sprintPlan.toolbar.alt.doneDefinition')}"
         action="doneDefinition"
-        shortcut="[key:'ctrl+shift+d',scope:id]"
+        shortcut="[key:'ctrl+shift+d',scope:controllerName]"
         id="${params.id}"
-        controller="${id}"
-        update="window-content-${id}">
+        controller="${controllerName}"
+        update="window-content-${controllerName}">
     ${message(code: 'is.ui.sprintPlan.toolbar.doneDefinition')}
 </is:iconButton>
 
@@ -214,10 +214,10 @@
         alt="${message(code:'is.ui.sprintPlan.toolbar.alt.retrospective')}"
         title="${message(code:'is.ui.sprintPlan.toolbar.alt.retrospective')}"
         action="retrospective"
-        shortcut="[key:'ctrl+shift+r',scope:id]"
+        shortcut="[key:'ctrl+shift+r',scope:controllerName]"
         id="${params.id}"
-        controller="${id}"
-        update="window-content-${id}">
+        controller="${controllerName}"
+        update="window-content-${controllerName}">
     ${message(code: 'is.ui.sprintPlan.toolbar.retrospective')}
 </is:iconButton>
 
@@ -228,9 +228,9 @@
         <li class="first">
             <is:link
                     action="sprintBurndownHoursChart"
-                    controller="${id}"
+                    controller="${controllerName}"
                     id="${sprint.id}"
-                    update="window-content-${id}"
+                    update="window-content-${controllerName}"
                     title="${message(code:'is.ui.sprintPlan.charts.sprintBurndownHoursChart')}"
                     remote="true"
                     value="${message(code:'is.ui.sprintPlan.charts.sprintBurndownHoursChart')}"/>
@@ -238,9 +238,9 @@
         <li>
             <is:link
                     action="sprintBurnupTasksChart"
-                    controller="${id}"
+                    controller="${controllerName}"
                     id="${sprint.id}"
-                    update="window-content-${id}"
+                    update="window-content-${controllerName}"
                     title="${message(code:'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}"
                     remote="true"
                     value="${message(code:'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}"/>
@@ -248,9 +248,9 @@
         <li class="last">
             <is:link
                     action="sprintBurnupStoriesChart"
-                    controller="${id}"
+                    controller="${controllerName}"
                     id="${sprint.id}"
-                    update="window-content-${id}"
+                    update="window-content-${controllerName}"
                     title="${message(code:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}"
                     remote="true"
                     value="${message(code:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}"/>
@@ -283,12 +283,12 @@
         params="id=${sprint.id}"/>
 
 </g:if>
-<entry:point id="${id}-${actionName}" model="[sprint:sprint]"/>
+<entry:point id="${controllerName}-${actionName}" model="[sprint:sprint]"/>
 
 <g:if test="${sprint?.id}">
 %{--Search--}%
     <is:panelSearch id="search-ui">
-        <is:autoCompleteSearch elementId="autoCmpTxt" controller="${id}" action="index" id="${sprint.id}"
-                               update="window-content-${id}"/>
+        <is:autoCompleteSearch elementId="autoCmpTxt" controller="${controllerName}" action="index" id="${sprint.id}"
+                               update="window-content-${controllerName}"/>
     </is:panelSearch>
 </g:if>

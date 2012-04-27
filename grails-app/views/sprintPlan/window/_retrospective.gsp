@@ -34,13 +34,13 @@
                     value="${sprint?.retrospective}"/>
         </is:fieldArea>
     </is:fieldset>
-    <entry:point id="${id}-${actionName}" model="[sprint:sprint]"/>
+    <entry:point id="${controllerName}-${actionName}" model="[sprint:sprint]"/>
     <is:buttonBar>
         <sec:access expression="productOwner() or scrumMaster()">
             <is:button
                     targetLocation="${controllerName+'/'+actionName}/${sprint.id}"
                     id="submitForm" type="submitToRemote"
-                    url="[controller:id, action:'updateRetrospective', params:[product:params.product,id:params.id]]"
+                    url="[controller:controllerName, action:'updateRetrospective', params:[product:params.product,id:params.id]]"
                     value="${message(code:'is.ui.sprintPlan.retrospective.button.save')}"
                     onSuccess="${is.notice(text:message(code:'is.sprint.retrospective.saved'))}"/>
             <is:button
@@ -48,13 +48,13 @@
                     type="link"
                     remote="true"
                     history="false"
-                    url="[controller:id, action:'copyFromPreviousRetrospective',id:params.id,params:[product:params.product]]"
-                    update="window-content-${id}"
+                    url="[controller:controllerName, action:'copyFromPreviousRetrospective',id:params.id,params:[product:params.product]]"
+                    update="window-content-${controllerName}"
                     onSuccess="jQuery.icescrum.renderNotice('${message(code: 'is.sprint.retrospective.copied')}')">${message(code: 'is.ui.sprintPlan.button.copyFromPreviousRetrospective')}
             </is:button>
         </sec:access>
         <is:button type="link" button="button-s button-s-black" remote="true"
-                   url="[controller:id, action:'index',id:params.id,params:[product:params.product]]"
-                   update="window-content-${id}">${message(code: 'is.button.close')}</is:button>
+                   url="[controller:controllerName, action:'index',id:params.id,params:[product:params.product]]"
+                   update="window-content-${controllerName}">${message(code: 'is.button.close')}</is:button>
     </is:buttonBar>
 </g:form>

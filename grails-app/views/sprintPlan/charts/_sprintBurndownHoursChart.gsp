@@ -93,9 +93,9 @@
                 elementId="close"
                 type="link"
                 button="button-s button-s-black"
-                update="window-content-${id}"
+                update="window-content-${controllerName}"
                 remote="true"
-                url="[controller:id,action:'index',params:[id:params.id,product:params.product]]"
+                url="[controller:controllerName,action:'index',params:[id:params.id,product:params.product]]"
                 value="${message(code: 'is.button.close')}"/>
     </is:buttonBar>
 </g:if>

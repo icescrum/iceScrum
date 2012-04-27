@@ -44,7 +44,7 @@
     <![CDATA[
     ?**
     var color = this.feature ? this.feature.color : '';
-    var acceptanceTestCount = this.acceptanceTests.length;
+    var acceptanceTestCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
     var name =  this.name ? this.name : '';
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
@@ -63,7 +63,7 @@
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"
-                         params="[id:id, story:story, sprint:sprint, template:true]"/>
+                         params="[controllerName:'sandbox', story:story, sprint:sprint, template:true]"/>
                 <span class="table-comment"
                       title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"
@@ -101,7 +101,7 @@
     <![CDATA[
     ?**
     var color = this.feature ? this.feature.color : '';
-    var acceptanceTestCount = this.acceptanceTests.length;
+    var acceptanceTestCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
     var name =  this.name ? this.name : '';
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
@@ -125,7 +125,7 @@
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"
-                         params="[id:id,story:story,template:true]"/>
+                         params="[controllerName:'backlog',story:story,template:true]"/>
                 <span class="table-comment"
                       title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"

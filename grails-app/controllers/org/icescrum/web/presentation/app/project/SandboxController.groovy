@@ -24,7 +24,6 @@
 
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 
 import org.icescrum.core.utils.BundleUtils
@@ -40,8 +39,6 @@ import org.icescrum.core.domain.Sprint
 @Secured('stakeHolder() or inProduct()')
 class SandboxController {
 
-    static final id = 'sandbox'
-
     def springSecurityService
     def storyService
     def dropImportService
@@ -50,7 +47,7 @@ class SandboxController {
     @Secured('productOwner() and !archivedProduct()')
     def openDialogAcceptAs = {
         def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
-        render(template: 'dialogs/acceptAs', model: [id: id, sprint: sprint])
+        render(template: 'dialogs/acceptAs', model: [sprint: sprint])
     }
 
     def list = {
@@ -70,14 +67,14 @@ class SandboxController {
         def user = null
         if (springSecurityService.isLoggedIn())
             user = springSecurityService.currentUser
-        render(template: template, model: [stories: stories, id: id, typeSelect: typeSelect, featureSelect: featureSelect, sprint: sprint, user: user])
+        render(template: template, model: [stories: stories, typeSelect: typeSelect, featureSelect: featureSelect, sprint: sprint, user: user])
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def add = {
         def currentProduct = Product.get(params.product)
         render(template: '/story/manage', model: [
-                referrer: id,
+                referrer: controllerName,
                 typesLabels: BundleUtils.storyTypes.values().collect {v -> message(code: v)},
                 typesKeys: BundleUtils.storyTypes.keySet().asList(),
                 featureSelect: currentProduct.features.asList(),
@@ -87,7 +84,7 @@ class SandboxController {
     }
 
     def editStory = {
-        forward(action: 'edit', controller: 'story', params: [referrer: id, id: params.id, product: params.product])
+        forward(action: 'edit', controller: 'story', params: [referrer: controllerName, id: params.id, product: params.product])
     }
 
     /**
@@ -117,15 +114,14 @@ class SandboxController {
             // we suggest the user to create a new story with the text he has input as a description
             if (!parsedData) {
                 render(text: include(action: 'list', params: [product: params.product]))
-                render(template: "dialogs/import", model: [id: id, data: data])
+                render(template: "dialogs/import", model: [data: data])
                 return
             } else {
                 // if the data is considered valid, then we ask the user to match his columns with
                 // the actual mapping
                 if (parsedData.columns.size() > 0 && !params.confirm) {
 
-                    def dialog = g.render(template: "dialogs/import", model: [id: id,
-                            data: data,
+                    def dialog = g.render(template: "dialogs/import", model: [data: data,
                             columns: parsedData.columns,
                             mapping: mapping,
                             matchValues: dropImportService.matchBundle(mapping, parsedData.columns)])
@@ -187,7 +183,7 @@ class SandboxController {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
             session.progress = new ProgressSupport()
-            render(template: 'dialogs/report', model: [id: id])
+            render(template: 'dialogs/report')
         }
     }
 }

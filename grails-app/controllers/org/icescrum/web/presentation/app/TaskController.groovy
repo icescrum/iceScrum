@@ -191,7 +191,7 @@ class TaskController {
     def take = {
         withTask{Task task ->
             User user = (User) springSecurityService.currentUser
-            taskService.assign([task], user)
+            taskService.assign(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }
@@ -204,7 +204,7 @@ class TaskController {
     def unassign = {
         withTask{Task task ->
             User user = (User) springSecurityService.currentUser
-            taskService.unassign([task], user)
+            taskService.unassign(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { render(status: 200, contentType: 'application/json', text: task as JSON) }

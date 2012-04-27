@@ -22,7 +22,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <is:backlogElementLayout
-        id="widget-${id}"
+        id="widget-${controllerName}"
         container="ul"
         emptyRendering="true"
         style="display:${stories ? 'block' : 'none'};"
@@ -51,13 +51,13 @@
     ${message(code: 'is.widget.backlog.empty')}
 </div>
 
-<entry:point id="${id}-${actionName}-widget" model="[stories:stories]"/>
+<entry:point id="${controllerName}-${actionName}-widget" model="[stories:stories]"/>
 
 <is:onStream
-        on="#backlog-layout-widget-${id}"
+        on="#backlog-layout-widget-${controllerName}"
         events="[[object:'story',events:['add','update','remove','estimate','plan','unPlan','associated','dissociated']]]"
         template="backlogWidget"/>
 
 <is:onStream
-        on="#backlog-layout-widget-${id}"
+        on="#backlog-layout-widget-${controllerName}"
         events="[[object:'feature',events:['update']]]"/>

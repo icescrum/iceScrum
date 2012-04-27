@@ -30,7 +30,7 @@
         params="[product:params.product]"
         title="${message(code:'is.ui.backlogelement.toolbar.update')}"
         alt="${message(code:'is.ui.backlogelement.toolbar.update')}"
-        update="window-content-${id}">
+        update="window-content-${controllerName}">
     ${message(code: 'is.ui.backlogelement.toolbar.update')}
 </is:iconButton>
 
@@ -115,13 +115,13 @@
     ${message(code: 'is.ui.backlogelement.toolbar.comment')}
 </is:iconButton>
 
-<entry:point id="${id}-${actionName}-toolbar"/>
+<entry:point id="${controllerName}-${actionName}-toolbar"/>
 
 <div class="navigation-right-toolbar">
 
     <g:if test="${previous}">
         <is:iconButton
-                href="#${id}/${previous.id}"
+                href="#${controllerName}/${previous.id}"
                 title="${message(code:'is.ui.backlogelement.toolbar.previous')}"
                 alt="${message(code:'is.ui.backlogelement.toolbar.previous')}">
             ${message(code: 'is.ui.backlogelement.toolbar.previous')}
@@ -132,7 +132,7 @@
 
     <g:if test="${next}">
         <is:iconButton
-                href="#${id}/${next.id}"
+                href="#${controllerName}/${next.id}"
                 title="${message(code:'is.ui.backlogelement.toolbar.next')}"
                 alt="${message(code:'is.ui.backlogelement.toolbar.next')}">
             ${message(code: 'is.ui.backlogelement.toolbar.next')}

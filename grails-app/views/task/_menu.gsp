@@ -67,7 +67,7 @@
              subid="${task.id}"
              params="[subid:task.id]"
              controller="sprintPlan"
-             update="window-content-${id}"
+             update="window-content-${controllerName}"
              value="${message(code:'is.ui.sprintPlan.menu.task.update')}"
              remote="true"/>
 </is:postitMenuItem>
@@ -101,4 +101,4 @@
              onSuccess="jQuery.icescrum.task.toggleBlocked('${task.id}');"
              value="${task.blocked?message(code:'is.ui.sprintPlan.menu.task.unblock'):message(code:'is.ui.sprintPlan.menu.task.block')}"/>
 </is:postitMenuItem>
-<entry:point id="${id}-${actionName}-taskMenu" model="[task:task]"/>
+<entry:point id="${controllerName}-${actionName}-taskMenu" model="[task:task]"/>

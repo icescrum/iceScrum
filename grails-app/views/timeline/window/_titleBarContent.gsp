@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <li>
-    <entry:point id="${id}-${actionName}" model="[currentRelease:currentRelease]"/>
+    <entry:point id="${controllerName}-${actionName}" model="[currentRelease:currentRelease]"/>
     <is:select
             width="200"
             rendered="${releasesName.size() > 0}"

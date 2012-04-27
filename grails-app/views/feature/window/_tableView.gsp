@@ -24,7 +24,7 @@
     <is:table id="feature-table"
               style="${features ? '' : 'display:none'};"
               sortableCols="true"
-              editable="[controller:id,action:'update',params:[product:params.product],onExitCell:'submit',success:'jQuery.event.trigger(\'update_feature\',value.object);']">
+              editable="[controller:controllerName,action:'update',params:[product:params.product],onExitCell:'submit',success:'jQuery.event.trigger(\'update_feature\',value.object);']">
 
         <is:tableHeader width="5%" class="table-cell-checkbox" name="">
             <g:checkBox name="checkbox-header"/>
@@ -43,7 +43,7 @@
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
                 <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
-                         params="[id:id, feature:feature]" rendered="${request.productOwner}"/>
+                         params="[feature:feature]" rendered="${request.productOwner}"/>
                 <g:set var="attachment" value="${feature.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment" title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
@@ -70,7 +70,7 @@
     </is:table>
 </is:tableView>
 
-<g:include view="/feature/window/_blank.gsp" model="[features:features,id:id]"/>
+<g:include view="/feature/window/_blank.gsp" model="[features:features]"/>
 
 <jq:jquery>
     jQuery('tr[data-rank]').each(function() {

@@ -25,7 +25,7 @@
 <is:menuItem first="true">
     <is:link id="${release.id}"
              action="open"
-             update="window-content-${id}"
+             update="window-content-${controllerName}"
              value="${message(code:'is.ui.timeline.menu.open')}"
              onclick="jQuery.icescrum.stopEvent(event).openWindow('releasePlan/${release.id}');"
              disabled="true"/>
@@ -58,7 +58,7 @@
 <is:menuItem rendered="${poOrsm && release.state != org.icescrum.core.domain.Release.STATE_DONE}">
     <is:link id="${release.id}"
              action="edit"
-             update="window-content-${id}"
+             update="window-content-${controllerName}"
              onclick="jQuery.icescrum.stopEvent(event);"
              value="${message(code:'is.ui.timeline.menu.update')}"
              remote="true"/>
@@ -73,4 +73,4 @@
              onSuccess="jQuery.event.trigger('remove_release',data)"
              value="${message(code:'is.ui.timeline.menu.delete')}"/>
 </is:menuItem>
-<entry:point id="${id}-${actionName}-menu" model="[release:release]"/>
+<entry:point id="${controllerName}-${actionName}-menu" model="[release:release]"/>

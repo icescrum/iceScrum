@@ -22,8 +22,7 @@
 <is:postitMenuItem first="true">
     <is:link id="${feature.id}"
              action="edit"
-             controller="${id}"
-             update="window-content-${id}"
+             update="window-content-${controllerName}"
              value="${message(code:'is.ui.feature.menu.update')}"
              remote="true"/>
 </is:postitMenuItem>
@@ -31,7 +30,6 @@
     <is:link id="${feature.id}"
              action="copyFeatureToBacklog"
              remote="true"
-             controller="${id}"
              history="false"
              onSuccess="jQuery.event.trigger('accept_story',data); jQuery.icescrum.renderNotice('${message(code: 'is.feature.copy')}');"
              value="${message(code:'is.ui.feature.menu.copy')}"/>
@@ -40,10 +38,9 @@
     <is:link
             id="${feature.id}"
             action="delete"
-            controller="${id}"
             remote="true"
             history="false"
             onSuccess="jQuery.event.trigger('remove_feature',data); jQuery.icescrum.renderNotice('${message(code:'is.feature.deleted')}');"
             value="${message(code:'is.ui.feature.menu.delete')}"/>
 </is:postitMenuItem>
-<entry:point id="${id}-${actionName}-postitMenu" model="[feature:feature]"/>
+<entry:point id="${controllerName}-${actionName}-postitMenu" model="[feature:feature]"/>

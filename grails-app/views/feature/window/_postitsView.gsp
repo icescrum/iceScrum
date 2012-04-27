@@ -21,7 +21,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <is:backlogElementLayout
-        id="window-${id}"
+        id="window-${controllerName}"
         emptyRendering="true"
         style="display:${!features ? 'none' : 'block'};"
         selectable="[rendered:request.productOwner,
@@ -32,24 +32,24 @@
                   containment:"#window-content-feature",
                   handle:".postit-sortable",
                   placeholder:"postit-placeholder ui-corner-all"]'
-        changeRank='[selector:".postit", controller:id,action:"rank",name:"feature.rank",params:[product:params.product]]'
+        changeRank='[selector:".postit",controller:controllerName,action:"rank",name:"feature.rank",params:[product:params.product]]'
         dblclickable='[rendered:!request.productOwner,
                                selector:".postit",
                                callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'
         value="${features}"
         var="feature">
         <is:cache  cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">
-            <g:include view="/feature/_postit.gsp" model="[id:id,feature:feature,user:user]" params="[product:params.product]"/>
+            <g:include view="/feature/_postit.gsp" model="[feature:feature,user:user]" params="[product:params.product]"/>
         </is:cache>
 </is:backlogElementLayout>
 
-<g:include view="/feature/window/_blank.gsp" model="[features:features,id:id]"/>
+<g:include view="/feature/window/_blank.gsp" model="[features:features]"/>
 
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'feature.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
-             scope="${id}"/>
-<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+             scope="${controllerName}"/>
+<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream
-        on="#backlog-layout-window-${id}"
+        on="#backlog-layout-window-${controllerName}"
         events="[[object:'feature',events:['add','update','remove']]]"
         template="window"/>

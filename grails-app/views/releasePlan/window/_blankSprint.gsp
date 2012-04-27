@@ -49,7 +49,7 @@
                         type="link"
                         button="button-s button-s-light"
                         rendered="${poOrSm}"
-                        href="#${id}/add/${release.id}"
+                        href="#${controllerName}/add/${release.id}"
                         title="${message(code:'is.ui.releasePlan.blankSprint.new')}"
                         alt="${message(code:'is.ui.releasePlan.blankSprint.new')}"
                         icon="create">
@@ -59,5 +59,5 @@
             <td class="empty">&nbsp;</td>
         </tr>
     </table>
-    <entry:point id="${id}-${actionName}-blankSprint" model="[release:release]"/>
+    <entry:point id="${controllerName}-${actionName}-blankSprint" model="[release:release]"/>
 </div>

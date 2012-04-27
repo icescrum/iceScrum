@@ -23,7 +23,6 @@
  */
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 
 import org.icescrum.core.utils.BundleUtils
@@ -40,10 +39,9 @@ import org.icescrum.core.domain.Story
 
 @Secured('inProduct()')
 class FeatureController {
+
     def featureService
     def springSecurityService
-
-    static final id = 'feature'
 
     @Secured('productOwner() and !archivedProduct()')
     def save = {
@@ -135,7 +133,7 @@ class FeatureController {
         def features = (params.term && params.term != '') ? Feature.findInAll(params.long('product'), '%' + params.term + '%').list() : Feature.findAllByBacklog(Product.load(params.product), [cache: true, sort: 'rank'])
         withFormat{
             html {
-                def template = (session['widgetsList']?.contains(id)) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+                def template = (session['widgetsList']?.contains(controllerName)) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
 
                 def currentProduct = Product.get(params.product)
                 def maxRank = Feature.countByBacklog(currentProduct)
@@ -156,7 +154,7 @@ class FeatureController {
                 currentSuite = currentSuite.eachWithIndex { t, i ->
                     suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
                 }
-                render(template: template, model: [features: features, effortFeature: effortFeature, linkedDoneStories: linkedDoneStories, id: id, typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
+                render(template: template, model: [features: features, effortFeature: effortFeature, linkedDoneStories: linkedDoneStories,typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
             }
             json { render status: 200, contentType: 'application/json', text: features as JSON }
             xml { render status: 200, contentType: 'text/xml', text: features  as XML }
@@ -184,13 +182,10 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def add = {
-        def currentProduct = Product.get(params.product)
         def valuesList = PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)
-
         render(template: 'window/manage', model: [valuesList: valuesList,
                 colorsLabels: BundleUtils.colorsSelect.values().collect { message(code: it) },
                 colorsKeys: BundleUtils.colorsSelect.keySet().asList(),
-                id: id,
                 typesNames: BundleUtils.featureTypes.values().collect {v -> message(code: v)},
                 typesId: BundleUtils.featureTypes.keySet().asList()
         ])
@@ -209,7 +204,6 @@ class FeatureController {
             def next = Feature.findByBacklogAndRank(product, feature.rank + 1, [cache: true])
             render(template: 'window/manage', model: [valuesList: valuesList,
                     rankList: rankList,
-                    id: id,
                     next: next?.id ?: '',
                     colorsLabels: BundleUtils.colorsSelect.values().collect { message(code: it) },
                     colorsKeys: BundleUtils.colorsSelect.keySet().asList(),
@@ -247,7 +241,6 @@ class FeatureController {
         }
         if (valueToDisplay.size() > 0)
             render(template: 'charts/productParkinglot', model: [
-                    id: id,
                     withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                     values: valueToDisplay as JSON,
                     featuresNames: values.label as JSON])
@@ -289,7 +282,7 @@ class FeatureController {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
             session.progress = new ProgressSupport()
-            render(template: 'dialogs/report', model: [id: id])
+            render(template: 'dialogs/report')
         }
     }
 

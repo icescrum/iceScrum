@@ -52,5 +52,5 @@
             <td class="empty">&nbsp;</td>
         </tr>
     </table>
-    <entry:point id="${id}-${actionName}"/>
+    <entry:point id="${controllerName}-${actionName}"/>
 </div>

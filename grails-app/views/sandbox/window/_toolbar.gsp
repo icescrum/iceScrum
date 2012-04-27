@@ -29,11 +29,11 @@
 <is:iconButton
         action="add"
         rendered="${!request.productArchived}"
-        controller="${id}"
-        shortcut="[key:'ctrl+n',scope:id]"
+        controller="${controllerName}"
+        shortcut="[key:'ctrl+n',scope:controllerName]"
         title="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
         alt="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
-        update="window-content-${id}"
+        update="window-content-${controllerName}"
         icon="create">
     ${message(code: 'is.ui.sandbox.toolbar.new')}
 </is:iconButton>
@@ -44,13 +44,13 @@
 %{--Accept button--}%
 <is:iconButton
         rendered="${productOwner}"
-        shortcut="[key:'ctrl+shift+a',scope:id]"
+        shortcut="[key:'ctrl+shift+a',scope:controllerName]"
         history="false"
         disabled="true"
         onClick="${is.remoteDialogFunction(
                           title:'is.dialog.acceptStory.title',
                           action:'openDialogAcceptAs',
-                          controller:id,
+                          controller:controllerName,
                           height:125,
                           width:360,
                           before:'if (jQuery.icescrum.postit.ids($(\'.postit.ui-selected,.table-row-focus\')) == false) return false;',
@@ -71,7 +71,7 @@
 
 <is:iconButton
         rendered="${productOwner}"
-        shortcut="[key:'ctrl+shift+c',scope:id]"
+        shortcut="[key:'ctrl+shift+c',scope:controllerName]"
         onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');});"
         disabled="true"
         alt="${message(code:'is.ui.sandbox.toolbar.alt.clone')}"
@@ -85,7 +85,7 @@
 <is:iconButton
         icon="delete"
         rendered="${productOwner}"
-        shortcut="[key:'del',scope:id]"
+        shortcut="[key:'del',scope:controllerName]"
         onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
         disabled="true"
         alt="${message(code:'is.ui.sandbox.toolbar.alt.delete')}"
@@ -102,9 +102,9 @@
             <is:link
                     controller="scrumOS"
                     action="changeView"
-                    params="'product=${params.product}&view=postitsView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                    params="'product=${params.product}&view=postitsView&window=${controllerName}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
                     history="false"
-                    update="window-content-${id}"
+                    update="window-content-${controllerName}"
                     remote="true"
                     onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.postitsView')}','postitsView')"
                     value="${message(code:'is.view.postitsView')}"/>
@@ -112,8 +112,8 @@
         <li class="last">
             <is:link controller="scrumOS"
                      action="changeView"
-                     params="'product=${params.product}&view=tableView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
-                     update="window-content-${id}"
+                     params="'product=${params.product}&view=tableView&window=${controllerName}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                     update="window-content-${controllerName}"
                      history="false"
                      onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.tableView')}','tableView')"
                      remote="true"
@@ -132,8 +132,8 @@
                   ['DOCX', message(code:'is.report.format.docx')],
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"/>
-<entry:point id="${id}-${actionName}"/>
+<entry:point id="${controllerName}-${actionName}"/>
 %{--Textfield for the auto completion search--}%
 <is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="${id}" action="list" update="window-content-${id}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="${controllerName}" action="list" update="window-content-${controllerName}"/>
 </is:panelSearch>

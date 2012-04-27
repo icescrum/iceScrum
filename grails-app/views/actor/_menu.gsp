@@ -23,8 +23,8 @@
 <is:postitMenuItem first="true">
     <is:link id="${actor.id}"
              action="edit"
-             controller="${id}"
-             update="window-content-${id}"
+             controller="${controllerName}"
+             update="window-content-${controllerName}"
              value="${message(code:'is.ui.actor.menu.update')}"
              remote="true"/>
 </is:postitMenuItem>
@@ -33,8 +33,8 @@
              action="delete"
              remote="true"
              history="false"
-             controller="${id}"
+             controller="${controllerName}"
              onSuccess="jQuery.event.trigger('remove_actor',data); jQuery.icescrum.renderNotice('${message(code:'is.actor.deleted')}');"
              value="${message(code:'is.ui.actor.menu.delete')}"/>
 </is:postitMenuItem>
-<entry:point id="${id}-${actionName}-actorMenu" model="[actor:actor]"/>
+<entry:point id="${controllerName}-${actionName}-actorMenu" model="[actor:actor]"/>

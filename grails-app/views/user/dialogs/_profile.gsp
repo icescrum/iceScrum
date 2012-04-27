@@ -80,7 +80,7 @@
                                        id="user.preferences.language" value="${user.preferences.language}"/>
                 </is:fieldSelect>
             </is:accordionSection>
-            <entry:point id="user-${actionName}" model="[user:user]"/>
+            <entry:point id="${controllerName}-${actionName}" model="[user:user]"/>
         </is:accordion>
     </is:fieldset>
 </form>

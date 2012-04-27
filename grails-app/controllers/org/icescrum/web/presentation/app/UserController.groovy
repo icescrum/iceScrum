@@ -39,8 +39,6 @@ import grails.plugin.springcache.annotations.Cacheable
 
 class UserController {
 
-    static final id = 'user'
-
     def userService
     def securityService
     def springSecurityService
@@ -71,7 +69,7 @@ class UserController {
     @Secured('isAuthenticated()')
     @Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
     def openProfile = {
-        render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)], id: id)
+        render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)])
     }
 
     def save = {

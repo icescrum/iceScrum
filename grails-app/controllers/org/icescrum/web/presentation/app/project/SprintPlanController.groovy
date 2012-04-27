@@ -43,8 +43,6 @@ import org.icescrum.core.domain.Release
 @Secured('inProduct()')
 class SprintPlanController {
 
-    static final id = 'sprintPlan'
-
     def springSecurityService
     def storyService
     def sprintService
@@ -68,8 +66,7 @@ class SprintPlanController {
             sprintsId.addAll(it.sprints.id)
         }
         render(template: 'window/titleBarContent',
-                model: [id: id,
-                        sprintsId: sprintsId,
+                model: [sprintsId: sprintsId,
                         sprint: sprint,
                         sprintsName: sprintsName])
     }
@@ -88,8 +85,7 @@ class SprintPlanController {
         User user = (User) springSecurityService.currentUser
 
         render(template: 'window/toolbar',
-                model: [id: id,
-                        currentView: session.currentView,
+                model: [currentView: session.currentView,
                         hideDoneState: user.preferences.hideDoneState,
                         currentFilter: user.preferences.filterTask,
                         sprint: sprint ?: null])
@@ -105,7 +101,7 @@ class SprintPlanController {
                 params.id = sprint.id
             else {
                 def release = currentProduct.releases.find {it.state == Release.STATE_WAIT}
-                render(template: 'window/blank', model: [id: id, release: release ?: null])
+                render(template: 'window/blank', model: [release: release ?: null])
                 return
             }
         }else{
@@ -146,8 +142,7 @@ class SprintPlanController {
         }
         def template = session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
         render(template: template,
-                model: [id: id,
-                        sprint: sprint,
+                model: [sprint: sprint,
                         stories: stories.findAll{it.state < Story.STATE_DONE},
                         storiesDone: stories.findAll{it.state == Story.STATE_DONE},
                         recurrentTasks: recurrentTasks,
@@ -239,7 +234,6 @@ class SprintPlanController {
         selectList = selectList + stories
 
         render(template: 'window/manage', model: [
-                id: id,
                 sprint: sprint,
                 stories: selectList,
                 selected: selected,
@@ -264,7 +258,6 @@ class SprintPlanController {
             def next = Task.findNextTask(task, user).list()[0]
 
             render(template: 'window/manage', model: [
-                    id: id,
                     task: task,
                     referrerUrl: params.referrerUrl,
                     stories: selectList,
@@ -277,12 +270,12 @@ class SprintPlanController {
     }
 
     def editStory = {
-        forward(action: 'edit', controller: 'story', params: [referrer: id, id: params.id, product: params.product])
+        forward(action: 'edit', controller: 'story', params: [referrer: controllerName, id: params.id, product: params.product])
     }
 
     def doneDefinition = {
         withSprint{ Sprint sprint ->
-            render(template: 'window/doneDefinition', model: [sprint: sprint, id: id])
+            render(template: 'window/doneDefinition', model: [sprint: sprint])
         }
     }
 
@@ -307,7 +300,7 @@ class SprintPlanController {
 
     def retrospective = {
         withSprint{ Sprint sprint ->
-            render(template: 'window/retrospective', model: [sprint: sprint, id: id])
+            render(template: 'window/retrospective', model: [sprint: sprint])
         }
     }
 
@@ -354,7 +347,6 @@ class SprintPlanController {
             def values = sprintService.sprintBurndownHoursValues(sprint)
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurndownHoursChart', model: [
-                        id: id,
                         remainingHours: values.remainingHours as JSON,
                         idealHours: values.idealHours as JSON,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
@@ -371,7 +363,6 @@ class SprintPlanController {
             def values = sprintService.sprintBurnupTasksValues(sprint)
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurnupTasksChart', model: [
-                        id: id,
                         tasks: values.tasks as JSON,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         tasksDone: values.tasksDone as JSON,
@@ -388,7 +379,6 @@ class SprintPlanController {
             def values = sprintService.sprintBurnupStoriesValues(sprint)
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurnupStoriesChart', model: [
-                        id: id,
                         stories: values.stories as JSON,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         storiesDone: values.storiesDone as JSON,
@@ -488,7 +478,7 @@ class SprintPlanController {
             render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
             session.progress = new ProgressSupport()
-            render(template: 'dialogs/report', model: [id: id, sprint: sprint])
+            render(template: 'dialogs/report', model: [sprint: sprint])
         }
     }
 
@@ -535,7 +525,7 @@ class SprintPlanController {
                 render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
             } else {
                 session.progress = new ProgressSupport()
-                render(template: 'dialogs/report', model: [id: id, sprint: sprint])
+                render(template: 'dialogs/report', model: [sprint: sprint])
             }
         }
     }

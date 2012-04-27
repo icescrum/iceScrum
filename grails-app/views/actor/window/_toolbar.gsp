@@ -22,16 +22,16 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 
-<is:shortcut key="ctrl+f" callback="jQuery('#search-ui').mouseover();" scope="${id}"/>
-<is:shortcut key="esc" callback="jQuery('#search-ui').mouseout();" scope="${id}" listenOn="'#autoCmpTxt'"/>
+<is:shortcut key="ctrl+f" callback="jQuery('#search-ui').mouseover();" scope="${controllerName}"/>
+<is:shortcut key="esc" callback="jQuery('#search-ui').mouseout();" scope="${controllerName}" listenOn="'#autoCmpTxt'"/>
 
 <sec:access expression="productOwner()">
 
     <is:iconButton
             controller="actor"
             action="add"
-            shortcut="[key:'ctrl+n',scope:id]"
-            update="window-content-${id}"
+            shortcut="[key:'ctrl+n',scope:controllerName]"
+            update="window-content-${controllerName}"
             icon="create"
             alt="${message(code:'is.ui.actor.toolbar.alt.new')}"
             title="${message(code:'is.ui.actor.toolbar.alt.new')}">
@@ -44,7 +44,7 @@
     <is:iconButton icon="delete"
                    onclick="jQuery.icescrum.selectableAction(null,null,null,function(data){jQuery.event.trigger('remove_actor',[data]); jQuery.icescrum.renderNotice('${message(code:'is.actor.deleted')}'); });"
                    history='false'
-                   shortcut="[key:'del',scope:id]"
+                   shortcut="[key:'del',scope:controllerName]"
                    disabled="true"
                    title="${message(code:'is.ui.actor.toolbar.alt.delete')}"
                    alt="${message(code:'is.ui.actor.toolbar.alt.delete')}">
@@ -62,9 +62,9 @@
             <is:link
                     controller="scrumOS"
                     action="changeView"
-                    params="'product=${params.product}&view=postitsView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                    params="'product=${params.product}&view=postitsView&window=${controllerName}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
                     history="false"
-                    update="window-content-${id}"
+                    update="window-content-${controllerName}"
                     remote="true"
                     onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.postitsView')}','postitsView')"
                     value="${message(code:'is.view.postitsView')}"/>
@@ -72,8 +72,8 @@
         <li class="last">
             <is:link controller="scrumOS"
                      action="changeView"
-                     params="'product=${params.product}&view=tableView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
-                     update="window-content-${id}"
+                     params="'product=${params.product}&view=tableView&window=${controllerName}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                     update="window-content-${controllerName}"
                      history="false"
                      onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.tableView')}','tableView')"
                      remote="true"
@@ -97,8 +97,8 @@
 
 %{--Search--}%
 
-<entry:point id="${id}-${actionName}-toolbar"/>
+<entry:point id="${controllerName}-${actionName}-toolbar"/>
 
 <is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="actor" action="list" update="window-content-${id}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="actor" action="list" update="window-content-${controllerName}"/>
 </is:panelSearch>

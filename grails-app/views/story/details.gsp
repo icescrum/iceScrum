@@ -172,7 +172,6 @@
                     <is:panelLine legend="${message(code:'is.followable.status')}">
                         <button id="start-follow"
                                 onClick="${g.remoteFunction(action: 'follow',
-                                        controller: id,
                                         params: [product: params.product],
                                         id: story.id,
                                         before: '$(this).attr(\'disabled\',\'disabled\')',
@@ -183,7 +182,6 @@
                         </button>
                         <button id="stop-follow"
                                 onClick="${g.remoteFunction(action: 'unfollow',
-                                        controller: id,
                                         params: [product: params.product],
                                         id: story.id,
                                         before: '$(this).attr(\'disabled\',\'disabled\')',
@@ -196,7 +194,7 @@
                 </is:panelContext>
             </is:panel>
 
-            <entry:point id="${id}-${actionName}-right" model="[story:story]"/>
+            <entry:point id="${controllerName}-${actionName}-right" model="[story:story]"/>
 
         </div>
     </div>

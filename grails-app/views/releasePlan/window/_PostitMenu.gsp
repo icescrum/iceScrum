@@ -26,7 +26,7 @@
  <is:scrumLink
         id="${story.id}"
         controller="story"
-        update="window-content-${id}">
+        update="window-content-${controllerName}">
    <g:message code='is.ui.releasePlan.menu.story.details'/>
  </is:scrumLink>
 </is:postitMenuItem>
@@ -36,7 +36,7 @@
         id="${story.id}"
         controller="story"
         params="[tab:'comments']"
-        update="window-content-${id}">
+        update="window-content-${controllerName}">
     <g:message code='is.ui.releasePlan.menu.story.commentable'/>
   </is:scrumLink>
 </is:postitMenuItem>
@@ -46,8 +46,8 @@
           action="edit"
           controller="productBacklog"
           id="${story.id}"
-          params="['referrer.controller':id, 'referrer.action':'index', 'referrer.id':params.id]"
-          update="window-content-${id}"
+          params="['referrer.controller':controllerName, 'referrer.action':'index', 'referrer.id':params.id]"
+          update="window-content-${controllerName}"
           value="${message(code:'is.ui.releasePlan.menu.story.update')}"
           history="false"
           remote="true"/>
@@ -92,4 +92,4 @@
           onSuccess="jQuery.icescrum.renderNotice('${g.message(code:'is.story.declaredAsUnDone')}')"
           value="${message(code:'is.ui.releasePlan.menu.story.undone')}"/>
 </is:postitMenuItem>
-<entry:point id="${id}-${actionName}-postitMenu" model="[story:story]"/>
+<entry:point id="${controllerName}-${actionName}-postitMenu" model="[story:story]"/>

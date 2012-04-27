@@ -39,8 +39,6 @@ class BacklogController {
     def storyService
     def springSecurityService
 
-    static final id = 'backlog'
-
     final featureTerm = /feature:(\w)/
     final typeTerm = /type:(\w)/
 
@@ -48,8 +46,8 @@ class BacklogController {
         def currentProduct = Product.get(params.product)
 
         def stories = params.term ? Story.findInStoriesAcceptedEstimated(params.long('product'), '%' + params.term + '%').list() : Story.findAllByBacklogAndStateBetween(currentProduct, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
-        stories = session['widgetsList']?.contains(id) ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
-        def template = session['widgetsList']?.contains(id) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+        stories = session['widgetsList']?.contains(controllerName) ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
+        def template = session['widgetsList']?.contains(controllerName) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
 
         def typeSelect = BundleUtils.storyTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
         def rankSelect = ''
@@ -73,7 +71,6 @@ class BacklogController {
 
         render(template: template, model: [
                 stories: stories,
-                id: id,
                 featureSelect: featureSelect,
                 typeSelect: typeSelect,
                 suiteSelect: suiteSelect,
@@ -84,7 +81,7 @@ class BacklogController {
 
 
     def editStory = {
-        forward(action: 'edit', controller: 'story', params: [referrer: id, id: params.id, product: params.product])
+        forward(action: 'edit', controller: 'story', params: [referrer: controllerName, id: params.id, product: params.product])
     }
 
     def print = {
@@ -114,7 +111,7 @@ class BacklogController {
             render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
             session.progress = new ProgressSupport()
-            render(template: 'dialogs/report', model: [id: id])
+            render(template: 'dialogs/report')
         }
     }
 }

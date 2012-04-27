@@ -38,5 +38,5 @@
             <td class="empty">&nbsp;</td>
         </tr>
     </table>
-    <entry:point id="${id}-${actionName}-blank"/>
+    <entry:point id="${controllerName}-${actionName}-blank"/>
 </div>

@@ -33,7 +33,7 @@
     <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
 
 %{--Embedded menu--}%
-    <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" model="[id:id, feature:feature]"
+    <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" model="[feature:feature]"
                    rendered="${request.productOwner}"/>
 
     <g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">
@@ -43,6 +43,6 @@
                 title="${feature.name.encodeAsHTML()}"
                 text="${feature.description?.encodeAsHTML()}"
                 apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                container="jQuery('#window-content-${id}')"/>
+                container="jQuery('#window-content-${controllerName}')"/>
     </g:if>
 </is:postit>

@@ -44,8 +44,6 @@ class ReleasePlanController {
     def releaseService
     def featureService
 
-    static final id = 'releasePlan'
-
     def titleBarContent = {
         def release
         if (!params.id) {
@@ -69,7 +67,7 @@ class ReleasePlanController {
             u.name = it.name.encodeAsHTML()
             releasesHtml << u
         }
-        render(template: 'window/titleBarContent', model: [currentView: session.currentView, id: id, releases: releasesHtml, release: release])
+        render(template: 'window/titleBarContent', model: [currentView: session.currentView,releases: releasesHtml, release: release])
     }
 
     def toolbar = {
@@ -86,7 +84,7 @@ class ReleasePlanController {
             render(status: 200)
             return
         }
-        render(template: 'window/toolbar', model: [currentView: session.currentView, id: id, release: release])
+        render(template: 'window/toolbar', model: [currentView: session.currentView,release: release])
     }
 
     def index = {
@@ -96,7 +94,7 @@ class ReleasePlanController {
             if (release) {
                 params.id = release.id
             } else {
-                render(template: 'window/blank', model: [id: id])
+                render(template: 'window/blank')
                 return
             }
         } else {
@@ -120,7 +118,7 @@ class ReleasePlanController {
             suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
         }
 
-        render(template: 'window/postitsView', model: [release: release, sprints: sprints, id: id, activeSprint: activeSprint, releaseId: release.id, suiteSelect: suiteSelect])
+        render(template: 'window/postitsView', model: [release: release, sprints: sprints,activeSprint: activeSprint, releaseId: release.id, suiteSelect: suiteSelect])
     }
 
 
@@ -129,7 +127,7 @@ class ReleasePlanController {
         withSprint{Sprint sprint ->
             def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
             if (unDoneStories?.size() > 0 && !params.confirm) {
-                def dialog = g.render(template: "dialogs/confirmCloseSprintWithUnDoneStories", model: [stories: unDoneStories, sprint: sprint, id: id])
+                def dialog = g.render(template: "dialogs/confirmCloseSprintWithUnDoneStories", model: [stories: unDoneStories, sprint: sprint])
                 render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
                 return
             }
@@ -148,7 +146,7 @@ class ReleasePlanController {
     def activate = {
         withSprint{Sprint sprint ->
             if (sprint.orderNumber == 1 && sprint.parentRelease.state == Release.STATE_WAIT && !params.confirm) {
-                def dialog = g.render(template: "dialogs/confirmActivateSprintAndRelease", model: [sprint: sprint, release: sprint.parentRelease, id: id])
+                def dialog = g.render(template: "dialogs/confirmActivateSprintAndRelease", model: [sprint: sprint, release: sprint.parentRelease])
                 render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
                 return
             }
@@ -167,7 +165,7 @@ class ReleasePlanController {
     def delete = {
         withSprint{Sprint sprint ->
             if (sprint.orderNumber < sprint.parentRelease.sprints.size() && !params.confirm) {
-                def dialog = g.render(template: "dialogs/confirmDeleteSprint", model: [sprint: sprint, release: sprint.parentRelease, id: id])
+                def dialog = g.render(template: "dialogs/confirmDeleteSprint", model: [sprint: sprint, release: sprint.parentRelease])
                 render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
                 return
             }
@@ -183,7 +181,7 @@ class ReleasePlanController {
             return
         }
         if (!params.capacity) {
-            def dialog = g.render(template: "dialogs/promptCapacityAutoPlan", model: [id: id])
+            def dialog = g.render(template: "dialogs/promptCapacityAutoPlan")
             render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
             return
         }
@@ -208,7 +206,6 @@ class ReleasePlanController {
         def previousSprint = release?.sprints?.max {s1, s2 -> s1.orderNumber <=> s2.orderNumber}
 
         render(template: 'window/manage', model: [
-                id: id,
                 currentPanel: 'add',
                 release: release,
                 previousSprint: previousSprint,
@@ -233,7 +230,6 @@ class ReleasePlanController {
         def previousSprint = sprint.parentRelease.sprints?.max {s1, s2 -> s1.orderNumber <=> s2.orderNumber}
         def next = Sprint.findByOrderNumberAndParentRelease(sprint.orderNumber + 1, sprint.parentRelease)
         render(template: 'window/manage', model: [
-                id: id,
                 currentPanel: 'edit',
                 release: sprint.parentRelease,
                 next: next?.id ?: null,
@@ -245,12 +241,12 @@ class ReleasePlanController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def editStory = {
-        forward(action: 'edit', controller: 'story', params: [referrer: id])
+        forward(action: 'edit', controller: 'story', params: [referrer: controllerName])
     }
 
     def vision = {
         withRelease{ Release release ->
-            render(template: 'window/visionView', model: [release: release, id: id])
+            render(template: 'window/visionView', model: [release: release])
         }
     }
 
@@ -269,7 +265,6 @@ class ReleasePlanController {
             def values = releaseService.releaseBurndownValues(release)
             if (values.size() > 0) {
                 render(template: 'charts/releaseBurndownChart', model: [
-                        id: id,
                         userstories: values.userstories as JSON,
                         technicalstories: values.technicalstories as JSON,
                         defectstories: values.defectstories as JSON,
@@ -295,7 +290,7 @@ class ReleasePlanController {
                 indexF++
             }
             if (valueToDisplay.size() > 0)
-                render(template: 'charts/releaseParkingLot', model: [id: id, values: valueToDisplay as JSON, featuresNames: values.label as JSON])
+                render(template: 'charts/releaseParkingLot', model: [values: valueToDisplay as JSON, featuresNames: values.label as JSON])
             else {
                 renderError(text:message(code: 'is.chart.error.no.values'))
             }

@@ -53,8 +53,6 @@ import com.sun.syndication.io.SyndFeedOutput
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
 
-    static final id = 'project'
-
     def productService
     def sprintService
     def teamService
@@ -98,7 +96,7 @@ class ProjectController {
     @Secured('owner() or scrumMaster()')
     def edit = {
         withProduct{ Product product ->
-            render(template: "dialogs/edit", model: [id: id, product: product])
+            render(template: "dialogs/edit", model: [product: product])
         }
     }
 
@@ -110,7 +108,7 @@ class ProjectController {
             if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
                 privateOption = false
             }
-            render(template: "dialogs/editPractices", model: [id: id, product: product, estimationSuitSelect: estimationSuitSelect, privateOption: privateOption])
+            render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect, privateOption: privateOption])
         }
     }
 
@@ -164,8 +162,7 @@ class ProjectController {
             privateOption = false
         }
 
-        render(template: "dialogs/wizard", model: [id: id,
-                                                    product: product,
+        render(template: "dialogs/wizard", model: [ product: product,
                                                     estimationSuitSelect: estimationSuitSelect,
                                                     privateOption: privateOption,
                                                     user:springSecurityService.currentUser,
@@ -285,9 +282,7 @@ class ProjectController {
                             sprint: sprint,
                             release: release,
                             user: springSecurityService.currentUser,
-                            lang: RCU.getLocale(request).toString().substring(0, 2),
-                            id: id
-                    ]
+                            lang: RCU.getLocale(request).toString().substring(0, 2)]
         }
     }
 
@@ -297,7 +292,6 @@ class ProjectController {
             def values = productService.cumulativeFlowValues(product)
             if (values.size() > 0) {
                 render(template: 'charts/productCumulativeFlowChart', model: [
-                        id: id,
                         withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
                         suggested: values.suggested as JSON,
                         accepted: values.accepted as JSON,
@@ -319,7 +313,6 @@ class ProjectController {
             def values = productService.productVelocityCapacityValues(product)
             if (values.size() > 0) {
                 render(template: 'charts/productVelocityCapacityChart', model: [
-                        id: id,
                         withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
                         capacity: values.capacity as JSON,
                         velocity: values.velocity as JSON,
@@ -337,7 +330,6 @@ class ProjectController {
             def values = productService.productBurnupValues(product)
             if (values.size() > 0) {
                 render(template: 'charts/productBurnupChart', model: [
-                        id: id,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         all: values.all as JSON,
                         done: values.done as JSON,
@@ -355,7 +347,6 @@ class ProjectController {
             def values = productService.productBurndownValues(product)
             if (values.size() > 0) {
                 render(template: 'charts/productBurndownChart', model: [
-                        id: id,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         userstories: values.userstories as JSON,
                         technicalstories: values.technicalstories as JSON,
@@ -374,7 +365,6 @@ class ProjectController {
             def values = productService.productVelocityValues(product)
             if (values.size() > 0) {
                 render(template: 'charts/productVelocityChart', model: [
-                        id: id,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         userstories: values.userstories as JSON,
                         technicalstories: values.technicalstories as JSON,
@@ -402,7 +392,6 @@ class ProjectController {
             }
             if (valueToDisplay.size() > 0)
                 render(template: '../feature/charts/productParkinglot', model: [
-                        id: id,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         values: valueToDisplay as JSON,
                         featuresNames: values.label as JSON])
@@ -440,7 +429,7 @@ class ProjectController {
                             session.progress.progressError(message(code: 'is.export.error'))
                         }
                     } else {
-                        render(template: 'dialogs/export', model: [id: id])
+                        render(template: 'dialogs/export')
                     }
                 }
                 xml {
@@ -500,7 +489,6 @@ class ProjectController {
             } else {
                 def importMustChangeValues = session.tmpP.hasErrors() ?: (true in session.tmpP.teams*.hasErrors()) ?: (true in session.tmpP.getAllUsers()*.hasErrors())
                 render(template: 'dialogs/import', model: [
-                        id: id,
                         user: user,
                         product: session.tmpP,
                         importMustChangeValues: importMustChangeValues,
@@ -509,7 +497,7 @@ class ProjectController {
                 ])
             }
         } else {
-            render(template: 'dialogs/import', model: [id: id, user: user])
+            render(template: 'dialogs/import', model: [user: user])
         }
     }
 
@@ -717,7 +705,7 @@ class ProjectController {
                 render(status: 200, contentType: 'application/json', text: session.progress as JSON)
             } else {
                 session.progress = new ProgressSupport()
-                render(template: 'dialogs/report', model: [id: id])
+                render(template: 'dialogs/report')
             }
         }
     }
@@ -855,7 +843,7 @@ class ProjectController {
                 render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
             } else {
                 session.progress = new ProgressSupport()
-                render(template: 'dialogs/report', model: [id: id])
+                render(template: 'dialogs/report')
             }
         }
     }

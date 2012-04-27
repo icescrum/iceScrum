@@ -24,7 +24,7 @@
 --}%
 <is:iconButton
         rendered="${request.inProduct}"
-        shortcut="[key:'ctrl+shift+c',scope:id]"
+        shortcut="[key:'ctrl+shift+c',scope:controllerName]"
         onclick="jQuery.icescrum.selectableAction('story/copy',true,'id',function(data){jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');})"
         disabled="true"
         alt="${message(code:'is.ui.backlog.toolbar.alt.clone')}"
@@ -40,7 +40,7 @@
         rendered="${request.productOwner}"
         onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
         history='false'
-        shortcut="[key:'del',scope:id]"
+        shortcut="[key:'del',scope:controllerName]"
         disabled="true"
         title="${message(code:'is.ui.backlog.toolbar.alt.delete')}"
         alt="${message(code:'is.ui.backlog.toolbar.alt.delete')}">
@@ -56,9 +56,9 @@
             <is:link
                     controller="scrumOS"
                     action="changeView"
-                    params="'product=${params.product}&view=postitsView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                    params="'product=${params.product}&view=postitsView&window=${controllerName}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
                     history="false"
-                    update="window-content-${id}"
+                    update="window-content-${controllerName}"
                     remote="true"
                     onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.postitsView')}','postitsView')"
                     value="${message(code:'is.view.postitsView')}"/>
@@ -66,8 +66,8 @@
         <li class="last">
             <is:link controller="scrumOS"
                      action="changeView"
-                     params="'product=${params.product}&view=tableView&window=${id}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
-                     update="window-content-${id}"
+                     params="'product=${params.product}&view=tableView&window=${controllerName}&actionWindow=list&term='+jQuery(\'#autoCmpTxt\').val()"
+                     update="window-content-${controllerName}"
                      history="false"
                      onSuccess="jQuery.icescrum.displayView('${message(code:'is.view.tableView')}','tableView')"
                      remote="true"
@@ -91,8 +91,8 @@
 
 %{--Search--}%
 
-<entry:point id="${id}-${actionName}"/>
+<entry:point id="${controllerName}-${actionName}"/>
 
 <is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="backlog" action="list" update="window-content-${id}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="backlog" action="list" update="window-content-${controllerName}"/>
 </is:panelSearch>

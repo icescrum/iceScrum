@@ -22,7 +22,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Sprint;" %>
-<g:form action="save" method="post" name="${id}-form" elemid="${sprint?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
+<g:form action="save" method="post" name="${controllerName}-form" elemid="${sprint?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
     <is:fieldset title="is.ui.releasePlan.sprint.properties.title">
         <is:fieldArea for="sprintgoal" label="is.sprint.goal">
             <is:area id="sprintgoal" large="true" name="sprint.goal" value="${sprint?.goal}" focus="true"/>
@@ -56,7 +56,7 @@
                     id="submitAndContinueForm"
                     type="submitToRemote"
                     url="[controller:'sprint', action:'save',id:release.id, params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.form.reset('#${id}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,${product.preferences.estimatedSprintsDuration}); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.saved')}')"
+                    onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,${product.preferences.estimatedSprintsDuration}); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.saved')}')"
                     value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
             <is:button
                     id="submitForm"
@@ -91,30 +91,30 @@
                 value="${message(code: 'is.button.cancel')}"/>
     </is:buttonBar>
 </g:form>
-<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${id}"
-             listenOn="'#${id}-form, #${id}-form input'"/>
-<is:shortcut key="esc" callback="\$.icescrum.form.cancel();" scope="${id}" listenOn="'#${id}-form, #${id}-form input'"/>
+<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
+<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${controllerName}"
+             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
+<is:shortcut key="esc" callback="\$.icescrum.form.cancel();" scope="${controllerName}" listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 
 <g:if test="${sprint}">
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'sprint',events:['update']]]"
             callback="alert('${message(code:'is.sprint.updated')}'); jQuery.icescrum.navigateTo('${controllerName+(params.subid?'/'+params.id:'')+'/edit/'+sprint.id}');"/>
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'sprint',events:['remove']]]"
             callback="alert('${message(code:'is.sprint.deleted')}'); jQuery.icescrum.navigateTo('${controllerName+'/'+release.id}');"/>
 </g:if>
 
 <g:if test="${sprint}">
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'sprint',events:['update','activate','close']]]"
             callback="if ( sprint.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.sprint.updated')}','${controllerName}/${release.id}',true);"/>
     <is:onStream
-            on="#${id}-form"
+            on="#${controllerName}-form"
             events="[[object:'sprint',events:['remove']]]"
             callback="if ( sprint.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.sprint.deleted')}','${controllerName}/${release.id}',true);"/>
 </g:if>

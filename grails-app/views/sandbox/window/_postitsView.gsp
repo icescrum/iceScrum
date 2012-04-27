@@ -28,7 +28,7 @@
 <is:backlogElementLayout
         emptyRendering="true"
         style="display:${stories ? 'block' : 'none'};"
-        id="window-${id}"
+        id="window-${controllerName}"
         selectable="[rendered:productOwner,
                     filter:'div.postit-story',
                     cancel:'.postit-label, a',
@@ -45,28 +45,28 @@
         value="${stories}"
         var="story">
         <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${sprint ? sprint.id : ''}">
-            <g:include view="/story/_postit.gsp" model="[id:id,story:story,user:user, sprint:sprint]"
+            <g:include view="/story/_postit.gsp" model="[story:story,user:user, sprint:sprint]"
                        params="[product:params.product]"/>
         </is:cache>
 </is:backlogElementLayout>
 
-<g:include view="/sandbox/window/_blank.gsp" model="[stories:stories,id:id]"/>
+<g:include view="/sandbox/window/_blank.gsp" model="[stories:stories]"/>
 
-<is:dropImport id="${id}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
+<is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
-             scope="${id}"/>
-<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${id} .ui-selectee').addClass('ui-selected');"/>
+             scope="${controllerName}"/>
+<is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 
 <is:onStream
-        on="#backlog-layout-window-${id}"
+        on="#backlog-layout-window-${controllerName}"
         events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']]]"
         template="sandbox"/>
 
 <is:onStream
-        on="#backlog-layout-window-${id}"
+        on="#backlog-layout-window-${controllerName}"
         events="[[object:'sprint',events:['close','activate']]]"/>
 
 <is:onStream
-        on="#backlog-layout-window-${id}"
+        on="#backlog-layout-window-${controllerName}"
         events="[[object:'feature',events:['update']]]"/>
