@@ -172,6 +172,7 @@ environments {
         icescrum.debug.enable = true
         grails.entryPoints.debug = false
         grails.tomcat.nio = true
+        //grails.resources.debug=true
     }
     test {
         icescrum.debug.enable = true
@@ -297,7 +298,6 @@ grails {
                 cookieName = 'iceScrum_doh_twelve_me'
                 key = 'twelveMe'
                 persistent = true
-                persistentToken.domainClassName = 'PersistentLogin'
             }
 
             useRunAs = true
