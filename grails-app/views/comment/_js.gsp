@@ -27,16 +27,16 @@
                              lastUpdated:'?**=jQuery.icescrum.serverDate(this.lastUpdated, true)**?',
                              body:'?**=this.body**?']"/>
 
-<g:set var="backlogelement" value="[id:'?**=this.backlogElement**?']"/>
+<g:set var="backlogElement" value="[id:'?**=this.backlogElement**?']"/>
 
 <template id="comment-storydetail-tmpl">
       <g:render template="/components/comment"
           plugin="icescrum-core"
-          model="[comment:comment, backlogelement:backlogelement, moderation:true, access:true, template:true]"/>
+          model="[comment:comment, backlogElement:backlogElement, moderation:true, access:true, template:true]"/>
 </template>
 
 <template id="comment-storydetailsummary-tmpl">
       <g:render template="/components/comment"
           plugin="icescrum-core"
-          model="[comment:comment, backlogelement:backlogelement, moderation:true, access:false, template:true, commentId:'summary']"/>
+          model="[comment:comment, backlogElement:backlogElement, moderation:true, access:false, template:true, commentId:'summary']"/>
 </template>
