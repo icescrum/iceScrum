@@ -29,7 +29,7 @@
                 <g:if test="${entry instanceof Comment}">
                     <g:render template="/components/comment"
                               plugin="icescrum-core"
-                              model="[noEscape:true, backlogelement:backlogelement, comment:entry, commentId:'summary']"/>
+                              model="[noEscape:true, backlogElement:backlogElement, comment:entry, commentId:'summary']"/>
                 </g:if>
                 <g:elseif test="${entry instanceof Activity && entry.code != 'comment'}">
                     <li ${(summary?.size() == (i + 1)) ? 'class="last"' : ''}>

@@ -126,7 +126,6 @@
                     <strong>
                     <is:scrumLink
                             controller="story"
-                            action="details"
                             id="${story.id}"
                             params="['tab':'tests']"
                             onclick="\$('#dialog').dialog('close');">
@@ -140,7 +139,6 @@
                     <strong>
                     <is:scrumLink
                             controller="story"
-                            action="details"
                             id="${story.id}"
                             params="['tab':'comments']"
                             onclick="\$('#dialog').dialog('close');">
