@@ -295,19 +295,13 @@ grails {
             auth.loginFormUrl = '/login'
 
             rememberMe {
-                cookieName = 'iceScrum_doh_twelve_me'
+                cookieName = 'iceScrum'
                 key = 'twelveMe'
-                persistent = true
             }
 
             useRunAs = true
             runAs.key = 'tw3lv3Scrum!'
             acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
-
-            openid {
-                domainClass = 'openidtest.OpenID'
-                registration.requiredAttributes = [firstName: 'http://axschema.org/namePerson/last',lastName:'http://axschema.org/namePerson/first',username:'http://axschema.org/namePerson/friendly',activity:'http://axschema.org/company/title',email:'http://axschema.org/contact/email']
-            }
         }
     }
 }
