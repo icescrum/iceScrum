@@ -37,6 +37,8 @@ import org.icescrum.web.upload.AjaxMultipartResolver
 import org.springframework.mail.MailException
 import org.icescrum.core.domain.Sprint
 import grails.plugin.springcache.annotations.Cacheable
+import org.springframework.security.acls.domain.BasePermission
+import org.icescrum.core.domain.preferences.ProductPreferences
 
 class ScrumOSController {
 
@@ -82,19 +84,16 @@ class ScrumOSController {
             currentUserInstance.preferences.lastProductOpened = currentProductInstance.pkey
             currentUserInstance.save()
         }
-
-        def products = productService.getByMemberProductList()
+        //For PO / SM : WRITE - TM / SH : READ
+        def products = currentUserInstance ? Product.findAllByRole(currentUserInstance.username, [BasePermission.WRITE,BasePermission.READ], [cache:true, max:11]) : []
         def pCount = products?.size()
-        if (pCount > 10){
-            products = products.subList(0,9)
-        }
 
         [user: currentUserInstance,
                 lang: RCU.getLocale(request).toString().substring(0, 2),
                 product: currentProductInstance,
-                publicProductsExists: Product.count() ? true : false,
+                publicProductsExists: ProductPreferences.countByHidden(false,[cache:true]) ? true : false,
                 productFilteredsListCount: pCount,
-                productFilteredsList: products]
+                productFilteredsList: pCount > 9 ? products?.subList(0,9) : products]
     }
 
 

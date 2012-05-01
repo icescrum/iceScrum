@@ -771,12 +771,13 @@ class ProjectController {
 
     @Secured('permitAll')
     def browseList = {
-        def max = 7
 
-        def total
-        def products
-        products = productService.getByTermProductList(params.term ?: '', [offset: params.int('offset') ?: 0, max: max, sort: "name", order: "asc", cache: true])
-        total = productService.getByTermProductList(params.term ?: '', null).size()
+        def term = '%'+params.term+'%' ?: '';
+        def options = [offset:params.int('offset') ?: 0, max: 9, sort: "name", order: "asc", cache:true]
+        def username = springSecurityService.currentUser?.username?:''
+
+        def products = securityService.admin(springSecurityService.authentication) ? Product.findAllByNameIlike(term, options) : Product.searchPublicAndMyProducts(username,term,options)
+        def total =  securityService.admin(springSecurityService.authentication) ? Product.countByNameIlike(term, [cache:true]) : Product.countPublicAndMyProducts(username,term,[cache:true])[0]
 
         def results = []
         products?.each {
@@ -785,17 +786,18 @@ class ProjectController {
             ]
         }
 
-        render template: "/components/browserColumn", plugin: 'icescrum-core', model: [name: 'project-browse', max: max, total: total, term: params.term, offset: params.int('offset') ?: 0, browserCollection: results, actionDetails: 'browseDetails']
+        render template: "/components/browserColumn", plugin: 'icescrum-core', model: [name: 'project-browse', max: 9, total: total, term: params.term, offset: params.int('offset') ?: 0, browserCollection: results, actionDetails: 'browseDetails']
     }
 
     @Secured('permitAll')
     @Cacheable(cache = 'projectCache', keyGenerator = 'projectKeyGenerator')
     def browseDetails = {
         withProduct('id'){ Product product ->
-            if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication)) {
-                throw new AccessDeniedException('denied')
+            if (!securityService.owner(product, springSecurityService.authentication)){
+                if ((product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication))) {
+                    throw new AccessDeniedException('denied')
+                }
             }
-
             render template: "dialogs/browseDetails", model: [product: product]
         }
     }
