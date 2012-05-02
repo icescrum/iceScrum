@@ -85,7 +85,7 @@ class ScrumOSController {
             currentUserInstance.save()
         }
         //For PO / SM : WRITE - TM / SH : READ
-        def products = currentUserInstance ? Product.findAllByRole(currentUserInstance.username, [BasePermission.WRITE,BasePermission.READ], [cache:true, max:11]) : []
+        def products = currentUserInstance ? Product.findAllByRole(currentUserInstance, [BasePermission.WRITE,BasePermission.READ], [cache:true, max:11]) : []
         def pCount = products?.size()
 
         [user: currentUserInstance,
@@ -288,7 +288,7 @@ class ScrumOSController {
         }
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
+    //@Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
     def templates = {
         def currentSprint = null
         def product = null

@@ -774,10 +774,10 @@ class ProjectController {
 
         def term = '%'+params.term+'%' ?: '';
         def options = [offset:params.int('offset') ?: 0, max: 9, sort: "name", order: "asc", cache:true]
-        def username = springSecurityService.currentUser?.username?:''
+        def currentUser = springSecurityService.currentUser
 
-        def products = securityService.admin(springSecurityService.authentication) ? Product.findAllByNameIlike(term, options) : Product.searchPublicAndMyProducts(username,term,options)
-        def total =  securityService.admin(springSecurityService.authentication) ? Product.countByNameIlike(term, [cache:true]) : Product.countPublicAndMyProducts(username,term,[cache:true])[0]
+        def products = securityService.admin(springSecurityService.authentication) ? Product.findAllByNameIlike(term, options) : Product.searchPublicAndMyProducts(currentUser,term,options)
+        def total =  securityService.admin(springSecurityService.authentication) ? Product.countByNameIlike(term, [cache:true]) : Product.countPublicAndMyProducts(currentUser,term,[cache:true])[0]
 
         def results = []
         products?.each {
