@@ -479,16 +479,16 @@
                         }
                     },
 
-                    add:function(template) {
+                    add:function(template, append) {
                         $(this).each(function() {
-                            $.icescrum.addOrUpdate(this, $.icescrum.story.templates[template], $.icescrum.story._postRendering);
+                            $.icescrum.addOrUpdate(this, $.icescrum.story.templates[template], $.icescrum.story._postRendering, append);
                         });
                     },
 
-                    update:function(template) {
+                    update:function(template, append) {
                         $(this).each(function() {
                             $.icescrum.story.remove.apply(this, [template]);
-                            $.icescrum.story.add.apply(this, [template]);
+                            $.icescrum.story.add.apply(this, [template, append]);
                         });
                     },
 
@@ -543,7 +543,7 @@
 
                     plan:function(template) {
                         $(this).each(function() {
-                            $.icescrum.story.update.apply(this, [template]);
+                            $.icescrum.story.update.apply(this, [template, true]);
                         });
                     },
 

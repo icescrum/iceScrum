@@ -703,13 +703,13 @@ class StoryController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
             return
         }
-        if (params.backlogelement == null) {
+        if (params.backlogElement == null) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
             return
         }
         def comment = Comment.get(params.long('id'))
         def idc = [id:comment.id]
-        def commentable = Story.getInProduct(params.long('product'),params.long('backlogelement')).list()[0]
+        def commentable = Story.getInProduct(params.long('product'),params.long('backlogElement')).list()[0]
         try {
             commentable.removeComment(comment)
             commentable.lastUpdated = new Date()
