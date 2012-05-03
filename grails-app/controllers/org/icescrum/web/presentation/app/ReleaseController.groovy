@@ -32,6 +32,7 @@ import grails.converters.XML
 import grails.plugins.springsecurity.Secured
 import grails.plugin.springcache.annotations.Cacheable
 
+@Secured('inProduct()')
 class ReleaseController {
 
     def releaseService
@@ -40,42 +41,33 @@ class ReleaseController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def update = {
-        if (!params.release?.id) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-        def release = Release.getInProduct(params.long('product'),params.long('release.id')).list()[0]
-
-        if (!release) {
-            returnError(text:message(code: 'is.release.error.not.exist'))
-            return
-        }
-
-        // If the version is different, the release has been modified since the last loading
-        if (params.long('release.version') != release.version) {
-            returnError(text:message(code: 'is.release.object', args: [message(code: 'is.release')]))
-            return
-        }
-
-        def startDate = params.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.startDate) : release.startDate
-        def endDate = new Date().parse(message(code: 'is.date.format.short'), params.endDate)
-        release.properties = params.release
-
-        try {
-            releaseService.update(release, startDate, endDate)
-            def next = null
-            if (params.continue) {
-                next = release.parentProduct.releases.find {it.orderNumber == release.orderNumber + 1}
+        withRelease{ Release release ->
+            // If the version is different, the release has been modified since the last loading
+            if (params.long('release.version') != release.version) {
+                returnError(text:message(code: 'is.release.object', args: [message(code: 'is.release')]))
+                return
             }
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON }
-                json { render status: 200, contentType: 'application/json', text: release as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: release as XML }
+
+            def startDate = params.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.startDate) : release.startDate
+            def endDate = new Date().parse(message(code: 'is.date.format.short'), params.endDate)
+            release.properties = params.release
+
+            try {
+                releaseService.update(release, startDate, endDate)
+                def next = null
+                if (params.continue) {
+                    next = release.parentProduct.releases.find {it.orderNumber == release.orderNumber + 1}
+                }
+                withFormat {
+                    html { render status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON }
+                    json { render status: 200, contentType: 'application/json', text: release as JSON }
+                    xml { render status: 200, contentType: 'text/xml', text: release as XML }
+                }
+            } catch (IllegalStateException e) {
+                returnError(exception:e)
+            }catch (RuntimeException e) {
+                returnError(object:release, exception:e)
             }
-        } catch (IllegalStateException e) {
-            returnError(exception:e)
-        }catch (RuntimeException e) {
-            returnError(object:release, exception:e)
         }
     }
 
@@ -176,9 +168,8 @@ class ReleaseController {
         }
     }
 
-    @Secured('inProduct()')
     @Cacheable(cache = 'releaseCache', keyGenerator='releaseKeyGenerator')
-    def show = {
+    def index = {
         if (request?.format == 'html'){
             render(status:404)
             return
@@ -191,4 +182,9 @@ class ReleaseController {
             }
         }
     }
+
+    def show = {
+        redirect(action:'index', controller: controllerName, params:params)
+    }
+
 }

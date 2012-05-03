@@ -91,7 +91,6 @@
 
     <g:if test="${feature}">
         <g:hiddenField name="feature.version" value="${feature.version}"/>
-        <g:hiddenField name="feature.id" value="${feature.id}"/>
     </g:if>
 
     <is:buttonBar>
@@ -106,7 +105,7 @@
             <is:button
                     id="submitForm"
                     type="submitToRemote"
-                    url="[controller:'feature', action:'save',params:[product:params.product]]"
+                    url="[controller:'feature', action:'save', params:[product:params.product]]"
                     onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.saved')}')"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                     value="${message(code:'is.button.add')}"/>
@@ -116,7 +115,7 @@
                 <is:button
                         id="submitAndContinueForm"
                         type="submitToRemote"
-                        url="[controller:'feature', action:'update', params:[continue:true,product:params.product]]"
+                        url="[controller:'feature', action:'update', id:feature.id, params:[continue:true,product:params.product]]"
                         onSuccess="jQuery('#${controllerName}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
                         before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                         value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
@@ -124,7 +123,7 @@
             <is:button
                     id="submitForm"
                     type="submitToRemote"
-                    url="[controller:'feature', action:'update',params:[product:params.product]]"
+                    url="[controller:'feature', action:'update', id:feature.id, params:[product:params.product]]"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                     onSuccess="jQuery('#${controllerName}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
                     value="${message(code:'is.button.update')}"/>

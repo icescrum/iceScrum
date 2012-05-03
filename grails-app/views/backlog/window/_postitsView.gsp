@@ -41,7 +41,7 @@
                   drop: remoteFunction(controller:"story",
                                        action:"associateFeature",
                                        onSuccess:"jQuery.event.trigger(\"update_story\",data)",
-                                       params:"\"product="+params.product+"&feature.id=\"+ui.draggable.attr(\"elemid\")+\"&story.id=\"+jQuery(\".postit-layout .postit-id\", jQuery(this)).text()"
+                                       params:"\"product="+params.product+"&feature.id=\"+ui.draggable.attr(\"elemid\")+\"&id=\"+jQuery(\".postit-layout .postit-id\", jQuery(this)).text()"
                                        ),
                   accept: ".postit-row-feature"]'
         dblclickable='[rendered:!request.productOwner,

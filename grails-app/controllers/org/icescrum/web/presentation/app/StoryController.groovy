@@ -100,34 +100,40 @@ class StoryController {
             } else if (product.preferences.hidden && !securityService.inProduct(story.backlog, springSecurityService.authentication) && !securityService.stakeHolder(story.backlog,springSecurityService.authentication,false)) {
                 render(status: 403)
             } else {
-                def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.uid)
-                def criteria = FollowLink.createCriteria()
-                def isFollower = false
-                if (user) {
-                    isFollower = criteria.get {
-                        projections {
-                            rowCount()
+                 withFormat {
+                    json { render(status: 200, contentType: 'application/json', text: story as JSON) }
+                    xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
+                    html {
+                         def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.uid)
+                        def criteria = FollowLink.createCriteria()
+                        def isFollower = false
+                        if (user) {
+                            isFollower = criteria.get {
+                                projections {
+                                    rowCount()
+                                }
+                                eq 'followRef', story.id
+                                eq 'followerId', user.id
+                                eq 'type', GrailsNameUtils.getPropertyName(Story.class)
+                                cache true
+                            }
+                            isFollower = isFollower == 1
                         }
-                        eq 'followRef', story.id
-                        eq 'followerId', user.id
-                        eq 'type', GrailsNameUtils.getPropertyName(Story.class)
-                        cache true
-                    }
-                    isFollower = isFollower == 1
-                }
 
-                render(view: 'details', model: [
-                        story: story,
-                        tasksDone: Task.countByParentStoryAndState(story, Task.STATE_DONE),
-                        typeCode: BundleUtils.storyTypes[story.type],
-                        storyStateCode: BundleUtils.storyStates[story.state],
-                        taskStateBundle: BundleUtils.taskStates,
-                        user: user,
-                        pkey: product.pkey,
-                        permalink: permalink,
-                        locale: RequestContextUtils.getLocale(request),
-                        isFollower: isFollower,
-                ])
+                        render(view: 'details', model: [
+                                story: story,
+                                tasksDone: Task.countByParentStoryAndState(story, Task.STATE_DONE),
+                                typeCode: BundleUtils.storyTypes[story.type],
+                                storyStateCode: BundleUtils.storyStates[story.state],
+                                taskStateBundle: BundleUtils.taskStates,
+                                user: user,
+                                pkey: product.pkey,
+                                permalink: permalink,
+                                locale: RequestContextUtils.getLocale(request),
+                                isFollower: isFollower,
+                        ])
+                    }
+                }
             }
         }
     }
@@ -169,7 +175,7 @@ class StoryController {
     }
 
     def update = {
-        withStory('story.id') { Story story ->
+        withStory{ Story story ->
             def user = springSecurityService.currentUser
             if (story.backlog.preferences.archived){
                 render(status: 403, contentType: 'application/json')
@@ -450,7 +456,7 @@ class StoryController {
 
     @Secured('(isAuthenticated()) and !archivedProduct()')
     def associateFeature = {
-        withStory('story.id'){ Story story ->
+        withStory{ Story story ->
             withFeature('feature.id'){ Feature feature ->
                 storyService.associateFeature(feature, story)
                 withFormat {
@@ -524,18 +530,8 @@ class StoryController {
     }
 
     @Secured('inProduct()')
-    @Cacheable(cache = 'storyCache', keyGenerator='storyKeyGenerator')
     def show = {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
-        }
-        withStory { story ->
-            withFormat {
-                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
-            }
-        }
+        redirect(action:'index', controller: controllerName, params:params)
     }
 
     @Secured('inProduct()')

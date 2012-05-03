@@ -63,7 +63,7 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def update = {
-        withFeature('feature.id'){ Feature feature ->
+        withFeature{ Feature feature ->
              // If the version is different, the feature has been modified since the last loading
             if (params.long('feature.version') != feature.version) {
                 returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.feature')]))
@@ -287,7 +287,7 @@ class FeatureController {
     }
 
     @Cacheable(cache = 'featureCache', keyGenerator='featureKeyGenerator')
-    def show = {
+    def index = {
         if (request?.format == 'html'){
             render(status:404)
             return
@@ -299,6 +299,10 @@ class FeatureController {
                 xml { render(status: 200, contentType: 'text/xml', text: feature as XML) }
             }
         }
+    }
+
+    def show = {
+        redirect(action:'index', controller: controllerName, params:params)
     }
 
     private manageAttachments(def feature) {

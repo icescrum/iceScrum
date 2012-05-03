@@ -61,7 +61,6 @@
 
     <g:if test="${release}">
         <g:hiddenField name="release.version" value="${release.version}"/>
-        <g:hiddenField name="release.id" value="${release.id}"/>
     </g:if>
 
     <is:buttonBar>
@@ -86,7 +85,7 @@
                 <is:button
                         id="submitAndContinueForm"
                         type="submitToRemote"
-                        url="[controller:'release', action:'update', params:[continue:true,product:params.product]]"
+                        url="[controller:'release', action:'update', id:release.id, params:[continue:true,product:params.product]]"
                         onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.release.updated')}')">
                     ${message(code: 'is.button.update')} ${message(code: 'is.button.andContinue')}
                 </is:button>
@@ -94,7 +93,7 @@
             <is:button
                     id="submitForm"
                     type="submitToRemote"
-                    url="[controller:'release', action:'update',params:[product:params.product]]"
+                    url="[controller:'release', action:'update', id:release.id, params:[product:params.product]]"
                     onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.updated')}')">
                 ${message(code: 'is.button.update')}
             </is:button>

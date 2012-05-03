@@ -164,7 +164,7 @@ class SprintPlanController {
 
     def updateTable = {
 
-        withTask('task.id'){ Task task ->
+        withTask{ Task task ->
             if (params.boolean('loadrich')) {
                 render(status: 200, text: task.notes ?: '')
                 return

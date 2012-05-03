@@ -129,7 +129,6 @@
 
     <g:if test="${story}">
         <g:hiddenField name="story.version" value="${story?.version}"/>
-        <g:hiddenField name="story.id" value="${story?.id}"/>
     </g:if>
 
     <is:buttonBar>
@@ -154,14 +153,14 @@
                 <is:button
                         id="submitAndContinueForm"
                         type="submitToRemote"
-                        url="[controller:'story', action:'update', params:[continue:true,product:params.product]]"
+                        url="[controller:'story', action:'update', params:[continue:true,product:params.product,id:story.id]]"
                         before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                         onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${referrer+(params.subid?'/'+params.id:'')+'/editStory/'}'+data.next) : jQuery.icescrum.navigateTo('${referrer}'); jQuery.icescrum.renderNotice('${message(code: 'is.story.updated')}')"
                         value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
             </g:if>
             <is:button
                     id="submitForm" type="submitToRemote"
-                    url="[controller:'story', action:'update', params:[product:params.product]]"
+                    url="[controller:'story', action:'update', params:[product:params.product,id:story.id]]"
                     value="${message(code:'is.button.update')}"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                     onSuccess="jQuery.icescrum.navigateTo('${referrerUrl?:referrer+(params.subid?'/'+params.id:'')}'); jQuery.icescrum.renderNotice('${message(code: 'is.story.updated')}')"/>

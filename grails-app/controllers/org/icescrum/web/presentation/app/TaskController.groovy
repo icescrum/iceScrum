@@ -68,7 +68,7 @@ class TaskController {
 
     def index = {
         withTask { Task task ->
-            Product product = (Product.get(params.long('product')))
+            def product = task.parentProduct
             def user = springSecurityService.currentUser
             if (product.preferences.hidden && !user) {
                 redirect(controller: 'login', params: [ref: "p/${product.pkey}@task/$story.id"])
@@ -77,11 +77,17 @@ class TaskController {
                 render(status: 403)
                 return
             } else {
-                render(view: 'details', model: [
-                        task: task,
-                        taskStateCode: BundleUtils.taskStates[task.state],
-                        taskTypeCode: BundleUtils.taskTypes[task.type]
-                ])
+                 withFormat {
+                    json { render(status: 200, contentType: 'appplication/json', text: task as JSON) }
+                    xml  { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                    html {
+                        render(view: 'details', model: [
+                            task: task,
+                            taskStateCode: BundleUtils.taskStates[task.state],
+                            taskTypeCode: BundleUtils.taskTypes[task.type]
+                        ])
+                    }
+                 }
             }
         }
     }
@@ -98,7 +104,7 @@ class TaskController {
         task.properties = params.task
 
         User user = (User) springSecurityService.currentUser
-        def sprint = Sprint.load(params.id)
+        def sprint = Sprint.load(params.long('sprint.id'))
         if (!sprint) {
             returnError(text: message(code: 'is.sprint.error.not.exist'))
             return
@@ -129,7 +135,7 @@ class TaskController {
 
     @Secured('inProduct() and !archivedProduct()')
     def update = {
-        withTask('task.id'){Task task ->
+        withTask{Task task ->
             def story = !(params.story?.id in ['recurrent', 'urgent']) ? Story.getInProduct(params.long('product'), params.long('story.id')).list()[0] : null
 
             if (!story && !(params.story?.id in ['recurrent', 'urgent'])) {
@@ -334,10 +340,10 @@ class TaskController {
     @Secured('inProduct() and !archivedProduct()')
     def state = {
         // params.id represent the targeted state (STATE_WAIT, STATE_INPROGRESS, STATE_DONE)
-        if (!params.id) {
+        if (!params.state) {
             returnError(text: message(code: 'is.ui.sprintPlan.state.no.exist'))
         }
-        withTask('task.id'){Task task ->
+        withTask{Task task ->
             User user = (User) springSecurityService.currentUser
             // If the task was moved to another story
             if (params.story?.id && task.parentStory && params.story.id != task.parentStory.id) {
@@ -357,7 +363,7 @@ class TaskController {
             } else if (params.task.type && params.int('task.type') != task.type) {
                 taskService.changeType(task, params.int('task.type'), user)
             }
-            taskService.state(task, params.int('id'), user)
+            taskService.state(task, params.int('state'), user)
             taskService.rank(task, params.int('position'))
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [task:task, story:task.parentStory?.state == Story.STATE_DONE ? task.parentStory : null] as JSON)  }
@@ -367,18 +373,8 @@ class TaskController {
         }
     }
 
-    @Cacheable(cache = 'taskCache', keyGenerator='taskKeyGenerator')
     def show = {
-        if (request?.format == 'html') {
-            render(status: 404)
-            return
-        }
-        withTask('task.id'){Task task ->
-            withFormat {
-                json { render(status: 200, contentType: 'appplication/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
-            }
-        }
+        redirect(action:'index', controller: controllerName, params:params)
     }
 
     @Cacheable(cache = 'taskCache', keyGenerator='tasksKeyGenerator')

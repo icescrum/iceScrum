@@ -82,7 +82,6 @@
 
     <g:if test="${actor}">
         <g:hiddenField name="actor.version" value="${actor?.version}"/>
-        <g:hiddenField name="actor.id" value="${actor?.id}"/>
     </g:if>
 
     <is:buttonBar>
@@ -107,7 +106,7 @@
                 <is:button
                         id="submitAndContinueForm"
                         type="submitToRemote"
-                        url="[controller:'actor', action:'update', params:[product:params.product,continue:true]]"
+                        url="[controller:'actor', action:'update', id:actor.id, params:[product:params.product,continue:true]]"
                         onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.actor.updated')}')"
                         before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                         value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
@@ -115,7 +114,7 @@
             <is:button
                     id="submitForm"
                     type="submitToRemote"
-                    url="[controller:'actor', action:'update', params:[product:params.product]]"
+                    url="[controller:'actor', action:'update', id:actor.id, params:[product:params.product]]"
                     onSuccess=" jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.actor.updated')}');"
                     before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                     value="${message(code:'is.button.update')}"/>

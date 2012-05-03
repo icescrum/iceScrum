@@ -101,11 +101,11 @@ class UserController {
 
     @Secured('isAuthenticated()')
     def update = {
-        if (params.long('user.id') != springSecurityService.principal.id) {
+        if (params.long('id') != springSecurityService.principal.id) {
             returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.user')]))
             return
         }
-        withUser('user.id') { User currentUser ->
+        withUser{ User currentUser ->
             if ((params.confirmPassword || params.user.password) && (params.confirmPassword != params.user.password)) {
                 returnError(text: message(code: 'is.user.error.password.check'))
                 return

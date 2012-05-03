@@ -32,6 +32,7 @@ import grails.converters.XML
 import grails.plugins.springsecurity.Secured
 import grails.plugin.springcache.annotations.Cacheable
 
+@Secured('inProduct()')
 class SprintController {
 
     def releaseService
@@ -152,9 +153,8 @@ class SprintController {
         }
     }
 
-    @Secured('inProduct()')
     @Cacheable(cache = 'sprintCache', keyGenerator='sprintKeyGenerator')
-    def show = {
+    def index = {
         if (request?.format == 'html'){
             render(status:404)
             return
@@ -166,5 +166,9 @@ class SprintController {
                 xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
             }
         }
+    }
+
+    def show = {
+        redirect(action:'index', controller: controllerName, params:params)
     }
 }

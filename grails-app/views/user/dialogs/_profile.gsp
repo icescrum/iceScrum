@@ -23,7 +23,6 @@
 <form id="form-profile" method="post" class='box-form box-form-250 box-form-200-legend'
       onsubmit="jQuery('.ui-dialog-buttonpane button:eq(1)').click();
       return false;">
-    <input type="hidden" id="user.id" name="user.id" value="${user.id}"/>
     <input type="hidden" id="product" name="product" value="${params.product}"/>
     <input type="hidden" id="user.version" name="user.version" value="${user.version}"/>
     <is:fieldset nolegend="true" title="is.dialog.profile">

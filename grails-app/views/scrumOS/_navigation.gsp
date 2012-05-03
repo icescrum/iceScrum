@@ -244,7 +244,7 @@
                         <is:remoteDialog
                             action="openProfile"
                             controller="user"
-                            valid="[action:'update',controller:'user',onSuccess:'jQuery.icescrum.updateProfile(data)']"
+                            valid="[action:'update',controller:'user',id:user.id,onSuccess:'jQuery.icescrum.updateProfile(data)']"
                             title="is.dialog.profile"
                             width="600"
                             noprefix="true"

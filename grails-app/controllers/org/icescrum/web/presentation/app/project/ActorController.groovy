@@ -75,7 +75,7 @@ class ActorController {
 
     @Secured('productOwner() and !archivedProduct()')
     def update = {
-        withActor('actor.id'){Actor actor ->
+        withActor{Actor actor ->
             actor.properties = params.actor
             actorService.update(actor)
             this.manageAttachments(actor)
@@ -219,8 +219,12 @@ class ActorController {
         }
     }
 
-    @Cacheable(cache = 'actorCache', keyGenerator='actorKeyGenerator')
     def show = {
+        redirect(action:'index', controller: controllerName, params:params)
+    }
+
+    @Cacheable(cache = 'actorCache', keyGenerator='actorKeyGenerator')
+    def index = {
         if (request?.format == 'html'){
             render(status:404)
             return
