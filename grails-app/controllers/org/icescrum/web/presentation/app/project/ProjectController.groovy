@@ -420,18 +420,9 @@ class ProjectController {
                         render(status: 200, contentType: 'application/json', text: session.progress as JSON)
                     }
                     else if (params.get) {
-
-                        try {
-                            session.progress.updateProgress(0, message(code: 'is.export.start'))
-                            exportProduct(product)
-                            session.progress?.completeProgress(message(code: 'is.export.complete'))
-                        } catch (Exception e) {
-                            if (log.debugEnabled) e.printStackTrace()
-                            session.progress.progressError(message(code: 'is.export.error'))
-                        } finally {
-                            zipFile.delete()
-                            xml.delete()
-                        }
+                        session.progress.updateProgress(0, message(code: 'is.export.start'))
+                        exportProduct(product, true)
+                        session.progress?.completeProgress(message(code: 'is.export.complete'))
                     } else {
                         session.progress = new ProgressSupport()
                         render(template: 'dialogs/export')
@@ -439,33 +430,13 @@ class ProjectController {
                 }
                 xml {
                     if (params.zip){
-                        exportProduct(product)
+                        exportProduct(product, false)
                     }else{
                         render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
                     }
                 }
             }
         }
-    }
-
-    private exportProduct(Product product){
-
-        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
-        def zipFile = new File("${projectName}.zip")
-        def xml = new File("${projectName}.xml")
-
-        StreamCharBuffer test = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
-        xml.withWriter('UTF-8'){ out ->
-            test.writeTo(out)
-        }
-
-        def inputDir = new File(grailsApplication.config.icescrum.baseDir + File.separator + product.id)
-        ApplicationSupport.zipExportFile(zipFile,inputDir,xml)
-        ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
-            response.setHeader(k, v)
-        }
-        response.contentType = 'application/zip'
-        response.outputStream << zipFile.newInputStream()
     }
 
     @Secured('isAuthenticated()')
@@ -890,6 +861,36 @@ class ProjectController {
                 session.progress = new ProgressSupport()
                 render(template: 'dialogs/report')
             }
+        }
+    }
+
+    private exportProduct(Product product, boolean withProgress){
+
+        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+        def zipFile = new File("${projectName}.zip")
+        def xml = new File("${projectName}.xml")
+
+        try {
+            StreamCharBuffer test = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+            xml.withWriter('UTF-8'){ out ->
+                test.writeTo(out)
+            }
+
+            def inputDir = new File(grailsApplication.config.icescrum.baseDir + File.separator + product.id)
+            ApplicationSupport.zipExportFile(zipFile,inputDir,xml)
+            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+                response.setHeader(k, v)
+            }
+            response.contentType = 'application/zip'
+            response.outputStream << zipFile.newInputStream()
+        } catch (Exception e) {
+            if (log.debugEnabled)
+                e.printStackTrace()
+            if (withProgress)
+                session.progress.progressError(message(code: 'is.export.error'))
+        } finally {
+            zipFile.delete()
+            xml.delete()
         }
     }
 }
