@@ -61,14 +61,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
             this.o = jQuery.extend({}, this.defaults, icescrum);
 
-            if (this.o.widgetsList.length > 0) {
-                var tmp = this.o.widgetsList;
-                this.o.widgetsList = [];
-                for (i = 0; i < tmp.length; i++) {
-                    this.addToWidgetBar(tmp[i]);
-                }
-            }
-
             $.datepicker.setDefaults($.datepicker.regional[this.o.locale]);
             if (!$.getUrlVar('ref')){
                 var url = location.hash.replace(/^.*#/, '');
@@ -78,6 +70,23 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
 
             $.icescrum.initHistory();
+            var currentWindow = location.hash.replace(/^.*#/, '');
+            if ($.icescrum.o.baseUrlProduct && !currentWindow && $('li.menubar:first a')){
+                var window = $('li.menubar:first a').attr('href').replace(/^.*#/, '');
+                document.location.hash = window;
+                this.o.widgetsList = $.grep($.icescrum.o.widgetsList, function(value) {
+                    return value != window;
+                });
+            }
+
+            if (this.o.widgetsList.length > 0) {
+                var tmp = this.o.widgetsList;
+                this.o.widgetsList = [];
+                for (i = 0; i < tmp.length; i++) {
+                    this.addToWidgetBar(tmp[i]);
+                }
+            }
+
             if (this.o.push.enable){
                 $.icescrum.listenServer();
             }

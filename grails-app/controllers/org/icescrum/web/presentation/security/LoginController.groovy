@@ -55,8 +55,6 @@ class LoginController {
      */
     def grailsApplication
 
-    def menuBarSupport
-
     /**
      * Default action; redirects to 'defaultTargetUrl' if logged in, /username/auth otherwise.
      */
@@ -181,9 +179,7 @@ class LoginController {
     def ajaxSuccess = {
         User u = (User)springSecurityService.currentUser
         if (u.preferences.lastProductOpened){
-            def firstMenu = u.preferences.menu.find{ it.value == '1' }?.key
-            def url = grailsApplication.config.grails.serverURL+'/p/'+u.preferences.lastProductOpened+'#'
-            url = firstMenu && menuBarSupport.permissionDynamicBar(url+firstMenu) ? (url + firstMenu) : url+'project'
+            def url = grailsApplication.config.grails.serverURL+'/p/'+u.preferences.lastProductOpened
             render(status:200, contentType: 'application/json', text:[url:url] as JSON)
         }else{
             render(status:200, text:'')
