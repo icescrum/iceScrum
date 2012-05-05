@@ -49,6 +49,8 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
 import feedsplugin.FeedBuilder
 import com.sun.syndication.io.SyndFeedOutput
+import org.codehaus.groovy.grails.web.util.StreamCharBuffer
+import org.apache.commons.io.FilenameUtils
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
@@ -418,17 +420,35 @@ class ProjectController {
                         render(status: 200, contentType: 'application/json', text: session.progress as JSON)
                     }
                     else if (params.get) {
+
+                        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+                        def zipFile = new File("${projectName}.zip")
+                        def xml = new File("${projectName}.xml")
+
                         try {
-                            session.progress = new ProgressSupport()
                             session.progress.updateProgress(0, message(code: 'is.export.start'))
-                            response.setHeader "Content-disposition", "attachment; filename=${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}.xml"
-                            render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+                            StreamCharBuffer test = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+                            xml.withWriter('UTF-8'){ out ->
+                                test.writeTo(out)
+                            }
+
+                            def inputDir = new File(grailsApplication.config.icescrum.baseDir + File.separator + product.id)
+                            ApplicationSupport.zipExportFile(zipFile,inputDir,xml)
+                            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+                                response.setHeader(k, v)
+                            }
+                            response.contentType = 'application/zip'
+                            response.outputStream << zipFile.newInputStream()
                             session.progress?.completeProgress(message(code: 'is.export.complete'))
                         } catch (Exception e) {
                             if (log.debugEnabled) e.printStackTrace()
                             session.progress.progressError(message(code: 'is.export.error'))
+                        } finally {
+                            zipFile.delete()
+                            xml.delete()
                         }
                     } else {
+                        session.progress = new ProgressSupport()
                         render(template: 'dialogs/export')
                     }
                 }
@@ -450,7 +470,7 @@ class ProjectController {
 
         def user = User.load(springSecurityService.principal.id)
         if (params.cancel) {
-            session.tmpP = null
+            session['import'] = null
             session.progress = null
             render(status: 200)
             return
@@ -463,8 +483,23 @@ class ProjectController {
             }
             if (uploadedProject) {
                 session.progress = new ProgressSupport()
-                session.tmpP = productService.parseXML(uploadedProject, session.progress)
-                session.tmpXmlPath = uploadedProject.absolutePath
+                session['import'] = [:]
+                if (FilenameUtils.getExtension(uploadedProject.name) == 'xml'){
+                    if (log.debugEnabled){ log.debug 'Export is an xml file, processing now' }
+                    session['import']?.product = productService.parseXML(uploadedProject, session.progress)
+                    session['import']?.path = uploadedProject.absolutePath
+                } else if (FilenameUtils.getExtension(uploadedProject.name) == 'zip'){
+                    if (log.debugEnabled){ log.debug 'Export is a zipped file, unzipping now' }
+                    def tmpDir = ApplicationSupport.createTempDir(FilenameUtils.getBaseName(uploadedProject.name))
+                    ApplicationSupport.unzip(uploadedProject,tmpDir)
+                    def xmlFile = tmpDir.listFiles().find { !it.isDirectory() && FilenameUtils.getExtension(it.name) == 'xml' }
+                    if (xmlFile.exists()){
+                        session['import']?.path = tmpDir.absolutePath
+                        session['import']?.product = productService.parseXML(xmlFile, session.progress)
+                    }else{
+                        session.progress.progressError(message(code:'is.error'))    
+                    }
+                }
             }
         }
         else if (params.status) {
@@ -478,22 +513,22 @@ class ProjectController {
             session.progress = null
         }
 
-        if (session.tmpP) {
+        if (session['import']) {
             def unValidableErrors = this.validateImport()
             if (unValidableErrors) {
-                session.tmpP = null
+                session['import'] = null
                 session.progress = null
                 render(status: 400, contentType: 'application/json', text: [notice: [text: unValidableErrors, type: 'error']] as JSON)
                 return
 
             } else {
-                def importMustChangeValues = session.tmpP.hasErrors() ?: (true in session.tmpP.teams*.hasErrors()) ?: (true in session.tmpP.getAllUsers()*.hasErrors())
+                def importMustChangeValues = session['import'].product.hasErrors() ?: (true in session['import'].product.teams*.hasErrors()) ?: (true in session['import'].product.getAllUsers()*.hasErrors())
                 render(template: 'dialogs/import', model: [
                         user: user,
-                        product: session.tmpP,
+                        product: session['import'].product,
                         importMustChangeValues: importMustChangeValues,
-                        teamsErrors: session.tmpP.teams.findAll {it.hasErrors()},
-                        usersErrors: session.tmpP.getAllUsers().findAll {it.hasErrors()}
+                        teamsErrors: session['import'].product.teams.findAll {it.hasErrors()},
+                        usersErrors: session['import'].product.getAllUsers().findAll {it.hasErrors()}
                 ])
             }
         } else {
@@ -510,13 +545,13 @@ class ProjectController {
             }
         }
 
-        if (!session.tmpP) {
+        if (!session['import']) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.import.error.no.backup']] as JSON)
             return
         }
 
         if (params.team?.name) {
-            session.tmpP.teams.each {
+            session['import'].product.teams.each {
                 if (params.team.name."${it.uid}") {
                     it.name = params.team.name."${it.uid}"
                 }
@@ -524,7 +559,7 @@ class ProjectController {
         }
 
         if (params.user?.username) {
-            session.tmpP.teams.each {
+            session['import'].product.teams.each {
                 it.members.each {it2 ->
                     if (params.user.username."${it2.uid}") {
                         it2.username = params.user.username."${it2.uid}"
@@ -539,7 +574,7 @@ class ProjectController {
         }
 
         if (params.productOwner?.username) {
-            session.tmpP.productOwners.each {
+            session['import'].product.productOwners.each {
                 if (params.productOwner.username."${it.uid}") {
                     it.username = params.productOwner.username."${it.uid}"
                 }
@@ -550,10 +585,10 @@ class ProjectController {
         if (params.productd?.int('erasableByUser')) {
             erasableByUser = params.productd?.int('erasableByUser') ? true : false
         }
-        session.tmpP.erasableByUser = erasableByUser
+        session['import'].product.erasableByUser = erasableByUser
         if (!erasableByUser && params.productd?.pkey != null && params.productd?.name != null) {
-            session.tmpP.pkey = params.productd.pkey
-            session.tmpP.name = params.productd.name
+            session['import'].product.pkey = params.productd.pkey
+            session['import'].product.name = params.productd.name
         }
         def errors = this.validateImport(true, erasableByUser)
         if (errors) {
@@ -563,7 +598,7 @@ class ProjectController {
 
         Product.withTransaction { status ->
             try {
-                productService.saveImport(session.tmpP, params.productd?.name, session.tmpXmlPath)
+                productService.saveImport(session['import'].product, params.productd?.name, session['import'].path)
             } catch (IllegalStateException ise) {
                 status.setRollbackOnly()
                 render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
@@ -575,15 +610,14 @@ class ProjectController {
                 render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.import.error')]] as JSON)
                 return
             }
-            render(status:200, contentType:'application/json', text:session.tmpP as JSON)
-            session.tmpP = null
-            session.tmpXmlPath = null
+            render(status:200, contentType:'application/json', text:session['import'].product as JSON)
+            session['import'] = null
         }
     }
 
     private def validateImport(def full = false, def erasableByUser = false) {
 
-        def p = session.tmpP
+        def p = session['import'].product
         productService.validate(p, session.progress)
         def beansErrors = null
 
@@ -602,7 +636,7 @@ class ProjectController {
             }
 
             if (!pass) {
-                beansErrors = renderErrors(bean: session.tmpP)
+                beansErrors = renderErrors(bean: session['import'].product)
             } else if (p.errors) {
                 log.info("Product validation with warning (${p.name}): " + p.errors)
             } else {

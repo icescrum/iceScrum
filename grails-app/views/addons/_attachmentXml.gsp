@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2012 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,19 +18,8 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
---}%<is:objectAsXML object="${object}" node="actor" indentLevel="${indentLevel}" root="${root}">
-    <is:propertyAsXML name="['instances','expertnessLevel','useFrequency','creationDate']"/>
-    <is:propertyAsXML name="['name','satisfactionCriteria','notes','description']" cdata="true"/>
-    <is:listAsXML
-            name="stories"
-            template="/xml/story"
-            child="story"
-            deep="${deep}"
-            indentLevel="${indentLevel + 1}"/>
-    <is:listAsXML
-            name="attachments"
-            template="/addons/attachmentXml"
-            child="attachment"
-            deep="${deep}"
-            indentLevel="${indentLevel + 1}"/>
+--}%
+<is:objectAsXML object="${object}" node="attachment" indentLevel="${indentLevel}" root="${root}">
+    <is:propertyAsXML name="['ext','length','posterClass','posterId','dateCreated']"/>
+    <is:propertyAsXML name="['name','inputName','contentType']" cdata="true"/>
 </is:objectAsXML>

@@ -37,27 +37,27 @@
     <is:listAsXML
             name="releases"
             child="release"
-            deep="['release','sprint','task','cliche','story','comment','activity', 'acceptanceTest']"
+            deep="['release','sprint','task','cliche','story','comment','activity', 'acceptanceTest', 'attachment']"
             template="/release/xml"/>
     <% session.progress?.updateProgress(30, message(code: 'is.export.inprogress', args: [message(code: 'is.actor')])) %>
     <is:listAsXML
             name="actors"
             child="actor"
             template="/actor/xml"
-            deep="['actor']"/>
+            deep="['actor','attachment']"/>
     <% session.progress?.updateProgress(40, message(code: 'is.export.inprogress', args: [message(code: 'is.feature')])) %>
     <is:listAsXML
             name="features"
             child="feature"
             template="/feature/xml"
-            deep="['feature']"/>
+            deep="['feature','attachment']"/>
     <% session.progress?.updateProgress(50, message(code: 'is.export.inprogress', args: [message(code: 'is.story')])) %>
     <is:listAsXML
             expr="${{it.parentSprint == null}}"
             name="stories"
             template="/story/xml"
             child="story"
-            deep="['story','task','comment','activity', 'acceptanceTest']"/>
+            deep="['story','task','comment','activity','acceptanceTest','activity','attachment']"/>
     <% session.progress?.updateProgress(80, message(code: 'is.export.inprogress', args: [message(code: 'is.cliche')])) %>
     <is:listAsXML
             name="cliches"

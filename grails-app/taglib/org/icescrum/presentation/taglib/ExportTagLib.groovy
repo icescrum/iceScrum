@@ -22,12 +22,14 @@
  */
 package org.icescrum.presentation.taglib
 
+import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil
+
 class ExportTagLib {
   static namespace = 'is'
 
   def objectAsXML = { attrs,body ->
     assert attrs.object
-    pageScope.object = attrs.object
+    pageScope.object = GrailsHibernateUtil.unwrapIfProxy(attrs.object)
     pageScope.propertiesObject = []
     pageScope.listsObjects = []
     pageScope.propertiesChildObject = []

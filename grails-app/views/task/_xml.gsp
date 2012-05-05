@@ -23,4 +23,10 @@
     <is:propertyAsXML object="creator"/>
     <is:propertyAsXML object="responsible"/>
     <is:propertyAsXML name="['name','description','notes']" cdata="true"/>
+    <is:listAsXML
+            name="attachments"
+            template="/addons/attachmentXml"
+            child="attachment"
+            deep="${deep}"
+            indentLevel="${indentLevel + 1}"/>
 </is:objectAsXML>

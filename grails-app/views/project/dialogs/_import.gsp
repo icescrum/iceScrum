@@ -30,7 +30,7 @@
           <is:fieldFile noborder="true" label="is.dialog.importProject.choose.file">
             <is:multiFilesUpload elementId="inportProductXml"
                           name="file"
-                          accept="['xml']"
+                          accept="['xml','zip']"
                           urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
                           multi="1"
                           params="[product:params.product]"

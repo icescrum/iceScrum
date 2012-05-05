@@ -25,6 +25,8 @@
     <is:listAsXML
             name="tasks"
             template="/task/xml"
+            deep="${deep}"
+            child="task"
             indentLevel="${indentLevel + 1}"
             expr="${{it.parentStory == null}}"/>
     <is:listAsXML

@@ -27,4 +27,10 @@
             child="story"
             deep="${deep}"
             indentLevel="${indentLevel + 1}"/>
+    <is:listAsXML
+            name="attachments"
+            template="/addons/attachmentXml"
+            child="attachment"
+            deep="${deep}"
+            indentLevel="${indentLevel + 1}"/>
 </is:objectAsXML>
