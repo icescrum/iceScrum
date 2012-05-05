@@ -27,6 +27,7 @@
             productOwner:${request.productOwner},
             scrumMaster:${request.scrumMaster},
             teamMember:${request.teamMember},
+            stakeHolder:${request.stakeHolder},
             i18n:{
                 addRoleProduct:"${message(code:'is.user.role.added.product')}",
                 updateRoleProduct:"${message(code:'is.user.role.updated.product')}",
@@ -70,7 +71,8 @@
         },
         <g:if test="${product}">
         product:{
-            currentProduct:${product.id},
+            id:${product.id},
+            pkey:"${product.pkey}",
             limitUrgentTasks:${product.preferences.limitUrgentTasks},
             hidden:${product.preferences.hidden},
             displayUrgentTasks:${product.preferences.displayUrgentTasks},

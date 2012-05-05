@@ -50,7 +50,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             dialogErrorContent:null,
             openWindow:false,
             locale:'en',
-            currentProductName:null,
             push:{enable:true,websocket:false},
             selectedObject:{obj:'',time:'',callback:''}
         },
@@ -254,7 +253,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                     .removeClass('loading')
                                     .html(data);
                             if (typeof save != 'undefined' && save) {
-                                $.cookie(container + $.icescrum.o.currentProductName, url);
+                                $.cookie(container + $.icescrum.product.id, url);
                             }
                             var test = /\/(.*)\//;
                             var match = test.exec(url);
@@ -275,7 +274,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         displayChartFromCookie:function(container, url, save) {
-            var saveChartType = $.cookie(container + $.icescrum.o.currentProductName);
+            var saveChartType = $.cookie(container + $.icescrum.product.id);
             if (saveChartType) {
                 this.displayChart(container, saveChartType, false);
             } else {

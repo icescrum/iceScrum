@@ -47,35 +47,19 @@ class UtilsTagLib {
     def grailsApplication
     def springcacheService
     def loadJsVar = { attrs, body ->
-        def opts = ''
-        def current
-        if (params.product) {
-            current = pageScope.product
-            opts = """currentProductName :'${current.name.encodeAsJavaScript()}',"""
-
-        }
-        def p = []
+        def current = params.product ? pageScope.product : null
+        def p = current ? [product: current.id] : []
         def widgetsList = session.widgetsList
-        def controllerSpace = 'scrumOS'
-        if (params.product) {
-            p = [product: current.id]
-        } else if (params.team) {
-            p = [team: current.id]
-            controllerSpace = 'team'
-            widgetsList = session.widgetsTeamList
-        }
-
         def locale = attrs.locale ? attrs.locale.replace('_', '-') : RCU.getLocale(request).toString().replace('_', '-')
         def jsCode = """var icescrum = {
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
                           baseUrl: "${createLink(controller: 'scrumOS')}",
-                          baseUrlProduct: ${p ? '\'' + createLink(controller: controllerSpace, params: p) + '/\'' : null},
-                          streamUrl: "${createLink(controller: 'scrumOS')}stream/app${params.product ? '?product=' + current.id : params.team ? '?team=' + current.id : '' }",
-                          ${opts}
-                          urlOpenWidget:"${createLink(controller: controllerSpace, action: 'openWidget', params: p)}",
-                          urlCloseWidget:"${createLink(controller: controllerSpace, action: 'closeWidget', params: p)}",
-                          urlOpenWindow:"${createLink(controller: controllerSpace, action: 'openWindow', params: p)}",
-                          urlCloseWindow:"${createLink(controller: controllerSpace, action: 'closeWindow', params: p)}",
+                          baseUrlProduct: ${p ? '\'' + createLink(controller: 'scrumOS', params: p) + '/\'' : null},
+                          streamUrl: "${createLink(controller: 'scrumOS')}stream/app${params.product ? '?product=' + current.id : '' }",
+                          urlOpenWidget:"${createLink(controller: 'scrumOS', action: 'openWidget', params: p)}",
+                          urlCloseWidget:"${createLink(controller: 'scrumOS', action: 'closeWidget', params: p)}",
+                          urlOpenWindow:"${createLink(controller: 'scrumOS', action: 'openWindow', params: p)}",
+                          urlCloseWindow:"${createLink(controller: 'scrumOS', action: 'closeWindow', params: p)}",
                           deleteConfirmMessage:"${message(code: 'is.confirm.delete').encodeAsJavaScript()}",
                           cancelFormConfirmMessage:"${message(code: 'is.confirm.cancel.form').encodeAsJavaScript()}",
                           widgetsList:${params.product ? widgetsList as JSON ?: [] : []},

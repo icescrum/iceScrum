@@ -33,7 +33,7 @@
                     scrumMaster:false,
                     productOwner:false,
                     teamMember:false,
-                    stackHolder:true,
+                    stakeHolder:true,
                     poOrSm:function() {
                         return (this.scrumMaster || this.productOwner);
                     },
@@ -51,7 +51,7 @@
                             }
                         }
                         $.icescrum.renderNotice($.icescrum.user.i18n.addRoleProduct+' '+this.product.name);
-                        if ($.icescrum.product.currentProduct && $.icescrum.product.currentProduct == this.product.id){
+                        if ($.icescrum.product.id && $.icescrum.product.id == this.product.id){
                             $.doTimeout(500, function() {
                                 document.location.reload(true);
                             });
@@ -64,7 +64,7 @@
                             $('div#menu-project li#my-projects').hide();
                         }
                         $.icescrum.renderNotice($.icescrum.user.i18n.removeRoleProduct+' '+this.product.name);
-                        if ($.icescrum.product.currentProduct && $.icescrum.product.currentProduct == this.product.id){
+                        if ($.icescrum.product.id && $.icescrum.product.id == this.product.id){
                             $.doTimeout(500, function() {
                                 document.location = $.icescrum.o.baseUrl;
                             });
@@ -73,7 +73,7 @@
 
                     updateRoleProduct:function(){
                         $.icescrum.renderNotice($.icescrum.user.i18n.updateRoleProduct+' '+this.product.name);
-                        if ($.icescrum.product.currentProduct && $.icescrum.product.currentProduct == this.product.id){
+                        if ($.icescrum.product.id && $.icescrum.product.id == this.product.id){
                             $.doTimeout(500, function() {
                                 document.location.reload(true);
                             });
@@ -83,7 +83,8 @@
 
 
                 product: {
-                    currentProduct:null,
+                    id:null,
+                    pkey:null,
                     displayUrgentTasks:true,
                     displayRecurrentTasks:true,
                     assignOnBeginTask:false,
@@ -102,10 +103,19 @@
                     },
 
                     update:function() {
-                        if (this.id == $.icescrum.product.currentProduct){
-                            if (this.preferences.hidden != $.icescrum.product.hidden){
+                        if (this.id == $.icescrum.product.id){
+                            if (this.pkey != $.icescrum.product.pkey){
                                 alert($.icescrum.product.i18n.updated);
-                                document.location = $.icescrum.o.baseUrl;
+                                var view = $.icescrum.o.currentOpenedWindow ? $.icescrum.o.currentOpenedWindow.data('id') : 'project';
+                                document.location = $.icescrum.o.baseUrl + 'p/' + this.pkey + '#' + view;
+                                return;
+                            }
+                            if (this.preferences.hidden != $.icescrum.product.hidden && $.icescrum.user.stakeHolder && this.preferences.hidden){
+                                alert($.icescrum.product.i18n.updated);
+                                $.doTimeout(500, function() {
+                                    document.location.reload(true);
+                                });
+                                return;
                             }
                             if ($.icescrum.product.displayUrgentTasks != this.preferences.displayUrgentTasks){
                                 $('tr.row-urgent-task').toggle();
@@ -140,14 +150,14 @@
                     },
 
                     remove:function() {
-                        if (this.id == $.icescrum.product.currentProduct){
+                        if (this.id == $.icescrum.product.id){
                             alert($.icescrum.product.i18n.deleted);
                             document.location = $.icescrum.o.baseUrl;
                         }
                     },
 
                     archive:function() {
-                        if (this.id == $.icescrum.product.currentProduct){
+                        if (this.id == $.icescrum.product.id){
                             alert($.icescrum.product.i18n.archived);
                             $.doTimeout(500, function() {
                                 document.location.reload(true);
@@ -156,7 +166,7 @@
                     },
 
                     unarchive:function() {
-                        if (this.id == $.icescrum.product.currentProduct){
+                        if (this.id == $.icescrum.product.id){
                             alert($.icescrum.product.i18n.unArchived);
                             $.doTimeout(500, function() {
                                 document.location.reload(true);

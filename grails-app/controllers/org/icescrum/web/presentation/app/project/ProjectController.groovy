@@ -128,7 +128,7 @@ class ProjectController {
             product.properties = params.productd
 
             try {
-                productService.update(product, hasHiddenChanged)
+                productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
                 entry.hook(id:"${controllerName}-${actionName}")
             } catch (IllegalStateException ise) {
                 returnError(exception:ise)
