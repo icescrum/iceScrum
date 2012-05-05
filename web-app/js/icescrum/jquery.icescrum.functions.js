@@ -110,6 +110,9 @@
                                 document.location = $.icescrum.o.baseUrl + 'p/' + this.pkey + '#' + view;
                                 return;
                             }
+
+                            $("div#menu-project .dropmenu-button span.content").text(this.name);
+
                             if (this.preferences.hidden != $.icescrum.product.hidden && $.icescrum.user.stakeHolder && this.preferences.hidden){
                                 alert($.icescrum.product.i18n.updated);
                                 $.doTimeout(500, function() {
