@@ -210,9 +210,16 @@
 
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'comment',events:['add','update','remove']], [object:'acceptancetest',events:['add','update','remove']]]"
+            events="[[object:'comment',events:['add','update','remove']]]"
+            constraint="comment.backlogElement == ${story.id}"
             template="storyDetail"/>
 <is:onStream
             on="#details-${story.id}"
             events="[[object:'comment',events:['add','update','remove']]]"
+            constraint="comment.backlogElement == ${story.id}"
             template="storyDetailSummary"/>
+<is:onStream
+            on="#details-${story.id}"
+            events="[[object:'acceptancetest',events:['add','update','remove']]]"
+            constraint="acceptancetest.parentStory.id == ${story.id}"
+            template="storyDetail"/>
