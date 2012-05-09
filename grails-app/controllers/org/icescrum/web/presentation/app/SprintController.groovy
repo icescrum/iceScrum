@@ -61,8 +61,8 @@ class SprintController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, next: next?.id ?: null] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
+                json { renderRESTJSON(sprint) }
+                xml  { renderRESTXML(sprint) }
             }
         }
     }
@@ -86,8 +86,8 @@ class SprintController {
             sprintService.save(sprint, release)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: sprint as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
+                json { renderRESTJSON(sprint, status:201) }
+                xml  { renderRESTXML(sprint, status:201) }
             }
         } catch (IllegalStateException e) {
             returnError(exception:e)
@@ -103,8 +103,8 @@ class SprintController {
                 def deletedSprints = sprintService.delete(sprint)
                 withFormat {
                     html { render(status: 200, contentType: 'application/json', text: deletedSprints as JSON)  }
-                    json { render(status: 200, contentType: 'application/json', text: 'success' as JSON) }
-                    xml { render(status: 200, contentType: 'text/xml', text: 'success' as XML) }
+                    json { render(status: 204, contentType: 'application/json', text: '') }
+                    xml { render(status: 204, contentType: 'text/xml', text: '') }
                 }
             } catch (IllegalStateException e) {
                 returnError(exception:e)
@@ -122,8 +122,8 @@ class SprintController {
             def unPlanAllStories = storyService.unPlanAll([sprint])
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
+                json { render(status: 204, contentType: 'application/json', text: '') }
+                xml  { render(status: 204, contentType: 'text/xml', text: '') }
             }
         }
     }
@@ -134,8 +134,8 @@ class SprintController {
             sprintService.activate(sprint)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
+                json { renderRESTJSON(sprint) }
+                xml  { renderRESTXML(sprint) }
             }
         }
     }
@@ -147,8 +147,8 @@ class SprintController {
             sprintService.close(sprint)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
+                json { renderRESTJSON(sprint) }
+                xml  { renderRESTXML(sprint) }
             }
         }
     }
@@ -162,8 +162,8 @@ class SprintController {
 
         withSprint{ Sprint sprint ->
             withFormat {
-                json { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: sprint as XML) }
+                json { renderRESTJSON(sprint) }
+                xml  { renderRESTXML(sprint) }
             }
         }
     }

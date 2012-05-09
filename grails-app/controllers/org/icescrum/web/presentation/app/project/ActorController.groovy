@@ -27,7 +27,6 @@ package org.icescrum.web.presentation.app.project
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
-import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
@@ -63,8 +62,8 @@ class ActorController {
             this.manageAttachments(actor)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: actor as JSON }
-                json { render status: 200, contentType: 'application/json', text: actor as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: actor  as XML }
+                json { renderRESTJSON(actor, status:201) }
+                xml  { renderRESTXML(actor, status:201) }
             }
         } catch (RuntimeException e) {
             returnError(exception:e, object:actor)
@@ -106,8 +105,8 @@ class ActorController {
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [actor: actor, next: next] as JSON }
-                json { render status: 200, contentType: 'application/json', text: actor as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: actor  as XML }
+                json { renderRESTJSON(actor) }
+                xml  { renderRESTXML(actor) }
             }
         }
     }
@@ -122,8 +121,8 @@ class ActorController {
             params.list('id').each { ids << [id: it] }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: ids as JSON }
-                json { render status: 200, text: [result:'success'] as JSON }
-                xml { render status: 200, text: [result:'success']  as XML }
+                json { render status: 204, contentType: 'application/json', text: '' }
+                xml { render status: 204, contentType: 'text/xml', text: '' }
             }
         }
     }
@@ -149,8 +148,8 @@ class ActorController {
                         instancesSelect: instancesSelect,
                         levelsSelect: levelsSelect])
             }
-            json { render status: 200, contentType: 'application/json', text: actors as JSON }
-            xml { render status: 200, contentType: 'text/xml', text: actors  as XML }
+            json { renderRESTJSON(actors) }
+            xml  { renderRESTXML(actors) }
          }
     }
 
@@ -232,8 +231,8 @@ class ActorController {
 
         withActor{ Actor actor ->
             withFormat {
-                json { render(status: 200, contentType: 'application/json', text: actor as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: actor as XML) }
+                json { renderRESTJSON(actor) }
+                xml  { renderRESTXML(actor) }
             }
         }
     }

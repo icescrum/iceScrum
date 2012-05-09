@@ -132,7 +132,7 @@ class ScrumOSController {
                     height: uiDefinition.widget?.height,
                     hasTitleBarContent: uiDefinition.widget?.titleBarContent,
                     title: message(code: uiDefinition.widget?.title),
-                    init: uiDefinition.widget?.init,
+                    init: uiDefinition.widget?.init
             ], {})
         }
     }
@@ -187,7 +187,7 @@ class ScrumOSController {
                     maximizeable: uiDefinition.window?.maximizeable,
                     closeable: uiDefinition.window?.closeable,
                     widgetable: uiDefinition.widget ? true : false,
-                    init: params.actionWindow ?: uiDefinition.window?.init,
+                    init: params.actionWindow ?: uiDefinition.window?.init
             ], {})
         }
     }

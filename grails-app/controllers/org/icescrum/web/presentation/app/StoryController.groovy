@@ -28,10 +28,8 @@ import org.icescrum.core.utils.BundleUtils
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Product
-
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.User
-
 import grails.converters.JSON
 import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
@@ -52,13 +50,6 @@ class StoryController {
     def springSecurityService
     def securityService
     def acceptanceTestService
-
-    def allowedMethods = [
-            ['save','rank','estimate','unPlan','plan','done','unDone','accept','copy','associateFeature']:['POST'],
-            ['edit','list','show','download']:['GET'],
-            ['update']:['PUT','POST'],
-            ['delete']:['DELETE','POST']
-    ]
 
     def toolbar = {
         withStory { Story story ->
@@ -101,10 +92,10 @@ class StoryController {
                 render(status: 403)
             } else {
                  withFormat {
-                    json { render(status: 200, contentType: 'application/json', text: story as JSON) }
-                    xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
+                    json { renderRESTJSON(text:story) }
+                    xml  { renderRESTXML(text:story) }
                     html {
-                         def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.uid)
+                        def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.uid)
                         def criteria = FollowLink.createCriteria()
                         def isFollower = false
                         if (user) {
@@ -164,8 +155,8 @@ class StoryController {
             this.manageAttachments(story)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
-                json { render status: 200, contentType: 'application/json', text: story as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: story as XML }
+                json { renderRESTJSON(text:story, status:201) }
+                xml  { renderRESTXML(text:story, status:201) }
             }
         } catch (AttachmentException e) {
             returnError(exception:e)
@@ -217,7 +208,8 @@ class StoryController {
             def skipUpdate = false
 
             if (params.story.rank && story.rank != params.story.rank.toInteger()) {
-                storyService.rank(story, params.story.rank.toInteger())
+                int rank = params.story.rank.toInteger()
+                storyService.rank(story, rank)
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
             }
@@ -288,8 +280,8 @@ class StoryController {
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [story: story, next: next?.id ?: null] as JSON }
-                json { render status: 200, contentType: 'application/json', text:story as JSON }
-                xml { render status: 200, contentType: 'text/xml', text:story as XML }
+                json { renderRESTJSON(text:story) }
+                xml  { renderRESTXML(text:story) }
             }
         }
     }
@@ -301,8 +293,8 @@ class StoryController {
             storyService.delete(stories)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: ids as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: [result: 'success'] as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: [result: 'success'] as XML) }
+                json { render(status: 204, contentType: 'application/json', text: '') }
+                xml { render(status: 204, contentType: 'text/xml', text: '') }
             }
         }
     }
@@ -374,7 +366,7 @@ class StoryController {
     @Secured('productOwner() and !archivedProduct()')
     def rank = {
         withStory{ Story story ->
-            def position = params.story.rank.toInteger()
+            int position = params.story.rank.toInteger()
             if (story == null || position == null)
                 returnError(text:message(code: 'is.story.rank.error'))
             if (storyService.rank(story, position)) {
@@ -396,8 +388,8 @@ class StoryController {
             storyService.estimate(story,params.story.effort)
             withFormat {
                 html { render(status: 200, text: params.story.effort)  }
-                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
+                json { renderRESTJSON(text:story) }
+                xml  { renderRESTXML(text:story) }
             }
         }
     }
@@ -421,8 +413,8 @@ class StoryController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [story: story, sprint: sprint] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
+                json { renderRESTJSON(text:story) }
+                xml  { renderRESTXML(text:story) }
             }
         }
     }
@@ -447,8 +439,8 @@ class StoryController {
                 }
                 withFormat {
                     html { render(status: 200, contentType: 'application/json', text: [story: story, oldSprint: oldSprint] as JSON)  }
-                    json { render(status: 200, contentType: 'application/json', text: story as JSON) }
-                    xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
+                    json { renderRESTJSON(text:story) }
+                    xml  { renderRESTXML(text:story) }
                 }
             }
         }
@@ -461,8 +453,8 @@ class StoryController {
                 storyService.associateFeature(feature, story)
                 withFormat {
                     html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                    json { render(status: 200, contentType: 'application/json', text: story as JSON) }
-                    xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
+                    json { renderRESTJSON(text:story) }
+                    xml  { renderRESTXML(text:story) }
                 }
             }
         }
@@ -474,8 +466,8 @@ class StoryController {
             storyService.done(story)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
+                json { renderRESTJSON(text:story) }
+                xml  { renderRESTXML(text:story) }
             }
         }
     }
@@ -486,8 +478,8 @@ class StoryController {
             storyService.unDone(story)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: story as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: story as XML) }
+                json { renderRESTJSON(text:story) }
+                xml  { renderRESTXML(text:story) }
             }
         }
     }
@@ -506,8 +498,8 @@ class StoryController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [id: storiesIds, objects: storiesJ] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: storiesJ as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: storiesJ as XML) }
+                json { renderRESTJSON(text:storiesJ) }
+                xml  { renderRESTXML(text:storiesJ) }
             }
         }
     }
@@ -523,8 +515,8 @@ class StoryController {
             def copiedStories = storyService.copy(stories)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: copiedStories as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: copiedStories as XML) }
+                json { renderRESTJSON(text:copiedStories) }
+                xml  { renderRESTXML(text:copiedStories) }
             }
         }
     }
@@ -544,8 +536,8 @@ class StoryController {
         def currentProduct = Product.load(params.product)
         def stories = (params.term) ? Story.findInStories(params.long('product'), '%' + params.term + '%').list() : Story.findAllByBacklog(currentProduct, [sort: 'id', order: 'asc'])
         withFormat {
-            json { render(status: 200, contentType: 'application/json', text: stories as JSON) }
-            xml { render(status: 200, contentType: 'text/xml', text: stories as XML) }
+            json { renderRESTJSON(text:stories) }
+            xml  { renderRESTXML(text:stories) }
         }
     }
 
@@ -600,8 +592,8 @@ class StoryController {
         }
 
         withFormat {
-            json { render(status: 200, contentType: 'application/json', text: comment as JSON) }
-            xml { render(status: 200, contentType: 'text/xml', text: comment as XML) }
+            json { renderRESTJSON(text:comment) }
+            xml  { renderRESTXML(text:comment) }
         }
     }
 
@@ -635,8 +627,8 @@ class StoryController {
             broadcast(function: 'add', message: myComment)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text:myComment as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: comment as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: comment as XML) }
+                json { renderRESTJSON(text:comment) }
+                xml  { renderRESTXML(text:comment) }
             }
         } catch (Exception e) {
             log.error "Error posting comment: ${e.message}"
@@ -681,8 +673,8 @@ class StoryController {
             broadcast(function: 'update', message: myComment)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text:myComment as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: comment as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: comment as XML) }
+                json { renderRESTJSON(text:comment) }
+                xml  { renderRESTXML(text:comment) }
             }
         } catch (RuntimeException e) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
@@ -840,8 +832,8 @@ class StoryController {
             return
         }
         withFormat {
-            json { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON) }
-            xml { render(status: 200, contentType: 'text/xml', text: acceptanceTest as XML) }
+            json { renderRESTJSON(text:acceptanceTest) }
+            xml  { renderRESTXML(text:acceptanceTest) }
         }
     }
 
@@ -849,13 +841,13 @@ class StoryController {
     def saveAcceptanceTest = {
         def acceptanceTest = new AcceptanceTest(params.acceptanceTest as Map)
         def parentStory = Story.getInProduct(params.long('product'),params.long('parentStoryId')).list()[0]
-        def user = springSecurityService.currentUser
+        User user = (User)springSecurityService.currentUser
         try {
             acceptanceTestService.save(acceptanceTest, parentStory, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: acceptanceTest as XML) }
+                json { renderRESTJSON(text:acceptanceTest) }
+                xml  { renderRESTXML(text:acceptanceTest) }
             }
         }
         catch (RuntimeException e) {
@@ -881,12 +873,12 @@ class StoryController {
         }
         try {
             acceptanceTest.properties = params.acceptanceTest
-            def user = springSecurityService.currentUser
+            User user = (User)springSecurityService.currentUser
             acceptanceTestService.update(acceptanceTest, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: acceptanceTest as XML) }
+                json { renderRESTJSON(text:acceptanceTest) }
+                xml  { renderRESTXML(text:acceptanceTest) }
             }
         } catch (RuntimeException e) {
             returnError(object: acceptanceTest, exception: e)

@@ -23,11 +23,9 @@
 package org.icescrum.web.presentation.app
 
 import org.icescrum.core.domain.User
-
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Sprint
-
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.converters.XML
@@ -35,9 +33,6 @@ import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.icescrum.core.domain.Product
-import org.grails.followable.FollowLink
-import grails.util.GrailsNameUtils
-import org.springframework.web.servlet.support.RequestContextUtils
 
 @Secured('inProduct()')
 class TaskController {
@@ -45,13 +40,6 @@ class TaskController {
     def securityService
     def springSecurityService
     def taskService
-
-    def allowedMethods = [
-            ['save', 'take', 'unassign', 'copy', 'estimate', 'rank', 'block', 'unblock', 'state']: ['POST'],
-            ['list', 'show', 'download']: ['GET'],
-            ['update']: ['PUT', 'POST'],
-            ['delete']: ['DELETE', 'POST']
-    ]
 
     def toolbar = {
         withTask { Task task ->
@@ -78,8 +66,8 @@ class TaskController {
                 return
             } else {
                  withFormat {
-                    json { render(status: 200, contentType: 'appplication/json', text: task as JSON) }
-                    xml  { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                    json { renderRESTJSON(task) }
+                    xml  { renderRESTXML(task) }
                     html {
                         render(view: 'details', model: [
                             task: task,
@@ -121,8 +109,8 @@ class TaskController {
             this.manageAttachments(task)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                json { renderRESTJSON(task, status:201) }
+                xml  { renderRESTXML(task, status:201) }
             }
         } catch (AttachmentException e) {
             returnError(object: task, exception: e)
@@ -187,8 +175,8 @@ class TaskController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [task: task, next: next?.id] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                json { renderRESTJSON(task) }
+                xml  { renderRESTXML(task) }
             }
         }
     }
@@ -200,8 +188,8 @@ class TaskController {
             taskService.assign(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                json { renderRESTJSON(task) }
+                xml  { renderRESTXML(task) }
             }
         }
     }
@@ -213,8 +201,8 @@ class TaskController {
             taskService.unassign(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                json { render(status: 204, contentType: 'application/json', text: '') }
+                xml  { render(status: 204, contentType: 'text/xml', text: '') }
             }
         }
     }
@@ -230,8 +218,8 @@ class TaskController {
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: idj as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: [result: 'success'] as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: [result: 'success'] as JSON) }
+                json { render(status: 204, contentType: 'application/json', text: '') }
+                xml { render(status: 204, contentType: 'text/xml', text: '') }
             }
         }
     }
@@ -243,8 +231,8 @@ class TaskController {
             def copiedTask = taskService.copy(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: copiedTask as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: copiedTask as JSON) }
-                xml { render(status: 200,  contentType: 'text/xml',  text: copiedTask as XML) }
+                json { renderRESTJSON(copiedTask,status:201) }
+                xml { renderRESTXML(copiedTask,status:201) }
             }
         }
     }
@@ -258,8 +246,8 @@ class TaskController {
             taskService.update(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                json { renderRESTJSON(task) }
+                xml  { renderRESTXML(task) }
             }
         }
     }
@@ -272,8 +260,8 @@ class TaskController {
             taskService.update(task, user)
             withFormat {
                 html { render(status: 200)  }
-                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                json { renderRESTJSON(task) }
+                xml  { renderRESTXML(task) }
             }
         }
     }
@@ -295,8 +283,8 @@ class TaskController {
             taskService.rank(task, position)
             withFormat {
                 html { render(status: 200)  }
-                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                json { renderRESTJSON(task) }
+                xml  { renderRESTXML(task) }
             }
         }
     }
@@ -367,8 +355,8 @@ class TaskController {
             taskService.rank(task, params.int('position'))
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [task:task, story:task.parentStory?.state == Story.STATE_DONE ? task.parentStory : null] as JSON)  }
-                json { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: task as XML) }
+                json { renderRESTJSON(task) }
+                xml  { renderRESTXML(task) }
             }
         }
     }
@@ -407,9 +395,21 @@ class TaskController {
         }
 
         withFormat {
-            json { render(status: 200, contentType: 'appplication/json', text: tasks as JSON) }
-            xml { render(status: 200, contentType: 'text/xml', text: tasks as XML) }
-            html { render(status: 200, contentType: 'text/xml', text: tasks as XML) }
+            html { render(status: 200, contentType: 'text/xml', text: tasks as JSON) }
+            json { renderRESTJSON(tasks) }
+            xml  { renderRESTXML(tasks) }
+        }
+    }
+
+    def summaryPanel = {
+        withTask { Task task ->
+            def summary = task.getActivities()
+            summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
+            render(template: "/backlogElement/summary",
+                    model: [summary: summary,
+                            backlogElement: task,
+                            product: Product.get(params.long('product'))
+                    ])
         }
     }
 
@@ -446,18 +446,6 @@ class TaskController {
                     }
                 }
             }
-        }
-    }
-
-    def summaryPanel = {
-        withTask { Task task ->
-            def summary = task.getActivities()
-            summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
-            render(template: "/backlogElement/summary",
-                    model: [summary: summary,
-                            backlogElement: task,
-                            product: Product.get(params.long('product'))
-                    ])
         }
     }
 }

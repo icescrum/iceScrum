@@ -44,7 +44,7 @@ class ReleaseController {
         withRelease{ Release release ->
             // If the version is different, the release has been modified since the last loading
             if (params.long('release.version') != release.version) {
-                returnError(text:message(code: 'is.release.object', args: [message(code: 'is.release')]))
+                returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.release')]))
                 return
             }
 
@@ -60,8 +60,8 @@ class ReleaseController {
                 }
                 withFormat {
                     html { render status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON }
-                    json { render status: 200, contentType: 'application/json', text: release as JSON }
-                    xml { render status: 200, contentType: 'text/xml', text: release as XML }
+                    json { renderRESTJSON(release) }
+                    xml  { renderRESTXML(release) }
                 }
             } catch (IllegalStateException e) {
                 returnError(exception:e)
@@ -85,8 +85,8 @@ class ReleaseController {
             releaseService.save(release, currentProduct)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 200, contentType: 'application/json', text: release as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: release as XML }
+                json { renderRESTJSON(release, status: 201) }
+                xml  { renderRESTXML(release, status: 201) }
             }
         }catch (IllegalStateException e) {
             returnError(exception:e)
@@ -101,8 +101,8 @@ class ReleaseController {
             releaseService.delete(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 200, contentType: 'application/json', text: release as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: release as XML }
+                json { render status: 204, contentType: 'application/json', text: '' }
+                xml  { render status: 204, contentType: 'application/json', text: '' }
             }
         }
     }
@@ -113,8 +113,8 @@ class ReleaseController {
             releaseService.close(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 200, contentType: 'application/json', text: release as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: release as XML }
+                json { renderRESTJSON(release) }
+                xml  { renderRESTXML(release) }
             }
         }
     }
@@ -125,8 +125,8 @@ class ReleaseController {
             releaseService.activate(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 200, contentType: 'application/json', text: release as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: release as XML }
+                json { renderRESTJSON(release) }
+                xml  { renderRESTXML(release) }
             }
         }
     }
@@ -137,8 +137,8 @@ class ReleaseController {
             def plannedStories = storyService.autoPlan(release, params.double('capacity'))
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: plannedStories as JSON }
-                json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
+                json { renderRESTJSON(plannedStories, status: 201) }
+                xml { renderRESTXML(plannedStories, status: 201) }
             }
         }
     }
@@ -150,8 +150,8 @@ class ReleaseController {
             def unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON }
-                json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
+                json { render status: 204, contentType: 'application/json', text: '' }
+                xml { render status: 204, contentType: 'text/xml', text: '' }
             }
         }
     }
@@ -162,8 +162,8 @@ class ReleaseController {
             def sprints = sprintService.generateSprints(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: sprints as JSON }
-                json { render status: 200, contentType: 'application/json', text: [result: 'success'] as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: [result: 'success'] as XML }
+                json { renderRESTJSON(sprints, status: 201) }
+                xml { renderRESTXML(sprints, status: 201) }
             }
         }
     }
@@ -177,8 +177,8 @@ class ReleaseController {
 
         withRelease{ Release release ->
             withFormat {
-                json { render(status: 200, contentType: 'application/json', text: release as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: release as XML) }
+                json { renderRESTJSON(release) }
+                xml  { renderRESTXML(release) }
             }
         }
     }

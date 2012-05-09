@@ -88,22 +88,32 @@ grails.mail.props = ["mail.smtp.auth":"true",
 /*
   Push section
  */
-icescrum.json.backlogElement = ['totalAttachments','version']
-icescrum.json.actor = icescrum.json.backlogElement.clone()
-icescrum.json.feature = icescrum.json.backlogElement.clone()
-icescrum.json.story = icescrum.json.backlogElement.clone()
-icescrum.json.story << 'totalComments' << 'tasks'
-icescrum.json.sprint = ['activable','totalRemainingHours']
-icescrum.json.task = icescrum.json.backlogElement.clone()
-icescrum.json.task << 'sprint'
-icescrum.json.productPreferences = []
+icescrum.marshaller = [
+        actor:[include:['totalAttachments']],
+        task:[include:['totalAttachments','sprint']],
+        feature:[include:['totalAttachments'],
+                 asShort:['color', 'name']],
+        story:[include:['totalAttachments','totalComments','tasks'],
+               asShort:['state', 'effort']],
+        sprint:[include:['activable','totalRemainingHours'],
+                asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
+        release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber']],
+        user:[asShort:['firstName', 'lastName']],
+        productPreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']]
+]
 
-icescrum.json.shortObject.feature = ['color', 'name']
-icescrum.json.shortObject.release = ['name', 'state', 'endDate', 'startDate', 'orderNumber']
-icescrum.json.shortObject.sprint = ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']
-icescrum.json.shortObject.user = ['firstName', 'lastName']
-icescrum.json.shortObject.story = ['state', 'effort']
-icescrum.json.shortObject.productpreferences = ['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']
+icescrum.restMarshaller = [
+        //global exclude
+        exclude:['dateCreated','totalAttachments','totalComments'],
+        story:[exclude:['affectVersion','origin','backlog']],
+        feature: [exclude: ['parentDomain','backlog']],
+        actor: [exclude: ['backlog']],
+        task:[exclude:['impediment']],
+        product:[exclude: ['domains','impediments','goal']],
+        sprint:[exclude: ['description','goal']],
+        team:[exclude: ['velocity','description','preferences']],
+        user: [exclude: ['password','accountExpired','accountLocked','passwordExpired']]
+]
 
 /*
     Check for update
@@ -251,6 +261,8 @@ log4j = {
         }
         additivity = true
     }
+
+    off 'org.codehaus.groovy.grails.web.converters.JSONParsingParameterCreationListener'
 }
 
 /*

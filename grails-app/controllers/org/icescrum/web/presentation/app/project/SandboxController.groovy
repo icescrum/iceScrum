@@ -25,9 +25,7 @@
 package org.icescrum.web.presentation.app.project
 
 import org.icescrum.core.support.ProgressSupport
-
 import org.icescrum.core.utils.BundleUtils
-
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Story

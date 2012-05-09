@@ -27,8 +27,6 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.utils.BundleUtils
-import org.icescrum.core.domain.security.Authority
-
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 

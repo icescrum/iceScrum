@@ -24,9 +24,7 @@
 package org.icescrum.web.presentation.app.project
 
 import org.icescrum.core.support.ProgressSupport
-
 import org.icescrum.core.utils.BundleUtils
-
 import grails.converters.JSON
 import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
@@ -51,8 +49,8 @@ class FeatureController {
             this.manageAttachments(feature)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: feature as JSON }
-                json { render status: 200, contentType: 'application/json', text: feature as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: feature  as XML }
+                json { renderRESTJSON(feature, status:201) }
+                xml  { renderRESTXML(feature, status:201) }
             }
         } catch (RuntimeException e) {
                 returnError(exception:e, object:feature)
@@ -106,8 +104,8 @@ class FeatureController {
                 }
                 withFormat {
                     html { render status: 200, contentType: 'application/json', text: [feature: feature, next: next?.id ?: null] as JSON }
-                    json { render status: 200, contentType: 'application/json', text: feature as JSON }
-                    xml { render status: 200, contentType: 'text/xml', text: feature  as XML }
+                    json { renderRESTJSON(feature) }
+                    xml  { renderRESTXML(feature) }
                 }
             }
         }
@@ -123,8 +121,8 @@ class FeatureController {
             params.list('id').each { ids << [id: it] }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: ids as JSON }
-                json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
+                json { render status: 204, contentType: 'application/json', text: '' }
+                xml { render status: 204, contentType: 'text/xml', text: '' }
             }
         }
     }
@@ -156,8 +154,8 @@ class FeatureController {
                 }
                 render(template: template, model: [features: features, effortFeature: effortFeature, linkedDoneStories: linkedDoneStories,typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
             }
-            json { render status: 200, contentType: 'application/json', text: features as JSON }
-            xml { render status: 200, contentType: 'text/xml', text: features  as XML }
+            json { renderRESTJSON(features) }
+            xml  { renderRESTXML(features) }
         }
     }
 
@@ -171,8 +169,8 @@ class FeatureController {
             if (featureService.rank(feature, position)) {
                withFormat {
                     html { render status: 200, text:'success' }
-                    json { render status: 200, contentType: 'application/json', text: feature as JSON }
-                    xml { render status: 200, contentType: 'text/xml', text: feature as XML }
+                    json { renderRESTJSON(feature) }
+                    xml  { renderRESTXML(feature) }
                 }
             } else {
                 returnError(text:message(code: 'is.feature.rank.error'))
@@ -220,8 +218,8 @@ class FeatureController {
             def story = featureService.copyToBacklog(feature)
             withFormat {
                 html { render status: 200, text:'success' }
-                json { render status: 200, contentType: 'application/json', text: story as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: story as XML }
+                json { renderRESTJSON(story, status:201) }
+                xml  { renderRESTXML(story, status:201) }
             }
         }
     }
@@ -295,8 +293,8 @@ class FeatureController {
 
         withFeature{ Feature feature ->
             withFormat {
-                json { render(status: 200, contentType: 'application/json', text: feature as JSON) }
-                xml { render(status: 200, contentType: 'text/xml', text: feature as XML) }
+                json { renderRESTJSON(text:feature) }
+                xml { renderRESTXML(text:feature) }
             }
         }
     }
