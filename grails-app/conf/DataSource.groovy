@@ -43,8 +43,8 @@ environments {
             username="root"
             password="root"
             dbCreate = "update"*/
-            dbCreate = "update" // one of 'create', 'create-drop','update'
-            url = "jdbc:hsqldb:file:prodDba"
+            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            url = "jdbc:hsqldb:file:devDba"
             loggingSql = false
         }
     }
