@@ -21,11 +21,12 @@
 --}%
 
 <%@ page import="org.icescrum.core.domain.Story;" %>
+<g:set var="creator" value="${story.creator.id == user?.id}"/>
 
 <is:iconButton
         action="editStory"
         controller="story"
-        rendered="${request.productOwner  || story.creator.id == user?.id}"
+        rendered="${request.productOwner  || creator}"
         id="${story.id}"
         params="[product:params.product]"
         title="${message(code:'is.ui.backlogelement.toolbar.update')}"
@@ -34,7 +35,7 @@
     ${message(code: 'is.ui.backlogelement.toolbar.update')}
 </is:iconButton>
 
-<is:separatorSmall rendered="${request.productOwner  || story.creator.id == user?.id}"/>
+<is:separatorSmall rendered="${request.productOwner  || creator}"/>
 
 %{--View--}%
 <is:panelButton
@@ -95,7 +96,7 @@
         action="delete"
         controller="story"
         id="${params.id}"
-        rendered="${request.productOwner}"
+        rendered="${(request.productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED)}"
         title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
         alt="${message(code:'is.ui.backlogelement.toolbar.delete')}"
         onSuccess="jQuery.icescrum.openWindow('${story.state > Story.STATE_SUGGESTED ? 'backlog' : 'sandbox'}');
@@ -104,7 +105,7 @@
     ${message(code: 'is.ui.backlogelement.toolbar.delete')}
 </is:iconButton>
 
-<is:separator rendered="${request.productOwner}"/>
+<is:separator rendered="${(request.productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED)}"/>
 
 <is:iconButton
         onclick="jQuery.icescrum.openCommentTab('#comments');"
