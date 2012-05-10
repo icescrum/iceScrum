@@ -169,7 +169,8 @@
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
                  values="${suiteSelect}"
-                 callback="jQuery(this).next().show();"
+                 ajaxoptions = "{dataType:'json'}"
+                 callback="jQuery(this).html(value.effort);jQuery(this).next().show();"
                  params="[product:params.product]"/>
 
     <is:editable rendered="${sprint.state != Sprint.STATE_DONE}"

@@ -128,7 +128,8 @@
                  cancel="jQuery(original).next().show();"
                  values="${suiteSelect}"
                  restrictOnNotAccess='teamMember() or scrumMaster()'
-                 callback="jQuery(this).next().show();"
+                 ajaxoptions = "{dataType:'json'}"
+                 callback="jQuery(this).next().show();jQuery(this).html(value.effort);jQuery.event.trigger('sprintMesure_sprint', value.parentSprint);"
                  params="[product:params.product]"/>
 </jq:jquery>
 

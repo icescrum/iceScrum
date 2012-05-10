@@ -59,7 +59,8 @@
                   before:'$(this).next().hide();',
                   cancel:'jQuery(original).next().show();',
                   values:suiteSelect,
-                  callback:'if (value == \'?\'){jQuery(this).next().html(\''+message(code:'is.story.state.accepted')+'\');}else{jQuery(this).next().html(\''+message(code:'is.story.state.estimated')+'\')} $(this).next().show(); $.icescrum.story.backlogTitleDetails();',
+                  ajaxoptions:'{dataType:\'json\'}',
+                  callback:'jQuery(this).html(value.effort);if (value == \'?\'){jQuery(this).next().html(\''+message(code:'is.story.state.accepted')+'\');}else{jQuery(this).next().html(\''+message(code:'is.story.state.estimated')+'\')} $(this).next().show(); $.icescrum.story.backlogTitleDetails(); ',
                   params:[product:params.product]]"
         value="${stories}"
         var="story">
