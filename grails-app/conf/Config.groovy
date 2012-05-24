@@ -182,7 +182,7 @@ environments {
         icescrum.debug.enable = true
         grails.entryPoints.debug = false
         grails.tomcat.nio = true
-        grails.resources.debug=true
+        //grails.resources.debug=true
     }
     test {
         icescrum.debug.enable = true
