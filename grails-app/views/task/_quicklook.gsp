@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Task" %>
 <div class="postit-details quicklook" elemid="${task.id}" type="task">
@@ -90,7 +91,7 @@
                        type="task"
                        typeNumber="${task.blocked ? 1 : 0}"
                        typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
-                       color="yellow"
+                       color="${task.color}"
                        stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
                        miniValue="${task.estimation ?: task.estimation == 0?'0':'?'}">
             </is:postit>

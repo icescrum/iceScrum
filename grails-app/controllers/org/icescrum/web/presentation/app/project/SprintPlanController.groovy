@@ -19,6 +19,8 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
+ * Jeroen Broekhuizen (Jeroen.Broekhuizen@quintiq.com)
  *
  */
 
@@ -237,6 +239,8 @@ class SprintPlanController {
                 sprint: sprint,
                 stories: selectList,
                 selected: selected,
+				colorsLabels: BundleUtils.taskColorsSelect.values().collect { message(code: it) },
+                colorsKeys: BundleUtils.taskColorsSelect.keySet().asList(),
                 params: [product: params.product, id: sprint.id]
         ])
     }
@@ -264,6 +268,8 @@ class SprintPlanController {
                     selected: selected,
                     next: next?.id ?: '',
                     sprint: task.backlog,
+					colorsLabels: BundleUtils.taskColorsSelect.values().collect { message(code: it) },
+					colorsKeys: BundleUtils.taskColorsSelect.keySet().asList(),
                     params: [product: params.product, id: task.id]
             ])
         }

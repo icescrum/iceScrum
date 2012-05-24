@@ -19,6 +19,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:tableView>
 
@@ -73,7 +74,7 @@
                 </is:tableColumn>
 
                 <is:tableColumn
-                        editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+                        editable="[type:'text', disabled:!taskEditable,name:'name']"><is:postitIcon color="${task.color}"/> ${task.name.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn
                         editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                         bundle="taskStates" value="${task.state}"/></is:tableColumn>
@@ -126,7 +127,7 @@
                 </is:tableColumn>
 
                 <is:tableColumn
-                        editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+                        editable="[type:'text', disabled:!taskEditable,name:'name']"><is:postitIcon color="${task.color}"/> ${task.name.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn
                         editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                         bundle="taskStates" value="${task.state}"/></is:tableColumn>
@@ -182,7 +183,7 @@
                     </is:tableColumn>
 
                     <is:tableColumn
-                            editable="[type:'text', disabled:!taskEditable,name:'name']">${task.name.encodeAsHTML()}</is:tableColumn>
+                            editable="[type:'text', disabled:!taskEditable,name:'name']"><is:postitIcon color="${task.color}"/> ${task.name.encodeAsHTML()}</is:tableColumn>
                     <is:tableColumn
                             editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                             bundle="taskStates" value="${task.state}"/></is:tableColumn>

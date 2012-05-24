@@ -19,6 +19,8 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
+- Jeroen Broekhuizen (Jeroen.Broekhuizen@quintiq.com)
 --}%
 <g:form action="save" name="${controllerName}-form" method="post" elemid="${task?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
 
@@ -38,9 +40,26 @@
             <is:input id="taskestimation" name="task.estimation" value="${task?.estimation}" typed="[type:'numeric',allow:'?.,']"/>
         </is:fieldInput>
 
-        <is:fieldArea for="taskdescription" label="is.backlogelement.description" noborder="true">
+        <is:fieldArea for="taskdescription" label="is.backlogelement.description">
             <is:area id="taskdescription" name="task.description" value="${task?.description}" large="true" rows="7"/>
         </is:fieldArea>
+
+        <is:fieldSelect for="taskcolor" label="is.task.color" noborder="true">
+            <is:select id="taskcolor" name="task.color" container=".window-content" width="100" maxHeight="200"
+                       styleSelect="dropdown" from="${colorsLabels}" keys="${colorsKeys}" value="${task?.color}"
+                       onchange="jQuery('#postit-ipsum-1').find('.postit-layout').removeClass().addClass('postit-layout postit-'+this.value);"/>
+        </is:fieldSelect>
+        <div class="select-lorem-rect">
+            <is:postit color="${task?.color}"
+                       title="Lorem ipsum dolor"
+                       id="1"
+                       miniId="1"
+                       type="ipsum"
+                       stateBundle="Ipsum"
+                       rect="true">
+                Lorem ipsum dolor sit amet, consectetur...
+            </is:postit>
+        </div>
 
     </is:fieldset>
 

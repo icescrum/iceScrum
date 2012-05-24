@@ -21,6 +21,7 @@
  * Stéphane Maldini (stephane.maldini@icescrum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  * Damien Vitrac (damien@oocube.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -1094,6 +1095,11 @@ li#li-roles {
 
 .select-lorem {
     height: 110px;
+    position: relative;
+}
+
+.select-lorem-rect {
+    height: 75px;
     position: relative;
 }
 

@@ -44,6 +44,9 @@
                     <is:panelLine legend="${message(code:'is.task.type')}" rendered="${task.parentStory == null}">
                         ${message(code: taskTypeCode)}
                     </is:panelLine>
+                    <is:panelLine legend="${message(code:'is.task.color')}">
+                        <is:postitIcon color="${task.color}"/>
+                    </is:panelLine>
                     <is:panelLine legend="${message(code:'is.task.estimation')}" rendered="${task.estimation != null}">
                         ${task.estimation}
                     </is:panelLine>

@@ -18,6 +18,8 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
+- Jeroen Broekhuizen (Jeroen.Broekhuizen@quintiq.com)
 --}%
 
 <%@ page import="org.icescrum.core.domain.Sprint; org.icescrum.core.domain.Task" %>
@@ -43,7 +45,7 @@
            stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
            miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
            editableEstimation="${taskEditable}"
-           color="yellow"
+           color="${task.color}"
            rect="true">
             <g:if test="${request.inProduct}">
                 <is:postitMenu id="task-${task.id}"

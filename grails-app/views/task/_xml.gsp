@@ -18,8 +18,9 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%<is:objectAsXML object="${object}" node="task" indentLevel="${indentLevel}" root="${root}">
-    <is:propertyAsXML name="['estimation','type','state','rank','creationDate','inProgressDate','doneDate','blocked']"/>
+    <is:propertyAsXML name="['estimation','type','state','rank','creationDate','inProgressDate','doneDate','blocked','color']"/>
     <is:propertyAsXML object="creator"/>
     <is:propertyAsXML object="responsible"/>
     <is:propertyAsXML name="['name','description','notes']" cdata="true"/>

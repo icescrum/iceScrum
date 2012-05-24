@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Task; org.icescrum.core.domain.Sprint" %>
 <g:set var="task" value="[id:'?**=this.id**?',
@@ -56,7 +57,7 @@
                stateText="?**=resp**?"
                attachment="${task.totalAttachments}"
                miniValue="?**=estimation**?"
-               color="yellow"
+               color="?**=this.color**?"
                rect="true">
         <g:if test="${request.inProduct}">
             <is:postitMenu id="task-${task.id}"

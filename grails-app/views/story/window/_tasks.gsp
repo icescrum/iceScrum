@@ -32,7 +32,7 @@
                     <is:tableHeader name="${message(code:'is.task.responsible')}"/>
                     <is:tableHeader name="${message(code:'is.task.state')}"/>
                         <is:tableRows in="${story.tasks}" rowClass="${{task -> task.blocked?'ico-task-1':''}}" var="task">
-                            <is:tableColumn><is:scrumLink controller="task" id="${task.id}">${task.name.encodeAsHTML()}</is:scrumLink></is:tableColumn>
+                            <is:tableColumn><is:postitIcon color="${task.color}"/> <is:scrumLink controller="task" id="${task.id}">${task.name.encodeAsHTML()}</is:scrumLink></is:tableColumn>
                             <is:tableColumn>${task.estimation >= 0 ? task.estimation.round(2) : '?'}</is:tableColumn>
                             <is:tableColumn>${task.creator.firstName.encodeAsHTML()} ${task.creator.lastName.encodeAsHTML()}</is:tableColumn>
                             <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
