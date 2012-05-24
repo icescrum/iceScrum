@@ -26,7 +26,6 @@
 
         checkBars:function() {
             $.icescrum.checkMenuBar();
-            $.icescrum.checkToolbar();
         },
 
         checkMenuBar:function() {
@@ -60,28 +59,6 @@
             // Update the arrow visibility
             var visibility = $('.menubar', $listHidden).size() == 0 ? 'hidden' : 'visible';
             $arrow.css('visibility', visibility)
-        },
-
-        checkToolbar:function() {
-            var $windowContent = $('.window-content');
-            var $overflowToolbar = $('#toolbar-overflow');
-            var $toolbar = $('.box-navigation:has(ul#window-toolbar)');
-            if($toolbar.size() > 0 && $overflowToolbar.size() > 0 && $windowContent.size() > 0) {
-                $toolbar.css('overflow', 'scroll');
-                var scrollHeight = $toolbar[0].scrollHeight;
-                $toolbar.css('overflow', 'visible');
-                if(scrollHeight > $toolbar.height()) {
-                    if($overflowToolbar.is(':hidden')) {
-                        $overflowToolbar.show();
-                        updateTop($windowContent, $overflowToolbar.height());
-                    }
-                } else {
-                    if($overflowToolbar.is(':visible')) {
-                        updateTop($windowContent, -$overflowToolbar.height());
-                        $overflowToolbar.hide();
-                    }
-                }
-            }
         }
     })
 })(jQuery);
