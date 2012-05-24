@@ -239,7 +239,7 @@ class SprintPlanController {
                 sprint: sprint,
                 stories: selectList,
                 selected: selected,
-				colorsLabels: BundleUtils.taskColorsSelect.values().collect { message(code: it) },
+                colorsLabels: BundleUtils.taskColorsSelect.values().collect { message(code: it) },
                 colorsKeys: BundleUtils.taskColorsSelect.keySet().asList(),
                 params: [product: params.product, id: sprint.id]
         ])
@@ -268,8 +268,8 @@ class SprintPlanController {
                     selected: selected,
                     next: next?.id ?: '',
                     sprint: task.backlog,
-					colorsLabels: BundleUtils.taskColorsSelect.values().collect { message(code: it) },
-					colorsKeys: BundleUtils.taskColorsSelect.keySet().asList(),
+                    colorsLabels: BundleUtils.taskColorsSelect.values().collect { message(code: it) },
+                    colorsKeys: BundleUtils.taskColorsSelect.keySet().asList(),
                     params: [product: params.product, id: task.id]
             ])
         }
