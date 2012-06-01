@@ -36,7 +36,7 @@
         <is:fieldDatePicker for="startDate" label="is.release.startDate">
             <is:datePicker
                     id="startDate"
-                    name="startDate"
+                    name="release.startDate"
                     mode="read-input"
                     changeMonth="true"
                     changeYear="true"
@@ -48,7 +48,7 @@
         <is:fieldDatePicker for="endDate" label="is.release.endDate" noborder="true">
             <is:datePicker
                     id="endDate"
-                    name="endDate"
+                    name="release.endDate"
                     minDate="${previousRelease && !release ? previousRelease.endDate + 2 : (previousRelease && release ? previousRelease.endDate + 2: product.startDate + 1)}"
                     defaultDate="${release ? release.endDate : (previousRelease ? previousRelease.endDate + 2 : product.startDate + 1)}"
                     disabled="${release ? release.state == Release.STATE_DONE : false}"

@@ -43,14 +43,16 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def save = {
-        def feature = new Feature(params.feature as Map)
+        def feature = new Feature()
+        bindData(feature, this.params, [include:['name','description','notes','color','type','value']], "feature")
+
         try {
             featureService.save(feature, Product.get(params.product))
             this.manageAttachments(feature)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: feature as JSON }
-                json { renderRESTJSON(feature, status:201) }
-                xml  { renderRESTXML(feature, status:201) }
+                json { renderRESTJSON(text:feature, status:201) }
+                xml  { renderRESTXML(text:feature, status:201) }
             }
         } catch (RuntimeException e) {
                 returnError(exception:e, object:feature)
@@ -63,7 +65,7 @@ class FeatureController {
     def update = {
         withFeature{ Feature feature ->
              // If the version is different, the feature has been modified since the last loading
-            if (params.long('feature.version') != feature.version) {
+            if (params.feature.version && params.long('feature.version') != feature.version) {
                 returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.feature')]))
                 return
             }
@@ -80,7 +82,9 @@ class FeatureController {
                 if(!feature.color.equals(params.feature.color)) {
                     feature.stories*.lastUpdated = new Date()
                 }
-                feature.properties = params.feature
+
+                bindData(feature, this.params, [include:['name','description','notes','color','type','value']], "feature")
+
                 this.manageAttachments(feature)
                 featureService.update(feature)
 
@@ -104,8 +108,8 @@ class FeatureController {
                 }
                 withFormat {
                     html { render status: 200, contentType: 'application/json', text: [feature: feature, next: next?.id ?: null] as JSON }
-                    json { renderRESTJSON(feature) }
-                    xml  { renderRESTXML(feature) }
+                    json { renderRESTJSON(text:feature) }
+                    xml  { renderRESTXML(text:feature) }
                 }
             }
         }
@@ -154,23 +158,23 @@ class FeatureController {
                 }
                 render(template: template, model: [features: features, effortFeature: effortFeature, linkedDoneStories: linkedDoneStories,typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
             }
-            json { renderRESTJSON(features) }
-            xml  { renderRESTXML(features) }
+            json { renderRESTJSON(text:features) }
+            xml  { renderRESTXML(text:features) }
         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def rank = {
         withFeature{ Feature feature ->
-            def position = params.int('feature.rank')
-            if (feature == null || position == null) {
+            Integer rank = params.feature.rank instanceof Number ? params.feature.rank : params.feature.rank.isNumber() ? params.feature.rank.toInteger() : null
+            if (feature == null || rank == null) {
                 returnError(text:message(code: 'is.feature.rank.error'))
             }
-            if (featureService.rank(feature, position)) {
+            if (featureService.rank(feature, rank)) {
                withFormat {
                     html { render status: 200, text:'success' }
-                    json { renderRESTJSON(feature) }
-                    xml  { renderRESTXML(feature) }
+                    json { renderRESTJSON(text:feature) }
+                    xml  { renderRESTXML(text:feature) }
                 }
             } else {
                 returnError(text:message(code: 'is.feature.rank.error'))
@@ -218,8 +222,8 @@ class FeatureController {
             def story = featureService.copyToBacklog(feature)
             withFormat {
                 html { render status: 200, text:'success' }
-                json { renderRESTJSON(story, status:201) }
-                xml  { renderRESTXML(story, status:201) }
+                json { renderRESTJSON(text:story, status:201) }
+                xml  { renderRESTXML(text:story, status:201) }
             }
         }
     }
@@ -307,7 +311,7 @@ class FeatureController {
         def user = springSecurityService.currentUser
         def needPush = false
 
-        if (feature.id && !params.feature.list('attachments') && feature.attachments*.id.size() > 0) {
+        if (params.feature.attachments && feature.id && !params.feature.list('attachments') && feature.attachments*.id.size() > 0) {
             feature.removeAllAttachments()
             needPush = true
         } else if (feature.attachments*.id.size() > 0) {

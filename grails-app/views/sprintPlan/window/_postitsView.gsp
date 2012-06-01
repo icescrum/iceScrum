@@ -203,7 +203,7 @@
                                    action:'state',
                                    onFailure:'jQuery(ui.sender).sortable(\'cancel\');',
                                    onSuccess:'data.story ? jQuery.event.trigger(\'update_story\',data.story) : jQuery.event.trigger(\'update_task\',data.task);',
-                                   params:'\'state=\'+jQuery(this).attr(\'type\')+\'&product='+params.product+'&id=\'+ui.item.attr(\'elemid\')+\'&position=\'+(jQuery(this).find(\'.postit-rect\').index(ui.item)+1)+ (jQuery(this).parent().attr(\'type\') ? \'&task.type=\'+jQuery(this).parent().attr(\'type\') : \'\') + (jQuery(this).parent().attr(\'elemid\') ? \'&story.id=\'+jQuery(this).parent().attr(\'elemid\') : \'\')',
+                                   params:'\'task.state=\'+jQuery(this).attr(\'type\')+\'&product='+params.product+'&id=\'+ui.item.attr(\'elemid\')+\'&task.rank=\'+(jQuery(this).find(\'.postit-rect\').index(ui.item)+1)+ (jQuery(this).parent().attr(\'type\') ? \'&task.type=\'+jQuery(this).parent().attr(\'type\') : \'\') + (jQuery(this).parent().attr(\'elemid\') ? \'&task.parentStory.id=\'+jQuery(this).parent().attr(\'elemid\') : \'\')',
                                    before:'if(jQuery(ui.placeholder).hasClass(\'no-drop\')){jQuery(ui.sender).sortable(\'cancel\'); return;}')}"/>
 </jq:jquery>
 <is:shortcut key="space"

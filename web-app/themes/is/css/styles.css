@@ -1670,6 +1670,10 @@ li#li-roles {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
+#about-tabs ul.ui-tabs-nav {
+    border-bottom: 1px solid #DDDDDD;
+}
+
 .buildinfos-table {
     width: 100%;
     border-width: 1px;

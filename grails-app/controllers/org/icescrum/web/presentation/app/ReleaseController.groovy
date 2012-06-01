@@ -31,6 +31,7 @@ import grails.converters.JSON
 import grails.converters.XML
 import grails.plugins.springsecurity.Secured
 import grails.plugin.springcache.annotations.Cacheable
+import com.sun.org.apache.regexp.internal.RE
 
 @Secured('inProduct()')
 class ReleaseController {
@@ -40,58 +41,59 @@ class ReleaseController {
     def storyService
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def update = {
-        withRelease{ Release release ->
-            // If the version is different, the release has been modified since the last loading
-            if (params.long('release.version') != release.version) {
-                returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.release')]))
-                return
-            }
+    def save = {
+        withProduct { Product product ->
+            def release = new Release()
 
-            def startDate = params.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.startDate) : release.startDate
-            def endDate = new Date().parse(message(code: 'is.date.format.short'), params.endDate)
-            release.properties = params.release
+            if (params.release.startDate)
+                params.release.startDate = new Date().parse(message(code: 'is.date.format.short'), params.release.startDate)
+            if (params.release.endDate)
+                params.release.endDate = new Date().parse(message(code: 'is.date.format.short'), params.release.endDate)
+
+            bindData(release, this.params, [include:['name','goal','startDate','endDate']], "release")
 
             try {
-                releaseService.update(release, startDate, endDate)
-                def next = null
-                if (params.continue) {
-                    next = release.parentProduct.releases.find {it.orderNumber == release.orderNumber + 1}
-                }
+                releaseService.save(release, product)
                 withFormat {
-                    html { render status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON }
-                    json { renderRESTJSON(release) }
-                    xml  { renderRESTXML(release) }
+                    html { render status: 200, contentType: 'application/json', text: release as JSON }
+                    json { renderRESTJSON(text:release, status: 201) }
+                    xml  { renderRESTXML(text:release, status: 201) }
                 }
-            } catch (IllegalStateException e) {
+            }catch (IllegalStateException e) {
                 returnError(exception:e)
-            }catch (RuntimeException e) {
+            } catch (RuntimeException e) {
                 returnError(object:release, exception:e)
             }
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def save = {
-        def release = new Release(params.release as Map)
-        def currentProduct = Product.get(params.product)
-
-        if (params.startDate)
-            release.startDate = new Date().parse(message(code: 'is.date.format.short'), params.startDate)
-        if (params.endDate)
-            release.endDate = new Date().parse(message(code: 'is.date.format.short'), params.endDate)
-
-        try {
-            releaseService.save(release, currentProduct)
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { renderRESTJSON(release, status: 201) }
-                xml  { renderRESTXML(release, status: 201) }
+    def update = {
+        withRelease{ Release release ->
+            if (release.state == Release.STATE_DONE){
+                returnError(text:message(code:'is.release.error.update.state.done'))
+                return
             }
-        }catch (IllegalStateException e) {
-            returnError(exception:e)
-        } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
+            // If the version is different, the release has been modified since the last loading
+            if (params.release.version && params.long('release.version') != release.version) {
+                returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.release')]))
+                return
+            }
+
+            def startDate = params.release.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.startDate) : null
+            def endDate = params.release.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.endDate) : null
+
+            bindData(release, this.params, [include:['name','goal']], "release")
+            releaseService.update(release, startDate, endDate)
+            def next = null
+            if (params.continue) {
+                next = release.parentProduct.releases.find {it.orderNumber == release.orderNumber + 1}
+            }
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON }
+                json { renderRESTJSON(text:release) }
+                xml  { renderRESTXML(text:release) }
+            }
         }
     }
 
@@ -101,8 +103,8 @@ class ReleaseController {
             releaseService.delete(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 204, contentType: 'application/json', text: '' }
-                xml  { render status: 204, contentType: 'application/json', text: '' }
+                json { render status: 204 }
+                xml  { render status: 204 }
             }
         }
     }
@@ -113,8 +115,8 @@ class ReleaseController {
             releaseService.close(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { renderRESTJSON(release) }
-                xml  { renderRESTXML(release) }
+                json { renderRESTJSON(text:release) }
+                xml  { renderRESTXML(text:release) }
             }
         }
     }
@@ -125,8 +127,8 @@ class ReleaseController {
             releaseService.activate(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { renderRESTJSON(release) }
-                xml  { renderRESTXML(release) }
+                json { renderRESTJSON(text:release) }
+                xml  { renderRESTXML(text:release) }
             }
         }
     }
@@ -137,8 +139,8 @@ class ReleaseController {
             def plannedStories = storyService.autoPlan(release, params.double('capacity'))
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: plannedStories as JSON }
-                json { renderRESTJSON(plannedStories, status: 201) }
-                xml { renderRESTXML(plannedStories, status: 201) }
+                json { renderRESTJSON(text:plannedStories, status: 201) }
+                xml { renderRESTXML(text:plannedStories, status: 201) }
             }
         }
     }
@@ -162,8 +164,8 @@ class ReleaseController {
             def sprints = sprintService.generateSprints(release)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: sprints as JSON }
-                json { renderRESTJSON(sprints, status: 201) }
-                xml { renderRESTXML(sprints, status: 201) }
+                json { renderRESTJSON(text:sprints, status: 201) }
+                xml { renderRESTXML(text:sprints, status: 201) }
             }
         }
     }
@@ -177,14 +179,27 @@ class ReleaseController {
 
         withRelease{ Release release ->
             withFormat {
-                json { renderRESTJSON(release) }
-                xml  { renderRESTXML(release) }
+                json { renderRESTJSON(text:release) }
+                xml  { renderRESTXML(text:release) }
             }
         }
     }
 
     def show = {
         redirect(action:'index', controller: controllerName, params:params)
+    }
+
+    def list = {
+        if (request?.format == 'html'){
+            render(status:404)
+            return
+        }
+        withProduct { Product product ->
+            withFormat {
+                json { renderRESTJSON(text:product.releases) }
+                xml  { renderRESTXML(text:product.releases) }
+            }
+        }
     }
 
 }

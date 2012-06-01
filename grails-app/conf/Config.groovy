@@ -105,12 +105,13 @@ icescrum.marshaller = [
 icescrum.restMarshaller = [
         //global exclude
         exclude:['dateCreated','totalAttachments','totalComments'],
-        story:[exclude:['affectVersion','origin','backlog']],
+        story:[exclude:['affectVersion','origin','backlog','value']],
         feature: [exclude: ['parentDomain','backlog']],
         actor: [exclude: ['backlog']],
         task:[exclude:['impediment']],
-        product:[exclude: ['domains','impediments','goal']],
-        sprint:[exclude: ['description','goal']],
+        product:[exclude: ['domains','impediments','goal','cliches']],
+        sprint:[exclude: ['description','cliches']],
+        release:[exclude: ['description','cliches','numberOfDays']],
         team:[exclude: ['velocity','description','preferences']],
         user: [exclude: ['password','accountExpired','accountLocked','passwordExpired']]
 ]
@@ -234,6 +235,9 @@ log4j = {
         debug 'org.icescrum.core'
         debug 'grails.plugin.springcache'
         debug 'net.sf.jasperreports'
+        debug 'grails.app.service.com.kagilum'
+        debug 'grails.app.controller.com.kagilum'
+        debug 'grails.app.domain.com.kagilum'
         debug 'com.kagilum'
     }else{
         off 'grails.plugin.springcache'
@@ -263,6 +267,7 @@ log4j = {
     }
 
     off 'org.codehaus.groovy.grails.web.converters.JSONParsingParameterCreationListener'
+    off 'org.codehaus.groovy.grails.web.converters.XMLParsingParameterCreationListener'
 }
 
 /*

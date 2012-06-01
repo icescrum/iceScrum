@@ -31,7 +31,7 @@
         </is:fieldInput>
 
         <is:fieldSelect label="is.task.story">
-            <is:select name="story.id" container=".window-content" width="240" maxHeight="200"
+            <is:select name="task.parentStory.id" container=".window-content" width="240" maxHeight="200"
                        styleSelect="dropdown" from="${stories}" value="${selected?.id}" optionValue="name"
                        optionKey="id"/>
         </is:fieldSelect>
@@ -90,22 +90,24 @@
 
     <g:if test="${task}">
         <g:hiddenField name="task.version" value="${task.version}"/>
-        <g:hiddenField name="task.id" value="${task.id}"/>
     </g:if>
+    <g:else>
+        <g:hiddenField name="task.sprint.id" value="${sprint.id}"/>
+    </g:else>
 
     <is:buttonBar>
         <g:if test="${!task}">
             <is:button
                     id="submitAndContinueForm"
                     type="submitToRemote"
-                    url="[controller:'task', action:'save',params:[product:params.product,'sprint.id':sprint.id]]"
+                    url="[controller:'task', action:'save',params:[product:params.product]]"
                     before='if (\$.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                     onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form',['story_id']); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.saved')}')"
                     value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
             <is:button
                     id="submitForm"
                     type="submitToRemote"
-                    url="[controller:'task', action:'save',params:[product:params.product,'sprint.id':sprint.id]]"
+                    url="[controller:'task', action:'save',params:[product:params.product]]"
                     before='if (\$.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
                     onSuccess="jQuery.icescrum.navigateTo('${controllerName+'/'+sprint.id}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.saved')}')"
                     value="${message(code:'is.button.add')}"/>

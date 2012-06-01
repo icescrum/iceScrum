@@ -32,6 +32,24 @@ class RestUrlMappings {
             }
         }
 
+        "/ws/p/$product/task/$filter"(parseRequest: true) {
+            controller = 'task'
+            action = [GET: "list"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                filter(matches:/[A-Za-z]*/)
+            }
+        }
+
+        "/ws/p/$product/$sprint/task/$filter?"(parseRequest: true) {
+            controller = 'task'
+            action = [GET: "list"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                sprint(matches: /\d*/)
+            }
+        }
+
         "/ws/p/$product/$controller/$id"(parseRequest: true) {
             action = [GET: "index", PUT: "update", DELETE: "delete"]
             constraints {

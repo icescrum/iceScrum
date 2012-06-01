@@ -58,7 +58,7 @@ class SprintPlanController {
         if (!params.id) {
             sprint = Sprint.findCurrentOrNextSprint(currentProduct.id).list()[0]
         } else {
-            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
+            sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }
 
         def sprintsName = []
@@ -81,7 +81,7 @@ class SprintPlanController {
             if (sprint)
                 params.id = sprint.id
         } else {
-            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
+            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }
 
         User user = (User) springSecurityService.currentUser
@@ -107,7 +107,7 @@ class SprintPlanController {
                 return
             }
         }else{
-            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
+            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.not.exist')]] as JSON)
@@ -215,7 +215,7 @@ class SprintPlanController {
     }
 
     def add = {
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -224,7 +224,7 @@ class SprintPlanController {
 
         def selected = null
         if (params.story?.id && !(params.story.id in ['recurrent', 'urgent']))
-            selected = Story.getInProduct(params.long('product'),params.long('story.id')).list()[0]
+            selected = Story.getInProduct(params.long('product'),params.long('story.id')).list()
         else if (params.story?.id && (params.story.id in ['recurrent', 'urgent']))
             selected = [id: params.story?.id]
 
@@ -426,7 +426,7 @@ class SprintPlanController {
      */
     def print = {
         def currentProduct = Product.load(params.product)
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()[0]
+        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         def data
         def chart = null
 

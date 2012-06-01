@@ -51,7 +51,7 @@ environments {
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:hsqldb:mem:testDba"
+            url = "jdbc:hsqldb:file:testDba"
         }
     }
     production {

@@ -38,12 +38,6 @@ grails.project.war.osgi.headers = false
 if (environment != Environment.PRODUCTION){
     println "use inline plugin in env: ${environment}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
-    //grails.plugin.location.'icescrum-plugin-scm' =  '../plugins/icescrum-plugin-scm'
-    //grails.plugin.location.'icescrum-plugin-management' =  '../plugins/icescrum-plugin-management'
-}
-
-if (environment == Environment.TEST){
-    grails.plugin.location.'icescrum-test' =  '../plugins/icescrum-test'
 }
 
 coverage {
@@ -89,7 +83,7 @@ grails.project.dependency.resolution = {
     if (environment == Environment.PRODUCTION){
         plugins {
             compile "org.icescrum:icescrum-core:1.5-SNAPSHOT"
-            compile ":tomcat:1.3.7"
+            compile ":tomcat:1.3.8"
         }
     }else{
         plugins {
@@ -98,11 +92,11 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile "org.icescrum:entry-points:0.3.2"
+        compile "org.icescrum:entry-points:0.4.1"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
         compile ":feeds:1.5"
-        compile ":hibernate:1.3.7"
+        compile ":hibernate:1.3.8"
         compile ":jquery:1.7.1"
         compile ":jquery-ui:1.8.11"
         compile ":resources:1.1.6"

@@ -131,7 +131,10 @@ class StoryController {
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def save = {
-        def story = new Story(params.story as Map)
+        def story = new Story()
+
+        bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
+
         if (params.int('displayTemplate') != 1) {
             story.textAs = null
             story.textICan = null
@@ -139,7 +142,7 @@ class StoryController {
         }
 
         if (params.feature?.id) {
-            def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
+            def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()
             if (!feature){
                 returnError(text:message(code: 'is.feature.error.not.exist'))
                 return
@@ -165,6 +168,7 @@ class StoryController {
         }
     }
 
+    @Secured('isAuthenticated()')
     def update = {
         withStory{ Story story ->
             def user = springSecurityService.currentUser
@@ -201,14 +205,19 @@ class StoryController {
                     next = Story.findNextStoryBySprint(story.parentSprint.id, story.rank).list()[0]
             }
 
-            if (params.story.effort && !params.story.effort.isNumber())
-                params.story.effort = null
-
+            else if(params.story.effort){
+                try {
+                    storyService.estimate(story,params.story.effort)
+                }catch(IllegalStateException e){
+                    retunError(text:message(code:e.message))
+                    return
+                }
+            }
 
             def skipUpdate = false
 
             if (params.story.rank && story.rank != params.story.rank.toInteger()) {
-                int rank = params.story.rank.toInteger()
+                Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null
                 storyService.rank(story, rank)
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
@@ -218,7 +227,7 @@ class StoryController {
                 if (!params.sprint.id.isNumber() && story.parentSprint)
                     storyService.unPlan(story)
                 else if (params.long('sprint.id') != story.parentSprint?.id){
-                    def sprint = Sprint.getInProduct(params.long('product'),params.long('sprint.id')).list()[0]
+                    def sprint = Sprint.getInProduct(params.long('product'),params.long('sprint.id')).list()
                     if (!sprint){
                         returnError(text:message(code: 'is.sprint.error.not.exist'))
                     }else{
@@ -228,7 +237,7 @@ class StoryController {
                 params.story.rank = story.rank
             }
 
-            story.properties = params.story
+            bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
 
             if (params.int('displayTemplate') && params.int('displayTemplate') != 1) {
                 story.textAs = null
@@ -238,7 +247,7 @@ class StoryController {
             }
 
             if (params.feature?.id && story.feature?.id != params.long('feature.id')) {
-                def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()[0]
+                def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()
                 if (!feature)
                     returnError(text:message(code: 'is.feature.error.not.exist'))
                 storyService.associateFeature(feature, story)
@@ -286,6 +295,7 @@ class StoryController {
         }
     }
 
+    @Secured('isAuthenticated()')
     def delete = {
         withStories{List<Story> stories ->
             def ids = []
@@ -293,12 +303,13 @@ class StoryController {
             storyService.delete(stories)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: ids as JSON)  }
-                json { render(status: 204, contentType: 'application/json', text: '') }
-                xml { render(status: 204, contentType: 'text/xml', text: '') }
+                json { render(status: 204) }
+                xml { render(status: 204) }
             }
         }
     }
 
+    @Secured('isAuthenticated()')
     def edit = {
         def id = params.long('subid') ? 'subid' : 'id'
         withStory(id){Story story ->
@@ -321,7 +332,7 @@ class StoryController {
             def product = (Product) story.backlog
 
             def sprints = []
-            def release = Release.findCurrentOrNextRelease(story.backlog.id).list()[0];
+            def release = Release.findCurrentOrNextRelease(story.backlog.id).list()[0]
             if (story.state >= Story.STATE_ESTIMATED && release) {
                 Sprint.findAllByStateNotEqualAndParentRelease(Sprint.STATE_DONE, release, [sort: "orderNumber", order: "asc"])?.each {
                     sprints << [id: it.id, name: message(code: 'is.sprint') + ' ' + it.orderNumber]
@@ -366,14 +377,14 @@ class StoryController {
     @Secured('productOwner() and !archivedProduct()')
     def rank = {
         withStory{ Story story ->
-            int position = params.story.rank.toInteger()
-            if (story == null || position == null)
+            Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null
+            if (story == null || rank == null)
                 returnError(text:message(code: 'is.story.rank.error'))
-            if (storyService.rank(story, position)) {
+            if (storyService.rank(story, rank)) {
                 withFormat {
                     html { render(status: 200)  }
-                    json { render(status: 200, contentType: 'application/json', text: [result: 'success'] as JSON) }
-                    xml { render(status: 200, contentType: 'text/xml', text: [result: 'success'] as XML) }
+                    json { renderRESTJSON(text:story) }
+                    xml { renderRESTXML(text:story) }
                 }
             } else {
                 returnError(text:message(code: 'is.story.rank.error'))
@@ -385,11 +396,15 @@ class StoryController {
     @Secured('(teamMember() or scrumMaster()) and !archivedProduct()')
     def estimate = {
         withStory{ Story story ->
-            storyService.estimate(story,params.story.effort)
-            withFormat {
-                html { render(status: 200, text: story as JSON)  }
-                json { renderRESTJSON(text:story) }
-                xml  { renderRESTXML(text:story) }
+            try {
+                storyService.estimate(story,params.story.effort)
+                withFormat {
+                    html { render(status: 200, text: params.story.effort)  }
+                    json { renderRESTJSON(text:story) }
+                    xml  { renderRESTXML(text:story) }
+                }
+            }catch(IllegalStateException e){
+                returnError(text:message(code:e.message))
             }
         }
     }
@@ -397,6 +412,10 @@ class StoryController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def unPlan = {
         withStory { Story story ->
+            if (!story.parentSprint){
+                returnError(text:message(code:'is.story.error.not.inSprint'))
+                return
+            }
             def capacity = (story.parentSprint.state == Sprint.STATE_WAIT) ? (story.parentSprint.capacity -= story.effort) : story.parentSprint.capacity
             def sprint = [id: story.parentSprint.id, class: Sprint.class, velocity: story.parentSprint.velocity, capacity: capacity, state: story.parentSprint.state]
 
@@ -422,15 +441,14 @@ class StoryController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def plan = {
         withStory{ Story story ->
-            withSprint('sprint.id'){ Sprint sprint ->
-                if (story.parentSprint?.id == params.sprint.id?.toLong()) {
-                    render(status: 200)
-                    return
-                }
-
+            if (story.parentSprint?.id == params.sprint.id?.toLong()) {
+                returnError(text:message(code:'is.story.error.same.sprint.planned'))
+                return
+            }
+            withSprint(params.sprint.id.toLong()){ Sprint sprint ->
                 def oldSprint = null;
                 if (story.parentSprint) {
-                    def capacity = (story.parentSprint.state == Sprint.STATE_WAIT) ? (story.parentSprint.capacity -= story.effort) : story.parentSprint.capacity
+                    def capacity = (story.parentSprint.state == Sprint.STATE_WAIT) ? (story.parentSprint.capacity - story.effort) : story.parentSprint.capacity
                     oldSprint = [id: story.parentSprint.id, class: Sprint.class, velocity: story.parentSprint.velocity, capacity: capacity, state: story.parentSprint.state]
                 }
                 storyService.plan(sprint, story)
@@ -449,7 +467,7 @@ class StoryController {
     @Secured('(isAuthenticated()) and !archivedProduct()')
     def associateFeature = {
         withStory{ Story story ->
-            withFeature('feature.id'){ Feature feature ->
+            withFeature(params.feature.id?.toLong()){ Feature feature ->
                 storyService.associateFeature(feature, story)
                 withFormat {
                     html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
@@ -486,20 +504,21 @@ class StoryController {
 
     @Secured('productOwner() and !archivedProduct()')
     def accept = {
+        def type = params.type instanceof Map ? params.type.value : params.type
         withStories{List<Story> stories ->
-            def storiesJ = []
+            def elements = []
             def storiesIds = stories*.id
-            if (params.type == 'story') {
-                storiesJ = storyService.acceptToBacklog(stories)
-            } else if (params.type == 'feature') {
-                storiesJ = storyService.acceptToFeature(stories)
-            } else if (params.type == 'task') {
-                storiesJ = storyService.acceptToUrgentTask(stories)
+            if (type == 'story') {
+                elements = storyService.acceptToBacklog(stories)
+            } else if (type == 'feature') {
+                elements = storyService.acceptToFeature(stories)
+            } else if (type == 'task') {
+                elements = storyService.acceptToUrgentTask(stories)
             }
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [id: storiesIds, objects: storiesJ] as JSON)  }
-                json { renderRESTJSON(text:storiesJ) }
-                xml  { renderRESTXML(text:storiesJ) }
+                html { render(status: 200, contentType: 'application/json', text: [id: storiesIds, objects: elements] as JSON)  }
+                json { renderRESTJSON(text:elements) }
+                xml  { renderRESTXML(text:elements) }
             }
         }
     }
@@ -515,8 +534,8 @@ class StoryController {
             def copiedStories = storyService.copy(stories)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON)  }
-                json { renderRESTJSON(text:copiedStories) }
-                xml  { renderRESTXML(text:copiedStories) }
+                json { renderRESTJSON(text:copiedStories, status: 201) }
+                xml  { renderRESTXML(text:copiedStories, status: 201) }
             }
         }
     }
@@ -600,7 +619,7 @@ class StoryController {
     @Secured('isAuthenticated() and !archivedProduct()')
     def saveComment = {
         def poster = springSecurityService.currentUser
-        def story = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()[0]
+        def story = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()
         try {
             if (params['comment'] instanceof Map) {
                 Comment.withTransaction { status ->
@@ -644,7 +663,7 @@ class StoryController {
             return
         }
         def comment = Comment.get(params.long('id'))
-        def story = Story.getInProduct(params.long('product'),params.long('commentable')).list()[0]
+        def story = Story.getInProduct(params.long('product'),params.long('commentable')).list()
         render(template: '/components/commentEditor', plugin: 'icescrum-core', model: [comment: comment, mode: 'edit', commentable: story])
     }
 
@@ -655,7 +674,7 @@ class StoryController {
             return
         }
         def comment = Comment.get(params.long('comment.id'))
-        def commentable = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()[0]
+        def commentable = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()
         comment.body = params.comment.body
         try {
             comment.save()
@@ -696,8 +715,8 @@ class StoryController {
             return
         }
         def comment = Comment.get(params.long('id'))
-        def idc = [id:comment.id]
-        def commentable = Story.getInProduct(params.long('product'),params.long('backlogElement')).list()[0]
+        def commentable = Story.getInProduct(params.long('product'),params.long('backlogElement')).list()
+        def idc = [id:comment.id,backlogElement:commentable.id]
         try {
             commentable.removeComment(comment)
             commentable.lastUpdated = new Date()
@@ -840,7 +859,7 @@ class StoryController {
     @Secured('inProduct() and !archivedProduct()')
     def saveAcceptanceTest = {
         def acceptanceTest = new AcceptanceTest(params.acceptanceTest as Map)
-        def parentStory = Story.getInProduct(params.long('product'),params.long('parentStoryId')).list()[0]
+        def parentStory = Story.getInProduct(params.long('product'),params.long('parentStoryId')).list()
         User user = (User)springSecurityService.currentUser
         try {
             acceptanceTestService.save(acceptanceTest, parentStory, user)

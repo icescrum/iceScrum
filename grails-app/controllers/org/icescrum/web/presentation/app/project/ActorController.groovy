@@ -55,15 +55,17 @@ class ActorController {
     def save = {
         if (!params.actor) return
 
-        def actor = new Actor(params.actor as Map)
+        def actor = new Actor()
+        bindData(actor, this.params, [include:['name','description','notes','satisfactionCriteria','instances','expertnessLevel','useFrequency']], "actor")
+
         def product = Product.load(params.product)
         try {
             actorService.save(actor, product)
             this.manageAttachments(actor)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: actor as JSON }
-                json { renderRESTJSON(actor, status:201) }
-                xml  { renderRESTXML(actor, status:201) }
+                json { renderRESTJSON(text:actor, status:201) }
+                xml  { renderRESTXML(text:actor, status:201) }
             }
         } catch (RuntimeException e) {
             returnError(exception:e, object:actor)
@@ -75,7 +77,9 @@ class ActorController {
     @Secured('productOwner() and !archivedProduct()')
     def update = {
         withActor{Actor actor ->
-            actor.properties = params.actor
+
+            bindData(actor, this.params, [include:['name','description','notes','satisfactionCriteria','instances','expertnessLevel','useFrequency']], "actor")
+
             actorService.update(actor)
             this.manageAttachments(actor)
             //if success for table view
@@ -105,8 +109,8 @@ class ActorController {
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [actor: actor, next: next] as JSON }
-                json { renderRESTJSON(actor) }
-                xml  { renderRESTXML(actor) }
+                json { renderRESTJSON(text:actor) }
+                xml  { renderRESTXML(text:actor) }
             }
         }
     }
@@ -121,8 +125,8 @@ class ActorController {
             params.list('id').each { ids << [id: it] }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: ids as JSON }
-                json { render status: 204, contentType: 'application/json', text: '' }
-                xml { render status: 204, contentType: 'text/xml', text: '' }
+                json { render status: 204 }
+                xml { render status: 204 }
             }
         }
     }
@@ -148,8 +152,8 @@ class ActorController {
                         instancesSelect: instancesSelect,
                         levelsSelect: levelsSelect])
             }
-            json { renderRESTJSON(actors) }
-            xml  { renderRESTXML(actors) }
+            json { renderRESTJSON(text:actors) }
+            xml  { renderRESTXML(text:actors) }
          }
     }
 
@@ -190,7 +194,7 @@ class ActorController {
     private manageAttachments(def actor) {
         def user = springSecurityService.currentUser
         def needPush = false
-        if (actor.id && !params.actor.list('attachments') && actor.attachments*.id.size() > 0) {
+        if (params.actor.attachments && actor.id && !params.actor.list('attachments') && actor.attachments*.id.size() > 0) {
             actor.removeAllAttachments()
             needPush = true
         } else if (actor.attachments*.id.size() > 0) {
@@ -231,8 +235,8 @@ class ActorController {
 
         withActor{ Actor actor ->
             withFormat {
-                json { renderRESTJSON(actor) }
-                xml  { renderRESTXML(actor) }
+                json { renderRESTJSON(text:actor) }
+                xml  { renderRESTXML(text:actor) }
             }
         }
     }

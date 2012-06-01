@@ -39,6 +39,8 @@ import org.icescrum.core.domain.Sprint
 import grails.plugin.springcache.annotations.Cacheable
 import org.springframework.security.acls.domain.BasePermission
 import org.icescrum.core.domain.preferences.ProductPreferences
+import org.codehaus.groovy.grails.plugins.DefaultGrailsPluginManager
+import org.codehaus.groovy.grails.plugins.GrailsPlugin
 
 class ScrumOSController {
 
@@ -48,6 +50,8 @@ class ScrumOSController {
     def notificationEmailService
     def securityService
     def uiDefinitionService
+
+    def licenseService
 
     def index = {
         def currentUserInstance = null
@@ -239,7 +243,6 @@ class ScrumOSController {
         }
     }
 
-    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
     def about = {
         def locale = RCU.getLocale(request)
         def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${locale}.xml")
@@ -294,7 +297,7 @@ class ScrumOSController {
         def product = null
         if (params.long('product')) {
             product = Product.get(params.product)
-            currentSprint = Sprint.findCurrentSprint(product.id).list()[0] ?: null
+            currentSprint = Sprint.findCurrentSprint(product.id).list() ?: null
         }
         def tmpl = g.render(
                 template: 'templatesJS',

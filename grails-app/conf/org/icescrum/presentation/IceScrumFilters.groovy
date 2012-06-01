@@ -45,9 +45,10 @@ class IceScrumFilters {
 
     webservices(uri: '/ws/**') {
       before = {
+        def webservices = false
         if (params.product) {
             params.product = params.product.decodeProductKey()
-            def webservices = Product.createCriteria().get {
+             webservices = Product.createCriteria().get {
                               eq 'id', params.product.toLong()
                                 preferences {
                                     projections {
@@ -58,9 +59,15 @@ class IceScrumFilters {
                             }
             if (!webservices){
                 render(status: 503)
-                return webservices
+            }else{
+                if(request.format == 'xml' && params.values){
+                    params.remove('values')?.each{ k, v ->
+                        params."${k}" = v
+                    }
+                }
             }
         }
+        return webservices
       }
     }
 

@@ -44,7 +44,7 @@ class SandboxController {
 
     @Secured('productOwner() and !archivedProduct()')
     def openDialogAcceptAs = {
-        def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
+        def sprint = Sprint.findCurrentSprint(params.long('product')).list()
         render(template: 'dialogs/acceptAs', model: [sprint: sprint])
     }
 
@@ -61,7 +61,7 @@ class SandboxController {
             featureSelect += currentProduct.features.collect {v -> "'$v.id':'${v.name.encodeAsHTML().encodeAsJavaScript()}'"}.join(',')
         }
 
-        def sprint = Sprint.findCurrentSprint(currentProduct.id).list()[0]
+        def sprint = Sprint.findCurrentSprint(currentProduct.id).list()
         def user = null
         if (springSecurityService.isLoggedIn())
             user = springSecurityService.currentUser
