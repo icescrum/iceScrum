@@ -283,7 +283,7 @@ class UtilsTagLib {
         else if (renderAs.equalsIgnoreCase("json")) {
             def errors = []
             eachErrorInternal(attrs, {
-                    errors << [error:[object: it.objectName,field: it.field, message: message(error:it)?.toString(),'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue)]]
+                    errors << [error:[object: it.objectName,field: it.field, message: message(error:it)?.toString(),'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue.toString())]]
                 })
             out << (errors as JSON).toString()
         }
@@ -294,7 +294,7 @@ class UtilsTagLib {
                     error(object: it.objectName,
                           field: it.field,
                           message: message(error:it)?.toString(),
-                            'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue))
+                            'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue.toString()))
                 })
             }
         }

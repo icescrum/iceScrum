@@ -42,34 +42,6 @@ class SprintController {
     def springSecurityService
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def update = {
-        withSprint{ Sprint sprint ->
-            // If the version is different, the sprint has been modified since the last loading
-            if (params.sprint.version && params.long('sprint.version') != sprint.version) {
-                def msg = message(code: 'is.stale.object', args: [message(code: 'is.sprint')])
-                returnError(text:msg)
-                return
-            }
-
-            def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.sprint.startDate) : sprint.startDate
-            def endDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.endDate)
-
-            bindData(sprint, this.params, [include:['resource','goal']], "sprint")
-
-            sprintService.update(sprint, startDate, endDate)
-            def next = null
-            if (params.continue) {
-                next = Sprint.findByOrderNumberAndParentRelease(sprint.orderNumber + 1, sprint.parentRelease)
-            }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, next: next?.id ?: null] as JSON)  }
-                json { renderRESTJSON(text:sprint) }
-                xml  { renderRESTXML(text:sprint) }
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def save = {
         def releaseId = params.remove('parentRelease.id') ?: params.sprint.remove('parentRelease.id')
         if (!releaseId){
@@ -101,6 +73,35 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def update = {
+        withSprint{ Sprint sprint ->
+            // If the version is different, the sprint has been modified since the last loading
+            if (params.sprint.version && params.long('sprint.version') != sprint.version) {
+                def msg = message(code: 'is.stale.object', args: [message(code: 'is.sprint')])
+                returnError(text:msg)
+                return
+            }
+
+            def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
+            def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
+
+            sprintService.update(sprint, startDate, endDate)
+
+            bindData(sprint, params, [include:['resource','goal']], "sprint")
+
+            def next = null
+            if (params.continue) {
+                next = Sprint.findByOrderNumberAndParentRelease(sprint.orderNumber + 1, sprint.parentRelease)
+            }
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, next: next?.id ?: null] as JSON)  }
+                json { renderRESTJSON(text:sprint) }
+                xml  { renderRESTXML(text:sprint) }
+            }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def delete = {
         withSprint{ Sprint sprint ->
             try {
@@ -126,8 +127,8 @@ class SprintController {
             def unPlanAllStories = storyService.unPlanAll([sprint])
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)  }
-                json { render(status: 204) }
-                xml  { render(status: 204) }
+                json { renderRESTJSON(text: sprint) }
+                xml  { renderRESTXML(text: sprint) }
             }
         }
     }
@@ -181,10 +182,18 @@ class SprintController {
             render(status:404)
             return
         }
-        withProduct { Product product ->
+        if (params.id){
+            withRelease { Release release ->
+                withFormat {
+                    json { renderRESTJSON(text:release.sprints) }
+                    xml  { renderRESTXML(text:release.sprints) }
+                }
+            }
+        }else{
+            def release = Release.findCurrentOrNextRelease(params.product).list()[0]
             withFormat {
-                json { renderRESTJSON(text:product.releases) }
-                xml  { renderRESTXML(text:product.releases) }
+                json { renderRESTJSON(text:release.sprints) }
+                xml  { renderRESTXML(text:release.sprints) }
             }
         }
     }

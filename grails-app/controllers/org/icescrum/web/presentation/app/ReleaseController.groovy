@@ -80,8 +80,8 @@ class ReleaseController {
                 return
             }
 
-            def startDate = params.release.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.startDate) : null
-            def endDate = params.release.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.endDate) : null
+            def startDate = params.release.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.startDate) : release.startDate
+            def endDate = params.release.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.endDate) : release.endDate
 
             bindData(release, this.params, [include:['name','goal']], "release")
             releaseService.update(release, startDate, endDate)
