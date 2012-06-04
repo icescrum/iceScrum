@@ -180,6 +180,7 @@
                  action="estimate"
                  controller="task"
                  highlight="true"
+                 name="task.estimation"
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
                  ajaxoptions = "{dataType:'json'}"

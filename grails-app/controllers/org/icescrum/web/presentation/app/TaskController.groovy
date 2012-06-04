@@ -106,7 +106,7 @@ class TaskController {
 
         User user = (User) springSecurityService.currentUser
 
-        sprint = sprint ? Sprint.getInProduct(params.product, sprint.toLong()).list() : sprint
+        sprint = sprint ? Sprint.getInProduct(params.product.toLong(), sprint.toLong()).list() : sprint
         if (!sprint) {
             returnError(text: message(code: 'is.sprint.error.not.exist'))
             return

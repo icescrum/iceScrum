@@ -399,7 +399,7 @@ class StoryController {
             try {
                 storyService.estimate(story,params.story.effort)
                 withFormat {
-                    html { render(status: 200, text: params.story.effort)  }
+                    html { render(status: 200, text: story as JSON)  }
                     json { renderRESTJSON(text:story) }
                     xml  { renderRESTXML(text:story) }
                 }
@@ -506,6 +506,7 @@ class StoryController {
     def accept = {
         def type = params.type instanceof Map ? params.type.value : params.type
         withStories{List<Story> stories ->
+            stories = stories.reverse()
             def elements = []
             def storiesIds = stories*.id
             if (type == 'story') {

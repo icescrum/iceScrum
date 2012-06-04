@@ -60,7 +60,7 @@
                   cancel:'jQuery(original).next().show();',
                   values:suiteSelect,
                   ajaxoptions:'{dataType:\'json\'}',
-                  callback:'jQuery(this).html(value.effort);if (value == \'?\'){jQuery(this).next().html(\''+message(code:'is.story.state.accepted')+'\');}else{jQuery(this).next().html(\''+message(code:'is.story.state.estimated')+'\')} $(this).next().show(); $.icescrum.story.backlogTitleDetails(); ',
+                  callback:'if (!value.effort){jQuery(this).html(\'?\'); jQuery(this).next().html(\''+message(code:'is.story.state.accepted')+'\');}else{ jQuery(this).html(value.effort); jQuery(this).next().html(\''+message(code:'is.story.state.estimated')+'\')} $(this).next().show(); $.icescrum.story.backlogTitleDetails(); ',
                   params:[product:params.product]]"
         value="${stories}"
         var="story">
