@@ -1,3 +1,5 @@
+import grails.util.Environment
+
 /*
 * Copyright (c) 2010 iceScrum Technologies.
 *
@@ -27,6 +29,16 @@ eventCreateWarStart = {warname, stagingDir ->
         }
     }
 }
+
+
+eventStatusUpdate = {
+    File file = new File(projectPluginsDir+File.separator+'spock-0.6')
+    if (grailsEnv != Environment.TEST && file.exists()){
+        ant.delete(includeemptydirs: true){fileset(dir: projectPluginsDir+File.separator+'spock-0.6')}
+        ant.delete(includeemptydirs: true){fileset(dir: projectPluginsDir+File.separator+'geb-0.6.3')}
+    }
+}
+
 
 def getRevision() {
     def determineRevisionClosure = buildConfig.buildinfo.determineRevision

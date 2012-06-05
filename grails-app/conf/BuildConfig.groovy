@@ -25,9 +25,6 @@
 import grails.util.GrailsNameUtils
 import grails.util.Environment
 
-//Workaround to detect grails environment
-def environment = Environment.getCurrent()
-
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -35,8 +32,8 @@ grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
 
-if (environment != Environment.PRODUCTION){
-    println "use inline plugin in env: ${environment}"
+if (grailsSettings.grailsEnv != Environment.PRODUCTION){
+    println "use inline plugin in env: ${grailsSettings.grailsEnv}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 }
 
@@ -80,7 +77,7 @@ grails.project.dependency.resolution = {
         runtime 'mysql:mysql-connector-java:5.1.18'
     }
 
-    if (environment == Environment.PRODUCTION){
+    if (grailsSettings.grailsEnv == Environment.PRODUCTION){
         plugins {
             compile "org.icescrum:icescrum-core:1.5-SNAPSHOT"
             compile ":tomcat:1.3.9"
@@ -103,6 +100,21 @@ grails.project.dependency.resolution = {
         compile ":session-temp-files:1.0"
         compile ":zipped-resources:1.0"
         compile ":yui-minify-resources:0.1.5"
+
+    }
+}
+
+//Cleanup spock & geb plugin
+File spock = new File(grailsSettings.projectPluginsDir.absolutePath+File.separator+'spock-0.6')
+File geb = new File(grailsSettings.projectPluginsDir.absolutePath+File.separator+'geb-0.6.3')
+
+if (grailsSettings.grailsEnv != Environment.TEST){
+    if (spock.exists()){
+        println 'testing context detected cleaning up...'
+        spock.deleteDir()
+        geb.deleteDir()
+    }else{
+        println 'no testing context detected'
     }
 }
 
