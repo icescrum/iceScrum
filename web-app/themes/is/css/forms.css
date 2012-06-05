@@ -1025,6 +1025,10 @@
     padding: 3px 2px;
 }
 
+.field-buttons .left-buttons {
+    vertical-align: top;
+}
+
 .box-form .field-noseparator {
     padding-bottom: 0;
 }
