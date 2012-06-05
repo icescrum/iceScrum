@@ -83,7 +83,7 @@ grails.project.dependency.resolution = {
     if (environment == Environment.PRODUCTION){
         plugins {
             compile "org.icescrum:icescrum-core:1.5-SNAPSHOT"
-            compile ":tomcat:1.3.8"
+            compile ":tomcat:1.3.9"
         }
     }else{
         plugins {
@@ -96,7 +96,7 @@ grails.project.dependency.resolution = {
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
         compile ":feeds:1.5"
-        compile ":hibernate:1.3.8"
+        compile ":hibernate:1.3.9"
         compile ":jquery:1.7.1"
         compile ":jquery-ui:1.8.11"
         compile ":resources:1.1.6"

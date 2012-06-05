@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object="${object}" node="user" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML
-            name="['id','username','password','email','dateCreated','enabled','accountExpired','accountLocked','passwordExpired']"/>
+            name="['id','username','password','email','dateCreated','enabled','accountExpired','accountLocked','passwordExpired','accountExternal']"/>
     <is:propertyAsXML name="['lastName','firstName']" cdata="true"/>
     <is:propertyAsXML
             object="preferences"

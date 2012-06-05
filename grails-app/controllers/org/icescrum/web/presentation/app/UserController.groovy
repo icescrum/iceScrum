@@ -116,7 +116,7 @@ class UserController {
             }
 
             def pwd = null
-            if (params.user.password.trim() != '') {
+            if (params.user.password?.trim() != '') {
                 pwd = params.user.password
             } else {
                 params.user.password = currentUser.password
@@ -260,10 +260,16 @@ class UserController {
             return
         }
 
-        def user = User.findByUsername(params.text)
+        def user = User.findWhere(username:params.text)
 
         if (!user) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.not.exist')]] as JSON)
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.not.exist')]] as JSON)
+            return
+        }else if (!user.enabled){
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.dialog.login.error.disabled')]] as JSON)
+            return
+        }else if(user.accountExternal){
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.externalAccount')]] as JSON)
             return
         }
         User.withTransaction { status ->

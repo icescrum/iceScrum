@@ -239,6 +239,9 @@ log4j = {
         debug 'grails.app.controller.com.kagilum'
         debug 'grails.app.domain.com.kagilum'
         debug 'com.kagilum'
+        debug 'org.codehaus.groovy.grails.plugins.springsecurity',
+                'grails.plugins.springsecurity',
+                'org.springframework.security'
     }else{
         off 'grails.plugin.springcache'
     }
@@ -357,9 +360,9 @@ else if (new File("${userHome}${File.separator}.grails${File.separator}${appName
     println "*** User defined config: file:${userHome}${File.separator}.grails${File.separator}${appName}.properties. ***"
     grails.config.locations = ["file:${userHome}${File.separator}.grails${File.separator}${appName}.properties"]
 }
-else if (new File("${userHome}${File.separator}.icescrum${File.separator}config.properties").exists()) {
-    println "*** iceScrum home defined config: file:${userHome}${File.separator}.icescrum${File.separator}config.properties. ***"
-    grails.config.locations = ["file:${userHome}${File.separator}.icescrum${File.separator}config.properties"]
+else if (new File("${userHome}${File.separator}.icescrum${File.separator}config.groovy").exists()) {
+    println "*** iceScrum home defined config: file:${userHome}${File.separator}.icescrum${File.separator}config.groovy. ***"
+    grails.config.locations = ["file:${userHome}${File.separator}.icescrum${File.separator}config.groovy"]
 }
 else {
     println "*** No external configuration file defined (${ApplicationSupport.CONFIG_ENV_NAME}). ***"

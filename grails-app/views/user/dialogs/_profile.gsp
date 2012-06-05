@@ -28,6 +28,7 @@
     <is:fieldset nolegend="true" title="is.dialog.profile">
         <is:accordion id="profile" autoHeight="false">
             <is:accordionSection title="is.dialog.profile.general.title">
+
                 <is:fieldInput for="userfirstName" label="is.user.firstname">
                     <is:input id="userfirstName" name="user.firstName" value="${user.firstName}"/>
                 </is:fieldInput>
@@ -37,15 +38,18 @@
                 <is:fieldInput for="userusername" label="is.user.username">
                     <is:input id="userusername" disabled="disabled" name="username" value="${user.username}"/>
                 </is:fieldInput>
-                <is:fieldInput for="userpassword" label="is.user.password" class="user-password">
-                    <is:password id="userpassword" name="user.password"/>
-                </is:fieldInput>
-                <is:fieldInput for="confirmPassword" label="is.dialog.profile.confirmPassword" class="user-password-confirm">
-                    <is:password id="confirmPassword" name="confirmPassword"/>
-                </is:fieldInput>
-                <is:fieldInput for="useremail" label="is.user.email">
-                    <is:input id="useremail" name="user.email" value="${user.email}"/>
-                </is:fieldInput>
+
+                <g:if test="${!user.accountExternal}">
+                    <is:fieldInput for="userpassword" label="is.user.password" class="user-password">
+                        <is:password id="userpassword" name="user.password"/>
+                    </is:fieldInput>
+                    <is:fieldInput for="confirmPassword" label="is.dialog.profile.confirmPassword" class="user-password-confirm">
+                        <is:password id="confirmPassword" name="confirmPassword"/>
+                    </is:fieldInput>
+                </g:if>
+                    <is:fieldInput for="useremail" label="is.user.email">
+                        <is:input id="useremail" name="user.email" disabled="${user.accountExternal?'disabled':false}" value="${user.email}"/>
+                    </is:fieldInput>
 
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar.enable)}">
                     <is:fieldInput for="avatar" label="is.dialog.profile.gravatar" class="profile-avatar">
