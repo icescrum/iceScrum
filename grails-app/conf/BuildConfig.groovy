@@ -104,20 +104,6 @@ grails.project.dependency.resolution = {
     }
 }
 
-//Cleanup spock & geb plugin
-File spock = new File(grailsSettings.projectPluginsDir.absolutePath+File.separator+'spock-0.6')
-File geb = new File(grailsSettings.projectPluginsDir.absolutePath+File.separator+'geb-0.6.3')
-
-if (grailsSettings.grailsEnv != Environment.TEST){
-    if (spock.exists()){
-        println 'testing context detected cleaning up...'
-        spock.deleteDir()
-        geb.deleteDir()
-    }else{
-        println 'no testing context detected'
-    }
-}
-
 //iceScrum plugins management
 def iceScrumPluginsDir = System.getProperty("icescrum.plugins.dir") ?: false
 println "Compile and use icescrum plugins : ${iceScrumPluginsDir ? true : false}"

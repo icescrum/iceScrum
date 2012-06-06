@@ -62,8 +62,8 @@
       </p>
       
       <is:buttonBar id="login-button-bar">
-          <is:button rendered="${enableRegistration}" type="link" action="register" controller="user" remote="false" value="${message(code: 'is.button.register')}"/>
           <is:button id="loginSubmit" history="false" type="submitToRemote" url="${[uri:postUrl]}" onSuccess="jQuery.icescrum.redirectOnLogin(data)" value="${message(code: 'is.button.connect')}"/>
+          <is:button rendered="${enableRegistration}" type="link" action="register" controller="user" remote="false" value="${message(code: 'is.button.register')}"/>
       </is:buttonBar>
 
     </g:formRemote>
