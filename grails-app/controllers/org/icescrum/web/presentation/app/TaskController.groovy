@@ -102,7 +102,7 @@ class TaskController {
         def sprint = params.remove('sprint.id') ?: params.task.remove('sprint.id')
 
         def task = new Task()
-        bindData(task, this.params, [include:['name','estimation','description','notes']], "task")
+        bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
 
         User user = (User) springSecurityService.currentUser
 
@@ -153,7 +153,7 @@ class TaskController {
                 params.task.estimation = params.task.float('estimation') ?: (params.task.float('estimation') == 0) ? 0 : null
             }
 
-            bindData(task, this.params, [include:['name','estimation','description','notes']], "task")
+            bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
             taskService.update(task, user)
             this.manageAttachments(task)
             def next = null
