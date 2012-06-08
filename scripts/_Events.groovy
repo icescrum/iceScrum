@@ -31,35 +31,37 @@ eventCreateWarStart = {warname, stagingDir ->
 }
 
 eventSetClasspath = {
-        println "-----${projectWorkDir} DELETE OLD ICESCRUM CORE START ---------"
-        String iceScrumCore = "${userHome}/.ivy2/cache/org.icescrum/icescrum-core"
-        String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.5-SNAPSHOT"
-        if (grailsEnv != "development"){
-            String tomcatNio = "${projectWorkDir}/plugins/tomcatnio-1.3.4"
-            file = new File(tomcatNio)
-            if (file.exists()){
-                println "----- deleting.... ${tomcatNio}--------"
-                ant.delete(dir:tomcatNio)
+        if (System.getProperty('icescrum.clean') == 'true'){
+            println "----- DELETE OLD ICESCRUM CORE START ---------"
+            String iceScrumCore = "${userHome}/.ivy2/cache/org.icescrum/icescrum-core"
+            String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.5-SNAPSHOT"
+            if (grailsEnv != "development"){
+                String tomcatNio = "${projectWorkDir}/plugins/tomcatnio-1.3.4"
+                file = new File(tomcatNio)
+                if (file.exists()){
+                    println "----- deleting.... ${tomcatNio}--------"
+                    ant.delete(dir:tomcatNio)
+                }
+            }else{
+                String tomcat = "${projectWorkDir}/plugins/tomcat-1.3.9"
+                file = new File(tomcat)
+                if (file.exists()){
+                    println "----- deleting.... ${tomcat}--------"
+                    ant.delete(dir:tomcat)
+                }
             }
-        }else{
-            String tomcat = "${projectWorkDir}/plugins/tomcat-1.3.9"
-            file = new File(tomcat)
+            file = new File(iceScrumCore)
             if (file.exists()){
-                println "----- deleting.... ${tomcat}--------"
-                ant.delete(dir:tomcat)
+                println "----- deleting.... ${iceScrumCore}--------"
+                ant.delete(dir:iceScrumCore)
             }
+            file = new File(iceScrumCoreP)
+            if (file.exists()){
+                println "----- deleting.... ${iceScrumCoreP}--------"
+                ant.delete(dir:iceScrumCoreP)
+            }
+            println "----- DELETE OLD ICESCRUM CORE END ----------"
         }
-        file = new File(iceScrumCore)
-        if (file.exists()){
-            println "----- deleting.... ${iceScrumCore}--------"
-            ant.delete(dir:iceScrumCore)
-        }
-        file = new File(iceScrumCoreP)
-        if (file.exists()){
-            println "----- deleting.... ${iceScrumCoreP}--------"
-            ant.delete(dir:iceScrumCoreP)
-        }
-        println "----- DELETE OLD ICESCRUM CORE END ----------"
 }
 
 def getRevision() {
