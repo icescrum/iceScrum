@@ -19,8 +19,11 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<p class="last">
+<p>
   <strong><g:message code="is.dialog.about.version.link"/></strong> : <a href="${version.link}">${version.link}</a>
+</p>
+<p class="last">
+  <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.link}">${version.link}</a>
 </p>
 <h3><g:message code="is.dialog.about.version.build.title"/></h3>
 <p>

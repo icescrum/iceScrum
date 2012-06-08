@@ -23,6 +23,7 @@
 <about>
     <version>
         <link>http://www.icescrum.org</link>
+        <documentation>http://www.kagilum.com/documentation</documentation>
         <library>
             <name>Simile Timeline</name>
             <version>1.0</version>
