@@ -76,7 +76,7 @@ class StoryController {
                     next = Story.findByParentSprintAndRank(story.parentSprint, story.rank + 1) ?: null
                     break
             }
-            def sprint = Sprint.findCurrentSprint(params.long('product')).list()[0]
+            def sprint = Sprint.findCurrentSprint(params.long('product')).list()
             render(template: 'window/toolbar', model: [story: story, user: user, next: next, previous: previous, sprint: sprint])
         }
     }
@@ -135,7 +135,7 @@ class StoryController {
 
         bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
 
-        if (params.int('displayTemplate') != 1) {
+        if (params.displayTemplate && params.int('displayTemplate') != 1) {
             story.textAs = null
             story.textICan = null
             story.textTo = null
