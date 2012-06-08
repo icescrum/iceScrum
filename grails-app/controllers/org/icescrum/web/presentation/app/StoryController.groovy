@@ -135,10 +135,14 @@ class StoryController {
 
         bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
 
-        if (params.displayTemplate && params.int('displayTemplate') != 1) {
-            story.textAs = null
-            story.textICan = null
-            story.textTo = null
+        withFormat {
+            html {
+                if (params.int('displayTemplate') != 1) {
+                    story.textAs = null
+                    story.textICan = null
+                    story.textTo = null
+                }
+            }
         }
 
         if (params.feature?.id) {
@@ -239,11 +243,15 @@ class StoryController {
 
             bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
 
-            if (params.int('displayTemplate') && params.int('displayTemplate') != 1) {
-                story.textAs = null
-                story.textICan = null
-                story.textTo = null
-                story.actor = null
+            withFormat {
+                html {
+                    if (params.int('displayTemplate') != 1) {
+                        story.textAs = null
+                        story.textICan = null
+                        story.textTo = null
+                        story.actor = null
+                    }
+                }
             }
 
             if (params.feature?.id && story.feature?.id != params.long('feature.id')) {
