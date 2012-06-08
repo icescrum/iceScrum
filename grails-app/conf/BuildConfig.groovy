@@ -32,8 +32,10 @@ grails.project.war.file = "target/${appName}.war"
 
 grails.project.war.osgi.headers = false
 
-if (grailsSettings.grailsEnv != Environment.PRODUCTION){
-    println "use inline plugin in env: ${grailsSettings.grailsEnv}"
+def environment = Environment.getCurrent()
+
+if (environment != Environment.PRODUCTION){
+    println "use inline plugin in env: ${environment}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 }
 
@@ -77,7 +79,7 @@ grails.project.dependency.resolution = {
         runtime 'mysql:mysql-connector-java:5.1.18'
     }
 
-    if (grailsSettings.grailsEnv == Environment.PRODUCTION){
+    if (environment == Environment.PRODUCTION){
         plugins {
             compile "org.icescrum:icescrum-core:1.5-SNAPSHOT"
             compile ":tomcat:1.3.9"
