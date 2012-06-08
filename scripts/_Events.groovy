@@ -30,6 +30,29 @@ eventCreateWarStart = {warname, stagingDir ->
     }
 }
 
+eventSetClasspath = {
+        println "----- ${projectWorkDir} DELETE OLD ICESCRUM CORE START ---------"
+        String iceScrumCore = "${userHome}/.ivy2/cache/org.icescrum/icescrum-core"
+        String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.5-SNAPSHOT"
+        String tomcatNio = "${projectWorkDir}/plugins/tomcatnio-1.3.4"
+        file = new File(tomcatNio)
+        if (file.exists()){
+            println "----- deleting.... ${tomcatNio}--------"
+            ant.delete(dir:tomcatNio)
+        }
+        def file = new File(iceScrumCore)
+        if (file.exists()){
+            println "----- deleting.... ${iceScrumCore}--------"
+            ant.delete(dir:iceScrumCore)
+        }
+        file = new File(iceScrumCoreP)
+        if (file.exists()){
+            println "----- deleting.... ${iceScrumCoreP}--------"
+            ant.delete(dir:iceScrumCoreP)
+        }
+        println "----- DELETE OLD ICESCRUM CORE END ----------"
+}
+
 def getRevision() {
     def determineRevisionClosure = buildConfig.buildinfo.determineRevision
     if (determineRevisionClosure instanceof Closure) {
