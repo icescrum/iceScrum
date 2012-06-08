@@ -23,7 +23,7 @@
   <strong><g:message code="is.dialog.about.version.link"/></strong> : <a href="${version.link}">${version.link}</a>
 </p>
 <p class="last">
-  <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.link}">${version.link}</a>
+  <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.documentation}">${version.documentation}</a>
 </p>
 <h3><g:message code="is.dialog.about.version.build.title"/></h3>
 <p>
