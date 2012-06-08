@@ -31,16 +31,25 @@ eventCreateWarStart = {warname, stagingDir ->
 }
 
 eventSetClasspath = {
-        println "----- ${projectWorkDir} DELETE OLD ICESCRUM CORE START ---------"
+        println "-----${projectWorkDir} DELETE OLD ICESCRUM CORE START ---------"
         String iceScrumCore = "${userHome}/.ivy2/cache/org.icescrum/icescrum-core"
         String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.5-SNAPSHOT"
-        String tomcatNio = "${projectWorkDir}/plugins/tomcatnio-1.3.4"
-        file = new File(tomcatNio)
-        if (file.exists()){
-            println "----- deleting.... ${tomcatNio}--------"
-            ant.delete(dir:tomcatNio)
+        if (grailsEnv != "development"){
+            String tomcatNio = "${projectWorkDir}/plugins/tomcatnio-1.3.4"
+            file = new File(tomcatNio)
+            if (file.exists()){
+                println "----- deleting.... ${tomcatNio}--------"
+                ant.delete(dir:tomcatNio)
+            }
+        }else{
+            String tomcat = "${projectWorkDir}/plugins/tomcat-1.3.9"
+            file = new File(tomcat)
+            if (file.exists()){
+                println "----- deleting.... ${tomcat}--------"
+                ant.delete(dir:tomcat)
+            }
         }
-        def file = new File(iceScrumCore)
+        file = new File(iceScrumCore)
         if (file.exists()){
             println "----- deleting.... ${iceScrumCore}--------"
             ant.delete(dir:iceScrumCore)
