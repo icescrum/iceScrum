@@ -143,7 +143,7 @@ class ScrumOSController {
 
     def closeWindow = {
         session['currentWindow'] = null
-        render(status: '200')
+        render(status: 200)
     }
 
     def closeWidget = {
