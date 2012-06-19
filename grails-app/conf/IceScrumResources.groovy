@@ -114,6 +114,7 @@ modules = {
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-fr.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-es.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-de.js'], bundle: 'jquery-ui-plugins'
+        resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-ru.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-cn.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-pt.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-pt-BR.js'], bundle: 'jquery-ui-plugins'
