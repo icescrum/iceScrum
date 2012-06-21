@@ -50,6 +50,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             dialogErrorContent:null,
             openWindow:false,
             locale:'en',
+            showUpgrade:true,
             push:{enable:true,websocket:false},
             selectedObject:{obj:'',time:'',callback:''}
         },
@@ -364,6 +365,21 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     $(document).on("click", handler)
                 ;}, 10);
             }
+        },
+
+        showUpgrade:function(){
+            if (this.o.showUpgrade){
+                var upgrade = $('.upgrade');
+                if (upgrade.length && $.cookie('hidee_upgrade') != "true"){
+                    upgrade.show();
+                    upgrade.find('.close').click(function(){
+                        upgrade.remove();
+                        $.cookie('hidee_upgrade', true, { expires: 30 });
+                    });
+                }else if(upgrade.length){
+                    upgrade.remove();
+                }
+            }
         }
     }
 
@@ -391,5 +407,5 @@ $(document).ready(function($) {
             });
 
     $.icescrum.init();
-
+    $.icescrum.showUpgrade();
 });

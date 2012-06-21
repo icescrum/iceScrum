@@ -2134,3 +2134,24 @@ li#li-roles {
 label span.help {
     cursor: help;
 }
+
+.upgrade {
+    background: url(../images/icons/info.png) no-repeat 12px center #FFF;
+    line-height: 16px;
+    margin-top: -3px;
+    text-align: center;
+    width: 258px;
+}
+
+.upgrade a {
+    text-decoration: underline;
+}
+
+.upgrade .close {
+    cursor: pointer;
+    display: block;
+    font-size: 9px;
+    position: absolute;
+    right: 2px;
+    top: 15px;
+}

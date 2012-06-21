@@ -22,6 +22,9 @@
 <p>
   <strong><g:message code="is.dialog.about.version.link"/></strong> : <a href="${version.link}">${version.link}</a>
 </p>
+<p>
+  <strong><g:message code="is.dialog.about.version.pro"/></strong> : <a href="${version.pro}">${version.pro}</a>
+</p>
 <p class="last">
   <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.documentation}">${version.documentation}</a>
 </p>

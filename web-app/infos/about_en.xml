@@ -24,6 +24,7 @@
 <about>
     <version>
         <link>http://www.icescrum.org</link>
+        <pro>https://www.kagilum.com/icescrum-pro</pro>
         <documentation>https://www.kagilum.com/documentation</documentation>
         <library>
             <name>Simile Timeline</name>
