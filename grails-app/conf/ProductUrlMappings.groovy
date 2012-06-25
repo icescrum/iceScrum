@@ -112,7 +112,7 @@ class ProductUrlMappings {
             }
         }
 
-        "/p/$product/$controller/$action?/$id?/$type?" {
+        name pUrl: "/p/$product/$controller/$action?/$id?/$type?" {
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }

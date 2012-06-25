@@ -55,13 +55,13 @@
             <is:button
                     id="submitAndContinueForm"
                     type="submitToRemote"
-                    url="[controller:'sprint', action:'save', params:[product:params.product, 'release.id':release.id]]"
+                    url="[controller:'sprint', action:'save', params:[product:params.product, 'parentRelease.id':release.id]]"
                     onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,${product.preferences.estimatedSprintsDuration}); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.saved')}')"
                     value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
             <is:button
                     id="submitForm"
                     type="submitToRemote"
-                    url="[controller:'sprint', action:'save', params:[product:params.product, 'release.id':release.id]]"
+                    url="[controller:'sprint', action:'save', params:[product:params.product, 'parentRelease.id':release.id]]"
                     onSuccess="jQuery.icescrum.navigateTo('${controllerName}/${release.id}'); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.saved')}')"
                     value="${message(code:'is.button.add')}"/>
         </g:if>
@@ -72,14 +72,14 @@
                 <is:button
                         id="submitAndContinueForm"
                         type="submitToRemote"
-                        url="[controller:'sprint', action:'update',id:sprint.id, params:[continue:true,product:params.product]]"
+                        url="[mapping:'pUrl', controller:'sprint', action:'update', id:sprint.id, params:[continue:true,product:params.product]]"
                         onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+(params.subid?'/'+params.id:'')+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName+'/'+release.id}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.sprint.updated')}')"
                         value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
             </g:if>
             <is:button
                     id="submitForm"
                     type="submitToRemote"
-                    url="[controller:'sprint', action:'update',id:sprint.id,params:[product:params.product]]"
+                    url="[mapping:'pUrl', controller:'sprint', action:'update', id:sprint.id,params:[product:params.product]]"
                     onSuccess="jQuery.icescrum.navigateTo('${controllerName+'/'+release.id}'); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.updated')}')"
                     value="${message(code:'is.button.update')}"/>
         </g:else>
