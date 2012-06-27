@@ -25,7 +25,6 @@ dataSource {
     driverClassName = "org.hsqldb.jdbcDriver"
     username = "sa"
     password = ""
-    pooled = true
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -58,6 +57,23 @@ environments {
         dataSource {
             dbCreate = "update"
             url = "jdbc:hsqldb:file:prodDba;shutdown=true"
+            pooled = true
+            properties {
+                maxActive = 100
+                maxIdle = 25
+                minIdle = 5
+                initialSize = 5
+                minEvictableIdleTimeMillis = 60000
+                timeBetweenEvictionRunsMillis = 60000
+                maxWait = 10000
+                numTestsPerEvictionRun = 3
+                testOnBorrow = true
+                testWhileIdle = true
+                testOnReturn = false
+                validationQuery = "SELECT 1"
+                removeAbandoned = true
+                removeAbandonedTimeout = 20
+            }
         }
     }
 }
