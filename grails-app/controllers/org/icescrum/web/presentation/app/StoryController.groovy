@@ -743,7 +743,7 @@ class StoryController {
     }
 
     def shortURL = {
-        redirect(url: is.createScrumLink(controller: 'story', params:[uid: params.id]))
+        redirect(url: is.createScrumLink(controller: 'story', params:[id: params.id]))
     }
 
     def idURL = {
