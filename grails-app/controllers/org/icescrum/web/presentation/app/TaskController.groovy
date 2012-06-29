@@ -59,7 +59,7 @@ class TaskController {
             def product = task.parentProduct
             def user = springSecurityService.currentUser
             if (product.preferences.hidden && !user) {
-                redirect(controller: 'login', params: [ref: "p/${product.pkey}#task/$story.id"])
+                redirect(controller: 'login', params: [ref: "p/${product.pkey}#task/$task.id"])
                 return
             } else if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product,springSecurityService.authentication,false)) {
                 render(status: 403)

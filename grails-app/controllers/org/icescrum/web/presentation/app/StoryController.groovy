@@ -52,7 +52,8 @@ class StoryController {
     def acceptanceTestService
 
     def toolbar = {
-        withStory { Story story ->
+        def id = params.uid?.toLong() ?: params.id?.toLong() ?: null
+        withStory(id) { Story story ->
             def user = null
             if (springSecurityService.isLoggedIn())
                 user = User.load(springSecurityService.principal.id)
@@ -82,11 +83,12 @@ class StoryController {
     }
 
     def index = {
-        withStory { Story story ->
+        def id = params.uid?.toLong() ?: params.id?.toLong() ?: null
+        withStory(id) { Story story ->
             def user = springSecurityService.currentUser
             Product product = (Product) story.backlog
             if (product.preferences.hidden && !user) {
-                redirect(controller: 'login', params: [ref: "p/${product.pkey}@story/$story.id"])
+                redirect(controller: 'login', params: [ref: "p/${product.pkey}#story/$story.id"])
                 return
             } else if (product.preferences.hidden && !securityService.inProduct(story.backlog, springSecurityService.authentication) && !securityService.stakeHolder(story.backlog,springSecurityService.authentication,false)) {
                 render(status: 403)
@@ -743,7 +745,7 @@ class StoryController {
     }
 
     def shortURL = {
-        redirect(url: is.createScrumLink(controller: 'story', params:[id: params.id]))
+        redirect(url: is.createScrumLink(controller: 'story', params:[uid: params.id]))
     }
 
     def idURL = {
