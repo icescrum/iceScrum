@@ -149,7 +149,11 @@ class TaskController {
             updateTaskType(task, user)
 
             if (params.task.estimation){
+                params.task.estimation = params.task.estimation == '?' ? null : params.task.estimation
                 params.task.estimation = params.task.estimation?.replace(/,/,'.')
+            }
+
+            if (params.task.estimation){
                 params.task.estimation = params.task.float('estimation') ?: (params.task.float('estimation') == 0) ? 0 : null
             }
 
@@ -230,6 +234,7 @@ class TaskController {
             User user = (User) springSecurityService.currentUser
             if (params.task?.estimation){
                 params.task.estimation = params.task.estimation instanceof String ? params.task.estimation.replace(/,/,'.') : params.task.estimation
+                params.task.estimation = params.task.estimation == '?' ? null : params.task.estimation
             }
             task.estimation = params.task?.estimation?.toFloat() ?: (params.task?.estimation?.toFloat() == 0) ? 0 : null
             taskService.update(task, user)
