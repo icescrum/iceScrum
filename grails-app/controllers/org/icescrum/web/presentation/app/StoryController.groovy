@@ -52,8 +52,8 @@ class StoryController {
     def acceptanceTestService
 
     def toolbar = {
-        def id = params.uid?.toLong() ?: params.id?.toLong() ?: null
-        withStory(id) { Story story ->
+        def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
+        withStory(id, params.uid?true:false) { Story story ->
             def user = null
             if (springSecurityService.isLoggedIn())
                 user = User.load(springSecurityService.principal.id)
@@ -83,8 +83,8 @@ class StoryController {
     }
 
     def index = {
-        def id = params.uid?.toLong() ?: params.id?.toLong() ?: null
-        withStory(id) { Story story ->
+        def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
+        withStory(id, params.uid?true:false) { Story story ->
             def user = springSecurityService.currentUser
             Product product = (Product) story.backlog
             if (product.preferences.hidden && !user) {
