@@ -133,8 +133,8 @@ class StoryController {
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def save = {
-        def story = new Story()
 
+        def story = new Story()
         bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
 
         withFormat {
@@ -869,19 +869,22 @@ class StoryController {
 
     @Secured('inProduct() and !archivedProduct()')
     def saveAcceptanceTest = {
-        def acceptanceTest = new AcceptanceTest(params.acceptanceTest as Map)
-        def parentStory = Story.getInProduct(params.long('product'),params.long('parentStoryId')).list()
-        User user = (User)springSecurityService.currentUser
-        try {
-            acceptanceTestService.save(acceptanceTest, parentStory, user)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
-                json { renderRESTJSON(text:acceptanceTest) }
-                xml  { renderRESTXML(text:acceptanceTest) }
+        withStory { story ->
+            def acceptanceTest = new AcceptanceTest()
+            bindData(acceptanceTest, this.params, [include:['name','description']], "acceptanceTest")
+
+            User user = (User)springSecurityService.currentUser
+            try {
+                acceptanceTestService.save(acceptanceTest, story, user)
+                withFormat {
+                    html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
+                    json { renderRESTJSON(text:acceptanceTest) }
+                    xml  { renderRESTXML(text:acceptanceTest) }
+                }
             }
-        }
-        catch (RuntimeException e) {
-            returnError(object: acceptanceTest, exception: e)
+            catch (RuntimeException e) {
+                returnError(object: acceptanceTest, exception: e)
+            }
         }
     }
 
@@ -931,11 +934,11 @@ class StoryController {
             render(status: 403, contentType: 'application/json')
             return
         }
-        def ida = [id:acceptanceTest.id]
         try {
+            def deleted = [id: acceptanceTest.id,parentStory: [id:acceptanceTest.parentStory.id]]
             acceptanceTestService.delete(acceptanceTest)
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: ida as JSON }
+                html { render status: 200, contentType: 'application/json', text: deleted as JSON }
                 json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
             }

@@ -47,7 +47,7 @@
         <g:else>
         <is:button
             id="acceptance-test-add-button" type="submitToRemote"
-            url="[controller:'story', action:'saveAcceptanceTest', params:[product:params.product]]"
+            url="[controller:'story', action:'saveAcceptanceTest', params:[product:params.product], id:parentStory.id]"
             onSuccess="jQuery('#acceptance-test-form-container').hide();
                        jQuery('#acceptance-test-description-field').val('');
                        jQuery('#acceptance-test-name-field').val('');
@@ -59,8 +59,5 @@
         <g:if test="${acceptanceTest}">
             <g:hiddenField name="acceptanceTest.id" value="${acceptanceTest?.id}"/>
         </g:if>
-        <g:else>
-            <g:hiddenField name="parentStoryId" value="${parentStory.id}"/>
-        </g:else>
     </form>
 </div>
