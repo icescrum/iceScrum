@@ -98,7 +98,11 @@ class ProjectController {
     @Secured('owner() or scrumMaster()')
     def edit = {
         withProduct{ Product product ->
-            render(template: "dialogs/edit", model: [product: product])
+            def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
+            if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                privateOption = false
+            }
+            render(template: "dialogs/edit", model: [product: product, privateOption: privateOption])
         }
     }
 
@@ -106,11 +110,7 @@ class ProjectController {
     def editPractices = {
         withProduct{ Product product ->
             def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
-            def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
-            if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                privateOption = false
-            }
-            render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect, privateOption: privateOption])
+            render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
         }
     }
 

@@ -43,7 +43,7 @@
 
       <is:accordionSection title="is.dialog.project.preferences.sprint.title">
         <is:fieldRadio for="productpreferencesautoDoneStory" label="is.product.preferences.sprint.autoDoneStory">
-          <is:radio id="productpreferencesautoDoneStory" name="productd.preferences.autoDoneStory" value="${product.preferences.noEstimation}"/>
+          <is:radio id="productpreferencesautoDoneStory" name="productd.preferences.autoDoneStory" value="${product.preferences.autoDoneStory}"/>
         </is:fieldRadio>
         <is:fieldRadio for="productpreferencesautoCreateTaskOnEmptyStory" label="is.product.preferences.sprint.autoCreateTaskOnEmptyStory">
           <is:radio id="productpreferencesautoCreateTaskOnEmptyStory" name="productd.preferences.autoCreateTaskOnEmptyStory" value="${product.preferences.autoCreateTaskOnEmptyStory}"/>
