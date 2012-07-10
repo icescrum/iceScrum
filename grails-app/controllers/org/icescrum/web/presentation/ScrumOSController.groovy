@@ -299,15 +299,19 @@ class ScrumOSController {
             product = Product.get(params.product)
             currentSprint = Sprint.findCurrentSprint(product.id).list() ?: null
         }
-        def tmpl = g.render(
-                template: 'templatesJS',
-                model: [id: controllerName,
-                        currentSprint: currentSprint,
-                        product:product
-                ])
+        if (product){
+            def tmpl = g.render(
+                    template: 'templatesJS',
+                    model: [id: controllerName,
+                            currentSprint: currentSprint,
+                            product:product
+                    ])
 
-        tmpl = "${tmpl}".split("<div class='templates'>")
-        tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=').replaceAll('<script type="text/javascript">', '<js>').replaceAll('</script>', '</js>').replaceAll('<template ', '<script type="text/x-jqote-template" ').replaceAll('</template>', '</script>')
-        render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
+            tmpl = "${tmpl}".split("<div class='templates'>")
+            tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=').replaceAll('<script type="text/javascript">', '<js>').replaceAll('</script>', '</js>').replaceAll('<template ', '<script type="text/x-jqote-template" ').replaceAll('</template>', '</script>')
+            render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
+        }else{
+            render(text: '')
+        }
     }
 }
