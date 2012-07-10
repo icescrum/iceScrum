@@ -129,7 +129,7 @@ class ProjectController {
 
             try {
                 productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
-                entry.hook(id:"${controllerName}-${actionName}")
+                entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
             } catch (IllegalStateException ise) {
                 returnError(exception:ise)
                 return
@@ -844,6 +844,7 @@ class ProjectController {
                             sprint: it.parentSprint?.orderNumber ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.orderNumber : null,
                             creator: it.creator.firstName + ' ' + it.creator.lastName,
                             feature: it.feature?.name ?: null,
+                            permalink:createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid),
                             featureColor: it.feature?.color ?: null]
                     if (first == 0) {
                         stories1 << story
