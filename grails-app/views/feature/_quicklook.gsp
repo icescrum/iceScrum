@@ -61,6 +61,9 @@
                     <strong><g:message code="is.feature.value"/> :</strong> ${feature.value}
                 </p>
             </g:if>
+
+            <entry:point id="feature-quicklook-left" model="[feature:feature]"/>
+
             <p>
                 <strong><g:message code="is.feature.effort"/> :</strong> ${effort}
             </p>
@@ -72,7 +75,6 @@
             <p class="last">
                 <strong><g:message code="is.feature.stories.finish"/> :</strong> ${finishedStories}
             </p>
-            <entry:point id="quicklook-feature-left" model="[feature:feature]"/>
         </div>
 
         <div class="col2">
@@ -94,7 +96,7 @@
                                       controller="feature" params="[product:params.product]" size="20"/>
                 </div>
             </g:if>
-            <entry:point id="quicklook-feature-right" model="[feature:feature]"/>
+            <entry:point id="feature-quicklook-right" model="[feature:feature]"/>
         </div>
     </div>
 </div>

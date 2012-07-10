@@ -81,4 +81,4 @@
 <is:onStream
         on="#feature-table"
         events="[[object:'feature',events:['add','update','remove']]]"
-        template="window"/>
+        template="features"/>

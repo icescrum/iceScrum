@@ -26,7 +26,6 @@ package org.icescrum.web.presentation.app.project
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
-import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
@@ -49,6 +48,7 @@ class FeatureController {
         try {
             featureService.save(feature, Product.get(params.product))
             this.manageAttachments(feature)
+            entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature])
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: feature as JSON }
                 json { renderRESTJSON(text:feature, status:201) }
@@ -106,6 +106,7 @@ class FeatureController {
                 if (params.continue) {
                     next = Feature.findByBacklogAndRank(feature.backlog, feature.rank + 1, [cache: true])
                 }
+                entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature])
                 withFormat {
                     html { render status: 200, contentType: 'application/json', text: [feature: feature, next: next?.id ?: null] as JSON }
                     json { renderRESTJSON(text:feature) }

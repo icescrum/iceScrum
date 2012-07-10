@@ -23,8 +23,10 @@
         id="${feature.id}"
         miniId="${feature.uid}"
         title="${feature.name}"
+        rect="${rect?:false}"
         color="${feature.color}"
         type="feature"
+        miniValue="${rect?feature.value:null}"
         attachment="${feature.totalAttachments}"
         sortable='[rendered:request.productOwner]'
         typeNumber="${feature.type}"

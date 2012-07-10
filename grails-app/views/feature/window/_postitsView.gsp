@@ -38,7 +38,7 @@
                                callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'
         value="${features}"
         var="feature">
-        <is:cache  cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">
+        <is:cache cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">
             <g:include view="/feature/_postit.gsp" model="[feature:feature,user:user]" params="[product:params.product]"/>
         </is:cache>
 </is:backlogElementLayout>
@@ -52,4 +52,4 @@
 <is:onStream
         on="#backlog-layout-window-${controllerName}"
         events="[[object:'feature',events:['add','update','remove']]]"
-        template="window"/>
+        template="features"/>

@@ -33,4 +33,9 @@
         deep="${deep}"
         indentLevel="${indentLevel  + 1}"
         child="cliche"/>
+  <is:listAsXML
+       name="features"
+       child="feature"
+       deep="${deep}"
+       indentLevel="${indentLevel + 1}"/>
 </is:objectAsXML>

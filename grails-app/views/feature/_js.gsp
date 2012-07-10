@@ -130,3 +130,5 @@
     </is:table>
     ]]>
 </template>
+
+<entry:point id="feature-template" model="[feature:feature,id:id]"/>

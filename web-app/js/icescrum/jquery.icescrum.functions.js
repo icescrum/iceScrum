@@ -256,7 +256,7 @@
 
                 feature:{
                     templates:{
-                        window:{
+                        features:{
                             selector:function() {
                                 return $.icescrum.o.currentView == 'postitsView' ? 'div.postit-feature' : 'tr.table-line';
                             },
@@ -266,12 +266,12 @@
                             view:function() {
                                 return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-feature' : '#feature-table';
                             },
-                            remove:function(template) {
+                            remove:function(tmpl) {
                                 if ($.icescrum.o.currentView == 'tableView') {
                                     var tableline = $('#feature-table .table-line[elemid=' + this.id + ']');
                                     var oldRank = tableline.data('rank');
                                     tableline.remove();
-                                    $.icescrum.postit.updateRankAndVersion($.icescrum.feature.templates[template].selector(), $.icescrum.feature.templates[template].view(), oldRank);
+                                    $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, oldRank);
                                     $('#feature-table').trigger("update");
                                 }else{
                                     $('.postit-feature[elemid=' + this.id + ']').remove();
@@ -285,6 +285,10 @@
                                         $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank, this.id);
                                     }
                                     $('#feature-table').updateTableSorter();
+                                }else{
+                                    if (this.rank && this.rank != 0) {
+                                        $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
+                                    }
                                 }
                             },
                             beforeTmpl:function(tmpl,container,current) {
@@ -298,7 +302,12 @@
                             remove:function() {
                                 $('.postit-row-feature[elemid=' + this.id + ']').remove();
                             },
-                            window:'#widget-content-feature'
+                            window:'#widget-content-feature',
+                            afterTmpl:function(tmpl, container, newObject) {
+                                if (this.rank && this.rank != 0) {
+                                    $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
+                                }
+                            }
                         }
                     },
 
@@ -324,18 +333,17 @@
                         tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
                         tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
                         $(this).each(function() {
-                            tmpl.remove.apply(this,[template]);
+                            tmpl.remove.apply(this,[tmpl]);
                         });
-                        if ($(tmpl.selector, $(tmpl.view)).length == 0) {
-                            $(tmpl.view).hide();
-                            $(tmpl.window + ' .box-blank').show();
+                        if (!tmpl.noblank) {
+                            if ($(tmpl.selector, $(tmpl.view)).length == 0) {
+                                $(tmpl.view).hide();
+                                $(tmpl.window + ' .box-blank').show();
+                            }
                         }
                     },
 
                     _postRendering:function(tmpl, newObject, container) {
-                        if (this.rank && this.rank != 0) {
-                            $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                        }
                         if (this.totalAttachments == undefined || !this.totalAttachments) {
                             newObject.find('.postit-attachment,.table-attachment').hide()
                         }
