@@ -62,8 +62,7 @@ class ProjectController {
     def springSecurityService
     def featureService
     def securityService
-    def springcacheService
-    def jasperService
+    def attachmentableService
 
     def index = {
         chain(controller: 'scrumOS', action: 'index', params: params)
@@ -540,23 +539,20 @@ class ProjectController {
 
         if (params.user?.username) {
             session['import'].product.teams.each {
-                it.members.each {it2 ->
+                it.members?.each {it2 ->
                     if (params.user.username."${it2.uid}") {
                         it2.username = params.user.username."${it2.uid}"
                     }
                 }
-                it.scrumMasters.each {it2 ->
+                it.scrumMasters?.each {it2 ->
                     if (params.user.username."${it2.uid}") {
                         it2.username = params.user.username."${it2.uid}"
                     }
                 }
             }
-        }
-
-        if (params.productOwner?.username) {
-            session['import'].product.productOwners.each {
-                if (params.productOwner.username."${it.uid}") {
-                    it.username = params.productOwner.username."${it.uid}"
+            session['import'].product.productOwners?.each {
+                if (params.user.username."${it.uid}") {
+                    it.username = params.user.username."${it.uid}"
                 }
             }
         }
@@ -872,13 +868,22 @@ class ProjectController {
         def xml = new File("${projectName}.xml")
 
         try {
-            StreamCharBuffer test = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+            StreamCharBuffer xmlFile = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
             xml.withWriter('UTF-8'){ out ->
-                test.writeTo(out)
+                xmlFile.writeTo(out)
             }
+            def files = []
 
-            def inputDir = new File(grailsApplication.config.icescrum.baseDir + File.separator + product.id)
-            ApplicationSupport.zipExportFile(zipFile,inputDir,xml)
+            product.stories*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.actors*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+
+            def tasks = []
+            product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }
+            tasks*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+
+            ApplicationSupport.zipExportFile(zipFile,files,xml)
+
             ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
                 response.setHeader(k, v)
             }
