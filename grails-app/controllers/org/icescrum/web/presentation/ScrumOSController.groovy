@@ -176,7 +176,6 @@ class ScrumOSController {
             def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: param).toString() - request.contextPath
 
             if (!menuBarSupport.permissionDynamicBar(url)){
-                println url
                 render(status:401, contentType: 'application/json', text:[url:params.window ? '#'+params.window + (params.actionWindow ? '/'+params.actionWindow : '') : ''] as JSON)
                 return
             }

@@ -267,7 +267,7 @@ class ReleasePlanController {
                         defectstories: values.defectstories as JSON,
                         labels: values.label as JSON])
             } else {
-                renderError(text:message(code: 'is.chart.error.no.values'))
+                returnError(text:message(code: 'is.chart.error.no.values'))
             }
         }
     }
@@ -289,7 +289,7 @@ class ReleasePlanController {
             if (valueToDisplay.size() > 0)
                 render(template: 'charts/releaseParkingLot', model: [values: valueToDisplay as JSON, featuresNames: values.label as JSON])
             else {
-                renderError(text:message(code: 'is.chart.error.no.values'))
+                returnError(text:message(code: 'is.chart.error.no.values'))
             }
         }
     }
