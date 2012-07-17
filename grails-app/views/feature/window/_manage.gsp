@@ -51,6 +51,14 @@
 
         <entry:point id="${controllerName}-${actionName}" model="[feature:feature]"/>
 
+        <is:fieldFile for='feature.tags' label="is.backlogelement.tags">
+            <ul name="feature.tags">
+              <g:each in="${feature?.tags}">
+                <li>${it}</li>
+              </g:each>
+            </ul>
+        </is:fieldFile>
+
         <is:fieldSelect for="featureColor" label="is.feature.color" noborder="true">
             <is:select class="featureColor" container=".window-content" width="100" maxHeight="200"
                        styleSelect="dropdown" from="${colorsLabels}" keys="${colorsKeys}" name="feature.color"
@@ -64,6 +72,7 @@
                 Lorem ipsum dolor sit amet, consectetur...
             </is:postit>
         </div>
+
     </is:fieldset>
 
     <is:fieldset title="is.ui.feature.feature.attachment.title">
@@ -153,3 +162,6 @@
             events="[[object:'feature',events:['remove']]]"
             callback="if ( feature.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.feature.deleted')}','${controllerName}',true);"/>
 </g:if>
+<jq:jquery>
+    $("ul[name='feature.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'tag', action: 'find', params:[product:params.product])}"});
+</jq:jquery>

@@ -42,17 +42,12 @@
            typeNumber="${task.blocked ? 1 : 0}"
            typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
            attachment="${task.totalAttachments}"
+           menu="[id:'task-'+task.id,template:'/task/menu',params:[id:id, task:task, user:user], rendered:request.inProduct && !sprintDone]"
            stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
            miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
            editableEstimation="${taskEditable}"
            color="${task.color}"
            rect="true">
-            <g:if test="${request.inProduct}">
-                <is:postitMenu id="task-${task.id}"
-                               contentView="/task/menu"
-                               model="[id:id, task:task, user:user]"
-                               rendered="${!sprintDone}"/>
-            </g:if>
             <g:if test="${task.name?.length() > 17 || task.description?.length() > 0}">
                 <is:tooltipPostit
                         type="task"

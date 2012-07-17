@@ -34,33 +34,38 @@
                       cacheable="[cache:'SprintCache',key:'sprintEvent',disabled:sprint.state != Sprint.STATE_DONE]">
             %{-- Header of the sprint column --}%
                 <is:eventHeader class="state-${sprint.state}">
-                    <g:if test="${request.inProduct}">
-                        <div class="event-header-label" onclick="$.icescrum.stopEvent(event).openWindow('sprintPlan/${sprint.id}');">
-                    </g:if>
-                    <g:else>
-                        <div class="event-header-label">
-                    </g:else>
-                    ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state"><is:bundle
-                        bundle="sprintStates" value="${sprint.state}"/></span>
-
-                    <div class="event-header-velocity">
-                        <g:if test="${Sprint.STATE_WAIT == sprint.state}">
-                            ${sprint.capacity?.toInteger()}
+                    <div class="event-header-label">
+                        <g:if test="${request.inProduct}">
+                            <a href="#sprintPlan/${sprint.id}">
                         </g:if>
-                        <g:else>
-                            ${sprint.velocity?.toInteger()} / ${sprint.capacity?.toInteger()}
-                        </g:else>
+                        ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state"><is:bundle bundle="sprintStates" value="${sprint.state}"/></span>
+                        <g:if test="${request.inProduct}">
+                            </a>
+                        </g:if>
+                        <div class="event-header-velocity">
+                            <g:if test="${Sprint.STATE_WAIT == sprint.state}">
+                                ${sprint.capacity?.toInteger()}
+                            </g:if>
+                            <g:else>
+                                ${sprint.velocity?.toInteger()} / ${sprint.capacity?.toInteger()}
+                            </g:else>
+                        </div>
                     </div>
-
-                    </div>
-
                     <div class="drap-container">
                         ${message(code: 'is.ui.releasePlan.from')} <strong><g:formatDate date="${sprint.startDate}"
                                                                                          formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></strong>
                         ${message(code: 'is.ui.releasePlan.to')} <strong><g:formatDate date="${sprint.endDate}"
                                                                                        formatName="is.date.format.short" timeZone="${release.parentProduct.preferences.timezone}"/></strong>
-                        <is:menu class="dropmenu-action" id="sprint-${sprint.id}" contentView="/sprint/menu"
-                                 params="[sprint:sprint]"/>
+                        <div class="dropmenu-action">
+                            <div data-dropmenu="true" class="dropmenu" data-top="0" data-offset="0" data-noWindows="false" id="menu-postit-sprint-${sprint.id}">
+                                <span class="dropmenu-arrow">!</span>
+                                <div class="dropmenu-content ui-corner-all">
+                                    <ul class="small">
+                                        <g:render template="/sprint/menu" model="[sprint:sprint]"/>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <g:if test="${sprint.goal}">

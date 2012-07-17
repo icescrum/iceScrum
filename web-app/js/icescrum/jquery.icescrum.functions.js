@@ -741,13 +741,13 @@
                         $.icescrum.sprint.updateRemaining();
                     },
 
-                    toggleBlocked:function(id) {
-                        if ($('#postit-task-' + id + ' .postit-ico,.table-line[elemid=' + id + ']').toggleClass('ico-task-1').hasClass('ico-task-1')) {
-                            $('#menu-blocked-' + id + ' a').text($.icescrum.task.UNBLOCK);
-                            $('#postit-task-' + id + ' .postit-ico,.table-line[elemid=' + id + ']').attr('title', $.icescrum.task.BLOCKED);
+                    toggleBlocked:function(data) {
+                        if ($('#postit-task-' + data.id + ' .postit-ico,.table-line[elemid=' + data.id + ']').toggleClass('ico-task-1').hasClass('ico-task-1')) {
+                            $('#menu-blocked-' + data.id + ' a').text($.icescrum.task.UNBLOCK);
+                            $('#postit-task-' + data.id + ' .postit-ico,.table-line[elemid=' + data.id + ']').attr('title', $.icescrum.task.BLOCKED);
                         } else {
-                            $('#menu-blocked-' + id + ' a').text($.icescrum.task.BLOCK);
-                            $('#postit-task-' + id + ' .postit-ico,.table-line[elemid=' + id + ']').attr('title', '');
+                            $('#menu-blocked-' + data.id + ' a').text($.icescrum.task.BLOCK);
+                            $('#postit-task-' + data.id + ' .postit-ico,.table-line[elemid=' + data.id + ']').attr('title', '');
                         }
                     }
                 },

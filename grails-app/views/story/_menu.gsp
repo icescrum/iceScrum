@@ -20,7 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
-
 <%@ page import="org.icescrum.core.domain.Story;org.icescrum.core.domain.Sprint;" %>
 <g:set var="inProduct" value="${request.inProduct}"/>
 <g:set var="productOwner" value="${request.productOwner}"/>
@@ -28,194 +27,120 @@
 <g:set var="scrumMaster" value="${request.scrumMaster}"/>
 <g:set var="creator" value="${story.creator.id == user?.id && !request.productArchived}"/>
 
-<is:postitMenuItem first="true">
-    <is:scrumLink
-            id="${story.id}"
-            controller="story"
-            update="window-content-${controllerName}">
+<li class="first">
+    <a class="scrum-link" href="#story/${story.id}">
         <g:message code='is.ui.releasePlan.menu.story.details'/>
-    </is:scrumLink>
-</is:postitMenuItem>
-
-<is:postitMenuItem>
-    <is:scrumLink
-            id="${story.id}"
-            controller="story"
-            params="[tab:'comments']"
-            update="window-content-${controllerName}">
+    </a>
+</li>
+<li>
+    <a class="scrum-link" href="#story/${story.id}?tab=comment">
         <g:message code='is.ui.releasePlan.menu.story.commentable'/>
-    </is:scrumLink>
-</is:postitMenuItem>
-
-<is:postitMenuItem>
-    <is:scrumLink
-            id="${story.id}"
-            controller="story"
-            params="[tab:'tests']"
-            update="window-content-${controllerName}">
+    </a>
+</li>
+<li>
+    <a class="scrum-link" href="#story/${story.id}?tab=test">
         <g:message code='is.ui.backlogelement.activity.test'/>
-    </is:scrumLink>
-</is:postitMenuItem>
-
-<g:if test="${story.state == Story.STATE_SUGGESTED || template}">
-    <is:postitMenuItem rendered="${productOwner}" elementId="menu-accept-${story.id}">
-        <is:link id="${story.id}"
-                 action="accept"
-                 params="[type:'story']"
-                 remote="true"
-                 controller="story"
-                 onSuccess="jQuery.event.trigger('accept_story',data); jQuery.icescrum.renderNotice('${message(code: 'is.story.acceptedAsStory')}')"
-                 value="${message(code:'is.ui.sandbox.menu.acceptAsStory')}"
-                 history='false'/>
-    </is:postitMenuItem>
-
-    <is:postitMenuItem rendered="${productOwner}" elementId="menu-accept-feature-${story.id}">
-        <is:link id="${story.id}"
-                 action="accept"
-                 controller="story"
-                 params="[type:'feature']"
-                 remote="true"
-                 onSuccess="jQuery.event.trigger('accept_story',data); jQuery.icescrum.renderNotice('${message(code: 'is.story.acceptedAsFeature')}')"
-                 value="${message(code:'is.ui.sandbox.menu.acceptAsFeature')}"
-                 history='false'/>
-    </is:postitMenuItem>
-
-    <is:postitMenuItem class="menu-accept-task ${sprint?'':'hidden'}"
-                       rendered="${productOwner && (template || story.state == Story.STATE_SUGGESTED)}"
-                       elementId="menu-accept-task-${story.id}">
-        <is:link id="${story.id}"
-                 action="accept"
-                 controller="story"
-                 params="[type:'task']"
-                 remote="true"
-                 onSuccess="jQuery.event.trigger('accept_story',data); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsUrgentTask')}')"
-                 value="${message(code:'is.ui.sandbox.menu.acceptAsUrgentTask')}"
-                 history='false'/>
-    </is:postitMenuItem>
+    </a>
+</li>
+<g:if test="${productOwner && (story.state == Story.STATE_SUGGESTED || template)}">
+    <li id="menu-accept-${story.id}">
+        <a href="${createLink(action:'accept',controller:'story',params:[type:'story',product:params.product],id:story.id)}"
+           data-ajax-trigger="accept_story"
+           data-ajax-notice="${message(code: 'is.story.acceptedAsStory')}"
+           data-ajax="true">
+           <g:message code='is.ui.sandbox.menu.acceptAsStory'/>
+        </a>
+    </li>
+    <li id="menu-accept-feature-${story.id}">
+        <a href="${createLink(action:'accept',controller:'story',params:[type:'feature',product:params.product],id:story.id)}"
+           data-ajax-trigger="accept_story"
+           data-ajax-notice="${message(code: 'is.story.acceptedAsFeature')}"
+           data-ajax="true">
+           <g:message code='is.ui.sandbox.menu.acceptAsFeature'/>
+        </a>
+    </li>
+    <li class="menu-accept-task ${sprint?'':'hidden'}" id="menu-accept-task-${story.id}">
+        <a href="${createLink(action:'accept',controller:'story',params:[type:'task',product:params.product],id:story.id)}"
+           data-ajax-trigger="accept_story"
+           data-ajax-notice="${message(code: 'is.story.acceptedAsUrgentTask')}"
+           data-ajax="true">
+           <g:message code='is.ui.sandbox.menu.acceptAsUrgentTask'/>
+        </a>
+    </li>
 </g:if>
-
-<!--<g:if test="${(scrumMaster || teamMember) && ((story.state >= Story.STATE_ACCEPTED && story.state < Story.STATE_DONE && session.currentView == 'postitsView' ) || template)}">
-    <is:postitMenuItem rendered="${session.currentView == 'postitsView'}">
-      <is:link
-            elementId="menu-estimate-${story.id}"
-            disabled="true"
-            history="false"
-            value="${message(code:'is.ui.backlog.menu.estimate')}"
-            onclick="jQuery('#postit-story-${story.id}').find('.mini-value').click();"
-            />
-    </is:postitMenuItem>
-
-    <is:postitMenuItem rendered="${session.currentView == 'tableView'}">
-      <is:link
-            elementId="menu-estimate-${story.id}"
-            disabled="true"
-            history="false"
-            value="${message(code:'is.ui.backlog.menu.estimate')}"
-            onclick="jQuery('#postit-story-${story.id}').find('.mini-value').click();"
-            />
-    </is:postitMenuItem>
-</g:if>-->
-
-<is:postitMenuItem rendered="${inProduct && (story.state == Story.STATE_PLANNED || story.state == Story.STATE_INPROGRESS || template)}"
-                   elementId="menu-add-task-${story.id}">
-    <is:link
-            action="add"
-            id="${story.parentSprint.id}"
-            controller="sprintPlan"
-            params="['story.id':story.id]"
-            remote="true"
-            alt="${message(code:'is.ui.sprintPlan.kanban.recurrentTasks.add')}"
-            update="window-content-${controllerName}">
-        ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks.add')}
-    </is:link>
-</is:postitMenuItem>
-
-<is:postitMenuItem
-        rendered="${((productOwner && story.state != Story.STATE_DONE) || (creator && story.state == Story.STATE_SUGGESTED)) || template}"
-        elementId="menu-edit-${story.id}">
-    <is:link
-            action="editStory"
-            controller="${controllerName}"
-            id="${referrer?:story.id}"
-            update="window-content-${controllerName}"
-            subid="${referrer?story.id:null}"
-            value="${message(code:'is.ui.releasePlan.menu.story.update')}"
-            history="true"
-            remote="true"/>
-</is:postitMenuItem>
-
-<is:postitMenuItem rendered="${inProduct}">
-    <is:link id="${story.id}"
-             action="copy"
-             controller="story"
-             remote="true"
-             history="false"
-             onSuccess="jQuery.event.trigger('add_story',data); jQuery.icescrum.renderNotice('${g.message(code:'is.story.cloned')}')"
-             value="${message(code:'is.ui.releasePlan.menu.story.clone')}"/>
-</is:postitMenuItem>
-
-<is:postitMenuItem
-        rendered="${(productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED) || template}"
-        elementId="menu-delete-${story.id}">
-    <is:link id="${story.id}"
-             action="delete"
-             controller="story"
-             remote="true"
-             onSuccess="jQuery.event.trigger('remove_story',data); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}')"
-             value="${message(code:'is.ui.sandbox.menu.delete')}"
-             history='false'/>
-</is:postitMenuItem>
-
-<is:postitMenuItem
-        rendered="${(productOwner || scrumMaster) && (template || story.state >= Story.STATE_PLANNED && story.state != Story.STATE_DONE)}"
-        elementId="menu-unplan-${story.id}">
-    <is:link
-            history="false"
-            id="${story.id}"
-            action="unPlan"
-            before="if(!confirm('${message(code:'is.ui.releasePlan.menu.story.warning.dissociate')}')){ return false; }"
-            controller="story"
-            remote="true"
-            onSuccess=" jQuery.event.trigger('sprintMesure_sprint',data.sprint); jQuery.event.trigger('unPlan_story',data.story); jQuery.icescrum.renderNotice('${g.message(code:'is.sprint.stories.dissociated')}')"
-            value="${message(code:'is.ui.releasePlan.menu.story.dissociate')}"/>
-</is:postitMenuItem>
-
-<is:postitMenuItem
-        class="menu-shift-${sprint?.parentRelease?.id}-${(sprint?.orderNumber instanceof Integer ?sprint?.orderNumber + 1:sprint?.orderNumber)} ${nextSprintExist?'':'hidden'}"
-        rendered="${(productOwner || scrumMaster) && (template || story.state >= Story.STATE_PLANNED && story.state <= Story.STATE_INPROGRESS)}"
-        elementId="menu-shift-${story.id}">
-    <is:link id="${story.id}"
-             action="unPlan"
-             remote="true"
-             history="false"
-             params="[shiftToNext:true]"
-             controller="story"
-             onSuccess="jQuery.event.trigger('unPlan_story',data.story); jQuery.icescrum.renderNotice('${g.message(code: 'is.story.shiftedToNext')}')"
-             value="${message(code:'is.ui.sprintPlan.menu.postit.shiftToNext')}"/>
-</is:postitMenuItem>
-
-<is:postitMenuItem rendered="${productOwner && (story.state == Story.STATE_INPROGRESS || template)}"
-                   elementId="menu-done-${story.id}">
-    <is:link
-            history="false"
-            id="${story.id}"
-            controller="story"
-            action="done"
-            remote="true"
-            onSuccess="jQuery.event.trigger('done_story',data); jQuery.icescrum.renderNotice('${g.message(code:'is.story.declaredAsDone')}')"
-            value="${message(code:'is.ui.releasePlan.menu.story.done')}"/>
-</is:postitMenuItem>
-
-<is:postitMenuItem
-        rendered="${productOwner && (template || story.state == Story.STATE_DONE && story.parentSprint.state == Sprint.STATE_INPROGRESS)}"
-        elementId="menu-undone-${story.id}">
-    <is:link
-            history="false"
-            id="${story.id}"
-            action="unDone"
-            controller="story"
-            remote="true"
-            onSuccess="jQuery.event.trigger('unDone_story',data); jQuery.icescrum.renderNotice('${g.message(code:'is.story.declaredAsUnDone')}')"
-            value="${message(code:'is.ui.releasePlan.menu.story.undone')}"/>
-</is:postitMenuItem>
+<g:if test="${inProduct && (story.state == Story.STATE_PLANNED || story.state == Story.STATE_INPROGRESS || template)}">
+    <li id="menu-add-task-${story.id}">
+        <a href="#sprintPlan/add/${story.parentSprint.id}/?story.id=${story.id}">
+           <g:message code='is.ui.sprintPlan.kanban.recurrentTasks.add'/>
+        </a>
+    </li>
+</g:if>
+<g:if test="${((productOwner && story.state != Story.STATE_DONE) || (creator && story.state == Story.STATE_SUGGESTED)) || template}">
+    <li id="menu-edit-${story.id}">
+        <a href="#${controllerName}/editStory/${referrer?:story.id}${referrer?'/?subid='+story.id:''}">
+           <g:message code='is.ui.releasePlan.menu.story.update'/>
+        </a>
+    </li>
+</g:if>
+<g:if test="${inProduct}">
+    <li>
+        <a href="${createLink(action:'copy',controller:'story',params:[product:params.product],id:story.id)}"
+           data-ajax-trigger="add_story"
+           data-ajax-notice="${message(code: 'is.story.cloned')}"
+           data-ajax="true">
+           <g:message code='is.ui.releasePlan.menu.story.clone'/>
+        </a>
+    </li>
+</g:if>
+<g:if test="${(productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED) || template}">
+    <li id="menu-delete-${story.id}">
+        <a href="${createLink(action:'delete',controller:'story',params:[product:params.product],id:story.id)}"
+           data-ajax-trigger="remove_story"
+           data-ajax-notice="${message(code: 'is.story.deleted')}"
+           data-ajax="true">
+           <g:message code='is.ui.sandbox.menu.delete'/>
+        </a>
+    </li>
+</g:if>
+<g:if test="${(productOwner || scrumMaster) && (template || story.state >= Story.STATE_PLANNED && story.state != Story.STATE_DONE)}">
+    <li id="menu-unplan-${story.id}">
+        <a href="${createLink(action:'unPlan',controller:'story',params:[product:params.product],id:story.id)}"
+           data-ajax-trigger='{"unPlan_story":"story","sprintMesure_sprint":"sprint"}'
+           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.story.warning.dissociate')}"
+           data-ajax-notice="${message(code: 'is.sprint.stories.dissociated')}"
+           data-ajax="true">
+           <g:message code='is.ui.releasePlan.menu.story.dissociate'/>
+        </a>
+    </li>
+</g:if>
+<g:if test="${(productOwner || scrumMaster) && (template || story.state >= Story.STATE_PLANNED && story.state <= Story.STATE_INPROGRESS)}">
+     <li id="menu-shift-${story.id}" class="menu-shift-${sprint?.parentRelease?.id}-${(sprint?.orderNumber instanceof Integer ?sprint?.orderNumber + 1:sprint?.orderNumber)} ${nextSprintExist?'':'hidden'}">
+         <a href="${createLink(action:'unPlan',controller:'story',params:[product:params.product,shiftToNext:true],id:story.id)}"
+            data-ajax-trigger="unPlan_story"
+            data-ajax-notice="${message(code: 'is.story.shiftedToNext')}"
+            data-ajax="true">
+            <g:message code='is.ui.sprintPlan.menu.postit.shiftToNext'/>
+         </a>
+     </li>
+</g:if>
+<g:if test="${productOwner && (story.state == Story.STATE_INPROGRESS || template)}">
+     <li id="menu-done-${story.id}">
+         <a href="${createLink(action:'done',controller:'story',params:[product:params.product],id:story.id)}"
+             data-ajax-trigger="done_story"
+             data-ajax-notice="${message(code: 'is.story.declaredAsDone')}"
+             data-ajax="true">
+             <g:message code='is.ui.releasePlan.menu.story.done'/>
+         </a>
+     </li>
+</g:if>
+<g:if test="${productOwner && (template || story.state == Story.STATE_DONE && story.parentSprint.state == Sprint.STATE_INPROGRESS)}">
+     <li id="menu-undone-${story.id}">
+         <a href="${createLink(action:'unDone',controller:'story',params:[product:params.product],id:story.id)}"
+              data-ajax-trigger="unDone_story"
+              data-ajax-notice="${message(code: 'is.story.declaredAsUnDone')}"
+              data-ajax="true">
+              <g:message code='is.ui.releasePlan.menu.story.undone'/>
+         </a>
+     </li>
+</g:if>
 <entry:point id="${controllerName}-${actionName}-postitMenu" model="[story:story]"/>

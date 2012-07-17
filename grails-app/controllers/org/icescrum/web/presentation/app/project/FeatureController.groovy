@@ -33,6 +33,7 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
+import org.grails.taggable.Tag
 
 @Secured('inProduct()')
 class FeatureController {
@@ -47,6 +48,7 @@ class FeatureController {
 
         try {
             featureService.save(feature, Product.get(params.product))
+            feature.tags = params.feature.tags instanceof String[] ? params.feature.tags : params.feature.tags ? [params.feature.tags] : null
             this.manageAttachments(feature)
             entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature])
             withFormat {
@@ -84,6 +86,7 @@ class FeatureController {
                 }
 
                 bindData(feature, this.params, [include:['name','description','notes','color','type','value']], "feature")
+                feature.tags = params.feature.tags instanceof String[] ? params.feature.tags : params.feature.tags ? [params.feature.tags] : request?.format == 'html' ? null : feature.tags
 
                 this.manageAttachments(feature)
                 featureService.update(feature)
@@ -344,5 +347,9 @@ class FeatureController {
     def download = {
         forward(action: 'download', controller: 'attachmentable', id: params.id)
         return
+    }
+
+    def tags = {
+        render Tag.findAllByNameIlike("${params.term}%")*.name as JSON
     }
 }

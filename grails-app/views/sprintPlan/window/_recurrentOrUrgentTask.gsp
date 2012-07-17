@@ -21,28 +21,20 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 
-<is:postitMenuItem first="true">
-    <is:link
-            action="add"
-            id="${sprint.id}"
-            controller="${controllerName}"
-            params="['story.id':type]"
-            remote="true"
-            alt="${message(code:'is.ui.sprintPlan.kanban.recurrentTasks.add')}"
-            update="window-content-${controllerName}">
+<li class="first">
+    <a href="#sprintPlan/add/${sprint.id}/?story.id=${type}"
+       alt="${message(code:'is.ui.sprintPlan.kanban.recurrentTasks.add')}">
         ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks.add')}
-    </is:link>
-</is:postitMenuItem>
-<is:postitMenuItem rendered="${previousSprintExist && type == 'recurrent'}">
-    <is:link
-            action="copyRecurrentTasksFromPreviousSprint"
-            id="${sprint.id}"
-            controller="${controllerName}"
-            remote="true"
-            history="false"
-            alt="${message(code:'is.ui.sprintPlan.kanban.copyRecurrentTasks')}"
-            onSuccess="jQuery.event.trigger('add_task',[data]); jQuery.icescrum.renderNotice('${g.message(code: 'is.sprint.copyRecurrentTasks.copied')}')">
+    </a>
+</li>
+<g:if test="${previousSprintExist && type == 'recurrent'}">
+<li>
+    <a href="${createLink(controller:controllerName,action:'copyRecurrentTasksFromPreviousSprint', id:sprint.id, params:[product:params.product])}"
+       data-ajax="true"
+       data-ajax-trigger="add_task"
+       data-ajax-notice="${message(code: 'is.sprint.copyRecurrentTasks.copied')}">
         ${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}
-    </is:link>
-</is:postitMenuItem>
+    </a>
+</li>
+</g:if>
 <entry:point id="${controllerName}-${actionName}-recurrentOrUrgentTask" model="[sprint:sprint,type:type]"/>

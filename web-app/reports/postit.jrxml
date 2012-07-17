@@ -76,7 +76,7 @@
 				<textFieldExpression><![CDATA[($F{effort}!=null?$F{effort}+" - ":"")+($F{state})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="262" y="258" width="116" height="20" isRemoveLineWhenBlank="true">
+				<reportElement mode="Opaque" x="262" y="132" width="116" height="20" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$F{featureColor}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -132,90 +132,6 @@
 				<textFieldExpression><![CDATA[$F{creator}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="132" width="67" height="20">
-					<printWhenExpression><![CDATA[$F{suggestedDate}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$R{is.report.postit.date.suggested}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="329" y="132" width="71" height="20" isRemoveLineWhenBlank="true"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{suggestedDate}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="262" y="172" width="67" height="20">
-					<printWhenExpression><![CDATA[$F{estimatedDate}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$R{is.report.postit.date.estimated}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="262" y="152" width="67" height="20">
-					<printWhenExpression><![CDATA[$F{acceptedDate}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$R{is.report.postit.date.accepted}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="262" y="212" width="67" height="20">
-					<printWhenExpression><![CDATA[$F{inProgressDate}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$R{is.report.postit.date.inprogress}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="262" y="192" width="67" height="20">
-					<printWhenExpression><![CDATA[$F{plannedDate}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$R{is.report.postit.date.planned}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="262" y="232" width="67" height="20">
-					<printWhenExpression><![CDATA[$F{doneDate}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$R{is.report.postit.date.done}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="329" y="152" width="71" height="20" isRemoveLineWhenBlank="true"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{acceptedDate}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="329" y="172" width="71" height="20" isRemoveLineWhenBlank="true"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{estimatedDate}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="329" y="192" width="71" height="20" isRemoveLineWhenBlank="true"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{plannedDate}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="329" y="212" width="71" height="20" isRemoveLineWhenBlank="true"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{inProgressDate}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="329" y="232" width="71" height="20" isRemoveLineWhenBlank="true"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{doneDate}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="262" y="69" width="67" height="20">
 					<printWhenExpression><![CDATA[$F{rank}!=null]]></printWhenExpression>
 				</reportElement>
@@ -236,10 +152,23 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sprint}]]></textFieldExpression>
 			</textField>
+			<ellipse>
+				<reportElement x="268" y="196" width="80" height="80"/>
+				<graphicElement>
+					<pen lineWidth="5.0" lineColor="#FF3333"/>
+				</graphicElement>
+			</ellipse>
 			<image>
-				<reportElement x="213" y="6" width="45" height="45"/>
+				<reportElement x="356" y="231" width="45" height="45"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode($F{permalink}, com.google.zxing.BarcodeFormat.QR_CODE, 400, 400))]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="268" y="216" width="80" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

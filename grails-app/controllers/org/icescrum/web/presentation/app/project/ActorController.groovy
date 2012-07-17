@@ -61,6 +61,7 @@ class ActorController {
         def product = Product.load(params.product)
         try {
             actorService.save(actor, product)
+            actor.tags = params.actor.tags instanceof String[] ? params.actor.tags : params.actor.tags ? [params.actor.tags] : null
             this.manageAttachments(actor)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: actor as JSON }
@@ -79,7 +80,7 @@ class ActorController {
         withActor{Actor actor ->
 
             bindData(actor, this.params, [include:['name','description','notes','satisfactionCriteria','instances','expertnessLevel','useFrequency']], "actor")
-
+            actor.tags = params.actor.tags instanceof String[] ? params.actor.tags : params.actor.tags ? [params.actor.tags] : request?.format == 'html' ? null : actor.tags
             actorService.update(actor)
             this.manageAttachments(actor)
             //if success for table view

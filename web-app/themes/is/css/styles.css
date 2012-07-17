@@ -1297,8 +1297,12 @@ li#li-roles {
     top: 2px;
 }
 
-.event-header-label {
-    cursor: pointer;
+.event-header-label a {
+    color: #2165A5;
+}
+
+.event-header-label a:hover{
+    text-decoration: none;
 }
 
 .event-header-label .event-header-velocity {

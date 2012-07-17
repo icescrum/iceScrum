@@ -70,6 +70,7 @@ modules = {
 
     'jqplot' {
         dependsOn 'jquery'
+        resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.min.js'], bundle: 'icescrum'
         resource url: [dir: "js/jquery", file: 'excanvas.min.js'], wrapper: { s -> "<!--[if IE]>$s<![endif]-->" }, bundle: 'jquery-plugins'
         resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.barRenderer.min.js'], bundle: 'jquery-plugins'
@@ -122,5 +123,11 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.checkbox.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.selectmenu.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], bundle: 'jquery-ui-plugins'
+    }
+
+    'tagit' {
+        dependsOn 'jquery-ui'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'tagit.css'], attrs: [media: 'screen,projection']
+        resource url: [dir: 'js/jquery', file: 'jquery.tagit.js'], bundle: 'jquery-ui-plugins'
     }
 }

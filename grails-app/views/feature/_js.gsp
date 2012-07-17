@@ -42,14 +42,13 @@
                title="?**=truncatedName**?"
                type="feature"
                notruncate="true"
+               menu="[id:'feature-'+feature.id,template:'/feature/menu',params:[controllerName:id, feature:feature],rendered:request.productOwner]"
                sortable='[rendered:request.productOwner]'
                attachment="${feature.totalAttachments}"
                typeNumber="${feature.type}"
                color="${feature.color}"
                controller="${id}">
         ?**=truncatedDescription**?
-        <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" params="[controllerName:id, feature:feature]"
-                       rendered="${request.productOwner}"/>
         ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
         <is:tooltipPostit
                 type="feature"
@@ -102,8 +101,18 @@
                         version="?**=this.version**?">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
-                         params="[controllerName:id, feature:feature]" rendered="${request.productOwner}"/>
+                <g:if test="${request.productOwner}">
+                    <div class="dropmenu-action">
+                        <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-feature-${feature.id}">
+                            <span class="dropmenu-arrow">!</span>
+                            <div class="dropmenu-content ui-corner-all">
+                                <ul class="small">
+                                    <g:render template="/feature/menu" model="[controllerName:id, feature:feature]"/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </g:if>
                 <g:set var="attachment" value="${feature.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment"

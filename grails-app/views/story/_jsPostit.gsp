@@ -58,6 +58,7 @@
            type="story"
            rect="${rect}"
            notruncate="true"
+           menu="[id:'story-'+story.id,template:'/story/menu',params:[controllerName:id, story:story, sprint:sprint, template:true, referrer:referrer]]"
            attachment="${story.totalAttachments}"
            typeNumber="${story.type}"
            typeTitle="?**=typeTitle**?"
@@ -69,8 +70,6 @@
            acceptanceTestCount="?**=acceptanceTestCount**?"
            comment="${story.totalComments}">
     ?**=truncatedDescription**?
-    <is:postitMenu id="story-${story.id}" contentView="/story/menu" params="[controllerName:id, story:story, sprint:sprint, template:true, referrer:referrer]"/>
-
     ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
     <is:tooltipPostit
             type="story"

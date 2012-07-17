@@ -37,7 +37,6 @@
             <p>
                 <strong><g:message code="is.feature.rank"/> :</strong> ${feature.rank}
             </p>
-
             <p>
                 <strong><g:message
                         code="is.backlogelement.description"/> :</strong> ${feature.description?.encodeAsHTML()?.encodeAsNL2BR()}
@@ -72,9 +71,12 @@
                 <strong><g:message code="is.feature.stories"/> :</strong> ${feature.stories?.size()}
             </p>
 
-            <p class="last">
+            <p>
                 <strong><g:message code="is.feature.stories.finish"/> :</strong> ${finishedStories}
             </p>
+            <div class="line last">
+                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${feature?.tags}"> ${tag}${i < feature.tags.size() - 1 ? ', ' : ''}</g:each>
+            </div>
         </div>
 
         <div class="col2">

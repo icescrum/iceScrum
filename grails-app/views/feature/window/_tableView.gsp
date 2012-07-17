@@ -42,8 +42,18 @@
         <is:tableRows in="${features}" var="feature" elemid="id" data-rank="rank">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${feature.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="${feature.id}" contentView="/feature/menu"
-                         params="[feature:feature]" rendered="${request.productOwner}"/>
+                <g:if test="${request.productOwner}">
+                    <div class="dropmenu-action">
+                        <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-feature-${feature.id}">
+                            <span class="dropmenu-arrow">!</span>
+                            <div class="dropmenu-content ui-corner-all">
+                                <ul class="small">
+                                    <g:render template="/feature/menu" model="[feature:feature]"/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </g:if>
                 <g:set var="attachment" value="${feature.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment" title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>

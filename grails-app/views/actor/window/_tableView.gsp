@@ -43,8 +43,18 @@
         <is:tableRows in="${actors}" var="actor" elemid="id" rowid="table-row-actor-">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${actor.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="${actor.id}" contentView="/actor/menu"
-                         params="[actor:actor]" rendered="${request.productOwner}"/>
+                <g:if test="${request.productOwner}">
+                    <div class="dropmenu-action">
+                        <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-actor-${actor.id}">
+                            <span class="dropmenu-arrow">!</span>
+                            <div class="dropmenu-content ui-corner-all">
+                                <ul class="small">
+                                    <g:render template="/actor/menu" model="[actor:actor]"/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </g:if>
                 <g:set var="attachment" value="${actor.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment"

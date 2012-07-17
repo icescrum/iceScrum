@@ -28,7 +28,6 @@
                 <strong><g:message code="is.backlogelement.id"/></strong>
                 <is:scrumLink onclick="jQuery('#dialog').dialog('close');" controller="task" id="${task.id}">${task.uid}</is:scrumLink>
             </p>
-
             <p>
                 <strong><g:message
                         code="is.backlogelement.description"/> :</strong> ${task.description?.encodeAsHTML()?.encodeAsNL2BR()}
@@ -66,19 +65,22 @@
                                   timeZone="${task.backlog.parentRelease.parentProduct.preferences.timezone}"/>
                 </p>
             </g:if>
-            <p class="${task.responsible ?: 'last'}">
+            <p>
                 <strong><g:message code="is.task.creator"/> :</strong> <is:scrumLink controller="user" action='profile'
                                                                                      onclick="\$('#dialog').dialog('close');"
                                                                                      id="${task.creator.username}">${task.creator.firstName.encodeAsHTML()} ${task.creator.lastName.encodeAsHTML()}</is:scrumLink>
             </p>
             <g:if test="${task.responsible}">
-                <p class="last">
+                <p>
                     <strong><g:message code="is.task.responsible"/> :</strong> <is:scrumLink controller="user"
                                                                                              action='profile'
                                                                                              onclick="\$('#dialog').dialog('close');"
                                                                                              id="${task.responsible.username}">${task.responsible.firstName.encodeAsHTML()} ${task.responsible.lastName.encodeAsHTML()}</is:scrumLink>
                 </p>
             </g:if>
+            <div class="line last">
+                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${task?.tags}"> ${tag}${i < task.tags.size() - 1 ? ', ' : ''}</g:each>
+            </div>
             <entry:point id="quicklook-task-left" model="[task:task]"/>
         </div>
 

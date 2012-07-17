@@ -69,11 +69,19 @@
             </is:fieldSelect>
         </g:if>
 
-        <is:fieldArea for="storydescription" label="${message(code:'is.backlogelement.description')}" noborder="true">
+        <is:fieldArea for="storydescription" label="${message(code:'is.backlogelement.description')}">
             <is:area id="storydescription" large="true" name="story.description"
                      value="${story?.description}"
                      rows="7"/>
         </is:fieldArea>
+
+        <is:fieldFile for='story.tags' label="is.backlogelement.tags" noborder="true">
+            <ul name="story.tags">
+              <g:each in="${story?.tags}">
+                <li>${it}</li>
+              </g:each>
+            </ul>
+        </is:fieldFile>
 
     </is:fieldset>
 
@@ -192,3 +200,6 @@
             events="[[object:'story',events:['remove']]]"
             callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','${referrer+(params.subid?'/'+params.id:'')}',true);"/>
 </g:if>
+<jq:jquery>
+    $("ul[name='story.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'tag', action: 'find', params:[product:params.product])}"});
+</jq:jquery>

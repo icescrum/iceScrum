@@ -51,10 +51,16 @@
         <is:kanbanColumn>
             <g:message code="is.ui.sprintPlan.kanban.recurrentTasks"/>
             <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
-                <is:menu yoffset="3" class="dropmenu-action" id="menu-recurrent"
-                         contentView="window/recurrentOrUrgentTask"
-                         params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent']"
-                         rendered="${sprint.state != Sprint.STATE_DONE}"/>
+                <div class="dropmenu-action">
+                   <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="3" data-noWindows="false" id="menu-recurrent">
+                       <span class="dropmenu-arrow">!</span>
+                       <div class="dropmenu-content ui-corner-all">
+                           <ul class="small">
+                               <g:render template="window/recurrentOrUrgentTask" model="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent']"/>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
             </g:if>
         </is:kanbanColumn>
 
@@ -77,12 +83,16 @@
         <is:kanbanColumn>
             <g:message code="is.ui.sprintPlan.kanban.urgentTasks"/>
             <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
-                <is:menu yoffset="3"
-                         class="dropmenu-action"
-                         id="menu-urgent"
-                         contentView="window/recurrentOrUrgentTask"
-                         params="[sprint:sprint,type:'urgent']"
-                         rendered="${sprint.state != Sprint.STATE_DONE}"/>
+                <div class="dropmenu-action">
+                   <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="3" data-noWindows="false" id="menu-urgent">
+                       <span class="dropmenu-arrow">!</span>
+                       <div class="dropmenu-content ui-corner-all">
+                           <ul class="small">
+                               <g:render template="window/recurrentOrUrgentTask" model="[sprint:sprint,previousSprintExist:previousSprintExist,type:'urgent']"/>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
             </g:if>
             <br/>
             <span id='limit-urgent-tasks' style='display:${limitValueUrgentTasks > 0 ? 'block' : 'none'}'>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks.limit', args:[limitValueUrgentTasks])}</span>
@@ -107,7 +117,7 @@
                    type="story"
                    emptyRendering="true">
             <is:kanbanColumn elementId="column-story-${story.id}">
-                <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
+                <is:cache cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
                     <g:include view="/story/_postit.gsp"
                                model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
                                params="[product:params.product]"/>

@@ -53,7 +53,6 @@
                     <wikitext:renderHtml markup="Textile">${story.notes}</wikitext:renderHtml>
                 </div>
             </div>
-
             <p>
                 <strong><g:message code="is.story.date.suggested"/> :</strong>
                 <g:formatDate date="${story.suggestedDate}" formatName="is.date.format.short.time"
@@ -94,16 +93,19 @@
                                   timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
-            <p class="${story.feature ? '' : 'last'}">
+            <p>
                 <strong><g:message code="is.story.creator"/> :</strong> <is:scrumLink controller="user" action='profile'
                                                                                       onclick="\$('#dialog').dialog('close');"
                                                                                       id="${story.creator.username}">${story.creator.firstName.encodeAsHTML()} ${story.creator.lastName.encodeAsHTML()}</is:scrumLink>
             </p>
             <g:if test="${story.feature}">
-                <p class="last">
+                <p>
                     <strong><g:message code="is.feature"/> :</strong> ${story.feature.name.encodeAsHTML()}
                 </p>
             </g:if>
+            <div class="line last">
+                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${story?.tags}"> ${tag}${i < story.tags.size() - 1 ? ', ' : ''}</g:each>
+            </div>
             <entry:point id="quicklook-story-left" model="[story:story]"/>
         </div>
 

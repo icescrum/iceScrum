@@ -43,8 +43,16 @@
         <is:tableRows in="${stories}" var="story" elemid="id">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="${story.id}" contentView="/story/menu"
-                         params="[story:story, sprint:sprint, user:user]"/>
+                <div class="dropmenu-action">
+                    <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-story-${story.id}">
+                        <span class="dropmenu-arrow">!</span>
+                        <div class="dropmenu-content ui-corner-all">
+                            <ul class="small">
+                                <g:render template="/story/menu" model="[story:story, sprint:sprint, user:user]"/>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <g:set var="comment" value="${story.totalComments}"/>
                 <g:if test="${comment}">
                     <span class="table-comment"

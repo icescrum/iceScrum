@@ -38,12 +38,11 @@
                miniId="${actor.uid}"
                title="?**=truncatedName**?"
                type="actor"
+               menu="[id:'actor-'+actor.id,template:'/actor/menu',params:[controllerName:id, actor:actor], rendered:request.productOwner]"
                notruncate="true"
                attachment="${actor.totalAttachments}"
                controller="${id}">
         ?**=truncatedDescription**?
-        <is:postitMenu id="actor-${actor.id}" contentView="/actor/menu" params="[controllerName:id, actor:actor]"
-                       rendered="${request.productOwner}"/>
         ?**if(truncatedDescription.length > 50 || truncatedName.length > 17) {**?
         <is:tooltipPostit
                 type="actor"
@@ -84,8 +83,18 @@
         <is:tableRow elemid="${actor.id}" rowid="table-row-actor-">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${actor.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="${actor.id}" contentView="/actor/menu"
-                         params="[controllerName:id, actor:actor]" rendered="${productOwner}"/>
+                <g:if test="${productOwner}">
+                    <div class="dropmenu-action">
+                        <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-actor-${actor.id}">
+                            <span class="dropmenu-arrow">!</span>
+                            <div class="dropmenu-content ui-corner-all">
+                                <ul class="small">
+                                    <g:render template="/actor/menu" model="[controllerName:id, actor:actor]"/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </g:if>
                 <g:set var="attachment" value="${actor.totalAttachments}"/>
                 <g:if test="${attachment}">
                     <span class="table-attachment"

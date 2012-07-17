@@ -62,8 +62,16 @@
         <is:tableRow elemid="${story.id}" version="?**=this.version**?">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"
-                         params="[controllerName:'sandbox', story:story, sprint:sprint, template:true]"/>
+                <div class="dropmenu-action">
+                   <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-story-${story.id}">
+                       <span class="dropmenu-arrow">!</span>
+                       <div class="dropmenu-content ui-corner-all">
+                           <ul class="small">
+                               <g:render template="/story/menu" model="[controllerName:'sandbox', story:story, sprint:sprint, template:true]"/>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
                 <span class="table-comment"
                       title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"
@@ -124,8 +132,16 @@
                      version="?**=this.version**?">
             <is:tableColumn class="table-cell-checkbox">
                 <g:checkBox name="check-${story.id}"/>
-                <is:menu class="dropmenu-action" yoffset="4" id="story-${story.id}" contentView="/story/menu"
-                         params="[controllerName:'backlog',story:story,template:true]"/>
+                <div class="dropmenu-action">
+                   <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-story-${story.id}">
+                       <span class="dropmenu-arrow">!</span>
+                       <div class="dropmenu-content ui-corner-all">
+                           <ul class="small">
+                               <g:render template="/story/menu" model="[controllerName:'backlog',story:story,template:true]"/>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
                 <span class="table-comment"
                       title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"

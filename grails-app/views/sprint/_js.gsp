@@ -45,25 +45,31 @@
         <is:event title="sprint ${sprint.orderNumber}" elemid="${sprint.id}">
         %{-- Header of the sprint column --}%
             <is:eventHeader class="state-${sprint.state}" style="position:relative;">
-                <g:if test="${request.inProduct}">
-                    <div class="event-header-label" onclick="$.icescrum.stopEvent(event).openWindow('sprintPlan/${sprint.id}');">
-                </g:if>
-                <g:else>
-                    <div class="event-header-label">
-                </g:else>
-                ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state">?**=textState**?</span>
-
-                <div class="event-header-velocity">
-                    ?**=sprintMesure**?
+                <div class="event-header-label">
+                    <g:if test="${request.inProduct}">
+                        <a href="#sprintPlan/${sprint.id}">
+                    </g:if>
+                    ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state">?**=textState**?</span>
+                    <g:if test="${request.inProduct}">
+                        </a>
+                    </g:if>
+                    <div class="event-header-velocity">
+                        ?**=sprintMesure**?
+                    </div>
                 </div>
-
-                </div>
-
                 <div class="drap-container">
                     ${message(code: 'is.ui.releasePlan.from')} <strong>?**=startDate**?</strong>
                     ${message(code: 'is.ui.releasePlan.to')} <strong>?**=endDate**?</strong>
-                    <is:menu class="dropmenu-action" id="sprint-${sprint.id}" contentView="/sprint/menu"
-                             params="[controllerName:id,sprint:sprint,template:true]"/>
+                    <div class="dropmenu-action">
+                        <div data-dropmenu="true" class="dropmenu" data-top="0" data-offset="0" data-noWindows="false" id="menu-postit-sprint-${sprint.id}">
+                            <span class="dropmenu-arrow">!</span>
+                            <div class="dropmenu-content ui-corner-all">
+                                <ul class="small">
+                                    <g:render template="/sprint/menu" model="[controllerName:id,sprint:sprint,template:true]"/>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <g:if test="${sprint.goal}">
@@ -119,24 +125,32 @@
     **?
     <div class="event-header state-?**=this.state**?" class="state-${sprint.state}" style="position:relative;"
          elemid="${sprint.id}">
-        <g:if test="${request.inProduct}">
-            <div class="event-header-label" onclick="$.icescrum.stopEvent(event).openWindow('sprintPlan/${sprint.id}');">
-        </g:if>
-        <g:else>
-            <div class="event-header-label">
-        </g:else>
-        ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state">?**=textState**?</span>
 
-        <div class="event-header-velocity">
-            ?**=sprintMesure**?
+        <div class="event-header-label">
+            <g:if test="${request.inProduct}">
+                <a href="#sprintPlan/${sprint.id}">
+            </g:if>
+            ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state">?**=textState**?</span>
+            <g:if test="${request.inProduct}">
+                </a>
+            </g:if>
+            <div class="event-header-velocity">
+                ?**=sprintMesure**?
+            </div>
         </div>
-    </div>
-
         <div class="drap-container">
             ${message(code: 'is.ui.releasePlan.from')} <strong>?**=startDate**?</strong>
             ${message(code: 'is.ui.releasePlan.to')} <strong>?**=endDate**?</strong>
-            <is:menu class="dropmenu-action" id="${sprint.id}" contentView="/sprint/menu"
-                     params="[controllerName:id,sprint:sprint,template:true]"/>
+            <div class="dropmenu-action">
+                <div data-dropmenu="true" class="dropmenu" data-top="0" data-offset="0" data-noWindows="false" id="menu-postit-sprint-${sprint.id}">
+                    <span class="dropmenu-arrow">!</span>
+                    <div class="dropmenu-content ui-corner-all">
+                        <ul class="small">
+                            <g:render template="/sprint/menu" model="[controllerName:id,sprint:sprint,template:true]"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <g:if test="${sprint.goal}">

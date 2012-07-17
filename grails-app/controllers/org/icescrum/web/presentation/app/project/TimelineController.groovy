@@ -100,12 +100,17 @@ class TimelineController {
                     break
             }
 
-            def isClosable = false
-            if (it.sprints.size() != 0) {
-                if (it.sprints.asList().last().state == Sprint.STATE_DONE)
-                    isClosable = true
-            }
-            def templateMenu = "<div class='dropmenu-action' onmouseover='if(jQuery(\"#dropmenu-rel-${it.id}\").dropMenuCreated() == false){jQuery(\"#dropmenu-rel-${it.id}\").dropmenu({top:10,showOnCreate:true});};'>" + is.menu(contentView: '/release/menu', id: "rel-${it.id}", params: [release: it, isClosable: isClosable, activeRelease: currentProduct.releases.find {it.state == Release.STATE_INPROGRESS}]) + "</div><span>${it.name.encodeAsJavaScript()}</span>"
+            def templateMenu = """<div class='dropmenu-action'>
+                                      <div data-dropmenu="true" class="dropmenu" data-top="10" id="rel-${it.id}">
+                                        <span class="dropmenu-arrow">!</span>
+                                        <div class="dropmenu-content ui-corner-all">
+                                            <ul class="small">
+                                                ${g.render(template: '/release/menu', model: [release:it])}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                  </div><span>${it.name.encodeAsJavaScript()}</span>"""
+
             def templateTooltip = include(view: "$controllerName/tooltips/_tooltipReleaseDetails.gsp", model: [release: it])
 
             def tlR = [window: "releasePlan/${it.id}",

@@ -45,9 +45,18 @@
                 rendered="${displayRecurrentTasks}"
                 editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
             <is:tableGroupHeader>
-                <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
-                         class="dropmenu-action" id="menu-recurrent" contentView="window/recurrentOrUrgentTask"
-                         params="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent']"/>
+                <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
+                    <div class="dropmenu-action">
+                       <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-recurrent">
+                           <span class="dropmenu-arrow">!</span>
+                           <div class="dropmenu-content ui-corner-all">
+                               <ul class="small">
+                                   <g:render template="window/recurrentOrUrgentTask" model="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent']"/>
+                               </ul>
+                           </div>
+                       </div>
+                   </div>
+                </g:if>
                 <strong>${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</strong>
             </is:tableGroupHeader>
             <is:tableRows in="${recurrentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
@@ -64,8 +73,18 @@
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
-                    <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
-                             class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu" params="[task:task, story:story, user:user]"/>
+                    <g:if test="${request.inProduct && sprint.state != Sprint.STATE_DONE}">
+                        <div class="dropmenu-action">
+                           <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-task-${task.id}">
+                               <span class="dropmenu-arrow">!</span>
+                               <div class="dropmenu-content ui-corner-all">
+                                   <ul class="small">
+                                       <g:render template="/task/menu" model="[task:task, story:story, user:user]"/>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                    </g:if>
                     <g:set var="attachment" value="${task.totalAttachments}"/>
                     <g:if test="${attachment}">
                         <span class="table-attachment"
@@ -97,9 +116,18 @@
                 rendered="${displayUrgentTasks}"
                 editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
             <is:tableGroupHeader>
-                <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
-                         class="dropmenu-action" id="menu-urgent" contentView="window/recurrentOrUrgentTask"
-                         params="[sprint:sprint,type:'urgent']"/>
+                <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
+                    <div class="dropmenu-action">
+                       <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-urgent">
+                           <span class="dropmenu-arrow">!</span>
+                           <div class="dropmenu-content ui-corner-all">
+                               <ul class="small">
+                                   <g:render template="window/recurrentOrUrgentTask" model="[sprint:sprint,previousSprintExist:previousSprintExist,type:'urgent']"/>
+                               </ul>
+                           </div>
+                       </div>
+                   </div>
+                </g:if>
                 <strong>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</strong>
             </is:tableGroupHeader>
             <is:tableRows in="${urgentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
@@ -116,9 +144,18 @@
 
                 <is:tableColumn class="table-cell-checkbox">
                     <g:checkBox name="check-${task.id}"/>
-                    <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
-                             class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu"
-                             params="[task:task, story:story, user:user]"/>
+                    <g:if test="${request.inProduct && sprint.state != Sprint.STATE_DONE}">
+                        <div class="dropmenu-action">
+                           <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-task-${task.id}">
+                               <span class="dropmenu-arrow">!</span>
+                               <div class="dropmenu-content ui-corner-all">
+                                   <ul class="small">
+                                       <g:render template="/task/menu" model="[task:task, story:story, user:user]"/>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                    </g:if>
                     <g:set var="attachment" value="${task.totalAttachments}"/>
                     <g:if test="${attachment}">
                         <span class="table-attachment"
@@ -150,8 +187,18 @@
                     elementId="${story.id}"
                     editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
                 <is:tableGroupHeader>
-                    <is:menu rendered="${request.inProduct}" yoffset="4" class="dropmenu-action" id="${story.id}"
-                             contentView="/story/menu" params="[story:story,nextSprintExist:nextSprintExist]"/>
+                    <g:if test="${request.inProduct}">
+                        <div class="dropmenu-action">
+                           <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-story-${story.id}">
+                               <span class="dropmenu-arrow">!</span>
+                               <div class="dropmenu-content ui-corner-all">
+                                   <ul class="small">
+                                       <g:render template="/story/menu" model="[story:story,nextSprintExist:nextSprintExist]"/>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                    </g:if>
                     <is:scrumLink id="${story.id}" controller="story">
                         ${story.uid}
                     </is:scrumLink> -
@@ -172,9 +219,18 @@
 
                     <is:tableColumn class="table-cell-checkbox">
                         <g:checkBox name="check-${task.id}"/>
-                        <is:menu rendered="${request.inProduct && sprint.state != Sprint.STATE_DONE}" yoffset="4"
-                                 class="dropmenu-action" id="story-task-${task.id}" contentView="/task/menu"
-                                 params="[task:task, story:story, user:user]"/>
+                        <g:if test="${request.inProduct && sprint.state != Sprint.STATE_DONE}">
+                            <div class="dropmenu-action">
+                               <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-story-task-${task.id}">
+                                   <span class="dropmenu-arrow">!</span>
+                                   <div class="dropmenu-content ui-corner-all">
+                                       <ul class="small">
+                                           <g:render template="/task/menu" model="[task:task, story:story, user:user]"/>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                        </g:if>
                         <g:set var="attachment" value="${task.totalAttachments}"/>
                         <g:if test="${attachment}">
                             <span class="table-attachment"

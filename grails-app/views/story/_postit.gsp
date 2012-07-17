@@ -29,6 +29,7 @@
            type="story"
            rect="${rect?:false}"
            typeNumber="${story.type}"
+           menu="[id:'story-'+story.id,template:'/story/menu',params:[story:story, user:user, nextSprint:nextSprint]]"
            typeTitle="${is.bundle(bundle:'storyTypes',value:story.type)}"
            attachment="${story.totalAttachments}"
            miniValue="${story.state > Story.STATE_SUGGESTED ? story.effort >= 0 ? story.effort :'?' : null}"
@@ -39,10 +40,6 @@
            acceptanceTestCount="${story.acceptanceTests.size()}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
     <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
-%{--Embedded menu--}%
-    <is:postitMenu id="story-${story.id}"
-                   contentView="/story/menu"
-                   model="[story:story, user:user, nextSprint:nextSprint]"/>
     <g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
         <is:tooltipPostit
                 type="story"

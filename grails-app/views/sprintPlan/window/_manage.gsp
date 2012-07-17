@@ -44,6 +44,14 @@
             <is:area id="taskdescription" name="task.description" value="${task?.description}" large="true" rows="7"/>
         </is:fieldArea>
 
+        <is:fieldFile for='task.tags' label="is.backlogelement.tags">
+            <ul name="task.tags">
+              <g:each in="${task?.tags}">
+                <li>${it}</li>
+              </g:each>
+            </ul>
+        </is:fieldFile>
+
         <is:fieldSelect for="taskcolor" label="is.task.color" noborder="true">
             <is:select id="taskcolor" name="task.color" container=".window-content" width="100" maxHeight="200"
                        styleSelect="dropdown" from="${colorsLabels}" keys="${colorsKeys}" value="${task?.color}"
@@ -154,3 +162,6 @@
             events="[[object:'task',events:['remove']]]"
             callback="if ( task.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.task.deleted')}','${controllerName}/${sprint.id}',true);"/>
 </g:if>
+<jq:jquery>
+    $("ul[name='task.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'tag', action: 'find', params:[product:params.product])}"});
+</jq:jquery>

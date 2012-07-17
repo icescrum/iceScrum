@@ -43,6 +43,9 @@ import org.grails.comments.Comment
 import org.icescrum.core.event.IceScrumStoryEvent
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
+import org.grails.taggable.Tag
+import org.icescrum.core.domain.BacklogElement
+import org.grails.taggable.TagLink
 
 class StoryController {
 
@@ -162,6 +165,7 @@ class StoryController {
         try {
             storyService.save(story, product, (User)user)
             this.manageAttachments(story)
+            story.tags = params.story.tags instanceof String[] ? params.story.tags : params.story.tags ? [params.story.tags] : null
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
                 json { renderRESTJSON(text:story, status:201) }
@@ -268,6 +272,8 @@ class StoryController {
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
             }
+
+            story.tags = params.story.tags instanceof String[] ? params.story.tags : params.story.tags ? [params.story.tags] : request?.format == 'html' ? null : story.tags
 
             if (!skipUpdate){
                 storyService.update(story)

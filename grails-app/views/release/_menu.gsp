@@ -22,55 +22,43 @@
 <%@ page import="org.icescrum.core.domain.Release" %>
 <g:set var="poOrsm" value="${request.productOwner || request.scrumMaster}"/>
 
-<is:menuItem first="true">
-    <is:link id="${release.id}"
-             action="open"
-             update="window-content-${controllerName}"
-             value="${message(code:'is.ui.timeline.menu.open')}"
-             onclick="jQuery.icescrum.stopEvent(event).openWindow('releasePlan/${release.id}');"
-             disabled="true"/>
-</is:menuItem>
-
-<is:menuItem rendered="${poOrsm && (release.state == Release.STATE_WAIT && !activeRelease)}">
-    <is:link id="${release.id}"
-             action="activate"
-             controller="release"
-             onclick="jQuery.icescrum.stopEvent(event)"
-             before="if (!confirm('${g.message(code:'is.ui.timeline.menu.activate.confirm')}')){ return false; }"
-             onSuccess="jQuery.event.trigger('activate_release',data)"
-             value="${message(code:'is.ui.timeline.menu.activate')}"
-             history='false'
-             remote="true"/>
-</is:menuItem>
-
-<is:menuItem rendered="${poOrsm && (release.state == Release.STATE_INPROGRESS && isClosable)}">
-    <is:link id="${release.id}"
-             action="close"
-             controller="release"
-             onClick="jQuery.icescrum.stopEvent(event)"
-             before="if (!confirm('${g.message(code:'is.ui.timeline.menu.close.confirm')}')){ return false; }"
-             onSuccess="jQuery.event.trigger('close_release',data)"
-             history='false'
-             value="${message(code:'is.ui.timeline.menu.close')}"
-             remote="true"/>
-</is:menuItem>
-
-<is:menuItem rendered="${poOrsm && release.state != org.icescrum.core.domain.Release.STATE_DONE}">
-    <is:link id="${release.id}"
-             action="edit"
-             update="window-content-${controllerName}"
-             onclick="jQuery.icescrum.stopEvent(event);"
-             value="${message(code:'is.ui.timeline.menu.update')}"
-             remote="true"/>
-</is:menuItem>
-<is:menuItem rendered="${poOrsm && release.state == Release.STATE_WAIT}">
-    <is:link id="${release.id}"
-             action="delete"
-             controller="release"
-             remote="true"
-             history='false'
-             onclick="jQuery.icescrum.stopEvent(event);"
-             onSuccess="jQuery.event.trigger('remove_release',data)"
-             value="${message(code:'is.ui.timeline.menu.delete')}"/>
-</is:menuItem>
+<li class="first">
+    <a href="#releasePlan/${release.id}">
+        ${message(code:'is.ui.timeline.menu.open')}
+    </a>
+</li>
+<g:if test="${poOrsm && (release.state == Release.STATE_WAIT && release.activable)}">
+<li>
+    <a href="${createLink(action:'activate', controller: 'release', id:release.id, params:[product:params.product])}"
+       data-ajax="true"
+       data-ajax-confirm="${message(code:'is.ui.timeline.menu.activate.confirm')}"
+       data-ajax-trigger="activate_release">
+        ${message(code:'is.ui.timeline.menu.activate')}
+    </a>
+</li>
+</g:if>
+<g:if test="${poOrsm && (release.state == Release.STATE_INPROGRESS && release.closable)}">
+    <a href="${createLink(action:'close', controller: 'release', id:release.id, params:[product:params.product])}"
+       data-ajax="true"
+       data-ajax-confirm="${message(code:'is.ui.timeline.menu.close.confirm')}"
+       data-ajax-trigger="close_release">
+        ${message(code:'is.ui.timeline.menu.close')}
+    </a>
+</g:if>
+<g:if test="${poOrsm && release.state != org.icescrum.core.domain.Release.STATE_DONE}">
+<li>
+    <a href="#timeline/edit/${release.id}">
+        ${message(code:'is.ui.timeline.menu.update')}
+    </a>
+</li>
+</g:if>
+<g:if test="${poOrsm && release.state == Release.STATE_WAIT}">
+<li>
+    <a href="${createLink(action:'delete', controller: 'release', id:release.id, params:[product:params.product])}"
+       data-ajax="true"
+       data-ajax-trigger="remove_release">
+        ${message(code:'is.ui.timeline.menu.delete')}
+    </a>
+</li>
+</g:if>
 <entry:point id="${controllerName}-${actionName}-menu" model="[release:release]"/>

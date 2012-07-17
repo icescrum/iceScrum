@@ -26,6 +26,7 @@
         rect="${rect?:false}"
         color="${feature.color}"
         type="feature"
+        menu="[id:'feature-'+feature.id,template:'/feature/menu',params:[feature:feature],rendered:request.productOwner]"
         miniValue="${rect?feature.value:null}"
         attachment="${feature.totalAttachments}"
         sortable='[rendered:request.productOwner]'
@@ -33,11 +34,6 @@
         typeTitle="${is.bundle(bundle:'featureTypes',value:feature.type)}"
         controller="feature">
     <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
-
-%{--Embedded menu--}%
-    <is:postitMenu id="feature-${feature.id}" contentView="/feature/menu" model="[feature:feature]"
-                   rendered="${request.productOwner}"/>
-
     <g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">
         <is:tooltipPostit
                 type="feature"

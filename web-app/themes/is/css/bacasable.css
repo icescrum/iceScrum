@@ -450,3 +450,7 @@ td.jqplot-table-legend {
 .acceptance-test-uid {
     float:right;
 }
+
+.table-line .dropmenu-action {
+    display:inline;
+}

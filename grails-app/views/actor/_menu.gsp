@@ -20,21 +20,17 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 
-<is:postitMenuItem first="true">
-    <is:link id="${actor.id}"
-             action="edit"
-             controller="${controllerName}"
-             update="window-content-${controllerName}"
-             value="${message(code:'is.ui.actor.menu.update')}"
-             remote="true"/>
-</is:postitMenuItem>
-<is:postitMenuItem>
-    <is:link id="${actor.id}"
-             action="delete"
-             remote="true"
-             history="false"
-             controller="${controllerName}"
-             onSuccess="jQuery.event.trigger('remove_actor',data); jQuery.icescrum.renderNotice('${message(code:'is.actor.deleted')}');"
-             value="${message(code:'is.ui.actor.menu.delete')}"/>
-</is:postitMenuItem>
+<li class="first">
+    <a href="#${controllerName}/edit/${actor.id}">
+       <g:message code='is.ui.actor.menu.update'/>
+    </a>
+</li>
+<li>
+    <a href="${createLink(action:'delete',controller:'actor',params:[product:params.product],id:actor.id)}"
+       data-ajax-trigger="remove_actor"
+       data-ajax-notice="${message(code: 'is.actor.deleted')}"
+       data-ajax="true">
+       <g:message code='is.ui.actor.menu.delete'/>
+    </a>
+</li>
 <entry:point id="${controllerName}-${actionName}-actorMenu" model="[actor:actor]"/>

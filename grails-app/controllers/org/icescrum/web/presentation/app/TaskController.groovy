@@ -33,6 +33,7 @@ import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.icescrum.core.domain.Product
+import org.grails.taggable.Tag
 
 @Secured('inProduct()')
 class TaskController {
@@ -120,6 +121,7 @@ class TaskController {
             else
                 taskService.saveStoryTask(task, story, user)
 
+            task.tags = params.task.tags instanceof String[] ? params.task.tags : params.task.tags ? [params.task.tags] : null
             this.manageAttachments(task)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
@@ -158,6 +160,7 @@ class TaskController {
             }
 
             bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
+            task.tags = params.task.tags instanceof String[] ? params.task.tags : params.task.tags ? [params.task.tags] : request?.format == 'html' ? null : task.tags
             taskService.update(task, user)
             this.manageAttachments(task)
             def next = null
@@ -256,7 +259,7 @@ class TaskController {
             User user = (User) springSecurityService.currentUser
             taskService.update(task, user)
             withFormat {
-                html { render(status: 200)  }
+                html { render(status: 200, contentType: 'application/json', text:task as JSON)  }
                 json { renderRESTJSON(text:task) }
                 xml  { renderRESTXML(text:task) }
             }
@@ -478,5 +481,9 @@ class TaskController {
             task.lastUpdated = new Date()
             broadcast(function: 'update', message: task)
         }
+    }
+
+    def tags = {
+        render Tag.findAllByNameIlike("${params.term}%")*.name as JSON
     }
 }

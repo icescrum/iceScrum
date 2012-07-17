@@ -23,13 +23,10 @@
            miniId="${actor.uid}"
            title="${actor.name}"
            type="actor"
+           menu="[id:'actor-'+actor.id,template:'/actor/menu',params:[actor:actor], rendered:request.productOwner]"
            attachment="${actor.totalAttachments}"
            controller="actor">
     <is:truncated size="50" encodedHTML="true">${actor.description?.encodeAsHTML()}</is:truncated>
-
-%{--Embedded menu--}%
-    <is:postitMenu id="actor-${actor.id}" contentView="/actor/menu" model="[actor:actor]" rendered="${request.productOwner}"/>
-
     <g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
         <is:tooltipPostit
                 type="actor"

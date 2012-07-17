@@ -49,10 +49,18 @@
             <is:area id="actordescription" name="actor.description" value="${actor?.description}" rows="3"/>
         </is:fieldArea>
 
-        <is:fieldArea for="actorsatisfactionCriteria" label="is.actor.satisfaction.criteria" noborder="true">
+        <is:fieldArea for="actorsatisfactionCriteria" label="is.actor.satisfaction.criteria">
             <is:area id="actorsatisfactionCriteria" name="actor.satisfactionCriteria"
                      value="${actor?.satisfactionCriteria}" rows="3"/>
         </is:fieldArea>
+
+        <is:fieldFile for='actor.tags' label="is.backlogelement.tags" noborder="true">
+            <ul name="actor.tags">
+              <g:each in="${actor?.tags}">
+                <li>${it}</li>
+              </g:each>
+            </ul>
+        </is:fieldFile>
 
     </is:fieldset>
 
@@ -144,3 +152,6 @@
             events="[[object:'actor',events:['remove']]]"
             callback="if ( actor.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.deleted')}','${controllerName}',true);"/>
 </g:if>
+<jq:jquery>
+    $("ul[name='actor.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'tag', action: 'find', params:[product:params.product])}"});
+</jq:jquery>

@@ -32,73 +32,65 @@
 <g:set var="taskReleasable" value="${responsible && !taskDone}"/>
 <g:set var="taskCopyable" value="${!task.parentStory || task.parentStory.state != Story.STATE_DONE}"/>
 
-<is:postitMenuItem first="true">
-    <is:scrumLink
-            id="${task.id}"
-            controller="task"
-            update="window-content-${controllerName}">
+<li class="first">
+    <a class="scrum-link" href="#task/${task.id}">
         <g:message code='is.ui.sprintPlan.menu.task.details'/>
-    </is:scrumLink>
-</is:postitMenuItem>
-<is:postitMenuItem rendered="${taskTakable || template}"
-                   elementId="menu-take-${task.id}">
-    <is:link id="${task.id}"
-             action="take"
-             controller="task"
-             remote="true"
-             onSuccess="jQuery.event.trigger('update_task',data); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.taken')}')"
-             history="false"
-             value="${message(code:'is.ui.sprintPlan.menu.task.take')}"/>
-</is:postitMenuItem>
-<is:postitMenuItem rendered="${taskReleasable || template}"
-                   elementId="menu-unassign-${task.id}">
-    <is:link id="${task.id}"
-             action="unassign"
-             controller="task"
-             history="false"
-             onSuccess="jQuery.event.trigger('update_task',data); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.unassigned')}')"
-             value="${message(code:'is.ui.sprintPlan.menu.task.unassign')}"
-             remote="true"/>
-</is:postitMenuItem>
-<is:postitMenuItem rendered="${taskEditable || template}"
-                   elementId="menu-edit-${task.id}">
-    <is:link id="${task.backlog?.id}"
-             action="edit"
-             subid="${task.id}"
-             params="[subid:task.id]"
-             controller="sprintPlan"
-             update="window-content-${controllerName}"
-             value="${message(code:'is.ui.sprintPlan.menu.task.update')}"
-             remote="true"/>
-</is:postitMenuItem>
-<is:postitMenuItem rendered="${taskCopyable || template}"
-                   elementId="menu-copy-${task.id}">
-    <is:link id="${task.id}"
-             action="copy"
-             controller="task"
-             remote="true"
-             history="false"
-             onSuccess="jQuery.event.trigger('add_task',data); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.copied')}')"
-             value="${message(code:'is.ui.sprintPlan.menu.task.copy')}"/>
-</is:postitMenuItem>
-<is:postitMenuItem rendered="${taskDeletable || template}"
-                   elementId="menu-delete-${task.id}">
-    <is:link id="${task.id}"
-             action="delete"
-             controller="task"
-             remote="true"
-             history="false"
-             onSuccess="jQuery.event.trigger('remove_task',data); jQuery.icescrum.renderNotice('${g.message(code: 'is.task.deleted')}')"
-             value="${message(code:'is.ui.sprintPlan.menu.task.delete')}"/>
-</is:postitMenuItem>
-<is:postitMenuItem rendered="${taskBlockable || template}"
-                   elementId="menu-blocked-${task.id}">
-    <is:link id="${task.id}"
-             action="block"
-             controller="task"
-             remote="true"
-             history="false"
-             onSuccess="jQuery.icescrum.task.toggleBlocked('${task.id}');"
-             value="${task.blocked?message(code:'is.ui.sprintPlan.menu.task.unblock'):message(code:'is.ui.sprintPlan.menu.task.block')}"/>
-</is:postitMenuItem>
+    </a>
+</li>
+<g:if test="${taskTakable || template}">
+<li id="menu-take-${task.id}">
+    <a href="${createLink(action:'take',controller:'task',params:[product:params.product],id:task.id)}"
+       data-ajax-trigger="update_task"
+       data-ajax-notice="${message(code: 'is.task.taken')}"
+       data-ajax="true">
+       <g:message code='is.ui.sprintPlan.menu.task.take'/>
+    </a>
+</li>
+</g:if>
+<g:if test="${taskReleasable || template}">
+<li id="menu-unassign-${task.id}">
+    <a href="${createLink(action:'unassign',controller:'task',params:[product:params.product],id:task.id)}"
+       data-ajax-trigger="update_task"
+       data-ajax-notice="${message(code: 'is.task.unassigned')}"
+       data-ajax="true">
+       <g:message code='is.ui.sprintPlan.menu.task.unassign'/>
+    </a>
+</li>
+</g:if>
+<g:if test="${taskEditable || template}">
+<li id="menu-edit-${task.id}">
+    <a href="#sprintPlan/edit/${task.backlog.id}/?subid=${task.id}">
+       <g:message code='is.ui.sprintPlan.menu.task.update'/>
+    </a>
+</li>
+</g:if>
+<g:if test="${taskCopyable || template}">
+<li id="menu-copy-${task.id}">
+    <a href="${createLink(action:'copy',controller:'task',params:[product:params.product],id:task.id)}"
+       data-ajax-trigger="add_task"
+       data-ajax-notice="${message(code: 'is.task.copied')}"
+       data-ajax="true">
+       <g:message code='is.ui.sprintPlan.menu.task.copy'/>
+    </a>
+</li>
+</g:if>
+<g:if test="${taskDeletable || template}">
+<li id="menu-delete-${task.id}">
+    <a href="${createLink(action:'delete',controller:'task',params:[product:params.product],id:task.id)}"
+       data-ajax-trigger="remove_task"
+       data-ajax-notice="${message(code: 'is.task.deleted')}"
+       data-ajax="true">
+       <g:message code='is.ui.sprintPlan.menu.task.delete'/>
+    </a>
+</li>
+</g:if>
+<g:if test="${taskBlockable || template}">
+<li id="menu-blocked-${task.id}">
+    <a href="${createLink(action:'block',controller:'task',params:[product:params.product],id:task.id)}"
+       data-ajax-success="jQuery.icescrum.task.toggleBlocked"
+       data-ajax="true">
+       <g:message code="${task.blocked?message(code:'is.ui.sprintPlan.menu.task.unblock'):message(code:'is.ui.sprintPlan.menu.task.block')}"/>
+    </a>
+</li>
+</g:if>
 <entry:point id="${controllerName}-${actionName}-taskMenu" model="[task:task]"/>

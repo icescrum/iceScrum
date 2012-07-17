@@ -24,6 +24,7 @@
 <g:set var="task" value="[id:'?**=this.id**?',
                            uid:'?**=this.uid**?',
                            name:'?**=name**?',
+                           backlog:[id:'?**=this.backlog.id**?'],
                            creator:[id:'?**=user_id**?'],
                            responsible:[id:'?**=user_id**?'],
                            description:'?**=description**?',
@@ -58,12 +59,8 @@
                attachment="${task.totalAttachments}"
                miniValue="?**=estimation**?"
                color="?**=this.color**?"
+               menu="[params:[controllerName:id, task:task, user:user, template:true], template:'/task/menu', id:'task-'+task.id, rendered:request.inProduct]"
                rect="true">
-        <g:if test="${request.inProduct}">
-            <is:postitMenu id="task-${task.id}"
-                           contentView="/task/menu"
-                           params="[controllerName:id, task:task, user:user, template:true]"/>
-        </g:if>
         ?**if (name.length > 17 || description.length > 0) {**?
         <is:tooltipPostit
                 type="task"
