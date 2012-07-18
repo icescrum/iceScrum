@@ -82,7 +82,7 @@
                         droppable="[
                             rendered:(poOrSm && sprint.state != Sprint.STATE_DONE),
                             hoverClass:'ui-drop-hover',
-                            accept:'.postit-row-story',
+                            accept:'.postit-row-story-backlog',
                             drop:remoteFunction(action:'plan',
                                       controller:'story',
                                       onSuccess:'ui.draggable.attr(\'remove\',\'true\'); jQuery.event.trigger(\'plan_story\',data.story)',

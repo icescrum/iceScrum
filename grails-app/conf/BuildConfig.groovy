@@ -96,7 +96,7 @@ grails.project.dependency.resolution = {
         compile ":cached-resources:1.0"
         compile ":feeds:1.5"
         compile ":hibernate:1.3.9"
-        compile ":jquery:1.7.1"
+        compile ":jquery:1.7.2"
         compile ":jquery-ui:1.8.11"
         compile ":resources:1.1.6"
         compile ":session-temp-files:1.0"

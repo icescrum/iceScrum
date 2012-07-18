@@ -454,3 +454,7 @@ td.jqplot-table-legend {
 .table-line .dropmenu-action {
     display:inline;
 }
+
+.backlog li {
+    list-style:none;
+}

@@ -176,6 +176,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
         changeRank:function(container, source, ui, name, call) {
             var postitid = ui.attr('id');
+            if (!postitid){
+                 return;
+            }
             var idmoved = postitid.substring(postitid.lastIndexOf("-") + 1, postitid.length);
             var newPosition = $(container).index(ui);
             //finally we send the update to server

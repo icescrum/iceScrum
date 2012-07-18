@@ -33,6 +33,10 @@
                     selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
         sortable='[rendered:request.productOwner,
                   handle:".postit-sortable",
+                  receive:"var rank = jQuery(\".postit-row-story\",this).index() + 1; jQuery(\".postit-row-story\",this).remove(); if (rank == 0) { return; } "+remoteFunction(controller:"story",
+                                         action:"accept",
+                                         onSuccess:"jQuery.event.trigger(\"accept_story\",data)",
+                                         params:"\"product="+params.product+"&id=\"+ui.item.attr(\"elemid\")+\"&type=story&rank=\"+rank"),
                   containment:"#window-content-backlog",
                   placeholder:"postit-placeholder ui-corner-all"]'
         droppable='[rendered:request.productOwner,
@@ -41,8 +45,7 @@
                   drop: remoteFunction(controller:"story",
                                        action:"associateFeature",
                                        onSuccess:"jQuery.event.trigger(\"update_story\",data)",
-                                       params:"\"product="+params.product+"&feature.id=\"+ui.draggable.attr(\"elemid\")+\"&id=\"+jQuery(\".postit-layout .postit-id\", jQuery(this)).text()"
-                                       ),
+                                       params:"\"product="+params.product+"&feature.id=\"+ui.draggable.attr(\"elemid\")+\"&id=\"+jQuery(this).attr(\"elemid\")"),
                   accept: ".postit-row-feature"]'
         dblclickable='[rendered:!request.productOwner,
                        selector:".postit",

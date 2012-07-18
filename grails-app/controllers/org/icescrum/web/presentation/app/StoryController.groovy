@@ -50,6 +50,7 @@ import org.grails.taggable.TagLink
 class StoryController {
 
     def storyService
+    def featureService
     def springSecurityService
     def securityService
     def acceptanceTestService
@@ -527,8 +528,16 @@ class StoryController {
             def storiesIds = stories*.id
             if (type == 'story') {
                 elements = storyService.acceptToBacklog(stories)
+                //case one story & d&d from sandbox to backlog
+                if (params.rank){
+                    storyService.rank(stories.first(), params.int('rank'));
+                }
             } else if (type == 'feature') {
                 elements = storyService.acceptToFeature(stories)
+                //case one story & d&d from sandbox to backlog
+                if (params.rank){
+                    featureService.rank((Feature)elements.first(), params.int('rank'));
+                }
             } else if (type == 'task') {
                 elements = storyService.acceptToUrgentTask(stories)
             }

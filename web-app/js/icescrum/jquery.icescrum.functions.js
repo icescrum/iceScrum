@@ -312,7 +312,9 @@
                     },
 
                     add:function(template) {
-                        $.icescrum.addOrUpdate(this, $.icescrum.feature.templates[template], $.icescrum.feature._postRendering);
+                        $(this).each(function() {
+                            $.icescrum.addOrUpdate(this, $.icescrum.feature.templates[template], $.icescrum.feature._postRendering);
+                        });
                     },
 
                     update:function(template) {
@@ -395,6 +397,22 @@
                                     $('#story-table').trigger("update");
                                 }
                             }
+                        },
+                        sandboxWidget:{
+                            selector:'li.postit-row-story',
+                            id:'postit-row-story-sandbox-tmpl',
+                            view:'#backlog-layout-widget-sandbox',
+                            constraintTmpl:function() {
+                                return this.state == $.icescrum.story.STATE_SUGGESTED;
+                            },
+                            remove:function(tmpl) {
+                                $(tmpl.view+' .postit-row-story[elemid=' + this.id + ']:visible').remove();
+                                if ($(tmpl.selector+':visible', $(tmpl.view)).length == 0) {
+                                    $(tmpl.view).hide();
+                                    $(tmpl.window + ' .box-blank').show();
+                                }
+                            },
+                            window:'#widget-content-sandbox'
                         },
                         backlogWindow:{
                             selector:function() {

@@ -28,21 +28,21 @@
         style="display:${stories ? 'block' : 'none'};"
         containerClass="list postit-rows"
         draggable="[
-                    rendered:(request.productOwner || request.scrumMaster),
+                    rendered:(request.productOwner),
                     selector:'.postit-row',
                     helper:'clone',
+                    connectToSortable:'#backlog-layout-window-backlog, #backlog-layout-window-feature',
                     appendTo:'body',
                     start:'jQuery(this).hide();',
-                    stop:'if (jQuery(this).attr(\'remove\') == \'true\') { jQuery(this).remove(); } else { jQuery(this).show(); }'
+                    stop:'debugger; if (jQuery(this).attr(\'remove\') == \'true\') { jQuery(this).remove(); } else { jQuery(this).show(); }'
                   ]"
         dblclickable='[rendered:(request.stakeHolder || request.inProduct), selector:".postit-row", callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
         value="${stories}"
         var="story">
     <is:cache  cache="storyCache" key="postit-small-${story.id}-${story.lastUpdated}">
-        <li class="postit-row postit-row-story postit-row-story-backlog" elemId="${story.id}">
+        <li class="postit-row postit-row-story" elemId="${story.id}">
             <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
             </span>${story.uid} - <is:truncated encodedHTML="true" size="30">${story.name.encodeAsHTML()}</is:truncated>
-            <em>(${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})</em>
         </li>
     </is:cache>
 </is:backlogElementLayout>
@@ -55,8 +55,8 @@
 
 <is:onStream
         on="#backlog-layout-widget-${controllerName}"
-        events="[[object:'story',events:['add','update','remove','estimate','plan','unPlan','associated','dissociated']]]"
-        template="backlogWidget"/>
+        events="[[object:'story',events:['add','update','remove','accept']]]"
+        template="sandboxWidget"/>
 
 <is:onStream
         on="#backlog-layout-widget-${controllerName}"

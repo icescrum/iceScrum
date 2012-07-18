@@ -70,7 +70,7 @@ uiDefinitions = {
             title 'is.ui.backlog'
             init 'list'
             toolbar false
-            height 143
+            height 170
         }
         shortcuts = [
             [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
@@ -182,6 +182,12 @@ uiDefinitions = {
             help 'is.ui.sandbox.help'
             init 'list'
             toolbar true
+        }
+        widget {
+            title 'is.ui.sandbox'
+            init 'list'
+            toolbar true
+            height 170
         }
         shortcuts = [
             [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],

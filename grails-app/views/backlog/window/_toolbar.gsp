@@ -25,7 +25,7 @@
 <is:iconButton
         rendered="${request.inProduct}"
         shortcut="[key:'ctrl+shift+c',scope:controllerName]"
-        onclick="jQuery.icescrum.selectableAction('story/copy',true,'id',function(data){jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');})"
+        onclick="jQuery.icescrum.selectableAction('story/copy',true,'id',function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');})"
         disabled="true"
         alt="${message(code:'is.ui.backlog.toolbar.alt.clone')}"
         title="${message(code:'is.ui.backlog.toolbar.alt.clone')}">

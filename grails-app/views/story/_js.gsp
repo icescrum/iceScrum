@@ -189,6 +189,20 @@
     ]]>
 </template>
 
+<template id="postit-row-story-sandbox-tmpl">
+    <![CDATA[
+    ?**
+    var name =  this.name ? this.name : '';
+    var truncatedName = name.length > 30 ? name.substring(0,30)+'...' : name;
+    var color = this.feature ? this.feature.color : '';
+    **?
+    <li class="postit-row postit-row-story" elemid="${story.id}">
+        <is:postitIcon name="${story.name}" color="${story.feature.color}"/>
+        ?**=this.uid **? - ?**=truncatedName**?
+    </li>
+    ]]>
+</template>
+
 <template id="postit-story-releasePlan-tmpl">
     <g:include view="/story/_jsPostit.gsp" params="[product:params.product]"
                model="[id:'releasePlan',editable:tMOrSm,rect:true, referrer:story.parentSprint.parentRelease]"/>

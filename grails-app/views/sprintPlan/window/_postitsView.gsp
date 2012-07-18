@@ -38,7 +38,7 @@
                                            onSuccess:"ui.draggable.attr(\"remove\",\"true\"); jQuery.event.trigger(\"plan_story\",data.story)",
                                            params:"\"&product=${params.product}&id=\"+ui.draggable.attr(\"elemid\")+\"&position=\"+(jQuery(\"table.kanban tbody tr.row-story\").index(this) == -1 ? jQuery(\"table.kanban tbody tr.row-story\").index(this) + 2 : jQuery(\"table.kanban tbody tr.row-story\").index(this) + 1 )+\"&sprint.id=\"+jQuery(\"table.kanban\").attr(\"elemid\")"
                                            ),
-                       accept: ".postit-row-story"]'>
+                       accept: ".postit-row-story-backlog"]'>
 %{-- Columns' headers --}%
     <is:kanbanHeader name="Story" key="story"/>
     <g:each in="${columns}" var="column">

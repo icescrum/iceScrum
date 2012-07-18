@@ -31,6 +31,11 @@
         sortable='[rendered:request.productOwner,
                   containment:"#window-content-feature",
                   handle:".postit-sortable",
+                  receive:"var rank = jQuery(\".postit-row-story\",this).index() + 1; jQuery(\".postit-row-story\",this).remove(); if (rank == 0) { return; } "+
+                          remoteFunction(controller:"story",
+                                         action:"accept",
+                                         onSuccess:"jQuery.event.trigger(\"accept_story\",data)",
+                                         params:"\"product="+params.product+"&id=\"+ui.item.attr(\"elemid\")+\"&type=feature&rank=\"+rank"),
                   placeholder:"postit-placeholder ui-corner-all"]'
         changeRank='[selector:".postit",controller:controllerName,action:"rank",name:"feature.rank",params:[product:params.product]]'
         dblclickable='[rendered:!request.productOwner,
