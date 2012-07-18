@@ -163,5 +163,5 @@
             callback="if ( feature.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.feature.deleted')}','${controllerName}',true);"/>
 </g:if>
 <jq:jquery>
-    $("ul[name='feature.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'tag', action: 'find', params:[product:params.product])}"});
+    $("ul[name='feature.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
 </jq:jquery>

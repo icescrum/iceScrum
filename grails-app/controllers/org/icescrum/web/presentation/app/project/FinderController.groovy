@@ -3,12 +3,20 @@ package org.icescrum.web.presentation.app.project
 import org.grails.taggable.Tag
 import grails.converters.JSON
 import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Actor
+import org.icescrum.core.utils.BundleUtils
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.User
+import grails.plugins.springsecurity.Secured
 
-class TagController {
+class FinderController {
 
         def springSecurityService
 
-        def find = {
+        def tag = {
             withProduct{ Product p ->
                 if ((p.preferences.hidden && !request.inProduct) || (!p.preferences.hidden && !springSecurityService.isLoggedIn())){
                     render status:403, text:''
@@ -35,5 +43,45 @@ class TagController {
                 tags.addAll(Tag.executeQuery(findTagsByTermAndProductInTasks, [term: params.term+'%', product: p.id]))
                 render tags.unique() as JSON
             }
+        }
+
+        @Secured('inProduct()')
+        def list = {
+            def data = [:]
+            if (params.term){
+                data.actors =  Actor.findAllByTagWithCriteria(params.term) {
+                    backlog {
+                        eq 'id', params.long('product')
+                    }
+                }
+
+                data.features = Feature.findAllByTagWithCriteria(params.term) {
+                    backlog {
+                        eq 'id', params.long('product')
+                    }
+                }
+
+                data.stories = Story.findAllByTagWithCriteria(params.term) {
+                    backlog {
+                        eq 'id', params.long('product')
+                    }
+                }
+
+                def queryTasks ="""SELECT task
+                                   FROM Task task,org.grails.taggable.TagLink tagLink
+                                   WHERE   task.id = tagLink.tagRef
+                                           AND tagLink.type = 'task'
+                                           AND tagLink.tag.name LIKE :term
+                                   ORDER BY task.name"""
+
+                data.tasks = Task.executeQuery(queryTasks, [term: params.term+'%'])
+            }
+            withFormat{
+                html {
+                    render(template: 'window/postitsView', model: [data: data, user:(User)springSecurityService.currentUser])
+                }
+                json { renderRESTJSON(text:data) }
+                xml  { renderRESTXML(text:data) }
+             }
         }
 }

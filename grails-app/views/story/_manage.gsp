@@ -201,5 +201,5 @@
             callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','${referrer+(params.subid?'/'+params.id:'')}',true);"/>
 </g:if>
 <jq:jquery>
-    $("ul[name='story.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'tag', action: 'find', params:[product:params.product])}"});
+    $("ul[name='story.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
 </jq:jquery>

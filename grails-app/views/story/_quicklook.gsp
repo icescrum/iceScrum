@@ -104,7 +104,7 @@
                 </p>
             </g:if>
             <div class="line last">
-                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${story?.tags}"> ${tag}${i < story.tags.size() - 1 ? ', ' : ''}</g:each>
+                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${story?.tags}"> <a href="#finder?term=${tag}">${tag}</a>${i < story.tags.size() - 1 ? ', ' : ''}</g:each>
             </div>
             <entry:point id="quicklook-story-left" model="[story:story]"/>
         </div>

@@ -458,3 +458,82 @@ td.jqplot-table-legend {
 .backlog li {
     list-style:none;
 }
+
+#main .box .box-content#window-content-finder, .window-fullscreen .box-content#window-content-finder {
+    overflow: hidden;
+}
+
+#backlog-layout-window-finder {
+    overflow: auto;
+    padding:5px;
+    width: 80%;
+}
+
+#backlog-layout-window-finder.full {
+    width: 99%;
+}
+
+#backlog-layout-window-finder .postit {
+    cursor: pointer;
+}
+
+
+#search-panel {
+    width:19%;
+    min-width: 220px;
+    height:100%;
+    position: absolute;
+    right:0px;
+    top:0px;
+    background:#F6F6F6;
+}
+
+.search-group {
+    border-bottom-width: 1px;
+    clear:both;
+    border-color: #C4C4C4;
+    border-style: solid;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#search-panel label {
+    display: block;
+    float: left;
+    font-size: 11px;
+    line-height: 16px;
+    padding: 8px;
+    text-align: right;
+    background: url(../images/application/separator-h.png) #F6F6F6;
+    background-repeat: repeat-x;
+    background-position: 0 bottom;
+}
+
+#search-panel p.field-noseparator label {
+    background:#F6F6F6;
+    background-repeat: repeat-x;
+    background-position: 0 bottom;
+}
+
+#search-panel p {
+    padding: 0px;
+    background: url(../images/application/separator-h.png) #FFF;
+    background-repeat: repeat-x;
+    background-position: 0 bottom;
+}
+
+#search-panel p.field-noseparator {
+    background: #FFF;
+    background-repeat: repeat-x;
+    background-position: 0 bottom;
+}
+
+#search-panel .input {
+    display: block;
+    padding: 5px;
+}
+
+#search-submit {
+    float: right;
+    margin-right: 12px;
+}

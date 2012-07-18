@@ -75,7 +75,7 @@
                 <strong><g:message code="is.feature.stories.finish"/> :</strong> ${finishedStories}
             </p>
             <div class="line last">
-                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${feature?.tags}"> ${tag}${i < feature.tags.size() - 1 ? ', ' : ''}</g:each>
+                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${feature?.tags}"> <a href="#finder?term=${tag}">${tag}</a>${i < feature.tags.size() - 1 ? ', ' : ''}</g:each>
             </div>
         </div>
 

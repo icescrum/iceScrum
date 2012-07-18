@@ -255,6 +255,20 @@ uiDefinitions = {
         }
     }
 
+    'finder' {
+        menuBar {
+            title 'is.ui.finder'
+            defaultVisibility false
+            defaultPosition 4
+            productDynamicBar true
+        }
+        window {
+            title 'is.ui.finder'
+            toolbar true
+            init 'list'
+        }
+    }
+
     'task' {
         menuBar {
             title 'is.ui.backlogelement'

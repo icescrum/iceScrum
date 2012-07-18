@@ -47,7 +47,7 @@
            miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
            editableEstimation="${taskEditable}"
            color="${task.color}"
-           rect="true">
+           rect="${rect ? rect : true}">
             <g:if test="${task.name?.length() > 17 || task.description?.length() > 0}">
                 <is:tooltipPostit
                         type="task"

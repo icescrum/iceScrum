@@ -153,5 +153,5 @@
             callback="if ( actor.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.deleted')}','${controllerName}',true);"/>
 </g:if>
 <jq:jquery>
-    $("ul[name='actor.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'tag', action: 'find', params:[product:params.product])}"});
+    $("ul[name='actor.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
 </jq:jquery>

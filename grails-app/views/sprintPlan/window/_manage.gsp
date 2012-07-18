@@ -163,5 +163,5 @@
             callback="if ( task.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.task.deleted')}','${controllerName}/${sprint.id}',true);"/>
 </g:if>
 <jq:jquery>
-    $("ul[name='task.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'tag', action: 'find', params:[product:params.product])}"});
+    $("ul[name='task.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
 </jq:jquery>

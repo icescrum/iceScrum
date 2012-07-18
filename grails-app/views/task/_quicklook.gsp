@@ -26,8 +26,10 @@
         <div class="col1 postit-details-information">
             <p>
                 <strong><g:message code="is.backlogelement.id"/></strong>
-                <is:scrumLink onclick="jQuery('#dialog').dialog('close');" controller="task" id="${task.id}">${task.uid}</is:scrumLink>
+                <is:scrumLink onclick="jQuery('#dialog').dialog('close');" controller="task"
+                              id="${task.id}">${task.uid}</is:scrumLink>
             </p>
+
             <p>
                 <strong><g:message
                         code="is.backlogelement.description"/> :</strong> ${task.description?.encodeAsHTML()?.encodeAsNL2BR()}
@@ -79,9 +81,10 @@
                 </p>
             </g:if>
             <div class="line last">
-                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${task?.tags}"> ${tag}${i < task.tags.size() - 1 ? ', ' : ''}</g:each>
+                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i"
+                                                                                           in="${task?.tags}"> <a href="#finder?term=${tag}">${tag}</a>${i < task.tags.size() - 1 ? ', ' : ''}</g:each>
             </div>
-            <entry:point id="quicklook-task-left" model="[task:task]"/>
+            <entry:point id="quicklook-task-left" model="[task: task]"/>
         </div>
 
         <div class="col2">
@@ -92,27 +95,27 @@
                        styleClass="story task ui-selectable-disabled"
                        type="task"
                        typeNumber="${task.blocked ? 1 : 0}"
-                       typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
+                       typeTitle="${task.blocked ? message(code: 'is.task.blocked') : ''}"
                        color="${task.color}"
                        stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
-                       miniValue="${task.estimation ?: task.estimation == 0?'0':'?'}">
+                       miniValue="${task.estimation ?: task.estimation == 0? '0' : '?'}">
             </is:postit>
             <g:if test="${task.totalAttachments}">
                 <div>
                     <strong>${message(code: 'is.postit.attachment', args: [task.totalAttachments, task.totalAttachments > 1 ? 's' : ''])} :</strong>
                     <is:attachedFiles bean="${task}" width="120" deletable="${false}" action="download"
-                                      params="[product:params.product]" controller="task" size="20"/>
+                                      params="[product: params.product]" controller="task" size="20"/>
                 </div>
             </g:if>
-            <entry:point id="quicklook-task-right" model="[task:task]"/>
+            <entry:point id="quicklook-task-right" model="[task: task]"/>
         </div>
     </div>
 </div>
 <is:onStream
         on=".postit-details-task[elemid=${task.id}]"
-        events="[[object:'task',events:['update']]]"
-        callback="jQuery('#dialog .quicklook').load('${createLink(controller:'quickLook', action:'index', params:[product:params.product,'task.id':task.id])}');"/>
+        events="[[object: 'task', events: ['update']]]"
+        callback="jQuery('#dialog .quicklook').load('${createLink(controller: 'quickLook', action: 'index', params: [product: params.product, 'task.id': task.id])}');"/>
 <is:onStream
         on=".postit-details-task[elemid=${task.id}]"
-        events="[[object:'task',events:['remove']]]"
-        callback="alert('${message(code:'is.task.deleted')}'); jQuery('#dialog').dialog('close');"/>
+        events="[[object: 'task', events: ['remove']]]"
+        callback="alert('${message(code: 'is.task.deleted')}'); jQuery('#dialog').dialog('close');"/>

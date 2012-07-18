@@ -92,6 +92,9 @@
                                     if (!jQuery("#dropmenu").is(':visible')) {
                                         jQuery("#window-id-" + targetWindow).focus();
                                     }
+                                    if(jQuery('#dialog').length){
+                                        jQuery('#dialog').dialog('close');
+                                    }
                                     return false;
                                 }
                             });

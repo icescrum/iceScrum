@@ -166,7 +166,7 @@ class StoryController {
         try {
             storyService.save(story, product, (User)user)
             this.manageAttachments(story)
-            story.tags = params.story.tags instanceof String[] ? params.story.tags : params.story.tags ? [params.story.tags] : null
+            story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : params.story.tags instanceof String[] ? params.story.tags : null
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
                 json { renderRESTJSON(text:story, status:201) }
@@ -273,9 +273,7 @@ class StoryController {
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
             }
-
-            story.tags = params.story.tags instanceof String[] ? params.story.tags : params.story.tags ? [params.story.tags] : request?.format == 'html' ? null : story.tags
-
+            story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : params.story.tags instanceof String[] ? params.story.tags : story.tags
             if (!skipUpdate){
                 storyService.update(story)
                 this.manageAttachments(story)

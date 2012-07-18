@@ -69,7 +69,7 @@
                 <strong><g:message code="is.actor.nb.stories"/> :</strong> ${stories}
             </p>
             <div class="line last">
-                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${actor?.tags}"> ${tag}${i < actor.tags.size() - 1 ? ', ' : ''}</g:each>
+                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${actor?.tags}"> <a href="#finder?term=${tag}">${tag}</a>${i < actor.tags.size() - 1 ? ', ' : ''}</g:each>
             </div>
 
             <entry:point id="quicklook-actor-left" model="[actor:actor]"/>
