@@ -90,15 +90,28 @@
             });
         }
 
-        if (opts.height) {
-            obj.bind("resize",
-                    function(event) {
-                        var actualHeight = jQuery("#widget-content-" + id).height();
-                        if (parseInt(opts.height) < actualHeight) {
-                            jQuery("#widget-content-" + id).height(parseInt(opts.height));
-                            jQuery("#widget-content-" + id).css('overflow-x', 'hidden').css('overflow-y', 'scroll');
-                        }
-                    }).trigger('resize');
+        if (opts.resizable) {
+
+            var content = $("#widget-content-" + id, obj);
+            var dif = obj.height() - content.height();
+            var savedHeight = $.icescrum.product.id ? $.cookie('widget-'+id+$.icescrum.product.id) : null;
+            if (savedHeight && $(content.children()[0]).height() > savedHeight){
+                content.height(savedHeight);
+            }
+
+            opts.resizable.minWidth = obj.width();
+            opts.resizable.maxWidth = obj.width();
+            opts.resizable.start = function(event, ui){
+                obj.resizable('option','maxHeight',$(content.children()[0]).height() + dif);
+            };
+            opts.resizable.resize = function(event, ui){
+                content.height(ui.size.height - dif);
+            };
+            opts.resizable.stop = function(event, ui){
+                $.cookie('widget-'+id+$.icescrum.product.id,ui.size.height - dif);
+            };
+
+            obj.resizable(opts.resizable);
         }
     };
 
@@ -106,7 +119,7 @@
 
 $.fn.isWidget.defaults = {
     windowable:false,
-    height:true,
+    resizable:null,
     closeable:true,
     onClose:null
 };

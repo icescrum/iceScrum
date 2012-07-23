@@ -133,7 +133,7 @@ class ScrumOSController {
                     closeable: uiDefinition.widget?.closeable,
                     sortable: uiDefinition.widget?.sortable,
                     windowable: uiDefinition.window ? true : false,
-                    height: uiDefinition.widget?.height,
+                    resizable: uiDefinition.widget?.resizable ?: false,
                     hasTitleBarContent: uiDefinition.widget?.titleBarContent,
                     title: message(code: uiDefinition.widget?.title),
                     init: uiDefinition.widget?.init

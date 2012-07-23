@@ -48,7 +48,7 @@
 </is:backlogElementLayout>
 
 <div class="box-blank" style="display:${stories ? 'none' : 'block'};">
-    ${message(code: 'is.widget.backlog.empty')}
+    ${message(code: 'is.widget.sandbox.empty')}
 </div>
 
 <entry:point id="${controllerName}-${actionName}-widget" model="[stories:stories]"/>
