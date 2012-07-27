@@ -138,18 +138,6 @@
             remote="true"
             value="${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}"/>
         </li>
-        <li class="last activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ? '' : 'hidden'}">
-            <is:link
-                    action="changeHideDoneState"
-                    controller="${controllerName}"
-                    history="false"
-                    remote="true"
-                    onSuccess="jQuery.icescrum.updateHideDoneState('${message(code: 'is.ui.sprintPlan.toolbar.showDoneState')}','${message(code: 'is.ui.sprintPlan.toolbar.hideDoneState')}');"
-                    id="${params.id}"
-                    update="window-content-${controllerName}">
-                ${hideDoneState ? message(code: 'is.ui.sprintPlan.toolbar.showDoneState') : message(code: 'is.ui.sprintPlan.toolbar.hideDoneState')}
-            </is:link>
-        </li>
     </ul>
 </is:panelButton>
 

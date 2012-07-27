@@ -2159,3 +2159,10 @@ label span.help {
     right: 2px;
     top: 15px;
 }
+
+table.kanban .kanban-col .table-cell .show-done-sprint a {
+    color: #666666;
+    font-size: 12px;
+    line-height: 18px;
+    margin-left: 10px;
+}

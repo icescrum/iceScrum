@@ -42,8 +42,39 @@
 %{-- Columns' headers --}%
     <is:kanbanHeader name="Story" key="story"/>
     <g:each in="${columns}" var="column">
-        <is:kanbanHeader name="${message(code:column.name)}" key="${column.key}"/>
+        <is:kanbanHeader name="${message(code:column.name)}" html="${column.html}" key="${column.key}"/>
     </g:each>
+
+%{-- Urgent Tasks --}%
+    <is:kanbanRow rendered="${displayUrgentTasks}" class="row-urgent-task" type="${Task.TYPE_URGENT}">
+        <is:kanbanColumn>
+            <g:message code="is.ui.sprintPlan.kanban.urgentTasks"/>
+            <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
+                <div class="dropmenu-action">
+                   <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="3" data-noWindows="false" id="menu-urgent">
+                       <span class="dropmenu-arrow">!</span>
+                       <div class="dropmenu-content ui-corner-all">
+                           <ul class="small">
+                               <g:render template="window/recurrentOrUrgentTask" model="[sprint:sprint,previousSprintExist:previousSprintExist,type:'urgent']"/>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+            </g:if>
+            <br/>
+            <span id='limit-urgent-tasks' style='display:${limitValueUrgentTasks > 0 ? 'block' : 'none'}'>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks.limit', args:[limitValueUrgentTasks])}</span>
+        </is:kanbanColumn>
+        <g:each in="${columns}" var="column">
+            <is:kanbanColumn key="${column.key}">
+                <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
+                    <is:cache  cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
+                        <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
+                    </is:cache>
+                </g:each>
+
+            </is:kanbanColumn>
+        </g:each>
+    </is:kanbanRow>
 
 %{-- Recurrent Tasks --}%
     <is:kanbanRow rendered="${displayRecurrentTasks}" class="row-recurrent-task" type="${Task.TYPE_RECURRENT}">
@@ -76,37 +107,6 @@
             </is:kanbanColumn>
         </g:each>
 
-    </is:kanbanRow>
-
-%{-- Urgent Tasks --}%
-    <is:kanbanRow rendered="${displayUrgentTasks}" class="row-urgent-task" type="${Task.TYPE_URGENT}">
-        <is:kanbanColumn>
-            <g:message code="is.ui.sprintPlan.kanban.urgentTasks"/>
-            <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
-                <div class="dropmenu-action">
-                   <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="3" data-noWindows="false" id="menu-urgent">
-                       <span class="dropmenu-arrow">!</span>
-                       <div class="dropmenu-content ui-corner-all">
-                           <ul class="small">
-                               <g:render template="window/recurrentOrUrgentTask" model="[sprint:sprint,previousSprintExist:previousSprintExist,type:'urgent']"/>
-                           </ul>
-                       </div>
-                   </div>
-               </div>
-            </g:if>
-            <br/>
-            <span id='limit-urgent-tasks' style='display:${limitValueUrgentTasks > 0 ? 'block' : 'none'}'>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks.limit', args:[limitValueUrgentTasks])}</span>
-        </is:kanbanColumn>
-        <g:each in="${columns}" var="column">
-            <is:kanbanColumn key="${column.key}">
-                <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
-                    <is:cache  cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
-                    </is:cache>
-                </g:each>
-
-            </is:kanbanColumn>
-        </g:each>
     </is:kanbanRow>
 
 %{-- Stories Rows --}%

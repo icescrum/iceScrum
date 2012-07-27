@@ -39,77 +39,6 @@
         <is:tableHeader width="7%" name="${message(code:'is.task.date.inprogress')}"/>
         <is:tableHeader width="7%" name="${message(code:'is.task.date.done')}"/>
 
-    %{-- Table group for recurrent tasks --}%
-        <is:tableGroup
-                elementId="recurrent"
-                rendered="${displayRecurrentTasks}"
-                editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
-            <is:tableGroupHeader>
-                <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
-                    <div class="dropmenu-action">
-                       <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-recurrent">
-                           <span class="dropmenu-arrow">!</span>
-                           <div class="dropmenu-content ui-corner-all">
-                               <ul class="small">
-                                   <g:render template="window/recurrentOrUrgentTask" model="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent']"/>
-                               </ul>
-                           </div>
-                       </div>
-                   </div>
-                </g:if>
-                <strong>${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</strong>
-            </is:tableGroupHeader>
-            <is:tableRows in="${recurrentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
-                          var="task" elemid="id">
-
-                <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
-                <g:set var="creator" value="${task.creator?.id == user.id}"/>
-                <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
-                <g:set var="sprintDone" value="${sprint?.state == Sprint.STATE_DONE}"/>
-                <g:set var="sprintInProgress" value="${sprint?.state == Sprint.STATE_DONE}"/>
-
-                <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
-                <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && sprintInProgress && !taskDone}"/>
-
-                <is:tableColumn class="table-cell-checkbox">
-                    <g:checkBox name="check-${task.id}"/>
-                    <g:if test="${request.inProduct && sprint.state != Sprint.STATE_DONE}">
-                        <div class="dropmenu-action">
-                           <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-task-${task.id}">
-                               <span class="dropmenu-arrow">!</span>
-                               <div class="dropmenu-content ui-corner-all">
-                                   <ul class="small">
-                                       <g:render template="/task/menu" model="[task:task, story:story, user:user]"/>
-                                   </ul>
-                               </div>
-                           </div>
-                       </div>
-                    </g:if>
-                    <g:set var="attachment" value="${task.totalAttachments}"/>
-                    <g:if test="${attachment}">
-                        <span class="table-attachment"
-                              title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
-                    </g:if>
-                </is:tableColumn>
-
-                <is:tableColumn
-                        editable="[type:'text', disabled:!taskEditable,name:'name']"><is:postitIcon color="${task.color}"/> ${task.name.encodeAsHTML()}</is:tableColumn>
-                <is:tableColumn
-                        editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
-                        bundle="taskStates" value="${task.state}"/></is:tableColumn>
-                <is:tableColumn
-                        editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
-                <is:tableColumn
-                        editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
-                <is:tableColumn
-                        editable="[type:'richarea',disabled:!taskEditable,name:'notes']">${task.notes}</is:tableColumn>
-
-                <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
-                <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate, timezone: timezone) : ''}</is:tableColumn>
-                <is:tableColumn>${task.doneDate ? g.formatDate(formatName: 'is.date.format.short', date: task.doneDate, timezone: timezone) : ''}</is:tableColumn>
-            </is:tableRows>
-        </is:tableGroup>
-
     %{-- Table group for urgent tasks --}%
         <is:tableGroup
                 elementId="urgent"
@@ -180,6 +109,77 @@
                 <is:tableColumn>${task.doneDate ? g.formatDate(formatName: 'is.date.format.short', date: task.doneDate) : ''}</is:tableColumn>
             </is:tableRows>
         </is:tableGroup>
+
+    %{-- Table group for recurrent tasks --}%
+            <is:tableGroup
+                    elementId="recurrent"
+                    rendered="${displayRecurrentTasks}"
+                    editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
+                <is:tableGroupHeader>
+                    <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
+                        <div class="dropmenu-action">
+                           <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-recurrent">
+                               <span class="dropmenu-arrow">!</span>
+                               <div class="dropmenu-content ui-corner-all">
+                                   <ul class="small">
+                                       <g:render template="window/recurrentOrUrgentTask" model="[sprint:sprint,previousSprintExist:previousSprintExist,type:'recurrent']"/>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                    </g:if>
+                    <strong>${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</strong>
+                </is:tableGroupHeader>
+                <is:tableRows in="${recurrentTasks?.sort{it.rank}}" rowClass="${{task -> task.blocked?'ico-task-1':''}}"
+                              var="task" elemid="id">
+
+                    <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
+                    <g:set var="creator" value="${task.creator?.id == user.id}"/>
+                    <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
+                    <g:set var="sprintDone" value="${sprint?.state == Sprint.STATE_DONE}"/>
+                    <g:set var="sprintInProgress" value="${sprint?.state == Sprint.STATE_DONE}"/>
+
+                    <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
+                    <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && sprintInProgress && !taskDone}"/>
+
+                    <is:tableColumn class="table-cell-checkbox">
+                        <g:checkBox name="check-${task.id}"/>
+                        <g:if test="${request.inProduct && sprint.state != Sprint.STATE_DONE}">
+                            <div class="dropmenu-action">
+                               <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-task-${task.id}">
+                                   <span class="dropmenu-arrow">!</span>
+                                   <div class="dropmenu-content ui-corner-all">
+                                       <ul class="small">
+                                           <g:render template="/task/menu" model="[task:task, story:story, user:user]"/>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                        </g:if>
+                        <g:set var="attachment" value="${task.totalAttachments}"/>
+                        <g:if test="${attachment}">
+                            <span class="table-attachment"
+                                  title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
+                        </g:if>
+                    </is:tableColumn>
+
+                    <is:tableColumn
+                            editable="[type:'text', disabled:!taskEditable,name:'name']"><is:postitIcon color="${task.color}"/> ${task.name.encodeAsHTML()}</is:tableColumn>
+                    <is:tableColumn
+                            editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
+                            bundle="taskStates" value="${task.state}"/></is:tableColumn>
+                    <is:tableColumn
+                            editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
+                    <is:tableColumn
+                            editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
+                    <is:tableColumn
+                            editable="[type:'richarea',disabled:!taskEditable,name:'notes']">${task.notes}</is:tableColumn>
+
+                    <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
+                    <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate, timezone: timezone) : ''}</is:tableColumn>
+                    <is:tableColumn>${task.doneDate ? g.formatDate(formatName: 'is.date.format.short', date: task.doneDate, timezone: timezone) : ''}</is:tableColumn>
+                </is:tableRows>
+            </is:tableGroup>
 
     %{-- Table group for stories --}%
         <g:each in="${stories.sort{it.rank}}" var="story">

@@ -113,10 +113,21 @@ class SprintPlanController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.not.exist')]] as JSON)
             return
         }
+
+        def hideDoneState = """<span id="show-done-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}" class="show-done-sprint ${sprint.state == Sprint.STATE_INPROGRESS ? '' : 'hidden'}">${
+                                        is.link(action:"changeHideDoneState",
+                                                controller:"${controllerName}",
+                                                history:"false",
+                                                remote:"true",
+                                                onSuccess:"jQuery.icescrum.updateHideDoneState('${message(code: 'is.ui.sprintPlan.toolbar.showDoneState')}','${message(code: 'is.ui.sprintPlan.toolbar.hideDoneState')}');" ,
+                                                id:"${params.id}",
+                                                update:"window-content-${controllerName}",user.preferences.hideDoneState ? message(code: 'is.ui.sprintPlan.toolbar.showDoneState') : message(code: 'is.ui.sprintPlan.toolbar.hideDoneState'))
+                                        } </span>"""
+
         def columns = [
                 [key: (Task.STATE_WAIT), name: 'is.task.state.wait'],
                 [key: (Task.STATE_BUSY), name: 'is.task.state.inprogress'],
-                [key: (Task.STATE_DONE), name: 'is.task.state.done']
+                [key: (Task.STATE_DONE), name: 'is.task.state.done', html:hideDoneState]
         ]
 
         def stateSelect = BundleUtils.taskStates.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
@@ -152,7 +163,6 @@ class SprintPlanController {
                         columns: columns,
                         stateSelect: stateSelect,
                         suiteSelect: suiteSelect,
-                        hideDoneState: user.preferences.hideDoneState,
                         previousSprintExist: (sprint.orderNumber > 1) ?: false,
                         nextSprintExist: sprint.hasNextSprint,
                         displayUrgentTasks: sprint.parentRelease.parentProduct.preferences.displayUrgentTasks,

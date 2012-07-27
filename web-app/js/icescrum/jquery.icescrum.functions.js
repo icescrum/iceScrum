@@ -909,6 +909,7 @@
                         $('div#dropmenu-menu-recurrent',kanban).remove();
                         $('div#dropmenu-menu-urgent',kanban).remove();
                         $('.close-sprint-' + this.parentRelease.id + '-' + (this.orderNumber)).remove();
+                        $('#show-done-sprint-' + this.parentRelease.id + '-' + this.orderNumber).remove();
                         $('.activate-sprint-' + this.parentRelease.id + '-' + (this.orderNumber + 1)).removeClass('hidden');
                         $('table.#kanban-sprint-' + this.id).addClass('done');
                     },
@@ -920,6 +921,7 @@
                         $.icescrum.sprint.current = this;
                         $('.menu-accept-task').show();
                         $('.activate-sprint-' + this.parentRelease.id + '-' + (this.orderNumber)).remove();
+                        $('#show-done-sprint-' + this.parentRelease.id + '-' + this.orderNumber).removeClass('hidden');
                         $('.close-sprint-' + this.parentRelease.id + '-' + (this.orderNumber)).removeClass('hidden');
                     },
 
