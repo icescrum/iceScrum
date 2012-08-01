@@ -127,7 +127,7 @@
         %{-- Workflow Columns --}%
             <g:each in="${columns}" var="column">
                 <is:kanbanColumn key="${column.key}">
-                    <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
+                    <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (user.preferences.hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                             var="task">
                                 <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
                     </g:each>
