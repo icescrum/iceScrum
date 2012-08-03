@@ -67,6 +67,14 @@ class FinderController {
                     }
                 }
 
+                //Sort by feature AND rank
+                Map storiesGrouped = data.stories?.groupBy{ it.feature }
+                data.stories = []
+                storiesGrouped?.each{
+                    it.value?.sort{ st -> st.state }
+                    data.stories.addAll(it.value)
+                }
+
                 def queryTasks ="""SELECT task
                                    FROM Task task,org.grails.taggable.TagLink tagLink
                                    WHERE   task.id = tagLink.tagRef

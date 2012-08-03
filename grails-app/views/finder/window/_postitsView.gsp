@@ -75,4 +75,7 @@
         return type+'='+obj.attr('elemid');
     }
 </script>
+<jq:jquery>
+    jQuery('#backlog-layout-window-${controllerName} .postit .dropmenu li a:not(".scrum-link")').parent().remove();
+</jq:jquery>
 <is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${controllerName}" listenOn="'#search-panel, #search-panel input'"/>

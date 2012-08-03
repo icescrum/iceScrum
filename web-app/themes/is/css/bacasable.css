@@ -507,6 +507,7 @@ td.jqplot-table-legend {
     background: url(../images/application/separator-h.png) #F6F6F6;
     background-repeat: repeat-x;
     background-position: 0 bottom;
+    margin-right: 5px;
 }
 
 #search-panel p.field-noseparator label {
