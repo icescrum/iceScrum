@@ -59,7 +59,6 @@
             </is:fieldSelect>
         </g:if>
 
-        <!--
         <g:if test="${storiesSelect}">
             <is:fieldSelect label="is.story.dependsOn" for="story.dependsOn">
                 <is:select container=".window-content" width="195" maxHeight="200"
@@ -70,7 +69,6 @@
                            value="${story?.dependsOn?.id}"/>
             </is:fieldSelect>
         </g:if>
-        -->
 
         <g:if test="${sprints}">
             <is:fieldSelect label="is.sprint" for="sprint.id">

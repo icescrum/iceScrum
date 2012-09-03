@@ -49,7 +49,6 @@
                             controller="sprintPlan"
                             id="${story.parentSprint.id}">${message(code: 'is.sprint')} ${story.parentSprint.orderNumber}</is:scrumLink>
                     </is:panelLine>
-                    <!--
                     <is:panelLine legend="${message(code:'is.story.dependsOn')}">
                         <g:if test="${story.dependsOn}">
                             <is:scrumLink controller="story" id="${story.dependsOn.id}">${story.dependsOn.name}</is:scrumLink>
@@ -62,7 +61,6 @@
                             </g:each>
                         </g:if>
                     </is:panelLine>
-                    -->
                     <is:panelLine legend="${message(code:'is.story.origin')}"
                                   rendered="${story.origin != ''}">${story.origin.encodeAsHTML()}</is:panelLine>
                     <is:panelLine legend="${message(code:'is.backlogelement.description')}"><is:storyTemplate
