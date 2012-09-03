@@ -12,7 +12,7 @@
                     updateRankAndVersion:function(selector, container, oldRank, newRank, elemid) {
                         var rows = $(selector, container);
                         function updateRow(row, newRank) {
-                            if(elemid == null || row.attr('elemid') != elemid) {
+                            if(elemid == null || row.data('elemid') != elemid) {
                                 row.data('rank', newRank);
                                 $('div[name=rank]', row).text(newRank);
                                 row.attr('version', parseInt(row.attr('version')) + 1);
@@ -60,7 +60,7 @@
 
                     id:function(object) {
                         if ($(object).hasClass('postit') || $(object).hasClass('postit-rect')) {
-                            var elem = $(object).attr('elemId');
+                            var elem = $(object).data('elemid');
                             if (elem) {
                                 return elem;
                             } else {
@@ -75,7 +75,7 @@
                             var _idParam = idParam ? idParam : 'id';
                             var ids = [];
                             $.each(object, function(key, val) {
-                                var elem = $(this).attr('elemid');
+                                var elem = $(this).data('elemid');
                                 if (elem) {
                                     ids.push(_idParam + '=' + elem);
                                 }

@@ -89,11 +89,11 @@
                 }).trigger('resize');
 
         $('.event-select-item').live('click.eventline', function() {
-            var elemid = $(this).attr('elemid');
-            $('.event-overflow').css('margin-left', '-' + $('.event-container[elemid=' + elemid + ']').position().left + 'px');
+            var elemid = $(this).data('elemid');
+            $('.event-overflow').css('margin-left', '-' + $('.event-container[data-elemid=' + elemid + ']').position().left + 'px');
         });
         if (options.focus && realWidth > rootContainer.width()) {
-            $('.event-select-item[elemid=' + options.focus + ']').click();
+            $('.event-select-item[data-elemid=' + options.focus + ']').click();
         }
     }
 }(jQuery));

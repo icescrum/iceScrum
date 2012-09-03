@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
-<g:form action="save" method="post" name="${controllerName}-form" elemid="${actor?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
+<g:form action="save" method="post" name="${controllerName}-form" data-elemid="${actor?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
 
     <is:fieldset title="is.ui.actor.actor.properties.title">
         <is:fieldInput label="is.actor" for="actorname">
@@ -146,11 +146,11 @@
     <is:onStream
             on="#${controllerName}-form"
             events="[[object:'actor',events:['update']]]"
-            callback="if ( actor.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.updated')}','${createLink(controller:controllerName,action:'edit',id:actor.id,params:[product:params.product])}',false,'#window-content-${controllerName}');"/>
+            callback="if ( actor.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.updated')}','${createLink(controller:controllerName,action:'edit',id:actor.id,params:[product:params.product])}',false,'#window-content-${controllerName}');"/>
     <is:onStream
             on="#${controllerName}-form"
             events="[[object:'actor',events:['remove']]]"
-            callback="if ( actor.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.deleted')}','${controllerName}',true);"/>
+            callback="if ( actor.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.deleted')}','${controllerName}',true);"/>
 </g:if>
 <jq:jquery>
     $("ul[name='actor.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});

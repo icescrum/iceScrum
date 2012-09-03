@@ -108,18 +108,16 @@ class UtilsTagLib {
 
     def changeRank = { attrs, body ->
 
-        if (attrs.params && attrs.params instanceof Map)
-            attrs.addParams = "params = params+'&${UtilsWebComponents.createQueryString(attrs.params)}';"
-        else if (attrs.params)
-            attrs.addParams = "params = params+'${attrs.params}';"
-        out << """\$.icescrum.changeRank(${attrs.selector ? '\'' + attrs.selector + '\'' : 'container'}, this, ${attrs.ui ?: 'ui.item'}, '${attrs.name?:'position'}',function(params, ui) { ${attrs.addParams ?: ''}
+        attrs.addParams = "params = jQuery.extend({}, params, ${attrs.params as JSON});"
+        out << """\$.icescrum.changeRank(${attrs.selector ? '\'' + attrs.selector + '\'' : 'container'}, this, ${attrs.ui ?: 'ui.item'}, '${attrs.name?:'position'}',function(params, ui) { ${ attrs.addParams ?: '' }
     ${
             remoteFunction(
                     action: attrs.action,
                     controller: attrs.controller,
                     id: attrs.id,
                     params: 'params',
-                    onFailure: "\$(ui).sortable(\"cancel\");" + attrs.onFailure)
+                    onSuccess: attrs.onSuccess,
+                    onFailure: "\$(ui).sortable(\"cancel\"); ${ attrs.onFailure?:'' }" )
         }})"""
     }
 
@@ -160,7 +158,7 @@ class UtilsTagLib {
         }
 
         def params = [
-                for: "div.event-header[elemid=${attrs.id}]",
+                for: "div.event-header[data-elemid=${attrs.id}]",
                 contentTitleText: attrs.title,
                 contentText: attrs.text,
                 styleName: "icescrum",

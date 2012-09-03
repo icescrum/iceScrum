@@ -22,7 +22,7 @@
 --}%
 
 <%@ page import="grails.plugin.fluxiable.ActivityLink; grails.plugin.fluxiable.Activity;org.icescrum.core.domain.Story" %>
-<div class="dashboard" id="details-${story.id}" elemid="${story.id}">
+<div class="dashboard" id="details-${story.id}" data-elemid="${story.id}">
     <div class="colset-2-80 clearfix">
         <div class="col1">
 
@@ -49,6 +49,18 @@
                             controller="sprintPlan"
                             id="${story.parentSprint.id}">${message(code: 'is.sprint')} ${story.parentSprint.orderNumber}</is:scrumLink>
                     </is:panelLine>
+                    <is:panelLine legend="${message(code:'is.story.dependsOn')}">
+                        <g:if test="${story.dependsOn}">
+                            <is:scrumLink controller="story" id="${story.dependsOn.id}">${story.dependsOn.name}</is:scrumLink>
+                        </g:if>
+                    </is:panelLine>
+                    <is:panelLine legend="${message(code:'is.story.dependences')}">
+                        <g:if test="${story.dependences}">
+                            <g:each var="depend" status="i" in="${story.dependences}">
+                                <is:scrumLink controller="story" id="${depend.id}">${depend.name}</is:scrumLink>${i < story.dependences.size() - 1 ? ', ' : ''}
+                            </g:each>
+                        </g:if>
+                    </is:panelLine>
                     <is:panelLine legend="${message(code:'is.story.origin')}"
                                   rendered="${story.origin != ''}">${story.origin.encodeAsHTML()}</is:panelLine>
                     <is:panelLine legend="${message(code:'is.backlogelement.description')}"><is:storyTemplate
@@ -60,17 +72,25 @@
                             </div>
                         </g:if>
                     </is:panelLine>
-                    <g:if test="${story.totalAttachments}">
-                        <is:panelLine
-                                legend="${message(code:'is.ui.backlogelement.attachment',args:[story.totalAttachments > 1 ?'s':''])}">
-                            <is:attachedFiles bean="${story}" width="120" deletable="${false}"
-                                              params="[product:params.product]" action="download"
-                                              controller="story"
-                                              size="20"/>
-                        </is:panelLine>
-                    </g:if>
-                    <is:panelLine legend="${message(code:'is.permalink')}"><a
-                            href="${permalink}">${permalink}</a></is:panelLine>
+                    <is:panelLine
+                            legend="${message(code:'is.ui.backlogelement.attachment',args:[story.totalAttachments > 1 ?'s':''])}">
+                        <g:if test="${story.totalAttachments}">
+                        <is:attachedFiles bean="${story}" width="120" deletable="${false}"
+                                          params="[product:params.product]" action="download"
+                                          controller="story"
+                                          size="20"/>
+                        </g:if>
+                    </is:panelLine>
+                    <is:panelLine legend="${message(code:'is.backlogelement.tags')}">
+                        <g:if test="${story.tags}">
+                            <g:each var="tag" status="i" in="${story.tags}">
+                                <a href="#finder?term=${tag}">${tag}</a>${i < story.tags.size() - 1 ? ', ' : ''}
+                            </g:each>
+                        </g:if>
+                    </is:panelLine>
+                    <is:panelLine legend="${message(code:'is.permalink')}">
+                        <a href="${permalink}">${permalink}</a>
+                    </is:panelLine>
                 </is:panelContext>
             </is:panel>
 
@@ -202,11 +222,11 @@
 <is:onStream
             on="#details-${story.id}"
             events="[[object:'story',events:['remove']]]"
-            callback="if ( story.id != jQuery(this).attr('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','project',true);"/>
+            callback="if ( story.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','project',true);"/>
 <is:onStream
             on="#details-${story.id}"
             events="[[object:'story',events:['accept','estimate','inProgress','done','unDone','plan','unPlan','associated','dissociated']]]"
-            callback="if ( story.id != jQuery(this).attr('elemid') ) return; document.location.reload();"/>
+            callback="if ( story.id != jQuery(this).data('elemid') ) return; document.location.reload();"/>
 
 <is:onStream
             on="#details-${story.id}"

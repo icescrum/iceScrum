@@ -51,6 +51,7 @@
 
     <div id="local">
         <is:widgetBar/>
+        <div id="notifications" style="display:none;"><a id="accept_notifications">${message(code:'is.ui.html5.notifications')}</a> (<a id="hide_notifications">${message(code:'is.ui.hide')}</a>)</div>
     </div>
     <is:desktop>
         <g:layoutBody/>
@@ -91,6 +92,6 @@
             events="[[object:'product',events:['add','remove','update','redirect','archive', 'unarchive']]]"/>
 <is:onStream
             on="#application"
-            events="[[object:'user',events:['addRoleProduct','removeRoleProduct','updateRoleProduct']]]"/>
+            events="[[object:'user',events:['addRoleProduct','removeRoleProduct','updateRoleProduct','updateProfile']]]"/>
 </body>
 </html>

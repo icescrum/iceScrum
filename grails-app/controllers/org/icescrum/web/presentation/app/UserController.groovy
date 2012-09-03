@@ -67,7 +67,7 @@ class UserController {
 
 
     @Secured('isAuthenticated()')
-    @Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
+    //@Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
     def openProfile = {
         render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)])
     }
@@ -149,14 +149,16 @@ class UserController {
             def link = (params.product) ? createLink(controller: 'scrumOS', params: [product: params.product]) : createLink(uri: '/')
             def name = currentUser.firstName + ' ' + currentUser.lastName
 
+            entry.hook(id:"${controllerName}-${actionName}", model:[user:currentUser])
+
             render(status: 200, contentType: 'application/json',
-                    text: [name: name.encodeAsHTML().encodeAsJavaScript(),
-                            forceRefresh: forceRefresh,
-                            refreshLink: link ?: null,
-                            updateAvatar: gravatar ?: createLink(action: 'avatar', id: currentUser.id),
-                            userid: currentUser.id,
-                            notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
-                    ] as JSON)
+                    text: [class:'User',user:[name: name.encodeAsHTML().encodeAsJavaScript(),
+                                                forceRefresh: forceRefresh,
+                                                refreshLink: link ?: null,
+                                                updateAvatar: gravatar ?: createLink(action: 'avatar', id: currentUser.id),
+                                                userid: currentUser.id,
+                                                notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
+                                        ]] as JSON)
         }
     }
 

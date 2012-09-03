@@ -325,7 +325,6 @@
                 }
 
                 form.submit(function(e) {
-
                     if (t) {
                         clearTimeout(t);
                     }

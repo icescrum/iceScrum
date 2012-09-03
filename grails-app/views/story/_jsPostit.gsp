@@ -31,6 +31,7 @@
                           creator:[id:'?**=user_id**?'],
                           effort:'?**=this.effort**?',
                           name:'?**=name**?',
+                          dependsOn:[id:'?**=dependsOnId**?', uid:'?**=dependsOnUid**?'],
                           parentSprint:[id:'?**=parentSprint**?'],
                           description:'?**=description**?',
                           totalComments:'?**=this.totalComments**?',
@@ -49,11 +50,14 @@
     var parentReleaseID = this.parentSprint ? this.parentSprint.parentReleaseId : '';
     var sprintOrderNumber = this.parentSprint ? this.parentSprint.orderNumber + 1 : '';
     var parentSprint = this.parentSprint ? this.parentSprint.id : '';
+    var dependsOnId = this.dependsOn ? this.dependsOn.id : '';
+    var dependsOnUid = this.dependsOn ? this.dependsOn.uid : '';
     var acceptanceTestCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
     description = description.formatLine();
 **?
 <is:postit id="${story.id}"
            miniId="${story.uid}"
+           dependsOn="${story.dependsOn}"
            title="?**=truncatedName**?"
            type="story"
            rect="${rect}"

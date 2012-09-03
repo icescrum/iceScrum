@@ -36,27 +36,33 @@
                   receive:"var rank = jQuery(\".postit-row-story\",this).index() + 1; jQuery(\".postit-row-story\",this).remove(); if (rank == 0) { return; } "+remoteFunction(controller:"story",
                                          action:"accept",
                                          onSuccess:"jQuery.event.trigger(\"accept_story\",data)",
-                                         params:"\"product="+params.product+"&id=\"+ui.item.attr(\"elemid\")+\"&type=story&rank=\"+rank"),
+                                         params:"\"product="+params.product+"&id=\"+ui.item.data(\"elemid\")+\"&type=story&rank=\"+rank"),
                   containment:"#window-content-backlog",
-                  placeholder:"postit-placeholder ui-corner-all"]'
+                  change:"jQuery.icescrum.story.checkDependsOnPostitsView(ui);",
+                  placeholder:"postit-placeholder postit-story ui-corner-all"]'
         droppable='[rendered:request.productOwner,
                   selector:".postit",
                   hoverClass: "ui-selected",
                   drop: remoteFunction(controller:"story",
                                        action:"associateFeature",
                                        onSuccess:"jQuery.event.trigger(\"update_story\",data)",
-                                       params:"\"product="+params.product+"&feature.id=\"+ui.draggable.attr(\"elemid\")+\"&id=\"+jQuery(this).attr(\"elemid\")"),
+                                       params:"\"product="+params.product+"&feature.id=\"+ui.draggable.data(\"elemid\")+\"&id=\"+jQuery(this).data(\"elemid\")"),
                   accept: ".postit-row-feature"]'
         dblclickable='[rendered:!request.productOwner,
                        selector:".postit",
-                       callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
+                       callback:is.quickLook(params:"\"story.id=\"+obj.data(\"elemid\")")]'
 
-        changeRank='[selector:".postit-story",controller:"story",action:"rank",name:"story.rank",params:[product:params.product]]'
+        changeRank='[selector:".postit-story",
+                     controller:"story",
+                     action:"rank",
+                     name:"story.rank",
+                     onSuccess:"jQuery.icescrum.story.updateRank(params,data,\"#backlog-layout-window-backlog\");",
+                     params:[product:params.product]]'
         editable="[controller:'story',
                   action:'estimate',
                   on:'div.backlog .postit-story .mini-value.editable',
                   rendered:(request.teamMember || request.scrumMaster),
-                  findId:'jQuery(this).parents(\'.postit-story:first\').attr(\'elemid\')',
+                  findId:'jQuery(this).parents(\'.postit-story:first\').data(\'elemid\')',
                   type:'selectui',
                   name:'story.effort',
                   before:'$(this).next().hide();',

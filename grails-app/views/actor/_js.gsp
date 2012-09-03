@@ -62,7 +62,7 @@
     var name =  this.name ? this.name : '';
     var truncatedName = name.length > 30 ? name.substring(0,30)+'...' : name;
     **?
-    <li class="postit-row postit-row-actor" elemid="${actor.id}">
+    <li class="postit-row postit-row-actor" data-elemid="${actor.id}">
         <span class="postit-icon postit-icon-yellow"></span>
         ?**=truncatedName**?
     </li>

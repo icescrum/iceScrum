@@ -37,7 +37,8 @@
         story:{
             i18n : {
                 stories:"${message(code:'is.ui.backlog.title.details.stories')}",
-                points:"${message(code:'is.ui.backlog.title.details.points')}"
+                points:"${message(code:'is.ui.backlog.title.details.points')}",
+                dependsOnWarning:"${message(code:'is.ui.story.warning.dependsOn')}"
             },
             states: ${is.bundleLocaleToJs(bundle: BundleUtils.storyStates)},
             types: ${is.bundleLocaleToJs(bundle: BundleUtils.storyTypes)}
@@ -102,12 +103,14 @@
 </jq:jquery>
 
 <div class='templates'>
-    <g:include view="/actor/_js.gsp" model="[id:'actor']" params="[product:params.product]"/>
-    <g:include view="/feature/_js.gsp" model="[id:'feature']" params="[product:params.product]"/>
-    <g:include view="/story/_js.gsp" params="[product:params.product]"/>
-    <g:include view="/task/_js.gsp" model="[id:'sprintPlan']" params="[product:params.product]"/>
-    <g:include view="/sprint/_js.gsp" model="[id:'releasePlan']" params="[product:params.product]"/>
-    <g:include view="/comment/_js.gsp" params="[product:params.product]"/>
-    <g:include view="/acceptanceTest/_js.gsp" params="[product:params.product]"/>
+    <g:if test="${params.product}">
+        <g:include view="/actor/_js.gsp" model="[id:'actor']" params="[product:params.product]"/>
+        <g:include view="/feature/_js.gsp" model="[id:'feature']" params="[product:params.product]"/>
+        <g:include view="/story/_js.gsp" params="[product:params.product]"/>
+        <g:include view="/task/_js.gsp" model="[id:'sprintPlan']" params="[product:params.product]"/>
+        <g:include view="/sprint/_js.gsp" model="[id:'releasePlan']" params="[product:params.product]"/>
+        <g:include view="/comment/_js.gsp" params="[product:params.product]"/>
+        <g:include view="/acceptanceTest/_js.gsp" params="[product:params.product]"/>
+    </g:if>
     <g:include view="/user/_js.gsp"/>
 </div>

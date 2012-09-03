@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<div class="postit-details postit-details-actor quicklook" elemid="${actor.id}">
+<div class="postit-details postit-details-actor quicklook" data-elemid="${actor.id}">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
@@ -95,10 +95,10 @@
     </div>
 </div>
 <is:onStream
-        on=".postit-details-actor[elemid=${actor.id}]"
+        on=".postit-details-actor[data-elemid=${actor.id}]"
         events="[[object:'feature',events:['update']]]"
         callback="jQuery('#dialog .quicklook').load('${createLink(controller:'quickLook', action:'index', params:[product:params.product,'actor.id':actor.id])}');"/>
 <is:onStream
-        on=".postit-details-actor[elemid=${actor.id}]"
+        on=".postit-details-actor[data-elemid=${actor.id}]"
         events="[[object:'actor',events:['remove']]]"
         callback="alert('${message(code:'is.actor.deleted')}'); jQuery('#dialog').dialog('close');"/>

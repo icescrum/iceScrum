@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Task" %>
-<div class="postit-details quicklook" elemid="${task.id}" type="task">
+<div class="postit-details quicklook" data-elemid="${task.id}" type="task">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
@@ -112,10 +112,10 @@
     </div>
 </div>
 <is:onStream
-        on=".postit-details-task[elemid=${task.id}]"
+        on=".postit-details-task[data-elemid=${task.id}]"
         events="[[object: 'task', events: ['update']]]"
         callback="jQuery('#dialog .quicklook').load('${createLink(controller: 'quickLook', action: 'index', params: [product: params.product, 'task.id': task.id])}');"/>
 <is:onStream
-        on=".postit-details-task[elemid=${task.id}]"
+        on=".postit-details-task[data-elemid=${task.id}]"
         events="[[object: 'task', events: ['remove']]]"
         callback="alert('${message(code: 'is.task.deleted')}'); jQuery('#dialog').dialog('close');"/>

@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<div class="postit-details postit-details-feature quicklook" elemid="${feature.id}">
+<div class="postit-details postit-details-feature quicklook" data-elemid="${feature.id}">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
@@ -103,10 +103,10 @@
     </div>
 </div>
 <is:onStream
-        on=".postit-details-feature[elemid=${feature.id}]"
+        on=".postit-details-feature[data-elemid=${feature.id}]"
         events="[[object:'feature',events:['update']]]"
         callback="jQuery('#dialog .quicklook').load('${createLink(controller:'quickLook', action:'index', params:[product:params.product,'feature.id':feature.id])}');"/>
 <is:onStream
-        on=".postit-details-feature[elemid=${feature.id}]"
+        on=".postit-details-feature[data-elemid=${feature.id}]"
         events="[[object:'feature',events:['remove']]]"
         callback="alert('${message(code:'is.feature.deleted')}'); jQuery('#dialog').dialog('close');"/>

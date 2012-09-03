@@ -71,11 +71,13 @@ class SandboxController {
     @Secured('isAuthenticated() and !archivedProduct()')
     def add = {
         def currentProduct = Product.get(params.product)
+
         render(template: '/story/manage', model: [
                 referrer: controllerName,
                 typesLabels: BundleUtils.storyTypes.values().collect {v -> message(code: v)},
                 typesKeys: BundleUtils.storyTypes.keySet().asList(),
                 featureSelect: currentProduct.features.asList(),
+                storiesSelect: Story.findAllByStateGreaterThanEqualsAndBacklog(Story.STATE_SUGGESTED, currentProduct),
                 story: params.story,
                 isUsedTemplate: false
         ])

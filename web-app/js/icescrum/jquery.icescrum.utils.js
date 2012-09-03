@@ -224,6 +224,13 @@
                     }else{
                         filter.find('a').text(show);
                     }
+                },
+
+                truncate:function(string, size){
+                    if(string.length>(size-1))
+                        return string.substring(0,size)+"...";
+                    else
+                        return string;
                 }
             });
 

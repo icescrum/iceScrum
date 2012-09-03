@@ -23,7 +23,7 @@
 <g:set var="sprint" value="${task.backlog}"/>
 <g:set var="product" value="${sprint.parentRelease.parentProduct}"/>
 
-<div class="dashboard" id="details-${task.id}" elemid="${task.id}">
+<div class="dashboard" id="details-${task.id}" data-elemid="${task.id}">
     <div class="colset-2-80 clearfix">
         <div class="col1">
 

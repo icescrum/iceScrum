@@ -160,6 +160,17 @@ class StoryController {
                 story.feature = feature
             }
         }
+
+        if (params.dependsOn?.id) {
+            def dependsOn = (Story)Story.getInProduct(params.long('product'),params.long('dependsOn.id')).list()
+            if (!dependsOn){
+                returnError(text:message(code: 'is.story.error.not.exist'))
+                return
+            }else{
+                story.dependsOn = dependsOn
+            }
+        }
+
         def user = springSecurityService.currentUser
         def product = Product.get(params.product)
 
@@ -227,27 +238,6 @@ class StoryController {
 
             def skipUpdate = false
 
-            if (params.story.rank && story.rank != params.story.rank.toInteger()) {
-                Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null
-                storyService.rank(story, rank)
-                if (params.table && params.boolean('table'))
-                    skipUpdate = true
-            }
-
-            if (params.sprint?.id != null) {
-                if (!params.sprint.id.isNumber() && story.parentSprint)
-                    storyService.unPlan(story)
-                else if (params.long('sprint.id') != story.parentSprint?.id){
-                    def sprint = Sprint.getInProduct(params.long('product'),params.long('sprint.id')).list()
-                    if (!sprint){
-                        returnError(text:message(code: 'is.sprint.error.not.exist'))
-                    }else{
-                        storyService.plan(sprint, story)
-                    }
-                }
-                params.story.rank = story.rank
-            }
-
             bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
 
             withFormat {
@@ -273,7 +263,37 @@ class StoryController {
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
             }
+            if (params.dependsOn?.id && story.dependsOn?.id != params.long('dependsOn.id')) {
+                def dependsOn = (Story) Story.getInProduct(params.long('product'),params.long('dependsOn.id')).list()
+                if (!dependsOn)
+                    returnError(text:message(code: 'is.story.error.not.exist'))
+                storyService.dependsOn(story, dependsOn)
+                if (params.table && params.boolean('table'))
+                    skipUpdate = true
+            } else if (story.dependsOn && params.dependsOn?.id == '') {
+                storyService.notDependsOn(story)
+                if (params.table && params.boolean('table'))
+                    skipUpdate = true
+            }
+
             story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : params.story.tags instanceof String[] ? params.story.tags : story.tags
+
+            if (params.story.rank && story.rank != params.story.rank.toInteger()) {
+                Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null
+                storyService.rank(story, rank)
+                if (params.table && params.boolean('table'))
+                    skipUpdate = true
+            }
+
+            if (params.sprint?.id != null && params.long('sprint.id') != story.parentSprint?.id) {
+                def sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('sprint.id')).list()
+                if (!sprint){
+                    returnError(text:message(code: 'is.sprint.error.not.exist'))
+                }else{
+                    storyService.plan(sprint, story)
+                }
+            }
+
             if (!skipUpdate){
                 storyService.update(story)
                 this.manageAttachments(story)
@@ -374,6 +394,8 @@ class StoryController {
             else if (story.state < Story.STATE_DONE)
                 next = Story.findNextStoryBySprint(story.parentSprint.id, story.rank).list()[0]
 
+            def storiesSelect = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
+
             render(template: '/story/manage', model: [
                     story: story,
                     isUsedTemplate: isUsedTemplate,
@@ -383,6 +405,7 @@ class StoryController {
                     typesLabels: BundleUtils.storyTypes.values().collect {v -> message(code: v)},
                     typesKeys: BundleUtils.storyTypes.keySet().asList(),
                     featureSelect: product.features.asList(),
+                    storiesSelect: storiesSelect,
                     referrer: params.referrer,
                     referrerUrl: params.referrerUrl
             ])
@@ -397,7 +420,7 @@ class StoryController {
                 returnError(text:message(code: 'is.story.rank.error'))
             if (storyService.rank(story, rank)) {
                 withFormat {
-                    html { render(status: 200)  }
+                    html { render(status: 200, text: [story:story,message:(story.rank != rank) ? message(code:'is.story.dependsOn.constraints.warning', args:[]) : null ] as JSON, contentType: 'application/json')  }
                     json { renderRESTJSON(text:story) }
                     xml { renderRESTXML(text:story) }
                 }

@@ -77,11 +77,12 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         test 'xmlunit:xmlunit:1.3'
         runtime 'mysql:mysql-connector-java:5.1.18'
+        runtime 'commons-dbcp:commons-dbcp:1.4'
     }
 
     if (environment == Environment.PRODUCTION){
         plugins {
-            compile "org.icescrum:icescrum-core:1.5-SNAPSHOT"
+            compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"
             compile ":tomcat:1.3.9"
         }
     }else{

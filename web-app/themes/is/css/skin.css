@@ -461,7 +461,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     background-color: #FFFAAE;
 }
 
-.postit-placeholder.no-drop {
+.postit-placeholder.no-drop, .dependsOn.ui-drop-hover-postit-rect {
     background: #ffa656;
     padding: 3px;
     text-align: center;

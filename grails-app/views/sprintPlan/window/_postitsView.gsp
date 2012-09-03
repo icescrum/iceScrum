@@ -36,7 +36,7 @@
                        drop: remoteFunction(controller:"story",
                                            action:"plan",
                                            onSuccess:"ui.draggable.attr(\"remove\",\"true\"); jQuery.event.trigger(\"plan_story\",data.story)",
-                                           params:"\"&product=${params.product}&id=\"+ui.draggable.attr(\"elemid\")+\"&position=\"+(jQuery(\"table.kanban tbody tr.row-story\").index(this) == -1 ? jQuery(\"table.kanban tbody tr.row-story\").index(this) + 2 : jQuery(\"table.kanban tbody tr.row-story\").index(this) + 1 )+\"&sprint.id=\"+jQuery(\"table.kanban\").attr(\"elemid\")"
+                                           params:"\"&product=${params.product}&id=\"+ui.draggable.data(\"elemid\")+\"&position=\"+(jQuery(\"table.kanban tbody tr.row-story\").index(this) == -1 ? jQuery(\"table.kanban tbody tr.row-story\").index(this) + 2 : jQuery(\"table.kanban tbody tr.row-story\").index(this) + 1 )+\"&sprint.id=\"+jQuery(\"table.kanban\").data(\"elemid\")"
                                            ),
                        accept: ".postit-row-story-backlog"]'>
 %{-- Columns' headers --}%
@@ -164,7 +164,7 @@
 </is:kanban>
 
 <jq:jquery>
-    jQuery('table#kanban-sprint-${sprint.id} div.postit-story').die('dblclick').live('dblclick',function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params: '\'story.id=\'+obj.attr(\"elemId\")')}});
+    jQuery('table#kanban-sprint-${sprint.id} div.postit-story').die('dblclick').live('dblclick',function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params: '\'story.id=\'+obj.data(\"elemid\")')}});
     jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
     <g:if test="${assignOnBeginTask && !request.scrumMaster && sprint.state != Sprint.STATE_DONE}">
         jQuery.icescrum.sprint.sortableTasks();
@@ -173,7 +173,7 @@
                  controller="story"
                  action='estimate'
                  on='table.kanban div.postit-story span.mini-value.editable'
-                 findId="jQuery(this).parents('.postit-story:first').attr('elemid')"
+                 findId="jQuery(this).parents('.postit-story:first').data('elemid')"
                  type="selectui"
                  name="story.effort"
                  before="jQuery(this).next().hide();"
@@ -196,7 +196,19 @@
                  ajaxoptions = "{dataType:'json'}"
                  callback="jQuery(this).next().show(); jQuery(this).html(jQuery.icescrum.formattedTaskEstimation(value.estimation)); jQuery.icescrum.sprint.updateRemaining(); if(value.state == ${Task.STATE_DONE}){ jQuery.event.trigger('update_task',value); }"
                  params="[product:params.product]"
-                 findId="jQuery(this).parents('.postit-task:first').attr('elemid')"/>
+                 findId="jQuery(this).parents('.postit-task:first').data('elemid')"/>
+
+    <g:if test="${sprint.state == Sprint.STATE_INPROGRESS}">
+        <is:droppable on="#kanban-sprint-${sprint.id} .row-urgent-task"
+                      accept=".postit-row-story-sandbox"
+                      activeClass="active"
+                      drop="${
+                          remoteFunction(controller:'story',
+                                         action:'accept',
+                                         onSuccess:'ui.draggable.attr(\'remove\',\'true\'); jQuery.event.trigger(\'accept_story\',data)',
+                                         params:'\'type=task&product='+params.product+'&id=\'+ui.draggable.data(\'elemid\')')
+                      }"/>
+    </g:if>
 
     <is:sortable rendered="${sprint.state != Sprint.STATE_DONE}"
                  on="table.kanban td.kanban-col:not(:first-child)"
@@ -208,13 +220,13 @@
                  revert="true"
                  live="true"
                  over="jQuery.icescrum.sprint.droppableTasks(this, ui)"
-                 update="var container = jQuery(this).find('.postit-rect'); if(container.index(ui.item) != -1 && ui.sender == undefined){${is.changeRank(controller:'task',action:'rank',name:'task.rank',params:'&product='+params.product+'')}}"
+                 update="var container = jQuery(this).find('.postit-rect'); if(container.index(ui.item) != -1 && ui.sender == undefined){${is.changeRank(controller:'task',action:'rank',name:'task.rank',params:[product:params.product])}}"
                  placeholder="postit-placeholder ui-corner-all"
                  receive="${remoteFunction(controller:'task',
                                    action:'state',
                                    onFailure:'jQuery(ui.sender).sortable(\'cancel\');',
                                    onSuccess:'data.story ? jQuery.event.trigger(\'update_story\',data.story) : jQuery.event.trigger(\'update_task\',data.task);',
-                                   params:'\'task.state=\'+jQuery(this).attr(\'type\')+\'&product='+params.product+'&id=\'+ui.item.attr(\'elemid\')+\'&task.rank=\'+(jQuery(this).find(\'.postit-rect\').index(ui.item)+1)+ (jQuery(this).parent().attr(\'type\') ? \'&task.type=\'+jQuery(this).parent().attr(\'type\') : \'\') + (jQuery(this).parent().attr(\'elemid\') ? \'&task.parentStory.id=\'+jQuery(this).parent().attr(\'elemid\') : \'\')',
+                                   params:'\'task.state=\'+jQuery(this).attr(\'type\')+\'&product='+params.product+'&id=\'+ui.item.data(\'elemid\')+\'&task.rank=\'+(jQuery(this).find(\'.postit-rect\').index(ui.item)+1)+ (jQuery(this).parent().attr(\'type\') ? \'&task.type=\'+jQuery(this).parent().attr(\'type\') : \'\') + (jQuery(this).parent().data(\'elemid\') ? \'&task.parentStory.id=\'+jQuery(this).parent().data(\'elemid\') : \'\')',
                                    before:'if(jQuery(ui.placeholder).hasClass(\'no-drop\')){jQuery(ui.sender).sortable(\'cancel\'); return;}')}"/>
 </jq:jquery>
 <is:shortcut key="space"

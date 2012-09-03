@@ -41,7 +41,7 @@
                     this._safemouseup = true;
 
                     //create menu button wrapper
-                    this.newelement = $('<a class="' + this.widgetBaseClass + ' ui-widget ui-state-default ui-corner-all" id="' + this.ids[0] + '" role="button" href="#" aria-haspopup="true" aria-owns="' + this.ids[1] + '"></a>')
+                    this.newelement = $('<a class="' + this.widgetBaseClass + ' ui-widget ui-state-default ui-corner-all" id="' + this.ids[0] + '" role="button" aria-haspopup="true" aria-owns="' + this.ids[1] + '"></a>')
                             .insertAfter(this.element);
 
                     //transfer tabindex
@@ -80,7 +80,7 @@
                         }
                         return false;
                     })
-                            .bind('click', function() {
+                            .bind('click', function(event) {
                                 return false;
                             })
                             .keydown(function(event) {

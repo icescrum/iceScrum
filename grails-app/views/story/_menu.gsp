@@ -116,7 +116,7 @@
 <g:if test="${(productOwner || scrumMaster) && (template || story.state >= Story.STATE_PLANNED && story.state <= Story.STATE_INPROGRESS)}">
      <li id="menu-shift-${story.id}" class="menu-shift-${sprint?.parentRelease?.id}-${(sprint?.orderNumber instanceof Integer ?sprint?.orderNumber + 1:sprint?.orderNumber)} ${nextSprintExist?'':'hidden'}">
          <a href="${createLink(action:'unPlan',controller:'story',params:[product:params.product,shiftToNext:true],id:story.id)}"
-            data-ajax-trigger="unPlan_story"
+            data-ajax-trigger='{"unPlan_story":"story","sprintMesure_sprint":"sprint"}'
             data-ajax-notice="${message(code: 'is.story.shiftedToNext')}"
             data-ajax="true">
             <g:message code='is.ui.sprintPlan.menu.postit.shiftToNext'/>

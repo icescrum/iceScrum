@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Story;" %>
-<div class="postit-details postit-details-story quicklook" elemid="${story.uid}">
+<div class="postit-details postit-details-story quicklook" data-elemid="${story.uid}">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
@@ -45,7 +45,6 @@
                 <strong><g:message code="is.backlogelement.description"/> :</strong> <is:storyTemplate displayBR="true"
                                                                                                        story="${story}"/>
             </p>
-
             <div class="line">
                 <strong><g:message code="is.backlogelement.notes"/> :</strong>
 
@@ -53,6 +52,29 @@
                     <wikitext:renderHtml markup="Textile">${story.notes}</wikitext:renderHtml>
                 </div>
             </div>
+            <p>
+                <strong><g:message code="is.story.creator"/> :</strong> <is:scrumLink controller="user" action='profile'
+                                                                                      onclick="\$('#dialog').dialog('close');"
+                                                                                      id="${story.creator.username}">${story.creator.firstName.encodeAsHTML()} ${story.creator.lastName.encodeAsHTML()}</is:scrumLink>
+            </p>
+            <g:if test="${story.dependsOn}">
+                <p>
+                    <strong><g:message code="is.story.dependsOn"/> :</strong> <is:scrumLink controller="story" id="${story.dependsOn.id}">${story.dependsOn.name}</is:scrumLink>
+                </p>
+            </g:if>
+            <g:if test="${story.dependences}">
+                <p>
+                    <strong><g:message code="is.story.dependences"/> :</strong>
+                    <g:each in="${story.dependences}" var="depend" status="i">
+                        <is:scrumLink controller="story" id="${depend.id}">${depend.name}</is:scrumLink>${i < story.dependences.size() - 1 ? ', ' : ''}
+                    </g:each>
+                </p>
+            </g:if>
+            <g:if test="${story.feature}">
+                <p>
+                    <strong><g:message code="is.feature"/> :</strong> ${story.feature.name.encodeAsHTML()}
+                </p>
+            </g:if>
             <p>
                 <strong><g:message code="is.story.date.suggested"/> :</strong>
                 <g:formatDate date="${story.suggestedDate}" formatName="is.date.format.short.time"
@@ -91,16 +113,6 @@
                     <strong><g:message code="is.story.date.done"/> :</strong>
                     <g:formatDate date="${story.doneDate}" formatName="is.date.format.short.time"
                                   timeZone="${story.backlog.preferences.timezone}"/>
-                </p>
-            </g:if>
-            <p>
-                <strong><g:message code="is.story.creator"/> :</strong> <is:scrumLink controller="user" action='profile'
-                                                                                      onclick="\$('#dialog').dialog('close');"
-                                                                                      id="${story.creator.username}">${story.creator.firstName.encodeAsHTML()} ${story.creator.lastName.encodeAsHTML()}</is:scrumLink>
-            </p>
-            <g:if test="${story.feature}">
-                <p>
-                    <strong><g:message code="is.feature"/> :</strong> ${story.feature.name.encodeAsHTML()}
                 </p>
             </g:if>
             <div class="line last">
@@ -161,10 +173,10 @@
     </div>
 </div>
 <is:onStream
-        on=".postit-details-story[elemid=${story.id}]"
+        on=".postit-details-story[data-elemid=${story.id}]"
         events="[[object:'story',events:['update']]]"
         callback="jQuery('#dialog .quicklook').load('${createLink(controller:'quickLook', action:'index', params:[product:params.product,'story.id':story.id])}');"/>
 <is:onStream
-        on=".postit-details-story[elemid=${story.id}]"
+        on=".postit-details-story[data-elemid=${story.id}]"
         events="[[object:'story',events:['remove']]]"
         callback="alert('${message(code:'is.story.deleted')}'); jQuery('#dialog').dialog('close');"/>

@@ -526,6 +526,7 @@ class SprintPlanController {
                             sprint: g.message(code: 'is.release') + " " + sprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + sprint.orderNumber,
                             creator: it.creator.firstName + ' ' + it.creator.lastName,
                             feature: it.feature?.name ?: null,
+                            dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
                             permalink:createLink(absolute: true, mapping: "shortURL", params: [product: currentProduct.pkey], id: it.uid),
                             featureColor: it.feature?.color ?: null]
                     if (first == 0) {

@@ -73,6 +73,9 @@
                 <is:scrumLink id="${story.id}" controller="story">
                     ${story.uid}
                 </is:scrumLink>
+                <g:if test="${story.dependsOn}">
+                    <a class="scrum-link dependsOn" data-elemid="${story.dependsOn.id}" href="#story/${story.dependsOn.id}">(${story.dependsOn.uid})</a>
+                </g:if>
             </is:tableColumn>
             <is:tableColumn
                     editable="[type:'text',highlight:true,disabled:!request.productOwner,name:'name']">${story.name.encodeAsHTML()}</is:tableColumn>

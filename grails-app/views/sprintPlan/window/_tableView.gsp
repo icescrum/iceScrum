@@ -201,7 +201,10 @@
                     </g:if>
                     <is:scrumLink id="${story.id}" controller="story">
                         ${story.uid}
-                    </is:scrumLink> -
+                    </is:scrumLink>
+                    <g:if test="${story.dependsOn}">
+                        <a class="scrum-link dependsOn" data-elemid="${story.dependsOn.id}" href="#story/${story.dependsOn.id}">(${story.dependsOn.uid})</a>
+                    </g:if> -
                     <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
                     <strong>${story.name.encodeAsHTML()} - ${story.effort} - ${is.bundle(bundle: 'storyStates', value: story.state)}</strong>
                 </is:tableGroupHeader>

@@ -68,7 +68,7 @@
     var name =  this.name ? this.name : '';
     var truncatedName = name.length > 30 ? name.substring(0,30)+'...' : name;
     **?
-    <li class="postit-row postit-row-feature" elemid="${feature.id}">
+    <li class="postit-row postit-row-feature" data-elemid="${feature.id}">
         <is:postitIcon name="${feature.name}" color="${feature.color}"/>
         ?**=truncatedName**?
     </li>

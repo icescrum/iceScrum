@@ -37,7 +37,7 @@
 
                     $('tr.table-group').click(function(){
                         var self = $(this);
-                        var trs = $('.table-group-' + self.attr('elemid'));
+                        var trs = $('.table-group-' + self.data('elemid'));
                         var td = self.find('td');
                         trs.slideToggle('fast', function() {
                             if (trs.is(':visible')) {

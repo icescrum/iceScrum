@@ -72,7 +72,7 @@
         }else if (obj.hasClass('postit-actor')){
             type = 'actor.id';
         }
-        return type+'='+obj.attr('elemid');
+        return type+'='+obj.data('elemid');
     }
 </script>
 <jq:jquery>

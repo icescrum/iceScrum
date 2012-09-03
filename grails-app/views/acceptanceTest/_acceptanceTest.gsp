@@ -19,7 +19,7 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<li id="acceptance-test${acceptanceTest.id}" class="acceptance-test" elemid="${acceptanceTest.id}">
+<li id="acceptance-test${acceptanceTest.id}" class="acceptance-test" data-elemid="${acceptanceTest.id}">
     <div class="acceptance-test-content">
         <div class="acceptance-test-uid">ID ${acceptanceTest.uid}</div>
 

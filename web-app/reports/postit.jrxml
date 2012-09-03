@@ -56,6 +56,7 @@
 	<field name="rank" class="java.lang.String"/>
 	<field name="type" class="java.lang.String"/>
 	<field name="permalink" class="java.lang.String"/>
+	<field name="dependsOn" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -76,7 +77,7 @@
 				<textFieldExpression><![CDATA[($F{effort}!=null?$F{effort}+" - ":"")+($F{state})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="262" y="132" width="116" height="20" isRemoveLineWhenBlank="true">
+				<reportElement mode="Opaque" x="262" y="258" width="116" height="20" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$F{featureColor}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -108,28 +109,44 @@
 				<textFieldExpression><![CDATA["ID: "+$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="92" width="71" height="20"/>
+				<reportElement x="329" y="90" width="71" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="92" width="67" height="20"/>
+				<reportElement x="262" y="90" width="67" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.type}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="112" width="67" height="20"/>
+				<reportElement x="262" y="111" width="67" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.creator}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="112" width="71" height="20"/>
+				<reportElement x="329" y="111" width="71" height="20">
+					<printWhenExpression><![CDATA[$F{dependsOn}!=null]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{creator}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="132" width="67" height="20">
+					<printWhenExpression><![CDATA[$F{dependsOn}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{is.report.postit.dependsOn}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="262" y="153" width="138" height="20" isRemoveLineWhenBlank="true"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dependsOn}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="262" y="69" width="67" height="20">
@@ -152,23 +169,10 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sprint}]]></textFieldExpression>
 			</textField>
-			<ellipse>
-				<reportElement x="268" y="196" width="80" height="80"/>
-				<graphicElement>
-					<pen lineWidth="5.0" lineColor="#FF3333"/>
-				</graphicElement>
-			</ellipse>
 			<image>
-				<reportElement x="356" y="231" width="45" height="45"/>
+				<reportElement x="213" y="6" width="45" height="45"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode($F{permalink}, com.google.zxing.BarcodeFormat.QR_CODE, 400, 400))]]></imageExpression>
 			</image>
-			<textField>
-				<reportElement x="268" y="216" width="80" height="40"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="28" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 </jasperReport>

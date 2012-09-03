@@ -29,7 +29,7 @@
                     filter:'div.postit-actor',
                     selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'actor.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
         value="${actors}"
-        dblclickable='[rendered:!request.productOwner,selector:".postit",callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'
+        dblclickable='[rendered:!request.productOwner,selector:".postit",callback:is.quickLook(params:"\"actor.id=\"+obj.data(\"elemid\")")]'
         var="actor">
         <is:cache cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
             <g:include view="/actor/_postit.gsp" model="[actor:actor]" params="[product:params.product]"/>

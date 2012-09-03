@@ -26,6 +26,7 @@
     <is:propertyAsXML object="creator"/>
     <is:propertyAsXML object="feature"/>
     <is:propertyAsXML object="actor"/>
+    <is:propertyAsXML object="dependsOn"/>
     <is:listAsXML
             name="tasks"
             template="/task/xml"

@@ -73,10 +73,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             $.icescrum.initHistory();
             var currentWindow = location.hash.replace(/^.*#/, '');
             if ($.icescrum.o.baseUrlProduct && !currentWindow && $('li.menubar:first a')){
-                var window = $('li.menubar:first a').attr('href').replace(/^.*#/, '');
-                document.location.hash = window;
+                var menubar = $('li.menubar:first a').attr('href').replace(/^.*#/, '');
+                document.location.hash = menubar;
                 this.o.widgetsList = $.grep($.icescrum.o.widgetsList, function(value) {
-                    return value != window;
+                    return value != menubar;
                 });
             }
 
@@ -84,12 +84,50 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 var tmp = this.o.widgetsList;
                 this.o.widgetsList = [];
                 for (i = 0; i < tmp.length; i++) {
-                    this.addToWidgetBar(tmp[i]);
+                    if($("#widget-id-"+tmp[i]).size() > 0){
+                        $.icescrum.o.widgetsList.push(tmp[i]);
+                    }else{
+                        this.addToWidgetBar(tmp[i]);
+                    }
                 }
             }
 
+            $.event.trigger('init.icescrum');
+
             if (this.o.push.enable){
                 $.icescrum.listenServer();
+            }
+
+            if (window.webkitNotifications) {
+                console.log("[notifications] are supported!");
+                if (!window.webkitNotifications.checkPermission()) {
+                    console.log("[notifications] got permission");
+                    this.o.notifications = true;
+                }
+                else if(window.webkitNotifications.checkPermission() != 2 && $.cookie('hide_notifications') != "true"){
+                    $("#notifications").show();
+                    $("#accept_notifications").click(function(){
+                        window.webkitNotifications.requestPermission(function(){
+                            if (window.webkitNotifications.checkPermission() == 0){
+                                console.log("[notifications] got permission");
+                                $.icescrum.o.notifications = true;
+                            }
+                            $.cookie('hide_notifications', true, { expires: 15 });
+                            $("#notifications").remove();
+                        });
+                    });
+                    $("#hide_notifications").click(function(){
+                        $.cookie('hide_notifications', true, { expires: 15 });
+                        $("#notifications").remove();
+                    });
+                }else{
+                    console.log("[notifications] permission refused");
+                    $("#notifications").remove();
+                }
+            }else{
+                $("#accept_notifications").remove();
+                console.log("Notifications are not supported for this Browser/OS version yet.");
+                this.o.notifications = false;
             }
 
             $(window).bind('resize',function(){$.icescrum.checkBars();});
@@ -114,16 +152,26 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if (typeP) {
                 typeP = type;
             }
-            $.pnotify({
-                        pnotify_addclass:'stack-bottomleft',
-                        pnotify_animation:{effect_in: 'slide', effect_out: 'fade'},
-                        pnotify_delay:7000,
-                        pnotify_history:false,
-                        pnotify_stack:stack_bottomleft,
-                        pnotify_text:text,
-                        pnotify_type:typeP,
-                        pnotify_title:titleP
-                    });
+            if (this.o.notifications){
+                this.displayNotification(title ? title : 'iceScrum '+ (type ?' - '+type : ''), text);
+            }else{
+                $.pnotify({
+                    pnotify_addclass:'stack-bottomleft',
+                    pnotify_animation:{effect_in: 'slide', effect_out: 'fade'},
+                    pnotify_delay:7000,
+                    pnotify_history:false,
+                    pnotify_stack:stack_bottomleft,
+                    pnotify_text:text,
+                    pnotify_type:typeP,
+                    pnotify_title:titleP
+                });
+            }
+        },
+
+        displayNotification:function(title, msg){
+            if (this.o.notifications){
+                window.webkitNotifications.createNotification(null, title, msg).show();
+            }
         },
 
         displayTemplate:function(selector, show) {
@@ -180,9 +228,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                  return;
             }
             var idmoved = postitid.substring(postitid.lastIndexOf("-") + 1, postitid.length);
-            var newPosition = $(container).index(ui);
+            var newPosition = $(container).index(ui) + 1;
             //finally we send the update to server
-            var params = "id=" + idmoved + "&"+name+"=" + (newPosition + 1);
+            var params = {id:idmoved};
+            params[name] = newPosition;
             call(params, source);
         },
 
@@ -216,25 +265,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 }
             }
             return false;
-        },
-
-        updateProfile:function(data) {
-            $('#profile-name a').html(data.name);
-            $('#user-tooltip-username').html(data.name);
-            if (data.updateAvatar) {
-                $('.avatar-user-' + data.userid).each(
-                        function() {
-                            $(this).attr('src', data.updateAvatar + '?nocache=' + new Date().getTime());
-                        }
-                )
-            }
-
-            if (data.forceRefresh) {
-                $.doTimeout(500, function() {
-                    document.location.reload(true);
-                })
-            }
-            $.icescrum.renderNotice(data.notice, 'notice');
         },
 
         openCommentTab:function(relation) {
@@ -373,11 +403,11 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         showUpgrade:function(){
             if (this.o.showUpgrade){
                 var upgrade = $('.upgrade');
-                if (upgrade.length && $.cookie('hidee_upgrade') != "true"){
+                if (upgrade.length && $.cookie('hide_upgrade') != "true"){
                     upgrade.show();
                     upgrade.find('.close').click(function(){
                         upgrade.remove();
-                        $.cookie('hidee_upgrade', true, { expires: 30 });
+                        $.cookie('hide_upgrade', true, { expires: 30 });
                     });
                 }else if(upgrade.length){
                     upgrade.remove();

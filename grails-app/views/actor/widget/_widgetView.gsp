@@ -28,9 +28,9 @@
                          containerClass="list postit-rows"
                          value="${actors}"
                          var="actor"
-                         dblclickable='[rendered:request.inProduct, selector:".postit-row", callback:is.quickLook(params:"\"actor.id=\"+obj.attr(\"elemId\")")]'>
+                         dblclickable='[rendered:request.inProduct, selector:".postit-row", callback:is.quickLook(params:"\"actor.id=\"+obj.data(\"elemid\")")]'>
     <is:cache cache="actorCache" key="postit-small-${actor.id}-${actor.lastUpdated}">
-        <li elemid="${actor.id}" id="postit-row-actor-${actor.id}" class="postit-row postit-row-actor">
+        <li data-elemid="${actor.id}" id="postit-row-actor-${actor.id}" class="postit-row postit-row-actor">
             <is:postitIcon/>
             <is:truncated size="30" encodedHTML="true">${actor.name.encodeAsHTML()}</is:truncated>
         </li>

@@ -538,3 +538,25 @@ td.jqplot-table-legend {
     float: right;
     margin-right: 12px;
 }
+
+.postit-placeholder.dependsOn {
+    background: #ffa656;
+    color: #FFF;
+    font-weight: bold;
+    padding:5px;
+    padding-top:10px;
+    text-align: center;
+    width: 143px;
+    height: 114px;
+}
+
+#notifications {
+    position: absolute;
+    text-align: center;
+    bottom: 5px;
+    width: 100%;
+}
+
+#notifications a {
+    font-weight: bold;
+}

@@ -26,7 +26,6 @@ import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 
 class BootStrap {
 
-    def messageSource
     def localeResolver
     DefaultGrailsApplication grailsApplication
 

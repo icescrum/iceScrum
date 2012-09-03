@@ -35,12 +35,12 @@
                           remoteFunction(controller:"story",
                                          action:"accept",
                                          onSuccess:"jQuery.event.trigger(\"accept_story\",data)",
-                                         params:"\"product="+params.product+"&id=\"+ui.item.attr(\"elemid\")+\"&type=feature&rank=\"+rank"),
+                                         params:"\"product="+params.product+"&id=\"+ui.item.data(\"elemid\")+\"&type=feature&rank=\"+rank"),
                   placeholder:"postit-placeholder ui-corner-all"]'
         changeRank='[selector:".postit",controller:controllerName,action:"rank",name:"feature.rank",params:[product:params.product]]'
         dblclickable='[rendered:!request.productOwner,
                                selector:".postit",
-                               callback:is.quickLook(params:"\"feature.id=\"+obj.attr(\"elemId\")")]'
+                               callback:is.quickLook(params:"\"feature.id=\"+obj.data(\"elemId\")")]'
         value="${features}"
         var="feature">
         <is:cache cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">

@@ -38,10 +38,10 @@
                   drop: remoteFunction(controller:"story",
                                        action:"associateFeature",
                                        onSuccess:"jQuery.event.trigger(\"update_story\",data)",
-                                       params:"\"product=${params.product}&feature.id=\"+ui.draggable.attr(\"elemid\")+\"&id=\"+jQuery(this).attr(\"elemid\")"
+                                       params:"\"product=${params.product}&feature.id=\"+ui.draggable.data(\"elemid\")+\"&id=\"+jQuery(this).data(\"elemid\")"
                                        ),
                   accept: ".postit-row-feature"]'
-        dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"story.id=\"+obj.attr(\"elemid\")")]'
+        dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"story.id=\"+obj.data(\"elemid\")")]'
         value="${stories}"
         var="story">
         <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${sprint ? sprint.id : ''}">

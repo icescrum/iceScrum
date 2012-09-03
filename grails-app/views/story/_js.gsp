@@ -54,7 +54,7 @@
     if (this.notes) {
     var id = this.id;
     $.get($.icescrum.o.baseUrl + 'textileParser', {data:this.notes,withoutHeader:true, async:false}, function(data){
-    $('.table-line[elemid='+id+'] .table-cell-richarea[name=notes]').html(data);
+    $('.table-line[data-elemid='+id+'] .table-cell-richarea[name=notes]').html(data);
     });
     }
     **?
@@ -122,7 +122,7 @@
     if (this.notes) {
     var id = this.id;
     $.get($.icescrum.o.baseUrl + 'textileParser', {data:this.notes,withoutHeader:true, async:false}, function(data){
-    $('.table-line[elemid='+id+'] .table-cell-richarea[name=notes]').html(data);
+    $('.table-line[data-elemid='+id+'] .table-cell-richarea[name=notes]').html(data);
     });
     }
     **?
@@ -182,7 +182,7 @@
     var truncatedName = name.length > 30 ? name.substring(0,30)+'...' : name;
     var color = this.feature ? this.feature.color : '';
     **?
-    <li class="postit-row postit-row-story" elemid="${story.id}">
+    <li class="postit-row postit-row-story postit-row-story-backlog" data-elemid="${story.id}">
         <is:postitIcon name="${story.name}" color="${story.feature.color}"/>
         ?**=this.uid **? - ?**=truncatedName**? <em>(?**=this.effort **? pts)</em>
     </li>
@@ -196,7 +196,7 @@
     var truncatedName = name.length > 30 ? name.substring(0,30)+'...' : name;
     var color = this.feature ? this.feature.color : '';
     **?
-    <li class="postit-row postit-row-story" elemid="${story.id}">
+    <li class="postit-row postit-row-story postit-row-story-sandbox" data-elemid="${story.id}">
         <is:postitIcon name="${story.name}" color="${story.feature.color}"/>
         ?**=this.uid **? - ?**=truncatedName**?
     </li>

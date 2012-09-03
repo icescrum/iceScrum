@@ -86,7 +86,7 @@
                             drop:remoteFunction(action:'plan',
                                       controller:'story',
                                       onSuccess:'ui.draggable.attr(\'remove\',\'true\'); jQuery.event.trigger(\'plan_story\',data.story)',
-                                      params: '\'product='+params.product+'&id=\'+ui.draggable.attr(\'elemid\')+\'&sprint.id='+sprint.id+'\'')]">
+                                      params: '\'product='+params.product+'&id=\'+ui.draggable.data(\'elemid\')+\'&sprint.id='+sprint.id+'\'')]">
                     <is:backlogElementLayout
                             id="plan-${controllerName}-${sprint.id}"
                             sortable='[
@@ -94,13 +94,14 @@
                               handle:".postit-layout .postit-sortable",
                               connectWith:".backlog",
                               containment:".event-overflow",
+                              change:"jQuery.icescrum.story.checkDependsOnPostitsView(ui);",
                               placeholder:"ui-drop-hover-postit-rect ui-corner-all",
-                              update:"if(jQuery(\"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect",controller:"story",action:"rank",name:"story.rank",params:"&product=${params.product}")}}",
+                              update:"if(jQuery(\"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect\").index(ui.item) == -1 || ui.sender != undefined){return}else{${is.changeRank(selector:"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect",controller:"story",action:"rank",name:"story.rank",onSuccess:"jQuery.icescrum.story.updateRank(params,data,\"#backlog-layout-plan-${controllerName}-${sprint.id}\");", params:[product:params.product])}}",
                               receive:"event.stopPropagation();"+remoteFunction(action:"plan",
                                           controller:"story",
-                                          onFailure: "jQuery(ui).sortable(\"cancel\");",
+                                          onFailure: "jQuery(ui.sender).sortable(\"cancel\");",
                                           onSuccess:"jQuery.event.trigger(\"plan_story\",data.story); if(data.oldSprint){ jQuery.event.trigger(\"sprintMesure_sprint\",data.oldSprint); }",
-                                          params: "\"product=${params.product}&id=\"+ui.item.attr(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect\").index(ui.item)+1)")
+                                          params: "\"product=${params.product}&id=\"+ui.item.data(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect\").index(ui.item)+1)")
                       ]'
                             dblclickable="[selector:'.postit-rect',callback:is.quickLook(params:'\'story.id=\'+$.icescrum.postit.id(obj)')]"
                             value="${sprint.stories?.sort{it.rank}}"
@@ -126,7 +127,7 @@
     <is:editable controller="story"
                  action='estimate'
                  on='div.backlog .postit-story .mini-value.editable'
-                 findId="jQuery(this).parents('.postit-story:first').attr(\'elemid\')"
+                 findId="jQuery(this).parents('.postit-story:first').data(\'elemid\')"
                  type="selectui"
                  name="story.effort"
                  before="jQuery(this).next().hide();"

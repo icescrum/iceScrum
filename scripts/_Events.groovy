@@ -34,7 +34,7 @@ eventSetClasspath = {
         if (System.getProperty('icescrum.clean') == 'true'){
             println "----- DELETE OLD ICESCRUM CORE START ---------"
             String iceScrumCore = "${userHome}/.ivy2/cache/org.icescrum/icescrum-core"
-            String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.5-SNAPSHOT"
+            String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.6-SNAPSHOT"
             if (grailsEnv != "development"){
                 String tomcatNio = "${projectWorkDir}/plugins/tomcatnio-1.3.4"
                 file = new File(tomcatNio)

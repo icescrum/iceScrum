@@ -22,6 +22,7 @@
 <%@ page import="org.icescrum.core.domain.Story" %>
 <g:set var="tMOrSm" value="${request.teamMember || request.scrumMaster}"/>
 <is:postit id="${story.id}"
+           dependsOn="${story.dependsOn ? [id:story.dependsOn.id, uid:story.dependsOn.uid] : null}"
            miniId="${story.uid}"
            title="${story.name}"
            titleSize="${story.state == Story.STATE_SUGGESTED ? 24 : 17}"

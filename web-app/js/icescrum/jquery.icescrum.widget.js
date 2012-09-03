@@ -8,7 +8,7 @@
                                     global:false,
                                     url:this.o.urlOpenWidget + '/' + id,
                                     success:function(data, textStatus) {
-                                        if ($.inArray(id, $.icescrum.o.widgetsList) == -1) {
+                                        if ($.inArray(id, $.icescrum.o.widgetsList) == -1 && data) {
                                             $(data).appendTo($.icescrum.o.widgetContainer);
                                             $.icescrum.o.widgetsList.push(id);
                                             if (callback) {
@@ -94,9 +94,13 @@
 
             var content = $("#widget-content-" + id, obj);
             var dif = obj.height() - content.height();
+
             var savedHeight = $.icescrum.product.id ? $.cookie('widget-'+id+$.icescrum.product.id) : null;
             if (savedHeight && $(content.children()[0]).height() > savedHeight){
                 content.height(savedHeight);
+            }else if (obj.height() > $(content.children()[0]).height()){
+                content.height($(content.children()[0]).height());
+                opts.resizable.minHeight = function(){ $(content.children()[0]).height() };
             }
 
             opts.resizable.minWidth = obj.width();

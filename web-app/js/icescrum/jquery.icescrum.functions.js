@@ -78,6 +78,26 @@
                                 document.location.reload(true);
                             });
                         }
+                    },
+
+                    updateProfile:function(){
+                        $('#profile-name a').html(this.name);
+                        $('#user-tooltip-username').html(this.name);
+                        if (this.updateAvatar) {
+                            var avatar = this.updateAvatar;
+                            $('.avatar-user-' + this.userid).each(
+                                    function() {
+                                        $(this).attr('src', avatar + '?nocache=' + new Date().getTime());
+                                    }
+                            )
+                        }
+
+                        if (this.forceRefresh) {
+                            $.doTimeout(500, function() {
+                                document.location.reload(true);
+                            })
+                        }
+                        $.icescrum.renderNotice(this.user.notice, 'notice');
                     }
                 },
 
@@ -122,12 +142,12 @@
                             }
                             if ($.icescrum.product.displayUrgentTasks != this.preferences.displayUrgentTasks){
                                 $('tr.row-urgent-task').toggle();
-                                $('tr.table-line.table-group[elemid=urgent]').toggle();
+                                $('tr.table-line.table-group[data-elemid=urgent]').toggle();
                                 $.icescrum.product.displayUrgentTasks = this.preferences.displayUrgentTasks;
                             }
                             if (this.preferences.displayRecurrentTasks != $.icescrum.product.displayRecurrentTasks){
                                 $('tr.row-recurrent-task').toggle();
-                                $('tr.table-line.table-group[elemid=recurrent]').toggle();
+                                $('tr.table-line.table-group[data-elemid=recurrent]').toggle();
                                 $.icescrum.product.displayRecurrentTasks = this.preferences.displayRecurrentTasks;
                             }
                             if (this.preferences.limitUrgentTasks != $.icescrum.product.limitUrgentTasks){
@@ -199,7 +219,7 @@
                                 return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-actor' : '#actor-table';
                             },
                             remove:function() {
-                                $.icescrum.o.currentView == 'postitsView' ? $('.postit-actor[elemid=' + this.id + ']').remove() : $('#actor-table .table-line[elemid=' + this.id + ']').remove();
+                                $.icescrum.o.currentView == 'postitsView' ? $('.postit-actor[data-elemid=' + this.id + ']').remove() : $('#actor-table .table-line[data-elemid=' + this.id + ']').remove();
                                 if ($.icescrum.o.currentView == 'tableView') {
                                     $('#actor-table').trigger("update");
                                 }
@@ -216,7 +236,7 @@
                             id:'postit-row-actor-tmpl',
                             view:'#backlog-layout-widget-actor',
                             remove:function() {
-                                $('.postit-row-actor[elemid=' + this.id + ']').remove();
+                                $('.postit-row-actor[data-elemid=' + this.id + ']').remove();
                             },
                             window:'#widget-content-actor'
                         }
@@ -268,13 +288,13 @@
                             },
                             remove:function(tmpl) {
                                 if ($.icescrum.o.currentView == 'tableView') {
-                                    var tableline = $('#feature-table .table-line[elemid=' + this.id + ']');
+                                    var tableline = $('#feature-table .table-line[data-elemid=' + this.id + ']');
                                     var oldRank = tableline.data('rank');
                                     tableline.remove();
                                     $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, oldRank);
                                     $('#feature-table').trigger("update");
                                 }else{
-                                    $('.postit-feature[elemid=' + this.id + ']').remove();
+                                    $('.postit-feature[data-elemid=' + this.id + ']').remove();
                                 }
                             },
                             window:'#window-content-feature',
@@ -300,7 +320,7 @@
                             id:'postit-row-feature-tmpl',
                             view:'#backlog-layout-widget-feature',
                             remove:function() {
-                                $('.postit-row-feature[elemid=' + this.id + ']').remove();
+                                $('.postit-row-feature[data-elemid=' + this.id + ']').remove();
                             },
                             window:'#widget-content-feature',
                             afterTmpl:function(tmpl, container, newObject) {
@@ -320,8 +340,8 @@
                     update:function(template) {
                         var feature = this;
                         $(feature.stories).each(function() {
-                            $('div.postit-story[elemid=' + this.id + '] .postit-layout').removeClass().addClass('postit-layout postit-' + feature.color);
-                            $('li.postit-row-story[elemid=' + this.id + '] .postit-icon').removeClass().addClass('postit-icon postit-icon-' + feature.color);
+                            $('div.postit-story[data-elemid=' + this.id + '] .postit-layout').removeClass().addClass('postit-layout postit-' + feature.color);
+                            $('li.postit-row-story[data-elemid=' + this.id + '] .postit-icon').removeClass().addClass('postit-icon postit-icon-' + feature.color);
                         });
                         $('#detail-feature-' + feature.id + ' .line-right').replaceWith('<td class="line-right"><span class="postit-icon postit-icon-' + feature.color + '" title="' + feature.name + '"></span>' + feature.name + '</td>');
                         if (template){
@@ -378,7 +398,7 @@
                                 return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-sandbox' : '#story-table';
                             },
                             remove:function(tmpl) {
-                                var story = $.icescrum.o.currentView == 'postitsView' ? $('.postit-story[elemid=' + this.id + ']') : $(tmpl.view+' .table-line[elemid=' + this.id + ']');
+                                var story = $.icescrum.o.currentView == 'postitsView' ? $('.postit-story[data-elemid=' + this.id + ']') : $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
                                 this.rank = story.index() + 1;
                                 story.remove();
                                 if ($.icescrum.o.currentView == 'tableView') {
@@ -406,10 +426,15 @@
                                 return this.state == $.icescrum.story.STATE_SUGGESTED;
                             },
                             remove:function(tmpl) {
-                                $(tmpl.view+' .postit-row-story[elemid=' + this.id + ']:visible').remove();
+                                $(tmpl.view+' .postit-row-story[data-elemid=' + this.id + ']:visible').remove();
                                 if ($(tmpl.selector+':visible', $(tmpl.view)).length == 0) {
                                     $(tmpl.view).hide();
                                     $(tmpl.window + ' .box-blank').show();
+                                }
+                            },
+                            afterTmpl:function(tmpl, container, newObject){
+                                if (this.dependsOn){
+                                    newObject.attr('data-dependsOn',this.dependsOn.id);
                                 }
                             },
                             window:'#widget-content-sandbox'
@@ -429,7 +454,7 @@
                             },
                             remove:function(tmpl) {
                                 if ($.icescrum.o.currentView == 'tableView') {
-                                    var tableline = $(tmpl.view+' tr.table-line'+'[elemid=' + this.id + ']');
+                                    var tableline = $(tmpl.view+' tr.table-line'+'[data-elemid=' + this.id + ']');
                                     this.oldRank = tableline.data('rank');
                                     tableline.remove();
                                     if (!this.rank && this.oldRank && !$.icescrum.story.templates['backlogWindow'].constraintTmpl()){
@@ -437,7 +462,7 @@
                                     }
                                     $(tmpl.view).trigger("update");
                                 }else{
-                                     $(tmpl.selector+'[elemid=' + this.id + ']').remove();
+                                     $(tmpl.selector+'[data-elemid=' + this.id + ']').remove();
                                 }
                                 $.icescrum.story.backlogTitleDetails();
                             },
@@ -462,10 +487,15 @@
                                 return this.state == $.icescrum.story.STATE_ESTIMATED;
                             },
                             remove:function(tmpl) {
-                                $(tmpl.view+' .postit-row-story[elemid=' + this.id + ']:visible').remove();
+                                $(tmpl.view+' .postit-row-story[data-elemid=' + this.id + ']:visible').remove();
                                 if ($(tmpl.selector+':visible', $(tmpl.view)).length == 0) {
                                     $(tmpl.view).hide();
                                     $(tmpl.window + ' .box-blank').show();
+                                }
+                            },
+                            afterTmpl:function(tmpl, container, newObject){
+                                if (this.dependsOn){
+                                    newObject.attr('data-dependsOn',this.dependsOn.id);
                                 }
                             },
                             window:'#widget-content-backlog'
@@ -478,7 +508,7 @@
                                 return this.parentSprint ? '#backlog-layout-plan-releasePlan' + '-' + this.parentSprint.id : '';
                             },
                             remove:function(tmpl) {
-                                $(tmpl.window+' .postit-story[elemid=' + this.id + ']').remove();
+                                $(tmpl.window+' .postit-story[data-elemid=' + this.id + ']').remove();
                             },
                             constraintTmpl:function() {
                                 return this.state >= $.icescrum.story.STATE_PLANNED;
@@ -497,7 +527,7 @@
                                 return this.parentSprint ? '#kanban-sprint' + '-' + this.parentSprint.id + ' tbody[type=' + storyType + ']' : '';
                             },
                             remove:function() {
-                                $('.kanban .row-story[elemid=' + this.id + ']').remove();
+                                $('.kanban .row-story[data-elemid=' + this.id + ']').remove();
                             },
                             constraintTmpl:function() {
                                 return this.state >= $.icescrum.story.STATE_PLANNED;
@@ -526,12 +556,12 @@
 
                     update:function(template, append) {
                         $(this).each(function() {
-                            $.icescrum.story.remove.apply(this, [template]);
+                            $.icescrum.story.remove.apply(this, [template, true]);
                             $.icescrum.story.add.apply(this, [template, append]);
                         });
                     },
 
-                    remove:function(template) {
+                    remove:function(template, notFull) {
                         var tmpl;
                         tmpl = $.extend(tmpl, $.icescrum.story.templates[template]);
                         tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
@@ -545,11 +575,17 @@
                                 $(tmpl.window + ' .box-blank').show();
                             }
                         }
+                        if (!notFull){
+                            $(this).each(function() {
+                                $('.dependsOn[data-elemid=' + this.id + ']').remove();
+                                $('[data-dependsOn=' + this.id + ']').removeData('dependson').removeAttr('data-dependsOn');
+                            });
+                        }
                     },
 
                     accept:function(template) {
                         $(this.id).each(function() {
-                            $.icescrum.story.remove.apply({id:this,state:$.icescrum.story.STATE_SUGGESTED}, [template]);
+                            $.icescrum.story.remove.apply({id:this,state:$.icescrum.story.STATE_SUGGESTED}, [template, true]);
                         });
                         var data = this.objects ? this.objects : this;
                         var type = this.objects ? this.objects[0]['class'].toLowerCase() : this['class'].toLowerCase();
@@ -603,6 +639,9 @@
                     _postRendering:function(tmpl, newObject, container) {
                         if (this.totalComments <= 0 ) {
                             newObject.find('.postit-comment,.table-comment').hide();
+                        }
+                        if (!this.dependsOn) {
+                            newObject.find('.dependsOn').remove();
                         }
                         if(!this.acceptanceTests || this.acceptanceTests.length <= 0) {
                             newObject.find('.postit-acceptance-test,.table-acceptance-test').hide();
@@ -659,6 +698,51 @@
                         var stories = $.icescrum.o.currentView == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort');
                         stories.each(function() { size += 1; if ($(this).text() != '?') effort += Number($(this).text());});
                         jQuery('#window-title-bar-backlog .content .details').html(' - <span id="stories-backlog-size">'+size+'</span> '+$.icescrum.story.i18n.stories+' / <span id="stories-backlog-effort">'+effort+'</span> '+$.icescrum.story.i18n.points);
+                    },
+
+                    checkDependsOnPostitsView:function(ui){
+                        var container = ui.placeholder.parent();
+                        var currentIndex = ui.placeholder.index();
+                        var indexDependsOn = jQuery("div.postit-story[data-elemid="+ui.item.data("dependson")+"]", container).index();
+                        if (indexDependsOn == -1){
+                            container.parents('.event-container').nextAll().each(function(){
+                                if (jQuery("div.postit-story[data-elemid="+ui.item.data("dependson")+"]", $(this)).index() > -1){
+                                    indexDependsOn = currentIndex + 1;
+                                    return false;
+                                }
+                            });
+                        }
+                        if (currentIndex < indexDependsOn && indexDependsOn != -1){
+                            ui.placeholder.addClass('dependsOn');
+                            ui.placeholder.html(this.i18n.dependsOnWarning);
+                            return;
+                        }else{
+                            ui.placeholder.removeClass('dependsOn');
+                            ui.placeholder.html("");
+                        }
+                        var firstDependence = jQuery("div.postit-story[data-dependsOn="+ui.item.data("elemid")+"]:first", container).index();
+                        if (firstDependence == -1){
+                            container.parents('.event-container').prevAll().each(function(){
+                                if (jQuery("div.postit-story[data-dependsOn="+ui.item.data("elemid")+"]:first", $(this)).index() > -1){
+                                    firstDependence = -2;
+                                    return false;
+                                }
+                            });
+                        }
+                        if (firstDependence != -1 && currentIndex > firstDependence){
+                            ui.placeholder.addClass('dependsOn');
+                            ui.placeholder.html(this.i18n.dependsOnWarning);
+                        }else{
+                            ui.placeholder.removeClass('dependsOn');
+                            ui.placeholder.html("");
+                        }
+                    },
+
+                    updateRank:function(params, data, container){
+                        if(data.story.rank != params["story.rank"]){
+                            jQuery.icescrum.postit.updatePosition("div.postit-story", jQuery(".postit-story[data-elemid="+data.story.id+"]"), data.story.rank, jQuery(container));
+                            jQuery.icescrum.renderNotice(data.message)
+                        }
                     }
                 },
 
@@ -676,10 +760,10 @@
                             selector:'div.postit-task',
                             id:'postit-task-sprintPlan-tmpl',
                             view:function() {
-                                return (this.type == $.icescrum.task.TYPE_RECURRENT || this.type == $.icescrum.task.TYPE_URGENT) ? '#kanban-sprint' + '-' + this.sprint.id + ' .table-line[type=' + this.type + '] .kanban-col[type=' + this.state + ']' : '#kanban-sprint' + '-' + this.sprint.id + ' .row-story[elemid=' + this.parentStory.id + '] .kanban-col[type=' + this.state + ']';
+                                return (this.type == $.icescrum.task.TYPE_RECURRENT || this.type == $.icescrum.task.TYPE_URGENT) ? '#kanban-sprint' + '-' + this.sprint.id + ' .table-line[type=' + this.type + '] .kanban-col[type=' + this.state + ']' : '#kanban-sprint' + '-' + this.sprint.id + ' .row-story[data-elemid=' + this.parentStory.id + '] .kanban-col[type=' + this.state + ']';
                             },
                             remove:function() {
-                                $('.postit-task[elemid=' + this.id + ']').remove();
+                                $('.postit-task[data-elemid=' + this.id + ']').remove();
                             }
                         }
                     },
@@ -760,12 +844,12 @@
                     },
 
                     toggleBlocked:function(data) {
-                        if ($('#postit-task-' + data.id + ' .postit-ico,.table-line[elemid=' + data.id + ']').toggleClass('ico-task-1').hasClass('ico-task-1')) {
+                        if ($('#postit-task-' + data.id + ' .postit-ico,.table-line[data-elemid=' + data.id + ']').toggleClass('ico-task-1').hasClass('ico-task-1')) {
                             $('#menu-blocked-' + data.id + ' a').text($.icescrum.task.UNBLOCK);
-                            $('#postit-task-' + data.id + ' .postit-ico,.table-line[elemid=' + data.id + ']').attr('title', $.icescrum.task.BLOCKED);
+                            $('#postit-task-' + data.id + ' .postit-ico,.table-line[data-elemid=' + data.id + ']').attr('title', $.icescrum.task.BLOCKED);
                         } else {
                             $('#menu-blocked-' + data.id + ' a').text($.icescrum.task.BLOCK);
-                            $('#postit-task-' + data.id + ' .postit-ico,.table-line[elemid=' + data.id + ']').attr('title', '');
+                            $('#postit-task-' + data.id + ' .postit-ico,.table-line[data-elemid=' + data.id + ']').attr('title', '');
                         }
                     }
                 },
@@ -791,14 +875,14 @@
                                 return  this.add ? 'sprint-releasePlan-tmpl' : 'sprint-releasePlan-update-tmpl';
                             },
                             view:function() {
-                                return this.add ? 'div.event-overflow' + '[elemid=' + this.parentRelease.id + ']' : this.id ? 'div.event-container' + '[elemid=' + this.id + ']' : 'div.event-container';
+                                return this.add ? 'div.event-overflow' + '[data-elemid=' + this.parentRelease.id + ']' : this.id ? 'div.event-container' + '[data-elemid=' + this.id + ']' : 'div.event-container';
                             },
                             constaintTmpl:function() {
-                                return $('div.event-overflow').attr('elemid') == this.parentRelease.id;
+                                return $('div.event-overflow').data('elemid') == this.parentRelease.id;
                             },
                             remove:function() {
-                                $('div.event-container[elemid=' + this.id + ']').remove();
-                                $('span.event-select-item[elemid=' + this.id + ']').remove();
+                                $('div.event-container[data-elemid=' + this.id + ']').remove();
+                                $('span.event-select-item[data-elemid=' + this.id + ']').remove();
                                 $(window).trigger('resize.eventline');
                             },
                             beforeTmpl:function(tmpl, container) {
@@ -815,7 +899,7 @@
                                 if (!beforeData) {
                                     container.find('div.event-content-list:last').addClass('event-content-list-odd');
                                 }
-                                $('div.event-select').append($('<span class="event-select-item" elemid="' + this.id + '">' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber + '</span>'));
+                                $('div.event-select').append($('<span class="event-select-item" data-elemid="' + this.id + '">' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber + '</span>'));
                             },
                             window:'#window-content-releasePlan'
                         }
@@ -890,7 +974,7 @@
                          if (this.tasks){
                             var tasks = this.tasks;
                             $('.row-urgent-task td:not(:last-child) .postit-task,.row-recurrent-task td:not(:last-child) .postit-task',kanban).each(function(){
-                                var id = $(this).attr('elemid');
+                                var id = $(this).data('elemid');
                                 var found = false;
                                 $(tasks).each(function(){
                                     if (this.id == id){
@@ -931,7 +1015,7 @@
                             if (backlog.length) {
                                 backlog.sortable('disable', true);
                                 $('.postit-label.postit-sortable', backlog).removeClass('postit-sortable');
-                                $('.event-container[elemid=' + this.id + '] > .event-content-list').droppable('disable', true).removeClass('ui-state-disabled');
+                                $('.event-container[data-elemid=' + this.id + '] > .event-content-list').droppable('disable', true).removeClass('ui-state-disabled');
                             }
                         }
                         if (this.activable) {
@@ -972,7 +1056,7 @@
 
                     sprintMesure:function() {
                         $(this).each(function() {
-                            var header = $('.event-header[elemid=' + this.id + ']');
+                            var header = $('.event-header[data-elemid=' + this.id + ']');
                             if (header.length) {
                                 if (this.state >= $.icescrum.sprint.STATE_INPROGRESS) {
                                     this.velocity = (this.velocity != undefined) ? this.velocity : 0;
@@ -1103,7 +1187,7 @@
                             view:'ul.list-comments',
                             remove:function(tmpl) {
                                 var commentList = $(tmpl.view);
-                                var comment = $(tmpl.selector + '[elemid=' + this.id + ']', commentList);
+                                var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', commentList);
                                 comment.remove();
                                 if ($(tmpl.selector, commentList).length == 0) {
                                     commentList.html('<li class="panel-box-empty">' + $.icescrum.comment.i18n.noComment + '</li>');
@@ -1116,7 +1200,7 @@
                             view:'ul.list-news',
                             remove:function(tmpl) {
                                 var summary = $(tmpl.view);
-                                var comment = $(tmpl.selector + '[elemid=' + this.id + ']', summary);
+                                var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', summary);
                                 comment.remove();
                             }
                         }
@@ -1177,7 +1261,7 @@
                             view:'ul.list-acceptance-tests',
                             remove:function(tmpl) {
                                 var acceptanceTests = $(tmpl.view);
-                                var acceptanceTest = $(tmpl.selector + '[elemid=' + this.id + ']', acceptanceTests);
+                                var acceptanceTest = $(tmpl.selector + '[data-elemid=' + this.id + ']', acceptanceTests);
                                 acceptanceTest.remove();
                                 if ($(tmpl.selector, acceptanceTests).length == 0) {
                                     acceptanceTests.html('<li class="panel-box-empty">' + $.icescrum.acceptancetest.i18n.noAcceptanceTest + '</li>');
@@ -1274,19 +1358,19 @@
                     }
 
                     var container = $(tmpl.view);
-                    var current = $(tmpl.selector + '[elemid=' + object.id + ']', container);
+                    var current = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
                     var beforeData = null;
                     if ($.isFunction(tmpl.beforeTmpl)) {
                         beforeData = tmpl.beforeTmpl.apply(object, [tmpl,container,current]);
                     }
 
                     if (current.length) {
-                        $(tmpl.selector + '[elemid=' + object.id + ']', container).jqoteup('#' + tmpl.id, object);
+                        $(tmpl.selector + '[data-elemid=' + object.id + ']', container).jqoteup('#' + tmpl.id, object);
                     }
                     else {
                         app ? container.jqoteapp('#' + tmpl.id, object) : container.jqotepre('#' + tmpl.id, object);
                     }
-                    var newObject = $(tmpl.selector + '[elemid=' + object.id + ']', container);
+                    var newObject = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
 
                     if ($.isFunction(after)) {
                         after.apply(object, [tmpl,newObject,container]);
@@ -1295,7 +1379,7 @@
                         tmpl.afterTmpl.apply(object, [tmpl,container,newObject,beforeData]);
                     }
 
-                    return $(tmpl.selector + '[elemid=' + object.id + ']', container);
+                    return $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
                 }
             });
 })($);
