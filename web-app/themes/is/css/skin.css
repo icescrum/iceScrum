@@ -159,7 +159,7 @@ body {
     background-position: 0 0;
 }
 
-.postit .postit-acceptance-test, .table-acceptance-test {
+.postit .postit-acceptance-test, .table-acceptance-test, .postit-rect .postit-acceptance-test {
     background-image: url(../images/icons/test-grey.png);
     background-repeat: no-repeat;
     background-position: 0 0;
