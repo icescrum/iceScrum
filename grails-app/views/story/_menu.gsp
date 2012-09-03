@@ -33,12 +33,12 @@
     </a>
 </li>
 <li>
-    <a class="scrum-link" href="#story/${story.id}?tab=comment">
+    <a class="scrum-link" href="#story/${story.id}?tab=comments">
         <g:message code='is.ui.releasePlan.menu.story.commentable'/>
     </a>
 </li>
 <li>
-    <a class="scrum-link" href="#story/${story.id}?tab=test">
+    <a class="scrum-link" href="#story/${story.id}?tab=tests">
         <g:message code='is.ui.backlogelement.activity.test'/>
     </a>
 </li>
