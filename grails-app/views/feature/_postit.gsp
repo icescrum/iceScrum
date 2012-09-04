@@ -31,6 +31,7 @@
         attachment="${feature.totalAttachments}"
         sortable='[rendered:request.productOwner]'
         typeNumber="${feature.type}"
+        stateText="${is.bundle(bundle:'featureStates',value:feature.state)}"
         typeTitle="${is.bundle(bundle:'featureTypes',value:feature.type)}"
         controller="feature">
     <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>

@@ -32,6 +32,7 @@ import org.icescrum.core.domain.Story
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
+import java.text.DecimalFormat
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class ReleasePlanController {
@@ -281,7 +282,7 @@ class ReleasePlanController {
             def indexF = 1
             values.value?.each {
                 def value = []
-                value << it.toString()
+                value << new DecimalFormat("#.##").format(it).toString()
                 value << indexF
                 valueToDisplay << value
                 indexF++

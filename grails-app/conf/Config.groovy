@@ -94,7 +94,7 @@ icescrum.marshaller = [
         product: [],
         actor:[include:['totalAttachments']],
         task:[include:['totalAttachments','sprint']],
-        feature:[include:['totalAttachments'],
+        feature:[include:['totalAttachments','countDoneStories','state','effort'],
                  asShort:['color', 'name']],
         story:[include:['totalAttachments','totalComments','tasks'],
                asShort:['state', 'effort','uid']],

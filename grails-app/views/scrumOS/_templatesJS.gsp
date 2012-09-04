@@ -68,7 +68,8 @@
             useFrequency:${is.bundleLocaleToJs(bundle: BundleUtils.actorFrequencies)}
         },
         feature:{
-            types:${is.bundleLocaleToJs(bundle: BundleUtils.featureTypes)}
+            types:${is.bundleLocaleToJs(bundle: BundleUtils.featureTypes)},
+            states:${is.bundleLocaleToJs(bundle: BundleUtils.featureStates)}
         },
         <g:if test="${product}">
         product:{

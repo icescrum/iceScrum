@@ -73,9 +73,9 @@
                     editable="[type:'text',disabled:!request.productOwner,name:'name']">${feature.name.encodeAsHTML()}</is:tableColumn>
             <is:tableColumn
                     editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${feature.description?.encodeAsHTML()}</is:tableColumn>
-            <is:tableColumn>${effortFeature(feature)}</is:tableColumn>
+            <is:tableColumn>${feature.effort}</is:tableColumn>
             <is:tableColumn>${feature.stories?.size() ?: 0}</is:tableColumn>
-            <is:tableColumn>${linkedDoneStories(feature)}</is:tableColumn>
+            <is:tableColumn>${feature.countDoneStories}</is:tableColumn>
         </is:tableRows>
     </is:table>
 </is:tableView>

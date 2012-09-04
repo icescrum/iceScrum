@@ -62,17 +62,17 @@
             min:0,
             max:100,
             label:'${message(code:'is.chart.productParkinglot.xaxis.label')}',
-            tickOptions:{formatString:''}
+            tickOptions:{
+                formatString:'%d\%'
+            }
           },
           yaxis:{
-            label:'${message(code:'is.chart.productParkinglot.yaxis.label')}',
             renderer:$.jqplot.CategoryAxisRenderer,
             ticks:${featuresNames},
             rendererOptions:{tickRenderer:$.jqplot.CanvasAxisTickRenderer},
             tickOptions:{
                 fontSize:'11px',
-                fontFamily:'Arial',
-                angle:30
+                fontFamily:'Arial'
             }
           }
       }

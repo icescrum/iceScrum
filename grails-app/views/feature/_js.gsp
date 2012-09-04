@@ -25,6 +25,8 @@
                              uid:'?**=this.uid**?',
                              name:'?**=name**?',
                              rank:'?**=this.rank**?',
+                             countDoneStories:'?**=this.countDoneStories**?',
+                             effort:'?**=this.effort**?',
                              value:'?**=this.value**?',
                              description:'?**=description**?',
                              totalAttachments:'?**=this.totalAttachments**?']"/>
@@ -36,11 +38,13 @@
     var description =  this.description ? this.description : '';
     var truncatedDescription = description.length > 50 ? description.substring(0,50)+'...' : description;
     description = description.formatLine();
+    var textState = jQuery.icescrum.feature.states[this.state];
     **?
     <is:postit id="${feature.id}"
                miniId="${feature.uid}"
                title="?**=truncatedName**?"
                type="feature"
+               stateText="?**=textState**?"
                notruncate="true"
                menu="[id:'feature-'+feature.id,template:'/feature/menu',params:[controllerName:id, feature:feature],rendered:request.productOwner]"
                sortable='[rendered:request.productOwner]'
@@ -81,18 +85,10 @@
     var description =  this.description ? this.description : '';
     var name =  this.name ? this.name : '';
     var type = $.icescrum.feature.types[this.type];
-    var effort = 0;
     var stories = 0;
-    var storiesDone = 0;
     $(this.stories).each(function(){
         stories++;
-        if (this.effort != '?'){
-             effort += this.effort;
-        }
-        storiesDone += (this.state == $.icescrum.story.STATE_DONE ? 1 : 0);
     });
-    effort = effort == 0 ? '' : effort;
-    storiesDone = storiesDone == 0 ? '' : storiesDone;
     **?
     <is:table onlyRows="true">
         <is:tableRow    data-rank="${feature.rank}"
@@ -132,9 +128,9 @@
                     editable="[type:'text',disabled:!request.productOwner,name:'name']">${feature.name.encodeAsHTML()}</is:tableColumn>
             <is:tableColumn
                     editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${feature.description}</is:tableColumn>
-            <is:tableColumn>?**=effort**?</is:tableColumn>
+            <is:tableColumn>${feature.effort}</is:tableColumn>
             <is:tableColumn>?**=stories**?</is:tableColumn>
-            <is:tableColumn>?**=storiesDone**?</is:tableColumn>
+            <is:tableColumn>${feature.countDoneStories}</is:tableColumn>
         </is:tableRow>
     </is:table>
     ]]>

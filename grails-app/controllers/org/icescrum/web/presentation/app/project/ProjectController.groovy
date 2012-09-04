@@ -51,6 +51,7 @@ import feedsplugin.FeedBuilder
 import com.sun.syndication.io.SyndFeedOutput
 import org.codehaus.groovy.grails.web.util.StreamCharBuffer
 import org.apache.commons.io.FilenameUtils
+import java.text.DecimalFormat
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
@@ -386,7 +387,7 @@ class ProjectController {
             def valueToDisplay = []
             values.value?.each {
                 def value = []
-                value << it.toString()
+                value << new DecimalFormat("#.##").format(it).toString()
                 value << indexF
                 valueToDisplay << value
                 indexF++

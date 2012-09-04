@@ -34,6 +34,7 @@ import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import org.grails.taggable.Tag
+import java.text.DecimalFormat
 
 @Secured('inProduct()')
 class FeatureController {
@@ -143,12 +144,6 @@ class FeatureController {
 
                 def currentProduct = Product.get(params.product)
                 def maxRank = Feature.countByBacklog(currentProduct)
-                def effortFeature = { feature ->
-                    feature.stories?.sum {it.effort ?: 0}
-                }
-                def linkedDoneStories = { feature ->
-                    feature.stories?.sum {(it.state == Story.STATE_DONE) ? 1 : 0}
-                }
                 //Pour la vue tableau
                 def rankSelect = ''
                 maxRank.times { rankSelect += "'${it + 1}':'${it + 1}'" + (it < maxRank - 1 ? ',' : '') }
@@ -160,7 +155,7 @@ class FeatureController {
                 currentSuite = currentSuite.eachWithIndex { t, i ->
                     suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
                 }
-                render(template: template, model: [features: features, effortFeature: effortFeature, linkedDoneStories: linkedDoneStories,typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
+                render(template: template, model: [features: features, typeSelect: typeSelect, rankSelect: rankSelect, suiteSelect: suiteSelect], params: [product: params.product])
             }
             json { renderRESTJSON(text:features) }
             xml  { renderRESTXML(text:features) }
@@ -240,7 +235,7 @@ class FeatureController {
         def valueToDisplay = []
         values.value?.each {
             def value = []
-            value << it.toString()
+            value << new DecimalFormat("#.##").format(it).toString()
             value << indexF
             valueToDisplay << value
             indexF++
@@ -259,12 +254,6 @@ class FeatureController {
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)
         def data = []
-        def effortFeature = { feature ->
-            feature.stories?.sum {it.effort ?: 0}
-        }
-        def linkedDoneStories = { feature ->
-            feature.stories?.sum {(it.state == Story.STATE_DONE) ? 1 : 0}
-        }
         if (!values) {
             returnError(text:message(code: 'is.report.error.no.data'))
             return
@@ -277,9 +266,9 @@ class FeatureController {
                         rank: feature.rank,
                         type: feature.type,
                         value: feature.value,
-                        effort: effortFeature(feature),
+                        effort: feature.effort,
                         associatedStories: Story.countByFeature(feature),
-                        associatedStoriesDone: linkedDoneStories(feature),
+                        associatedStoriesDone: feature.countDoneStories,
                         parkingLotValue: values[index].value
                 ]
             }

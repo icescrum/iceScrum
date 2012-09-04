@@ -89,6 +89,7 @@
                     typeNumber="${feature.type}"
                     typeTitle="${is.bundle(bundle:'featureTypes',value:feature.type)}"
                     rect="true"
+                    stateText="${is.bundle(bundle:'featureStates',value:feature.state)}"
                     sortable='[rendered:request.productOwner]'>
             </is:postit>
             <g:if test="${feature.totalAttachments}">
