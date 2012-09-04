@@ -85,10 +85,6 @@
     var description =  this.description ? this.description : '';
     var name =  this.name ? this.name : '';
     var type = $.icescrum.feature.types[this.type];
-    var stories = 0;
-    $(this.stories).each(function(){
-        stories++;
-    });
     **?
     <is:table onlyRows="true">
         <is:tableRow    data-rank="${feature.rank}"
@@ -129,7 +125,7 @@
             <is:tableColumn
                     editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${feature.description}</is:tableColumn>
             <is:tableColumn>${feature.effort}</is:tableColumn>
-            <is:tableColumn>?**=stories**?</is:tableColumn>
+            <is:tableColumn>?**=this.stories.length**?</is:tableColumn>
             <is:tableColumn>${feature.countDoneStories}</is:tableColumn>
         </is:tableRow>
     </is:table>
