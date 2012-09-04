@@ -22,7 +22,7 @@
 <is:objectAsXML object="${object}" node="story" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML
             name="['state','suggestedDate','acceptedDate','estimatedDate','plannedDate','inProgressDate','doneDate','effort','value','rank','creationDate','type','executionFrequency']"/>
-    <is:propertyAsXML name="['name','textAs','textICan','textTo','notes','description']" cdata="true"/>
+    <is:propertyAsXML name="['name','textAs','textICan','textTo','notes','description','tags']" cdata="true"/>
     <is:propertyAsXML object="creator"/>
     <is:propertyAsXML object="feature"/>
     <is:propertyAsXML object="actor"/>
@@ -34,6 +34,12 @@
             deep="${deep}"
             indentLevel="${indentLevel + 1}"/>
     <is:listAsXML
+                name="acceptanceTests"
+                template="/acceptanceTest/xml"
+                child="acceptanceTest"
+                deep="${deep}"
+                indentLevel="${indentLevel + 1}"/>
+    <is:listAsXML
             name="comments"
             template="/addons/commentXml"
             child="comment"
@@ -43,12 +49,6 @@
             name="activities"
             template="/addons/activityXml"
             child="activity"
-            deep="${deep}"
-            indentLevel="${indentLevel + 1}"/>
-    <is:listAsXML
-            name="acceptanceTests"
-            template="/acceptanceTest/xml"
-            child="acceptanceTest"
             deep="${deep}"
             indentLevel="${indentLevel + 1}"/>
     <is:listAsXML

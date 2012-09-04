@@ -23,7 +23,7 @@
     <is:propertyAsXML name="['estimation','type','state','rank','creationDate','inProgressDate','doneDate','blocked','color']"/>
     <is:propertyAsXML object="creator"/>
     <is:propertyAsXML object="responsible"/>
-    <is:propertyAsXML name="['name','description','notes']" cdata="true"/>
+    <is:propertyAsXML name="['name','description','notes','tags']" cdata="true"/>
     <is:listAsXML
             name="attachments"
             template="/addons/attachmentXml"

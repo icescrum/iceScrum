@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%<is:objectAsXML object="${object}" node="actor" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML name="['instances','expertnessLevel','useFrequency','creationDate']"/>
-    <is:propertyAsXML name="['name','satisfactionCriteria','notes','description']" cdata="true"/>
+    <is:propertyAsXML name="['name','satisfactionCriteria','notes','description','tags']" cdata="true"/>
     <is:listAsXML
             name="stories"
             template="/xml/story"
