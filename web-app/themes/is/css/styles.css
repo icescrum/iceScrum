@@ -1341,6 +1341,11 @@ li#li-roles {
     border-top-width: 1px;
 }
 
+.window-fullscreen .event-select {
+    bottom:0px;
+    left:0px;
+}
+
 .event-select-item {
     margin-left: 5px;
     margin-right: 5px;
