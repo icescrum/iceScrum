@@ -99,16 +99,18 @@
 
             var content = $("#widget-content-" + id, obj);
             var dif = obj.height() - content.height();
-            var savedHeight = $.icescrum.product.id ? $.cookie('widget-'+id+$.icescrum.product.id) : null;
-            if (savedHeight && ($(content.children()[0]).height() > savedHeight || savedHeight < opts.resizable.minHeight)){
-                content.height(savedHeight);
-            }else if (obj.height() > $(content.children()[0]).height()){
-                if ( $(content.children()[0]).height() > opts.resizable.minHeight){
-                    content.height($(content.children()[0]).height());
-                }
-                opts.resizable.minHeight = function(){ $(content.children()[0]).height() };
-            }
+            var savedHeight = $.icescrum.product.id ? parseInt($.cookie('widget-'+id+$.icescrum.product.id)) : null;
 
+            if ($('.box-blank', content).is(':visible')){
+                content.height(opts.resizable.minHeight);
+            }else{
+                if (savedHeight && $(content.children()[0]).height() > savedHeight){
+                    content.height(savedHeight);
+                }else if (!savedHeight && $(content.children()[0]).height() > opts.resizable.defaultHeight){
+                    content.height(opts.resizable.defaultHeight);
+                }
+            }
+            opts.resizable.minHeight += dif;
             opts.resizable.zIndex = 990;
             opts.resizable.minWidth = obj.width();
             opts.resizable.maxWidth = obj.width();

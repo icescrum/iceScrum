@@ -5,10 +5,6 @@
                     var opts = obj.data('opts');
                     $.icescrum.o.currentOpenedWindow = null;
                     var closeClosure = function() {
-                        jQuery.ajax({
-                                    type:'GET',
-                                    url:$.icescrum.o.urlCloseWindow + '/' + obj.data('id')
-                                });
                         obj.trigger('beforeIsCloseWindow');
                         obj.remove();
                     };

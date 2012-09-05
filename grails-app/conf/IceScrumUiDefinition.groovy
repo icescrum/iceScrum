@@ -40,7 +40,7 @@ uiDefinitions = {
             title 'is.ui.actor'
             init 'list'
             toolbar true
-            resizable = [minHeight:143,maxWith:3]
+            resizable = [defaultHeight:143,minHeight:26]
         }
         shortcuts = [
             [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
@@ -70,7 +70,7 @@ uiDefinitions = {
             title 'is.ui.backlog'
             init 'list'
             toolbar false
-            resizable = [minHeight:170]
+            resizable = [defaultHeight:143,minHeight:26]
         }
         shortcuts = [
             [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
@@ -115,7 +115,7 @@ uiDefinitions = {
             title 'is.ui.feature'
             init 'list'
             toolbar true
-            resizable = [minHeight:143]
+            resizable = [defaultHeight:143,minHeight:26]
         }
 
         shortcuts = [
@@ -187,7 +187,7 @@ uiDefinitions = {
             title 'is.ui.sandbox'
             init 'list'
             toolbar true
-            resizable = [minHeight:170]
+            resizable = [defaultHeight:143,minHeight:26]
         }
         shortcuts = [
             [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
