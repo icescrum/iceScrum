@@ -405,6 +405,22 @@ class SprintPlanController {
         }
     }
 
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
+    def sprintBurnupPointsChart = {
+        withSprint{ Sprint sprint ->
+            def values = sprintService.sprintBurnupStoriesValues(sprint)
+            if (values.size() > 0) {
+                render(template: 'charts/sprintBurnupPointsChart', model: [
+                        points: values.totalPoints as JSON,
+                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                        pointsDone: values.pointsDone as JSON,
+                        labels: values.label as JSON])
+            } else {
+                renderErrors(text:message(code: 'is.chart.error.no.values'))
+            }
+        }
+    }
+
     def changeFilterTasks = {
         if (!params.filter || !params.filter in ['allTasks', 'myTasks', 'freeTasks']) {
             def msg = message(code: 'is.user.preferences.error.not.filter')

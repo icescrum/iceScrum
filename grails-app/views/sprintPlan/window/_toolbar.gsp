@@ -233,7 +233,7 @@
                     remote="true"
                     value="${message(code:'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}"/>
         </li>
-        <li class="last">
+        <li>
             <is:link
                     action="sprintBurnupStoriesChart"
                     controller="${controllerName}"
@@ -242,6 +242,16 @@
                     title="${message(code:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}"
                     remote="true"
                     value="${message(code:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}"/>
+        </li>
+        <li class="last">
+            <is:link
+                    action="sprintBurnupPointsChart"
+                    controller="${controllerName}"
+                    id="${sprint.id}"
+                    update="window-content-${controllerName}"
+                    title="${message(code:'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}"
+                    remote="true"
+                    value="${message(code:'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}"/>
         </li>
     </ul>
 </is:panelButton>
