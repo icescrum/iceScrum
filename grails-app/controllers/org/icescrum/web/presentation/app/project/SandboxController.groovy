@@ -52,7 +52,7 @@ class SandboxController {
         def currentProduct = Product.load(params.product)
         def stories = (params.term) ? Story.findInStoriesSuggested(params.long('product'), '%' + params.term + '%').list() : Story.findAllByBacklogAndState(currentProduct, Story.STATE_SUGGESTED, [sort: 'suggestedDate', order: 'desc'])
 
-        def template = session['widgetsList']?.contains(controllerName) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+        def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
         def typeSelect = BundleUtils.storyTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
 
         def featureSelect = "'':'${message(code: 'is.ui.sandbox.manage.chooseFeature')}'"

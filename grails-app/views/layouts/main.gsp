@@ -50,7 +50,16 @@
     </div>
 
     <div id="local">
-        <is:widgetBar/>
+        <div class="widget-bar">
+          <div id="widget-list">
+            <sec:ifLoggedIn>
+                <div class="upgrade" style="display:none;">
+                    <span class="close"><g:message code="is.ui.hide"/></span>
+                    <g:message code="is.ui.hide"/>
+                </div>
+            </sec:ifLoggedIn>
+          </div>
+        </div>
         <div id="notifications" style="display:none;"><a id="accept_notifications">${message(code:'is.ui.html5.notifications')}</a> (<a id="hide_notifications">${message(code:'is.ui.hide')}</a>)</div>
     </div>
     <is:desktop>
@@ -84,6 +93,25 @@
       hoverClass: 'main-active',
       accept: '.draggable-to-desktop'
     });
+      $("#widget-list").sortable({
+        handle:".box-title",
+        items:".box-widget-sortable"
+      });
+
+      $("#local").droppable({
+        drop:function(event, ui){
+          var id = ui.draggable.attr('id').replace('elem_','');
+          if (id != ui.draggable.attr('id')){
+            if($("#window-id-"+id).is(':visible')){
+              $.icescrum.windowToWidget($("#window-id-"+id),event);
+            }else{
+              $.icescrum.addToWidgetBar(id);
+            }
+          }
+        },
+        hoverClass: 'local-active',
+        accept: '.widgetable'
+      });
 </jq:jquery>
 <entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>

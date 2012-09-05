@@ -45,13 +45,10 @@ import org.codehaus.groovy.grails.plugins.GrailsPlugin
 class ScrumOSController {
 
     def springSecurityService
-    def productService
     def menuBarSupport
     def notificationEmailService
     def securityService
     def uiDefinitionService
-
-    def licenseService
 
     def index = {
         def currentUserInstance = null
@@ -117,14 +114,8 @@ class ScrumOSController {
             }
             def url = createLink(controller: params.window, action: uiDefinition.widget?.init, params: paramsWidget).toString() - request.contextPath
             if (!menuBarSupport.permissionDynamicBar(url)) {
-                session['widgetsList'].remove(params.window)
                 render(status: 400)
                 return
-            }
-
-            if (!session['widgetsList']?.contains(params.window)) {
-                session['widgetsList'] = session['widgetsList'] ?: []
-                session['widgetsList'].add(params.window)
             }
 
             render is.widget([
@@ -141,27 +132,12 @@ class ScrumOSController {
         }
     }
 
-    def closeWindow = {
-        session['currentWindow'] = null
-        render(status: 200)
-    }
-
-    def closeWidget = {
-        if (session['widgetsList']?.contains(params.window))
-            session['widgetsList'].remove(params.window);
-        render(status: 200)
-    }
-
     def openWindow = {
         if (!params.window) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window')]] as JSON)
             return
         }
-        session['currentWindow'] = params.window
-        session['currentView'] = session['currentView'] ?: springSecurityService.isLoggedIn() ? 'postitsView' : 'tableView'
-
-        if (session['widgetsList']?.contains(params.window))
-            session['widgetsList'].remove(params.window);
+        params.viewType = params.viewType ?: springSecurityService.isLoggedIn() ? 'postitsView' : 'tableView'
 
         def uiRequested = params.window
         def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
@@ -205,12 +181,6 @@ class ScrumOSController {
         if (uiDefinition) {
             forward(controller: params.window, action: 'toolbar', params: params)
         }
-    }
-
-    def changeView = {
-        if (!params.view) return
-        session['currentView'] = params.view
-        forward(action: params.actionWindow, controller: params.window, params: [product: params.product, id: params.id ?: null])
     }
 
     @Secured('isAuthenticated()')
@@ -290,7 +260,7 @@ class ScrumOSController {
         }
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
+    //@Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
     def templates = {
         def currentSprint = null
         def product = null

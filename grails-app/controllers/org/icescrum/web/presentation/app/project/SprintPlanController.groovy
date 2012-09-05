@@ -153,7 +153,7 @@ class SprintPlanController {
         currentSuite = currentSuite.eachWithIndex { t, i ->
             suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
         }
-        def template = session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+        def template = params.viewType ? 'window/' + params.viewType : 'window/postitsView'
         render(template: template,
                 model: [sprint: sprint,
                         stories: stories.findAll{it.state < Story.STATE_DONE},

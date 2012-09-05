@@ -132,18 +132,11 @@ class ActorController {
         }
     }
 
-    def changeView = {
-        if (!params.id) return
-        session['currentView'] = params.id
-        def view = include(action: 'list', controller: 'actor', id: params.id)
-        render(text: view)
-    }
-
     def list = {
         def actors = params.term ? Actor.findActorByProductAndTerm(params.long('product'), '%' + params.term + '%').list() : Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc'])
         withFormat{
             html {
-                def template = session.widgetsList?.contains(controllerName) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+                def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
                 def frequenciesSelect = BundleUtils.actorFrequencies.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
                 def instancesSelect = BundleUtils.actorInstances.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
                 def levelsSelect = BundleUtils.actorLevels.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')

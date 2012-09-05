@@ -140,7 +140,7 @@ class FeatureController {
         def features = (params.term && params.term != '') ? Feature.findInAll(params.long('product'), '%' + params.term + '%').list() : Feature.findAllByBacklog(Product.load(params.product), [cache: true, sort: 'rank'])
         withFormat{
             html {
-                def template = (session['widgetsList']?.contains(controllerName)) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+                def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
 
                 def currentProduct = Product.get(params.product)
                 def maxRank = Feature.countByBacklog(currentProduct)

@@ -44,8 +44,8 @@ class BacklogController {
         def currentProduct = Product.get(params.product)
 
         def stories = params.term ? Story.findInStoriesAcceptedEstimated(params.long('product'), '%' + params.term + '%').list() : Story.findAllByBacklogAndStateBetween(currentProduct, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
-        stories = session['widgetsList']?.contains(controllerName) ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
-        def template = session['widgetsList']?.contains(controllerName) ? 'widget/widgetView' : session['currentView'] ? 'window/' + session['currentView'] : 'window/postitsView'
+        stories = params.windowType == 'widget' ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
+        def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
 
         def typeSelect = BundleUtils.storyTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
         def rankSelect = ''

@@ -28,6 +28,17 @@
                     this.o.fullscreen = false;
                 },
 
+                setDefaultView:function(xhr, element){
+                    var view = $(element).data("defaultView");
+                    $.cookie('view-'+ ($.icescrum.product.id ? $.icescrum.product.id : '-no-product'), view);
+                    $('#menu-display-list .content').html('<span class="ico"></span>'+ $(element).text());
+                },
+
+                getDefaultView:function(){
+                    var view = $.cookie('view-'+ ($.icescrum.product.id ? $.icescrum.product.id : '-no-product'));
+                    return view ? view : 'postitsView';
+                },
+
                 openWindow:function(id, callback) {
 
                     var targetWindow = id;
@@ -42,7 +53,7 @@
                         targetWindow = targetWindow.substring(0, targetParam);
                     }
 
-                    if ($.inArray(targetWindow, this.o.widgetsList) != -1) {
+                    if ($.inArray(targetWindow, $.icescrum.getWidgetsList()) != -1) {
                         var obj = $("#widget-id-" + targetWindow);
                         this.closeWidget(obj);
                     }
@@ -54,11 +65,11 @@
                             this.addToWidgetBar(this.o.currentOpenedWindow.data('id'));
                         }
                     }
-
+                    var view = this.getDefaultView();
                     jQuery.ajax({
                                 type:'GET',
                                 cache:true,
-                                url:this.o.urlOpenWindow + '/' + id,
+                                url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? '?viewType='+view : '' ),
                                 beforeSend:function(){
                                     var loading = $('<div/>').attr('id','window-loading').css('opacity',0).css('z-index',998);
                                     if ($.icescrum.o.fullscreen) {
@@ -79,6 +90,10 @@
                                         $('#window-id-' + targetWindow).addClass('window-fullscreen');
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
+                                        var viewSelector = $('#menu-display-list');
+                                        if (viewSelector.length != -1){
+                                            viewSelector.find('.content').html('<span class="ico"></span>' + viewSelector.find('a[data-default-view='+view+']').text());
+                                        }
                                     }
                                     $('#window-loading').stop().animate({opacity:0.0},250,function(){  $(this).remove(); });
                                     if (callback) {

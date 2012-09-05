@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON;" %>
-<jq:jquery type="text/javascript">
+<jq:jquery>
     jQuery.extend(true, jQuery.icescrum, {
         user:{
             id:${sec.loggedInUserInfo(field: 'id') ?: 'null'},
@@ -101,6 +101,8 @@
             }
         }
     });
+
+    $.icescrum.init();
 </jq:jquery>
 
 <div class='templates'>

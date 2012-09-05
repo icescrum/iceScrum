@@ -92,7 +92,7 @@
                             )
                         }
 
-                        if (this.forceRefresh) {
+                        if (this.user.forceRefresh) {
                             $.doTimeout(500, function() {
                                 document.location.reload(true);
                             })

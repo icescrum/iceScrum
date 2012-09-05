@@ -2,26 +2,24 @@
 
     jQuery.extend($.icescrum, {
                 addToWidgetBar:function(id, callback) {
-                    if ($.inArray(id, this.o.widgetsList) == -1) {
+                    if ($.inArray(id,  $.icescrum.getWidgetsList()) == -1) {
                         jQuery.ajax({
-                                    type:'GET',
-                                    global:false,
-                                    url:this.o.urlOpenWidget + '/' + id,
-                                    success:function(data, textStatus) {
-                                        if ($.inArray(id, $.icescrum.o.widgetsList) == -1 && data) {
-                                            $(data).appendTo($.icescrum.o.widgetContainer);
-                                            $.icescrum.o.widgetsList.push(id);
-                                            if (callback) {
-                                                callback();
-                                            }
+                                type:'GET',
+                                global:false,
+                                url:this.o.urlOpenWidget + '/' + id,
+                                success:function(data, textStatus) {
+                                    if ($.inArray(id, $.icescrum.getWidgetsList()) == -1 && data) {
+                                        $(data).appendTo($.icescrum.o.widgetContainer);
+                                        $.icescrum.addToWidgetsList(id);
+                                        if (callback) {
+                                            callback();
                                         }
-                                    },
-                                    error:function() {
-                                        $.icescrum.o.widgetsList = $.grep($.icescrum.o.widgetsList, function(value) {
-                                            return value != id;
-                                        });
                                     }
-                                });
+                                },
+                                error:function() {
+                                    $.icescrum.removeFromWidgetsList(id);
+                                }
+                            });
                     }
                     return false;
                 },
@@ -34,31 +32,38 @@
 
                 closeWidget:function(obj, event) {
                     var opts = obj.data('opts');
-                    $.icescrum.o.widgetsList = $.grep($.icescrum.o.widgetsList, function(value) {
-                        return value != obj.data('id');
-                    });
-                    var callback;
-                    if (event) {
-                        callback = function() {
-                            jQuery.ajax({
-                                        type:'GET',
-                                        url:$.icescrum.o.urlCloseWidget + '/' + obj.data('id'),
-                                        success:function(data, textStatus) {
-                                            obj.remove();
-                                        }
-                                    });
-                        };
-                    } else
-                        callback = function() {
-                            obj.remove();
-                        };
-
-                    obj.effect('blind', null, 'fast', callback);
+                    obj.effect('blind', null, 'fast', function() { obj.remove(); });
+                    this.removeFromWidgetsList(obj.data('id'));
                     if (opts && opts.onClose)
                         opts.onClose();
-
                     if (event)
                         this.stopEvent(event);
+                },
+
+                saveWidgetsList:function(widgetsList){
+                    if ($.icescrum.product.id){
+                        $.cookie('widgets-' + $.icescrum.product.id, widgetsList);
+                    }else{
+                        $.cookie('widgets-noproduct', widgetsList);
+                    }
+                },
+
+                getWidgetsList:function(){
+                    var list = $.icescrum.product.id ? $.cookie('widgets-' + $.icescrum.product.id) : $.cookie('widgets-noproduct');
+                    return list ? list.split(',') : [];
+                },
+
+                removeFromWidgetsList:function(id){
+                    var list = $.grep(this.getWidgetsList(), function(value) {
+                        return value != id;
+                    });
+                    this.saveWidgetsList(list);
+                },
+
+                addToWidgetsList:function(id){
+                    var list = this.getWidgetsList();
+                    list.push(id);
+                    this.saveWidgetsList(list);
                 }
             });
 
@@ -94,19 +99,22 @@
 
             var content = $("#widget-content-" + id, obj);
             var dif = obj.height() - content.height();
-
             var savedHeight = $.icescrum.product.id ? $.cookie('widget-'+id+$.icescrum.product.id) : null;
-            if (savedHeight && $(content.children()[0]).height() > savedHeight){
+            if (savedHeight && ($(content.children()[0]).height() > savedHeight || savedHeight < opts.resizable.minHeight)){
                 content.height(savedHeight);
             }else if (obj.height() > $(content.children()[0]).height()){
-                content.height($(content.children()[0]).height());
+                if ( $(content.children()[0]).height() > opts.resizable.minHeight){
+                    content.height($(content.children()[0]).height());
+                }
                 opts.resizable.minHeight = function(){ $(content.children()[0]).height() };
             }
 
+            opts.resizable.zIndex = 990;
             opts.resizable.minWidth = obj.width();
             opts.resizable.maxWidth = obj.width();
             opts.resizable.start = function(event, ui){
-                obj.resizable('option','maxHeight',$(content.children()[0]).height() + dif);
+                var height = $(content.children()[0]).height();
+                obj.resizable('option','maxHeight',height >= opts.resizable.minHeight ? height + dif : opts.resizable.minHeight);
             };
             opts.resizable.resize = function(event, ui){
                 content.height(ui.size.height - dif);

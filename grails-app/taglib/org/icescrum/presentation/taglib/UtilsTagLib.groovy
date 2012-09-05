@@ -49,7 +49,6 @@ class UtilsTagLib {
     def loadJsVar = { attrs, body ->
         def current = params.product ? pageScope.product : null
         def p = current ? [product: current.id] : []
-        def widgetsList = session.widgetsList
         def locale = attrs.locale ? attrs.locale.replace('_', '-') : RCU.getLocale(request).toString().replace('_', '-')
         def jsCode = """var icescrum = {
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
@@ -62,8 +61,6 @@ class UtilsTagLib {
                           urlCloseWindow:"${createLink(controller: 'scrumOS', action: 'closeWindow', params: p)}",
                           deleteConfirmMessage:"${message(code: 'is.confirm.delete').encodeAsJavaScript()}",
                           cancelFormConfirmMessage:"${message(code: 'is.confirm.cancel.form').encodeAsJavaScript()}",
-                          widgetsList:${params.product ? widgetsList as JSON ?: [] : []},
-                          currentView:"${session.currentView ?: 'postitsView'}",
                           locale:'${locale}',
                           showUpgrade:${grailsApplication.config.icescrum.show.upgrade},
                           push:{enable:${grailsApplication.config.icescrum.push.enable?:false}, websocket:${grailsApplication.config.icescrum.push.websocket?:false}},

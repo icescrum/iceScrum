@@ -65,25 +65,18 @@
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">
     <ul>
         <li class="first">
-            <is:link
-                    controller="scrumOS"
-                    action="changeView"
-                    params="'product=${params.product}&view=postitsView&window=${controllerName}&id=${sprint.id}&actionWindow=index&term='+\$(\'#autoCmpTxt\').val()"
-                    history="false"
-                    update="window-content-${controllerName}"
-                    remote="true"
-                    onSuccess="\$.icescrum.displayView('${message(code:'is.view.postitsView')}','postitsView')"
-                    value="${message(code:'is.view.postitsView')}"/>
+            <a href="${createLink(action:'index',controller:controllerName,params:[product:params.product])}"
+               data-default-view="postitsView"
+               data-ajax-begin="$.icescrum.setDefaultView"
+               data-ajax-update="#window-content-${controllerName}"
+               data-ajax="true">${message(code:'is.view.postitsView')}</a>
         </li>
         <li class="last">
-            <is:link controller="scrumOS"
-                     action="changeView"
-                     params="'product=${params.product}&view=tableView&window=${controllerName}&id=${sprint.id}&actionWindow=index&term='+\$(\'#autoCmpTxt\').val()"
-                     update="window-content-${controllerName}"
-                     history="false"
-                     onSuccess="\$.icescrum.displayView('${message(code:'is.view.tableView')}','tableView')"
-                     remote="true"
-                     value="${message(code:'is.view.tableView')}"/>
+            <a href="${createLink(action:'index',controller:controllerName,params:[product:params.product, viewType:'tableView'])}"
+               data-default-view="tableView"
+               data-ajax-begin="$.icescrum.setDefaultView"
+               data-ajax-update="#window-content-${controllerName}"
+               data-ajax="true">${message(code:'is.view.tableView')}</a>
         </li>
     </ul>
 </is:panelButton>

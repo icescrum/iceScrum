@@ -46,7 +46,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             fullscreen:false,
             deleteConfirmMessage:'Are you sure?',
             cancelFormConfirmMessage:'Do you want to quit this form?',
-            widgetsList:[],
             dialogErrorContent:null,
             openWindow:false,
             locale:'en',
@@ -75,20 +74,14 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if ($.icescrum.o.baseUrlProduct && !currentWindow && $('li.menubar:first a')){
                 var menubar = $('li.menubar:first a').attr('href').replace(/^.*#/, '');
                 document.location.hash = menubar;
-                this.o.widgetsList = $.grep($.icescrum.o.widgetsList, function(value) {
-                    return value != menubar;
-                });
+                $.icescrum.removeFromWidgetsList(menubar);
             }
 
-            if (this.o.widgetsList.length > 0) {
-                var tmp = this.o.widgetsList;
-                this.o.widgetsList = [];
+            if ($.icescrum.getWidgetsList().length > 0) {
+                var tmp = $.icescrum.getWidgetsList();
+                $.icescrum.saveWidgetsList([]);
                 for (i = 0; i < tmp.length; i++) {
-                    if($("#widget-id-"+tmp[i]).size() > 0){
-                        $.icescrum.o.widgetsList.push(tmp[i]);
-                    }else{
-                        this.addToWidgetBar(tmp[i]);
-                    }
+                    this.addToWidgetBar(tmp[i]);
                 }
             }
 
@@ -184,9 +177,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
         },
 
-        displayView:function(view,id) {
-            $.icescrum.o.currentView = id;
-            $('#menu-display-list .content').html('<span class="ico"></span>' + view);
+        displayView:function() {
+            $('#menu-display-list .content').html('<span class="ico"></span>');
         },
 
         selectableAction:function(action, doNotConfirm, idParam, onSuccess) {
@@ -439,6 +431,5 @@ $(document).ready(function($) {
                 cache: false
             });
 
-    $.icescrum.init();
     $.icescrum.showUpgrade();
 });
