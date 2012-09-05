@@ -35,9 +35,9 @@
 <body class="simple">
 <g:layoutBody/>
 <is:spinner
-        on400="${is.notice(data: '$.parseJSON(xhr.responseText)')}"
-        on500="jQuery.icescrum.dialogError(xhr)"
-        on403="${is.notice(text:message('is.denied'),type:'error')}"/>
+        on400="var error = jQuery.parseJSON(xhr.responseText); jQuery.icescrum.renderNotice( error.notice.text, 'error', error.notice.title); "
+        on403="jQuery.icescrum.renderNotice('${message(code:'is.error.denied')}', 'error');"
+        on500="jQuery.icescrum.dialogError(xhr)"/>
 <r:layoutResources/>
 <entry:point id="icescrum-footer"/>
 </body>

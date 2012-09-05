@@ -77,8 +77,8 @@
                     draggable:'false')}"/>
 <is:spinner
         on401="var data = jQuery.parseJSON(xhr.responseText); document.location='${createLink(controller:'login',action:'auth')}?ref=${product ? 'p/'+product.pkey+'/' : ''}'+(data.url?data.url:'');"
-        on400="${is.notice(data:'$.parseJSON(xhr.responseText)',type:'error')}"
-        on403="${is.notice(text:message(code:'is.error.denied'),type:'error')}"
+        on400="var error = jQuery.parseJSON(xhr.responseText); jQuery.icescrum.renderNotice( error.notice.text, 'error', error.notice.title); "
+        on403="jQuery.icescrum.renderNotice('${message(code:'is.error.denied')}', 'error');"
         on500="jQuery.icescrum.dialogError(xhr)"/>
 <r:layoutResources/>
 <jq:jquery>

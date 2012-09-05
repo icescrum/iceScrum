@@ -42,7 +42,7 @@
                     id="submitForm" type="submitToRemote"
                     url="[controller:controllerName, action:'updateRetrospective', params:[product:params.product,id:params.id]]"
                     value="${message(code:'is.ui.sprintPlan.retrospective.button.save')}"
-                    onSuccess="${is.notice(text:message(code:'is.sprint.retrospective.saved'))}"/>
+                    onSuccess="jQuery.icescrum.renderNotice('${message(code:'is.sprint.retrospective.saved')}');"/>
             <is:button
                     rendered="${sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1}"
                     type="link"

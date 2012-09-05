@@ -99,14 +99,14 @@
                     type="submitToRemote"
                     url="[controller:'actor', action:'save', params:[product:params.product]]"
                     onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.renderNotice('${message(code: 'is.actor.saved')}')"
-                    before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
+                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
                     value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
             <is:button
                     id="submitForm"
                     type="submitToRemote"
                     url="[controller:'actor', action:'save', params:[product:params.product]]"
                     onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.actor.saved')}')"
-                    before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
+                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
                     value="${message(code:'is.button.add')}"/>
         </g:if>
         <g:else>
@@ -116,7 +116,7 @@
                         type="submitToRemote"
                         url="[controller:'actor', action:'update', id:actor.id, params:[product:params.product,continue:true]]"
                         onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.actor.updated')}')"
-                        before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
+                        before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
                         value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
             </g:if>
             <is:button
@@ -124,7 +124,7 @@
                     type="submitToRemote"
                     url="[controller:'actor', action:'update', id:actor.id, params:[product:params.product]]"
                     onSuccess=" jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.actor.updated')}');"
-                    before='if (jQuery.icescrum.uploading()) {${is.notice(text:message(code:"is.upload.inprogress.wait"))} return false; }'
+                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
                     value="${message(code:'is.button.update')}"/>
         </g:else>
         <is:button

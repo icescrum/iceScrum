@@ -177,7 +177,7 @@
                       <g:each var="curProduct" in="${productFilteredsList}">
                           <li id='product-${curProduct.id}' class="projects ${(curProduct.owner.id == user?.id) ? 'owner' : ''}"><g:link class="${(product?.id == curProduct.id) ? 'active' : ''}" controller="scrumOS"
                                       params="[product:curProduct.pkey]"
-                                      onClick="${(product?.id == curProduct.id) ? is.notice(text:g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')]))+'return false;' : ''}">
+                                      onClick="${(product?.id == curProduct.id) ? ' jQuery.icescrum.renderNotice("'+g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')])+'"); return false;' : ''}">
                               <is:truncated encodedHTML="true" size="25">${curProduct.name.encodeAsHTML()}</is:truncated>
                           </g:link>
                           </li>

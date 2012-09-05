@@ -42,7 +42,7 @@
                     id="submitForm" type="submitToRemote"
                     url="[controller:controllerName, action:'updateVision', params:[product:params.product,id:params.id]]"
                     value="${message(code:'is.ui.releasePlan.vision.button.save')}"
-                    onSuccess="${is.notice(text:message(code:'is.release.vision.saved'))}"/>
+                    onSuccess="jQuery.icescrum.renderNotice('${message(code:'is.release.vision.saved')}');"/>
         </sec:access>
         <is:button type="link" button="button-s button-s-black" remote="true"
                    url="[controller:controllerName, action:'index',id:params.id,params:[product:params.product]]"

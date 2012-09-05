@@ -131,7 +131,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         uploading:function() {
-            return $('.field-file .is-progressbar .ui-progressbar-value:not(.ui-progressbar-value-error)').size() > 0;
+            return $('.is-multifiles .is-progressbar .ui-progressbar-value:not(.ui-progressbar-value-error)').size() > 0;
         },
 
         renderNotice:function(text, type, title) {
@@ -144,7 +144,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 typeP = type;
             }
             if (this.o.notifications){
-                this.displayNotification(title ? title : 'iceScrum '+ (type ?' - '+type : ''), text);
+                this.displayNotification(title ? title : 'iceScrum '+ (type ?' - '+type : ''), text.replace(/<\/?[^>]+>/gi, ''));
             }else{
                 $.pnotify({
                     pnotify_addclass:'stack-bottomleft',
