@@ -37,9 +37,21 @@
 
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
   <ul>
-    <li class="first"><is:link action="productCumulativeFlowChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productCumulativeflow')}" remote="true" value="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}"/></li>
-    <li><is:link action="productBurnupChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.burnup')}" remote="true" value="${message(code:'is.ui.timeline.charts.productBurnup')}"/></li>
-    <li><is:link action="productBurndownChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.burndown')}" remote="true" value="${message(code:'is.ui.timeline.charts.productBurndown')}"/></li>
+    <li class="first">
+        <a href="#${controllerName}/productCumulativeFlowChart" title="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}">
+            ${message(code:'is.ui.timeline.charts.productCumulativeFlow')}
+        </a>
+    </li>
+    <li>
+        <a href="#${controllerName}/productBurnupChart" title="${message(code:'is.ui.timeline.charts.productBurnup')}">
+            ${message(code:'is.ui.timeline.charts.productBurnup')}
+        </a>
+    </li>
+    <li>
+        <a href="#${controllerName}/productBurndownChart" title="${message(code:'is.ui.timeline.charts.productBurndown')}">
+          ${message(code:'is.ui.timeline.charts.productBurndown')}
+        </a>
+    </li>
     <li><is:link action="productParkingLotChart"
             params="['referrer.action':'index','referrer.controller':controllerName]"
             controller="${controllerName}"
@@ -48,8 +60,16 @@
             remote="true"
             value="${message(code:'is.ui.timeline.charts.productParkingLot')}"/>
     </li>
-    <li><is:link action="productVelocityChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.velocityType')}" remote="true" value="${message(code:'is.ui.timeline.charts.productVelocity')}"/></li>
-    <li class="last"><is:link action="productVelocityCapacityChart" controller="${controllerName}" update="window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}" remote="true" value="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}"/></li>
+      <li>
+          <a href="#${controllerName}/productVelocityChart" title="${message(code:'is.ui.timeline.charts.productVelocity')}">
+            ${message(code:'is.ui.timeline.charts.productVelocity')}
+          </a>
+      </li>
+      <li class="last">
+        <a href="#${controllerName}/productVelocityCapacityChart" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}">
+          ${message(code:'is.ui.timeline.charts.productVelocityCapacity')}
+        </a>
+    </li>
   </ul>
 </is:panelButton>
 
