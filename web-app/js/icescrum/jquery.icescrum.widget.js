@@ -50,7 +50,7 @@
                 },
 
                 getWidgetsList:function(){
-                    var list = $.icescrum.product.id ? $.cookie('widgets-' + $.icescrum.product.id) : $.cookie('widgets-noproduct');
+                    var list = $.cookie('widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous'));
                     return list ? list.split(',') : [];
                 },
 
