@@ -41,10 +41,11 @@
                 },
 
                 saveWidgetsList:function(widgetsList){
+                    widgetsList = $.makeArray($(widgetsList).filter(function(i,itm){
+                        return i == $(widgetsList).index(itm);
+                    }));
                     if ($.icescrum.product.id){
-                        $.cookie('widgets-' + $.icescrum.product.id, widgetsList);
-                    }else{
-                        $.cookie('widgets-noproduct', widgetsList);
+                        $.cookie('widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous') , widgetsList);
                     }
                 },
 
