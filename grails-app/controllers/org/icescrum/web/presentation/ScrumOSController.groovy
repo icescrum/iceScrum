@@ -49,6 +49,7 @@ class ScrumOSController {
     def notificationEmailService
     def securityService
     def uiDefinitionService
+    def grailsApplication
 
     def index = {
         def currentUserInstance = null
@@ -112,6 +113,7 @@ class ScrumOSController {
             if (params.product) {
                 paramsWidget = [product: params.product]
             }
+
             def url = createLink(controller: params.window, action: uiDefinition.widget?.init, params: paramsWidget).toString() - request.contextPath
             if (!menuBarSupport.permissionDynamicBar(url)) {
                 render(status: 400)

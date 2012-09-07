@@ -3,14 +3,16 @@
     jQuery.extend($.icescrum, {
                 addToWidgetBar:function(id, callback) {
                     if ($.inArray(id,  $.icescrum.getWidgetsList()) == -1) {
+                        $.icescrum.addToWidgetsList(id);
                         jQuery.ajax({
                                 type:'GET',
                                 global:false,
                                 url:this.o.urlOpenWidget + '/' + id,
-                                success:function(data, textStatus) {
-                                    if ($.inArray(id, $.icescrum.getWidgetsList()) == -1 && data) {
+                                success:function(data) {
+                                    if (data == ''){
+                                        $.icescrum.removeFromWidgetsList(id);
+                                    } else{
                                         $(data).appendTo($.icescrum.o.widgetContainer);
-                                        $.icescrum.addToWidgetsList(id);
                                         if (callback) {
                                             callback();
                                         }
@@ -41,17 +43,13 @@
                 },
 
                 saveWidgetsList:function(widgetsList){
-                    widgetsList = $.makeArray($(widgetsList).filter(function(i,itm){
-                        return i == $(widgetsList).index(itm);
-                    }));
-                    if ($.icescrum.product.id){
-                        $.cookie('widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous') , widgetsList);
-                    }
+                    $.cookie('widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous') , $.unique(widgetsList));
                 },
 
                 getWidgetsList:function(){
                     var list = $.cookie('widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous'));
-                    return list ? list.split(',') : [];
+                    list = list ? list.split(',') : [];
+                    return $.unique(list);
                 },
 
                 removeFromWidgetsList:function(id){
