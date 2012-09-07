@@ -144,7 +144,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 typeP = type;
             }
             if (this.o.notifications){
-                this.displayNotification(title ? title : 'iceScrum '+ (type ?' - '+type : ''), text.replace(/<\/?[^>]+>/gi, ''), type);
+                this.displayNotification(title ? title : 'iceScrum '+ (type ?' - '+type : ''), text, type);
             }else{
                 $.pnotify({
                     pnotify_addclass:'stack-bottomleft',
@@ -163,7 +163,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             var image = "../themes/is/images/"
             image += type == "error" ?  "logo-disconnected.png" : "logo-connected.png";
             if (this.o.notifications){
-                window.webkitNotifications.createNotification(image, title, msg).show();
+                window.webkitNotifications.createNotification(image, title, msg.replace(/<\/?[^>]+>/gi, '')).show();
             }
         },
 
