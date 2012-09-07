@@ -108,10 +108,10 @@ icescrum.marshaller = [
 icescrum.restMarshaller = [
         //global exclude
         exclude:['dateCreated','totalAttachments','totalComments'],
-        story:[exclude:['affectVersion','origin','backlog','value']],
-        feature: [exclude: ['parentDomain','backlog']],
-        actor: [exclude: ['backlog']],
-        task:[exclude:['impediment']],
+        story:[exclude:['affectVersion','origin','backlog','value'], include: ['tags']],
+        feature: [exclude: ['parentDomain','backlog'],include: ['tags']],
+        actor: [exclude: ['backlog'],include: ['tags']],
+        task:[exclude:['impediment'],include: ['tags']],
         product:[exclude: ['domains','impediments','goal','cliches']],
         sprint:[exclude: ['description','cliches']],
         release:[exclude: ['description','cliches','numberOfDays']],

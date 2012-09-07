@@ -41,7 +41,13 @@ class FinderController {
 
                 def tags = Tag.executeQuery(findTagsByTermAndProduct, [term: params.term+'%', product: p.id])
                 tags.addAll(Tag.executeQuery(findTagsByTermAndProductInTasks, [term: params.term+'%', product: p.id]))
-                render tags.unique() as JSON
+                withFormat{
+                    html {
+                        render tags.unique() as JSON
+                    }
+                    json { renderRESTJSON(text:tags.unique()) }
+                    xml  { renderRESTXML(text:tags.unique()) }
+                 }
             }
         }
 

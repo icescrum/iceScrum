@@ -43,9 +43,6 @@ import org.grails.comments.Comment
 import org.icescrum.core.event.IceScrumStoryEvent
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
-import org.grails.taggable.Tag
-import org.icescrum.core.domain.BacklogElement
-import org.grails.taggable.TagLink
 
 class StoryController {
 
@@ -151,8 +148,9 @@ class StoryController {
             }
         }
 
-        if (params.feature?.id) {
-            def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()
+        def featureId = params.remove('feature.id') ?: params.story.remove('feature.id')
+        if (featureId) {
+            def feature = Feature.getInProduct(params.long('product'),featureId.toLong()).list()
             if (!feature){
                 returnError(text:message(code: 'is.feature.error.not.exist'))
                 return
@@ -161,8 +159,9 @@ class StoryController {
             }
         }
 
-        if (params.dependsOn?.id) {
-            def dependsOn = (Story)Story.getInProduct(params.long('product'),params.long('dependsOn.id')).list()
+        def dependsOnId = params.remove('dependsOn.id') ?: params.story.remove('dependsOn.id')
+        if (dependsOnId) {
+            def dependsOn = (Story)Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
             if (!dependsOn){
                 returnError(text:message(code: 'is.story.error.not.exist'))
                 return
@@ -177,7 +176,7 @@ class StoryController {
         try {
             storyService.save(story, product, (User)user)
             this.manageAttachments(story)
-            story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : params.story.tags instanceof String[] ? params.story.tags : null
+            story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
                 json { renderRESTJSON(text:story, status:201) }
@@ -251,8 +250,9 @@ class StoryController {
                 }
             }
 
-            if (params.feature?.id && story.feature?.id != params.long('feature.id')) {
-                def feature = Feature.getInProduct(params.long('product'),params.long('feature.id')).list()
+            def featureId = params.remove('feature.id') ?: params.story.remove('feature.id')
+            if (featureId && story.feature?.id != featureId.toLong()) {
+                def feature = Feature.getInProduct(params.long('product'),featureId.toLong()).list()
                 if (!feature)
                     returnError(text:message(code: 'is.feature.error.not.exist'))
                 storyService.associateFeature(feature, story)
@@ -263,8 +263,9 @@ class StoryController {
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
             }
-            if (params.dependsOn?.id && story.dependsOn?.id != params.long('dependsOn.id')) {
-                def dependsOn = (Story) Story.getInProduct(params.long('product'),params.long('dependsOn.id')).list()
+            def dependsOnId = params.remove('dependsOn.id') ?: params.story.remove('dependsOn.id')
+            if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
+                def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
                 if (!dependsOn)
                     returnError(text:message(code: 'is.story.error.not.exist'))
                 storyService.dependsOn(story, dependsOn)
@@ -276,7 +277,7 @@ class StoryController {
                     skipUpdate = true
             }
 
-            story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : params.story.tags instanceof String[] ? params.story.tags : story.tags
+            story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : story.tags
 
             if (params.story.rank && story.rank != params.story.rank.toInteger()) {
                 Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null
@@ -285,8 +286,9 @@ class StoryController {
                     skipUpdate = true
             }
 
-            if (params.sprint?.id != null && params.long('sprint.id') != story.parentSprint?.id) {
-                def sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('sprint.id')).list()
+            def sprintId = params.remove('sprint.id') ?: params.story.remove('sprint.id')
+            if (sprintId && story.parentSprint?.id != sprintId.toLong()) {
+                def sprint = (Sprint)Sprint.getInProduct(params.long('product'),sprintId.toLong()).list()
                 if (!sprint){
                     returnError(text:message(code: 'is.sprint.error.not.exist'))
                 }else{
