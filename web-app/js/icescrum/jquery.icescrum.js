@@ -160,7 +160,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         displayNotification:function(title, msg, type){
-            var image = "../themes/is/images/"
+            var image = $.icescrum.o.baseUrl + "themes/is/images/"
             image += type == "error" ?  "logo-disconnected.png" : "logo-connected.png";
             if (this.o.notifications){
                 window.webkitNotifications.createNotification(image, title, msg.replace(/<\/?[^>]+>/gi, '')).show();
