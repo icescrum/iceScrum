@@ -276,6 +276,8 @@ log4j = {
     off 'org.codehaus.groovy.grails.web.converters.XMLParsingParameterCreationListener'
 }
 
+modulesResources = []
+
 /*
 
  CACHE SECTION
