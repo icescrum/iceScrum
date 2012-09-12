@@ -27,7 +27,7 @@
     <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
     <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
     <is:loadJsVar/>
-    <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum, ${grailsApplication.config?.modulesResources?.join(',')}"/>
+    <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
     <r:layoutResources/>
     <g:layoutHead/>
 </head>
