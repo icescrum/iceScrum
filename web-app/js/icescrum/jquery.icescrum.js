@@ -135,6 +135,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         renderNotice:function(text, type, title) {
+            var timeout = 7000;
             var titleP = "";
             if (title) {
                 titleP = title;
@@ -144,12 +145,17 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 typeP = type;
             }
             if (this.o.notifications){
-                this.displayNotification(title ? title : 'iceScrum '+ (type ?' - '+type : ''), text, type);
+                var notification = this.displayNotification(title ? title : 'iceScrum '+ (type ?' - '+type : ''), text, type);
+                if(notification) {
+                    $.doTimeout(timeout,function(){
+                        notification.close();
+                    });
+                }
             }else{
                 $.pnotify({
                     pnotify_addclass:'stack-bottomleft',
                     pnotify_animation:{effect_in: 'slide', effect_out: 'fade'},
-                    pnotify_delay:7000,
+                    pnotify_delay:timeout,
                     pnotify_history:false,
                     pnotify_stack:stack_bottomleft,
                     pnotify_text:text,
@@ -163,7 +169,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             var image = $.icescrum.o.baseUrl + "themes/is/images/"
             image += type == "error" ?  "logo-disconnected.png" : "logo-connected.png";
             if (this.o.notifications){
-                window.webkitNotifications.createNotification(image, title, msg.replace(/<\/?[^>]+>/gi, '')).show();
+                var notification = window.webkitNotifications.createNotification(image, title, msg.replace(/<\/?[^>]+>/gi, ''));
+                notification.show();
+                return notification;
             }
         },
 
