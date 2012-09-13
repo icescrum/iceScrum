@@ -87,8 +87,7 @@ class SprintPlanController {
         User user = (User) springSecurityService.currentUser
 
         render(template: 'window/toolbar',
-                model: [currentView: session.currentView,
-                        hideDoneState: user.preferences.hideDoneState,
+                model: [hideDoneState: user.preferences.hideDoneState,
                         currentFilter: user.preferences.filterTask,
                         sprint: sprint ?: null])
     }

@@ -51,7 +51,8 @@
 <is:separator rendered="${request.productOwner}"/>
 
 %{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">
+
+<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
     <ul>
         <li class="first">
             <a href="${createLink(action:'list',controller:controllerName,params:[product:params.product])}"

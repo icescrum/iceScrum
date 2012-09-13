@@ -62,7 +62,7 @@
               rendered="${inTeam && sprint.state != Sprint.STATE_DONE}"/>
 
 %{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">
+<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
     <ul>
         <li class="first">
             <a href="${createLink(action:'index',controller:controllerName,params:[product:params.product])}"
