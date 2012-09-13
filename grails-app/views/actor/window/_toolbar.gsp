@@ -56,7 +56,7 @@
 </sec:access>
 
 %{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view" text="${message(code:'is.view.'+currentView)}">
+<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
     <ul>
         <li class="first">
             <a href="${createLink(action:'list',controller:'actor',params:[product:params.product])}"

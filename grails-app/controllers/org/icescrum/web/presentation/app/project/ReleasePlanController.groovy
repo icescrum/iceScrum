@@ -65,7 +65,7 @@ class ReleasePlanController {
             u.name = it.name.encodeAsHTML()
             releasesHtml << u
         }
-        render(template: 'window/titleBarContent', model: [currentView: session.currentView,releases: releasesHtml, release: release])
+        render(template: 'window/titleBarContent', model: [releases: releasesHtml, release: release])
     }
 
     def toolbar = {
@@ -82,7 +82,7 @@ class ReleasePlanController {
             render(status: 200)
             return
         }
-        render(template: 'window/toolbar', model: [currentView: session.currentView,release: release])
+        render(template: 'window/toolbar', model: [release: release])
     }
 
     def index = {
