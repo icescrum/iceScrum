@@ -210,23 +210,23 @@
                     templates:{
                         window:{
                             selector:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? 'div.postit-actor' : 'tr.table-line';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? 'div.postit-actor' : 'tr.table-line';
                             },
                             id:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? 'postit-actor-tmpl' : 'table-row-actor-tmpl';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? 'postit-actor-tmpl' : 'table-row-actor-tmpl';
                             },
                             view:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-actor' : '#actor-table';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-actor' : '#actor-table';
                             },
                             remove:function() {
-                                $.icescrum.o.currentView == 'postitsView' ? $('.postit-actor[data-elemid=' + this.id + ']').remove() : $('#actor-table .table-line[data-elemid=' + this.id + ']').remove();
-                                if ($.icescrum.o.currentView == 'tableView') {
+                                $.icescrum.getDefaultView() == 'postitsView' ? $('.postit-actor[data-elemid=' + this.id + ']').remove() : $('#actor-table .table-line[data-elemid=' + this.id + ']').remove();
+                                if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('#actor-table').trigger("update");
                                 }
                             },
                             window:'#window-content-actor',
                             afterTmpl:function(tmpl) {
-                                if ($.icescrum.o.currentView == 'tableView') {
+                                if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('#actor-table').trigger("update");
                                 }
                             }
@@ -278,16 +278,16 @@
                     templates:{
                         features:{
                             selector:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? 'div.postit-feature' : 'tr.table-line';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? 'div.postit-feature' : 'tr.table-line';
                             },
                             id:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? 'postit-feature-tmpl' : 'table-row-feature-tmpl';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? 'postit-feature-tmpl' : 'table-row-feature-tmpl';
                             },
                             view:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-feature' : '#feature-table';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-feature' : '#feature-table';
                             },
                             remove:function(tmpl) {
-                                if ($.icescrum.o.currentView == 'tableView') {
+                                if ($.icescrum.getDefaultView() == 'tableView') {
                                     var tableline = $('#feature-table .table-line[data-elemid=' + this.id + ']');
                                     var oldRank = tableline.data('rank');
                                     tableline.remove();
@@ -299,7 +299,7 @@
                             },
                             window:'#window-content-feature',
                             afterTmpl:function(tmpl, container, newObject) {
-                                if ($.icescrum.o.currentView == 'tableView') {
+                                if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('div[name=rank]', $(newObject)).text(this.rank);
                                     if(this.oldRank != this.rank) {
                                         $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank, this.id);
@@ -389,19 +389,19 @@
                     templates:{
                         sandbox:{
                             selector:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? 'div.postit-story' : 'tr.table-line';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? 'div.postit-story' : 'tr.table-line';
                             },
                             id:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? 'postit-story-sandbox-tmpl' : 'table-row-story-sandbox-tmpl';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? 'postit-story-sandbox-tmpl' : 'table-row-story-sandbox-tmpl';
                             },
                             view:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-sandbox' : '#story-table';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-sandbox' : '#story-table';
                             },
                             remove:function(tmpl) {
-                                var story = $.icescrum.o.currentView == 'postitsView' ? $('.postit-story[data-elemid=' + this.id + ']') : $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
+                                var story = $.icescrum.getDefaultView() == 'postitsView' ? $('.postit-story[data-elemid=' + this.id + ']') : $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
                                 this.rank = story.index() + 1;
                                 story.remove();
-                                if ($.icescrum.o.currentView == 'tableView') {
+                                if ($.icescrum.getDefaultView() == 'tableView') {
                                     $(tmpl.view).trigger("update");
                                 }
                             },
@@ -413,7 +413,7 @@
                                 if (this.rank){
                                     $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 }
-                                if ($.icescrum.o.currentView == 'tableView') {
+                                if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('#story-table').trigger("update");
                                 }
                             }
@@ -441,19 +441,19 @@
                         },
                         backlogWindow:{
                             selector:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? 'div.postit-story' : 'tr.table-line';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? 'div.postit-story' : 'tr.table-line';
                             },
                             id:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? 'postit-story-backlog-tmpl' : 'table-row-story-backlog-tmpl';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? 'postit-story-backlog-tmpl' : 'table-row-story-backlog-tmpl';
                             },
                             view:function() {
-                                return $.icescrum.o.currentView == 'postitsView' ? '#backlog-layout-window-backlog' : '#story-table';
+                                return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-backlog' : '#story-table';
                             },
                             constraintTmpl:function() {
                                 return this.state == $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_ESTIMATED;
                             },
                             remove:function(tmpl) {
-                                if ($.icescrum.o.currentView == 'tableView') {
+                                if ($.icescrum.getDefaultView() == 'tableView') {
                                     var tableline = $(tmpl.view+' tr.table-line'+'[data-elemid=' + this.id + ']');
                                     this.oldRank = tableline.data('rank');
                                     tableline.remove();
@@ -470,7 +470,7 @@
                             afterTmpl:function(tmpl, container, newObject) {
                                 $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                 $.icescrum.story.backlogTitleDetails();
-                                if ($.icescrum.o.currentView == 'tableView') {
+                                if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('div[name=rank]', $(newObject)).text(this.rank);
                                     if(this.oldRank != this.rank) {
                                         $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank, this.id);
@@ -695,7 +695,7 @@
 
                     backlogTitleDetails:function(){
                         var effort = 0, size = 0;
-                        var stories = $.icescrum.o.currentView == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort');
+                        var stories = $.icescrum.getDefaultView() == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort');
                         stories.each(function() { size += 1; if ($(this).text() != '?') effort += Number($(this).text());});
                         jQuery('#window-title-bar-backlog .content .details').html(' - <span id="stories-backlog-size">'+size+'</span> '+$.icescrum.story.i18n.stories+' / <span id="stories-backlog-effort">'+effort+'</span> '+$.icescrum.story.i18n.points);
                     },
