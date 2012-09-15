@@ -208,6 +208,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                             url: $.icescrum.o.baseUrlProduct + action,
                             success:function(data, textStatus) {
                                 $.icescrum.o.deleting = false;
+                                if (data.dialog){
+                                    $(document.body).append(data.dialog);
+                                    return;
+                                }
                                 if (onSuccess) {
                                     onSuccess(data);
                                 }
