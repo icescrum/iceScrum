@@ -236,15 +236,15 @@ log4j = {
         debug 'org.icescrum.atmosphere'
         debug 'org.icescrum.cache'
         debug 'org.icescrum.core'
-        debug 'grails.plugin.springcache'
         debug 'net.sf.jasperreports'
         debug 'grails.app.service.com.kagilum'
         debug 'grails.app.controller.com.kagilum'
         debug 'grails.app.domain.com.kagilum'
         debug 'com.kagilum'
+        /*debug 'grails.plugin.springcache'
         debug 'org.codehaus.groovy.grails.plugins.springsecurity',
                 'grails.plugins.springsecurity',
-                'org.springframework.security'
+                'org.springframework.security'*/
     }else{
         off 'grails.plugin.springcache'
     }
@@ -338,7 +338,7 @@ CLIENT MODULES SECTION
 */
 grails.resources.caching.excludes = ['js/timeline**/*.js']
 grails.resources.zip.excludes = ['/**/*.png', '/**/*.gif', '/**/*.jpg', '/**/*.gz']
-
+grails.resources.work.dir = "/Users/vbarrier/Desktop/test/"
 
 environments {
     production {

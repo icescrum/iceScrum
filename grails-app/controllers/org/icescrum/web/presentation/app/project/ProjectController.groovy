@@ -884,20 +884,17 @@ class ProjectController {
             product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }
             tasks*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
 
-            ApplicationSupport.zipExportFile(zipFile,files,xml)
-
             ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
                 response.setHeader(k, v)
             }
             response.contentType = 'application/zip'
-            response.outputStream << zipFile.newInputStream()
+            ApplicationSupport.zipExportFile(response.outputStream,files,xml)
         } catch (Exception e) {
             if (log.debugEnabled)
                 e.printStackTrace()
             if (withProgress)
                 session.progress.progressError(message(code: 'is.export.error'))
         } finally {
-            zipFile.delete()
             xml.delete()
         }
     }
