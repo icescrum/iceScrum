@@ -338,7 +338,6 @@ CLIENT MODULES SECTION
 */
 grails.resources.caching.excludes = ['js/timeline**/*.js']
 grails.resources.zip.excludes = ['/**/*.png', '/**/*.gif', '/**/*.jpg', '/**/*.gz']
-grails.resources.work.dir = "/Users/vbarrier/Desktop/test/"
 
 environments {
     production {
