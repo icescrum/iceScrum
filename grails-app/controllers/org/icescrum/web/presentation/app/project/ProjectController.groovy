@@ -866,9 +866,9 @@ class ProjectController {
     private exportProduct(Product product, boolean withProgress){
 
         def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
-        def zipFile = new File("${projectName}.zip")
-        def xml = new File("${projectName}.xml")
-
+        def tempdir = System.getProperty("java.io.tmpdir");
+        tempdir = (tempdir.endsWith("/") || tempdir.endsWith("\\")) ? tempdir : tempdir + System.getProperty("file.separator")
+        def xml = new File(tempdir + projectName + '.xml')
         try {
             StreamCharBuffer xmlFile = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
             xml.withWriter('UTF-8'){ out ->
