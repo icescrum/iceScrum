@@ -189,6 +189,7 @@ class ReleaseController {
         redirect(action:'index', controller: controllerName, params:params)
     }
 
+    @Cacheable(cache = 'releaseCache', keyGenerator = 'releasesKeyGenerator')
     def list = {
         if (request?.format == 'html'){
             render(status:404)
