@@ -39,10 +39,8 @@
 
                     var targetWindow = id;
                     var targetParam = targetWindow.indexOf('?');
-                    if (targetParam >= 0) {
-                        targetWindow = targetWindow.substring(0, targetParam);
-                    }
-
+                    targetWindow = id.indexOf('/') ? id.substring(0, id.indexOf('/')) : targetWindow;
+                    targetWindow = id.indexOf('?') ? id.substring(0, id.indexOf('?')) : targetWindow;
                     if ($.inArray(targetWindow, $.icescrum.getWidgetsList()) != -1) {
                         var obj = $("#widget-id-" + targetWindow);
                         this.closeWidget(obj);

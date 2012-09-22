@@ -116,6 +116,10 @@
         $.ajax(options);
     }
 
+    $(document).bind('keydown.stream','esc', function(e){
+        e.preventDefault();
+    });
+
     $(document).on("click", 'a[data-ajax=true]', function (evt) {
         var a = $(this);
         evt.preventDefault();
@@ -182,7 +186,7 @@ function attachListeners(content){
         $(on).bind(bind,elem.data('shortcut'),function(e){
             if (!elem.attr('href') || elem.data('ajax')){
                 elem.click();
-            }else{
+            }else if (elem.attr('href')){
                 document.location.hash = elem.attr('href');
             }
             e.preventDefault();
