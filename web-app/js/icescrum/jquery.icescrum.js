@@ -272,12 +272,12 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         openCommentTab:function(relation) {
-            jQuery('#commentEditorContainer').show();
-            jQuery.icescrum.openTab(relation, true);
+            $('#commentEditorContainer').show();
+            $.icescrum.openTab(relation, true);
         },
 
         openTab:function(relation, scrollBottom) {
-            jQuery('.panel-box a[rel=' + relation + ']').click();
+            $('.panel-box a[rel=' + relation + ']').click();
             if (scrollBottom) {
                 var contentWindow = jQuery('div .window-content');
                 contentWindow.scrollTop(contentWindow.outerHeight());

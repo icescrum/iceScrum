@@ -19,71 +19,70 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:setProvider library="jquery"/>
-<is:chartView>
-<div id="productParkinglot" class="chart-container">
-</div>
-<jq:jquery>
-  $.jqplot.config.enablePlugins = true;      
-  line1 = ${values};
-  plot1 = $.jqplot('productParkinglot', [line1], {
-      fontFamily:'Arial',
-      legend:{
-        show:true,
-        renderer: $.jqplot.EnhancedLegendRenderer,
-        location:'se',
-        rendererOptions:{
-             numberColumns:1
-        },
-        fontSize: '11px',
-        background:'#FFFFFF',
-        fontFamily:'Arial'
-      },
-      title:{
-        text:'${message(code:"is.chart.productParkinglot.title")}',
-        fontFamily:'Arial'
-      },
-      grid: {
-        background:'#FFFFFF',
-        gridLineColor:'#CCCCCC',
-        shadow:false,
-        borderWidth:0
-      },
-      seriesDefaults:{
-          renderer: $.jqplot.BarRenderer,
-          rendererOptions:{barWidth: 50,barDirection:'horizontal', barPadding: 6, barMargin:15},
-          shadowAngle:135
-      },
-      series:[
-          {label:'${message(code:"is.chart.productParkinglot.serie.name")}',color: '#afe2ff'}
-          ],
-      axes:{
-          xaxis:{
-            min:0,
-            max:100,
-            label:'${message(code:'is.chart.productParkinglot.xaxis.label')}',
-            tickOptions:{
-                formatString:'%d\%'
-            }
+<div class="view-chart">
+    <div id="productParkinglot" class="chart-container">
+    </div>
+    <jq:jquery>
+      $.jqplot.config.enablePlugins = true;
+      line1 = ${values};
+      plot1 = $.jqplot('productParkinglot', [line1], {
+          fontFamily:'Arial',
+          legend:{
+            show:true,
+            renderer: $.jqplot.EnhancedLegendRenderer,
+            location:'se',
+            rendererOptions:{
+                 numberColumns:1
+            },
+            fontSize: '11px',
+            background:'#FFFFFF',
+            fontFamily:'Arial'
           },
-          yaxis:{
-            renderer:$.jqplot.CategoryAxisRenderer,
-            ticks:${featuresNames},
-            rendererOptions:{tickRenderer:$.jqplot.CanvasAxisTickRenderer},
-            tickOptions:{
-                fontSize:'11px',
-                fontFamily:'Arial'
-            }
+          title:{
+            text:'${message(code:"is.chart.productParkinglot.title")}',
+            fontFamily:'Arial'
+          },
+          grid: {
+            background:'#FFFFFF',
+            gridLineColor:'#CCCCCC',
+            shadow:false,
+            borderWidth:0
+          },
+          seriesDefaults:{
+              renderer: $.jqplot.BarRenderer,
+              rendererOptions:{barWidth: 50,barDirection:'horizontal', barPadding: 6, barMargin:15},
+              shadowAngle:135
+          },
+          series:[
+              {label:'${message(code:"is.chart.productParkinglot.serie.name")}',color: '#afe2ff'}
+              ],
+          axes:{
+              xaxis:{
+                min:0,
+                max:100,
+                label:'${message(code:'is.chart.productParkinglot.xaxis.label')}',
+                tickOptions:{
+                    formatString:'%d\%'
+                }
+              },
+              yaxis:{
+                renderer:$.jqplot.CategoryAxisRenderer,
+                ticks:${featuresNames},
+                rendererOptions:{tickRenderer:$.jqplot.CanvasAxisTickRenderer},
+                tickOptions:{
+                    fontSize:'11px',
+                    fontFamily:'Arial'
+                }
+              }
           }
-      }
-  });
-  $('#productParkinglot').bind('resize.jqplot', function(event, ui) {
-        plot1.replot();
-      $('#productParkinglot').find('.jqplot-table-legend').css('bottom','-12px');
-    });
-    $('#productParkinglot').find('.jqplot-table-legend').css('bottom','-12px');
-</jq:jquery>
-</is:chartView>
+      });
+      $('#productParkinglot').bind('resize.jqplot', function(event, ui) {
+            plot1.replot();
+          $('#productParkinglot').find('.jqplot-table-legend').css('bottom','-12px');
+        });
+        $('#productParkinglot').find('.jqplot-table-legend').css('bottom','-12px');
+    </jq:jquery>
+</div>
 <g:if test="${withButtonBar}">
   <is:buttonBar>
     <is:button
@@ -92,7 +91,7 @@
             button="button-s button-s-black"
             update="window-content-${controllerName}"
             remote="true"
-            url="[controller:params.referrer?.controller?:controllerName,action:params.referrer?.action?:'list',params:[product:params.product]]"
+            url="[controller:controllerName,action:referrerAction?:'',params:[product:params.product]]"
             value="${message(code: 'is.button.close')}"/>
   </is:buttonBar>
 </g:if>

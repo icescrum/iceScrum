@@ -74,14 +74,11 @@
            acceptanceTestCount="?**=acceptanceTestCount**?"
            comment="${story.totalComments}">
     ?**=truncatedDescription**?
-    ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
-    <is:tooltipPostit
-            type="story"
-            id="${story.id}"
-            title="${story.name}"
-            text="${story.description}"
-            apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-            container="jQuery('#window-content-${id}')"/>
-    ?**}**?
 </is:postit>
+?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
+    <div class="tooltip">
+        <span class="tooltip-title">${story.name}</span>
+        ${story.description}
+    </div>
+?**}**?
 ]]>

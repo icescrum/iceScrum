@@ -25,35 +25,44 @@
 <is:shortcut key="ctrl+f" callback="jQuery('#search-ui').mouseover();" scope="${controllerName}"/>
 <is:shortcut key="esc" callback="jQuery('#search-ui').mouseout();" scope="${controllerName}" listenOn="'#autoCmpTxt'"/>
 
-<sec:access expression="productOwner()">
+<g:if test="${request.productOwner}">
+    <li class="navigation-item button-ico button-create">
+        <a class="tool-button button-n"
+           href="#${controllerName}/add"
+           data-shortcut="ctrl+n"
+           data-shortcut-on="#window-id-${controllerName}"
+           title="${message(code:'is.ui.actor.toolbar.alt.new')}"
+           alt="${message(code:'is.ui.actor.toolbar.alt.new')}">
+                <span class="start"></span>
+                <span class="content">
+                    <span class="ico"></span>
+                    ${message(code: 'is.ui.actor.toolbar.new')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
 
-    <is:iconButton
-            controller="actor"
-            action="add"
-            shortcut="[key:'ctrl+n',scope:controllerName]"
-            update="window-content-${controllerName}"
-            icon="create"
-            alt="${message(code:'is.ui.actor.toolbar.alt.new')}"
-            title="${message(code:'is.ui.actor.toolbar.alt.new')}">
-        <g:message code="is.ui.actor.toolbar.new"/>
-    </is:iconButton>
+    <li class="navigation-item separator-s"></li>
 
-    <is:separatorSmall/>
+    %{--Delete button--}%
+    <li class="navigation-item button-ico button-delete">
+        <a class="tool-button button-n"
+           onclick="jQuery.icescrum.selectableAction('actor/delete',null,null,function(data){ jQuery.event.trigger('remove_actor',[data]); jQuery.icescrum.renderNotice('${message(code:'is.actor.deleted')}'); });"
+           data-shortcut="del"
+           data-shortcut-on="#window-id-${controllerName}"
+           alt="${message(code:'is.ui.actor.toolbar.alt.delete')}"
+           title="${message(code:'is.ui.actor.toolbar.alt.delete')}">
+                <span class="start"></span>
+                <span class="content">
+                    <span class="ico"></span>
+                    ${message(code: 'is.ui.actor.toolbar.delete')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
 
-%{--Delete button (note-view)--}%
-    <is:iconButton icon="delete"
-                   onclick="jQuery.icescrum.selectableAction(null,null,null,function(data){jQuery.event.trigger('remove_actor',[data]); jQuery.icescrum.renderNotice('${message(code:'is.actor.deleted')}'); });"
-                   history='false'
-                   shortcut="[key:'del',scope:controllerName]"
-                   disabled="true"
-                   title="${message(code:'is.ui.actor.toolbar.alt.delete')}"
-                   alt="${message(code:'is.ui.actor.toolbar.alt.delete')}">
-        <g:message code="is.ui.actor.toolbar.delete"/>
-    </is:iconButton>
-
-    <is:separator/>
-
-</sec:access>
+    <li class="navigation-item separator"></li>
+</g:if>
 
 %{--View--}%
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
@@ -75,7 +84,7 @@
     </ul>
 </is:panelButton>
 
-<is:separator/>
+<li class="navigation-item separator"></li>
 
 %{--Print button--}%
 <is:reportPanel

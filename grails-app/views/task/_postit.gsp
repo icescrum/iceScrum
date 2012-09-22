@@ -48,13 +48,10 @@
            editableEstimation="${taskEditable}"
            color="${task.color}"
            rect="${rect ? rect : true}">
-            <g:if test="${task.name?.length() > 17 || task.description?.length() > 0}">
-                <is:tooltipPostit
-                        type="task"
-                        id="${task.id}"
-                        title="${task.name?.encodeAsHTML()}"
-                        text="${task.description?.encodeAsHTML()}"
-                        apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                        container="jQuery('#window-content-${controllerName}')"/>
-            </g:if>
 </is:postit>
+<g:if test="${task.name?.length() > 17 || task.description?.length() > 0}">
+    <div class="tooltip">
+        <span class="tooltip-title">${task.name}</span>
+        ${task.description.encodeAsHTML()}
+    </div>
+</g:if>

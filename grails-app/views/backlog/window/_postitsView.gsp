@@ -30,7 +30,7 @@
         selectable="[rendered:request.productOwner,
                     filter:'div.postit-story',
                     cancel:'.postit .postit-sortable, a, .mini-value, select, input',
-                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
+                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,$.icescrum.displayQuicklook)']"
         sortable='[rendered:request.productOwner,
                   handle:".postit-sortable",
                   receive:"var rank = jQuery(\".postit-row-story\",this).index() + 1; jQuery(\".postit-row-story\",this).remove(); if (rank == 0) { return; } "+remoteFunction(controller:"story",
@@ -50,7 +50,7 @@
                   accept: ".postit-row-feature"]'
         dblclickable='[rendered:!request.productOwner,
                        selector:".postit",
-                       callback:is.quickLook(params:"\"story.id=\"+obj.data(\"elemid\")")]'
+                       callback:"\$.icescrum.displayQuicklook"]'
 
         changeRank='[selector:".postit-story",
                      controller:"story",
@@ -86,7 +86,7 @@
 </jq:jquery>
 
 <is:shortcut key="space"
-             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
+             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>
 <is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream

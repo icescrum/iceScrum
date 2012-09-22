@@ -32,7 +32,7 @@
     <a href="${createLink(controller:controllerName,action:'copyRecurrentTasksFromPreviousSprint', id:sprint.id, params:[product:params.product])}"
        data-ajax="true"
        data-ajax-trigger="add_task"
-       data-ajax-notice="${message(code: 'is.sprint.copyRecurrentTasks.copied')}">
+       data-ajax-notice="${message(code: 'is.sprint.copyRecurrentTasks.copied').encodeAsJavaScript()}">
         ${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}
     </a>
 </li>

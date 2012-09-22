@@ -31,7 +31,7 @@
 <li>
     <a href="${createLink(action:'activate', controller: 'release', id:release.id, params:[product:params.product])}"
        data-ajax="true"
-       data-ajax-confirm="${message(code:'is.ui.timeline.menu.activate.confirm')}"
+       data-ajax-confirm="${message(code:'is.ui.timeline.menu.activate.confirm').encodeAsJavaScript()}"
        data-ajax-trigger="activate_release">
         ${message(code:'is.ui.timeline.menu.activate')}
     </a>
@@ -40,7 +40,7 @@
 <g:if test="${poOrsm && (release.state == Release.STATE_INPROGRESS && release.closable)}">
     <a href="${createLink(action:'close', controller: 'release', id:release.id, params:[product:params.product])}"
        data-ajax="true"
-       data-ajax-confirm="${message(code:'is.ui.timeline.menu.close.confirm')}"
+       data-ajax-confirm="${message(code:'is.ui.timeline.menu.close.confirm').encodeAsJavaScript()}"
        data-ajax-trigger="close_release">
         ${message(code:'is.ui.timeline.menu.close')}
     </a>

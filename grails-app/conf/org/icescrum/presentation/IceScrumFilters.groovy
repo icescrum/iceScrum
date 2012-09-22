@@ -35,8 +35,8 @@ class IceScrumFilters {
         if (params.product) {
           params.product = params.product.decodeProductKey()
           if (!params.product) {
-            render(status: 404)
-            return
+                redirect(controller: 'scrumOS', action:'index')
+                return
           }
 
         }

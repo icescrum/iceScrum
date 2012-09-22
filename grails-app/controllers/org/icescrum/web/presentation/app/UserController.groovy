@@ -42,9 +42,7 @@ class UserController {
     def userService
     def securityService
     def springSecurityService
-    def productService
     def grailsApplication
-    def notificationEmailService
 
     @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
     def register = {
@@ -69,7 +67,8 @@ class UserController {
     @Secured('isAuthenticated()')
     //@Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
     def openProfile = {
-        render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)])
+        def dialog = g.render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)])
+        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
     }
 
     def save = {
@@ -179,8 +178,7 @@ class UserController {
 
         def user = User.findByUsername(params.id)
         if (!user) {
-            def jqCode = jq.jquery(null, "\$.icescrum.renderNotice('${message(code: 'is.user.error.not.exist')}','error');");
-            render(status: 400, text: jqCode);
+            returnError(text:message(code:'is.user.error.not.exist'))
             return
         }
         def permalink = createLink(absolute: true, mapping: "profile", id: params.id)

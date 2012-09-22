@@ -31,6 +31,7 @@ import org.icescrum.core.domain.Task
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.icescrum.core.utils.BundleUtils
 import grails.plugin.springcache.annotations.Cacheable
+import grails.converters.JSON
 
 @Secured("stakeHolder() or inProduct()")
 class QuickLookController {
@@ -58,23 +59,25 @@ class QuickLookController {
     @Cacheable(cache = 'storyCache', keyGenerator = 'storyKeyGenerator')
     def story = {
         withStory('story.id'){ Story story ->
-            render(template: "/story/quicklook", model: [
+            def dialog = g.render(template: "/story/quicklook", model: [
                     story: story,
                     typeCode: BundleUtils.storyTypes[story.type],
                     user: springSecurityService.currentUser,
                     locale: RequestContextUtils.getLocale(request)
             ])
+            render(status:200, contentType:'application/json', text:[dialog:dialog] as JSON)
         }
     }
 
     @Cacheable(cache = 'taskCache', keyGenerator = 'taskKeyGenerator')
     def task = {
         withTask('task.id'){ Task task ->
-            render(template: "/task/quicklook", model: [
+            def dialog = g.render(template: "/task/quicklook", model: [
                     task: task,
                     user: springSecurityService.currentUser,
                     locale: RequestContextUtils.getLocale(request)
             ])
+            render(status:200, contentType:'application/json', text:[dialog:dialog] as JSON)
         }
     }
 
@@ -85,20 +88,21 @@ class QuickLookController {
             def effort = sum ?: '?'
             def finished = feature.stories?.findAll { story -> story.state == Story.STATE_DONE }?.size() ?: 0
 
-            render(template: "/feature/quicklook", model: [
+            def dialog = g.render(template: "/feature/quicklook", model: [
                     feature: feature,
                     type: BundleUtils.featureTypes[feature.type],
                     effort: effort,
                     user: springSecurityService.currentUser,
                     finishedStories: finished
             ])
+            render(status:200, contentType:'application/json', text:[dialog:dialog] as JSON)
         }
     }
 
     @Cacheable(cache = 'actorCache', keyGenerator = 'actorKeyGenerator')
     def actor = {
         withActor('actor.id'){ Actor actor ->
-            render(template: "/actor/quicklook", model: [
+            def dialog = g.render(template: "/actor/quicklook", model: [
                     actor: actor,
                     instancesCode: BundleUtils.actorInstances[actor.instances],
                     useFrequencyCode: BundleUtils.actorFrequencies[actor.useFrequency],
@@ -106,6 +110,7 @@ class QuickLookController {
                     stories: Story.findAllByTextAsIlike(actor.name).size(),
                     user: springSecurityService.currentUser
             ])
+            render(status:200, contentType:'application/json', text:[dialog:dialog] as JSON)
         }
     }
 }

@@ -20,38 +20,46 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
-%{--New--}%
-<is:iconButton
-        controller="feature"
-        action="add"
-        rendered="${request.productOwner}"
-        shortcut="[key:'ctrl+n',scope:controllerName]"
-        update="window-content-${controllerName}"
-        icon="create"
-        alt="${message(code:'is.ui.feature.toolbar.alt.new')}"
-        title="${message(code:'is.ui.feature.toolbar.alt.new')}">
-    <g:message code="is.ui.feature.toolbar.new"/>
-</is:iconButton>
+%{--Add button--}%
+<g:if test="${request.productOwner}">
+    <li class="navigation-item button-ico button-create">
+        <a class="tool-button button-n"
+           href="#feature/add"
+           data-shortcut="ctrl+n"
+           data-shortcut-on="#window-id-${controllerName}"
+           title="${message(code:'is.ui.feature.toolbar.alt.new')}"
+           alt="${message(code:'is.ui.feature.toolbar.alt.new')}">
+                <span class="start"></span>
+                <span class="content">
+                    <span class="ico"></span>
+                    ${message(code: 'is.ui.feature.toolbar.new')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
 
-<is:separatorSmall rendered="${request.productOwner}"/>
+    <li class="navigation-item separator-s"></li>
 
-%{--Delete button (note-view)--}%
-<is:iconButton
-        icon="delete"
-        onclick="jQuery.icescrum.selectableAction(null,null,null,function(data){jQuery.event.trigger('remove_feature',[data]); jQuery.icescrum.renderNotice('${message(code:'is.feature.deleted')}'); });"
-        history='false'
-        rendered="${request.productOwner}"
-        shortcut="[key:'del',scope:controllerName]"
-        disabled="true"
-        title="${message(code:'is.ui.feature.toolbar.alt.delete')}"
-        alt="${message(code:'is.ui.feature.toolbar.alt.delete')}">
-    <g:message code="is.ui.sandbox.toolbar.delete"/>
-</is:iconButton>
+    <li class="navigation-item button-ico button-delete">
+        <a class="tool-button button-n"
+           onclick="jQuery.icescrum.selectableAction('feature/delete',null,null,function(data){ jQuery.event.trigger('remove_feature',[data]); jQuery.icescrum.renderNotice('${message(code:'is.feature.deleted')}'); });"
+           data-shortcut="del"
+           data-shortcut-on="#window-id-${controllerName}"
+           alt="${message(code:'is.ui.feature.toolbar.alt.delete')}"
+           title="${message(code:'is.ui.feature.toolbar.alt.delete')}">
+                <span class="start"></span>
+                <span class="content">
+                    <span class="ico"></span>
+                    ${message(code: 'is.ui.feature.toolbar.delete')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
 
-<is:separator rendered="${request.productOwner}"/>
+    <li class="navigation-item separator"></li>
+</g:if>
 
 %{--View--}%
-
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
     <ul>
         <li class="first">
@@ -71,23 +79,19 @@
     </ul>
 </is:panelButton>
 
-<is:separator/>
+<li class="navigation-item separator"></li>
 
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
     <ul>
         <li class="first">
-            <is:link
-                    action="productParkingLotChart"
-                    controller="feature"
-                    update="window-content-${controllerName}"
-                    title="${message(code:'is.ui.feature.charts.productParkingLot')}"
-                    remote="true"
-                    value="${message(code:'is.ui.feature.charts.productParkingLot')}"/>
+            <a href="${createLink(action:'productParkingLotChart', params: [product:params.product])}"
+                     data-ajax="true"
+                     data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.feature.charts.productParkingLot')}</a>
         </li>
     </ul>
 </is:panelButton>
 
-<is:separatorSmall/>
+<li class="navigation-item separator-s"></li>
 
 %{--Print button--}%
 <is:reportPanel

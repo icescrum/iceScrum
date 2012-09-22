@@ -66,15 +66,6 @@
         <g:layoutBody/>
     </is:desktop>
 </div>
-<is:shortcut
-        key="ctrl+shift+n"
-        callback="${is.remoteDialogFunction(
-                    action:'openWizard',
-                    controller:'project',
-                    title:'is.dialog.wizard',
-                    resizable:'false',
-                    width:'760',height:'460',
-                    draggable:'false')}"/>
 <is:spinner
         on401="var data = jQuery.parseJSON(xhr.responseText); document.location='${createLink(controller:'login',action:'auth')}?ref=${product ? 'p/'+product.pkey+'/' : ''}'+(data.url?data.url:'');"
         on400="var error = jQuery.parseJSON(xhr.responseText); jQuery.icescrum.renderNotice( error.notice.text, 'error', error.notice.title); "

@@ -65,14 +65,6 @@ class ProductUrlMappings {
             }
         }
 
-        "/b/$id" {
-            controller = 'story'
-            action = 'idURL'
-            constraints {
-                id(matches: /[0-9]*/)
-            }
-        }
-
         "/p/$product/$action/$window?/$actionWindow?/$id?" {
             controller = 'scrumOS'
             constraints {

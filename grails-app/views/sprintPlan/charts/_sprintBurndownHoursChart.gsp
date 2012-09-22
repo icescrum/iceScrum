@@ -19,8 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:setProvider library="jquery"/>
-<is:chartView>
+<div class="view-chart">
     <div id="sprintBurndownHours" class="chart-container">
     </div>
     <jq:jquery>
@@ -85,7 +84,7 @@
     });
     $('#sprintBurndownHours').find('.jqplot-table-legend').css('bottom','-12px');
     </jq:jquery>
-</is:chartView>
+</div>
 <g:if test="${withButtonBar}">
     <is:buttonBar>
         <is:button

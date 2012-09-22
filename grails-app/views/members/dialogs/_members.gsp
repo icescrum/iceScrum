@@ -20,6 +20,13 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.owner || request.scrumMaster}"/>
+<is:dialog
+        valid="${ownerOrSm ? [action:'update',controller:'members',onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
+          buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
+          title="is.dialog.project.title"
+          width="650"
+          resizable="false"
+          draggable="false">
 <form id="form-project" name="form-project" method="post" class='box-form box-form-250 box-form-200-legend'>
     <input type="hidden" name="product" value="${params.product}">
     <is:fieldset title="is.team" id="member-autocomplete">
@@ -93,3 +100,4 @@
         </div>
     </is:fieldset>
 </form>
+</is:dialog>

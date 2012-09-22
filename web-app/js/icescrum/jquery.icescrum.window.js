@@ -38,12 +38,6 @@
                 openWindow:function(id, callback) {
 
                     var targetWindow = id;
-                    var openPanel = false;
-                    var targetIndex = id.indexOf('/');
-                    if (targetIndex >= 0) {
-                        targetWindow = id.substring(0, targetIndex);
-                        openPanel = true;
-                    }
                     var targetParam = targetWindow.indexOf('?');
                     if (targetParam >= 0) {
                         targetWindow = targetWindow.substring(0, targetParam);
@@ -54,7 +48,6 @@
                         this.closeWidget(obj);
                     }
 
-
                     if (this.o.currentOpenedWindow != null && this.o.currentOpenedWindow.data('id') != targetWindow) {
                         $(document).unbind('keydown.' + this.o.currentOpenedWindow.data('id'));
                         if (this.o.currentOpenedWindow.data('opts').widgetable) {
@@ -64,7 +57,7 @@
                     var view = this.getDefaultView();
                     jQuery.ajax({
                                 type:'GET',
-                                cache:true,
+                                cache:false,
                                 url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? '?viewType='+view : '' ),
                                 beforeSend:function(){
                                     var loading = $('<div/>').attr('id','window-loading').css('opacity',0).css('z-index',998);
@@ -86,6 +79,7 @@
                                         $('#window-id-' + targetWindow).addClass('window-fullscreen');
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
+                                        attachListeners($($.icescrum.o.windowContainer));
                                         var viewSelector = $('#menu-display-list');
                                         if (viewSelector.length != -1){
                                             viewSelector.find('.content').html('<span class="ico"></span>' + viewSelector.find('a[data-default-view='+view+']').text());

@@ -41,13 +41,10 @@
            acceptanceTestCount="${story.acceptanceTests.size()}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
     <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
-    <g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
-        <is:tooltipPostit
-                type="story"
-                id="${story.id}"
-                title="${story.name.encodeAsHTML()}"
-                text="${is.storyTemplate(story:story)}"
-                apiBeforeShow="if(jQuery('#dropmenu').is(':visible') || jQuery('#postit-story-${story.id} .mini-value.editable').hasClass('editable-hover') ) return false;"
-                container="jQuery('#window-content-${controllerName}')"/>
-    </g:if>
 </is:postit>
+<g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
+    <div class="tooltip">
+        <span class="tooltip-title">${story.name}</span>
+        ${is.storyTemplate(story:story)}
+    </div>
+</g:if>

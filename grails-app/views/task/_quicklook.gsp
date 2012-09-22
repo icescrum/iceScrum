@@ -21,6 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Task" %>
+<is:dialog width="600"
+           resizable="false"
+           draggable="false"
+           withTitlebar="false"
+           buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
+           focusable="false">
 <div class="postit-details quicklook" data-elemid="${task.id}" type="task">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
@@ -111,6 +117,7 @@
         </div>
     </div>
 </div>
+</is:dialog>
 <is:onStream
         on=".postit-details-task[data-elemid=${task.id}]"
         events="[[object: 'task', events: ['update']]]"

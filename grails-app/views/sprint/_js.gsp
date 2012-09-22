@@ -71,14 +71,10 @@
                         </div>
                     </div>
                 </div>
-
-                <g:if test="${sprint.goal}">
-                    <is:tooltipSprint
-                            id="releasePlan-${sprint.orderNumber}"
-                            title="${message(code:'is.sprint')} ${sprint.orderNumber}"
-                            text="${sprint.goal}"
-                            container="jQuery('.event-line-limiter')"/>
-                </g:if>
+                <div class="tooltip">
+                    <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber}</span>
+                    ${sprint.goal}
+                </div>
             </is:eventHeader>
 
         %{-- Content of the sprint column --}%
@@ -107,7 +103,7 @@
                                           onSuccess:"jQuery.event.trigger(\"lan_story\",data.story); if(data.oldSprint){  jQuery.event.trigger(\"sprintMesure_sprint\",data.oldSprint); }",
                                           params: "\"product=${params.product}&id=\"+ui.item.data(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item)+1)")
                       ]'
-                        dblclickable="[selector:'.postit-rect',callback:is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj)')]"
+                        dblclickable="[selector:'.postit-rect',callback:'$.icescrum.displayQuicklook(obj)']"
                         emptyRendering="true">
                 </is:backlogElementLayout>
             </is:eventContent>
@@ -154,14 +150,10 @@
                 </div>
             </div>
         </div>
-
-        <g:if test="${sprint.goal}">
-            <is:tooltipSprint
-                    id="releasePlan-${sprint.orderNumber}"
-                    title="${message(code:'is.sprint')} ${sprint.orderNumber}"
-                    text="${sprint.goal}"
-                    container="jQuery('.event-line-limiter')"/>
-        </g:if>
+        <div class="tooltip">
+            <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber}</span>
+            ${sprint.goal}
+        </div>
     </div>
     ]]>
 </template>

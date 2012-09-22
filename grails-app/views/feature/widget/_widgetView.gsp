@@ -35,7 +35,7 @@
           ]'
                          value="${features}"
                          var="feature"
-                         dblclickable='[rendered:request.inProduct, selector:".postit-row", callback:is.quickLook(params:"\"feature.id=\"+obj.data(\"elemId\")")]'>
+                         dblclickable='[rendered:request.inProduct, selector:".postit-row", callback:"\$.icescrum.displayQuicklook(obj)"]'>
     <is:cache  cache="featureCache" key="postit-small-${feature.id}-${feature.lastUpdated}">
         <li data-elemid="${feature.id}" class="postit-row postit-row-feature">
             <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>

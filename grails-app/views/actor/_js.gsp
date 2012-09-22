@@ -43,16 +43,13 @@
                attachment="${actor.totalAttachments}"
                controller="${id}">
         ?**=truncatedDescription**?
-        ?**if(truncatedDescription.length > 50 || truncatedName.length > 17) {**?
-        <is:tooltipPostit
-                type="actor"
-                id="${actor.id}"
-                title="${actor.name}"
-                text="${actor.description}"
-                apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                container="jQuery('#window-content-actor')"/>
-        ?**}**?
     </is:postit>
+    ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
+        <div class="tooltip">
+            <span class="tooltip-title">${actor.name}</span>
+            ${actor.description}
+        </div>
+    ?**}**?
     ]]>
 </template>
 

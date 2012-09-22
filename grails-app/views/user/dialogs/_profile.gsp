@@ -20,6 +20,12 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
+<is:dialog valid="[action:'update',controller:'user',id:user.id,onSuccess:'jQuery.event.trigger(\'updateProfile_user\',[data])']"
+            title="is.dialog.profile"
+            width="600"
+            noprefix="true"
+            resizable="false"
+            draggable="false">
 <form id="form-profile" method="post" class='box-form box-form-250 box-form-200-legend'
       onsubmit="jQuery('.ui-dialog-buttonpane button:eq(1)').click();
       return false;">
@@ -89,3 +95,4 @@
 </form>
 <is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-profile"
              listenOn="'#form-profile input'"/>
+</is:dialog>

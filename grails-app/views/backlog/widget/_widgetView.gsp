@@ -35,7 +35,7 @@
                     start:'jQuery(this).hide();',
                     stop:'if (jQuery(this).attr(\'remove\') == \'true\') { jQuery(this).remove(); } else { jQuery(this).show(); }'
                   ]"
-        dblclickable='[rendered:(request.stakeHolder || request.inProduct), selector:".postit-row", callback:is.quickLook(params:"\"story.id=\"+obj.data(\"elemid\")")]'
+        dblclickable='[rendered:(request.stakeHolder || request.inProduct), selector:".postit-row", callback:"\$.icescrum.displayQuicklook(obj)"]'
         value="${stories}"
         var="story">
     <is:cache  cache="storyCache" key="postit-small-${story.id}-${story.lastUpdated}">

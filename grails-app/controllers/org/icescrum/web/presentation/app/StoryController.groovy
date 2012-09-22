@@ -786,23 +786,6 @@ class StoryController {
         redirect(url: is.createScrumLink(controller: 'story', params:[uid: params.id]))
     }
 
-    def idURL = {
-        if (!params.id) {
-            if (springSecurityService.isAjax(request)) {
-                def jqCode = jq.jquery(null, "\$.icescrum.renderNotice('${message(code: 'is.story.error.not.exist')}','error');");
-                render(status: 400, text: jqCode);
-            }
-            return
-        }
-        def story = Story.get(params.id)
-        if (!story) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.story.error.not.exist']] as JSON)
-            return
-        }
-        params.product = story.backlog.id
-        redirect(url: is.createScrumLink(controller: 'story', id: params.id))
-    }
-
     def summaryPanel = {
         withStory { Story story ->
             def activities = story.getActivities()

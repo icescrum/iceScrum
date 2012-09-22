@@ -43,8 +43,8 @@
   </is:dialog>
 </g:if>
 <g:else>
-  <is:dialog width="400" valid="[action:'add',controller:controllerName,update:'window-content-'+controllerName,button:'is.yes']">
-    <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="return false;">
+  <is:dialog width="400" valid="[button:'is.yes']">
+    <form method="post" class="box-form box-form-250 box-form-200-legend" onsubmit="var description = $('#dialog input[name=\'story.description\']').val(); $.icescrum.openWindow('sandbox/add', function(){ $('#sandbox-form textarea[name=\'story.description\']').val(description); }); return false;">
       <input type="hidden" value="${data}" name="story.description"/>
       <input type="hidden" value="${params.product}" name="product"/>
       <is:fieldset title="is.dialog.drop.import.sandbox.title">

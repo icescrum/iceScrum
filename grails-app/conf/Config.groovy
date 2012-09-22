@@ -25,6 +25,8 @@
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
 import org.icescrum.core.support.ApplicationSupport
+import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
+import org.icescrum.web.JQueryProvider
 
 /*
  Public URL
@@ -377,3 +379,6 @@ environments {
         println "--------------------------------------------------------"
     }
 }
+
+JavascriptTagLib.LIBRARY_MAPPINGS.jquery = ["jquery/jquery-${jQueryVersion}.min"]
+JavascriptTagLib.PROVIDER_MAPPINGS.jquery = JQueryProvider.class

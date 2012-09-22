@@ -23,6 +23,23 @@
 (function($) {
     jQuery.extend($.icescrum, {
 
+                displayQuicklook:function(obj){
+                    var elem = obj.selected ? $(obj.selected) : $(obj);
+                    var type;
+                    if (elem.hasClass('postit-actor') || elem.hasClass('postit-row-actor')){
+                        type = 'actor.id';
+                    }else if(elem.hasClass('postit-feature') || elem.hasClass('postit-row-feature')){
+                        type = 'feature.id';
+                    }else if(elem.hasClass('postit-task') || elem.hasClass('postit-row-task')){
+                        type = 'task.id';
+                    }else if(elem.hasClass('postit-story') || elem.hasClass('postit-row-story')){
+                        type = 'story.id';
+                    }
+                    $.get($.icescrum.o.baseUrlProduct + 'quickLook?'+type+'='+elem.data('elemid'), function(data){
+                        $(document.body).append(data.dialog);
+                    });
+                },
+
                 loading:function(load) {
                     if (load != undefined && !load) {
                         $("#is-logo").stop(true).css('opacity', 1.0).removeClass().addClass('connected');
@@ -208,13 +225,13 @@
                     $('#datepicker-endDate').datepicker('setDate', this.dateLocaleFormat(date2));
                 },
 
-                updateFilterTask:function(text, visible){
-                    if (visible){
+                updateFilterTask:function(data, xhr, status, element){
+                    if (element.data('active')){
                         $('#menu-filter-task-list').addClass('filter-active');
                     }else {
                         $('#menu-filter-task-list').removeClass('filter-active');
                     }
-                    $('#menu-filter-task-navigation-item .content').html('<span class="ico"></span>'+text);
+                    $('#menu-filter-task-navigation-item .content').html('<span class="ico"></span>'+element.text());
                 },
 
                 updateHideDoneState:function(show,hide){
@@ -342,3 +359,10 @@
     };
 
 })(jQuery);
+
+if (typeof String.prototype.startsWith != 'function') {
+  // see below for better implementation!
+  String.prototype.startsWith = function (str){
+    return this.indexOf(str) == 0;
+  };
+}

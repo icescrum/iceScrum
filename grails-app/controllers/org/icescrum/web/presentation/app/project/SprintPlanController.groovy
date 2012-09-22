@@ -509,7 +509,8 @@ class SprintPlanController {
             render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
             session.progress = new ProgressSupport()
-            render(template: 'dialogs/report', model: [sprint: sprint])
+            def dialog = g.render(template: '/scrumOS/report')
+            render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
     }
 
@@ -558,7 +559,8 @@ class SprintPlanController {
                 render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
             } else {
                 session.progress = new ProgressSupport()
-                render(template: 'dialogs/report', model: [sprint: sprint])
+                def dialog = g.render(template: '/scrumOS/report', model: [sprint: sprint])
+                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
             }
         }
     }

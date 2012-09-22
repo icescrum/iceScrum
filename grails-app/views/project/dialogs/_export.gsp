@@ -19,6 +19,12 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
+<is:dialog
+        resizable="false"
+      withTitlebar="false"
+      onClose="jQuery.doTimeout('progressBar');"
+      buttons="'${message(code:'is.button.cancel')}': function() { jQuery(this).dialog('close'); }, '${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
+      draggable="false">
 <div class="box-form">
     <is:fieldset title="is.dialog.exportProject.title">
         <is:fieldInformation noborder="true">
@@ -34,3 +40,4 @@
                 url="${createLink(action:'export',controller:controllerName,params:[product:params.product,status:true])}"/>
     </is:fieldset>
 </div>
+</is:dialog>

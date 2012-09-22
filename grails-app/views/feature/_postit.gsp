@@ -35,13 +35,10 @@
         typeTitle="${is.bundle(bundle:'featureTypes',value:feature.type)}"
         controller="feature">
     <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
-    <g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">
-        <is:tooltipPostit
-                type="feature"
-                id="${feature.id}"
-                title="${feature.name.encodeAsHTML()}"
-                text="${feature.description?.encodeAsHTML()}"
-                apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                container="jQuery('#window-content-${controllerName}')"/>
-    </g:if>
 </is:postit>
+<g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">
+    <div class="tooltip">
+        <span class="tooltip-title">${feature.name}</span>
+        ${feature.description.encodeAsHTML()}
+    </div>
+</g:if>

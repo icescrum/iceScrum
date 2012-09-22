@@ -22,32 +22,41 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
-<is:iconButton
-        rendered="${request.inProduct}"
-        shortcut="[key:'ctrl+shift+c',scope:controllerName]"
-        onclick="jQuery.icescrum.selectableAction('story/copy',true,'id',function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');})"
-        disabled="true"
-        alt="${message(code:'is.ui.backlog.toolbar.alt.clone')}"
-        title="${message(code:'is.ui.backlog.toolbar.alt.clone')}">
-    ${message(code: 'is.ui.backlog.toolbar.clone')}
-</is:iconButton>
+<g:if test="${request.inProduct}">
+    <li class="navigation-item">
+        <a class="tool-button button-n"
+           onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
+           data-shortcut="ctrl+shift+c"
+           data-shortcut-on="#window-id-${controllerName}"
+           alt="${message(code:'is.ui.backlog.toolbar.alt.clone')}"
+           title="${message(code:'is.ui.backlog.toolbar.alt.clone')}">
+            <span class="start"></span>
+            <span class="content">
+                ${message(code: 'is.ui.backlog.toolbar.clone')}
+            </span>
+            <span class="end"></span>
+        </a>
+    </li>
+    <li class="navigation-item separator-s"></li>
+</g:if>
 
-<is:separatorSmall rendered="${request.inProduct}"/>
-
-%{--Delete button--}%
-<is:iconButton
-        icon="delete"
-        rendered="${request.productOwner}"
-        onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
-        history='false'
-        shortcut="[key:'del',scope:controllerName]"
-        disabled="true"
-        title="${message(code:'is.ui.backlog.toolbar.alt.delete')}"
-        alt="${message(code:'is.ui.backlog.toolbar.alt.delete')}">
-    ${message(code: 'is.ui.backlog.toolbar.delete')}
-</is:iconButton>
-
-<is:separator rendered="${request.productOwner}"/>
+<g:if test="${request.productOwner}">
+    <li class="navigation-item">
+       <a class="tool-button button-n"
+          onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){ jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
+          data-shortcut="del"
+          data-shortcut-on="#window-id-${controllerName}"
+          alt="${message(code:'is.ui.backlog.toolbar.alt.delete')}"
+          title="${message(code:'is.ui.backlog.toolbar.alt.delete')}">
+              <span class="start"></span>
+              <span class="content">
+                  ${message(code: 'is.ui.backlog.toolbar.delete')}
+              </span>
+              <span class="end"></span>
+       </a>
+   </li>
+    <li class="navigation-item separator"></li>
+</g:if>
 
 %{--View--}%
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
@@ -69,7 +78,7 @@
     </ul>
 </is:panelButton>
 
-<is:separator/>
+<li class="navigation-item separator"></li>
 
 %{--Print button--}%
 <is:reportPanel

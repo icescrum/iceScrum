@@ -64,7 +64,7 @@
         </library>
         <library>
             <name>jQuery iceScrum</name>
-            <version>1.0</version>
+            <version>5.2</version>
         </library>
         <library>
             <name>jQuery iceScrum postit</name>
@@ -81,11 +81,11 @@
 
         <library>
             <name>jQuery Pnotify</name>
-            <version>1.0.0 Beta 1</version>
+            <version>1.0.0</version>
         </library>
         <library>
-            <name>jQuery Qtip</name>
-            <version>1.0</version>
+            <name>jQuery tipTip</name>
+            <version>1.3</version>
         </library>
         <library>
             <name>jQuery alphanumeric</name>
@@ -93,15 +93,15 @@
         </library>
         <library>
             <name>jQuery jqplot</name>
-            <version>2.0</version>
+            <version>1.0.0b1_r746</version>
         </library>
         <library>
             <name>jQuery</name>
-            <version>1.5.2</version>
+            <version>1.8.1</version>
         </library>
         <library>
             <name>jQuery cookie</name>
-            <version>1.0</version>
+            <version>1.2</version>
         </library>
         <library>
             <name>jQuery mousewheel</name>
@@ -117,11 +117,11 @@
         </library>
         <library>
             <name>jQuery UI</name>
-            <version>1.8.10</version>
+            <version>1.8.23</version>
         </library>
         <library>
             <name>jQuery UI - timepicker</name>
-            <version>0.9</version>
+            <version>0.9.9</version>
         </library>
         <library>
             <name>jQuery UI - selectmenu (by iceScrum)</name>

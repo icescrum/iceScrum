@@ -19,10 +19,17 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:iconButton
-        controller="${controllerName}"
-        rendered="${request.productOwner}"
-        href="#${controllerName}/add"
-        params="[product:params.product]"
-        action="add">${message(code:"is.ui.feature.toolbar.new")}</is:iconButton>
+<li class="navigation-item button-ico button-create">
+    <a class="tool-button button-n"
+       href="#feature/add"
+       title="${message(code:'is.ui.feature.toolbar.alt.new')}"
+       alt="${message(code:'is.ui.feature.toolbar.alt.new')}">
+        <span class="start"></span>
+        <span class="content">
+            <span class="ico"></span>
+            ${message(code: 'is.ui.feature.toolbar.new')}
+        </span>
+        <span class="end"></span>
+    </a>
+</li>
 <entry:point id="${controllerName}-${actionName}-widget-toolbar"/>

@@ -658,47 +658,19 @@ Timeline.IceScrumEventPainter.prototype.showBubble = function(evt) {
 };
 
 Timeline.IceScrumEventPainter.prototype._showBubble = function(x, y, evt) {
-  var elmt = this._eventIdToElmt[evt.getID()];
-  if (!jQuery(elmt).qtip('api').destroy) {
-      jQuery(elmt).qtip(
-            {
-               content: {
-                title:{
-                  text: evt.getProperty('tooltipTitle')
-                },
-                text: evt.getProperty('tooltipContent')
-               },
-               hide: 'mouseout',
-               position: {
-                  target: 'mouse',
-                  container: "#"+this._timeline._containerDiv.id,
-                  adjust: { mouse: 'false' , x:10 }
-               },
-               show: {
-                  ready: false,
-                  solo: true,
-                  delay:500,
-                  when: {
-                  target: false
-                  }
-               },
-               style: {
-                  name: 'classic',
-                  tip : {
-                      size:{
-                          width:300,
-                          height:200
-                      }
-                  }
-               },
-               api:{
-                  beforeShow:function(){ if($('#dropmenu').is(':visible')){return false;}}
-               }
-
-            }
-      );
-      jQuery(elmt).mouseover();
-  };
+    var elmt = $(this._eventIdToElmt[evt.getID()]);
+    if (!elmt.data('tooltip-created')){
+        var tooltip = $("<div/>").addClass('tooltip').html(evt.getProperty('tooltipContent'));
+        var tooltipTitle = $("<span/>").addClass('tooltip-title').html(evt.getProperty('tooltipTitle'));
+        tooltipTitle.prependTo(tooltip);
+        tooltip.insertAfter(elmt);
+        elmt.data('tooltip-created','true');
+        elmt.tipTip({delay:500, activation:"focus", defaultPosition:"right", content:tooltip.html(), edgeOffset:-20});
+        elmt.mouseleave(function(){ elmt.tipTip('hide'); });
+    }
+    if (!$(elmt).next().is(':visible')){
+        elmt.tipTip('show');
+    }
 };
 
 Timeline.IceScrumEventPainter.prototype._fireOnSelect = function(eventID) {

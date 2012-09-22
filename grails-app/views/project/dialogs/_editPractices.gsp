@@ -19,6 +19,11 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
+<is:dialog valid="[action:'update',controller:'project',onSuccess:'jQuery.event.trigger(\'update_product\',[data]);  jQuery.icescrum.renderNotice(\''+message(code:'is.product.updated')+'\');']"
+                                  title="is.dialog.project.title"
+                                  width="600"
+                                  resizable="false"
+                                  draggable="false">
 <form id="form-project" name="form-project" method="post" class='box-form box-form-250 box-form-200-legend'>
   <input type="hidden" name="productd.id" value="${params.product}">
   <input type="hidden" name="product" value="${params.product}">
@@ -88,4 +93,5 @@
     </is:accordion>
   </is:fieldset>
 </form>
+</is:dialog>
 <is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-project" listenOn="'#form-project input'"/>

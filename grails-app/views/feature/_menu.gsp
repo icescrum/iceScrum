@@ -27,7 +27,7 @@
 <li>
     <a href="${createLink(action:'copyFeatureToBacklog',controller:'feature',id:feature.id,params:[product:params.product])}"
        data-ajax-trigger="accept_story"
-       data-ajax-notice="${message(code: 'is.feature.copy')}"
+       data-ajax-notice="${message(code: 'is.feature.copy').encodeAsJavaScript()}"
        data-ajax="true">
        <g:message code='is.ui.feature.menu.copy'/>
     </a>
@@ -36,7 +36,7 @@
 <li>
     <a href="${createLink(action:'delete',controller:'feature',id:feature.id, params:[product:params.product])}"
        data-ajax-trigger="remove_feature"
-       data-ajax-notice="${message(code: 'is.feature.deleted')}"
+       data-ajax-notice="${message(code: 'is.feature.deleted').encodeAsJavaScript()}"
        data-ajax="true">
        <g:message code='is.ui.feature.menu.delete'/>
     </a>

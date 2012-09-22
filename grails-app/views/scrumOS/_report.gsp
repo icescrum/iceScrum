@@ -19,6 +19,11 @@
 -
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
+<is:dialog
+        withTitlebar="false"
+        onClose="\$.doTimeout('progressBar');"
+        buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
+        draggable="false">
 <div class="box-form">
 <is:fieldset title="is.dialog.report.generation">
       <is:fieldInformation noborder="true">
@@ -29,8 +34,9 @@
               label="${message(code:'is.report.processing')}"
               iframe="true"
               showOnCreate="true"
-              iframeSrc="${createLink(action:'print',controller:controllerName,params:[product:params.product,get:true,format:params.format])}"
-              url="${createLink(action:'print',controller:controllerName,params:[product:params.product,status:true])}"
+              iframeSrc="${createLink(action:'print',controller:controllerName,params:[product:params.product,get:true,format:params.format], id:params.id?:null)}"
+              url="${createLink(action:'print',controller:controllerName,params:[product:params.product,status:true], id:params.id?:null)}"
               />
   </is:fieldset>
 </div>
+</is:dialog>

@@ -41,7 +41,7 @@
 <li id="menu-take-${task.id}">
     <a href="${createLink(action:'take',controller:'task',params:[product:params.product],id:task.id)}"
        data-ajax-trigger="update_task"
-       data-ajax-notice="${message(code: 'is.task.taken')}"
+       data-ajax-notice="${message(code: 'is.task.taken').encodeAsJavaScript()}"
        data-ajax="true">
        <g:message code='is.ui.sprintPlan.menu.task.take'/>
     </a>
@@ -51,7 +51,7 @@
 <li id="menu-unassign-${task.id}">
     <a href="${createLink(action:'unassign',controller:'task',params:[product:params.product],id:task.id)}"
        data-ajax-trigger="update_task"
-       data-ajax-notice="${message(code: 'is.task.unassigned')}"
+       data-ajax-notice="${message(code: 'is.task.unassigned').encodeAsJavaScript()}"
        data-ajax="true">
        <g:message code='is.ui.sprintPlan.menu.task.unassign'/>
     </a>
@@ -68,7 +68,7 @@
 <li id="menu-copy-${task.id}">
     <a href="${createLink(action:'copy',controller:'task',params:[product:params.product],id:task.id)}"
        data-ajax-trigger="add_task"
-       data-ajax-notice="${message(code: 'is.task.copied')}"
+       data-ajax-notice="${message(code: 'is.task.copied').encodeAsJavaScript()}"
        data-ajax="true">
        <g:message code='is.ui.sprintPlan.menu.task.copy'/>
     </a>
@@ -78,7 +78,7 @@
 <li id="menu-delete-${task.id}">
     <a href="${createLink(action:'delete',controller:'task',params:[product:params.product],id:task.id)}"
        data-ajax-trigger="remove_task"
-       data-ajax-notice="${message(code: 'is.task.deleted')}"
+       data-ajax-notice="${message(code: 'is.task.deleted').encodeAsJavaScript()}"
        data-ajax="true">
        <g:message code='is.ui.sprintPlan.menu.task.delete'/>
     </a>

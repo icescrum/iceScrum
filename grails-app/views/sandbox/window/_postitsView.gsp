@@ -32,7 +32,7 @@
         selectable="[rendered:productOwner,
                     filter:'div.postit-story',
                     cancel:'.postit-label, a',
-                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
+                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,$.icescrum.displayQuicklook)']"
         droppable='[selector:"div.postit",
                   hoverClass: "ui-selected",
                   drop: remoteFunction(controller:"story",
@@ -41,7 +41,7 @@
                                        params:"\"product=${params.product}&feature.id=\"+ui.draggable.data(\"elemid\")+\"&id=\"+jQuery(this).data(\"elemid\")"
                                        ),
                   accept: ".postit-row-feature"]'
-        dblclickable='[rendered:!productOwner,selector:".postit",callback:is.quickLook(params:"\"story.id=\"+obj.data(\"elemid\")")]'
+        dblclickable='[rendered:!productOwner,selector:".postit",callback:"\$.icescrum.displayQuicklook"]'
         value="${stories}"
         var="story">
         <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${sprint ? sprint.id : ''}">
@@ -54,7 +54,7 @@
 
 <is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
 <is:shortcut key="space"
-             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
+             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>
 <is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 

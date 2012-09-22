@@ -19,6 +19,12 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
+<is:dialog width="600"
+           resizable="false"
+           draggable="false"
+           withTitlebar="false"
+           buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
+           focusable="false">
 <div class="postit-details postit-details-actor quicklook" data-elemid="${actor.id}">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
@@ -94,6 +100,7 @@
         </div>
     </div>
 </div>
+</is:dialog>
 <is:onStream
         on=".postit-details-actor[data-elemid=${actor.id}]"
         events="[[object:'feature',events:['update']]]"

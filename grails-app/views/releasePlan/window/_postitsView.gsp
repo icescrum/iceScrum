@@ -67,14 +67,10 @@
                             </div>
                         </div>
                     </div>
-
-                    <g:if test="${sprint.goal}">
-                        <is:tooltipSprint
-                                id="${sprint.id}"
-                                title="${message(code:'is.sprint')} ${sprint.orderNumber}"
-                                text="${sprint.goal.encodeAsHTML()}"
-                                container="jQuery('#window-content-releasePlan')"/>
-                    </g:if>
+                    <div class="tooltip">
+                        <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber}</span>
+                        ${sprint.goal}
+                    </div>
                 </is:eventHeader>
 
             %{-- Content of the sprint column --}%
@@ -103,7 +99,7 @@
                                           onSuccess:"jQuery.event.trigger(\"plan_story\",data.story); if(data.oldSprint){ jQuery.event.trigger(\"sprintMesure_sprint\",data.oldSprint); }",
                                           params: "\"product=${params.product}&id=\"+ui.item.data(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${controllerName}-${sprint.id} .postit-rect\").index(ui.item)+1)")
                       ]'
-                            dblclickable="[selector:'.postit-rect',callback:is.quickLook(params:'\'story.id=\'+$.icescrum.postit.id(obj)')]"
+                            dblclickable="[selector:'.postit-rect',callback:'$.icescrum.displayQuicklook(obj)']"
                             value="${sprint.stories?.sort{it.rank}}"
                             var="story"
                             emptyRendering="true">
@@ -143,7 +139,7 @@
 </jq:jquery>
 
 <is:shortcut key="space"
-             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;} jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'story.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
+             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;} jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>
 
 <is:onStream

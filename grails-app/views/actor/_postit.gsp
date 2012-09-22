@@ -27,14 +27,10 @@
            attachment="${actor.totalAttachments}"
            controller="actor">
     <is:truncated size="50" encodedHTML="true">${actor.description?.encodeAsHTML()}</is:truncated>
-    <g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
-        <is:tooltipPostit
-                type="actor"
-                id="${actor.id}"
-                title="${actor.name.encodeAsHTML()}"
-                text="${actor.description?.encodeAsHTML()}"
-                apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                container="jQuery('#window-content-${controllerName}')"/>
-    </g:if>
-
 </is:postit>
+<g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
+    <div class="tooltip">
+        <span class="tooltip-title">${actor.name}</span>
+        ${actor.description.encodeAsHTML()}
+    </div>
+</g:if>

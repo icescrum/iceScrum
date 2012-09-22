@@ -29,7 +29,7 @@
            elemid="${sprint.id}"
            selectable="[filter:'div.postit-rect',
                         cancel:'span.postit-label, div.postit-story, a, span.mini-value, select, input',
-                        selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'task.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
+                        selected:'jQuery.icescrum.dblclickSelectable(ui,300,$.icescrum.displayQuicklook)']"
            droppable='[selector:".kanban tbody tr",
                        hoverClass: "active",
                        rendered:(poOrSm && sprint.state != Sprint.STATE_DONE),
@@ -164,7 +164,7 @@
 </is:kanban>
 
 <jq:jquery>
-    jQuery('table#kanban-sprint-${sprint.id} div.postit-story').die('dblclick').live('dblclick',function(e){ var obj = jQuery(e.currentTarget);${is.quickLook(params: '\'story.id=\'+obj.data(\"elemid\")')}});
+    jQuery('table#kanban-sprint-${sprint.id} div.postit-story').die('dblclick').live('dblclick',function(e){ jQuery.icescrum.displayQuicklook(jQuery(e.currentTarget)); });
     jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
     <g:if test="${assignOnBeginTask && !request.scrumMaster && sprint.state != Sprint.STATE_DONE}">
         jQuery.icescrum.sprint.sortableTasks();
@@ -230,7 +230,7 @@
                                    before:'if(jQuery(ui.placeholder).hasClass(\'no-drop\')){jQuery(ui.sender).sortable(\'cancel\'); return;}')}"/>
 </jq:jquery>
 <is:shortcut key="space"
-             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'task.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
+             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>
 <is:shortcut key="ctrl+a" callback="jQuery('#window-content-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 

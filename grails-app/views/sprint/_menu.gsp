@@ -58,8 +58,8 @@
     <li id="menu-activate-sprint-${sprint.id}" class="activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.activable?'':'hidden'}">
         <a href="${createLink(action:'activate',controller:'sprint',id:sprint.id,params:[product:params.product])}"
            data-ajax-trigger='{"activate_sprint":"sprint","inProgress_story":"stories"}'
-           data-ajax-notice="${message(code: 'is.sprint.activated')}"
-           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.sprint.activate.confirm')}"
+           data-ajax-notice="${message(code: 'is.sprint.activated').encodeAsJavaScript()}"
+           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.sprint.activate.confirm').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.releasePlan.menu.sprint.activate'/>
         </a>
@@ -69,8 +69,8 @@
     <li id="menu-close-sprint-${sprint.id}" class="close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS?'':'hidden'}">
         <a href="${createLink(action:'close',controller:'releasePlan',id:sprint.id,params:[product:params.product])}"
            data-ajax-trigger='{"close_sprint":"sprint","done_story":"stories","update_story":"unDoneStories"}'
-           data-ajax-notice="${message(code: 'is.sprint.closed')}"
-           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.sprint.close.confirm')}"
+           data-ajax-notice="${message(code: 'is.sprint.closed').encodeAsJavaScript()}"
+           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.sprint.close.confirm').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.releasePlan.menu.sprint.close'/>
         </a>
@@ -87,7 +87,7 @@
     <li id="menu-delete-sprint-${sprint.id}">
         <a href="${createLink(action:'delete',controller:'releasePlan',id:sprint.id,params:[product:params.product])}"
            data-ajax-trigger='remove_sprint'
-           data-ajax-notice="${message(code: 'is.sprint.deleted')}"
+           data-ajax-notice="${message(code: 'is.sprint.deleted').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.releasePlan.menu.sprint.delete'/>
         </a>
@@ -97,8 +97,8 @@
     <li id="menu-unplan-sprint-${sprint.id}">
         <a href="${createLink(action:'unPlan',controller:'sprint',id:sprint.id,params:[product:params.product])}"
            data-ajax-trigger='{"sprintMesure_sprint":"sprint", "unPlan_story":"stories"}'
-           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.sprint.warning.dissociateAll')}"
-           data-ajax-notice="${message(code:'is.sprint.stories.dissociated')}"
+           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.sprint.warning.dissociateAll').encodeAsJavaScript()}"
+           data-ajax-notice="${message(code:'is.sprint.stories.dissociated').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.releasePlan.menu.sprint.dissociateAll'/>
         </a>

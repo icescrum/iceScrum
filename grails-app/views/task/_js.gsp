@@ -61,14 +61,11 @@
                color="?**=this.color**?"
                menu="[params:[controllerName:id, task:task, user:user, template:true], template:'/task/menu', id:'task-'+task.id, rendered:request.inProduct]"
                rect="true">
-        ?**if (name.length > 17 || description.length > 0) {**?
-        <is:tooltipPostit
-                type="task"
-                id="${task.id}"
-                title="${task.name}"
-                text="${task.description}"
-                apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                container="jQuery('#window-content-${id}')"/>
-        ?**}**?
     </is:postit>
+    ?**if (name.length > 17 || description.length > 0) {**?
+        <div class="tooltip">
+            <span class="tooltip-title">${task.name}</span>
+            ${task.description}
+        </div>
+    ?**}**?
 </template>

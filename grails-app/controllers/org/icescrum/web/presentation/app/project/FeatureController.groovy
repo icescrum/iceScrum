@@ -277,7 +277,8 @@ class FeatureController {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
             session.progress = new ProgressSupport()
-            render(template: 'dialogs/report')
+            def dialog = g.render(template: '/scrumOS/report')
+            render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
     }
 

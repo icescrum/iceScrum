@@ -53,16 +53,13 @@
                color="${feature.color}"
                controller="${id}">
         ?**=truncatedDescription**?
-        ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
-        <is:tooltipPostit
-                type="feature"
-                id="${feature.id}"
-                title="${feature.name}"
-                text="${feature.description}"
-                apiBeforeShow="if(jQuery('#dropmenu').is(':visible')){return false;}"
-                container="jQuery('#window-content-feature')"/>
-        ?**}**?
     </is:postit>
+    ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
+        <div class="tooltip">
+            <span class="tooltip-title">${feature.name}</span>
+            ${feature.description}
+        </div>
+    ?**}**?
     ]]>
 </template>
 

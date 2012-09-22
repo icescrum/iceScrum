@@ -19,11 +19,17 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-
-<is:iconButton
-        controller="${controllerName}"
-        href="#${controllerName}/add"
-        rendered="${!request.productArchived}"
-        params="[product:params.product]"
-        action="add">${message(code:"is.ui.sandbox.toolbar.new")}</is:iconButton>
+<li class="navigation-item button-ico button-create">
+    <a class="tool-button button-n"
+       href="#${controllerName}/add"
+       title="${message(code:'is.ui.sandbox.toolbar.new')}"
+       alt="${message(code:'is.ui.sandbox.toolbar.new')}">
+            <span class="start"></span>
+            <span class="content">
+                <span class="ico"></span>
+                ${message(code: 'is.ui.sandbox.toolbar.new')}
+            </span>
+            <span class="end"></span>
+    </a>
+</li>
 <entry:point id="${controllerName}-${actionName}-widget-toolbar"/>

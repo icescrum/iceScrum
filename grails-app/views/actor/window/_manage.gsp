@@ -139,7 +139,7 @@
              listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 <is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${controllerName}"
              listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
-<is:shortcut key="esc" callback="alert('efzfezfz'); jQuery.icescrum.form.cancel();" scope="${controllerName}"
+<is:shortcut key="esc" callback="jQuery.icescrum.form.cancel();" scope="${controllerName}"
              listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 
 <g:if test="${actor}">

@@ -19,10 +19,23 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:setProvider library="jquery"/>
-
+<is:dialog action="importProject"
+          rendered="${importEnable}"
+          controller="project"
+          resizable="false"
+          noprefix="true"
+          withTitlebar="false"
+          width="520"
+          onOpen="if (jQuery('#import-validate').is(':hidden')){jQuery(\'.ui-dialog-buttonpane button:eq(1)\').hide()}"
+          valid="[button:'is.dialog.importProject.submit',
+              action:'saveImport',
+              update:'dialog',
+              onSuccess:'$(\'#dialog\').dialog(\'close\'); jQuery.icescrum.renderNotice(\''+message(code:'is.dialog.importProject.success')+'\'); jQuery.event.trigger(\'redirect_product\',data);',
+              controller:'project']"
+          cancel="[action:'importProject',controller:'project',params:'\'cancel=1\'']"
+          draggable="false">
    <g:if test="${!product}">
-     <g:formRemote url="[action:'importProject']" update="dialog" name="${controllerName}-import-form" class="box-form box-form-180 box-form-180-legend">
+     <g:formRemote url="[action:'importProject']" onSuccess="jQuery('#dialog').dialog('close'); jQuery(document.body).append(data.dialog);" name="${controllerName}-import-form" class="box-form box-form-180 box-form-180-legend">
         <is:fieldset title="is.dialog.importProject.choose.title">
           <is:fieldInformation noborder="true">
             <g:message code="is.dialog.importProject.choose.description"/>
@@ -140,3 +153,4 @@
         jQuery('.ui-dialog-buttonpane button:eq(1)').show();
       </jq:jquery>
     </g:else>
+</is:dialog>

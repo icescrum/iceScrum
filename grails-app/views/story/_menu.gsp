@@ -46,7 +46,7 @@
     <li id="menu-accept-${story.id}">
         <a href="${createLink(action:'accept',controller:'story',params:[type:'story',product:params.product],id:story.id)}"
            data-ajax-trigger="accept_story"
-           data-ajax-notice="${message(code: 'is.story.acceptedAsStory')}"
+           data-ajax-notice="${message(code: 'is.story.acceptedAsStory').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.sandbox.menu.acceptAsStory'/>
         </a>
@@ -54,7 +54,7 @@
     <li id="menu-accept-feature-${story.id}">
         <a href="${createLink(action:'accept',controller:'story',params:[type:'feature',product:params.product],id:story.id)}"
            data-ajax-trigger="accept_story"
-           data-ajax-notice="${message(code: 'is.story.acceptedAsFeature')}"
+           data-ajax-notice="${message(code: 'is.story.acceptedAsFeature').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.sandbox.menu.acceptAsFeature'/>
         </a>
@@ -62,7 +62,7 @@
     <li class="menu-accept-task ${sprint?'':'hidden'}" id="menu-accept-task-${story.id}">
         <a href="${createLink(action:'accept',controller:'story',params:[type:'task',product:params.product],id:story.id)}"
            data-ajax-trigger="accept_story"
-           data-ajax-notice="${message(code: 'is.story.acceptedAsUrgentTask')}"
+           data-ajax-notice="${message(code: 'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.sandbox.menu.acceptAsUrgentTask'/>
         </a>
@@ -86,7 +86,7 @@
     <li>
         <a href="${createLink(action:'copy',controller:'story',params:[product:params.product],id:story.id)}"
            data-ajax-trigger="add_story"
-           data-ajax-notice="${message(code: 'is.story.cloned')}"
+           data-ajax-notice="${message(code: 'is.story.cloned').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.releasePlan.menu.story.clone'/>
         </a>
@@ -96,7 +96,7 @@
     <li id="menu-delete-${story.id}">
         <a href="${createLink(action:'delete',controller:'story',params:[product:params.product],id:story.id)}"
            data-ajax-trigger="remove_story"
-           data-ajax-notice="${message(code: 'is.story.deleted')}"
+           data-ajax-notice="${message(code: 'is.story.deleted').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.sandbox.menu.delete'/>
         </a>
@@ -106,8 +106,8 @@
     <li id="menu-unplan-${story.id}">
         <a href="${createLink(action:'unPlan',controller:'story',params:[product:params.product],id:story.id)}"
            data-ajax-trigger='{"unPlan_story":"story","sprintMesure_sprint":"sprint"}'
-           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.story.warning.dissociate')}"
-           data-ajax-notice="${message(code: 'is.sprint.stories.dissociated')}"
+           data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.story.warning.dissociate').encodeAsJavaScript()}"
+           data-ajax-notice="${message(code: 'is.sprint.stories.dissociated').encodeAsJavaScript()}"
            data-ajax="true">
            <g:message code='is.ui.releasePlan.menu.story.dissociate'/>
         </a>
@@ -117,7 +117,7 @@
      <li id="menu-shift-${story.id}" class="menu-shift-${sprint?.parentRelease?.id}-${(sprint?.orderNumber instanceof Integer ?sprint?.orderNumber + 1:sprint?.orderNumber)} ${nextSprintExist?'':'hidden'}">
          <a href="${createLink(action:'unPlan',controller:'story',params:[product:params.product,shiftToNext:true],id:story.id)}"
             data-ajax-trigger='{"unPlan_story":"story","sprintMesure_sprint":"sprint"}'
-            data-ajax-notice="${message(code: 'is.story.shiftedToNext')}"
+            data-ajax-notice="${message(code: 'is.story.shiftedToNext').encodeAsJavaScript()}"
             data-ajax="true">
             <g:message code='is.ui.sprintPlan.menu.postit.shiftToNext'/>
          </a>
@@ -127,7 +127,7 @@
      <li id="menu-done-${story.id}">
          <a href="${createLink(action:'done',controller:'story',params:[product:params.product],id:story.id)}"
              data-ajax-trigger="done_story"
-             data-ajax-notice="${message(code: 'is.story.declaredAsDone')}"
+             data-ajax-notice="${message(code: 'is.story.declaredAsDone').encodeAsJavaScript()}"
              data-ajax="true">
              <g:message code='is.ui.releasePlan.menu.story.done'/>
          </a>
@@ -137,7 +137,7 @@
      <li id="menu-undone-${story.id}">
          <a href="${createLink(action:'unDone',controller:'story',params:[product:params.product],id:story.id)}"
               data-ajax-trigger="unDone_story"
-              data-ajax-notice="${message(code: 'is.story.declaredAsUnDone')}"
+              data-ajax-notice="${message(code: 'is.story.declaredAsUnDone').encodeAsJavaScript()}"
               data-ajax="true">
               <g:message code='is.ui.releasePlan.menu.story.undone'/>
          </a>

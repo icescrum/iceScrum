@@ -67,21 +67,6 @@ class UtilsTagLib {
         out << g.javascript(null, jsCode)
     }
 
-    def quickLook = { attrs ->
-        def params = [
-                action: "index",
-                controller: "quickLook",
-                width: "600",
-                resizable: "false",
-                draggable: "false",
-                withTitlebar: "false",
-                buttons: "'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }",
-                focusable: false,
-                params: attrs.params
-        ]
-        out << is.remoteDialogFunction(params)
-    }
-
     /**
      * Generate the iceScrum desktop (where the main window appear)
      */
@@ -129,83 +114,8 @@ class UtilsTagLib {
         )
     }
 
-    def savedRequest = {attrs, body ->
-        if (params.ref) {
-            out << params.ref.decodeURL()
-        } else if (session.SPRING_SECURITY_SAVED_REQUEST_KEY)
-            out << session.SPRING_SECURITY_SAVED_REQUEST_KEY.requestURL
-        else
-            out << createLink(uri: '/')
-    }
-
     def bundle = {attrs, body ->
         out << g.message(code: BundleUtils."${attrs.bundle}".get(attrs.value))
-    }
-
-    def tooltipSprint = { attrs ->
-
-        def hideText
-        def hideBorder
-
-        if (!attrs.text) {
-            hideText = "qtip-text-hidden"
-            hideBorder = "{'border':'none'}"
-        }
-
-        def params = [
-                for: "div.event-header[data-elemid=${attrs.id}]",
-                contentTitleText: attrs.title,
-                contentText: attrs.text,
-                styleName: "icescrum",
-                positionTarget: "\'mouse\'",
-                positionAdjustMouse: "false",
-                positionAdjustX: "5",
-                positionAdjustY: "5",
-                showSolo: "true",
-                showDelay: "500",
-                hideDelay: "0",
-                styleTitle: hideBorder ?: null,
-                apiBeforeShow: """function(){ if(\$('#dropmenu').is(':visible')){return false;}}""",
-                styleClassesContent: hideText ?: null,
-                hideWhenEvent: "mouseleave",
-                positionContainer: attrs.container
-        ]
-        out << is.tooltip(params)
-    }
-
-    def tooltipPostit = { attrs ->
-
-        if (pageScope?.tooltip != '') return
-
-        def hideText
-        def hideBorder
-
-        if (!attrs.text) {
-            hideText = "qtip-text-hidden"
-            hideBorder = "{'border':'none'}"
-        }
-
-        def params = [
-                for: "div.#postit-${attrs.type}-${attrs.id}",
-                contentTitleText: attrs.title,
-                contentText: attrs.text,
-                styleName: "icescrum",
-                positionTarget: "\'mouse\'",
-                positionAdjustMouse: "false",
-                positionAdjustScreen: "true",
-                positionAdjustX: "10",
-                positionAdjustY: "10",
-                styleTypeSizeY: "200",
-                showSolo: "true",
-                showDelay: "500",
-                hideDelay: "0",
-                styleTitle: hideBorder ?: null,
-                styleClassesContent: hideText ?: null,
-                hideWhenEvent: "mouseleave",
-                positionContainer: attrs.container,
-                apiBeforeShow: "function(){ if (jQuery('#postit-${attrs.type}-${attrs.id}').hasClass('ui-sortable-helper')) { return false; }; ${attrs.apiBeforeShow}}"
-        ]
-        pageScope.tooltip = is.tooltip(params)
     }
 
     def avatarSelector = { attrs ->

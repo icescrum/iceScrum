@@ -115,7 +115,7 @@
                 searchmenu: function(settings) {
                     settings = $.extend({}, $.dropmenu.defaults, settings);
                     createHelper(settings);
-                    return this.each(
+                    var menu =  this.each(
                             function() {
                                 var elt = $(this);
                                 var _ul = $('.' + settings.content, $(this));
@@ -161,6 +161,11 @@
                                 });
                             }
                     );
+
+                    if (settings.showOnCreate) {
+                        this.mouseover();
+                    }
+                    return menu;
                 }
             });
 
@@ -180,7 +185,7 @@
         var left = menu.offset().left;
 
         if (helper.body) {
-            var existing = helper.body.find(':first');
+            var existing = helper.body.find(">:first-child");
             if (existing.data('hideHandler') != undefined) {
                 _isHover = false;
                 existing.data('hideHandler').call(existing[0], event);

@@ -102,7 +102,8 @@ class ProjectController {
             if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
                 privateOption = false
             }
-            render(template: "dialogs/edit", model: [product: product, privateOption: privateOption])
+            def dialog = g.render(template: "dialogs/edit", model: [product: product, privateOption: privateOption])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
 
@@ -110,7 +111,8 @@ class ProjectController {
     def editPractices = {
         withProduct{ Product product ->
             def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
-            render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
+            def dialog = g.render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
 
@@ -163,14 +165,14 @@ class ProjectController {
         if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
             privateOption = false
         }
+        def dialog = g.render(template: "dialogs/wizard", model: [ product: product,
+                                                            estimationSuitSelect: estimationSuitSelect,
+                                                            privateOption: privateOption,
+                                                            user:springSecurityService.currentUser,
+                                                            rolesLabels: BundleUtils.roles.values().collect {v -> message(code: v)},
+                                                            rolesKeys: BundleUtils.roles.keySet().asList()])
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
 
-        render(template: "dialogs/wizard", model: [ product: product,
-                                                    estimationSuitSelect: estimationSuitSelect,
-                                                    privateOption: privateOption,
-                                                    user:springSecurityService.currentUser,
-                                                    rolesLabels: BundleUtils.roles.values().collect {v -> message(code: v)},
-                                                    rolesKeys: BundleUtils.roles.keySet().asList()]
-        )
     }
 
     @Secured('isAuthenticated()')
@@ -396,6 +398,7 @@ class ProjectController {
                 render(template: '../feature/charts/productParkinglot', model: [
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         values: valueToDisplay as JSON,
+                        referrerAction:'dashboard',
                         featuresNames: values.label as JSON])
             else {
                 def msg = message(code: 'is.chart.error.no.values')
@@ -425,7 +428,8 @@ class ProjectController {
                         session.progress?.completeProgress(message(code: 'is.export.complete'))
                     } else {
                         session.progress = new ProgressSupport()
-                        render(template: 'dialogs/export')
+                        def dialog = g.render(template: 'dialogs/export')
+                        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
                     }
                 }
                 xml {
@@ -473,7 +477,7 @@ class ProjectController {
                     def tmpDir = ApplicationSupport.createTempDir(FilenameUtils.getBaseName(uploadedProject.name))
                     ApplicationSupport.unzip(uploadedProject,tmpDir)
                     def xmlFile = tmpDir.listFiles().find { !it.isDirectory() && FilenameUtils.getExtension(it.name) == 'xml' }
-                    if (xmlFile.exists()){
+                    if (xmlFile){
                         session['import']?.path = tmpDir.absolutePath
                         session['import']?.product = productService.parseXML(xmlFile, session.progress)
                     }else{
@@ -503,16 +507,18 @@ class ProjectController {
 
             } else {
                 def importMustChangeValues = session['import'].product.hasErrors() ?: (true in session['import'].product.teams*.hasErrors()) ?: (true in session['import'].product.getAllUsers()*.hasErrors())
-                render(template: 'dialogs/import', model: [
+                def dialog = g.render(template: 'dialogs/import', model: [
                         user: user,
                         product: session['import'].product,
                         importMustChangeValues: importMustChangeValues,
                         teamsErrors: session['import'].product.teams.findAll {it.hasErrors()},
                         usersErrors: session['import'].product.getAllUsers().findAll {it.hasErrors()}
                 ])
+                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
             }
         } else {
-            render(template: 'dialogs/import', model: [user: user])
+            def dialog = g.render(template: 'dialogs/import', model: [user: user])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
 
@@ -716,7 +722,8 @@ class ProjectController {
                 render(status: 200, contentType: 'application/json', text: session.progress as JSON)
             } else {
                 session.progress = new ProgressSupport()
-                render(template: 'dialogs/report')
+                def dialog = g.render(template: '/scrumOS/report')
+                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
             }
         }
     }
@@ -777,7 +784,8 @@ class ProjectController {
     @Secured('permitAll')
     @Cacheable(cache = 'applicationCache', keyGenerator = 'localeKeyGenerator')
     def browse = {
-        render template: 'dialogs/browse'
+        def dialog = g.render(template: 'dialogs/browse')
+        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
     }
 
     @Secured('permitAll')
@@ -858,7 +866,8 @@ class ProjectController {
                 render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
             } else {
                 session.progress = new ProgressSupport()
-                render(template: 'dialogs/report')
+                def dialog = g.render(template: '/scrumOS/report')
+                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
             }
         }
     }

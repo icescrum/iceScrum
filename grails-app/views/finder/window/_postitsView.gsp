@@ -1,7 +1,7 @@
 <is:backlogElementLayout
         id="window-${controllerName}"
         emptyRendering="true"
-        dblclickable='[rendered:request.inProduct, selector:".postit", callback:is.quickLook(params:"findTypeAndId(obj)")]'
+        dblclickable='[rendered:request.inProduct, selector:".postit", callback:"\$.icescrum.displayQuicklook(obj)"]'
         style="display:${data ? 'block' : 'none'};"
         value="${data}"
         var="type">

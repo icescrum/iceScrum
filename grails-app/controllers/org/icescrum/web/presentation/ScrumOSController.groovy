@@ -222,7 +222,8 @@ class ScrumOSController {
         }
         def aboutXml = new XmlSlurper().parse(file)
         def license
-        render(status: 200, template: "about/index", model: [about: aboutXml])
+        def dialog = g.render(template: "about/index", model: [about: aboutXml])
+        render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
     }
 
     def textileParser = {

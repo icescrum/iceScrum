@@ -2158,3 +2158,63 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     line-height: 18px;
     margin-left: 10px;
 }
+
+.tooltip {
+    display: none;
+}
+
+/* TipTip CSS - Version 1.2 */
+
+#tiptip_holder {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+}
+
+#tiptip_holder.tip_top {
+    padding-bottom: 5px;
+}
+
+#tiptip_holder.tip_bottom {
+    padding-top: 5px;
+}
+
+#tiptip_holder.tip_right {
+    padding-left: 5px;
+}
+
+#tiptip_holder.tip_left {
+    padding-right: 5px;
+}
+
+#tiptip_content .tooltip-title {
+    display: block;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#tiptip_content {
+    font-size: 12px;
+    color: #444;
+    text-shadow: 0 0 2px #FFF;
+    padding: 4px 8px;
+    background-color: rgb(250,241,127);
+    background-color: rgba(250,241,127,0.99);
+    box-shadow: 0 0 3px #555;
+    -webkit-box-shadow: 0 0 3px #555;
+    -moz-box-shadow: 0 0 3px #555;
+}
+
+/* Webkit Hacks  */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    #tiptip_content {
+        padding: 4px 8px 5px 8px;
+        background-color: rgba(250,241,127,0.99);
+    }
+}
+
+.navigation-search .search-content, .navigation-item .dropmenu-content {
+    display: none;
+}

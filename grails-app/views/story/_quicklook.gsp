@@ -19,6 +19,12 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
+<is:dialog width="600"
+           resizable="false"
+           draggable="false"
+           withTitlebar="false"
+           buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
+           focusable="false">
 <%@ page import="org.icescrum.core.domain.Story;" %>
 <div class="postit-details postit-details-story quicklook" data-elemid="${story.uid}">
     <div class="colset-2 clearfix">
@@ -172,6 +178,7 @@
         </div>
     </div>
 </div>
+</is:dialog>
 <is:onStream
         on=".postit-details-story[data-elemid=${story.id}]"
         events="[[object:'story',events:['update']]]"

@@ -19,8 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:setProvider library="jquery"/>
-<is:chartView>
+<div class="view-chart">
   <div id="productCumulativeflow" class="chart-container">
   <jq:jquery>
     $.jqplot.config.enablePlugins = true;
@@ -102,7 +101,7 @@
     $('#productCumulativeflow').find('.jqplot-table-legend').css('bottom','-12px');
   </jq:jquery>
   </div>
-</is:chartView>
+</div>
 <g:if test="${withButtonBar}">
   <is:buttonBar>
     <is:button

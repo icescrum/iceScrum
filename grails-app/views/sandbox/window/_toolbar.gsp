@@ -22,78 +22,82 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
-<g:set var="productOwner" value="${request.productOwner}"/>
-<g:set var="inProduct" value="${request.inProduct}"/>
-
 %{--Add button--}%
-<is:iconButton
-        action="add"
-        rendered="${!request.productArchived}"
-        controller="${controllerName}"
-        shortcut="[key:'ctrl+n',scope:controllerName]"
-        title="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
-        alt="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
-        update="window-content-${controllerName}"
-        icon="create">
-    ${message(code: 'is.ui.sandbox.toolbar.new')}
-</is:iconButton>
+<li class="navigation-item button-ico button-create">
+    <a class="tool-button button-n"
+       href="#${controllerName}/add"
+       data-shortcut="ctrl+n"
+       data-shortcut-on="#window-id-${controllerName}"
+       title="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
+       alt="${message(code:'is.ui.sandbox.toolbar.alt.new')}">
+            <span class="start"></span>
+            <span class="content">
+                <span class="ico"></span>
+                ${message(code: 'is.ui.sandbox.toolbar.new')}
+            </span>
+            <span class="end"></span>
+    </a>
+</li>
 
+<g:if test="${request.productOwner}">
 
-<is:separatorSmall rendered="${productOwner}"/>
+    <li class="navigation-item separator-s"></li>
 
-%{--Accept button--}%
-<is:iconButton
-        rendered="${productOwner}"
-        shortcut="[key:'ctrl+shift+a',scope:controllerName]"
-        history="false"
-        disabled="true"
-        onClick="${is.remoteDialogFunction(
-                          title:'is.dialog.acceptStory.title',
-                          action:'openDialogAcceptAs',
-                          controller:controllerName,
-                          height:125,
-                          width:360,
-                          before:'if (jQuery.icescrum.postit.ids($(\'.postit.ui-selected,.table-row-focus\')) == false) return false;',
-                          valid:[
-                              action:'accept',
-                              controller:'story',
-                              params:'jQuery.icescrum.postit.ids($(\'.postit.ui-selected,.table-row-focus\'))',
-                              onSuccess:'var type = jQuery(\'input[name=type]:checked\', \'#dialog form\').val(); $.event.trigger(\'accept_story\',data)',
-                              button:'is.dialog.acceptAs.button'
-                          ])
-                  }"
-        alt="${message(code:'is.ui.sandbox.toolbar.alt.accept')}"
-        title="${message(code:'is.ui.sandbox.toolbar.alt.accept')}">
-    ${message(code: 'is.ui.sandbox.toolbar.accept')}
-</is:iconButton>
+    %{--Accept button--}%
+    <li class="navigation-item">
+        <a class="tool-button button-n"
+           data-ajax="true"
+           href="${createLink(action:'openDialogAcceptAs',params:[product:params.product])}"
+           data-shortcut="ctrl+shift+a"
+           data-shortcut-on="#window-id-${controllerName}"
+           alt="${message(code:'is.ui.sandbox.toolbar.alt.accept')}"
+           title="${message(code:'is.ui.sandbox.toolbar.alt.accept')}">
+                <span class="start"></span>
+                <span class="content">
+                    ${message(code: 'is.ui.sandbox.toolbar.accept')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
 
-<is:separatorSmall rendered="${productOwner}"/>
+    <li class="navigation-item separator-s"></li>
 
-<is:iconButton
-        rendered="${productOwner}"
-        shortcut="[key:'ctrl+shift+c',scope:controllerName]"
-        onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}');});"
-        disabled="true"
-        alt="${message(code:'is.ui.sandbox.toolbar.alt.clone')}"
-        title="${message(code:'is.ui.sandbox.toolbar.alt.clone')}">
-    ${message(code: 'is.ui.sandbox.toolbar.clone')}
-</is:iconButton>
+    <li class="navigation-item">
+        <a class="tool-button button-n"
+           onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
+           data-shortcut="ctrl+shift+c"
+           data-shortcut-on="#window-id-${controllerName}"
+           alt="${message(code:'is.ui.sandbox.toolbar.alt.clone')}"
+           title="${message(code:'is.ui.sandbox.toolbar.alt.clone')}">
+                <span class="start"></span>
+                <span class="content">
+                    ${message(code: 'is.ui.sandbox.toolbar.clone')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
 
-<is:separatorSmall rendered="${productOwner}"/>
+    <li class="navigation-item separator-s"></li>
 
-%{--Delete button --}%
-<is:iconButton
-        icon="delete"
-        rendered="${productOwner}"
-        shortcut="[key:'del',scope:controllerName]"
-        onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
-        disabled="true"
-        alt="${message(code:'is.ui.sandbox.toolbar.alt.delete')}"
-        title="${message(code:'is.ui.sandbox.toolbar.alt.delete')}">
-    ${message(code: 'is.ui.sandbox.toolbar.delete')}
-</is:iconButton>
+    <li class="navigation-item">
+        <a class="tool-button button-n"
+           onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){ jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
+           data-shortcut="del"
+           data-shortcut-on="#window-id-${controllerName}"
+           alt="${message(code:'is.ui.sandbox.toolbar.alt.delete')}"
+           title="${message(code:'is.ui.sandbox.toolbar.alt.delete')}">
+                <span class="start"></span>
+                <span class="content">
+                    ${message(code: 'is.ui.sandbox.toolbar.delete')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
+</g:if>
 
-<is:separator rendered="${!request.productArchived}"/>
+<g:if test="${!request.productArchived}">
+    <li class="navigation-item separator"></li>
+</g:if>
 
 %{--View--}%
 <is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
@@ -115,7 +119,8 @@
     </ul>
 </is:panelButton>
 
-<is:separator/>
+<li class="navigation-item separator"></li>
+
 <is:reportPanel
         action="print"
         text="${message(code: 'is.ui.toolbar.print')}"
@@ -125,6 +130,7 @@
                   ['DOCX', message(code:'is.report.format.docx')],
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"/>
+
 <entry:point id="${controllerName}-${actionName}"/>
 %{--Textfield for the auto completion search--}%
 <is:panelSearch id="search-ui">

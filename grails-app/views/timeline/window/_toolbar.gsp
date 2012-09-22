@@ -19,61 +19,76 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:set var="poOrSm" value="${request.scrumMaster || request.productOwner}"/>
+<g:if test="${request.scrumMaster || request.productOwner}">
 
-<is:iconButton
-        rendered="${poOrSm}"
-        action="add"
-        shortcut="[key:'ctrl+n',scope:controllerName]"
-        update="window-content-${controllerName}"
-        icon="create"
-        class="${(currentPanel == 'add') ? 'select' : ''}"
-        title="${message(code:'is.ui.timeline.toolbar.alt.new')}"
-        alt="${message(code:'is.ui.timeline.toolbar.alt.new')}">
-  <g:message code="is.ui.timeline.toolbar.new"/>
-</is:iconButton>
+    <li class="navigation-item button-ico button-create">
+        <a class="tool-button button-n"
+           href="#${controllerName}/add"
+           data-shortcut="ctrl+n"
+           data-shortcut-on="#window-id-${controllerName}"
+           title="${message(code:'is.ui.timeline.toolbar.alt.new')}"
+           alt="${message(code:'is.ui.timeline.toolbar.alt.new')}">
+                <span class="start"></span>
+                <span class="content">
+                    <span class="ico"></span>
+                    ${message(code: 'is.ui.timeline.toolbar.new')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
 
-<is:separator rendered="${poOrSm}"/>
+    <li class="navigation-item separator"></li>
+
+</g:if>
 
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
   <ul>
     <li class="first">
-        <a href="#${controllerName}/productCumulativeFlowChart" title="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}">
+        <a href="${createLink(action:'productCumulativeFlowChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}">
             ${message(code:'is.ui.timeline.charts.productCumulativeFlow')}
         </a>
     </li>
     <li>
-        <a href="#${controllerName}/productBurnupChart" title="${message(code:'is.ui.timeline.charts.productBurnup')}">
+        <a href="${createLink(action:'productBurnupChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productBurnup')}">
             ${message(code:'is.ui.timeline.charts.productBurnup')}
         </a>
     </li>
     <li>
-        <a href="#${controllerName}/productBurndownChart" title="${message(code:'is.ui.timeline.charts.productBurndown')}">
+        <a href="${createLink(action:'productBurndownChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productBurndown')}">
           ${message(code:'is.ui.timeline.charts.productBurndown')}
         </a>
     </li>
-    <li><is:link action="productParkingLotChart"
-            params="['referrer.action':'index','referrer.controller':controllerName]"
-            controller="${controllerName}"
-            update="window-content-${controllerName}"
-            title="${message(code:'is.ui.timeline.charts.parkinglot')}"
-            remote="true"
-            value="${message(code:'is.ui.timeline.charts.productParkingLot')}"/>
+    <li>
+        <a href="${createLink(action:'productParkingLotChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productParkingLot')}">
+          ${message(code:'is.ui.timeline.charts.productParkingLot')}
+        </a>
     </li>
       <li>
-          <a href="#${controllerName}/productVelocityChart" title="${message(code:'is.ui.timeline.charts.productVelocity')}">
+          <a href="${createLink(action:'productVelocityChart', params: [product:params.product])}"
+                  data-ajax="true"
+                  data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productVelocity')}">
             ${message(code:'is.ui.timeline.charts.productVelocity')}
           </a>
       </li>
       <li class="last">
-        <a href="#${controllerName}/productVelocityCapacityChart" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}">
+        <a href="${createLink(action:'productVelocityCapacityChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}"href="#${controllerName}/productVelocityCapacityChart" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}">
           ${message(code:'is.ui.timeline.charts.productVelocityCapacity')}
         </a>
     </li>
   </ul>
 </is:panelButton>
 
-<is:separator elementId="menu-report-separator"/>
+<li class="navigation-item separator" id="menu-report-separator"></li>
 
 %{--Print button--}%
 <is:reportPanel

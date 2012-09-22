@@ -28,59 +28,76 @@
 <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !taskDone}"/>
 <g:set var="taskDeletable" value="${(request.scrumMaster || responsible || creator)}"/>
 
-<is:iconButton
-        action="edit"
-        controller="sprintPlan"
-        rendered="${taskEditable}"
-        id="${task.backlog.id}"
-        subid="${task.id}"
-        params="[product:params.product, referrerUrl:controllerName+'/'+task.id]"
-        title="${message(code:'is.ui.backlogelement.toolbar.update')}"
-        alt="${message(code:'is.ui.backlogelement.toolbar.update')}"
-        update="window-content-${controllerName}">
-    ${message(code: 'is.ui.backlogelement.toolbar.update')}
-</is:iconButton>
-
-<is:separatorSmall rendered="${taskEditable}"/>
-
-<is:iconButton
-        action="delete"
-        controller="task"
-        id="${task.id}"
-        params="[product:params.product]"
-        rendered="${taskDeletable}"
-        title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
-        alt="${message(code:'is.ui.backlogelement.toolbar.delete')}"
-        onSuccess="jQuery.icescrum.openWindow('sprintPlan');
-          jQuery.icescrum.renderNotice('${message(code:'is.task.deleted').encodeAsJavaScript()}');"
-        icon="delete">
-    ${message(code: 'is.ui.backlogelement.toolbar.delete')}
-</is:iconButton>
-
-<is:separator rendered="${taskDeletable}"/>
+<g:if test="${taskEditable}">
+    <li class="navigation-item">
+        <a class="tool-button button-n"
+           href="#sprintPlan/${task.backlog.id}/edit/${task.id}"
+           title="${message(code:'is.ui.backlogelement.toolbar.update')}"
+           alt="${message(code:'is.ui.backlogelement.toolbar.update')}">
+                <span class="start"></span>
+                <span class="content">
+                ${message(code: 'is.ui.backlogelement.toolbar.update')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
+    <li class="navigation-item separator-s"></li>
+</g:if>
+<g:if test="${taskDeletable}">
+    <li class="navigation-item">
+        <a class="tool-button button-n"
+           href="${createLink(controller:'task', action:'delete',id:task.id,params:[product:params.product])}"
+           data-ajax-notice="${message(code:'is.task.deleted').encodeAsJavaScript()}"
+           data-ajax-trigger="remove_task"
+           data-ajax-success="#sprintPlan"
+           data-ajax="true"
+           title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
+           alt="${message(code:'is.ui.backlogelement.toolbar.delete')}">
+                <span class="start"></span>
+                <span class="content">
+                    ${message(code: 'is.ui.backlogelement.toolbar.delete')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
+</g:if>
 
 <entry:point id="${controllerName}-${actionName}-toolbar"/>
 
 <div class="navigation-right-toolbar">
 
     <g:if test="${previous}">
-        <is:iconButton
-                href="#${controllerName}/${previous.id}"
-                title="${message(code:'is.ui.backlogelement.toolbar.previous')}"
-                alt="${message(code:'is.ui.backlogelement.toolbar.previous')}">
-            ${message(code: 'is.ui.backlogelement.toolbar.previous')}
-        </is:iconButton>
+        <li class="navigation-item">
+            <a class="tool-button button-n"
+               href="#${controllerName}/${previous.id}"
+               title="${message(code:'is.ui.backlogelement.toolbar.previous')}"
+               alt="${message(code:'is.ui.backlogelement.toolbar.previous')}">
+                    <span class="start"></span>
+                    <span class="content">
+                        ${message(code: 'is.ui.backlogelement.toolbar.previous')}
+                    </span>
+                    <span class="end"></span>
+            </a>
+        </li>
     </g:if>
 
-    <is:separatorSmall rendered="${previous != null && next != null}"/>
+    <g:if test="${next && previous}">
+        <li class="navigation-item separator-s"></li>
+    </g:if>
 
     <g:if test="${next}">
-        <is:iconButton
-                href="#${controllerName}/${next.id}"
-                title="${message(code:'is.ui.backlogelement.toolbar.next')}"
-                alt="${message(code:'is.ui.backlogelement.toolbar.next')}">
-            ${message(code: 'is.ui.backlogelement.toolbar.next')}
-        </is:iconButton>
+        <li class="navigation-item">
+            <a class="tool-button button-n"
+               href="#${controllerName}/${next.id}"
+               title="${message(code:'is.ui.backlogelement.toolbar.next')}"
+               alt="${message(code:'is.ui.backlogelement.toolbar.next')}">
+                    <span class="start"></span>
+                    <span class="content">
+                        ${message(code: 'is.ui.backlogelement.toolbar.next')}
+                    </span>
+                    <span class="end"></span>
+            </a>
+        </li>
     </g:if>
 
 </div>

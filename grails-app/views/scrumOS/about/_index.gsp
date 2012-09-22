@@ -19,6 +19,14 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
+<is:dialog
+        resizable="false"
+        withTitlebar="false"
+        noprefix="true"
+        width="600"
+        height="430"
+        buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
+        draggable="false">
 <is:tabs elementId="about-tabs">
   <entry:point id="about-tabs-first"/>
   <is:tab elementId="version-tab" class="about-tab" title="is.dialog.about.version">
@@ -29,3 +37,4 @@
   </is:tab>
   <entry:point id="about-tabs-last"/>
 </is:tabs>
+</is:dialog>

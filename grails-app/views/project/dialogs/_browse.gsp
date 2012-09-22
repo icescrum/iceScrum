@@ -19,6 +19,16 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
+<is:dialog
+        resizable="false"
+          draggable="false"
+          noprefix="true"
+          width="940"
+          height="540"
+          valid="[action:'index',
+              controller:'scrumOS',
+              before:'document.location=jQuery.icescrum.o.baseUrl+\'p/\'+jQuery(\'#product\').val()+\'#project\';jQuery(\'#dialog\').dialog(\'close\'); return false;',
+              button:'is.dialog.browseProject.button']">
 <form id="form-project-browse" name="form-project-browse" method="post">
 <is:browser detailsLabel="is.dialog.browseProject.details"
         browserLabel="is.dialog.browseProject.projects"
@@ -28,3 +38,4 @@
         name="project-browse" >
 </is:browser>
 </form>
+</is:dialog>

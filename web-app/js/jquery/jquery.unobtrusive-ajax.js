@@ -83,7 +83,9 @@
                 if (data.dialog){
                     $(document.body).append(data.dialog);
                 }else{
-                    getFunction(element.data("ajaxSuccess"), ["data", "status", "xhr"]).apply(this, arguments);
+                    if (element.data("ajaxNotice")){
+                        $.icescrum.renderNotice(element.data("ajaxNotice"));
+                    }
                     if (element.data("ajaxTrigger")){
                         if(typeof element.data("ajaxTrigger") == 'string'){
                             $.event.trigger(element.data("ajaxTrigger"),[data]);
@@ -93,9 +95,11 @@
                             });
                         }
                     }
-                    if (element.data("ajaxNotice")){
-                        $.icescrum.renderNotice(element.data("ajaxNotice"));
+                    if (element.data("ajaxSuccess") && element.data("ajaxSuccess").startsWith('#')){
+                        document.location.hash = element.data("ajaxSuccess");
+                        return
                     }
+                    getFunction(element.data("ajaxSuccess"), ["data", "status", "xhr", "element"]).apply(this, [data, status, xhr, element]);
                 }
             },
             error: getFunction(element.data("ajaxFailure"), ["xhr", "status", "error"])
@@ -112,7 +116,7 @@
         $.ajax(options);
     }
 
-    $("a[data-ajax=true]").live("click", function (evt) {
+    $(document).on("click", 'a[data-ajax=true]', function (evt) {
         var a = $(this);
         evt.preventDefault();
         ajaxRequest(a, {
@@ -122,16 +126,66 @@
         });
     });
 
-    $('div[data-dropmenu=true]').live("hover", function(){
+    $(document).on("hover", 'div[data-dropmenu=true], li[data-searchmenu=true]', function(){
         var elemt = $(this);
         if(!elemt.data('created')){
             var data = $(this).data();
-            if (!data.left){
-                data.left = $.constbrowser.getDropMenuTopLeft();
-            }
             data.showOnCreate = true;
-            elemt.dropmenu(data);
+            if (data.dropmenu){
+                if (!data.left){
+                    data.left = $.constbrowser.getDropMenuTopLeft();
+                }
+                elemt.dropmenu(data);
+            } else {
+                elemt.searchmenu(data);
+            }
+            elemt.data('created',true);
         }
     });
 
+
+    $(document).on('hover','.postit, .postit-rect', function(event){
+        var elem = $(this);
+        var tooltip = elem.next();
+        if (tooltip.hasClass('tooltip')){
+            if (!elem.data('tooltip-init')){
+                elem.tipTip({delay:500, activation:"focus", defaultPosition:"right", content:tooltip.html(), edgeOffset:-20});
+                elem.data('tooltip-init',true);
+            }
+            (event.type == 'mouseenter' && !$('#dropmenu').is(':visible')) ? elem.focus() : elem.blur();
+        }
+    });
+
+    $(document).on('hover','.event-header', function(event){
+        var tooltip = $('.tooltip',this);
+        var elem = $(this);
+        if (tooltip.hasClass('tooltip')){
+            if (!elem.data('tooltip-init')){
+                elem.tipTip({delay:500, activation:"focus", defaultPosition:"right", content:tooltip.html(), edgeOffset:-20});
+                elem.data('tooltip-init',true);
+            }
+            (event.type == 'mouseenter' && !$('#dropmenu').is(':visible')) ? elem.focus() : elem.blur();
+        }
+    });
+
+    attachListeners();
+
 }(jQuery));
+
+function attachListeners(content){
+    $('a[data-shortcut]', content).each(function(){
+        var elem = $(this);
+        var onClean = elem.data('shortcutOn') ? elem.data('shortcutOn').replace(/\W/g, '')  : 'body';
+        var on = elem.data('shortcutOn') ? elem.data('shortcutOn')  : document.body;
+        var bind = 'keydown.'+'.'+onClean+'.'+elem.data('shortcut').replace(/\+/g,'');
+        $(on).unbind(bind);
+        $(on).bind(bind,elem.data('shortcut'),function(e){
+            if (!elem.attr('href') || elem.data('ajax')){
+                elem.click();
+            }else{
+                document.location.hash = elem.attr('href');
+            }
+            e.preventDefault();
+        });
+    });
+}

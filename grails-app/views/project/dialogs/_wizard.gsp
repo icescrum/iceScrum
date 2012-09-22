@@ -20,6 +20,12 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
+<is:dialog
+        resizable="false"
+        noprefix="true"
+        withTitlebar="false"
+        width="800"
+        draggable="false">
 <is:wizard next="is.dialog.wizard.next" cancel="is.button.cancel" previous="is.dialog.wizard.previous"
            submit="is.dialog.wizard.submit" id="project-wizard" controller="project"
            before="\$('#choose-select-is-team-teams').empty();\$('#choose-select-is-team-members').empty();"
@@ -171,3 +177,4 @@
     </is:fieldset>
 
 </is:wizard>
+</is:dialog>

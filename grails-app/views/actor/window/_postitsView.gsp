@@ -27,9 +27,9 @@
         style="display:${actors ? 'block' : 'none'};"
         selectable="[rendered:request.productOwner,
                     filter:'div.postit-actor',
-                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'actor.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
+                    selected:'jQuery.icescrum.dblclickSelectable(ui, 300, $.icescrum.displayQuicklook)']"
         value="${actors}"
-        dblclickable='[rendered:!request.productOwner,selector:".postit",callback:is.quickLook(params:"\"actor.id=\"+obj.data(\"elemid\")")]'
+        dblclickable='[rendered:!request.productOwner,selector:".postit",callback:"\$.icescrum.displayQuicklook"]'
         var="actor">
         <is:cache cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
             <g:include view="/actor/_postit.gsp" model="[actor:actor]" params="[product:params.product]"/>
@@ -40,7 +40,7 @@
 
 
 <is:shortcut key="space"
-             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'actor.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
+             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>
 <is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream

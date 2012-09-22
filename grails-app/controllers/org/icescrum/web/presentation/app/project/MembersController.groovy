@@ -56,13 +56,14 @@ class MembersController {
         }
 
         def listRoles = product.preferences.hidden ? 'roles' : 'rolesPublic'
-        render(template: "dialogs/members", model: [product: product,
+        def dialog = g.render(template: "dialogs/members", model: [product: product,
                                                     members: members,
                                                     ownerSelect:ownerSelect,
                                                     possibleOwners:possibleOwners,
                                                     user: springSecurityService.currentUser,
                                                     rolesNames:BundleUtils."${listRoles}".values().collect {v -> message(code: v)},
                                                     rolesKeys:BundleUtils."${listRoles}".keySet().asList()])
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])

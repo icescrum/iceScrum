@@ -25,64 +25,37 @@
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
   <ul>
     <li class="first">
-      <is:link
-              action="productCumulativeFlowChart"
-              controller="${controllerName}"
-              update="window-content-${controllerName}"
-              title="${message(code:'is.ui.project.charts.productCumulativeFlow')}"
-              remote="true"
-              value="${message(code:'is.ui.project.charts.productCumulativeFlow')}"/>
+        <a href="${createLink(action:'productCumulativeFlowChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productCumulativeFlow')}</a>
     </li>
     <li>
-      <is:link
-              action="productBurnupChart"
-              controller="${controllerName}"
-              update="window-content-${controllerName}"
-              title="${message(code:'is.ui.project.charts.productBurnup')}"
-              remote="true"
-              value="${message(code:'is.ui.project.charts.productBurnup')}"/>
+        <a href="${createLink(action:'productBurnupChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productBurnup')}</a>
     </li>
     <li>
-      <is:link
-              action="productBurndownChart"
-              controller="${controllerName}"
-              update="window-content-${controllerName}"
-              title="${message(code:'is.ui.project.charts.productBurndown')}"
-              remote="true"
-              value="${message(code:'is.ui.project.charts.productBurndown')}"/>
+        <a href="${createLink(action:'productBurndownChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productBurndown')}</a>
     </li>
     <li>
-      <is:link
-              action="productParkingLotChart"
-              controller="${controllerName}"
-              params="['referrer.action':'dashboard','referrer.controller':controllerName]"
-              update="window-content-${controllerName}"
-              title="${message(code:'is.ui.project.charts.productParkingLot')}"
-              remote="true"
-              value="${message(code:'is.ui.project.charts.productParkingLot')}"/>
+        <a href="${createLink(action:'productParkingLotChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productParkingLot')}</a>
     </li>
     <li>
-      <is:link
-              action="productVelocityChart"
-              controller="${controllerName}"
-              update="window-content-${controllerName}"
-              title="${message(code:'is.ui.project.charts.productVelocity')}"
-              remote="true"
-              value="${message(code:'is.ui.project.charts.productVelocity')}"/>
+        <a href="${createLink(action:'productVelocityChart', params: [product:params.product])}"
+                 data-ajax="true"
+                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productVelocity')}</a>
     </li>
     <li class="last">
-      <is:link
-              action="productVelocityCapacityChart"
-              controller="${controllerName}"
-              update="window-content-${controllerName}"
-              title="${message(code:'is.ui.project.charts.productVelocityCapacity')}"
-              remote="true"
-              value="${message(code:'is.ui.project.charts.productVelocityCapacity')}"/>
+        <a href="#${controllerName}/productVelocityCapacityChart">${message(code:'is.ui.project.charts.productVelocityCapacity')}</a>
     </li>
   </ul>
 </is:panelButton>
 
-<is:separator elementId="menu-report-separator"/>
+<li class="navigation-item separator" id="menu-report-separator"></li>
 
 <entry:point id="${controllerName}-${actionName}"/>
 

@@ -23,121 +23,139 @@
 <%@ page import="org.icescrum.core.domain.Story;" %>
 <g:set var="creator" value="${story.creator.id == user?.id}"/>
 
-<is:iconButton
-        action="editStory"
-        controller="story"
-        rendered="${request.productOwner  || creator}"
-        id="${story.id}"
-        params="[product:params.product]"
-        title="${message(code:'is.ui.backlogelement.toolbar.update')}"
-        alt="${message(code:'is.ui.backlogelement.toolbar.update')}"
-        update="window-content-${controllerName}">
-    ${message(code: 'is.ui.backlogelement.toolbar.update')}
-</is:iconButton>
-
-<is:separatorSmall rendered="${request.productOwner  || creator}"/>
+<g:if test="${request.productOwner  || creator}">
+    <li class="navigation-item">
+        <a class="tool-button button-n"
+           href="#${controllerName}/editStory/${story.id}"
+           title="${message(code:'is.ui.backlogelement.toolbar.update')}"
+           alt="${message(code:'is.ui.backlogelement.toolbar.update')}">
+            <span class="start"></span>
+            <span class="content">
+                ${message(code: 'is.ui.backlogelement.toolbar.update')}
+            </span>
+            <span class="end"></span>
+        </a>
+    </li>
+    <li class="navigation-item separator-s"></li>
+</g:if>
 
 %{--View--}%
-<is:panelButton
-        id="accept-display"
-        arrow="true"
-        text="${message(code:'is.ui.backlogelement.toolbar.accept')}"
-        rendered="${request.productOwner && story.state == Story.STATE_SUGGESTED}">
-    <ul>
-        <li class="first">
-            <is:link
-                    controller="story"
-                    action="accept"
-                    id="${params.id}"
-                    params="[type:'story']"
-                    history="false"
-                    remote="true"
-                    onSuccess="jQuery.event.trigger('accept_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsStory').encodeAsJavaScript()}')"
-                    value="${message(code:'is.ui.backlogelement.toolbar.acceptAsStory')}"/>
+<g:if test="${request.productOwner && story.state == Story.STATE_SUGGESTED}">
+
+    <is:panelButton
+            id="accept-display"
+            arrow="true"
+            text="${message(code:'is.ui.backlogelement.toolbar.accept')}">
+        <ul>
+            <li class="first">
+                <a href="${createLink(action:'accept',controller:'story',params:[type:'story',product:params.product],id:story.id)}"
+                   data-ajax-trigger="accept_story"
+                   data-ajax-notice="${message(code: 'is.story.acceptedAsStory').encodeAsJavaScript()}"
+                   data-ajax="true">
+                   <g:message code='is.ui.backlogelement.toolbar.acceptAsStory'/>
+                </a>
+            </li>
+
+            <g:if test="${!sprint}">
+                <li class="last">
+            </g:if>
+            <g:else>
+                <li>
+            </g:else>
+            <a href="${createLink(action:'accept',controller:'story',params:[type:'feature',product:params.product],id:story.id)}"
+               data-ajax-notice="${message(code: 'is.story.acceptedAsFeature').encodeAsJavaScript()}"
+               data-ajax-success="#feature"
+               data-ajax="true">
+               <g:message code='is.ui.backlogelement.toolbar.acceptAsFeature'/>
+            </a>
         </li>
 
-        <g:if test="${!sprint}">
-            <li class="last">
-        </g:if>
-        <g:else>
-            <li>
-        </g:else>
-        <is:link
-        controller="story"
-        action="accept"
-        id="${params.id}"
-        params="[type:'feature']"
-        history="false"
-        remote="true"
-        onSuccess="jQuery.icescrum.openWindow('feature'); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsFeature').encodeAsJavaScript()}')"
-        value="${message(code:'is.ui.backlogelement.toolbar.acceptAsFeature')}"/>
+            <g:if test="${sprint}">
+                <li class="last">
+                    <a href="${createLink(action:'accept',controller:'story',params:[type:'task',product:params.product],id:story.id)}"
+                       data-ajax-notice="${message(code: 'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}"
+                       data-ajax-success="#sprintPlan"
+                       data-ajax="true">
+                       <g:message code='is.ui.backlogelement.toolbar.acceptAsUrgentTask'/>
+                    </a>
+                </li>
+            </g:if>
+
+        </ul>
+    </is:panelButton>
+    <li class="navigation-item separator-s"></li>
+</g:if>
+
+<g:if test="${(request.productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED)}">
+
+    <li class="navigation-item">
+        <a class="tool-button button-n"
+           href="${createLink(controller:'story', action:'delete',id:story.id,params:[product:params.product])}"
+           data-ajax-notice="${message(code:'is.story.deleted').encodeAsJavaScript()}"
+           data-ajax-trigger="remove_story"
+           data-ajax-success="#${story.state > Story.STATE_SUGGESTED ? 'backlog' : 'sandbox'}"
+           data-ajax="true"
+           title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
+           alt="${message(code:'is.ui.backlogelement.toolbar.delete')}">
+                <span class="start"></span>
+                <span class="content">
+                    ${message(code: 'is.ui.backlogelement.toolbar.delete')}
+                </span>
+                <span class="end"></span>
+        </a>
     </li>
 
-        <g:if test="${sprint}">
-            <li class="last">
-                <is:link
-                        controller="story"
-                        action="accept"
-                        id="${params.id}"
-                        params="[type:'task']"
-                        history="false"
-                        remote="true"
-                        onSuccess="jQuery.icescrum.openWindow('sprintPlan'); jQuery.icescrum.renderNotice('${message(code:'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}')"
-                        value="${message(code:'is.ui.backlogelement.toolbar.acceptAsUrgentTask')}"/>
-            </li>
-        </g:if>
+    <li class="navigation-item separator"></li>
+</g:if>
 
-    </ul>
-</is:panelButton>
-
-<is:separatorSmall rendered="${request.productOwner && story.state == Story.STATE_SUGGESTED}"/>
-
-<is:iconButton
-        action="delete"
-        controller="story"
-        id="${params.id}"
-        rendered="${(request.productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED)}"
-        title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
-        alt="${message(code:'is.ui.backlogelement.toolbar.delete')}"
-        onSuccess="jQuery.icescrum.openWindow('${story.state > Story.STATE_SUGGESTED ? 'backlog' : 'sandbox'}');
-          jQuery.icescrum.renderNotice('${message(code:'is.story.deleted').encodeAsJavaScript()}');"
-        icon="delete">
-    ${message(code: 'is.ui.backlogelement.toolbar.delete')}
-</is:iconButton>
-
-<is:separator rendered="${(request.productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED)}"/>
-
-<is:iconButton
-        onclick="jQuery.icescrum.openCommentTab('#comments');"
-        title="${message(code:'is.ui.backlogelement.toolbar.comment')}"
-        alt="${message(code:'is.ui.backlogelement.toolbar.comment')}"
-        renderedOnAccess="isAuthenticated()"
-        disabled="true">
-    ${message(code: 'is.ui.backlogelement.toolbar.comment')}
-</is:iconButton>
+<li class="navigation-item">
+    <a class="tool-button button-n"
+       onclick="$.icescrum.openCommentTab('#comments'); return false;"
+       title="${message(code:'is.ui.backlogelement.toolbar.comment')}"
+       alt="${message(code:'is.ui.backlogelement.toolbar.comment')}">
+            <span class="start"></span>
+            <span class="content">
+                ${message(code: 'is.ui.backlogelement.toolbar.comment')}
+            </span>
+            <span class="end"></span>
+    </a>
+</li>
 
 <entry:point id="${controllerName}-${actionName}-toolbar"/>
 
 <div class="navigation-right-toolbar">
 
     <g:if test="${previous}">
-        <is:iconButton
-                href="#${controllerName}/${previous.id}"
-                title="${message(code:'is.ui.backlogelement.toolbar.previous')}"
-                alt="${message(code:'is.ui.backlogelement.toolbar.previous')}">
-            ${message(code: 'is.ui.backlogelement.toolbar.previous')}
-        </is:iconButton>
+        <li class="navigation-item">
+            <a class="tool-button button-n"
+               href="#${controllerName}/${previous.id}"
+               title="${message(code:'is.ui.backlogelement.toolbar.previous')}"
+               alt="${message(code:'is.ui.backlogelement.toolbar.previous')}">
+                    <span class="start"></span>
+                    <span class="content">
+                        ${message(code: 'is.ui.backlogelement.toolbar.previous')}
+                    </span>
+                    <span class="end"></span>
+            </a>
+        </li>
     </g:if>
 
-    <is:separatorSmall rendered="${previous != null && next != null}"/>
+    <g:if test="${next && previous}">
+        <li class="navigation-item separator-s"></li>
+    </g:if>
 
     <g:if test="${next}">
-        <is:iconButton
-                href="#${controllerName}/${next.id}"
-                title="${message(code:'is.ui.backlogelement.toolbar.next')}"
-                alt="${message(code:'is.ui.backlogelement.toolbar.next')}">
-            ${message(code: 'is.ui.backlogelement.toolbar.next')}
-        </is:iconButton>
+        <li class="navigation-item">
+            <a class="tool-button button-n"
+               href="#${controllerName}/${next.id}"
+               title="${message(code:'is.ui.backlogelement.toolbar.next')}"
+               alt="${message(code:'is.ui.backlogelement.toolbar.next')}"><span class="start"></span>
+                    <span class="content">
+                        ${message(code: 'is.ui.backlogelement.toolbar.next')}
+                    </span>
+                    <span class="end"></span>
+            </a>
+        </li>
     </g:if>
 
 </div>

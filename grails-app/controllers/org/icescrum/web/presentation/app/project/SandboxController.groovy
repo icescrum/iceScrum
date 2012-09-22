@@ -40,12 +40,12 @@ class SandboxController {
     def springSecurityService
     def storyService
     def dropImportService
-    def securityService
 
     @Secured('productOwner() and !archivedProduct()')
     def openDialogAcceptAs = {
         def sprint = Sprint.findCurrentSprint(params.long('product')).list()
-        render(template: 'dialogs/acceptAs', model: [sprint: sprint])
+        def dialog = g.render(template: 'dialogs/acceptAs', model: [sprint: sprint])
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     def list = {
@@ -113,8 +113,8 @@ class SandboxController {
             // If the data submitted is not considered to be a valid table, then
             // we suggest the user to create a new story with the text he has input as a description
             if (!parsedData) {
-                render(text: include(action: 'list', params: [product: params.product]))
-                render(template: "dialogs/import", model: [data: data])
+                def dialog = g.render(template: "dialogs/import", model: [data: data])
+                render(status:200, contentType: 'application/json', text:[dialog:dialog] as JSON)
                 return
             } else {
                 // if the data is considered valid, then we ask the user to match his columns with
@@ -183,7 +183,8 @@ class SandboxController {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
             session.progress = new ProgressSupport()
-            render(template: 'dialogs/report')
+            def dialog = g.render(template: '/scrumOS/report')
+            render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
     }
 }

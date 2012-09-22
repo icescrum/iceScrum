@@ -27,7 +27,7 @@
         selectable="[rendered:request.productOwner,
                     filter:'div.postit-feature',
                     cancel:'.postit .postit-sortable, a',
-                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,function(obj){'+is.quickLook(params:'\'feature.id=\'+jQuery.icescrum.postit.id(obj.selected)')+';})']"
+                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,$.icescrum.displayQuicklook)']"
         sortable='[rendered:request.productOwner,
                   containment:"#window-content-feature",
                   handle:".postit-sortable",
@@ -40,7 +40,7 @@
         changeRank='[selector:".postit",controller:controllerName,action:"rank",name:"feature.rank",params:[product:params.product]]'
         dblclickable='[rendered:!request.productOwner,
                                selector:".postit",
-                               callback:is.quickLook(params:"\"feature.id=\"+obj.data(\"elemId\")")]'
+                               callback:"\$.icescrum.displayQuicklook(obj)"]'
         value="${features}"
         var="feature">
         <is:cache cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">
@@ -51,7 +51,7 @@
 <g:include view="/feature/window/_blank.gsp" model="[features:features]"/>
 
 <is:shortcut key="space"
-             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,function(obj){${is.quickLook(params:'\'feature.id=\'+jQuery.icescrum.postit.id(obj.selected)')}},true);"
+             callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>
 <is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream
