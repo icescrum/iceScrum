@@ -659,17 +659,16 @@ Timeline.IceScrumEventPainter.prototype.showBubble = function(evt) {
 
 Timeline.IceScrumEventPainter.prototype._showBubble = function(x, y, evt) {
     var elmt = $(this._eventIdToElmt[evt.getID()]);
-    if (!elmt.data('tooltip-created')){
+    if (!elmt.data('tooltip')){
         var tooltip = $("<div/>").addClass('tooltip').html(evt.getProperty('tooltipContent'));
         var tooltipTitle = $("<span/>").addClass('tooltip-title').html(evt.getProperty('tooltipTitle'));
         tooltipTitle.prependTo(tooltip);
         tooltip.insertAfter(elmt);
         elmt.data('tooltip-created','true');
-        elmt.tipTip({delay:500, activation:"focus", defaultPosition:"right", content:tooltip.html(), edgeOffset:-20});
-        elmt.mouseleave(function(){ elmt.tipTip('hide'); });
-    }
-    if (!$(elmt).next().is(':visible')){
-        elmt.tipTip('show');
+        elmt.tipTip({delay:200, activation:"hover", delayHover:500, defaultPosition:"right", content:tooltip.html(), edgeOffset:-20});
+        elmt.data('tooltip', true);
+        var timeoutOnCreate = setTimeout(function(){ elmt.tipTip('show'); }, 500);
+        elmt.mouseleave(function(){ clearTimeout(timeoutOnCreate); elmt.tipTip('hide'); });
     }
 };
 
