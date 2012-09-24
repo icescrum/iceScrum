@@ -108,19 +108,6 @@
     <li class="navigation-item separator"></li>
 </g:if>
 
-<li class="navigation-item">
-    <a class="tool-button button-n"
-       onclick="$.icescrum.openCommentTab('#comments'); return false;"
-       title="${message(code:'is.ui.backlogelement.toolbar.comment')}"
-       alt="${message(code:'is.ui.backlogelement.toolbar.comment')}">
-            <span class="start"></span>
-            <span class="content">
-                ${message(code: 'is.ui.backlogelement.toolbar.comment')}
-            </span>
-            <span class="end"></span>
-    </a>
-</li>
-
 <entry:point id="${controllerName}-${actionName}-toolbar"/>
 
 <div class="navigation-right-toolbar">
