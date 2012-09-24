@@ -630,7 +630,7 @@
 }
 
 #dropmenu .dropmenu-content ul.small li.hidden,
-.tool-button.hidden,
+.navigation-item.hidden,
 .separator.hidden {
     display: none;
 }
