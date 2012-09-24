@@ -247,7 +247,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 #navigation, .box .box-navigation, #navigation .navigation-content .separator,
 .box .box-navigation .separator, .box .box-navigation .separator-s,
 .table .table-filters td, .table th, .table .table-foot,
-.pagination .separator, #dropmenu .dropmenu-content ul li a:hover,
+.pagination .separator, #dropmenu .dropmenu-content ul li:hover,
 .field-buttons, .panel .panel-title, .dropmenu-content .menu-label,
 #spinner-app, .field-choose .field-choose-legend,
 .panel-box .panel-box-title,

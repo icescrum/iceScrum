@@ -25,32 +25,34 @@
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
   <ul>
     <li class="first">
-        <a href="${createLink(action:'productCumulativeFlowChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productCumulativeFlow')}</a>
+        <a href="#${controllerName}/productCumulativeFlowChart">
+            ${message(code:'is.ui.project.charts.productCumulativeFlow')}
+        </a>
     </li>
     <li>
-        <a href="${createLink(action:'productBurnupChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productBurnup')}</a>
+        <a href="#${controllerName}/productBurnupChart">
+            ${message(code:'is.ui.project.charts.productBurnup')}
+        </a>
     </li>
     <li>
-        <a href="${createLink(action:'productBurndownChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productBurndown')}</a>
+        <a href="#${controllerName}/productBurndownChart">
+            ${message(code:'is.ui.project.charts.productBurndown')}
+        </a>
     </li>
     <li>
-        <a href="${createLink(action:'productParkingLotChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productParkingLot')}</a>
+        <a href="#${controllerName}/productParkingLotChart">
+            ${message(code:'is.ui.project.charts.productParkingLot')}
+        </a>
     </li>
     <li>
-        <a href="${createLink(action:'productVelocityChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.project.charts.productVelocity')}</a>
+        <a href="#${controllerName}/productVelocityChart">
+            ${message(code:'is.ui.project.charts.productVelocity')}
+        </a>
     </li>
     <li class="last">
-        <a href="#${controllerName}/productVelocityCapacityChart">${message(code:'is.ui.project.charts.productVelocityCapacity')}</a>
+        <a href="#${controllerName}/productVelocityCapacityChart">
+            ${message(code:'is.ui.project.charts.productVelocityCapacity')}
+        </a>
     </li>
   </ul>
 </is:panelButton>
@@ -69,7 +71,7 @@
                   ['DOCX', message(code:'is.report.format.docx')],
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"
-        params="locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
+        params="locationHash=${params.actionWindow?:''}"/>
 
 %{--Print button--}%
 <is:reportPanel
@@ -78,5 +80,4 @@
         formats="[
                     ['PDF', message(code:'is.report.format.pdf')]
                 ]"
-        text="${message(code: 'is.ui.project.toolbar.print.allStories')}"
-        params="locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
+        text="${message(code: 'is.ui.project.toolbar.print.allStories')}"/>
