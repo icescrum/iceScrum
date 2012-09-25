@@ -1202,6 +1202,10 @@ li#li-roles {
     width: 398px;
 }
 
+.postit-details-information {
+    max-height: 570px;
+}
+
 .postit-details-information .line .content {
     float: left;
     width: 356px;
