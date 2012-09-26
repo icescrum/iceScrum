@@ -31,6 +31,6 @@
 <g:if test="${actor.name?.length() > 17 || actor.description?.length() > 50}">
     <div class="tooltip">
         <span class="tooltip-title">${actor.name}</span>
-        ${actor.description.encodeAsHTML()}
+        ${actor.description?.encodeAsHTML()?:''}
     </div>
 </g:if>
