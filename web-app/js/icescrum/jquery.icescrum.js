@@ -59,6 +59,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
             this.o = jQuery.extend({}, this.defaults, icescrum);
 
+            if (!window.console) window.console = {};
+            if (!window.console.log) window.console.log = function () { };
+
             $.datepicker.setDefaults($.datepicker.regional[this.o.locale]);
             if (!$.getUrlVar('ref')){
                 var url = location.hash.replace(/^.*#/, '');
