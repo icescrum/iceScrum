@@ -36,11 +36,13 @@
                 },
 
                 openWindow:function(id, callback) {
-
                     var targetWindow = id;
-                    var targetParam = targetWindow.indexOf('?');
-                    targetWindow = id.indexOf('/') ? id.substring(0, id.indexOf('/')) : targetWindow;
-                    targetWindow = id.indexOf('?') ? id.substring(0, id.indexOf('?')) : targetWindow;
+                    if(targetWindow.indexOf('/') >= 0) {
+                        targetWindow = targetWindow.substring(0, targetWindow.indexOf('/'))
+                    }
+                    if(targetWindow.indexOf('?') >= 0) {
+                        targetWindow = targetWindow.substring(0, targetWindow.indexOf('?'))
+                    }
                     if ($.inArray(targetWindow, $.icescrum.getWidgetsList()) != -1) {
                         var obj = $("#widget-id-" + targetWindow);
                         this.closeWidget(obj);

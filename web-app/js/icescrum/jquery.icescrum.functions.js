@@ -969,7 +969,7 @@
                         }
                         $.icescrum.sprint.current = null;
                         $('li.menu-accept-task').hide();
-                        var kanban = $('table.#kanban-sprint-' + this.id);
+                        var kanban = $('table#kanban-sprint-' + this.id);
                         $('td:not(:first-child)',kanban).sortable('destroy');
                          if (this.tasks){
                             var tasks = this.tasks;
@@ -995,7 +995,7 @@
                         $('.close-sprint-' + this.parentRelease.id + '-' + (this.orderNumber)).remove();
                         $('#show-done-sprint-' + this.parentRelease.id + '-' + this.orderNumber).remove();
                         $('.activate-sprint-' + this.parentRelease.id + '-' + (this.orderNumber + 1)).removeClass('hidden');
-                        $('table.#kanban-sprint-' + this.id).addClass('done');
+                        $('table#kanban-sprint-' + this.id).addClass('done');
                     },
 
                     activate:function(template) {
