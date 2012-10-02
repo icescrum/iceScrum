@@ -114,8 +114,8 @@
             opts.resizable.minWidth = obj.width();
             opts.resizable.maxWidth = obj.width();
             opts.resizable.start = function(event, ui){
-                var height = $(content.children()[0]).height();
-                obj.resizable('option','maxHeight',height >= opts.resizable.minHeight ? height + dif : opts.resizable.minHeight);
+                var totalHeight = $(content.children()[0]).height() + dif;
+                obj.resizable('option','maxHeight', totalHeight >= opts.resizable.minHeight ? totalHeight : opts.resizable.minHeight);
             };
             opts.resizable.resize = function(event, ui){
                 content.height(ui.size.height - dif);
