@@ -532,7 +532,7 @@ class ProjectController {
         }
 
         if (!session['import']) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: 'is.import.error.no.backup']] as JSON)
+            returnError(text:message(code:'is.import.error.no.backup'))
             return
         }
 

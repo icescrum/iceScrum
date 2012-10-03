@@ -29,7 +29,6 @@
           onOpen="if (jQuery('#import-validate').is(':hidden')){jQuery(\'.ui-dialog-buttonpane button:eq(1)\').hide()}"
           valid="[button:'is.dialog.importProject.submit',
               action:'saveImport',
-              update:'dialog',
               onSuccess:'$(\'#dialog\').dialog(\'close\'); jQuery.icescrum.renderNotice(\''+message(code:'is.dialog.importProject.success')+'\'); jQuery.event.trigger(\'redirect_product\',data);',
               controller:'project']"
           cancel="[action:'importProject',controller:'project',params:'\'cancel=1\'']"
