@@ -269,7 +269,7 @@
             params="id=${sprint.id}"/>
 
 </g:if>
-<entry:point id="${controllerName}-${actionName}" model="[sprint:sprint]"/>
+<entry:point id="${controllerName}-${actionName}" model="[sprint:sprint]"/>  %{-- attention le sprint peut etre null --}%
 
 <g:if test="${sprint?.id}">
 %{--Search--}%
