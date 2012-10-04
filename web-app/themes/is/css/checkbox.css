@@ -77,8 +77,8 @@ v\:roundrect, v\:fill, v\:stroke {
 .ui-checkbox input, .ui-radio input {
     position: absolute;
     visibility: visible;
-    left: -99999999px;
-    top: -99999999px;
+    left: -99999px;
+    top: -99999px;
     width: 14px;
     height: 13px;
     margin: 0px;

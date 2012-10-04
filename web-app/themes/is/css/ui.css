@@ -27,8 +27,9 @@
 }
 
 .ui-helper-hidden-accessible {
-    position: absolute;
-    left: -99999999px;
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px,1px,1px,1px);
 }
 
 .ui-helper-reset {
