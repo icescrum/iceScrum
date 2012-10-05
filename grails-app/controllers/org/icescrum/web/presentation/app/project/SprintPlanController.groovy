@@ -367,7 +367,7 @@ class SprintPlanController {
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         labels: values.label as JSON])
             } else {
-                renderErrors(text:message(code: 'is.chart.error.no.values'))
+                returnError(text:message(code: 'is.chart.error.no.values'))
             }
         }
     }
@@ -383,7 +383,7 @@ class SprintPlanController {
                         tasksDone: values.tasksDone as JSON,
                         labels: values.label as JSON])
             } else {
-                renderErrors(text:message(code: 'is.chart.error.no.values'))
+                returnError(text:message(code: 'is.chart.error.no.values'))
             }
         }
     }
@@ -399,7 +399,7 @@ class SprintPlanController {
                         storiesDone: values.storiesDone as JSON,
                         labels: values.label as JSON])
             } else {
-                renderErrors(text:message(code: 'is.chart.error.no.values'))
+                returnError(text:message(code: 'is.chart.error.no.values'))
             }
         }
     }
@@ -415,7 +415,7 @@ class SprintPlanController {
                         pointsDone: values.pointsDone as JSON,
                         labels: values.label as JSON])
             } else {
-                renderErrors(text:message(code: 'is.chart.error.no.values'))
+                returnError(text:message(code: 'is.chart.error.no.values'))
             }
         }
     }

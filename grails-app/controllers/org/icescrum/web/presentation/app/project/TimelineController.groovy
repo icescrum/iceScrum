@@ -213,7 +213,7 @@ class TimelineController {
                     done: values.done as JSON,
                     labels: values.label as JSON])
         } else {
-            renderErrors(text:message(code: 'is.chart.error.no.values'))
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -228,7 +228,7 @@ class TimelineController {
                     velocity: values.velocity as JSON,
                     labels: values.label as JSON])
         } else {
-            renderErrors(text:message(code: 'is.chart.error.no.values'))
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -243,7 +243,7 @@ class TimelineController {
                     done: values.done as JSON,
                     labels: values.label as JSON])
         } else {
-            renderErrors(text:message(code: 'is.chart.error.no.values'))
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -259,7 +259,7 @@ class TimelineController {
                     defectstories: values.defectstories as JSON,
                     labels: values.label as JSON])
         } else {
-            renderErrors(text:message(code: 'is.chart.error.no.values'))
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -275,7 +275,7 @@ class TimelineController {
                     defectstories: values.defectstories as JSON,
                     labels: values.label as JSON])
         } else {
-            renderErrors(text:message(code: 'is.chart.error.no.values'))
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -298,7 +298,7 @@ class TimelineController {
                     values: valueToDisplay as JSON,
                     featuresNames: values.label as JSON])
         else {
-           renderErrors(text:message(code: 'is.chart.error.no.values'))
+           returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
