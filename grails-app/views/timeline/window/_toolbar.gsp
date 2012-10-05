@@ -44,44 +44,32 @@
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
   <ul>
     <li class="first">
-        <a href="${createLink(action:'productCumulativeFlowChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}">
+        <a href="#${controllerName}/productCumulativeFlowChart" title="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}">
             ${message(code:'is.ui.timeline.charts.productCumulativeFlow')}
         </a>
     </li>
     <li>
-        <a href="${createLink(action:'productBurnupChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productBurnup')}">
+        <a href="#${controllerName}/productBurnupChart" title="${message(code:'is.ui.timeline.charts.productBurnup')}">
             ${message(code:'is.ui.timeline.charts.productBurnup')}
         </a>
     </li>
     <li>
-        <a href="${createLink(action:'productBurndownChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productBurndown')}">
+        <a href="#${controllerName}/productBurndownChart" title="${message(code:'is.ui.timeline.charts.productBurndown')}">
           ${message(code:'is.ui.timeline.charts.productBurndown')}
         </a>
     </li>
     <li>
-        <a href="${createLink(action:'productParkingLotChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productParkingLot')}">
+        <a href="#${controllerName}/productParkingLotChart" title="${message(code:'is.ui.timeline.charts.productParkingLot')}">
           ${message(code:'is.ui.timeline.charts.productParkingLot')}
         </a>
     </li>
       <li>
-          <a href="${createLink(action:'productVelocityChart', params: [product:params.product])}"
-                  data-ajax="true"
-                  data-ajax-update="#window-content-${controllerName}" title="${message(code:'is.ui.timeline.charts.productVelocity')}">
+          <a href="#${controllerName}/productVelocityChart" title="${message(code:'is.ui.timeline.charts.productVelocity')}">
             ${message(code:'is.ui.timeline.charts.productVelocity')}
           </a>
       </li>
       <li class="last">
-        <a href="${createLink(action:'productVelocityCapacityChart', params: [product:params.product])}"
-                 data-ajax="true"
-                 data-ajax-update="#window-content-${controllerName}"href="#${controllerName}/productVelocityCapacityChart" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}">
+        <a href="#${controllerName}/productVelocityCapacityChart" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}">
           ${message(code:'is.ui.timeline.charts.productVelocityCapacity')}
         </a>
     </li>
@@ -100,6 +88,6 @@
                   ['DOCX', message(code:'is.report.format.docx')],
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"
-        params="locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
+        params="locationHash=${params.actionWindow?:''}"/>
 
 <entry:point id="${controllerName}-${actionName}"/>

@@ -357,6 +357,7 @@ class TimelineController {
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
+            session.progress = new ProgressSupport()
             def dialog = g.render(template: '/scrumOS/report')
             render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }

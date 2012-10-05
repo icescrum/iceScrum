@@ -222,24 +222,16 @@
     <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
         <ul>
             <li class="first">
-                <a href="${createLink(action:'sprintBurndownHoursChart', params: [product:params.product], id:sprint.id)}"
-                         data-ajax="true"
-                         data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.sprintPlan.charts.sprintBurndownHoursChart')}</a>
+                <a href="#${controllerName}/sprintBurndownHoursChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurndownHoursChart')}</a>
             </li>
             <li>
-                <a href="${createLink(action:'sprintBurnupTasksChart', params: [product:params.product], id:sprint.id)}"
-                         data-ajax="true"
-                         data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a>
+                <a href="#${controllerName}/sprintBurnupTasksChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a>
             </li>
             <li>
-                <a href="${createLink(action:'sprintBurnupStoriesChart', params: [product:params.product], id:sprint.id)}"
-                         data-ajax="true"
-                         data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a>
+                <a href="#${controllerName}/sprintBurnupStoriesChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a>
             </li>
             <li class="last">
-                <a href="${createLink(action:'sprintBurnupPointsChart', params: [product:params.product], id:sprint.id)}"
-                         data-ajax="true"
-                         data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a>
+                <a href="#${controllerName}/sprintBurnupPointsChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a>
             </li>
         </ul>
     </is:panelButton>
@@ -255,7 +247,7 @@
                       ['DOCX', message(code:'is.report.format.docx')],
                       ['ODT', message(code:'is.report.format.odt')]
                     ]"
-            params="id=${sprint.id}&locationHash='+encodeURIComponent(\$.icescrum.o.currentOpenedWindow.context.location.hash)+'"/>
+            params="id=${sprint.id}&locationHash=${params.actionWindow?:''}"/>
 
     <li class="navigation-item separator-s"></li>
 
