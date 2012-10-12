@@ -23,21 +23,23 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 %{--Add button--}%
-<li class="navigation-item button-ico button-create">
-    <a class="tool-button button-n"
-       href="#${controllerName}/add"
-       data-shortcut="ctrl+n"
-       data-shortcut-on="#window-id-${controllerName}"
-       title="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
-       alt="${message(code:'is.ui.sandbox.toolbar.alt.new')}">
-            <span class="start"></span>
-            <span class="content">
-                <span class="ico"></span>
-                ${message(code: 'is.ui.sandbox.toolbar.new')}
-            </span>
-            <span class="end"></span>
-    </a>
-</li>
+<g:if test="${!request.archivedProduct}">
+    <li class="navigation-item button-ico button-create">
+        <a class="tool-button button-n"
+           href="#${controllerName}/add"
+           data-shortcut="ctrl+n"
+           data-shortcut-on="#window-id-${controllerName}"
+           title="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
+           alt="${message(code:'is.ui.sandbox.toolbar.alt.new')}">
+                <span class="start"></span>
+                <span class="content">
+                    <span class="ico"></span>
+                    ${message(code: 'is.ui.sandbox.toolbar.new')}
+                </span>
+                <span class="end"></span>
+        </a>
+    </li>
+</g:if>
 
 <g:if test="${request.productOwner}">
 
@@ -95,7 +97,7 @@
     </li>
 </g:if>
 
-<g:if test="${!request.productArchived}">
+<g:if test="${!request.archivedProduct}">
     <li class="navigation-item separator"></li>
 </g:if>
 

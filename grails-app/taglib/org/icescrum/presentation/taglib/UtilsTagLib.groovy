@@ -305,12 +305,16 @@ class UtilsTagLib {
 
         if (attrs.role){
             if (request.admin) {
-            role = 'adm'
+                role = 'adm'
             } else {
-                if (request.scrumMaster)  {  role += 'scm'  }
-                if (request.teamMember)   {  role += 'tm'  }
-                if (request.productOwner) {  role += 'po'  }
-                if (!role && request.stakeHolder) {  role += 'sh'  }
+                if (request.archivedProduct) {
+                    role += 'archived'
+                } else{
+                    if (request.scrumMaster)  {  role += 'scm'  }
+                    if (request.teamMember)   {  role += 'tm'  }
+                    if (request.productOwner) {  role += 'po'  }
+                    if (!role && request.stakeHolder) {  role += 'sh'  }
+                }
             }
             role = role ?: 'anonymous'
             key.append(role)
