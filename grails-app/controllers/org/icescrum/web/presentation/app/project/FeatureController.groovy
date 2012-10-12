@@ -87,7 +87,7 @@ class FeatureController {
                 }
 
                 bindData(feature, this.params, [include:['name','description','notes','color','type','value']], "feature")
-                feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : feature.tags
+                feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
 
                 this.manageAttachments(feature)
                 featureService.update(feature)

@@ -161,7 +161,7 @@ class TaskController {
 
             bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
 
-            task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : task.tags
+            task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
 
             taskService.update(task, user)
             this.manageAttachments(task)
