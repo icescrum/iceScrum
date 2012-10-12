@@ -154,7 +154,11 @@ class ScrumOSController {
             def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: param).toString() - request.contextPath
 
             if (!menuBarSupport.permissionDynamicBar(url)){
-                render(status:401, contentType: 'application/json', text:[url:params.window ? '#'+params.window + (params.actionWindow ? '/'+params.actionWindow : '') : ''] as JSON)
+                if (springSecurityService.isLoggedIn()){
+                    render(status:403)
+                } else {
+                    render(status:401, contentType: 'application/json', text:[url:params.window ? '#'+params.window + (params.actionWindow ? '/'+params.actionWindow : '') : ''] as JSON)
+                }
                 return
             }
             render is.window([

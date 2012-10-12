@@ -25,7 +25,7 @@
 <g:set var="productOwner" value="${request.productOwner}"/>
 <g:set var="teamMember" value="${request.teamMember}"/>
 <g:set var="scrumMaster" value="${request.scrumMaster}"/>
-<g:set var="creator" value="${story.creator.id == user?.id && !request.productArchived}"/>
+<g:set var="creator" value="${story.creator.id == user?.id && !request.archivedProduct}"/>
 
 <li class="first">
     <a class="scrum-link" href="#story/${story.id}">
