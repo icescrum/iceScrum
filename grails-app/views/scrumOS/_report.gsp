@@ -34,8 +34,8 @@
               label="${message(code:'is.report.processing')}"
               iframe="true"
               showOnCreate="true"
-              iframeSrc="${createLink(action:'print',controller:controllerName,params:[product:params.product,get:true,format:params.format], id:params.id?:null)}"
-              url="${createLink(action:'print',controller:controllerName,params:[product:params.product,status:true], id:params.id?:null)}"
+              iframeSrc="${createLink(action:actionName,controller:controllerName,params:[product:params.product,get:true,format:params.format], id:params.id?:null)}"
+              url="${createLink(action:actionName,controller:controllerName,params:[product:params.product,status:true], id:params.id?:null)}"
               />
   </is:fieldset>
 </div>
