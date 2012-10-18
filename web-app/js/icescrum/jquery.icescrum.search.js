@@ -7,7 +7,8 @@
                     $.ajax({
                                 url: url,
                                 data: {
-                                    term: request.term
+                                    term: request.term,
+                                    viewType:$.icescrum.getDefaultView()
                                 },
                                 success: function(data) {
                                     $('#' + params.update).html(data);

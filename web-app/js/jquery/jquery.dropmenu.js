@@ -90,7 +90,6 @@
                                 });
                                 _ul.hide();
                             }).hover(function(event) {
-
                                 this.dropContent.data('showHandler').call(this, event);
                             },
                             function(event) {
@@ -138,6 +137,7 @@
                                     show(this.dropContent, elt, settings, event, true);
                                     _ul.show();
                                     $(_ul).find('div>input').focus();
+                                    event.stopPropagation();
                                 });
                                 this.dropContent.data('hideHandler', function(event) {
                                     if (!_isHover) {
