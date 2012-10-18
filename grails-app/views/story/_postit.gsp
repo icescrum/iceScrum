@@ -40,11 +40,13 @@
            sortable="[disabled:!sortable]"
            acceptanceTestCount="${story.acceptanceTests.size()}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
-    <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
+            <g:if test="${!rect}">
+                <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
+            </g:if>
+            <g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
+                <div class="tooltip">
+                    <span class="tooltip-title">${story.name}</span>
+                    ${is.storyTemplate(story:story)?:''}
+                </div>
+            </g:if>
 </is:postit>
-<g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
-    <div class="tooltip">
-        <span class="tooltip-title">${story.name}</span>
-        ${is.storyTemplate(story:story)?:''}
-    </div>
-</g:if>

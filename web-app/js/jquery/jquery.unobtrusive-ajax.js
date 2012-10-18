@@ -150,8 +150,8 @@
 
     $(document).on('hover','.postit, .postit-rect', function(event){
         var elem = $(this);
-        var tooltip = elem.next();
-        if (tooltip.hasClass('tooltip')){
+        var tooltip = $('.tooltip',elem);
+        if (tooltip.length > 0){
             if (!elem.data('tooltip-init')){
                 elem.tipTip({delay:500, activation:"focus", defaultPosition:"right", content:tooltip.html(), edgeOffset:-20});
                 elem.data('tooltip-init',true);

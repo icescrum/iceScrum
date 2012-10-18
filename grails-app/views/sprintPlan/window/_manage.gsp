@@ -65,7 +65,6 @@
                        type="ipsum"
                        stateBundle="Ipsum"
                        rect="true">
-                Lorem ipsum dolor sit amet, consectetur...
             </is:postit>
         </div>
 

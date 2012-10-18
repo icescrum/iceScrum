@@ -34,11 +34,13 @@
         stateText="${is.bundle(bundle:'featureStates',value:feature.state)}"
         typeTitle="${is.bundle(bundle:'featureTypes',value:feature.type)}"
         controller="feature">
-    <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
+        <g:if test="${!rect}">
+            <is:truncated size="50" encodedHTML="true">${feature.description?.encodeAsHTML()}</is:truncated>
+        </g:if>
+        <g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">
+            <div class="tooltip">
+                <span class="tooltip-title">${feature.name}</span>
+                ${feature.description?.encodeAsHTML()?:''}
+            </div>
+        </g:if>
 </is:postit>
-<g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">
-    <div class="tooltip">
-        <span class="tooltip-title">${feature.name}</span>
-        ${feature.description?.encodeAsHTML()?:''}
-    </div>
-</g:if>

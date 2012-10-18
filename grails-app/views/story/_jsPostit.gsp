@@ -73,12 +73,19 @@
            stateText="?**=textState**?"
            acceptanceTestCount="?**=acceptanceTestCount**?"
            comment="${story.totalComments}">
-    ?**=truncatedDescription**?
+            <g:if test="${rect}">
+                <div class="tooltip">
+                    <span class="tooltip-title">${story.name}</span>
+                    ${story.description}
+                </div>
+            </g:if>
+            <g:else>
+                ?**=truncatedDescription**?
+                ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
+                <div class="tooltip">
+                    <span class="tooltip-title">${story.name}</span>
+                    ${story.description}
+                </div>
+                ?**}**?
+            </g:else>
 </is:postit>
-?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
-    <div class="tooltip">
-        <span class="tooltip-title">${story.name}</span>
-        ${story.description}
-    </div>
-?**}**?
-]]>

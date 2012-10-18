@@ -43,13 +43,13 @@
                attachment="${actor.totalAttachments}"
                controller="${id}">
         ?**=truncatedDescription**?
-    </is:postit>
-    ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
+        ?**if (truncatedDescription.length > 50 || truncatedName.length > 17) {**?
         <div class="tooltip">
             <span class="tooltip-title">${actor.name}</span>
             ${actor.description}
         </div>
-    ?**}**?
+        ?**}**?
+    </is:postit>
     ]]>
 </template>
 
