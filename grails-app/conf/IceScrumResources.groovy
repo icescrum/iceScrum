@@ -92,7 +92,8 @@ modules = {
 
     'jqplot' {
         dependsOn 'jquery'
-        resource url: [dir: "js/jquery", file: 'excanvas.min.js'],  nominify: true, bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.js'], bundle: 'icescrum'
+        resource url: [dir: "js/jquery", file: 'excanvas.min.js'],  nominify: true, wrapper: { s -> "<!--[if IE]>$s<![endif]-->" }, bundle: 'jquery-plugins'
         resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.barRenderer.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.categoryAxisRenderer.min.js'], nominify: true, bundle: 'jquery-plugins'
@@ -106,8 +107,7 @@ modules = {
 
     'jquery-plugins' {
         dependsOn 'jquery'
-        resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.js'], bundle: 'jquery-plugins'
-        resource url: [dir: 'js/jquery', file: 'jquery.pnotify.min.js'], nominify: true, bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.pnotify.min.js'], nominify: true, bundle: 'jquery-plugins', disposition:'head'
         resource url: [dir: 'js/jquery', file: 'jquery.history.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.mousewheel.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.hotkeys.js'], bundle: 'jquery-plugins'

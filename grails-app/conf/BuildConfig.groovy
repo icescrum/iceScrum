@@ -97,7 +97,7 @@ grails.project.dependency.resolution = {
         compile ":cached-resources:1.0"
         compile ":feeds:1.5"
         compile ":hibernate:1.3.9"
-        compile ":resources:1.2.RC2"
+        compile ":resources:1.1.6"
         compile ":session-temp-files:1.0"
         compile ":zipped-resources:1.0"
         compile ":yui-minify-resources:0.1.5"
