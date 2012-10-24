@@ -44,6 +44,21 @@ class UserController {
     def springSecurityService
     def grailsApplication
 
+    @Secured('inProduct()')
+    def list = {
+        if (request?.format == 'html'){
+            render(status:404)
+            return
+        }
+        withProduct { Product product ->
+            def members = product.allUsers
+            withFormat {
+                json { renderRESTJSON(text:members) }
+                xml  { renderRESTXML(text:members) }
+            }
+        }
+    }
+
     @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
     def register = {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {

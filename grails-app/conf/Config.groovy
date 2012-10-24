@@ -118,7 +118,7 @@ icescrum.restMarshaller = [
         sprint:[exclude: ['description','cliches']],
         release:[exclude: ['description','cliches','numberOfDays']],
         team:[exclude: ['velocity','description','preferences']],
-        user: [exclude: ['password','accountExpired','accountLocked','passwordExpired']]
+        user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']]
 ]
 
 /*
