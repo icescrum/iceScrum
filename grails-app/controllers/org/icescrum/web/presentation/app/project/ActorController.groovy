@@ -43,7 +43,7 @@ class ActorController {
 
     @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
     def search = {
-        def actors = Actor.findActorByProductAndTerm(params.long('product'), '%' + params.term + '%').list()
+        def actors = Actor.findAllByProductAndTerm(params.long('product'), '%' + params.term + '%').list()
         def result = []
         actors?.each {
             result << [label: it.name, value: it.name]
@@ -133,7 +133,7 @@ class ActorController {
     }
 
     def list = {
-        def actors = params.term ? Actor.findActorByProductAndTerm(params.long('product'), '%' + params.term + '%').list() : Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc'])
+        def actors = params.term ? Actor.findAllByProductAndTerm(params.long('product'), '%' + params.term + '%').list() : Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc'])
         withFormat{
             html {
                 def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'

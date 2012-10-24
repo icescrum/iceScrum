@@ -4,8 +4,7 @@
 <jq:jquery>
   jQuery('#window-id-finder .search-button').click(function(){
         var $marginLefty = $('#search-panel');
-        $marginLefty.animate({  right: parseInt($marginLefty.css('right'),10) == 0 ? - $marginLefty.outerWidth() : 0 } );
+        $marginLefty.animate({  'margin-right': parseInt($marginLefty.css('margin-right'),10) == 0 ? - $marginLefty.outerWidth() : 0 }, { complete:function(){ $('#window-content-finder').trigger('resize'); } } );
         $(this).toggleClass('active-search');
-        $('#backlog-layout-window-finder').toggleClass('full');
   });
 </jq:jquery>

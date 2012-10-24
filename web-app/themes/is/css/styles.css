@@ -1608,7 +1608,7 @@ li#li-roles {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-#main-content .box-blank {
+.box-window .box-blank {
     width: 300px;
     margin: 0 auto;
     text-align: center;
@@ -1620,20 +1620,20 @@ li#li-roles {
     text-align: center;
 }
 
-#main-content .box-blank .box-blank-button {
+.box-window .box-blank .box-blank-button {
     width: 100%;
     padding-top: 10px;
 }
 
-#main-content .box-blank .box-blank-button td {
+.box-window .box-blank .box-blank-button td {
     white-space: nowrap;
 }
 
-#main-content .box-blank .box-blank-button .empty {
+.box-window .box-blank .box-blank-button .empty {
     width: 30%;
 }
 
-#main-content .box-blank p {
+.box-window .box-blank p {
     line-height: 16px;
     padding: 8px 0;
 }

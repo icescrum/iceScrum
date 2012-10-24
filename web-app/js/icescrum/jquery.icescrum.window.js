@@ -58,7 +58,7 @@
                     jQuery.ajax({
                                 type:'GET',
                                 cache:false,
-                                url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? '?viewType='+view : '' ),
+                                url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? (id.indexOf('?') >= 0 ? '&' : '?') + 'viewType='+view : '' ),
                                 beforeSend:function(){
                                     var loading = $('<div/>').attr('id','window-loading').css('opacity',0).css('z-index',998);
                                     if ($.icescrum.o.fullscreen) {

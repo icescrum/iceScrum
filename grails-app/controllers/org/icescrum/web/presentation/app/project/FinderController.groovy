@@ -11,6 +11,7 @@ import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
 import grails.plugins.springsecurity.Secured
+import org.icescrum.core.domain.PlanningPokerGame
 
 class FinderController {
 
@@ -53,49 +54,252 @@ class FinderController {
 
         @Secured('inProduct()')
         def list = {
-            def data = [:]
-            if (params.term){
-                data.actors =  Actor.findAllByTagWithCriteria(params.term) {
-                    backlog {
-                        eq 'id', params.long('product')
-                    }
+            withProduct { Product product ->
+                def data = [:]
+
+                params.term = params.term ? '%'+params.term+'%' : null
+                data.actors =  searchInActors(product.id, [tag:params.tag, term:params.term, actor: params.withActors ? params.actor : null])
+                data.stories = searchInStories(product.id, [tag:params.tag, term:params.term, story: params.withStories ? params.story : null])
+                data.features = searchInFeatures(product.id, [tag:params.tag, term:params.term, feature: params.withFeatures ? params.feature : null])
+                data.tasks = searchInTasks(product, [tag:params.tag, term:params.term, task: params.withTasks ? params.task : null])
+
+                if (!data.actors && !data.stories && !data.features && !data.tasks){
+                    data = null
                 }
 
-                data.features = Feature.findAllByTagWithCriteria(params.term) {
-                    backlog {
-                        eq 'id', params.long('product')
-                    }
+
+                def suiteSelect = [:]
+
+                PlanningPokerGame.getInteger(product.planningPokerGameType).eachWithIndex { t, i ->
+                    suiteSelect."${t}" = t
                 }
 
-                data.stories = Story.findAllByTagWithCriteria(params.term) {
-                    backlog {
-                        eq 'id', params.long('product')
+                withFormat{
+                    html {
+                        render(template: 'window/postitsView', model: [
+                                data: data,
+                                user:(User)springSecurityService.currentUser,
+                                update: params.update ?: false,
+                                suiteSelect:suiteSelect,
+                                product:product])
+                    }
+                    json { renderRESTJSON(text:data) }
+                    xml  { renderRESTXML(text:data) }
+                }
+            }
+        }
+
+        private searchInStories(product, options){
+            List<Story> stories = []
+            def criteria = {
+                backlog {
+                    eq 'id', product
+                }
+                if (options.term || options.story){
+                    if (options.term) {
+                        or {
+                            ilike 'name', options.term
+                            ilike 'textAs', options.term
+                            ilike 'textICan', options.term
+                            ilike 'textTo', options.term
+                            ilike 'description', options.term
+                            ilike 'notes', options.term
+                        }
+                    }
+                    if (options.story?.feature?.isLong()){
+                        feature {
+                            eq 'id', options.story.feature.toLong()
+                        }
+                    }
+                    if (options.story?.actor?.isLong()){
+                        actor {
+                            eq 'id', options.story.actor.toLong()
+                        }
+                    }
+                    if (options.story?.state?.isInteger()){
+                        eq 'state', options.story.state.toInteger()
+                    }
+                    if (options.story?.parentRelease?.isLong()){
+                        parentSprint {
+                            parentRelease{
+                                eq 'id', options.story.parentRelease.toLong()
+                            }
+                        }
+                    }
+                    if (options.story?.parentSprint?.isLong()){
+                        parentSprint {
+                            eq 'id', options.story.parentSprint.toLong()
+                        }
+                    }
+                    if (options.story?.creator?.isLong()){
+                        creator {
+                            eq 'id', options.story.creator.toLong()
+                        }
+                    }
+                    if (options.story?.type?.isInteger()){
+                        eq 'type', options.story.type.toInteger()
+                    }
+                    if (options.story?.dependsOn?.isLong()){
+                        dependsOn {
+                            eq 'id', options.story.dependsOn.toLong()
+                        }
+                    }
+                    if (options.story?.effort?.isInteger()){
+                        eq 'effort', options.story.effort.toInteger()
                     }
                 }
-
-                //Sort by feature AND rank
-                Map storiesGrouped = data.stories?.groupBy{ it.feature }
-                data.stories = []
+            }
+            if (options.tag){
+                stories = Story.findAllByTagWithCriteria(options.tag) {
+                    criteria.delegate = delegate
+                    criteria.call()
+                }
+            } else if(options.term || options.story) {
+                stories = Story.createCriteria().list {
+                    criteria.delegate = delegate
+                    criteria.call()
+                }
+            }
+            if (stories){
+                Map storiesGrouped = stories?.groupBy{ it.feature }
+                stories = []
                 storiesGrouped?.each{
                     it.value?.sort{ st -> st.state }
-                    data.stories.addAll(it.value)
+                    stories.addAll(it.value)
                 }
-
-                def queryTasks ="""SELECT task
-                                   FROM Task task,org.grails.taggable.TagLink tagLink
-                                   WHERE   task.id = tagLink.tagRef
-                                           AND tagLink.type = 'task'
-                                           AND tagLink.tag.name LIKE :term
-                                   ORDER BY task.name"""
-
-                data.tasks = Task.executeQuery(queryTasks, [term: params.term+'%'])
             }
-            withFormat{
-                html {
-                    render(template: 'window/postitsView', model: [data: data, user:(User)springSecurityService.currentUser])
+            return stories ?: Collections.EMPTY_LIST
+        }
+
+        private searchInActors(product, options){
+            def criteria = {
+                backlog {
+                    eq 'id', product
                 }
-                json { renderRESTJSON(text:data) }
-                xml  { renderRESTXML(text:data) }
-             }
+                if (options.term || options.actor){
+                    if(options.term) {
+                        or {
+                            ilike 'name', options.term
+                            ilike 'description', options.term
+                            ilike 'notes', options.term
+                            ilike 'satisfactionCriteria', options.term
+                        }
+                    }
+                    if (options.actor?.frequency?.isInteger()){
+                        eq 'useFrequency', options.actor.frequency.toInteger()
+                    }
+                    if (options.actor?.level?.isInteger()){
+                        eq 'expertnessLevel', options.actor.level.toInteger()
+                    }
+                    if (options.actor?.instance?.isInteger()){
+                        eq 'instances', options.actor.instance.toInteger()
+                    }
+                }
+            }
+            if (options.tag){
+                return Actor.findAllByTagWithCriteria(options.tag) {
+                    criteria.delegate = delegate
+                    criteria.call()
+                }
+            } else if(options.term || options.actor) {
+                return Actor.createCriteria().list {
+                    criteria.delegate = delegate
+                    criteria.call()
+                }
+            } else {
+                return Collections.EMPTY_LIST
+            }
+        }
+
+        private searchInFeatures(product, options){
+            def criteria = {
+                backlog {
+                    eq 'id', product
+                }
+                if (options.term || options.feature){
+                    if (options.term){
+                        or {
+                            ilike 'name', options.term
+                            ilike 'description', options.term
+                            ilike 'notes', options.term
+                        }
+                    }
+                    if (options.feature?.type?.isInteger()){
+                        eq 'type', options.feature.type.toInteger()
+                    }
+                }
+            }
+            if (options.tag){
+                return Feature.findAllByTagWithCriteria(options.tag) {
+                    criteria.delegate = delegate
+                    criteria.call()
+                }
+            } else if(options.term || options.feature)  {
+                return Feature.createCriteria().list {
+                    criteria.delegate = delegate
+                    criteria.call()
+                }
+            } else {
+                return Collections.EMPTY_LIST
+            }
+        }
+
+        private searchInTasks(product, options){
+
+            def criteria = {
+                backlog {
+                    if (options.task?.parentSprint?.isLong() && options.task.parentSprint.toLong() in product.releases*.sprints*.id.flatten()){
+                        eq 'id', options.task.parentSprint.toLong()
+                    } else if (options.task?.parentRelease?.isLong() && options.task.parentRelease.toLong() in product.releases*.id){
+                        'in' 'id', product.releases.find{it.id == options.task.parentRelease.toLong()}.sprints*.id
+                    } else {
+                        'in' 'id', product.releases*.sprints*.id.flatten()
+                    }
+                }
+
+                if (options.term || options.task){
+                    if (options.term){
+                        or {
+                            ilike 'name', options.term
+                            ilike 'description', options.term
+                            ilike 'notes', options.term
+                        }
+                    }
+                    if (options.task?.type?.isInteger()){
+                        eq 'type', options.task.type.toInteger()
+                    }
+                    if (options.task?.state?.isInteger()){
+                        eq 'state', options.task.state.toInteger()
+                    }
+                    if (options.task?.parentStory?.isLong()){
+                        parentStory{
+                            eq 'id', options.task.parentStory.toLong()
+                        }
+                    }
+                    if (options.task?.creator?.isLong()){
+                        creator {
+                            eq 'id', options.task.creator.toLong()
+                        }
+                    }
+                    if (options.task?.responsible?.isLong()){
+                        responsible {
+                            eq 'id', options.task.responsible.toLong()
+                        }
+                    }
+                }
+            }
+            if (options.tag){
+                return Task.findAllByTagWithCriteria(options.tag) {
+                    criteria.delegate = delegate
+                    criteria.call()
+                }
+            } else if(options.term || options.task)  {
+                return Task.createCriteria().list {
+                    criteria.delegate = delegate
+                    criteria.call()
+                }
+            } else {
+                return Collections.EMPTY_LIST
+            }
         }
 }

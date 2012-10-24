@@ -66,7 +66,7 @@ body {
 
 body, html {
     height: 100%;
-    overflow: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
 }
 
@@ -463,12 +463,6 @@ td.jqplot-table-legend {
     overflow: hidden;
 }
 
-#backlog-layout-window-finder {
-    overflow: auto;
-    padding:5px;
-    width: 80%;
-}
-
 #backlog-layout-window-finder.full {
     width: 99%;
 }
@@ -477,15 +471,20 @@ td.jqplot-table-legend {
     cursor: pointer;
 }
 
+#search-result {
+    float: left;
+    height:100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 
 #search-panel {
-    width:19%;
-    min-width: 230px;
+    width:300px;
     height:100%;
-    position: absolute;
-    right:0px;
-    top:0px;
+    float:right;
     background:#F6F6F6;
+    padding:5px;
+    overflow-y: auto;
 }
 
 .search-group {
@@ -497,46 +496,80 @@ td.jqplot-table-legend {
     font-weight: bold;
 }
 
-#search-panel label {
-    display: block;
-    float: left;
-    font-size: 11px;
-    line-height: 16px;
-    padding: 8px;
-    text-align: right;
-    background: url(../images/application/separator-h.png) #F6F6F6;
-    background-repeat: repeat-x;
-    background-position: 0 bottom;
-    margin-right: 5px;
+#search-panel ul li, #search-panel ul {
+    list-style: none;
+    clear:both;
 }
 
-#search-panel p.field-noseparator label {
-    background:#F6F6F6;
-    background-repeat: repeat-x;
-    background-position: 0 bottom;
+#search-panel .label {
+    display: inline-block;
+    padding-top: 4px;
 }
 
-#search-panel p {
-    padding: 0px;
-    background: url(../images/application/separator-h.png) #FFF;
-    background-repeat: repeat-x;
-    background-position: 0 bottom;
+#search-panel ul li .ui-selectmenu, #search-panel ul li .datePicker, #search-panel ul li #tag, #search-panel ul li #term {
+    vertical-align: middle;
+    display: inline-block;
+    float:right;
 }
 
-#search-panel p.field-noseparator {
-    background: #FFF;
-    background-repeat: repeat-x;
-    background-position: 0 bottom;
+#search-panel form > ul {
+    margin-left: 0;
 }
 
-#search-panel .input {
-    display: block;
-    padding: 5px;
+#search-panel h3.ui-accordion-header {
+    font-size: 12px;
+    margin: 0;
+}
+
+#search-panel h3 input[type=checkbox] {
+    float: right;
+}
+
+.search-box {
+    padding: 5px 10px 5px;
+    margin-bottom:10px;
+}
+
+.search-box .hidden {
+    display: none;
+}
+
+.search-box .ui-widget-content li {
+    font-size: 12px;
+    line-height: 24px;
+    padding: 2px 0;
+}
+
+.search-options {
+    margin-left: 0;
+}
+
+.search-options .input, #search-input .input {
+    float:right;
+    display: inline-block;
+}
+
+#search-input h3 {
+    display: inline-block;
+}
+
+.search-options input {
+    width:130px;
+}
+
+.search-box h3 {
+    font-size: 13px;
+    padding: 0;
+}
+
+#search-common-options > li {
+    line-height: 24px;
+    padding: 3px 0;
 }
 
 #search-submit {
     float: right;
-    margin-right: 12px;
+    margin: 0 5px 10px 10px;
 }
 
 .postit-placeholder.dependsOn {
