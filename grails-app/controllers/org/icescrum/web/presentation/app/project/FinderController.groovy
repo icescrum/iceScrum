@@ -67,9 +67,7 @@ class FinderController {
                     data = null
                 }
 
-
                 def suiteSelect = [:]
-
                 PlanningPokerGame.getInteger(product.planningPokerGameType).eachWithIndex { t, i ->
                     suiteSelect."${t}" = t
                 }
