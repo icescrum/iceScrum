@@ -59,14 +59,13 @@
                     var menu = this.each(
                             function() {
                                 var elt = $(this);
-                                var _ul = $('.' + settings.content, $(this));
+                                var _ul = $('.' + settings.content+':first', $(this));
                                 elt.css('cursor', 'pointer');
-                                var _settings = settings;
                                 elt.removeClass(settings.hover);
                                 this.dropContent = _ul;
                                 this.dropContent.data('oldParent', elt);
                                 this.currentMenu = elt;
-                                this.settings = settings
+                                this.settings = settings;
                                 this.dropContent.data('showHandler', function(event) {
                                     if (elt == _current) {
                                         _isHover = true;
@@ -76,6 +75,7 @@
                                     _isHover = true;
                                     _oldHover = elt;
                                     show(this.dropContent, elt, settings, event, true);
+                                    $('li .dropmenu-content', _ul).hide();
                                     _ul.show();
                                     _current = elt;
                                 });
@@ -86,20 +86,27 @@
                                         _ul.hide();
                                         hide();
                                     }
-
                                 });
                                 _ul.hide();
                             }).hover(function(event) {
-                                this.dropContent.data('showHandler').call(this, event);
+                                if ($(this).parents('#dropmenu').size() > 0){
+                                    this.dropContent.removeClass('ui-corner-all').addClass('ui-corner-left').show();
+                                }else{
+                                    this.dropContent.data('showHandler').call(this, event);
+                                }
                             },
                             function(event) {
-                                _isHover = false;
-                                var dropContent = this.dropContent;
-                                $(this).delay(this.settings.delay, function() {
-                                    if (dropContent.data('hideHandler') != undefined) {
-                                        dropContent.data('hideHandler').call(this, event);
-                                    }
-                                });
+                                if ($(this).parents('#dropmenu').size() > 0){
+                                    this.dropContent.addClass('ui-corner-all').removeClass('ui-corner-left').hide();
+                                }else{
+                                    _isHover = false;
+                                    var dropContent = this.dropContent;
+                                    $(this).delay(this.settings.delay, function() {
+                                        if (dropContent.data('hideHandler') != undefined) {
+                                            dropContent.data('hideHandler').call(this, event);
+                                        }
+                                    });
+                                }
                             }
                     );
 
@@ -205,11 +212,10 @@
             if (f > hWindow) {
                 top -= ((settings.top) + $(context).height() - settings.yoffset);
             }
-
             helper.parent.css('z-index', '999');
             var e = $(context).width() + left + 20;
             if (e > wWindow) {
-                left -= $(context).width() - 10;
+                left -= $(context).width() - menu.width();
             }
         }
 

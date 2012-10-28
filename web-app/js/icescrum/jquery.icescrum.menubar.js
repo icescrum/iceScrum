@@ -26,39 +26,101 @@
 
         checkBars:function() {
             $.icescrum.checkMenuBar();
+            $.icescrum.checkToolbar();
         },
 
         checkMenuBar:function() {
             var $listHidden = $('#menubar-list-content > ul');
             var $arrow = $('#menubar-list-button');
             // Show all
-            var candidatesForShowing = $listHidden.find('.menubar:not([hidden])').toArray().reverse();
+            var taller = false;
+            var candidatesForShowing = $listHidden.find('.menubar:not([hidden])').toArray();
+            var rightLimit = retrieveRightLimit($("#navigation-avatar"));
+            var bottomLimit = retrieveBottomLimit($("#main"));
+
             $(candidatesForShowing).each(function(){
                 var $candidateForShowing = $(this);
                 $candidateForShowing.addClass('draggable-to-desktop');
                 $arrow.before($candidateForShowing);
+                var arrowRightEdge = retrieveRightEdge($arrow);
+                var arrowBottomEdge = retrieveBottomEdge($arrow);
+                if(arrowRightEdge > rightLimit || arrowBottomEdge > bottomLimit){
+                    $candidateForShowing.prependTo($listHidden);
+                    return false;
+                } else {
+                    taller = true;
+                }
             });
-            // Hide elements until it fits
-            var rightLimit = retrieveRightLimit($("#navigation-avatar"));
-            var bottomLimit = retrieveBottomLimit($("#main"));
-            var arrowRightEdge = retrieveRightEdge($arrow);
-            var arrowBottomEdge = retrieveBottomEdge($arrow);
-            if(rightLimit && bottomLimit && arrowRightEdge && arrowBottomEdge) {
-                while (arrowRightEdge > rightLimit || arrowBottomEdge > bottomLimit) {
-                    var $lastMenu = $('.navigation-content .menubar:visible:last');
-                    if ($lastMenu.size() != 0) {
-                        $lastMenu.removeClass('draggable-to-desktop');
-                        $lastMenu.appendTo($listHidden);
-                        arrowRightEdge = retrieveRightEdge($arrow);
-                        arrowBottomEdge = retrieveBottomEdge($arrow);
-                    } else {
-                        return;
+            if  (!taller){
+                // Hide elements until it fits
+                var arrowRightEdge = retrieveRightEdge($arrow);
+                var arrowBottomEdge = retrieveBottomEdge($arrow);
+                if(rightLimit && bottomLimit && arrowRightEdge && arrowBottomEdge) {
+                    while (arrowRightEdge > rightLimit || arrowBottomEdge > bottomLimit) {
+                        var $lastMenu = $('.navigation-content .menubar:visible:last');
+                        if ($lastMenu.size() != 0) {
+                            $lastMenu.removeClass('draggable-to-desktop');
+                            $lastMenu.prependTo($listHidden);
+                            arrowRightEdge = retrieveRightEdge($arrow);
+                            arrowBottomEdge = retrieveBottomEdge($arrow);
+                        } else {
+                            return;
+                        }
                     }
                 }
             }
             // Update the arrow visibility
             var visibility = $('.menubar', $listHidden).size() == 0 ? 'hidden' : 'visible';
             $arrow.css('visibility', visibility)
+        },
+
+        checkToolbar:function(){
+            var $toolbar = $('#window-toolbar');
+
+            if ($toolbar.size()){
+                var topEdge = $toolbar.offset().top;
+                var $arrow = $toolbar.find('#toolbar-list-button');
+                var $search = $toolbar.find('#search-ui');
+
+                if ($arrow.size() == 0){
+                    $arrow = $('<li style="visibility: hidden;" id="toolbar-list-button" class="navigation-item list separator"/>');
+                    $('<div data-dropmenu="true" id="toolbar-list" class="dropmenu" style="cursor: pointer;"/>')
+                        .append('<div class="dropmenu-content ui-corner-all"><ul id="toolbar-list-hidden"/></div>')
+                        .append('<a class="button-n dropmenu-button button-n"><span class="start"/><span class="content">More<span class="end"><span class="arrow"></span></span></a>')
+                        .appendTo($arrow);
+                    $arrow.insertAfter($('#window-toolbar > .navigation-item:visible:last'));
+                }
+
+                var taller = false;
+                var $listHidden = $arrow.find('#toolbar-list-hidden');
+                var hidden = $arrow.find('#toolbar-list-hidden > .navigation-item').toArray();
+                $(hidden).each(function(){
+                    var $elem = $(this);
+                    $arrow.before($elem);
+                    if ($arrow.offset().top > topEdge || ($search.size() != 0 && $search.offset().top > topEdge)){
+                        $elem.prependTo($listHidden);
+                        return false;
+                    }else{
+                        taller = true;
+                    }
+                    $elem.removeClass('first');
+                });
+
+                if (!taller){
+                    var $elem = $('#window-toolbar > .navigation-item:not(.list):visible:last');
+                    var $item = $arrow.css('visibility') == 'visible' ? $arrow : $elem;
+                    while ($elem.size() != 0 && $item.size() != 0 && ($item.offset().top > topEdge || ($search.size() != 0 && $search.offset().top > topEdge) )){
+                        $listHidden.find('li:first').removeClass('first');
+                        $elem.prependTo($listHidden);
+                        $listHidden.find('li:first').addClass('first');
+                        $elem = $('#window-toolbar > .navigation-item:not(.list):visible:last');
+                        $item = $arrow.css('visibility') == 'visible' ? $arrow : $elem;
+                    }
+                }
+
+                var visibility = $arrow.find('ul:first > li').size() == 0 ? 'hidden' : 'visible';
+                $arrow.css('visibility', visibility);
+            }
         }
     })
 })(jQuery);

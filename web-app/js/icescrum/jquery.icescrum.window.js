@@ -100,6 +100,7 @@
                                     if(jQuery('#dialog').length){
                                         jQuery('#dialog').dialog('close');
                                     }
+                                    $.icescrum.checkToolbar();
                                     return false;
                                 }
                             });

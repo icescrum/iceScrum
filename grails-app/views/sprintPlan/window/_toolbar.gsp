@@ -43,10 +43,8 @@
             </a>
         </li>
 
-        <li class="navigation-item separator close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}"></li>
-
         %{--Delete button--}%
-        <li class="navigation-item button-ico button-delete close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
+        <li class="navigation-item button-ico button-delete separator close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
             <a class="tool-button button-n"
                onclick="jQuery.icescrum.selectableAction('task/delete',null,null,function(data){ jQuery.event.trigger('remove_task',[data]); jQuery.icescrum.renderNotice('${message(code:'is.task.deleted')}'); });"
                data-shortcut="del"
@@ -62,12 +60,10 @@
             </a>
         </li>
 
-        <li class="navigation-item separator close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}"></li>
-
     </g:if>
 
     %{--View--}%
-    <is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
+    <is:panelButton alt="View" id="menu-display" arrow="true" separator="${(request.teamMember || request.scrumMaster || request.productOwner) && sprint.state != Sprint.STATE_DONE}" icon="view">
         <ul>
             <li class="first">
                 <a href="${createLink(action:'index',controller:controllerName,params:[product:params.product],id: sprint.id)}"
@@ -86,13 +82,12 @@
         </ul>
     </is:panelButton>
 
-    <li class="navigation-item separator-s"></li>
-
     %{--Filter--}%
     <is:panelButton alt="Filter"
                     id="menu-filter-task"
                     arrow="true"
                     icon="filter"
+                    separator="true"
                     classDropmenu="${currentFilter == 'allTasks' ? '' : 'filter-active'}"
                     text="${message(code:'is.ui.sprintPlan.toolbar.filter.'+currentFilter)}">
         <ul>
@@ -131,12 +126,10 @@
         </ul>
     </is:panelButton>
 
-    <li class="navigation-item separator"></li>
-
     <g:if test="${request.scrumMaster || request.productOwner}">
 
         %{--Activate button--}%
-        <li class="navigation-item activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'':'hidden'}">
+        <li class="navigation-item separator activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'separator':'hidden'}">
             <a class="tool-button button-n"
                data-ajax="true"
                href="${createLink(action:'activate',controller:'releasePlan',params:[product:params.product],id:sprint.id)}"
@@ -155,12 +148,8 @@
             </a>
         </li>
 
-        <g:if test="${sprint.state == Sprint.STATE_WAIT}">
-            <li class="navigation-item separator activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'':'hidden'}"></li>
-        </g:if>
-
         %{--Close button--}%
-        <li class="navigation-item close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'':'hidden'}">
+        <li class="navigation-item close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'separator':'hidden'}">
             <a class="tool-button button-n"
                data-ajax="true"
                href="${createLink(action:'close',controller:'releasePlan',params:[product:params.product],id:sprint.id)}"
@@ -179,12 +168,10 @@
             </a>
         </li>
 
-        <li class="navigation-item separator close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'':'hidden'}"></li>
-
     </g:if>
 
     %{-- doneDefinition --}%
-    <li class="navigation-item">
+    <li class="navigation-item separator">
         <a class="tool-button button-n"
            href="#${controllerName}/doneDefinition/${sprint.id}"
            data-shortcut="ctrl+shift+d"
@@ -199,10 +186,8 @@
         </a>
     </li>
 
-    <li class="navigation-item separator-s"></li>
-
     %{-- retrospective --}%
-    <li class="navigation-item">
+    <li class="navigation-item separator">
         <a class="tool-button button-n"
            href="#${controllerName}/retrospective/${sprint.id}"
            data-shortcut="ctrl+shift+r"
@@ -217,9 +202,7 @@
         </a>
     </li>
 
-    <li class="navigation-item separator"></li>
-
-    <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
+    <is:panelButton alt="Charts" separator="true" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
         <ul>
             <li class="first">
                 <a href="#${controllerName}/sprintBurndownHoursChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurndownHoursChart')}</a>
@@ -236,9 +219,8 @@
         </ul>
     </is:panelButton>
 
-    <li class="navigation-item separator-s"></li>
-
     <is:reportPanel
+            separator="true"
             action="print"
             text="${message(code: 'is.ui.toolbar.print')}"
             formats="[
@@ -249,9 +231,8 @@
                     ]"
             params="id=${sprint.id}&locationHash=${params.actionWindow?:''}"/>
 
-    <li class="navigation-item separator-s"></li>
-
     <is:reportPanel
+            separator="true"
             action="printPostits"
             id="all"
             formats="[

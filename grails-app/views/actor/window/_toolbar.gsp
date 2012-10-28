@@ -42,10 +42,8 @@
         </a>
     </li>
 
-    <li class="navigation-item separator-s"></li>
-
     %{--Delete button--}%
-    <li class="navigation-item button-ico button-delete">
+    <li class="navigation-item button-ico button-delete separator">
         <a class="tool-button button-n"
            onclick="jQuery.icescrum.selectableAction('actor/delete',null,null,function(data){ jQuery.event.trigger('remove_actor',[data]); jQuery.icescrum.renderNotice('${message(code:'is.actor.deleted')}'); });"
            data-shortcut="del"
@@ -60,12 +58,10 @@
                 <span class="end"></span>
         </a>
     </li>
-
-    <li class="navigation-item separator"></li>
 </g:if>
 
 %{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
+<is:panelButton alt="View" id="menu-display" arrow="true" icon="view" separator="${request.productOwner}">
     <ul>
         <li class="first">
             <a href="${createLink(action:'list',controller:'actor',params:[product:params.product])}"
@@ -84,10 +80,9 @@
     </ul>
 </is:panelButton>
 
-<li class="navigation-item separator"></li>
-
 %{--Print button--}%
 <is:reportPanel
+        separator="true"
         action="print"
         text="${message(code: 'is.ui.toolbar.print')}"
         formats="[

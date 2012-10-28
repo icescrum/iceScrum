@@ -36,12 +36,9 @@
                 <span class="end"></span>
         </a>
     </li>
-
-    <li class="navigation-item separator"></li>
-
 </g:if>
 
-<is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
+<is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}" separator="${request.scrumMaster || request.productOwner}">
   <ul>
     <li class="first">
         <a href="#${controllerName}/productCumulativeFlowChart" title="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}">
@@ -76,10 +73,9 @@
   </ul>
 </is:panelButton>
 
-<li class="navigation-item separator" id="menu-report-separator"></li>
-
 %{--Print button--}%
 <is:reportPanel
+        separator="true"
         action="print"
         text="${message(code: 'is.ui.toolbar.print')}"
         formats="[

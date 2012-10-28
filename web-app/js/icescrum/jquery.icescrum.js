@@ -124,7 +124,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 this.o.notifications = false;
             }
 
-            $(window).bind('resize',function(){$.icescrum.checkBars();});
+            $(window).bind('resize',function(){
+                $.icescrum.checkBars();
+            });
         },
 
         log:function() {

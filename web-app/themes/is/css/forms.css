@@ -50,7 +50,7 @@
     height: 15px;
     width: auto;
     padding-bottom: 1px;
-    line-height: 16px;
+    line-height: 13px;
     padding-left: 22px;
     margin: 4px 0 3px 4px;
     margin-right: 5px;
@@ -618,6 +618,39 @@
     margin: 0;
     display: block;
     float: none;
+}
+
+#dropmenu .dropmenu-content a.button-n {
+    float:none;
+}
+
+#dropmenu .dropmenu-content .button-ico .ico {
+    top:6px;
+}
+
+#dropmenu .dropmenu-content a .arrow {
+    top:6px;
+    left:-3px;
+}
+
+#dropmenu .dropmenu-content .navigation-item.first {
+    border:none;
+}
+
+
+#dropmenu .dropmenu-content .navigation-item .dropmenu-content {
+    display: block;
+    right: 160px;
+    position: absolute;
+    top: -1px;
+}
+
+#dropmenu .dropmenu-content .navigation-item .dropmenu-content li {
+    line-height: 19px;
+}
+
+#dropmenu .dropmenu-content .button-n:hover span.start,#dropmenu .dropmenu-content .button-n:hover span.content, #dropmenu .dropmenu-content .button-n:hover span.end {
+    background-image: none;
 }
 
 #dropmenu .dropmenu-content ul li a {

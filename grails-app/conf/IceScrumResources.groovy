@@ -66,7 +66,7 @@ modules = {
     }
 
     'jquery' {
-        resource url:[dir:'js/jquery', file:"jquery-1.8.1.min.js"], nominify: true, disposition:'head'
+        resource url:[dir:'js/jquery', file:"jquery-1.8.2.min.js"], nominify: true, disposition:'head'
     }
 
     'jquery-ui' {

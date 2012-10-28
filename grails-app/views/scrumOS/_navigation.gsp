@@ -34,8 +34,7 @@
         </a>
     </li>
     <is:newVersion/>
-    <li class="navigation-line separator"></li>
-    <li class="navigation-line">
+    <li class="navigation-line separator">
         <div class="dropmenu" id="menu-project" data-dropmenu="true">
 
           <a class="button-n clearfix dropmenu-button" onclick="return false;">
@@ -131,7 +130,6 @@
           </div>
         </div>
     </li>
-    <li class="navigation-line separator"></li>
     <entry:point id="menu-left" model="[product:product]"/>
     <is:cache cache="userCache" key="user-${user?.username?:'anonymous'}-${user?.lastUpdated}" disabled="${product ? false : true}" role="false" locale="false">
         <is:menuBar/>

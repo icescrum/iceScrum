@@ -57,13 +57,12 @@
   </ul>
 </is:panelButton>
 
-<li class="navigation-item separator" id="menu-report-separator"></li>
-
 <entry:point id="${controllerName}-${actionName}"/>
 
 %{--Print button--}%
 <is:reportPanel
         action="print"
+        separator="true"
         text="${message(code: 'is.ui.toolbar.print')}"
         formats="[
                   ['PDF', message(code:'is.report.format.pdf')],
@@ -77,6 +76,7 @@
 <is:reportPanel
         action="printPostits"
         id="all"
+        separator="true"
         formats="[
                     ['PDF', message(code:'is.report.format.pdf')]
                 ]"

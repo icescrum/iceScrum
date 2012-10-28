@@ -36,7 +36,6 @@
             <span class="end"></span>
         </a>
     </li>
-    <li class="navigation-item separator-s"></li>
 </g:if>
 
 %{--View--}%
@@ -45,6 +44,7 @@
     <is:panelButton
             id="accept-display"
             arrow="true"
+            separator="${request.productOwner  || creator}"
             text="${message(code:'is.ui.backlogelement.toolbar.accept')}">
         <ul>
             <li class="first">
@@ -83,12 +83,11 @@
 
         </ul>
     </is:panelButton>
-    <li class="navigation-item separator-s"></li>
 </g:if>
 
 <g:if test="${(request.productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED)}">
 
-    <li class="navigation-item">
+    <li class="navigation-item ${request.productOwner && story.state == Story.STATE_SUGGESTED ? 'separator' : ''}">
         <a class="tool-button button-n"
            href="${createLink(controller:'story', action:'delete',id:story.id,params:[product:params.product])}"
            data-ajax-notice="${message(code:'is.story.deleted').encodeAsJavaScript()}"
@@ -104,8 +103,6 @@
                 <span class="end"></span>
         </a>
     </li>
-
-    <li class="navigation-item separator"></li>
 </g:if>
 
 <entry:point id="${controllerName}-${actionName}-toolbar"/>
@@ -127,12 +124,8 @@
         </li>
     </g:if>
 
-    <g:if test="${next && previous}">
-        <li class="navigation-item separator-s"></li>
-    </g:if>
-
     <g:if test="${next}">
-        <li class="navigation-item">
+        <li class="navigation-item ${previous ? 'separator' : ''}">
             <a class="tool-button button-n"
                href="#${controllerName}/${next.id}"
                title="${message(code:'is.ui.backlogelement.toolbar.next')}"

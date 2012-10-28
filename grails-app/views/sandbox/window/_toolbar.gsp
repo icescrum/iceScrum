@@ -42,11 +42,8 @@
 </g:if>
 
 <g:if test="${request.productOwner}">
-
-    <li class="navigation-item separator-s"></li>
-
     %{--Accept button--}%
-    <li class="navigation-item">
+    <li class="navigation-item ${!request.archivedProduct ? 'separator' : ''}">
         <a class="tool-button button-n"
            data-ajax="true"
            href="${createLink(action:'openDialogAcceptAs',params:[product:params.product])}"
@@ -62,9 +59,7 @@
         </a>
     </li>
 
-    <li class="navigation-item separator-s"></li>
-
-    <li class="navigation-item">
+    <li class="navigation-item separator">
         <a class="tool-button button-n"
            onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
            data-shortcut="ctrl+shift+c"
@@ -79,9 +74,7 @@
         </a>
     </li>
 
-    <li class="navigation-item separator-s"></li>
-
-    <li class="navigation-item">
+    <li class="navigation-item separator">
         <a class="tool-button button-n"
            onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){ jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
            data-shortcut="del"
@@ -97,12 +90,8 @@
     </li>
 </g:if>
 
-<g:if test="${!request.archivedProduct}">
-    <li class="navigation-item separator"></li>
-</g:if>
-
 %{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
+<is:panelButton alt="View" id="menu-display" arrow="true" icon="view" separator="${!request.archivedProduct}">
     <ul>
         <li class="first">
             <a href="${createLink(action:'list',controller:controllerName,params:[product:params.product])}"
@@ -121,9 +110,8 @@
     </ul>
 </is:panelButton>
 
-<li class="navigation-item separator"></li>
-
 <is:reportPanel
+        separator="true"
         action="print"
         text="${message(code: 'is.ui.toolbar.print')}"
         formats="[

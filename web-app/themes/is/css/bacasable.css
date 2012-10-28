@@ -452,7 +452,11 @@ td.jqplot-table-legend {
 }
 
 .table-line .dropmenu-action {
-    display:inline;
+    display:inline-block;
+}
+
+#menu-urgent, #menu-recurrent {
+    line-height: 15px;
 }
 
 .backlog li {
@@ -592,4 +596,8 @@ td.jqplot-table-legend {
 
 #notifications a {
     font-weight: bold;
+}
+
+#menu-project {
+    margin-right: 5px;
 }

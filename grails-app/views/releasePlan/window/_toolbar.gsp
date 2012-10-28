@@ -40,10 +40,8 @@
             </a>
         </li>
 
-        <li class="navigation-item separator close-release-${release.id}"></li>
-
         %{-- Sprints generation --}%
-        <li class="navigation-item close-release-${release.id}">
+        <li class="navigation-item separator close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'release', action:'generateSprints', params:[product:params.product], id:release.id)}"
                data-shortcut="ctrl+g"
@@ -61,11 +59,9 @@
             </a>
         </li>
 
-        <li class="navigation-item separator-s close-release-${release.id}"></li>
-
     %{-- Automatic planification --}%
 
-        <li class="navigation-item close-release-${release.id}">
+        <li class="navigation-item separator close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'releasePlan', action:'autoPlan', params:[product:params.product], id:release.id)}"
                data-shortcut="ctrl+shift+a"
@@ -81,10 +77,8 @@
             </a>
         </li>
 
-        <li class="navigation-item separator-s close-release-${release.id}"></li>
-
     %{-- Dissociate All --}%
-        <li class="navigation-item close-release-${release.id}">
+        <li class="navigation-item separator close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'release', action:'unPlan', params:[product:params.product], id:release.id)}"
                data-shortcut="ctrl+shift+d"
@@ -102,12 +96,10 @@
                     <span class="end"></span>
             </a>
         </li>
-
-        <li class="navigation-item separator close-release-${release.id}"></li>
     </g:if>
 
 %{-- Vision --}%
-    <li class="navigation-item">
+    <li class="navigation-item ${release.state <= Release.STATE_INPROGRESS && (request.productOwner || request.scrumMaster) ? 'separator' : ''}">
         <a class="tool-button button-n"
            href="#${controllerName}/vision/${release.id}"
            data-shortcut="ctrl+shift+v"
@@ -122,9 +114,7 @@
         </a>
     </li>
 
-    <li class="navigation-item separator"></li>
-
-    <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph"
+    <is:panelButton alt="Charts" id="menu-chart" arrow="true" separator="true" icon="graph"
                     text="${message(code:'is.ui.toolbar.charts')}">
         <ul>
             <li class="first">

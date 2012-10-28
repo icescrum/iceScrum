@@ -42,6 +42,7 @@
     position: relative;
     width: 25px;
     z-index: 997;
+    padding-right: 10px;
 }
 
 .is-logo a {
@@ -232,16 +233,6 @@ li#li-roles {
     padding: 4px 0;
 }
 
-#navigation .navigation-content .separator {
-    background-position: right -93px;
-    background-repeat: no-repeat;
-    width: 2px;
-    height: 29px;
-    padding: 0;
-    margin: 0 8px;
-    padding-right: 4px;
-}
-
 #navigation .right {
     position: absolute;
     right: 0;
@@ -376,9 +367,8 @@ li#li-roles {
     float: left;
     list-style: none;
     list-style-type: none;
-    padding: 0;
+    padding: 0 3px;
     margin: 0;
-    padding-left: 3px;
 }
 
 .box .box-navigation ul .navigation-right {
@@ -399,25 +389,16 @@ li#li-roles {
     float: right;
 }
 
-.box .box-navigation .separator {
-    background-position: right -93px;
+.box .box-navigation .separator, #navigation .navigation-content .separator {
+    background-position: left -93px;
     background-repeat: no-repeat;
-    width: 2px;
-    height: 18px;
-    padding: 0;
-    margin: 0 3px;
-    padding-right: 4px;
 }
 
-.box .box-navigation .separator-s {
-    background-position: right -93px;
+#navigation .navigation-content .separator {
+    background-position: left -93px;
     background-repeat: no-repeat;
-    width: 2px;
-    height: 10px;
-    padding: 0;
-    margin: 3px 3px;
-    padding-right: 4px;
 }
+
 
 .box .box-navigation ul .search, #main .box .box-navigation ul .search {
     padding: 0;
@@ -1958,7 +1939,7 @@ li#li-roles {
 }
 
 #tasks-table td.table-cell-checkbox .table-cell, #story-table td.table-cell-checkbox .table-cell,
-#feature-table td.table-cell-checkbox .table-cell {
+#feature-table td.table-cell-checkbox .table-cell, #actor-table td.table-cell-checkbox .table-cell {
     padding-left: 7px;
     width: auto;
 }
