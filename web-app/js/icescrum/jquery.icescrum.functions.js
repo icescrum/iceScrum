@@ -926,6 +926,7 @@
                     update:function(template) {
                         if (template) {
                             this.add = false;
+                            debugger;
                             $.icescrum.addOrUpdate(this, $.icescrum.sprint.templates[template], $.icescrum.sprint._postRendering);
                         }
                         var selectOnTimeline = $("#selectOnTimeline");
@@ -1340,6 +1341,7 @@
                 },
 
                 addOrUpdate:function(object, _tmpl, after, app) {
+                    debugger;
                     if ($.isFunction(_tmpl.constraintTmpl)) {
                         if (_tmpl.constraintTmpl.apply(object) == false) {
                             return false;

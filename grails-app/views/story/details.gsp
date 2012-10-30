@@ -34,6 +34,9 @@
                     <is:panelLine
                             legend="${message(code:'is.backlogelement.name')}">${story.name.encodeAsHTML()}</is:panelLine>
                     <is:panelLine legend="${message(code:'is.story.type')}">${message(code: typeCode)}</is:panelLine>
+                    <g:if test="${story.affectVersion}">
+                        <is:panelLine legend="${message(code:'is.story.affectVersion')}">${story.affectVersion}</is:panelLine>
+                    </g:if>
                     <is:panelLine legend="${message(code:'is.feature')}" rendered="${story.feature != null}"
                                   id="${'detail-feature-'+story.feature?.id}">
                         <is:postitIcon name="${story.feature.name.encodeAsHTML()}"
@@ -81,13 +84,17 @@
                                           size="20"/>
                         </g:if>
                     </is:panelLine>
-                    <is:panelLine legend="${message(code:'is.backlogelement.tags')}">
-                        <g:if test="${story.tags}">
-                            <g:each var="tag" status="i" in="${story.tags}">
-                                <a href="#finder?term=${tag}">${tag}</a>${i < story.tags.size() - 1 ? ', ' : ''}
-                            </g:each>
-                        </g:if>
+                    <is:panelLine legend="${story.type == Story.TYPE_DEFECT ? message(code:'is.story.deliveredVersion.defect') : message(code:'is.story.deliveredVersion')}"
+                                  rendered="${story.parentSprint?.deliveredVersion != null}">
+                        ${story.parentSprint.deliveredVersion}
                     </is:panelLine>
+                    <g:if test="${story.tags}">
+                        <is:panelLine legend="${message(code:'is.backlogelement.tags')}">
+                                <g:each var="tag" status="i" in="${story.tags}">
+                                    <a href="#finder?tag=${tag}">${tag}</a>${i < story.tags.size() - 1 ? ', ' : ''}
+                                </g:each>
+                        </is:panelLine>
+                    </g:if>
                     <is:panelLine legend="${message(code:'is.permalink')}">
                         <a href="${permalink}">${permalink}</a>
                     </is:panelLine>

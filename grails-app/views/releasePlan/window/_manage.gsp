@@ -45,8 +45,12 @@
                            defaultDate="${sprint ? sprint.endDate : (previousSprint ? previousSprint.endDate : release.startDate) + product.preferences.estimatedSprintsDuration}"/>
         </is:fieldDatePicker>
 
+        <is:fieldInput for="sprintDeliveredVersion" label="is.sprint.deliveredVersion">
+            <is:input id="sprintDeliveredVersion" class="small" name="sprint.deliveredVersion" value="${sprint?.deliveredVersion}"/>
+        </is:fieldInput>
+
         <is:fieldInput for="sprintresource" label="is.sprint.resource" noborder="true">
-            <is:input id="sprintresource" name="sprint.resource" value="${sprint?.resource}" typed="[type:'numeric']"/>
+            <is:input id="sprintresource" class="small" name="sprint.resource" value="${sprint?.resource}" typed="[type:'numeric']"/>
         </is:fieldInput>
     </is:fieldset>
 

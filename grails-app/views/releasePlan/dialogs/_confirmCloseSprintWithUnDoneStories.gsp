@@ -28,17 +28,27 @@
         <input type="hidden" value="true" name="confirm"/>
         <input type="hidden" value="${params.product}" name="product"/>
         <is:fieldset title="is.dialog.closeSprint.title">
-            <is:fieldInformation noborder="true">
-                <g:message code="is.dialog.closeSprint.description"/>
-            </is:fieldInformation>
-            <g:each in="${stories}" var="story" status="u">
-                <is:fieldRadio noborder="${(u + 1) == stories.size()?'true':'false'}" for="undonestory-${story.id}"
-                               label="${story.id} - ${story.name.encodeAsHTML()} (${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})">
-                    <is:radio
-                            from="[(message(code: 'is.dialog.closeSprint.done')): '1', (message(code: 'is.dialog.closeSprint.notDone')): '0']"
-                            id="undonestory-${story.id}" value="0" name="story.id.${story.id}"/>
-                </is:fieldRadio>
-            </g:each>
+            <g:if test="${stories}">
+                <is:fieldInformation noborder="true">
+                    <g:message code="is.dialog.closeSprint.description"/>
+                </is:fieldInformation>
+                <g:each in="${stories}" var="story" status="u">
+                    <is:fieldRadio noborder="${(u + 1) == stories.size()?'true':'false'}" for="undonestory-${story.id}"
+                                   label="${story.id} - ${story.name.encodeAsHTML()} (${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})">
+                        <is:radio
+                                from="[(message(code: 'is.dialog.closeSprint.done')): '1', (message(code: 'is.dialog.closeSprint.notDone')): '0']"
+                                id="undonestory-${story.id}" value="0" name="story.id.${story.id}"/>
+                    </is:fieldRadio>
+                </g:each>
+            </g:if>
+            <g:if test="${!sprint.deliveredVersion}">
+                <is:fieldInformation noborder="true">
+                    <g:message code="is.dialog.closeSprintVersion.description"/>
+                </is:fieldInformation>
+                <is:fieldInput for="sprintDeliveredVersion" label="is.sprint.deliveredVersion" noborder="true">
+                    <is:input id="sprintDeliveredVersion" class="small" name="sprint.deliveredVersion" value="${sprint?.deliveredVersion}"/>
+                </is:fieldInput>
+            </g:if>
         </is:fieldset>
     </form>
 </is:dialog>

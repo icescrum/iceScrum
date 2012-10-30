@@ -134,7 +134,7 @@
         </is:fieldRadio>
         <is:fieldRadio for="product.preferences.limitUrgentTasks" label="is.product.preferences.sprint.limitUrgentTasks"
                        noborder="true">
-            <is:input id="product.preferences.limitUrgentTasks" name="product.preferences.limitUrgentTasks"
+            <is:input id="product.preferences.limitUrgentTasks" class="small" name="product.preferences.limitUrgentTasks"
                       typed="[type:'numeric',allow:'-']" value="${product.preferences.limitUrgentTasks}"/>
         </is:fieldRadio>
     </is:fieldset>
@@ -156,7 +156,7 @@
 
          <is:fieldInput for="productpreferencesestimatedSprintsDuration"
                        label="is.product.preferences.planification.estimatedSprintsDuration">
-            <is:input id="productpreferencesestimatedSprintsDuration"
+            <is:input id="productpreferencesestimatedSprintsDuration" class="small"
                       name="product.preferences.estimatedSprintsDuration" typed="[type:'numeric']"
                       value="${product.preferences.estimatedSprintsDuration}"/>
         </is:fieldInput>

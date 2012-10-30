@@ -38,7 +38,6 @@ import java.text.DecimalFormat
 class ReleasePlanController {
     def storyService
     def springSecurityService
-    def sprintService
     def releaseService
     def featureService
 
@@ -124,7 +123,7 @@ class ReleasePlanController {
     def close = {
         withSprint{Sprint sprint ->
             def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
-            if (unDoneStories?.size() > 0 && !params.confirm) {
+            if ((unDoneStories?.size() > 0 || !sprint.deliveredVersion) && !params.confirm) {
                 def dialog = g.render(template: "dialogs/confirmCloseSprintWithUnDoneStories", model: [stories: unDoneStories, sprint: sprint])
                 render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
                 return
@@ -135,6 +134,10 @@ class ReleasePlanController {
                         storyService.done(Story.get(it.key.toLong()))
                     }
                 }
+            }
+
+            if (params.sprint?.deliveredVersion){
+                sprint.deliveredVersion = params.sprint.deliveredVersion
             }
             forward(action: 'close', controller: 'sprint', params: [product: params.product, id: sprint.id])
         }

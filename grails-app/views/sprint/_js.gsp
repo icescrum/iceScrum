@@ -40,6 +40,7 @@
     var startDate = jQuery.icescrum.dateLocaleFormat(this.startDate);
     var endDate = jQuery.icescrum.dateLocaleFormat(this.endDate);
     var sprintMesure = (this.state != ${Sprint.STATE_WAIT}) ? this.capacity+' / '+this.velocity : this.capacity;
+    var deliveredVersion = this.deliveredVersion ? '(' + this.deliveredVersion + ')' : '';
     **?
     <is:eventline onlyEvents="true">
         <is:event title="sprint ${sprint.orderNumber}" elemid="${sprint.id}">
@@ -72,7 +73,7 @@
                     </div>
                 </div>
                 <div class="tooltip">
-                    <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber}</span>
+                    <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber} ?**=deliveredVersion**?</span>
                     ${sprint.goal}
                 </div>
             </is:eventHeader>
@@ -120,6 +121,7 @@
     var startDate = jQuery.icescrum.dateLocaleFormat(this.startDate);
     var endDate = (this.state != ${Sprint.STATE_DONE}) ? jQuery.icescrum.dateLocaleFormat(this.endDate) : jQuery.icescrum.dateLocaleFormat(this.closeDate);
     var sprintMesure = (this.state != ${Sprint.STATE_WAIT}) ? this.velocity+' / '+this.capacity : this.capacity;
+    var deliveredVersion = this.deliveredVersion ? '(' + this.deliveredVersion + ')' : '';
     **?
     <div class="event-header state-?**=this.state**?" class="state-${sprint.state}" style="position:relative;"
          data-elemid="${sprint.id}">
@@ -151,7 +153,7 @@
             </div>
         </div>
         <div class="tooltip">
-            <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber}</span>
+            <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber} ?**=deliveredVersion**?</span>
             ${sprint.goal}
         </div>
     </div>

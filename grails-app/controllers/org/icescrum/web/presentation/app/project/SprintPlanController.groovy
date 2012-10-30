@@ -26,7 +26,6 @@
 
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 
 import org.icescrum.core.utils.BundleUtils
@@ -46,10 +45,8 @@ import org.icescrum.core.domain.Release
 class SprintPlanController {
 
     def springSecurityService
-    def storyService
     def sprintService
     def taskService
-    def releaseService
     def userService
 
     def titleBarContent = {

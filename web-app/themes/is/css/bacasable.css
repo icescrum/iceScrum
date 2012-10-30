@@ -601,3 +601,19 @@ td.jqplot-table-legend {
 #menu-project {
     margin-right: 5px;
 }
+
+.field-input .input.small input {
+    width:100px;
+}
+
+.field-input .input.small {
+    width:130px;
+}
+
+#storyaffectVersion-field input {
+    width:176px;
+}
+
+.box-form .datePicker input {
+    width:100px;
+}

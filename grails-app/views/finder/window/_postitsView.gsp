@@ -61,104 +61,110 @@
         <form method="POST" action="#">
             <ul>
                 <li id="search-input" class="search-box ui-widget-content ui-corner-top ui-corner-bottom">
-                    <h3>Search:</h3><is:input type="text" id="term" name="term"/>
+                    <h3>${g.message(code:'is.ui.finder.submit')}:</h3><is:input type="text" id="term" name="term"/>
                 </li>
                 <li class="search-box ui-widget-content ui-corner-top ui-corner-bottom">
-                    <h3>Filters on:</h3>
+                    <h3>${g.message(code:'is.ui.finder.filters')}:</h3>
                     <ul id="search-on">
                         <li>
-                            <h3><a href="#">Stories <input type="checkbox" class="hidden" name="withStories"/> <input type="checkbox" disabled="disabled"/></a></h3>
+                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.stories')} <input type="checkbox" class="hidden" name="withStories"/> <input type="checkbox" disabled="disabled"/></a></h3>
                             <ul>
-                                <li>Type: <is:select   width="150" maxHeight="200"
+                                <li>${g.message(code:'is.story.type')}: <is:select   width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="story.type" noSelection="['':'Choose a type']"
+                                                       name="story.type" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.storyTypes}"/></li>
-                                <li>Feature: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.feature')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="story.feature" noSelection="['':message(code:'is.ui.backlog.choose.feature')]"
+                                                       name="story.feature" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="name" optionKey="id" from="${product.features}"/></li>
-                                <li>Actor: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.actor')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="story.actor" noSelection="['':'Choose an actor']"
+                                                       name="story.actor" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="name" optionKey="id" from="${product.actors}"/></li>
-                                <li>State: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.story.affectVersion')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="story.state" noSelection="['':'Choose a state']"
+                                                       name="story.affectedVersion" noSelection="['':g.message(code:'is.ui.choose.or.empty')]" from="${product.getVersions(false, true)}"/></li>
+                                <li>${g.message(code:'is.story.state')}: <is:select width="150" maxHeight="200"
+                                                       styleSelect="dropdown"
+                                                       name="story.state" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.storyStates}"/></li>
-                                <li>Estimation: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.story.effort')}: <is:select width="150" maxHeight="200"
                                                       styleSelect="dropdown"
-                                                      name="story.effort" noSelection="['':'Choose an estimation']"
+                                                      name="story.effort" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                       optionValue="value" optionKey="key" from="${suiteSelect}"/></li>
-                                <li>Depends on: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.story.dependsOn')}: <is:select width="150" maxHeight="200"
                                                       styleSelect="dropdown"
-                                                      name="story.dependsOn" noSelection="['':'Choose a dependence']"
+                                                      name="story.dependsOn" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                       optionValue="${{ el -> el.uid+' - '+el.name }}" optionKey="id" from="${product.stories}"/></li>
-                                <li>Release: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.release')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="story.parentRelease" noSelection="['':'Choose a release']"
+                                                       name="story.parentRelease" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="name" optionKey="id" from="${product.releases}"/></li>
-                                <li>Sprint: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.sprint')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="story.parentSprint" noSelection="['':'Choose a sprint']"
+                                                       name="story.parentSprint" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{el -> 'R'+el.parentRelease.orderNumber +' S'+ el.orderNumber}}" optionKey="id" from="${product.releases*.sprints.flatten()}"/></li>
-                                <li>Created by: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.story.deliveredVersion')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="story.creator" noSelection="['':'Choose a user']"
+                                                       name="story.deliveredVersion" noSelection="['':g.message(code:'is.ui.choose.or.empty')]" from="${product.getVersions(true, false)}"/></li>
+                                <li>${g.message(code:'is.story.creator')}: <is:select width="150" maxHeight="200"
+                                                       styleSelect="dropdown"
+                                                       name="story.creator" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${product.allUsers}"/></li>
                             </ul>
                         </li>
                         <li>
-                            <h3><a href="#">Tasks <input type="checkbox" class="hidden" name="withTasks"/> <input type="checkbox" disabled="disabled"/></a></h3>
+                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.tasks')} <input type="checkbox" class="hidden" name="withTasks"/> <input type="checkbox" disabled="disabled"/></a></h3>
                             <ul>
-                                <li>Type: <is:select   width="150" maxHeight="200"
+                                <li>${g.message(code:'is.task.type')}: <is:select   width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="task.type" noSelection="['':'Choose a type']"
+                                                       name="task.type" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.taskTypes}"/></li>
-                                <li>Story: <is:select  width="150" maxHeight="200"
+                                <li>${g.message(code:'is.story')}: <is:select  width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="task.parentStory" noSelection="['':'Choose a story']"
+                                                       name="task.parentStory" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="name" optionKey="id" from="${product.stories?.findAll{ it.state >= Story.STATE_PLANNED }}"/></li>
-                                <li>Release: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.release')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="task.parentRelease" noSelection="['':'Choose a release']"
+                                                       name="task.parentRelease" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="name" optionKey="id" from="${product.releases}"/></li>
-                                <li>Sprint: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.sprint')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="task.parentSprint" noSelection="['':'Choose a sprint']"
+                                                       name="task.parentSprint" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{el -> 'R'+el.parentRelease.orderNumber +' S'+ el.orderNumber}}" optionKey="id" from="${product.releases*.sprints.flatten()}"/></li>
-                                <li>State: <is:select  width="150" maxHeight="200"
+                                <li>${g.message(code:'is.task.state')}: <is:select  width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="task.state" noSelection="['':'Choose a type']"
+                                                       name="task.state" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.taskStates}"/></li>
-                                <li>Taken by: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.task.responsible')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="task.responsible" noSelection="['':'Choose a user']"
+                                                       name="task.responsible" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${product.allUsers}"/></li>
-                                <li>Created by: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.task.creator')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="task.creator" noSelection="['':'Choose a user']"
+                                                       name="task.creator" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${product.allUsers}"/></li>
                             </ul>
                         </li>
                         <li>
-                            <h3><a href="#">Actors <input type="checkbox" class="hidden" name="withActors"/> <input type="checkbox" disabled="disabled"/></a></h3>
+                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.actors')} <input type="checkbox" class="hidden" name="withActors"/> <input type="checkbox" disabled="disabled"/></a></h3>
                             <ul>
-                                <li>Instance: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.actor.instances')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="actor.instance" noSelection="['':'Choose an instance']"
+                                                       name="actor.instance" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.actorInstances}"/></li>
-                                <li>Frequency: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.actor.use.frequency')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="actor.frequency" noSelection="['':'Choose a frequency']"
+                                                       name="actor.frequency" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.actorFrequencies}"/></li>
-                                <li>Level: <is:select width="150" maxHeight="200"
+                                <li>${g.message(code:'is.actor.it.level')}: <is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
-                                                       name="actor.level" noSelection="['':'Choose a level']"
+                                                       name="actor.level" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.actorLevels}"/></li>
                             </ul>
                         </li>
                         <li>
-                            <h3><a href="#">Features <input type="checkbox" class="hidden" name="withFeatures"/> <input type="checkbox" disabled="disabled"/></a></h3>
+                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.features')} <input type="checkbox" class="hidden" name="withFeatures"/> <input type="checkbox" disabled="disabled"/></a></h3>
                             <ul>
                                 <li>Type: <is:select   width="150" maxHeight="200"
                                                        styleSelect="dropdown"
@@ -170,9 +176,9 @@
                     </ul>
                 </li>
                 <li class="search-box ui-widget-content ui-corner-top ui-corner-bottom">
-                    <h3>Common filters:</h3>
+                    <h3>${g.message(code:'is.ui.finder.filters.common')}</h3>
                     <ul class="search-options">
-                        <li>Tag: <is:input type="text" id="tag" name="tag"/></li>
+                        <li>${g.message(code:'is.ui.finder.filters.common.tag')}: <is:input type="text" id="tag" name="tag" value="${params.tag?:''}"/></li>
                     </ul>
                 </li>
                 <li id="search-submit">
@@ -197,5 +203,5 @@
         });
         $("#search-on, #search-options").togglePanels();
     </jq:jquery>
-    <is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${controllerName}" listenOn="'#search-panel, #search-panel input'"/>
+    <is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${controllerName}" listenOn="'#search-panel, #search-panel input[type=text]'"/>
 </g:if>

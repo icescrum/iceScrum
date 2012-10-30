@@ -42,6 +42,11 @@
             <p>
                 <strong><g:message code="is.story.type"/> :</strong> <g:message code="${typeCode}"/>
             </p>
+            <g:if test="${story.affectVersion}">
+                <p>
+                   <strong><g:message code="is.story.affectVersion"/> :</strong> <g:message code="${story.affectVersion}"/>
+               </p>
+            </g:if>
             <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_ACCEPTED}">
                 <p>
                     <strong><g:message code="is.story.rank"/> :</strong> ${story.rank}
@@ -121,9 +126,11 @@
                                   timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
-            <div class="line last">
-                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${story?.tags}"> <a href="#finder?term=${tag}">${tag}</a>${i < story.tags.size() - 1 ? ', ' : ''}</g:each>
-            </div>
+            <g:if test="${story.tags}">
+                <div class="line last">
+                    <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i" in="${story.tags}"> <a href="#finder?tag=${tag}">${tag}</a>${i < story.tags.size() - 1 ? ', ' : ''}</g:each>
+                </div>
+            </g:if>
             <entry:point id="quicklook-story-left" model="[story:story]"/>
         </div>
 

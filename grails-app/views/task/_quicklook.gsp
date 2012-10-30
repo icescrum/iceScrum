@@ -86,10 +86,12 @@
                                                                                              id="${task.responsible.username}">${task.responsible.firstName.encodeAsHTML()} ${task.responsible.lastName.encodeAsHTML()}</is:scrumLink>
                 </p>
             </g:if>
-            <div class="line last">
-                <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i"
-                                                                                           in="${task?.tags}"> <a href="#finder?term=${tag}">${tag}</a>${i < task.tags.size() - 1 ? ', ' : ''}</g:each>
-            </div>
+            <g:if test="${task.tags}">
+                <div class="line last">
+                    <strong><g:message code="is.backlogelement.tags"/> :</strong>&nbsp;<g:each var="tag" status="i"
+                                                                                               in="${task.tags}"> <a href="#finder?tag=${tag}">${tag}</a>${i < task.tags.size() - 1 ? ', ' : ''}</g:each>
+                </div>
+            </g:if>
             <entry:point id="quicklook-task-left" model="[task: task]"/>
         </div>
 

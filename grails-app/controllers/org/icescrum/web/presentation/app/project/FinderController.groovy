@@ -145,6 +145,14 @@ class FinderController {
                     if (options.story?.effort?.isInteger()){
                         eq 'effort', options.story.effort.toInteger()
                     }
+                    if (options.story?.affectedVersion){
+                        eq 'affectVersion', options.story.affectedVersion
+                    }
+                    if (options.story?.deliveredVersion){
+                        parentSprint {
+                            eq 'deliveredVersion', options.story.deliveredVersion
+                        }
+                    }
                 }
             }
             if (options.tag){

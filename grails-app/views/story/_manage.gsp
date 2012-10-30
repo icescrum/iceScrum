@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.Story" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -34,14 +35,19 @@
         <is:fieldSelect for="story.type" label="is.story.type">
             <is:select
                     container=".window-content"
-                    width="240"
+                    width="195"
                     maxHeight="200"
+                    change="this.value == '${Story.TYPE_DEFECT}' ? jQuery('#storyaffectVersion-field-input').show() : jQuery('#storyaffectVersion-field-input').hide();"
                     styleSelect="dropdown"
                     from="${typesLabels}"
                     keys="${typesKeys}"
                     name="story.type"
                     value="${story?.type}"/>
         </is:fieldSelect>
+
+        <is:fieldInput for="storyaffectVersion" label="is.story.affectVersion" id="storyaffectVersion-field-input" style="display:${story?.type == Story.TYPE_DEFECT ? 'block' : 'none'}">
+            <is:input id="storyaffectVersion" name="story.affectVersion" value="${story?.affectVersion}"/>
+        </is:fieldInput>
 
         <is:fieldSelect label="is.feature" for="story.feature">
             <is:select container=".window-content" width="195" maxHeight="200"
@@ -213,4 +219,8 @@
 </g:if>
 <jq:jquery>
     $("ul[name='story.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
+    $( "#storyaffectVersion" ).autocomplete({
+        source: "${g.createLink(controller:'project', action: 'versions', params:[product:params.product])}",
+        minLength: 2
+    });
 </jq:jquery>

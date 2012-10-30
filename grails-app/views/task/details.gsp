@@ -74,13 +74,13 @@
                                               size="20"/>
                         </is:panelLine>
                     </g:if>
-                    <is:panelLine legend="${message(code:'is.backlogelement.tags')}">
-                        <g:if test="${task.tags}">
+                    <g:if test="${task.tags}">
+                        <is:panelLine legend="${message(code:'is.backlogelement.tags')}">
                             <g:each var="tag" status="i" in="${task.tags}">
-                                <a href="#finder?term=${tag}">${tag}</a>${i < task.tags.size() - 1 ? ', ' : ''}
+                                <a href="#finder?tag=${tag}">${tag}</a>${i < task.tags.size() - 1 ? ', ' : ''}
                             </g:each>
-                        </g:if>
-                    </is:panelLine>
+                        </is:panelLine>
+                    </g:if>
                 </is:panelContext>
             </is:panel>
 

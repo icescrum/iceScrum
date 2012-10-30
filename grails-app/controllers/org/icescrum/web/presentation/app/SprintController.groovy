@@ -55,7 +55,7 @@ class SprintController {
             if (params.sprint.endDate)
                 params.sprint.endDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.endDate)
             try {
-                bindData(sprint, this.params, [include:['resource','goal','startDate','endDate']], "sprint")
+                bindData(sprint, this.params, [include:['resource','goal','startDate','endDate','deliveredVersion']], "sprint")
                 sprintService.save(sprint, release)
                 withFormat {
                     html { render(status: 200, contentType: 'application/json', text: sprint as JSON)  }
@@ -85,9 +85,9 @@ class SprintController {
             def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
             def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
 
-            sprintService.update(sprint, startDate, endDate)
+            bindData(sprint, params, [include:['resource','goal','deliveredVersion']], "sprint")
 
-            bindData(sprint, params, [include:['resource','goal']], "sprint")
+            sprintService.update(sprint, startDate, endDate)
 
             def next = null
             if (params.continue) {

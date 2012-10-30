@@ -136,7 +136,7 @@ class StoryController {
     def save = {
 
         def story = new Story()
-        bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
+        bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo','affectVersion']], "story")
 
         withFormat {
             html {
@@ -237,7 +237,7 @@ class StoryController {
 
             def skipUpdate = false
 
-            bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo']], "story")
+            bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo','affectVersion']], "story")
 
             withFormat {
                 html {

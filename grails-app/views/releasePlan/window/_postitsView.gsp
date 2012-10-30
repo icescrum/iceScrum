@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="tooltip">
-                        <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber}</span>
+                        <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber} ${sprint.deliveredVersion ? '('+sprint.deliveredVersion+')' : ''}</span>
                         ${sprint.goal}
                     </div>
                 </is:eventHeader>

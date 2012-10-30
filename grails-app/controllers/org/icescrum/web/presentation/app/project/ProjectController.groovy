@@ -872,6 +872,18 @@ class ProjectController {
         }
     }
 
+    def versions = {
+        withProduct { Product product ->
+            withFormat{
+                html {
+                    render product.getVersions(false, true) as JSON
+                }
+                json { renderRESTJSON(text:product.versions) }
+                xml  { renderRESTXML(text:product.versions) }
+             }
+        }
+    }
+
     private exportProduct(Product product, boolean withProgress){
 
         def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"

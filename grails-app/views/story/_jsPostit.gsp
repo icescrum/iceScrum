@@ -46,7 +46,7 @@
     var effort = this.state > 1 ? (this.effort != null ? this.effort : '?') : '';
     var truncatedDescription = description.length > 50 ? description.substring(0,50)+'...' : description;
     var textState = this.state > 1 ? jQuery.icescrum.story.states[this.state] : '';
-    var typeTitle = $.icescrum.story.types[this.type];
+    var typeTitle = $.icescrum.story.types[this.type] + (this.type == 2 && this.affectVersion ? ' ('+ this.affectVersion+')' : '');
     var parentReleaseID = this.parentSprint ? this.parentSprint.parentReleaseId : '';
     var sprintOrderNumber = this.parentSprint ? this.parentSprint.orderNumber + 1 : '';
     var parentSprint = this.parentSprint ? this.parentSprint.id : '';
