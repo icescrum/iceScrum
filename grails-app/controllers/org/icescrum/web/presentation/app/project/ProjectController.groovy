@@ -102,7 +102,14 @@ class ProjectController {
             if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
                 privateOption = false
             }
-            def dialog = g.render(template: "dialogs/edit", model: [product: product, privateOption: privateOption])
+            def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
+            def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
+
+            def dialog = g.render(template: "dialogs/edit",
+                                  model: [product: product,
+                                          privateOption: privateOption,
+                                          possibleViews: possibleViews,
+                                          restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
             render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
@@ -128,7 +135,9 @@ class ProjectController {
             //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
             boolean hasHiddenChanged = product.preferences.hidden != params.productd.preferences.hidden
             product.properties = params.productd
-
+            if(!params.productd.preferences?.stakeHolderRestrictedViews){
+                product.preferences.stakeHolderRestrictedViews = null
+            }
             try {
                 productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
                 entry.hook(id:"${controllerName}-${actionName}", model:[product:product])

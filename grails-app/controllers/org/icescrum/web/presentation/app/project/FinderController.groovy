@@ -4,18 +4,51 @@ import org.grails.taggable.Tag
 import grails.converters.JSON
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Actor
-import org.icescrum.core.utils.BundleUtils
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Task
-import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
 import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.PlanningPokerGame
 
+@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class FinderController {
 
         def springSecurityService
+
+        def index = {
+            withProduct { Product product ->
+                def data = [:]
+
+                params.term = params.term ? '%'+params.term+'%' : null
+                data.actors =  searchInActors(product.id, [tag:params.tag, term:params.term, actor: params.withActors ? params.actor : null])
+                data.stories = searchInStories(product.id, [tag:params.tag, term:params.term, story: params.withStories ? params.story : null])
+                data.features = searchInFeatures(product.id, [tag:params.tag, term:params.term, feature: params.withFeatures ? params.feature : null])
+                data.tasks = searchInTasks(product, [tag:params.tag, term:params.term, task: params.withTasks ? params.task : null])
+
+                if (!data.actors && !data.stories && !data.features && !data.tasks){
+                    data = null
+                }
+
+                def suiteSelect = [:]
+                PlanningPokerGame.getInteger(product.planningPokerGameType).eachWithIndex { t, i ->
+                    suiteSelect."${t}" = t
+                }
+
+                withFormat{
+                    html {
+                        render(template: 'window/postitsView', model: [
+                                data: data,
+                                user:(User)springSecurityService.currentUser,
+                                update: params.update ?: false,
+                                suiteSelect:suiteSelect,
+                                product:product])
+                    }
+                    json { renderRESTJSON(text:data) }
+                    xml  { renderRESTXML(text:data) }
+                }
+            }
+        }
 
         def tag = {
             withProduct{ Product p ->
@@ -49,41 +82,6 @@ class FinderController {
                     json { renderRESTJSON(text:tags.unique()) }
                     xml  { renderRESTXML(text:tags.unique()) }
                  }
-            }
-        }
-
-        @Secured('inProduct()')
-        def list = {
-            withProduct { Product product ->
-                def data = [:]
-
-                params.term = params.term ? '%'+params.term+'%' : null
-                data.actors =  searchInActors(product.id, [tag:params.tag, term:params.term, actor: params.withActors ? params.actor : null])
-                data.stories = searchInStories(product.id, [tag:params.tag, term:params.term, story: params.withStories ? params.story : null])
-                data.features = searchInFeatures(product.id, [tag:params.tag, term:params.term, feature: params.withFeatures ? params.feature : null])
-                data.tasks = searchInTasks(product, [tag:params.tag, term:params.term, task: params.withTasks ? params.task : null])
-
-                if (!data.actors && !data.stories && !data.features && !data.tasks){
-                    data = null
-                }
-
-                def suiteSelect = [:]
-                PlanningPokerGame.getInteger(product.planningPokerGameType).eachWithIndex { t, i ->
-                    suiteSelect."${t}" = t
-                }
-
-                withFormat{
-                    html {
-                        render(template: 'window/postitsView', model: [
-                                data: data,
-                                user:(User)springSecurityService.currentUser,
-                                update: params.update ?: false,
-                                suiteSelect:suiteSelect,
-                                product:product])
-                    }
-                    json { renderRESTJSON(text:data) }
-                    xml  { renderRESTXML(text:data) }
-                }
             }
         }
 

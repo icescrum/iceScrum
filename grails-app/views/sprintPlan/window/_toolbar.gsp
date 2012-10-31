@@ -100,15 +100,17 @@
                     ${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}
                 </a>
             </li>
-            <li>
-                <a href="${createLink(action:'changeFilterTasks', params:[filter:'myTasks', product:params.product], id:sprint.id)}"
-                   data-ajax="true"
-                   data-ajax-update="#window-content-${controllerName}"
-                   data-ajax-success="$.icescrum.updateFilterTask"
-                   data-active="true">
-                    ${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}
-                </a>
-            </li>
+            <g:if test="${request.inProduct}">
+                <li>
+                    <a href="${createLink(action:'changeFilterTasks', params:[filter:'myTasks', product:params.product], id:sprint.id)}"
+                       data-ajax="true"
+                       data-ajax-update="#window-content-${controllerName}"
+                       data-ajax-success="$.icescrum.updateFilterTask"
+                       data-active="true">
+                        ${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}
+                    </a>
+                </li>
+            </g:if>
             <entry:point id="${controllerName}-${actionName}-filters" model="[sprint:sprint]"/>
             <g:if test="${sprint.state == Sprint.STATE_INPROGRESS}">
                 <li>

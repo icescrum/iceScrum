@@ -183,7 +183,7 @@
                  callback="jQuery(this).html(value.effort);jQuery(this).next().show();"
                  params="[product:params.product]"/>
 
-    <is:editable rendered="${sprint.state != Sprint.STATE_DONE}"
+    <is:editable rendered="${sprint.state != Sprint.STATE_DONE && request.inProduct}"
                  on="div.postit-task span.mini-value.editable"
                  typed="[type:'numeric',allow:'?.,']"
                  onExit="submit"
@@ -198,7 +198,7 @@
                  params="[product:params.product]"
                  findId="jQuery(this).parents('.postit-task:first').data('elemid')"/>
 
-    <g:if test="${sprint.state == Sprint.STATE_INPROGRESS}">
+    <g:if test="${sprint.state == Sprint.STATE_INPROGRESS && request.inProduct}">
         <is:droppable on="#kanban-sprint-${sprint.id} .row-urgent-task"
                       accept=".postit-row-story-sandbox"
                       activeClass="active"
@@ -210,7 +210,7 @@
                       }"/>
     </g:if>
 
-    <is:sortable rendered="${sprint.state != Sprint.STATE_DONE}"
+    <is:sortable rendered="${sprint.state != Sprint.STATE_DONE && request.inProduct}"
                  on="table.kanban td.kanban-col:not(:first-child)"
                  handle="p.postit-sortable"
                  containment="#window-content-sprintPlan table"

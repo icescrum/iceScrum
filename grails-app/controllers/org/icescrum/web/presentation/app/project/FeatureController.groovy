@@ -36,7 +36,7 @@ import org.icescrum.core.domain.Story
 import org.grails.taggable.Tag
 import java.text.DecimalFormat
 
-@Secured('inProduct()')
+@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class FeatureController {
 
     def featureService

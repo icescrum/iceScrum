@@ -38,6 +38,13 @@
     <is:fieldRadio rendered="${!privateOption}" for="productpreferenceshidden" label="is.product.preferences.project.hidden">
         <is:radio id="productpreferenceshidden" name="productd.preferences.hidden" value="${product.preferences.hidden}"/>
     </is:fieldRadio>
+    <is:fieldFile for="productpreferencesStakeHolderRestrictedViews" label="is.product.preferences.project.stakeHolderRestrictedViews">
+        <div class="restrictedViews">
+            <g:each var="view" in="${possibleViews}">
+                <is:checkbox label="${message(code:view.title)}" checked="${view.id in restrictedViews}"  value="${view.id}" name="productd.preferences.stakeHolderRestrictedViews"/>
+            </g:each>
+        </div>
+    </is:fieldFile>
     <is:fieldSelect for="productpreferencestimezone" label="is.product.preferences.timezone">
         <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown"
                            name="productd.preferences.timezone" id="productpreferencestimezone"

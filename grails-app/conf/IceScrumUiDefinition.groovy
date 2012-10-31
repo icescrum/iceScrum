@@ -265,7 +265,7 @@ uiDefinitions = {
         window {
             title 'is.ui.finder'
             toolbar true
-            init 'list'
+            init 'index'
         }
     }
 

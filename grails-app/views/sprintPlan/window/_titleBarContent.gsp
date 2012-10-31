@@ -34,7 +34,7 @@
                 history='false'
                 name="selectOnSprintPlan"
                 width="200"
-                onchange=" \$.icescrum.openWindow('${controllerName}/'+this.value)"/>
+                onchange="document.location.hash = '${controllerName}/'+this.value;"/>
         <is:link
                 rendered="${sprintsName.size() > 0}"
                 class="ui-icon-triangle-1-w"

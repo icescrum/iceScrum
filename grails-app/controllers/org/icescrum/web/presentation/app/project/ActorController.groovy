@@ -36,7 +36,7 @@ import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 
-@Secured('inProduct()')
+@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class ActorController {
     def actorService
     def springSecurityService

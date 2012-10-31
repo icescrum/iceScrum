@@ -617,3 +617,12 @@ td.jqplot-table-legend {
 .box-form .datePicker input {
     width:100px;
 }
+
+.restrictedViews {
+    float:left;
+    width: 338px;
+}
+
+.box-form .field-input .restrictedViews span.radio {
+    padding: 0;
+}

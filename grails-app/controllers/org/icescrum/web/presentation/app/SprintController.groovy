@@ -36,7 +36,6 @@ import org.icescrum.core.domain.Product
 @Secured('inProduct()')
 class SprintController {
 
-    def releaseService
     def sprintService
     def storyService
     def springSecurityService

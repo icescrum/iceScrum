@@ -34,7 +34,6 @@ import org.icescrum.core.domain.PlanningPokerGame
 
 @Secured('stakeHolder() or inProduct()')
 class BacklogController {
-    def storyService
     def springSecurityService
 
     final featureTerm = /feature:(\w)/

@@ -81,6 +81,9 @@
                             </g:each>
                         </is:panelLine>
                     </g:if>
+                    <is:panelLine legend="${message(code:'is.permalink')}">
+                        <a href="${permalink}">${permalink}</a>
+                    </is:panelLine>
                 </is:panelContext>
             </is:panel>
 

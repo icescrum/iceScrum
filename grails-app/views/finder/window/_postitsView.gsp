@@ -5,7 +5,7 @@
     <is:backlogElementLayout
             id="window-${controllerName}"
             emptyRendering="true"
-            dblclickable='[rendered:request.inProduct, selector:".postit", callback:"\$.icescrum.displayQuicklook(obj)"]'
+            dblclickable='[selector:".postit", callback:"\$.icescrum.displayQuicklook(obj)"]'
             style="display:${data ? 'block' : 'none'};"
             value="${data}"
             var="type">
@@ -185,7 +185,7 @@
                     <is:button
                             id="submitForm"
                             type="submitToRemote"
-                            url="[controller:'finder', action:'list', params:[product:params.product, update:true]]"
+                            url="[controller:'finder', action:'index', params:[product:params.product, update:true]]"
                             update="search-result"
                             button="button-s"
                             title="${message(code:'is.ui.finder.submit')}"

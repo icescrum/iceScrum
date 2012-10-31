@@ -24,6 +24,14 @@
 class ProductUrlMappings {
     static mappings = {
 
+        "/p/$product/finder" {
+            controller = 'finder'
+            action = 'index'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
         "/p/textileParser" {
             controller = 'scrumOS'
             action = 'textileParser'
@@ -41,6 +49,15 @@ class ProductUrlMappings {
 
         name shortURL: "/p/$product-$id/" {
             controller = 'story'
+            action = 'shortURL'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /[0-9]*/)
+            }
+        }
+
+        name shortURLTASK: "/p/$product-T$id/" {
+            controller = 'task'
             action = 'shortURL'
             constraints {
                 product(matches: /[0-9A-Z]*/)

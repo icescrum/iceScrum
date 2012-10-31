@@ -1082,9 +1082,9 @@
                     },
 
                     sortableTasks:function(){
-                        if ($.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
+                        if (!$.icescrum.user.stakeHolder && $.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
                             $('table.kanban:not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').addClass('postit-sortable');
-                        }else if(!$.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
+                        }else if(!$.icescrum.user.stakeHolder && !$.icescrum.product.assignOnBeginTask && !$.icescrum.user.scrumMaster){
                             $('table.kanban:not(.done) td[type=0] .postit-task:not(.hasResponsible) .postit-label').removeClass('postit-sortable');
                         }
                     },

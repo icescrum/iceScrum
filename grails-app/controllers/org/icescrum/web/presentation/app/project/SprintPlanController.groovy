@@ -41,7 +41,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 
-@Secured('inProduct()')
+@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class SprintPlanController {
 
     def springSecurityService
@@ -106,7 +106,7 @@ class SprintPlanController {
             sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.not.exist')]] as JSON)
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
         }
 
@@ -221,7 +221,7 @@ class SprintPlanController {
     }
 
     def add = {
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
+        Sprint sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
         if (!sprint) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
             return
@@ -295,7 +295,7 @@ class SprintPlanController {
     def copyFromPreviousDoneDefinition = {
         withSprint{ Sprint sprint ->
             if (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) {
-                def previous
+                Sprint previous
                 if (sprint.orderNumber > 1) {
                     previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.orderNumber - 1)
                 } else {
@@ -320,7 +320,7 @@ class SprintPlanController {
     def copyFromPreviousRetrospective = {
         withSprint{ Sprint sprint ->
             if (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) {
-                def previous
+                Sprint previous
                 if (sprint.orderNumber > 1) {
                     previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.orderNumber - 1)
                 } else {
@@ -448,7 +448,7 @@ class SprintPlanController {
      */
     def print = {
         def currentProduct = Product.load(params.product)
-        def sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
+        Sprint sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
         def data
         def chart = null
 
@@ -511,9 +511,21 @@ class SprintPlanController {
         }
     }
 
-    def printPostits = {
-        def currentProduct = Product.load(params.product)
+    def sprintNotes = {
         withSprint{ Sprint sprint ->
+            render(status:200,
+                   template: 'window/sprintNotes',
+                   model:[ sprint:sprint,
+                           tasks:sprint.tasks?.findAll{it.type == Task.TYPE_URGENT && it.state == Task.STATE_DONE},
+                           technicalStories:sprint.stories?.findAll{it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE},
+                           userStories:sprint.stories?.findAll{it.type == Story.TYPE_USER_STORY && it.state == Story.STATE_DONE},
+                           defectStories:sprint.stories?.findAll{it.type == Story.TYPE_DEFECT && it.state == Story.STATE_DONE}])
+        }
+    }
+
+    def printPostits = {
+        withSprint{ Sprint sprint ->
+            def product = sprint.parentProduct
             def stories1 = []
             def stories2 = []
             def first = 0
@@ -529,18 +541,18 @@ class SprintPlanController {
                             description: is.storyTemplate([story: it, displayBR: true]),
                             notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
                             type: message(code: BundleUtils.storyTypes[it.type]),
-                            suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.suggestedDate]) : null,
-                            acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.acceptedDate]) : null,
-                            estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.estimatedDate]) : null,
-                            plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.plannedDate]) : null,
-                            inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.inProgressDate]) : null,
-                            doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: currentProduct.preferences.timezone, date: it.doneDate ?: null]) : null,
+                            suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
+                            acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,
+                            estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.estimatedDate]) : null,
+                            plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.plannedDate]) : null,
+                            inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.inProgressDate]) : null,
+                            doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.doneDate ?: null]) : null,
                             rank: it.rank ?: null,
                             sprint: g.message(code: 'is.release') + " " + sprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + sprint.orderNumber,
                             creator: it.creator.firstName + ' ' + it.creator.lastName,
                             feature: it.feature?.name ?: null,
                             dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
-                            permalink:createLink(absolute: true, mapping: "shortURL", params: [product: currentProduct.pkey], id: it.uid),
+                            permalink:createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid),
                             featureColor: it.feature?.color ?: null]
                     if (first == 0) {
                         stories1 << story
@@ -551,7 +563,7 @@ class SprintPlanController {
                     }
 
                 }
-                outputJasperReport('stories', params.format, [[product: currentProduct.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], currentProduct.name)
+                outputJasperReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
             } else if (params.status) {
                 render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
             } else {

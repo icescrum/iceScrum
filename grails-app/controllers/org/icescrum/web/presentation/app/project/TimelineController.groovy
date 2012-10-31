@@ -38,7 +38,6 @@ import grails.plugins.springsecurity.Secured
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class TimelineController {
 
-    def releaseService
     def productService
     def featureService
     def springSecurityService

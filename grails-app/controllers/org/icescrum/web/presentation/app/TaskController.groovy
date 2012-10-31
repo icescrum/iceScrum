@@ -35,7 +35,7 @@ import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.icescrum.core.domain.Product
 import org.grails.taggable.Tag
 
-@Secured('inProduct()')
+@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class TaskController {
 
     def securityService
@@ -43,7 +43,8 @@ class TaskController {
     def taskService
 
     def toolbar = {
-        withTask { Task task ->
+        def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
+        withTask(id, params.uid?true:false){ Task task ->
             def user = null
             if (springSecurityService.isLoggedIn())
                 user = User.load(springSecurityService.principal.id)
@@ -55,8 +56,13 @@ class TaskController {
         }
     }
 
+    def shortURL = {
+        redirect(url: is.createScrumLink(controller: 'task', params:[uid: params.id]))
+    }
+
     def index = {
-        withTask { Task task ->
+        def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
+        withTask(id, params.uid?true:false) { Task task ->
             def product = task.parentProduct
             def user = springSecurityService.currentUser
             if (product.preferences.hidden && !user) {
@@ -70,8 +76,10 @@ class TaskController {
                     json { renderRESTJSON(text:task) }
                     xml  { renderRESTXML(text:task) }
                     html {
+                        def permalink = createLink(absolute: true, mapping: "shortURLTASK", params: [product: product.pkey], id: task.uid)
                         render(view: 'details', model: [
                             task: task,
+                            permalink:permalink,
                             taskStateCode: BundleUtils.taskStates[task.state],
                             taskTypeCode: BundleUtils.taskTypes[task.type]
                         ])

@@ -30,7 +30,7 @@
 <g:set var="sprintDone" value="${task.backlog?.state == Sprint.STATE_DONE}"/>
 
 <g:set var="taskEditable" value="${(request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
-<g:set var="taskSortable" value="${request.scrumMaster || responsible || (assignOnBeginTask && task.state == Task.STATE_WAIT)}"/>
+<g:set var="taskSortable" value="${request.scrumMaster || responsible || (request.inProduct && assignOnBeginTask && task.state == Task.STATE_WAIT)}"/>
 
 %{-- Task postit --}%
 <is:postit title="${task.name}"
