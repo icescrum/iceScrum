@@ -59,6 +59,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
             this.o = jQuery.extend({}, this.defaults, icescrum);
 
+            $.cookie.defaults = { path: '/' };
+
             if (!window.console) window.console = {};
             if (!window.console.log) window.console.log = function () { };
 
