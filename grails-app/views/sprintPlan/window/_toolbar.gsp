@@ -27,7 +27,7 @@
     <g:if test="${(request.teamMember || request.scrumMaster || request.productOwner) && sprint.state != Sprint.STATE_DONE}">
 
         %{--Add button--}%
-        <li class="navigation-item button-ico button-create close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
+        <li class="navigation-item button-ico button-add close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
             <a class="tool-button button-n"
                href="#sprintPlan/add/${sprint.id}"
                data-shortcut="ctrl+n"
@@ -172,37 +172,54 @@
 
     </g:if>
 
-    %{-- doneDefinition --}%
-    <li class="navigation-item separator">
-        <a class="tool-button button-n"
-           href="#${controllerName}/doneDefinition/${sprint.id}"
-           data-shortcut="ctrl+shift+d"
-           data-shortcut-on="#window-id-${controllerName}"
-           alt="${message(code:'is.ui.sprintPlan.toolbar.alt.doneDefinition')}"
-           title="${message(code:'is.ui.sprintPlan.toolbar.alt.doneDefinition')}">
-                <span class="start"></span>
-                <span class="content">
-                    ${message(code: 'is.ui.sprintPlan.toolbar.doneDefinition')}
-                </span>
-                <span class="end"></span>
-        </a>
-    </li>
+    <is:panelButton alt="documents" separator="true" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
+        <ul>
+        %{-- doneDefinition --}%
+            <li class="first">
+                <a href="#${controllerName}/doneDefinition/${sprint.id}"
+                   data-shortcut="ctrl+shift+d"
+                   data-shortcut-on="#window-id-${controllerName}"
+                   alt="${message(code:'is.ui.sprintPlan.toolbar.alt.doneDefinition')}"
+                   title="${message(code:'is.ui.sprintPlan.toolbar.alt.doneDefinition')}">
+                        <span class="start"></span>
+                        <span class="content">
+                            ${message(code: 'is.ui.sprintPlan.toolbar.doneDefinition')}
+                        </span>
+                        <span class="end"></span>
+                </a>
+            </li>
 
-    %{-- retrospective --}%
-    <li class="navigation-item separator">
-        <a class="tool-button button-n"
-           href="#${controllerName}/retrospective/${sprint.id}"
-           data-shortcut="ctrl+shift+r"
-           data-shortcut-on="#window-id-${controllerName}"
-           alt="${message(code:'is.ui.sprintPlan.toolbar.alt.retrospective')}"
-           title="${message(code:'is.ui.sprintPlan.toolbar.alt.retrospective')}">
-                <span class="start"></span>
-                <span class="content">
-                    ${message(code: 'is.ui.sprintPlan.toolbar.retrospective')}
-                </span>
-                <span class="end"></span>
-        </a>
-    </li>
+            %{-- retrospective --}%
+            <li>
+                <a href="#${controllerName}/retrospective/${sprint.id}"
+                   data-shortcut="ctrl+shift+r"
+                   data-shortcut-on="#window-id-${controllerName}"
+                   alt="${message(code:'is.ui.sprintPlan.toolbar.alt.retrospective')}"
+                   title="${message(code:'is.ui.sprintPlan.toolbar.alt.retrospective')}">
+                        <span class="start"></span>
+                        <span class="content">
+                            ${message(code: 'is.ui.sprintPlan.toolbar.retrospective')}
+                        </span>
+                        <span class="end"></span>
+                </a>
+            </li>
+
+            %{-- sprint notes --}%
+            <li class="last">
+                <a href="#${controllerName}/sprintNotes/${sprint.id}"
+                   data-shortcut="ctrl+shift+s"
+                   data-shortcut-on="#window-id-${controllerName}"
+                   alt="${message(code:'is.ui.sprintPlan.toolbar.alt.sprintNotes')}"
+                   title="${message(code:'is.ui.sprintPlan.toolbar.alt.sprintNotes')}">
+                    <span class="start"></span>
+                    <span class="content">
+                        ${message(code: 'is.ui.sprintPlan.toolbar.sprintNotes')}
+                    </span>
+                    <span class="end"></span>
+                </a>
+            </li>
+        </ul>
+    </is:panelButton>
 
     <is:panelButton alt="Charts" separator="true" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
         <ul>

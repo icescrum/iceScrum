@@ -1,4 +1,4 @@
-<div class="box-blank clearfix" style="display:${!features ? 'block' : 'none'};">
+<div class="box-blank clearfix" style="display:${show ? 'block' : 'none'};">
     <p>${message(code: 'is.ui.feature.blank.description')}</p>
     <table cellpadding="0" cellspacing="0" border="0" class="box-blank-button">
         <tr>

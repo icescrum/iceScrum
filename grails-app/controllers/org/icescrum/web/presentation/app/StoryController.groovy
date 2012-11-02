@@ -802,35 +802,6 @@ class StoryController {
         }
     }
 
-    def taskPanel = {
-        withStory { Story story ->
-            render(template: "window/tasks",
-                model: [taskStateBundle: BundleUtils.taskStates,
-                        story: story,
-                        product: params.product
-                ])
-        }
-    }
-
-    def testsPanel = {
-        withStory { Story story ->
-            render(template: "window/tests",
-                model: [story: story,
-                        product: params.product,
-                        user: springSecurityService.currentUser
-                ])
-        }
-    }
-
-    def commentsPanel = {
-        withStory { Story story ->
-            render(template: "window/comments",
-                model: [story: story,
-                        product: params.product
-                ])
-        }
-    }
-
     @Secured('isAuthenticated()')
     def follow = {
         withStory { Story story ->

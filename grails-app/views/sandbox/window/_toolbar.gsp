@@ -24,7 +24,7 @@
 --}%
 %{--Add button--}%
 <g:if test="${!request.archivedProduct}">
-    <li class="navigation-item button-ico button-create">
+    <li class="navigation-item button-ico button-add">
         <a class="tool-button button-n"
            href="#${controllerName}/add"
            data-shortcut="ctrl+n"

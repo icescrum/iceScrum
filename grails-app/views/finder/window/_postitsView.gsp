@@ -13,15 +13,15 @@
                 <div class="search-group"><g:message code="is.story"/> (${type.value.size()})</div>
                 <g:each in="${type.value}" var="story">
                     <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
-                        <g:include view="/story/_postit.gsp" model="[story:story,user:user, sprint:sprint]" params="[product:params.product]"/>
+                        <g:render template="/story/postit" model="[story:story,user:user, sprint:sprint]"/>
                     </is:cache>
                 </g:each>
             </g:if>
             <g:if test="${type.key == 'tasks' && type.value}">
                 <div class="search-group"><g:message code="is.task"/> (${type.value.size()})</div>
                 <g:each in="${type.value}" var="task">
-                    <is:cache cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:include view="/task/_postit.gsp" model="[task:task, user:user, rect:'false']" params="[product:params.product]"/>
+                    <is:cache cache="taskCache" key="postit-norect-${task.id}-${task.lastUpdated}">
+                        <g:render template="/task/postit" model="[task:task, user:user, rect:'false']"/>
                     </is:cache>
                 </g:each>
             </g:if>
@@ -29,7 +29,7 @@
                 <div class="search-group"><g:message code="is.feature"/> (${type.value.size()})</div>
                 <g:each in="${type.value}" var="feature">
                     <is:cache cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">
-                        <g:include view="/feature/_postit.gsp" model="[feature:feature]" params="[product:params.product]"/>
+                        <g:render template="/feature/postit" model="[feature:feature]"/>
                     </is:cache>
                 </g:each>
             </g:if>
@@ -37,12 +37,12 @@
                 <div class="search-group"><g:message code="is.actor"/> (${type.value.size()})</div>
                 <g:each in="${type.value}" var="actor">
                     <is:cache cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
-                        <g:include view="/actor/_postit.gsp" model="[actor:actor]" params="[product:params.product]"/>
+                        <g:render template="/actor/postit" model="[actor:actor]"/>
                     </is:cache>
                 </g:each>
             </g:if>
     </is:backlogElementLayout>
-    <g:include view="/finder/window/_blank.gsp" model="[data:data]"/>
+    <g:render template="/finder/window/blank" model="[show: data ? false : true]"/>
     <jq:jquery>
         $('#backlog-layout-window-${controllerName} .postit .dropmenu li a:not(".scrum-link")').parent().remove();
         $('#window-content-finder').on('resize', function(){

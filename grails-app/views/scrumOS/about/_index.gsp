@@ -30,10 +30,10 @@
 <is:tabs elementId="about-tabs">
   <entry:point id="about-tabs-first"/>
   <is:tab elementId="version-tab" class="about-tab" title="is.dialog.about.version">
-    <g:include view="${controllerName}/about/_version.gsp" model="[version:about.version]"/>
+    <g:render template="/${controllerName}/about/version" model="[version:about.version]"/>
   </is:tab>
   <is:tab elementId="license-tab" class="about-tab box" title="is.dialog.about.license">
-    <g:include view="${controllerName}/about/_license.gsp" model="[license:about.license.text().encodeAsNL2BR()]"/>
+    <g:render template="/${controllerName}/about/license" model="[license:about.license.text().encodeAsNL2BR()]"/>
   </is:tab>
   <entry:point id="about-tabs-last"/>
 </is:tabs>

@@ -26,7 +26,7 @@
 <is:shortcut key="esc" callback="jQuery('#search-ui').mouseout();" scope="${controllerName}" listenOn="'#autoCmpTxt'"/>
 
 <g:if test="${request.productOwner}">
-    <li class="navigation-item button-ico button-create">
+    <li class="navigation-item button-ico button-add">
         <a class="tool-button button-n"
            href="#${controllerName}/add"
            data-shortcut="ctrl+n"

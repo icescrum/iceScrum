@@ -80,7 +80,7 @@
     </is:table>
 </is:tableView>
 
-<g:include view="/feature/window/_blank.gsp" model="[features:features]"/>
+<g:render template="/feature/window/blank" model="[show:features ? false : true]"/>
 
 <jq:jquery>
     jQuery('tr[data-rank]').each(function() {

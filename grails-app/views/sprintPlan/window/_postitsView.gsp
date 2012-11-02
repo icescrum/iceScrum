@@ -68,7 +68,7 @@
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
                     <is:cache  cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
+                        <g:render template="/task/postit" model="[task:task,user:user]"/>
                     </is:cache>
                 </g:each>
 
@@ -99,8 +99,7 @@
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${recurrentTasks?.sort{it.rank}?.findAll{ it.state == column.key} }" var="task">
                     <is:cache cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:include view="/task/_postit.gsp" model="[task:task,user:user]"
-                                   params="[product:params.product]"/>
+                        <g:render template="/task/postit" model="[task:task,user:user]"/>
                     </is:cache>
                 </g:each>
 
@@ -118,9 +117,8 @@
                    emptyRendering="true">
             <is:kanbanColumn elementId="column-story-${story.id}">
                 <is:cache cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
-                    <g:include view="/story/_postit.gsp"
-                               model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
-                               params="[product:params.product]"/>
+                    <g:render  template="/story/postit"
+                               model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"/>
                 </is:cache>
             </is:kanbanColumn>
 
@@ -129,7 +127,7 @@
                 <is:kanbanColumn key="${column.key}">
                     <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (user.preferences.hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                             var="task">
-                                <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
+                        <g:render template="/task/postit" model="[task:task,user:user]"/>
                     </g:each>
                 </is:kanbanColumn>
             </g:each>
@@ -144,9 +142,8 @@
                    emptyRendering="true">
         <is:kanbanColumn elementId="column-story-${story.id}">
             <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
-                <g:include view="/story/_postit.gsp"
-                           model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"
-                           params="[product:params.product]"/>
+                <g:render template="/story/postit"
+                           model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"/>
             </is:cache>
         </is:kanbanColumn>
 
@@ -155,7 +152,7 @@
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                         var="task">
-                    <g:include view="/task/_postit.gsp" model="[task:task,user:user]" params="[product:params.product]"/>
+                    <g:render template="/task/postit" model="[task:task,user:user]" />
                 </g:each>
             </is:kanbanColumn>
         </g:each>

@@ -24,7 +24,7 @@
 <g:if test="${release.id}">
     <g:if test="${release.state <= Release.STATE_INPROGRESS && (request.productOwner || request.scrumMaster)}">
     %{-- Add button --}%
-        <li class="navigation-item button-ico button-create close-release-${release.id}">
+        <li class="navigation-item button-ico button-add close-release-${release.id}">
             <a class="tool-button button-n"
                href="#${controllerName}/add/${release.id}"
                data-shortcut="ctrl+n"
@@ -98,22 +98,37 @@
         </li>
     </g:if>
 
-%{-- Vision --}%
-    <li class="navigation-item ${release.state <= Release.STATE_INPROGRESS && (request.productOwner || request.scrumMaster) ? 'separator' : ''}">
-        <a class="tool-button button-n"
-           href="#${controllerName}/vision/${release.id}"
-           data-shortcut="ctrl+shift+v"
-           data-shortcut-on="#window-id-${controllerName}"
-           alt="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
-           title="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}">
-                <span class="start"></span>
-                <span class="content">
-                    ${message(code: 'is.ui.releasePlan.toolbar.vision')}
-                </span>
-                <span class="end"></span>
-        </a>
-    </li>
-
+    <is:panelButton alt="documents" separator="${release.state <= Release.STATE_INPROGRESS && (request.productOwner || request.scrumMaster)}" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
+        <ul>
+            %{-- vision --}%
+            <li class="first">
+                <a href="#${controllerName}/vision/${release.id}"
+                   data-shortcut="ctrl+shift+v"
+                   data-shortcut-on="#window-id-${controllerName}"
+                   alt="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
+                   title="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}">
+                        <span class="start"></span>
+                        <span class="content">
+                            ${message(code: 'is.ui.releasePlan.toolbar.vision')}
+                        </span>
+                        <span class="end"></span>
+                </a>
+            </li>
+            <li class="last">
+                <a href="#${controllerName}/releaseNotes/${release.id}"
+                   data-shortcut="ctrl+shift+s"
+                   data-shortcut-on="#window-id-${controllerName}"
+                   alt="${message(code:'is.ui.releasePlan.toolbar.alt.releaseNotes')}"
+                   title="${message(code:'is.ui.releasePlan.toolbar.alt.releaseNotes')}">
+                    <span class="start"></span>
+                    <span class="content">
+                        ${message(code: 'is.ui.releasePlan.toolbar.releaseNotes')}
+                    </span>
+                    <span class="end"></span>
+                </a>
+            </li>
+        </ul>
+    </is:panelButton>
     <is:panelButton alt="Charts" id="menu-chart" arrow="true" separator="true" icon="graph"
                     text="${message(code:'is.ui.toolbar.charts')}">
         <ul>

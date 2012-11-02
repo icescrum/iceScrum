@@ -44,11 +44,11 @@
         value="${features}"
         var="feature">
         <is:cache cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">
-            <g:include view="/feature/_postit.gsp" model="[feature:feature,user:user]" params="[product:params.product]"/>
+            <g:render template="/feature/postit" model="[feature:feature,user:user]"/>
         </is:cache>
 </is:backlogElementLayout>
 
-<g:include view="/feature/window/_blank.gsp" model="[features:features]"/>
+<g:render template="/feature/window/blank" model="[show : features ? false : true]"/>
 
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"

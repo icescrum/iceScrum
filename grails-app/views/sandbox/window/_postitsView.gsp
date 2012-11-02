@@ -45,12 +45,11 @@
         value="${stories}"
         var="story">
         <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${sprint ? sprint.id : ''}">
-            <g:include view="/story/_postit.gsp" model="[story:story,user:user, sprint:sprint]"
-                       params="[product:params.product]"/>
+            <g:render template="/story/postit" model="[story:story,user:user, sprint:sprint]"/>
         </is:cache>
 </is:backlogElementLayout>
 
-<g:include view="/sandbox/window/_blank.gsp" model="[stories:stories]"/>
+<g:render template="/sandbox/window/blank" model="[show:stories ? false : true]"/>
 
 <is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
 <is:shortcut key="space"

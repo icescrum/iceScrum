@@ -32,11 +32,11 @@
         dblclickable='[rendered:!request.productOwner,selector:".postit",callback:"\$.icescrum.displayQuicklook"]'
         var="actor">
         <is:cache cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
-            <g:include view="/actor/_postit.gsp" model="[actor:actor]" params="[product:params.product]"/>
+            <g:render template="/actor/postit" model="[actor:actor]"/>
         </is:cache>
 </is:backlogElementLayout>
 
-<g:include view="/actor/window/_blank.gsp" model="[actors:actors]"/>
+<g:render template="/actor/window/blank" model="[show:actors ? false : true]"/>
 
 
 <is:shortcut key="space"

@@ -60,17 +60,22 @@
                                 cache:false,
                                 url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? (id.indexOf('?') >= 0 ? '&' : '?') + 'viewType='+view : '' ),
                                 beforeSend:function(){
-                                    var loading = $('<div/>').attr('id','window-loading').css('opacity',0).css('z-index',998);
-                                    if ($.icescrum.o.fullscreen) {
-                                        $(document.body).prepend(loading);
-                                        loading.addClass('window-fullscreen loading').animate({opacity:0.2},250);
-                                    }else{
-                                        $('#main').prepend(loading);
-                                        loading.addClass('modal-background loading').animate({opacity:0.2},250);
+                                    if ($('#window-loading').size() == 0){
+                                        var loading = $('<div/>').attr('id','window-loading').css('opacity',0).css('z-index',998);
+                                        if ($.icescrum.o.fullscreen) {
+                                            $(document.body).prepend(loading);
+                                            loading.addClass('window-fullscreen loading').animate({opacity:0.2},250);
+                                        }else{
+                                            $('#main').prepend(loading);
+                                            loading.addClass('modal-background loading').animate({opacity:0.2},250);
+                                        }
                                     }
                                 },
-                                error:function() {
-                                    $('#window-loading').stop().animate({opacity:0.0},250,function(){  $(this).remove(); });
+                                complete:function(){
+                                    var loading = $('#window-loading');
+                                    if(loading.size() > 0){
+                                        loading.stop().animate({opacity:0.0},250,function(){  $(this).remove(); });
+                                    }
                                 },
                                 success:function(data, textStatus) {
                                     if ($.icescrum.o.fullscreen) {
@@ -85,7 +90,6 @@
                                             viewSelector.find('.content').html('<span class="ico"></span>' + viewSelector.find('a[data-default-view='+view+']').text());
                                         }
                                     }
-                                    $('#window-loading').stop().animate({opacity:0.0},250,function(){  $(this).remove(); });
                                     if (callback) {
                                         callback();
                                     }

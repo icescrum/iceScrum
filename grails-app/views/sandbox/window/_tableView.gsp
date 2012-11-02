@@ -94,7 +94,7 @@
     </is:table>
 </is:tableView>
 
-<g:include view="/sandbox/window/_blank.gsp" model="[stories:stories]"/>
+<g:render template="/sandbox/window/blank" model="[show:stories ? false : true]"/>
 
 <is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
 <is:onStream

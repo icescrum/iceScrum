@@ -36,8 +36,7 @@
 <g:set var="user" value="[id:'?**=this.id**?']"/>
 
 <template id="postit-story-sandbox-tmpl">
-    <g:include view="/story/_jsPostit.gsp" params="[product:params.product]"
-               model="[id:'sandbox',sortable:request.productOwner,editable:tMOrSm]"/>
+    <g:render template="/story/jsPostit" model="[id:'sandbox',sortable:request.productOwner,editable:tMOrSm]"/>
 </template>
 
 <template id="table-row-story-sandbox-tmpl">
@@ -101,8 +100,7 @@
 </template>
 
 <template id="postit-story-backlog-tmpl">
-    <g:include view="/story/_jsPostit.gsp" params="[product:params.product]"
-               model="[id:'backlog',sortable:request.productOwner,editable:tMOrSm]"/>
+    <g:render template="/story/jsPostit" model="[id:'backlog',sortable:request.productOwner,editable:tMOrSm]"/>
 </template>
 
 <template id="table-row-story-backlog-tmpl">
@@ -204,16 +202,14 @@
 </template>
 
 <template id="postit-story-releasePlan-tmpl">
-    <g:include view="/story/_jsPostit.gsp" params="[product:params.product]"
-               model="[id:'releasePlan',editable:tMOrSm,rect:true, referrer:story.parentSprint.parentRelease]"/>
+    <g:render template="/story/jsPostit" model="[id:'releasePlan',editable:tMOrSm,rect:true, referrer:story.parentSprint.parentRelease]"/>
 </template>
 
 <template id="postit-story-sprintPlan-tmpl">
     <is:kanban onlyRows="true">
         <is:kanbanRow class="row-story" elemid="${story.id}">
             <is:kanbanColumn elementId="column-story-${story.id}" key="story">
-                <g:include view="/story/_jsPostit.gsp" params="[product:params.product]"
-                           model="[id:'sprintPlan',rect:false, editable:tMOrSm, referrer:story.parentSprint.id]"/>
+                <g:render template="/story/jsPostit" model="[id:'sprintPlan',rect:false, editable:tMOrSm, referrer:story.parentSprint.id]"/>
             </is:kanbanColumn>
             <g:each in="${columns}" var="column">
                 <is:kanbanColumn elementId="column-story-${story.id}-${column.key}" key="${column.key}"/>

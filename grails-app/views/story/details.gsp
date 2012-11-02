@@ -116,9 +116,9 @@
                 </is:panelTabButton>
                 <div id="panel-tab-contents-1" class="panel-tab-contents">
                     <g:include  action="summaryPanel" controller="story" params="[product:params.product, id:story.id]"/>
-                    <g:include  action="taskPanel" controller="story" params="[product:params.product, id:story.id]"/>
-                    <g:include  action="testsPanel" controller="story" params="[product:params.product, id:story.id]"/>
-                    <g:include  action="commentsPanel" controller="story" params="[product:params.product, id:story.id]"/>
+                    <g:render template="window/tasks" model="[story:story]"/>
+                    <g:render template="window/tests" model="[story:story, user:user]"/>
+                    <g:render template="window/comments" model="[story:story]"/>
                     <entry:point id="${controllerName}-${actionName}-tab-entry" model="[story:story]"/>
                 </div>
                 <jq:jquery>

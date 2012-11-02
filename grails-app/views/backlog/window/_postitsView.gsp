@@ -75,11 +75,11 @@
         var="story">
         <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
     <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
-        <g:include view="/story/_postit.gsp" model="[story:story,user:user,sortable:request.productOwner]" params="[product:params.product]"/>
+        <g:render template="/story/postit" model="[story:story,user:user,sortable:request.productOwner]"/>
     </is:cache>
 </is:backlogElementLayout>
 
-<g:include view="/backlog/window/_blank.gsp" model="[stories:stories]"/>
+<g:render template="/backlog/window/blank" model="[show:stories ? false : true]"/>
 
 <jq:jquery>
     jQuery('#window-title-bar-${controllerName} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');

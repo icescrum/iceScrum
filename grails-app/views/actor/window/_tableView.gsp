@@ -81,7 +81,7 @@
     </is:table>
 </is:tableView>
 
-<g:include view="/actor/window/_blank.gsp" model="[actors:actors]"/>
+<g:render template="/actor/window/blank" model="[show:actors ? false : true]"/>
 
 <is:onStream
         on="#actor-table"

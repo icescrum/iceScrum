@@ -104,9 +104,8 @@
                             var="story"
                             emptyRendering="true">
                             <is:cache cache="storyCache" key="postit-rect-${story.id}-${story.lastUpdated}">
-                                <g:include view="/story/_postit.gsp"
-                                           model="[story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"
-                                           params="[product:params.product]"/>
+                                <g:render template="/story/postit"
+                                           model="[story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"/>
                             </is:cache>
                     </is:backlogElementLayout>
                 </is:eventContent>
@@ -115,8 +114,7 @@
     </g:each>
 </is:eventline>
 
-<g:include view="/releasePlan/window/_blankSprint.gsp" model="[sprints:sprints,release:release]"
-           params="[product:params.product]"/>
+<g:render template="/releasePlan/window/blankSprint" model="[show:sprints ? false : true,release:release]"/>
 
 <jq:jquery>
     $('#window-title-bar-${controllerName} .content').html('${message(code: "is.ui." + controllerName)} - ${release.name}  - ${is.bundle(bundle: 'releaseStates', value: release.state)} - [${g.formatDate(date: release.startDate, formatName: 'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} -> ${g.formatDate(date: release.endDate, formatName: 'is.date.format.short',timeZone:release.parentProduct.preferences.timezone)}]');

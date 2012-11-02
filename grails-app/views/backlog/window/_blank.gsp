@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<div class="box-blank clearfix" style="display:${stories ? 'none' : 'block'};">
+<div class="box-blank clearfix" style="display:${show ? 'block' : 'none'};">
     <p>${message(code: 'is.ui.backlog.blank.description')}</p>
     <table cellpadding="0" cellspacing="0" border="0" class="box-blank-button">
         <tr>

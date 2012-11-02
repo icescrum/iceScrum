@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<li class="navigation-item button-ico button-create">
+<li class="navigation-item button-ico button-add">
     <a class="tool-button button-n"
        href="#feature/add"
        title="${message(code:'is.ui.feature.toolbar.alt.new')}"

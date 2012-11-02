@@ -107,13 +107,13 @@
 
 <div class='templates'>
     <g:if test="${params.product}">
-        <g:include view="/actor/_js.gsp" model="[id:'actor']" params="[product:params.product]"/>
-        <g:include view="/feature/_js.gsp" model="[id:'feature']" params="[product:params.product]"/>
-        <g:include view="/story/_js.gsp" params="[product:params.product]"/>
-        <g:include view="/task/_js.gsp" model="[id:'sprintPlan']" params="[product:params.product]"/>
-        <g:include view="/sprint/_js.gsp" model="[id:'releasePlan']" params="[product:params.product]"/>
-        <g:include view="/comment/_js.gsp" params="[product:params.product]"/>
-        <g:include view="/acceptanceTest/_js.gsp" params="[product:params.product]"/>
+        <g:render template="/actor/js" model="[id:'actor']"/>
+        <g:render template="/feature/js" model="[id:'feature']"/>
+        <g:render template="/story/js"/>
+        <g:render template="/task/js" model="[id:'sprintPlan']"/>
+        <g:render template="/sprint/js" model="[id:'releasePlan']"/>
+        <g:render template="/comment/js"/>
+        <g:render template="/acceptanceTest/js"/>
     </g:if>
-    <g:include view="/user/_js.gsp"/>
+    <g:render template="/user/js"/>
 </div>

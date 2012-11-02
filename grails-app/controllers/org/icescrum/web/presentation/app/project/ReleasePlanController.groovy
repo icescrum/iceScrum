@@ -33,6 +33,7 @@ import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import java.text.DecimalFormat
+import org.icescrum.core.domain.Task
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
 class ReleasePlanController {
@@ -295,6 +296,19 @@ class ReleasePlanController {
             else {
                 returnError(text:message(code: 'is.chart.error.no.values'))
             }
+        }
+    }
+
+    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
+    def releaseNotes = {
+        withRelease{ Release release ->
+            render(status:200,
+                    template: 'window/releaseNotes',
+                    model:[ release:release,
+                            tasks:release.sprints*.tasks.flatten().findAll{ it.type == Task.TYPE_URGENT && it.state == Task.STATE_DONE },
+                            technicalStories:release.sprints*.stories.flatten().findAll{ it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE },
+                            userStories:release.sprints*.stories.flatten().findAll{it.type == Story.TYPE_USER_STORY && it.state == Story.STATE_DONE},
+                            defectStories:release.sprints*.stories.flatten().findAll{it.type == Story.TYPE_DEFECT && it.state == Story.STATE_DONE}])
         }
     }
 }
