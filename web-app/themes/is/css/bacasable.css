@@ -649,3 +649,8 @@ td.jqplot-table-legend {
 .productdescription-label label {
     height:155px;
 }
+
+
+.panel .field-information {
+    border-top-width: 0;
+}
