@@ -620,11 +620,11 @@ td.jqplot-table-legend {
 
 .restrictedViews {
     float:left;
-    width: 338px;
+    width: 300px;
 }
 
 .box-form .field-input .restrictedViews span.radio {
-    padding: 0;
+    padding: 3px;
 }
 
 .sprintNotes h1, .releaseNotes h1 {
@@ -644,4 +644,8 @@ td.jqplot-table-legend {
 
 .sprintNotes ul li, .releaseNotes ul li {
     padding: 2px;
+}
+
+.productdescription-label label {
+    height:155px;
 }
