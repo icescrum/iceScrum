@@ -2000,6 +2000,7 @@ html > body .ui-pnotify {
 .ui-pnotify-closer {
     float: right;
     margin-left: .2em;
+    margin-top:4px;
 }
 
 .ui-pnotify-title {
@@ -2017,6 +2018,7 @@ html > body .ui-pnotify {
     display: block;
     float: left;
     margin-right: .2em;
+    margin-top: 3px;
 }
 
 /* History Pulldown
