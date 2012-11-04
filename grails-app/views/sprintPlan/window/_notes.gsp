@@ -4,7 +4,7 @@
     <button onclick="NotesToHtml('#sprintNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.html')}</button>
 </div>
 <div id="sprintNotes" style="padding: 10px;">
-    <h1>${sprint.deliveredVersion ? sprint.deliveredVersion + ' - ' : ''}${sprint.parentRelease.name} - ${message(code:'is.sprint')} ${sprint.orderNumber}</h1>
+    <h1>${sprint.deliveredVersion ? sprint.deliveredVersion + ' - ' : ''}${sprint.parentRelease.name} - ${message(code:'is.sprint')} ${sprint.orderNumber} (${g.formatDate(date:sprint.startDate,formatName:'is.date.format.short', timeZone:sprint.parentProduct.preferences.timezone)} - ${g.formatDate(date:sprint.endDate,formatName:'is.date.format.short', timeZone:sprint.parentProduct.preferences.timezone)})</h1>
     <g:if test="${tasks}">
         <h2>${message(code: BundleUtils.taskTypes[Task.TYPE_URGENT])}</h2>
         <ul><g:each in="${tasks}" var="task">

@@ -4,7 +4,7 @@
     <button onclick="NotesToHtml('#releaseNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.html')}</button>
 </div>
 <div id="releaseNotes" style="padding: 10px;">
-    <h1>${release.name}</h1>
+    <h1>${release.name} (${g.formatDate(date:release.startDate,formatName:'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} - ${g.formatDate(date:release.endDate,formatName:'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)})</h1>
     <g:if test="${tasks}">
         <h2>${message(code: BundleUtils.taskTypes[Task.TYPE_URGENT])}</h2>
         <ul><g:each in="${tasks}" var="task">

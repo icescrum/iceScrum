@@ -511,7 +511,7 @@ class SprintPlanController {
         }
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
+   @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def notes = {
         withSprint{ Sprint sprint ->
             render(status:200,

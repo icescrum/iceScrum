@@ -299,7 +299,7 @@ class ReleasePlanController {
         }
     }
 
-    //@Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
+    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def notes = {
         withRelease{ Release release ->
             render(status:200,
