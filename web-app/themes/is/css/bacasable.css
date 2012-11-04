@@ -627,23 +627,33 @@ td.jqplot-table-legend {
     padding: 3px;
 }
 
-.sprintNotes h1, .releaseNotes h1 {
+#sprintNotes h1, #releaseNotes h1, h1.copyNotes {
     color:#4382BD;
 }
 
-.sprintNotes h2, .releaseNotes h2 {
+#sprintNotes h2, #releaseNotes h2 {
     padding: 5px 10px 10px;
     font-size: 1.4em;
 }
 
-.sprintNotes ul, .releaseNotes ul {
+#sprintNotes ul, #releaseNotes ul {
     margin-left: 0;
     padding-left: 30px;
     padding-top: 0;
 }
 
-.sprintNotes ul li, .releaseNotes ul li {
+#sprintNotes ul li, #releaseNotes ul li {
     padding: 2px;
+}
+
+.copyNotes {
+    margin-left: 10px;
+}
+
+textarea.copyNotes {
+    width:98%;
+    position: absolute;
+    display:none;
 }
 
 .productdescription-label label {

@@ -115,14 +115,14 @@
                 </a>
             </li>
             <li class="last">
-                <a href="#${controllerName}/releaseNotes/${release.id}"
-                   data-shortcut="ctrl+shift+s"
+                <a href="#${controllerName}/notes/${release.id}"
+                   data-shortcut="ctrl+shift+o"
                    data-shortcut-on="#window-id-${controllerName}"
-                   alt="${message(code:'is.ui.releasePlan.toolbar.alt.releaseNotes')}"
-                   title="${message(code:'is.ui.releasePlan.toolbar.alt.releaseNotes')}">
+                   alt="${message(code:'is.ui.releasePlan.toolbar.alt.notes')}"
+                   title="${message(code:'is.ui.releasePlan.toolbar.alt.notes')}">
                     <span class="start"></span>
                     <span class="content">
-                        ${message(code: 'is.ui.releasePlan.toolbar.releaseNotes')}
+                        ${message(code: 'is.ui.releasePlan.toolbar.notes')}
                     </span>
                     <span class="end"></span>
                 </a>

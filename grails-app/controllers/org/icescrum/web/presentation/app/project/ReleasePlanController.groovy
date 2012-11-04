@@ -299,11 +299,11 @@ class ReleasePlanController {
         }
     }
 
-    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
-    def releaseNotes = {
+    //@Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
+    def notes = {
         withRelease{ Release release ->
             render(status:200,
-                    template: 'window/releaseNotes',
+                    template: 'window/notes',
                     model:[ release:release,
                             tasks:release.sprints*.tasks.flatten().findAll{ it.type == Task.TYPE_URGENT && it.state == Task.STATE_DONE },
                             technicalStories:release.sprints*.stories.flatten().findAll{ it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE },

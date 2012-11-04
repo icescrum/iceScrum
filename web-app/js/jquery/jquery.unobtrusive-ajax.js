@@ -192,4 +192,16 @@ function attachListeners(content){
             e.preventDefault();
         });
     });
+
+    $('textarea[data-selectall]', content).each(function(){
+        $(this).focus(function() {
+            var $this = $(this);
+            $this.select();
+            // Work around Chrome's little problem
+            $this.mouseup(function() {
+                $this.unbind("mouseup");
+                return false;
+            });
+        });
+    });
 }

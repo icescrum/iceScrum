@@ -206,14 +206,14 @@
 
             %{-- sprint notes --}%
             <li class="last">
-                <a href="#${controllerName}/sprintNotes/${sprint.id}"
-                   data-shortcut="ctrl+shift+s"
+                <a href="#${controllerName}/notes/${sprint.id}"
+                   data-shortcut="ctrl+shift+o"
                    data-shortcut-on="#window-id-${controllerName}"
-                   alt="${message(code:'is.ui.sprintPlan.toolbar.alt.sprintNotes')}"
-                   title="${message(code:'is.ui.sprintPlan.toolbar.alt.sprintNotes')}">
+                   alt="${message(code:'is.ui.sprintPlan.toolbar.alt.notes')}"
+                   title="${message(code:'is.ui.sprintPlan.toolbar.alt.notes')}">
                     <span class="start"></span>
                     <span class="content">
-                        ${message(code: 'is.ui.sprintPlan.toolbar.sprintNotes')}
+                        ${message(code: 'is.ui.sprintPlan.toolbar.notes')}
                     </span>
                     <span class="end"></span>
                 </a>

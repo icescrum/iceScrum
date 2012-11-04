@@ -512,11 +512,11 @@ class SprintPlanController {
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
-    def sprintNotes = {
+    def notes = {
         withSprint{ Sprint sprint ->
             render(status:200,
-                   template: 'window/sprintNotes',
-                   model:[ sprint:sprint,
+                   template: 'window/notes',
+                   model:[sprint:sprint,
                            tasks:sprint.tasks?.findAll{it.type == Task.TYPE_URGENT && it.state == Task.STATE_DONE},
                            technicalStories:sprint.stories?.findAll{it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE},
                            userStories:sprint.stories?.findAll{it.type == Story.TYPE_USER_STORY && it.state == Story.STATE_DONE},

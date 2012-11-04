@@ -387,3 +387,53 @@ if (typeof String.prototype.startsWith != 'function') {
     return this.indexOf(str) == 0;
   };
 }
+
+function NotesToText(html, textarea){
+    var dirty = $(html).html();
+    $(html).after('<div id="tmp_html"></div>');
+    var container = $('#tmp_html');
+    var brk = '{break}';
+    var dblbrk = '{dblbreak}';
+    container.hide().html(dirty);
+    container.find('ul').each(function(){
+        var items = '';
+        $(this).find('li').each(function() {
+            items += '\t * ' + $(this).text() + brk;
+        });
+        $(this).replaceWith(brk + items + dblbrk);
+    });
+    container.find('h1').each(function(){
+        $(this).replaceWith('h1. ' + $(this).html() + dblbrk);
+    });
+    container.find('h2').each(function(){
+        $(this).replaceWith('h2. ' + $(this).html() + dblbrk);
+    });
+    var textile = container.html();
+    textile = textile.replace(/ +(?= )/g,'');
+    textile = textile.replace(/    \*/g, '*');
+    textile = textile.replace(new RegExp(brk, 'g'), '\n');
+    //textile = textile.replace(new RegExp('\t', 'g'), '');
+    textile = textile.replace(new RegExp('  ', 'g'), ' ');
+    textile = textile.replace(new RegExp('\\n ', 'g'), '\n');
+    textile = textile.replace(new RegExp(dblbrk, 'g'), '\n');
+    textile = textile.replace(new RegExp('\\n\\n', 'g'), '\n');
+    $('h1'+textarea).show();
+    $('textarea'+textarea).show().val($.trim(textile));
+    $('textarea'+textarea).parent().animate({scrollTop: $(textarea).offset().top}, 500,'easeInOutCubic');
+    container.remove();
+    return false;
+}
+
+function NotesToHtml(html, textarea){
+    var text = $(html).html();
+    text = text.replace(/ +(?= )/g,'');
+    text = text.replace(/    \*/g, '*');
+    text = text.replace(new RegExp('\t', 'g'), '');
+    text = text.replace(new RegExp('  ', 'g'), ' ');
+    text = text.replace(new RegExp('\\n ', 'g'), '\n');
+    text = text.replace(new RegExp('\\n\\n', 'g'), '\n');
+    $('h1'+textarea).show();
+    $('textarea'+textarea).show().val($.trim(text));
+    $('textarea'+textarea).parent().animate({scrollTop: $(textarea).offset().top}, 500,'easeInOutCubic');
+    return false;
+}
