@@ -172,6 +172,16 @@
         }
     });
 
+    $(document).on('click','textarea.selectall',function() {
+        var $this = $(this);
+        $this.select();
+        // Work around Chrome's little problem
+        $this.mouseup(function() {
+            $this.unbind("mouseup");
+            return false;
+        });
+    });
+
     attachListeners();
 
 }(jQuery));
@@ -190,18 +200,6 @@ function attachListeners(content){
                 document.location.hash = elem.attr('href');
             }
             e.preventDefault();
-        });
-    });
-
-    $('textarea[data-selectall]', content).each(function(){
-        $(this).focus(function() {
-            var $this = $(this);
-            $this.select();
-            // Work around Chrome's little problem
-            $this.mouseup(function() {
-                $this.unbind("mouseup");
-                return false;
-            });
         });
     });
 }

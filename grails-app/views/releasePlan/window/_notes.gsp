@@ -31,4 +31,4 @@
     </g:if>
 </div>
 <h1 class="copyNotes" style="display: none;">${message(code:'is.ui.releasePlan.notes.copyTo')}</h1>
-<textarea class="copyNotes" data-selectall="true" rows="20"></textarea>
+<textarea class="copyNotes selectall" rows="20"></textarea>
