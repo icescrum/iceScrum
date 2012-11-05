@@ -1,7 +1,7 @@
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Task; org.icescrum.core.utils.BundleUtils" %>
-<div style="float:right; padding: 10px; padding-top: 10px">
-    <button onclick="NotesToText('#sprintNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.text')}</button>
-    <button onclick="NotesToHtml('#sprintNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.html')}</button>
+<div style="float:right; padding: 10px; padding-top: 10px" class="panel-line">
+    <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="NotesToText('#sprintNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.text')}</button>
+    <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="NotesToHtml('#sprintNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.html')}</button>
 </div>
 <div id="sprintNotes" style="padding: 10px;">
     <h1>${sprint.deliveredVersion ? sprint.deliveredVersion + ' - ' : ''}${sprint.parentRelease.name} - ${message(code:'is.sprint')} ${sprint.orderNumber} (${g.formatDate(date:sprint.startDate,formatName:'is.date.format.short', timeZone:sprint.parentProduct.preferences.timezone)} - ${g.formatDate(date:sprint.endDate,formatName:'is.date.format.short', timeZone:sprint.parentProduct.preferences.timezone)})</h1>
