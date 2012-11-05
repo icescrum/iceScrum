@@ -82,6 +82,7 @@
                 ajaxOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
                 if (data.dialog){
                     $(document.body).append(data.dialog);
+                    attachOnDomUpdate($('.ui-dialog'));
                 }else{
                     if (element.data("ajaxNotice")){
                         $.icescrum.renderNotice(element.data("ajaxNotice"));
@@ -182,11 +183,11 @@
         });
     });
 
-    attachListeners();
+    attachOnDomUpdate();
 
 }(jQuery));
 
-function attachListeners(content){
+function attachOnDomUpdate(content){
     $('a[data-shortcut]', content).each(function(){
         var elem = $(this);
         var onClean = elem.data('shortcutOn') ? elem.data('shortcutOn').replace(/\W/g, '')  : 'body';
@@ -202,4 +203,5 @@ function attachListeners(content){
             e.preventDefault();
         });
     });
+    $.event.trigger('domUpdate.icescrum',content);
 }

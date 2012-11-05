@@ -84,7 +84,7 @@
                                         $('#window-id-' + targetWindow).addClass('window-fullscreen');
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
-                                        attachListeners($($.icescrum.o.windowContainer));
+                                        attachOnDomUpdate($($.icescrum.o.windowContainer));
                                         var viewSelector = $('#menu-display-list');
                                         if (viewSelector.length != -1){
                                             viewSelector.find('.content').html('<span class="ico"></span>' + viewSelector.find('a[data-default-view='+view+']').text());
