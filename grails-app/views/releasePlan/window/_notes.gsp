@@ -32,3 +32,11 @@
 </div>
 <h1 class="copyNotes" style="display: none;">${message(code:'is.ui.releasePlan.notes.copyTo')}</h1>
 <textarea class="copyNotes selectall" rows="20"></textarea>
+<is:buttonBar>
+    <is:button
+            href="#${controllerName+'/'+release.id}"
+            elementId="close"
+            type="link"
+            button="button-s button-s-black"
+            value="${message(code: 'is.button.close')}"/>
+</is:buttonBar>

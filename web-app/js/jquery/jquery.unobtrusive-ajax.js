@@ -27,7 +27,7 @@
         if (contentType.indexOf("application/x-javascript") !== -1) {  // jQuery already executes JavaScript for us
             return;
         }
-
+        $('#tiptip_holder').remove();
         mode = (element.data("ajaxMode") || "").toUpperCase();
         $(element.data("ajaxUpdate")).each(function (i, update) {
             var top;
@@ -81,6 +81,7 @@
             success: function (data, status, xhr) {
                 ajaxOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
                 if (data.dialog){
+                    $('#tiptip_holder').remove();
                     $(document.body).append(data.dialog);
                     attachOnDomUpdate($('.ui-dialog'));
                 }else{
