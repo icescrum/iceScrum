@@ -3,7 +3,7 @@
     <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="NotesToText('#sprintNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.text')}</button>
     <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="NotesToHtml('#sprintNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.html')}</button>
 </div>
-<div id="sprintNotes" style="padding: 10px;">
+<div id="sprintNotes">
     <h1>${sprint.deliveredVersion ? sprint.deliveredVersion + ' - ' : ''}${sprint.parentRelease.name} - ${message(code:'is.sprint')} ${sprint.orderNumber} (${g.formatDate(date:sprint.startDate,formatName:'is.date.format.short', timeZone:sprint.parentProduct.preferences.timezone)} - ${g.formatDate(date:sprint.endDate,formatName:'is.date.format.short', timeZone:sprint.parentProduct.preferences.timezone)})</h1>
     <g:if test="${tasks}">
         <h2>${message(code: BundleUtils.taskTypes[Task.TYPE_URGENT])}</h2>

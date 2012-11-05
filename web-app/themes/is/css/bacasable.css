@@ -627,6 +627,10 @@ td.jqplot-table-legend {
     padding: 3px;
 }
 
+#releaseNotes, #sprintNotes {
+    padding: 10px 10px 40px;
+}
+
 #sprintNotes h1, #releaseNotes h1, h1.copyNotes {
     color:#4382BD;
 }

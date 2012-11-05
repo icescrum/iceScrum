@@ -3,7 +3,7 @@
     <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="NotesToText('#releaseNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.text')}</button>
     <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" onclick="NotesToHtml('#releaseNotes','.copyNotes');">${message(code:'is.ui.notes.copy.as.html')}</button>
 </div>
-<div id="releaseNotes" style="padding: 10px;">
+<div id="releaseNotes">
     <h1>${release.name} (${g.formatDate(date:release.startDate,formatName:'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} - ${g.formatDate(date:release.endDate,formatName:'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)})</h1>
     <g:if test="${tasks}">
         <h2>${message(code: BundleUtils.taskTypes[Task.TYPE_URGENT])}</h2>

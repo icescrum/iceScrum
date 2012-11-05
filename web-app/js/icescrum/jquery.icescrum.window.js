@@ -57,7 +57,6 @@
                     var view = this.getDefaultView();
                     jQuery.ajax({
                                 type:'GET',
-                                cache:false,
                                 url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? (id.indexOf('?') >= 0 ? '&' : '?') + 'viewType='+view : '' ),
                                 beforeSend:function(){
                                     if ($('#window-loading').size() == 0){
@@ -76,6 +75,7 @@
                                     if(loading.size() > 0){
                                         loading.stop().animate({opacity:0.0},250,function(){  $(this).remove(); });
                                     }
+                                    $('#tiptip_holder').remove();
                                 },
                                 success:function(data, textStatus) {
                                     if ($.icescrum.o.fullscreen) {

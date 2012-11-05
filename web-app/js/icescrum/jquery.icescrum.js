@@ -441,14 +441,10 @@ $.fn.icescrum = function(options) {
 };
 
 $(document).ready(function($) {
-
-    // Ajax Cache Init
-    $.ajaxSetup({
-                timeout:45000,
-                jsonp: null,
-                jsonpCallback: null,
-                cache: false
-            });
-
+    $.ajaxSetup({ timeout:45000 });
+    $(document).ajaxSend(function(event, xhr){
+        xhr.setRequestHeader("If-Modified-Since",new Date(1970,1,1).toUTCString());
+        xhr.setRequestHeader("Pragma","no-cache");
+    });
     $.icescrum.showUpgrade();
 });
