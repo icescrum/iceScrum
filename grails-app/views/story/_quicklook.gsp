@@ -189,7 +189,7 @@
 <is:onStream
         on=".postit-details-story[data-elemid=${story.id}]"
         events="[[object:'story',events:['update']]]"
-        callback="jQuery('#dialog .quicklook').load('${createLink(controller:'quickLook', action:'index', params:[product:params.product,'story.id':story.id])}');"/>
+        callback="\$.icescrum.displayQuicklook(\$('#dialog .postit-story'));"/>
 <is:onStream
         on=".postit-details-story[data-elemid=${story.id}]"
         events="[[object:'story',events:['remove']]]"

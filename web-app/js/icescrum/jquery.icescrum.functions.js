@@ -218,8 +218,8 @@
                             view:function() {
                                 return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-actor' : '#actor-table';
                             },
-                            remove:function() {
-                                $.icescrum.getDefaultView() == 'postitsView' ? $('.postit-actor[data-elemid=' + this.id + ']').remove() : $('#actor-table .table-line[data-elemid=' + this.id + ']').remove();
+                            remove:function(tmpl) {
+                                $.icescrum.getDefaultView() == 'postitsView' ? $(tmpl.view+' '+'.postit-actor[data-elemid=' + this.id + ']').remove() : $('#actor-table .table-line[data-elemid=' + this.id + ']').remove();
                                 if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('#actor-table').trigger("update");
                                 }
@@ -256,7 +256,7 @@
                         tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
                         tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
                         $(this).each(function() {
-                            tmpl.remove.apply(this);
+                            tmpl.remove.apply(this,[tmpl]);
                         });
                         if ($(tmpl.selector, $(tmpl.view)).length == 0) {
                             $(tmpl.view).hide();
@@ -294,7 +294,7 @@
                                     $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, oldRank);
                                     $('#feature-table').trigger("update");
                                 }else{
-                                    $('.postit-feature[data-elemid=' + this.id + ']').remove();
+                                    $(tmpl.view+' '+'.postit-feature[data-elemid=' + this.id + ']').remove();
                                 }
                             },
                             window:'#window-content-feature',
@@ -319,8 +319,8 @@
                             selector:'.postit-row-feature',
                             id:'postit-row-feature-tmpl',
                             view:'#backlog-layout-widget-feature',
-                            remove:function() {
-                                $('.postit-row-feature[data-elemid=' + this.id + ']').remove();
+                            remove:function(tmpl) {
+                                $(tmpl.view+' '+'.postit-row-feature[data-elemid=' + this.id + ']').remove();
                             },
                             window:'#widget-content-feature',
                             afterTmpl:function(tmpl, container, newObject) {
@@ -398,7 +398,7 @@
                                 return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-sandbox' : '#story-table';
                             },
                             remove:function(tmpl) {
-                                var story = $.icescrum.getDefaultView() == 'postitsView' ? $('.postit-story[data-elemid=' + this.id + ']') : $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
+                                var story = $.icescrum.getDefaultView() == 'postitsView' ? $(tmpl.view+' .postit-story[data-elemid=' + this.id + ']') : $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
                                 this.rank = story.index() + 1;
                                 story.remove();
                                 if ($.icescrum.getDefaultView() == 'tableView') {
@@ -462,7 +462,7 @@
                                     }
                                     $(tmpl.view).trigger("update");
                                 }else{
-                                     $(tmpl.selector+'[data-elemid=' + this.id + ']').remove();
+                                     $(tmpl.window+' '+tmpl.selector+'[data-elemid=' + this.id + ']').remove();
                                 }
                                 $.icescrum.story.backlogTitleDetails();
                             },
@@ -526,8 +526,8 @@
                                 var storyType = this.state < $.icescrum.story.STATE_DONE ? 'story' : 'storyDone';
                                 return this.parentSprint ? '#kanban-sprint' + '-' + this.parentSprint.id + ' tbody[type=' + storyType + ']' : '';
                             },
-                            remove:function() {
-                                $('.kanban .row-story[data-elemid=' + this.id + ']').remove();
+                            remove:function(tmpl) {
+                                $(tmpl.view+' .kanban .row-story[data-elemid=' + this.id + ']').remove();
                             },
                             constraintTmpl:function() {
                                 return this.state >= $.icescrum.story.STATE_PLANNED;
@@ -762,8 +762,8 @@
                             view:function() {
                                 return (this.type == $.icescrum.task.TYPE_RECURRENT || this.type == $.icescrum.task.TYPE_URGENT) ? '#kanban-sprint' + '-' + this.sprint.id + ' .table-line[type=' + this.type + '] .kanban-col[type=' + this.state + ']' : '#kanban-sprint' + '-' + this.sprint.id + ' .row-story[data-elemid=' + this.parentStory.id + '] .kanban-col[type=' + this.state + ']';
                             },
-                            remove:function() {
-                                $('.postit-task[data-elemid=' + this.id + ']').remove();
+                            remove:function(tmpl) {
+                                $(tmpl.view+' '+'.postit-task[data-elemid=' + this.id + ']').remove();
                             }
                         }
                     },
@@ -781,8 +781,12 @@
                     },
 
                     remove:function(template) {
+                        var tmpl;
+                        tmpl = $.extend(tmpl, $.icescrum.task.templates[template]);
+                        tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
+                        tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
                         $(this).each(function() {
-                            $.icescrum.task.templates[template].remove.apply(this);
+                            tmpl.remove.apply(this,[tmpl]);
                         });
                         $.icescrum.sprint.updateRemaining();
                     },

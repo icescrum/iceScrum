@@ -36,6 +36,9 @@
                         type = 'story.id';
                     }
                     $.get($.icescrum.o.baseUrlProduct + 'quickLook?'+type+'='+elem.data('elemid'), function(data){
+                        if ($('#dialog').length){
+                            $('#dialog').dialog('close');
+                        }
                         $(document.body).append(data.dialog);
                     });
                 },

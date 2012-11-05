@@ -27,7 +27,7 @@
            withTitlebar="false"
            buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
            focusable="false">
-<div class="postit-details quicklook" data-elemid="${task.id}" type="task">
+<div class="postit-details postit-details-task quicklook" data-elemid="${task.id}" type="task">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>
@@ -123,7 +123,7 @@
 <is:onStream
         on=".postit-details-task[data-elemid=${task.id}]"
         events="[[object: 'task', events: ['update']]]"
-        callback="jQuery('#dialog .quicklook').load('${createLink(controller: 'quickLook', action: 'index', params: [product: params.product, 'task.id': task.id])}');"/>
+        callback="\$.icescrum.displayQuicklook(\$('#dialog .postit-task'));"/>
 <is:onStream
         on=".postit-details-task[data-elemid=${task.id}]"
         events="[[object: 'task', events: ['remove']]]"

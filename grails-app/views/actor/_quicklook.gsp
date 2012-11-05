@@ -104,8 +104,8 @@
 </is:dialog>
 <is:onStream
         on=".postit-details-actor[data-elemid=${actor.id}]"
-        events="[[object:'feature',events:['update']]]"
-        callback="jQuery('#dialog .quicklook').load('${createLink(controller:'quickLook', action:'index', params:[product:params.product,'actor.id':actor.id])}');"/>
+        events="[[object:'actor',events:['update']]]"
+        callback="\$.icescrum.displayQuicklook(\$('#dialog .postit-actor'));"/>
 <is:onStream
         on=".postit-details-actor[data-elemid=${actor.id}]"
         events="[[object:'actor',events:['remove']]]"

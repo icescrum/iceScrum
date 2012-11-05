@@ -115,7 +115,7 @@
 <is:onStream
         on=".postit-details-feature[data-elemid=${feature.id}]"
         events="[[object:'feature',events:['update']]]"
-        callback="jQuery('#dialog .quicklook').load('${createLink(controller:'quickLook', action:'index', params:[product:params.product,'feature.id':feature.id])}');"/>
+        callback="\$.icescrum.displayQuicklook(\$('#dialog .postit-feature'));"/>
 <is:onStream
         on=".postit-details-feature[data-elemid=${feature.id}]"
         events="[[object:'feature',events:['remove']]]"
