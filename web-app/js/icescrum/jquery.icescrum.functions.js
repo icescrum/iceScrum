@@ -151,13 +151,13 @@
                                 $.icescrum.product.displayRecurrentTasks = this.preferences.displayRecurrentTasks;
                             }
                             if (this.preferences.limitUrgentTasks != $.icescrum.product.limitUrgentTasks){
-                                var text = $('span.#limit-urgent-tasks').text();
+                                var text = $('#limit-urgent-tasks').text();
                                 var reg=new RegExp($.icescrum.product.limitUrgentTasks, "g");
-                                $('span.#limit-urgent-tasks').text(text.replace(reg,this.preferences.limitUrgentTasks));
+                                $('#limit-urgent-tasks').text(text.replace(reg,this.preferences.limitUrgentTasks));
                                 if (this.preferences.limitUrgentTasks > 0){
-                                    $('span.#limit-urgent-tasks').show();
+                                    $('#limit-urgent-tasks').show();
                                 }else{
-                                    $('span.#limit-urgent-tasks').hide();
+                                    $('#limit-urgent-tasks').hide();
                                 }
                                 $.icescrum.product.limitUrgentTasks = this.preferences.limitUrgentTasks;
                             }
@@ -760,7 +760,7 @@
                             selector:'div.postit-task',
                             id:'postit-task-sprintPlan-tmpl',
                             view:function() {
-                                return (this.type == $.icescrum.task.TYPE_RECURRENT || this.type == $.icescrum.task.TYPE_URGENT) ? '#kanban-sprint' + '-' + this.sprint.id + ' .table-line[type=' + this.type + '] .kanban-col[type=' + this.state + ']' : '#kanban-sprint' + '-' + this.sprint.id + ' .row-story[data-elemid=' + this.parentStory.id + '] .kanban-col[type=' + this.state + ']';
+                                return (this.type == $.icescrum.task.TYPE_RECURRENT || this.type == $.icescrum.task.TYPE_URGENT) ? '#kanban-sprint' + '-' + this.sprint.id + ' .table-line[type=' + this.type + '] .kanban-col[type=' + this.state + ']' : this.sprint ? '#kanban-sprint' + '-' + this.sprint.id + ' .row-story[data-elemid=' + this.parentStory.id + '] .kanban-col[type=' + this.state + ']' : '';
                             },
                             remove:function(tmpl) {
                                 $(tmpl.view+' '+'.postit-task[data-elemid=' + this.id + ']').remove();

@@ -17,6 +17,7 @@
     }
 
     function ajaxOnBeforeSend(xhr, method) {
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         if (!isMethodProxySafe(method)) {
             xhr.setRequestHeader("X-HTTP-Method-Override", method);
         }
@@ -106,15 +107,6 @@
             },
             error: getFunction(element.data("ajaxFailure"), ["xhr", "status", "error"])
         });
-
-        options.data.push({ name: "X-Requested-With", value: "XMLHttpRequest" });
-
-        method = options.type.toUpperCase();
-        if (!isMethodProxySafe(method)) {
-            options.type = "POST";
-            options.data.push({ name: "X-HTTP-Method-Override", value: method });
-        }
-
         $.ajax(options);
     }
 

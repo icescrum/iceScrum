@@ -100,6 +100,11 @@ class ScrumOSController {
 
 
     def openWidget = {
+        if (!request.xhr){
+            redirect(controller: 'scrumOS', action: 'index')
+            return
+        }
+
         if (!params.window) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.widget')]] as JSON)
             return
@@ -145,12 +150,21 @@ class ScrumOSController {
         def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
         if (uiDefinition) {
 
-            def projectName
+            def projectName = null, projectKey = null
             def param = [:]
             if (params.product) {
-                projectName = Product.get(params.long('product'))?.name
+                def p  = Product.get(params.long('product'))
+                projectName = p?.name
+                projectKey = p?.pkey
                 param = [product: params.product]
             }
+
+            if (!request.xhr){
+                def fragment = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: [product: projectKey]).toString() - createLink(params: [product: projectKey]) - '/'
+                redirect(url:createLink(absolute: true, params: [product: projectKey], fragment: fragment))
+                return
+            }
+
             def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: param).toString() - request.contextPath
 
             if (!menuBarSupport.permissionDynamicBar(url)){
