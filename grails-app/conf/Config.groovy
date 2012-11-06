@@ -114,9 +114,9 @@ icescrum.restMarshaller = [
         feature: [exclude: ['parentDomain','backlog'],include: ['tags']],
         actor: [exclude: ['backlog'],include: ['tags']],
         task:[exclude:['impediment'],include: ['tags']],
-        product:[exclude: ['domains','impediments','goal','cliches']],
-        sprint:[exclude: ['description','cliches']],
-        release:[exclude: ['description','cliches','numberOfDays']],
+        product:[exclude: ['domains','impediments','goal','cliches','duration']],
+        sprint:[exclude: ['description','cliches','duration']],
+        release:[exclude: ['description','cliches','duration']],
         team:[exclude: ['velocity','description','preferences']],
         user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']]
 ]
