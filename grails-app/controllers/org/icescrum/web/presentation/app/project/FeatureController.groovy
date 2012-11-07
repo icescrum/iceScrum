@@ -220,7 +220,7 @@ class FeatureController {
         withFeature{ Feature feature ->
             def story = featureService.copyToBacklog(feature)
             withFormat {
-                html { render status: 200, text:'success' }
+                html { render (status: 200, contentType: 'application/json', text:story as JSON) }
                 json { renderRESTJSON(text:story, status:201) }
                 xml  { renderRESTXML(text:story, status:201) }
             }

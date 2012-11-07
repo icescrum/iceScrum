@@ -22,7 +22,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
-<g:if test="${request.inProduct}">
+<g:if test="${request.productOwner}">
     <li class="navigation-item">
         <a class="tool-button button-n"
            onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
