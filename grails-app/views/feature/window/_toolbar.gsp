@@ -84,9 +84,7 @@
         text="${message(code:'is.ui.toolbar.charts')}">
     <ul>
         <li class="first">
-            <a href="${createLink(action:'productParkingLotChart', params: [product:params.product])}"
-                     data-ajax="true"
-                     data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.feature.charts.productParkingLot')}</a>
+            <a href="#${controllerName}/productParkingLotChart">${message(code:'is.ui.feature.charts.productParkingLot')}</a>
         </li>
     </ul>
 </is:panelButton>

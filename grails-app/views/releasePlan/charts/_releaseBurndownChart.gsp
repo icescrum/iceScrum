@@ -86,13 +86,10 @@
   </jq:jquery>
 </div>
 <is:buttonBar>
-  <is:button
-          targetLocation="${controllerName+'/'+params.id}"
+    <is:button
+          href="#${controllerName}/${params.id}"
           elementId="close"
           type="link"
           button="button-s button-s-black"
-          remote="true"
-          url="[controller:controllerName, action:'index',id:params.id, params:[product:params.product]]"
-          update="window-content-${controllerName}"
           value="${message(code: 'is.button.close')}"/>
 </is:buttonBar>

@@ -133,14 +133,10 @@
                     text="${message(code:'is.ui.toolbar.charts')}">
         <ul>
             <li class="first">
-                <a href="${createLink(action:'releaseBurndownChart', params: [product:params.product], id:release.id)}"
-                         data-ajax="true"
-                         data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.releaseplan.charts.burndown')}</a>
+                <a href="#${controllerName}/releaseBurndownChart/${release.id}">${message(code:'is.ui.releaseplan.charts.burndown')}</a>
             </li>
             <li class="last">
-                <a href="${createLink(action:'releaseParkingLotChart', params: [product:params.product], id:release.id)}"
-                         data-ajax="true"
-                         data-ajax-update="#window-content-${controllerName}">${message(code:'is.ui.releaseplan.charts.parkingLot')}</a>
+                <a href="#${controllerName}/releaseParkingLotChart/${release.id}">${message(code:'is.ui.releaseplan.charts.parkingLot')}</a>
             </li>
         </ul>
     </is:panelButton>

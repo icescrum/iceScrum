@@ -88,13 +88,10 @@
 <g:if test="${withButtonBar}">
     <is:buttonBar>
         <is:button
-                targetLocation="${controllerName+'/'+params.id}"
-                elementId="close"
-                type="link"
-                button="button-s button-s-black"
-                update="window-content-${controllerName}"
-                remote="true"
-                url="[controller:controllerName,action:'index',params:[id:params.id,product:params.product]]"
-                value="${message(code: 'is.button.close')}"/>
+              href="#${controllerName}/${params.id}"
+              elementId="close"
+              type="link"
+              button="button-s button-s-black"
+              value="${message(code: 'is.button.close')}"/>
     </is:buttonBar>
 </g:if>
