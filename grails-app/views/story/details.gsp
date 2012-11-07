@@ -186,9 +186,11 @@
                 <is:panelContext>
                     <is:panelLine
                             legend="${message(code:'is.story.state')}">${message(code: storyStateCode)}</is:panelLine>
-                    <is:panelLine legend="${message(code:'is.ui.backlogelement.progress.tasks')}">
-                        ${tasksDone} / ${story.tasks?.size()}
-                    </is:panelLine>
+                    <g:if test="${story.state >= Story.STATE_PLANNED}">
+                        <is:panelLine legend="${message(code:'is.ui.backlogelement.progress.tasks')}">
+                            ${tasksDone} / ${story.tasks?.size()}
+                        </is:panelLine>
+                    </g:if>
                 </is:panelContext>
             </is:panel>
 
