@@ -189,8 +189,10 @@
 <is:onStream
         on=".postit-details-story[data-elemid=${story.id}]"
         events="[[object:'story',events:['update']]]"
+        constraint="story.id == ${story.id}"
         callback="\$.icescrum.displayQuicklook(\$('#dialog .postit-story'));"/>
 <is:onStream
         on=".postit-details-story[data-elemid=${story.id}]"
         events="[[object:'story',events:['remove']]]"
+        constraint="story.id == ${story.id}"
         callback="alert('${message(code:'is.story.deleted')}'); jQuery('#dialog').dialog('close');"/>

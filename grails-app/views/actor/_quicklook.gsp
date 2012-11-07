@@ -105,8 +105,10 @@
 <is:onStream
         on=".postit-details-actor[data-elemid=${actor.id}]"
         events="[[object:'actor',events:['update']]]"
+        constraint="actor.id == ${actor.id}"
         callback="\$.icescrum.displayQuicklook(\$('#dialog .postit-actor'));"/>
 <is:onStream
         on=".postit-details-actor[data-elemid=${actor.id}]"
         events="[[object:'actor',events:['remove']]]"
+        constraint="actor.id == ${actor.id}"
         callback="alert('${message(code:'is.actor.deleted')}'); jQuery('#dialog').dialog('close');"/>

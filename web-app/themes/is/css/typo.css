@@ -68,6 +68,12 @@ body, input, textarea {
 
 .postit .postit-label {
     font-weight: bold;
+    font-size: 13px;
+}
+
+.postit-rect .postit-label {
+    font-weight: bold;
+    font-size: 12px;
 }
 
 .postit .postit-id {

@@ -123,8 +123,10 @@
 <is:onStream
         on=".postit-details-task[data-elemid=${task.id}]"
         events="[[object: 'task', events: ['update']]]"
+        constraint="task.id == ${task.id}"
         callback="\$.icescrum.displayQuicklook(\$('#dialog .postit-task'));"/>
 <is:onStream
         on=".postit-details-task[data-elemid=${task.id}]"
         events="[[object: 'task', events: ['remove']]]"
+        constraint="task.id == ${task.id}"
         callback="alert('${message(code: 'is.task.deleted')}'); jQuery('#dialog').dialog('close');"/>

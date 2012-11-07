@@ -115,8 +115,10 @@
 <is:onStream
         on=".postit-details-feature[data-elemid=${feature.id}]"
         events="[[object:'feature',events:['update']]]"
+        constraint="feature.id == ${feature.id}"
         callback="\$.icescrum.displayQuicklook(\$('#dialog .postit-feature'));"/>
 <is:onStream
         on=".postit-details-feature[data-elemid=${feature.id}]"
         events="[[object:'feature',events:['remove']]]"
+        constraint="feature.id == ${feature.id}"
         callback="alert('${message(code:'is.feature.deleted')}'); jQuery('#dialog').dialog('close');"/>
