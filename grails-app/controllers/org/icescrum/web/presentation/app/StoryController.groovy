@@ -198,12 +198,16 @@ class StoryController {
                 return
             }
             def productOwner = securityService.productOwner(story.backlog.id, springSecurityService.authentication)
-            if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !productOwner) {
-                render(status: 403, contentType: 'application/json')
-                return
-            } else if (story.state > Story.STATE_SUGGESTED && !productOwner) {
-                render(status: 403, contentType: 'application/json')
-                return
+            def inProduct = securityService.inProduct(story.backlog.id, springSecurityService.authentication)
+
+            if (!(params.table && params.name == 'effort' && inProduct)){
+                if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !productOwner) {
+                    render(status: 403, contentType: 'application/json')
+                    return
+                } else if (story.state > Story.STATE_SUGGESTED && !productOwner) {
+                    render(status: 403, contentType: 'application/json')
+                    return
+                }
             }
 
             if (params.boolean('loadrich')) {
