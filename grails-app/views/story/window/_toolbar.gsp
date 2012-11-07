@@ -22,8 +22,8 @@
 
 <%@ page import="org.icescrum.core.domain.Story;" %>
 <g:set var="creator" value="${story.creator.id == user?.id}"/>
-
-<g:if test="${request.productOwner  || creator}">
+<g:set var="canEdit" value="${(request.productOwner && story.state >= Story.STATE_SUGGESTED && story.state != Story.STATE_DONE) || (creator && story.state == Story.STATE_SUGGESTED)}"/>
+<g:if test="${canEdit}">
     <li class="navigation-item">
         <a class="tool-button button-n"
            href="#${controllerName}/editStory/${story.id}"
@@ -44,7 +44,7 @@
     <is:panelButton
             id="accept-display"
             arrow="true"
-            separator="${request.productOwner  || creator}"
+            separator="${canEdit}"
             text="${message(code:'is.ui.backlogelement.toolbar.accept')}">
         <ul>
             <li class="first">

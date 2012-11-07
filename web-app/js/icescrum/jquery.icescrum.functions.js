@@ -654,7 +654,7 @@
                         }
 
                         var creator = (this.creator.id == $.icescrum.user.id);
-                        if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state != $.icescrum.story.STATE_DONE && $.icescrum.user.productOwner))) {
+                        if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state >= $.icescrum.story.STATE_SUGGESTED && this.state != $.icescrum.story.STATE_DONE && $.icescrum.user.productOwner))) {
                             $('#menu-edit-' + this.id, newObject).remove();
                         }
                         if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state <= $.icescrum.story.STATE_ESTIMATED && $.icescrum.user.productOwner)) || this.state > $.icescrum.story.STATE_PLANNED) {
@@ -671,6 +671,9 @@
                         }
                         if (this.state != $.icescrum.story.STATE_INPROGRESS) {
                             $('#menu-done-' + this.id, newObject).remove();
+                        }
+                        if (!(this.state >= $.icescrum.story.STATE_SUGGESTED)) {
+                            $('#menu-copy-' + this.id, newObject).remove();
                         }
                         if ( this.state < $.icescrum.story.STATE_PLANNED || this.state == $.icescrum.story.STATE_DONE) {
                             $('#menu-unplan-' + this.id, newObject).remove();

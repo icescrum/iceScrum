@@ -75,15 +75,15 @@
         </a>
     </li>
 </g:if>
-<g:if test="${((productOwner && story.state != Story.STATE_DONE) || (creator && story.state == Story.STATE_SUGGESTED)) || template}">
+<g:if test="${((productOwner && story.state >= Story.STATE_SUGGESTED && story.state != Story.STATE_DONE) || (creator && story.state == Story.STATE_SUGGESTED)) || template}">
     <li id="menu-edit-${story.id}">
         <a href="#${controllerName}/editStory/${referrer?:story.id}${referrer?'/?subid='+story.id:''}">
            <g:message code='is.ui.releasePlan.menu.story.update'/>
         </a>
     </li>
 </g:if>
-<g:if test="${inProduct}">
-    <li>
+<g:if test="${(inProduct && story.state >= Story.STATE_SUGGESTED) || template}">
+    <li id="menu-copy-${story.id}">
         <a href="${createLink(action:'copy',controller:'story',params:[product:params.product],id:story.id)}"
            data-ajax-trigger="add_story"
            data-ajax-notice="${message(code: 'is.story.cloned').encodeAsJavaScript()}"
