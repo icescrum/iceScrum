@@ -173,10 +173,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         displayNotification:function(title, msg, type){
-            var image = $.icescrum.o.baseUrl + "themes/is/images/"
+            var image = $.icescrum.o.baseUrl + "themes/is/images/";
             image += type == "error" ?  "logo-disconnected.png" : "logo-connected.png";
             if (this.o.notifications){
-                var notification = window.webkitNotifications.createNotification(image, title, msg.replace(/<\/?[^>]+>/gi, ''));
+                var notification = window.webkitNotifications.createNotification(image, title, $('<div/>').html(msg.replace(/<\/?[^>]+>/gi, '')).text());
                 notification.show();
                 return notification;
             }
@@ -247,7 +247,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         dblclickSelectable:function(obj, delay, callback, force) {
-            var id;
             if (force != undefined && force) {
                 if ($.icescrum.o.selectedObject.obj != "" && $('#' + $.icescrum.o.selectedObject.obj.selected.id).hasClass('ui-selected')) {
                     if ($.icescrum.o.selectedObject.callback) {
