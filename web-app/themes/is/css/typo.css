@@ -66,12 +66,6 @@ body, input, textarea {
     text-decoration: none;
 }
 
-.postit .postit-label, .postit .postit-excerpt {
-    font-family: Georgia, Arial, Verdana;
-    font-size: 13px;
-    line-height: 12px;
-}
-
 .postit .postit-label {
     font-weight: bold;
 }

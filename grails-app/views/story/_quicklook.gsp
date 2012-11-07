@@ -26,7 +26,7 @@
            buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
            focusable="false">
 <%@ page import="org.icescrum.core.domain.Story;" %>
-<div class="postit-details postit-details-story quicklook" data-elemid="${story.uid}">
+<div class="postit-details postit-details-story quicklook" data-elemid="${story.id}">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
             <p>

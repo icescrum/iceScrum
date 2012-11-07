@@ -737,6 +737,10 @@ table.kanban:not(.done) tbody[type="storyDone"] {
     opacity: 0.6;
 }
 
+table.kanban:not(.done) tbody.storyDone {
+    opacity: 0.6;
+}
+
 .user-tooltip {
     width: 315px;
     position: relative;

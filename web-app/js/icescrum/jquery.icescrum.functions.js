@@ -526,8 +526,8 @@
                                 var storyType = this.state < $.icescrum.story.STATE_DONE ? 'story' : 'storyDone';
                                 return this.parentSprint ? '#kanban-sprint' + '-' + this.parentSprint.id + ' tbody[type=' + storyType + ']' : '';
                             },
-                            remove:function(tmpl) {
-                                $(tmpl.view+' .kanban .row-story[data-elemid=' + this.id + ']').remove();
+                            remove:function() {
+                                $('.kanban .row-story[data-elemid=' + this.id + ']').remove();
                             },
                             constraintTmpl:function() {
                                 return this.state >= $.icescrum.story.STATE_PLANNED;
@@ -762,8 +762,8 @@
                             view:function() {
                                 return (this.type == $.icescrum.task.TYPE_RECURRENT || this.type == $.icescrum.task.TYPE_URGENT) ? '#kanban-sprint' + '-' + this.sprint.id + ' .table-line[type=' + this.type + '] .kanban-col[type=' + this.state + ']' : this.sprint ? '#kanban-sprint' + '-' + this.sprint.id + ' .row-story[data-elemid=' + this.parentStory.id + '] .kanban-col[type=' + this.state + ']' : '';
                             },
-                            remove:function(tmpl) {
-                                $(tmpl.view+' '+'.postit-task[data-elemid=' + this.id + ']').remove();
+                            remove:function() {
+                                $('.kanban-col .postit-task[data-elemid=' + this.id + ']').remove();
                             }
                         }
                     },
@@ -781,12 +781,8 @@
                     },
 
                     remove:function(template) {
-                        var tmpl;
-                        tmpl = $.extend(tmpl, $.icescrum.task.templates[template]);
-                        tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
-                        tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
                         $(this).each(function() {
-                            tmpl.remove.apply(this,[tmpl]);
+                            $.icescrum.task.templates[template].remove.apply(this);
                         });
                         $.icescrum.sprint.updateRemaining();
                     },
