@@ -69,6 +69,7 @@ body, input, textarea {
 .postit .postit-label {
     font-weight: bold;
     font-size: 13px;
+    line-height: 13px;
 }
 
 .postit-rect .postit-label {
