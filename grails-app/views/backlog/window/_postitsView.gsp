@@ -50,7 +50,7 @@
                   accept: ".postit-row-feature"]'
         dblclickable='[rendered:!request.productOwner,
                        selector:".postit",
-                       callback:"\$.icescrum.displayQuicklook"]'
+                       callback:"\$.icescrum.displayQuicklook(obj);"]'
 
         changeRank='[selector:".postit-story",
                      controller:"story",

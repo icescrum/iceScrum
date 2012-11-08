@@ -28,7 +28,7 @@
                          containerClass="list postit-rows"
                          value="${actors}"
                          var="actor"
-                         dblclickable='[rendered:request.inProduct, selector:".postit-row", callback:"\$.icescrum.displayQuicklook(obj);"]'>
+                         dblclickable='[rendered:request.inProduct || request.stakeHolder, selector:".postit-row", callback:"\$.icescrum.displayQuicklook(obj);"]'>
     <is:cache cache="actorCache" key="postit-small-${actor.id}-${actor.lastUpdated}">
         <li data-elemid="${actor.id}" id="postit-row-actor-${actor.id}" class="postit-row postit-row-actor">
             <is:postitIcon/>

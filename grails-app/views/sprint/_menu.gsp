@@ -47,7 +47,7 @@
 <%@ page import="org.icescrum.core.domain.Sprint;" %>
 <g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
 
-<g:if test="${request.inProduct}">
+<g:if test="${request.inProduct || request.stakeHolder}">
 <li class="first">
     <a href="#sprintPlan/${sprint.id}">
         <g:message code="is.ui.releasePlan.menu.sprint.open"/>

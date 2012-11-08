@@ -31,10 +31,10 @@
                 ${message(code: 'is.ui.acceptanceTest.login')}
             </g:link>
         </sec:ifNotLoggedIn>
-        <sec:ifLoggedIn>
+        <g:if test="${request.inProduct}">
             <is:link disabled="true"
                      onClick="jQuery('#acceptance-test-form-container').show();jQuery.icescrum.openTab('tests', true);">${message(code: 'is.ui.acceptanceTest.add')}</is:link>
-        </sec:ifLoggedIn>
+        </g:if>
     </div>
     <is:cache cache="storyCache" key="story-tests-${story.id}-${AcceptanceTest.findLastUpdated(story.id).list()[0]}">
         <ul class="list-acceptance-tests">
@@ -47,8 +47,10 @@
                         model="[access:access, user:user]"/>
         </ul>
     </is:cache>
-    <div id="addComment" class="addComment">
-        <g:render template="/acceptanceTest/acceptanceTestForm"
-                  model="[parentStory:story, hidden:true]"/>
-    </div>
+    <g:if test="${request.inProduct}">
+        <div id="addComment" class="addComment">
+            <g:render template="/acceptanceTest/acceptanceTestForm"
+                      model="[parentStory:story, hidden:true]"/>
+        </div>
+    </g:if>
  </is:panelTab>

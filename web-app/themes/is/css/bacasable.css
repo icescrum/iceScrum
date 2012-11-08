@@ -668,3 +668,7 @@ textarea.copyNotes {
 .panel .field-information {
     border-top-width: 0;
 }
+
+.postit-row .postit-icon, .backlog .postit-layout {
+    cursor:pointer;
+}

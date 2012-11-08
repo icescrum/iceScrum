@@ -40,7 +40,7 @@
         changeRank='[selector:".postit",controller:controllerName,action:"rank",name:"feature.rank",params:[product:params.product]]'
         dblclickable='[rendered:!request.productOwner,
                                selector:".postit",
-                               callback:"\$.icescrum.displayQuicklook(obj)"]'
+                               callback:"\$.icescrum.displayQuicklook(obj);"]'
         value="${features}"
         var="feature">
         <is:cache cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">

@@ -24,7 +24,6 @@
 --}%
 
 <g:set var="productOwner" value="${request.productOwner}"/>
-
 <is:backlogElementLayout
         emptyRendering="true"
         style="display:${stories ? 'block' : 'none'};"
@@ -41,7 +40,7 @@
                                        params:"\"product=${params.product}&feature.id=\"+ui.draggable.data(\"elemid\")+\"&id=\"+jQuery(this).data(\"elemid\")"
                                        ),
                   accept: ".postit-row-feature"]'
-        dblclickable='[rendered:!productOwner,selector:".postit",callback:"\$.icescrum.displayQuicklook"]'
+        dblclickable='[rendered:!productOwner,selector:".postit",callback:"\$.icescrum.displayQuicklook(obj);"]'
         value="${stories}"
         var="story">
         <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${sprint ? sprint.id : ''}">

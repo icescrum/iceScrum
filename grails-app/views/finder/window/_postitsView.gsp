@@ -5,7 +5,7 @@
     <is:backlogElementLayout
             id="window-${controllerName}"
             emptyRendering="true"
-            dblclickable='[selector:".postit", callback:"\$.icescrum.displayQuicklook(obj)"]'
+            dblclickable='[selector:".postit", callback:"\$.icescrum.displayQuicklook(obj);"]'
             style="display:${data ? 'block' : 'none'};"
             value="${data}"
             var="type">
