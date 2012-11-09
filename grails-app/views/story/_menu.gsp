@@ -92,16 +92,6 @@
         </a>
     </li>
 </g:if>
-<g:if test="${(productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED) || template}">
-    <li id="menu-delete-${story.id}">
-        <a href="${createLink(action:'delete',controller:'story',params:[product:params.product],id:story.id)}"
-           data-ajax-trigger="remove_story"
-           data-ajax-notice="${message(code: 'is.story.deleted').encodeAsJavaScript()}"
-           data-ajax="true">
-           <g:message code='is.ui.sandbox.menu.delete'/>
-        </a>
-    </li>
-</g:if>
 <g:if test="${(productOwner || scrumMaster) && (template || story.state >= Story.STATE_PLANNED && story.state != Story.STATE_DONE)}">
     <li id="menu-unplan-${story.id}">
         <a href="${createLink(action:'unPlan',controller:'story',params:[product:params.product],id:story.id)}"
@@ -143,4 +133,16 @@
          </a>
      </li>
 </g:if>
-<entry:point id="${controllerName}-${actionName}-postitMenu" model="[story:story]"/>
+
+<entry:point id="${controllerName}-postitMenu" model="[story:story,template:template,sprint:sprint]"/>
+
+<g:if test="${(productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED) || template}">
+    <li id="menu-delete-${story.id}">
+        <a href="${createLink(action:'delete',controller:'story',params:[product:params.product],id:story.id)}"
+           data-ajax-trigger="remove_story"
+           data-ajax-notice="${message(code: 'is.story.deleted').encodeAsJavaScript()}"
+           data-ajax="true">
+           <g:message code='is.ui.sandbox.menu.delete'/>
+        </a>
+    </li>
+</g:if>

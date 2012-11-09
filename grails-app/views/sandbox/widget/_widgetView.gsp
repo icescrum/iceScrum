@@ -31,12 +31,12 @@
                     rendered:(request.productOwner),
                     selector:'.postit-row',
                     helper:'clone',
-                    connectToSortable:'#backlog-layout-window-backlog, #backlog-layout-window-feature',
+                    connectToSortable:'.backlog.connectableToWidgetSandbox',
                     appendTo:'body',
                     start:'jQuery(this).hide();',
                     stop:'if (jQuery(this).attr(\'remove\') == \'true\') { jQuery(this).remove(); } else { jQuery(this).show(); }'
                   ]"
-        dblclickable='[rendered:(request.stakeHolder || request.inProduct), selector:".postit-row", callback:"\$.icescrum.displayQuicklook(obj)"]'
+        dblclickable='[rendered:(request.stakeHolder || request.inProduct), selector:".postit-row", callback:"\$.icescrum.displayQuicklook(obj);"]'
         value="${stories}"
         var="story">
     <is:cache  cache="storyCache" key="postit-small-${story.id}-${story.lastUpdated}">

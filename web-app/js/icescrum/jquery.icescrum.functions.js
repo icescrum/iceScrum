@@ -666,7 +666,7 @@
                         }
                         if ($.icescrum.sprint.current == null) {
                             this.state == $.icescrum.story.STATE_SUGGESTED ? $('#menu-accept-task-' + this.id, newObject).hide() : $('#menu-accept-task-' + this.id, newObject).remove();
-                        } else if (this.state > $.icescrum.story.STATE_SUGGESTED) {
+                        } else if (this.state != $.icescrum.story.STATE_SUGGESTED) {
                             $('#menu-accept-task-' + this.id, newObject).remove();
                         }
                         if (this.state != $.icescrum.story.STATE_INPROGRESS) {
@@ -693,6 +693,10 @@
                         }
                         if (this.state < $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_DONE || !$.icescrum.user.productOwner) {
                             newObject.find('.postit-label').removeClass('postit-sortable');
+                        }
+
+                        if(tmpl.window) {
+                            $(tmpl.window).trigger("postRendering.story",[this, tmpl, newObject, container]);
                         }
                     },
 

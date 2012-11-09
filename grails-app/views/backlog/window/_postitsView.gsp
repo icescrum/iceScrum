@@ -72,6 +72,7 @@
                   callback:'if (!jQuery.isNumeric(value.effort)){jQuery(this).html(\'?\'); jQuery(this).next().html(\''+message(code:'is.story.state.accepted')+'\');}else{ jQuery(this).html(value.effort); jQuery(this).next().html(\''+message(code:'is.story.state.estimated')+'\')} $(this).next().show(); $.icescrum.story.backlogTitleDetails(); ',
                   params:[product:params.product]]"
         value="${stories}"
+        containerClass="connectableToWidgetSandbox"
         var="story">
         <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
     <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">

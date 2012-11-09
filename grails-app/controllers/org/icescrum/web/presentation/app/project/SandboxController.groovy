@@ -50,9 +50,6 @@ class SandboxController {
 
     def list = {
         def currentProduct = Product.load(params.product)
-
-        currentProduct.versions
-
         def stories = (params.term) ? Story.findInStoriesSuggested(params.long('product'), '%' + params.term + '%').list() : Story.findAllByBacklogAndState(currentProduct, Story.STATE_SUGGESTED, [sort: 'suggestedDate', order: 'desc'])
 
         def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'

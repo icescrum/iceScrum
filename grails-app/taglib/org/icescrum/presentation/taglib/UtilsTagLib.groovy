@@ -136,15 +136,11 @@ class UtilsTagLib {
 
     def bundleLocaleToJs = { attrs ->
         assert attrs.bundle
-        def val = []
+        def val = [:]
         attrs.bundle.each {
-            val[it.key] = message(code: it.value)
+            val."${it.key}" = message(code: it.value)
         }
-        if (attrs.var) {
-            out << "var ${attrs.var} = ${val as JSON};"
-        } else {
-            out << "${val as JSON}"
-        }
+        out << "${val as JSON}"
     }
 
     def onStream = { attrs ->

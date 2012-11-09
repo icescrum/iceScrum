@@ -23,6 +23,7 @@
 <is:backlogElementLayout
         id="window-${controllerName}"
         emptyRendering="true"
+        containerClass="connectableToWidgetSandbox"
         style="display:${!features ? 'none' : 'block'};"
         selectable="[rendered:request.productOwner,
                     filter:'div.postit-feature',

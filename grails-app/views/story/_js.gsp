@@ -217,3 +217,5 @@
         </is:kanbanRow>
     </is:kanban>
 </template>
+
+<entry:point id="story-template" model="[story:story,user:user,tMOrSm:tMOrSm,inProduct:inProduct,columns:columns]"/>
