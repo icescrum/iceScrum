@@ -49,7 +49,7 @@ class UtilsTagLib {
     def loadJsVar = { attrs, body ->
         def current = params.product ? pageScope.product : null
         def p = current ? [product: current.id] : []
-        def locale = attrs.locale ? attrs.locale.replace('_', '-') : RCU.getLocale(request).toString().replace('_', '-')
+        def locale = attrs.locale ? attrs.locale : RCU.getLocale(request).toString()
         def jsCode = """var icescrum = {
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
                           baseUrl: "${createLink(controller: 'scrumOS')}",
