@@ -81,11 +81,11 @@
                     },
 
                     updateProfile:function(){
-                        $('#profile-name a').html(this.name);
-                        $('#user-tooltip-username').html(this.name);
+                        $('#profile-name a').html(this.user.name);
+                        $('#user-tooltip-username').html(this.user.name);
                         if (this.updateAvatar) {
                             var avatar = this.updateAvatar;
-                            $('.avatar-user-' + this.userid).each(
+                            $('.avatar-user-' + this.user.userid).each(
                                     function() {
                                         $(this).attr('src', avatar + '?nocache=' + new Date().getTime());
                                     }
