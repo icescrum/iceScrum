@@ -144,7 +144,7 @@ class ScrumOSController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window')]] as JSON)
             return
         }
-        params.viewType = params.viewType ?: springSecurityService.isLoggedIn() ? 'postitsView' : 'tableView'
+        params.viewType = params.viewType ?: 'postitsView'
 
         def uiRequested = params.window
         def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
