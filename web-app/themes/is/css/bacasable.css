@@ -672,3 +672,51 @@ textarea.copyNotes {
 .postit-row .postit-icon, .backlog .postit-layout {
     cursor:pointer;
 }
+
+body:-webkit-full-screen #navigation,body:-webkit-full-screen .window-fullscreen .box-title{
+    display:none;
+}
+body:-moz-full-screen #navigation,body:-moz-full-screen .window-fullscreen .box-title{
+    display:none;
+}
+body:-ms-full-screen #navigation,body:-ms-full-screen .window-fullscreen .box-title{
+    display:none;
+}
+body:-o-full-screen #navigation,body:-o-full-screen .window-fullscreen .box-title{
+    display:none;
+}
+body:full-screen #navigation,body:full-screen .window-fullscreen .box-title{
+    display:none;
+}
+
+body:-webkit-full-screen .window-fullscreen{
+    top:-27px;
+    bottom:0;
+    left:0;
+    right:0;
+}
+body:-moz-full-screen .window-fullscreen{
+    top:-27px;
+    bottom:0;
+    left:0;
+    right:0;
+}
+body:-ms-full-screen .window-fullscreen{
+    top:-27px;
+    bottom:0;
+    left:0;
+    right:0;
+}
+body:-o-full-screen .window-fullscreen{
+    top:-27px;
+    bottom:0;
+    left:0;
+    right:0;
+}
+body:full-screen .window-fullscreen{
+    top:-27px;
+    bottom:0;
+    left:0;
+    right:0;
+}
+

@@ -115,6 +115,8 @@
                     if (!this.o.fullscreen) {
                         $(document.body).prepend(obj);
                         this.o.fullscreen = true;
+                        $(document.body).fullScreen(true);
+
                     } else {
                         $('#main-content').prepend(obj);
                         this.o.fullscreen = false;
@@ -182,6 +184,16 @@
 
         $.icescrum.o.currentOpenedWindow = obj;
     };
+
+    $(document).bind("fullscreenchange", function() {
+        if ($(document).fullScreen()){
+            console.log("Fullscreen on");
+        }else{
+            $.icescrum.maximizeWindow($('.box-window'));
+            console.log("Fullscreen off");
+        }
+    });
+
 })(jQuery);
 
 $.fn.isWindow.defaults = {

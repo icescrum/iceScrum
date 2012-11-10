@@ -125,6 +125,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.tablesorter.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.table.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.jeditable.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup/sets/textile', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'jquery-plugins'
