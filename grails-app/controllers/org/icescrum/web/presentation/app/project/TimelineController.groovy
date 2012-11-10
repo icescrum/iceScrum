@@ -152,6 +152,9 @@ class TimelineController {
                         tooltipContent: templateTooltip,
                         tooltipTitle: "${message(code: 'is.sprint')} ${index + 1} (${message(code: BundleUtils.sprintStates[it2.state])})"]
                 list.add(tlS)
+                if (it2.deliveredVersion){
+                    list.add([start: it2.effectiveEndDate, end: it2.effectiveEndDate, durationEvent: false, title:it2.deliveredVersion])
+                }
             }
         }
         render([dateTimeFormat: "iso8601", events: list] as JSON)

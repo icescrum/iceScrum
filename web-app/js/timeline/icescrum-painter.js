@@ -659,7 +659,7 @@ Timeline.IceScrumEventPainter.prototype.showBubble = function(evt) {
 
 Timeline.IceScrumEventPainter.prototype._showBubble = function(x, y, evt) {
     var elmt = $(this._eventIdToElmt[evt.getID()]);
-    if (!elmt.data('tooltip')){
+    if (!elmt.data('tooltip') && evt.getProperty('tooltipContent')){
         var tooltip = $("<div/>").addClass('tooltip').html(evt.getProperty('tooltipContent'));
         var tooltipTitle = $("<span/>").addClass('tooltip-title').html(evt.getProperty('tooltipTitle'));
         tooltipTitle.prependTo(tooltip);
