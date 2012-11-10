@@ -19,7 +19,7 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.AcceptanceTest" %>
+<%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.AcceptanceTest" %>
 <g:set var="acceptanceTests" value="${story.acceptanceTests}"/>
 <g:set var="access" value="${request.productOwner}"/>
 <is:panelTab id="tests" selected="${params.tab && 'tests' in params.tab ? 'true' : ''}">
@@ -31,7 +31,7 @@
                 ${message(code: 'is.ui.acceptanceTest.login')}
             </g:link>
         </sec:ifNotLoggedIn>
-        <g:if test="${request.inProduct}">
+        <g:if test="${request.inProduct && story.state >= Story.STATE_SUGGESTED}">
             <is:link disabled="true"
                      onClick="jQuery('#acceptance-test-form-container').show();jQuery.icescrum.openTab('tests', true);">${message(code: 'is.ui.acceptanceTest.add')}</is:link>
         </g:if>

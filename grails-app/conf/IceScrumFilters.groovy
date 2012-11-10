@@ -19,9 +19,6 @@
  *
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
-
-package org.icescrum.presentation
-
 import org.icescrum.core.domain.Product
 
 class IceScrumFilters {
