@@ -27,7 +27,6 @@ var stack_bottomleft = {"dir1": "up", "dir2": "right"};
 var autoCompleteCache = {}, autoCompleteLastXhr;
 
 (function($) {
-
     $.icescrum = {
 
         defaults:{
@@ -446,4 +445,5 @@ $(document).ready(function($) {
         xhr.setRequestHeader("Pragma","no-cache");
     });
     $.icescrum.showUpgrade();
+    $.fn.editable.defaults.placeholder = "&nbsp;";
 });

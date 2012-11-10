@@ -87,13 +87,13 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.checkbox.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.selectmenu.js'], bundle: 'jquery-ui-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], bundle: 'jquery-ui-plugins'
-        resource url: [dir: 'js/jquery', file: 'jquery.ui.touch-punch.min.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.ui.touch-punch.min.js'], nominify: true, bundle: 'icescrum'
     }
 
     'jqplot' {
         dependsOn 'jquery'
         resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.js'], bundle: 'icescrum'
-        resource url: [dir: "js/jquery", file: 'excanvas.min.js'],  nominify: true, wrapper: { s -> "<!--[if IE]>$s<![endif]-->" }, bundle: 'jquery-plugins'
+        resource url: [dir: "js/jquery", file: 'jqplot/excanvas.min.js'],  nominify: true, wrapper: { s -> "<!--[if IE]>$s<![endif]-->" }, bundle: 'jquery-plugins'
         resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.barRenderer.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.categoryAxisRenderer.min.js'], nominify: true, bundle: 'jquery-plugins'
@@ -111,7 +111,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.history.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.mousewheel.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.hotkeys.js'], bundle: 'jquery-plugins'
-        resource url: [dir: 'js/jquery', file: 'jquery.dotimeout.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.dotimeout.min.js'],nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.tipTip.min.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.eventline.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.dropmenu.js'], bundle: 'jquery-plugins'
@@ -124,7 +124,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.input.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.tablesorter.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.table.js'], bundle: 'jquery-plugins'
-        resource url: [dir: 'js/jquery', file: 'jquery.jeditable.js'], bundle: 'jquery-plugins'
+        resource url: [dir: 'js/jquery', file: 'jquery.jeditable.min.js'], nominify:true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], nominify: true, bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'jquery-plugins'
         resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'], bundle: 'jquery-plugins'
