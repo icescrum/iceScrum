@@ -67,8 +67,8 @@
         <g:each in="${columns}" var="column">
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
-                    <is:cache  cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:render template="/task/postit" model="[task:task,user:user]"/>
+                    <is:cache  cache="taskCache" disabled="true" key="postit-${task.id}-${task.lastUpdated}">
+                        <g:render template="/task/postit" model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
                     </is:cache>
                 </g:each>
 
@@ -98,8 +98,8 @@
         <g:each in="${columns}" var="column" status="i">
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${recurrentTasks?.sort{it.rank}?.findAll{ it.state == column.key} }" var="task">
-                    <is:cache cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:render template="/task/postit" model="[task:task,user:user]"/>
+                    <is:cache cache="taskCache" disabled="true" key="postit-${task.id}-${task.lastUpdated}">
+                        <g:render template="/task/postit" model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
                     </is:cache>
                 </g:each>
 
@@ -127,7 +127,7 @@
                 <is:kanbanColumn key="${column.key}">
                     <g:each in="${story.tasks?.sort{it.rank}?.findAll{ (user.preferences.hideDoneState) ? (it.state == column.key && it.state != Task.STATE_DONE) : (it.state == column.key) }}"
                             var="task">
-                        <g:render template="/task/postit" model="[task:task,user:user]"/>
+                        <g:render template="/task/postit"  model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
                     </g:each>
                 </is:kanbanColumn>
             </g:each>

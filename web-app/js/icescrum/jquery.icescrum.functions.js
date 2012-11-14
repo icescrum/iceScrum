@@ -37,6 +37,9 @@
                     poOrSm:function() {
                         return (this.scrumMaster || this.productOwner);
                     },
+                    inProduct:function() {
+                        return (this.scrumMaster || this.productOwner || this.teamMember);
+                    },
 
                     addRoleProduct:function(){
                         if ($('li#product-'+this.product.id).length == 0){
@@ -810,7 +813,7 @@
                         var taskEditable = ($.icescrum.user.scrumMaster || responsible || creator) && !taskDone;
                         var taskDeletable = $.icescrum.user.scrumMaster || responsible || creator;
                         var taskBlockable = ($.icescrum.user.scrumMaster || responsible) && !taskDone && this.sprint.state == $.icescrum.sprint.STATE_INPROGRESS;
-                        var taskSortable = ($.icescrum.user.scrumMaster || responsible || ($.icescrum.product.assignOnBeginTask && this.state == $.icescrum.task.STATE_WAIT)) && !taskDone;
+                        var taskSortable = ($.icescrum.user.scrumMaster || responsible || (!this.responsible && $.icescrum.user.inProduct() && $.icescrum.product.assignOnBeginTask && this.state == $.icescrum.task.STATE_WAIT)) && !taskDone;
                         var taskTakable = !responsible && !taskDone;
                         var taskReleasable = responsible && !taskDone;
                         var taskCopyable = !this.parentStory || this.parentStory.state != $.icescrum.story.STATE_DONE;
