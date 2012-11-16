@@ -74,6 +74,15 @@ body, html {
     height: 90%;
 }
 
+.view-chart .panel-line {
+    float:right;
+    padding: 0 10px 10px;
+}
+
+.view-chart .panel-line button {
+    z-index:900;
+}
+
 .ui-draggable {
     cursor: move;
 }

@@ -179,6 +179,15 @@
         });
     });
 
+    $(document).on('click','button.save-chart',function(event){
+        if ($.browser.msie && parseInt($.browser.version) < 9){
+            alert('Browser not supported');
+            return;
+        }
+        var chart = $(this).parent().next();
+        $.download($.icescrum.o.baseUrl+'saveImage', {image:chart.toImage(),title:chart.attr('title')});
+    });
+
     attachOnDomUpdate();
 
 }(jQuery));

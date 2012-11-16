@@ -20,7 +20,10 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <div class="view-chart">
-  <div id="productBurnDown" class="chart-container">
+  <div class="panel-line">
+        <button class="save-chart ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">${message(code:'is.button.save.as.image')}</button>
+  </div>
+  <div id="productBurnDown" title="${message(code:"is.chart.productBurnDown.title")}" class="chart-container">
   </div>
   <jq:jquery>
     $.jqplot.config.enablePlugins = true;    

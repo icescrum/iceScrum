@@ -39,8 +39,7 @@ import org.icescrum.core.domain.Sprint
 import grails.plugin.springcache.annotations.Cacheable
 import org.springframework.security.acls.domain.BasePermission
 import org.icescrum.core.domain.preferences.ProductPreferences
-import org.codehaus.groovy.grails.plugins.DefaultGrailsPluginManager
-import org.codehaus.groovy.grails.plugins.GrailsPlugin
+import sun.misc.BASE64Decoder
 
 class ScrumOSController {
 
@@ -299,5 +298,20 @@ class ScrumOSController {
         tmpl = "${tmpl}".split("<div class='templates'>")
         tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=').replaceAll('<script type="text/javascript">', '<js>').replaceAll('</script>', '</js>').replaceAll('<template ', '<script type="text/x-jqote-template" ').replaceAll('</template>', '</script>')
         render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
+    }
+
+    def saveImage = {
+        if (!params.image){
+            render(status:404)
+            return
+        }
+        String imageEncoded = URLDecoder.decode(params.image)
+        String title = URLDecoder.decode(params.title)
+        imageEncoded = imageEncoded.substring(imageEncoded.indexOf("base64,") + "base64,".length(), imageEncoded.length());
+        response.contentType = 'image/png'
+        ['Content-disposition': "attachment;filename=\"${title+'.png'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+            response.setHeader(k, v)
+        }
+        response.outputStream << new BASE64Decoder().decodeBuffer(imageEncoded)
     }
 }
