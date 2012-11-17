@@ -81,15 +81,6 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
-
-        "/ws/p/$product/project/export"(parseRequest: true) {
-            action = "export"
-            controller = "project"
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-            }
-        }
-
     }
 
 }
