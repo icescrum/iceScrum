@@ -304,6 +304,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                             $(container)
                                     .removeClass('loading')
                                     .html(data);
+                            $('.save-chart', $(container)).remove();
                             if (typeof save != 'undefined' && save) {
                                 $.cookie(container + $.icescrum.product.id, url);
                             }
