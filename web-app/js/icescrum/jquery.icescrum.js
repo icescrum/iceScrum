@@ -43,6 +43,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             fullscreen:false,
             deleteConfirmMessage:'Are you sure?',
             cancelFormConfirmMessage:'Do you want to quit this form?',
+            more:'more',
             dialogErrorContent:null,
             openWindow:false,
             locale:'en',

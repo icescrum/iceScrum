@@ -27,7 +27,7 @@
         color="${feature.color}"
         type="feature"
         menu="[id:'feature-'+feature.id,template:'/feature/menu',params:[feature:feature],rendered:request.productOwner]"
-        miniValue="${rect?feature.value:null}"
+        miniValue="${feature.value}"
         attachment="${feature.totalAttachments}"
         sortable='[rendered:request.productOwner]'
         typeNumber="${feature.type}"

@@ -86,7 +86,7 @@
                     $arrow = $('<li style="visibility: hidden;" id="toolbar-list-button" class="navigation-item list separator"/>');
                     $('<div data-dropmenu="true" id="toolbar-list" class="dropmenu" style="cursor: pointer;"/>')
                         .append('<div class="dropmenu-content ui-corner-all"><ul id="toolbar-list-hidden"/></div>')
-                        .append('<a class="button-n dropmenu-button button-n"><span class="start"/><span class="content">More<span class="end"><span class="arrow"></span></span></a>')
+                        .append('<a class="button-n dropmenu-button button-n"><span class="start"/><span class="content">' + $.icescrum.o.more + '<span class="end"><span class="arrow"></span></span></a>')
                         .appendTo($arrow);
                     $arrow.insertAfter($('#window-toolbar > .navigation-item:visible:last'));
                 }

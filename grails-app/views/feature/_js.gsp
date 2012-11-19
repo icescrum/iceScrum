@@ -46,6 +46,7 @@
                type="feature"
                stateText="?**=textState**?"
                notruncate="true"
+               miniValue="${feature.value}"
                menu="[id:'feature-'+feature.id,template:'/feature/menu',params:[controllerName:id, feature:feature],rendered:request.productOwner]"
                sortable='[rendered:request.productOwner]'
                attachment="${feature.totalAttachments}"

@@ -26,7 +26,7 @@ class FinderController {
                 data.features = searchInFeatures(product.id, [tag:params.tag, term:params.term, feature: params.withFeatures ? params.feature : null])
                 data.tasks = searchInTasks(product, [tag:params.tag, term:params.term, task: params.withTasks ? params.task : null])
 
-                if (!data.actors && !data.stories && !data.features && !data.tasks){
+                if (!data.actors && !data.stories && !data.features && !data.tasks && !params.term && !params.tag && !params.withActors && !params.withStories && !params.withFeatures && !params.withTasks){
                     data = null
                 }
 

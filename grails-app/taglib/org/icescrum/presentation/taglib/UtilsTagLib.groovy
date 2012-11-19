@@ -59,6 +59,7 @@ class UtilsTagLib {
                           urlOpenWindow:"${createLink(controller: 'scrumOS', action: 'openWindow', params: p)}",
                           deleteConfirmMessage:"${message(code: 'is.confirm.delete').encodeAsJavaScript()}",
                           cancelFormConfirmMessage:"${message(code: 'is.confirm.cancel.form').encodeAsJavaScript()}",
+                          more:"${message(code: 'is.menu.more').encodeAsJavaScript()}",
                           locale:'${locale}',
                           showUpgrade:${grailsApplication.config.icescrum.show.upgrade},
                           push:{enable:${grailsApplication.config.icescrum.push.enable?:false}, websocket:${grailsApplication.config.icescrum.push.websocket?:false}},
