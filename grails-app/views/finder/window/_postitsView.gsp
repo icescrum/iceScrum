@@ -67,7 +67,7 @@
                     <h3>${g.message(code:'is.ui.finder.filters')}</h3>
                     <ul id="search-on">
                         <li>
-                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.stories')} <input type="checkbox" class="hidden" name="withStories"/> <input type="checkbox" disabled="disabled"/></a></h3>
+                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.stories')} <input type="checkbox" class="hidden" name="withStories"/></a></h3>
                             <ul>
                                 <li>${g.message(code:'is.story.creator')}<is:select width="150" maxHeight="200"
                                                                                     styleSelect="dropdown"
@@ -111,10 +111,10 @@
                                                        styleSelect="dropdown"
                                                        name="story.parentSprint" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                        optionValue="${{el -> 'R'+el.parentRelease.orderNumber +' S'+ el.orderNumber}}" optionKey="id" from="${product.releases*.sprints.flatten()}"/></li>
-                               </ul>
+                            </ul>
                         </li>
                         <li>
-                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.tasks')} <input type="checkbox" class="hidden" name="withTasks"/> <input type="checkbox" disabled="disabled"/></a></h3>
+                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.tasks')} <input type="checkbox" class="hidden" name="withTasks"/></a></h3>
                             <ul>
                                 <li>${g.message(code:'is.task.creator')}<is:select width="150" maxHeight="200"
                                                                                    styleSelect="dropdown"
@@ -147,7 +147,7 @@
                                 </ul>
                         </li>
                         <li>
-                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.actors')} <input type="checkbox" class="hidden" name="withActors"/> <input type="checkbox" disabled="disabled"/></a></h3>
+                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.actors')} <input type="checkbox" class="hidden" name="withActors"/></a></h3>
                             <ul>
                                 <li>${g.message(code:'is.actor.instances')}<is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
@@ -164,7 +164,7 @@
                             </ul>
                         </li>
                         <li>
-                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.features')} <input type="checkbox" class="hidden" name="withFeatures"/> <input type="checkbox" disabled="disabled"/></a></h3>
+                            <h3><a href="#">${g.message(code:'is.ui.finder.filters.features')} <input type="checkbox" class="hidden" name="withFeatures"/></a></h3>
                             <ul>
                                 <li>Type<is:select   width="150" maxHeight="200"
                                                        styleSelect="dropdown"
