@@ -393,7 +393,13 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
         redirectOnLogin:function(data){
             var ref = jQuery.getUrlVar('ref');
-            document.location = ref ? ref : data ? data.url : '';
+            var hash = ref ? ref : data ? data.url : '';
+            if(hash.indexOf('#') == 0){
+                var url = document.location.toString();
+                document.location = url.substring(0,url.indexOf('login')) + hash;
+            }else {
+                document.location = hash;
+            }
         },
 
         showAndHideOnClickAnywhere:function(selector){
