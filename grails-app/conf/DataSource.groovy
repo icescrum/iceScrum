@@ -41,7 +41,13 @@ environments {
             url="jdbc:mysql://localhost:3306/icetest?useUnicode=true&characterEncoding=utf8"
             username="root"
             password="root"
-            dbCreate = "update"*/
+            driverClassName = "oracle.jdbc.driver.OracleDriver"
+            dialect = "org.hibernate.dialect.Oracle10gDialect"
+            username = "kagilum"
+            password = "kagilum"
+            dbCreate = "update" // one of 'create', 'create-drop','update'
+            url = "jdbc:oracle:thin:@192.168.0.10:1521:XE"*/
+            //dbCreate = "update"
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
             url = "jdbc:hsqldb:file:devDba"
             loggingSql = false
