@@ -49,9 +49,6 @@
             <is:input id="sprintDeliveredVersion" class="small" name="sprint.deliveredVersion" value="${sprint?.deliveredVersion}"/>
         </is:fieldInput>
 
-        <!--<is:fieldInput for="sprintresource" label="is.sprint.resource">
-            <is:input id="sprintresource" class="small" name="sprint.resource" value="${sprint?.resource}" typed="[type:'numeric']"/>
-        </is:fieldInput>-->
     </is:fieldset>
 
     <is:buttonBar>
