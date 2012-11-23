@@ -90,7 +90,7 @@ class SprintPlanController {
     }
 
     def index = {
-        def sprint
+        Sprint sprint
         User user = (User) springSecurityService.currentUser
         def currentProduct = Product.load(params.product)
         if (!params.id) {
@@ -159,7 +159,7 @@ class SprintPlanController {
                         columns: columns,
                         stateSelect: stateSelect,
                         suiteSelect: suiteSelect,
-                        previousSprintExist: (sprint.orderNumber > 1) ?: false,
+                        previousSprintExist: (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) ?: false,
                         nextSprintExist: sprint.hasNextSprint,
                         displayUrgentTasks: sprint.parentRelease.parentProduct.preferences.displayUrgentTasks,
                         displayRecurrentTasks: sprint.parentRelease.parentProduct.preferences.displayRecurrentTasks,
