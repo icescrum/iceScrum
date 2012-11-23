@@ -152,6 +152,8 @@
         </is:fieldArea>
     </is:fieldset>
 
+    <entry:point id="${referrer}-${actionName}" model="[story:story]"/>
+
     <g:if test="${story}">
         <g:hiddenField name="story.version" value="${story?.version}"/>
     </g:if>

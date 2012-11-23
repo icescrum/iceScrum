@@ -72,7 +72,7 @@ class SandboxController {
     def add = {
         def currentProduct = Product.get(params.product)
 
-        render(template: '/story/manage', model: [
+        render(template: '/story/window/manage', model: [
                 referrer: controllerName,
                 typesLabels: BundleUtils.storyTypes.values().collect {v -> message(code: v)},
                 typesKeys: BundleUtils.storyTypes.keySet().asList(),

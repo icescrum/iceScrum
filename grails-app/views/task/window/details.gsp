@@ -90,7 +90,7 @@
             <is:panel id="panel-activity">
                 <is:panelTitle>${message(code: 'is.ui.backlogelement.activity')}</is:panelTitle>
                 <is:panelTabButton id="panel-box-1">
-                    <a rel="#summary" href="../" class="${!params.tab || 'summary' in params.tab ? 'selected' : ''}">
+                    <a rel="#summary" class="${!params.tab || 'summary' in params.tab ? 'selected' : ''}">
                         ${message(code: 'is.ui.backlogelement.activity.summary')}
                     </a>
                     <entry:point id="${controllerName}-${actionName}-tab-button"/>

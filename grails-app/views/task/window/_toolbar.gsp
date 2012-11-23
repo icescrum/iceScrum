@@ -43,7 +43,7 @@
     </li>
 </g:if>
 <g:if test="${taskDeletable}">
-    <li class="navigation-item ${taskEditable ? 'seperator' : ''}">
+    <li class="navigation-item ${taskEditable ? 'separator' : ''}">
         <a class="tool-button button-n"
            href="${createLink(controller:'task', action:'delete',id:task.id,params:[product:params.product])}"
            data-ajax-notice="${message(code:'is.task.deleted').encodeAsJavaScript()}"

@@ -114,7 +114,7 @@ class StoryController {
                             isFollower = isFollower == 1
                         }
 
-                        render(view: 'details', model: [
+                        render(view: 'window/details', model: [
                                 story: story,
                                 tasksDone: Task.countByParentStoryAndState(story, Task.STATE_DONE),
                                 typeCode: BundleUtils.storyTypes[story.type],
@@ -405,7 +405,7 @@ class StoryController {
 
             def storiesSelect = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
 
-            render(template: '/story/manage', model: [
+            render(template: '/story/window/manage', model: [
                     story: story,
                     isUsedTemplate: isUsedTemplate,
                     next: next?.id ?: null,

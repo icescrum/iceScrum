@@ -77,7 +77,7 @@ class TaskController {
                     xml  { renderRESTXML(text:task) }
                     html {
                         def permalink = createLink(absolute: true, mapping: "shortURLTASK", params: [product: product.pkey], id: task.uid)
-                        render(view: 'details', model: [
+                        render(view: 'window/details', model: [
                             task: task,
                             permalink:permalink,
                             taskStateCode: BundleUtils.taskStates[task.state],
