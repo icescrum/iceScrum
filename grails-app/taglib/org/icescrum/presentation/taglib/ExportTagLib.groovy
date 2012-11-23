@@ -73,7 +73,7 @@ class ExportTagLib {
         it.propertiesObject.each{ it2 ->
           (attrs.indentLevel+2).times{out << "\t"}          
           out << "<${it2.node}>"
-          out << it2.value
+          out << (it.cdata ? '<![CDATA[' : '') + (it2.value != null ? it2.value : '') + (it.cdata ? ']]>' : '')
           out << "</${it2.node}>\n"
         }
         (attrs.indentLevel+1).times{out << "\t"}
@@ -103,6 +103,7 @@ class ExportTagLib {
        def object = [:]
        object.name = attrs.object
        object.id = pageScope.object."${attrs.object}"?.id?:null
+       object.cdata = attrs.cdata ?: false
        if (pageScope.object."${attrs.object}"?.hasProperty('uid')){
            object.uid = pageScope.object."${attrs.object}"?.uid?:null
        }
