@@ -173,12 +173,8 @@ class TaskController {
 
             taskService.update(task, user)
             this.manageAttachments(task)
-            def next = null
-            if (params.continue) {
-                next = Task.findNextTask(task, user).list()[0]
-            }
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [task: task, next: next?.id] as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { renderRESTJSON(text:task) }
                 xml  { renderRESTXML(text:task) }
             }

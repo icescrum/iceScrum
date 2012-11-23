@@ -49,7 +49,7 @@
       </is:fieldInformation>
 
       <is:fieldInput for="username" label="is.user.username">
-        <is:input name="j_username" id="username" value="${params.username?:''}" focus="true"/>
+        <is:input name="j_username" id="username" value="${params.username?:''}"/>
       </is:fieldInput>
 
       <is:fieldInput for="password" label="is.user.password">

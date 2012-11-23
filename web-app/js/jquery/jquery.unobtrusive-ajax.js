@@ -1,16 +1,16 @@
-(function ($) {
-
-    function getFunction(code, argNames) {
-        var fn = window, parts = (code || "").split(".");
-        while (fn && parts.length) {
-            fn = fn[parts.shift()];
-        }
-        if (typeof (fn) === "function") {
-            return fn;
-        }
-        argNames.push(code);
-        return Function.constructor.apply(null, argNames);
+function getFunction(code, argNames) {
+    var fn = window, parts = (code || "").split(".");
+    while (fn && parts.length) {
+        fn = fn[parts.shift()];
     }
+    if (typeof (fn) === "function") {
+        return fn;
+    }
+    argNames.push(code);
+    return Function.constructor.apply(null, argNames);
+}
+
+(function ($) {
 
     function isMethodProxySafe(method) {
         return method === "GET" || method === "POST";
@@ -53,7 +53,7 @@
     }
 
     function ajaxRequest(element, options) {
-        var confirm, loading, method, duration;
+        var confirm, loading, duration;
 
         confirm = element.data("ajaxConfirm");
         if (confirm){
@@ -71,7 +71,7 @@
             url: element.data("ajaxUrl") || undefined,
             beforeSend: function (xhr) {
                 var result;
-                ajaxOnBeforeSend(xhr, method);
+                ajaxOnBeforeSend(xhr, options.type);
                 result = getFunction(element.data("ajaxBegin"), ["xhr", "element"]).apply(this, [xhr, element]);
                 if (result !== false) {
                     loading.show(duration);
@@ -122,8 +122,8 @@
         evt.preventDefault();
         ajaxRequest(a, {
             url:  a.attr('href'),
-            type: a.attr('method') || 'GET',
-            data: []
+            type: a.attr('method') || ( a.data('ajaxForm') ? 'POST' : 'GET'),
+            data: a.data('ajaxForm') ? a.parents('form:first').serialize() : []
         });
     });
 
@@ -200,6 +200,12 @@ function attachOnDomUpdate(content){
         var bind = 'keydown.'+'.'+onClean+'.'+elem.data('shortcut').replace(/\+/g,'');
         $(on).unbind(bind);
         $(on).bind(bind,elem.data('shortcut'),function(e){
+            if (elem.data('callback')){
+                if (!getFunction(elem.data("callback"), []).apply(this, [])){
+                    e.preventDefault();
+                    return;
+                }
+            }
             if (!elem.attr('href') || elem.data('ajax')){
                 elem.click();
             }else if (elem.attr('href')){

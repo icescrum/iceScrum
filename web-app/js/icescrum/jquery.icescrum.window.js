@@ -1,5 +1,5 @@
 (function($) {
-    jQuery.extend($.icescrum, {
+    $.extend($.icescrum, {
 
                 closeWindow:function(obj, event, disableAnim) {
                     var opts = obj.data('opts');
@@ -55,7 +55,7 @@
                         }
                     }
                     var view = this.getDefaultView();
-                    jQuery.ajax({
+                    $.ajax({
                                 type:'GET',
                                 url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? (id.indexOf('?') >= 0 ? '&' : '?') + 'viewType='+view : '' ),
                                 beforeSend:function(){
@@ -84,12 +84,15 @@
                                         $('#window-id-' + targetWindow).addClass('window-fullscreen');
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
-                                        attachOnDomUpdate($($.icescrum.o.windowContainer));
                                         var viewSelector = $('#menu-display-list');
                                         if (viewSelector.length != -1){
                                             viewSelector.find('.content').html('<span class="ico"></span>' + viewSelector.find('a[data-default-view='+view+']').text());
                                         }
                                     }
+
+                                    var content = $('#window-id-' + targetWindow)
+                                    attachOnDomUpdate(content);
+
                                     if (callback) {
                                         callback();
                                     }
@@ -98,11 +101,11 @@
                                         $.icescrum.o.openWindow = true;
                                         location.hash = id;
                                     }
-                                    if (!jQuery("#dropmenu").is(':visible')) {
-                                        jQuery("#window-id-" + targetWindow).focus();
+                                    if($('#dialog').length){
+                                        $('#dialog').dialog('close');
                                     }
-                                    if(jQuery('#dialog').length){
-                                        jQuery('#dialog').dialog('close');
+                                    if (!$("#dropmenu").is(':visible')) {
+                                        $("input:visible, textarea:visible", content).first().focus()
                                     }
                                     $.icescrum.checkToolbar();
                                     return false;

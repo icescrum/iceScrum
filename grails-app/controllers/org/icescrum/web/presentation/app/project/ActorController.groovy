@@ -101,15 +101,8 @@ class ActorController {
                 render(status: 200, text: [version: version, value: returnValue ?: ''] as JSON)
                 return
             }
-            def next = null
-            if (params.continue) {
-                def actors = Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc']);
-                def actorIndex = actors.indexOf(actor)
-                if (actors.size() > actorIndex + 1)
-                    next = actors[actorIndex + 1].id
-            }
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: [actor: actor, next: next] as JSON }
+                html { render status: 200, contentType: 'application/json', text:actor as JSON }
                 json { renderRESTJSON(text:actor) }
                 xml  { renderRESTXML(text:actor) }
             }

@@ -36,7 +36,7 @@
                 <g:message code="is.dialog.promptCapacityAutoPlan.description"/>
             </is:fieldInformation>
             <is:fieldInput for="capacity" label="is.dialog.promptCapacityAutoPlan.capacity" noborder="true">
-                <is:input id="capacity" name="capacity" value="" typed="[type:'numeric']" focus="true"/>
+                <is:input id="capacity" name="capacity" value="" typed="[type:'numeric']"/>
             </is:fieldInput>
         </is:fieldset>
     </form>

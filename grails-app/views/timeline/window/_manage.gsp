@@ -26,7 +26,7 @@
     <is:fieldset title="is.ui.timeline.release.properties.title">
 
         <is:fieldInput for="releasename" label="is.release.name">
-            <is:input id="releasename" name="release.name" value="${release?.name}" focus="true"/>
+            <is:input id="releasename" name="release.name" value="${release?.name}"/>
         </is:fieldInput>
 
         <is:fieldArea label="is.release.goal" for="releasegoal">
@@ -62,55 +62,90 @@
     <g:if test="${release}">
         <g:hiddenField name="release.version" value="${release.version}"/>
     </g:if>
-
     <is:buttonBar>
         <g:if test="${!release?.id}">
-            <is:button
-                    id="submitAndContinueForm"
-                    type="submitToRemote"
-                    url="[controller:'release', action:'save', params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,90); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.saved')}')">
-                ${message(code: 'is.button.add')} ${message(code: 'is.button.andContinue')}
-            </is:button>
-            <is:button
-                    id="submitForm"
-                    type="submitToRemote"
-                    url="[controller:'release', action:'save',params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.saved')}')">
-                ${message(code: 'is.button.add')}
-            </is:button>
+            <td>
+                <a id="submitAndContinueForm" class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-shortcut="shift+return"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                   data-ajax-success="jQuery.icescrum.form.reset"
+                   data-ajax-notice="${message(code: 'is.release.saved').encodeAsJavaScript()}"
+                   href="${createLink([controller:'release', action:'save', params:[product:params.product]])}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}</span>
+                    <span class="end"></span>
+                </a>
+            </td>
+            <td>
+                <a id="submitForm"  class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-shortcut="return"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                   data-ajax-notice="${message(code: 'is.release.saved').encodeAsJavaScript()}"
+                   data-ajax-success="#${controllerName}"
+                   href="${createLink([controller:'release', action:'save', params:[product:params.product]])}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.add')}</span>
+                    <span class="end"></span>
+                </a>
+            </td>
         </g:if>
         <g:else>
             <g:if test="${next}">
-                <is:button
-                        id="submitAndContinueForm"
-                        type="submitToRemote"
-                        url="[controller:'release', action:'update', id:release.id, params:[continue:true,product:params.product]]"
-                        onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.release.updated')}')">
-                    ${message(code: 'is.button.update')} ${message(code: 'is.button.andContinue')}
-                </is:button>
+                <td>
+                    <a id="submitAndContinueForm"  class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-method="POST"
+                       data-shortcut="shift+return"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                       data-ajax-notice="${message(code: 'is.release.updated').encodeAsJavaScript()}"
+                       data-ajax-success="#${next ? controllerName+(params.subid?'/'+params.id:'')+'/edit/'+next : controllerName}"
+                       href="${createLink([controller:'release', action:'update', params:[product:params.product,id:release.id]])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
             </g:if>
-            <is:button
-                    id="submitForm"
-                    type="submitToRemote"
-                    url="[controller:'release', action:'update', id:release.id, params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.release.updated')}')">
-                ${message(code: 'is.button.update')}
-            </is:button>
+                <td>
+                    <a id="submitForm"  class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-method="POST"
+                       data-shortcut="return"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                       data-ajax-notice="${message(code: 'is.release.updated').encodeAsJavaScript()}"
+                       data-ajax-success="#${controllerName}"
+                       href="${createLink([controller:'release', action:'update', params:[product:params.product,id:release.id]])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'is.button.update')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
         </g:else>
-        <is:button
-                id="cancelForm"
-                type="link"
-                button="button-s button-s-black"
-                href="#${controllerName}"
-                value="${message(code: 'is.button.cancel')}"/>
+        <td>
+            <a  id="cancelForm"
+                data-shortcut="esc"
+                data-callback="jQuery.icescrum.form.cancel"
+                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                class="button-s button-s-black" href="#${referrerUrl ?: controllerName}">
+                <span class="start"></span>
+                <span class="content">${message(code: 'is.button.cancel')}</span>
+                <span class="end"></span>
+            </a>
+        </td>
     </is:buttonBar>
 </g:form>
-<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${controllerName}"
-             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
-<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${controllerName}"
-             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
-<is:shortcut key="esc" callback="\$.icescrum.form.cancel();" scope="${controllerName}" listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 
 <g:if test="${release}">
     <is:onStream

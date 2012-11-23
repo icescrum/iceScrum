@@ -28,7 +28,7 @@
         tabindex="1">
     <is:fieldset title="is.ui.backlog.story.properties.title">
         <is:fieldInput for="storyname" label="is.story.name">
-            <is:input id="storyname" name="story.name" value="${story?.name}" focus="true"/>
+            <is:input id="storyname" name="story.name" value="${story?.name}"/>
         </is:fieldInput>
 
     %{-- Type --}%
@@ -160,54 +160,89 @@
 
     <is:buttonBar>
         <g:if test="${!story}">
-            <is:button
-                    id="submitAndContinueForm"
-                    type="submitToRemote"
-                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
-                    url="[controller:'story', action:'save', params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.renderNotice('${message(code: 'is.story.saved')}'); jQuery.icescrum.form.reset('#${referrer}-form')"
-                    value="${message(code:'is.button.suggest')} ${message(code:'is.button.andContinue')}"/>
-            <is:button
-                    id="submitForm"
-                    type="submitToRemote"
-                    onSuccess="jQuery.icescrum.navigateTo('${referrer+(params.subid?'/'+params.id:'')}'); jQuery.icescrum.renderNotice('${message(code: 'is.story.saved')}')"
-                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
-                    url="[controller:'story', action:'save',params:[product:params.product]]"
-                    value="${message(code:'is.button.suggest')}"/>
+            <td>
+                <a id="submitAndContinueForm" class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-shortcut="shift+return"
+                   data-shortcut-on="#${referrer}-form, #${referrer}-form input"
+                   data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                   data-ajax-success="jQuery.icescrum.form.reset"
+                   data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
+                   href="${createLink([controller:'story', action:'save', params:[product:params.product]])}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.suggest')} ${message(code:'is.button.andContinue')}</span>
+                    <span class="end"></span>
+                </a>
+            </td>
+            <td>
+                <a id="submitForm"  class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-shortcut="return"
+                   data-shortcut-on="#${referrer}-form, #${referrer}-form input:not([name='story.textAs'])"
+                   data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                   data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
+                   data-ajax-success="#${referrer+(params.subid?'/'+params.id:'')}"
+                   href="${createLink([controller:'story', action:'save', params:[product:params.product]])}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.suggest')}</span>
+                    <span class="end"></span>
+                </a>
+            </td>
         </g:if>
         <g:else>
             <g:if test="${next}">
-                <is:button
-                        id="submitAndContinueForm"
-                        type="submitToRemote"
-                        url="[controller:'story', action:'update', params:[continue:true,product:params.product,id:story.id]]"
-                        before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
-                        onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${referrer+(params.subid?'/'+params.id:'')+'/editStory/'}'+data.next) : jQuery.icescrum.navigateTo('${referrer}'); jQuery.icescrum.renderNotice('${message(code: 'is.story.updated')}')"
-                        value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
+                <td>
+                    <a id="submitAndContinueForm"  class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-method="POST"
+                       data-shortcut="shift+return"
+                       data-shortcut-on="#${referrer}-form, #${referrer}-form input"
+                       data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                       data-ajax-notice="${message(code: 'is.story.updated').encodeAsJavaScript()}"
+                       data-ajax-success="#${next ? referrer+(params.subid?'/'+params.id:'')+'/editStory/'+next : referrer}"
+                       href="${createLink([controller:'story', action:'update', params:[product:params.product,id:story.id]])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
             </g:if>
-            <is:button
-                    id="submitForm" type="submitToRemote"
-                    url="[controller:'story', action:'update', params:[product:params.product,id:story.id]]"
-                    value="${message(code:'is.button.update')}"
-                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
-                    onSuccess="jQuery.icescrum.navigateTo('${referrerUrl?:referrer+(params.subid?'/'+params.id:'')}'); jQuery.icescrum.renderNotice('${message(code: 'is.story.updated')}')"/>
+                <td>
+                    <a id="submitForm"  class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-method="POST"
+                       data-shortcut="return"
+                       data-shortcut-on="#${referrer}-form, #${referrer}-form input:not([name='story.textAs'])"
+                       data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                       data-ajax-notice="${message(code: 'is.story.updated').encodeAsJavaScript()}"
+                       data-ajax-success="#${referrerUrl?:referrer+(params.subid?'/'+params.id:'')}"
+                       href="${createLink([controller:'story', action:'update', params:[product:params.product,id:story.id]])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'is.button.update')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
         </g:else>
-        <is:button
-                id="cancelForm"
-                type="link"
-                button="button-s button-s-black"
-                href="#${referrerUrl?:referrer}"
-                value="${message(code: 'is.button.cancel')}"/>
+        <td>
+            <a  id="cancelForm"
+                data-shortcut="esc"
+                data-callback="jQuery.icescrum.form.cancel"
+                data-shortcut-on="#${referrer}-form, #${referrer}-form input:not([name='story.textAs'])"
+                class="button-s button-s-black" href="#${referrerUrl?:referrer}">
+                <span class="start"></span>
+                <span class="content">${message(code: 'is.button.cancel')}</span>
+                <span class="end"></span>
+            </a>
+        </td>
     </is:buttonBar>
 
 </g:form>
-<is:shortcut key="shift+return" callback="jQuery('#submitAndContinueForm').click();" scope="${referrer}"
-             listenOn="'#${referrer}-form, #${referrer}-form input'"/>
-<is:shortcut key="return"
-             callback="if(e.currentTarget.referrer == 'story-textAs'){return false;}jQuery('#submitForm').click();"
-             scope="${referrer}" listenOn="'#${referrer}-form, #${referrer}-form input'"/>
-<is:shortcut key="esc" callback="jQuery.icescrum.form.cancel();" scope="${referrer}"
-             listenOn="'#${referrer}-form, #${referrer}-form input'"/>
 
 <g:if test="${story}">
     <is:onStream

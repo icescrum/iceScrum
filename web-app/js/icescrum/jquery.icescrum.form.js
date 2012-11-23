@@ -9,29 +9,50 @@
                             return false;
                         }
                     },
-                    reset:function(id,preserve) {
-                        if (!preserve){
-                            preserve = [];
+
+                    checkUploading:function(xhr, element){
+                        var form = element.parents('form:first');
+                        if ($('.is-multifiles .is-progressbar .ui-progressbar-value:not(.ui-progressbar-value-error)').size()) {
+                            $.icescrum.renderNotice($.icescrum.o.uploading, 'error');
+                            return false;
+                        } else {
+                            form.addClass('updating');
+                            return true;
                         }
-                        $(':input', id)
+                    },
+
+                    reset:function(data, status, xhr, element) {
+                        var form = element.parents('form:first');
+                        form.removeClass('updating');
+                        $(':input', form)
+                                .not('.preserve')
                                 .not(':button, :submit, :reset, :hidden')
                                 .not('[id=displayTemplate]')
                                 .val('')
                                 .removeAttr('checked')
                                 .removeAttr('selected');
                         $('.is-multifiles-checkbox').remove();
-                        $('select', id).each(function() {
+                        $('select:not(.preserve)', form).each(function() {
                             if (this.id.indexOf('rank') > -1) {
                                 var nextRank = $(this).find('option').size() + 1;
                                 $(this).selectmenu('add', nextRank, nextRank, true);
                             } else {
-                                if ($.inArray(this.id,preserve) == -1){
-                                    $(this).selectmenu('value', 0);
-                                    $(this).trigger('onchange');
-                                }
+                                $(this).selectmenu('value', 0);
+                                $(this).trigger('onchange');
                             }
                         });
+                        if ($('#datepicker-startDate', form).size() > 0){
+                            jQuery.icescrum.updateStartDateDatePicker(data);
+                        }
+                        if ($('#datepicker-endDate', form).size() > 0){
+                            if (data.class == "Release"){
+                                jQuery.icescrum.updateEndDateDatePicker(data, 90);
+                            } else {
+                                jQuery.icescrum.updateEndDateDatePicker(data, $.icescrum.product.estimatedSprintsDuration);
+                            }
+                        }
 
+                        $("input:visible, textarea:visible", form).first().focus();
                     }
                 }
             })

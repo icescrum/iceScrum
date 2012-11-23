@@ -87,13 +87,8 @@ class SprintController {
             bindData(sprint, params, [include:['resource','goal','deliveredVersion']], "sprint")
 
             sprintService.update(sprint, startDate, endDate)
-
-            def next = null
-            if (params.continue) {
-                next = Sprint.findByOrderNumberAndParentRelease(sprint.orderNumber + 1, sprint.parentRelease)
-            }
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, next: next?.id ?: null] as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text:sprint as JSON)  }
                 json { renderRESTJSON(text:sprint) }
                 xml  { renderRESTXML(text:sprint) }
             }

@@ -112,7 +112,7 @@ class FeatureController {
                 }
                 entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature])
                 withFormat {
-                    html { render status: 200, contentType: 'application/json', text: [feature: feature, next: next?.id ?: null] as JSON }
+                    html { render status: 200, contentType: 'application/json', text:feature as JSON }
                     json { renderRESTJSON(text:feature) }
                     xml  { renderRESTXML(text:feature) }
                 }

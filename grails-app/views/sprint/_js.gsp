@@ -101,7 +101,7 @@
                               receive:"event.stopPropagation();"+remoteFunction(action:"plan",
                                           controller:"story",
                                           onFailure: "jQuery(ui).sortable(\"cancel\");",
-                                          onSuccess:"jQuery.event.trigger(\"lan_story\",data.story); if(data.oldSprint){  jQuery.event.trigger(\"sprintMesure_sprint\",data.oldSprint); }",
+                                          onSuccess:"jQuery.event.trigger(\"plan_story\",data.story); if(data.oldSprint){  jQuery.event.trigger(\"sprintMesure_sprint\",data.oldSprint); }",
                                           params: "\"product=${params.product}&id=\"+ui.item.data(\"elemid\")+\"&sprint.id=${sprint.id}&position=\"+(jQuery(\"#backlog-layout-plan-${id}-${sprint.id} .postit-rect\").index(ui.item)+1)")
                       ]'
                         dblclickable="[selector:'.postit-rect',callback:'$.icescrum.displayQuicklook(obj)']"

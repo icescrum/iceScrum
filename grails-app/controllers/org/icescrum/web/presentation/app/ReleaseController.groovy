@@ -85,12 +85,8 @@ class ReleaseController {
 
             bindData(release, this.params, [include:['name','goal']], "release")
             releaseService.update(release, startDate, endDate)
-            def next = null
-            if (params.continue) {
-                next = release.parentProduct.releases.find {it.orderNumber == release.orderNumber + 1}
-            }
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: [release: release, next: next?.id ?: null] as JSON }
+                html { render status: 200, contentType: 'application/json', text:release as JSON }
                 json { renderRESTJSON(text:release) }
                 xml  { renderRESTXML(text:release) }
             }

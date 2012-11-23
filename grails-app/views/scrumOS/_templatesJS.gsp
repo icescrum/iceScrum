@@ -82,6 +82,7 @@
             limitUrgentTasks:${product.preferences.limitUrgentTasks},
             assignOnBeginTask:${product.preferences.assignOnBeginTask},
             timezoneOffset:${TimeZone.getTimeZone(product.preferences.timezone).rawOffset/3600000},
+            estimatedSprintsDuration:${product.preferences.estimatedSprintsDuration},
             i18n: {
                 deleted:"${g.message(code: 'is.product.deleted')}",
                 updated:"${g.message(code: 'is.product.updated')}",

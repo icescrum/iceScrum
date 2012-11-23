@@ -25,7 +25,7 @@
 
     <is:fieldset title="is.ui.feature.feature.properties.title">
         <is:fieldInput for="featurename" label="is.feature.name">
-            <is:input id="featurename" name="feature.name" value="${feature?.name}" focus="true"/>
+            <is:input id="featurename" name="feature.name" value="${feature?.name}"/>
         </is:fieldInput>
 
         <is:fieldArea for="featuredescription" label="is.backlogelement.description">
@@ -102,61 +102,98 @@
     <g:if test="${feature}">
         <g:hiddenField name="feature.version" value="${feature.version}"/>
     </g:if>
-
-    <is:buttonBar>
+<is:buttonBar>
         <g:if test="${!feature}">
-            <is:button
-                    id="submitAndContinueForm"
-                    type="submitToRemote"
-                    url="[controller:'feature', action:'save', params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.saved')}')"
-                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
-                    value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
-            <is:button
-                    id="submitForm"
-                    type="submitToRemote"
-                    url="[controller:'feature', action:'save', params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.saved')}')"
-                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
-                    value="${message(code:'is.button.add')}"/>
+            <td>
+                <a id="submitAndContinueForm" class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-shortcut="shift+return"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                   data-ajax-success="jQuery.icescrum.form.reset"
+                   data-ajax-notice="${message(code: 'is.feature.saved').encodeAsJavaScript()}"
+                   href="${createLink([controller:'feature', action:'save', params:[product:params.product]])}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}</span>
+                    <span class="end"></span>
+                </a>
+            </td>
+            <td>
+                <a id="submitForm"  class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-shortcut="return"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                   data-ajax-notice="${message(code: 'is.feature.saved').encodeAsJavaScript()}"
+                   data-ajax-success="#${controllerName}"
+                   href="${createLink([controller:'feature', action:'save', params:[product:params.product]])}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.add')}</span>
+                    <span class="end"></span>
+                </a>
+            </td>
         </g:if>
         <g:else>
             <g:if test="${next}">
-                <is:button
-                        id="submitAndContinueForm"
-                        type="submitToRemote"
-                        url="[controller:'feature', action:'update', id:feature.id, params:[continue:true,product:params.product]]"
-                        onSuccess="jQuery('#${controllerName}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); data.next != null ? jQuery.icescrum.navigateTo('${controllerName+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
-                        before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
-                        value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
+                <td>
+                    <a id="submitAndContinueForm"  class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-method="POST"
+                       data-ajax-trigger="update_feature"
+                       data-shortcut="shift+return"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                       data-ajax-notice="${message(code: 'is.feature.updated').encodeAsJavaScript()}"
+                       data-ajax-success="#${next ? controllerName+'/edit/'+next : controllerName}"
+                       href="${createLink([controller:'feature', action:'update', params:[product:params.product,id:feature.id]])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
             </g:if>
-            <is:button
-                    id="submitForm"
-                    type="submitToRemote"
-                    url="[controller:'feature', action:'update', id:feature.id, params:[product:params.product]]"
-                    before="if (jQuery.icescrum.uploading()) { jQuery.icescrum.renderNotice('${message(code:'is.upload.inprogress.wait')}', 'error'); return false; }"
-                    onSuccess="jQuery('#${controllerName}-form').unbind('.stream'); jQuery.event.trigger('update_feature',data.feature); jQuery.icescrum.navigateTo('${controllerName}'); jQuery.icescrum.renderNotice('${message(code: 'is.feature.updated')}')"
-                    value="${message(code:'is.button.update')}"/>
+                <td>
+                    <a id="submitForm"  class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-trigger="update_feature"
+                       data-ajax-method="POST"
+                       data-shortcut="return"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                       data-ajax-notice="${message(code: 'is.feature.updated').encodeAsJavaScript()}"
+                       data-ajax-success="#${controllerName}"
+                       href="${createLink([controller:'feature', action:'update', params:[product:params.product,id:feature.id]])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'is.button.update')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
         </g:else>
-        <is:button id="cancelForm"
-                   type="link"
-                   button="button-s button-s-black"
-                   href="#${controllerName}"
-                   value="${message(code: 'is.button.cancel')}"/>
+        <td>
+            <a  id="cancelForm"
+                data-shortcut="esc"
+                data-callback="jQuery.icescrum.form.cancel"
+                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                class="button-s button-s-black" href="#${controllerName}">
+                <span class="start"></span>
+                <span class="content">${message(code: 'is.button.cancel')}</span>
+                <span class="end"></span>
+            </a>
+        </td>
     </is:buttonBar>
 
 </g:form>
-<is:shortcut key="shift+return" callback="jQuery('#submitAndContinueForm').click();" scope="${controllerName}"
-             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
-<is:shortcut key="return" callback="jQuery('#submitForm').click();" scope="${controllerName}"
-             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
-<is:shortcut key="esc" callback="jQuery.icescrum.form.cancel();" scope="${controllerName}"
-             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 <g:if test="${feature}">
     <is:onStream
             on="#${controllerName}-form"
             events="[[object:'feature',events:['update']]]"
-            callback="if ( feature.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.feature.updated')}','${createLink(controller:controllerName,action:'edit',id:feature.id,params:[product:params.product])}',false,'#window-content-${controllerName}');"/>
+            callback="if ( feature.id != jQuery(this).data('elemid') || jQuery(this).hasClass('updating') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.feature.updated')}','${createLink(controller:controllerName,action:'edit',id:feature.id,params:[product:params.product])}',false,'#window-content-${controllerName}');"/>
     <is:onStream
             on="#${controllerName}-form"
             events="[[object:'feature',events:['remove']]]"

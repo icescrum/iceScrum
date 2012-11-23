@@ -223,15 +223,6 @@ class StoryController {
                 returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.story')]))
                 return
             }
-            def next = null
-            if (params.continue) {
-                if (story.state == Story.STATE_SUGGESTED)
-                    next = Story.findNextSuggested(params.long('product'), story.suggestedDate, !productOwner ? user.id : null).list()[0]
-                else if (story.state <= Story.STATE_ESTIMATED)
-                    next = Story.findNextAcceptedOrEstimated(params.long('product'), story.rank).list()[0]
-                else if (story.state < Story.STATE_DONE)
-                    next = Story.findNextStoryBySprint(story.parentSprint.id, story.rank).list()[0]
-            }
 
             else if(params.story.effort){
                 try {
@@ -332,7 +323,7 @@ class StoryController {
                 return
             }
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: [story: story, next: next?.id ?: null] as JSON }
+                html { render status: 200, contentType: 'application/json', text: story as JSON }
                 json { renderRESTJSON(text:story) }
                 xml  { renderRESTXML(text:story) }
             }

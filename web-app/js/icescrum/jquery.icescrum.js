@@ -44,6 +44,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             deleteConfirmMessage:'Are you sure?',
             cancelFormConfirmMessage:'Do you want to quit this form?',
             more:'more',
+            uploading:'',
             dialogErrorContent:null,
             openWindow:false,
             locale:'en',
@@ -135,10 +136,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if (window.console) {
                 console.log.apply(console, arguments);
             }
-        },
-
-        uploading:function() {
-            return $('.is-multifiles .is-progressbar .ui-progressbar-value:not(.ui-progressbar-value-error)').size() > 0;
         },
 
         renderNotice:function(text, type, title) {

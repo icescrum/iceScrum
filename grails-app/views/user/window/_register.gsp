@@ -41,7 +41,7 @@
         </is:fieldInformation>
 
         <is:fieldInput for="firstName" label="is.user.firstname">
-          <is:input id="firstName" name="firstName" value="${user.firstName}" focus="true" />
+          <is:input id="firstName" name="firstName" value="${user.firstName}"/>
         </is:fieldInput>
 
         <is:fieldInput for="lastName" label="is.user.lastname">

@@ -114,6 +114,7 @@
                     hidden:false,
                     limitUrgentTasks:0,
                     timezoneOffset:0,
+                    estimatedSprintsDuration:14,
                     i18n : {
                         deleted:'Project deleted',
                         updated:'Project settings updated',

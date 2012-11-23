@@ -25,7 +25,7 @@
 <g:form action="save" method="post" name="${controllerName}-form" data-elemid="${sprint?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
     <is:fieldset title="is.ui.releasePlan.sprint.properties.title">
         <is:fieldArea for="sprintgoal" label="is.sprint.goal">
-            <is:area id="sprintgoal" large="true" name="sprint.goal" value="${sprint?.goal}" focus="true"/>
+            <is:area id="sprintgoal" large="true" name="sprint.goal" value="${sprint?.goal}"/>
         </is:fieldArea>
 
     %{-- Start Date --}%
@@ -50,53 +50,90 @@
         </is:fieldInput>
 
     </is:fieldset>
-
     <is:buttonBar>
         <g:if test="${!sprint}">
-            <is:button
-                    id="submitAndContinueForm"
-                    type="submitToRemote"
-                    url="[controller:'sprint', action:'save', params:[product:params.product, 'parentRelease.id':release.id]]"
-                    onSuccess="jQuery.icescrum.form.reset('#${controllerName}-form'); jQuery.icescrum.updateStartDateDatePicker(data); jQuery.icescrum.updateEndDateDatePicker(data,${product.preferences.estimatedSprintsDuration}); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.saved')}')"
-                    value="${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}"/>
-            <is:button
-                    id="submitForm"
-                    type="submitToRemote"
-                    url="[controller:'sprint', action:'save', params:[product:params.product, 'parentRelease.id':release.id]]"
-                    onSuccess="jQuery.icescrum.navigateTo('${controllerName}/${release.id}'); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.saved')}')"
-                    value="${message(code:'is.button.add')}"/>
+            <td>
+                <a id="submitAndContinueForm" class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-shortcut="shift+return"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                   data-ajax-success="jQuery.icescrum.form.reset"
+                   data-ajax-notice="${message(code: 'is.sprint.saved').encodeAsJavaScript()}"
+                   href="${createLink([controller:'sprint', action:'save', params:[product:params.product, 'parentRelease.id':release.id]])}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.add')} ${message(code:'is.button.andContinue')}</span>
+                    <span class="end"></span>
+                </a>
+            </td>
+            <td>
+                <a id="submitForm"  class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-shortcut="return"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                   data-ajax-notice="${message(code: 'is.sprint.saved').encodeAsJavaScript()}"
+                   data-ajax-success="#${controllerName+'/'+release.id}"
+                   href="${createLink([controller:'sprint', action:'save', params:[product:params.product, 'parentRelease.id':release.id]])}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.add')}</span>
+                    <span class="end"></span>
+                </a>
+            </td>
         </g:if>
         <g:else>
-            <g:hiddenField name="sprint.version" value="${sprint.version}"/>
-            <g:hiddenField name="sprint.id" value="${sprint.id}"/>
             <g:if test="${next}">
-                <is:button
-                        id="submitAndContinueForm"
-                        type="submitToRemote"
-                        url="[mapping:'pUrl', controller:'sprint', action:'update', id:sprint.id, params:[continue:true,product:params.product]]"
-                        onSuccess="data.next != null ? jQuery.icescrum.navigateTo('${controllerName+(params.subid?'/'+params.id:'')+'/edit/'}'+data.next) : jQuery.icescrum.navigateTo('${controllerName+'/'+release.id}'); jQuery.icescrum.renderNotice('${g.message(code: 'is.sprint.updated')}')"
-                        value="${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}"/>
+                <td>
+                    <a id="submitAndContinueForm"  class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-method="POST"
+                       data-shortcut="shift+return"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                       data-ajax-notice="${message(code: 'is.sprint.updated').encodeAsJavaScript()}"
+                       data-ajax-success="#${next ? controllerName+(params.subid?'/'+params.id:'')+'/edit/'+next : controllerName+'/'+release.id}"
+                       href="${createLink([mapping:'pUrl', controller:'sprint', action:'update', params:[product:params.product,id:sprint.id]])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
             </g:if>
-            <is:button
-                    id="submitForm"
-                    type="submitToRemote"
-                    url="[mapping:'pUrl', controller:'sprint', action:'update', id:sprint.id,params:[product:params.product]]"
-                    onSuccess="jQuery.icescrum.navigateTo('${controllerName+'/'+release.id}'); jQuery.icescrum.renderNotice('${message(code: 'is.sprint.updated')}')"
-                    value="${message(code:'is.button.update')}"/>
+                <td>
+                    <a id="submitForm"  class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-method="POST"
+                       data-shortcut="return"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-ajax-begin="jQuery.icescrum.form.checkUploading"
+                       data-ajax-notice="${message(code: 'is.sprint.updated').encodeAsJavaScript()}"
+                       data-ajax-success="#${controllerName+'/'+release.id}"
+                       href="${createLink([mapping:'pUrl', controller:'sprint', action:'update', params:[product:params.product,id:sprint.id]])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'is.button.update')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
         </g:else>
-        <is:button
-                id="cancelForm"
-                type="link"
-                button="button-s button-s-black"
-                href="#${controllerName+'/'+release.id}"
-                value="${message(code: 'is.button.cancel')}"/>
+        <td>
+            <a  id="cancelForm"
+                data-shortcut="esc"
+                data-callback="jQuery.icescrum.form.cancel"
+                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                class="button-s button-s-black" href="#${referrerUrl ?: controllerName+'/'+release.id}">
+                <span class="start"></span>
+                <span class="content">${message(code: 'is.button.cancel')}</span>
+                <span class="end"></span>
+            </a>
+        </td>
     </is:buttonBar>
 </g:form>
-<is:shortcut key="shift+return" callback="\$('#submitAndContinueForm').click();" scope="${controllerName}"
-             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
-<is:shortcut key="return" callback="\$('#submitForm').click();" scope="${controllerName}"
-             listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
-<is:shortcut key="esc" callback="\$.icescrum.form.cancel();" scope="${controllerName}" listenOn="'#${controllerName}-form, #${controllerName}-form input'"/>
 
 <g:if test="${sprint}">
     <is:onStream
