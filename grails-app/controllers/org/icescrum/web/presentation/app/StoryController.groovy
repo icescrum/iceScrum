@@ -177,6 +177,9 @@ class StoryController {
             storyService.save(story, product, (User)user)
             this.manageAttachments(story)
             story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+
+            entry.hook(id:"${controllerName}-${actionName}", model:[story:story])
+
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
                 json { renderRESTJSON(text:story, status:201) }
