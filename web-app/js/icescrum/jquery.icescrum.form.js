@@ -42,13 +42,13 @@
                             }
                         });
                         if ($('#datepicker-startDate', form).size() > 0){
-                            jQuery.icescrum.updateStartDateDatePicker(data);
+                            $.icescrum.updateStartDateDatePicker(data);
                         }
                         if ($('#datepicker-endDate', form).size() > 0){
-                            if (data.class == "Release"){
-                                jQuery.icescrum.updateEndDateDatePicker(data, 90);
+                            if (data['class'] == "Release"){
+                                $.icescrum.updateEndDateDatePicker(data, 90);
                             } else {
-                                jQuery.icescrum.updateEndDateDatePicker(data, $.icescrum.product.estimatedSprintsDuration);
+                                $.icescrum.updateEndDateDatePicker(data, $.icescrum.product.estimatedSprintsDuration);
                             }
                         }
 
