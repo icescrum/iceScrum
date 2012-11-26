@@ -101,6 +101,7 @@
                 noAcceptanceTest:"${message(code:'is.ui.acceptanceTest.empty')}"
             }
         }
+        <entry:point id="jquery-icescrum-js" model="[product:product]"/>
     });
 
     $.icescrum.init();

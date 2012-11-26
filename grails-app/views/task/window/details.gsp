@@ -68,7 +68,7 @@
                     </is:panelLine>
                     <g:if test="${task.totalAttachments}">
                         <is:panelLine legend="${message(code:'is.ui.backlogelement.attachment',args:[task.totalAttachments > 1 ?'s':''])}">
-                            <is:attachedFiles bean="${task}" width="120" deletable="${false}"
+                            <is:attachedFiles bean="${task}" deletable="${false}"
                                               params="[product:params.product]" action="download"
                                               controller="task"
                                               size="20"/>

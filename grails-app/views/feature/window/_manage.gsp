@@ -79,6 +79,7 @@
         <is:fieldFile for='feature.attachments' label="is.backlogelement.attachment" noborder="true">
             <is:multiFilesUpload elementId="featureattachments"
                                  name="attachments"
+                                 class="attachments"
                                  bean="${feature}"
                                  urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
                                  params="[product:params.product]"

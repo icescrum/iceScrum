@@ -318,8 +318,13 @@ class FeatureController {
         def uploadedFiles = []
         params.list('attachments')?.each { attachment ->
             "${attachment}".split(":").with {
-                if (session.uploadedFiles[it[0]])
-                    uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), name: it[1]]
+                if (it[0].contains('http')){
+                    uploadedFiles << [url: it[0] +':'+ it[1], filename: it[2], length: it[3], provider:it[4]]
+                }else{
+                    if (session.uploadedFiles[it[0]]){
+                        uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), filename: it[1]]
+                    }
+                }
             }
         }
         if (uploadedFiles){

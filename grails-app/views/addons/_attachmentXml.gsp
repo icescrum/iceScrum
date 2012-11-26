@@ -21,5 +21,5 @@
 --}%
 <is:objectAsXML object="${object}" node="attachment" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML name="['ext','length','posterClass','posterId','dateCreated']"/>
-    <is:propertyAsXML name="['name','inputName','contentType']" cdata="true"/>
+    <is:propertyAsXML name="['name','inputName','contentType', 'provider', 'url']" cdata="true"/>
 </is:objectAsXML>

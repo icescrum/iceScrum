@@ -133,6 +133,7 @@
         <is:fieldFile for='story.attachments' label="is.backlogelement.attachment" noborder="true">
             <is:multiFilesUpload elementId="storyattachments"
                                  name="attachments"
+                                 class="attachments"
                                  bean="${story}"
                                  urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
                                  params="[product:params.product]"

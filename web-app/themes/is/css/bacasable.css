@@ -367,7 +367,7 @@ table.kanban .table-line .kanban-col:first-child .postit-story {
 }
 
 .field-input .is-multifiles-checkbox {
-    float: right;
+    float: left;
     position: relative;
     margin: 3px;
     clear: both;

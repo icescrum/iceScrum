@@ -78,7 +78,7 @@
                     <is:panelLine
                             legend="${message(code:'is.ui.backlogelement.attachment',args:[story.totalAttachments > 1 ?'s':''])}">
                         <g:if test="${story.totalAttachments}">
-                        <is:attachedFiles bean="${story}" width="120" deletable="${false}"
+                        <is:attachedFiles bean="${story}" deletable="${false}"
                                           params="[product:params.product]" action="download"
                                           controller="story"
                                           size="20"/>

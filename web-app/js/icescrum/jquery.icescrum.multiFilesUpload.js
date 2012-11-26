@@ -29,6 +29,11 @@
 
         //Elements
         var root = $(this);
+
+        if (root.find('.is-multifiles-button').size() > 0){
+            return
+        }
+
         root.addClass("is-multifiles");
 
         var multiFilesUploadDiv = $('<div>').addClass("is-multifiles-select");
@@ -38,8 +43,12 @@
         if ((settings.multi != -1 && root.find('.is-multifiles-filename').size() >= settings.multi)) {
             multiFilesUploadDiv.hide();
         }
-
-        $(this).append(multiFilesUploadDiv);
+        var lastItem = $(this).find('.is-multifiles-checkbox:last');
+        if (lastItem.size() > 0){
+            multiFilesUploadDiv.insertAfter(lastItem);
+        }else{
+            multiFilesUploadDiv.prependTo($(this));
+        }
         multiFilesUploadDiv.append(input);
         input.wrap(button);
 
@@ -104,7 +113,7 @@
                 filename.append($('<span>').html(fileTitle).attr('title', fileTitleC));
                 //Display filename & ext image
                 multiFilesUploadDiv.append(filename);
-
+                multiFilesUploadDiv.addClass('uploading-file');
                 root.multiFilesUpload(settings);
 
                 //Create an cancel button
@@ -155,7 +164,7 @@
                     var filenameCloned = filename.clone(true);
                     filenameCloned.find('.ui-icon-cancel').remove();
                     multiFilesUploadDiv.replaceWith(wrap);
-                    var checkbox = wrap.checkBoxFile(settings.name, fileID + ':' + fileTitleC, settings);
+                    var checkbox = wrap.checkBoxFile(settings.name, fileID + ':' + fileTitleC);
                     checkbox.after(filenameCloned).attr('idFile', fileID);
                     $('#' + fileID + ' form').remove();
                     $('#' + fileID + ' iframe').remove();
@@ -173,7 +182,7 @@
         });
     },
 
-            $.fn.checkBoxFile = function(name, value, settings) {
+            $.fn.checkBoxFile = function(name, value) {
                 $(this).addClass('is-multifiles-checkbox');
                 var checkbox = $('<input>').attr('type', 'checkbox').attr('name', name).attr('value', value).attr('checked', 'checked').addClass('is-multifiles-uploaded');
                 $(this).append(checkbox);
