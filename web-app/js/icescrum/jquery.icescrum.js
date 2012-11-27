@@ -373,6 +373,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                             var type = this.object['class'].substring(this.object['class'].lastIndexOf('.') + 1).toLowerCase();
                                             this.call = (this.call == 'delete') ? 'remove' : this.call;
                                             $.event.trigger(this.call + '_' + type + '.stream', this.object);
+                                        } else{
+                                            $.event.trigger(this.call + '.stream', this.object);
                                         }
                                     } else if(this.broadcaster) {
                                         if(this.broadcaster.users && this.broadcaster.users.length > 1){

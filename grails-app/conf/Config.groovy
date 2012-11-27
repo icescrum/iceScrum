@@ -31,7 +31,7 @@ import org.icescrum.web.JQueryProvider
 /*
  Public URL
 */
-grails.serverURL = "http://localhost:8080/${appName}"
+grails.serverURL = "http://192.168.0.3:8080/${appName}"
 
 /*
 Administration section
