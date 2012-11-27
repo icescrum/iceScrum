@@ -374,6 +374,16 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                             this.call = (this.call == 'delete') ? 'remove' : this.call;
                                             $.event.trigger(this.call + '_' + type + '.stream', this.object);
                                         }
+                                    } else if(this.broadcaster) {
+                                        if(this.broadcaster.users && this.broadcaster.users.length > 1){
+                                            var users = [];
+                                            $(this.broadcaster.users).each(function(){
+                                                users.push(this.fullName);
+                                            });
+                                            $('#menu-project .content').attr('title',users.length+' users online ('+users.join(', ')+')');
+                                        }else{
+                                            $('#menu-project .content').attr('title', 'Do you feel lonely?');
+                                        }
                                     }
                                 });
                             } catch(e) {
