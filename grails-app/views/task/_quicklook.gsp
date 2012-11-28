@@ -26,7 +26,7 @@
            draggable="false"
            withTitlebar="false"
            buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
-           focusable="false">
+           focusable="${false}">
 <div class="postit-details postit-details-task quicklook" data-elemid="${task.id}" type="task">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">

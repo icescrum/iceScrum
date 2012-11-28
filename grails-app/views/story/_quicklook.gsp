@@ -24,7 +24,7 @@
            draggable="false"
            withTitlebar="false"
            buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
-           focusable="false">
+           focusable="${false}">
 <%@ page import="org.icescrum.core.domain.Story;" %>
 <div class="postit-details postit-details-story quicklook" data-elemid="${story.id}">
     <div class="colset-2 clearfix">

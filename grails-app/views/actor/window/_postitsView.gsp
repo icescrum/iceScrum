@@ -29,7 +29,7 @@
                     filter:'div.postit-actor',
                     selected:'jQuery.icescrum.dblclickSelectable(ui, 300, $.icescrum.displayQuicklook)']"
         value="${actors}"
-        dblclickable='[rendered:!request.productOwner,selector:".postit",callback:"\$.icescrum.displayQuicklook"]'
+        dblclickable='[rendered:!request.productOwner,selector:".postit",callback:"\$.icescrum.displayQuicklook(obj)"]'
         var="actor">
         <is:cache cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
             <g:render template="/actor/postit" model="[actor:actor]"/>
@@ -38,10 +38,10 @@
 
 <g:render template="/actor/window/blank" model="[show:actors ? false : true]"/>
 
-
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>
+
 <is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream
         on="#backlog-layout-window-${controllerName}"

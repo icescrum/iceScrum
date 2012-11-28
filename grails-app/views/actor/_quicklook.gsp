@@ -23,8 +23,8 @@
            resizable="false"
            draggable="false"
            withTitlebar="false"
-           buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
-           focusable="false">
+           buttons="'${message(code: 'is.button.close')}': function() {\$(this).dialog('close'); }"
+           focusable="${false}">
 <div class="postit-details postit-details-actor quicklook" data-elemid="${actor.id}">
     <div class="colset-2 clearfix">
         <div class="col1 postit-details-information">
