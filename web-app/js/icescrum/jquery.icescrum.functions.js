@@ -86,8 +86,8 @@
                     updateProfile:function(){
                         $('#profile-name a').html(this.user.name);
                         $('#user-tooltip-username').html(this.user.name);
-                        if (this.updateAvatar) {
-                            var avatar = this.updateAvatar;
+                        if (this.user.updateAvatar) {
+                            var avatar = this.user.updateAvatar;
                             $('.avatar-user-' + this.user.userid).each(
                                     function() {
                                         $(this).attr('src', avatar + '?nocache=' + new Date().getTime());

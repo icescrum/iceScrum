@@ -85,6 +85,6 @@
 
 <is:onStream
         on="#actor-table"
-        events="[[object:'actors',events:['add','update','remove']]]"
+        events="[[object:'actor',events:['add','update','remove']]]"
         template="window"/>
 

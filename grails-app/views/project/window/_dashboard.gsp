@@ -130,11 +130,10 @@
 
         <div class="col2">
             <entry:point id="${controllerName}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
-            <is:cache cache="projectCache" role="false" key="${product.id}eef-${activities.size() ? activities?.first()?.dateCreated :''}">
+            <is:cache cache="projectCache" role="false" key="${product.id}-${product.lastUpdated}-${activities.size() ? activities?.first()?.dateCreated :''}">
                 <is:panel id="panel-activity">
                     <is:panelTitle>
-                        <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed"
-                                params="[product:product.pkey,lang:lang]">
+                        <g:link class="button-rss" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
                             <span class='ico'></span>
                         </g:link>
                         <g:message code="is.ui.project.activity.title"/>
