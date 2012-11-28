@@ -81,7 +81,7 @@
                 </g:if>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',disabled:!request.productOwner,name:'rank',values:rankSelect]"></is:tableColumn>
+                    editable="[type:'selectui',id:'rank',disabled:!request.productOwner,name:'rank',values:rankSelect]">${story.rank}</is:tableColumn>
             <is:tableColumn
                     editable="[type:'text',disabled:!request.productOwner,name:'name']">${story.name.encodeAsHTML()}</is:tableColumn>
             <is:tableColumn
