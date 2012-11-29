@@ -402,7 +402,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         redirectOnLogin:function(data){
-            var ref = jQuery.getUrlVar('ref');
+            var refVar = "?ref=";
+            var ref = window.location.href.slice(window.location.href.indexOf(refVar) + refVar.length);
             var hash = ref ? ref : data ? data.url : '';
             if(hash.indexOf('#') == 0){
                 var url = document.location.toString();
