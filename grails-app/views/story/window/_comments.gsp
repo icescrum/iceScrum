@@ -23,7 +23,7 @@
 <is:panelTab id="comments" selected="${params.tab && 'comments' in params.tab ? 'true' : ''}">
     <div class="addorlogin">
         <sec:ifNotLoggedIn>
-            <a href="${grailsApplication.config.grails.serverURL}/login?ref=p/${story.backlog.pkey}#story/${story.id}">
+            <a href="${grailsApplication.config.grails.serverURL}/login?ref=p/${story.backlog.pkey}#story/${story.id}?tab=comments">
                 ${message(code: 'is.ui.backlogelement.comment.login')}
             </a>
         </sec:ifNotLoggedIn>

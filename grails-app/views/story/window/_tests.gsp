@@ -25,11 +25,9 @@
 <is:panelTab id="tests" selected="${params.tab && 'tests' in params.tab ? 'true' : ''}">
     <div class="addorlogin">
         <sec:ifNotLoggedIn>
-            <g:link
-                    controller="login"
-                    onClick="this.href=this.href+'?ref='+decodeURI('${params.product?'p/'+story.backlog.pkey:params.team?'t/'+params.team:''}')+decodeURI(document.location.hash.replace('#','@'));">
+            <a href="${grailsApplication.config.grails.serverURL}/login?ref=p/${story.backlog.pkey}#story/${story.id}?tab=tests">
                 ${message(code: 'is.ui.acceptanceTest.login')}
-            </g:link>
+            </a>
         </sec:ifNotLoggedIn>
         <g:if test="${request.inProduct && story.state >= Story.STATE_SUGGESTED}">
             <is:link disabled="true"
