@@ -86,7 +86,7 @@ class ScrumOSController {
             currentUserInstance.save()
         }
         //For PO / SM : WRITE - TM / SH : READ
-        def products = currentUserInstance ? Product.findAllByRole(currentUserInstance, [BasePermission.WRITE,BasePermission.READ], [cache:true, max:11]) : []
+        def products = currentUserInstance ? Product.findAllByRole(currentUserInstance, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : []
         def pCount = products?.size()
 
         [user: currentUserInstance,
