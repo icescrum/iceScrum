@@ -103,7 +103,7 @@
                             value="${sprint.stories?.sort{it.rank}}"
                             var="story"
                             emptyRendering="true">
-                            <is:cache cache="storyCache" key="postit-rect-${story.id}-${story.lastUpdated}">
+                            <is:cache cache="storyCache" key="postit-rect-${story.id}-${story.lastUpdated}-${nextSprintExist}">
                                 <g:render template="/story/postit"
                                            model="[story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"/>
                             </is:cache>
