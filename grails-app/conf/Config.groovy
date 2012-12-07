@@ -196,7 +196,7 @@ environments {
         grails.tomcat.nio = true
     }
     production {
-        grails.config.locations = ["classpath:config.properties"]
+        grails.config.locations = []
         icescrum.debug.enable = false
         grails.entryPoints.debug = false
     }
