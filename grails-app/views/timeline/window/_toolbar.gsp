@@ -65,6 +65,7 @@
             ${message(code:'is.ui.timeline.charts.productVelocity')}
           </a>
       </li>
+      <entry:point id="${controllerName}-${actionName}-charts" model="[product:params.product, origin:controllerName]"/>
       <li class="last">
         <a href="#${controllerName}/productVelocityCapacityChart" title="${message(code:'is.ui.timeline.charts.productVelocityCapacity')}">
           ${message(code:'is.ui.timeline.charts.productVelocityCapacity')}
