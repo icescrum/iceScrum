@@ -24,7 +24,7 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 
-<g:form action="save" method="post" name="${referrer}-form" data-elemid="${story?.id?:null}" class="box-form box-form-250 box-form-200-legend"
+<g:form action="save" method="post" name="${referrer}-form" data-elemid="${story?.id?:null}" data-state="${story?.state?:Story.STATE_SUGGESTED}" data-rank="${story?.rank?:'null'}" class="box-form box-form-250 box-form-200-legend"
         tabindex="1">
     <is:fieldset title="is.ui.backlog.story.properties.title">
         <is:fieldInput for="storyname" label="is.story.name">
@@ -167,6 +167,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="shift+return"
+                   data-ajax-trigger="add_story"
                    data-shortcut-on="#${referrer}-form, #${referrer}-form input"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-success="jQuery.icescrum.form.reset"
@@ -245,16 +246,14 @@
 
 </g:form>
 
-<g:if test="${story}">
-    <is:onStream
-            on="#${referrer}-form"
-            events="[[object:'story',events:['update','estimate','unPlan','plan','done','unDone','inProgress','associated','dissociated']]]"
-            callback="if ( story.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.updated')}','${createLink(controller:controllerName,action:'edit',id:params.id,params:[product:params.product,subid:params.subid,referrer:referrer])}',false,'#window-content-${referrer}');"/>
-    <is:onStream
-            on="#${referrer}-form"
-            events="[[object:'story',events:['remove']]]"
-            callback="if ( story.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','${referrer+(params.subid?'/'+params.id:'')}',true);"/>
-</g:if>
+<is:onStream
+        on="#${referrer}-form"
+        events="[[object:'story',events:['add','update','estimate','unPlan','plan','done','unDone','inProgress','associated','dissociated']]]"
+        callback="if ( story.id != jQuery(this).data('elemid') ){ jQuery.icescrum.story.manageDependencies.apply(story); return; } jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.updated')}','${createLink(controller:controllerName,action:'edit',id:params.id,params:[product:params.product,subid:params.subid,referrer:referrer])}',false,'#window-content-${referrer}');"/>
+<is:onStream
+        on="#${referrer}-form"
+        events="[[object:'story',events:['remove']]]"
+        callback="if ( story.id != jQuery(this).data('elemid') ){ jQuery.icescrum.story.manageDependencies.apply(story); return; } jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','${referrer+(params.subid?'/'+params.id:'')}',true);"/>
 <jq:jquery>
     $("ul[name='story.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
     $( "#storyaffectVersion" ).autocomplete({

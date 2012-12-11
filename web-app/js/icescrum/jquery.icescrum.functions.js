@@ -554,12 +554,14 @@
 
                     add:function(template, append) {
                         $(this).each(function() {
+                            $.icescrum.story.manageDependencies.apply(this);
                             $.icescrum.addOrUpdate(this, $.icescrum.story.templates[template], $.icescrum.story._postRendering, append);
                         });
                     },
 
                     update:function(template, append) {
                         $(this).each(function() {
+                            $.icescrum.story.manageDependencies.apply(this);
                             $.icescrum.story.remove.apply(this, [template, true]);
                             $.icescrum.story.add.apply(this, [template, append]);
                         });
@@ -638,6 +640,35 @@
 
                     dissociated:function(template) {
                         $.icescrum.story.update.apply(this, [template]);
+                    },
+
+                    manageDependencies:function(){
+                        var SelectDependsOn = $("#dependsOn_id");
+                        if (SelectDependsOn.size() > 0){
+                            var addOrUpdate = function(story){
+                                if (SelectDependsOn.find('option[value='+story.id+']').size() > 0){
+                                    SelectDependsOn.selectmenu('update', story.id, story.id, story.uid + ' - ' + story.name);
+                                }else{
+                                    SelectDependsOn.selectmenu('add', story.id, story.uid + ' - ' + story.name);
+                                }
+                            };
+                            var form = SelectDependsOn.parents('form:first');
+                            if (!this.name){
+                                SelectDependsOn.selectmenu('remove', this.id);
+                            } else if (this.state < form.data('state')){
+                                if (SelectDependsOn.find('option[value='+this.id+']').size() > 0){
+                                    SelectDependsOn.selectmenu('remove', this.id);
+                                }
+                            } else if (this.state > form.data('state')){
+                                addOrUpdate(this);
+                            } else if (this.state == form.data('state') && this.state == $.icescrum.story.STATE_SUGGESTED){
+                                addOrUpdate(this);
+                            } else if (this.state == form.data('state') && this.state > $.icescrum.story.STATE_SUGGESTED && this.rank < form.data('rank')){
+                                addOrUpdate(this);
+                            } else if (this.state == form.data('state') && this.state > $.icescrum.story.STATE_SUGGESTED && this.rank > form.data('rank')){
+                                SelectDependsOn.selectmenu('remove', this.id);
+                            }
+                        }
                     },
 
                     _postRendering:function(tmpl, newObject, container) {
