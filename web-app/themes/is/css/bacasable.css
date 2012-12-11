@@ -728,3 +728,8 @@ body:full-screen .window-fullscreen{
     right:0;
 }
 
+#dropmenu .dropmenu-scrollable {
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}

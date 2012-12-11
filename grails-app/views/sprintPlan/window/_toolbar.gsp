@@ -90,7 +90,7 @@
                     separator="true"
                     classDropmenu="${currentFilter == 'allTasks' ? '' : 'filter-active'}"
                     text="${message(code:'is.ui.sprintPlan.toolbar.filter.'+currentFilter)}">
-        <ul>
+        <ul class="dropmenu-scrollable">
             <li class="first">
                 <a href="${createLink(action:'changeFilterTasks', params:[filter:'allTasks', product:params.product], id:sprint.id)}"
                    data-ajax="true"
