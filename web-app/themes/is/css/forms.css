@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Damien Vitrac (damien@oocube.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 /*
@@ -55,6 +56,10 @@
     margin: 4px 0 3px 4px;
     margin-right: 5px;
     background-position: 0 -176px;
+}
+
+.dropmenu-content .file-icon {
+    padding-left: 15px;
 }
 
 /*

@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Stéphane Maldini (stephane.maldini@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -218,10 +219,9 @@ class ProjectController {
             return
         }
 
-        def team
         Product.withTransaction { status ->
             try {
-                team = new Team()
+                def team = new Team()
                 team.name = params.product.name+" team "+new Date().toTimestamp()
                 team.preferences = new TeamPreferences()
                 team.properties = params.team
@@ -909,6 +909,7 @@ class ProjectController {
             product.stories*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
             product.actors*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
             product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.releases*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
 
             def tasks = []
             product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }

@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON;" %>
 <jq:jquery>
@@ -116,6 +117,7 @@
         <g:render template="/sprint/js" model="[id:'releasePlan']"/>
         <g:render template="/comment/js"/>
         <g:render template="/acceptanceTest/js"/>
+        <g:render template="/attachment/js"/>
     </g:if>
     <g:render template="/user/js"/>
 </div>

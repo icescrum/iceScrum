@@ -20,6 +20,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:if test="${release.id}">
     <g:if test="${release.state <= Release.STATE_INPROGRESS && (request.productOwner || request.scrumMaster)}">
@@ -99,7 +100,7 @@
     </g:if>
 
     <is:panelButton alt="documents" separator="${release.state <= Release.STATE_INPROGRESS && (request.productOwner || request.scrumMaster)}" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
-        <ul>
+        <ul class="dropmenu-scrollable" id="release-attachments-${release.id}">
             %{-- vision --}%
             <li class="first">
                 <a href="#${controllerName}/vision/${release.id}"
@@ -114,7 +115,7 @@
                         <span class="end"></span>
                 </a>
             </li>
-            <li class="last">
+            <li>
                 <a href="#${controllerName}/notes/${release.id}"
                    data-shortcut="ctrl+shift+o"
                    data-shortcut-on="#window-id-${controllerName}"
@@ -127,6 +128,22 @@
                     <span class="end"></span>
                 </a>
             </li>
+            <li>
+                <a href="${g.createLink(action:"addDocument", id: release.id, params: [product:params.product])}"
+                   title="${message(code:'is.ui.releasePlan.documents.manage')}"
+                   alt="${message(code:'is.ui.releasePlan.documents.manage')}"
+                   data-ajax="true">
+                    <span class="start"></span>
+                    <span class="content">
+                        <span class="ico"></span>
+                        ${message(code: 'is.ui.toolbar.documents.add')}
+                    </span>
+                    <span class="end"></span>
+                </a>
+            </li>
+            <g:each var="attachment" in="${release.attachments}">
+                <g:render template="/attachment/line" model="[attachment: attachment]"/>
+            </g:each>
         </ul>
     </is:panelButton>
     <is:panelButton alt="Charts" id="menu-chart" arrow="true" separator="true" icon="graph"
@@ -142,3 +159,8 @@
     </is:panelButton>
     <entry:point id="${controllerName}-${actionName}" model="[release:release]"/>
 </g:if>
+
+<is:onStream
+        on="#release-attachments-${release.id}"
+        events="[[object:'attachments', events:['replaceAll']]]"
+        template="toolbar"/>

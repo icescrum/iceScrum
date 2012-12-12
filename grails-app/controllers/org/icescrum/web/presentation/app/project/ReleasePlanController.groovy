@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -309,6 +310,14 @@ class ReleasePlanController {
                             technicalStories:release.sprints*.stories.flatten().findAll{ it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE },
                             userStories:release.sprints*.stories.flatten().findAll{it.type == Story.TYPE_USER_STORY && it.state == Story.STATE_DONE},
                             defectStories:release.sprints*.stories.flatten().findAll{it.type == Story.TYPE_DEFECT && it.state == Story.STATE_DONE}])
+        }
+    }
+
+    def addDocument = {
+        withRelease { Release release ->
+            def dialog = g.render(template:'dialogs/documents',
+                                  model:[release:release])
+            render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
         }
     }
 }

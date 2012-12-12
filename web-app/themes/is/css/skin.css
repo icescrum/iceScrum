@@ -514,6 +514,10 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     border-style: solid;
 }
 
+.ui-dialog.overflow-visible {
+    overflow: visible;
+}
+
 .ui-dialog .ui-widget-header {
     border-color: #4382bd;
     border-style: solid;

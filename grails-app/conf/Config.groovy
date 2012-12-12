@@ -20,6 +20,7 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  * Stephane Maldini (stephane.maldini@icescrum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
 import org.apache.log4j.DailyRollingFileAppender
@@ -104,7 +105,8 @@ icescrum.marshaller = [
                 asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
         release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber']],
         user:[asShort:['firstName', 'lastName']],
-        productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']]
+        productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
+        attachment:[include: ['filename']]
 ]
 
 icescrum.restMarshaller = [
@@ -135,6 +137,7 @@ icescrum.check.timeout  = 5000
 grails.attachmentable.storyDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}stories${File.separator + it.id + File.separator}"}
 grails.attachmentable.featureDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}features${File.separator + it.id + File.separator}"}
 grails.attachmentable.actorDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}actors${File.separator + it.id + File.separator}"}
+grails.attachmentable.releaseDir = {"${File.separator + it.parentProduct.id + File.separator}attachments${File.separator}releases${File.separator + it.id + File.separator}"}
 grails.attachmentable.taskDir = {
     if (it.parentStory)
         return "${File.separator + it.parentStory?.backlog?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"

@@ -185,7 +185,7 @@
             $.fn.checkBoxFile = function(name, value) {
                 $(this).addClass('is-multifiles-checkbox');
                 var checkbox = $('<input>').attr('type', 'checkbox').attr('name', name).attr('value', value).attr('checked', 'checked').addClass('is-multifiles-uploaded');
-                $(this).append(checkbox);
+                $(this).prepend(checkbox);
                 checkbox.bind("change", function() {
                     if (!checkbox.attr('checked')) {
                         if (checkbox.parents('.inputfile:first .is-multifiles-button :visible').size() == 0) {
