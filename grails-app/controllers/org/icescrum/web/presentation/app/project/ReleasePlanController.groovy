@@ -313,10 +313,10 @@ class ReleasePlanController {
         }
     }
 
+    @Secured('inProduct()')
     def addDocument = {
         withRelease { Release release ->
-            def dialog = g.render(template:'dialogs/documents',
-                                  model:[release:release])
+            def dialog = g.render(template: '/attachment/dialogs/documents', model: [bean:release, destController:'release'])
             render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
         }
     }

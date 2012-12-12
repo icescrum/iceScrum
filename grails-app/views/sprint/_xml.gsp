@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%<is:objectAsXML object="${object}" node="sprint" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML
             name="['state','dailyWorkTime','velocity','capacity','endDate','startDate','orderNumber','activationDate','closeDate','lastUpdated','dateCreated']"/>
@@ -41,4 +42,10 @@
             child="cliche"
             deep="${deep}"
             indentLevel="${indentLevel  + 1}"/>
+    <is:listAsXML
+            name="attachments"
+            template="/addons/attachmentXml"
+            child="attachment"
+            deep="${deep}"
+            indentLevel="${indentLevel + 1}"/>
 </is:objectAsXML>

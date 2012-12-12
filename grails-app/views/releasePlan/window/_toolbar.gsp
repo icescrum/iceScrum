@@ -128,19 +128,21 @@
                     <span class="end"></span>
                 </a>
             </li>
-            <li>
-                <a href="${g.createLink(action:"addDocument", id: release.id, params: [product:params.product])}"
-                   title="${message(code:'is.ui.releasePlan.documents.manage')}"
-                   alt="${message(code:'is.ui.releasePlan.documents.manage')}"
-                   data-ajax="true">
-                    <span class="start"></span>
-                    <span class="content">
-                        <span class="ico"></span>
-                        ${message(code: 'is.ui.toolbar.documents.add')}
-                    </span>
-                    <span class="end"></span>
-                </a>
-            </li>
+            <g:if test="${request.inProduct}">
+                <li>
+                    <a href="${g.createLink(action:"addDocument", id: release.id, params: [product:params.product])}"
+                       title="${message(code:'is.dialog.documents.manage.release')}"
+                       alt="${message(code:'is.dialog.documents.manage.release')}"
+                       data-ajax="true">
+                        <span class="start"></span>
+                        <span class="content">
+                            <span class="ico"></span>
+                            ${message(code: 'is.ui.toolbar.documents.add')}
+                        </span>
+                        <span class="end"></span>
+                    </a>
+                </li>
+            </g:if>
             <g:each var="attachment" in="${release.attachments}">
                 <g:render template="/attachment/line" model="[attachment: attachment]"/>
             </g:each>

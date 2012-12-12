@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%<is:objectAsXML object="${object}" node="product" root="${root}">
     <is:propertyAsXML
             name="['pkey','planningPokerGameType','startDate','endDate','lastUpdated','dateCreated']"/>
@@ -68,4 +69,9 @@
             template="/user/xml"
             deep="true"
             child="productOwner"/>
+    <is:listAsXML
+            name="attachments"
+            template="/addons/attachmentXml"
+            child="attachment"
+            deep="true"/>
 </is:objectAsXML>

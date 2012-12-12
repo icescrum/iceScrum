@@ -138,6 +138,8 @@ grails.attachmentable.storyDir = {"${File.separator + it.backlog.id + File.separ
 grails.attachmentable.featureDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}features${File.separator + it.id + File.separator}"}
 grails.attachmentable.actorDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}actors${File.separator + it.id + File.separator}"}
 grails.attachmentable.releaseDir = {"${File.separator + it.parentProduct.id + File.separator}attachments${File.separator}releases${File.separator + it.id + File.separator}"}
+grails.attachmentable.sprintDir = {"${File.separator + it.parentRelease.parentProduct.id + File.separator}attachments${File.separator}sprints${File.separator + it.id + File.separator}"}
+grails.attachmentable.productDir = {"${File.separator + it.id + File.separator}attachments${File.separator}product${File.separator + it.id + File.separator}"}
 grails.attachmentable.taskDir = {
     if (it.parentStory)
         return "${File.separator + it.parentStory?.backlog?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"

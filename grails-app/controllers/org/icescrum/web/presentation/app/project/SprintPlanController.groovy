@@ -587,4 +587,12 @@ class SprintPlanController {
                 action: data.size() > 1 ? data[1] : null
         ]
     }
+
+    @Secured('inProduct()')
+    def addDocument = {
+        withSprint { Sprint sprint ->
+            def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:sprint, destController:'sprint'])
+            render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
+        }
+    }
 }

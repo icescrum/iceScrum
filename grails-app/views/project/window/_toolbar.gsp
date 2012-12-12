@@ -20,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullt (nnoullet@kagilum.com)
 --}%
 
 <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
@@ -58,6 +59,29 @@
   </ul>
 </is:panelButton>
 
+<is:panelButton alt="documents" separator="true" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
+    <ul class="dropmenu-scrollable" id="product-attachments-${product.id}">
+        <g:if test="${request.inProduct}">
+            <li>
+                <a href="${g.createLink(action:"addDocument", id: product.id, params: [product:params.product])}"
+                   title="${message(code:'is.dialog.documents.manage.project')}"
+                   alt="${message(code:'is.dialog.documents.manage.project')}"
+                   data-ajax="true">
+                    <span class="start"></span>
+                    <span class="content">
+                        <span class="ico"></span>
+                        ${message(code: 'is.ui.toolbar.documents.add')}
+                    </span>
+                    <span class="end"></span>
+                </a>
+            </li>
+        </g:if>
+        <g:each var="attachment" in="${product.attachments}">
+            <g:render template="/attachment/line" model="[attachment: attachment]"/>
+        </g:each>
+    </ul>
+</is:panelButton>
+
 <entry:point id="${controllerName}-${actionName}"/>
 
 %{--Print button--}%
@@ -82,3 +106,8 @@
                     ['PDF', message(code:'is.report.format.pdf')]
                 ]"
         text="${message(code: 'is.ui.project.toolbar.print.allStories')}"/>
+
+<is:onStream
+        on="#product-attachments-${product.id}"
+        events="[[object:'attachments', events:['replaceAll']]]"
+        template="toolbar"/>

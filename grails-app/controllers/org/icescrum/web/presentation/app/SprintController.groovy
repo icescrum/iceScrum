@@ -22,6 +22,7 @@
  */
 package org.icescrum.web.presentation.app
 
+import grails.util.GrailsNameUtils
 import org.icescrum.core.domain.Release
 
 import org.icescrum.core.domain.Sprint
@@ -32,6 +33,7 @@ import grails.converters.XML
 import grails.plugins.springsecurity.Secured
 import grails.plugin.springcache.annotations.Cacheable
 import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.User
 
 @Secured('inProduct()')
 class SprintController {
@@ -190,5 +192,53 @@ class SprintController {
                 xml  { renderRESTXML(text:release.sprints) }
             }
         }
+    }
+
+    def attachments = {
+        withSprint { Sprint sprint ->
+            def keptAttachments = params.list('sprint.attachments')
+            def addedAttachments = params.list('attachments')
+            def attachments = this.manageAttachments(sprint, keptAttachments, addedAttachments)
+            render status: 200, contentType: 'application/json', text: attachments as JSON
+        }
+    }
+
+    private manageAttachments(def attachmentable, keptAttachments, addedAttachments) {
+        def needPush = false
+        if (!keptAttachments && attachmentable.attachments.size() > 0) {
+            attachmentable.removeAllAttachments()
+            needPush = true
+        } else {
+            attachmentable.attachments.each { attachment ->
+                if (!keptAttachments.contains(attachment.id.toString())) {
+                    attachmentable.removeAttachment(attachment)
+                }
+                needPush = true
+            }
+        }
+        def uploadedFiles = []
+        addedAttachments.each { attachment ->
+            def parts = attachment.split(":")
+            if (parts[0].contains('http')) {
+                uploadedFiles << [url: parts[0] +':'+ parts[1], filename: parts[2], length: parts[3], provider:parts[4]]
+            } else {
+                if (session.uploadedFiles[parts[0]]) {
+                    uploadedFiles << [file: new File((String) session.uploadedFiles[parts[0]]), filename: parts[1]]
+                }
+            }
+        }
+        session.uploadedFiles = null
+        def currentUser = (User) springSecurityService.currentUser
+        if (uploadedFiles){
+            attachmentable.addAttachments(currentUser, uploadedFiles)
+            needPush = true
+        }
+        def attachmentableClass = GrailsNameUtils.getShortName(attachmentable.class).toLowerCase()
+        def newAttachments = [class:'attachments', attachmentable: [class:attachmentableClass, id: attachmentable.id], attachments:attachmentable.attachments]
+        if (needPush){
+            attachmentable.lastUpdated = new Date()
+            broadcast(function: 'replaceAll', message: newAttachments)
+        }
+        return newAttachments
     }
 }

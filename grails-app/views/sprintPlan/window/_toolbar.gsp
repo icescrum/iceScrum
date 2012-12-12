@@ -20,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Sprint;" %>
 <g:if test="${sprint?.id}">
@@ -173,7 +174,7 @@
     </g:if>
 
     <is:panelButton alt="documents" separator="true" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
-        <ul>
+        <ul class="dropmenu-scrollable" id="sprint-attachments-${sprint.id}">
         %{-- doneDefinition --}%
             <li class="first">
                 <a href="#${controllerName}/doneDefinition/${sprint.id}"
@@ -218,6 +219,25 @@
                     <span class="end"></span>
                 </a>
             </li>
+
+            <g:if test="${request.inProduct}">
+                <li>
+                    <a href="${g.createLink(action:"addDocument", id: sprint.id, params: [product:params.product])}"
+                       title="${message(code:'is.dialog.documents.manage.sprint')}"
+                       alt="${message(code:'is.dialog.documents.manage.sprint')}"
+                       data-ajax="true">
+                        <span class="start"></span>
+                        <span class="content">
+                            <span class="ico"></span>
+                            ${message(code: 'is.ui.toolbar.documents.add')}
+                        </span>
+                        <span class="end"></span>
+                    </a>
+                </li>
+            </g:if>
+            <g:each var="attachment" in="${sprint.attachments}">
+                <g:render template="/attachment/line" model="[attachment: attachment]"/>
+            </g:each>
         </ul>
     </is:panelButton>
 
@@ -270,3 +290,8 @@
                                update="window-content-${controllerName}"/>
     </is:panelSearch>
 </g:if>
+
+<is:onStream
+        on="#sprint-attachments-${sprint.id}"
+        events="[[object:'attachments', events:['replaceAll']]]"
+        template="toolbar"/>

@@ -25,6 +25,7 @@
 
 package org.icescrum.web.presentation.app.project
 
+import grails.util.GrailsNameUtils
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.preferences.TeamPreferences
 import org.icescrum.core.domain.security.Authority
@@ -68,6 +69,12 @@ class ProjectController {
 
     def index = {
         chain(controller: 'scrumOS', action: 'index', params: params)
+    }
+
+    def toolbar = {
+        withProduct { Product product ->
+            render template: "window/toolbar", model: [id: controllerName, product: product]
+        }
     }
 
     @Cacheable(cache = 'projectCache', keyGenerator = 'localeKeyGenerator')
@@ -910,6 +917,8 @@ class ProjectController {
             product.actors*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
             product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
             product.releases*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.sprints*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.attachments.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
 
             def tasks = []
             product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }
@@ -928,5 +937,62 @@ class ProjectController {
         } finally {
             xml.delete()
         }
+    }
+
+    @Secured('inProduct()')
+    def addDocument = {
+        withProduct { Product product ->
+            def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:product, destController:'project'])
+            render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
+        }
+    }
+
+    @Secured('inProduct()')
+    def attachments = {
+        withProduct { Product product ->
+            def keptAttachments = params.list('product.attachments')
+            def addedAttachments = params.list('attachments')
+            def attachments = this.manageAttachments(product, keptAttachments, addedAttachments)
+            render status: 200, contentType: 'application/json', text: attachments as JSON
+        }
+    }
+
+    private manageAttachments(def attachmentable, keptAttachments, addedAttachments) {
+        def needPush = false
+        if (!keptAttachments && attachmentable.attachments.size() > 0) {
+            attachmentable.removeAllAttachments()
+            needPush = true
+        } else {
+            attachmentable.attachments.each { attachment ->
+                if (!keptAttachments.contains(attachment.id.toString())) {
+                    attachmentable.removeAttachment(attachment)
+                }
+                needPush = true
+            }
+        }
+        def uploadedFiles = []
+        addedAttachments.each { attachment ->
+            def parts = attachment.split(":")
+            if (parts[0].contains('http')) {
+                uploadedFiles << [url: parts[0] +':'+ parts[1], filename: parts[2], length: parts[3], provider:parts[4]]
+            } else {
+                if (session.uploadedFiles[parts[0]]) {
+                    uploadedFiles << [file: new File((String) session.uploadedFiles[parts[0]]), filename: parts[1]]
+                }
+            }
+        }
+        session.uploadedFiles = null
+        def currentUser = (User) springSecurityService.currentUser
+        if (uploadedFiles){
+            attachmentable.addAttachments(currentUser, uploadedFiles)
+            needPush = true
+        }
+        def attachmentableClass = GrailsNameUtils.getShortName(attachmentable.class).toLowerCase()
+        def newAttachments = [class:'attachments', attachmentable: [class:attachmentableClass, id: attachmentable.id], attachments:attachmentable.attachments]
+        if (needPush){
+            attachmentable.lastUpdated = new Date()
+            broadcast(function: 'replaceAll', message: newAttachments)
+        }
+        return newAttachments
     }
 }

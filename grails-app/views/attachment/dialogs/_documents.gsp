@@ -20,19 +20,19 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 
 --}%
-<is:dialog valid="[controller:'release', action:'attachments', id:release.id, onSuccess:'jQuery.event.trigger(\'replaceAll_attachments\', data);']"
+<is:dialog valid="[controller:destController, action:'attachments', id:bean.id, onSuccess:'jQuery.event.trigger(\'replaceAll_attachments\', data);']"
            dialogClass="overflow-visible"
            width="500"
            maxHeight="500"
            buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }">
-    <form id="form-release-attachments" name="form-projectform-release-attachments" method="post" class='box-form box-form-250 box-form-200-legend'>
+    <form id="form-${destController}-attachments" name="form-projectform-${destController}-attachments" method="post" class='box-form box-form-250 box-form-200-legend'>
         <input type="hidden" name="product" value="${params.product}">
-        <is:fieldset title="is.ui.releasePlan.documents.manage">
-            <is:fieldFile for='release.attachments' label="is.backlogelement.attachment" noborder="true">
-            <is:multiFilesUpload elementId="releaseattachments"
+        <is:fieldset title="is.dialog.documents.manage.${destController}">
+            <is:fieldFile for='${destController}.attachments' label="is.backlogelement.attachment" noborder="true">
+            <is:multiFilesUpload elementId="${destController}attachments"
                                  class="attachments"
                                  name="attachments"
-                                 bean="${release}"
+                                 bean="${bean}"
                                  urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
                                  params="[product:params.product]"
                                  progress="[
