@@ -1297,7 +1297,7 @@
                             selector: 'li.attachment-line',
                             id: 'toolbar-line-attachment-tmpl',
                             view: function() {
-                                return 'ul#' + this.attachmentable.class + '-attachments-' + this.attachmentable.id;
+                                return 'ul#' + this.attachmentable['class'] + '-attachments-' + this.attachmentable.id;
                             }
                         }
                     },
