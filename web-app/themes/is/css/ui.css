@@ -1853,11 +1853,12 @@ button.ui-button::-moz-focus-inner {
     position: absolute;
     top: 0;
     visibility: hidden;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .ui-selectmenu-open {
     visibility: visible;
+    overflow: auto;
 }
 
 .ui-selectmenu-menu-popup {
