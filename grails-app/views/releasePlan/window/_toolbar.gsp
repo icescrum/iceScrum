@@ -160,9 +160,9 @@
         </ul>
     </is:panelButton>
     <entry:point id="${controllerName}-${actionName}" model="[release:release]"/>
-</g:if>
 
-<is:onStream
-        on="#release-attachments-${release.id}"
-        events="[[object:'attachments', events:['replaceAll']]]"
-        template="toolbar"/>
+    <is:onStream
+            on="#release-attachments-${release.id}"
+            events="[[object:'attachments', events:['replaceAll']]]"
+            template="toolbar"/>
+</g:if>

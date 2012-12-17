@@ -228,7 +228,7 @@ class ReleaseController {
             if (parts[0].contains('http')) {
                 uploadedFiles << [url: parts[0] +':'+ parts[1], filename: parts[2], length: parts[3], provider:parts[4]]
             } else {
-                if (session.uploadedFiles[parts[0]]) {
+                if (session.uploadedFiles && session.uploadedFiles[parts[0]]) {
                     uploadedFiles << [file: new File((String) session.uploadedFiles[parts[0]]), filename: parts[1]]
                 }
             }
