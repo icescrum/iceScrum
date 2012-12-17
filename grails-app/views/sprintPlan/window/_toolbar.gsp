@@ -289,9 +289,9 @@
         <is:autoCompleteSearch elementId="autoCmpTxt" controller="${controllerName}" action="index" id="${sprint.id}"
                                update="window-content-${controllerName}"/>
     </is:panelSearch>
-</g:if>
 
-<is:onStream
-        on="#sprint-attachments-${sprint.id}"
-        events="[[object:'attachments', events:['replaceAll']]]"
-        template="toolbar"/>
+    <is:onStream
+            on="#sprint-attachments-${sprint?.id}"
+            events="[[object:'attachments', events:['replaceAll']]]"
+            template="toolbar"/>
+</g:if>

@@ -30,7 +30,7 @@
            type="story"
            rect="${rect?:false}"
            typeNumber="${story.type}"
-           menu="[id:'story-'+story.id,template:'/story/menu',params:[story:story, user:user, sprint:sprint, nextSprintExist:nextSprintExist]]"
+           menu="[id:'story-'+story.id,template:'/story/menu',params:[story:story, user:user, sprint:sprint, nextSprintExist:nextSprintExist, referrer:referrer]]"
            typeTitle="${is.bundle(bundle:'storyTypes',value:story.type) + (story.type == Story.TYPE_DEFECT && story.affectVersion?' ('+story.affectVersion+')':'')}"
            attachment="${story.totalAttachments}"
            miniValue="${story.state > Story.STATE_SUGGESTED ? story.effort >= 0 ? story.effort :'?' : null}"
