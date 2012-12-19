@@ -74,6 +74,36 @@
   </ul>
 </is:panelButton>
 
+<g:if test="${product?.id}">
+    <is:panelButton alt="documents" separator="true" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
+        <ul class="dropmenu-scrollable" id="product-attachments-${product.id}">
+            <g:if test="${request.inProduct}">
+                <li>
+                    <a href="${g.createLink(controller:"project", action:"addDocument", id: product.id, params: [product:params.product])}"
+                       title="${message(code:'is.dialog.documents.manage.project')}"
+                       alt="${message(code:'is.dialog.documents.manage.project')}"
+                       data-ajax="true">
+                        <span class="start"></span>
+                        <span class="content">
+                            <span class="ico"></span>
+                            ${message(code: 'is.ui.toolbar.documents.add')}
+                        </span>
+                        <span class="end"></span>
+                    </a>
+                </li>
+            </g:if>
+            <g:each var="attachment" in="${product.attachments}">
+                <g:render template="/attachment/line" model="[attachment: attachment]"/>
+            </g:each>
+        </ul>
+    </is:panelButton>
+
+    <is:onStream
+            on="#product-attachments-${product.id}"
+            events="[[object:'attachments', events:['replaceAll']]]"
+            template="toolbar"/>
+</g:if>
+
 %{--Print button--}%
 <is:reportPanel
         separator="true"

@@ -42,6 +42,12 @@ class TimelineController {
     def featureService
     def springSecurityService
 
+    def toolbar = {
+        withProduct { Product product ->
+            render template: "window/toolbar", model: [id: controllerName, product: product]
+        }
+    }
+
     @Cacheable(cache = 'releaseCache', keyGenerator = 'releasesRoleKeyGenerator')
     def titleBarContent = {
         def currentProduct = Product.get(params.product);

@@ -25,7 +25,10 @@
 <head>
     <title>iceScrum - <g:layoutTitle/></title>
     <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
-    <!--[if IE 8]><meta http-equiv="X-UA-Compatible" content="IE=8"/><![endif]-->
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" type="text/css" media="screen" href="${resource(dir: 'themes/is/css', file: 'browser-detection.css')}" />
+        <script type="text/javascript" src="${resource(dir: 'js', file: 'browser-detection.js')}"></script>
+    <![endif]-->
     <is:loadJsVar/>
     <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
     <r:layoutResources/>
