@@ -226,9 +226,10 @@ class ProjectController {
             return
         }
 
+        def team = null
         Product.withTransaction { status ->
             try {
-                def team = new Team()
+                team = new Team()
                 team.name = params.product.name+" team "+new Date().toTimestamp()
                 team.preferences = new TeamPreferences()
                 team.properties = params.team
