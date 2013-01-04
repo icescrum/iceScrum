@@ -243,6 +243,7 @@ log4j = {
         debug 'org.icescrum.atmosphere'
         debug 'org.icescrum.cache'
         debug 'org.icescrum.core'
+        debug 'org.icescrum.plugins.chat'
         debug 'net.sf.jasperreports'
         debug 'grails.app.service.com.kagilum'
         debug 'grails.app.controller.com.kagilum'
