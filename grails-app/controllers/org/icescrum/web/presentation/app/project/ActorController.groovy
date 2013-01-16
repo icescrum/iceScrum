@@ -243,6 +243,7 @@ class ActorController {
         } else if (params.get) {
             actors.each {
                 data << [
+                        uid: it.uid,
                         name: it.name,
                         description: it.description,
                         notes: it.notes?.replaceAll(/<.*?>/, ''),

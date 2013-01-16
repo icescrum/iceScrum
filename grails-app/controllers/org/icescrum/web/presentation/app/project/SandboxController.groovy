@@ -169,6 +169,7 @@ class SandboxController {
         } else if (params.get) {
             stories.each {
                 data << [
+                        uid: it.uid,
                         name: it.name,
                         description: it.description,
                         notes: it.notes?.replaceAll(/<.*?>/, ''),

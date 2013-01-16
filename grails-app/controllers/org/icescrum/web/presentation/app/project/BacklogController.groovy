@@ -91,6 +91,7 @@ class BacklogController {
         } else if (params.get) {
             stories.each {
                 data << [
+                        uid: it.uid,
                         name: it.name,
                         rank: it.rank,
                         effort: it.effort,

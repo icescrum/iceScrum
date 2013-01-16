@@ -89,6 +89,7 @@
         </box>
     </style>
     <subDataset name="story">
+        <field name="uid" class="java.lang.Integer"/>
         <field name="name" class="java.lang.String"/>
         <field name="effort" class="java.lang.Integer"/>
         <field name="rank" class="java.lang.Integer"/>
@@ -133,6 +134,22 @@
                         <dataSourceExpression>
                             <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{stories})]]></dataSourceExpression>
                     </datasetRun>
+                    <jr:column width="40">
+                        <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+                            <textField>
+                                <reportElement x="0" y="0" width="40" height="30"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                                <textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.uid}]]></textFieldExpression>
+                            </textField>
+                        </jr:columnHeader>
+                        <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
+                            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                                <reportElement x="0" y="0" width="40" height="30"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                                <textFieldExpression class="java.lang.Integer"><![CDATA[$F{uid}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
                     <jr:column width="65">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
@@ -186,10 +203,10 @@
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="105">
+                    <jr:column width="80">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
-                                <reportElement x="0" y="0" width="105" height="30"/>
+                                <reportElement x="0" y="0" width="80" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$R{is.report.story.type}]]></textFieldExpression>
@@ -197,7 +214,7 @@
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
                             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="105" height="30"/>
+                                <reportElement x="0" y="0" width="80" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String"><![CDATA[$F{type}]]></textFieldExpression>
                             </textField>
@@ -239,10 +256,10 @@
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="76">
+                    <jr:column width="70">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
-                                <reportElement x="0" y="0" width="76" height="30"/>
+                                <reportElement x="0" y="0" width="70" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$R{is.report.story.date.accepted}]]></textFieldExpression>
@@ -250,17 +267,17 @@
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
                             <textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="76" height="30"/>
+                                <reportElement x="0" y="0" width="70" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.util.Date">
                                     <![CDATA[$F{acceptedDate}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="75">
+                    <jr:column width="70">
                         <jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
                             <textField>
-                                <reportElement x="0" y="0" width="75" height="30"/>
+                                <reportElement x="0" y="0" width="70" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.lang.String">
                                     <![CDATA[$R{is.report.story.date.estimated}]]></textFieldExpression>
@@ -268,7 +285,7 @@
                         </jr:columnHeader>
                         <jr:detailCell style="table 2_TD" height="30" rowSpan="1">
                             <textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-                                <reportElement x="0" y="0" width="75" height="30"/>
+                                <reportElement x="0" y="0" width="70" height="30"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle"/>
                                 <textFieldExpression class="java.util.Date">
                                     <![CDATA[$F{estimatedDate}]]></textFieldExpression>

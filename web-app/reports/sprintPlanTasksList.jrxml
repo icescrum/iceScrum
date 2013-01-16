@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sprintPlanTasksList" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sprintPlanTasksList" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report" uuid="c71e3936-28a4-463f-a323-8437c049755a">
 	<property name="ireport.zoom" value="0.9090909090909113"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -76,6 +76,7 @@
 	<field name="responsible" class="java.lang.Object"/>
 	<field name="parentStory" class="java.lang.Object"/>
 	<field name="type" class="java.lang.Number"/>
+	<field name="uid" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -83,7 +84,7 @@
 		<band height="42" splitType="Stretch">
 			<printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
 			<textField>
-				<reportElement x="0" y="9" width="351" height="27" forecolor="#0066CC"/>
+				<reportElement uuid="8df785e8-a0fa-4c10-b60d-f5a77baff84d" x="0" y="9" width="351" height="27" forecolor="#0066CC"/>
 				<textElement>
 					<font size="20" isBold="true"/>
 				</textElement>
@@ -95,7 +96,7 @@
 		<band height="26" splitType="Stretch">
 			<printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
 			<textField>
-				<reportElement x="575" y="0" width="227" height="15" isPrintWhenDetailOverflows="true"/>
+				<reportElement uuid="d8da3034-bf9e-4481-90ce-d0885eb8071c" x="575" y="0" width="227" height="15" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
@@ -106,95 +107,105 @@
 	<columnHeader>
 		<band height="53">
 			<textField>
-				<reportElement x="0" y="0" width="185" height="20"/>
+				<reportElement uuid="64887de4-adb3-44ba-ab9d-2e6b1574f35b" x="0" y="0" width="185" height="20"/>
 				<textElement>
 					<font size="12" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{is.report.sprintPlan.tasks.list}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="table_CH" x="0" y="33" width="90" height="20"/>
+				<reportElement uuid="c8eab40c-490d-435b-917a-48ee3174f76b" style="table_CH" x="38" y="33" width="74" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$R{is.report.task.story}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="table_CH" x="90" y="33" width="95" height="20"/>
+				<reportElement uuid="982f520d-034d-4399-8850-d9e7e0c10db9" style="table_CH" x="112" y="33" width="83" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$R{is.report.task.name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="table_CH" x="185" y="33" width="55" height="20"/>
+				<reportElement uuid="5d9f2f41-06c9-4e50-bf08-a880353795bb" style="table_CH" x="195" y="33" width="55" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$R{is.report.task.state}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="table_CH" x="240" y="33" width="77" height="20"/>
+				<reportElement uuid="66359206-60c5-4acf-adb9-fd02f37de21f" style="table_CH" x="250" y="33" width="77" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$R{is.report.task.estimation}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="table_CH" x="317" y="33" width="86" height="20"/>
+				<reportElement uuid="52de066e-8ddd-48d5-b2dc-915eb6eaf401" style="table_CH" x="327" y="33" width="89" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$R{is.report.task.responsible}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="table_CH" x="403" y="33" width="157" height="20"/>
+				<reportElement uuid="f30c843d-f16a-4dd6-9cff-b213c8edcd69" style="table_CH" x="416" y="33" width="159" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$R{is.report.backlogelement.description}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="table_CH" x="560" y="33" width="141" height="20"/>
+				<reportElement uuid="01d92f5e-8c01-4e20-a822-afb47a8aec0c" style="table_CH" x="575" y="33" width="137" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$R{is.report.backlogelement.notes}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="table_CH" x="701" y="33" width="101" height="20"/>
+				<reportElement uuid="606e5d2b-67a7-4e91-b6cd-905ee4407659" style="table_CH" x="712" y="33" width="90" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$R{is.report.task.creator}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c8eab40c-490d-435b-917a-48ee3174f76b" style="table_CH" x="0" y="33" width="38" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{is.report.uid}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="0" y="0" width="90" height="20"/>
+				<reportElement uuid="940c272c-5790-489e-a53e-c045355b1d97" style="table_TD" stretchType="RelativeToTallestObject" x="38" y="0" width="74" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[($F{parentStory} != null ? $F{parentStory}.name : ($F{type} == 10 ? $R{is.report.task.type.recurrent} : $R{is.report.task.type.urgent}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="90" y="0" width="95" height="20"/>
+				<reportElement uuid="08d84eb6-1339-49cc-9e7d-9b86a5392b97" style="table_TD" stretchType="RelativeToTallestObject" x="112" y="0" width="83" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="185" y="0" width="55" height="20"/>
+				<reportElement uuid="01195c03-3c3e-43fd-883c-436b3e7b0d3d" style="table_TD" stretchType="RelativeToTallestObject" x="195" y="0" width="55" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}.getString($P{taskStateBundle}.get($F{state}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="240" y="0" width="77" height="20"/>
+				<reportElement uuid="4aab5a6f-3131-415d-a8f2-1e53c224646f" style="table_TD" stretchType="RelativeToTallestObject" x="250" y="0" width="77" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{estimation}  != null ? $F{estimation} : "?"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="317" y="0" width="86" height="20"/>
+				<reportElement uuid="ffc4dadb-27c1-4bbd-a9f5-039cf62a4b0d" style="table_TD" stretchType="RelativeToTallestObject" x="327" y="0" width="89" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{responsible}.firstName+" "+$F{responsible}.lastName]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="403" y="0" width="157" height="20"/>
+				<reportElement uuid="1a5133f2-02ab-4b1a-b441-0dd0f6c6a2cc" style="table_TD" stretchType="RelativeToTallestObject" x="416" y="0" width="159" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="560" y="0" width="141" height="20"/>
+				<reportElement uuid="98758353-2027-4884-ae1a-7c7a24fcbd25" style="table_TD" stretchType="RelativeToTallestObject" x="575" y="0" width="137" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{notes}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToTallestObject" x="701" y="0" width="101" height="20"/>
+				<reportElement uuid="4785035b-8715-4d91-bb88-2878d21a7fa9" style="table_TD" stretchType="RelativeToTallestObject" x="712" y="0" width="90" height="20"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{creator}.firstName+" "+$F{creator}.lastName]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="940c272c-5790-489e-a53e-c045355b1d97" style="table_TD" stretchType="RelativeToTallestObject" x="0" y="0" width="38" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{uid}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -202,22 +213,22 @@
 		<band height="41" splitType="Stretch">
 			<printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
 			<textField>
-				<reportElement x="0" y="20" width="289" height="20"/>
+				<reportElement uuid="66ccf0ff-ffe4-4161-8b9b-d5c7d0580096" x="0" y="20" width="289" height="20"/>
 				<textElement markup="none"/>
 				<textFieldExpression><![CDATA[$R{is.report.footer.credit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="682" y="20" width="80" height="20"/>
+				<reportElement uuid="9cfaf432-ff96-47e1-ad7e-e8526f6ce462" x="682" y="20" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{is.report.footer.page}+" "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="762" y="20" width="40" height="20"/>
+				<reportElement uuid="4622f3b4-1a57-4ab8-be87-c6287b49e90f" x="762" y="20" width="40" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="289" y="20" width="393" height="20"/>
+				<reportElement uuid="a529e1da-d551-4e9b-9be6-495a53ad45de" x="289" y="20" width="393" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>

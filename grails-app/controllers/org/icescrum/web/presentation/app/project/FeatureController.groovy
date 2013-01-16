@@ -260,11 +260,12 @@ class FeatureController {
         } else if (params.get) {
             currentProduct.features.eachWithIndex { feature, index ->
                 data << [
+                        uid: feature.uid,
                         name: feature.name,
                         description: feature.description,
                         notes: feature.notes?.replaceAll(/<.*?>/, ''),
                         rank: feature.rank,
-                        type: feature.type,
+                        type: message(code: BundleUtils.featureTypes[feature.type]),
                         value: feature.value,
                         effort: feature.effort,
                         associatedStories: Story.countByFeature(feature),
