@@ -51,6 +51,10 @@
 
 <g:render template="/feature/window/blank" model="[show : features ? false : true]"/>
 
+<jq:jquery>
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' (<span id="features-size">${features?.size()}</span>)');
+</jq:jquery>
+
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>

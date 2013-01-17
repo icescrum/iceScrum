@@ -27,7 +27,7 @@
                 setDefaultView:function(xhr, element){
                     var view = $(element).data("defaultView");
                     $.cookie('view-'+ ($.icescrum.product.id ? $.icescrum.product.id : '-no-product'), view);
-                    $('#menu-display-list .content').html('<span class="ico"></span>'+ $(element).text());
+                    $('#menu-display-list').find('.content').html('<span class="ico"></span>'+ $(element).text());
                 },
 
                 getDefaultView:function(){
@@ -78,10 +78,11 @@
                                     $('#tiptip_holder').remove();
                                 },
                                 success:function(data, textStatus) {
+                                    var content = $('#window-id-' + targetWindow);
                                     if ($.icescrum.o.fullscreen) {
                                         $.icescrum.o.currentOpenedWindow.remove();
                                         $(document.body).prepend(data);
-                                        $('#window-id-' + targetWindow).addClass('window-fullscreen');
+                                        content.addClass('window-fullscreen');
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
                                         var viewSelector = $('#menu-display-list');
@@ -90,7 +91,6 @@
                                         }
                                     }
 
-                                    var content = $('#window-id-' + targetWindow)
                                     attachOnDomUpdate(content);
 
                                     if (callback) {
@@ -101,8 +101,9 @@
                                         $.icescrum.o.openWindow = true;
                                         location.hash = id;
                                     }
-                                    if($('#dialog').length){
-                                        $('#dialog').dialog('close');
+                                    var $dialog  = $('#dialog');
+                                    if($dialog.length){
+                                        $dialog.dialog('close');
                                     }
                                     if (!$("#dropmenu").is(':visible')) {
                                         $("input:visible, textarea:visible", content).first().focus()

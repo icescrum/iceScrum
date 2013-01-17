@@ -75,8 +75,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             $.icescrum.initHistory();
             var currentWindow = location.hash.replace(/^.*#/, '');
-            if ($.icescrum.o.baseUrlProduct && !currentWindow && $('li.menubar:first a')){
-                var menubar = $('li.menubar:first a').attr('href').replace(/^.*#/, '');
+            var $menubar = $('li.menubar:first a');
+            if ($.icescrum.o.baseUrlProduct && !currentWindow && $menubar){
+                var menubar = $menubar.attr('href').replace(/^.*#/, '');
                 document.location.hash = menubar;
                 $.icescrum.removeFromWidgetsList(menubar);
             }
@@ -190,7 +191,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         displayView:function() {
-            $('#menu-display-list .content').html('<span class="ico"></span>');
+            $('#menu-display-list').find('.content').html('<span class="ico"></span>');
         },
 
         selectableAction:function(action, doNotConfirm, idParam, onSuccess) {
@@ -309,7 +310,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                             var test = /\/(.*)\//;
                             var match = test.exec(url);
                             if (match[1]) {
-                                $('#panel-chart .right').removeClass('selected');
+                                $('#panel-chart').find('.right').removeClass('selected');
                                 $('#chart-' + match[1]).addClass('selected');
                             }
                         },
@@ -382,9 +383,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                             $(this.broadcaster.users).each(function(){
                                                 users.push(this.fullName);
                                             });
-                                            $('#menu-project .content').attr('title',users.length+' users online ('+users.join(', ')+')');
+                                            $('#menu-project').find('.content').attr('title',users.length+' users online ('+users.join(', ')+')');
                                         }else{
-                                            $('#menu-project .content').attr('title', 'Do you feel lonely?');
+                                            $('#menu-project').find('.content').attr('title', 'Do you feel lonely?');
                                         }
                                     }
                                 });

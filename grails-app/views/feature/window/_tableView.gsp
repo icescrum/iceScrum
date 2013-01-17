@@ -92,3 +92,7 @@
         on="#feature-table"
         events="[[object:'feature',events:['add','update','remove']]]"
         template="features"/>
+
+<jq:jquery>
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' (<span id="features-size">${features?.size()}</span>)');
+</jq:jquery>

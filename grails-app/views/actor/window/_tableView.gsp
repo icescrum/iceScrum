@@ -88,3 +88,7 @@
         events="[[object:'actor',events:['add','update','remove']]]"
         template="window"/>
 
+<jq:jquery>
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' (<span id="actors-size">${actors?.size()}</span>)');
+</jq:jquery>
+

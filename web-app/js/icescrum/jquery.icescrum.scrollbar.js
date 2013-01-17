@@ -27,7 +27,7 @@
                 self.css({'height':params.contentHeight + 'px','overflow':'hidden','position':'relative'});
 
                 wrapper.css({'top':0 + 'px','float':'left','position':'relative','width':temp - params.scrollbarWidth + 'px'});
-                var clear = $('<div class="clear"></div>')
+                var clear = $('<div class="clear"></div>');
                 self.append(clear);
                 clear.css({'clear':'both'});
 
@@ -109,7 +109,7 @@
                 self.css({'width':params.contentWidth + 'px','overflow':'hidden','position':'relative'});
 
                 wrapper.css({'width':originalWidth + 'px','left':0 + 'px','position':'relative','height':temp - params.scrollbarHeight + 'px'});
-                var clear = $('<div class="clear"></div>')
+                var clear = $('<div class="clear"></div>');
                 self.append(clear);
                 clear.css({'clear':'both'});
 

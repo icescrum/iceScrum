@@ -38,6 +38,10 @@
 
 <g:render template="/actor/window/blank" model="[show:actors ? false : true]"/>
 
+<jq:jquery>
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' (<span id="actors-size">${actors?.size()}</span>)');
+</jq:jquery>
+
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>

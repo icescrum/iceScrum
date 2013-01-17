@@ -1,14 +1,16 @@
 (function($) {
-    jQuery.extend($.icescrum, {
+    $.extend($.icescrum, {
                 updateWizardDate:function(datepicker) {
-                    var startDate = jQuery(datepicker).datepicker('getDate');
+                    var startDate = $(datepicker).datepicker('getDate');
                     var endDateProject = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
                     var endDate = new Date(startDate.getTime() + 90 * 24 * 60 * 60 * 1000);
                     var endDateFirstSprint = new Date(startDate.getTime() + 88 * 24 * 60 * 60 * 1000);
-                    jQuery('#datepicker-productendDate').datepicker('option', {minDate:endDateProject,defaultDate:endDate,maxDate:null});
-                    jQuery('#datepicker-productendDate').datepicker('setDate', endDate);
-                    jQuery('#datepicker-firstSprint').datepicker('option', {minDate:startDate,defaultDate:startDate,maxDate:endDateFirstSprint});
-                    jQuery('#datepicker-firstSprint').datepicker('setDate', startDate);
+                    var $endDate = $('#datepicker-productendDate');
+                    var $firstSprint = $('#datepicker-firstSprint');
+                    $endDate.datepicker('option', {minDate:endDateProject,defaultDate:endDate,maxDate:null});
+                    $endDate.datepicker('setDate', endDate);
+                    $endDate.datepicker('option', {minDate:startDate,defaultDate:startDate,maxDate:endDateFirstSprint});
+                    $endDate.datepicker('setDate', startDate);
                 }
             });
 
@@ -110,8 +112,9 @@
         }
 
         function selectStep(i) {
-            $("#steps li").removeClass("current");
-            $("#steps li").removeClass("old");
+            var $steps = $("#steps").find("li");
+            $steps.removeClass("current");
+            $steps.removeClass("old");
             $("#stepDesc" + i).addClass("current");
 
             for (var j = i - 1; j >= 0; j--) {
@@ -121,4 +124,4 @@
 
     };
 
-})(jQuery);
+})($);

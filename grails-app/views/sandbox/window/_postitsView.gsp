@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.Story; grails.converters.JSON" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -51,6 +52,11 @@
 <g:render template="/sandbox/window/blank" model="[show:stories ? false : true]"/>
 
 <is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
+
+<jq:jquery>
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' (<span id="stories-sandbox-size">${stories?.size()}</span>)');
+</jq:jquery>
+
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>

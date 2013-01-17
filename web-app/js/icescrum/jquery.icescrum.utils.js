@@ -21,7 +21,7 @@
  *
  */
 (function($) {
-    jQuery.extend($.icescrum, {
+    $.extend($.icescrum, {
 
                 displayQuicklook:function(obj){
                     var elem = obj.selected ? $(obj.selected) : $(obj);
@@ -36,8 +36,9 @@
                         type = 'story.id';
                     }
                     $.get($.icescrum.o.baseUrlProduct + 'quickLook?'+type+'='+elem.data('elemid'), function(data){
-                        if ($('#dialog').length){
-                            $('#dialog').dialog('close');
+                        var $dialog = $('#dialog');
+                        if ($dialog.length){
+                            $dialog.dialog('close');
                         }
                         $(document.body).append(data.dialog);
                     });
@@ -115,7 +116,7 @@
                 },
 
                 stopEvent:function(event) {
-                    event = jQuery.event.fix(event || window.event);
+                    event = $.event.fix(event || window.event);
                     event.stopPropagation();
                     return this;
                 },
@@ -136,14 +137,14 @@
                     } else {
                         text = xhr;
                     }
-
-                    $('#window-dialog').dialog('destroy');
+                    var $windowDialog = $('#window-dialog');
+                    $windowDialog.dialog('destroy');
                     $(document.body).append(this.o.dialogErrorContent);
                     $('#comments').focus();
                     $('#stackError').val(text);
                     $('#stackError-field').input({className:'area'});
                     $('#comments-field').input({className:'area'});
-                    $('#window-dialog').dialog({
+                    $windowDialog.dialog({
                                 dialogClass: 'no-titlebar',
                                 closeOnEscape:true,
                                 closeText:'Close',
@@ -162,9 +163,9 @@
                                         $(this).dialog('close');
                                     },
                                     'OK': function() {
-                                        jQuery.ajax({
+                                        $.ajax({
                                                     type:'POST',
-                                                    data:jQuery('#window-dialog form:first').serialize(),
+                                                    data:$('#window-dialog').find('form:first').serialize(),
                                                     url:$.icescrum.o.baseUrl + 'reportError',
                                                     success:function(data, textStatus) {
                                                         $.icescrum.renderNotice(data.notice.text, data.notice.type);
@@ -215,8 +216,9 @@
                     var date = this.jsonToDate(data.endDate);
                     date.setDate(date.getDate() + 1);
                     date = this.dateLocaleFormat(date);
-                    $('#datepicker-startDate').datepicker('option', {minDate:date, defaultDate:date});
-                    $('#datepicker-startDate').datepicker('setDate', date);
+                    var $startDate = $('#datepicker-startDate');
+                    $startDate.datepicker('option', {minDate:date, defaultDate:date});
+                    $startDate.datepicker('setDate', date);
                 },
 
                 updateEndDateDatePicker:function(data, delta) {
@@ -224,8 +226,9 @@
                     date.setDate(date.getDate() + 2);
                     var date2 = new Date(date);
                     date2.setDate(date.getDate() + (delta - 1));
-                    $('#datepicker-endDate').datepicker('option', {minDate:this.dateLocaleFormat(date), defaultDate:this.dateLocaleFormat(date2)});
-                    $('#datepicker-endDate').datepicker('setDate', this.dateLocaleFormat(date2));
+                    var $endDate = $('#datepicker-endDate');
+                    $endDate.datepicker('option', {minDate:this.dateLocaleFormat(date), defaultDate:this.dateLocaleFormat(date2)});
+                    $endDate.datepicker('setDate', this.dateLocaleFormat(date2));
                 },
 
                 updateFilterTask:function(data, xhr, status, element){
@@ -234,11 +237,11 @@
                     }else {
                         $('#menu-filter-task-list').removeClass('filter-active');
                     }
-                    $('#menu-filter-task-navigation-item .content').html('<span class="ico"></span>'+element.text());
+                    $('#menu-filter-task-navigation-item').find('.content').html('<span class="ico"></span>'+element.text());
                 },
 
                 updateHideDoneState:function(show,hide){
-                    var filter = jQuery('#menu-filter-task-list .dropmenu-content li.last');
+                    var filter = $('#menu-filter-task-list').find('.dropmenu-content li.last');
                     if(filter.text().trim() == show){
                         filter.find('a').text(hide);
                     }else{
@@ -320,10 +323,10 @@
         getConstBrowser:function() {
             var o = $.constbrowser.defaults;
             if ($.browser.msie) {
-                if (jQuery.browser.version.substr(0, 1) == "7") {
+                if ($.browser.version.substr(0, 1) == "7") {
                     o = $.constbrowser.ie7;
                 }
-                else if (jQuery.browser.version.substr(0, 1) == "6") {
+                else if ($.browser.version.substr(0, 1) == "6") {
                     o = $.constbrowser.ie6;
                 }
             }
@@ -386,10 +389,10 @@
         //url and data options required
         if( url && data ){
             //data can be string of parameters or array/object
-            data = typeof data == 'string' ? data : jQuery.param(data);
+            data = typeof data == 'string' ? data : $.param(data);
             //split params into form inputs
             var inputs = '';
-            jQuery.each(data.split('&'), function(){
+            $.each(data.split('&'), function(){
                 var pair = this.split('=');
                 inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />';
             });
@@ -400,7 +403,7 @@
         }
     };
 
-})(jQuery);
+})($);
 
 if (typeof String.prototype.startsWith != 'function') {
   // see below for better implementation!
@@ -409,6 +412,9 @@ if (typeof String.prototype.startsWith != 'function') {
   };
 }
 
+/**
+ * @return {boolean}
+ */
 function NotesToText(html, textarea){
     var dirty = $(html).html();
     $(html).after('<div id="tmp_html"></div>');
@@ -439,12 +445,16 @@ function NotesToText(html, textarea){
     textile = textile.replace(new RegExp(dblbrk, 'g'), '\n');
     textile = textile.replace(new RegExp('\\n\\n', 'g'), '\n');
     $('h1'+textarea).show();
-    $('textarea'+textarea).show().val($.trim(textile));
-    $('textarea'+textarea).parent().animate({scrollTop: $(textarea).offset().top}, 500,'easeInOutCubic');
+    var $textarea = $('textarea'+textarea);
+    $textarea.show().val($.trim(textile));
+    $textarea.parent().animate({scrollTop: $(textarea).offset().top}, 500,'easeInOutCubic');
     container.remove();
     return false;
 }
 
+/**
+ * @return {boolean}
+ */
 function NotesToHtml(html, textarea){
     var text = $(html).html();
     text = text.replace(/ +(?= )/g,'');
@@ -454,7 +464,8 @@ function NotesToHtml(html, textarea){
     text = text.replace(new RegExp('\\n ', 'g'), '\n');
     text = text.replace(new RegExp('\\n\\n', 'g'), '\n');
     $('h1'+textarea).show();
-    $('textarea'+textarea).show().val($.trim(text));
-    $('textarea'+textarea).parent().animate({scrollTop: $(textarea).offset().top}, 500,'easeInOutCubic');
+    var $textarea = $('textarea'+textarea);
+    $textarea.show().val($.trim(text));
+    $textarea.parent().animate({scrollTop: $(textarea).offset().top}, 500,'easeInOutCubic');
     return false;
 }

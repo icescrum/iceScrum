@@ -85,7 +85,7 @@
                     },
 
                     updateProfile:function(){
-                        $('#profile-name a').html(this.user.name);
+                        $('#profile-name').find('a').html(this.user.name);
                         $('#user-tooltip-username').html(this.user.name);
                         if (this.user.updateAvatar) {
                             var avatar = this.user.updateAvatar;
@@ -156,13 +156,14 @@
                                 $.icescrum.product.displayRecurrentTasks = this.preferences.displayRecurrentTasks;
                             }
                             if (this.preferences.limitUrgentTasks != $.icescrum.product.limitUrgentTasks){
-                                var text = $('#limit-urgent-tasks').text();
+                                var $urgentTasks = $('#limit-urgent-tasks');
+                                var text = $urgentTasks.text();
                                 var reg=new RegExp($.icescrum.product.limitUrgentTasks, "g");
-                                $('#limit-urgent-tasks').text(text.replace(reg,this.preferences.limitUrgentTasks));
+                                $urgentTasks.text(text.replace(reg,this.preferences.limitUrgentTasks));
                                 if (this.preferences.limitUrgentTasks > 0){
-                                    $('#limit-urgent-tasks').show();
+                                    $urgentTasks.show();
                                 }else{
-                                    $('#limit-urgent-tasks').hide();
+                                    $urgentTasks.hide();
                                 }
                                 $.icescrum.product.limitUrgentTasks = this.preferences.limitUrgentTasks;
                             }
@@ -170,9 +171,9 @@
                                 $.icescrum.product.assignOnBeginTask = this.preferences.assignOnBeginTask;
                                 $.icescrum.sprint.sortableTasks();
                             }
-                            $('#project-details ul li:first strong').text(this.name);
+                            $('#project-details').find('ul li:first strong').text(this.name);
                             if (this.description){
-                                $('#panel-description .panel-box-content').load($.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
+                                $('#panel-description').find('.panel-box-content').load($.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
                             }
                         }
                     },
@@ -224,16 +225,18 @@
                                 return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-actor' : '#actor-table';
                             },
                             remove:function(tmpl) {
-                                $.icescrum.getDefaultView() == 'postitsView' ? $(tmpl.view+' '+'.postit-actor[data-elemid=' + this.id + ']').remove() : $('#actor-table .table-line[data-elemid=' + this.id + ']').remove();
+                                $.icescrum.getDefaultView() == 'postitsView' ? $(tmpl.view+' .postit-actor[data-elemid=' + this.id + ']').remove() : $(tmpl.view+' .table-line[data-elemid=' + this.id + ']').remove();
                                 if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('#actor-table').trigger("update");
                                 }
+                                $('#actors-size').html($(tmpl.view+' .postit-actor, '+tmpl.view+' .table-line').size());
                             },
                             window:'#window-content-actor',
                             afterTmpl:function(tmpl) {
                                 if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('#actor-table').trigger("update");
                                 }
+                                $('#actors-size').html($(tmpl.view+' .postit-actor, '+tmpl.view+' .table-line').size());
                             }
                         },
                         widget:{
@@ -293,7 +296,7 @@
                             },
                             remove:function(tmpl) {
                                 if ($.icescrum.getDefaultView() == 'tableView') {
-                                    var tableline = $('#feature-table .table-line[data-elemid=' + this.id + ']');
+                                    var tableline = $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
                                     var oldRank = tableline.data('rank');
                                     tableline.remove();
                                     $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, oldRank);
@@ -301,6 +304,7 @@
                                 }else{
                                     $(tmpl.view+' '+'.postit-feature[data-elemid=' + this.id + ']').remove();
                                 }
+                                $('#features-size').html($(tmpl.view+' .postit-feature, '+tmpl.view+' .table-line').size());
                             },
                             window:'#window-content-feature',
                             afterTmpl:function(tmpl, container, newObject) {
@@ -315,6 +319,7 @@
                                         $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
                                     }
                                 }
+                                $('#features-size').html($(tmpl.view+' .postit-feature, '+tmpl.view+' .table-line').size());
                             },
                             beforeTmpl:function(tmpl,container,current) {
                                 this.oldRank = current.data('rank');
@@ -409,6 +414,7 @@
                                 if ($.icescrum.getDefaultView() == 'tableView') {
                                     $(tmpl.view).trigger("update");
                                 }
+                                $('#stories-sandbox-size').html($(tmpl.view+' .postit-story, '+tmpl.view+' .table-line').size());
                             },
                             constraintTmpl:function() {
                                 return this.state == $.icescrum.story.STATE_SUGGESTED;
@@ -421,6 +427,7 @@
                                 if ($.icescrum.getDefaultView() == 'tableView') {
                                     $('#story-table').trigger("update");
                                 }
+                                $('#stories-sandbox-size').html($(tmpl.view+' .postit-story, '+tmpl.view+' .table-line').size());
                             }
                         },
                         sandboxWidget:{
@@ -740,7 +747,7 @@
                         var effort = 0, size = 0;
                         var stories = $.icescrum.getDefaultView() == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort');
                         stories.each(function() { size += 1; if ($(this).text() != '?') effort += Number($(this).text());});
-                        jQuery('#window-title-bar-backlog .content .details').html(' - <span id="stories-backlog-size">'+size+'</span> '+$.icescrum.story.i18n.stories+' / <span id="stories-backlog-effort">'+effort+'</span> '+$.icescrum.story.i18n.points);
+                        $('#window-title-bar-backlog').find('.content .details').html(' - <span id="stories-backlog-size">'+size+'</span> '+$.icescrum.story.i18n.stories+' / <span id="stories-backlog-effort">'+effort+'</span> '+$.icescrum.story.i18n.points);
                     },
 
                     checkDependsOnPostitsView:function(ui){
@@ -887,12 +894,13 @@
                     },
 
                     toggleBlocked:function(data) {
-                        if ($('#postit-task-' + data.id + ' .postit-ico,.table-line[data-elemid=' + data.id + ']').toggleClass('ico-task-1').hasClass('ico-task-1')) {
+                        var $elem = $('#postit-task-' + data.id + ' .postit-ico,.table-line[data-elemid=' + data.id + ']');
+                        if ($elem.toggleClass('ico-task-1').hasClass('ico-task-1')) {
                             $('#menu-blocked-' + data.id + ' a').text($.icescrum.task.UNBLOCK);
-                            $('#postit-task-' + data.id + ' .postit-ico,.table-line[data-elemid=' + data.id + ']').attr('title', $.icescrum.task.BLOCKED);
+                            $elem.attr('title', $.icescrum.task.BLOCKED);
                         } else {
                             $('#menu-blocked-' + data.id + ' a').text($.icescrum.task.BLOCK);
-                            $('#postit-task-' + data.id + ' .postit-ico,.table-line[data-elemid=' + data.id + ']').attr('title', '');
+                            $elem.attr('title', '');
                         }
                     }
                 },
@@ -1038,7 +1046,7 @@
                         $('.close-sprint-' + this.parentRelease.id + '-' + (this.orderNumber)).remove();
                         $('#show-done-sprint-' + this.parentRelease.id + '-' + this.orderNumber).remove();
                         $('.activate-sprint-' + this.parentRelease.id + '-' + (this.orderNumber + 1)).removeClass('hidden');
-                        $('table#kanban-sprint-' + this.id).addClass('done');
+                        kanban.addClass('done');
                     },
 
                     activate:function(template) {
@@ -1081,8 +1089,9 @@
                     },
 
                     updateWindowTitle:function(sprint){
-                        if ($("#selectOnSprintPlan") && $("#selectOnSprintPlan").val() == sprint.id){
-                            $('#window-title-bar-sprintPlan .content .details').html(' - '+$.icescrum.sprint.i18n.name+' '+sprint.orderNumber+' - '+$.icescrum.sprint.states[sprint.state]+' - ['+$.icescrum.dateLocaleFormat(sprint.startDate)+' -> '+$.icescrum.dateLocaleFormat(sprint.endDate)+'] - '+$.icescrum.sprint.i18n.totalRemainingHours+' <span class="remaining">'+sprint.totalRemainingHours+'</span> '+$.icescrum.sprint.i18n.hours);
+                        var $select = $("#selectOnSprintPlan");
+                        if ($select && $select.val() == sprint.id){
+                            $('#window-title-bar-sprintPlan').find('.content .details').html(' - '+$.icescrum.sprint.i18n.name+' '+sprint.orderNumber+' - '+$.icescrum.sprint.states[sprint.state]+' - ['+$.icescrum.dateLocaleFormat(sprint.startDate)+' -> '+$.icescrum.dateLocaleFormat(sprint.endDate)+'] - '+$.icescrum.sprint.i18n.totalRemainingHours+' <span class="remaining">'+sprint.totalRemainingHours+'</span> '+$.icescrum.sprint.i18n.hours);
                         }
                     },
 
@@ -1094,7 +1103,7 @@
                                 remaining += parseFloat(val);
                             }
                         });
-                        $('#window-title-bar-sprintPlan span.remaining').html(remaining);
+                        $('#window-title-bar-sprintPlan').find('span.remaining').html(remaining);
                     },
 
                     sprintMesure:function() {
@@ -1389,9 +1398,10 @@
                 },
 
                 alertDeleteOrUpdateObject:function(message, url, deleted, container) {
-                    $('#window-dialog').dialog('destroy');
+                    var $dialog = $('#window-dialog');
+                    $dialog.dialog('destroy');
                     $(document.body).append("<div id='window-dialog'/>");
-                    $('#window-dialog').html('<div class="panel ui-corner-all"><h3 class="panel-title">Warning</h3><p class="field-information">' + message + '</p></div>').dialog({
+                    $dialog.html('<div class="panel ui-corner-all"><h3 class="panel-title">Warning</h3><p class="field-information">' + message + '</p></div>').dialog({
                                 dialogClass: 'no-titlebar',
                                 closeOnEscape:true,
                                 closeText:'Close',

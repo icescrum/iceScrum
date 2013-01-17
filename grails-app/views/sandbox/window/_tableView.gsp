@@ -105,3 +105,7 @@
 <is:onStream
         on="#story-table"
         events="[[object:'sprint',events:['close','activate']]]"/>
+
+<jq:jquery>
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' (<span id="stories-sandbox-size">${stories?.size()}</span>)');
+</jq:jquery>
