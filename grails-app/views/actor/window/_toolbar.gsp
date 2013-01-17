@@ -94,7 +94,7 @@
 
 %{--Search--}%
 
-<entry:point id="${controllerName}-${actionName}-toolbar"/>
+<entry:point id="${controllerName}-${actionName}"/>
 
 <is:panelSearch id="search-ui">
     <is:autoCompleteSearch elementId="autoCmpTxt" controller="actor" action="list" update="window-content-${controllerName}"/>

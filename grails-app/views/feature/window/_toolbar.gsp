@@ -100,7 +100,7 @@
                   ['DOCX', message(code:'is.report.format.docx')],
                   ['ODT', message(code:'is.report.format.odt')]
                 ]"/>
-<entry:point id="${controllerName}-${actionName}-toolbar"/>
+<entry:point id="${controllerName}-${actionName}"/>
 %{--Search--}%
 <is:panelSearch id="search-ui">
     <is:autoCompleteSearch elementId="autoCmpTxt" controller="feature" action="list" update="window-content-${controllerName}"/>

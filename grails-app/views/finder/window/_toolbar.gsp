@@ -1,3 +1,4 @@
+<entry:point id="${controllerName}-${actionName}"/>
 <li class="navigation-search search" style="cursor: pointer;">
     <a class="search-button active-search"></a>
 </li>

@@ -85,8 +85,8 @@
                         </g:if>
                     </is:panelLine>
                     <is:panelLine legend="${story.type == Story.TYPE_DEFECT ? message(code:'is.story.deliveredVersion.defect') : message(code:'is.story.deliveredVersion')}"
-                                  rendered="${story.parentSprint?.deliveredVersion != null}">
-                        ${story.parentSprint.deliveredVersion}
+                                  rendered="${story.deliveredVersion != null}">
+                        ${story.deliveredVersion}
                     </is:panelLine>
                     <g:if test="${story.tags}">
                         <is:panelLine legend="${message(code:'is.backlogelement.tags')}">

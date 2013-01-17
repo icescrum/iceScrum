@@ -929,7 +929,7 @@ class ProjectController {
                 response.setHeader(k, v)
             }
             response.contentType = 'application/zip'
-            ApplicationSupport.zipExportFile(response.outputStream,files,xml)
+            ApplicationSupport.zipExportFile(response.outputStream, files, xml, 'attachments')
         } catch (Exception e) {
             if (log.debugEnabled)
                 e.printStackTrace()

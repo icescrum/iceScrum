@@ -58,7 +58,7 @@
 </g:if>
 <g:if test="${!update}">
     <div id="search-panel">
-        <form method="POST" action="#">
+        <form method="POST" action="#" id="finder-form">
             <ul>
                 <li id="search-input" class="search-box ui-widget-content ui-corner-top ui-corner-bottom">
                     <h3>${g.message(code:'is.ui.finder.submit')}</h3><is:input type="text" id="term" name="term"/>
@@ -89,8 +89,8 @@
                                                        styleSelect="dropdown"
                                                        name="story.affectedVersion" noSelection="['':g.message(code:'is.ui.choose.or.empty')]" from="${product.getVersions(false, true)}"/></li>
                                 <li>${g.message(code:'is.story.deliveredVersion')}<is:select width="150" maxHeight="200"
-                                                                                             styleSelect="dropdown"
-                                                                                             name="story.deliveredVersion" noSelection="['':g.message(code:'is.ui.choose.or.empty')]" from="${product.getVersions(true, false)}"/></li>
+                                                         styleSelect="dropdown"
+                                                         name="story.deliveredVersion" noSelection="['':g.message(code:'is.ui.choose.or.empty')]" from="${product.getVersions(true, false)}"/></li>
                                 <li>${g.message(code:'is.story.state')}<is:select width="150" maxHeight="200"
                                                        styleSelect="dropdown"
                                                        name="story.state" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
@@ -181,6 +181,7 @@
                         <li>${g.message(code:'is.ui.finder.filters.common.tag')}<is:input type="text" id="tag" name="tag" value="${params.tag?:''}"/></li>
                     </ul>
                 </li>
+                <entry:point id="${controllerName}-${actionName}-side"/>
                 <li id="search-submit">
                     <is:button
                             id="submitForm"
@@ -192,6 +193,7 @@
                             alt="${message(code:'is.ui.finder.submit')}">
                         <strong>${message(code: 'is.ui.finder.submit')}</strong>
                     </is:button>
+                    <entry:point id="${controllerName}-${actionName}-side-buttons"/>
                 </li>
             </ul>
         </form>
