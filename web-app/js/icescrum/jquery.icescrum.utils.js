@@ -381,6 +381,15 @@
         .next()
         .addClass("ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom")
         .hide();
+
+        $(this).find('h3.active').each(function(){
+            var headToggle = $(this);
+            headToggle.toggleClass("ui-accordion-header-active ui-state-active ui-state-default ui-corner-bottom")
+                .find("> .ui-icon").toggleClass("ui-icon-triangle-1-e ui-icon-triangle-1-s").end()
+                .next().slideToggle();
+            headToggle.find("> a > input.hidden[type='checkbox']").prop('checked', headToggle.hasClass("ui-accordion-header-active"));
+        });
+
       });
     };
 
@@ -468,4 +477,8 @@ function NotesToHtml(html, textarea){
     $textarea.show().val($.trim(text));
     $textarea.parent().animate({scrollTop: $(textarea).offset().top}, 500,'easeInOutCubic');
     return false;
+}
+
+function updateUrlFinder(){
+
 }
