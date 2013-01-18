@@ -20,13 +20,12 @@ class FinderController {
             withProduct { Product product ->
                 def data = [:]
 
-                def term = params.term ? '%'+params.term+'%' : null
-                data.actors =  Actor.search(product.id, [tag:params.tag, term:term, actor: params.withActors ? params.actor : null])
-                data.stories = Story.search(product.id, [tag:params.tag, term:term, story: params.withStories ? params.story : null])
-                data.features = Feature.search(product.id, [tag:params.tag, term:term, feature: params.withFeatures ? params.feature : null])
-                data.tasks = Task.search(product, [tag:params.tag, term:term, task: params.withTasks ? params.task : null])
+                data.actors =  Actor.search(product.id, [tag:params.tag, term:params.term, actor: params.withActors ? params.actor : null])
+                data.stories = Story.search(product.id, [tag:params.tag, term:params.term, story: params.withStories ? params.story : null])
+                data.features = Feature.search(product.id, [tag:params.tag, term:params.term, feature: params.withFeatures ? params.feature : null])
+                data.tasks = Task.search(product, [tag:params.tag, term:params.term, task: params.withTasks ? params.task : null])
 
-                if (!data.actors && !data.stories && !data.features && !data.tasks && !term && !params.tag && !params.withActors && !params.withStories && !params.withFeatures && !params.withTasks){
+                if (!data.actors && !data.stories && !data.features && !data.tasks && !params.term && !params.tag && !params.withActors && !params.withStories && !params.withFeatures && !params.withTasks){
                     data = null
                 }
 
