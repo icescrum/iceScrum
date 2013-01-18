@@ -78,11 +78,11 @@
                                     $('#tiptip_holder').remove();
                                 },
                                 success:function(data, textStatus) {
-                                    var content = $('#window-id-' + targetWindow);
+                                    var content = '#window-id-' + targetWindow;
                                     if ($.icescrum.o.fullscreen) {
                                         $.icescrum.o.currentOpenedWindow.remove();
                                         $(document.body).prepend(data);
-                                        content.addClass('window-fullscreen');
+                                        $(content).addClass('window-fullscreen');
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
                                         var viewSelector = $('#menu-display-list');
@@ -91,7 +91,7 @@
                                         }
                                     }
 
-                                    attachOnDomUpdate(content);
+                                    attachOnDomUpdate($(content));
 
                                     if (callback) {
                                         callback();
