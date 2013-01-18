@@ -233,11 +233,16 @@
 <is:onStream
             on="#details-${story.id}"
             events="[[object:'story',events:['remove']]]"
-            callback="if ( story.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','project',true);"/>
+            callback="if ( story.id != jQuery(this).data('elemid') ){ return; } jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','project',true);"/>
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'story',events:['accept','estimate','inProgress','done','unDone','plan','unPlan','associated','dissociated']]]"
-            callback="if ( story.id != jQuery(this).data('elemid') ) return; document.location.reload();"/>
+            events="[[object:'story',events:['estimate','inProgress','done','unDone','plan','unPlan','associated','dissociated']]]"
+            callback="if ( story.id != jQuery(this).data('elemid') ){ return; } document.location.reload();"/>
+
+<is:onStream
+            on="#details-${story.id}"
+            events="[[object:'story',events:['accept']]]"
+            callback="if ( story.id != jQuery(this).data('elemid') ){ return; } var next = jQuery('#next-story'); document.location.hash = next.length ? next.find('a').attr('href') : '#sandbox';"/>
 
 <is:onStream
             on="#details-${story.id}"

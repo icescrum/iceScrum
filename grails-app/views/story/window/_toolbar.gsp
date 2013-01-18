@@ -125,7 +125,7 @@
     </g:if>
 
     <g:if test="${next}">
-        <li class="navigation-item ${previous ? 'separator' : ''}">
+        <li class="navigation-item ${previous ? 'separator' : ''}" id="next-story">
             <a class="tool-button button-n"
                href="#${controllerName}/${next.id}"
                title="${message(code:'is.ui.backlogelement.toolbar.next')}"
