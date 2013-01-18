@@ -50,7 +50,9 @@ class FeatureController {
         try {
             featureService.save(feature, Product.get(params.product))
             feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
-            this.manageAttachments(feature)
+            def keptAttachments = params.list('feature.attachments')
+            def addedAttachments = params.list('attachments')
+            manageAttachments(feature, keptAttachments, addedAttachments)
             entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature])
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: feature as JSON }
@@ -89,7 +91,10 @@ class FeatureController {
                 bindData(feature, this.params, [include:['name','description','notes','color','type','value']], "feature")
                 feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
 
-                this.manageAttachments(feature)
+                def keptAttachments = params.list('feature.attachments')
+                def addedAttachments = params.list('attachments')
+                manageAttachments(feature, keptAttachments, addedAttachments)
+
                 featureService.update(feature)
 
                 if (params.table && params.boolean('table')) {
@@ -300,49 +305,6 @@ class FeatureController {
 
     def show = {
         redirect(action:'index', controller: controllerName, params:params)
-    }
-
-    private manageAttachments(def feature) {
-        def user = springSecurityService.currentUser
-        def needPush = false
-
-        if (params.feature.attachments && feature.id && !params.feature.list('attachments') && feature.attachments*.id.size() > 0) {
-            feature.removeAllAttachments()
-            needPush = true
-        } else if (feature.attachments*.id.size() > 0) {
-            feature.attachments*.id.each {
-                if (!params.feature.list('attachments').contains(it.toString()))
-                    feature.removeAttachment(it)
-                    needPush = true
-            }
-        }
-        def uploadedFiles = []
-        params.list('attachments')?.each { attachment ->
-            "${attachment}".split(":").with {
-                if (it[0].contains('http')){
-                    uploadedFiles << [url: it[0] +':'+ it[1], filename: it[2], length: it[3], provider:it[4]]
-                }else{
-                    if (session.uploadedFiles[it[0]]){
-                        uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), filename: it[1]]
-                    }
-                }
-            }
-        }
-        if (uploadedFiles){
-            feature.addAttachments(user, uploadedFiles)
-            needPush = true
-        }
-        session.uploadedFiles = null
-
-        if (needPush){
-            feature.lastUpdated = new Date()
-            broadcast(function: 'update', message: feature)
-        }
-    }
-
-    def download = {
-        forward(action: 'download', controller: 'attachmentable', id: params.id)
-        return
     }
 
     def tags = {

@@ -31,5 +31,5 @@
 ]"/>
 
 <template id="toolbar-line-attachment-tmpl">
-    <g:render template="/attachment/line" model="[attachment: attachment, template: true]"/>
+    <g:render template="/attachment/line" model="[attachment: attachment, template: true, controllerName:'?**=this.controllerName**?']"/>
 </template>

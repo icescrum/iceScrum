@@ -62,7 +62,9 @@ class ActorController {
         try {
             actorService.save(actor, product)
             actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
-            this.manageAttachments(actor)
+            def keptAttachments = params.list('actor.attachments')
+            def addedAttachments = params.list('attachments')
+            this.manageAttachments(actor, keptAttachments, addedAttachments)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: actor as JSON }
                 json { renderRESTJSON(text:actor, status:201) }
@@ -82,7 +84,9 @@ class ActorController {
             bindData(actor, this.params, [include:['name','description','notes','satisfactionCriteria','instances','expertnessLevel','useFrequency']], "actor")
             actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
             actorService.update(actor)
-            this.manageAttachments(actor)
+            def keptAttachments = params.list('actor.attachments')
+            def addedAttachments = params.list('attachments')
+            manageAttachments(actor, keptAttachments, addedAttachments)
             //if success for table view
             if (params.table && params.boolean('table')) {
                 def returnValue
@@ -178,42 +182,6 @@ class ActorController {
         }
     }
 
-    private manageAttachments(def actor) {
-        def user = springSecurityService.currentUser
-        def needPush = false
-        if (params.actor.attachments && actor.id && !params.actor.list('attachments') && actor.attachments*.id.size() > 0) {
-            actor.removeAllAttachments()
-            needPush = true
-        } else if (actor.attachments*.id.size() > 0) {
-            actor.attachments*.id.each {
-                if (!params.actor.list('attachments').contains(it.toString()))
-                    actor.removeAttachment(it)
-                    needPush = true
-            }
-        }
-        def uploadedFiles = []
-        params.list('attachments')?.each { attachment ->
-            "${attachment}".split(":").with {
-                if (it[0].contains('http')){
-                    uploadedFiles << [url: it[0] +':'+ it[1], filename: it[2], length: it[3], provider:it[4]]
-                }else{
-                    if (session.uploadedFiles[it[0]]){
-                        uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), filename: it[1]]
-                    }
-                }
-            }
-        }
-        if (uploadedFiles){
-            actor.addAttachments(user, uploadedFiles)
-            needPush = true
-        }
-        session.uploadedFiles = null
-        if (needPush){
-            actor.lastUpdated = new Date()
-            broadcast(function: 'update', message: actor)
-        }
-    }
-
     def show = {
         redirect(action:'index', controller: controllerName, params:params)
     }
@@ -262,10 +230,5 @@ class ActorController {
             def dialog = g.render(template: '/scrumOS/report')
             render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
-    }
-
-    def download = {
-        forward(action: 'download', controller: 'attachmentable', id: params.id)
-        return
     }
 }

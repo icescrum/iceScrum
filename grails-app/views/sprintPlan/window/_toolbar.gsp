@@ -236,7 +236,7 @@
                 </li>
             </g:if>
             <g:each var="attachment" in="${sprint.attachments}">
-                <g:render template="/attachment/line" model="[attachment: attachment]"/>
+                <g:render template="/attachment/line" model="[attachment: attachment, controllerName:'sprint']"/>
             </g:each>
         </ul>
     </is:panelButton>

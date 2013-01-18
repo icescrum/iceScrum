@@ -1317,6 +1317,7 @@
                         var container = $(view);
                         if (container.length > 0) {
                             var attachmentable = this.attachmentable;
+                            var controllerName = this.controllerName;
                             // Remove all
                             $(tmpl.selector, container).each(function() {
                                 $(this).remove();
@@ -1324,6 +1325,7 @@
                             // Add all
                             $(this.attachments).each(function () {
                                 this.attachmentable = attachmentable; // hack to make dynamic view evaluation working in the context of each attachment
+                                this.controllerName = controllerName;
                                 $.icescrum.addOrUpdate(this, tmpl, $.icescrum.attachments._postRendering, true);
                             });
                         }

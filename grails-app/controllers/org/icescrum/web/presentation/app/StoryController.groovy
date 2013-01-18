@@ -34,6 +34,7 @@ import grails.converters.JSON
 import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
+import org.icescrum.plugins.attachmentable.domain.Attachment
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.grails.followable.FollowLink
 import grails.util.GrailsNameUtils
@@ -43,6 +44,8 @@ import org.grails.comments.Comment
 import org.icescrum.core.event.IceScrumStoryEvent
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
+
+import javax.servlet.http.HttpServletResponse
 
 class StoryController {
 
@@ -175,7 +178,9 @@ class StoryController {
 
         try {
             storyService.save(story, product, (User)user)
-            this.manageAttachments(story)
+            def keptAttachments = params.list('story.attachments')
+            def addedAttachments = params.list('attachments')
+            manageAttachments(story, keptAttachments, addedAttachments)
             story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
 
             entry.hook(id:"${controllerName}-${actionName}", model:[story:story])
@@ -296,7 +301,9 @@ class StoryController {
 
             if (!skipUpdate){
                 storyService.update(story)
-                this.manageAttachments(story)
+                def keptAttachments = params.list('story.attachments')
+                def addedAttachments = params.list('attachments')
+                manageAttachments(story, keptAttachments, addedAttachments)
             }
 
             //if success for table view
@@ -570,11 +577,6 @@ class StoryController {
         }
     }
 
-    def download = {
-        forward(action: 'download', controller: 'attachmentable', id: params.id)
-        return
-    }
-
     @Secured('inProduct() and !archivedProduct()')
     def copy = {
         withStories{List<Story> stories ->
@@ -604,45 +606,6 @@ class StoryController {
         withFormat {
             json { renderRESTJSON(text:stories) }
             xml  { renderRESTXML(text:stories) }
-        }
-    }
-
-
-    private manageAttachments(def story) {
-        def user = springSecurityService.currentUser
-        def needPush = false
-        if (params.story.attachments && story.id && !params.story.list('attachments') && story.attachments*.id.size() > 0) {
-            story.removeAllAttachments()
-            needPush = true
-        } else if (story.attachments*.id.size() > 0) {
-            story.attachments*.id.each {
-                if (!params.story.list('attachments').contains(it.toString())){
-                    story.removeAttachment(it)
-                    needPush = true
-                }
-            }
-        }
-        def uploadedFiles = []
-        params.list('attachments')?.each { attachment ->
-            "${attachment}".split(":").with {
-                if (it[0].contains('http')){
-                    uploadedFiles << [url: it[0] +':'+ it[1], filename: it[2], length: it[3], provider:it[4]]
-                }else{
-                    if (session.uploadedFiles[it[0]]){
-                        uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), filename: it[1]]
-                    }
-                }
-            }
-        }
-        if (uploadedFiles){
-            story.addAttachments(user, uploadedFiles)
-            needPush = true
-        }
-        session.uploadedFiles = null
-
-        if (needPush){
-            story.lastUpdated = new Date()
-            broadcast(function: 'update', message: story)
         }
     }
 

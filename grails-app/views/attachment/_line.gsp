@@ -23,7 +23,7 @@
 
 <li class="is-multifiles-checkbox attachment-line" data-elemid="${attachment.id}">
     <div class="is-multifiles-filename file-icon ${attachment.ext?.toLowerCase()}-format" style="display: inline-block; margin-left: 5px;">
-        <a ${attachment.url ? 'target="_blank"' : ''} href="${g.createLink(controller: 'attachmentable', action: 'download', id: attachment.id, params:[product:params.product])}">
+        <a ${attachment.url || attachment.previewable ? 'target="_blank"' : ''} href="${g.createLink(controller: controllerName, action: 'download', id: attachment.id, params:[product:params.product])}">
             <span class="filename" title="${attachment.filename} ${attachment.provider? ' - ('+ attachment.provider + ' / ' + attachment.poster.firstName +' '+ attachment.poster.lastName + ')' : '' } "><g:if test="${template}">${attachment.filename}</g:if><g:else>${is.truncated(value:attachment.filename, size: 23)}</g:else></span>
         </a>
     </div>

@@ -130,7 +130,9 @@ class TaskController {
                 taskService.saveStoryTask(task, story, user)
 
             task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
-            this.manageAttachments(task)
+            def keptAttachments = params.list('task.attachments')
+            def addedAttachments = params.list('attachments')
+            manageAttachments(task, keptAttachments, addedAttachments)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { renderRESTJSON(status:201, text:task) }
@@ -172,7 +174,9 @@ class TaskController {
             task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
 
             taskService.update(task, user)
-            this.manageAttachments(task)
+            def keptAttachments = params.list('task.attachments')
+            def addedAttachments = params.list('attachments')
+            manageAttachments(task, keptAttachments, addedAttachments)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { renderRESTJSON(text:task) }
@@ -301,11 +305,6 @@ class TaskController {
                 xml  { renderRESTXML(text:task) }
             }
         }
-    }
-
-    def download = {
-        forward(action: 'download', controller: 'attachmentable', id: params.id)
-        return
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -455,42 +454,6 @@ class TaskController {
             } else if (task && sprintTask != task.type) {
                 taskService.changeType(task, sprintTask, user)
             }
-        }
-    }
-
-    private manageAttachments(def task) {
-        User user = (User) springSecurityService.currentUser
-        def needPush = false
-        if (params.task.attachments && task.id && !params.task.list('attachments') && task.attachments*.id.size() > 0) {
-            task.removeAllAttachments()
-            needPush = true
-        } else if (task.attachments*.id.size() > 0) {
-            task.attachments*.id.each {
-                if (!params.task.list('attachments').contains(it.toString()))
-                    task.removeAttachment(it)
-                    needPush = true
-            }
-        }
-        def uploadedFiles = []
-        params.list('attachments')?.each { attachment ->
-            "${attachment}".split(":").with {
-                if (it[0].contains('http')){
-                    uploadedFiles << [url: it[0] +':'+ it[1], filename: it[2], length: it[3], provider:it[4]]
-                }else{
-                    if (session.uploadedFiles[it[0]]){
-                        uploadedFiles << [file: new File((String) session.uploadedFiles[it[0]]), filename: it[1]]
-                    }
-                }
-            }
-        }
-        if (uploadedFiles){
-            task.addAttachments(user, uploadedFiles)
-            needPush = true
-        }
-        session.uploadedFiles = null
-        if (needPush){
-            task.lastUpdated = new Date()
-            broadcast(function: 'update', message: task)
         }
     }
 

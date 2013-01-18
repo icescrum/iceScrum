@@ -93,7 +93,7 @@
                 </li>
             </g:if>
             <g:each var="attachment" in="${product.attachments}">
-                <g:render template="/attachment/line" model="[attachment: attachment]"/>
+                <g:render template="/attachment/line" model="[attachment: attachment, controller: 'project']"/>
             </g:each>
         </ul>
     </is:panelButton>
