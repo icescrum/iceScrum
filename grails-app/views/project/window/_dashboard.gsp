@@ -28,18 +28,18 @@
             <entry:point id="${controllerName}-${actionName}-top-left" model="[sprint:sprint,release:release,product:product]"/>
             <is:panel id="panel-chart">
                 <is:panelTitle>
-                    <g:if test="${sprint && request.inProduct}">
+                    <g:if test="${request.inProduct}">
                         <is:link class="right" id="chart-sprintBurndownHoursChart" disabled="true"
-                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurndownHoursChart/${sprint?.id}',true);">${message(code: 'is.ui.project.chart.option.hours')}</is:link>
+                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurndownHoursChart',true);">${message(code: 'is.ui.project.chart.option.hours')}</is:link>
                         <span class="right">|</span>
                         <is:link class="right" id="chart-sprintBurnupTasksChart" disabled="true"
-                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupTasksChart/${sprint?.id}',true);">${message(code: 'is.ui.project.chart.option.tasks')}</is:link>
+                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupTasksChart',true);">${message(code: 'is.ui.project.chart.option.tasks')}</is:link>
                         <span class="right">|</span>
                         <is:link class="right" id="chart-sprintBurnupPointsChart" disabled="true"
-                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupPointsChart/${sprint?.id}',true);">${message(code: 'is.ui.project.chart.option.points')}</is:link>
+                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupPointsChart',true);">${message(code: 'is.ui.project.chart.option.points')}</is:link>
                         <span class="right">|</span>
                         <is:link rendered="${sprint}" id="chart-sprintBurnupStoriesChart" class="right" disabled="true"
-                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupStoriesChart/${sprint?.id}',true);">${message(code: 'is.ui.project.chart.option.stories')}</is:link>
+                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupStoriesChart',true);">${message(code: 'is.ui.project.chart.option.stories')}</is:link>
                         <span class="right">|</span>
                     </g:if>
                     <is:link class="right" disabled="true" id="chart-productBurnupChart"

@@ -50,17 +50,10 @@ class SprintPlanController {
     def userService
 
     def titleBarContent = {
-        def currentProduct = Product.load(params.product)
-        def sprint
-        if (!params.id) {
-            sprint = Sprint.findCurrentOrNextSprint(currentProduct.id).list()[0]
-        } else {
-            sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
-        }
-
-        def sprintsName = []
+        Sprint sprint = getSprint()
         def sprintsId = []
-        currentProduct.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
+        def sprintsName = []
+        sprint?.parentProduct?.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
             sprintsName.addAll(it.sprints.collect {v -> "${it.name} - Sprint ${v.orderNumber}"})
             sprintsId.addAll(it.sprints.id)
         }
@@ -71,16 +64,7 @@ class SprintPlanController {
     }
 
     def toolbar = {
-        def sprint
-        def currentProduct = Product.load(params.product)
-        if (!params.id) {
-            sprint = Sprint.findCurrentOrNextSprint(currentProduct.id).list()[0]
-            if (sprint)
-                params.id = sprint.id
-        } else {
-            sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
-        }
-
+        Sprint sprint = getSprint()
         User user = (User) springSecurityService.currentUser
 
         render(template: 'window/toolbar',
@@ -110,7 +94,7 @@ class SprintPlanController {
             return
         }
 
-        def hideDoneState = """<span id="show-done-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}" class="show-done-sprint ${sprint.state == Sprint.STATE_INPROGRESS ? '' : 'hidden'}">${
+        def hideDoneState = request.readOnly ?: """<span id="show-done-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}" class="show-done-sprint ${sprint.state == Sprint.STATE_INPROGRESS ? '' : 'hidden'}">${
                                         is.link(action:"changeHideDoneState",
                                                 controller:"${controllerName}",
                                                 history:"false",
@@ -355,7 +339,8 @@ class SprintPlanController {
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurndownHoursChart = {
-        withSprint{ Sprint sprint ->
+        Sprint sprint = getSprint(false)
+        if (sprint){
             def values = sprintService.sprintBurndownHoursValues(sprint)
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurndownHoursChart', model: [
@@ -363,15 +348,16 @@ class SprintPlanController {
                         idealHours: values.idealHours as JSON,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         labels: values.label as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
+                return
             }
         }
+        returnError(text:message(code: 'is.chart.error.no.values'))
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupTasksChart = {
-        withSprint{ Sprint sprint ->
+        Sprint sprint = getSprint(false)
+        if (sprint){
             def values = sprintService.sprintBurnupTasksValues(sprint)
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurnupTasksChart', model: [
@@ -379,15 +365,16 @@ class SprintPlanController {
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         tasksDone: values.tasksDone as JSON,
                         labels: values.label as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
+                return
             }
         }
+        returnError(text:message(code: 'is.chart.error.no.values'))
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupStoriesChart = {
-        withSprint{ Sprint sprint ->
+        Sprint sprint = getSprint(false)
+        if (sprint){
             def values = sprintService.sprintBurnupStoriesValues(sprint)
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurnupStoriesChart', model: [
@@ -395,15 +382,16 @@ class SprintPlanController {
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         storiesDone: values.storiesDone as JSON,
                         labels: values.label as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
+                return
             }
         }
+        returnError(text:message(code: 'is.chart.error.no.values'))
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupPointsChart = {
-        withSprint{ Sprint sprint ->
+        Sprint sprint = getSprint(false)
+        if (sprint){
             def values = sprintService.sprintBurnupStoriesValues(sprint)
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurnupPointsChart', model: [
@@ -411,10 +399,10 @@ class SprintPlanController {
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         pointsDone: values.pointsDone as JSON,
                         labels: values.label as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
+                return
             }
         }
+        returnError(text:message(code: 'is.chart.error.no.values'))
     }
 
     def changeFilterTasks = {
@@ -594,5 +582,16 @@ class SprintPlanController {
             def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:sprint, destController:'sprint'])
             render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
         }
+    }
+
+    private getSprint(withNext = true){
+        def currentProduct = Product.load(params.product)
+        def sprint
+        if (!params.id) {
+            sprint = withNext ? Sprint.findCurrentOrNextSprint(currentProduct.id).list()[0] : Sprint.findCurrentOrLastSprint(currentProduct.id).list()[0]
+        } else {
+            sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
+        }
+        return sprint
     }
 }

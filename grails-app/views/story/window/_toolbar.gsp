@@ -87,7 +87,7 @@
 
 <g:if test="${(request.productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED)}">
 
-    <li class="navigation-item ${request.productOwner && story.state == Story.STATE_SUGGESTED ? 'separator' : ''}">
+    <li class="navigation-item ${request.productOwner && story.state >= Story.STATE_SUGGESTED && story.state <= Story.STATE_DONE ? 'separator' : ''}">
         <a class="tool-button button-n"
            href="${createLink(controller:'story', action:'delete',id:story.id,params:[product:params.product])}"
            data-ajax-notice="${message(code:'is.story.deleted').encodeAsJavaScript()}"
