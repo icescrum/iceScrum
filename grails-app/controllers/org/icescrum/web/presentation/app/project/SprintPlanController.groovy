@@ -94,7 +94,7 @@ class SprintPlanController {
             return
         }
 
-        def hideDoneState = request.readOnly ?: """<span id="show-done-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}" class="show-done-sprint ${sprint.state == Sprint.STATE_INPROGRESS ? '' : 'hidden'}">${
+        def hideDoneState = request.readOnly ? '' : """<span id="show-done-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}" class="show-done-sprint ${sprint.state == Sprint.STATE_INPROGRESS ? '' : 'hidden'}">${
                                         is.link(action:"changeHideDoneState",
                                                 controller:"${controllerName}",
                                                 history:"false",
