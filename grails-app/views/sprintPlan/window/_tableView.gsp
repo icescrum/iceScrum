@@ -72,7 +72,9 @@
                 <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && sprintInProgress && !taskDone}"/>
 
                 <is:tableColumn class="table-cell-checkbox">
-                    <g:checkBox name="check-${task.id}"/>
+                    <g:if test="${!request.readOnly}">
+                        <g:checkBox name="check-${task.id}"/>
+                    </g:if>
                     <g:if test="${request.inProduct && sprint.state != Sprint.STATE_DONE}">
                         <div class="dropmenu-action">
                            <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-task-${task.id}">
@@ -143,7 +145,9 @@
                     <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && sprintInProgress && !taskDone}"/>
 
                     <is:tableColumn class="table-cell-checkbox">
-                        <g:checkBox name="check-${task.id}"/>
+                        <g:if test="${!request.readOnly}">
+                            <g:checkBox name="check-${task.id}"/>
+                        </g:if>
                         <g:if test="${request.inProduct && sprint.state != Sprint.STATE_DONE}">
                             <div class="dropmenu-action">
                                <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-task-${task.id}">
@@ -221,7 +225,9 @@
                     <g:set var="taskSortable" value="${(request.scrumMaster || responsible) && sprintInProgress && !taskDone}"/>
 
                     <is:tableColumn class="table-cell-checkbox">
-                        <g:checkBox name="check-${task.id}"/>
+                        <g:if test="${!request.readOnly}">
+                            <g:checkBox name="check-${task.id}"/>
+                        </g:if>
                         <g:if test="${request.inProduct && sprint.state != Sprint.STATE_DONE}">
                             <div class="dropmenu-action">
                                <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-story-task-${task.id}">
@@ -263,6 +269,8 @@
 
     </is:table>
 </is:tableView>
-<jq:jquery>
-    jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
-</jq:jquery>
+<g:if test="${!request.readOnly}">
+    <jq:jquery>
+        jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
+    </jq:jquery>
+</g:if>

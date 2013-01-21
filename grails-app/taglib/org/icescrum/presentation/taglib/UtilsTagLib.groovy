@@ -146,6 +146,9 @@ class UtilsTagLib {
     }
 
     def onStream = { attrs ->
+        if (request.noPush){
+            return
+        }
         def jqCode = ""
         attrs.events.each { it ->
             def events = [];
@@ -320,6 +323,10 @@ class UtilsTagLib {
 
         if (attrs.locale)
             key.append(RCU.getLocale(request).toString().substring(0, 2))
+
+        if (request.customKey){
+            key.append(request.customKey)
+        }
 
         def resultAndBuffer = springcacheService.doWithCache(attrs.cache, key.toCacheKey()) {
             def outputStack = GroovyPageOutputStack.currentStack()

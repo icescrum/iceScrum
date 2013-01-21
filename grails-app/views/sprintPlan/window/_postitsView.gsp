@@ -67,11 +67,11 @@
         <g:each in="${columns}" var="column">
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
-                    <is:cache  cache="taskCache" disabled="true" key="postit-${task.id}-${task.lastUpdated}">
+                    <is:cache  cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
                         <g:render template="/task/postit" model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
                     </is:cache>
                 </g:each>
-
+                &nbsp;
             </is:kanbanColumn>
         </g:each>
     </is:kanbanRow>
@@ -98,11 +98,11 @@
         <g:each in="${columns}" var="column" status="i">
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${recurrentTasks?.sort{it.rank}?.findAll{ it.state == column.key} }" var="task">
-                    <is:cache cache="taskCache" disabled="true" key="postit-${task.id}-${task.lastUpdated}">
+                    <is:cache cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
                         <g:render template="/task/postit" model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
                     </is:cache>
                 </g:each>
-
+                &nbsp;
             </is:kanbanColumn>
         </g:each>
 
@@ -129,6 +129,7 @@
                             var="task">
                         <g:render template="/task/postit"  model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
                     </g:each>
+                    &nbsp;
                 </is:kanbanColumn>
             </g:each>
     </is:kanbanRows>
@@ -161,9 +162,11 @@
 </is:kanban>
 
 <jq:jquery>
-    jQuery('table#kanban-sprint-${sprint.id} div.postit-story').die('dblclick').live('dblclick',function(e){ jQuery.icescrum.displayQuicklook(jQuery(e.currentTarget)); });
-    jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
-    <g:if test="${assignOnBeginTask && !request.scrumMaster && sprint.state != Sprint.STATE_DONE}">
+    <g:if test="${!request.readOnly}">
+        jQuery('table#kanban-sprint-${sprint.id} div.postit-story').die('dblclick').live('dblclick',function(e){ jQuery.icescrum.displayQuicklook(jQuery(e.currentTarget)); });
+        jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
+    </g:if>
+    <g:if test="${assignOnBeginTask && !request.scrumMaster && sprint.state != Sprint.STATE_DONE  && !request.readOnly}">
         jQuery.icescrum.sprint.sortableTasks();
     </g:if>
     <is:editable rendered="${sprint.state != Sprint.STATE_DONE && (request.teamMember || request.scrumMaster)}"
@@ -229,6 +232,7 @@
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"
              scope="${controllerName}"/>
+
 <is:shortcut key="ctrl+a" callback="jQuery('#window-content-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 
 <is:onStream

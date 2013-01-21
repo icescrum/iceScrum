@@ -41,7 +41,9 @@
 
         <is:tableRows in="${features}" var="feature" elemid="id" data-rank="rank">
             <is:tableColumn class="table-cell-checkbox">
-                <g:checkBox name="check-${feature.id}"/>
+                <g:if test="${!request.readOnly}">
+                    <g:checkBox name="check-${feature.id}"/>
+                </g:if>
                 <g:if test="${request.productOwner}">
                     <div class="dropmenu-action">
                         <div data-dropmenu="true" class="dropmenu" data-top="13" data-offset="4" data-noWindows="false" id="menu-table-feature-${feature.id}">
