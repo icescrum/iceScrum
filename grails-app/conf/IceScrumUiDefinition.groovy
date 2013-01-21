@@ -50,6 +50,10 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.actor.ctrln.text'],
             [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.actor.space.text']
         ]
+        embedded = [
+                view:'list',
+                viewTypes:['table','postits']
+        ]
     }
 
     'backlog' {
@@ -79,6 +83,10 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.backlog.ctrla.text'],
             [code: 'is.ui.shortcut.ctrlshiftc.code', text: 'is.ui.shortcut.backlog.ctrlshiftc.text'],
             [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.backlog.space.text']
+        ]
+        embedded = [
+                view:'list',
+                viewTypes:['table','postits']
         ]
     }
 
@@ -126,6 +134,11 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.feature.ctrln.text'],
             [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.feature.space.text']
         ]
+        embedded = [
+                view:'list',
+                viewTypes:['table','postits'],
+                charts:['parkingLot':'productParkingLot']
+        ]
     }
 
     'project' {
@@ -142,6 +155,15 @@ uiDefinitions = {
             toolbar true
             init 'dashboard'
         }
+        embedded = [
+                view:'productCumulativeFlowChart',
+                charts:['projectCumulativeFlow':'productCumulativeFlowChart',
+                        'projectVlocityVScapacity':'productVelocityCapacityChart',
+                        'projectBurnup':'productBurnupChart',
+                        'projectBurndown':'productBurndownChart',
+                        'projectVelocity':'productVelocityChart',
+                        'projectParkingLot':'productParkingLotChart']
+        ]
     }
 
     'releasePlan' {
@@ -166,6 +188,12 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.ctrlshifta.code', text: 'is.ui.shortcut.releasePlan.ctrlshifta.text'],
             [code: 'is.ui.shortcut.ctrlshiftv.code', text: 'is.ui.shortcut.releasePlan.ctrlshiftv.text'],
             [code: 'is.ui.shortcut.ctrlshiftd.code', text: 'is.ui.shortcut.releasePlan.ctrlshiftd.text']
+        ]
+        embedded = [
+                view:'index',
+                viewTypes:['postits'],
+                charts:['releaseBurndown':'releaseBurndownChart',
+                        'releaseParkingLot':'releaseParkingLotChart']
         ]
     }
 
@@ -199,6 +227,10 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.sandbox.ctrln.text'],
             [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.sandbox.space.text']
         ]
+        embedded = [
+                view:'list',
+                viewTypes:['table','postits']
+        ]
     }
 
     'sprintPlan' {
@@ -224,6 +256,14 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.ctrlshiftc.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftc.text'],
             [code: 'is.ui.shortcut.ctrlshiftd.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftd.text'],
             [code: 'is.ui.shortcut.ctrlshiftr.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftr.text']
+        ]
+        embedded = [
+                view:'index',
+                viewTypes:['table','postits'],
+                charts:['sprintBurndownHours':'sprintBurndownHoursChart',
+                        'sprintBurnupTasks':'sprintBurnupTasksChart',
+                        'sprintBurnupStories':'sprintBurnupStoriesChart',
+                        'sprintBurnupPoints':'sprintBurnupPointsChart']
         ]
     }
 
