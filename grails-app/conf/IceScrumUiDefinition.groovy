@@ -137,7 +137,7 @@ uiDefinitions = {
         embedded = [
                 view:'list',
                 viewTypes:['table','postits'],
-                charts:['parkingLot':'productParkingLot']
+                charts:['productParkingLot']
         ]
     }
 
@@ -157,12 +157,7 @@ uiDefinitions = {
         }
         embedded = [
                 view:'productCumulativeFlowChart',
-                charts:['projectCumulativeFlow':'productCumulativeFlowChart',
-                        'projectVlocityVScapacity':'productVelocityCapacityChart',
-                        'projectBurnup':'productBurnupChart',
-                        'projectBurndown':'productBurndownChart',
-                        'projectVelocity':'productVelocityChart',
-                        'projectParkingLot':'productParkingLotChart']
+                charts:['productCumulativeFlowChart','productVelocityCapacityChart','productBurnupChart','productBurndownChart','productVelocityChart','productParkingLotChart']
         ]
     }
 
@@ -192,8 +187,7 @@ uiDefinitions = {
         embedded = [
                 view:'index',
                 viewTypes:['postits'],
-                charts:['releaseBurndown':'releaseBurndownChart',
-                        'releaseParkingLot':'releaseParkingLotChart']
+                charts:['releaseBurndownChart','releaseParkingLotChart']
         ]
     }
 
@@ -260,10 +254,7 @@ uiDefinitions = {
         embedded = [
                 view:'index',
                 viewTypes:['table','postits'],
-                charts:['sprintBurndownHours':'sprintBurndownHoursChart',
-                        'sprintBurnupTasks':'sprintBurnupTasksChart',
-                        'sprintBurnupStories':'sprintBurnupStoriesChart',
-                        'sprintBurnupPoints':'sprintBurnupPointsChart']
+                charts:['sprintBurndownHoursChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart']
         ]
     }
 
