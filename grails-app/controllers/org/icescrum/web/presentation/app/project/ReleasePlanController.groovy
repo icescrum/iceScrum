@@ -264,8 +264,7 @@ class ReleasePlanController {
 
     @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def releaseBurndownChart = {
-        Release release = getRelease(false)
-        if (release){
+        withRelease{ Release release ->
             def values = releaseService.releaseBurndownValues(release)
             if (values.size() > 0) {
                 render(template: 'charts/releaseBurndownChart', model: [
@@ -273,16 +272,15 @@ class ReleasePlanController {
                         technicalstories: values.technicalstories as JSON,
                         defectstories: values.defectstories as JSON,
                         labels: values.label as JSON])
-                return
+            } else {
+                returnError(text:message(code: 'is.chart.error.no.values'))
             }
         }
-        returnError(text:message(code: 'is.chart.error.no.values'))
     }
 
     @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def releaseParkingLotChart = {
-        Release release = getRelease(false)
-        if (release){
+        withRelease{ Release release ->
             def values = featureService.releaseParkingLotValues(release)
 
             def valueToDisplay = []
@@ -294,12 +292,12 @@ class ReleasePlanController {
                 valueToDisplay << value
                 indexF++
             }
-            if (valueToDisplay.size() > 0) {
+            if (valueToDisplay.size() > 0)
                 render(template: 'charts/releaseParkingLot', model: [values: valueToDisplay as JSON, featuresNames: values.label as JSON])
-                return
+            else {
+                returnError(text:message(code: 'is.chart.error.no.values'))
             }
         }
-        returnError(text:message(code: 'is.chart.error.no.values'))
     }
 
     @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
@@ -321,16 +319,5 @@ class ReleasePlanController {
             def dialog = g.render(template: '/attachment/dialogs/documents', model: [bean:release, destController:'release'])
             render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
         }
-    }
-
-    private getRelease(withNext = true){
-        def currentProduct = Product.load(params.product)
-        def release
-        if (!params.id) {
-            release = withNext ? Release.findCurrentOrNextRelease(currentProduct.id).list()[0] : Release.findCurrentOrLastRelease(currentProduct.id).list()[0]
-        } else {
-            release = (Release)Release.getInProduct(params.long('product'),params.long('id')).list()
-        }
-        return release
     }
 }

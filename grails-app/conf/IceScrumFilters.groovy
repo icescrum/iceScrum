@@ -19,75 +19,94 @@
  *
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
+
 import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
 
 class IceScrumFilters {
 
-  def securityService
-  def springSecurityService
+    def securityService
+    def springSecurityService
 
-  def filters = {
-    pkey(controller: 'scrumOS', action: 'index') {
-      before = {
-        if (params.product) {
-          params.product = params.product.decodeProductKey()
-          if (!params.product) {
-                redirect(controller: 'scrumOS', action:'index')
-                return
-          }
-
-        }
-      }
-    }
-
-    webservices(uri: '/ws/**') {
-      before = {
-        def webservices = false
-        if (params.product) {
-            params.product = params.product.decodeProductKey()
-             webservices = Product.createCriteria().get {
-                              eq 'id', params.product.toLong()
-                                preferences {
-                                    projections {
-                                        property 'webservices'
-                                    }
-                                }
-                              cache true
-                            }
-            if (!webservices){
-                render(status: 503)
-            }else{
-                if(request.format == 'xml' && params.values){
-                    params.remove('values')?.each{ k, v ->
-                        params."${k}" = v
+    def filters = {
+        pkey(controller: 'scrumOS', action: 'index') {
+            before = {
+                if (params.product) {
+                    params.product = params.product.decodeProductKey()
+                    if (!params.product) {
+                        redirect(controller: 'scrumOS', action: 'index')
+                        return
                     }
+
                 }
             }
         }
-        return webservices
-      }
-    }
 
-    permissions(controller: '*', action: '*') {
-      before = {
-        securityService.filterRequest()
-        return
-      }
-    }
+        webservices(uri: '/ws/**') {
+            before = {
+                def webservices = false
+                if (params.product) {
+                    params.product = params.product.decodeProductKey()
+                    webservices = Product.createCriteria().get {
+                        eq 'id', params.product.toLong()
+                        preferences {
+                            projections {
+                                property 'webservices'
+                            }
+                        }
+                        cache true
+                    }
+                    if (!webservices) {
+                        render(status: 503)
+                    } else {
+                        if (request.format == 'xml' && params.values) {
+                            params.remove('values')?.each { k, v ->
+                                params."${k}" = v
+                            }
+                        }
+                    }
+                }
+                return webservices
+            }
+        }
 
-    pkeyFeed(controller: 'project', action: 'feed') {
-      before = {
-        if (params.product) {
-          params.product = params.product.decodeProductKey()
-          if (!params.product) {
-            render(status: 404)
-            return
-          }
+        permissions(controller: '*', action: '*') {
+            before = {
+                securityService.filterRequest()
+                return
+            }
+        }
+
+        pkeyFeed(controller: 'project', action: 'feed') {
+            before = {
+                if (params.product) {
+                    params.product = params.product.decodeProductKey()
+                    if (!params.product) {
+                        render(status: 404)
+                        return
+                    }
+
+                }
+            }
 
         }
-      }
 
+        releaseId(controller: 'releasePlan', action: '*') {
+            before = {
+                if (!params.id) {
+                    params.id = !actionName.contains('Chart') ? Release.findCurrentOrNextRelease(Product.load(params.product).id).list()[0]?.id : Release.findCurrentOrLastRelease(Product.load(params.product).id).list()[0]?.id
+                }
+            }
+        }
+
+        sprintId(controller: 'sprintPlan', action: '*') {
+            before = {
+                if (!params.id) {
+                    params.id = !actionName.contains('Chart') ? Sprint.findCurrentOrNextSprint(Product.load(params.product).id).list()[0]?.id : Sprint.findCurrentOrLastSprint(Product.load(params.product).id).list()[0]?.id
+                }
+            }
+        }
     }
-  }
 
 }

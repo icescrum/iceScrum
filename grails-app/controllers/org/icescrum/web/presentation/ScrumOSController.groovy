@@ -151,8 +151,9 @@ class ScrumOSController {
 
             def projectName = null, projectKey = null
             def param = [:]
+            def p = null
             if (params.product) {
-                def p  = Product.get(params.long('product'))
+                p  = Product.get(params.long('product'))
                 projectName = p?.name
                 projectKey = p?.pkey
                 param = [product: params.product]
@@ -174,19 +175,30 @@ class ScrumOSController {
                 }
                 return
             }
-            render is.window([
-                    window: params.window,
-                    projectName: projectName,
-                    title: message(code: uiDefinition.window?.title),
-                    help: message(code: uiDefinition.window?.help),
-                    shortcuts: uiDefinition.shortcuts,
-                    hasToolbar: uiDefinition.window?.toolbar,
-                    hasTitleBarContent: uiDefinition.window?.titleBarContent,
-                    maximizeable: uiDefinition.window?.maximizeable,
-                    closeable: uiDefinition.window?.closeable,
-                    widgetable: uiDefinition.widget ? true : false,
-                    init: params.actionWindow ?: uiDefinition.window?.init
-            ], {})
+
+            def _continue = true
+            if (uiDefinition.window.before){
+                uiDefinition.window.before.delegate = delegate
+                uiDefinition.window.before.resolveStrategy = Closure.DELEGATE_FIRST
+                _continue = uiDefinition.window.before(p)
+            }
+            if (!_continue){
+                render(status:404)
+            } else {
+                render is.window([
+                        window: params.window,
+                        projectName: projectName,
+                        title: message(code: uiDefinition.window?.title),
+                        help: message(code: uiDefinition.window?.help),
+                        shortcuts: uiDefinition.shortcuts,
+                        hasToolbar: uiDefinition.window?.toolbar,
+                        hasTitleBarContent: uiDefinition.window?.titleBarContent,
+                        maximizeable: uiDefinition.window?.maximizeable,
+                        closeable: uiDefinition.window?.closeable,
+                        widgetable: uiDefinition.widget ? true : false,
+                        init: params.actionWindow ?: uiDefinition.window?.init
+                ], {})
+            }
         }
     }
 
@@ -280,7 +292,7 @@ class ScrumOSController {
         }
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
+    //@Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
     def templates = {
         def currentSprint = null
         def product = null

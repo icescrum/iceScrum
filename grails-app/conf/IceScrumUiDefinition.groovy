@@ -1,3 +1,7 @@
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
+
 /*
 * Copyright (c) 2012 Kagilum SAS
 *
@@ -52,7 +56,7 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'list',
-                viewTypes:['table','postits']
+                viewTypes:['postits','table']
         ]
     }
 
@@ -86,7 +90,7 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'list',
-                viewTypes:['table','postits']
+                viewTypes:['postits','table']
         ]
     }
 
@@ -136,8 +140,8 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'list',
-                viewTypes:['table','postits'],
-                charts:['productParkingLot']
+                viewTypes:['postits','table'],
+                charts:['productParkingLotChart']
         ]
     }
 
@@ -175,6 +179,9 @@ uiDefinitions = {
             init 'index'
             toolbar true
             titleBarContent true
+            before { def product ->
+                params.id = params.id  ?: !actionName.contains('Chart') ? Release.findCurrentOrNextRelease(product.id).list()[0]?.id : Release.findCurrentOrLastRelease(product.id).list()[0]?.id
+            }
         }
         shortcuts = [
             [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
@@ -187,7 +194,7 @@ uiDefinitions = {
         embedded = [
                 view:'index',
                 viewTypes:['postits'],
-                charts:['releaseBurndownChart','releaseParkingLotChart']
+                charts:['releaseBurndownChart','releaseParkingLotChart'],
         ]
     }
 
@@ -223,7 +230,7 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'list',
-                viewTypes:['table','postits']
+                viewTypes:['postits','table']
         ]
     }
 
@@ -240,6 +247,9 @@ uiDefinitions = {
             help 'is.ui.sprintPlan.help'
             toolbar true
             titleBarContent true
+            before { def product ->
+                params.id = params.id ?: !actionName.contains('Chart') ? Sprint.findCurrentOrNextSprint(product.id).list()[0]?.id : Sprint.findCurrentOrLastSprint(product.id).list()[0]?.id
+            }
         }
         shortcuts = [
             [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
@@ -253,8 +263,8 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'index',
-                viewTypes:['table','postits'],
-                charts:['sprintBurndownHoursChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart']
+                viewTypes:['postits','table'],
+                charts:['sprintBurndownHoursChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
         ]
     }
 
