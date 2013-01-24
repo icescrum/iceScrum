@@ -109,7 +109,7 @@
   </jq:jquery>
   </div>
 </div>
-<g:if test="${withButtonBar}">
+<g:if test="${withButtonBar && !request.readOnly}">
     <is:buttonBar>
         <is:button
                 href="#${controllerName}"

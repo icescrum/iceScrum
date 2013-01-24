@@ -92,7 +92,7 @@
     $('#sprintBurnupTasks').find('.jqplot-table-legend').css('bottom','-12px');
     </jq:jquery>
 </div>
-<g:if test="${withButtonBar}">
+<g:if test="${withButtonBar && !request.readOnly}">
     <is:buttonBar>
         <is:button
               href="#${controllerName}/${params.id}"

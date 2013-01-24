@@ -160,7 +160,7 @@
                     //write li's
                     for (var i in selectOptionData) {
                         if (!$.isFunction(selectOptionData[i])) {
-                            var thisLi = $('<li role="presentation"><a href="#" tabindex="-1" role="option" aria-selected="false">' + selectOptionData[i].text + '</a></li>')
+                            var thisLi = $('<li role="presentation"><a href="#" onclick="return false;" tabindex="-1" role="option" aria-selected="false">' + selectOptionData[i].text + '</a></li>')
                                     .data('index', i)
                                     .addClass(selectOptionData[i].classes)
                                     .data('optionClasses', selectOptionData[i].classes || '')

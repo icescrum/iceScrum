@@ -140,8 +140,7 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'list',
-                viewTypes:['postits','table'],
-                charts:['productParkingLotChart']
+                viewTypes:['postits','table','productParkingLotChart']
         ]
     }
 
@@ -161,7 +160,7 @@ uiDefinitions = {
         }
         embedded = [
                 view:'productCumulativeFlowChart',
-                charts:['productCumulativeFlowChart','productVelocityCapacityChart','productBurnupChart','productBurndownChart','productVelocityChart','productParkingLotChart']
+                viewTypes:['productCumulativeFlowChart','productVelocityCapacityChart','productBurnupChart','productBurndownChart','productVelocityChart','productParkingLotChart'],
         ]
     }
 
@@ -193,8 +192,14 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'index',
-                viewTypes:['postits'],
-                charts:['releaseBurndownChart','releaseParkingLotChart'],
+                viewTypes:['postits','notes','releaseBurndownChart','releaseParkingLotChart'],
+                id:{ product ->
+                    def id = [label:message(code:'is.ui.releasePlan.choose.release'), select:[[key:'', value:message(code:'is.ui.releasePlan.id.empty')]]]
+                    product.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
+                        id.select << [key:it.id, value:"${it.name}"]
+                    }
+                    id
+                }
         ]
     }
 
@@ -263,8 +268,14 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'index',
-                viewTypes:['postits','table'],
-                charts:['sprintBurndownHoursChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
+                viewTypes:['postits','table','notes','sprintBurndownHoursChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
+                id:{ product ->
+                    def id = [label:message(code:'is.ui.sprintPlan.choose.sprint'), select:[[key:'', value:message(code:'is.ui.sprintPlan.id.empty')]]]
+                    product.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
+                        it.sprints?.collect {v -> id.select << [key:v.id, value:"${it.name} - Sprint ${v.orderNumber}"]}
+                    }
+                    id
+                }
         ]
     }
 
