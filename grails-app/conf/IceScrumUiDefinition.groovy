@@ -194,7 +194,7 @@ uiDefinitions = {
                 view:'index',
                 viewTypes:['postits','notes','releaseBurndownChart','releaseParkingLotChart'],
                 id:{ product ->
-                    def id = [label:message(code:'is.ui.releasePlan.choose.release'), select:[[key:'', value:message(code:'is.ui.releasePlan.id.empty')]]]
+                    def id = [label:message(code:'is.release'), select:[[key:'', value:message(code:'is.ui.releasePlan.id.empty')]]]
                     product.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
                         id.select << [key:it.id, value:"${it.name}"]
                     }
@@ -270,7 +270,7 @@ uiDefinitions = {
                 view:'index',
                 viewTypes:['postits','table','notes','sprintBurndownHoursChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
                 id:{ product ->
-                    def id = [label:message(code:'is.ui.sprintPlan.choose.sprint'), select:[[key:'', value:message(code:'is.ui.sprintPlan.id.empty')]]]
+                    def id = [label:message(code:'is.sprint'), select:[[key:'', value:message(code:'is.ui.sprintPlan.id.empty')]]]
                     product.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
                         it.sprints?.collect {v -> id.select << [key:v.id, value:"${it.name} - Sprint ${v.orderNumber}"]}
                     }
