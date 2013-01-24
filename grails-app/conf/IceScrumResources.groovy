@@ -108,7 +108,6 @@ modules = {
 
     'jquery-plugins' {
         dependsOn 'jquery'
-        resource url: [dir: 'js/jquery', file: 'jquery.mention.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.pnotify.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.history.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.mousewheel.min.js'], nominify: true, bundle: 'icescrum'
