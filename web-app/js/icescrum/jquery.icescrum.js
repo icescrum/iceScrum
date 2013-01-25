@@ -307,7 +307,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                             if (typeof save != 'undefined' && save) {
                                 $.cookie(container + $.icescrum.product.id, url);
                             }
-                            var test = /\/(.*)\//;
+                            var test = /\/(.*)/;
                             var match = test.exec(url);
                             if (match[1]) {
                                 $('#panel-chart').find('.right').removeClass('selected');
