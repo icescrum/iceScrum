@@ -226,10 +226,10 @@ class SprintPlanController {
             selected = [id: params.story?.id]
 
         def selectList = []
-        if (sprint.parentRelease.parentProduct.preferences.displayRecurrentTasks)
-            selectList << [id: 'recurrent', name: ' ** ' + message(code: 'is.task.type.recurrent') + ' ** ']
         if (sprint.parentRelease.parentProduct.preferences.displayUrgentTasks)
             selectList << [id: 'urgent', name: ' ** ' + message(code: 'is.task.type.urgent') + ' ** ']
+        if (sprint.parentRelease.parentProduct.preferences.displayRecurrentTasks)
+            selectList << [id: 'recurrent', name: ' ** ' + message(code: 'is.task.type.recurrent') + ' ** ']
         selectList = selectList + stories
 
         render(template: 'window/manage', model: [
