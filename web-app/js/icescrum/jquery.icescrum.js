@@ -310,6 +310,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                             var test = /\/(.*)/;
                             var match = test.exec(url);
                             if (match[1]) {
+                                if (match[1].endsWith('/')){
+                                    match[1] = match[1].substr(0, match[1].length - 1)
+                                }
                                 $('#panel-chart').find('.right').removeClass('selected');
                                 $('#chart-' + match[1]).addClass('selected');
                             }
