@@ -48,6 +48,7 @@
                       name="productd.description"
                       value="${product.description}"/>
             </is:fieldArea>
+            <entry:point id="${controllerName}-${actionName}-settings" model="[product:product]"/>
             <g:if test="${!product.preferences.archived && (request.owner || request.scrumMaster)}">
                 <is:fieldInput for="archivedProject" label="is.dialog.project.archive" class="productcreator" noborder="true">
                     <button onClick="if (confirm('${message(code:'is.dialog.project.archive.confirm').encodeAsJavaScript()}')) {
