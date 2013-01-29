@@ -657,8 +657,8 @@ class StoryController {
                     backlogElement:story.id,
                     lastUpdated:comment.lastUpdated,
                     body:comment.body]
-            broadcast(function: 'update', message: story)
-            broadcast(function: 'add', message: myComment)
+            broadcast(function: 'update', message: story, channel:'product-'+story.backlog.id)
+            broadcast(function: 'add', message: myComment, channel:'product-'+story.backlog.id)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text:myComment as JSON)  }
                 json { renderRESTJSON(text:comment) }
@@ -703,8 +703,8 @@ class StoryController {
                     backlogElement:commentable.id,
                     lastUpdated:comment.lastUpdated,
                     body:comment.body]
-            broadcast(function: 'update', message: commentable)
-            broadcast(function: 'update', message: myComment)
+            broadcast(function: 'update', message: commentable, channel:'product-'+commentable.backlog.id)
+            broadcast(function: 'update', message: myComment, channel:'product-'+commentable.backlog.id)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text:myComment as JSON)  }
                 json { renderRESTJSON(text:comment) }
@@ -735,8 +735,8 @@ class StoryController {
         try {
             commentable.removeComment(comment)
             commentable.lastUpdated = new Date()
-            broadcast(function: 'update', message: commentable)
-            broadcast(function: 'delete', message: [class: comment.class, id: comment.id])
+            broadcast(function: 'update', message: commentable, channel:'product-'+params.long('product'))
+            broadcast(function: 'delete', message: [class: comment.class, id: comment.id], channel:'product-'+params.long('product'))
             publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_DELETED))
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: idc as JSON }
