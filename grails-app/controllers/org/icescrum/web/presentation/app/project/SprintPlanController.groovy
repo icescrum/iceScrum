@@ -72,12 +72,7 @@ class SprintPlanController {
 
     def toolbar = {
         def sprint
-        def currentProduct = Product.load(params.product)
-        if (!params.id) {
-            sprint = Sprint.findCurrentOrNextSprint(currentProduct.id).list()[0]
-            if (sprint)
-                params.id = sprint.id
-        } else {
+        if (params.id) {
             sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }
 
@@ -91,17 +86,13 @@ class SprintPlanController {
 
     def index = {
         Sprint sprint
+
         User user = (User) springSecurityService.currentUser
         def currentProduct = Product.load(params.product)
         if (!params.id) {
-            sprint = Sprint.findCurrentOrNextSprint(currentProduct.id).list()[0]
-            if (sprint)
-                params.id = sprint.id
-            else {
-                def release = currentProduct.releases.find {it.state == Release.STATE_WAIT}
-                render(template: 'window/blank', model: [release: release ?: null])
-                return
-            }
+            def release = currentProduct.releases.find {it.state == Release.STATE_WAIT}
+            render(template: 'window/blank', model: [release: release ?: null])
+            return
         }else{
             sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }

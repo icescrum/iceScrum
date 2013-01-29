@@ -178,8 +178,9 @@ uiDefinitions = {
             init 'index'
             toolbar true
             titleBarContent true
-            before { def product ->
-                params.id = params.id  ?: !actionName.contains('Chart') ? Release.findCurrentOrNextRelease(product.id).list()[0]?.id : Release.findCurrentOrLastRelease(product.id).list()[0]?.id
+            before { def product, def action ->
+                params.id = params.id  ?: (actionName.contains('Chart') || actionName == 'openWindow' ? (Release.findCurrentOrLastRelease(product.id).list()[0]?.id ?: Release.findCurrentOrNextRelease(product.id).list()[0]?.id) : Release.findCurrentOrNextRelease(product.id).list()[0]?.id)
+                !params.id && actionName == 'openWindow' ? true : params.id
             }
         }
         shortcuts = [
@@ -252,8 +253,9 @@ uiDefinitions = {
             help 'is.ui.sprintPlan.help'
             toolbar true
             titleBarContent true
-            before { def product ->
-                params.id = params.id ?: !actionName.contains('Chart') ? Sprint.findCurrentOrNextSprint(product.id).list()[0]?.id : Sprint.findCurrentOrLastSprint(product.id).list()[0]?.id
+            before { def product, def action ->
+                params.id = params.id ?: action.contains('Chart') || actionName == 'openWindow' ? (Sprint.findCurrentOrLastSprint(product.id).list()[0]?.id ?: Sprint.findCurrentOrNextSprint(product.id).list()[0]?.id) : Sprint.findCurrentOrNextSprint(product.id).list()[0]?.id
+                !params.id && actionName == 'openWindow' ? true : params.id
             }
         }
         shortcuts = [

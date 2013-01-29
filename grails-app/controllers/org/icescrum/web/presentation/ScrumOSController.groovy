@@ -180,7 +180,7 @@ class ScrumOSController {
             if (uiDefinition.window.before){
                 uiDefinition.window.before.delegate = delegate
                 uiDefinition.window.before.resolveStrategy = Closure.DELEGATE_FIRST
-                _continue = uiDefinition.window.before(p)
+                _continue = uiDefinition.window.before(p, params.actionWindow ?: uiDefinition.window?.init)
             }
             if (!_continue){
                 render(status:404)
