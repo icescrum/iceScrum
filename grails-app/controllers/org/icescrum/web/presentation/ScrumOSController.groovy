@@ -269,6 +269,7 @@ class ScrumOSController {
     def reportError = {
         try {
             notificationEmailService.send([
+                    from: springSecurityService.currentUser?.email?:null,
                     to: grailsApplication.config.icescrum.alerts.errors.to,
                     subject: "[iceScrum][report] Rapport d'erreur",
                     view: '/emails-templates/reportError',
