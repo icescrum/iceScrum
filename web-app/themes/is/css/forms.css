@@ -827,6 +827,10 @@
 .area-large textarea {
     height: 134px;
 }
+.box-form-250 .area.area-large textarea {
+    height: 134px;
+    width:  400px;
+}
 
 /*
 ////////////////////////////////////////////////////////////////////////////////
