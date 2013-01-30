@@ -39,7 +39,9 @@
     var description =  this.description ? this.description : '';
     var typeTitle = this.blocked ? '${message(code: 'is.task.blocked')}' : '';
     var typeNumber = this.blocked ? 1 : 0;
-    var estimation = jQuery.icescrum.formattedTaskEstimation(this.estimation);
+    var estimation = jQuery.icescrum.formattedTaskEstimation(this.estimation, true);
+    var initial = jQuery.icescrum.formattedTaskEstimation(this.initial, false);
+    initial = initial ? '${message(code:'is.task.initial.long').encodeAsJavaScript()}'+': '+initial : '';
     var resp = this.responsible ? (this.responsible.firstName +' '+this.responsible.lastName) : '';
     resp = resp.length > 16 ? resp.substring(0,13)+'...' : resp;
     var styleClass = 'task ' + (resp ? 'hasResponsible' : '');
@@ -58,6 +60,7 @@
                stateText="?**=resp**?"
                attachment="${task.totalAttachments}"
                miniValue="?**=estimation**?"
+               miniValueTitle="?**=initial**?"
                color="?**=this.color**?"
                menu="[params:[controllerName:id, task:task, user:user, template:true], template:'/task/menu', id:'task-'+task.id, rendered:request.inProduct]"
                rect="true">

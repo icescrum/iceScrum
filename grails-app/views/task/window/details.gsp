@@ -47,8 +47,8 @@
                     <is:panelLine legend="${message(code:'is.task.color')}">
                         <is:postitIcon color="${task.color}"/>
                     </is:panelLine>
-                    <is:panelLine legend="${message(code:'is.task.estimation')}" rendered="${task.estimation != null}">
-                        ${task.estimation}
+                    <is:panelLine legend="${message(code:'is.task.estimation')}" rendered="${task.estimation != null || task.initial != null}">
+                        ${task.estimation ?: '?'} ${task.initial ? '('+message(code:'is.task.initial')+': '+task.initial+')' : ''}
                     </is:panelLine>
                     <is:panelLine legend="${message(code:'is.sprint')}" rendered="${sprint != null}">
                         <is:scrumLink controller="releasePlan" id="${sprint.parentRelease.id}">

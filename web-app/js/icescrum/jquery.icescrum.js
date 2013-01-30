@@ -398,9 +398,11 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     });
         },
 
-        formattedTaskEstimation:function(estimation) {
-            if(estimation == null)
+        formattedTaskEstimation:function(estimation, defaultChar) {
+            if(estimation == null && defaultChar)
                 return '?';
+            else if(estimation == null)
+                return null;
             else
                 return estimation.toString().indexOf('.') == -1 ? estimation.toString().concat('.0') : estimation;
         },

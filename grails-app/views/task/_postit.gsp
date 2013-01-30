@@ -45,6 +45,7 @@
            menu="[id:'task-'+task.id,template:'/task/menu',params:[id:id, task:task, user:user], rendered:request.inProduct && !sprintDone]"
            stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
            miniValue="${task.estimation >= 0 ? task.estimation :'?'}"
+           miniValueTitle="${task.initial >= 0 ? message(code:'is.task.initial.long')+': '+task.initial : null}"
            editableEstimation="${taskEditable}"
            color="${task.color}"
            rect="${rect ? rect : true}">
