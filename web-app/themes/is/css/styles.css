@@ -111,6 +111,14 @@ li#li-roles {
     overflow: auto;
 }
 
+.rich-content ul, .rich-content ol {
+    padding:0;
+}
+
+.rich-content ul li {
+    padding:0;
+}
+
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //	Main & local
