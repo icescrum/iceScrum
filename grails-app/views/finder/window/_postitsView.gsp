@@ -49,7 +49,7 @@
         if ( parseInt($('#search-panel').css('margin-right'), 10) < 0){
             margin = 0;
         }
-        $('#search-result').css('width', $('#window-content-finder').width() - margin);
+        $('#search-result').css('width', Math.round($('#window-content-finder').width() - margin - 1));
     }).trigger('resize');
 </jq:jquery>
 <div id="search-panel">
