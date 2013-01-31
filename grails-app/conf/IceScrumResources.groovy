@@ -76,6 +76,7 @@ modules = {
     'jquery-ui-plugins' {
         dependsOn 'jquery-ui'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-en.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-en_US.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-fr.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-es.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-de.js'], bundle: 'icescrum'
