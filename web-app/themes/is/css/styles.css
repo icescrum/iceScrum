@@ -1257,6 +1257,11 @@ li#li-roles {
     line-height: 15px;
 }
 
+.list-news li .comment-body p, .list-comments li .comment-body p, .list-acceptance-tests li .acceptance-test-description p {
+    padding:8px;
+    padding-left: 0;
+}
+
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //	Release Plan
