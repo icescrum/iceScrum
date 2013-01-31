@@ -177,7 +177,7 @@
             <g:if test="${story.totalAttachments}">
                 <div>
                     <strong>${message(code: 'is.postit.attachment', args: [story.totalAttachments, story.totalAttachments > 1 ? 's' : ''])} :</strong>
-                    <is:attachedFiles bean="${story}" width="120" deletable="${false}" params="[product:params.product]" size="20"/>
+                    <is:attachedFiles bean="${story}" width="120" deletable="${false}" params="[product:params.product]" controller="story" size="20"/>
                 </div>
             </g:if>
             <entry:point id="quicklook-story-right" model="[story:story]"/>
