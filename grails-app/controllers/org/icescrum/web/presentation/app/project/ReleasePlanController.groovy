@@ -45,12 +45,7 @@ class ReleasePlanController {
 
     def titleBarContent = {
         def release
-        if (!params.id) {
-            release = Release.findCurrentOrNextRelease(params.long('product')).list()[0]
-            if (release) {
-                params.id = release.id
-            }
-        } else {
+        if (params.id) {
             release = Release.getInProduct(params.long('product'),params.long('id')).list()
         }
         def releases
@@ -71,12 +66,7 @@ class ReleasePlanController {
 
     def toolbar = {
         def release
-        if (!params.id) {
-            release = Release.findCurrentOrNextRelease(params.long('product')).list()[0]
-            if (release) {
-                params.id = release.id
-            }
-        } else {
+        if (params.id) {
             release = Release.getInProduct(params.long('product'),params.long('id')).list()
         }
         if (!release) {
@@ -88,15 +78,7 @@ class ReleasePlanController {
 
     def index = {
         def release
-        if (!params.id) {
-            release = Release.findCurrentOrNextRelease(params.long('product')).list()[0]
-            if (release) {
-                params.id = release.id
-            } else {
-                render(template: 'window/blank')
-                return
-            }
-        } else {
+        if (params.id) {
             release = Release.getInProduct(params.long('product'),params.long('id')).list()
         }
         if (!release || !(release instanceof Release)) {

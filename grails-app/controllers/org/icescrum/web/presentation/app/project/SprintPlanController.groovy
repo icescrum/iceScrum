@@ -52,12 +52,9 @@ class SprintPlanController {
     def titleBarContent = {
         def currentProduct = Product.load(params.product)
         def sprint
-        if (!params.id) {
-            sprint = Sprint.findCurrentOrNextSprint(currentProduct.id).list()[0]
-        } else {
+        if (params.id) {
             sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }
-
         def sprintsName = []
         def sprintsId = []
         currentProduct.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
