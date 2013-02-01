@@ -90,11 +90,13 @@
     $('#releaseBurnDown').find('.jqplot-table-legend').css('bottom','-12px');
   </jq:jquery>
 </div>
-<is:buttonBar>
-    <is:button
-          href="#${controllerName}/${params.id}"
-          elementId="close"
-          type="link"
-          button="button-s button-s-black"
-          value="${message(code: 'is.button.close')}"/>
-</is:buttonBar>
+<g:if test="${!request.readOnly}">
+    <is:buttonBar>
+        <is:button
+              href="#${controllerName}/${params.id}"
+              elementId="close"
+              type="link"
+              button="button-s button-s-black"
+              value="${message(code: 'is.button.close')}"/>
+    </is:buttonBar>
+</g:if>
