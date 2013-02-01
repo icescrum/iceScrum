@@ -342,13 +342,19 @@ class StoryController {
         withStories{List<Story> stories ->
             def ids = []
             stories.each { ids << [id: it.id, state: it.state] }
-            storyService.delete(stories)
+            storyService.delete(stories, true, params.reason? params.reason.replaceAll("(\r\n|\n)", "<br/>") :null)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: ids as JSON)  }
                 json { render(status: 204) }
                 xml { render(status: 204) }
             }
         }
+    }
+
+    @Secured('isAuthenticated()')
+    def openDialogDelete = {
+        def dialog = g.render(template: 'dialogs/delete')
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     @Secured('isAuthenticated()')

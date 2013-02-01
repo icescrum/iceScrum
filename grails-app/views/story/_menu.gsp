@@ -138,10 +138,7 @@
 
 <g:if test="${(productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED) || template}">
     <li id="menu-delete-${story.id}">
-        <a href="${createLink(action:'delete',controller:'story',params:[product:params.product],id:story.id)}"
-           data-ajax-trigger="remove_story"
-           data-ajax-notice="${message(code: 'is.story.deleted').encodeAsJavaScript()}"
-           data-ajax="true">
+        <a href="${createLink(action:'openDialogDelete',controller:'story',params:[product:params.product],id:story.id)}" data-ajax="true">
            <g:message code='is.ui.sandbox.menu.delete'/>
         </a>
     </li>

@@ -1104,6 +1104,10 @@
     width: 200px;
 }
 
+.box-form-160-legend label {
+    width: 160px;
+}
+
 .box-form-200-legend .panel {
     background-position: -285px 0;
 }

@@ -76,7 +76,7 @@
 
     <li class="navigation-item separator">
         <a class="tool-button button-n"
-           onclick="jQuery.icescrum.selectableAction('story/delete',null,null,function(data){ jQuery.event.trigger('remove_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.deleted')}'); });"
+           onclick="jQuery.icescrum.selectableAction('story/openDialogDelete',true,null,null);"
            data-shortcut="del"
            data-shortcut-on="#window-id-${controllerName}"
            alt="${message(code:'is.ui.sandbox.toolbar.alt.delete')}"

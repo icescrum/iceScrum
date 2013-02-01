@@ -89,10 +89,7 @@
 
     <li class="navigation-item ${request.productOwner && story.state >= Story.STATE_SUGGESTED && story.state <= Story.STATE_DONE ? 'separator' : ''}">
         <a class="tool-button button-n"
-           href="${createLink(controller:'story', action:'delete',id:story.id,params:[product:params.product])}"
-           data-ajax-notice="${message(code:'is.story.deleted').encodeAsJavaScript()}"
-           data-ajax-trigger="remove_story"
-           data-ajax-success="#${story.state > Story.STATE_SUGGESTED ? 'backlog' : 'sandbox'}"
+           href="${createLink(controller:'story', action:'openDialogDelete', id:story.id, params:[product:params.product])}"
            data-ajax="true"
            title="${message(code:'is.ui.backlogelement.toolbar.delete')}"
            alt="${message(code:'is.ui.backlogelement.toolbar.delete')}">
