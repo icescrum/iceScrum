@@ -363,7 +363,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                         open: function() {
                             $("#is-logo").removeClass().addClass('connected');
                             if ($.icescrum.o.timeout){
-                                $.icescrum.o.timeout = null;
                                 //reload widgets
                                 if ($.icescrum.getWidgetsList().length > 0) {
                                     var tmp = $.icescrum.getWidgetsList();
@@ -381,6 +380,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                     },50);
                                 }
                             }
+                            $.icescrum.o.timeout = null;
                         },
                         error: function() {
                             $("#is-logo").removeClass().addClass('disconnected');
@@ -388,7 +388,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                         close: function(event, stream) {
                             if (!stream.options.reconnect) {
                                 $("#is-logo").removeClass().addClass('disconnected');
-                                $.icescrum.o.timeout = $.icescrum.o.timeout != undefined ? ($.icescrum.o.timeout + 60 > 3600 ? 3600 : $.icescrum.o.timeout + 60) : 0;
+                                $.icescrum.o.timeout = $.icescrum.o.timeout != null ? ($.icescrum.o.timeout + 60 > 3600 ? 3600 : $.icescrum.o.timeout + 60) : 0;
                                 $.icescrum.renderNotice('Connection lost, retry in '+($.icescrum.o.timeout ? ($.icescrum.o.timeout / 60 > 0 ? $.icescrum.o.timeout / 60 : $.icescrum.o.timeout) : 10)+ ($.icescrum.o.timeout / 60 > 0 ? 'min' : 'sec'), 'error', '');
                                 setTimeout(function(){
                                     $.icescrum.listenServer();
