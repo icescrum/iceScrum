@@ -77,7 +77,11 @@ class ScrumOSController {
         def currentProductInstance = params.product ? Product.get(params.long('product')) : null
 
         if (currentProductInstance?.preferences?.hidden && !securityService.inProduct(currentProductInstance, springSecurityService.authentication) && !securityService.stakeHolder(currentProductInstance,springSecurityService.authentication,false)){
-            redirect(action:'error403',controller:'errors')
+            if (springSecurityService.isLoggedIn())
+                forward(action:'error403',controller:'errors')
+            else{
+                forward(action:'error401',controller:'errors')
+            }
             return
         }
 
@@ -171,7 +175,7 @@ class ScrumOSController {
                 if (springSecurityService.isLoggedIn()){
                     render(status:403)
                 } else {
-                    render(status:401, contentType: 'application/json', text:[url:params.window ? '#'+params.window + (params.actionWindow ? '/'+params.actionWindow : '') : ''] as JSON)
+                    render(status:401, contentType: 'application/json', text:[url:params.window ? '#'+params.window + (params.actionWindow ? '/'+params.actionWindow : '') + (params.id ? '/'+params.id : '') + (params.uid ? '/?uid='+params.uid : '') : ''] as JSON)
                 }
                 return
             }

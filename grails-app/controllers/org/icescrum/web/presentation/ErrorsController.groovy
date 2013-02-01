@@ -29,12 +29,11 @@ class ErrorsController {
     def springSecurityService
 
     def error403 = {
-        if (!springSecurityService.isLoggedIn())
-            redirect(action: 'error401')
-        else if (springSecurityService.isAjax(request))
+        if (springSecurityService.isAjax(request))
             render(status: 403, text: [error: message(code: 'is.error.denied')])
-        else
-            redirect(controller: 'login', action: 'index')
+        else{
+            render(status: 403, text: message(code: 'is.error.denied'))
+        }
     }
     def error401 = {
         if (springSecurityService.isAjax(request))

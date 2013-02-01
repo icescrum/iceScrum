@@ -755,7 +755,13 @@ class StoryController {
     }
 
     def shortURL = {
-        redirect(url: is.createScrumLink(controller: 'story', params:[uid: params.id]))
+        withProduct{ Product product ->
+            if (!springSecurityService.isLoggedIn() && product.preferences.hidden){
+                redirect(url:createLink(controller:'login', action: 'auth')+'?ref='+is.createScrumLink(controller: 'story', params:[uid: params.id]))
+                return
+            }
+            redirect(url: is.createScrumLink(controller: 'story', params:[uid: params.id]))
+        }
     }
 
     def summaryPanel = {
