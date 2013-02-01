@@ -362,12 +362,38 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                         throbber: {type:'lazy',delay:0},
                         open: function() {
                             $("#is-logo").removeClass().addClass('connected');
+                            if ($.icescrum.o.timeout){
+                                $.icescrum.o.timeout = null;
+                                //reload widgets
+                                if ($.icescrum.getWidgetsList().length > 0) {
+                                    var tmp = $.icescrum.getWidgetsList();
+                                    $.icescrum.saveWidgetsList([]);
+                                    for (i = 0; i < tmp.length; i++) {
+                                        $.icescrum.addToWidgetBar(tmp[i]);
+                                    }
+                                }
+                                //reload window
+                                if ($.icescrum.o.currentOpenedWindow){
+                                    var hash = document.location.hash;
+                                    document.location.hash = '';
+                                    setTimeout(function(){
+                                        document.location.hash = hash;
+                                    },50);
+                                }
+                            }
                         },
                         error: function() {
                             $("#is-logo").removeClass().addClass('disconnected');
                         },
-                        close: function() {
-                            $("#is-logo").removeClass().addClass('disconnected');
+                        close: function(event, stream) {
+                            if (!stream.options.reconnect) {
+                                $("#is-logo").removeClass().addClass('disconnected');
+                                $.icescrum.o.timeout = $.icescrum.o.timeout ? ($.icescrum.o.timeout + 60 > 300 ? 300 : $.icescrum.o.timeout + 60) : 10;
+                                $.icescrum.renderNotice('Connection lost, retry in '+$.icescrum.o.timeout+'sec', 'error', '');
+                                setTimeout(function(){
+                                    $.icescrum.listenServer();
+                                }, $.icescrum.o.timeout * 1000);
+                            }
                         },
                         message: function(event) {
                             try {
