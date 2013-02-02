@@ -370,6 +370,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                             $("#is-logo").removeClass().addClass('connected');
                             if ($.icescrum.o.timeout){
                                 //reload widgets
+                                $('#notifications').html('');
+
                                 if ($.icescrum.getWidgetsList().length > 0) {
                                     var tmp = $.icescrum.getWidgetsList();
                                     $.icescrum.saveWidgetsList([]);
@@ -435,10 +437,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 var notifications = $('#notifications');
                 setTimeout(function(){
                     var minutesFix = $.icescrum.o.timeout / 60;
-                    notifications.html('<a class="retry" title="Retry now">Connection lost, retry in '+(minutesFix > 1 ? Math.round(minutesFix) : $.icescrum.o.timeout)+ (minutesFix > 1 ? ' min' : ' sec')+'...</a> (<a class="cancel">cancel</a>)').show();
+                    notifications.html('<a class="retry" title="Retry now">Connection lost, retry in '+(minutesFix >= 1 ? Math.round(minutesFix) : $.icescrum.o.timeout)+ (minutesFix >= 1 ? ' min' : ' sec')+'...</a> (<a class="cancel">cancel</a>)').show();
                     var countdown = setInterval(function () {
                         var minutes = count / 60;
-                        notifications.find('.retry').html('Connection lost, retry in '+(minutes > 1 ? Math.round(minutes) : count) + (minutes > 1 ? ' min' : ' sec')+'...');
+                        notifications.find('.retry').html('Connection lost, retry in '+(minutes >= 1 ? Math.round(minutes) : count) + (minutes >= 1 ? ' min' : ' sec')+'...');
                         if (count == 0) {
                             clearInterval(countdown);
                         }
@@ -454,12 +456,13 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     notifications.find('.retry').unbind('click').on('click', function(){
                         clearTimeout(reconnect);
                         clearInterval(countdown);
+                        notifications.html('Retrying now...');
                         $.icescrum.listenServer();
                         return false;
                     });
                 }, 1000);
                 reconnect = setTimeout(function(){
-                    notifications.html('');
+                    notifications.html('Retrying now...');
                     $.icescrum.listenServer();
                 }, ($.icescrum.o.timeout ? $.icescrum.o.timeout : 10)  * 1000);
             }
