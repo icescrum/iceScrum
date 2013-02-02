@@ -310,7 +310,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                             var test = /\/(.*)/;
                             var match = test.exec(url);
                             if (match[1]) {
-                                if (match[1].endsWith('/')){
+                                if (match[1].indexOf('/') == match[1].length - 1){
                                     match[1] = match[1].substr(0, match[1].length - 1)
                                 }
                                 $('#panel-chart').find('.right').removeClass('selected');
@@ -356,6 +356,12 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 }
             });
 
+            $(window).on('beforeunload', function(){
+                $.icescrum.o.timeout = null;
+            });
+
+
+
             $.stream($.icescrum.o.streamUrl, {
                         dataType: "json",
                         openData: {useWebSocket: ($.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket)) ? "true" : "false"},
@@ -384,15 +390,11 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                         },
                         error: function() {
                             $("#is-logo").removeClass().addClass('disconnected');
+                            $.icescrum.streamReconnect();
                         },
                         close: function(event, stream) {
                             if (!stream.options.reconnect) {
-                                $("#is-logo").removeClass().addClass('disconnected');
-                                $.icescrum.o.timeout = $.icescrum.o.timeout != null ? ($.icescrum.o.timeout + 60 > 3600 ? 3600 : $.icescrum.o.timeout + 60) : 0;
-                                $.icescrum.renderNotice('Connection lost, retry in '+($.icescrum.o.timeout ? ($.icescrum.o.timeout / 60 > 0 ? $.icescrum.o.timeout / 60 : $.icescrum.o.timeout) : 10)+ ($.icescrum.o.timeout / 60 > 0 ? 'min' : 'sec'), 'error', '');
-                                setTimeout(function(){
-                                    $.icescrum.listenServer();
-                                }, ($.icescrum.o.timeout ? $.icescrum.o.timeout : 10)  * 1000);
+                                $.icescrum.streamReconnect();
                             }
                         },
                         message: function(event) {
@@ -422,6 +424,45 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                             }
                         }
                     });
+        },
+
+        streamReconnect:function(){
+            $("#is-logo").removeClass().addClass('disconnected');
+            if ($.icescrum.o.timeout !== false){
+                $.icescrum.o.timeout = $.icescrum.o.timeout != null ? ($.icescrum.o.timeout + 60 > 3600 ? 3600 : $.icescrum.o.timeout + 60) : 10;
+                var count = $.icescrum.o.timeout;
+                var reconnect;
+                var notifications = $('#notifications');
+                setTimeout(function(){
+                    var minutesFix = $.icescrum.o.timeout / 60;
+                    notifications.html('<a class="retry" title="Retry now">Connection lost, retry in '+(minutesFix > 1 ? Math.round(minutesFix) : $.icescrum.o.timeout)+ (minutesFix > 1 ? ' min' : ' sec')+'...</a> (<a class="cancel">cancel</a>)').show();
+                    var countdown = setInterval(function () {
+                        var minutes = count / 60;
+                        notifications.find('.retry').html('Connection lost, retry in '+(minutes > 1 ? Math.round(minutes) : count) + (minutes > 1 ? ' min' : ' sec')+'...');
+                        if (count == 0) {
+                            clearInterval(countdown);
+                        }
+                        count--;
+                    }, 1000);
+                    notifications.find('.cancel').unbind('click').on('click', function(){
+                        $.icescrum.o.timeout = false;
+                        clearTimeout(reconnect);
+                        clearInterval(countdown);
+                        notifications.html('');
+                        return false;
+                    });
+                    notifications.find('.retry').unbind('click').on('click', function(){
+                        clearTimeout(reconnect);
+                        clearInterval(countdown);
+                        $.icescrum.listenServer();
+                        return false;
+                    });
+                }, 1000);
+                reconnect = setTimeout(function(){
+                    notifications.html('');
+                    $.icescrum.listenServer();
+                }, ($.icescrum.o.timeout ? $.icescrum.o.timeout : 10)  * 1000);
+            }
         },
 
         formattedTaskEstimation:function(estimation, defaultChar) {
