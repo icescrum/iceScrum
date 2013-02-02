@@ -364,7 +364,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             $.stream($.icescrum.o.streamUrl, {
                         dataType: "json",
-                        openData: {useWebSocket: ($.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket)) ? "true" : "false"},
+                        openData: {ws: ($.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket)) ? "true" : "false"},
                         throbber: {type:'lazy',delay:0},
                         open: function() {
                             $("#is-logo").removeClass().addClass('connected');
