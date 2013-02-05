@@ -101,15 +101,19 @@ class TaskController {
         def type = params.remove('parentStory.id') ?: params.task.remove('parentStory.id')
         if (!type){
             type = params.remove('task.type') ?: params.task.remove('type')
-            type = type instanceof Integer ? type : type instanceof String && type.isNumber() ? type.toInteger() : null
             if (type in [Task.TYPE_RECURRENT,Task.TYPE_URGENT]){
                 type = type == Task.TYPE_RECURRENT ? 'recurrent' : 'urgent'
-            }else{
-                type = null
+            } else if (!(type in ['recurrent', 'urgent'])){
+                type = type instanceof Integer ? type : type instanceof String && type.isNumber() ? type.toInteger() : null
             }
         }
 
-        def story = !(type in ['recurrent', 'urgent'] && type) ? Story.getInProduct(params.long('product'), type.toLong()).list() : null
+        if (!type){
+            returnError(text: message(code: 'is.task.error.not.saved'))
+            return
+        }
+
+        def story = !(type in ['recurrent', 'urgent'] && type) ? Story.getInProduct(params.long('product'), type?.toLong()).list() : null
         if (!story && !(type in ['recurrent', 'urgent'])) {
             returnError(text: message(code: 'is.story.error.not.exist'))
             return
