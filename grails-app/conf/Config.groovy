@@ -43,6 +43,7 @@ icescrum.login.retrieve.enable = true
 icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = true
 icescrum.alerts.default.from = "webmaster@icescrum.org"
+icescrum.alerts.emailPerAccount = false
 
 icescrum.attachments.enable = true
 icescrum.alerts.errors.to = "dev@icescrum.org"
