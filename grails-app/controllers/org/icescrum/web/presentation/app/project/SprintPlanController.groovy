@@ -348,7 +348,7 @@ class SprintPlanController {
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurndownHoursChart', model: [
                         remainingHours: values.remainingHours as JSON,
-                        idealHours: values.idealHours as JSON,
+                        idealHours: values.first()?.idealHours ? values.idealHours as JSON : null,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         labels: values.label as JSON])
             } else {

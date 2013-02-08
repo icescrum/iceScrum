@@ -29,10 +29,20 @@
     </div>
     <jq:jquery>
         $.jqplot.config.enablePlugins = true;
-       line1 = ${remainingHours};
-    line2 = ${idealHours};
+        var line1 = ${remainingHours};
 
-    plot1 = $.jqplot('sprintBurndownHours', [line1,line2], {
+       <g:if test="${idealHours}">
+          var line2 = ${idealHours};
+          var lines = [line1,line2];
+          var labels = [ {label:'${message(code: "is.chart.sprintBurndownHoursChart.serie.task.name")}',color: '#003399'},
+                         {label:'${message(code: "is.chart.sprintBurndownHoursChart.serie.task.ideal")}',color: '#003344'}];
+       </g:if>
+       <g:else>
+           var lines = [line1];
+           var labels = [ {label:'${message(code: "is.chart.sprintBurndownHoursChart.serie.task.name")}',color: '#003399'}];
+       </g:else>
+
+    plot1 = $.jqplot('sprintBurndownHours', lines, {
         legend:{
           show:true,
           renderer: $.jqplot.EnhancedLegendRenderer,
@@ -57,8 +67,7 @@
         seriesDefaults: {
           pointLabels:{location:'s', ypadding:2}
         },
-        series:[ {label:'${message(code: "is.chart.sprintBurndownHoursChart.serie.task.name")}',color: '#003399'},
-                 {label:'${message(code: "is.chart.sprintBurndownHoursChart.serie.task.ideal")}',color: '#003344'}],
+        series:labels,
         axes:{
             xaxis:{
               min:0,
