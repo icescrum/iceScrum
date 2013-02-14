@@ -23,6 +23,11 @@
 
 import grails.util.Metadata
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
+import org.codehaus.groovy.grails.web.mime.DefaultAcceptHeaderParser
+import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
+import org.codehaus.groovy.grails.web.servlet.HttpHeaders
+
+import javax.servlet.http.HttpServletRequest
 
 class BootStrap {
 
@@ -37,6 +42,31 @@ class BootStrap {
         println("------------------");
         println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
         println("------------------");
+
+        //Hack grails 1.3.x bug with accept header for request.format should be remove when upgrade to grails 2.x
+        HttpServletRequest.metaClass.getMimeTypes = {->
+            def result = delegate.getAttribute(GrailsApplicationAttributes.REQUEST_FORMATS)
+            if (!result) {
+
+                def userAgent = delegate.getHeader(HttpHeaders.USER_AGENT)
+                def msie = userAgent && useAgent ==~ /msie(?i)/ ?: false
+
+                def parser = new DefaultAcceptHeaderParser()
+                def header
+                if (delegate.getRequestURI()?.contains('ws/')){
+                    header = delegate.getHeader(HttpHeaders.ACCEPT)
+                    if (!header) header = delegate.getHeader(HttpHeaders.CONTENT_TYPE)
+                }else{
+                    header = delegate.contentType
+                    if (!header) header = delegate.getHeader(HttpHeaders.CONTENT_TYPE)
+                }
+                if (msie) header = "*/*"
+                result = parser.parse(header)
+
+                delegate.setAttribute(GrailsApplicationAttributes.REQUEST_FORMATS, result)
+            }
+            result
+        }
     }
 
     def destroy = {
