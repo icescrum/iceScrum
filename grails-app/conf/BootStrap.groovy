@@ -53,13 +53,12 @@ class BootStrap {
 
                 def parser = new DefaultAcceptHeaderParser()
                 def header
-                if (delegate.getRequestURI()?.contains('ws/')){
+                if (delegate.getRequestURI()?.contains('ws/')) {
                     header = delegate.getHeader(HttpHeaders.ACCEPT)
-                    if (!header) header = delegate.getHeader(HttpHeaders.CONTENT_TYPE)
-                }else{
+                } else {
                     header = delegate.contentType
-                    if (!header) header = delegate.getHeader(HttpHeaders.CONTENT_TYPE)
                 }
+                if (!isValidType(header)) header = delegate.getHeader(HttpHeaders.CONTENT_TYPE)
                 if (msie) header = "*/*"
                 result = parser.parse(header)
 
@@ -67,6 +66,10 @@ class BootStrap {
             }
             result
         }
+    }
+
+    static private boolean isValidType (String type) {
+        type?.toLowerCase() in ["application/json", "application/xml"]
     }
 
     def destroy = {
