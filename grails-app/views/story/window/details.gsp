@@ -106,10 +106,10 @@
                 <is:panelTabButton id="panel-box-1">
                     <a rel="#summary" href="../../"
                        class="${!params.tab || 'summary' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.summary')}</a>
-                    <a rel="#tasks" href="../../"
-                       class="${params.tab && 'tasks' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.task')}</a>
                     <a rel="#tests" href="../../"
                        class="${params.tab && 'tests' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.test')}</a>
+                    <a rel="#tasks" href="../../"
+                       class="${params.tab && 'tasks' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.task')}</a>
                     <a rel="#comments" href="../../"
                        class="${params.tab && 'comments' in params.tab ? 'selected' : ''}">${message(code: 'is.ui.backlogelement.activity.comments')}</a>
                     <entry:point id="${controllerName}-${actionName}-tab-button" model="[tab:params.tab]"/>
