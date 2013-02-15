@@ -179,8 +179,14 @@ uiDefinitions = {
             toolbar true
             titleBarContent true
             before { def product, def action ->
-                params.id = params.id  ?: (actionName.contains('Chart') || actionName == 'openWindow' ? (Release.findCurrentOrLastRelease(product.id).list()[0]?.id ?: Release.findCurrentOrNextRelease(product.id).list()[0]?.id) : Release.findCurrentOrNextRelease(product.id).list()[0]?.id)
-                !params.id && actionName == 'openWindow' ? true : params.id
+                def isWindowContext = actionName == 'openWindow'
+                if (!params.id && (!isWindowContext || action.contains('Chart'))) {
+                    params.id = Release.findCurrentOrLastRelease(product.id).list()[0]?.id
+                }
+                if (!params.id) {
+                    params.id = Release.findCurrentOrNextRelease(product.id).list()[0]?.id
+                }
+                isWindowContext || params.id
             }
         }
         shortcuts = [
@@ -254,8 +260,14 @@ uiDefinitions = {
             toolbar true
             titleBarContent true
             before { def product, def action ->
-                params.id = params.id ?: action.contains('Chart') || actionName == 'openWindow' ? (Sprint.findCurrentOrLastSprint(product.id).list()[0]?.id ?: Sprint.findCurrentOrNextSprint(product.id).list()[0]?.id) : Sprint.findCurrentOrNextSprint(product.id).list()[0]?.id
-                !params.id && actionName == 'openWindow' ? true : params.id
+                def isWindowContext = actionName == 'openWindow'
+                if (!params.id && (!isWindowContext || action.contains('Chart'))) {
+                    params.id = Sprint.findCurrentOrLastSprint(product.id).list()[0]?.id
+                }
+                if (!params.id) {
+                    params.id = Sprint.findCurrentOrNextSprint(product.id).list()[0]?.id
+                }
+                isWindowContext || params.id
             }
         }
         shortcuts = [
