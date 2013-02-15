@@ -1255,6 +1255,29 @@
                                 var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', summary);
                                 comment.remove();
                             }
+                        },
+                        taskDetail:{
+                            selector:'li.comment',
+                            id:'comment-taskdetail-tmpl',
+                            view:'ul.list-comments',
+                            remove:function(tmpl) {
+                                var commentList = $(tmpl.view);
+                                var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', commentList);
+                                comment.remove();
+                                if ($(tmpl.selector, commentList).length == 0) {
+                                    commentList.html('<li class="panel-box-empty">' + $.icescrum.comment.i18n.noComment + '</li>');
+                                }
+                            }
+                        },
+                        taskDetailSummary:{
+                            selector:'li.comment',
+                            id:'comment-taskdetailsummary-tmpl',
+                            view:'ul.list-news',
+                            remove:function(tmpl) {
+                                var summary = $(tmpl.view);
+                                var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', summary);
+                                comment.remove();
+                            }
                         }
                     },
 

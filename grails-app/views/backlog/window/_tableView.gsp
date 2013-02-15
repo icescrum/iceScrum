@@ -97,8 +97,8 @@
                     editable="[type:'selectui',id:'effort',disabled:!request.inProduct,name:'effort',values:suiteSelect]">${story.effort >= 0 ? story.effort : '?'}</is:tableColumn>
             <is:tableColumn
                     editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${story.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
-            <is:tableColumn editable="[type:'richarea',disabled:!request.productOwner,name:'notes']"><wikitext:renderHtml
-                    markup="Textile">${story.notes}</wikitext:renderHtml></is:tableColumn>
+            <is:tableColumn editable="[type:'richarea',disabled:!request.productOwner,name:'notes']"><div class="rich-content"><wikitext:renderHtml
+                                                        markup="Textile">${story.notes}</wikitext:renderHtml></div></is:tableColumn>
             <is:tableColumn>${story.acceptedDate ? g.formatDate(date: story.acceptedDate, formatName: 'is.date.format.short', timezone: story.backlog.preferences.timezone) : ''}</is:tableColumn>
             <is:tableColumn>${g.formatDate(date: story.estimatedDate, formatName: 'is.date.format.short', timezone: story.backlog.preferences.timezone)}</is:tableColumn>
         </is:tableRows>

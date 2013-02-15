@@ -87,6 +87,11 @@
                            </div>
                        </div>
                     </g:if>
+                    <g:set var="comment" value="${task.totalComments}"/>
+                    <g:if test="${comment}">
+                        <span class="table-comment"
+                              title="${message(code: 'is.postit.comment.count', args: [comment, comment > 1 ? 's' : ''])}"></span>
+                    </g:if>
                     <g:set var="attachment" value="${task.totalAttachments}"/>
                     <g:if test="${attachment}">
                         <span class="table-attachment"
@@ -104,7 +109,8 @@
                 <is:tableColumn
                         editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'richarea',disabled:!taskEditable,name:'notes']">${task.notes}</is:tableColumn>
+                        editable="[type:'richarea',disabled:!taskEditable,name:'notes']"><div class="rich-content"><wikitext:renderHtml
+                                            markup="Textile">${task.notes}</wikitext:renderHtml></div></is:tableColumn>
 
                 <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate) : ''}</is:tableColumn>
@@ -160,6 +166,11 @@
                                </div>
                            </div>
                         </g:if>
+                        <g:set var="comment" value="${task.totalComments}"/>
+                       <g:if test="${comment}">
+                           <span class="table-comment"
+                                 title="${message(code: 'is.postit.comment.count', args: [comment, comment > 1 ? 's' : ''])}"></span>
+                       </g:if>
                         <g:set var="attachment" value="${task.totalAttachments}"/>
                         <g:if test="${attachment}">
                             <span class="table-attachment"
@@ -240,6 +251,11 @@
                                </div>
                            </div>
                         </g:if>
+                        <g:set var="comment" value="${task.totalComments}"/>
+                       <g:if test="${comment}">
+                           <span class="table-comment"
+                                 title="${message(code: 'is.postit.comment.count', args: [comment, comment > 1 ? 's' : ''])}"></span>
+                       </g:if>
                         <g:set var="attachment" value="${task.totalAttachments}"/>
                         <g:if test="${attachment}">
                             <span class="table-attachment"

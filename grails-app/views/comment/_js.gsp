@@ -27,16 +27,28 @@
                              lastUpdated:'?**=jQuery.icescrum.serverDate(this.lastUpdated, true)**?',
                              body:'?**=this.body**?']"/>
 
-<g:set var="backlogElement" value="[id:'?**=this.backlogElement**?']"/>
+<g:set var="backlogElement" value="[id:'?**=this.backlogElement.id**?']"/>
 
 <template id="comment-storydetail-tmpl">
       <g:render template="/components/comment"
           plugin="icescrum-core"
-          model="[comment:comment, backlogElement:backlogElement, moderation:true, access:true, template:true]"/>
+          model="[comment:comment, commentable:backlogElement, type:'story', moderation:true, access:true, template:true]"/>
 </template>
 
 <template id="comment-storydetailsummary-tmpl">
       <g:render template="/components/comment"
           plugin="icescrum-core"
-          model="[comment:comment, backlogElement:backlogElement, moderation:true, access:false, template:true, commentId:'summary']"/>
+          model="[comment:comment, commentable:backlogElement, type:'story', moderation:true, access:false, template:true, commentId:'summary']"/>
+</template>
+
+<template id="comment-taskdetail-tmpl">
+      <g:render template="/components/comment"
+          plugin="icescrum-core"
+          model="[comment:comment, commentable:backlogElement, type:'task', moderation:true, access:true, template:true]"/>
+</template>
+
+<template id="comment-taskdetailsummary-tmpl">
+      <g:render template="/components/comment"
+          plugin="icescrum-core"
+          model="[comment:comment, commentable:backlogElement, type:'task', moderation:true, access:false, template:true, commentId:'summary']"/>
 </template>

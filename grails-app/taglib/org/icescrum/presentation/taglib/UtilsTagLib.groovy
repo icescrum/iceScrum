@@ -54,7 +54,6 @@ class UtilsTagLib {
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
                           baseUrl: "${createLink(controller: 'scrumOS')}",
                           baseUrlProduct: ${p ? '\'' + createLink(controller: 'scrumOS', params: p) + '/\'' : null},
-                          streamUrl: "${createLink(controller: 'scrumOS')}stream/app${params.product ? '?product=' + current.id : '' }",
                           urlOpenWidget:"${createLink(controller: 'scrumOS', action: 'openWidget', params: p)}",
                           urlOpenWindow:"${createLink(controller: 'scrumOS', action: 'openWindow', params: p)}",
                           deleteConfirmMessage:"${message(code: 'is.confirm.delete').encodeAsJavaScript()}",
@@ -63,7 +62,11 @@ class UtilsTagLib {
                           uploading:"${message(code:'is.upload.inprogress.wait').encodeAsJavaScript()}",
                           locale:'${locale}',
                           showUpgrade:${grailsApplication.config.icescrum.show.upgrade},
-                          push:{enable:${grailsApplication.config.icescrum.push.enable?:false}, websocket:${grailsApplication.config.icescrum.push.websocket?:false}},
+                          push:{
+                            enable:${grailsApplication.config.icescrum.push.enable?:false},
+                            websocket:${grailsApplication.config.icescrum.push.websocket?:false},
+                            url:"${createLink(controller: 'scrumOS', absolute: true)}stream/app${params.product ? '?product=' + current.id : '' }"
+                          },
                           dialogErrorContent:"<div id=\'window-dialog\'><form method=\'post\' class=\'box-form box-form-250 box-form-250-legend\'><div  title=\'${message(code: 'is.dialog.sendError.title')}\' class=\' panel ui-corner-all\'><h3 class=\'panel-title\'>${message(code: 'is.dialog.sendError.title')}</h3><p class=\'field-information\'>${message(code: 'is.dialog.sendError.description')}</p><p class=\'field-area clearfix field-noseparator\' for=\'stackError\' label=\'${message(code: 'is.dialog.sendError.stackError')}\'><label for=\'stackError\'>${message(code: 'is.dialog.sendError.stackError')}</label><span class=\'area area-large\' id=\'stackError-field\'><span class=\'start\'></span><span class=\'content\'><textarea id=\'stackError\' name=\'stackError\' ></textarea></span><span class=\'end\'></span></span></p><p class=\'field-area clearfix field-noseparator\' for=\'comments\' label=\'${message(code: 'is.dialog.sendError.comments')}\'><label for=\'comments\'>${message(code: 'is.dialog.sendError.comments')}</label><span class=\'area area-large\' id=\'comments-field\'><span class=\'start\'></span><span class=\'content\'><textarea id=\'comments\' name=\'comments\' ></textarea></span><span class=\'end\'></span></span></p></div></form></div>"
                 };"""
         out << g.javascript(null, jsCode)

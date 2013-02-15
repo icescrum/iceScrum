@@ -34,14 +34,11 @@ import grails.converters.JSON
 import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
-import org.icescrum.plugins.attachmentable.domain.Attachment
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.grails.followable.FollowLink
 import grails.util.GrailsNameUtils
 import org.icescrum.core.domain.Task
 import org.springframework.web.servlet.support.RequestContextUtils
-import org.grails.comments.Comment
-import org.icescrum.core.event.IceScrumStoryEvent
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
 
@@ -615,143 +612,8 @@ class StoryController {
         }
     }
 
-    @Secured('inProduct()')
-    def showComment = {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
-        }
-        if (!params.id) {
-            returnError(text:message(code: 'is.comment.error.not.exist'))
-            return
-        }
-        def comment = Comment.get(params.long('id'))
-        if (!comment) {
-            returnError(text:message(code: 'is.comment.error.not.exist'))
-            return
-        }
-
-        withFormat {
-            json { renderRESTJSON(text:comment) }
-            xml  { renderRESTXML(text:comment) }
-        }
-    }
-
-    @Secured('isAuthenticated() and !archivedProduct()')
-    def saveComment = {
-        def poster = springSecurityService.currentUser
-        def story = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()
-        try {
-            if (params['comment'] instanceof Map) {
-                Comment.withTransaction { status ->
-                    try {
-                        story.addComment(poster, params.comment.body)
-                        story.addActivity(poster, 'comment', story.name)
-                        story.addFollower(poster)
-                        story.lastUpdated = new Date()
-                    } catch (Exception e) {
-                        status.setRollbackOnly()
-                    }
-                }
-            }
-            def comments = story.getComments()
-            Comment comment = comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }.last()
-            def myComment = [class:"Comment",
-                    id:comment.id,
-                    poster:[username:poster.username, firstName:poster.firstName, lastName:poster.lastName, id:poster.id, email:poster.email],
-                    dateCreated:comment.dateCreated,
-                    backlogElement:story.id,
-                    lastUpdated:comment.lastUpdated,
-                    body:comment.body]
-            broadcast(function: 'update', message: story, channel:'product-'+story.backlog.id)
-            broadcast(function: 'add', message: myComment, channel:'product-'+story.backlog.id)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text:myComment as JSON)  }
-                json { renderRESTJSON(text:comment) }
-                xml  { renderRESTXML(text:comment) }
-            }
-        } catch (Exception e) {
-            log.error "Error posting comment: ${e.message}"
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error')]] as JSON)
-            return
-        }
-    }
-
-    @Secured('isAuthenticated() and !archivedProduct()')
-    def editCommentEditor = {
-        if (params.id == null) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
-            return
-        }
-        def comment = Comment.get(params.long('id'))
-        def story = Story.getInProduct(params.long('product'),params.long('commentable')).list()
-        render(template: '/components/commentEditor', plugin: 'icescrum-core', model: [comment: comment, mode: 'edit', commentable: story])
-    }
-
-    @Secured('isAuthenticated() and !archivedProduct()')
-    def updateComment = {
-        if (params.comment.id == null) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
-            return
-        }
-        def comment = Comment.get(params.long('comment.id'))
-        def commentable = Story.getInProduct(params.long('product'),params.long('comment.ref')).list()
-        comment.body = params.comment.body
-        try {
-            comment.save()
-            commentable.lastUpdated = new Date()
-            publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_UPDATED))
-            def poster = comment.getPoster()
-            def myComment = [class:"Comment",
-                    id:comment.id,
-                    poster:[username:poster.username, firstName:poster.firstName, lastName:poster.lastName, id:poster.id, email:poster.email],
-                    dateCreated:comment.dateCreated,
-                    backlogElement:commentable.id,
-                    lastUpdated:comment.lastUpdated,
-                    body:comment.body]
-            broadcast(function: 'update', message: commentable, channel:'product-'+commentable.backlog.id)
-            broadcast(function: 'update', message: myComment, channel:'product-'+commentable.backlog.id)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text:myComment as JSON)  }
-                json { renderRESTJSON(text:comment) }
-                xml  { renderRESTXML(text:comment) }
-            }
-        } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-        }
-    }
-
     def editStory = {
         forward(action: 'edit', controller: 'story', params: [referrer: controllerName, referrerUrl:controllerName+'/'+params.id, id: params.id, product: params.product])
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def deleteComment = {
-        if (params.id == null) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.ui.backlogelement.comment.error.not.exists')]] as JSON)
-            return
-        }
-        if (params.backlogElement == null) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.story.error.not.exist')]] as JSON)
-            return
-        }
-        def comment = Comment.get(params.long('id'))
-        def commentable = Story.getInProduct(params.long('product'),params.long('backlogElement')).list()
-        def idc = [id:comment.id,backlogElement:commentable.id]
-        try {
-            commentable.removeComment(comment)
-            commentable.lastUpdated = new Date()
-            broadcast(function: 'update', message: commentable, channel:'product-'+params.long('product'))
-            broadcast(function: 'delete', message: [class: comment.class, id: comment.id], channel:'product-'+params.long('product'))
-            publishEvent(new IceScrumStoryEvent(commentable, comment, this.class, (User) springSecurityService.currentUser, IceScrumStoryEvent.EVENT_COMMENT_DELETED))
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: idc as JSON }
-                json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
-                xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
-            }
-        } catch (RuntimeException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: e.getMessage())]] as JSON)
-        }
     }
 
     def shortURL = {

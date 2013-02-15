@@ -383,7 +383,7 @@ class TaskController {
 
     def summaryPanel = {
         withTask { Task task ->
-            def summary = task.getActivities()
+            def summary = task.comments + task.getActivities()
             summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
             render(template: "/backlogElement/summary",
                     model: [summary: summary,

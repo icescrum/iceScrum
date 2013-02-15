@@ -32,7 +32,7 @@ import org.icescrum.web.JQueryProvider
 /*
  Public URL
 */
-grails.serverURL = "http://localhost:8080/${appName}"
+grails.serverURL = "http://192.168.0.3:8080/${appName}"
 
 /*
 Administration section
@@ -97,7 +97,7 @@ grails.mail.props = ["mail.smtp.auth":"true",
 icescrum.marshaller = [
         product: [],
         actor:[include:['totalAttachments']],
-        task:[include:['totalAttachments','sprint']],
+        task:[include:['totalAttachments','sprint','totalComments']],
         feature:[include:['totalAttachments','countDoneStories','state','effort'],
                  asShort:['color', 'name']],
         story:[include:['totalAttachments','totalComments','tasks'],

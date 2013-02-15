@@ -90,10 +90,14 @@
                     <a rel="#summary" class="${!params.tab || 'summary' in params.tab ? 'selected' : ''}">
                         ${message(code: 'is.ui.backlogelement.activity.summary')}
                     </a>
+                    <a rel="#comments" class="${params.tab && 'comments' in params.tab ? 'selected' : ''}">
+                        ${message(code: 'is.ui.backlogelement.activity.comments')}
+                    </a>
                     <entry:point id="${controllerName}-${actionName}-tab-button"/>
                 </is:panelTabButton>
                 <div id="panel-tab-contents-1" class="panel-tab-contents">
                     <g:include  action="summaryPanel" controller="task" params="[product:params.product, id:task.id]"/>
+                    <g:render template="/comment/comments" model="[commentable:task,product:product]"/>
                     <entry:point id="${controllerName}-${actionName}-tab-entry" model="[task:task]"/>
                 </div>
                 <jq:jquery>
@@ -170,3 +174,14 @@
         </div>
     </div>
 </div>
+
+<is:onStream
+            on="#details-${task.id}"
+            events="[[object:'comment',events:['add','update','remove']]]"
+            constraint="comment.backlogElement.type == 'task' && comment.backlogElement.id == ${task.id}"
+            template="taskDetail"/>
+<is:onStream
+            on="#details-${task.id}"
+            events="[[object:'comment',events:['add','update','remove']]]"
+            constraint="comment.backlogElement.type == 'task' && comment.backlogElement.id == ${task.id}"
+            template="taskDetailSummary"/>

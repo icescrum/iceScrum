@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.BacklogElement" %>
 %{--
 - Copyright (c) 2011 Kagilum SAS.
 -
@@ -19,11 +20,10 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.Story" %>
 <is:panelTab id="comments" selected="${params.tab && 'comments' in params.tab ? 'true' : ''}">
     <div class="addorlogin">
         <sec:ifNotLoggedIn>
-            <a href="${grailsApplication.config.grails.serverURL}/login?ref=p/${story.backlog.pkey}#story/${story.id}?tab=comments">
+            <a href="${grailsApplication.config.grails.serverURL}/login?ref=p/${product.pkey}#${controllerName}/${commentable.id}?tab=comments">
                 ${message(code: 'is.ui.backlogelement.comment.login')}
             </a>
         </sec:ifNotLoggedIn>
@@ -32,7 +32,7 @@
                      onClick="jQuery.icescrum.openCommentTab('#comments');">${message(code: 'is.ui.backlogelement.comment.add')}</is:link>
         </sec:ifLoggedIn>
     </div>
-    <is:cache cache="storyCache" key="story-comments-${story.id}-${Story.findLastUpdatedComment(story.id)}">
-        <isComment:render noEscape="true" bean="${story}" noComment="${message(code:'is.ui.backlogelement.activity.comments.no')}"/>
+    <is:cache cache="${controllerName}Cache" key="${controllerName}-comments-${commentable.id}-${commentable.class.findLastUpdatedComment(commentable)}">
+        <isComment:render noEscape="true" product="${product}" bean="${commentable}" noComment="${message(code:'is.ui.backlogelement.activity.comments.no')}"/>
     </is:cache>
  </is:panelTab>

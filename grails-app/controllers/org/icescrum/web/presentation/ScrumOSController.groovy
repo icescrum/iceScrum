@@ -264,7 +264,7 @@ class ScrumOSController {
             params.data = is.truncated([size: params.int('truncate')], params.data)
         }
         if (params.withoutHeader) {
-            render(text: wikitext.renderHtml([markup: "Textile"], params.data))
+            render(text: '<div class="rich-content">'+wikitext.renderHtml([markup: "Textile"], params.data)+'</div>')
         } else {
             render(status: 200, template: 'textileParser')
         }
@@ -297,7 +297,7 @@ class ScrumOSController {
         }
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
+    //@Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
     def templates = {
         def currentSprint = null
         def product = null

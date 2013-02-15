@@ -37,6 +37,11 @@
         <g:message code='is.ui.sprintPlan.menu.task.details'/>
     </a>
 </li>
+<li>
+    <a class="scrum-link" href="#task/${task.id}?tab=comments">
+        <g:message code='is.ui.releasePlan.menu.story.commentable'/>
+    </a>
+</li>
 <g:if test="${taskTakable || template}">
 <li id="menu-take-${task.id}">
     <a href="${createLink(action:'take',controller:'task',params:[product:params.product],id:task.id)}"

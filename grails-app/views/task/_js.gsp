@@ -28,6 +28,7 @@
                            creator:[id:'?**=user_id**?'],
                            responsible:[id:'?**=user_id**?'],
                            description:'?**=description**?',
+                           totalComments:'?**=this.totalComments**?',
                            totalAttachments:'?**=this.totalAttachments**?']"/>
 <g:set var="user" value="[id:'?**=this.id**?']"/>
 
@@ -62,6 +63,7 @@
                miniValue="?**=estimation**?"
                miniValueTitle="?**=initial**?"
                color="?**=this.color**?"
+               comment="${task.totalComments}"
                menu="[params:[controllerName:id, task:task, user:user, template:true], template:'/task/menu', id:'task-'+task.id, rendered:request.inProduct]"
                rect="true">
                 ?**if (name.length > 17 || description.length > 0) {**?

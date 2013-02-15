@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
-
+<g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
 <%@ page import="grails.plugin.fluxiable.Activity" %>
 <div class="dashboard">
     <div class="colset-2 clearfix">
@@ -50,10 +50,19 @@
                 </div>
             </is:panel>
             <is:panel id="panel-description">
-                <is:panelTitle><g:message code="is.ui.project.description.title"/></is:panelTitle>
+                <is:panelTitle>
+                    <g:if test="${ownerOrSm}">
+                        <span class="right">
+                            <a href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
+                                <g:message code="default.button.edit.label"/>
+                            </a>
+                        </span>
+                    </g:if>
+                    <g:message code="is.ui.project.description.title"/>
+                </is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${product.description}">
-                        <wikitext:renderHtml markup="Textile">${product.description}</wikitext:renderHtml>
+                        <div class="rich-content"><wikitext:renderHtml markup="Textile">${product.description}</wikitext:renderHtml></div>
                     </g:if>
                     <g:else>
                         <g:message code="is.product.empty.description"/>
@@ -61,10 +70,19 @@
                 </div>
             </is:panel>
             <is:panel class="panel-vision" id="panel-vision-${release?.id}">
-                <is:panelTitle><g:message code="is.ui.project.vision.title"/></is:panelTitle>
+                <is:panelTitle>
+                    <g:if test="${request.productOwner && release?.id}">
+                        <span class="right">
+                            <a href="#releasePlan/vision/${release.id}">
+                                <g:message code="default.button.edit.label"/>
+                            </a>
+                        </span>
+                    </g:if>
+                    <g:message code="is.ui.project.vision.title"/>
+                </is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${release?.vision}">
-                        <wikitext:renderHtml markup="Textile">${is.truncated(value: release.vision, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
+                        <div class="rich-content"><wikitext:renderHtml markup="Textile">${is.truncated(value: release.vision, size: 1000, encodedHTML: false)}</wikitext:renderHtml></div>
                     </g:if>
                     <g:else>
                         <g:message code="is.release.empty.vision"/>
@@ -82,11 +100,20 @@
                 </g:if>
             </is:panel>
             <is:panel class="panel-doneDefinition" id="panel-doneDefinition-${sprint?.id}">
-                <is:panelTitle><g:message code="is.ui.project.doneDefinition.title"/></is:panelTitle>
+                <is:panelTitle>
+                    <g:if test="${(request.productOwner || request.scrumMaster) && sprint?.id}">
+                        <span class="right">
+                            <a href="#sprintPlan/doneDefinition/${sprint.id}">
+                                <g:message code="default.button.edit.label"/>
+                            </a>
+                        </span>
+                    </g:if>
+                    <g:message code="is.ui.project.doneDefinition.title"/>
+                </is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${sprint?.doneDefinition}">
-                        <wikitext:renderHtml
-                                markup="Textile">${is.truncated(value: sprint.doneDefinition, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
+                        <div class="rich-content"><wikitext:renderHtml
+                                markup="Textile">${is.truncated(value: sprint.doneDefinition, size: 1000, encodedHTML: false)}</wikitext:renderHtml></div>
                     </g:if>
                     <g:else>
                         <g:message code="is.sprint.empty.doneDefinition"/>
@@ -104,11 +131,21 @@
                 </g:if>
             </is:panel>
             <is:panel class="panel-retrospective" id="panel-retrospective-${sprint?.id}">
-                <is:panelTitle><g:message code="is.ui.project.retrospective.title"/></is:panelTitle>
+                <is:panelTitle>
+                    <g:if test="${(request.productOwner || request.scrumMaster) && sprint?.id}">
+                        <span class="right">
+                            <a href="#sprintPlan/retrospective/${sprint.id}">
+                                <g:message code="default.button.edit.label"/>
+                            </a>
+                        </span>
+                    </g:if>
+                    <g:message code="is.ui.project.retrospective.title"/>
+                </is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${sprint?.retrospective}">
-                        <wikitext:renderHtml
+                        <div class="rich-content"><wikitext:renderHtml
                                 markup="Textile">${is.truncated(value: sprint.retrospective, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
+                        </div>
                     </g:if>
                     <g:else>
                         <g:message code="is.sprint.empty.retrospective"/>
