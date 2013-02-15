@@ -1279,7 +1279,7 @@ li#li-roles {
 }
 
 .list-news > li .comment-body p, .list-comments > li .comment-body p, .list-acceptance-tests > li .acceptance-test-description p {
-    padding:8px;
+    padding:6px;
     padding-left: 0;
 }
 
