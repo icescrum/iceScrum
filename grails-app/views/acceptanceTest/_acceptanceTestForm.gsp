@@ -27,7 +27,7 @@
             </is:fieldInput>
             <is:fieldArea for="acceptanceTest.description" label="is.backlogelement.description" noborder="true">
                 <span class="area-rich">
-                    <markitup:editor id="acceptance-test-description-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.description" class="area-rich">
+                    <markitup:editor id="acceptance-test-description-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.description" height="150">
                         ${acceptanceTest?.description}
                     </markitup:editor>
                 </span>
