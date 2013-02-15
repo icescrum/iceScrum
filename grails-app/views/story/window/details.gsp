@@ -243,12 +243,12 @@
 <is:onStream
             on="#details-${story.id}"
             events="[[object:'comment',events:['add','update','remove']]]"
-            constraint="comment.backlogElement == ${story.id}"
+            constraint="comment.backlogElement.type == 'story' && comment.backlogElement.id == ${story.id}"
             template="storyDetail"/>
 <is:onStream
             on="#details-${story.id}"
             events="[[object:'comment',events:['add','update','remove']]]"
-            constraint="comment.backlogElement == ${story.id}"
+            constraint="comment.backlogElement.type == 'story' && comment.backlogElement.id == ${story.id}"
             template="storyDetailSummary"/>
 <is:onStream
             on="#details-${story.id}"
