@@ -344,14 +344,13 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                               transport : $.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket) ? 'websocket' : 'streaming',
                               enableXDR : true,
                               trackMessageLength:true,
+                              maxReconnectOnClose: 100000000,
                               fallbackTransport: 'long-polling'};
 
             request.onOpen = function(response) {
                 if(response.request){
                     $.icescrum.o.push.uuid = response.request.uuid;
                 }
-                console.log('on onOpen event');
-                console.log('on onOpen');
                 $("#is-logo").removeClass().addClass('connected');
             };
 
