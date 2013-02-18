@@ -344,7 +344,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                               transport : $.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket) ? 'websocket' : 'streaming',
                               enableXDR : true,
                               trackMessageLength:true,
-                              //reconnectInterval:60,
                               fallbackTransport: 'long-polling'};
 
             request.onOpen = function(response) {
@@ -352,8 +351,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     $.icescrum.o.push.uuid = response.request.uuid;
                 }
                 console.log('on onOpen event');
+                console.log('on onOpen');
                 $("#is-logo").removeClass().addClass('connected');
-                //$.icescrum.o.push.timeout = 0;
             };
 
 
@@ -392,54 +391,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 $("#is-logo").removeClass().addClass('disconnected');
             };
 
-            /*var notifications = $('#notifications');
-            var countdown = null;
-
-            request.onError = function(response) {
-                if (countdown){
-                    return;
-                }
-                console.log('on error event');
-                $.icescrum.o.push.timeout = $.icescrum.o.push.timeout != null ? ($.icescrum.o.push.timeout + 60 > 3600 ? 3600 : $.icescrum.o.push.timeout + 60) : 10;
-                request.reconnectInterval = $.icescrum.o.push.timeout;
-                $("#is-logo").removeClass().addClass('disconnected');
-                var minutes = $.icescrum.o.push.timeout / 60;
-                var count = $.icescrum.o.push.timeout;
-                var reconnect = function(){
-                    socket.unsubscribe();
-                    socket.subscribe(request);
-                };
-
-                notifications.html('<a class="retry" title="Retry now">Connection lost, retry in '+(minutes >= 1 ? Math.round(minutes) : $.icescrum.o.push.timeout)+ (minutes >= 1 ? ' min' : ' sec')+'...</a> (<a class="cancel">cancel</a>)').show();
-
-                notifications.find('.cancel').unbind('click').on('click', function(){
-                    socket.unsubscribe();
-                    clearInterval(countdown);
-                    notifications.html('');
-                    return false;
-                });
-
-                notifications.find('.retry').unbind('click').on('click', function(){
-                    notifications.html('Retrying now...');
-                    clearInterval(countdown);
-                    reconnect();
-                    return false;
-                });
-
-                var countdown = setInterval(function () {
-                    notifications.find('.retry').html('Connection lost, retry in '+(minutes >= 1 ? Math.round(minutes) : count) + (minutes >= 1 ? ' min' : ' sec')+'...');
-                    if (count == 0) {
-                        clearInterval(countdown);
-                        reconnect();
-                    }
-                    count--;
-                }, 1000);
-            };
-            */
-            request.onClose = function(request, response) {
-                console.log('on close event');
+            request.onClose = function(response) {
                 $("#is-logo").removeClass().addClass('disconnected');
             };
+
             socket.subscribe(request);
         },
 
