@@ -117,7 +117,7 @@
 <g:render template="/releasePlan/window/blankSprint" model="[show:sprints ? false : true,release:release]"/>
 
 <jq:jquery>
-    $('#window-title-bar-${controllerName} .content').html('${message(code: "is.ui." + controllerName)} - ${release.name}  - ${is.bundle(bundle: 'releaseStates', value: release.state)} - [${g.formatDate(date: release.startDate, formatName: 'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} -> ${g.formatDate(date: release.endDate, formatName: 'is.date.format.short',timeZone:release.parentProduct.preferences.timezone)}]');
+    $('#window-title-bar-${controllerName} .content').html('${message(code: "is.ui." + controllerName)} - ${release.name?.encodeAsJavaScript()}  - ${is.bundle(bundle: 'releaseStates', value: release.state)} - [${g.formatDate(date: release.startDate, formatName: 'is.date.format.short', timeZone:release.parentProduct.preferences.timezone)} -> ${g.formatDate(date: release.endDate, formatName: 'is.date.format.short',timeZone:release.parentProduct.preferences.timezone)}]');
     <is:editable controller="story"
                  action='estimate'
                  on='div.backlog .postit-story .mini-value.editable'
