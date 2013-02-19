@@ -40,7 +40,7 @@ body, a, .table .table-line, #dropmenu .dropmenu-content ul li a:hover,
 }
 
 a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover, #local .box-simple,
-.field-information, .field-choose strong, .postit-details strong,
+.field-information, .field-choose strong, .postit-details a,
 .list-news strong, .event-header .drap-container,
 .kanban .kanban-label, .browse .browse-content h4, .chat-content .chat-users a,
 .chat-content .chat-status-change, .chat-content strong, .chat-content-hover .chat-selector,
