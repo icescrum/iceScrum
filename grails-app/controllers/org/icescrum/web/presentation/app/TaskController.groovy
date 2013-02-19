@@ -185,9 +185,11 @@ class TaskController {
             task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
 
             taskService.update(task, user)
-            def keptAttachments = params.list('task.attachments')
-            def addedAttachments = params.list('attachments')
-            manageAttachments(task, keptAttachments, addedAttachments)
+            if (params.boolean('manageAttachments')) {
+                def keptAttachments = params.list('task.attachments')
+                def addedAttachments = params.list('attachments')
+                manageAttachments(task, keptAttachments, addedAttachments)
+            }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
                 json { renderRESTJSON(text:task) }

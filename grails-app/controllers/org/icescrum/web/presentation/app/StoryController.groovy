@@ -298,11 +298,12 @@ class StoryController {
 
             if (!skipUpdate){
                 storyService.update(story)
-                def keptAttachments = params.list('story.attachments')
-                def addedAttachments = params.list('attachments')
-                manageAttachments(story, keptAttachments, addedAttachments)
+                if (params.boolean('manageAttachments')) {
+                    def keptAttachments = params.list('story.attachments')
+                    def addedAttachments = params.list('attachments')
+                    manageAttachments(story, keptAttachments, addedAttachments)
+                }
             }
-
             //if success for table view
             if (params.table && params.boolean('table')) {
                 def returnValue

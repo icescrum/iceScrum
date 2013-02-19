@@ -90,11 +90,11 @@ class FeatureController {
 
                 bindData(feature, this.params, [include:['name','description','notes','color','type','value']], "feature")
                 feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
-
-                def keptAttachments = params.list('feature.attachments')
-                def addedAttachments = params.list('attachments')
-                manageAttachments(feature, keptAttachments, addedAttachments)
-
+                if (params.boolean('manageAttachments')) {
+                    def keptAttachments = params.list('feature.attachments')
+                    def addedAttachments = params.list('attachments')
+                    manageAttachments(feature, keptAttachments, addedAttachments)
+                }
                 featureService.update(feature)
 
                 if (params.table && params.boolean('table')) {

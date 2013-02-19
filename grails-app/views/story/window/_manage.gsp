@@ -143,6 +143,7 @@
                       ]"/>
         </is:fieldFile>
     </is:fieldset>
+    <g:hiddenField name="manageAttachments" value="true"/>
 
     <is:fieldset title="is.ui.backlog.story.notes.title">
         <is:fieldArea for="storynotes" label="is.backlogelement.notes" noborder="true">

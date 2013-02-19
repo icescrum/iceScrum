@@ -64,7 +64,7 @@ class ActorController {
             actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
             def keptAttachments = params.list('actor.attachments')
             def addedAttachments = params.list('attachments')
-            this.manageAttachments(actor, keptAttachments, addedAttachments)
+            manageAttachments(actor, keptAttachments, addedAttachments)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: actor as JSON }
                 json { renderRESTJSON(text:actor, status:201) }
@@ -84,9 +84,11 @@ class ActorController {
             bindData(actor, this.params, [include:['name','description','notes','satisfactionCriteria','instances','expertnessLevel','useFrequency']], "actor")
             actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
             actorService.update(actor)
-            def keptAttachments = params.list('actor.attachments')
-            def addedAttachments = params.list('attachments')
-            manageAttachments(actor, keptAttachments, addedAttachments)
+            if (params.boolean('manageAttachments')) {
+                def keptAttachments = params.list('actor.attachments')
+                def addedAttachments = params.list('attachments')
+                manageAttachments(actor, keptAttachments, addedAttachments)
+            }
             //if success for table view
             if (params.table && params.boolean('table')) {
                 def returnValue

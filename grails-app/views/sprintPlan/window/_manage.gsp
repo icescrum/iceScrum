@@ -85,6 +85,7 @@
                       ]"/>
         </is:fieldFile>
     </is:fieldset>
+    <g:hiddenField name="manageAttachments" value="true"/>
 
     <is:fieldset title="is.ui.sprintPlan.task.notes.title">
         <is:fieldArea label="is.backlogelement.notes" noborder="true">
