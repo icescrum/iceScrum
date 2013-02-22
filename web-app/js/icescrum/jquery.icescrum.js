@@ -344,7 +344,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                               transport : $.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket) ? 'websocket' : 'streaming',
                               enableXDR : true,
                               trackMessageLength:true,
-                              maxReconnectOnClose: 100000000,
                               fallbackTransport: 'long-polling'};
 
             request.onOpen = function(response) {

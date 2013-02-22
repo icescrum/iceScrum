@@ -255,6 +255,7 @@ log4j = {
         debug 'org.codehaus.groovy.grails.plugins.springsecurity',
                 'grails.plugins.springsecurity',
                 'org.springframework.security'*/
+        trace 'org.atmosphere'
     }else{
         off 'grails.plugin.springcache'
     }
