@@ -845,6 +845,9 @@
                         if (this.totalAttachments == undefined || !this.totalAttachments) {
                             postit.find('.postit-attachment').hide();
                         }
+                        if (this.totalComments <= 0 ) {
+                            postit.find('.postit-comment').hide();
+                        }
 
                         var responsible = (this.responsible && this.responsible.id == $.icescrum.user.id) ? true : false;
                         var creator = this.creator.id == $.icescrum.user.id;
