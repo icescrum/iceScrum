@@ -342,6 +342,9 @@ grails {
             useRunAs = true
             runAs.key = 'tw3lv3Scrum!'
             acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
+            ldap.authorities.retrieveGroupRoles = false
+            ldap.authorities.groupSearchFilter = ""
+            ldap.authorities.groupSearchBase = ""
         }
     }
 }
