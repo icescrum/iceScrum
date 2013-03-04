@@ -47,9 +47,9 @@ class ReleaseController {
             def release = new Release()
 
             if (params.release.startDate)
-                params.release.startDate = new Date().parse(message(code: 'is.date.format.short'), params.release.startDate)
+                params.release.startDate = new Date().parse(message(code: 'is.date.format.short'), params.release.startDate).toTimestamp()
             if (params.release.endDate)
-                params.release.endDate = new Date().parse(message(code: 'is.date.format.short'), params.release.endDate)
+                params.release.endDate = new Date().parse(message(code: 'is.date.format.short'), params.release.endDate).toTimestamp()
 
             bindData(release, this.params, [include:['name','goal','startDate','endDate']], "release")
 
@@ -81,8 +81,8 @@ class ReleaseController {
                 return
             }
 
-            def startDate = params.release.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.startDate) : release.startDate
-            def endDate = params.release.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.endDate) : release.endDate
+            def startDate = params.release.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.startDate).toTimestamp() : release.startDate
+            def endDate = params.release.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.endDate).toTimestamp() : release.endDate
 
             bindData(release, this.params, [include:['name','goal']], "release")
             releaseService.update(release, startDate, endDate)
