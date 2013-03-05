@@ -52,9 +52,9 @@ class SprintController {
         withRelease(releaseId.toLong()){ Release release ->
             Sprint sprint = new Sprint()
             if (params.sprint.startDate)
-                params.sprint.startDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.startDate).toTimestamp()
+                params.sprint.startDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.startDate)
             if (params.sprint.endDate)
-                params.sprint.endDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.endDate).toTimestamp()
+                params.sprint.endDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.endDate)
             try {
                 bindData(sprint, this.params, [include:['resource','goal','startDate','endDate','deliveredVersion']], "sprint")
                 sprintService.save(sprint, release)
@@ -83,8 +83,8 @@ class SprintController {
                 return
             }
 
-            def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')).toTimestamp() : sprint.startDate
-            def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')).toTimestamp() : sprint.endDate
+            def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
+            def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
 
             bindData(sprint, params, [include:['resource','goal','deliveredVersion']], "sprint")
 
