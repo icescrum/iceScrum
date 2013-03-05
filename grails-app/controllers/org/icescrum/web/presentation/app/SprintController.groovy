@@ -84,23 +84,27 @@ class SprintController {
 
             /////////////// DEBUG
             println "Params end date: $params.sprint.endDate"
-            println "Old end date: \t\t\t\t\t\t ${new Date(sprint.endDate.time)}"
             def userLocale = new Locale(springSecurityService.currentUser.preferences.language)
-            def userLocaleEndDate = new Date().parse(message(code: 'is.date.format.short', locale: userLocale), params.sprint.endDate)
-            println "User locale ($userLocale) end date: \t\t $userLocaleEndDate"
+            def userLocaleEndDate = message(code: 'is.date.format.short', locale: userLocale)
+            println "User locale ($userLocale) format: \t $userLocaleEndDate"
             def requestLocale = request.locale
-            def requestLocaleEndDate = new Date().parse(message(code: 'is.date.format.short', locale: requestLocale), params.sprint.endDate)
-            println "Request locale ($requestLocale) end date: \t $requestLocaleEndDate"
+            def requestLocaleEndDate = message(code: 'is.date.format.short', locale: requestLocale)
+            println "Request locale ($requestLocale) format: \t $requestLocaleEndDate"
             def requestLocaleRCU = RCU.getLocale(request)
-            def requestLocaleRCUEndDate = new Date().parse(message(code: 'is.date.format.short', locale: requestLocaleRCU), params.sprint.endDate)
-            println "RCU locale ($requestLocaleRCU) end date: \t\t $requestLocaleRCUEndDate"
+            def requestLocaleRCUEndDate = message(code: 'is.date.format.short', locale: requestLocaleRCU)
+            println "RCU locale ($requestLocaleRCU) format: \t $requestLocaleRCUEndDate"
+            def customFormat = message(code: 'is.date.format.short', locale: new Locale('en_US'))
+            println "Custom (en_US) format: \t\t $customFormat"
+            def customFormat2 = message(code: 'is.date.format.short', locale: new Locale('en','US'))
+            println "Custom (en_US) format2: \t $customFormat2"
             /////////////// DEBUG
 
             def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
             def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
 
             /////////////// DEBUG
-            println "New end date: \t\t\t\t\t\t $endDate"
+            println "Old end date: \t\t\t\t ${new Date(sprint.endDate.time)}"
+            println "New end date: \t\t\t\t $endDate"
             /////////////// DEBUG
 
             bindData(sprint, params, [include:['resource','goal','deliveredVersion']], "sprint")
