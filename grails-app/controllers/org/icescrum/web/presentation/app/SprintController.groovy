@@ -97,6 +97,8 @@ class SprintController {
             println "Custom (en_US) format: \t\t $customFormat"
             def customFormat2 = message(code: 'is.date.format.short', locale: new Locale('en','US'))
             println "Custom (en_US) format2: \t $customFormat2"
+            def customFormat3 = message(code: 'is.date.format.short', locale: new Locale('en','us'))
+            println "Custom (en_US) format3: \t $customFormat3"
             /////////////// DEBUG
 
             def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate

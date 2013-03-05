@@ -67,7 +67,7 @@ class ScrumOSController {
         if (springSecurityService.isLoggedIn()) {
             currentUserInstance = User.get(springSecurityService.principal.id)
             if (locale != currentUserInstance.preferences.language || RCU.getLocale(request).toString() != currentUserInstance.preferences.language) {
-                RCU.getLocaleResolver(request).setLocale(request, response, new Locale(currentUserInstance.preferences.language))
+                RCU.getLocaleResolver(request).setLocale(request, response, currentUserInstance.locale)
             }
         } else {
             if (locale) {
