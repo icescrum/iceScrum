@@ -22,18 +22,17 @@
  */
 package org.icescrum.web.presentation.app
 
-import grails.util.GrailsNameUtils
 import org.icescrum.core.domain.Release
 
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
 
 import grails.converters.JSON
-import grails.converters.XML
 import grails.plugins.springsecurity.Secured
 import grails.plugin.springcache.annotations.Cacheable
-import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.User
+
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
+
 
 @Secured('inProduct()')
 class SprintController {
@@ -83,8 +82,26 @@ class SprintController {
                 return
             }
 
+            /////////////// DEBUG
+            println "Params end date: $params.sprint.endDate"
+            println "Old end date: \t\t\t\t\t\t ${new Date(sprint.endDate.time)}"
+            def userLocale = new Locale(springSecurityService.currentUser.preferences.language)
+            def userLocaleEndDate = new Date().parse(message(code: 'is.date.format.short', locale: userLocale), params.sprint.endDate)
+            println "User locale ($userLocale) end date: \t\t $userLocaleEndDate"
+            def requestLocale = request.locale
+            def requestLocaleEndDate = new Date().parse(message(code: 'is.date.format.short', locale: requestLocale), params.sprint.endDate)
+            println "Request locale ($requestLocale) end date: \t $requestLocaleEndDate"
+            def requestLocaleRCU = RCU.getLocale(request)
+            def requestLocaleRCUEndDate = new Date().parse(message(code: 'is.date.format.short', locale: requestLocaleRCU), params.sprint.endDate)
+            println "RCU locale ($requestLocaleRCU) end date: \t\t $requestLocaleRCUEndDate"
+            /////////////// DEBUG
+
             def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
             def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
+
+            /////////////// DEBUG
+            println "New end date: \t\t\t\t\t\t $endDate"
+            /////////////// DEBUG
 
             bindData(sprint, params, [include:['resource','goal','deliveredVersion']], "sprint")
 
