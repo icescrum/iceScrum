@@ -49,7 +49,7 @@ jQuery.atmosphere = function() {
     };
 
     return {
-        version : "1.0.11",
+        version : "1.0.12",
         requests : [],
         callbacks : [],
 
@@ -680,7 +680,6 @@ jQuery.atmosphere = function() {
 
                 request.close = function() {
                     _close();
-                    request.reconnect = false;
                 };
 
                 _response.request = request;
@@ -1044,14 +1043,14 @@ jQuery.atmosphere = function() {
                             return;
                         }
 
-                        _request.id = setTimeout(function() {
-                            setTimeout(function () {
-                                _clearState();
-                            }, _request.reconnectInterval)
-                        }, _request.timeout);
-
                     }, _request.connectTimeout);
                 }
+
+                _request.id = setTimeout(function() {
+                    setTimeout(function () {
+                        _clearState();
+                    }, _request.reconnectInterval)
+                }, _request.timeout);
 
                 _websocket.onopen = function(message) {
                     if (_request.logLevel == 'debug') {
@@ -1596,7 +1595,7 @@ jQuery.atmosphere = function() {
                             if (_subscribed) {
                                 setTimeout(function () {
                                     _clearState();
-                                    _execute();
+                                    _executeRequest(rq);
                                 }, rq.reconnectInterval)
                             }
                         }, rq.timeout);
@@ -2294,6 +2293,7 @@ jQuery.atmosphere = function() {
              * @private
              */
             function _close() {
+                _abordingConnection = true;
                 _request.reconnect = false;
                 _response.request = _request;
                 _response.state = 'unsubscribe';
@@ -2422,13 +2422,19 @@ jQuery.atmosphere = function() {
                     var rq = requestsClone[i];
                     rq.close();
                     if (rq.enableProtocol()) {
-                        jQuery.ajax({url: rq.getUrl() + "?X-Atmosphere-Transport=close&X-Atmosphere-tracking-id=" + rq.getUUID(), async:false});
+                        jQuery.ajax({url: this._closeUrl(rq), async:false});
                     }
-                    clearTimeout(rq.id);
+                    clearTimeout(rq.response.request.id);
                 }
             }
             jQuery.atmosphere.requests = [];
             jQuery.atmosphere.callbacks = [];
+        },
+
+        _closeUrl : function(rq) {
+            var query = "X-Atmosphere-Transport=close&X-Atmosphere-tracking-id=" + rq.getUUID();
+            var url = rq.getUrl().replace(/([?&])_=[^&]*/, query);
+            return url + (url === rq.getUrl() ? (/\?/.test(rq.getUrl()) ? "&" : "?") + query : "");
         },
 
         unsubscribeUrl: function(url) {
@@ -2440,7 +2446,10 @@ jQuery.atmosphere = function() {
                     // Suppose you can subscribe once to an url
                     if (rq.getUrl() == url) {
                         rq.close();
-                        clearTimeout(rq.id);
+                        if (rq.enableProtocol()) {
+                            jQuery.ajax({url :this._closeUrl(rq), async:false});
+                        }
+                        clearTimeout(rq.response.request.id);
                         idx = i;
                         break;
                     }
