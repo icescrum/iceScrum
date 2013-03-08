@@ -209,6 +209,7 @@ environments {
 }
 
 icescrum.securitydebug.enable = false
+icescrum.pushdebug.enable = false
 
 // log4j configuration
 icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
@@ -243,7 +244,6 @@ log4j = {
         debug 'grails.app.controller.org.icescrum'
         debug 'grails.app.domain.org.icescrum'
         debug 'grails.app.org.icescrum'
-        debug 'org.icescrum.atmosphere'
         debug 'org.icescrum.cache'
         debug 'org.icescrum.core'
         debug 'org.icescrum.plugins'
@@ -260,6 +260,12 @@ log4j = {
 
     if (ApplicationSupport.booleanValue(icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
+        /* debug 'org.codehaus.groovy.grails.plugins.springsecurity',
+                'grails.plugins.springsecurity'*/
+    }
+
+    if (ApplicationSupport.booleanValue(icescrum.pushdebug.enable)) {
+        debug 'org.icescrum.atmosphere'
         /* debug 'org.codehaus.groovy.grails.plugins.springsecurity',
                 'grails.plugins.springsecurity'*/
     }
