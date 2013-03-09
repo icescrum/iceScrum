@@ -209,7 +209,6 @@ environments {
 }
 
 icescrum.securitydebug.enable = false
-icescrum.pushdebug.enable = false
 
 // log4j configuration
 icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
