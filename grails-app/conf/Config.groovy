@@ -253,6 +253,7 @@ log4j = {
         debug 'grails.app.controller.com.kagilum'
         debug 'grails.app.domain.com.kagilum'
         debug 'com.kagilum'
+        debug 'org.icescrum.atmosphere'
         /*debug 'grails.plugin.springcache' */
     }else{
         off 'grails.plugin.springcache'
@@ -260,12 +261,6 @@ log4j = {
 
     if (ApplicationSupport.booleanValue(icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
-        /* debug 'org.codehaus.groovy.grails.plugins.springsecurity',
-                'grails.plugins.springsecurity'*/
-    }
-
-    if (ApplicationSupport.booleanValue(icescrum.pushdebug.enable)) {
-        debug 'org.icescrum.atmosphere'
         /* debug 'org.codehaus.groovy.grails.plugins.springsecurity',
                 'grails.plugins.springsecurity'*/
     }
