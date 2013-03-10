@@ -21,6 +21,7 @@
                     if (event)
                         this.stopEvent(event);
                     location.hash = '';
+                    $.post($.icescrum.o.push.url, {window:''});
                     this.o.fullscreen = false;
                 },
 
@@ -109,6 +110,7 @@
                                         $("input:visible, textarea:visible", content).first().focus()
                                     }
                                     $.icescrum.checkToolbar();
+                                    $.post($.icescrum.o.push.url, {window:id});
                                     return false;
                                 }
                             });

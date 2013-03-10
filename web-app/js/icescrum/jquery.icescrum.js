@@ -340,6 +340,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             var socket = $.atmosphere;
             var request = { url: $.icescrum.o.push.url,
                               contentType : "application/json",
+                              data:{window:($.icescrum.o.currentOpenedWindow ? $.icescrum.o.currentOpenedWindow.data('id') : null)},
                               transport : $.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket) ? 'websocket' : 'streaming',
                               enableXDR : true,
                               trackMessageLength:true,
