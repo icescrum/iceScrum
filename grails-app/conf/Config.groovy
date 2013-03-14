@@ -345,6 +345,7 @@ grails {
             ldap.authorities.retrieveGroupRoles = false
             ldap.authorities.groupSearchFilter = ""
             ldap.authorities.groupSearchBase = ""
+            ldap.active=false
         }
     }
 }
