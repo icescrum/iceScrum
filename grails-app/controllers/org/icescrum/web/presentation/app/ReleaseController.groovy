@@ -146,8 +146,9 @@ class ReleaseController {
     def unPlan = {
         withRelease{ Release release ->
             def sprints = Sprint.findAllByParentRelease(release)
+            def unPlanAllStories = []
             if (sprints) {
-                def unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
+                unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON }
