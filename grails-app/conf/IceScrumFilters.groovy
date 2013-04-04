@@ -23,6 +23,8 @@
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.User
+import org.springframework.web.servlet.support.RequestContextUtils
 
 class IceScrumFilters {
 
@@ -104,6 +106,32 @@ class IceScrumFilters {
             before = {
                 if (!params.id) {
                     params.id = !actionName.contains('Chart') ? Sprint.findCurrentOrNextSprint(Product.load(params.product).id).list()[0]?.id : Sprint.findCurrentOrLastSprint(Product.load(params.product).id).list()[0]?.id
+                }
+            }
+        }
+
+        locale(uri: '/ws/**', invert:true) {
+            before = {
+                def locale = params.lang ?: null
+                try {
+                    def localeAccept = request.getHeader("accept-language")?.split(",")
+                    if (localeAccept)
+                        localeAccept = localeAccept[0]?.split("-")
+
+                    if (localeAccept?.size() > 0) {
+                        locale = params.lang ?: localeAccept[0].toString()
+                    }
+                } catch (Exception e) {}
+
+                if (springSecurityService.isLoggedIn()) {
+                    def currentUserInstance = User.get(springSecurityService.principal.id)
+                    if (locale != currentUserInstance.preferences.language || RequestContextUtils.getLocale(request).toString() != currentUserInstance.preferences.language) {
+                        RequestContextUtils.getLocaleResolver(request).setLocale(request, response, currentUserInstance.locale)
+                    }
+                } else {
+                    if (locale) {
+                        RequestContextUtils.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
+                    }
                 }
             }
         }

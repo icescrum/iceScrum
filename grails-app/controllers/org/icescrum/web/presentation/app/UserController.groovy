@@ -65,16 +65,6 @@ class UserController {
             render(status: 403)
             return
         }
-        def localeAccept = request.getHeader("accept-language")?.split(",")
-        if (localeAccept)
-            localeAccept = localeAccept[0]?.split("-")
-
-        def locale = params.lang ?: null
-        if (localeAccept?.size() > 0) {
-            locale = params.lang ?: localeAccept[0].toString()
-        }
-        if (locale)
-            RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         render(template: 'window/register', model: [user: new User()])
     }
 

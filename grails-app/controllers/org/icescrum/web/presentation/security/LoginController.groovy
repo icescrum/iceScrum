@@ -36,7 +36,6 @@ import org.springframework.security.authentication.LockedException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.icescrum.core.domain.Product
 
 class LoginController {
 
@@ -81,6 +80,7 @@ class LoginController {
         }
         session.invalidate()
 
+        // required because locale is lost when session is invalidated
         def locale = params.lang ?: null
         try {
             def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")

@@ -52,27 +52,8 @@ class ScrumOSController {
 
     def index = {
         def currentUserInstance = null
-
-        def locale = params.lang ?: null
-        try {
-            def localeAccept = request.getHeader("accept-language")?.split(",")
-            if (localeAccept)
-                localeAccept = localeAccept[0]?.split("-")
-
-            if (localeAccept?.size() > 0) {
-                locale = params.lang ?: localeAccept[0].toString()
-            }
-        } catch (Exception e) {}
-
         if (springSecurityService.isLoggedIn()) {
             currentUserInstance = User.get(springSecurityService.principal.id)
-            if (locale != currentUserInstance.preferences.language || RCU.getLocale(request).toString() != currentUserInstance.preferences.language) {
-                RCU.getLocaleResolver(request).setLocale(request, response, currentUserInstance.locale)
-            }
-        } else {
-            if (locale) {
-                RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
-            }
         }
         def currentProductInstance = params.product ? Product.get(params.long('product')) : null
 
