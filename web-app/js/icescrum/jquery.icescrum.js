@@ -130,6 +130,11 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             $(window).bind('resize',function(){
                 $.icescrum.checkBars();
             });
+
+            //post every 25 min to cancel session timeout
+            $.doTimeout(1000 * 60 * 25,function(){
+                $.post($.icescrum.o.push.url);
+            });
         },
 
         log:function() {
@@ -381,7 +386,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                       });
                   } catch (e) {
                       console.log('Error: ', message.data);
-                      return;
                   }
             };
 
