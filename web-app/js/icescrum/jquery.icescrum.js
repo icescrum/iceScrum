@@ -134,6 +134,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             //post every 25 min to cancel session timeout
             $.doTimeout(1000 * 60 * 25,function(){
                 $.post($.icescrum.o.push.url);
+                return true;
             });
         },
 
