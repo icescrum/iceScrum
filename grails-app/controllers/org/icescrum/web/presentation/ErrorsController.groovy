@@ -47,6 +47,10 @@ class ErrorsController {
 
     }
 
+    def browserNotSupported = {
+
+    }
+
     def handleDatabase = {
         render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.database')] as JSON)
     }

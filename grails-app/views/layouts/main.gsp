@@ -21,7 +21,13 @@
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+
+<browser:isMsie versionLower="9">
+    ${response.sendRedirect("errors/browserNotSupported")}
+</browser:isMsie>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -29,10 +35,6 @@
         <g:layoutTitle/></title>
 
     <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
-    <!--[if lt IE 9]>
-        <link rel="stylesheet" type="text/css" media="screen" href="${resource(dir: 'themes/is/css', file: 'browser-detection.css')}" />
-        <script type="text/javascript" src="${resource(dir: 'js', file: 'browser-detection.js')}"></script>
-    <![endif]-->
     <is:loadJsVar/>
     <r:require modules="jquery,jquery-ui,jquery-ui-plugins,tagit,jquery-plugins,jqplot,icescrum${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
     <sec:ifLoggedIn>
