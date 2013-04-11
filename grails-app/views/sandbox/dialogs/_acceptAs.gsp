@@ -21,7 +21,7 @@
 --}%
 <is:dialog
         height="125"
-        width="360"
+        width="430"
         valid="[
           action:'accept',
           controller:'story',
