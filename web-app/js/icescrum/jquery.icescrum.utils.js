@@ -138,7 +138,7 @@
                         text = xhr;
                     }
                     var $windowDialog = $('#window-dialog');
-                    $windowDialog.dialog('destroy');
+                    $windowDialog.remove();
                     $(document.body).append(this.o.dialogErrorContent);
                     $('#comments').focus();
                     $('#stackError').val(text);
