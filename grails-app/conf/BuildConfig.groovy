@@ -104,6 +104,7 @@ grails.project.dependency.resolution = {
         compile ":session-temp-files:1.0"
         compile ":zipped-resources:1.0"
         compile ":yui-minify-resources:0.1.5"
+        compile ":browser-detection:0.4.3"
         if (environment == Environment.PRODUCTION){
             compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"
             compile ":tomcat:1.3.9"
