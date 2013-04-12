@@ -22,10 +22,15 @@
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
 <g:form action="save" method="post" name="${referrer}-form" data-elemid="${story?.id?:null}" data-state="${story?.state?:Story.STATE_SUGGESTED}" data-rank="${story?.rank?:'null'}" class="box-form box-form-250 box-form-200-legend"
         tabindex="1">
+
+    <g:hiddenField name="manageAttachments" value="true"/>
+    <g:hiddenField name="manageTags" value="true"/>
+
     <is:fieldset title="is.ui.backlog.story.properties.title">
         <is:fieldInput for="storyname" label="is.story.name">
             <is:input id="storyname" name="story.name" value="${story?.name}"/>
@@ -143,7 +148,6 @@
                       ]"/>
         </is:fieldFile>
     </is:fieldset>
-    <g:hiddenField name="manageAttachments" value="true"/>
 
     <is:fieldset title="is.ui.backlog.story.notes.title">
         <is:fieldArea for="storynotes" label="is.backlogelement.notes" noborder="true">

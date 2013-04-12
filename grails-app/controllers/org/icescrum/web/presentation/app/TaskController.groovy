@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 package org.icescrum.web.presentation.app
@@ -182,7 +183,9 @@ class TaskController {
 
             bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
 
-            task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
+            if (params.boolean('manageTags')) {
+                task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
+            }
 
             taskService.update(task, user)
             if (params.boolean('manageAttachments')) {

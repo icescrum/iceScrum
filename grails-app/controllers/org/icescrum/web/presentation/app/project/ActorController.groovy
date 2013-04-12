@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -82,7 +83,9 @@ class ActorController {
         withActor{Actor actor ->
 
             bindData(actor, this.params, [include:['name','description','notes','satisfactionCriteria','instances','expertnessLevel','useFrequency']], "actor")
-            actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+            if (params.boolean('manageTags')) {
+                actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+            }
             actorService.update(actor)
             if (params.boolean('manageAttachments')) {
                 def keptAttachments = params.list('actor.attachments')

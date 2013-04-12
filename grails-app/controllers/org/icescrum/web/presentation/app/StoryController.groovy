@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 package org.icescrum.web.presentation.app
@@ -41,8 +42,6 @@ import org.icescrum.core.domain.Task
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
-
-import javax.servlet.http.HttpServletResponse
 
 class StoryController {
 
@@ -277,7 +276,9 @@ class StoryController {
                     skipUpdate = true
             }
 
-            story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+            if (params.boolean('manageTags')) {
+                story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+            }
 
             if (params.story.rank && story.rank != params.story.rank.toInteger()) {
                 Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null

@@ -24,6 +24,9 @@
 --}%
 <g:form action="save" name="${controllerName}-form" method="post" data-elemid="${task?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
 
+    <g:hiddenField name="manageAttachments" value="true"/>
+    <g:hiddenField name="manageTags" value="true"/>
+
     <is:fieldset title="is.ui.sprintPlan.task.properties.title">
 
         <is:fieldInput for="taskname" label="is.task.name">
@@ -85,7 +88,6 @@
                       ]"/>
         </is:fieldFile>
     </is:fieldset>
-    <g:hiddenField name="manageAttachments" value="true"/>
 
     <is:fieldset title="is.ui.sprintPlan.task.notes.title">
         <is:fieldArea label="is.backlogelement.notes" noborder="true">

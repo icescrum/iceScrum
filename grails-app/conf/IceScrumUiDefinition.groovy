@@ -1,4 +1,3 @@
-import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 

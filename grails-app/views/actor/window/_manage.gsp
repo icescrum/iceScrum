@@ -19,8 +19,12 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:form action="save" method="post" name="${controllerName}-form" data-elemid="${actor?.id ?: null}" class="box-form box-form-250 box-form-200-legend" tabindex="1">
+
+    <g:hiddenField name="manageAttachments" value="true"/>
+    <g:hiddenField name="manageTags" value="true"/>
 
     <is:fieldset title="is.ui.actor.actor.properties.title">
         <is:fieldInput label="is.actor" for="actorname">
@@ -78,7 +82,6 @@
                       ]"/>
         </is:fieldFile>
     </is:fieldset>
-    <g:hiddenField name="manageAttachments" value="true"/>
 
     <is:fieldset title="is.ui.actor.actor.notes.title">
         <is:fieldArea for="actornotes" label="is.backlogelement.notes" noborder="true">

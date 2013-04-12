@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 package org.icescrum.web.presentation.app.project
@@ -89,7 +90,9 @@ class FeatureController {
                 }
 
                 bindData(feature, this.params, [include:['name','description','notes','color','type','value']], "feature")
-                feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
+                if (params.boolean('manageTags')) {
+                    feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
+                }
                 if (params.boolean('manageAttachments')) {
                     def keptAttachments = params.list('feature.attachments')
                     def addedAttachments = params.list('attachments')
