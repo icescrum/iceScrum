@@ -25,7 +25,7 @@
 --}%
 
 <browser:isMsie versionLower="9">
-    ${response.sendRedirect("errors/browserNotSupported")}
+    ${response.sendRedirect(createLink(controller:'errors',action:'browserNotSupported',absolute:true).toString())}
 </browser:isMsie>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
