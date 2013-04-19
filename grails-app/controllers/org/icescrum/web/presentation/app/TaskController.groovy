@@ -122,6 +122,10 @@ class TaskController {
 
         def sprint = params.remove('sprint.id') ?: params.task.remove('sprint.id')
 
+        if (params.task?.estimation instanceof String) {
+            params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/,'.').toFloat()
+        }
+
         def task = new Task()
         bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
 
@@ -172,13 +176,8 @@ class TaskController {
             User user = (User) springSecurityService.currentUser
             updateTaskType(task, user)
 
-            if (params.task.estimation){
-                params.task.estimation = params.task.estimation == '?' ? null : params.task.estimation
-                params.task.estimation = params.task.estimation?.replace(/,/,'.')
-            }
-
-            if (params.task.estimation){
-                params.task.estimation = params.task.float('estimation') ?: (params.task.float('estimation') == 0) ? 0 : null
+            if (params.task?.estimation instanceof String) {
+                params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/,'.').toFloat()
             }
 
             bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
