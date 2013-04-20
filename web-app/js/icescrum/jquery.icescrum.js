@@ -373,15 +373,18 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                               } else{
                                   $.event.trigger(this.call + '.stream', this.object);
                               }
-                          } else if(this.broadcaster) {
-                              if(this.broadcaster.users && this.broadcaster.users.length > 1){
+                          } else if(this.command) {
+                              if(this.command == 'connected' && this.object.length > 1){
                                   var users = [];
-                                  $(this.broadcaster.users).each(function(){
+                                  $(this.object).each(function(){
                                       users.push(this.fullName);
                                   });
                                   $('#menu-project').find('.content').attr('title',users.length+' users online ('+users.join(', ')+')');
-                              }else{
+                              }else if (this.command == 'connected'){
                                   $('#menu-project').find('.content').attr('title', 'Do you feel lonely?');
+                              } else {
+                                  console.log('calling: '+this.command+' with params: '+JSON.stringify(this.object)+' from uuid: '+this.from);
+                                  $.icescrum.commands[this.command].apply(null,[this.object, this.from]);
                               }
                           }
                       });
