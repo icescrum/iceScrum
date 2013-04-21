@@ -383,7 +383,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                               }else if (this.command == 'connected'){
                                   $('#menu-project').find('.content').attr('title', 'Do you feel lonely?');
                               } else {
-                                  console.log('calling: '+this.command+' with params: '+JSON.stringify(this.data)+' from uuid: '+this.from);
                                   $.icescrum.commands[this.command].apply(null,[this.data, this.from]);
                               }
                           }
@@ -461,7 +460,14 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
     $.icescrum.commands = {
         send:function(command,to,data,callback){
-            $.post($.icescrum.o.push.url, {command:command,to:to,data:data}, callback);
+            $.ajax({
+                type:"POST",
+                url:$.icescrum.o.push.url,
+                data:{command:command,to:to,data:data},
+                success:callback,
+                headers:{"X-Atmosphere-tracking-id":$.icescrum.o.push.uuid},
+                global:false
+            });
         }
     }
 
