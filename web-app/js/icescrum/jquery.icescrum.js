@@ -181,10 +181,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if (this.o.notifications){
                 var notification = window.webkitNotifications.createNotification(image, title, $('<div/>').html(msg.replace(/<\/?[^>]+>/gi, '')).text());
                 notification.show();
-                return notification;
             }
         },
 
+        //really used
         displayTemplate:function(selector, show) {
             if (show) {
                 $(selector + " .text-template").show();
@@ -207,16 +207,14 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     this.o.deleting = false;
                     return false;
                 }
-                var dataToSend = '';
-                dataToSend = $.icescrum.postit.ids(elements, idParam);
-
+                var dataToSend = $.icescrum.postit.ids(elements, idParam);
                 if (!action || (action && action.indexOf('/') == -1)) {
                     action = $.icescrum.o.currentOpenedWindow.data('id') + '/' + (action ? action : 'delete');
                 }
 
                 jQuery.ajax({type:'POST', data:dataToSend,
                             url: $.icescrum.o.baseUrlProduct + action,
-                            success:function(data, textStatus) {
+                            success:function(data) {
                                 $.icescrum.o.deleting = false;
                                 if (data.dialog){
                                     $(document.body).append(data.dialog);
@@ -226,7 +224,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                     onSuccess(data);
                                 }
                             },
-                            error:function(XMLHttpRequest, textStatus, errorThrown) {
+                            error:function() {
                                 elements.css('background-color', '');
                                 $.icescrum.o.deleting = false;
                             }
@@ -236,6 +234,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             return true;
         },
 
+        //really used
         changeRank:function(container, source, ui, name, call) {
             var postitid = ui.attr('id');
             if (!postitid){
@@ -303,7 +302,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                         beforeSend:function() {
                             $(container).addClass('loading').html('');
                         },
-                        success:function(data, textStatus) {
+                        success:function(data) {
                             $(container).height(300);
                             $(container)
                                     .removeClass('loading')
@@ -322,7 +321,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                 $('#chart-' + match[1]).addClass('selected');
                             }
                         },
-                        error:function(XMLHttpRequest, textStatus, errorThrown) {
+                        error:function(XMLHttpRequest) {
                             var data = $.parseJSON(XMLHttpRequest.responseText);
                             $(container).css("height", null);
                             $(container)
@@ -333,6 +332,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     });
         },
 
+        //really used
         displayChartFromCookie:function(container, url, save) {
             var saveChartType = $.cookie(container + $.icescrum.product.id);
             if (saveChartType) {
@@ -383,8 +383,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                               }else if (this.command == 'connected'){
                                   $('#menu-project').find('.content').attr('title', 'Do you feel lonely?');
                               } else {
-                                  console.log('calling: '+this.command+' with params: '+JSON.stringify(this.object)+' from uuid: '+this.from);
-                                  $.icescrum.commands[this.command].apply(null,[this.object, this.from]);
+                                  console.log('calling: '+this.command+' with params: '+JSON.stringify(this.data)+' from uuid: '+this.from);
+                                  $.icescrum.commands[this.command].apply(null,[this.data, this.from]);
                               }
                           }
                       });
@@ -393,17 +393,18 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                   }
             };
 
-            request.onError = function(response) {
+            request.onError = function() {
                 $("#is-logo").removeClass().addClass('disconnected');
             };
 
-            request.onClose = function(response) {
+            request.onClose = function() {
                 $("#is-logo").removeClass().addClass('disconnected');
             };
 
             socket.subscribe(request);
         },
 
+        //really used
         formattedTaskEstimation:function(estimation, defaultChar) {
             if(estimation == null && defaultChar)
                 return '?';
@@ -432,10 +433,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             var element = $(selector);
             if(element.css('display') == 'none') {
                 element.show();
-                var handler = function(event){
+                var handler = function(){
                     element.hide();
                     $(document).off("click", handler);
-                }
+                };
                 setTimeout(function () {
                     $(document).on("click", handler)
                 ;}, 10);
@@ -455,6 +456,12 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     upgrade.remove();
                 }
             }
+        }
+    }
+
+    $.icescrum.commands = {
+        send:function(command,to,data,callback){
+            $.post($.icescrum.o.push.url, {command:command,to:to,data:data}, callback);
         }
     }
 
