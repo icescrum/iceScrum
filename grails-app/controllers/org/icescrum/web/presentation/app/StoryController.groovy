@@ -361,7 +361,7 @@ class StoryController {
         def id = params.long('subid') ? 'subid' : 'id'
         withStory(id){Story story ->
             if (story.state == Story.STATE_DONE) {
-            returnError(text:message(code: 'is.story.error.done'))
+                returnError(text:message(code: 'is.story.error.done'))
                 return
             }
 
