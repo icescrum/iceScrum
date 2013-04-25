@@ -357,8 +357,12 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             request.onOpen = function(response) {
                 if(response.request){
                     $.icescrum.o.push.uuid = response.request.uuid;
+                    var window = location.hash.replace(/^.*#/, '');
+                    if (window){
+                        $.post($.icescrum.o.push.url, {window:window});
+                    }
+                    $("#is-logo").removeClass().addClass('connected');
                 }
-                $("#is-logo").removeClass().addClass('connected');
             };
 
 
