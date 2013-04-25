@@ -402,6 +402,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 $("#is-logo").removeClass().addClass('disconnected');
             };
 
+            $(window).on("beforeunload", function() {
+                $(window).trigger("unload.atmosphere");
+            });
+
             socket.subscribe(request);
         },
 
@@ -488,10 +492,10 @@ $.fn.icescrum = function(options) {
 
 $(document).ready(function($) {
     $.ajaxSetup({ timeout:45000 });
-    $(document).ajaxSend(function(event, xhr){
+    $(document).ajaxSend(function(event, xhr, settings){
         xhr.setRequestHeader("If-Modified-Since",new Date(1970,1,1).toUTCString());
         xhr.setRequestHeader("Pragma","no-cache");
-        if ($.icescrum.o.push && $.icescrum.o.push.uuid){
+        if ($.icescrum.o.push && $.icescrum.o.push.uuid && settings.url.indexOf('X-Atmosphere-tracking-id') == -1){
             xhr.setRequestHeader("X-Atmosphere-tracking-id", $.icescrum.o.push.uuid);
         }
     });
