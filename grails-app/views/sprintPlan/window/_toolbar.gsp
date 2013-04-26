@@ -113,12 +113,7 @@
                 </li>
             </g:if>
             <entry:point id="${controllerName}-${actionName}-filters" model="[sprint:sprint]"/>
-            <g:if test="${sprint.state == Sprint.STATE_INPROGRESS}">
-                <li>
-            </g:if>
-            <g:else>
-                <li class="last">
-            </g:else>
+            <li>
                 <a href="${createLink(action:'changeFilterTasks', params:[filter:'freeTasks', product:params.product], id:sprint.id)}"
                    data-ajax="true"
                    data-ajax-update="#window-content-${controllerName}"
@@ -126,6 +121,16 @@
                    data-active="true">
                     ${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}
                 </a>
+            </li>
+            <li class="last">
+                <a href="${createLink(action:'changeFilterTasks', params:[filter:'blockedTasks', product:params.product], id:sprint.id)}"
+                   data-ajax="true"
+                   data-ajax-update="#window-content-${controllerName}"
+                   data-ajax-success="$.icescrum.updateFilterTask"
+                   data-active="false">
+                    ${message(code:'is.ui.sprintPlan.toolbar.filter.blockedTasks')}
+                </a>
+            </li>
         </ul>
     </is:panelButton>
 
