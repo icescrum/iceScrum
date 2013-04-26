@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Story" %>
 <g:set var="tMOrSm" value="${request.teamMember || request.scrumMaster}"/>
@@ -39,6 +40,7 @@
            editableEstimation="${tMOrSm && story.state != Story.STATE_DONE}"
            sortable="[disabled:!sortable]"
            acceptanceTestCount="${story.acceptanceTests.size()}"
+           testState="${story.testState}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
             <g:if test="${!rect}">
                 <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>

@@ -24,6 +24,7 @@
 <g:set var="acceptanceTest" value="[id:'?**=this.id**?',
                              creator:[id:'?**=this.poster.id**?'],
                              name:'?**=this.name**?',
+                             state: '?**=this.state**?',
                              description:'?**=this.description**?',
                              uid:'?**=this.uid**?',
                              body:'?**=this.body**?']"/>

@@ -42,6 +42,7 @@ import org.icescrum.core.domain.Task
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
+import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 
 class StoryController {
 
@@ -706,7 +707,10 @@ class StoryController {
         withStory { story ->
             def acceptanceTest = new AcceptanceTest()
             bindData(acceptanceTest, this.params, [include:['name','description']], "acceptanceTest")
-
+            def state = params.acceptanceTest.int('state')
+            if (state != null && AcceptanceTestState.exists(state)) {
+                acceptanceTest.stateEnum = AcceptanceTestState.byId(state)
+            }
             User user = (User)springSecurityService.currentUser
             try {
                 acceptanceTestService.save(acceptanceTest, story, user)
@@ -739,7 +743,11 @@ class StoryController {
             return
         }
         try {
-            acceptanceTest.properties = params.acceptanceTest
+            bindData(acceptanceTest, this.params, [include: ['name', 'description']], "acceptanceTest")
+            def state = params.acceptanceTest.int('state')
+            if (state != null && AcceptanceTestState.exists(state)) {
+                acceptanceTest.stateEnum = AcceptanceTestState.byId(state)
+            }
             User user = (User)springSecurityService.currentUser
             acceptanceTestService.update(acceptanceTest, user)
             withFormat {

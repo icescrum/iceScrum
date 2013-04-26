@@ -1415,6 +1415,8 @@
                         } else {
                             description.text('');
                         }
+                        var select = $('.acceptance-test-state-select', acceptanceTest);
+                        select.selectmenu('value', select.find("option[value='" + this.state + "']").index());
                     },
 
                     remove:function(template) {

@@ -100,7 +100,7 @@ icescrum.marshaller = [
         task:[include:['totalAttachments','sprint','totalComments']],
         feature:[include:['totalAttachments','countDoneStories','state','effort'],
                  asShort:['color', 'name']],
-        story:[include:['totalAttachments','totalComments','tasks'],
+        story:[include:['totalAttachments','totalComments','tasks', 'testState'],
                asShort:['state', 'effort','uid']],
         sprint:[include:['activable','totalRemainingHours'],
                 asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
@@ -113,7 +113,7 @@ icescrum.marshaller = [
 icescrum.restMarshaller = [
         //global exclude
         exclude:['dateCreated','totalAttachments','totalComments'],
-        story:[exclude:['origin','backlog','value'], include: ['tags', 'dependences']],
+        story:[exclude:['origin','backlog','value'], include: ['tags', 'dependences', 'testState']],
         feature: [exclude: ['parentDomain','backlog'],include: ['tags']],
         actor: [exclude: ['backlog'],include: ['tags']],
         task:[exclude:['impediment'],include: ['tags']],

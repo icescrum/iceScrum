@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:set var="user" value="[id:'?**=this.id**?']"/>
 
@@ -34,6 +35,7 @@
                           dependsOn:[id:'?**=dependsOnId**?', uid:'?**=dependsOnUid**?'],
                           parentSprint:[id:'?**=parentSprint**?'],
                           description:'?**=description**?',
+                          testState:'?**=this.testState**?',
                           totalComments:'?**=this.totalComments**?',
                           totalAttachments:'?**=this.totalAttachments**?']"/>
 <![CDATA[
@@ -71,6 +73,7 @@
            color="?**=color**?"
            editableEstimation="${editable}"
            stateText="?**=textState**?"
+           testState="${story.testState}"
            acceptanceTestCount="?**=acceptanceTestCount**?"
            comment="${story.totalComments}">
             <g:if test="${rect}">

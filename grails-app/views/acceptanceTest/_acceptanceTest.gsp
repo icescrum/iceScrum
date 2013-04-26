@@ -19,12 +19,18 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+<%@ page import="org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
 <li id="acceptance-test${acceptanceTest.id}" class="acceptance-test" data-elemid="${acceptanceTest.id}">
     <div class="acceptance-test-content">
-        <div class="acceptance-test-uid">ID ${acceptanceTest.uid}</div>
+
+        <div class="acceptance-test-state">
+            <is:select class="acceptance-test-state-select" id="acceptance-test-state-select${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
+                       from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}"
+                       data-url="${createLink(controller: 'story', action: 'updateAcceptanceTest', params: [product: params.product])}"/>
+        </div>
 
         <div class="acceptance-test-name">
-            <strong>${acceptanceTest.name}</strong>
+            ${acceptanceTest.uid} - <strong>${acceptanceTest.name}</strong>
             <g:if test="${(access || user?.id == acceptanceTest.creator.id)}">
                 <span class="acceptance-test-menu">
                     (

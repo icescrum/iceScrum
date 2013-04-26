@@ -187,6 +187,16 @@ function getFunction(code, argNames) {
         $.download($.icescrum.o.baseUrl+'saveImage', {image:chart.toImage(),title:chart.attr('title')});
     });
 
+    $(document).on('change', '.acceptance-test-state-select', function() {
+        var $this = $(this);
+        var acceptanceTestId = $this.parents('.acceptance-test').data('elemid');
+        var url = $this.data('url');
+        $.post(url, {
+            "acceptanceTest.state" : $this.val(),
+            "acceptanceTest.id": acceptanceTestId
+        });
+    });
+
     attachOnDomUpdate();
 
 }(jQuery));

@@ -21,6 +21,7 @@
  * Stéphane Maldini (stephane.maldini@icescrum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  * Damien Vitrac (damien@oocube.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -455,7 +456,7 @@ td.jqplot-table-legend {
     text-align: center;
 }
 
-.acceptance-test-uid {
+.acceptance-test-state {
     float:right;
 }
 

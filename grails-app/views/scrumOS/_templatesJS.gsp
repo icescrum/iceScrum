@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON;" %>
+<%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
 <jq:jquery>
     jQuery.extend(true, jQuery.icescrum, {
         user:{
@@ -100,7 +100,9 @@
         acceptancetest:{
             i18n:{
                 noAcceptanceTest:"${message(code:'is.ui.acceptanceTest.empty')}"
-            }
+            },
+            <g:each var="stateEnum" in="${AcceptanceTestState.values()}">${stateEnum.name()}: ${stateEnum.id}, </g:each>
+            states: { <g:each var="stateEnum" in="${AcceptanceTestState.values()}">"${stateEnum.id}": "${message(code: stateEnum.toString())}", </g:each> }
         }
         <entry:point id="jquery-icescrum-js" model="[product:product]"/>
     });
