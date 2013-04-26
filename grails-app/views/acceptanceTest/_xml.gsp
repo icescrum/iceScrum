@@ -21,5 +21,6 @@
 --}%
 <is:objectAsXML object="${object}" node="acceptanceTest" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML name="['name','description']" cdata="true"/>
+    <is:propertyAsXML name="['state']"/>
     <is:propertyAsXML object="creator"/>
 </is:objectAsXML>
