@@ -26,7 +26,7 @@
             <is:fieldInput for="acceptanceTest.name" label="is.backlogelement.name">
                 <is:input id="acceptance-test-name-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.name" value="${acceptanceTest?.name}"/>
             </is:fieldInput>
-            <is:fieldSelect for="acceptanceTest.state" label="is.ui.acceptanceTest.state">
+            <is:fieldSelect for="acceptanceTest.state" label="is.acceptanceTest.state">
                 <is:select id="acceptance-test-state-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
                            from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}" />
             </is:fieldSelect>
