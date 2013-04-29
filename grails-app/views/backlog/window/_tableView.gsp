@@ -70,7 +70,7 @@
                 </g:if>
                 <g:set var="acceptanceTestCount" value="${story.acceptanceTests.size()}"/>
                 <g:if test="${acceptanceTestCount > 0}">
-                    <span class="table-acceptance-test"
+                    <span class="table-acceptance-test icon${story.testState}"
                           title="${message(code: 'is.postit.acceptanceTest.count', args: [acceptanceTestCount, acceptanceTestCount > 1 ? 's' : ''])}"></span>
                 </g:if>
             </is:tableColumn>

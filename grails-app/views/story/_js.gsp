@@ -25,6 +25,7 @@
 <g:set var="columns"
        value="[[key: (Task.STATE_WAIT), name: 'is.task.state.wait'],[key: (Task.STATE_BUSY), name: 'is.task.state.inprogress'],[key: (Task.STATE_DONE), name: 'is.task.state.done']]"/>
 <g:set var="story" value="[id:'?**=this.id**?',
+                            testState:'?**=this.testState**?',
                             uid:'?**=this.uid**?',
                             feature:[color:'?**=color**?'],
                             rank:'?**=this.rank**?',
@@ -75,7 +76,7 @@
                       title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"
                       title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
-                <span class="table-acceptance-test"
+                <span class="table-acceptance-test icon${story.testState}"
                           title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
@@ -144,7 +145,7 @@
                       title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"
                       title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
-                <span class="table-acceptance-test"
+                <span class="table-acceptance-test icon${story.testState}"
                           title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
