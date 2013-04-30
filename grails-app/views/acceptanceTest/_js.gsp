@@ -31,5 +31,5 @@
 
 <template id="acceptancetest-storydetail-tmpl">
       <g:render template="/acceptanceTest/acceptanceTest"
-          model="[acceptanceTest:acceptanceTest, access:true, template:true]"/>
+          model="[acceptanceTest:acceptanceTest, template:true]"/>
 </template>

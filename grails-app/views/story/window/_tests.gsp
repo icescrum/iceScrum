@@ -21,19 +21,20 @@
 --}%
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.AcceptanceTest" %>
 <g:set var="acceptanceTests" value="${story.acceptanceTests}"/>
-<g:set var="access" value="${request.productOwner}"/>
 <is:panelTab id="tests" selected="${params.tab && 'tests' in params.tab ? 'true' : ''}">
-    <div class="addorlogin">
-        <sec:ifNotLoggedIn>
-            <a href="${grailsApplication.config.grails.serverURL}/login?ref=p/${story.backlog.pkey}#story/${story.id}?tab=tests">
-                ${message(code: 'is.ui.acceptanceTest.login')}
-            </a>
-        </sec:ifNotLoggedIn>
-        <g:if test="${request.inProduct && story.state >= Story.STATE_SUGGESTED}">
-            <is:link disabled="true"
-                     onClick="jQuery('#acceptance-test-form-container').show();jQuery.icescrum.openTab('tests', true);">${message(code: 'is.ui.acceptanceTest.add')}</is:link>
-        </g:if>
-    </div>
+    <g:if test="${story.state < Story.STATE_DONE}">
+        <div class="addorlogin">
+            <sec:ifNotLoggedIn>
+                <a href="${grailsApplication.config.grails.serverURL}/login?ref=p/${story.backlog.pkey}#story/${story.id}?tab=tests">
+                    ${message(code: 'is.ui.acceptanceTest.login')}
+                </a>
+            </sec:ifNotLoggedIn>
+            <g:if test="${request.inProduct && story.state >= Story.STATE_SUGGESTED}">
+                <is:link disabled="true"
+                         onClick="jQuery('#acceptance-test-form-container').show();jQuery.icescrum.openTab('tests', true);">${message(code: 'is.ui.acceptanceTest.add')}</is:link>
+            </g:if>
+        </div>
+    </g:if>
     <is:cache cache="storyCache" key="story-tests-${story.id}-${AcceptanceTest.findLastUpdated(story.id).list()[0]}">
         <ul class="list-acceptance-tests">
             <g:if test="${!acceptanceTests || acceptanceTests.size() == 0}">
@@ -42,7 +43,7 @@
             <g:render template="/acceptanceTest/acceptanceTest"
                         collection="${acceptanceTests}"
                         var="acceptanceTest"
-                        model="[access:access, user:user]"/>
+                        model="[parentStory: story, user: user]"/>
         </ul>
     </is:cache>
     <g:if test="${request.inProduct}">

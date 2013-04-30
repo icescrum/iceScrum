@@ -19,17 +19,20 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
+<%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
 <div id="acceptance-test-form-container${acceptanceTest?.id ?: ''}" ${hidden ? 'style="display:none;"' : ''} class="box-form box-form-250 box-form-200-legend">
     <form method="post" name="acceptanceTestForm${acceptanceTest?.id ?: ''}" onSubmit="return false;">
         <is:fieldset title="">
             <is:fieldInput for="acceptanceTest.name" label="is.backlogelement.name">
                 <is:input id="acceptance-test-name-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.name" value="${acceptanceTest?.name}"/>
             </is:fieldInput>
-            <is:fieldSelect for="acceptanceTest.state" label="is.acceptanceTest.state">
-                <is:select id="acceptance-test-state-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
-                           from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}" />
-            </is:fieldSelect>
+            <g:if test="${parentStory.state == Story.STATE_INPROGRESS}">
+                <is:fieldSelect for="acceptanceTest.state" label="is.ui.acceptanceTest.state">
+                    <is:select id="acceptance-test-state-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
+                               from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}" />
+                </is:fieldSelect>
+            </g:if>
+
             <is:fieldArea for="acceptanceTest.description" label="is.backlogelement.description" noborder="true">
                 <span class="area-rich">
                     <markitup:editor id="acceptance-test-description-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.description" height="150">

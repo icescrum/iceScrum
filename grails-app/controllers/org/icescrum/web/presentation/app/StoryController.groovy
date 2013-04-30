@@ -687,115 +687,109 @@ class StoryController {
             render(status:404)
             return
         }
-        if (!params.id) {
-            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
-            return
-        }
-        AcceptanceTest acceptanceTest = AcceptanceTest.get(params.long('acceptanceTest.id'))
-        if (!acceptanceTest) {
-            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
-            return
-        }
-        withFormat {
-            json { renderRESTJSON(text:acceptanceTest) }
-            xml  { renderRESTXML(text:acceptanceTest) }
+        withAcceptanceTest('acceptanceTest.id') { AcceptanceTest acceptanceTest ->
+            withFormat {
+                json { renderRESTJSON(text:acceptanceTest) }
+                xml  { renderRESTXML(text:acceptanceTest) }
+            }
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def saveAcceptanceTest = {
         withStory { story ->
-            def acceptanceTest = new AcceptanceTest()
-            bindData(acceptanceTest, this.params, [include:['name','description']], "acceptanceTest")
-            def state = params.acceptanceTest.int('state')
-            if (state != null && AcceptanceTestState.exists(state)) {
-                acceptanceTest.stateEnum = AcceptanceTestState.byId(state)
+
+            if (story.state >= Story.STATE_DONE) {
+                returnError(text: message(code: 'is.acceptanceTest.error.save.storyState'))
+                return
             }
-            User user = (User)springSecurityService.currentUser
-            try {
-                acceptanceTestService.save(acceptanceTest, story, user)
-                withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
-                    json { renderRESTJSON(text:acceptanceTest) }
-                    xml  { renderRESTXML(text:acceptanceTest) }
+
+            def acceptanceTest = new AcceptanceTest()
+
+            def state = params.acceptanceTest.int('state')
+            if (state != null) {
+                if (AcceptanceTestState.exists(state)) {
+                    AcceptanceTestState newState = AcceptanceTestState.byId(state)
+                    if (newState > AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
+                        returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
+                        return
+                    }
+                    acceptanceTest.stateEnum = newState
+                } else {
+                    returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
+                    return
                 }
             }
-            catch (RuntimeException e) {
-                returnError(object: acceptanceTest, exception: e)
+
+            bindData(acceptanceTest, this.params, [include:['name','description']], "acceptanceTest")
+            User user = (User) springSecurityService.currentUser
+            acceptanceTestService.save(acceptanceTest, story, user)
+
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
+                json { renderRESTJSON(text:acceptanceTest) }
+                xml  { renderRESTXML(text:acceptanceTest) }
             }
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def updateAcceptanceTest = {
-        if (!params.acceptanceTest.id) {
-            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
-            return
-        }
-        AcceptanceTest acceptanceTest = AcceptanceTest.get(params.long('acceptanceTest.id'))
-        if (!acceptanceTest) {
-            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
-            return
-        }
-        def productOwner = securityService.productOwner(acceptanceTest.parentStory.backlog.id, springSecurityService.authentication)
-        if (!(acceptanceTest.creator.id == springSecurityService.currentUser.id) && !productOwner) {
-            render(status: 403, contentType: 'application/json')
-            return
-        }
-        try {
-            bindData(acceptanceTest, this.params, [include: ['name', 'description']], "acceptanceTest")
-            def state = params.acceptanceTest.int('state')
-            if (state != null && AcceptanceTestState.exists(state)) {
-                acceptanceTest.stateEnum = AcceptanceTestState.byId(state)
+        withAcceptanceTest('acceptanceTest.id') { AcceptanceTest acceptanceTest ->
+
+            def story = acceptanceTest.parentStory
+            if (story.state >= Story.STATE_DONE) {
+                returnError(text: message(code: 'is.acceptanceTest.error.update.storyState'))
+                return
             }
-            User user = (User)springSecurityService.currentUser
+
+            def state = params.acceptanceTest.int('state')
+            if (state != null) {
+                if (AcceptanceTestState.exists(state)) {
+                    AcceptanceTestState newState = AcceptanceTestState.byId(state)
+                    if (newState > AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
+                        returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
+                        return
+                    }
+                    acceptanceTest.stateEnum = newState
+                } else {
+                    returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
+                    return
+                }
+            }
+
+            bindData(acceptanceTest, this.params, [include: ['name', 'description']], "acceptanceTest")
+            User user = (User) springSecurityService.currentUser
             acceptanceTestService.update(acceptanceTest, user)
+
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
                 json { renderRESTJSON(text:acceptanceTest) }
                 xml  { renderRESTXML(text:acceptanceTest) }
             }
-        } catch (RuntimeException e) {
-            returnError(object: acceptanceTest, exception: e)
+
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def deleteAcceptanceTest = {
-        if (params.id == null) {
-            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
-            return
-        }
-        AcceptanceTest acceptanceTest = AcceptanceTest.get(params.long('id'))
-        if (!acceptanceTest) {
-            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
-            return
-        }
-        def productOwner = securityService.productOwner(acceptanceTest.parentStory.backlog.id, springSecurityService.authentication)
-        if (!(acceptanceTest.creator.id == springSecurityService.currentUser.id) && !productOwner) {
-            render(status: 403, contentType: 'application/json')
-            return
-        }
-        try {
+        withAcceptanceTest { AcceptanceTest acceptanceTest ->
+
             def deleted = [id: acceptanceTest.id,parentStory: [id:acceptanceTest.parentStory.id]]
             acceptanceTestService.delete(acceptanceTest)
+
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: deleted as JSON }
                 json { render status: 200, contentType: 'application/json', text: [result:'success'] as JSON }
                 xml { render status: 200, contentType: 'text/xml', text: [result:'success']  as XML }
             }
-        } catch (RuntimeException e) {
-            returnError(object: acceptanceTest, exception: e)
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def acceptanceTestEditor = {
-        if (params.id == null) {
-            returnError(text:message(code: 'is.ui.acceptanceTest.not.exists'))
-            return
+        withAcceptanceTest { AcceptanceTest acceptanceTest ->
+            render(template: '/acceptanceTest/acceptanceTestForm', model: [acceptanceTest: acceptanceTest, parentStory: acceptanceTest.parentStory])
         }
-        def acceptanceTest = AcceptanceTest.get(params.long('id'))
-        render(template: '/acceptanceTest/acceptanceTestForm', model: [acceptanceTest: acceptanceTest, parentStory: acceptanceTest.parentStory])
     }
 }

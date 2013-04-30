@@ -1405,18 +1405,22 @@
                     },
 
                     _postRendering:function(tmpl, acceptanceTest) {
-                        var isCreator = (this.creator.id == $.icescrum.user.id);
-                        if(!$.icescrum.user.scrumMaster && !isCreator) {
+                        if (!$.icescrum.user.inProduct() || this.parentStory.state >= $.icescrum.story.STATE_DONE) {
                            acceptanceTest.find('.acceptance-test-menu').remove();
                         }
                         var description = $('.acceptance-test-description', acceptanceTest);
-                        if(this.description != null) {
+                        if (this.description != null) {
                             description.load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.description,withoutHeader:true});
                         } else {
                             description.text('');
                         }
-                        var select = $('.acceptance-test-state-select', acceptanceTest);
-                        select.selectmenu('value', select.find("option[value='" + this.state + "']").index());
+                        if (!$.icescrum.user.inProduct() || this.parentStory.state !== $.icescrum.story.STATE_INPROGRESS) {
+                            $('.acceptance-test-state').text($.icescrum.acceptancetest.states[this.state]);
+                        }
+                        else {
+                            var select = $('.acceptance-test-state-select', acceptanceTest);
+                            select.selectmenu('value', select.find("option[value='" + this.state + "']").index());
+                        }
                     },
 
                     remove:function(template) {

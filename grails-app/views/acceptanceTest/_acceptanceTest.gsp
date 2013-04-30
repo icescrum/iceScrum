@@ -19,19 +19,26 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
+<%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
+<g:set var="testEditable" value="${template || (request.inProduct && parentStory.state < Story.STATE_DONE)}"/>
+<g:set var="stateEditable" value="${template || (request.inProduct && parentStory.state == Story.STATE_INPROGRESS)}"/>
 <li id="acceptance-test${acceptanceTest.id}" class="acceptance-test" data-elemid="${acceptanceTest.id}">
     <div class="acceptance-test-content">
 
         <div class="acceptance-test-state">
-            <is:select class="acceptance-test-state-select" id="acceptance-test-state-select${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
-                       from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}"
-                       data-url="${createLink(controller: 'story', action: 'updateAcceptanceTest', params: [product: params.product])}"/>
+            <g:if test="${stateEditable}">
+                <is:select class="acceptance-test-state-select" id="acceptance-test-state-select${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
+                           from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}"
+                           data-url="${createLink(controller: 'story', action: 'updateAcceptanceTest', params: [product: params.product])}"/>
+            </g:if>
+            <g:else>
+                ${message(code: acceptanceTest.stateEnum.toString())}
+            </g:else>
         </div>
 
         <div class="acceptance-test-name">
             ${acceptanceTest.uid} - <strong>${acceptanceTest.name}</strong>
-            <g:if test="${(access || user?.id == acceptanceTest.creator.id)}">
+            <g:if test="${testEditable}">
                 <span class="acceptance-test-menu">
                     (
                         <is:link history="false"
