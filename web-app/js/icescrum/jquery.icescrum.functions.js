@@ -1414,8 +1414,8 @@
                         } else {
                             description.text('');
                         }
-                        if (!$.icescrum.user.inProduct() || this.parentStory.state !== $.icescrum.story.STATE_INPROGRESS) {
-                            $('.acceptance-test-state').text($.icescrum.acceptancetest.states[this.state]);
+                        if (!$.icescrum.user.inProduct() || this.parentStory.state != $.icescrum.story.STATE_INPROGRESS) {
+                            $('.acceptance-test-state', acceptanceTest).text($.icescrum.acceptancetest.states[this.state]);
                         }
                         else {
                             var select = $('.acceptance-test-state-select', acceptanceTest);
