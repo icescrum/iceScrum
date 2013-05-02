@@ -723,7 +723,13 @@ class StoryController {
 
             bindData(acceptanceTest, this.params, [include:['name','description']], "acceptanceTest")
             User user = (User) springSecurityService.currentUser
-            acceptanceTestService.save(acceptanceTest, story, user)
+
+            try {
+                acceptanceTestService.save(acceptanceTest, story, user)
+            } catch (RuntimeException e) {
+                returnError(object: acceptanceTest, exception: e)
+                return
+            }
 
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
