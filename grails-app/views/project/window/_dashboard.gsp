@@ -19,6 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
 <%@ page import="grails.plugin.fluxiable.Activity" %>
@@ -183,7 +184,7 @@
                                         <p>
                                             <is:scrumLink controller="user" action='profile'
                                                           id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
-                                            <g:message code="is.fluxiable.${a.code}"/> <g:message code="${a.code == 'taskDelete' ? 'is.task' : 'is.story'}"/>
+                                            <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.${a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'}"/>
                                             <g:if test="${a.code != Activity.CODE_DELETE}">
                                                 <is:scrumLink controller="story" id="${a.cachedId}"
                                                               params="${a.code == 'comment' ? ['tab':'comments'] : []}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink>

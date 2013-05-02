@@ -25,7 +25,6 @@
 
 package org.icescrum.web.presentation.app.project
 
-import grails.util.GrailsNameUtils
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.preferences.TeamPreferences
 import org.icescrum.core.domain.security.Authority
@@ -88,7 +87,7 @@ class ProjectController {
             def builder = new FeedBuilder()
             builder.feed(description: "${product.description?:''}",title: "$product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: product.pkey])}") {
               activities.each() { a ->
-                    entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is.story")} ${a.cachedLabel.encodeAsHTML()}") {e ->
+                    entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.cachedLabel.encodeAsHTML()}") {e ->
                         if (a.code != Activity.CODE_DELETE)
                             e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.cachedId)}"
                         else

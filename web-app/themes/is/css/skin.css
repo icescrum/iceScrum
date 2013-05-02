@@ -409,19 +409,20 @@ event-content-list .ui-selected, .kanban .ui-selected {
 */
 
 .list-news .news-acceptAs, .list-news .news-update, .list-news .news-taskAssociateUrgent, .list-news .news-taskAssociateRecurrent,
-.list-news .news-taskUpdate, .list-news .news-taskWait, .list-news .news-taskInprogress, .list-news .news-acceptanceTest, .list-news .news-unDone  {
+.list-news .news-taskUpdate, .list-news .news-taskWait, .list-news .news-taskInprogress, .list-news .news-unDone,
+.list-news .news-acceptanceTestUpdate, .list-news .news-acceptanceTestTocheck, .list-news .news-acceptanceTestFailed {
     background-image: url(../images/news/edit.png);
 }
 
-.list-news .news-delete, .list-news .news-taskDelete {
+.list-news .news-delete, .list-news .news-taskDelete, .list-news .news-acceptanceTestDelete {
     background-image: url(../images/news/delete.png);
 }
 
-.list-news .news-save, .list-news .news-taskSave {
+.list-news .news-save, .list-news .news-taskSave, .list-news .news-acceptanceTest, .list-news .news-acceptanceTestSave {
     background-image: url(../images/news/accept.png);
 }
 
-.list-news .news-done, .valid, .list-news .news-taskFinish {
+.list-news .news-done, .valid, .list-news .news-taskFinish, .list-news .news-acceptanceTestSuccess {
     background-image: url(../images/news/create.png);
 }
 

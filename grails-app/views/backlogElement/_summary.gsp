@@ -37,7 +37,8 @@
                             <p><is:scrumLink controller="user" action='profile'
                                              id="${entry.poster.username}">${entry.poster.firstName.encodeAsHTML()} ${entry.poster.lastName.encodeAsHTML()}</is:scrumLink>
                             <g:message code="is.fluxiable.${entry.code}"/>
-                            <g:message code="is.${entry.code.startsWith('task') ? 'task' : 'story'}"/>
+                            %{-- Doesn't match against "acceptanceTest" alone because it's a legacy story activity --}%
+                            <g:message code="is.${entry.code.startsWith('task') ? 'task' : entry.code =~ /acceptanceTest.+/ ? 'acceptanceTest' : 'story'}"/>
                                 <strong>${entry.cachedLabel.encodeAsHTML()}</strong></p>
 
                             <p><g:formatDate date="${entry.dateCreated}" formatName="is.date.format.short.time"

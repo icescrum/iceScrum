@@ -631,17 +631,15 @@ class StoryController {
 
     def summaryPanel = {
         withStory { Story story ->
-            def activities = story.getActivities()
-            if (story.tasks) {
-                story.tasks*.getActivities()*.each { activities << it }
-            }
-            def summary = story.comments + activities
-            summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
-            render(template: "/backlogElement/summary",
-                    model: [summary: summary,
-                            backlogElement: story,
-                            product: Product.get(params.long('product'))
-                    ])
+            def summary = story.comments +
+                          story.getActivities() +
+                          story.tasks*.getActivities().flatten() +
+                          story.acceptanceTests*.getActivities().flatten()
+            render template: "/backlogElement/summary",
+                   model: [summary: summary.sort { it.dateCreated },
+                           backlogElement: story,
+                           product: Product.get(params.long('product'))
+                   ]
         }
     }
 
@@ -766,7 +764,7 @@ class StoryController {
 
             bindData(acceptanceTest, this.params, [include: ['name', 'description']], "acceptanceTest")
             User user = (User) springSecurityService.currentUser
-            acceptanceTestService.update(acceptanceTest, user)
+            acceptanceTestService.update(acceptanceTest, user, acceptanceTest.isDirty('state'))
 
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
