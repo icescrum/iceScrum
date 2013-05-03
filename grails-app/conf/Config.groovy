@@ -107,7 +107,8 @@ icescrum.marshaller = [
         release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber']],
         user:[asShort:['firstName', 'lastName']],
         productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
-        attachment:[include: ['filename']]
+        attachment:[include: ['filename']],
+        acceptanceTest:[]
 ]
 
 icescrum.restMarshaller = [
