@@ -35,7 +35,7 @@
             </g:if>
         </div>
     </g:if>
-    <is:cache cache="storyCache" key="story-tests-${story.id}-${AcceptanceTest.findLastUpdated(story.id).list()[0]}">
+    <is:cache cache="storyCache" key="story-tests-${story.id}-${story.lastUpdated}">
         <ul class="list-acceptance-tests">
             <g:if test="${!acceptanceTests || acceptanceTests.size() == 0}">
                 <li class="panel-box-empty">${message(code: 'is.ui.acceptanceTest.empty')}</li>

@@ -532,6 +532,12 @@ class StoryController {
     @Secured('productOwner() and !archivedProduct()')
     def done = {
         withStory {Story story ->
+            def testsNotSuccess = story.acceptanceTests.findAll { AcceptanceTest test -> test.stateEnum != AcceptanceTestState.SUCCESS }
+            if (testsNotSuccess.size() > 0 && !params.boolean('confirm')) {
+                def dialog = g.render(template: 'dialogs/confirmDone', model: [testsNotSuccess: testsNotSuccess.sort {it.uid}])
+                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+                return
+            }
             storyService.done(story)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
