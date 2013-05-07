@@ -1415,7 +1415,7 @@
                             description.text('');
                         }
                         if (!$.icescrum.user.inProduct() || this.parentStory.state != $.icescrum.story.STATE_INPROGRESS) {
-                            $('.acceptance-test-state', acceptanceTest).text($.icescrum.acceptancetest.states[this.state]);
+                            $('.acceptance-test-state', acceptanceTest).text($.icescrum.acceptancetest.stateLabels[this.state]);
                         }
                         else {
                             var select = $('.acceptance-test-state-select', acceptanceTest);

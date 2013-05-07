@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
+<%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState; org.icescrum.core.domain.Story.TestState" %>
 <jq:jquery>
     jQuery.extend(true, jQuery.icescrum, {
         user:{
@@ -42,7 +42,17 @@
                 dependsOnWarning:"${message(code:'is.ui.story.warning.dependsOn')}"
             },
             states: ${is.bundleLocaleToJs(bundle: BundleUtils.storyStates)},
-            types: ${is.bundleLocaleToJs(bundle: BundleUtils.storyTypes)}
+            types: ${is.bundleLocaleToJs(bundle: BundleUtils.storyTypes)},
+            testStates: {
+                <g:each var="testStateEnum" status="index" in="${TestState.values()}">
+                ${testStateEnum.name()}: ${testStateEnum.id}${index == TestState.values().size() - 1 ? '' : ','}
+                </g:each>
+            },
+            testStateLabels: {
+                <g:each var="testStateEnum" status="index" in="${TestState.values()}">
+                "${testStateEnum.id}": "${message(code: testStateEnum.toString())}"${index == TestState.values().size() - 1 ? '' : ','}
+                </g:each>
+            }
         },
         sprint:{
             ${currentSprint ? 'current:' + (currentSprint as JSON) + ',' : ''}
@@ -101,8 +111,14 @@
             i18n:{
                 noAcceptanceTest:"${message(code:'is.ui.acceptanceTest.empty')}"
             },
-            <g:each var="stateEnum" in="${AcceptanceTestState.values()}">${stateEnum.name()}: ${stateEnum.id}, </g:each>
-            states: { <g:each var="stateEnum" in="${AcceptanceTestState.values()}">"${stateEnum.id}": "${message(code: stateEnum.toString())}", </g:each> }
+            <g:each var="stateEnum" in="${AcceptanceTestState.values()}">
+            ${stateEnum.name()}: ${stateEnum.id},
+            </g:each>
+            stateLabels: {
+                <g:each var="stateEnum" status="index" in="${AcceptanceTestState.values()}">
+                "${stateEnum.id}": "${message(code: stateEnum.toString())}"${index == AcceptanceTestState.values().size() - 1 ? '' : ','}
+                </g:each>
+            }
         }
         <entry:point id="jquery-icescrum-js" model="[product:product]"/>
     });

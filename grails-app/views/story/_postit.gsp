@@ -39,8 +39,9 @@
            stateText="${story.state > Story.STATE_SUGGESTED ? is.bundle(bundle:'storyStates',value:story.state) : ''}"
            editableEstimation="${tMOrSm && story.state != Story.STATE_DONE}"
            sortable="[disabled:!sortable]"
-           acceptanceTestCount="${story.acceptanceTests.size()}"
+           acceptanceTestCount="${story.countAcceptanceTests()}"
            testState="${story.testState}"
+           testStateLabel="${message(code: story.testStateEnum.toString())}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
             <g:if test="${!rect}">
                 <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>

@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Task" %>
 <g:set var="inProduct" value="${request.inProduct}"/>
@@ -49,6 +50,7 @@
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
     var feature = this.feature ? this.feature.name : '${message(code: 'is.ui.sandbox.manage.chooseFeature')}';
+    var testStateLabel = this.testState > 0 ? jQuery.icescrum.story.testStateLabels[this.testState] : '';
     this.parentSprint = this.parentSprint ? this.parentSprint.id : '';
     var notes = '&nbsp;';
     if (this.notes) {
@@ -77,7 +79,7 @@
                 <span class="table-attachment"
                       title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
                 <span class="table-acceptance-test icon${story.testState}"
-                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}"></span>
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}, ${message(code: 'is.postit.acceptanceTest.progress')} ?**=testStateLabel**?"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="story">
@@ -116,6 +118,7 @@
     var effort = this.state > 1 ? (this.effort != null ? this.effort : '?') : '';
     var acceptedDate = jQuery.icescrum.dateLocaleFormat(this.acceptedDate);
     var estimatedDate = this.estimatedDate ? jQuery.icescrum.dateLocaleFormat(this.estimatedDate) : '';
+    var testStateLabel = this.testState > 0 ? jQuery.icescrum.story.testStateLabels[this.testState] : '';
     this.parentSprint = this.parentSprint ? this.parentSprint.id : '';
     var notes = '&nbsp;';
     if (this.notes) {
@@ -146,7 +149,7 @@
                 <span class="table-attachment"
                       title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
                 <span class="table-acceptance-test icon${story.testState}"
-                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}"></span>
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])} - ?**=testStateLabel**?"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="story">

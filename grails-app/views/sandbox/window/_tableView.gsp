@@ -21,6 +21,7 @@
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
 <%@ page import="org.icescrum.core.domain.Story" %>
@@ -65,10 +66,10 @@
                     <span class="table-attachment"
                           title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
                 </g:if>
-                <g:set var="acceptanceTestCount" value="${story.acceptanceTests.size()}"/>
+                <g:set var="acceptanceTestCount" value="${story.countAcceptanceTests()}"/>
                 <g:if test="${acceptanceTestCount > 0}">
                     <span class="table-acceptance-test icon${story.testState}"
-                          title="${message(code: 'is.postit.acceptanceTest.count', args: [acceptanceTestCount, acceptanceTestCount > 1 ? 's' : ''])}"></span>
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: [acceptanceTestCount, acceptanceTestCount > 1 ? 's' : ''])}, ${message(code: 'is.postit.acceptanceTest.progress')} ${message(code: story.testStateEnum.toString())}"></span>
                 </g:if>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">

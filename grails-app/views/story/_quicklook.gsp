@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog width="600"
            resizable="false"
@@ -147,7 +148,7 @@
                        color="${story.feature?.color ?: 'yellow'}"
                        stateText="${is.bundle(bundle:'storyStates',value:story.state)}">
             </is:postit>
-            <g:set var="acceptanceTestCount" value="${story.acceptanceTests.size()}"/>
+            <g:set var="acceptanceTestCount" value="${story.countAcceptanceTests()}"/>
             <g:if test="${acceptanceTestCount > 0}">
                 <div>
                     <strong>
