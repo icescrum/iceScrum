@@ -136,6 +136,7 @@
         </div>
 
         <div class="col2">
+            <g:set var="acceptanceTestCount" value="${story.countAcceptanceTests()}"/>
             <is:postit title="${story.name}"
                        id="${story.id}"
                        miniId="${story.uid}"
@@ -146,9 +147,11 @@
                        typeTitle="${is.bundle(bundle:'storyTypes',value:story.type)}"
                        miniValue="${story.effort >= 0 ? story.effort :'?'}"
                        color="${story.feature?.color ?: 'yellow'}"
+                       acceptanceTestCount="${acceptanceTestCount}"
+                       testState="${story.testState}"
+                       testStateLabel="${message(code: story.testStateEnum.toString())}"
                        stateText="${is.bundle(bundle:'storyStates',value:story.state)}">
             </is:postit>
-            <g:set var="acceptanceTestCount" value="${story.countAcceptanceTests()}"/>
             <g:if test="${acceptanceTestCount > 0}">
                 <div>
                     <strong>
