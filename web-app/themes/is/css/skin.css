@@ -160,37 +160,38 @@ body {
     background-position: 0 0;
 }
 
-.postit-rect .postit-acceptance-test,
-.postit .postit-acceptance-test,
-.table-acceptance-test {
+.story-icon-acceptance-test {
+    height: 14px;
+    width: 16px;
+    display: inline-block;
     background-repeat: no-repeat;
     background-position: 0 0;
 }
 
-.postit-rect .postit-acceptance-test.icon1,
-.postit .postit-acceptance-test.icon1,
-.table-acceptance-test.icon1{
+.text-icon-acceptance-test {
+    width: 76px;
+    background-repeat: no-repeat;
+    background-position: 3px 3px;
+    text-indent: 25px;
+}
+
+.select-icon-acceptance-test, .select-icon-acceptance-test:hover {
+    background-repeat: no-repeat;
+    background-position: 4px 3px;
+    text-indent: 20px;
+}
+
+.icon-acceptance-test1, .icon-acceptance-test1:hover {
     background-image: url(../images/icons/test-grey.png);
 }
 
-.postit-rect .postit-acceptance-test.icon5,
-.postit .postit-acceptance-test.icon5,
-.table-acceptance-test.icon5{
+.icon-acceptance-test5, .icon-acceptance-test5:hover {
     background-image: url(../images/icons/test-red.png);
 }
 
-.postit-rect .postit-acceptance-test.icon7,
-.postit .postit-acceptance-test.icon7,
-.table-acceptance-test.icon7{
-    background-image: url(../images/icons/test-yellow.png);
-}
-
-.postit-rect .postit-acceptance-test.icon10,
-.postit .postit-acceptance-test.icon10,
-.table-acceptance-test.icon10{
+.icon-acceptance-test10, .icon-acceptance-test10:hover {
     background-image: url(../images/icons/test-green.png);
 }
-
 
 .postit-rect .postit-layout {
     background-image: url(../images/view/postit-rectangle.png);

@@ -68,7 +68,7 @@
                 </g:if>
                 <g:set var="acceptanceTestCount" value="${story.countAcceptanceTests()}"/>
                 <g:if test="${acceptanceTestCount > 0}">
-                    <span class="table-acceptance-test icon${story.testState}"
+                    <span class="story-icon-acceptance-test icon-acceptance-test${story.testState}"
                           title="${message(code: 'is.postit.acceptanceTest.count', args: [acceptanceTestCount, acceptanceTestCount > 1 ? 's' : ''])}, ${message(code: 'is.postit.acceptanceTest.progress')} ${message(code: story.testStateEnum.toString())}"></span>
                 </g:if>
             </is:tableColumn>

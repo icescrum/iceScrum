@@ -78,7 +78,7 @@
                       title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"
                       title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
-                <span class="table-acceptance-test icon${story.testState}"
+                <span class="story-icon-acceptance-test icon-acceptance-test${story.testState}"
                           title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}, ${message(code: 'is.postit.acceptanceTest.progress')} ?**=testStateLabel**?"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
@@ -148,7 +148,7 @@
                       title="${message(code: 'is.postit.comment.count', args: [story.totalComments, ''])}"></span>
                 <span class="table-attachment"
                       title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
-                <span class="table-acceptance-test icon${story.testState}"
+                <span class="story-icon-acceptance-test icon-acceptance-test${story.testState}"
                           title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])} - ?**=testStateLabel**?"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">

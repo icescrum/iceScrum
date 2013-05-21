@@ -687,7 +687,7 @@
                             newObject.find('.dependsOn').remove();
                         }
                         if(!this.acceptanceTests || this.acceptanceTests.length <= 0) {
-                            newObject.find('.postit-acceptance-test,.table-acceptance-test').hide();
+                            newObject.find('.story-icon-acceptance-test').hide();
                         }
                         if (this.totalAttachments <= 0) {
                             newObject.find('.postit-attachment,.table-attachment').hide()
@@ -1415,7 +1415,11 @@
                             description.text('');
                         }
                         if (!$.icescrum.user.inProduct() || this.parentStory.state != $.icescrum.story.STATE_INPROGRESS) {
-                            $('.acceptance-test-state', acceptanceTest).text($.icescrum.acceptancetest.stateLabels[this.state]);
+                            $('.acceptance-test-state', acceptanceTest).html(
+                                '<div class="text-icon-acceptance-test icon-acceptance-test' +  this.state + '">' +
+                                    $.icescrum.acceptancetest.stateLabels[this.state] +
+                                '</div>'
+                            );
                         }
                         else {
                             var select = $('.acceptance-test-state-select', acceptanceTest);

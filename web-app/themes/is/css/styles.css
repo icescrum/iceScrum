@@ -800,11 +800,6 @@ li#li-roles {
     width: 15px;
 }
 
-.postit .postit-acceptance-test, .postit-rect .postit-acceptance-test {
-    height: 14px;
-    width: 16px;
-}
-
 .postit .postit-sortable {
     cursor: move;
 }
@@ -1988,12 +1983,6 @@ li#li-roles {
 .table-attachment, .table-comment {
     height: 15px;
     width: 15px;
-    display: inline-block;
-}
-
-.table-acceptance-test {
-    height: 14px;
-    width: 16px;
     display: inline-block;
 }
 

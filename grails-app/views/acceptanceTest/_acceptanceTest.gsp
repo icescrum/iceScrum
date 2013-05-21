@@ -22,17 +22,20 @@
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
 <g:set var="testEditable" value="${template || (request.inProduct && parentStory.state < Story.STATE_DONE)}"/>
 <g:set var="stateEditable" value="${template || (request.inProduct && parentStory.state == Story.STATE_INPROGRESS)}"/>
+<g:set var="acceptanceTestIcons" value="${AcceptanceTestState.values().collect { 'select-icon-acceptance-test icon-acceptance-test' + it.id }}"/>
 <li id="acceptance-test${acceptanceTest.id}" class="acceptance-test" data-elemid="${acceptanceTest.id}">
     <div class="acceptance-test-content">
 
         <div class="acceptance-test-state">
             <g:if test="${stateEditable}">
-                <is:select class="acceptance-test-state-select" id="acceptance-test-state-select${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
+                <is:select icons="${acceptanceTestIcons}" class="acceptance-test-state-select" id="acceptance-test-state-select${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
                            from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}"
                            data-url="${createLink(controller: 'story', action: 'updateAcceptanceTest', params: [product: params.product])}"/>
             </g:if>
             <g:else>
-                ${message(code: acceptanceTest.stateEnum.toString())}
+                <div class="text-icon-acceptance-test icon-acceptance-test${acceptanceTest?.state ?: ''}">
+                    ${message(code: acceptanceTest.stateEnum.toString())}
+                </div>
             </g:else>
         </div>
 
