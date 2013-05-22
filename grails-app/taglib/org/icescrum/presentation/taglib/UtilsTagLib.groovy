@@ -53,6 +53,7 @@ class UtilsTagLib {
         def jsCode = """var icescrum = {
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
                           baseUrl: "${createLink(controller: 'scrumOS')}",
+                          versionUrl: "${createLink(controller: 'scrumOS', action:'version')}",
                           baseUrlProduct: ${p ? '\'' + createLink(controller: 'scrumOS', params: p) + '/\'' : null},
                           urlOpenWidget:"${createLink(controller: 'scrumOS', action: 'openWidget', params: p)}",
                           urlOpenWindow:"${createLink(controller: 'scrumOS', action: 'openWindow', params: p)}",
