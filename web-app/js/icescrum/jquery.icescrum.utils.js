@@ -137,14 +137,18 @@
                     } else {
                         text = xhr;
                     }
-                    var $windowDialog = $('#window-dialog');
-                    $windowDialog.remove();
+                    var $dialog = $('#dialog');
+                    if($dialog.length){
+                        $dialog.dialog('close');
+                        $dialog.remove();
+                    }
                     $(document.body).append(this.o.dialogErrorContent);
                     $('#comments').focus();
                     $('#stackError').val(text);
                     $('#stackError-field').input({className:'area'});
                     $('#comments-field').input({className:'area'});
-                    $windowDialog.dialog({
+                    //must revalidate selector
+                    $('#dialog').dialog({
                                 dialogClass: 'no-titlebar',
                                 closeOnEscape:true,
                                 closeText:'Close',
@@ -165,14 +169,14 @@
                                     'OK': function() {
                                         $.ajax({
                                                     type:'POST',
-                                                    data:$('#window-dialog').find('form:first').serialize(),
+                                                    data:$('#dialog').find('form:first').serialize(),
                                                     url:$.icescrum.o.baseUrl + 'reportError',
                                                     success:function(data, textStatus) {
                                                         $.icescrum.renderNotice(data.notice.text, data.notice.type);
-                                                        $('#window-dialog').dialog('close');
+                                                        $('#dialog').dialog('close');
                                                     },
                                                     error:function() {
-                                                        $('#window-dialog').dialog('close');
+                                                        $('#dialog').dialog('close');
                                                     }
                                                 });
                                     }
