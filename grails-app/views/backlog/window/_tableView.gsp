@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<%@ page import="org.icescrum.core.domain.Story" %>
+<%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Story.TestState" %>
 <g:set var="sumEfforts" value="${0}"/>
 <is:tableView>
     <is:table id="story-table"
@@ -69,10 +69,11 @@
                     <span class="table-attachment"
                           title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
                 </g:if>
-                <g:set var="acceptanceTestCount" value="${story.countAcceptanceTests()}"/>
-                <g:if test="${acceptanceTestCount > 0}">
+                <g:set var="testCount" value="${story.countAcceptanceTests()}"/>
+                <g:if test="${testCount > 0}">
+                    <g:set var="testCountByStateLabel" value="${story.countTestsByState().collect({ k, v -> message(code: k.toString()) + ': ' + v}).join(' / ')}" />
                     <span class="story-icon-acceptance-test icon-acceptance-test${story.testState}"
-                          title="${message(code: 'is.postit.acceptanceTest.count', args: [acceptanceTestCount, acceptanceTestCount > 1 ? 's' : ''])}, ${message(code: 'is.postit.acceptanceTest.progress')} ${message(code: story.testStateEnum.toString())}"></span>
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: [testCount, testCount > 1 ? 's' : ''])} (${testCountByStateLabel})"></span>
                 </g:if>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">

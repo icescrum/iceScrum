@@ -688,6 +688,18 @@
                         }
                         if(!this.acceptanceTests || this.acceptanceTests.length <= 0) {
                             newObject.find('.story-icon-acceptance-test').hide();
+                        } else {
+                            var testCountByState = {};
+                            $(this.acceptanceTests).each(function() {
+                                var state = this.state;
+                                testCountByState[state] = testCountByState[state] !== undefined ? testCountByState[state] + 1 : 1;
+                            });
+                            var testCountByStateLabel = $.map(testCountByState, function(value, key) {
+                                return $.icescrum.story.testStateLabels[key] + ': ' + value;
+                            }).join(' / ');
+                            var testIcon = newObject.find('.story-icon-acceptance-test');
+                            var oldTitle = testIcon.attr('title');
+                            testIcon.attr('title', oldTitle + ' (' + testCountByStateLabel + ')');
                         }
                         if (this.totalAttachments <= 0) {
                             newObject.find('.postit-attachment,.table-attachment').hide()

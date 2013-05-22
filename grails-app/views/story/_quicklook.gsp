@@ -48,7 +48,7 @@
                    <strong><g:message code="is.story.affectVersion"/> :</strong> <g:message code="${story.affectVersion}"/>
                </p>
             </g:if>
-            <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_ACCEPTED}">
+            <g:if test="${story.state >= Story.STATE_ACCEPTED}">
                 <p>
                     <strong><g:message code="is.story.rank"/> :</strong> ${story.rank}
                 </p>
@@ -92,35 +92,35 @@
                 <g:formatDate date="${story.suggestedDate}" formatName="is.date.format.short.time"
                               timeZone="${story.backlog.preferences.timezone}"/>
             </p>
-            <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_ACCEPTED}">
+            <g:if test="${story.state >= Story.STATE_ACCEPTED}">
                 <p>
                     <strong><g:message code="is.story.date.accepted"/> :</strong>
                     <g:formatDate date="${story.acceptedDate}" formatName="is.date.format.short.time"
                                   timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
-            <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_ESTIMATED}">
+            <g:if test="${story.state >= Story.STATE_ESTIMATED}">
                 <p>
                     <strong><g:message code="is.story.date.estimated"/> :</strong>
                     <g:formatDate date="${story.estimatedDate}" formatName="is.date.format.short.time"
                                   timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
-            <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_PLANNED}">
+            <g:if test="${story.state >= Story.STATE_PLANNED}">
                 <p>
                     <strong><g:message code="is.story.date.planned"/> :</strong>
                     <g:formatDate date="${story.plannedDate}" formatName="is.date.format.short.time"
                                   timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
-            <g:if test="${story.state >= org.icescrum.core.domain.Story.STATE_INPROGRESS}">
+            <g:if test="${story.state >= Story.STATE_INPROGRESS}">
                 <p>
                     <strong><g:message code="is.story.date.inprogress"/> :</strong>
                     <g:formatDate date="${story.inProgressDate}" formatName="is.date.format.short.time"
                                   timeZone="${story.backlog.preferences.timezone}"/>
                 </p>
             </g:if>
-            <g:if test="${story.state == org.icescrum.core.domain.Story.STATE_DONE}">
+            <g:if test="${story.state == Story.STATE_DONE}">
                 <p>
                     <strong><g:message code="is.story.date.done"/> :</strong>
                     <g:formatDate date="${story.doneDate}" formatName="is.date.format.short.time"
@@ -136,23 +136,23 @@
         </div>
 
         <div class="col2">
-            <g:set var="acceptanceTestCount" value="${story.countAcceptanceTests()}"/>
+            <g:set var="testCount" value="${story.countAcceptanceTests()}"/>
             <is:postit title="${story.name}"
                        id="${story.id}"
                        miniId="${story.uid}"
                        rect="true"
-                       styleClass="story task${story.state == org.icescrum.core.domain.Story.STATE_DONE ? ' ui-selectable-disabled':''}"
+                       styleClass="story task${story.state == Story.STATE_DONE ? ' ui-selectable-disabled':''}"
                        type="story"
                        typeNumber="${story.type}"
                        typeTitle="${is.bundle(bundle:'storyTypes',value:story.type)}"
                        miniValue="${story.effort >= 0 ? story.effort :'?'}"
                        color="${story.feature?.color ?: 'yellow'}"
-                       acceptanceTestCount="${acceptanceTestCount}"
+                       testCount="${testCount}"
                        testState="${story.testState}"
-                       testStateLabel="${message(code: story.testStateEnum.toString())}"
+                       testCountByStateLabel="${story.countTestsByState().collect({ k, v -> message(code: k.toString()) + ': ' + v}).join(' / ')}"
                        stateText="${is.bundle(bundle:'storyStates',value:story.state)}">
             </is:postit>
-            <g:if test="${acceptanceTestCount > 0}">
+            <g:if test="${testCount > 0}">
                 <div>
                     <strong>
                     <is:scrumLink
@@ -160,7 +160,7 @@
                             id="${story.id}"
                             params="['tab':'tests']"
                             onclick="\$('#dialog').dialog('close');">
-                        ${message(code: 'is.postit.acceptanceTest.count', args: [acceptanceTestCount, acceptanceTestCount > 1 ? 's' : ''])}
+                        ${message(code: 'is.postit.acceptanceTest.count', args: [testCount, testCount > 1 ? 's' : '']).toString().toLowerCase()}
                     </is:scrumLink>
                     </strong>
                 </div>

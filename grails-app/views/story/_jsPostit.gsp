@@ -48,14 +48,13 @@
     var effort = this.state > 1 ? (this.effort != null ? this.effort : '?') : '';
     var truncatedDescription = description.length > 50 ? description.substring(0,50)+'...' : description;
     var textState = this.state > 1 ? jQuery.icescrum.story.states[this.state] : '';
-    var testStateLabel = this.testState > 0 ? jQuery.icescrum.story.testStateLabels[this.testState] : '';
     var typeTitle = $.icescrum.story.types[this.type] + (this.type == 2 && this.affectVersion ? ' ('+ this.affectVersion+')' : '');
     var parentReleaseID = this.parentSprint ? this.parentSprint.parentReleaseId : '';
     var sprintOrderNumber = this.parentSprint ? this.parentSprint.orderNumber + 1 : '';
     var parentSprint = this.parentSprint ? this.parentSprint.id : '';
     var dependsOnId = this.dependsOn ? this.dependsOn.id : '';
     var dependsOnUid = this.dependsOn ? this.dependsOn.uid : '';
-    var acceptanceTestCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
+    var testCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
     description = description.formatLine();
 **?
 <is:postit id="${story.id}"
@@ -75,8 +74,7 @@
            editableEstimation="${editable}"
            stateText="?**=textState**?"
            testState="${story.testState}"
-           testStateLabel="?**=testStateLabel**?"
-           acceptanceTestCount="?**=acceptanceTestCount**?"
+           testCount="?**=testCount**?"
            comment="${story.totalComments}">
             <g:if test="${rect}">
                 <div class="tooltip">

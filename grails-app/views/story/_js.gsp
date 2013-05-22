@@ -45,7 +45,7 @@
     <![CDATA[
     ?**
     var color = this.feature ? this.feature.color : '';
-    var acceptanceTestCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
+    var testCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
     var name =  this.name ? this.name : '';
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
@@ -79,7 +79,7 @@
                 <span class="table-attachment"
                       title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
                 <span class="story-icon-acceptance-test icon-acceptance-test${story.testState}"
-                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])}, ${message(code: 'is.postit.acceptanceTest.progress')} ?**=testStateLabel**?"></span>
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=testCount**?', ''])}"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="story">
@@ -110,7 +110,7 @@
     <![CDATA[
     ?**
     var color = this.feature ? this.feature.color : '';
-    var acceptanceTestCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
+    var testCount = this.acceptanceTests ? this.acceptanceTests.length : 0;
     var name =  this.name ? this.name : '';
     var description =  this.description ? this.description : '&nbsp;';
     var typeTitle = $.icescrum.story.types[this.type];
@@ -149,7 +149,7 @@
                 <span class="table-attachment"
                       title="${message(code: 'is.postit.attachment', args: [story.totalAttachments, ''])}"></span>
                 <span class="story-icon-acceptance-test icon-acceptance-test${story.testState}"
-                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=acceptanceTestCount**?', ''])} - ?**=testStateLabel**?"></span>
+                          title="${message(code: 'is.postit.acceptanceTest.count', args: ['?**=testCount**?', ''])}"></span>
             </is:tableColumn>
             <is:tableColumn class="table-cell-postit-icon">
                 <is:scrumLink id="${story.id}" controller="story">

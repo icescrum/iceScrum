@@ -108,7 +108,7 @@ icescrum.marshaller = [
         user:[asShort:['firstName', 'lastName']],
         productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
         attachment:[include: ['filename']],
-        acceptancetest:[] // required to make acceptance tests being taken into account in custom marshaller
+        acceptancetest:[asShort:['state']]
 ]
 
 icescrum.restMarshaller = [
