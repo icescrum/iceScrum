@@ -6,7 +6,6 @@
                         $.icescrum.addToWidgetsList(id);
                         jQuery.ajax({
                                 type:'GET',
-                                global:false,
                                 url:this.o.urlOpenWidget + '/' + id,
                                 success:function(data) {
                                     if (data == ''){
