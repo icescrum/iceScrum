@@ -35,13 +35,6 @@
             %{-- Header of the sprint column --}%
                 <is:eventHeader class="state-${sprint.state}">
                     <div class="event-header-label">
-                        <g:if test="${request.inProduct}">
-                            <a href="#sprintPlan/${sprint.id}">
-                        </g:if>
-                        ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state"><is:bundle bundle="sprintStates" value="${sprint.state}"/></span>
-                        <g:if test="${request.inProduct}">
-                            </a>
-                        </g:if>
                         <div class="event-header-velocity">
                             <g:if test="${Sprint.STATE_WAIT == sprint.state}">
                                 ${sprint.capacity?.toInteger()}
@@ -49,6 +42,15 @@
                             <g:else>
                                 ${sprint.velocity?.toInteger()} / ${sprint.capacity?.toInteger()}
                             </g:else>
+                        </div>
+                        <div class="event-header-title">
+                            <g:if test="${request.inProduct}">
+                                <a href="#sprintPlan/${sprint.id}">
+                            </g:if>
+                            ${message(code: 'is.sprint')} ${sprint.orderNumber} - <span class="state"><is:bundle bundle="sprintStates" value="${sprint.state}"/></span>
+                            <g:if test="${request.inProduct}">
+                                </a>
+                            </g:if>
                         </div>
                     </div>
                     <div class="drap-container">
