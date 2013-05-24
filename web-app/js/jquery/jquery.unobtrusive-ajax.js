@@ -88,7 +88,6 @@ function getFunction(code, argNames) {
                     $(document.body).append(data.dialog);
                     attachOnDomUpdate($('.ui-dialog'));
                 }else{
-                    debugger;
                     if (data.dialogSuccess){
                         $(document.body).append(data.dialogSuccess);
                         attachOnDomUpdate($('.ui-dialog'));
