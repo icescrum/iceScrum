@@ -95,16 +95,19 @@ grails.mail.props = ["mail.smtp.auth":"true",
   Push section
  */
 icescrum.marshaller = [
-        product: [],
+        product: [exclude:['cliches']],
         actor:[include:['totalAttachments']],
-        task:[include:['totalAttachments','sprint','totalComments']],
+        task:[include:['totalAttachments','totalComments'], includeShort:['sprint']],
         feature:[include:['totalAttachments','countDoneStories','state','effort'],
                  asShort:['color', 'name']],
         story:[include:['totalAttachments','totalComments','tasks', 'testState'],
                asShort:['state', 'effort','uid']],
         sprint:[include:['activable','totalRemainingHours'],
+                exclude:['cliches'],
                 asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
-        release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber']],
+        release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
+                exclude:['cliches']
+        ],
         user:[asShort:['firstName', 'lastName']],
         productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
         attachment:[include: ['filename']],
