@@ -160,6 +160,14 @@ body {
     background-position: 0 0;
 }
 
+.acceptance-test-state {
+    float:right;
+}
+
+.acceptance-tests-not-success {
+    padding: 5px;
+}
+
 .story-icon-acceptance-test {
     height: 14px;
     width: 16px;

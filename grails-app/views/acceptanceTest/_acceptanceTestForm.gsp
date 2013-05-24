@@ -27,8 +27,9 @@
                 <is:input id="acceptance-test-name-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.name" value="${acceptanceTest?.name}"/>
             </is:fieldInput>
             <g:if test="${parentStory.state == Story.STATE_INPROGRESS}">
+                <g:set var="acceptanceTestIcons" value="${AcceptanceTestState.values().collect { 'select-icon-acceptance-test icon-acceptance-test' + it.id }}"/>
                 <is:fieldSelect for="acceptanceTest.state" label="is.ui.acceptanceTest.state">
-                    <is:select id="acceptance-test-state-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
+                    <is:select icons="${acceptanceTestIcons}" id="acceptance-test-state-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
                                from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}" />
                 </is:fieldSelect>
             </g:if>
@@ -43,26 +44,34 @@
         </is:fieldset>
 
         <g:if test="${acceptanceTest}">
-            <is:button
-                id="acceptance-test-edit-button" type="submitToRemote"
-                url="[controller:'story', action:'updateAcceptanceTest', params:[product:params.product]]"
-                onSuccess="jQuery('#acceptance-test-editor-wrapper${acceptanceTest.id}').hide();
-                           jQuery('#acceptance-test${acceptanceTest.id} .acceptance-test-content').show();
-                           jQuery.event.trigger('update_acceptancetest',data);"
-                value="${message(code:'is.ui.acceptanceTest.edit')}"
-                history="false"/>
+            <a id="acceptance-test-edit-button" class="button-s clearfix"
+               data-ajax="true"
+               data-ajax-form="true"
+               data-ajax-method="POST"
+               data-ajax-trigger='{"update_acceptancetest":"acceptanceTest"}'
+               data-ajax-success="jQuery('#acceptance-test-editor-wrapper${acceptanceTest.id}').hide();
+                                  jQuery('#acceptance-test${acceptanceTest.id} .acceptance-test-content').show();"
+               href="${createLink([action: 'updateAcceptanceTest', params:[product:params.product]])}">
+                <span class="start"></span>
+                <span class="content">${message(code:'is.ui.acceptanceTest.edit')}</span>
+                <span class="end"></span>
+            </a>
         </g:if>
         <g:else>
-        <is:button
-            id="acceptance-test-add-button" type="submitToRemote"
-            url="[controller:'story', action:'saveAcceptanceTest', params:[product:params.product], id:parentStory.id]"
-            onSuccess="jQuery('#acceptance-test-form-container').hide();
-                       jQuery('#acceptance-test-description-field').val('');
-                       jQuery('#acceptance-test-name-field').val('');
-                       jQuery('#acceptance-test-state-field').selectmenu('value', 0);
-                       jQuery.event.trigger('add_acceptancetest',data);"
-            value="${message(code:'is.button.add')}"
-            history="false"/>
+            <a  id="acceptance-test-add-button" class="button-s clearfix"
+               data-ajax="true"
+               data-ajax-form="true"
+               data-ajax-method="POST"
+               data-ajax-trigger="add_acceptancetest"
+               data-ajax-success="jQuery('#acceptance-test-form-container').hide();
+                                  jQuery('#acceptance-test-description-field').val('');
+                                  jQuery('#acceptance-test-name-field').val('');
+                                  jQuery('#acceptance-test-state-field').selectmenu('value', 0);"
+               href="${createLink([id:parentStory.id, action: 'saveAcceptanceTest', params:[product:params.product]])}">
+                <span class="start"></span>
+                <span class="content">${message(code:'is.button.add')}</span>
+                <span class="end"></span>
+            </a>
         </g:else>
 
         <g:if test="${acceptanceTest}">

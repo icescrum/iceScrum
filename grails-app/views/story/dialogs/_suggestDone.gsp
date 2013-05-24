@@ -19,26 +19,19 @@
 -
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:dialog width="510"
+<is:dialog width="400"
            valid="[action:'done',
                    controller:'story',
-                   id: params.id, button:'is.ui.releasePlan.menu.story.done',
-                   onSuccess:'jQuery.event.trigger(\'done_story\',[data]); jQuery.icescrum.renderNotice(\''+message(code:'is.story.declaredAsDone')+'\');',
+                   id: storyId,
+                   button:'is.ui.releasePlan.menu.story.done',
+                   onSuccess:'jQuery.event.trigger(\'done_story\',[data]); jQuery.icescrum.renderNotice(\''+message(code:'is.story.declaredAsDone')+'\');'
            ]">
     <form method="post" class="box-form" onsubmit="return false;">
         <input type="hidden" value="${params.product}" name="product"/>
-        <input type="hidden" value="true" name="confirm"/>
-        <is:fieldset title="is.dialog.confirmDoneStoryAcceptanceTestsSuccess.title">
+        <is:fieldset title="is.dialog.acceptanceTestsSuggestStoryDone.title">
             <is:fieldInformation noborder="true">
-                <g:message code="is.dialog.confirmDoneStoryAcceptanceTestsSuccess"/>
-                <div class="acceptance-tests-not-success">
-                    <g:each in="${testsNotSuccess}" var="test">
-                        <div class="acceptance-test-state text-icon-acceptance-test icon-acceptance-test${test.state}">${message(code: test.stateEnum.toString())}</div>
-                        <div>${test.uid} - <strong>${test.name}</strong></div>
-                    </g:each>
-                </div>
+                <g:message code="is.dialog.acceptanceTestsSuggestStoryDone"/>
             </is:fieldInformation>
         </is:fieldset>
     </form>
-
 </is:dialog>

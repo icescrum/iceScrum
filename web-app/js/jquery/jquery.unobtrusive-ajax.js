@@ -88,6 +88,11 @@ function getFunction(code, argNames) {
                     $(document.body).append(data.dialog);
                     attachOnDomUpdate($('.ui-dialog'));
                 }else{
+                    debugger;
+                    if (data.dialogSuccess){
+                        $(document.body).append(data.dialogSuccess);
+                        attachOnDomUpdate($('.ui-dialog'));
+                    }
                     if (element.data("ajaxNotice")){
                         $.icescrum.renderNotice(element.data("ajaxNotice"));
                     }
@@ -191,10 +196,17 @@ function getFunction(code, argNames) {
         var $this = $(this);
         var acceptanceTestId = $this.parents('.acceptance-test').data('elemid');
         var url = $this.data('url');
-        $.post(url, {
+        var postData = {
             "acceptanceTest.state" : $this.val(),
             "acceptanceTest.id": acceptanceTestId
-        });
+        };
+        var success = function(data) {
+            if (data.dialogSuccess){
+                $(document.body).append(data.dialogSuccess);
+                attachOnDomUpdate($('.ui-dialog'));
+            }
+        };
+        $.post(url, postData, success);
     });
 
     attachOnDomUpdate();

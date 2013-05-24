@@ -43,6 +43,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
+import org.icescrum.core.domain.Story.TestState
 
 class StoryController {
 
@@ -773,7 +774,13 @@ class StoryController {
             acceptanceTestService.update(acceptanceTest, user, acceptanceTest.isDirty('state'))
 
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)  }
+                html {
+                    def responseData = [acceptanceTest: acceptanceTest]
+                    if (request.productOwner && story.testStateEnum == TestState.SUCCESS) {
+                        responseData.dialogSuccess = g.render(template: 'dialogs/suggestDone', model: [storyId: story.id])
+                    }
+                    render(status: 200, contentType: 'application/json', text: responseData as JSON)
+                }
                 json { renderRESTJSON(text:acceptanceTest) }
                 xml  { renderRESTXML(text:acceptanceTest) }
             }
