@@ -257,6 +257,7 @@ log4j = {
         debug 'grails.app.domain.com.kagilum'
         debug 'com.kagilum'
         debug 'org.icescrum.atmosphere'
+        debug 'org.atmosphere'
         /*debug 'grails.plugin.springcache' */
     }else{
         off 'grails.plugin.springcache'
@@ -330,7 +331,7 @@ grails {
             successHandler.alwaysUseDefault = false
 
             useBasicAuth = true
-            basic.realmName = "iceScrum authentication for private stuff"
+            basic.realmName = "iceScrum authentication for REST API"
             filterChain.chainMap = [
                     '/ws/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
                     '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
