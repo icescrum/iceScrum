@@ -639,14 +639,14 @@ class StoryController {
     def summaryPanel = {
         withStory { Story story ->
             def summary = story.comments +
-                          story.getActivities() +
-                          story.tasks*.getActivities().flatten() +
-                          story.acceptanceTests*.getActivities().flatten()
+                    story.getActivities().findAll{it.code != 'comment'} +
+                    story.tasks*.getActivities().flatten().findAll{it.code != 'comment'} +
+                    story.acceptanceTests*.getActivities().flatten()
             render template: "/backlogElement/summary",
-                   model: [summary: summary.sort { it.dateCreated },
-                           backlogElement: story,
-                           product: Product.get(params.long('product'))
-                   ]
+                    model: [summary: summary.sort { it.dateCreated },
+                            backlogElement: story,
+                            product: Product.get(params.long('product'))
+                    ]
         }
     }
 

@@ -457,7 +457,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 .box-form .field-noseparator, .box-form-200-legend .panel-nolegend,
 .simple #spinner-app, .pagination .pagination-action a,
 .postit-details .postit-details-information .last,
-.list-news .last, .table-lines .table-lines-item td.first, #version-tab p.last,
+.list-news .last, .list-comments .comment.last, .list-acceptance-tests .acceptance-test.last, .table-lines .table-lines-item td.first, #version-tab p.last,
 .panel-line-last .line-left, .panel-line-last .line-right {
     background: 0 none;
 }

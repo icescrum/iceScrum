@@ -22,7 +22,7 @@
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
 <g:set var="testEditable" value="${template || (request.inProduct && parentStory.state < Story.STATE_DONE)}"/>
 <g:set var="stateEditable" value="${template || (request.inProduct && parentStory.state == Story.STATE_INPROGRESS)}"/>
-<li id="acceptance-test${acceptanceTest.id}" class="acceptance-test" data-elemid="${acceptanceTest.id}">
+<li id="acceptance-test${acceptanceTest.id}" class="acceptance-test ${last?'last':''}" data-elemid="${acceptanceTest.id}">
     <div class="acceptance-test-content">
 
         <div class="acceptance-test-state">

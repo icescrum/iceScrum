@@ -29,10 +29,10 @@
                 <g:if test="${entry instanceof Comment}">
                     <g:render template="/components/comment"
                               plugin="icescrum-core"
-                              model="[noEscape:true, commentable:backlogElement, comment:entry, product:product, commentId:'summary']"/>
+                              model="[last:summary.size() == (i + 1), noEscape:true, commentable:backlogElement, comment:entry, product:product, commentId:'summary']"/>
                 </g:if>
                 <g:elseif test="${entry instanceof Activity && entry.code != 'comment'}">
-                    <li ${(summary?.size() == (i + 1)) ? 'class="last"' : ''}>
+                    <li ${(summary.size() == (i + 1)) ? 'class="last"' : ''}>
                         <div class="news-item news-${entry.code}">
                             <p><is:scrumLink controller="user" action='profile'
                                              id="${entry.poster.username}">${entry.poster.firstName.encodeAsHTML()} ${entry.poster.lastName.encodeAsHTML()}</is:scrumLink>

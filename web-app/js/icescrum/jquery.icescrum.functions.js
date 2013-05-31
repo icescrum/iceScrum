@@ -1259,16 +1259,24 @@
                                 if ($(tmpl.selector, commentList).length == 0) {
                                     commentList.html('<li class="panel-box-empty">' + $.icescrum.comment.i18n.noComment + '</li>');
                                 }
+                                commentList.find('li.last').removeClass('last');
+                                commentList.find('li:last').addClass('last');
+                            },
+                            afterTmpl:function(tmpl, container){
+                                container.find('li.last').removeClass('last');
+                                container.find('li:last').addClass('last');
                             }
                         },
                         storyDetailSummary:{
                             selector:'li.comment',
                             id:'comment-storydetailsummary-tmpl',
-                            view:'ul.list-news',
+                            view:'ul.list-news',                         
                             remove:function(tmpl) {
                                 var summary = $(tmpl.view);
                                 var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', summary);
                                 comment.remove();
+                                summary.find('li.last').removeClass('last');
+                                summary.find('li:last').addClass('last');
                             }
                         },
                         taskDetail:{
@@ -1281,6 +1289,9 @@
                                 comment.remove();
                                 if ($(tmpl.selector, commentList).length == 0) {
                                     commentList.html('<li class="panel-box-empty">' + $.icescrum.comment.i18n.noComment + '</li>');
+                                } else {
+                                    commentList.find('li.last').removeClass('last');
+                                    commentList.find('li:last').addClass('last');
                                 }
                             }
                         },
@@ -1292,6 +1303,8 @@
                                 var summary = $(tmpl.view);
                                 var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', summary);
                                 comment.remove();
+                                summary.find('li.last').removeClass('last');
+                                summary.find('li:last').addClass('last');
                             }
                         }
                     },
@@ -1303,8 +1316,7 @@
                            commentList.html('');
                         }
                         $(this).each(function() {
-                            var comment = $.icescrum.addOrUpdate(this, tmpl, $.icescrum.comment._postRendering);
-                            comment.appendTo(commentList);
+                            var comment = $.icescrum.addOrUpdate(this, tmpl, $.icescrum.comment._postRendering, true);
                             $('.comment-lastUpdated', comment).hide();
                         });
                     },
@@ -1322,7 +1334,9 @@
                         });
                     },
 
-                    _postRendering:function(tmpl, comment) {
+                    _postRendering:function(tmpl, comment, container) {
+                        container.find('li.last').removeClass('last');
+                        container.find('li:last').addClass('last');
                         var isPoster = (this.poster.id == $.icescrum.user.id);
                         if(!$.icescrum.user.poOrSm()) {
                             if(!isPoster) {
@@ -1394,6 +1408,12 @@
                                 if ($(tmpl.selector, acceptanceTests).length == 0) {
                                     acceptanceTests.html('<li class="panel-box-empty">' + $.icescrum.acceptancetest.i18n.noAcceptanceTest + '</li>');
                                 }
+                                acceptanceTests.find('li.last').removeClass('last');
+                                acceptanceTests.find('li:last').addClass('last');
+                            },
+                            afterTmpl:function(tmpl, container){
+                                container.find('li.last').removeClass('last');
+                                container.find('li:last').addClass('last');
                             }
                         }
                     },
@@ -1406,7 +1426,6 @@
                         }
                         $(this).each(function() {
                             var acceptanceTest = $.icescrum.addOrUpdate(this, tmpl, $.icescrum.acceptancetest._postRendering);
-                            acceptanceTest.appendTo(acceptanceTests);
                         });
                     },
 
