@@ -1112,12 +1112,14 @@
 
                     updateRemaining:function(){
                         var remaining = 0;
+                        var offset = 10000; // hack for decimal values
                         $('table.table.kanban div.postit-task span.mini-value').each(function(){
                             var val = $(this).text();
                             if (val != '?'){
-                                remaining += parseFloat(val);
+                                remaining += parseFloat(val) * offset; // hack for decimal values
                             }
                         });
+                        remaining =  Math.round(remaining) / offset; // hack for decimal values
                         $('#window-title-bar-sprintPlan').find('span.remaining').html(remaining);
                     },
 
