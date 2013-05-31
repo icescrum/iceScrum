@@ -354,7 +354,8 @@ class StoryController {
 
     @Secured('isAuthenticated()')
     def openDialogDelete = {
-        def dialog = g.render(template: 'dialogs/delete')
+        def state = Story.getInProduct(params.long('product'), params.list('id').first().toLong()).list()?.state
+        def dialog = g.render(template: 'dialogs/delete', model:[back: params.back ? params.back : state >= Story.STATE_ACCEPTED ? '#backlog' : '#sandbox'])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 

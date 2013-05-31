@@ -1,6 +1,6 @@
 <is:dialog width="510" valid="[action:'delete',
         controller:'story',
-        onSuccess:'jQuery.event.trigger(\'remove_story\',[data]); jQuery.icescrum.renderNotice(\''+message(code:'is.story.deleted')+'\');',
+        onSuccess:'jQuery.event.trigger(\'remove_story\',[data]); jQuery.icescrum.renderNotice(\''+message(code:'is.story.deleted')+'\'); document.location.hash=\''+back+'\';',
         button:'is.dialog.storyDelete.confirm']">
     <form method="post" class="box-form box-form-250 box-form-160-legend" onsubmit="return false;">
         <input type="hidden" value="${params.product}" name="product"/>
