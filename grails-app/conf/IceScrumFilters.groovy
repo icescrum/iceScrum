@@ -20,6 +20,9 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
+
+import org.geeks.browserdetection.BrowserTagLib
+import org.geeks.browserdetection.ComparisonType
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -30,6 +33,7 @@ class IceScrumFilters {
 
     def securityService
     def springSecurityService
+    def userAgentIdentService
 
     def filters = {
         pkey(controller: 'scrumOS', action: 'index') {
@@ -75,6 +79,14 @@ class IceScrumFilters {
 
         permissions(controller: '*', action: '*') {
             before = {
+                if (!request.getRequestURI().contains('/ws/') && controllerName != "errors" && actionName != "browserNotSupported"){
+                    if(userAgentIdentService.isMsie(ComparisonType.LOWER, "9")){
+                        if (!request.getHeader('user-agent').contains('chromeframe')){
+                            redirect(controller:'errors',action:'browserNotSupported')
+                            return false
+                        }
+                    }
+                }
                 securityService.filterRequest()
                 return
             }
