@@ -40,10 +40,9 @@
             <g:if test="${!acceptanceTests || acceptanceTests.size() == 0}">
                 <li class="panel-box-empty">${message(code: 'is.ui.acceptanceTest.empty')}</li>
             </g:if>
-            <g:render template="/acceptanceTest/acceptanceTest"
-                        collection="${acceptanceTests}"
-                        var="acceptanceTest"
-                        model="[parentStory: story, user: user]"/>
+            <g:each var="acceptanceTest" status="i" in="${acceptanceTests}">
+                <g:render template="/acceptanceTest/acceptanceTest" model="[last:acceptanceTests.size() == (i+1), acceptanceTest: acceptanceTest, parentStory: story, user: user]"/>
+            </g:each>
         </ul>
     </is:cache>
     <g:if test="${request.inProduct}">
