@@ -47,15 +47,17 @@ class ErrorsController {
 
     }
 
+
+
     def browserNotSupported = {
 
     }
 
-    def handleDatabase = {
+    def database = {
         render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.database')] as JSON)
     }
 
-    def handleMemory = {
-        render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.permgen')] as JSON)
+    def memory = {
+        render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.memory')] as JSON)
     }
 }

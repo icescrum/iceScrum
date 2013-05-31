@@ -1697,6 +1697,10 @@ li#li-roles {
     width: 20%;
 }
 
+.buildinfos-table a, .plugins-table a {
+    text-decoration: underline;
+}
+
 .about-tab {
     height: 335px;
     overflow: auto;
@@ -2125,7 +2129,7 @@ li#li-roles {
     position:absolute;
 }
 
-.new-version {
+.warning {
     height: 16px;
     left: -5px;
     padding: 0;

@@ -729,7 +729,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     cursor: pointer;
 }
 
-.new-version {
+.warning {
     background: url(../images/icons/warning.png) no-repeat;
 }
 

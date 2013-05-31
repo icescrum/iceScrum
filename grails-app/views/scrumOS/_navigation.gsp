@@ -33,7 +33,7 @@
                     code="is.shortname"/></span>
         </a>
     </li>
-    <is:newVersion/>
+    <is:errors/>
     <li class="navigation-line separator">
         <div class="dropmenu" id="menu-project" data-dropmenu="true">
 

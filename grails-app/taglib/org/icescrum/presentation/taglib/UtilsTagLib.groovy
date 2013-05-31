@@ -28,7 +28,6 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
-import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.utils.BundleUtils
@@ -345,12 +344,10 @@ class UtilsTagLib {
         out << resultAndBuffer.result
     }
 
-    def newVersion = {
-        def info = grailsApplication.config.icescrum.check?.available?:null
-        if (info){
-            def v = 'R'+info?.version?.replaceFirst('\\.','#')
-            out << """<a href='${info.url}' target='_blank'>
-                        <li class='navigation-line new-version' title='${info.message?:g.message(code:'is.new.version')} ${v}'></li>
+    def errors = {
+        if (grailsApplication.config.icescrum.errors){
+            out << """<a data-ajax="true" href="${createLink(controller:'scrumOS',action:'about')}">
+                        <li class='navigation-line warning' title="${g.message(code:'is.warning')}"></li>
                       </a>"""
         }
     }

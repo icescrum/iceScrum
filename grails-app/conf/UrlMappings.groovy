@@ -71,8 +71,8 @@ class UrlMappings {
         "302"(controller: "errors", action: "fakeError")
         "500"(controller: "errors", action: "error403", exception: AccessDeniedException)
         "500"(controller: "errors", action: "error403", exception: NotFoundException)
-        "500"(controller: 'errors', action: 'handleMemory', exception: OutOfMemoryError)
-        "500"(controller: 'errors', action: 'handleDatabase', exception: CannotCreateTransactionException)
-        "500"(controller: 'errors', action: 'handleDatabase', exception: CommunicationsException)
+        "500"(controller: 'errors', action: 'memory', exception: OutOfMemoryError)
+        "500"(controller: 'errors', action: 'database', exception: CannotCreateTransactionException)
+        "500"(controller: 'errors', action: 'database', exception: CommunicationsException)
     }
 }

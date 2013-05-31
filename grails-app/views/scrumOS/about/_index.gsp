@@ -28,9 +28,14 @@
         buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
         draggable="false">
 <is:tabs elementId="about-tabs">
+  <g:if test="${errors}">
+      <is:tab elementId="errors-tab" class="about-tab" title="is.dialog.about.errors">
+        <g:render template="/${controllerName}/about/errors" model="[errors:errors]"/>
+      </is:tab>
+  </g:if>
   <entry:point id="about-tabs-first"/>
   <is:tab elementId="version-tab" class="about-tab" title="is.dialog.about.version">
-    <g:render template="/${controllerName}/about/version" model="[version:about.version]"/>
+    <g:render template="/${controllerName}/about/version" model="[version:about.version, server:server]"/>
   </is:tab>
   <is:tab elementId="license-tab" class="about-tab box" title="is.dialog.about.license">
     <g:render template="/${controllerName}/about/license" model="[license:about.license.text().encodeAsNL2BR()]"/>

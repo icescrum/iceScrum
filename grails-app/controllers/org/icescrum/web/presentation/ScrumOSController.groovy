@@ -49,6 +49,7 @@ class ScrumOSController {
     def securityService
     def uiDefinitionService
     def grailsApplication
+    def servletContext
 
     def index = {
         def currentUserInstance = null
@@ -235,8 +236,7 @@ class ScrumOSController {
             file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
         }
         def aboutXml = new XmlSlurper().parse(file)
-        def license
-        def dialog = g.render(template: "about/index", model: [about: aboutXml])
+        def dialog = g.render(template: "about/index", model: [server:servletContext.getServerInfo(),about: aboutXml,errors:grailsApplication.config.icescrum.errors?:false])
         render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
     }
 
