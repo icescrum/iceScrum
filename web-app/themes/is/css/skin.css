@@ -713,16 +713,22 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     background-color:gray;
 }
 
-.table .table-line.table-group td.collapse {
+.collapse {
     background-image: url(../images/application/collapse.png);
+}
+
+.table .table-line.table-group td.collapse {
     background-repeat: no-repeat;
     background-position: 3px 9px;
     background-color: #FFFFFF;
     cursor: pointer;
 }
 
-.table .table-line.table-group td.expand {
+.expand {
     background-image: url(../images/application/expand.png);
+}
+
+.table .table-line.table-group td.expand {
     background-repeat: no-repeat;
     background-position: 3px 9px;
     background-color: #F5F5F5;

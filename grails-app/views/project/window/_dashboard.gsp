@@ -203,7 +203,7 @@
                     </g:if>
                     <g:else>
                         <div class="panel-box-empty">
-                            <g:message code="is.fluxiable.no"/>
+                            <div style="text-align: center; padding:5px;">${message(code:'is.fluxiable.no')}</div>
                         </div>
                     </g:else>
                 </is:panel>
