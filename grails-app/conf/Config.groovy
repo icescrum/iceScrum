@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Vincent Barrier (vbarrier@kagilum.com)
+ * Vincent Barrier (vbarrier@kagilum.com - @chipeau)
  * Stephane Maldini (stephane.maldini@icescrum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
