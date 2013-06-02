@@ -319,7 +319,7 @@ class ScrumOSController {
                 render(status:'200', text:g.meta([name:'app.version']))
             }
             xml {
-                RenderRESTXML(text:[version:g.meta([name:'app.version'])])
+                renderRESTXML(text:[version:g.meta([name:'app.version'])])
             }
             json {
                 renderRESTJSON(text:[version:g.meta([name:'app.version'])])
