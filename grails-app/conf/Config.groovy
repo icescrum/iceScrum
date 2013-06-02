@@ -128,6 +128,7 @@ icescrum.restMarshaller = [
         user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']]
 ]
 
+/* CORS Section */
 icescrum.cors.enable = true
 icescrum.cors.url.pattern = '/ws/*'
 
