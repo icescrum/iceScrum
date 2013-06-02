@@ -52,35 +52,28 @@ class ScrumOSController {
     def servletContext
 
     def index = {
-        def currentUserInstance = null
-        if (springSecurityService.isLoggedIn()) {
-            currentUserInstance = User.get(springSecurityService.principal.id)
-        }
-        def currentProductInstance = params.product ? Product.get(params.long('product')) : null
+        def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
+        def product = params.product ? Product.get(params.long('product')) : null
 
-        if (currentProductInstance?.preferences?.hidden && !securityService.inProduct(currentProductInstance, springSecurityService.authentication) && !securityService.stakeHolder(currentProductInstance,springSecurityService.authentication,false)){
-            if (springSecurityService.isLoggedIn())
-                forward(action:'error403',controller:'errors')
-            else{
-                forward(action:'error401',controller:'errors')
-            }
+        if (product?.preferences?.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product,springSecurityService.authentication,false)){
+            forward(action:springSecurityService.isLoggedIn() ? 'error403' : 'error401',controller:'errors')
             return
         }
 
-        if (currentProductInstance && currentUserInstance && !securityService.hasRoleAdmin(currentUserInstance) && currentUserInstance.preferences.lastProductOpened != currentProductInstance.pkey){
-            currentUserInstance.preferences.lastProductOpened = currentProductInstance.pkey
-            currentUserInstance.save()
+        if (product && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProductOpened != product.pkey){
+            user.preferences.lastProductOpened = product.pkey
+            user.save()
         }
         //For PO / SM : WRITE - TM / SH : READ
-        def products = currentUserInstance ? Product.findAllByRole(currentUserInstance, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : []
+        def products = user ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : []
         def pCount = products?.size()
 
-        [user: currentUserInstance,
-                lang: RCU.getLocale(request).toString().substring(0, 2),
-                product: currentProductInstance,
-                publicProductsExists: ProductPreferences.countByHidden(false,[cache:true]) ? true : false,
-                productFilteredsListCount: pCount,
-                productFilteredsList: pCount > 9 ? products?.subList(0,9) : products]
+        [user: user,
+         lang: RCU.getLocale(request).toString().substring(0, 2),
+         product: product,
+         publicProductsExists: ProductPreferences.countByHidden(false,[cache:true]) ? true : false,
+         productFilteredsListCount: pCount,
+         productFilteredsList: pCount > 9 ? products?.subList(0,9) : products]
     }
 
 
@@ -121,6 +114,8 @@ class ScrumOSController {
                     title: message(code: uiDefinition.widget?.title),
                     init: uiDefinition.widget?.init
             ], {})
+        } else {
+            render(status:404)
         }
     }
 
@@ -185,18 +180,8 @@ class ScrumOSController {
                         init: params.actionWindow ?: uiDefinition.window?.init
                 ], {})
             }
-        }
-    }
-
-    def reloadToolbar = {
-        if (!params.window) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window.toolbar')]] as JSON)
-            return
-        }
-        def uiRequested = params.window
-        def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
-        if (uiDefinition) {
-            forward(controller: params.window, action: 'toolbar', params: params)
+        } else {
+            render(status:404)
         }
     }
 
@@ -210,13 +195,15 @@ class ScrumOSController {
         if (!session.uploadedFiles)
             session.uploadedFiles = [:]
         session.uploadedFiles["${params."X-Progress-ID"}"] = tmpF.toString()
-        log.info "upload done for session: ${session?.id} / fileID: ${params."X-Progress-ID"}"
+        if (log.infoEnabled)
+            log.info "upload done for session: ${session?.id} / fileID: ${params."X-Progress-ID"}"
         render(status: 200)
     }
 
     @Secured('isAuthenticated()')
     def uploadStatus = {
-        log.debug "upload status for session: ${session?.id} / fileID: ${params?."X-Progress-ID" ?: 'null'}"
+        if (log.debugEnabled)
+            log.debug "upload status for session: ${session?.id} / fileID: ${params?."X-Progress-ID" ?: 'null'}"
         if (params."X-Progress-ID" && session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")]) {
             if (((ProgressSupport) session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])?.complete) {
                 render(status: 200, contentType: 'application/json', text: session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
@@ -230,13 +217,11 @@ class ScrumOSController {
     }
 
     def about = {
-        def locale = RCU.getLocale(request)
-        def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${locale}.xml")
+        def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${RCU.getLocale(request)}.xml")
         if (!file.exists()) {
             file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
         }
-        def aboutXml = new XmlSlurper().parse(file)
-        def dialog = g.render(template: "about/index", model: [server:servletContext.getServerInfo(),about: aboutXml,errors:grailsApplication.config.icescrum.errors?:false])
+        def dialog = g.render(template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
         render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
     }
 

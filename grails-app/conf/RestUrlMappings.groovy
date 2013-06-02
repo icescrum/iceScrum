@@ -25,6 +25,11 @@ class RestUrlMappings {
 
     static mappings = {
 
+        "/ws/version" {
+            action = [GET: "version"]
+            controller = 'scrumOS'
+        }
+
         "/ws/p/$product/$controller"(parseRequest: true) {
             action = [POST: "save", GET: "list"]
             constraints {
