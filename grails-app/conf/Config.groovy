@@ -128,6 +128,9 @@ icescrum.restMarshaller = [
         user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']]
 ]
 
+icescrum.cors.enable = true
+icescrum.cors.url.pattern = '/ws/*'
+
 /*
     Check for update
 */
@@ -357,8 +360,6 @@ grails {
         }
     }
 }
-
-icescrum.cors.url.pattern = '/ws/*'
 
 /*
 
