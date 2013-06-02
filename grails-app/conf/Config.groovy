@@ -137,6 +137,7 @@ icescrum.check.path     = 'check.php'
 icescrum.check.interval = 1440 //in minutes (24h)
 icescrum.check.timeout  = 5000
 
+//Array for visual & catched errors
 icescrum.errors = []
 /*
  Attachmentable section
@@ -356,6 +357,8 @@ grails {
         }
     }
 }
+
+icescrum.cors.url.pattern = '/ws/*'
 
 /*
 
