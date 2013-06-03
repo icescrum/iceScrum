@@ -34,10 +34,8 @@ import grails.plugins.springsecurity.Secured
 class MembersController {
 
     def springSecurityService
-    def teamService
     def productService
     def securityService
-    def springcacheService
 
     def edit = {
         def product = Product.get(params.product)

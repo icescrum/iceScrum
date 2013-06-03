@@ -23,8 +23,7 @@
  */
 package org.icescrum.web.presentation.app
 
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-
+import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
 import grails.plugins.springsecurity.Secured
@@ -72,7 +71,8 @@ class UserController {
     @Secured('isAuthenticated()')
     //@Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
     def openProfile = {
-        def dialog = g.render(template: 'dialogs/profile', model: [user: User.get(springSecurityService.principal.id)])
+        def user = User.get(springSecurityService.principal.id)
+        def dialog = g.render(template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
         render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
     }
 
@@ -109,12 +109,12 @@ class UserController {
             returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.user')]))
             return
         }
-        withUser{ User currentUser ->
+        withUser{ User user ->
             if ((params.confirmPassword || params.user.password) && (params.confirmPassword != params.user.password)) {
                 returnError(text: message(code: 'is.user.error.password.check'))
                 return
             }
-            if (params.long('user.version') != currentUser.version) {
+            if (params.long('user.version') != user.version) {
                 returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.user')]))
                 return
             }
@@ -123,7 +123,7 @@ class UserController {
             if (params.user.password?.trim() != '') {
                 pwd = params.user.password
             } else {
-                params.user.password = currentUser.password
+                params.user.password = user.password
             }
 
             def gravatar = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)
@@ -145,22 +145,26 @@ class UserController {
                 }
             }
 
-            def forceRefresh = (params.user.preferences.language != currentUser.preferences.language)
+            user.preferences.emailsSettings = [onStory:params.remove('user.preferences.emailsSettings.onStory'),
+                                               autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
+                                               onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
+
+            def forceRefresh = (params.user.preferences.language != user.preferences.language)
             params.remove('user.username')
-            currentUser.properties = params.user
-            userService.update(currentUser, pwd, (gravatar ? null : avatar?.canonicalPath), scale)
+            user.properties = params.user
+            userService.update(user, pwd, (gravatar ? null : avatar?.canonicalPath), scale)
 
             def link = (params.product) ? createLink(controller: 'scrumOS', params: [product: params.product]) : createLink(uri: '/')
-            def name = currentUser.firstName + ' ' + currentUser.lastName
+            def name = user.firstName + ' ' + user.lastName
 
-            entry.hook(id:"${controllerName}-${actionName}", model:[user:currentUser])
+            entry.hook(id:"${controllerName}-${actionName}", model:[user:user])
 
             render(status: 200, contentType: 'application/json',
                     text: [class:'User',user:[name: name.encodeAsHTML().encodeAsJavaScript(),
                                                 forceRefresh: forceRefresh,
                                                 refreshLink: link ?: null,
-                                                updateAvatar: gravatar ?: createLink(action: 'avatar', id: currentUser.id),
-                                                userid: currentUser.id,
+                                                updateAvatar: gravatar ?: createLink(action: 'avatar', id: user.id),
+                                                userid: user.id,
                                                 notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
                                         ]] as JSON)
         }

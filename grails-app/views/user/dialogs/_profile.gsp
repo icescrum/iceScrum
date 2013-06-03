@@ -89,6 +89,31 @@
                                        id="user.preferences.language" value="${user.preferences.language}"/>
                 </is:fieldSelect>
             </is:accordionSection>
+            <g:if test="${projects}">
+                <is:accordionSection title="is.dialog.profile.emailsSettings">
+                    <is:fieldFile for="userpreferencesemailsSettingsautoFollow" label="is.dialog.profile.emailsSettings.autoFollow">
+                        <div class="emails-settings">
+                            <g:each var="project" in="${projects}">
+                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.autoFollow}"  value="${project.pkey}" name="user.preferences.emailsSettings.autoFollow"/>
+                            </g:each>
+                        </div>
+                    </is:fieldFile>
+                    <is:fieldFile for="userpreferencesemailsSettingsonStory" label="is.dialog.profile.emailsSettings.onStory">
+                        <div class="emails-settings">
+                            <g:each var="project" in="${projects}">
+                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.onStory}"  value="${project.pkey}" name="user.preferences.emailsSettings.onStory"/>
+                            </g:each>
+                        </div>
+                    </is:fieldFile>
+                    <is:fieldFile for="userpreferencesemailsSettingsonUrgentTask" label="is.dialog.profile.emailsSettings.onUrgentTask">
+                        <div class="emails-settings">
+                            <g:each var="project" in="${projects}">
+                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.onUrgentTask}"  value="${project.pkey}" name="user.preferences.emailsSettings.onUrgentTask"/>
+                            </g:each>
+                        </div>
+                    </is:fieldFile>
+                </is:accordionSection>
+            </g:if>
             <entry:point id="${controllerName}-${actionName}" model="[user:user]"/>
         </is:accordion>
     </is:fieldset>
