@@ -129,7 +129,7 @@ icescrum.restMarshaller = [
 ]
 
 /* CORS Section */
-icescrum.cors.enable = false
+icescrum.cors.enable = true
 icescrum.cors.url.pattern = '/ws/*'
 
 /*
