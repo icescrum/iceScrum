@@ -25,6 +25,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>iceScrum - <g:layoutTitle/></title>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
     <is:loadJsVar/>
     <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
