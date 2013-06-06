@@ -98,13 +98,13 @@
                             </g:each>
                         </div>
                     </is:fieldFile>
-%{--                    <is:fieldFile for="userpreferencesemailsSettingsautoFollow" label="is.dialog.profile.emailsSettings.autoFollow">
+                    <is:fieldFile for="userpreferencesemailsSettingsautoFollow" label="is.dialog.profile.emailsSettings.autoFollow">
                         <div class="emails-settings">
                             <g:each var="project" in="${projects}">
                                 <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.autoFollow}"  value="${project.pkey}" name="user.preferences.emailsSettings.autoFollow"/>
                             </g:each>
                         </div>
-                    </is:fieldFile>--}%
+                    </is:fieldFile>
                     <is:fieldFile for="userpreferencesemailsSettingsonUrgentTask" label="is.dialog.profile.emailsSettings.onUrgentTask">
                         <div class="emails-settings">
                             <g:each var="project" in="${projects}">
