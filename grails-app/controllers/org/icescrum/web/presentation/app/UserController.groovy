@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Stéphane Maldini (stephane.maldini@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 package org.icescrum.web.presentation.app
@@ -163,7 +164,7 @@ class UserController {
                     text: [class:'User',user:[name: name.encodeAsHTML().encodeAsJavaScript(),
                                                 forceRefresh: forceRefresh,
                                                 refreshLink: link ?: null,
-                                                updateAvatar: gravatar ?: createLink(action: 'avatar', id: user.id),
+                                                updateAvatar: is.avatar([user:user,link:true]),
                                                 userid: user.id,
                                                 notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
                                         ]] as JSON)
