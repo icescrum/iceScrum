@@ -65,7 +65,6 @@ class UrlMappings {
 
         "/login"(controller: 'login', action: 'auth')
 
-        "/attachmentable/download/$id?"(controller: "errors", action: "error403")
         "403"(controller: "errors", action: "error403")
         "400"(controller: "errors", action: "fakeError")
         "302"(controller: "errors", action: "fakeError")

@@ -21,7 +21,6 @@
  */
 
 
-import org.geeks.browserdetection.BrowserTagLib
 import org.geeks.browserdetection.ComparisonType
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
@@ -145,6 +144,12 @@ class IceScrumFilters {
                         RequestContextUtils.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
                     }
                 }
+            }
+        }
+
+        attachmentable(controller:'attachmentable', action:'download'){
+            before = {
+                redirect(controller: "errors", action: "error403")
             }
         }
     }
