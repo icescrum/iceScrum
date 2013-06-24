@@ -66,7 +66,9 @@
                     </is:panelLine>
                     <is:panelLine legend="${message(code:'is.story.origin')}"
                                   rendered="${story.origin}">${story.origin?.encodeAsHTML()?:null}</is:panelLine>
-                    <is:panelLine legend="${message(code:'is.backlogelement.description')}">${story.description}</is:panelLine>
+                    <is:panelLine legend="${message(code:'is.backlogelement.description')}">
+                        ${story.description?.encodeAsHTML()?.encodeAsNL2BR()}
+                    </is:panelLine>
                     <is:panelLine legend="${message(code:'is.backlogelement.notes')}">
                         <g:if test="${story.notes}">
                             <div class="rich-content">
