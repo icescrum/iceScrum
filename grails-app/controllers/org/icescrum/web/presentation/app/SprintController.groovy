@@ -60,10 +60,8 @@ class SprintController {
                     xml  { renderRESTXML(text:sprint, status:201) }
                 }
             } catch (IllegalStateException e) {
-                release.discard()
                 returnError(exception:e)
             } catch (RuntimeException e) {
-                release.discard()
                 returnError(object:sprint, exception:e)
             }
         }
