@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%<is:objectAsXML object="${object}" node="sprint" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML
-            name="['state','dailyWorkTime','velocity','capacity','endDate','startDate','orderNumber','activationDate','closeDate','lastUpdated','dateCreated']"/>
+            name="['state','dailyWorkTime','velocity','capacity','endDate','startDate','orderNumber','activationDate','closeDate','lastUpdated','dateCreated', 'deliveredVersion']"/>
     <is:propertyAsXML name="['retrospective','doneDefinition','description','goal']" cdata="true"/>
     <is:listAsXML
             name="tasks"
