@@ -19,6 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
 <%@ page import="grails.converters.JSON; org.icescrum.core.domain.Task;org.icescrum.core.domain.Sprint;org.icescrum.core.domain.Story;" %>
@@ -164,7 +165,7 @@
 <jq:jquery>
     <g:if test="${!request.readOnly}">
         jQuery('table#kanban-sprint-${sprint.id} div.postit-story').die('dblclick').live('dblclick',function(e){ jQuery.icescrum.displayQuicklook(jQuery(e.currentTarget)); });
-        jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate] as JSON});
+        jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate,velocity:sprint.velocity,capacity:sprint.capacity] as JSON});
     </g:if>
     <g:if test="${assignOnBeginTask && !request.scrumMaster && sprint.state != Sprint.STATE_DONE  && !request.readOnly}">
         jQuery.icescrum.sprint.sortableTasks();
@@ -180,7 +181,7 @@
                  cancel="jQuery(original).next().show();"
                  values="${suiteSelect}"
                  ajaxoptions = "{dataType:'json'}"
-                 callback="jQuery(this).html(value.effort);jQuery(this).next().show();"
+                 callback="jQuery(this).html(value.effort);jQuery(this).next().show();jQuery.event.trigger('sprintMesure_sprint', value.parentSprint);"
                  params="[product:params.product]"/>
 
     <is:editable rendered="${sprint.state != Sprint.STATE_DONE && request.inProduct}"
@@ -248,6 +249,12 @@
 <is:onStream
         on="#kanban-sprint-${sprint.id}"
         events="[[object:'sprint',events:['close','activate']]]"/>
+
+%{-- Separate stream because of the constraint that applies only to sprintMesure --}%
+<is:onStream
+        on="#kanban-sprint-${sprint.id}"
+        events="[[object:'sprint',events:['sprintMesure']]]"
+        constraint="sprint.id == ${sprint.id}"/>
 
 <is:onStream
         on="#kanban-sprint-${sprint.id}"

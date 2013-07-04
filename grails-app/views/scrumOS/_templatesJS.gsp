@@ -61,7 +61,8 @@
                    noDropMessage:"${g.message(code:'is.ui.sprintPlan.no.drop')}",
                    noDropMessageLimitedTasks:"${g.message(code:'is.task.error.limitTasksUrgent')}",
                    totalRemainingHours:"${g.message(code:'is.ui.sprintPlan.totalRemainingHours')}",
-                   hours:"${g.message(code:'is.ui.sprintPlan.hours')}"
+                   hours:"${g.message(code:'is.ui.sprintPlan.hours')}",
+                   points:"${g.message(code:'is.ui.sprintPlan.points')}"
             },
             states:${is.bundleLocaleToJs(bundle: BundleUtils.sprintStates)}
         },

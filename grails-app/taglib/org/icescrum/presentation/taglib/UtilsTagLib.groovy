@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Stéphane Maldini (stephane.maldini@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -160,8 +161,8 @@ class UtilsTagLib {
             }
             jqCode += "jQuery('${attrs.on}').bind('${events.join(' ')}',function(event,${it.object}){ "
             jqCode += "var type = event.type.split('_')[0];"
-            jqCode += attrs.constraint ? " if ( ${attrs.constraint} ) { ${attrs.callback ?: "jQuery.icescrum.${it.object}[type].apply(${it.object},['${attrs.template}']);"} " : ""
-            jqCode += attrs.constraint ? "}" : attrs.callback ?: " jQuery.icescrum.${it.object}[type].apply(${it.object}${attrs.template ? ',[\'' + attrs.template + '\']' : ''});"
+            def callback = attrs.callback ?: "jQuery.icescrum.${it.object}[type].apply(${it.object}${attrs.template ? ",['" + attrs.template + "']" : ''});"
+            jqCode += attrs.constraint ? " if ( ${attrs.constraint} ) { $callback }" : callback
             jqCode += "});"
         }
         out << jq.jquery(null, jqCode)
