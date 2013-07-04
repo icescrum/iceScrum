@@ -144,7 +144,7 @@
                 </li>
             </g:if>
             <g:each var="attachment" in="${release.attachments}">
-                <g:render template="/attachment/line" model="[attachment: attachment, controller: 'release']"/>
+                <g:render template="/attachment/line" model="[attachment: attachment, controllerName: 'release']"/>
             </g:each>
         </ul>
     </is:panelButton>
