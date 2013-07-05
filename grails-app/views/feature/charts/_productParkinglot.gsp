@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="view-chart">
     <g:if test="${!request.readOnly}">
@@ -91,7 +92,7 @@
 <g:if test="${withButtonBar && !request.readOnly}">
     <is:buttonBar>
         <is:button
-                href="#${controllerName+(referrerAction?'/'+referrerAction:'')}"
+                href="#${controllerName}"
                 elementId="close"
                 type="link"
                 button="button-s button-s-black"

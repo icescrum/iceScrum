@@ -238,6 +238,11 @@ table.kanban .table-line .kanban-col:first-child .postit-story {
     cursor: pointer;
 }
 
+.jqplot-point-label {
+    font-size:11px;
+    color:#444
+}
+
 /*//////////////////////////////
 // Divers
 //////////////////////////////*/

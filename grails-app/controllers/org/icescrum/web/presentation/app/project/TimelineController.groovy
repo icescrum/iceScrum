@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -26,8 +27,6 @@ package org.icescrum.web.presentation.app.project
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.User
-import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
@@ -206,108 +205,28 @@ class TimelineController {
         }
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'releasesKeyGenerator')
     def productCumulativeFlowChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.cumulativeFlowValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: '../project/charts/productCumulativeFlowChart', model: [
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    suggested: values.suggested as JSON,
-                    accepted: values.accepted as JSON,
-                    estimated: values.estimated as JSON,
-                    planned: values.planned as JSON,
-                    inprogress: values.inprogress as JSON,
-                    done: values.done as JSON,
-                    labels: values.label as JSON])
-        } else {
-            returnError(text:message(code: 'is.chart.error.no.values'))
-        }
+        forward controller: 'project', action: 'productCumulativeFlowChart', params: ['controllerName': controllerName]
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'releasesKeyGenerator')
     def productVelocityCapacityChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.productVelocityCapacityValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: '../project/charts/productVelocityCapacityChart', model: [
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    capacity: values.capacity as JSON,
-                    velocity: values.velocity as JSON,
-                    labels: values.label as JSON])
-        } else {
-            returnError(text:message(code: 'is.chart.error.no.values'))
-        }
+        forward controller: 'project', action: 'productVelocityCapacityChart', params: ['controllerName': controllerName]
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'releasesKeyGenerator')
     def productBurnupChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.productBurnupValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: '../project/charts/productBurnupChart', model: [
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    all: values.all as JSON,
-                    done: values.done as JSON,
-                    labels: values.label as JSON])
-        } else {
-            returnError(text:message(code: 'is.chart.error.no.values'))
-        }
+        forward controller: 'project', action: 'productBurnupChart', params: ['controllerName': controllerName]
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'releasesKeyGenerator')
     def productBurndownChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.productBurndownValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: '../project/charts/productBurndownChart', model: [
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    userstories: values.userstories as JSON,
-                    technicalstories: values.technicalstories as JSON,
-                    defectstories: values.defectstories as JSON,
-                    labels: values.label as JSON])
-        } else {
-            returnError(text:message(code: 'is.chart.error.no.values'))
-        }
+        forward controller: 'project', action: 'productBurndownChart', params: ['controllerName': controllerName]
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'releasesKeyGenerator')
     def productVelocityChart = {
-        def currentProduct = Product.get(params.product)
-        def values = productService.productVelocityValues(currentProduct)
-        if (values.size() > 0) {
-            render(template: '../project/charts/productVelocityChart', model: [
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    userstories: values.userstories as JSON,
-                    technicalstories: values.technicalstories as JSON,
-                    defectstories: values.defectstories as JSON,
-                    labels: values.label as JSON])
-        } else {
-            returnError(text:message(code: 'is.chart.error.no.values'))
-        }
+        forward controller: 'project', action: 'productVelocityChart', params: ['controllerName': controllerName]
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator='featuresKeyGenerator')
     def productParkingLotChart = {
-        def currentProduct = Product.get(params.product)
-        def values = featureService.productParkingLotValues(currentProduct)
-        def indexF = 1
-        def valueToDisplay = []
-        values.value?.each {
-            def value = []
-            value << it.toString()
-            value << indexF
-            valueToDisplay << value
-            indexF++
-        }
-        if (valueToDisplay.size() > 0)
-            render(template: '../feature/charts/productParkinglot', model: [
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    values: valueToDisplay as JSON,
-                    featuresNames: values.label as JSON])
-        else {
-           returnError(text:message(code: 'is.chart.error.no.values'))
-        }
+        forward controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName]
     }
 
     /**

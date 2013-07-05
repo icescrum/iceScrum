@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="view-chart">
     <g:if test="${!request.readOnly}">
@@ -61,9 +62,9 @@
           pointLabels:{stackedValue: true,location: 's',ypadding:0}
         },
         series: [
-          {label: '${message(code:'is.chart.productVelocity.series.userstories.name')}',color: '#0099CC'},
-          {label: '${message(code:'is.chart.productVelocity.series.technicalstories.name')}',color: '#FF9933'},
-          {label: '${message(code:'is.chart.productVelocity.series.defectstories.name')}',color: '#CC3300'}],
+          {pointLabels:{show: true, labels:${userstoriesLabels}}, label: '${message(code:'is.chart.productVelocity.series.userstories.name')}',color: '#0099CC'},
+          {pointLabels:{show: true, labels:${technicalstoriesLabels}}, label: '${message(code:'is.chart.productVelocity.series.technicalstories.name')}',color: '#FF9933'},
+          {pointLabels:{show: true, labels:${defectstoriesLabels}}, label: '${message(code:'is.chart.productVelocity.series.defectstories.name')}',color: '#CC3300'}],
         axes: {
             xaxis: {
               label:'${message(code:'is.chart.productVelocity.xaxis.label')}',

@@ -35,7 +35,6 @@ import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import org.grails.taggable.Tag
-import java.text.DecimalFormat
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class FeatureController {
@@ -235,27 +234,8 @@ class FeatureController {
         }
     }
 
-    @Cacheable(cache = "projectCache", keyGenerator= 'featuresKeyGenerator')
     def productParkingLotChart = {
-        def currentProduct = Product.get(params.product)
-        def values = featureService.productParkingLotValues(currentProduct)
-        def indexF = 1
-        def valueToDisplay = []
-        values.value?.each {
-            def value = []
-            value << new DecimalFormat("#.##").format(it).toString()
-            value << indexF
-            valueToDisplay << value
-            indexF++
-        }
-        if (valueToDisplay.size() > 0)
-            render(template: 'charts/productParkinglot', model: [
-                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                    values: valueToDisplay as JSON,
-                    featuresNames: values.label as JSON])
-        else {
-            returnError(text: message(code: 'is.chart.error.no.values'))
-        }
+        forward controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName]
     }
 
     def print = {

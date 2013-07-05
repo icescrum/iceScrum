@@ -319,7 +319,8 @@ class ProjectController {
                         planned: values.planned as JSON,
                         inprogress: values.inprogress as JSON,
                         done: values.done as JSON,
-                        labels: values.label as JSON])
+                        labels: values.label as JSON,
+                        controllerName: params.controllerName ?: controllerName])
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -336,7 +337,8 @@ class ProjectController {
                         withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
                         capacity: values.capacity as JSON,
                         velocity: values.velocity as JSON,
-                        labels: values.label as JSON])
+                        labels: values.label as JSON,
+                        controllerName: params.controllerName ?: controllerName])
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -353,7 +355,8 @@ class ProjectController {
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         all: values.all as JSON,
                         done: values.done as JSON,
-                        labels: values.label as JSON])
+                        labels: values.label as JSON,
+                        controllerName: params.controllerName ?: controllerName])
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -371,7 +374,11 @@ class ProjectController {
                         userstories: values.userstories as JSON,
                         technicalstories: values.technicalstories as JSON,
                         defectstories: values.defectstories as JSON,
-                        labels: values.label as JSON])
+                        labels: values.label as JSON,
+                        userstoriesLabels: values*.userstoriesLabel as JSON,
+                        technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
+                        defectstoriesLabels: values*.defectstoriesLabel as JSON,
+                        controllerName: params.controllerName ?: controllerName])
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -389,7 +396,11 @@ class ProjectController {
                         userstories: values.userstories as JSON,
                         technicalstories: values.technicalstories as JSON,
                         defectstories: values.defectstories as JSON,
-                        labels: values.label as JSON])
+                        labels: values.label as JSON,
+                        userstoriesLabels: values*.userstoriesLabel as JSON,
+                        technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
+                        defectstoriesLabels: values*.defectstoriesLabel as JSON,
+                        controllerName: params.controllerName ?: controllerName])
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -414,8 +425,8 @@ class ProjectController {
                 render(template: '../feature/charts/productParkinglot', model: [
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         values: valueToDisplay as JSON,
-                        referrerAction:'dashboard',
-                        featuresNames: values.label as JSON])
+                        featuresNames: values.label as JSON,
+                        controllerName: params.controllerName ?: controllerName])
             else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
