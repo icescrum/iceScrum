@@ -253,7 +253,10 @@ class ReleasePlanController {
                         userstories: values.userstories as JSON,
                         technicalstories: values.technicalstories as JSON,
                         defectstories: values.defectstories as JSON,
-                        labels: values.label as JSON])
+                        labels: values.label as JSON,
+                        userstoriesLabels: values*.userstoriesLabel as JSON,
+                        technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
+                        defectstoriesLabels: values*.defectstoriesLabel as JSON])
             } else {
                 returnError(text:message(code: 'is.chart.error.no.values'))
             }
