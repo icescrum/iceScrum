@@ -61,9 +61,10 @@
           pointLabels:{stackedValue: true,location: 's',ypadding:0}
         },
         series: [
-          {label: '${message(code:'is.chart.releaseBurnDown.series.userstories.name')}',color: '#0099CC'},
-          {label: '${message(code:'is.chart.releaseBurnDown.series.technicalstories.name')}',color: '#FF9933'},
-          {label: '${message(code:'is.chart.releaseBurnDown.series.defectstories.name')}',color: '#CC3300'}],
+          {pointLabels:{show: true, labels:${userstoriesLabels}}, label: '${message(code:'is.chart.releaseBurnDown.series.userstories.name')}',color: '#0099CC'},
+          {pointLabels:{show: true, labels:${technicalstoriesLabels}}, label: '${message(code:'is.chart.releaseBurnDown.series.technicalstories.name')}',color: '#FF9933'},
+          {pointLabels:{show: true, labels:${defectstoriesLabels}}, label: '${message(code:'is.chart.releaseBurnDown.series.defectstories.name')}',color: '#CC3300'}
+        ],
         axes: {
             xaxis: {
               ticks:${labels},
