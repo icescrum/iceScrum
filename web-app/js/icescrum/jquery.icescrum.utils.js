@@ -238,9 +238,11 @@
                 updateFilterTask:function(data, xhr, status, element){
                     if (element.data('active')){
                         $('#menu-filter-task-list').addClass('filter-active');
-                    }else {
+                    } else {
                         $('#menu-filter-task-list').removeClass('filter-active');
                     }
+                    $.icescrum.sprint.currentTaskFilter = element.data('filter');
+                    $.icescrum.sprint.updateRemaining();
                     $('#menu-filter-task-navigation-item').find('.content').html('<span class="ico"></span>'+element.text());
                 },
 

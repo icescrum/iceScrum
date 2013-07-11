@@ -827,6 +827,10 @@
                             },
                             remove:function() {
                                 $('.kanban-col .postit-task[data-elemid=' + this.id + ']').remove();
+                            },
+                            constraintTmpl:function() {
+                                var filter = $.icescrum.sprint.taskFilters[$.icescrum.sprint.currentTaskFilter];
+                                return (filter == undefined) || filter(this);
                             }
                         }
                     },
@@ -927,12 +931,29 @@
                         noDropMessage:'',
                         noDropMessageLimitedTasks:'',
                         totalRemainingHours:'',
-                        hours:''
+                        hours:'',
+                        points:'',
+                        filtered:''
                     },
                     current: null,
                     STATE_WAIT : 1,
                     STATE_INPROGRESS : 2,
                     STATE_DONE : 3,
+                    currentTaskFilter: 'allTasks',
+                    taskFilters: {
+                        myTasks: function (task) {
+                            return task.responsible != null && task.responsible.id == $.icescrum.user.id;
+                        },
+                        freeTasks: function (task) {
+                            return task.responsible == null;
+                        },
+                        blockedTasks: function (task) {
+                            return task.blocked;
+                        }
+                    },
+                    isFiltered: function() {
+                        return $.icescrum.sprint.currentTaskFilter != 'allTasks';
+                    },
                     templates:{
                         window:{
                             selector:function() {
@@ -1104,7 +1125,7 @@
                         }
                     },
 
-                    updateWindowTitle:function(sprint){
+                    updateWindowTitle:function(sprint) {
                         var $select = $("#selectOnSprintPlan");
                         if ($select && $select.val() == sprint.id) {
                             var newTitle = ' - ' +
@@ -1112,9 +1133,11 @@
                                            $.icescrum.sprint.states[sprint.state] + ' - ' +
                                            '[' + $.icescrum.dateLocaleFormat(sprint.startDate) + ' -> ' + $.icescrum.dateLocaleFormat(sprint.endDate) + '] - ' +
                                            '<span class="sprint-points"></span> ' + $.icescrum.sprint.i18n.points + ' - ' +
-                                           $.icescrum.sprint.i18n.totalRemainingHours + ' <span class="remaining">' + sprint.totalRemainingHours + '</span> ' + $.icescrum.sprint.i18n.hours;
+                                           $.icescrum.sprint.i18n.totalRemainingHours + ' <span class="remaining"></span> ' + $.icescrum.sprint.i18n.hours + '<span class="remaining-filtered"></span>';
                             $('#window-title-bar-sprintPlan').find('.content .details').html(newTitle);
-                            $.icescrum.sprint.sprintMesure.apply(sprint); // fill the sprint-points
+                            // Fill the empty fields
+                            $.icescrum.sprint.updateRemaining();
+                            $.icescrum.sprint.sprintMesure.apply(sprint);
                         }
                     },
 
@@ -1128,7 +1151,10 @@
                             }
                         });
                         remaining =  Math.round(remaining) / offset; // hack for decimal values
-                        $('#window-title-bar-sprintPlan').find('span.remaining').html(remaining);
+                        var titleBar = $('#window-title-bar-sprintPlan');
+                        titleBar.find('span.remaining').html(remaining);
+                        var filteredText = $.icescrum.sprint.isFiltered() ? ' (' + $.icescrum.sprint.i18n.filtered + ')' : '';
+                        titleBar.find('span.remaining-filtered').html(filteredText);
                     },
 
                     sprintMesure:function() {

@@ -97,7 +97,8 @@
                    data-ajax="true"
                    data-ajax-update="#window-content-${controllerName}"
                    data-ajax-success="$.icescrum.updateFilterTask"
-                   data-active="false">
+                   data-active="false"
+                   data-filter="allTasks">
                     ${message(code:'is.ui.sprintPlan.toolbar.filter.allTasks')}
                 </a>
             </li>
@@ -107,7 +108,8 @@
                        data-ajax="true"
                        data-ajax-update="#window-content-${controllerName}"
                        data-ajax-success="$.icescrum.updateFilterTask"
-                       data-active="true">
+                       data-active="true"
+                       data-filter="myTasks">
                         ${message(code:'is.ui.sprintPlan.toolbar.filter.myTasks')}
                     </a>
                 </li>
@@ -118,7 +120,8 @@
                    data-ajax="true"
                    data-ajax-update="#window-content-${controllerName}"
                    data-ajax-success="$.icescrum.updateFilterTask"
-                   data-active="true">
+                   data-active="true"
+                   data-filter="freeTasks">
                     ${message(code:'is.ui.sprintPlan.toolbar.filter.freeTasks')}
                 </a>
             </li>
@@ -127,7 +130,8 @@
                    data-ajax="true"
                    data-ajax-update="#window-content-${controllerName}"
                    data-ajax-success="$.icescrum.updateFilterTask"
-                   data-active="false">
+                   data-active="true"
+                   data-filter="blockedTasks">
                     ${message(code:'is.ui.sprintPlan.toolbar.filter.blockedTasks')}
                 </a>
             </li>
@@ -286,6 +290,11 @@
             params="id=${sprint.id}"/>
 
 </g:if>
+
+<jq:jquery>
+    jQuery.icescrum.sprint.currentTaskFilter = '${currentFilter}';
+</jq:jquery>
+
 <entry:point id="${controllerName}-${actionName}" model="[sprint:sprint]"/>  %{-- attention le sprint peut etre null --}%
 
 <g:if test="${sprint?.id}">
