@@ -33,6 +33,9 @@
   <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : <g:meta name="app.version"/>
 </p>
 <p>
+    <strong><g:message code="is.dialog.about.appID"/></strong> : <is:appId/>
+</p>
+<p>
   <strong><g:message code="is.dialog.about.version.buildDate"/></strong> : <g:meta name="build.date"/>
 </p>
 <p>
@@ -62,11 +65,8 @@
 <p>
   <strong><g:message code="is.dialog.about.version.javaVersion"/></strong> : ${System.getProperty('java.version')}
 </p>
-<p>
-    <strong><g:message code="is.dialog.about.version.serverVersion"/></strong> : ${server}
-</p>
 <p class="last">
-  <strong><g:message code="is.dialog.about.appID"/></strong> : <is:appId/>
+    <strong><g:message code="is.dialog.about.version.serverVersion"/></strong> : ${server}
 </p>
 <h3><g:message code="is.dialog.about.version.plugins.title"/></h3>
 <g:set var="pluginManager" value="${applicationContext.getBean('pluginManager').allPlugins.sort({it.name.toUpperCase()})}"/>
