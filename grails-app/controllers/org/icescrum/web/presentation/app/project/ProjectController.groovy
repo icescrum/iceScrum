@@ -46,6 +46,7 @@ import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
 import feedsplugin.FeedBuilder
@@ -859,7 +860,9 @@ class ProjectController {
                 return
             } else if (params.get) {
                 stories.each {
-                    def story = [name: it.name,
+                    def testsByState = it.countTestsByState()
+                    def story = [
+                            name: it.name,
                             id: it.uid,
                             effort: it.effort,
                             state: message(code: BundleUtils.storyStates[it.state]),
@@ -878,7 +881,11 @@ class ProjectController {
                             feature: it.feature?.name ?: null,
                             dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
                             permalink:createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid),
-                            featureColor: it.feature?.color ?: null]
+                            featureColor: it.feature?.color ?: null,
+                            nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
+                            nbTestsFailed: testsByState[AcceptanceTestState.FAILED],
+                            nbTestsSuccess: testsByState[AcceptanceTestState.SUCCESS]
+                    ]
                     if (first == 0) {
                         stories1 << story
                         first = 1

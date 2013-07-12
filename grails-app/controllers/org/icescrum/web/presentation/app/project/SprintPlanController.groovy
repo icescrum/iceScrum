@@ -26,6 +26,7 @@
 
 package org.icescrum.web.presentation.app.project
 
+import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 import org.icescrum.core.support.ProgressSupport
 
 import org.icescrum.core.utils.BundleUtils
@@ -523,7 +524,9 @@ class SprintPlanController {
                 return
             } else if (params.get) {
                 sprint.stories?.each {
-                    def story = [name: it.name,
+                    def testsByState = it.countTestsByState()
+                    def story = [
+                            name: it.name,
                             id: it.uid,
                             effort: it.effort,
                             state: message(code: BundleUtils.storyStates[it.state]),
@@ -542,7 +545,11 @@ class SprintPlanController {
                             feature: it.feature?.name ?: null,
                             dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
                             permalink:createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid),
-                            featureColor: it.feature?.color ?: null]
+                            featureColor: it.feature?.color ?: null,
+                            nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
+                            nbTestsFailed: testsByState[AcceptanceTestState.FAILED],
+                            nbTestsSuccess: testsByState[AcceptanceTestState.SUCCESS]
+                    ]
                     if (first == 0) {
                         stories1 << story
                         first = 1

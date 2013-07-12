@@ -57,6 +57,9 @@
 	<field name="type" class="java.lang.String"/>
 	<field name="permalink" class="java.lang.String"/>
 	<field name="dependsOn" class="java.lang.String"/>
+	<field name="nbTestsTocheck" class="java.lang.Number"/>
+	<field name="nbTestsFailed" class="java.lang.String"/>
+	<field name="nbTestsSuccess" class="java.lang.Number"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -126,9 +129,7 @@
 				<textFieldExpression><![CDATA[$R{is.report.postit.creator}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="111" width="71" height="20">
-					<printWhenExpression><![CDATA[$F{dependsOn}!=null]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="329" y="111" width="71" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -173,6 +174,54 @@
 				<reportElement x="213" y="6" width="45" height="45"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode($F{permalink}, com.google.zxing.BarcodeFormat.QR_CODE, 400, 400))]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="262" y="174" width="110" height="20">
+					<printWhenExpression><![CDATA[$F{nbTestsTocheck}!=null && $F{nbTestsTocheck} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{is.report.postit.tests.tocheck}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="174" width="28" height="20">
+					<printWhenExpression><![CDATA[$F{nbTestsTocheck}!=null && $F{nbTestsTocheck} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nbTestsTocheck}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="195" width="28" height="20">
+					<printWhenExpression><![CDATA[$F{nbTestsFailed}!=null && $F{nbTestsFailed} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nbTestsFailed}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="195" width="110" height="20">
+					<printWhenExpression><![CDATA[$F{nbTestsFailed}!=null && $F{nbTestsFailed} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{is.report.postit.tests.failed}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="215" width="110" height="20">
+					<printWhenExpression><![CDATA[$F{nbTestsSuccess}!=null && $F{nbTestsSuccess} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{is.report.postit.tests.success}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="215" width="28" height="20">
+					<printWhenExpression><![CDATA[$F{nbTestsSuccess}!=null && $F{nbTestsSuccess} > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nbTestsSuccess}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
