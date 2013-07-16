@@ -21,6 +21,7 @@
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 %{--Add button--}%
 <g:if test="${!request.archivedProduct}">
@@ -124,5 +125,5 @@
 <entry:point id="${controllerName}-${actionName}"/>
 %{--Textfield for the auto completion search--}%
 <is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="${controllerName}" action="list" update="window-content-${controllerName}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="${controllerName}" action="list" update="window-content-${controllerName}" withTags="true"/>
 </is:panelSearch>

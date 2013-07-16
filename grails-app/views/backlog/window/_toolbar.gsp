@@ -21,6 +21,7 @@
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:if test="${request.productOwner}">
     <li class="navigation-item">
@@ -93,5 +94,5 @@
 <entry:point id="${controllerName}-${actionName}"/>
 
 <is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="backlog" action="list" update="window-content-${controllerName}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="backlog" action="list" update="window-content-${controllerName}" withTags="true"/>
 </is:panelSearch>

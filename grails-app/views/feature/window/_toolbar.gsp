@@ -19,6 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 %{--Add button--}%
 <g:if test="${request.productOwner}">
@@ -103,5 +104,5 @@
 <entry:point id="${controllerName}-${actionName}"/>
 %{--Search--}%
 <is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="feature" action="list" update="window-content-${controllerName}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="feature" action="list" update="window-content-${controllerName}" withTags="true"/>
 </is:panelSearch>

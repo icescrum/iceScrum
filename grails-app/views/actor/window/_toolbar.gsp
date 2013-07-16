@@ -20,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Damien vitrac (damien@oocube.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
 <is:shortcut key="ctrl+f" callback="jQuery('#search-ui').mouseover();" scope="${controllerName}"/>
@@ -97,5 +98,5 @@
 <entry:point id="${controllerName}-${actionName}"/>
 
 <is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="actor" action="list" update="window-content-${controllerName}"/>
+    <is:autoCompleteSearch elementId="autoCmpTxt" controller="actor" action="list" update="window-content-${controllerName}" withTags="true"/>
 </is:panelSearch>

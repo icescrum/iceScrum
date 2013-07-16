@@ -26,6 +26,7 @@
 package org.icescrum.web.presentation.app.project
 
 import org.icescrum.core.domain.Actor
+import org.icescrum.core.domain.BacklogElement
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.support.ProgressSupport
@@ -135,7 +136,15 @@ class ActorController {
     }
 
     def list = {
-        def actors = params.term ? Actor.findAllByProductAndTerm(params.long('product'), '%' + params.term + '%').list() : Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc'])
+        def searchOptions = [actor: [empty:'']] // TODO FIX
+        if (params.term) {
+            if (params.term.startsWith(BacklogElement.TAG_KEYWORD)) {
+                searchOptions.tag = params.term - BacklogElement.TAG_KEYWORD
+            } else {
+                searchOptions.term = params.term
+            }
+        }
+        def actors = Actor.search(params.long('product'), searchOptions)
         withFormat{
             html {
                 def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'

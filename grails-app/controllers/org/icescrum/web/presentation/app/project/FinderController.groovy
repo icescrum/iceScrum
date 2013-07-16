@@ -2,6 +2,7 @@ package org.icescrum.web.presentation.app.project
 
 import org.grails.taggable.Tag
 import grails.converters.JSON
+import org.icescrum.core.domain.BacklogElement
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Story
@@ -73,11 +74,24 @@ class FinderController {
                            AND tagLink.tag.name LIKE :term
                            ORDER BY tagLink.tag.name"""
 
-                def tags = Tag.executeQuery(findTagsByTermAndProduct, [term: params.term+'%', product: p.id])
-                tags.addAll(Tag.executeQuery(findTagsByTermAndProductInTasks, [term: params.term+'%', product: p.id]))
+                def term = params.term
+                if (params.withKeyword) {
+                    if (term.startsWith(BacklogElement.TAG_KEYWORD)) {
+                        term -= BacklogElement.TAG_KEYWORD
+                    }
+                }
+
+                def tags = Tag.executeQuery(findTagsByTermAndProduct, [term: term +'%', product: p.id])
+                tags.addAll(Tag.executeQuery(findTagsByTermAndProductInTasks, [term: term +'%', product: p.id]))
+                tags.unique()
+
+                if (params.withKeyword) {
+                    tags = tags.collect { BacklogElement.TAG_KEYWORD + it }
+                }
+
                 withFormat{
                     html {
-                        render tags.unique() as JSON
+                        render tags as JSON
                     }
                     json { renderRESTJSON(text:tags.unique()) }
                     xml  { renderRESTXML(text:tags.unique()) }

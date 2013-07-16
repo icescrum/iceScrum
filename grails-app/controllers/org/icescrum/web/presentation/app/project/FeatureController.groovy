@@ -24,6 +24,7 @@
  */
 package org.icescrum.web.presentation.app.project
 
+import org.icescrum.core.domain.BacklogElement
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
@@ -144,7 +145,16 @@ class FeatureController {
     }
 
     def list = {
-        def features = (params.term && params.term != '') ? Feature.findAllByProductAndTerm(params.long('product'), '%' + params.term + '%').list() : Feature.findAllByBacklog(Product.load(params.product), [cache: true, sort: 'rank'])
+        def searchOptions = [feature: [empty:'']] // TODO FIX
+        if (params.term) {
+            if (params.term.startsWith(BacklogElement.TAG_KEYWORD)) {
+                searchOptions.tag = params.term - BacklogElement.TAG_KEYWORD
+            } else {
+                searchOptions.term = params.term
+            }
+        }
+        def features = Feature.search(params.long('product'), searchOptions)
+
         withFormat{
             html {
                 def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'

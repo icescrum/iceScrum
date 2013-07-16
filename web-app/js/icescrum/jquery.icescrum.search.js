@@ -1,98 +1,91 @@
-(function($) {
-    jQuery.extend($.icescrum, {
-                autoCompleteSearch:function(request, response, url, params) {
-                    if (params.before) {
-                        params.before();
-                    }
-                    $.ajax({
-                                url: url,
-                                data: {
-                                    term: request.term,
-                                    viewType:$.icescrum.getDefaultView()
-                                },
-                                success: function(data) {
-                                    $('#' + params.update).html(data);
-                                    response({});
-                                    var obj = $(this);
-                                    $.doTimeout(200, function() {
-                                        $('#autoCmpTxt').focus()
-                                    })
-                                }
-                            });
-                },
+/*
+ * Copyright (c) 2013 Kagilum SAS.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Nicolas Noullet (nnoullet@kagilum.com)
+ *
+ */
 
-                createCompleteResult:function(item, idfieldname, term) {
-                    var res = '<div class="list-selectable-item ui-selectable" id="resultComplete-id-' + item.id + '">';
-                    res += '<img class="ico" src="' + item.image + '" />';
-                    res += '<p><strong>' + item.label + '</strong></p>';
-                    res += '<p>' + item.extra + '</p>';
-                    res += '<input class="id" type="hidden" name="_' + idfieldname + '" value="' + item.id + '"></input>';
-                    res += '</div>';
-                    return res;
-                },
+$(document).on('domUpdate.icescrum', function (event, content) {
 
-                createCompleteSelected:function(item, idfieldname, id) {
-                    var res = '<div class="field-choose-list-item clearfix">';
-                    res += '<span class=" button-s button-s-light clearfix"><span class="start"></span>';
-                    res += '<span class="content">' + item + '<span class="button-action button-delete" style="display: none;">del</span></span>';
-                    res += '<span class="end"></span></span>';
-                    res += '<input class="id" type="hidden" name="' + idfieldname + '" value="' + id + '"></input>';
-                    res += '</div>';
-                    return res;
-                    // elem list
-                },
+    $('.auto-complete-searchable', content).each(function () {
 
-                chooseSelected:function(source, target, fieldname) {
-                    var result = $("#" + target);
-                    var id;
-                    var input;
-                    var label;
-                    $("#" + source + " .ui-selected").each(function() {
-                        input = $(this).find("input");
-                        label = $(this).find("strong").html();
-                        id = input.val();
-                        if (!$('#' + target + ' input.id[value=' + id + ']').length > 0) {
-                            result.append($.icescrum.createCompleteSelected(label, fieldname, id));
-                        }
-                        $(this).removeClass('ui-selected');
-                    });
-                    $('.button-s .button-action').click(function() {
-                        $(this).parent().parent().parent().remove();
-                    });
-                    $('.button-s').hover(function() {
-                        $(this).find('.button-action').show();
-                    }, function() {
-                        $(this).find('.button-action').hide();
-                    });
-                },
+        var autocompletable = $(this);
+        var update = autocompletable.data('update');
+        var url = autocompletable.data('url');
+        var tagUrl = autocompletable.data('tag-url');
+        var minLength = autocompletable.data('min-length');
+        var searchOnInit = autocompletable.data('search-on-init');
 
-                autoCompleteChoose:function(request, response, url, params) {
-                    var fieldname = params && params.idfieldname ? params.idfieldname : 'searchid';
-                    $.ajax({
-                                url: url,
-                                data: {
-                                    term: request.term
-                                },
-                                success: function(data) {
-                                    var out = '';
-                                    $.each(data, function(index, item) {
-                                        out += $.icescrum.createCompleteResult(item, fieldname, request.term);
-                                    });
-                                    var selectNode = $('#' + params.selectId);
-                                    selectNode.html(out);
-                                    selectNode.selectable({
-                                                filter:'.ui-selectable',
-                                                selected:function(event, ui) {
-                                                    $.icescrum.dblclickSelectable(ui, 300, function() {
-                                                        $.icescrum.chooseSelected(params.selectId, params.listId, fieldname);
-                                                        return false;
-                                                    });
-                                                }
-                                            });
-                                    $('.ui-selectable', selectNode).draggable({opacity: 0.8, helper: 'clone',handle:'.ico'});
-                                    response({});
-                                }
-                            });
+        function filterWindowContent(term) {
+            $.ajax({
+                url: url,
+                data: {
+                    term: term,
+                    viewType: $.icescrum.getDefaultView()
+                },
+                success: function (data) {
+                    $('#' + update).html(data);
+                    $.doTimeout(200, function () {
+                        autocompletable.focus()
+                    })
                 }
-            })
-})(jQuery);
+            });
+        }
+
+        autocompletable.autocomplete({
+            minLength: minLength,
+            source: function (request, response) {
+                filterWindowContent(request.term);
+                if (tagUrl) {
+                    $.ajax({
+                        url: tagUrl,
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+                            response(data);
+                        },
+                        error: function () {
+                            response([]);
+                        }
+                    });
+                } else {
+                    response({});
+                }
+            },
+            select: function (event, ui) {
+                filterWindowContent(ui.item.value);
+            },
+            focus: function (event, ui) {
+                event.preventDefault(); // disable update of input content on focus
+            },
+            search: function (event, ui) {
+                var searchButton = $('#search-ui').find('.search-button');
+                if ($(this).val().length > 0) {
+                    searchButton.addClass('active-search');
+                } else {
+                    searchButton.removeClass('active-search');
+                }
+            }
+        });
+
+        if (searchOnInit) {
+            autocompletable.autocomplete('search');
+        }
+    });
+});
