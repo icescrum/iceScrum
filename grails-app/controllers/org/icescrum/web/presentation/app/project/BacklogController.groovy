@@ -25,7 +25,6 @@
 
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.core.domain.BacklogElement
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
@@ -38,24 +37,10 @@ import org.icescrum.core.domain.PlanningPokerGame
 class BacklogController {
     def springSecurityService
 
-    final featureTerm = /feature:(\w)/
-    final typeTerm = /type:(\w)/
-
     def list = {
         def currentProduct = Product.get(params.product)
 
-        def stories
-        if (params.term) {
-            if (params.term.startsWith(BacklogElement.TAG_KEYWORD)) {
-                def tag = params.term - BacklogElement.TAG_KEYWORD
-                stories = Story.search(params.long('product'), [tag: tag])
-                stories = stories.findAll { Story story -> story.state in [Story.STATE_ACCEPTED, Story.STATE_ESTIMATED] }
-            } else {
-                stories = Story.findInStoriesAcceptedEstimated(params.long('product'), '%' + params.term + '%').list()
-            }
-        } else {
-            stories = Story.findAllByBacklogAndStateBetween(currentProduct, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
-        }
+        def stories = Story.searchByTermOrTagInBacklog(currentProduct, params.term)
         stories = params.windowType == 'widget' ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
         def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
 

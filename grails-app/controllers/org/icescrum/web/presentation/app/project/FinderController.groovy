@@ -76,8 +76,8 @@ class FinderController {
 
                 def term = params.term
                 if (params.withKeyword) {
-                    if (term.startsWith(BacklogElement.TAG_KEYWORD)) {
-                        term -= BacklogElement.TAG_KEYWORD
+                    if (BacklogElement.hasTagKeyword(term)) {
+                        term = BacklogElement.removeTagKeyword(term)
                     }
                 }
 

@@ -26,14 +26,12 @@
 package org.icescrum.web.presentation.app.project
 
 import org.icescrum.core.domain.Actor
-import org.icescrum.core.domain.BacklogElement
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
-import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
@@ -43,9 +41,10 @@ class ActorController {
     def actorService
     def springSecurityService
 
+    // TODO check why it is here
     @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
     def search = {
-        def actors = Actor.findAllByProductAndTerm(params.long('product'), '%' + params.term + '%').list()
+        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
         def result = []
         actors?.each {
             result << [label: it.name, value: it.name]
@@ -136,15 +135,7 @@ class ActorController {
     }
 
     def list = {
-        def searchOptions = [actor: [empty:'']] // TODO FIX
-        if (params.term) {
-            if (params.term.startsWith(BacklogElement.TAG_KEYWORD)) {
-                searchOptions.tag = params.term - BacklogElement.TAG_KEYWORD
-            } else {
-                searchOptions.term = params.term
-            }
-        }
-        def actors = Actor.search(params.long('product'), searchOptions)
+        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
         withFormat{
             html {
                 def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'

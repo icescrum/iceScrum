@@ -25,7 +25,6 @@
 
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.core.domain.BacklogElement
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
@@ -52,17 +51,7 @@ class SandboxController {
 
     def list = {
         def currentProduct = Product.load(params.product)
-
-        def searchOptions = [story: [state: Story.STATE_SUGGESTED.toString()]]
-        if (params.term) {
-            if (params.term.startsWith(BacklogElement.TAG_KEYWORD)) {
-                searchOptions.tag = params.term - BacklogElement.TAG_KEYWORD
-            } else {
-                searchOptions.term = params.term
-            }
-        }
-        def stories = Story.search(currentProduct.id, searchOptions)
-
+        def stories = Story.searchByTermOrTagInSandbox(currentProduct.id, params.term)
         def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
         def typeSelect = BundleUtils.storyTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
 
