@@ -54,12 +54,15 @@
     <div id="local">
         <div class="widget-bar">
           <div id="widget-list">
-            <sec:ifLoggedIn>
-                <div class="upgrade" style="display:none;">
-                    <span class="close"><g:message code="is.ui.hide"/></span>
-                    <g:message code="is.ui.hide"/>
+            <div class="message" id="upgrade" style="display:none;">
+                <span class="close"><g:message code="is.ui.hide"/></span>
+                <g:message code="is.upgrade.icescrum.pro"/>
+            </div>
+            <g:if test="${request.archivedProduct}">
+                <div class="message" style="display:block;">
+                    <g:message code="is.message.project.activate"/>
                 </div>
-            </sec:ifLoggedIn>
+            </g:if>
           </div>
         </div>
         <div id="notifications" style="display:none;"><a id="accept_notifications">${message(code:'is.ui.html5.notifications')}</a> (<a id="hide_notifications">${message(code:'is.ui.hide')}</a>)</div>

@@ -2143,25 +2143,27 @@ label span.help {
     cursor: help;
 }
 
-.upgrade {
+.message {
     background: url(../images/icons/info.png) no-repeat 12px center #FFF;
     line-height: 16px;
     margin-top: -3px;
+    margin-bottom: 6px;
     text-align: center;
     width: 258px;
 }
 
-.upgrade a {
+.message a {
     text-decoration: underline;
 }
 
-.upgrade .close {
+.message .close {
+    bottom: 0;
     cursor: pointer;
-    display: block;
-    font-size: 9px;
-    position: absolute;
-    right: 2px;
-    top: 15px;
+    display: inline-block;
+    float: right;
+    font-size: 10px;
+    padding-right: 4px;
+    position: relative;
 }
 
 table.kanban .kanban-col .table-cell .show-done-sprint a {

@@ -51,8 +51,6 @@ icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
 
 println "Server Timezone : ${icescrum.timezone.default}"
 
-icescrum.show.upgrade = true
-
 /*
 Project administration section
  */

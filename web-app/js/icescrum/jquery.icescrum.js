@@ -60,6 +60,16 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
             this.o = jQuery.extend({}, this.defaults, icescrum);
 
+            $.ajaxSetup({ timeout:45000 });
+            $(document).ajaxSend(function(event, xhr, settings){
+                xhr.setRequestHeader("If-Modified-Since",new Date(1970,1,1).toUTCString());
+                xhr.setRequestHeader("Pragma","no-cache");
+                if ($.icescrum.o.push && $.icescrum.o.push.uuid && settings.url.indexOf('X-Atmosphere-tracking-id') == -1){
+                    xhr.setRequestHeader("X-Atmosphere-tracking-id", $.icescrum.o.push.uuid);
+                }
+            });
+
+            $.fn.editable.defaults.placeholder = "&nbsp;";
             $.cookie.defaults = { path: '/' };
 
             if (!window.console) window.console = {};
@@ -74,6 +84,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
 
             $.icescrum.initHistory();
+
             var currentWindow = location.hash.replace(/^.*#/, '');
             var $menubar = $('li.menubar:first a');
             if ($.icescrum.o.baseUrlProduct && !currentWindow && $menubar){
@@ -137,6 +148,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 $.get($.icescrum.o.versionUrl);
                 return true;
             });
+
+            $.icescrum.showUpgrade();
         },
 
         log:function() {
@@ -456,7 +469,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
         showUpgrade:function(){
             if (this.o.showUpgrade){
-                var upgrade = $('.upgrade');
+                var upgrade = $('#upgrade');
                 if (upgrade.length && $.cookie('hide_upgrade') != "true"){
                     upgrade.show();
                     upgrade.find('.close').click(function(){
@@ -495,16 +508,3 @@ $.fn.icescrum = function(options) {
     }
     return $.icescrum;
 };
-
-$(document).ready(function($) {
-    $.ajaxSetup({ timeout:45000 });
-    $(document).ajaxSend(function(event, xhr, settings){
-        xhr.setRequestHeader("If-Modified-Since",new Date(1970,1,1).toUTCString());
-        xhr.setRequestHeader("Pragma","no-cache");
-        if ($.icescrum.o.push && $.icescrum.o.push.uuid && settings.url.indexOf('X-Atmosphere-tracking-id') == -1){
-            xhr.setRequestHeader("X-Atmosphere-tracking-id", $.icescrum.o.push.uuid);
-        }
-    });
-    $.icescrum.showUpgrade();
-    $.fn.editable.defaults.placeholder = "&nbsp;";
-});
