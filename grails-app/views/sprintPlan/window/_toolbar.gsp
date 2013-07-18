@@ -301,7 +301,7 @@
 %{--Search--}%
     <is:panelSearch id="search-ui">
         <is:autoCompleteSearch elementId="autoCmpTxt" controller="${controllerName}" action="index" id="${sprint.id}"
-                               update="window-content-${controllerName}"/>
+                               update="window-content-${controllerName}" withTags="true"/>
     </is:panelSearch>
 
     <is:onStream

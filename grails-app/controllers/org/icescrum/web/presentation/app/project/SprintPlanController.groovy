@@ -122,14 +122,15 @@ class SprintPlanController {
         def urgentTasks
         def userid = params.long('userid')
 
+        stories = Story.findStoriesFilter(sprint, null, user, userid).listDistinct()
+        recurrentTasks = Task.findRecurrentTasksFilter(sprint, null, user, userid).listDistinct()
+        urgentTasks = Task.findUrgentTasksFilter(sprint, null, user, userid).listDistinct()
         if (params.term && params.term != '') {
-            stories = Story.findStoriesFilter(sprint, '%' + params.term + '%', user, userid).listDistinct()
-            recurrentTasks = Task.findRecurrentTasksFilter(sprint, '%' + params.term + '%', user, userid).listDistinct()
-            urgentTasks = Task.findUrgentTasksFilter(sprint, '%' + params.term + '%', user, userid).listDistinct()
-        } else {
-            stories = Story.findStoriesFilter(sprint, null, user, userid).listDistinct()
-            recurrentTasks = Task.findRecurrentTasksFilter(sprint, null, user, userid).listDistinct()
-            urgentTasks = Task.findUrgentTasksFilter(sprint, null, user, userid).listDistinct()
+            def storiesMatchingTermOrTag = Story.searchAllByTermOrTag(currentProduct.id, params.term)
+            stories = stories.intersect(storiesMatchingTermOrTag)
+            def tasksMatchingTermOrTag = Task.searchAllByTermOrTag(currentProduct, params.term)
+            recurrentTasks = recurrentTasks.intersect(tasksMatchingTermOrTag)
+            urgentTasks = urgentTasks.intersect(tasksMatchingTermOrTag)
         }
 
         def suiteSelect = ''
