@@ -22,12 +22,13 @@
 - Jeroen Broekhuizen (Jeroen.Broekhuizen@quintiq.com)
 --}%
 
-<%@ page import="org.icescrum.core.domain.Sprint; org.icescrum.core.domain.Task" %>
+<%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Sprint; org.icescrum.core.domain.Task" %>
 
 <g:set var="responsible" value="${task.responsible?.id == user.id}"/>
 <g:set var="creator" value="${task.creator.id == user.id}"/>
 <g:set var="taskDone" value="${task.state == Task.STATE_DONE}"/>
 <g:set var="sprintDone" value="${task.backlog?.state == Sprint.STATE_DONE}"/>
+<g:set var="storyDone" value="${task.parentStory?.state == Story.STATE_DONE}"/>
 
 <g:set var="taskEditable" value="${!request.readOnly && (request.scrumMaster || responsible || creator) && !sprintDone && !taskDone}"/>
 <g:set var="taskSortable" value="${!request.readOnly && (request.scrumMaster || responsible || (request.inProduct && assignOnBeginTask && !task.responsible && task.state == Task.STATE_WAIT))}"/>
@@ -38,7 +39,7 @@
            miniId="${task.uid}"
            styleClass="task ${responsible ? 'hasResponsible' : ''}"
            type="task"
-           sortable='[rendered:taskSortable, disabled:(sprintDone || taskDone)]'
+           sortable='[rendered:taskSortable, disabled:(sprintDone || storyDone)]'
            typeNumber="${task.blocked ? 1 : 0}"
            typeTitle="${task.blocked ? message(code:'is.task.blocked') : ''}"
            attachment="${task.totalAttachments}"

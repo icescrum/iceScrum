@@ -166,36 +166,58 @@ class TaskController {
     @Secured('inProduct() and !archivedProduct()')
     def update = {
         withTask{Task task ->
+            Task.withTransaction { status ->
+                try {
+                    // If the version is different, the task has been modified since the last loading
+                    if (params.task.version && params.long('task.version') != task.version) {
+                        returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.task')]))
+                        return
+                    }
 
-            // If the version is different, the task has been modified since the last loading
-            if (params.task.version && params.long('task.version') != task.version) {
-                returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.task')]))
-                return
-            }
+                    User user = (User) springSecurityService.currentUser
 
-            User user = (User) springSecurityService.currentUser
-            updateTaskType(task, user)
+                    // The order is important to allow actions that both change state and type
+                    if (task.state < Task.STATE_DONE) {
+                        updateTaskType(task, user)
+                        status.flush()
+                    }
 
-            if (params.task?.estimation instanceof String) {
-                params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/,'.').toFloat()
-            }
+                    if (params.task?.estimation instanceof String) {
+                        params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
+                    }
 
-            bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
+                    bindData(task, this.params, [include: ['name', 'estimation', 'description', 'notes', 'color']], "task")
 
-            if (params.boolean('manageTags')) {
-                task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
-            }
+                    if (params.boolean('manageTags')) {
+                        task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
+                    }
 
-            taskService.update(task, user)
-            if (params.boolean('manageAttachments')) {
-                def keptAttachments = params.list('task.attachments')
-                def addedAttachments = params.list('attachments')
-                manageAttachments(task, keptAttachments, addedAttachments)
-            }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { renderRESTJSON(text:task) }
-                xml  { renderRESTXML(text:task) }
+                    taskService.update(task, user)
+
+                    // The order is important to allow actions that both change state and type
+                    if (task.state >= Task.STATE_DONE) {
+                        status.flush()
+                        updateTaskType(task, user)
+                    }
+
+                    if (params.boolean('manageAttachments')) {
+                        def keptAttachments = params.list('task.attachments')
+                        def addedAttachments = params.list('attachments')
+                        manageAttachments(task, keptAttachments, addedAttachments)
+                    }
+                    withFormat {
+                        html { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                        json { renderRESTJSON(text: task) }
+                        xml { renderRESTXML(text: task) }
+                    }
+                } catch (IllegalStateException e) {
+                    status.setRollbackOnly()
+                    returnError(exception: e)
+                    return
+                } catch (RuntimeException e) {
+                    status.setRollbackOnly()
+                    returnError(object: task, exception: e)
+                }
             }
         }
     }
@@ -331,18 +353,37 @@ class TaskController {
             return
         }
         withTask{ Task task ->
-            User user = (User) springSecurityService.currentUser
-            updateTaskType(task,user)
-            taskService.state(task, state, user)
-            if (params.task.rank){
-                Integer rank = params.task.rank instanceof String && params.task.rank.isNumber() ? params.task.rank.toInteger() : params.task.rank instanceof Integer ? params.task.rank : null
-                if(rank)
-                    taskService.rank(task, rank)
-            }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [task:task, story:task.parentStory?.state == Story.STATE_DONE ? task.parentStory : null] as JSON)  }
-                json { renderRESTJSON(text:task) }
-                xml  { renderRESTXML(text:task) }
+            Task.withTransaction { status ->
+                try {
+                    User user = (User) springSecurityService.currentUser
+                    // The order is important to allow actions that both change state and type
+                    if (task.state < Task.STATE_DONE) {
+                        updateTaskType(task, user)
+                        status.flush()
+                        taskService.state(task, state, user)
+                    } else {
+                        taskService.state(task, state, user)
+                        status.flush()
+                        updateTaskType(task, user)
+                    }
+                    if (params.task.rank) {
+                        Integer rank = params.task.rank instanceof String && params.task.rank.isNumber() ? params.task.rank.toInteger() : params.task.rank instanceof Integer ? params.task.rank : null
+                        if (rank)
+                            taskService.rank(task, rank)
+                    }
+                    withFormat {
+                        html { render(status: 200, contentType: 'application/json', text: [task: task, story: task.parentStory?.state == Story.STATE_DONE ? task.parentStory : null] as JSON) }
+                        json { renderRESTJSON(text: task) }
+                        xml { renderRESTXML(text: task) }
+                    }
+                } catch (IllegalStateException e) {
+                    status.setRollbackOnly()
+                    returnError(exception: e)
+                    return
+                } catch (RuntimeException e) {
+                    status.setRollbackOnly()
+                    returnError(object: task, exception: e)
+                }
             }
         }
     }
@@ -470,9 +511,5 @@ class TaskController {
                 taskService.changeType(task, sprintTask, user)
             }
         }
-    }
-
-    def tags = {
-        render Tag.findAllByNameIlike("${params.term}%")*.name as JSON
     }
 }

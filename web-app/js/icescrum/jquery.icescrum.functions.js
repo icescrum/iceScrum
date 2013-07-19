@@ -869,14 +869,15 @@
                         var responsible = (this.responsible && this.responsible.id == $.icescrum.user.id) ? true : false;
                         var creator = this.creator.id == $.icescrum.user.id;
                         var taskDone = this.state == $.icescrum.task.STATE_DONE;
+                        var notStoryDone = !this.parentStory || this.parentStory.state != $.icescrum.story.STATE_DONE;
 
                         var taskEditable = ($.icescrum.user.scrumMaster || responsible || creator) && !taskDone;
                         var taskDeletable = $.icescrum.user.scrumMaster || responsible || creator;
                         var taskBlockable = ($.icescrum.user.scrumMaster || responsible) && !taskDone && this.sprint.state == $.icescrum.sprint.STATE_INPROGRESS;
-                        var taskSortable = ($.icescrum.user.scrumMaster || responsible || (!this.responsible && $.icescrum.user.inProduct() && $.icescrum.product.assignOnBeginTask && this.state == $.icescrum.task.STATE_WAIT)) && !taskDone;
+                        var taskSortable = ($.icescrum.user.scrumMaster || responsible || (!this.responsible && $.icescrum.user.inProduct() && $.icescrum.product.assignOnBeginTask && this.state == $.icescrum.task.STATE_WAIT)) && notStoryDone;
                         var taskTakable = !responsible && !taskDone;
                         var taskReleasable = responsible && !taskDone;
-                        var taskCopyable = !this.parentStory || this.parentStory.state != $.icescrum.story.STATE_DONE;
+                        var taskCopyable = notStoryDone
 
                         if(this.sprint.state == $.icescrum.sprint.STATE_DONE) {
                             $('.dropmenu-action', postit).remove();
