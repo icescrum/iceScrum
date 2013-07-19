@@ -123,7 +123,12 @@ class TaskController {
         def sprint = params.remove('sprint.id') ?: params.task.remove('sprint.id')
 
         if (params.task?.estimation instanceof String) {
-            params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/,'.').toFloat()
+            try {
+                params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
+            } catch (NumberFormatException e) {
+                returnError(text: message(code: 'is.task.error.estimation.number'))
+                return
+            }
         }
 
         def task = new Task()
@@ -183,7 +188,12 @@ class TaskController {
                     }
 
                     if (params.task?.estimation instanceof String) {
-                        params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
+                        try {
+                            params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
+                        } catch (NumberFormatException e) {
+                            returnError(text: message(code: 'is.task.error.estimation.number'))
+                            return
+                        }
                     }
 
                     bindData(task, this.params, [include: ['name', 'estimation', 'description', 'notes', 'color']], "task")
@@ -282,11 +292,16 @@ class TaskController {
     def estimate = {
         withTask{Task task ->
             User user = (User) springSecurityService.currentUser
-            if (params.task?.estimation){
-                params.task.estimation = params.task.estimation instanceof String ? params.task.estimation.replace(/,/,'.') : params.task.estimation
-                params.task.estimation = params.task.estimation == '?' ? null : params.task.estimation
+            try {
+                if (params.task?.estimation) {
+                    params.task.estimation = params.task.estimation instanceof String ? params.task.estimation.replace(/,/, '.') : params.task.estimation
+                    params.task.estimation = params.task.estimation == '?' ? null : params.task.estimation
+                }
+                task.estimation = params.task?.estimation?.toFloat() ?: (params.task?.estimation?.toFloat() == 0) ? 0 : null
+            } catch (NumberFormatException e) {
+                returnError(text: message(code: 'is.task.error.estimation.number'))
+                return
             }
-            task.estimation = params.task?.estimation?.toFloat() ?: (params.task?.estimation?.toFloat() == 0) ? 0 : null
             taskService.update(task, user)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
