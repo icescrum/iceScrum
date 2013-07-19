@@ -34,7 +34,6 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
-import org.grails.taggable.Tag
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class FeatureController {
@@ -289,10 +288,5 @@ class FeatureController {
 
     def show = {
         redirect(action:'index', controller: controllerName, params:params)
-    }
-
-    // TODO check why it is here
-    def tags = {
-        render Tag.findAllByNameIlike("${params.term}%")*.name as JSON
     }
 }

@@ -41,17 +41,6 @@ class ActorController {
     def actorService
     def springSecurityService
 
-    // TODO check why it is here
-    @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
-    def search = {
-        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
-        def result = []
-        actors?.each {
-            result << [label: it.name, value: it.name]
-        }
-        render(result as JSON)
-    }
-
     @Secured('productOwner() and !archivedProduct()')
     def save = {
         if (!params.actor) return
