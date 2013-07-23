@@ -29,12 +29,10 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
-import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.icescrum.core.domain.Product
-import org.grails.taggable.Tag
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class TaskController {
@@ -171,63 +169,48 @@ class TaskController {
     @Secured('inProduct() and !archivedProduct()')
     def update = {
         withTask{Task task ->
-            Task.withTransaction { status ->
+            // If the version is different, the task has been modified since the last loading
+            if (params.task.version && params.long('task.version') != task.version) {
+                returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.task')]))
+                return
+            }
+
+            User user = (User) springSecurityService.currentUser
+
+            if (params.task?.estimation instanceof String) {
                 try {
-                    // If the version is different, the task has been modified since the last loading
-                    if (params.task.version && params.long('task.version') != task.version) {
-                        returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.task')]))
-                        return
-                    }
-
-                    User user = (User) springSecurityService.currentUser
-
-                    // The order is important to allow actions that both change state and type
-                    if (task.state < Task.STATE_DONE) {
-                        updateTaskType(task, user)
-                        status.flush()
-                    }
-
-                    if (params.task?.estimation instanceof String) {
-                        try {
-                            params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
-                        } catch (NumberFormatException e) {
-                            returnError(text: message(code: 'is.task.error.estimation.number'))
-                            return
-                        }
-                    }
-
-                    bindData(task, this.params, [include: ['name', 'estimation', 'description', 'notes', 'color']], "task")
-
-                    if (params.boolean('manageTags')) {
-                        task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
-                    }
-
-                    taskService.update(task, user)
-
-                    // The order is important to allow actions that both change state and type
-                    if (task.state >= Task.STATE_DONE) {
-                        status.flush()
-                        updateTaskType(task, user)
-                    }
-
-                    if (params.boolean('manageAttachments')) {
-                        def keptAttachments = params.list('task.attachments')
-                        def addedAttachments = params.list('attachments')
-                        manageAttachments(task, keptAttachments, addedAttachments)
-                    }
-                    withFormat {
-                        html { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                        json { renderRESTJSON(text: task) }
-                        xml { renderRESTXML(text: task) }
-                    }
-                } catch (IllegalStateException e) {
-                    status.setRollbackOnly()
-                    returnError(exception: e)
+                    params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
+                } catch (NumberFormatException e) {
+                    returnError(text: message(code: 'is.task.error.estimation.number'))
                     return
-                } catch (RuntimeException e) {
-                    status.setRollbackOnly()
-                    returnError(object: task, exception: e)
                 }
+            }
+
+            // must be done before bindData in order to remove parentStory params
+            // if it isn't removed, bindData creates a transient empty BacklogElement if no story is provided
+            def storyOrType = parseTaskTypeOrStory()
+
+            bindData(task, this.params, [include: ['name', 'estimation', 'description', 'notes', 'color']], "task")
+
+            if (storyOrType) {
+                taskService.update(task, user, false, storyOrType.type, storyOrType.story)
+            } else {
+                taskService.update(task, user)
+            }
+
+            if (params.boolean('manageTags')) {
+                task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
+            }
+
+            if (params.boolean('manageAttachments')) {
+                def keptAttachments = params.list('task.attachments')
+                def addedAttachments = params.list('attachments')
+                manageAttachments(task, keptAttachments, addedAttachments)
+            }
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                json { renderRESTJSON(text: task) }
+                xml { renderRESTXML(text: task) }
             }
         }
     }
@@ -361,44 +344,28 @@ class TaskController {
 
     @Secured('inProduct() and !archivedProduct()')
     def state = {
-        // params.id represent the targeted state (STATE_WAIT, STATE_INPROGRESS, STATE_DONE)
         Integer state = params.task?.state instanceof String && params.task.state.isNumber() ? params.task.state.toInteger() : params.task?.state instanceof Integer ? params.task.state : null
         if (!(state in [Task.STATE_WAIT,Task.STATE_BUSY,Task.STATE_DONE])){
             returnError(text: message(code: 'is.ui.sprintPlan.state.no.exist'))
             return
         }
         withTask{ Task task ->
-            Task.withTransaction { status ->
-                try {
-                    User user = (User) springSecurityService.currentUser
-                    // The order is important to allow actions that both change state and type
-                    if (task.state < Task.STATE_DONE) {
-                        updateTaskType(task, user)
-                        status.flush()
-                        taskService.state(task, state, user)
-                    } else {
-                        taskService.state(task, state, user)
-                        status.flush()
-                        updateTaskType(task, user)
-                    }
-                    if (params.task.rank) {
-                        Integer rank = params.task.rank instanceof String && params.task.rank.isNumber() ? params.task.rank.toInteger() : params.task.rank instanceof Integer ? params.task.rank : null
-                        if (rank)
-                            taskService.rank(task, rank)
-                    }
-                    withFormat {
-                        html { render(status: 200, contentType: 'application/json', text: [task: task, story: task.parentStory?.state == Story.STATE_DONE ? task.parentStory : null] as JSON) }
-                        json { renderRESTJSON(text: task) }
-                        xml { renderRESTXML(text: task) }
-                    }
-                } catch (IllegalStateException e) {
-                    status.setRollbackOnly()
-                    returnError(exception: e)
-                    return
-                } catch (RuntimeException e) {
-                    status.setRollbackOnly()
-                    returnError(object: task, exception: e)
-                }
+            User user = (User) springSecurityService.currentUser
+            def storyOrType = parseTaskTypeOrStory()
+            if (storyOrType) {
+                taskService.state(task, state, user, storyOrType.type, storyOrType.story)
+            } else {
+                taskService.state(task, state, user)
+            }
+            if (params.task.rank) {
+                Integer rank = params.task.rank instanceof String && params.task.rank.isNumber() ? params.task.rank.toInteger() : params.task.rank instanceof Integer ? params.task.rank : null
+                if (rank)
+                    taskService.rank(task, rank)
+            }
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: [task: task, story: task.parentStory?.state == Story.STATE_DONE ? task.parentStory : null] as JSON) }
+                json { renderRESTJSON(text: task) }
+                xml { renderRESTXML(text: task) }
             }
         }
     }
@@ -489,8 +456,8 @@ class TaskController {
         }
     }
 
-    private updateTaskType(Task task, User user){
-
+    // very strange behavior in there to support both dropdown that mixes stories and types and API support
+    private Map parseTaskTypeOrStory() {
         def type = params.remove('parentStory.id') ?: params.task.remove('parentStory.id')
         if (!type){
             type = params.remove('task.type') ?: params.task.remove('type')
@@ -501,30 +468,15 @@ class TaskController {
                 type = null
             }
         }
-        if (type){
-            def story = !(type in ['recurrent', 'urgent'] && type) ? (Story)Story.getInProduct(params.long('product'), type.toLong()).list() : null
-            if (!story && !(type in ['recurrent', 'urgent'])) {
-                returnError(text: message(code: 'is.story.error.not.exist'))
-                return
+        if (type) {
+            if (type in ['recurrent', 'urgent']) {
+                type = type == 'recurrent' ? Task.TYPE_RECURRENT : Task.TYPE_URGENT
+                return [story: null, type: type]
+            } else {
+                return [story: type.toLong(), type: null]
             }
-
-            def sprintTask = (type in ['recurrent', 'urgent']) ? type == 'recurrent' ? Task.TYPE_RECURRENT : Task.TYPE_URGENT : null
-
-            if (!story && task.parentStory) {
-                taskService.storyTaskToSprintTask(task, sprintTask, user)
-                // If the Task was transformed to a Task
-
-            } else if (story && task.parentStory && story.id != task.parentStory.id) {
-                taskService.changeTaskStory(task, story, user)
-                // If the Task was transformed to a Task
-
-            } else if (story && !task.parentStory) {
-                taskService.sprintTaskToStoryTask(task, story, user)
-                // If the Task has changed its type (TYPE_RECURRENT/TYPE_URGENT)
-
-            } else if (task && sprintTask != task.type) {
-                taskService.changeType(task, sprintTask, user)
-            }
+        } else {
+            return [:]
         }
     }
 }
