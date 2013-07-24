@@ -124,7 +124,7 @@ class ActorController {
     }
 
     def list = {
-        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
+        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
         withFormat{
             html {
                 def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'

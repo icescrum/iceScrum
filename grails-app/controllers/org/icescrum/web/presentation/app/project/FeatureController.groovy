@@ -144,7 +144,7 @@ class FeatureController {
 
     def list = {
         def currentProduct = Product.get(params.product)
-        def features = Feature.searchAllByTermOrTag(currentProduct.id, params.term)
+        def features = Feature.searchAllByTermOrTag(currentProduct.id, params.term).sort { Feature feature -> feature.rank }
 
         withFormat{
             html {

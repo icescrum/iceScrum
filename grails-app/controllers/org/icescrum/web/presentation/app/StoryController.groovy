@@ -616,7 +616,7 @@ class StoryController {
             return
         }
         def currentProduct = Product.load(params.product)
-        def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term)
+        def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term).sort { Story story -> story.id }
         withFormat {
             json { renderRESTJSON(text:stories) }
             xml  { renderRESTXML(text:stories) }

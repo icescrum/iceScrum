@@ -51,7 +51,7 @@ class SandboxController {
 
     def list = {
         def currentProduct = Product.load(params.product)
-        def stories = Story.searchByTermOrTagInSandbox(currentProduct.id, params.term)
+        def stories = Story.searchByTermOrTagInSandbox(currentProduct.id, params.term).sort { Story s1, Story s2 -> s2.suggestedDate <=> s1.suggestedDate }
         def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
         def typeSelect = BundleUtils.storyTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
 

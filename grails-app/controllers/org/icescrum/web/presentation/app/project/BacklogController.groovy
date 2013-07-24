@@ -40,7 +40,7 @@ class BacklogController {
     def list = {
         def currentProduct = Product.get(params.product)
 
-        def stories = Story.searchByTermOrTagInBacklog(currentProduct, params.term)
+        def stories = Story.searchByTermOrTagInBacklog(currentProduct, params.term).sort { Story story -> story.rank }
         stories = params.windowType == 'widget' ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
         def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
 
