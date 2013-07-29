@@ -65,7 +65,7 @@
                 <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
             </is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!request.productOwner]"></is:tableColumn>
+                    editable="[type:'selectui',id:'rank',name:'rank',values:rankSelect,disabled:!request.productOwner]">${feature.rank}</is:tableColumn>
             <is:tableColumn
                     editable="[type:'selectui',disabled:!request.productOwner,name:'value',values:suiteSelect]">${feature.value}</is:tableColumn>
             <is:tableColumn
