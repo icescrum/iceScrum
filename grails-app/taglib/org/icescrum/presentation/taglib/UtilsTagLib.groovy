@@ -348,7 +348,7 @@ class UtilsTagLib {
     def errors = {
         if (grailsApplication.config.icescrum.errors){
             out << """<a data-ajax="true" href="${createLink(controller:'scrumOS',action:'about')}">
-                        <li class='navigation-line warning' title="${g.message(code:'is.warning')}"></li>
+                        <li class='navigation-line warning warning-icon' title="${g.message(code:'is.warning')}"></li>
                       </a>"""
         }
     }
