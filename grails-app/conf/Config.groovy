@@ -157,6 +157,7 @@ grails.attachmentable.taskDir = {
         return "${File.separator + it.backlog?.parentRelease?.parentProduct?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
 }
 
+grails.taggable.preserve.case = true
 /*
   Default grails config
  */
