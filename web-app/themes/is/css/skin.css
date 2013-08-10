@@ -739,6 +739,10 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     background: url(../images/icons/warning.png) no-repeat;
 }
 
+.upgrade-icon {
+    background: url(../images/icons/upgrade.png) no-repeat;
+}
+
 
 .comment-body blockquote {
     font-style: italic;
