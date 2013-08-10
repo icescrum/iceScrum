@@ -112,7 +112,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.mousewheel.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.hotkeys.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.dotimeout.min.js'],nominify: true, bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.tipTip.min.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.tipTip.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.eventline.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.dropmenu.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.dnd.js'], bundle: 'icescrum'
