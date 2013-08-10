@@ -28,13 +28,13 @@
         var rootContainer = $('.event-overflow').parent();
         overflow.css('overflow', 'hidden');
         var container = $('.event-container');
-        var realWidth = container.length * 181;
+        var realWidth = container.length * (container.width() + 1);
 
         var size = function() {
             var container = $('.event-container');
             var contentList = $('.event-content-list');
 
-            var realWidth = container.length * 181;
+            var realWidth = container.length * (container.width() + 1);
             overflow.width(realWidth);
             var selectList = $('.event-select');
             var adjust = 0;
