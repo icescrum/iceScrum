@@ -148,15 +148,22 @@ function getFunction(code, argNames) {
     });
 
 
-    $(document).on('hover','.postit, .postit-rect', function(event){
+    $(document).on('hover','.postit, .postit-rect, .tooltip-help', function(event){
         var elem = $(this);
         var tooltip = $('.tooltip',elem);
         if (tooltip.length > 0){
+            var label = elem.find('label:first');
             if (!elem.data('tooltip-init')){
-                elem.tipTip({delay:500, activation:"focus", defaultPosition:"right", content:tooltip.html(), edgeOffset:-20});
+                (label.length > 0 ? label : elem).tipTip({
+                    delay:tooltip.data('delay') ? tooltip.data('delay') : 500,
+                    activation:tooltip.data('activation') ? tooltip.data('activation') : "focus",
+                    defaultPosition:tooltip.data('defaultPosition') ? tooltip.data('defaultPosition') : "right",
+                    edgeOffset:tooltip.data('edgeOffset') ? tooltip.data('edgeOffset') : -20,
+                    content:tooltip.html()
+                });
                 elem.data('tooltip-init',true);
             }
-            (event.type == 'mouseenter' && !$('#dropmenu').is(':visible')) ? elem.focus() : elem.blur();
+            (event.type == 'mouseenter' && !$('#dropmenu').is(':visible')) ? (label.length > 0 ? label : elem).hover().focus() : (label.length > 0 ? label : elem).blur();
         }
     });
 
