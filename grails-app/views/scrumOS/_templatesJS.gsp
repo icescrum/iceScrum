@@ -60,8 +60,7 @@
                    name:"${g.message(code: 'is.sprint')}",
                    noDropMessage:"${g.message(code:'is.ui.sprintPlan.no.drop')}",
                    noDropMessageLimitedTasks:"${g.message(code:'is.task.error.limitTasksUrgent')}",
-                   totalRemainingHours:"${g.message(code:'is.ui.sprintPlan.totalRemainingHours')}",
-                   hours:"${g.message(code:'is.ui.sprintPlan.hours')}",
+                   totalRemaining:"${g.message(code:'is.ui.sprintPlan.totalRemaining')}",
                    points:"${g.message(code:'is.ui.sprintPlan.points')}",
                    filtered:"${g.message(code:'is.ui.sprintPlan.filtered')}"
             },

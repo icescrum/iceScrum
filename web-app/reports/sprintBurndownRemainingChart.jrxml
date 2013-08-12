@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sprintBurndownHoursChart" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sprintBurndownRemainingChart" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
 	<property name="ireport.zoom" value="0.9090909090909113"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="1"/>
@@ -69,7 +69,7 @@
 		<defaultValueExpression><![CDATA[Boolean.FALSE]]></defaultValueExpression>
 	</parameter>
 	<field name="label" class="java.lang.String"/>
-	<field name="remainingHours" class="java.lang.Number"/>
+	<field name="remainingTime" class="java.lang.Number"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -81,7 +81,7 @@
 				<textElement>
 					<font size="20" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.sprintBurndownHoursChart.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.sprintBurndownRemainingChart.title}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -129,7 +129,7 @@
 				<textElement textAlignment="Center">
 					<font size="11" isBold="true" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.sprintBurndownHoursChart.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.sprintBurndownRemainingChart.title}]]></textFieldExpression>
 			</textField>
 			<lineChart>
 				<chart>
@@ -140,9 +140,9 @@
 				</chart>
 				<categoryDataset>
 					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.sprintBurndownHoursChart.serie.task.name}]]></seriesExpression>
+						<seriesExpression><![CDATA[$R{is.report.chart.sprintBurndownRemainingChart.serie.task.name}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{remainingHours}]]></valueExpression>
+						<valueExpression><![CDATA[$F{remainingTime}]]></valueExpression>
 					</categorySeries>
 				</categoryDataset>
 				<linePlot>
@@ -166,14 +166,14 @@
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.sprintBurndownHoursChart.yaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.sprintBurndownRemainingChart.yaxis.label}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="568" y="226" width="115" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.sprintBurndownHoursChart.xaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.sprintBurndownRemainingChart.xaxis.label}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

@@ -253,7 +253,7 @@
     <is:panelButton alt="Charts" separator="true" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
         <ul>
             <li class="first">
-                <a href="#${controllerName}/sprintBurndownHoursChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurndownHoursChart')}</a>
+                <a href="#${controllerName}/sprintBurndownRemainingChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a>
             </li>
             <li>
                 <a href="#${controllerName}/sprintBurnupTasksChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a>

@@ -344,13 +344,13 @@ class SprintPlanController {
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
-    def sprintBurndownHoursChart = {
+    def sprintBurndownRemainingChart = {
         withSprint{ Sprint sprint ->
-            def values = sprintService.sprintBurndownHoursValues(sprint)
+            def values = sprintService.sprintBurndownRemainingValues(sprint)
             if (values.size() > 0) {
-                render(template: 'charts/sprintBurndownHoursChart', model: [
-                        remainingHours: values.remainingHours as JSON,
-                        idealHours: values.first()?.idealHours ? values.idealHours as JSON : null,
+                render(template: 'charts/sprintBurndownRemainingChart', model: [
+                        remainingTime: values.remainingTime as JSON,
+                        idealTime: values.first()?.idealTime ? values.idealTime as JSON : null,
                         withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
                         labels: values.label as JSON])
             } else {
@@ -452,8 +452,8 @@ class SprintPlanController {
         }
 
         switch (chart) {
-            case 'sprintBurndownHoursChart':
-                data = sprintService.sprintBurndownHoursValues(sprint)
+            case 'sprintBurndownRemainingChart':
+                data = sprintService.sprintBurndownRemainingValues(sprint)
                 break
             case 'sprintBurnupTasksChart':
                 data = sprintService.sprintBurnupTasksValues(sprint)
@@ -480,7 +480,7 @@ class SprintPlanController {
                         [
                                 taskStateBundle: BundleUtils.taskStates,
                                 tasks: tasks,
-                                sprintBurndownHoursChart: sprintService.sprintBurndownHoursValues(sprint),
+                                sprintBurndownRemainingChart: sprintService.sprintBurndownRemainingValues(sprint),
                                 sprintBurnupTasksChart: sprintService.sprintBurnupTasksValues(sprint),
                                 sprintBurnupStoriesChart: sprintService.sprintBurnupStoriesValues(sprint)
                         ]

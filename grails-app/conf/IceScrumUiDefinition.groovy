@@ -281,7 +281,7 @@ uiDefinitions = {
         ]
         embedded = [
                 view:'index',
-                viewTypes:['postits','table','notes','sprintBurndownHoursChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
+                viewTypes:['postits','table','notes','sprintBurndownRemainingChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
                 id:{ product ->
                     def id = [label:message(code:'is.sprint'), select:[[key:'', value:message(code:'is.ui.sprintPlan.id.empty')]]]
                     product.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {

@@ -100,7 +100,7 @@ icescrum.marshaller = [
                  asShort:['color', 'name']],
         story:[include:['totalAttachments','totalComments','tasks', 'testState'],
                asShort:['state', 'effort','uid']],
-        sprint:[include:['activable','totalRemainingHours'],
+        sprint:[include:['activable','totalRemaining'],
                 exclude:['cliches'],
                 asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
         release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],

@@ -71,7 +71,7 @@
     <parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
     <parameter name="_name" class="java.lang.String"/>
     <parameter name="labels.projectName" class="java.lang.String"/>
-    <field name="sprintBurndownHoursChart" class="java.util.List"/>
+    <field name="sprintBurndownRemainingChart" class="java.util.List"/>
     <field name="sprintBurnupTasksChart" class="java.util.List"/>
     <field name="sprintBurnupStoriesChart" class="java.util.List"/>
     <field name="productParkingLotChart" class="java.util.List"/>
@@ -129,9 +129,9 @@
                     <subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
                 </subreportParameter>
                 <dataSourceExpression>
-                    <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sprintBurndownHoursChart})]]></dataSourceExpression>
+                    <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{sprintBurndownRemainingChart})]]></dataSourceExpression>
                 <subreportExpression class="java.lang.String">
-                    <![CDATA[$P{SUBREPORT_DIR} + "sprintBurndownHoursChart.jasper"]]></subreportExpression>
+                    <![CDATA[$P{SUBREPORT_DIR} + "sprintBurndownRemainingChart.jasper"]]></subreportExpression>
             </subreport>
         </band>
         <band height="103">

@@ -25,24 +25,24 @@
               <button class="save-chart ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">${message(code:'is.button.save.as.image')}</button>
         </div>
     </g:if>
-    <div id="sprintBurndownHours" title="${message(code:"is.chart.sprintBurndownHoursChart.title")}" class="chart-container">
+    <div id="sprintBurndownRemaining" title="${message(code:"is.chart.sprintBurndownRemainingChart.title")}" class="chart-container">
     </div>
     <jq:jquery>
         $.jqplot.config.enablePlugins = true;
-        var line1 = ${remainingHours};
+        var line1 = ${remainingTime};
 
-       <g:if test="${idealHours}">
-          var line2 = ${idealHours};
+       <g:if test="${idealTime}">
+          var line2 = ${idealTime};
           var lines = [line1,line2];
-          var labels = [ {label:'${message(code: "is.chart.sprintBurndownHoursChart.serie.task.name")}',color: '#003399'},
-                         {label:'${message(code: "is.chart.sprintBurndownHoursChart.serie.task.ideal")}',color: '#003344'}];
+          var labels = [ {label:'${message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name")}',color: '#003399'},
+                         {label:'${message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal")}',color: '#003344'}];
        </g:if>
        <g:else>
            var lines = [line1];
-           var labels = [ {label:'${message(code: "is.chart.sprintBurndownHoursChart.serie.task.name")}',color: '#003399'}];
+           var labels = [ {label:'${message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name")}',color: '#003399'}];
        </g:else>
 
-    plot1 = $.jqplot('sprintBurndownHours', lines, {
+    plot1 = $.jqplot('sprintBurndownRemaining', lines, {
         legend:{
           show:true,
           renderer: $.jqplot.EnhancedLegendRenderer,
@@ -55,7 +55,7 @@
           fontFamily:'Arial'
         },
         title:{
-        text:'${message(code: "is.chart.sprintBurndownHoursChart.title")}',
+        text:'${message(code: "is.chart.sprintBurndownRemainingChart.title")}',
           fontFamily:'Arial'
         },
         grid: {
@@ -71,7 +71,7 @@
         axes:{
             xaxis:{
               min:0,
-              label:'${message(code: 'is.chart.sprintBurndownHoursChart.xaxis.label')}',
+              label:'${message(code: 'is.chart.sprintBurndownRemainingChart.xaxis.label')}',
               ticks:${labels},
               renderer: $.jqplot.CategoryAxisRenderer,
               rendererOptions:{tickRenderer:$.jqplot.CanvasAxisTickRenderer},
@@ -83,7 +83,7 @@
             },
             yaxis:{
               min:0,
-              label:'${message(code: 'is.chart.sprintBurndownHoursChart.yaxis.label')}',
+              label:'${message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')}',
               tickOptions:{formatString:'%.1f'}
             }
         },
@@ -92,11 +92,11 @@
           zoom: true
         }
     });
-     $('#sprintBurndownHours').bind('resize.jqplot', function(event, ui) {
+     $('#sprintBurndownRemaining').bind('resize.jqplot', function(event, ui) {
         plot1.replot();
-        $('#sprintBurndownHours').find('.jqplot-table-legend').css('bottom','-12px');
+        $('#sprintBurndownRemaining').find('.jqplot-table-legend').css('bottom','-12px');
     });
-    $('#sprintBurndownHours').find('.jqplot-table-legend').css('bottom','-12px');
+    $('#sprintBurndownRemaining').find('.jqplot-table-legend').css('bottom','-12px');
     </jq:jquery>
 </div>
 <g:if test="${withButtonBar && !request.readOnly}">

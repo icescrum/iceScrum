@@ -30,8 +30,8 @@
             <is:panel id="panel-chart">
                 <is:panelTitle>
                     <g:if test="${request.inProduct}">
-                        <is:link class="right" id="chart-sprintBurndownHoursChart" disabled="true"
-                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurndownHoursChart',true);">${message(code: 'is.ui.project.chart.option.hours')}</is:link>
+                        <is:link class="right" id="chart-sprintBurndownRemainingChart" disabled="true"
+                                 onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurndownRemainingChart',true);">${message(code: 'is.ui.project.chart.option.remaining')}</is:link>
                         <span class="right">|</span>
                         <is:link class="right" id="chart-sprintBurnupTasksChart" disabled="true"
                                  onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurnupTasksChart',true);">${message(code: 'is.ui.project.chart.option.tasks')}</is:link>

@@ -931,8 +931,7 @@
                         name:'Sprint',
                         noDropMessage:'',
                         noDropMessageLimitedTasks:'',
-                        totalRemainingHours:'',
-                        hours:'',
+                        totalRemaining:'',
                         points:'',
                         filtered:''
                     },
@@ -1134,7 +1133,7 @@
                                            $.icescrum.sprint.states[sprint.state] + ' - ' +
                                            '[' + $.icescrum.dateLocaleFormat(sprint.startDate) + ' -> ' + $.icescrum.dateLocaleFormat(sprint.endDate) + '] - ' +
                                            '<span class="sprint-points"></span> ' + $.icescrum.sprint.i18n.points + ' - ' +
-                                           $.icescrum.sprint.i18n.totalRemainingHours + ' <span class="remaining"></span> ' + $.icescrum.sprint.i18n.hours + '<span class="remaining-filtered"></span>';
+                                           $.icescrum.sprint.i18n.totalRemaining + ' <span class="remaining"></span> <span class="remaining-filtered"></span>';
                             $('#window-title-bar-sprintPlan').find('.content .details').html(newTitle);
                             // Fill the empty fields
                             $.icescrum.sprint.updateRemaining();

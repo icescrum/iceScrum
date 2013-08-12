@@ -287,6 +287,6 @@
 </is:tableView>
 <g:if test="${!request.readOnly}">
     <jq:jquery>
-        jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate,velocity:sprint.velocity,capacity:sprint.capacity] as JSON});
+        jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemaining:sprint.totalRemaining,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate,velocity:sprint.velocity,capacity:sprint.capacity] as JSON});
     </jq:jquery>
 </g:if>

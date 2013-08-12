@@ -165,7 +165,7 @@
 <jq:jquery>
     <g:if test="${!request.readOnly}">
         jQuery('table#kanban-sprint-${sprint.id} div.postit-story').die('dblclick').live('dblclick',function(e){ jQuery.icescrum.displayQuicklook(jQuery(e.currentTarget)); });
-        jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemainingHours:sprint.totalRemainingHours,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate,velocity:sprint.velocity,capacity:sprint.capacity] as JSON});
+        jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemaining:sprint.totalRemaining,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate,velocity:sprint.velocity,capacity:sprint.capacity] as JSON});
     </g:if>
     <g:if test="${assignOnBeginTask && !request.scrumMaster && sprint.state != Sprint.STATE_DONE  && !request.readOnly}">
         jQuery.icescrum.sprint.sortableTasks();
