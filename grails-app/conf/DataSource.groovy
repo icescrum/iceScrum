@@ -49,7 +49,7 @@ environments {
             url = "jdbc:oracle:thin:@192.168.0.10:1521:XE"*/
             //dbCreate = "update"
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            //url = "jdbc:hsqldb:file:devDba"
+            url = "jdbc:hsqldb:file:devDba"
             loggingSql = false
         }
     }
