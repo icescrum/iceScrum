@@ -47,7 +47,7 @@
 <body class="icescrum">
 
 <div id="application">
-    <div id="head" class="${product ? 'is_header-normal' : 'is_header-full'}">
+    <div id="head" class="${space ? 'is_header-normal' : 'is_header-full'}">
         <is:mainMenu/>
     </div>
 
@@ -72,7 +72,7 @@
     </is:desktop>
 </div>
 <is:spinner
-        on401="var data = jQuery.parseJSON(xhr.responseText); document.location='${createLink(controller:'login',action:'auth')}?ref=${product ? 'p/'+product.pkey+'/' : ''}'+(data.url?data.url:'');"
+        on401="var data = jQuery.parseJSON(xhr.responseText); document.location='${createLink(controller:'login',action:'auth')}?ref=${space ? space.config.path+'/'+space.config.key+'/' : ''}'+(data.url?data.url:'');"
         on400="var error = jQuery.parseJSON(xhr.responseText); jQuery.icescrum.renderNotice( error.notice.text, 'error', error.notice.title); "
         on403="jQuery.icescrum.renderNotice('${message(code:'is.error.denied')}', 'error');"
         on500="jQuery.icescrum.dialogError(xhr)"/>

@@ -31,7 +31,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
         defaults:{
             debug:false,
-            baseUrlProduct:null,
+            baseUrlSpace:null,
             baseUrl:null,
             versionUrl:null,
             grailsServer:null,
@@ -87,7 +87,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             var currentWindow = location.hash.replace(/^.*#/, '');
             var $menubar = $('li.menubar:first a');
-            if ($.icescrum.o.baseUrlProduct && !currentWindow && $menubar){
+            if ($.icescrum.o.baseUrlSpace && !currentWindow && $menubar){
                 var menubar = $menubar.attr('href').replace(/^.*#/, '');
                 document.location.hash = menubar;
                 $.icescrum.removeFromWidgetsList(menubar);
@@ -227,7 +227,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 }
 
                 jQuery.ajax({type:'POST', data:dataToSend,
-                            url: $.icescrum.o.baseUrlProduct + action,
+                            url: $.icescrum.o.baseUrlSpace + action,
                             success:function(data) {
                                 $.icescrum.o.deleting = false;
                                 if (data.dialog){
@@ -311,7 +311,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                         type:'GET',
                         global:false,
                         cache:true,
-                        url:$.icescrum.o.baseUrlProduct + url,
+                        url:$.icescrum.o.baseUrlSpace + url,
                         data:'withButtonBar=false',
                         beforeSend:function() {
                             $(container).addClass('loading').html('');

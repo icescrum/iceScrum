@@ -35,7 +35,7 @@
                     }else if(elem.hasClass('postit-story') || elem.hasClass('postit-row-story')){
                         type = 'story.id';
                     }
-                    $.get($.icescrum.o.baseUrlProduct + 'quickLook?'+type+'='+elem.data('elemid'), function(data){
+                    $.get($.icescrum.o.baseUrlSpace + 'quickLook?'+type+'='+elem.data('elemid'), function(data){
                         var $dialog = $('#dialog');
                         if ($dialog.length){
                             $dialog.dialog('close');

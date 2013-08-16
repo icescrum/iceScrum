@@ -97,7 +97,7 @@
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.sprint.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${next ? controllerName+(params.subid?'/'+params.id:'')+'/edit/'+next : controllerName+'/'+release.id}"
-                       href="${createLink([mapping:'pUrl', controller:'sprint', action:'update', params:[product:params.product,id:sprint.id]])}">
+                       href="${createLink([mapping:'urlProduct', controller:'sprint', action:'update', params:[product:params.product,id:sprint.id]])}">
                         <span class="start"></span>
                         <span class="content">${message(code:'is.button.update')} ${message(code:'is.button.andContinue')}</span>
                         <span class="end"></span>
@@ -114,7 +114,7 @@
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.sprint.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${controllerName+'/'+release.id}"
-                       href="${createLink([mapping:'pUrl', controller:'sprint', action:'update', params:[product:params.product,id:sprint.id]])}">
+                       href="${createLink([mapping:'urlProduct', controller:'sprint', action:'update', params:[product:params.product,id:sprint.id]])}">
                         <span class="start"></span>
                         <span class="content">${message(code:'is.button.update')}</span>
                         <span class="end"></span>

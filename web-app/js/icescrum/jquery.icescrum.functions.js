@@ -1383,7 +1383,7 @@
                             }
                         }
                         $('.comment-body', comment).load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.body,withoutHeader:true});
-                        $('.comment-avatar', comment).load(jQuery.icescrum.o.baseUrlProduct + 'user/displayAvatar', {id:this.poster.id, email:this.poster.email});
+                        $('.comment-avatar', comment).load(jQuery.icescrum.o.baseUrlSpace + 'user/displayAvatar', {id:this.poster.id, email:this.poster.email});
                     }
 
                 },

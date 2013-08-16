@@ -47,14 +47,15 @@ class UtilsTagLib {
     def grailsApplication
     def springcacheService
     def loadJsVar = { attrs, body ->
-        def current = params.product ? pageScope.product : null
-        def p = current ? [product: current.id] : []
+
+        def current = pageScope.variables?.space ? pageScope.space.object : null
+        def p = current ? pageScope.space.params : [:]
         def locale = attrs.locale ? attrs.locale : RCU.getLocale(request).toString()
         def jsCode = """var icescrum = {
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
                           baseUrl: "${createLink(controller: 'scrumOS')}",
                           versionUrl: "${createLink(controller: 'scrumOS', action:'version')}",
-                          baseUrlProduct: ${p ? '\'' + createLink(controller: 'scrumOS', params: p) + '/\'' : null},
+                          baseUrlSpace: ${p ? '\'' + createLink(controller: 'scrumOS', params: p, mapping:'baseUrl'+pageScope.variables.space.name.capitalize()) + '/\'' : null},
                           urlOpenWidget:"${createLink(controller: 'scrumOS', action: 'openWidget', params: p)}",
                           urlOpenWindow:"${createLink(controller: 'scrumOS', action: 'openWindow', params: p)}",
                           deleteConfirmMessage:"${message(code: 'is.confirm.delete').encodeAsJavaScript()}",
@@ -66,7 +67,7 @@ class UtilsTagLib {
                           push:{
                             enable:${grailsApplication.config.icescrum.push.enable?:false},
                             websocket:${grailsApplication.config.icescrum.push.websocket?:false},
-                            url:"${createLink(controller: 'scrumOS', absolute: true)}stream/app${params.product ? '?product=' + current.id : '' }"
+                            url:"${createLink(controller: 'scrumOS', absolute: true)}stream/app${p ? '?'+pageScope.space.name+'=' + current.id : '' }"
                           },
                           dialogErrorContent:"<div id=\'dialog\'><form method=\'post\' class=\'box-form box-form-250 box-form-250-legend\'><div  title=\'${message(code: 'is.dialog.sendError.title')}\' class=\' panel ui-corner-all\'><h3 class=\'panel-title\'>${message(code: 'is.dialog.sendError.title')}</h3><p class=\'field-information\'>${message(code: 'is.dialog.sendError.description')}</p><p class=\'field-area clearfix field-noseparator\' for=\'stackError\' label=\'${message(code: 'is.dialog.sendError.stackError')}\'><label for=\'stackError\'>${message(code: 'is.dialog.sendError.stackError')}</label><span class=\'area area-large\' id=\'stackError-field\'><span class=\'start\'></span><span class=\'content\'><textarea id=\'stackError\' name=\'stackError\' ></textarea></span><span class=\'end\'></span></span></p><p class=\'field-area clearfix field-noseparator\' for=\'comments\' label=\'${message(code: 'is.dialog.sendError.comments')}\'><label for=\'comments\'>${message(code: 'is.dialog.sendError.comments')}</label><span class=\'area area-large\' id=\'comments-field\'><span class=\'start\'></span><span class=\'content\'><textarea id=\'comments\' name=\'comments\' ></textarea></span><span class=\'end\'></span></span></p></div></form></div>"
                 };"""

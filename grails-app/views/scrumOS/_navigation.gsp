@@ -99,7 +99,7 @@
                           </a>
                       </li>
                   </g:if>
-                  <entry:point id="menu-project" model="[curProduct:product]"/>
+                  <entry:point id="menu-project" model="[curProduct:product,user:user]"/>
                   <li class="menu-label" id="my-projects" style='display:${productFilteredsList ?'block':'none'}'>
                       ${message(code: 'is.projectmenu.submenu.project.my.title')}
                   </li>
@@ -131,7 +131,7 @@
         </div>
     </li>
     <entry:point id="menu-left" model="[product:product]"/>
-    <is:cache cache="userCache" key="user-${user?.username?:'anonymous'}-${user?.lastUpdated}-${product?.lastUpdated}" disabled="${product ? false : true}" role="false" locale="false">
+    <is:cache cache="userCache" key="user-${user?.username?:'anonymous'}-${user?.lastUpdated}-${product?.lastUpdated}" disabled="${product ? true : true}" role="false" locale="false">
         <is:menuBar/>
     </is:cache>
 </ul>

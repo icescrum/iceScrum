@@ -259,3 +259,4 @@
 <is:onStream
         on="#kanban-sprint-${sprint.id}"
         events="[[object:'feature',events:['update']]]"/>
+<entry:point id="${controllerName}-${actionName}" model="[sprint:sprint]"/>

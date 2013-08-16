@@ -26,8 +26,6 @@ import org.icescrum.core.domain.Product
 
 class ProductKeyCodec {
 
-  static final CACHE_KEYPROD = 'productKeyToId'
-
   static final numeric = /[0-9]*/
 
   static decode = { theTarget ->

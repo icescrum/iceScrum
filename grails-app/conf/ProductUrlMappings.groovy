@@ -38,7 +38,7 @@ class ProductUrlMappings {
         }
 
 
-        "/p/$product/" {
+        name baseUrlProduct: "/p/$product/" {
             controller = 'scrumOS'
             action = 'index'
             constraints {
@@ -121,7 +121,7 @@ class ProductUrlMappings {
             }
         }
 
-        name pUrl: "/p/$product/$controller/$action?/$id?/$type?" {
+        name urlProduct: "/p/$product/$controller/$action?/$id?/$type?" {
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }

@@ -31,7 +31,7 @@ uiDefinitions = {
             title 'is.ui.actor'
             defaultVisibility false
             defaultPosition 3
-            productDynamicBar true
+            spaceDynamicBar true
         }
         window {
             title 'is.ui.actor'
@@ -64,7 +64,7 @@ uiDefinitions = {
             title 'is.ui.backlog'
             defaultVisibility true
             defaultPosition 3
-            productDynamicBar true
+            spaceDynamicBar true
         }
 
         window {
@@ -113,7 +113,7 @@ uiDefinitions = {
             title 'is.ui.feature'
             defaultVisibility false
             defaultPosition 2
-            productDynamicBar true
+            spaceDynamicBar true
         }
 
         window {
@@ -148,7 +148,7 @@ uiDefinitions = {
             title 'is.ui.project'
             defaultVisibility true
             defaultPosition 1
-            productDynamicBar true
+            spaceDynamicBar true
         }
 
         window {
@@ -168,7 +168,7 @@ uiDefinitions = {
             title 'is.ui.releasePlan'
             defaultVisibility true
             defaultPosition 4
-            productDynamicBar true
+            spaceDynamicBar true
         }
 
         window {
@@ -214,7 +214,7 @@ uiDefinitions = {
             title 'is.ui.sandbox'
             defaultVisibility true
             defaultPosition 2
-            productDynamicBar true
+            spaceDynamicBar true
         }
 
         window {
@@ -250,7 +250,7 @@ uiDefinitions = {
             title 'is.ui.sprintPlan'
             defaultVisibility true
             defaultPosition 5
-            productDynamicBar true
+            spaceDynamicBar true
         }
 
         window {
@@ -297,7 +297,7 @@ uiDefinitions = {
             title 'is.ui.timeline'
             defaultVisibility false
             defaultPosition 1
-            productDynamicBar true
+            spaceDynamicBar true
         }
 
         window {
@@ -325,7 +325,7 @@ uiDefinitions = {
             title 'is.ui.finder'
             defaultVisibility false
             defaultPosition 4
-            productDynamicBar true
+            spaceDynamicBar true
         }
         window {
             title 'is.ui.finder'

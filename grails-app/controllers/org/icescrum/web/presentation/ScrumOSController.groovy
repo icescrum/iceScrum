@@ -25,6 +25,7 @@
 
 package org.icescrum.web.presentation
 
+import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
@@ -53,27 +54,26 @@ class ScrumOSController {
 
     def index = {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
-        def product = params.product ? Product.get(params.long('product')) : null
 
-        if (product?.preferences?.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product,springSecurityService.authentication,false)){
-            forward(action:springSecurityService.isLoggedIn() ? 'error403' : 'error401',controller:'errors')
-            return
+        def space = ApplicationSupport.getCurrentSpace(params)
+        if (space){
+            space.indexScrumOS.delegate = delegate
+            space.indexScrumOS(space, user, securityService, springSecurityService)
         }
 
-        if (product && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProductOpened != product.pkey){
-            user.preferences.lastProductOpened = product.pkey
-            user.save()
-        }
         //For PO / SM : WRITE - TM / SH : READ
         def products = user ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : []
         def pCount = products?.size()
 
-        [user: user,
-         lang: RCU.getLocale(request).toString().substring(0, 2),
-         product: product,
-         publicProductsExists: ProductPreferences.countByHidden(false,[cache:true]) ? true : false,
-         productFilteredsListCount: pCount,
-         productFilteredsList: pCount > 9 ? products?.subList(0,9) : products]
+        def attrs = [user: user,
+                     lang: RCU.getLocale(request).toString().substring(0, 2),
+                     space:space,
+                     publicProductsExists: ProductPreferences.countByHidden(false,[cache:true]) ? true : false,
+                     productFilteredsListCount: pCount,
+                     productFilteredsList: pCount > 9 ? products?.subList(0,9) : products]
+        if (space)
+            attrs."$space.name" = space.object
+        attrs
     }
 
 
@@ -93,8 +93,14 @@ class ScrumOSController {
         def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
         if (uiDefinition) {
             def paramsWidget = null
-            if (params.product) {
-                paramsWidget = [product: params.product]
+            if (params."$uiDefinition.space") {
+                paramsWidget = ApplicationSupport.getCurrentSpace(params,uiDefinition.space)
+                if (!paramsWidget){
+                    render(status:404)
+                    return
+                }else{
+                    paramsWidget = paramsWidget.params
+                }
             }
 
             def url = createLink(controller: params.window, action: uiDefinition.widget?.init, params: paramsWidget).toString() - request.contextPath
@@ -130,23 +136,22 @@ class ScrumOSController {
         def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
         if (uiDefinition) {
 
-            def projectName = null, projectKey = null
-            def param = [:]
-            def p = null
-            if (params.product) {
-                p  = Product.get(params.long('product'))
-                projectName = p?.name
-                projectKey = p?.pkey
-                param = [product: params.product]
+            def space = null
+            if (uiDefinition.space) {
+                space = ApplicationSupport.getCurrentSpace(params,uiDefinition.space)
+                if (!space){
+                    render(status:404)
+                    return
+                }
             }
 
             if (!request.xhr){
-                def fragment = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: [product: projectKey]).toString() - createLink(params: [product: projectKey]) - '/'
-                redirect(url:createLink(absolute: true, params: [product: projectKey], fragment: fragment))
+                def fragment = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: space?.params?:null).toString() - createLink(params:space?.params?:null) - '/'
+                redirect(url:createLink(absolute: true, params:space?.params?:null, fragment: fragment))
                 return
             }
 
-            def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: param).toString() - request.contextPath
+            def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params:space?.params?:null).toString() - request.contextPath
 
             if (!menuBarSupport.permissionDynamicBar(url)){
                 if (springSecurityService.isLoggedIn()){
@@ -161,14 +166,14 @@ class ScrumOSController {
             if (uiDefinition.window.before){
                 uiDefinition.window.before.delegate = delegate
                 uiDefinition.window.before.resolveStrategy = Closure.DELEGATE_FIRST
-                _continue = uiDefinition.window.before(p, params.actionWindow ?: uiDefinition.window?.init)
+                _continue = uiDefinition.window.before(space?.object, params.actionWindow ?: uiDefinition.window?.init)
             }
             if (!_continue){
                 render(status:404)
             } else {
                 render is.window([
                         window: params.window,
-                        projectName: projectName,
+                        spaceName: space?.object?.name,
                         title: message(code: uiDefinition.window?.title),
                         help: message(code: uiDefinition.window?.help),
                         shortcuts: uiDefinition.shortcuts,
