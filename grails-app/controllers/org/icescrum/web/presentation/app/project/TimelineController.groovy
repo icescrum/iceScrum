@@ -85,7 +85,7 @@ class TimelineController {
         def list = []
 
         def date = new Date(currentProduct.startDate.getTime() - 1000)
-        def startProject = [start: date, end: date, durationEvent: false, classname: "timeline-startproject"]
+        def startProject = [start: date, end: date, durationEvent: false, classname: "timeline-startproject", trackNum:0]
 
         list.add(startProject)
 
@@ -126,6 +126,7 @@ class TimelineController {
                     textColor: textColor,
                     classname: "timeline-release",
                     eventID: it.id,
+                    trackNum:1,
                     tooltipContent: templateTooltip,
                     tooltipTitle: "${it.name.encodeAsHTML()} (${message(code: BundleUtils.releaseStates[it.state])})"]
 
@@ -153,12 +154,13 @@ class TimelineController {
                         color: colorS,
                         textColor: textColorS,
                         classname: "timeline-sprint",
+                        trackNum:2,
                         eventID: it2.id,
                         tooltipContent: templateTooltip,
                         tooltipTitle: "${message(code: 'is.sprint')} ${index + 1} (${message(code: BundleUtils.sprintStates[it2.state])})"]
                 list.add(tlS)
                 if (it2.deliveredVersion){
-                    list.add([start: it2.effectiveEndDate, end: it2.effectiveEndDate, durationEvent: false, title:it2.deliveredVersion])
+                    list.add([start: it2.effectiveEndDate, end: it2.effectiveEndDate, durationEvent: false, title:it2.deliveredVersion,trackNum:2])
                 }
             }
         }
