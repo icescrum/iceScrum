@@ -350,7 +350,7 @@ class UtilsTagLib {
         def trueError = grailsApplication.config.icescrum.errors?.find{ it.error }
         if (grailsApplication.config.icescrum.errors){
             out << """<a data-ajax="true" href="${createLink(controller:'scrumOS',action:'about')}">
-                        <li class='navigation-line warning ${trueError ? 'warning-icon' : 'upgrade-icon'}" title="${g.message(code:'is.warning')}"></li>
+                        <li class='navigation-line warning ${trueError ? 'warning-icon' : 'upgrade-icon'}' title="${g.message(code:'is.warning')}"></li>
                       </a>"""
         }
     }
