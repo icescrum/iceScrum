@@ -39,7 +39,7 @@
 
           <a class="button-n clearfix dropmenu-button" onclick="return false;">
             <span class="start"></span>
-            <span class="content">${product ? product.name.encodeAsHTML() : message(code:'is.projectmenu.title')}</span>
+            <span class="content">${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}</span>
             <span class="end"><span class="arrow"></span></span>
           </a>
 
