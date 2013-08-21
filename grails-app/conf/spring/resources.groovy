@@ -31,6 +31,9 @@ import org.icescrum.web.upload.AjaxMultipartResolver
 
 beans = {
 
+    xmlns task:"http://www.springframework.org/schema/task"
+    task.'annotation-driven'()
+
     authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
         def conf = SpringSecurityUtils.securityConfig
         authenticationManager = ref('authenticationManager')
