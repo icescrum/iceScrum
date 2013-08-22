@@ -73,6 +73,15 @@
     float: left;
 }
 
+.colset-2-80 .col1 .panel-box {
+    width:100%;
+}
+
+.colset-2-80 .col1 .panel-box table {
+    width:100%;
+    table-layout: fixed;
+}
+
 .colset-2-80 .col2 {
     width: 35%;
     float: right;
