@@ -77,7 +77,7 @@
     width:100%;
 }
 
-.colset-2-80 .col1 .panel-box table {
+.colset-2-80 .col1 .panel-box table, .colset-2-80 .col2 .panel-box table {
     width:100%;
     table-layout: fixed;
 }
