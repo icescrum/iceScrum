@@ -30,4 +30,10 @@
             child="attachment"
             deep="${deep}"
             indentLevel="${indentLevel + 1}"/>
+    <is:listAsXML
+            name="comments"
+            template="/addons/commentXml"
+            child="comment"
+            deep="${deep}"
+            indentLevel="${indentLevel + 1}"/>
 </is:objectAsXML>
