@@ -160,7 +160,7 @@ class TimelineController {
                         tooltipTitle: "${message(code: 'is.sprint')} ${index + 1} (${message(code: BundleUtils.sprintStates[it2.state])})"]
                 list.add(tlS)
                 if (it2.deliveredVersion){
-                    list.add([start: it2.effectiveEndDate, end: it2.effectiveEndDate, durationEvent: false, title:it2.deliveredVersion,trackNum:2])
+                    list.add([start: it2.effectiveEndDate, end: it2.effectiveEndDate, durationEvent: false, title:it2.deliveredVersion,trackNum:3])
                 }
             }
         }
