@@ -226,6 +226,54 @@ li#li-roles {
     width: 258px;
 }
 
+#local > .ui-resizable-handle, #right > .ui-resizable-handle {
+    background: #F5F5F5 url(../images/application/grip.png) no-repeat center;
+}
+
+#local > .ui-resizable-handle {
+    cursor: w-resize;
+}
+
+#local.ui-resizable-hidden > .ui-resizable-handle {
+    cursor: e-resize;
+}
+
+#right {
+    background:none repeat scroll 0 0 #FFFFFF;
+    position:absolute;
+    right:0;
+    top:54px;
+    bottom:0;
+    height:auto;
+    width:400px;
+    border: 0 solid #C4C4C4;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+}
+
+
+#right > .ui-resizable-handle {
+    cursor: e-resize;
+    margin-left: -1px;
+    border: 0 solid #C4C4C4;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+}
+
+#right.ui-resizable-hidden > .ui-resizable-handle {
+    cursor: w-resize;
+    border-right-width: 0;
+}
+
+#local.ui-resizable-hidden div, #right.ui-resizable-hidden div {
+    display: none;
+}
+
+#local.ui-resizable-hidden .ui-resizable-handle, #right.ui-resizable-hidden .ui-resizable-handle {
+    display: block;
+}
+
 #window-content-members td {
     vertical-align: middle;
 }

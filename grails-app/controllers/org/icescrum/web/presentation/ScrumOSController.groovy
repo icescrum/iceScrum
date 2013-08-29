@@ -179,6 +179,7 @@ class ScrumOSController {
                         shortcuts: uiDefinition.shortcuts,
                         hasToolbar: uiDefinition.window?.toolbar,
                         hasTitleBarContent: uiDefinition.window?.titleBarContent,
+                        hasRight: uiDefinition.window?.right,
                         maximizeable: uiDefinition.window?.maximizeable,
                         closeable: uiDefinition.window?.closeable,
                         widgetable: uiDefinition.widget ? true : false,
