@@ -43,7 +43,7 @@
         <is:tableGroup
                 elementId="urgent"
                 rendered="${displayUrgentTasks}"
-                editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
+                editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit',success:'jQuery.icescrum.sprint.updateRemaining();']">
             <is:tableGroupHeader>
                 <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
                     <div class="dropmenu-action">
@@ -105,6 +105,7 @@
                         editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                         bundle="taskStates" value="${task.state}"/></is:tableColumn>
                 <is:tableColumn
+                        class="estimation"
                         editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
                 <is:tableColumn
                         editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
@@ -122,7 +123,7 @@
             <is:tableGroup
                     elementId="recurrent"
                     rendered="${displayRecurrentTasks}"
-                    editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
+                    editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit',success:'jQuery.icescrum.sprint.updateRemaining();']">
                 <is:tableGroupHeader>
                     <g:if test="${request.inProduct && sprint.state <= Sprint.STATE_INPROGRESS}">
                         <div class="dropmenu-action">
@@ -184,6 +185,7 @@
                             editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                             bundle="taskStates" value="${task.state}"/></is:tableColumn>
                     <is:tableColumn
+                            class="estimation"
                             editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
                     <is:tableColumn
                             editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
@@ -200,7 +202,7 @@
         <g:each in="${stories.sort{it.rank}}" var="story">
             <is:tableGroup
                     elementId="${story.id}"
-                    editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit']">
+                    editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit',success:'jQuery.icescrum.sprint.updateRemaining();']">
                 <is:tableGroupHeader>
                     <g:if test="${request.inProduct}">
                         <div class="dropmenu-action">
@@ -269,6 +271,7 @@
                             editable="[type:'selectui',id:'state',disabled:!taskSortable,name:'state',values:stateSelect]"><is:bundle
                             bundle="taskStates" value="${task.state}"/></is:tableColumn>
                     <is:tableColumn
+                            class="estimation"
                             editable="[type:'text',disabled:!taskEditable,name:'estimation']">${task.estimation >= 0 ? task.estimation : '?'}</is:tableColumn>
                     <is:tableColumn
                             editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
