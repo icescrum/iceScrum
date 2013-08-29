@@ -293,3 +293,4 @@
         jQuery.icescrum.sprint.updateWindowTitle(${[id:sprint.id,orderNumber:sprint.orderNumber,totalRemaining:sprint.totalRemaining,state:sprint.state,startDate:sprint.startDate,endDate:sprint.endDate,velocity:sprint.velocity,capacity:sprint.capacity] as JSON});
     </jq:jquery>
 </g:if>
+<entry:point id="${controllerName}-${actionName}" model="[sprint:sprint]"/>
