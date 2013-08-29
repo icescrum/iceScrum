@@ -1144,7 +1144,8 @@
                     updateRemaining:function(){
                         var remaining = 0;
                         var offset = 10000; // hack for decimal values
-                        $('table.table.kanban div.postit-task span.mini-value').each(function(){
+                        var selector = $.icescrum.getDefaultView() == 'postitsView' ? 'table.table.kanban div.postit-task span.mini-value' : 'table#tasks-table td.estimation div.table-cell';
+                        $('#window-id-sprintPlan').find(selector).each(function(){
                             var val = $(this).text();
                             if (val != '?'){
                                 remaining += parseFloat(val) * offset; // hack for decimal values
