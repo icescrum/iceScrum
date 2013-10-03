@@ -526,13 +526,17 @@ class SprintPlanController {
             } else if (params.get) {
                 sprint.stories?.each {
                     def testsByState = it.countTestsByState()
+                    def notes = ''
+                    if (it.notes != null && it.notes != 'null')
+		    	notes = wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML()
+
                     def story = [
                             name: it.name,
                             id: it.uid,
                             effort: it.effort,
                             state: message(code: BundleUtils.storyStates[it.state]),
                             description: is.storyTemplate([story: it, displayBR: true]),
-                            notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
+                            notes:notes,
                             type: message(code: BundleUtils.storyTypes[it.type]),
                             suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
                             acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,

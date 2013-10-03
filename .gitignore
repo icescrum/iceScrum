@@ -1,8 +1,17 @@
 *.iml
 *.project
 target/
-
-ompiled source #
+logs/
+#####
+web-app/META-INF/atmosphere.xml
+web-app/WEB-INF/atmosphere-decorators.xml
+# Development Related *
+#######################
+icescrum_config.groovy
+*.groovy~
+*.jrxml~
+devDba.*
+# Compiled source #
 ###################
 *.com
 *.class
@@ -10,7 +19,6 @@ ompiled source #
 *.exe
 *.o
 *.so
-
 
 # OS generated files #
 ######################
