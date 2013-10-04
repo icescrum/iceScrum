@@ -39,7 +39,7 @@
         </g:if>
         <g:if test="${feature.name?.length() > 17 || feature.description?.length() > 50}">
             <div class="tooltip">
-                <span class="tooltip-title">${feature.name}</span>
+                <span class="tooltip-title">${feature.name?.encodeAsHTML() ?: ''}</span>
                 ${feature.description?.encodeAsHTML()?:''}
             </div>
         </g:if>

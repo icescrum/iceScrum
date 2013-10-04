@@ -53,7 +53,7 @@
            comment="${task.totalComments >= 0 ? task.totalComments : ''}">
             <g:if test="${task.name?.length() > 17 || task.description?.length() > 0}">
                 <div class="tooltip">
-                    <span class="tooltip-title">${task.name}</span>
+                    <span class="tooltip-title">${task.name?.encodeAsHTML() ?: ''}</span>
                     ${task.description?.encodeAsHTML() ?: ''}
                 </div>
             </g:if>

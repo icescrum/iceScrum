@@ -48,7 +48,7 @@
             </g:if>
             <g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
                 <div class="tooltip">
-                    <span class="tooltip-title">${story.name}</span>
+                    <span class="tooltip-title">${story.name?.encodeAsHTML() ?: ''}</span>
                     ${is.storyTemplate(story:story)?:''}
                 </div>
             </g:if>

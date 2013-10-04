@@ -71,7 +71,7 @@
                     </div>
                     <div class="tooltip">
                         <span class="tooltip-title">${message(code:'is.sprint')} ${sprint.orderNumber} ${sprint.deliveredVersion ? '('+sprint.deliveredVersion+')' : ''}</span>
-                        ${sprint.goal}
+                        ${sprint.goal?.encodeAsHTML() ?: ''}
                     </div>
                 </is:eventHeader>
 
