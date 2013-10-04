@@ -1,0 +1,1 @@
+<entry:point id="${controllerName}-${actionName}"/>

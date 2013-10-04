@@ -268,6 +268,7 @@ uiDefinitions = {
                 }
                 isWindowContext || params.id
             }
+            right true
         }
         shortcuts = [
             [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
