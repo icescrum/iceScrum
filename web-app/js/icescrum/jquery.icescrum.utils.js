@@ -74,6 +74,18 @@
                     return $('<div/>').html(value).text();
                 },
 
+                applyStringFunctionToJSON:function(object, f) {
+                    return JSON.parse(f(JSON.stringify(object)));
+                },
+
+                htmlEncodeJSON:function(object) {
+                    return $.icescrum.applyStringFunctionToJSON(object, $.icescrum.htmlEncode);
+                },
+
+                htmlDecodeJSON:function(object) {
+                    return $.icescrum.applyStringFunctionToJSON(object, $.icescrum.htmlDecode);
+                },
+
                 isValidEmail:function(email) {
                     var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
                     return filter.test(email);

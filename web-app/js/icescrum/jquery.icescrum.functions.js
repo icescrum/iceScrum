@@ -1535,6 +1535,9 @@
                 },
 
                 addOrUpdate:function(object, _tmpl, after, append) {
+
+                    object = $.icescrum.htmlEncodeJSON(object);
+
                     if ($.isFunction(_tmpl.constraintTmpl)) {
                         if (_tmpl.constraintTmpl.apply(object) == false) {
                             return false;

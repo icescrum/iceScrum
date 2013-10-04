@@ -36,7 +36,7 @@
     <![CDATA[
     ?**
     var name =  this.name ? this.name : '';
-    var truncatedName = name.length > 17 ? name.substring(0,14)+'...' : name;
+    var truncatedName = name.length > 17 ? name.substring(0,17)+'...' : name;
     var description =  this.description ? this.description : '';
     var typeTitle = this.blocked ? '${message(code: 'is.task.blocked')}' : '';
     var typeNumber = this.blocked ? 1 : 0;
@@ -74,3 +74,5 @@
                 ?**}**?
     </is:postit>
 </template>
+
+<entry:point id="task-template" model="[task:task,user:user]"/>
