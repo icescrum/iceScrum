@@ -108,6 +108,19 @@
                        stateText="${task.responsible?.firstName?.encodeAsHTML() ?: ''} ${task.responsible?.lastName?.encodeAsHTML() ?: ''}"
                        miniValue="${task.estimation ?: task.estimation == 0? '0' : '?'}">
             </is:postit>
+            <g:if test="${task.comments?.size() >= 1}">
+                <div>
+                    <strong>
+                        <is:scrumLink
+                                controller="task"
+                                id="${task.id}"
+                                params="['tab':'comments']"
+                                onclick="\$('#dialog').dialog('close');">
+                            ${message(code: 'is.postit.comment.count', args: [task.comments.size(), task.comments.size() > 1 ? 's' : ''])}
+                        </is:scrumLink>
+                    </strong>
+                </div>
+            </g:if>
             <g:if test="${task.totalAttachments}">
                 <div>
                     <strong>${message(code: 'is.postit.attachment', args: [task.totalAttachments, task.totalAttachments > 1 ? 's' : ''])} :</strong>
