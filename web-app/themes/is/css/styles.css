@@ -249,6 +249,7 @@ li#li-roles {
     border: 0 solid #C4C4C4;
     border-bottom-width: 1px;
     border-right-width: 1px;
+    overflow:auto;
 }
 
 
