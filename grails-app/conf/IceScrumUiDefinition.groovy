@@ -315,6 +315,7 @@ uiDefinitions = {
 
     'user' {
         window {
+            space = null
             title 'is.user'
             toolbar false
             init 'profile'
