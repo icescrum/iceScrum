@@ -176,6 +176,9 @@ class ProjectController {
         product.startDate = new Date()
         product.endDate = new Date() + 90
         product.preferences = new ProductPreferences()
+        if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.default)) {
+            product.preferences.hidden = true
+        }
         def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
 
         def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
