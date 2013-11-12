@@ -41,6 +41,16 @@ class ActorController {
     def actorService
     def springSecurityService
 
+    @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
+    def search = {
+        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
+        def result = []
+        actors?.each {
+            result << [label: it.name, value: it.name]
+        }
+        render(result as JSON)
+    }
+
     @Secured('productOwner() and !archivedProduct()')
     def save = {
         if (!params.actor) return
@@ -57,8 +67,8 @@ class ActorController {
             manageAttachments(actor, keptAttachments, addedAttachments)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: actor as JSON }
-                json { renderRESTJSON(text:actor, status:201) }
-                xml  { renderRESTXML(text:actor, status:201) }
+                json { render(status:201) }
+                xml  { render(status:201) }
             }
         } catch (RuntimeException e) {
             returnError(exception:e, object:actor)
