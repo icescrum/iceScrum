@@ -31,6 +31,16 @@
                                 .val('')
                                 .removeAttr('checked')
                                 .removeAttr('selected');
+                        $(':input[data-default]', form).each(function() {
+                            var $this = $(this);
+                            $this.val($this.data('default'))
+                        });
+                        $(':input.selectallonce').each(function() {
+                            var $this = $(this);
+                            $this.one('click', function() {
+                                $this.select();
+                            });
+                        });
                         $('.is-multifiles-checkbox').remove();
                         $('select:not(.preserve)', form).each(function() {
                             if (this.id.indexOf('rank') > -1) {

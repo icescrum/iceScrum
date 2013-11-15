@@ -42,7 +42,18 @@
                     container=".window-content"
                     width="195"
                     maxHeight="200"
-                    change="this.value == '${Story.TYPE_DEFECT}' ? jQuery('#storyaffectVersion-field-input').show() : jQuery('#storyaffectVersion-field-input').hide();"
+                    change="var storyDescription = jQuery('#storydescription');
+                            var defaultDescription = storyDescription.data('default');
+                            if (this.value == '${Story.TYPE_USER_STORY}') {
+                                if (storyDescription.val() == '') {
+                                    storyDescription.val(defaultDescription);
+                                }
+                            } else {
+                                if (storyDescription.val() == defaultDescription) {
+                                    storyDescription.val('');
+                                }
+                                this.value == '${Story.TYPE_DEFECT}' ? jQuery('#storyaffectVersion-field-input').show() : jQuery('#storyaffectVersion-field-input').hide();
+                            }"
                     styleSelect="dropdown"
                     from="${typesLabels}"
                     keys="${typesKeys}"
@@ -92,8 +103,8 @@
         </g:if>
 
         <is:fieldArea for="storydescription" label="${message(code:'is.backlogelement.description')}">
-            <is:area id="storydescription" large="true" name="story.description"
-                     value="${story?.description}"
+            <is:area data-default="${is.generateStoryTemplate()}" id="storydescription" class="${story ? '' : 'selectallonce'}" large="true" name="story.description"
+                     value="${story ? story.description : is.generateStoryTemplate()}"
                      rows="7"/>
         </is:fieldArea>
 

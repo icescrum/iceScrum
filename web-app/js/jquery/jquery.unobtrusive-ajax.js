@@ -189,10 +189,6 @@ function getFunction(code, argNames) {
         });
     });
 
-    $(document).one('click', 'textarea.selectallonce', function() {
-        $(this).select();
-    });
-
     $(document).on('click','button.save-chart',function(event){
         if ($.browser.msie && parseInt($.browser.version) < 9){
             alert('Browser not supported');
@@ -224,6 +220,11 @@ function getFunction(code, argNames) {
 }(jQuery));
 
 function attachOnDomUpdate(content){
+
+    $(document).one('click', 'textarea.selectallonce', function() {
+        $(this).select();
+    });
+
     $('a[data-shortcut]', content).each(function(){
         var elem = $(this);
         var onClean = elem.data('shortcutOn') ? elem.data('shortcutOn').replace(/\W/g, '')  : 'body';
