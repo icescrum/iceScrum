@@ -36,9 +36,9 @@
 
             <is:fieldArea for="acceptanceTest.description" label="is.backlogelement.description" noborder="true">
                 <span class="area-rich">
-                    <markitup:editor id="acceptance-test-description-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.description" height="150">
-                        ${acceptanceTest?.description}
-                    </markitup:editor>
+                    <markitup:editor id="acceptance-test-description-field${acceptanceTest?.id ?: ''}"
+                                     class="${acceptanceTest ? '' : 'selectallonce'}" notrim="true" name="acceptanceTest.description" height="150"
+                                     value="${acceptanceTest ? acceptanceTest.description : is.generateAcceptanceTestTemplate()}"/>
                 </span>
             </is:fieldArea>
         </is:fieldset>
@@ -64,7 +64,8 @@
                data-ajax-method="POST"
                data-ajax-trigger="add_acceptancetest"
                data-ajax-success="jQuery('#acceptance-test-form-container').hide();
-                                  jQuery('#acceptance-test-description-field').val('');
+                                  jQuery('#acceptance-test-description-field').val('${is.generateAcceptanceTestTemplate().replaceAll('\n', '\\\\n')}');
+                                  jQuery('textarea.selectallonce').one('click',function() { jQuery(this).select(); });
                                   jQuery('#acceptance-test-name-field').val('');
                                   jQuery('#acceptance-test-state-field').selectmenu('value', 0);"
                href="${createLink([id:parentStory.id, action: 'saveAcceptanceTest', params:[product:params.product]])}">

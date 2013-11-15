@@ -189,6 +189,10 @@ function getFunction(code, argNames) {
         });
     });
 
+    $(document).one('click', 'textarea.selectallonce', function() {
+        $(this).select();
+    });
+
     $(document).on('click','button.save-chart',function(event){
         if ($.browser.msie && parseInt($.browser.version) < 9){
             alert('Browser not supported');
