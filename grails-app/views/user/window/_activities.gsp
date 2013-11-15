@@ -74,8 +74,7 @@
                         <is:tableHeader name="${message(code:'is.story.lastUpdated')}"/>
 
                         <is:tableRows in="${stories}" var="story">
-                            <is:tableColumn><is:scrumLink product="${story.backlog.pkey}" controller="story"
-                                                          id="${story.id}">${story.backlog.pkey}-${story.id}</is:scrumLink></is:tableColumn>
+                            <is:tableColumn><g:link mapping="shortURL" absolute="true" params="[product:story.backlog.pkey, id:story.uid]">${story.backlog.pkey}-${story.uid}</g:link></is:tableColumn>
                             <is:tableColumn>${story.name.encodeAsHTML()}</is:tableColumn>
                             <is:tableColumn>${is.bundle(bundle: 'storyStates', value: story.state)}</is:tableColumn>
                             <is:tableColumn><g:formatDate date="${story.lastUpdated}"
@@ -102,7 +101,8 @@
                         <is:tableHeader name="${message(code:'is.task.creator')}"/>
 
                         <is:tableRows in="${tasks}" var="task">
-                            <is:tableColumn><is:scrumLink product="${task.backlog.parentRelease.parentProduct.pkey}"
+                            <is:tableColumn>
+                                <is:scrumLink product="${task.backlog.parentRelease.parentProduct.pkey}"
                                                           controller="sprintPlan"
                                                           id="${task.backlog.id}">${task.backlog.parentRelease.parentProduct.name.encodeAsHTML()} - ${task.backlog.orderNumber}</is:scrumLink></is:tableColumn>
                             <is:tableColumn><g:if test="${task.parentStory}"><is:scrumLink
