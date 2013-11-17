@@ -68,7 +68,7 @@
                                                                                 styleSelect="dropdown"
                                                                                 value="${params.story?.creator}"
                                                                                 name="story.creator" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                                optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${product.allUsers}"/>
+                                                                                optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${creators}"/>
                             </li>
                             <li>${g.message(code:'is.story.type')}<is:select   width="150" maxHeight="200"
                                                                                styleSelect="dropdown"
@@ -139,7 +139,7 @@
                                                                                styleSelect="dropdown"
                                                                                value="${params.story?.parentSprint}"
                                                                                name="task.creator" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${product.allUsers}"/>
+                                                                               optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${tasksCreators}"/>
                             </li>
                             <li>${g.message(code:'is.task.type')}<is:select   width="150" maxHeight="200"
                                                                                styleSelect="dropdown"
@@ -175,7 +175,7 @@
                                                                                styleSelect="dropdown"
                                                                                value="${params.task?.responsible}"
                                                                                name="task.responsible" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${product.allUsers}"/>
+                                                                               optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${tasksResponsibles}"/>
                             </li>
                             </ul>
                     </li>

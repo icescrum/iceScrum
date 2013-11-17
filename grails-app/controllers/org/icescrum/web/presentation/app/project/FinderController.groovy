@@ -41,6 +41,9 @@ class FinderController {
                                 data: data,
                                 user:(User)springSecurityService.currentUser,
                                 suiteSelect:suiteSelect,
+                                creators:(product.allUsers + product.stories*.creator.unique()).unique(),
+                                tasksCreators:(product.allUsers + Task.getAllCreatorsInProduct(product.id)).unique(),
+                                tasksResponsibles:(product.allUsers + Task.getAllResponsiblesInProduct(product.id)).unique(),
                                 product:product])
                     }
                     json { renderRESTJSON(text:data) }
