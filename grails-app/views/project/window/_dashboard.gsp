@@ -203,7 +203,9 @@
                     </g:if>
                     <g:else>
                         <div class="panel-box-empty">
-                            <div style="text-align: center; padding:5px;">${message(code:'is.fluxiable.no')}</div>
+                            <div style="text-align: center; padding:5px; font-size:14px;">
+                                <a class="scrum-link" target="_blank" href="https://www.kagilum.com/documentation/getting-started-with-icescrum">${message(code:'is.ui.getting.started')}</a>
+                            </div>
                         </div>
                     </g:else>
                 </is:panel>
