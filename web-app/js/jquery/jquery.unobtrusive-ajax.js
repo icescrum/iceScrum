@@ -46,6 +46,7 @@ function getFunction(code, argNames) {
                 break;
             default:
                 $(update).html(data);
+                attachOnDomUpdate($(update));
                 break;
             }
         });
@@ -221,7 +222,7 @@ function getFunction(code, argNames) {
 
 function attachOnDomUpdate(content){
 
-    $(document).one('click', 'textarea.selectallonce', function() {
+    $('textarea.selectallonce',content).one('click', function() {
         $(this).select();
     });
 
@@ -256,7 +257,7 @@ function attachOnDomUpdate(content){
             if (right){
                 elem.css('left','auto');
             }
-            if(elem.find('> div:visible').length <= 1 && elem.data('emptyHide') == true){
+            if(elem.find('> div:not(.ui-resizable-handle)').length == 0 && elem.data('emptyHide') == true){
                 elem.hide();
                 div.css(right ? 'right' : 'left', 0);
             }else if (elem.width() <= 7 && !elem.hasClass('docked')){
@@ -309,6 +310,9 @@ function attachOnDomUpdate(content){
             resize();
         });
         resize();
+        elem.bind("manualResize", function(){
+            resize();
+        });
     });
     $.event.trigger('domUpdate.icescrum',content);
 }
