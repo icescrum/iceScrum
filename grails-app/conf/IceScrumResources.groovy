@@ -67,7 +67,7 @@ modules = {
 
     'jquery-ui' {
         dependsOn 'jquery', 'jquery-theme'
-        resource url:[dir:'js/jquery', file:"jquery-ui-1.8.23.custom.min.js"], nominify: true, bundle: 'icescrum'
+        resource url:[dir:'js/jquery', file:"jquery-ui-1.10.3.custom.min.js"], nominify: true, bundle: 'icescrum'
     }
 
     'jquery-ui-plugins' {
