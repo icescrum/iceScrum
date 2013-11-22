@@ -102,11 +102,9 @@
             </is:fieldSelect>
         </g:if>
 
-        <is:fieldArea for="storydescription" label="${message(code:'is.backlogelement.description')}">
-            <is:area data-default="${is.generateStoryTemplate()}" id="storydescription" class="${story ? '' : 'selectallonce'}" large="true" name="story.description"
-                     value="${story ? story.description : is.generateStoryTemplate()}"
-                     rows="7"/>
-        </is:fieldArea>
+        <div class="field-area clearfix"><label for="storydescription">Description</label>
+            <div class="area area-large" id="storydescription-field" style=""><div contenteditable="true" data-default="${is.generateStoryTemplate()}" id="storydescription" class="${story ? '' : 'selectallonce'}">${story ? story.description : is.generateStoryTemplate()}</div></div>
+        </div>
 
         <is:fieldFile for='story.tags' label="is.backlogelement.tags" noborder="true">
             <ul name="story.tags">
@@ -117,33 +115,6 @@
         </is:fieldFile>
 
     </is:fieldset>
-
-    <is:textTemplate
-            title="is.story.template"
-            id="story-template"
-            label="is.ui.backlog.story.template"
-            checked="${isUsedTemplate}">
-
-        <is:textTemplateRow title="${message(code:'is.story.template.as')}" for="story-textAs">
-            <is:autoCompleteSkin
-                    controller="actor"
-                    action="search"
-                    id="story-textAs"
-                    name="story.textAs"
-                    minLength="1"
-                    value="${story?.actor?.name ?: story?.textAs ?: ''}"/>
-        </is:textTemplateRow>
-
-        <is:textTemplateRow title="${message(code:'is.story.template.ican')}">
-            <is:area id="storytextICan" name="story.textICan" value="${story?.textICan}"/>
-        </is:textTemplateRow>
-
-        <is:textTemplateRow title="${message(code:'is.story.template.to')}">
-            <is:area id="storytextTo"
-                     name="story.textTo"
-                     value="${story?.textTo}"/>
-        </is:textTemplateRow>
-    </is:textTemplate>
 
     <is:fieldset title="is.ui.backlog.story.attachment.title">
         <is:fieldFile for='story.attachments' label="is.backlogelement.attachment" noborder="true">
@@ -200,7 +171,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="return"
-                   data-shortcut-on="#${referrer}-form, #${referrer}-form input:not([name='story.textAs'])"
+                   data-shortcut-on="#${referrer}-form, #${referrer}-form input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
                    data-ajax-success="#${referrer+(params.subid?'/'+params.id:'')}"
@@ -236,7 +207,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="return"
-                       data-shortcut-on="#${referrer}-form, #${referrer}-form input:not([name='story.textAs'])"
+                       data-shortcut-on="#${referrer}-form, #${referrer}-form input"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.story.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${referrerUrl?:referrer+(params.subid?'/'+params.id:'')}"
@@ -251,7 +222,7 @@
             <a  id="cancelForm"
                 data-shortcut="esc"
                 data-callback="jQuery.icescrum.form.cancel"
-                data-shortcut-on="#${referrer}-form, #${referrer}-form input:not([name='story.textAs'])"
+                data-shortcut-on="#${referrer}-form, #${referrer}-form input"
                 class="button-s button-s-black" href="#${referrerUrl?:referrer}">
                 <span class="start"></span>
                 <span class="content">${message(code: 'is.button.cancel')}</span>
@@ -276,4 +247,5 @@
         source: "${g.createLink(controller:'project', action: 'versions', params:[product:params.product])}",
         minLength: 2
     });
+    autocompleteContentEditable($('#storydescription'), "${g.createLink(controller:'actor', action: 'search', params:[product:params.product])}");
 </jq:jquery>

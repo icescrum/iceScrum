@@ -810,7 +810,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.area textarea {
+.area textarea, .area [contenteditable="true"] {
     height: 34px;
 	background: -moz-linear-gradient(90deg, #ebebeb, #fff); /* Firefox */
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ebebeb)); /* Webkit */
@@ -822,21 +822,21 @@
 	padding: 7px 10px;
 }
 
-.area-focus textarea {
+.area-focus textarea, .area-focus [contenteditable="true"] {
 	background: -moz-linear-gradient(90deg, #cfe6fc, #e6f1fc); /* Firefox */
 	background: -webkit-gradient(linear, left top, left bottom, from(#e6f1fc), to(#cfe6fc)); /* Webkit */
     background: linear-gradient(#e6f1fc, #cfe6fc); /* W3C */
 	border: 1px solid #90afcd;
 }
 
-.area-medium textarea {
+.area-medium textarea, .area-medium [contenteditable="true"] {
     height: 84px;
 }
 
-.area-large textarea {
+.area-large textarea, .area-large [contenteditable="true"] {
     height: 134px;
 }
-.box-form-250 .area.area-large textarea {
+.box-form-250 .area.area-large textarea, .box-form-250 .area.area-large [contenteditable="true"] {
     height: 134px;
     width:  400px;
 }
@@ -1097,7 +1097,7 @@
     width: 180px;
 }
 
-.box-form-180 .input input, .box-form-180 .area textarea {
+.box-form-180 .input input, .box-form-180 .area textarea, .box-form-180 .area [contenteditable="true"] {
     width: 150px;
 }
 
@@ -1105,7 +1105,7 @@
     width: 160px;
 }
 
-.box-form-160 .input input, .box-form-160 .area textarea {
+.box-form-160 .input input, .box-form-160 .area textarea, .box-form-160 .area [contenteditable="true"] {
     width: 130px;
 }
 
@@ -1125,7 +1125,7 @@
     width: 250px;
 }
 
-.box-form-250 .input input, .box-form-250 .area textarea {
+.box-form-250 .input input, .box-form-250 .area textarea, .box-form-250 .area [contenteditable="true"] {
     width: 220px;
 }
 

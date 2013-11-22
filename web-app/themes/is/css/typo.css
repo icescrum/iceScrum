@@ -89,7 +89,7 @@ body, input, textarea {
 }
 
 .dropmenu .dropmenu-content ul li, .box .box-navigation ul .search .search-content input,
-.box-form label, .input input, .box-form .field-information, .area textarea, .input textarea,
+.box-form label, .input input, .box-form .field-information, .area [contenteditable="true"], .area textarea, .input textarea,
 .field-file {
     font-size: 11px;
     line-height: 16px;
