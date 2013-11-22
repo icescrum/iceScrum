@@ -22,7 +22,7 @@
 <is:objectAsXML object="${object}" node="story" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML
             name="['state','suggestedDate','acceptedDate','estimatedDate','plannedDate','inProgressDate','doneDate','effort','value','rank','creationDate','type','executionFrequency']"/>
-    <is:propertyAsXML name="['name','textAs','textICan','textTo','notes','description','tags']" cdata="true"/>
+    <is:propertyAsXML name="['name','notes','description','tags']" cdata="true"/>
     <is:propertyAsXML object="creator"/>
     <is:propertyAsXML object="feature"/>
     <is:propertyAsXML object="actor"/>

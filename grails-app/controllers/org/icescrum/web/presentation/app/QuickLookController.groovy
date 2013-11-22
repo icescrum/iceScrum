@@ -107,7 +107,7 @@ class QuickLookController {
                     instancesCode: BundleUtils.actorInstances[actor.instances],
                     useFrequencyCode: BundleUtils.actorFrequencies[actor.useFrequency],
                     expertnessLevelCode: BundleUtils.actorLevels[actor.expertnessLevel],
-                    stories: Story.findAllByTextAsIlike(actor.name).size(),
+                    stories: Story.countByActor(actor),
                     user: springSecurityService.currentUser
             ])
             render(status:200, contentType:'application/json', text:[dialog:dialog] as JSON)

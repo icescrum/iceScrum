@@ -44,12 +44,12 @@
            testCountByStateLabel="${story.countTestsByState().collect({ k, v -> message(code: k.toString()) + ': ' + v}).join(' / ')}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">
             <g:if test="${!rect}">
-                <is:truncated size="50" encodedHTML="true"><is:storyTemplate story="${story}"/></is:truncated>
+                <is:truncated size="50" encodedHTML="true"><is:storyDescription story="${story}"/></is:truncated>
             </g:if>
-            <g:if test="${story.name?.length() > 17 || is.storyTemplate(story:story)?.length() > 50 || rect}">
+            <g:if test="${story.name?.length() > 17 || is.storyDescription(story:story)?.length() > 50 || rect}">
                 <div class="tooltip">
                     <span class="tooltip-title">${story.name?.encodeAsHTML() ?: ''}</span>
-                    ${is.storyTemplate(story:story)?:''}
+                    ${is.storyDescription(story:story)?:''}
                 </div>
             </g:if>
 </is:postit>

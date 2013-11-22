@@ -27,7 +27,6 @@
                         $(':input', form)
                                 .not('.preserve')
                                 .not(':button, :submit, :reset, :hidden')
-                                .not('[id=displayTemplate]')
                                 .val('')
                                 .removeAttr('checked')
                                 .removeAttr('selected');

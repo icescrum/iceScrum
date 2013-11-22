@@ -54,7 +54,7 @@
                 </p>
             </g:if>
             <p>
-                <strong><g:message code="is.backlogelement.description"/> :</strong> <is:storyTemplate displayBR="true"
+                <strong><g:message code="is.backlogelement.description"/> :</strong> <is:storyDescription displayBR="true"
                                                                                                        story="${story}"/>
             </p>
             <div class="line">

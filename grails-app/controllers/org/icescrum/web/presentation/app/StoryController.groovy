@@ -137,17 +137,7 @@ class StoryController {
     def save = {
 
         def story = new Story()
-        bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo','affectVersion']], "story")
-
-        withFormat {
-            html {
-                if (params.int('displayTemplate') != 1) {
-                    story.textAs = null
-                    story.textICan = null
-                    story.textTo = null
-                }
-            }
-        }
+        bindData(story, this.params, [include:['name','description','notes','type','affectVersion']], "story")
 
         def featureId = params.remove('feature.id') ?: params.story.remove('feature.id')
         if (featureId) {
@@ -238,18 +228,7 @@ class StoryController {
 
             def skipUpdate = false
 
-            bindData(story, this.params, [include:['name','description','notes','type','textAs','textICan','textTo','affectVersion']], "story")
-
-            withFormat {
-                html {
-                    if (params.int('displayTemplate') != 1) {
-                        story.textAs = null
-                        story.textICan = null
-                        story.textTo = null
-                        story.actor = null
-                    }
-                }
-            }
+            bindData(story, this.params, [include:['name','description','notes','type','affectVersion']], "story")
 
             def featureId = params.remove('feature.id') ?: params.story.remove('feature.id')
             if (featureId && story.feature?.id != featureId.toLong()) {
@@ -398,9 +377,6 @@ class StoryController {
             }
             maxRank.times { rankList << (it + 1) }
 
-            def tempTxt = [story.textAs, story.textICan, story.textTo]*.trim()
-            def isUsedTemplate = (tempTxt != ['null', 'null', 'null'] && tempTxt != ['', '', ''] && tempTxt != [null, null, null])
-
             def next = null
             if (story.state == Story.STATE_SUGGESTED)
                 next = Story.findNextSuggested(params.long('product'), story.suggestedDate, !productOwner ? user.id : null).list()[0]
@@ -413,7 +389,6 @@ class StoryController {
 
             render(template: '/story/window/manage', model: [
                     story: story,
-                    isUsedTemplate: isUsedTemplate,
                     next: next?.id ?: null,
                     rankList: rankList ?: null,
                     sprints: sprints,

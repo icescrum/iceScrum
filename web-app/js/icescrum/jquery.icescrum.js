@@ -198,17 +198,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
         },
 
-        //really used
-        displayTemplate:function(selector, show) {
-            if (show) {
-                $(selector + " .text-template").show();
-                $("#displayTemplate").val('1');
-            } else {
-                $(selector + " .text-template").hide();
-                $("#displayTemplate").val('0');
-            }
-        },
-
         displayView:function() {
             $('#menu-display-list').find('.content').html('<span class="ico"></span>');
         },

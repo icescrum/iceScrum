@@ -43,7 +43,8 @@ class ActorController {
 
     @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
     def search = {
-        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
+        def storyDescription = params.term
+        def actors = Actor.searchAllByTermOrTag(params.long('product'), storyDescription)
         def result = []
         actors?.each {
             result << [label: it.name, value: it.name]
@@ -223,7 +224,7 @@ class ActorController {
                         satisfactionCriteria: it.satisfactionCriteria,
                         useFrequency: message(code: BundleUtils.actorFrequencies[it.useFrequency]),
                         instances: BundleUtils.actorInstances[it.instances],
-                        associatedStories: Story.findAllByTextAsIlike(it.name).size() ?: 0
+                        associatedStories: Story.countByActor(it)
                 ]
             }
             outputJasperReport('actors', params.format, [[product: currentProduct.name, actors: data ?: null]], currentProduct.name)

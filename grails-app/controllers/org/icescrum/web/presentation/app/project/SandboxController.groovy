@@ -78,8 +78,7 @@ class SandboxController {
                 typesKeys: BundleUtils.storyTypes.keySet().asList(),
                 featureSelect: currentProduct.features.asList(),
                 storiesSelect: Story.findAllByStateGreaterThanEqualsAndBacklog(Story.STATE_SUGGESTED, currentProduct),
-                story: params.story,
-                isUsedTemplate: false
+                story: params.story
         ])
     }
 

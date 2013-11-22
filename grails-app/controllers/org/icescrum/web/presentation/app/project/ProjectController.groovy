@@ -869,7 +869,7 @@ class ProjectController {
                             id: it.uid,
                             effort: it.effort,
                             state: message(code: BundleUtils.storyStates[it.state]),
-                            description: is.storyTemplate([story: it, displayBR: true]),
+                            description: is.storyDescription([story: it, displayBR: true]),
                             notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
                             type: message(code: BundleUtils.storyTypes[it.type]),
                             suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
