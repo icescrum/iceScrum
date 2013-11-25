@@ -58,6 +58,7 @@
 <li>
     <a href="${createLink(action:'delete', controller: 'release', id:release.id, params:[product:params.product])}"
        data-ajax="true"
+       data-ajax-confirm="${message(code:'is.ui.timeline.menu.delete.confirm').encodeAsJavaScript()}"
        data-ajax-trigger="remove_release">
         ${message(code:'is.ui.timeline.menu.delete')}
     </a>
