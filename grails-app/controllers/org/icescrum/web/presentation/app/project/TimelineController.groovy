@@ -104,6 +104,12 @@ class TimelineController {
                     break
             }
 
+            def maxSize = it.duration > 14 ? it.duration - 11 : (it.duration / 3) as Integer
+            def encodedName = it.name.encodeAsJavaScript()
+            if (encodedName.size() > maxSize) {
+                encodedName = encodedName[0..(maxSize-1)].trim() + '...'
+            }
+
             def templateMenu = """<div class='dropmenu-action'>
                                       <div data-dropmenu="true" class="dropmenu" data-top="10" id="rel-${it.id}">
                                         <span class="dropmenu-arrow">!</span>
@@ -113,7 +119,7 @@ class TimelineController {
                                             </ul>
                                         </div>
                                     </div>
-                                  </div><span>${it.name.encodeAsJavaScript()}</span>"""
+                                  </div><span>${encodedName}</span>"""
 
             def templateTooltip = include(view: "$controllerName/tooltips/_tooltipReleaseDetails.gsp", model: [release: it])
 
