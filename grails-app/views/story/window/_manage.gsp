@@ -171,7 +171,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="return"
-                   data-shortcut-on="#${referrer}-form, #${referrer}-form input)"
+                   data-shortcut-on="#${referrer}-form, #${referrer}-form input"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
                    data-ajax-success="#${referrer+(params.subid?'/'+params.id:'')}"
