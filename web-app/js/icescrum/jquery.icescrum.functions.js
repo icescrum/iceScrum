@@ -1559,9 +1559,7 @@
                                 modal:true,
                                 position:'top',
                                 resizable:false,
-                                stack:true,
                                 width:300,
-                                zindex:1000,
                                 close:function(ev, ui) {
                                     $(this).remove();
                                     if (deleted) {

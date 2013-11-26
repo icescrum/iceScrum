@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 (function($) {
@@ -168,9 +169,7 @@
                                 modal:true,
                                 position:'top',
                                 resizable:false,
-                                stack:true,
                                 width:600,
-                                zindex:1000,
                                 close:function(ev, ui) {
                                     $(this).remove();
                                 },

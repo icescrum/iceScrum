@@ -1383,6 +1383,7 @@ button.ui-button::-moz-focus-inner {
     padding: .2em;
     width: 300px;
     overflow: hidden;
+    z-index:1000 !important;
 
     border-width: 0 !important;
     border-bottom-width: 1px !important;
@@ -1456,6 +1457,11 @@ button.ui-button::-moz-focus-inner {
     height: 14px;
     right: 3px;
     bottom: 3px;
+}
+
+/* Dialog overlay */
+.ui-front {
+    z-index:1000 !important;
 }
 
 .ui-draggable .ui-dialog-titlebar {
