@@ -20,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <head>
   <meta name='layout' content='simple'/>
@@ -41,19 +42,19 @@
         </is:fieldInformation>
 
         <is:fieldInput for="firstName" label="is.user.firstname">
-          <is:input id="firstName" name="firstName" value="${user.firstName}"/>
+          <is:input id="firstName" name="firstName" autofocus=""/>
         </is:fieldInput>
 
         <is:fieldInput for="lastName" label="is.user.lastname">
-          <is:input name='lastName' id='lastName' value="${user.lastName}" />
+          <is:input name='lastName' id='lastName'/>
         </is:fieldInput>
 
         <is:fieldInput for="username" label="is.user.username">
-          <is:input name="username" id="username" value="${user.username}" />
+          <is:input name="username" id="username"/>
         </is:fieldInput>
 
         <is:fieldInput for="password" label="is.user.password">
-          <is:password name='password' id='password' value="${user.password}" />
+          <is:password name='password' id='password'/>
         </is:fieldInput>
 
         <is:fieldInput for="confirmPassword" label="is.dialog.register.confirmPassword">
@@ -61,7 +62,7 @@
         </is:fieldInput>
 
         <is:fieldInput for="email" label="is.user.email">
-          <is:input name='email' id='email' value="${user.email}" />
+          <is:input name='email' id='email'/>
         </is:fieldInput>
 
         <is:fieldInput for="activity" label="is.user.preferences.activity" optional="true">

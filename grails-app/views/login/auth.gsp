@@ -20,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Damien vitrac (damien@oocube.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <head>
   <meta name='layout' content='simple'/>
@@ -49,7 +50,7 @@
       </is:fieldInformation>
 
       <is:fieldInput for="username" label="is.user.username">
-        <is:input name="j_username" id="username" value="${params.username?:''}"/>
+        <is:input name="j_username" id="username" value="${params.username?:''}" autofocus=""/>
       </is:fieldInput>
 
       <is:fieldInput for="password" label="is.user.password">

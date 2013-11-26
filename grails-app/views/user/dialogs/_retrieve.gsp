@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <head>
   <meta name='layout' content='simple'/>
@@ -45,7 +46,7 @@
       </is:fieldInformation>
 
       <is:fieldInput for="text" label="is.dialog.retrieve.input" noborder="true">
-        <is:input name="text" id="text" />
+        <is:input name="text" id="text" autofocus=""/>
       </is:fieldInput>
 
       <is:buttonBar id="retrieve-button-bar">
