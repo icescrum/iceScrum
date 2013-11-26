@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Damien Vitrac (damien@oocube.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -1193,16 +1194,12 @@
 .ui-accordion .ui-accordion-header a {
     display: block;
     font-size: 1em;
-    padding: .3em .3em .3em .5em;
+    padding: .3em .3em .3em 2.2em;
 }
 
 /* IE7-/Win - Fix extra vertical space in lists */
 .ui-accordion a {
     zoom: 1;
-}
-
-.ui-accordion-icons .ui-accordion-header a {
-    padding-left: 2.2em;
 }
 
 .ui-accordion .ui-accordion-header .ui-icon {

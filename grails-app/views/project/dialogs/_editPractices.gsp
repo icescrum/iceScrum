@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog valid="[action:'update',controller:'project',onSuccess:'jQuery.event.trigger(\'update_product\',[data]);  jQuery.icescrum.renderNotice(\''+message(code:'is.product.updated')+'\');']"
                                   title="is.dialog.project.title"
@@ -29,7 +30,7 @@
   <input type="hidden" name="product" value="${params.product}">
   <input type="hidden" name="productd.version" value="${product.version}">
   <is:fieldset nolegend="true" title="is.dialog.project.preferences.title">
-    <is:accordion id="preferences" autoHeight="false">
+    <is:accordion id="preferences">
 
       <is:accordionSection title="is.dialog.project.preferences.planification.title">
         <is:fieldSelect for="product.planningPokerGameType" label="is.product.preferences.planification.estimationSuite">

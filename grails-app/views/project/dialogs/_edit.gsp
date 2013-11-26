@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog valid="[action:'update',controller:'project',onSuccess:'jQuery.event.trigger(\'update_product\',[data]); jQuery.icescrum.renderNotice(\''+message(code:'is.product.updated')+'\');']"
           width="600"
@@ -28,7 +29,7 @@
   <input type="hidden" name="product" value="${params.product}">
   <input type="hidden" name="productd.version" value="${product.version}">
   <is:fieldset nolegend="true" title="is.dialog.project.title">
-    <is:accordion id="properties" autoHeight="false">
+    <is:accordion id="properties">
         <is:accordionSection title="is.dialog.project.properties.title">
             <is:fieldInput for="productname" label="is.product.name">
               <is:input id="productname" name="productd.name" value="${product.name}"/>

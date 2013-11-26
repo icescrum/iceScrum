@@ -19,6 +19,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog valid="[action:'update',controller:'user',id:user.id,onSuccess:'jQuery.event.trigger(\'updateProfile_user\',[data])']"
             title="is.dialog.profile"
@@ -32,7 +33,7 @@
     <input type="hidden" id="product" name="product" value="${params.product}"/>
     <input type="hidden" id="user.version" name="user.version" value="${user.version}"/>
     <is:fieldset nolegend="true" title="is.dialog.profile">
-        <is:accordion id="profile" autoHeight="false">
+        <is:accordion id="profile">
             <is:accordionSection title="is.dialog.profile.general.title">
 
                 <is:fieldInput for="userfirstName" label="is.user.firstname">

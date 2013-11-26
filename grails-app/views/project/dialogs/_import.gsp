@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog action="importProject"
           rendered="${importEnable}"
@@ -86,7 +87,7 @@
             </g:if>
           </is:fieldInformation>
 
-          <is:accordion id="preferences" autoHeight="false" active="0">
+          <is:accordion id="preferences" active="0">
 
             <g:if test="${importMustChangeValues || product.erasableByUser}">
               <is:accordionSection title="is.dialog.importProject.confirm.changeValues.title">
