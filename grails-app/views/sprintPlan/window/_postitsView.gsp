@@ -117,7 +117,7 @@
                    type="story"
                    emptyRendering="true">
             <is:kanbanColumn elementId="column-story-${story.id}">
-                <is:cache cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
+                <is:cache cache="storyCache" key="postit-rect-${story.id}-${story.lastUpdated}-${nextSprintExist}">
                     <g:render  template="/story/postit"
                                model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"/>
                 </is:cache>
