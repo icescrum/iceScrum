@@ -28,9 +28,16 @@
         <div class="acceptance-test-state">
             <g:if test="${stateEditable}">
                 <g:set var="acceptanceTestIcons" value="${AcceptanceTestState.values().collect { 'select-icon-acceptance-test icon-acceptance-test' + it.id }}"/>
-                <is:select icons="${acceptanceTestIcons}" class="acceptance-test-state-select" id="acceptance-test-state-select${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
-                           from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}"
-                           data-url="${createLink(controller: 'story', action: 'updateAcceptanceTest', params: [product: params.product])}"/>
+                <is:select
+                        icons="${acceptanceTestIcons}"
+                        class="acceptance-test-state-select"
+                        id="acceptance-test-state-select${acceptanceTest?.id ?: ''}"
+                        name="acceptanceTest.state"
+                        data-minimumResultsForSearch="-1"
+                        from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}"
+                        keys="${AcceptanceTestState.values().id}"
+                        value="${acceptanceTest?.state ?: ''}"
+                        data-url="${createLink(controller: 'story', action: 'updateAcceptanceTest', params: [product: params.product])}"/>
             </g:if>
             <g:else>
                 <div class="text-icon-acceptance-test icon-acceptance-test${acceptanceTest?.state ?: ''}">
@@ -44,17 +51,14 @@
             <g:if test="${testEditable}">
                 <span class="acceptance-test-menu">
                     (
-                        <is:link history="false"
-                                  remote="true"
-                                  controller="story"
-                                  action="acceptanceTestEditor"
-                                  id="${acceptanceTest.id}"
-                                  update="acceptance-test-editor-wrapper${acceptanceTest.id}"
-                                  onSuccess="jQuery('#acceptance-test-form-container').hide();
+                        <a href="${createLink(controller:"story",action: "acceptanceTestEditor",params:[product:params.product,id:acceptanceTest.id])}"
+                           data-ajax="true"
+                           data-ajax-update="#acceptance-test-editor-wrapper${acceptanceTest.id}"
+                           data-ajax-success="jQuery('#acceptance-test-form-container').hide();
                                              jQuery('#acceptance-test${acceptanceTest.id} .acceptance-test-content').hide();
                                              jQuery('#acceptance-test-editor-wrapper${acceptanceTest?.id ?: ''}').show();">
                             ${message(code:'is.ui.acceptanceTest.edit')}
-                        </is:link>
+                        </a>
                     -
                         <is:link history="false"
                                 remote="true"

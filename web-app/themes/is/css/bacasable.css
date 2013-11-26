@@ -46,10 +46,6 @@
     padding: 0;
 }
 
-.ui-selectmenu-menu {
-    z-index: 1010;
-}
-
 .ui-dialog .ui-dialog-buttonpane {
     padding: 0;
 }
@@ -520,7 +516,7 @@ td.jqplot-table-legend {
     padding-top: 4px;
 }
 
-#search-panel ul li .ui-selectmenu, #search-panel ul li .datePicker, #search-panel ul li #tag, #search-panel ul li #term {
+#search-panel ul li .datePicker, #search-panel ul li #tag, #search-panel ul li #term {
     vertical-align: middle;
     display: inline-block;
     float:right;
@@ -695,7 +691,7 @@ body:-ms-full-screen #navigation,body:-ms-full-screen .window-fullscreen .box-ti
 body:-o-full-screen #navigation,body:-o-full-screen .window-fullscreen .box-title{
     display:none;
 }
-body:full-screen #navigation,body:full-screen .window-fullscreen .box-title{
+body:fullscreen #navigation,body:fullscreen .window-fullscreen .box-title{
     display:none;
 }
 
@@ -723,7 +719,7 @@ body:-o-full-screen .window-fullscreen{
     left:0;
     right:0;
 }
-body:full-screen .window-fullscreen{
+body:fullscreen .window-fullscreen{
     top:-27px;
     bottom:0;
     left:0;

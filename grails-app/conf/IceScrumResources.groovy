@@ -41,6 +41,7 @@ modules = {
         resource url: [dir: "themes/$icescrum.theme/css", file: 'text.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "themes/$icescrum.theme/css", file: 'css3.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "themes/$icescrum.theme/css", file: 'typo.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'select2.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "js/jquery", file: 'jqplot/css/jquery.jqplot.min.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "themes/$icescrum.theme/css", file: 'bacasable.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
     }
@@ -59,6 +60,7 @@ modules = {
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.progress.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.multiFilesUpload.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.functions.js'], bundle: 'icescrum'
+        resource url: [dir: 'js', file: 'medium.js'], nominify: true, bundle: 'icescrum'
     }
 
     'jquery' {
@@ -83,7 +85,6 @@ modules = {
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-pt_BR.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery-ui.timepicker.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.checkbox.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.ui.selectmenu.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.touch-punch.min.js'], nominify: true, bundle: 'icescrum'
     }
@@ -124,15 +125,10 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.table.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.jeditable.min.js'], nominify:true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], nominify: true, bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.select2.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'icescrum'
         resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'], bundle: 'icescrum'
         resource url: [dir: 'js/markitup/sets/textile', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: 'js/markitup/skins/simple', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
-    }
-
-    'tagit' {
-        dependsOn 'jquery-ui'
-        resource url: [dir: "themes/$icescrum.theme/css", file: 'tagit.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.tagit.js'], bundle: 'icescrum'
     }
 }

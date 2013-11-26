@@ -39,25 +39,11 @@
     %{-- Type --}%
         <is:fieldSelect for="story.type" label="is.story.type">
             <is:select
-                    container=".window-content"
-                    width="195"
-                    maxHeight="200"
-                    change="var storyDescription = jQuery('#storydescription');
-                            var defaultDescription = storyDescription.data('default');
-                            if (this.value == '${Story.TYPE_USER_STORY}') {
-                                if (storyDescription.val() == '') {
-                                    storyDescription.val(defaultDescription);
-                                }
-                            } else {
-                                if (storyDescription.val() == defaultDescription) {
-                                    storyDescription.val('');
-                                }
-                                this.value == '${Story.TYPE_DEFECT}' ? jQuery('#storyaffectVersion-field-input').show() : jQuery('#storyaffectVersion-field-input').hide();
-                            }"
-                    styleSelect="dropdown"
+                    data-change="jQuery.icescrum.story.displayOptions"
                     from="${typesLabels}"
                     keys="${typesKeys}"
                     name="story.type"
+                    data-minimum-result-for-search="-1"
                     value="${story?.type}"/>
         </is:fieldSelect>
 
@@ -66,27 +52,29 @@
         </is:fieldInput>
 
         <is:fieldSelect label="is.feature" for="story.feature">
-            <is:select container=".window-content" width="195" maxHeight="200"
-                       styleSelect="dropdown"
-                       name="feature.id" noSelection="['':message(code:'is.ui.backlog.choose.feature')]"
-                       optionValue="name" optionKey="id" from="${featureSelect}"
+            <is:select name="feature.id"
+                       noSelection="['':message(code:'is.ui.backlog.choose.feature')]"
+                       optionValue="name"
+                       optionKey="id"
+                       from="${featureSelect}"
                        value="${story?.feature?.id}"/>
         </is:fieldSelect>
 
         <g:if test="${rankList}">
             <is:fieldSelect label="is.story.rank" for="story.rank">
-                <is:select container=".window-content" width="100" maxHeight="200"
-                           styleSelect="dropdown"
-                           from="${rankList}" name="story.rank" value="${story.rank}"/>
+                <is:select from="${rankList}"
+                           name="story.rank"
+                           value="${story.rank}"/>
             </is:fieldSelect>
         </g:if>
 
         <g:if test="${storiesSelect}">
             <is:fieldSelect label="is.story.dependsOn" for="story.dependsOn">
-                <is:select container=".window-content" width="195" maxHeight="200"
-                           styleSelect="dropdown"
-                           name="dependsOn.id" noSelection="['':message(code:'is.ui.backlog.choose.dependsOn')]"
-                           optionValue="${{ el -> el.uid+' - '+el.name }}" optionKey="id" from="${storiesSelect}"
+                <is:select name="dependsOn.id"
+                           noSelection="['':message(code:'is.ui.backlog.choose.dependsOn')]"
+                           optionValue="${{ el -> el.name+' ('+el.uid+')' }}"
+                           optionKey="id"
+                           from="${storiesSelect}"
                            disabled="${!request.productOwner && !request.scrumMaster}"
                            value="${story?.dependsOn?.id}"/>
             </is:fieldSelect>
@@ -94,25 +82,32 @@
 
         <g:if test="${sprints}">
             <is:fieldSelect label="is.sprint" for="sprint.id">
-                <is:select container=".window-content" width="195" maxHeight="200"
-                           styleSelect="dropdown"
+                <is:select name="sprint.id"
                            keys="${sprints*.id}"
                            noSelection="['':message(code:'is.ui.backlog.choose.sprint')]"
-                           from="${sprints*.name}" name="sprint.id" value="${story.parentSprint?.id}"/>
+                           from="${sprints*.name}"
+                           value="${story.parentSprint?.id}"/>
             </is:fieldSelect>
         </g:if>
 
-        <div class="field-area clearfix"><label for="storydescription">Description</label>
-            <div class="area area-large" id="storydescription-field" style=""><div contenteditable="true" data-default="${is.generateStoryTemplate()}" id="storydescription" class="${story ? '' : 'selectallonce'}">${story ? story.description : is.generateStoryTemplate()}</div></div>
+        <div class="field-area clearfix">
+            <label for="storydescription">Description</label>
+            <div class="area area-large" id="storydescription-field">
+                <div data-autocomplete="true"
+                     data-default="${is.generateStoryTemplate()}"
+                     data-source="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
+                     data-min-length="3"
+                     contenteditable="true"
+                     id="storydescription"
+                     class="${story ? '' : 'selectallonce'}">
+                    ${story ? story.description : is.generateStoryTemplate()}
+                </div>
+            </div>
         </div>
 
-        <is:fieldFile for='story.tags' label="is.backlogelement.tags" noborder="true">
-            <ul name="story.tags">
-              <g:each in="${story?.tags}">
-                <li>${it}</li>
-              </g:each>
-            </ul>
-        </is:fieldFile>
+        <is:fieldSelect label="is.backlogelement.tags" for="story.tags" noborder="true">
+            <input type="hidden" name="story.tags" data-tag="true" value="${story?.tags?.join(', ')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}" data-tags="${story?.tags?.join(',')}" />
+        </is:fieldSelect>
 
     </is:fieldset>
 
@@ -155,7 +150,7 @@
                    data-ajax-method="POST"
                    data-shortcut="shift+return"
                    data-ajax-trigger="add_story"
-                   data-shortcut-on="#${referrer}-form, #${referrer}-form input"
+                   data-shortcut-on="#${referrer}-form input"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-success="jQuery.icescrum.form.reset"
                    data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
@@ -171,7 +166,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="return"
-                   data-shortcut-on="#${referrer}-form, #${referrer}-form input"
+                   data-shortcut-on="#${referrer}-form input"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
                    data-ajax-success="#${referrer+(params.subid?'/'+params.id:'')}"
@@ -190,7 +185,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="shift+return"
-                       data-shortcut-on="#${referrer}-form, #${referrer}-form input"
+                       data-shortcut-on="#${referrer}-form input"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.story.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${next ? referrer+(params.subid?'/'+params.id:'')+'/editStory/'+next : referrer}"
@@ -207,7 +202,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="return"
-                       data-shortcut-on="#${referrer}-form, #${referrer}-form input"
+                       data-shortcut-on="#${referrer}-form input"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.story.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${referrerUrl?:referrer+(params.subid?'/'+params.id:'')}"
@@ -242,10 +237,8 @@
         events="[[object:'story',events:['remove']]]"
         callback="if ( story.id != jQuery(this).data('elemid') ){ jQuery.icescrum.story.manageDependencies.apply(story); return; } jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','${referrer+(params.subid?'/'+params.id:'')}',true);"/>
 <jq:jquery>
-    $("ul[name='story.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
     $( "#storyaffectVersion" ).autocomplete({
         source: "${g.createLink(controller:'project', action: 'versions', params:[product:params.product])}",
         minLength: 2
     });
-    autocompleteContentEditable($('#storydescription'), "${g.createLink(controller:'actor', action: 'search', params:[product:params.product])}");
 </jq:jquery>

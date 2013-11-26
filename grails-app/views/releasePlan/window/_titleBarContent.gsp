@@ -22,30 +22,11 @@
 <li>
     <entry:point id="${controllerName}-${actionName}" model="[releases:releases]"/>
     <is:select
-            width="160"
             rendered="${releases*.name.size() > 0}"
-            maxHeight="200"
-            styleSelect="dropdown"
-            class="window-toolbar-selectmenu-button window-toolbar-selectmenu"
             from="${releases*.name}"
             keys="${releases*.id}"
             name="selectOnReleasePlan" value="${params.id}"
-            history='false'
             onchange="\$.icescrum.openWindow('${controllerName}/'+this.value)"/>
-    <is:link
-            rendered="${releases*.name.size() > 0}"
-            class="ui-icon-triangle-1-w"
-            disabled="true"
-            title="${message(code:'is.ui.releasePlan.toolbar.alt.previous')}"
-            onClick="jQuery('#selectOnReleasePlan').selectmenu('selectPrevious');"
-            elementId="select-previous">&nbsp;</is:link>
-    <is:link
-            rendered="${releases*.name.size() > 0}"
-            class="ui-icon-triangle-1-e"
-            disabled="true"
-            title="${message(code:'is.ui.releasePlan.toolbar.alt.next')}"
-            onClick="jQuery('#selectOnReleasePlan').selectmenu('selectNext');"
-            elementId="select-next">&nbsp;</is:link>
 </li>
 
 <is:onStream on="#window-title-bar-content-releasePlan" events="[[object:'release',events:['add','update','remove']]]"/>

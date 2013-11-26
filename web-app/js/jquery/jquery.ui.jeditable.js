@@ -97,11 +97,9 @@
             );
         },
         plugin: function(settings, original) {
-            $('select', this).selectmenu({style:"dropdown",maxHeight:200, transferClasses:true});
-            $('select', this).bind('close', function() {
+            $('select', this).select2({minimumResultsForSearch:-1}).change(function() {
                 jQuery(this).parents("form").submit();
             });
-            $('select', this).selectmenu('open');
         }
     });
 })(jQuery);

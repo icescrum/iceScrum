@@ -702,7 +702,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     background-position: 0 -320px;
 }
 
-#select-next, #select-previous, #window-title-bar-content-timeline .ui-selectmenu-icon, #window-title-bar-content-releasePlan .ui-selectmenu-icon, #window-title-bar-content-sprintPlan .ui-selectmenu-icon {
+#select-next, #select-previous {
     background-image: url(../images/ui/ui-icons_ffffff_256x240.png);
 }
 

@@ -32,7 +32,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
     <is:loadJsVar/>
-    <r:require modules="jquery,jquery-ui,jquery-ui-plugins,tagit,jquery-plugins,jqplot,icescrum${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
+    <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
     <sec:ifLoggedIn>
         <script src="${resource(dir: 'js/timeline/timeline_ajax', file: 'simile-ajax-api.js?bundle=true')}"
                 type="text/javascript"></script>

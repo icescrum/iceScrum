@@ -26,30 +26,11 @@
         <entry:point id="${controllerName}-${actionName}" model="[sprintsName:sprintsName]"/>
         <is:select
                 rendered="${sprintsName.size() > 0}"
-                maxHeight="200"
-                styleSelect="dropdown"
-                class="window-toolbar-selectmenu-button window-toolbar-selectmenu"
                 from="${sprintsName}"
                 keys="${sprintsId}"
                 value="${sprint.id}"
-                history='false'
                 name="selectOnSprintPlan"
-                width="200"
                 onchange="document.location.hash = '${controllerName}/'+this.value;"/>
-        <is:link
-                rendered="${sprintsName.size() > 0}"
-                class="ui-icon-triangle-1-w"
-                disabled="true"
-                title="${message(code:'is.ui.sprintPlan.toolbar.alt.previous')}"
-                onClick="jQuery('#selectOnSprintPlan').selectmenu('selectPrevious');"
-                elementId="select-previous">&nbsp;</is:link>
-        <is:link
-                rendered="${sprintsName.size() > 0}"
-                class="ui-icon-triangle-1-e"
-                disabled="true"
-                title="${message(code:'is.ui.sprintPlan.toolbar.alt.next')}"
-                onClick="jQuery('#selectOnSprintPlan').selectmenu('selectNext');"
-                elementId="select-next">&nbsp;</is:link>
     </li>
 
     <is:onStream on="#window-title-bar-content-sprintPlan"

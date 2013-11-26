@@ -652,22 +652,18 @@
                     },
 
                     manageDependencies:function(){
-                        var SelectDependsOn = $("#dependsOn_id");
+                        var SelectDependsOn = $("#dependsOn\\.id");
                         if (SelectDependsOn.size() > 0){
                             var addOrUpdate = function(story){
                                 if (SelectDependsOn.find('option[value='+story.id+']').size() > 0){
-                                    SelectDependsOn.selectmenu('update', story.id, story.id, story.uid + ' - ' + story.name);
+                                    SelectDependsOn.find('option[value='+story.id+']').html(story.name+' ('+story.uid+')');
                                 }else{
-                                    SelectDependsOn.selectmenu('add', story.id, story.uid + ' - ' + story.name);
+                                    SelectDependsOn.append($('<option></option>').val(story.id).html(story.name+' ('+story.uid+')'));
                                 }
                             };
                             var form = SelectDependsOn.parents('form:first');
-                            if (!this.name){
-                                SelectDependsOn.selectmenu('remove', this.id);
-                            } else if (this.state < form.data('state')){
-                                if (SelectDependsOn.find('option[value='+this.id+']').size() > 0){
-                                    SelectDependsOn.selectmenu('remove', this.id);
-                                }
+                            if (!this.name || this.state < form.data('state')){
+                                SelectDependsOn.find('option[value='+this.id+']').remove();
                             } else if (this.state > form.data('state')){
                                 addOrUpdate(this);
                             } else if (this.state == form.data('state') && this.state == $.icescrum.story.STATE_SUGGESTED){
@@ -675,8 +671,9 @@
                             } else if (this.state == form.data('state') && this.state > $.icescrum.story.STATE_SUGGESTED && this.rank < form.data('rank')){
                                 addOrUpdate(this);
                             } else if (this.state == form.data('state') && this.state > $.icescrum.story.STATE_SUGGESTED && this.rank > form.data('rank')){
-                                SelectDependsOn.selectmenu('remove', this.id);
+                                SelectDependsOn.find('option[value='+this.id+']').remove();
                             }
+                            SelectDependsOn.trigger("change");
                         }
                     },
 
@@ -805,6 +802,21 @@
                         if(data.story.rank != params["story.rank"]){
                             jQuery.icescrum.postit.updatePosition("div.postit-story", jQuery(".postit-story[data-elemid="+data.story.id+"]"), data.story.rank, jQuery(container));
                             jQuery.icescrum.renderNotice(data.message)
+                        }
+                    },
+
+                    displayOptions:function(event){
+                        var storyDescription = $('#storydescription');
+                        var defaultDescription = storyDescription.data('default');
+                        if (this.value == 0) {
+                            if (storyDescription.val() == '') {
+                                storyDescription.val(defaultDescription);
+                            }
+                        } else {
+                            if (storyDescription.val() == defaultDescription) {
+                                storyDescription.val('');
+                            }
+                            this.value == 2 ? $('#storyaffectVersion-field-input').show() : $('#storyaffectVersion-field-input').hide();
                         }
                     }
                 },
@@ -1022,10 +1034,12 @@
                         $(sprints).each(function() {
                             $('.menu-shift-' + this.parentRelease.id + '-' + (this.orderNumber)).removeClass('hidden');
                             if (selectOnSprintPlan.length) {
-                                selectOnSprintPlan.selectmenu('add', this.id, this.parentRelease.name + ' - ' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber);
+                                selectOnSprintPlan.append($('<option></option>').val(this.id).html(this.parentRelease.name + ' - ' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber));
+                                selectOnSprintPlan.trigger('change');
                             }
                             if (selectOnTimeline.length) {
-                                selectOnTimeline.selectmenu('add', $.icescrum.jsonToDate(this.startDate).getTime(), this.parentRelease.name + ' - ' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber, this.id);
+                                selectOnTimeline.append($('<option></option>').val($.icescrum.jsonToDate(this.startDate).getTime()).attr('id',this.id).html(this.parentRelease.name + ' - ' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber));
+                                selectOnTimeline.trigger('change');
                             }
                             if (template) {
                                 this.add = true;
@@ -1041,9 +1055,9 @@
                         }
                         var selectOnTimeline = $("#selectOnTimeline");
                         if (selectOnTimeline.length) {
-                            selectOnTimeline.selectmenu('update', this.id, $.icescrum.jsonToDate(this.startDate).getTime(), this.parentRelease.name + ' - ' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber);
+                            selectOnTimeline.find('option[id='+this.id+']').val($.icescrum.jsonToDate(this.startDate).getTime()).html(this.parentRelease.name + ' - ' + $.icescrum.sprint.i18n.name + ' ' + this.orderNumber);
                         }
-
+                        selectOnTimeline.trigger('change');
                     },
 
                     remove:function(template) {
@@ -1061,11 +1075,12 @@
                             }
                             $('li.menu-shift-' + this.parentRelease.id + '-' + (this.orderNumber)).addClass('hidden');
                             if (selectOnSprintPlan.length) {
-                                selectOnSprintPlan.selectmenu('remove', this.id);
+                                selectOnSprintPlan.find('option[value='+this.id+']').remove();
+                                selectOnSprintPlan.trigger('change');
                             }
                             if (selectOnTimeline.length) {
-                                selectOnTimeline.selectmenu('remove', this.id, true, true);
-
+                                selectOnTimeline.find('option[id='+this.id+']').remove();
+                                selectOnTimeline.trigger('change');
                             }
                         });
                         if ($(tmpl.selector, $(tmpl.view)).length == 0) {
@@ -1258,33 +1273,39 @@
                     add:function() {
                         var select = $('#selectOnTimeline');
                         if (select.length) {
-                            select.selectmenu('add', $.icescrum.jsonToDate(this.startDate).getTime(), this.name, this.id);
+                            select.append($('<option></option>').attr("id",this.id).val($.icescrum.jsonToDate(this.startDate).getTime()).html(this.name));
+                            select.trigger("change");
                         }
                         var release = $('#selectOnReleasePlan');
                         if (release.length) {
-                            release.selectmenu('add', this.id, this.name);
+                            release.append($('<option></option>').val(this.id).html(this.name));
+                            release.trigger("change");
                         }
                     },
 
                     update:function() {
                         var select = $('#selectOnTimeline');
                         if (select.length) {
-                            select.selectmenu('update', this.id, $.icescrum.jsonToDate(this.startDate).getTime(), this.name, true);
+                            select.find('option[id='+this.id+']').val($.icescrum.jsonToDate(this.startDate).getTime()).html(this.name);
+                            select.trigger("change");
                         }
                         var release = $('#selectOnReleasePlan');
                         if (release.length) {
-                            release.selectmenu('update', this.id, this.id, this.name);
+                            release.find('option[value='+this.id+']').html(this.name);
+                            release.trigger("change");
                         }
                     },
 
                     remove:function() {
                         var select = $('#selectOnTimeline');
                         if (select.length) {
-                            select.selectmenu('remove', this.id, true, true);
+                            select.find('option[id='+this.id+']').remove();
+                            select.trigger("change");
                         }
                         var release = $('#selectOnReleasePlan');
                         if (release.length) {
-                            release.selectmenu('remove', this.id, false, true);
+                            release.find('option[value='+this.id+']').remove();
+                            release.trigger("change");
                         }
                     },
 
@@ -1514,7 +1535,7 @@
                         }
                         else {
                             var select = $('.acceptance-test-state-select', acceptanceTest);
-                            select.selectmenu('value', select.find("option[value='" + this.state + "']").index());
+                            select.select2({minimumResultsForSearch:-1});
                         }
                     },
 

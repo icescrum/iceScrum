@@ -64,28 +64,6 @@
     width: 18px;
 }
 
-#window-title-bar-content-timeline .ui-selectmenu, #window-title-bar-content-releasePlan .ui-selectmenu, #window-title-bar-content-sprintPlan .ui-selectmenu {
-    border: none;
-    background: 0 none;
-    font-weight: normal;
-    color: #FFFFFF;
-    display: inline-block;
-    float: left;
-}
-
-#window-title-bar-content-timeline .ui-selectmenu-menu li, #window-title-bar-content-releasePlan .ui-selectmenu-menu li, #window-title-bar-content-sprintPlan .ui-selectmenu-menu li {
-    text-align: right;
-    padding-right: 16px;
-}
-
-#window-title-bar-content-timeline .ui-selectmenu .ui-selectmenu-status, #window-title-bar-content-releasePlan .ui-selectmenu .ui-selectmenu-status, #window-title-bar-content-sprintPlan .ui-selectmenu .ui-selectmenu-status {
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
-    text-decoration: none;
-    font-weight: bold;
-    text-align: right;
-    margin-right: 16px;
-}
-
 #team-details, #project-details {
     position: relative;
 }
@@ -489,11 +467,6 @@ li#li-roles {
 #main .box .box-navigation ul {
     height: 24px;
     border-width: 0 1px;
-}
-
-#main .box .box-navigation .ui-selectmenu-menu {
-    height: auto;
-    border-width: 1px;
 }
 
 .box .box-navigation ul .search-button {

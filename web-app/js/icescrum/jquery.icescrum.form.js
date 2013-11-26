@@ -46,11 +46,13 @@
                         $('select:not(.preserve)', form).each(function() {
                             if (this.id.indexOf('rank') > -1) {
                                 var nextRank = $(this).find('option').size() + 1;
-                                $(this).selectmenu('add', nextRank, nextRank, true);
+                                $(this).append($('<option></option>').val(nextRank).html(nextRank));
                             } else {
-                                $(this).selectmenu('value', 0);
+                                $(this).find('option').removeAttr('selected');
+                                $(this).find('option:first').attr('selected','selected');
                                 $(this).trigger('onchange');
                             }
+                            $(this).trigger('change');
                         });
                         if ($('#datepicker-startDate', form).size() > 0){
                             $.icescrum.updateStartDateDatePicker(data);

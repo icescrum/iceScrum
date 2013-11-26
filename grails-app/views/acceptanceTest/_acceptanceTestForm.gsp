@@ -29,8 +29,14 @@
             <g:if test="${parentStory.state == Story.STATE_INPROGRESS}">
                 <g:set var="acceptanceTestIcons" value="${AcceptanceTestState.values().collect { 'select-icon-acceptance-test icon-acceptance-test' + it.id }}"/>
                 <is:fieldSelect for="acceptanceTest.state" label="is.ui.acceptanceTest.state">
-                    <is:select icons="${acceptanceTestIcons}" id="acceptance-test-state-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.state" styleSelect="dropdown" width="100"
-                               from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}" keys="${AcceptanceTestState.values().id}" value="${acceptanceTest?.state ?: ''}" />
+                    <is:select
+                            icons="${acceptanceTestIcons}"
+                            id="acceptance-test-state-field${acceptanceTest?.id ?: ''}"
+                            name="acceptanceTest.state"
+                            data-minimumResultsForSearch="-1"
+                            from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}"
+                            keys="${AcceptanceTestState.values().id}"
+                            value="${acceptanceTest?.state ?: ''}" />
                 </is:fieldSelect>
             </g:if>
 
@@ -66,8 +72,7 @@
                data-ajax-success="jQuery('#acceptance-test-form-container').hide();
                                   jQuery('#acceptance-test-description-field').val('${is.generateAcceptanceTestTemplate().replaceAll('\n', '\\\\n')}');
                                   jQuery('textarea.selectallonce').one('click',function() { jQuery(this).select(); });
-                                  jQuery('#acceptance-test-name-field').val('');
-                                  jQuery('#acceptance-test-state-field').selectmenu('value', 0);"
+                                  jQuery('#acceptance-test-name-field').val('');"
                href="${createLink([id:parentStory.id, action: 'saveAcceptanceTest', params:[product:params.product]])}">
                 <span class="start"></span>
                 <span class="content">${message(code:'is.button.add')}</span>

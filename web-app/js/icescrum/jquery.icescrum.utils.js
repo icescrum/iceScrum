@@ -276,21 +276,21 @@
             });
 
     $.fn.changeSelectDate = function(date) {
-        var obj = $(this);
-        var id = obj.attr('id');
-        var select = $('#' + id + ' option');
-        var moveTo = -1;
-        select.each(function () {
-            var option = $(this).val();
-            if (option <= date && date >= option) {
-                moveTo += 1;
+        var select = $(this);
+        var id = select.attr('id');
+        var options = $('#' + id + ' option');
+        options.removeAttr('selected');
+        var lastOption = null;
+        options.each(function () {
+            var option = $(this);
+            if (this.value <= date && date >= this.value) {
+                lastOption = option;
             }
         });
-        if (moveTo != -1) {
-            obj.selectmenu('value', moveTo);
-        } else {
-            obj.selectmenu('value', 0);
+        if(lastOption){
+            lastOption.attr('selected','selected');
         }
+        select.trigger("change");
     };
 
     $.fn.liveDraggable = function (opts) {
