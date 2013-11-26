@@ -357,42 +357,9 @@ function attachOnDomUpdate(content){
         });
     });
 
-    $('div[data-autocomplete]',content).each(function(){
-        var elem = $(this),
-            editor = new Medium({
-                element:this,
-                autoHR:false,
-                mode:"partial",
-                maxLength:3000
-            }).getEditor(),
-            range = null,
-            term;
-
-        elem.autocomplete({
-            source: function( request, response ) {
-                request.term = range.startContainer.textContent.substring(0, range.endOffset).split(" ").pop();
-                $.getJSON( elem.data('source'), request, response );
-            },
-            search: function() {
-                range = editor.selection.saveSelection();
-                term = range.startContainer.textContent.substring(0, range.endOffset).split(" ").pop();
-                return term.length >= elem.data('minLength');
-            },
-            select:function(event, ui){
-                range.setStart(range.startContainer, range.startOffset - term.length);
-                editor.selection.restoreSelection( range );
-                console.log(range.startOffset);
-                document.execCommand('insertHTML', false,(range.startOffset == 0 ? '</p>' : '') + '<span data-uid="'+ui.item.value+'">'+ui.item.label.replace(/\n/g, '<br>')+'</span><span>&nbsp;</span>'+ (range.startOffset == 0 ? '</p>' : '') );
-                return false;
-            },
-            focus:function(event,ui){
-                event.preventDefault();
-                return false;
-            },
-            change: function( event, ui ) {
-                console.log('up/down autocomplete');
-            }
-        });
+    $('textarea[data-at]',content).each(function(){
+        var elem = $(this);
+        elem.atwho(elem.data());
     });
 
     $.event.trigger('domUpdate.icescrum',content);

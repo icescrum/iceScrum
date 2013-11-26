@@ -60,7 +60,6 @@ modules = {
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.progress.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.multiFilesUpload.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.functions.js'], bundle: 'icescrum'
-        resource url: [dir: 'js', file: 'medium.js'], nominify: true, bundle: 'icescrum'
     }
 
     'jquery' {
@@ -126,6 +125,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.jeditable.min.js'], nominify:true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.select2.min.js'], nominify: true, bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.atwho.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'icescrum'
         resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'], bundle: 'icescrum'
         resource url: [dir: 'js/markitup/sets/textile', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'

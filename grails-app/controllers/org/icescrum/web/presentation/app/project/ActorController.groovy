@@ -47,7 +47,7 @@ class ActorController {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), storyDescription)
         def result = []
         actors?.each {
-            result << [label: it.name, value: it.uid]
+            result << [name: it.name, uid: it.uid]
         }
         render(result as JSON)
     }

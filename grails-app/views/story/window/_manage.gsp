@@ -93,15 +93,14 @@
         <div class="field-area clearfix">
             <label for="storydescription">Description</label>
             <div class="area area-large" id="storydescription-field">
-                <div data-autocomplete="true"
-                     data-default="${is.generateStoryTemplate()}"
-                     data-source="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
-                     data-min-length="3"
-                     contenteditable="true"
-                     id="storydescription"
-                     class="${story ? '' : 'selectallonce'}">
-                    ${story ? story.description : is.generateStoryTemplate()}
-                </div>
+                <textarea   data-at="a"
+                            data-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
+                            data-default="${is.generateStoryTemplate()}"
+                            data-data="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
+                            id="storydescription"
+                            class="${story ? '' : 'selectallonce'}">
+                            ${story ? story.description : is.generateStoryTemplate()}
+                </textarea>
             </div>
         </div>
 
