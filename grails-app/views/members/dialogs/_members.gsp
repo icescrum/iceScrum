@@ -46,7 +46,7 @@
 
         <g:if test="${!request.admin && (request.inProduct || (request.stakeHolder && product.preferences.hidden))}">
             <is:fieldInput for="leaveTeam" label="is.dialog.members.leave.team" class="productcreator">
-                <button onClick="if (confirm('${message(code:'is.dialog.members.leave.team.confirm').encodeAsJavaScript()}')) {
+                <button type="button" onClick="if (confirm('${message(code:'is.dialog.members.leave.team.confirm').encodeAsJavaScript()}')) {
                                       ${g.remoteFunction(action:'leaveTeam',
                                                          controller:'members',
                                                          params:[product:params.product],
