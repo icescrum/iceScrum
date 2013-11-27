@@ -250,6 +250,9 @@ function attachOnDomUpdate(content){
                 });
                 callback(data);
             },
+            createSearchChoice:function(term, data) {
+                return {id:term, text:term};
+            },
             ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
                 url: element.data('url'),
                 data: function (term) {
