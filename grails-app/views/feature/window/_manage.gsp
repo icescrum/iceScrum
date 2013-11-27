@@ -56,11 +56,7 @@
         <entry:point id="${controllerName}-${actionName}" model="[feature:feature]"/>
 
         <is:fieldFile for='feature.tags' label="is.backlogelement.tags">
-            <ul name="feature.tags">
-              <g:each in="${feature?.tags}">
-                <li>${it}</li>
-              </g:each>
-            </ul>
+            <input type="hidden" name="feature.tags" data-tag="true" value="${feature?.tags?.join(',')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"/>
         </is:fieldFile>
 
         <is:fieldSelect for="featureColor" label="is.feature.color" noborder="true">
@@ -115,7 +111,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="shift+return"
-                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-success="jQuery.icescrum.form.reset"
                    data-ajax-notice="${message(code: 'is.feature.saved').encodeAsJavaScript()}"
@@ -131,7 +127,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="return"
-                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-notice="${message(code: 'is.feature.saved').encodeAsJavaScript()}"
                    data-ajax-success="#${controllerName}"
@@ -151,7 +147,7 @@
                        data-ajax-method="POST"
                        data-ajax-trigger="update_feature"
                        data-shortcut="shift+return"
-                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.feature.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${next ? controllerName+'/edit/'+next : controllerName}"
@@ -169,7 +165,7 @@
                        data-ajax-trigger="update_feature"
                        data-ajax-method="POST"
                        data-shortcut="return"
-                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.feature.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${controllerName}"
@@ -184,7 +180,7 @@
             <a  id="cancelForm"
                 data-shortcut="esc"
                 data-callback="jQuery.icescrum.form.cancel"
-                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                 class="button-s button-s-black" href="#${controllerName}">
                 <span class="start"></span>
                 <span class="content">${message(code: 'is.button.cancel')}</span>
@@ -204,6 +200,3 @@
             events="[[object:'feature',events:['remove']]]"
             callback="if ( feature.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.feature.deleted')}','${controllerName}',true);"/>
 </g:if>
-<jq:jquery>
-    $("ul[name='feature.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
-</jq:jquery>

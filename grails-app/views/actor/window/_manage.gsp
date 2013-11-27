@@ -59,11 +59,7 @@
         </is:fieldArea>
 
         <is:fieldFile for='actor.tags' label="is.backlogelement.tags" noborder="true">
-            <ul name="actor.tags">
-              <g:each in="${actor?.tags}">
-                <li>${it}</li>
-              </g:each>
-            </ul>
+            <input type="hidden" name="actor.tags" data-tag="true" value="${actor?.tags?.join(',')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"/>
         </is:fieldFile>
 
     </is:fieldset>
@@ -105,7 +101,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="shift+return"
-                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-success="jQuery.icescrum.form.reset"
                    data-ajax-notice="${message(code: 'is.actor.saved').encodeAsJavaScript()}"
@@ -121,7 +117,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="return"
-                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-notice="${message(code: 'is.actor.saved').encodeAsJavaScript()}"
                    data-ajax-success="#${controllerName}"
@@ -140,7 +136,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="shift+return"
-                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.actor.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${next ? controllerName+'/edit/'+next : controllerName}"
@@ -157,7 +153,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="return"
-                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.actor.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${controllerName}"
@@ -172,7 +168,7 @@
             <a  id="cancelForm"
                 data-shortcut="esc"
                 data-callback="jQuery.icescrum.form.cancel"
-                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                 class="button-s button-s-black" href="#${controllerName}">
                 <span class="start"></span>
                 <span class="content">${message(code: 'is.button.cancel')}</span>
@@ -192,6 +188,3 @@
             events="[[object:'actor',events:['remove']]]"
             callback="if ( actor.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.actor.deleted')}','${controllerName}',true);"/>
 </g:if>
-<jq:jquery>
-    $("ul[name='actor.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
-</jq:jquery>

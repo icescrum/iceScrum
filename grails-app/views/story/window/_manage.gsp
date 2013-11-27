@@ -43,7 +43,6 @@
                     from="${typesLabels}"
                     keys="${typesKeys}"
                     name="story.type"
-                    data-minimum-result-for-search="-1"
                     value="${story?.type}"/>
         </is:fieldSelect>
 
@@ -105,7 +104,7 @@
         </div>
 
         <is:fieldSelect label="is.backlogelement.tags" for="story.tags" noborder="true">
-            <input type="hidden" name="story.tags" data-tag="true" value="${story?.tags?.join(', ')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}" data-tags="${story?.tags?.join(',')}" />
+            <input type="hidden" name="story.tags" data-tag="true" value="${story?.tags?.join(',')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"/>
         </is:fieldSelect>
 
     </is:fieldset>
@@ -149,7 +148,7 @@
                    data-ajax-method="POST"
                    data-shortcut="shift+return"
                    data-ajax-trigger="add_story"
-                   data-shortcut-on="#${referrer}-form input"
+                   data-shortcut-on="#${referrer}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-success="jQuery.icescrum.form.reset"
                    data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
@@ -165,7 +164,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="return"
-                   data-shortcut-on="#${referrer}-form input"
+                   data-shortcut-on="#${referrer}-form, #${referrer}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
                    data-ajax-success="#${referrer+(params.subid?'/'+params.id:'')}"
@@ -184,7 +183,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="shift+return"
-                       data-shortcut-on="#${referrer}-form input"
+                       data-shortcut-on="#${referrer}-form, #${referrer}-form input:not(.select2-input)"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.story.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${next ? referrer+(params.subid?'/'+params.id:'')+'/editStory/'+next : referrer}"
@@ -201,7 +200,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="return"
-                       data-shortcut-on="#${referrer}-form input"
+                       data-shortcut-on="#${referrer}-form, #${referrer}-form input:not(.select2-input)"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.story.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${referrerUrl?:referrer+(params.subid?'/'+params.id:'')}"
@@ -216,7 +215,7 @@
             <a  id="cancelForm"
                 data-shortcut="esc"
                 data-callback="jQuery.icescrum.form.cancel"
-                data-shortcut-on="#${referrer}-form, #${referrer}-form input"
+                data-shortcut-on="#${referrer}-form, #${referrer}-form input:not(.select2-input)"
                 class="button-s button-s-black" href="#${referrerUrl?:referrer}">
                 <span class="start"></span>
                 <span class="content">${message(code: 'is.button.cancel')}</span>

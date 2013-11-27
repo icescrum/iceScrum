@@ -1,5 +1,3 @@
-var hu;
-
 function getFunction(code, argNames) {
     var fn = window, parts = (code || "").split(".");
     while (fn && parts.length) {
@@ -242,8 +240,16 @@ function attachOnDomUpdate(content){
     $('input[data-tag]', content).each(function(){
         var element = $(this);
         var select = element.select2({
+            width: "200",
             tags:[],
             tokenSeparators: [",", " "],
+            initSelection : function (element, callback) {
+                var data = [];
+                $(element.val().split(",")).each(function () {
+                    data.push({id: this, text: this});
+                });
+                callback(data);
+            },
             ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
                 url: element.data('url'),
                 data: function (term) {

@@ -48,11 +48,7 @@
         </is:fieldArea>
 
         <is:fieldFile for='task.tags' label="is.backlogelement.tags">
-            <ul name="task.tags">
-              <g:each in="${task?.tags}">
-                <li>${it}</li>
-              </g:each>
-            </ul>
+            <input type="hidden" name="task.tags" data-tag="true" value="${task?.tags?.join(',')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"/>
         </is:fieldFile>
 
         <is:fieldSelect for="taskcolor" label="is.task.color" noborder="true">
@@ -113,7 +109,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="shift+return"
-                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-success="jQuery.icescrum.form.reset"
                    data-ajax-notice="${message(code: 'is.task.saved').encodeAsJavaScript()}"
@@ -129,7 +125,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-shortcut="return"
-                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-notice="${message(code: 'is.task.saved').encodeAsJavaScript()}"
                    data-ajax-success="#${controllerName+'/'+sprint.id}"
@@ -148,7 +144,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="shift+return"
-                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.task.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${next ? controllerName+(params.subid?'/'+params.id:'')+'/edit/'+next : controllerName+'/'+sprint.id}"
@@ -165,7 +161,7 @@
                        data-ajax-form="true"
                        data-ajax-method="POST"
                        data-shortcut="return"
-                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                       data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                        data-ajax-begin="jQuery.icescrum.form.checkUploading"
                        data-ajax-notice="${message(code: 'is.task.updated').encodeAsJavaScript()}"
                        data-ajax-success="#${controllerName+'/'+sprint.id}"
@@ -180,7 +176,7 @@
             <a  id="cancelForm"
                 data-shortcut="esc"
                 data-callback="jQuery.icescrum.form.cancel"
-                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input"
+                data-shortcut-on="#${controllerName}-form, #${controllerName}-form input:not(.select2-input)"
                 class="button-s button-s-black" href="#${referrerUrl ?: controllerName+'/'+sprint.id}">
                 <span class="start"></span>
                 <span class="content">${message(code: 'is.button.cancel')}</span>
@@ -199,6 +195,3 @@
             events="[[object:'task',events:['remove']]]"
             callback="if ( task.id != jQuery(this).data('elemid') ) return; jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.task.deleted')}','${controllerName}/${sprint.id}',true);"/>
 </g:if>
-<jq:jquery>
-    $("ul[name='task.tags']").tagit({select:true, tagSource: "${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"});
-</jq:jquery>
