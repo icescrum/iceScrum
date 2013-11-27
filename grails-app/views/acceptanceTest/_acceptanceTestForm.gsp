@@ -33,7 +33,6 @@
                             icons="${acceptanceTestIcons}"
                             id="acceptance-test-state-field${acceptanceTest?.id ?: ''}"
                             name="acceptanceTest.state"
-                            data-minimumResultsForSearch="-1"
                             from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}"
                             keys="${AcceptanceTestState.values().id}"
                             value="${acceptanceTest?.state ?: ''}" />

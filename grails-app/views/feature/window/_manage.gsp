@@ -55,9 +55,9 @@
 
         <entry:point id="${controllerName}-${actionName}" model="[feature:feature]"/>
 
-        <is:fieldFile for='feature.tags' label="is.backlogelement.tags">
+        <is:fieldSelect for='feature.tags' label="is.backlogelement.tags">
             <input type="hidden" name="feature.tags" data-tag="true" value="${feature?.tags?.join(',')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"/>
-        </is:fieldFile>
+        </is:fieldSelect>
 
         <is:fieldSelect for="featureColor" label="is.feature.color" noborder="true">
             <is:select class="featureColor" container=".window-content" width="100" maxHeight="200"

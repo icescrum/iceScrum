@@ -240,7 +240,7 @@ function attachOnDomUpdate(content){
     $('input[data-tag="true"]', content).each(function(){
         var element = $(this);
         var select = element.select2({
-            width: "200",
+            width: "240",
             tags:[],
             tokenSeparators: [",", " "],
             initSelection : function (element, callback) {

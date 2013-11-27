@@ -33,7 +33,6 @@
                         class="acceptance-test-state-select"
                         id="acceptance-test-state-select${acceptanceTest?.id ?: ''}"
                         name="acceptanceTest.state"
-                        data-minimumResultsForSearch="-1"
                         from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}"
                         keys="${AcceptanceTestState.values().id}"
                         value="${acceptanceTest?.state ?: ''}"

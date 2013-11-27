@@ -47,9 +47,9 @@
             <is:area id="taskdescription" name="task.description" value="${task?.description}" large="true" rows="7"/>
         </is:fieldArea>
 
-        <is:fieldFile for='task.tags' label="is.backlogelement.tags">
+        <is:fieldSelect for='task.tags' label="is.backlogelement.tags">
             <input type="hidden" name="task.tags" data-tag="true" value="${task?.tags?.join(',')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"/>
-        </is:fieldFile>
+        </is:fieldSelect>
 
         <is:fieldSelect for="taskcolor" label="is.task.color" noborder="true">
             <is:select id="taskcolor" name="task.color" container=".window-content" width="100" maxHeight="200"

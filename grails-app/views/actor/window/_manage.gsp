@@ -58,9 +58,9 @@
                      value="${actor?.satisfactionCriteria}" rows="3"/>
         </is:fieldArea>
 
-        <is:fieldFile for='actor.tags' label="is.backlogelement.tags" noborder="true">
+        <is:fieldSelect for='actor.tags' label="is.backlogelement.tags" noborder="true">
             <input type="hidden" name="actor.tags" data-tag="true" value="${actor?.tags?.join(',')}" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"/>
-        </is:fieldFile>
+        </is:fieldSelect>
 
     </is:fieldset>
 
