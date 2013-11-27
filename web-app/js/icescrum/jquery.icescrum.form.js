@@ -64,7 +64,7 @@
                                 $.icescrum.updateEndDateDatePicker(data, $.icescrum.product.estimatedSprintsDuration);
                             }
                         }
-                        $('ul.tagit', form).tagit("reset");
+                        $('input[data-tag="true"]').select2('val', '');
                         $("input:visible, textarea:visible", form).first().focus();
                     }
                 }

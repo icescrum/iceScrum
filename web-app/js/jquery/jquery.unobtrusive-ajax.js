@@ -237,7 +237,7 @@ function attachOnDomUpdate(content){
         }
     });
 
-    $('input[data-tag]', content).each(function(){
+    $('input[data-tag="true"]', content).each(function(){
         var element = $(this);
         var select = element.select2({
             width: "200",
@@ -250,16 +250,13 @@ function attachOnDomUpdate(content){
                 });
                 callback(data);
             },
-            createSearchChoice:function(term, data) {
+            createSearchChoice:function (term) {
                 return {id:term, text:term};
             },
             ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
                 url: element.data('url'),
                 data: function (term) {
-                    return {
-                        term: term,
-                        add: element.data('add') ? true : null
-                    };
+                    return {term: term};
                 },
                 results: function (data) {
                     var results = [];

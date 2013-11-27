@@ -148,7 +148,7 @@
                    data-ajax-method="POST"
                    data-shortcut="shift+return"
                    data-ajax-trigger="add_story"
-                   data-shortcut-on="#${referrer}-form input:not(.select2-input)"
+                   data-shortcut-on="#${referrer}-form, #${referrer}-form input:not(.select2-input)"
                    data-ajax-begin="jQuery.icescrum.form.checkUploading"
                    data-ajax-success="jQuery.icescrum.form.reset"
                    data-ajax-notice="${message(code: 'is.story.saved').encodeAsJavaScript()}"
