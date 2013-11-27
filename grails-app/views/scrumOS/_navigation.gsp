@@ -114,16 +114,15 @@
                           </li>
                       </g:each>
                   </g:if>
-                  <g:if test="${publicProductsExists || productFilteredsListCount > 10}">
+                  <g:if test="${publicProductsExist || moreProductsExist}">
                       <li>
                           <a href="${createLink(controller:'project', action:'browse')}" data-ajax="true">
-                              <g:if test="${productFilteredsListCount > 10}">
-                                    <g:message code="is.projectmenu.submenu.project.more"/>
-                                </g:if>
-                                <g:else>
-                                    <g:message code="is.projectmenu.submenu.project.browse"/>
-                                </g:else>
-                            </a>
+                              <g:if test="${moreProductsExist}">
+                                  <g:message code="is.projectmenu.submenu.project.more"/>
+                              </g:if><g:else>
+                                  <g:message code="is.projectmenu.submenu.project.browse"/>
+                              </g:else>
+                          </a>
                       </li>
                   </g:if>
               </ul>
