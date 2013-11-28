@@ -516,7 +516,7 @@ td.jqplot-table-legend {
     padding-top: 4px;
 }
 
-#search-panel ul li .datePicker, #search-panel ul li #tag, #search-panel ul li #term {
+#search-panel ul li .datePicker, #search-panel ul li .select2-container, #search-panel ul li #tag, #search-panel ul li #term {
     vertical-align: middle;
     display: inline-block;
     float:right;
