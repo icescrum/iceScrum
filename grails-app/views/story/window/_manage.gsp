@@ -97,9 +97,7 @@
                             data-default="${is.generateStoryTemplate()}"
                             data-data="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
                             id="storydescription"
-                            class="${story ? '' : 'selectallonce'}">
-                            ${story ? story.description : is.generateStoryTemplate()}
-                </textarea>
+                            class="${story ? '' : 'selectallonce'}">${story ? story.description : is.generateStoryTemplate()}</textarea>
             </div>
         </div>
 
