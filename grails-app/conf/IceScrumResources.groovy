@@ -42,6 +42,7 @@ modules = {
         resource url: [dir: "themes/$icescrum.theme/css", file: 'css3.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "themes/$icescrum.theme/css", file: 'typo.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "themes/$icescrum.theme/css", file: 'select2.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "themes/$icescrum.theme/css", file: 'select2-overriden.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "js/jquery", file: 'jqplot/css/jquery.jqplot.min.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "themes/$icescrum.theme/css", file: 'bacasable.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
     }
