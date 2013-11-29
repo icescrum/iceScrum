@@ -26,7 +26,7 @@
             from="${releases*.name}"
             keys="${releases*.id}"
             name="selectOnReleasePlan" value="${params.id}"
-            width="200"
+            width="225"
             class="title-bar-select2"
             data-dropdown-css-class="title-bar-select2"
             onchange="\$.icescrum.openWindow('${controllerName}/'+this.value)"/>

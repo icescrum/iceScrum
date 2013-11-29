@@ -27,6 +27,11 @@
     background-position: right -13px;
 }
 
+.select2-results .select2-result-label {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
 .select2-drop-active {
     border-color: #8fabc0;
 }
@@ -65,10 +70,12 @@
 }
 
 .select2-search {
+    font-size: 11px;
     min-height: 20px;
 }
 
 .select2-search input {
+    height: 24px !important;
     min-height: 20px;
 }
 
@@ -170,10 +177,14 @@
 .title-bar-select2.select2-container .select2-choice {
     text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
     text-align: right;
-    font-weight: bold;
     color: white;
     background: none;
     border: 0;
+}
+
+.title-bar-select2.select2-container .select2-chosen {
+    line-height: 20px;
+    font-weight: bold;
 }
 
 .title-bar-select2.select2-container .select2-choice .select2-arrow {
@@ -186,5 +197,9 @@
 
 .title-bar-select2.select2-drop-active {
     margin-left:5px;
-    margin-top:2px;
+    margin-top:3px;
+}
+
+.title-bar-select2 .select2-search {
+    margin-top: 3px;
 }

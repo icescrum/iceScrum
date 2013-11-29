@@ -28,7 +28,7 @@
             keys="${releasesDate}"
             optionId="${releasesIds}"
             value="${currentRelease}"
-            width="200"
+            width="225"
             class="title-bar-select2"
             data-dropdown-css-class="title-bar-select2"
             onChange="timelineTl.getBand(0).setMinVisibleDate(parseInt(this.value.split('-')[0]));"/>
