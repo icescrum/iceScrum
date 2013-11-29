@@ -28,6 +28,9 @@
             keys="${releasesDate}"
             optionId="${releasesIds}"
             value="${currentRelease}"
+            width="200"
+            class="title-bar-select2"
+            data-dropdown-css-class="title-bar-select2"
             onChange="timelineTl.getBand(0).setMinVisibleDate(parseInt(this.value.split('-')[0]));"/>
 </li>
 <is:onStream on="#window-title-bar-content-timeline"

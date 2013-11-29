@@ -30,6 +30,9 @@
                 keys="${sprintsId}"
                 value="${sprint.id}"
                 name="selectOnSprintPlan"
+                width="200"
+                class="title-bar-select2"
+                data-dropdown-css-class="title-bar-select2"
                 onchange="document.location.hash = '${controllerName}/'+this.value;"/>
     </li>
 

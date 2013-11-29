@@ -107,16 +107,17 @@
 }
 
 .select2-results .select2-highlighted {
-    background: #60a9f6;
+    border: 1px solid #2890f0;
+    text-shadow: rgba(0, 0, 0, 0.6) 1px 1px 0px;;
+    background: rgb(116,180,245); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(116,180,245,1) 0%, rgba(88,164,244,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(116,180,245,1)), color-stop(100%,rgba(88,164,244,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(116,180,245,1) 0%,rgba(88,164,244,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top,  rgba(116,180,245,1) 0%,rgba(88,164,244,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(116,180,245,1) 0%,rgba(88,164,244,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#74b4f5', endColorstr='#58a4f4',GradientType=0 ); /* IE6-9 */
 }
 
-.select2-container-multi .select2-choices {
-    min-height: 20px;
-}
-
-.select2-container-multi.select2-container-active .select2-choices {
-    border-color: #8fabc0;
-}
 
 .select2-default {
     color: #6d6d6d !important;
@@ -138,6 +139,7 @@
 }
 
 .select2-container-multi.select2-container-active .select2-choices {
+    border-color: #8fabc0;
     background: #ffffff;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -161,4 +163,28 @@
     background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* IE10+ */
     background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ebebeb',GradientType=0 ); /* IE6-9 */
+}
+
+/* Title bars */
+
+.title-bar-select2.select2-container .select2-choice {
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+    text-align: right;
+    font-weight: bold;
+    color: white;
+    background: none;
+    border: 0;
+}
+
+.title-bar-select2.select2-container .select2-choice .select2-arrow {
+    background: none;
+}
+
+.title-bar-select2.select2-dropdown-open .select2-choice .select2-arrow {
+    background: none;
+}
+
+.title-bar-select2.select2-drop-active {
+    margin-left:5px;
+    margin-top:2px;
 }
