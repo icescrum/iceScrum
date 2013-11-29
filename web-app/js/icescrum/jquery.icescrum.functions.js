@@ -816,8 +816,8 @@
                             if (storyDescription.val() == defaultDescription) {
                                 storyDescription.val('');
                             }
-                            this.value == 2 ? $('#storyaffectVersion-field-input').show() : $('#storyaffectVersion-field-input').hide();
                         }
+                        this.value == 2 ? $('#storyaffectVersion-field-input').show() : $('#storyaffectVersion-field-input').hide();
                     }
                 },
 
