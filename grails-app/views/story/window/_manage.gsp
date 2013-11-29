@@ -40,6 +40,7 @@
         <is:fieldSelect for="story.type" label="is.story.type">
             <is:select
                     data-change="jQuery.icescrum.story.displayOptions"
+                    width="150"
                     from="${typesLabels}"
                     keys="${typesKeys}"
                     name="story.type"
@@ -52,6 +53,7 @@
 
         <is:fieldSelect label="is.feature" for="story.feature">
             <is:select name="feature.id"
+                       width="240"
                        noSelection="['':message(code:'is.ui.backlog.choose.feature')]"
                        optionValue="name"
                        optionKey="id"
@@ -62,6 +64,7 @@
         <g:if test="${rankList}">
             <is:fieldSelect label="is.story.rank" for="story.rank">
                 <is:select from="${rankList}"
+                           width="50"
                            name="story.rank"
                            value="${story.rank}"/>
             </is:fieldSelect>
@@ -70,6 +73,7 @@
         <g:if test="${storiesSelect}">
             <is:fieldSelect label="is.story.dependsOn" for="story.dependsOn">
                 <is:select name="dependsOn.id"
+                           width="240"
                            noSelection="['':message(code:'is.ui.backlog.choose.dependsOn')]"
                            optionValue="${{ el -> el.name+' ('+el.uid+')' }}"
                            optionKey="id"
