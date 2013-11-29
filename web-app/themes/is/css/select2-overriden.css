@@ -1,8 +1,17 @@
 .select2-container .select2-choice {
-    height: 20px;
+    color: #000000;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
     font-size: 11px;
-    border: 1px solid #cacaca;
     line-height: 20px;
+    height: 20px;
+    border-color: #cacaca;
+    background: #ffffff;
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(235,235,235,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ebebeb',GradientType=0 ); /* IE6-9 */
 }
 
 .select2-container .select2-choice > .select2-chosen {
@@ -11,7 +20,7 @@
 
 .select2-container .select2-choice abbr {
     top: 6px;
-    background: url('../images/select2.png') right -2px no-repeat;
+    background-position: right -2px;
 }
 
 .select2-container .select2-choice abbr:hover {
@@ -19,11 +28,11 @@
 }
 
 .select2-drop-active {
-    border: 1px solid #8fabc0;
+    border-color: #8fabc0;
 }
 
 .select2-drop.select2-drop-above.select2-drop-active {
-    border-top: 1px solid #8fabc0;
+    border-top-color: #8fabc0;
 }
 
 .select2-drop {
@@ -31,20 +40,28 @@
 }
 
 .select2-container .select2-choice .select2-arrow {
-    display: inline-block;
-    width: 18px;
-    height: 100%;
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    border:none;
-
-    background:none;
+    border: 0;
+    background: #ffffff;
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(235,235,235,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ebebeb',GradientType=0 ); /* IE6-9 */
 }
 
 .select2-container .select2-choice .select2-arrow b {
-    background: url('../images/select2.png') no-repeat 0 -2px;
+    background-position: 0 -2px;
+}
+
+.select2-results .select2-no-results,
+.select2-results .select2-searching,
+.select2-results .select2-selection-limit {
+    background: #ffffff;
+}
+
+.select2-search input {
+    border-color: #cacaca;
 }
 
 .select2-search {
@@ -57,19 +74,24 @@
 
 .select2-container-active .select2-choice,
 .select2-container-active .select2-choices {
-    border: 1px solid #8fabc0;
+    border-color: #8fabc0;
     -webkit-box-shadow: none;
     box-shadow: none;
 
 }
 
 .select2-dropdown-open .select2-choice {
-    background: none;
+    background: #ffffff
 }
 
 .select2-dropdown-open.select2-drop-above .select2-choice,
 .select2-dropdown-open.select2-drop-above .select2-choices {
-    border: 1px solid #64a8f4;
+    border-color: #64a8f4;
+}
+
+
+.select2-dropdown-open .select2-choice .select2-arrow {
+    background: #ffffff;
 }
 
 .select2-dropdown-open .select2-choice .select2-arrow b {
@@ -81,7 +103,7 @@
 }
 
 .select2-results li {
-    padding: 0px;
+    padding: 0;
 }
 
 .select2-results .select2-highlighted {
@@ -93,10 +115,50 @@
 }
 
 .select2-container-multi.select2-container-active .select2-choices {
-    border: 1px solid #8fabc0;
+    border-color: #8fabc0;
 }
 
 .select2-default {
     color: #6d6d6d !important;
 }
 
+/* Multi select (tags...) */
+
+.select2-container-multi .select2-choices {
+    font-size: 11px;
+    border-radius: 2px;
+    border-color: #cacaca;
+    background: #ffffff /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(235,235,235,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ebebeb',GradientType=0 ); /* IE6-9 */
+}
+
+.select2-container-multi.select2-container-active .select2-choices {
+    background: #ffffff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input {
+    color: #000000;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+    background: #ffffff;
+    border-color: #cacaca;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice-focus {
+    background: #ebebeb;
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(235,235,235,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ebebeb',GradientType=0 ); /* IE6-9 */
+}
