@@ -19,7 +19,7 @@
 }
 
 .select2-container .select2-choice abbr {
-    top: 6px;
+    top: 5px;
     background-position: right -2px;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .select2-container .select2-choice .select2-arrow b {
-    background-position: 0 -2px;
+    background-position: 0 -3px;
 }
 
 .select2-results .select2-no-results,
@@ -102,7 +102,7 @@
 }
 
 .select2-dropdown-open .select2-choice .select2-arrow b {
-    background-position: -18px -2px;
+    background-position: -18px -3px;
 }
 
 .select2-results {
@@ -202,4 +202,16 @@
 
 .title-bar-select2 .select2-search {
     margin-top: 3px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {
+    .select2-container .select2-choice .select2-arrow b {
+        margin-top:1px;
+    }
+    .select2-container .select2-choice abbr {
+        background-position: right -1px;
+    }
+    .select2-container .select2-choice abbr:hover {
+        background-position: right -12px;
+    }
 }
