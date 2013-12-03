@@ -222,7 +222,6 @@ function getFunction(code, argNames) {
 
 function attachOnDomUpdate(content){
 
-    // TODO make it work for contenteditable story description
     $('textarea.selectallonce',content).one('click', function() {
         $(this).select();
     });

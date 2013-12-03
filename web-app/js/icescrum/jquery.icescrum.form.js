@@ -24,14 +24,12 @@
                     reset:function(data, status, xhr, element) {
                         var form = element.parents('form:first');
                         form.removeClass('updating');
-                        // TODO make it work with contenteditable for story description
                         $(':input', form)
                                 .not('.preserve')
                                 .not(':button, :submit, :reset, :hidden')
                                 .val('')
                                 .removeAttr('checked')
                                 .removeAttr('selected');
-                        // TODO make it work with contenteditable for story description
                         $(':input[data-default]', form).each(function() {
                             var $this = $(this);
                             $this.val($this.data('default'))
