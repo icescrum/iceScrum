@@ -244,8 +244,12 @@ class ReleasePlanController {
         }
     }
 
-    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def releaseBurndownChart = {
+        forward(action:"releaseBurndownChartCached", params:params)
+    }
+
+    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
+    def releaseBurndownChartCached = {
         withRelease{ Release release ->
             def values = releaseService.releaseBurndownValues(release)
             if (values.size() > 0) {
@@ -263,8 +267,12 @@ class ReleasePlanController {
         }
     }
 
-    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def releaseParkingLotChart = {
+        forward(action:"releaseParkingLotChartCached", params:params)
+    }
+
+    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
+    def releaseParkingLotChartCached = {
         withRelease{ Release release ->
             def values = featureService.releaseParkingLotValues(release)
 
@@ -285,8 +293,12 @@ class ReleasePlanController {
         }
     }
 
-    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
     def notes = {
+        forward(action:"notesCached", params:params)
+    }
+
+    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
+    def notesCached = {
         withRelease{ Release release ->
             render(status:200,
                     template: 'window/notes',

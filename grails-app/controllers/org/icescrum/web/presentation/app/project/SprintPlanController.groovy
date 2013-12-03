@@ -343,8 +343,12 @@ class SprintPlanController {
         }
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurndownRemainingChart = {
+        forward(action: "sprintBurndownRemainingChartCached", params:params)
+    }
+
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
+    def sprintBurndownRemainingChartCached = {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurndownRemainingValues(sprint)
             if (values.size() > 0) {
@@ -359,9 +363,13 @@ class SprintPlanController {
         }
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupTasksChart = {
-        withSprint{ Sprint sprint ->
+        forward(action:"sprintBurnupTasksChartCached",params:params)
+    }
+
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
+    def sprintBurnupTasksChartCached = {
+            withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupTasksValues(sprint)
             if (values.size() > 0) {
                 render(template: 'charts/sprintBurnupTasksChart', model: [
@@ -375,8 +383,12 @@ class SprintPlanController {
         }
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupStoriesChart = {
+        forward(action:"sprintBurnupStoriesChartCached",params:params)
+    }
+
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
+    def sprintBurnupStoriesChartCached = {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupStoriesValues(sprint)
             if (values.size() > 0) {
@@ -391,8 +403,12 @@ class SprintPlanController {
         }
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupPointsChart = {
+        forward(action:"sprintBurnupPointsChartCached",params:params)
+    }
+
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
+    def sprintBurnupPointsChartCached = {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupStoriesValues(sprint)
             if (values.size() > 0) {
@@ -501,8 +517,12 @@ class SprintPlanController {
         }
     }
 
-   @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
     def notes = {
+        forward(action: "notesCached", params:params)
+    }
+
+    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
+    def notesCached = {
         withSprint{ Sprint sprint ->
             render(status:200,
                    template: 'window/notes',
