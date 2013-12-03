@@ -818,6 +818,10 @@
                             }
                         }
                         this.value == 2 ? $('#storyaffectVersion-field-input').show() : $('#storyaffectVersion-field-input').hide();
+                    },
+
+                    storyTemplate:function(story) {
+                        return story.description ? story.description.replace(/A\[.+?-(.*?)\]/g, "$1") : "&nbsp;";
                     }
                 },
 
