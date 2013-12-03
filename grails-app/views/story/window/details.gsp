@@ -19,6 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Manuarii Stein (manuarii.stein@icescrum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
 <%@ page import="grails.plugin.fluxiable.ActivityLink; grails.plugin.fluxiable.Activity;org.icescrum.core.domain.Story" %>
@@ -67,7 +68,7 @@
                     <is:panelLine legend="${message(code:'is.story.origin')}"
                                   rendered="${story.origin}">${story.origin?.encodeAsHTML()?:null}</is:panelLine>
                     <is:panelLine legend="${message(code:'is.backlogelement.description')}">
-                        ${story.description?.encodeAsHTML()?.encodeAsNL2BR()}
+                        ${is.storyDescription([story: story, displayBR: true])}
                     </is:panelLine>
                     <is:panelLine legend="${message(code:'is.backlogelement.notes')}">
                         <g:if test="${story.notes}">

@@ -91,7 +91,7 @@
                     name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/><g:message
                     code="${story.feature?.name?.encodeAsHTML()?:message(code:'is.ui.sandbox.manage.chooseFeature')}"/></is:tableColumn>
             <is:tableColumn
-                    editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${story.description?.encodeAsHTML()}</is:tableColumn>
+                    editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${story.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
             <is:tableColumn editable="[type:'richarea',disabled:!request.productOwner,name:'notes']"><div class="rich-content"><wikitext:renderHtml
                     markup="Textile">${story.notes}</wikitext:renderHtml></div></is:tableColumn>
         </is:tableRows>
