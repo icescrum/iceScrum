@@ -33,10 +33,7 @@
         <g:if test="${request.admin}">
             <is:fieldSelect for="creator" label="is.role.owner" class="productcreator">
                 <is:select
-                        container="#form-project"
                         width="240"
-                        maxHeight="200"
-                        styleSelect="dropdown"
                         from="${possibleOwners*.name}"
                         keys="${possibleOwners*.id}"
                         name="creator"
@@ -68,7 +65,7 @@
                                 id="members"
                                 name="team.members"
                                 appendTo="#member-autocomplete"
-                                onSelect="jQuery('.members-list').jqoteapp('#user-tmpl', ui.item)"
+                                onSelect="attachOnDomUpdate(jQuery('.members-list').jqoteapp('#user-tmpl', ui.item));"
                                 renderItem="${link}"
                                 minLength="2"/>
             </is:fieldInput>
@@ -85,11 +82,8 @@
                     <span class="fullname">${is.truncated(value:member.name,size:17)}</span>
                     <span class="activity">${member.activity}</span>
                     <input type="hidden" name="members.${member.id}" value="${member.id}"/>
-                     <is:select container="#member${member.id}"
-                                width="110"
-                                maxHeight="200"
+                     <is:select width="110"
                                 id="member-role-select-${member.id}"
-                                styleSelect="dropdown"
                                 disabled="${!ownerOrSm}"
                                 from="${rolesNames}"
                                 keys="${rolesKeys}"

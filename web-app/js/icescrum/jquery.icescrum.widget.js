@@ -11,10 +11,11 @@
                                     if (data == ''){
                                         $.icescrum.removeFromWidgetsList(id);
                                     } else{
-                                        $(data).appendTo($.icescrum.o.widgetContainer);
+                                        var widget = $(data).appendTo($.icescrum.o.widgetContainer);
                                         if (callback) {
                                             callback();
                                         }
+                                        attachOnDomUpdate(widget);
                                     }
                                 },
                                 error:function() {

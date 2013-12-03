@@ -70,7 +70,7 @@
         </is:fieldInput>
 
         <is:fieldSelect for="language" label="is.user.preferences.language" noborder="true">
-          <is:localeSelecter container="#registerForm" width="170" styleSelect="dropdown" name="preferences.language"/>
+          <is:localeSelecter width="170" name="preferences.language"/>
         </is:fieldSelect>
         
         <is:fieldInformation>

@@ -37,11 +37,8 @@
         <span class="fullname">?**=name**?</span>
         <span class="activity">?**=activity**?</span>
         <input type="hidden" name="members.?**=this.id**?" value="?**=this.id**?"/>
-         <is:select container="#member?**=this.id**?"
-                    width="110"
-                    maxHeight="200"
+         <is:select width="110"
                     id="?**=id**?"
-                    styleSelect="dropdown"
                     from="${BundleUtils.roles.values().collect {v -> message(code: v)}}"
                     keys="${BundleUtils.roles.keySet().asList()}"
                     name="role.?**=this.id**?"

@@ -32,20 +32,26 @@
         </is:fieldInput>
 
         <is:fieldSelect label="is.actor.instances" for="actor.instances">
-            <is:select container=".window-content" width="100" maxHeight="200" styleSelect="dropdown"
-                       from="${instancesValues}" keys="${instancesKeys}" name="actor.instances"
+            <is:select width="100"
+                       from="${instancesValues}"
+                       keys="${instancesKeys}"
+                       name="actor.instances"
                        value="${actor?.instances}"/>
         </is:fieldSelect>
 
         <is:fieldSelect label="is.actor.it.level" for="actor.expertnessLevel">
-            <is:select container=".window-content" width="100" maxHeight="200" styleSelect="dropdown"
-                       from="${levelsValues}" keys="${levelsKeys}" name="actor.expertnessLevel"
+            <is:select width="100"
+                       from="${levelsValues}"
+                       keys="${levelsKeys}"
+                       name="actor.expertnessLevel"
                        value="${actor?.expertnessLevel}"/>
         </is:fieldSelect>
 
         <is:fieldSelect label="is.actor.use.frequency" for="actor.useFrequency">
-            <is:select container=".window-content" width="100" maxHeight="200" styleSelect="dropdown"
-                       from="${frequenciesValues}" keys="${frequenciesKeys}" name="actor.useFrequency"
+            <is:select width="100"
+                       from="${frequenciesValues}"
+                       keys="${frequenciesKeys}"
+                       name="actor.useFrequency"
                        value="${actor?.useFrequency}"/>
         </is:fieldSelect>
 

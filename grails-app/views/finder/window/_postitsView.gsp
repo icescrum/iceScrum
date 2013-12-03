@@ -64,152 +64,187 @@
                     <li>
                         <h3 class="${params.withStories ? 'active' : ''}"><a href="#">${g.message(code:'is.ui.finder.filters.stories')} <input type="checkbox" class="hidden" ${params.withStories ? 'checked="checked"' : ''} name="withStories"/></a></h3>
                         <ul>
-                            <li>${g.message(code:'is.story.creator')}<is:select width="150" maxHeight="200"
-                                                                                styleSelect="dropdown"
+                            <li>${g.message(code:'is.story.creator')}<is:select width="150"
                                                                                 value="${params.story?.creator}"
-                                                                                name="story.creator" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                                optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${creators}"/>
+                                                                                name="story.creator"
+                                                                                noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                                optionValue="${{el -> el.firstName+' '+el.lastName}}"
+                                                                                optionKey="id"
+                                                                                from="${creators}"/>
                             </li>
-                            <li>${g.message(code:'is.story.type')}<is:select   width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
+                            <li>${g.message(code:'is.story.type')}<is:select   width="150"
                                                                                value="${params.story?.type}"
-                                                                               name="story.type" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.storyTypes}"/>
+                                                                               name="story.type"
+                                                                               noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                               optionValue="${{ el -> message(code:el.value) }}"
+                                                                               optionKey="key"
+                                                                               from="${BundleUtils.storyTypes}"/>
                             </li>
-                            <li>${g.message(code:'is.feature')}<is:select width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
+                            <li>${g.message(code:'is.feature')}<is:select      width="150"
                                                                                value="${params.story?.feature}"
-                                                                               name="story.feature" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="name" optionKey="id" from="${product.features}"/>
+                                                                               name="story.feature"
+                                                                               noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                               optionValue="name"
+                                                                               optionKey="id"
+                                                                               from="${product.features}"/>
                             </li>
-                            <li>${g.message(code:'is.actor')}<is:select width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
-                                                                               value="${params.story?.actor}"
-                                                                               name="story.actor" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="name" optionKey="id" from="${product.actors}"/></li>
-                            <li>${g.message(code:'is.story.affectVersion')}<is:select width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
-                                                                               value="${params.story?.affectedVersion}"
-                                                                               name="story.affectedVersion" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               from="${product.getVersions(false, true)}"/>
+                            <li>${g.message(code:'is.actor')}<is:select width="150"
+                                                                        value="${params.story?.actor}"
+                                                                        name="story.actor"
+                                                                        noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                        optionValue="name"
+                                                                        optionKey="id"
+                                                                        from="${product.actors}"/></li>
+                            <li>${g.message(code:'is.story.affectVersion')}<is:select width="150"
+                                                                                      value="${params.story?.affectedVersion}"
+                                                                                      name="story.affectedVersion"
+                                                                                      noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                                      from="${product.getVersions(false, true)}"/>
                             </li>
-                            <li>${g.message(code:'is.story.deliveredVersion')}<is:select width="150" maxHeight="200"
-                                                                                         styleSelect="dropdown"
+                            <li>${g.message(code:'is.story.deliveredVersion')}<is:select width="150"
                                                                                          value="${params.story?.deliveredVersion}"
-                                                                                         name="story.deliveredVersion" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                                         name="story.deliveredVersion"
+                                                                                         noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
                                                                                          from="${product.getVersions(true, false)}"/>
                             </li>
-                            <li>${g.message(code:'is.story.state')}<is:select width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
-                                                                               value="${params.story?.state}"
-                                                                               name="story.state" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.storyStates}"/>
+                            <li>${g.message(code:'is.story.state')}<is:select width="150"
+                                                                              value="${params.story?.state}"
+                                                                              name="story.state"
+                                                                              noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                              optionValue="${{ el -> message(code:el.value) }}"
+                                                                              optionKey="key"
+                                                                              from="${BundleUtils.storyStates}"/>
                             </li>
-                            <li>${g.message(code:'is.story.effort')}<is:select width="150" maxHeight="200"
-                                                                              styleSelect="dropdown"
-                                                                              value="${params.story?.effort}"
-                                                                              name="story.effort" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                              optionValue="value" optionKey="key" from="${suiteSelect}"/>
+                            <li>${g.message(code:'is.story.effort')}<is:select width="150"
+                                                                               value="${params.story?.effort}"
+                                                                               name="story.effort"
+                                                                               noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                               optionValue="value"
+                                                                               optionKey="key"
+                                                                               from="${suiteSelect}"/>
                             </li>
-                            <li>${g.message(code:'is.story.dependsOn')}<is:select width="150" maxHeight="200"
-                                                                                  styleSelect="dropdown"
+                            <li>${g.message(code:'is.story.dependsOn')}<is:select width="150"
                                                                                   value="${params.story?.dependsOn}"
-                                                                                  name="story.dependsOn" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                                  optionValue="${{ el -> el.uid+' - '+el.name }}" optionKey="id" from="${product.stories}"/>
+                                                                                  name="story.dependsOn"
+                                                                                  noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                                  optionValue="${{ el -> el.uid+' - '+el.name }}"
+                                                                                  optionKey="id"
+                                                                                  from="${product.stories}"/>
                             </li>
-                            <li>${g.message(code:'is.release')}<is:select width="150" maxHeight="200"
-                                                                           styleSelect="dropdown"
-                                                                           value="${params.story?.parentRelease}"
-                                                                           name="story.parentRelease" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                           optionValue="name" optionKey="id" from="${product.releases}"/>
+                            <li>${g.message(code:'is.release')}<is:select width="150"
+                                                                          value="${params.story?.parentRelease}"
+                                                                          name="story.parentRelease"
+                                                                          noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                          optionValue="name"
+                                                                          optionKey="id"
+                                                                          from="${product.releases}"/>
                             </li>
-                            <li>${g.message(code:'is.sprint')}<is:select width="150" maxHeight="200"
-                                                                           styleSelect="dropdown"
-                                                                           value="${params.story?.parentSprint}"
-                                                                           name="story.parentSprint" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                           optionValue="${{el -> 'R'+el.parentRelease.orderNumber +' S'+ el.orderNumber}}" optionKey="id"
-                                                                           from="${product.releases*.sprints.flatten()}"/>
+                            <li>${g.message(code:'is.sprint')}<is:select width="150"
+                                                                         value="${params.story?.parentSprint}"
+                                                                         name="story.parentSprint"
+                                                                         noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                         optionValue="${{el -> 'R'+el.parentRelease.orderNumber +' S'+ el.orderNumber}}" optionKey="id"
+                                                                         from="${product.releases*.sprints.flatten()}"/>
                             </li>
                         </ul>
                     </li>
                     <li>
                         <h3 class="${params.withTasks ? 'active' : ''}"><a href="#">${g.message(code:'is.ui.finder.filters.tasks')} <input type="checkbox" class="hidden" ${params.withTasks ? 'checked="checked"' : ''} name="withTasks"/></a></h3>
                         <ul>
-                            <li>${g.message(code:'is.task.creator')}<is:select width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
+                            <li>${g.message(code:'is.task.creator')}<is:select width="150"
                                                                                value="${params.story?.parentSprint}"
-                                                                               name="task.creator" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${tasksCreators}"/>
+                                                                               name="task.creator"
+                                                                               noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                               optionValue="${{el -> el.firstName+' '+el.lastName}}"
+                                                                               optionKey="id"
+                                                                               from="${tasksCreators}"/>
                             </li>
-                            <li>${g.message(code:'is.task.type')}<is:select   width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
-                                                                               value="${params.task?.type}"
-                                                                               name="task.type" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.taskTypes}"/>
+                            <li>${g.message(code:'is.task.type')}<is:select   width="150"
+                                                                              value="${params.task?.type}"
+                                                                              name="task.type"
+                                                                              noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                              optionValue="${{ el -> message(code:el.value) }}"
+                                                                              optionKey="key"
+                                                                              from="${BundleUtils.taskTypes}"/>
                             </li>
-                            <li>${g.message(code:'is.story')}<is:select  width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
-                                                                               value="${params.task?.parentStory}"
-                                                                               name="task.parentStory" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="name" optionKey="id" from="${product.stories?.findAll{ it.state >= Story.STATE_PLANNED }}"/>
+                            <li>${g.message(code:'is.story')}<is:select  width="150"
+                                                                         value="${params.task?.parentStory}"
+                                                                         name="task.parentStory"
+                                                                         noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                         optionValue="name"
+                                                                         optionKey="id"
+                                                                         from="${product.stories?.findAll{ it.state >= Story.STATE_PLANNED }}"/>
                             </li>
-                            <li>${g.message(code:'is.release')}<is:select width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
-                                                                               value="${params.task?.parentRelease}"
-                                                                               name="task.parentRelease" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="name" optionKey="id" from="${product.releases}"/></li>
-                            <li>${g.message(code:'is.sprint')}<is:select width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
-                                                                               value="${params.task?.parentSprint}"
-                                                                               name="task.parentSprint" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{el -> 'R'+el.parentRelease.orderNumber +' S'+ el.orderNumber}}" optionKey="id"
-                                                                               from="${product.releases*.sprints.flatten()}"/>
+                            <li>${g.message(code:'is.release')}<is:select width="150"
+                                                                          value="${params.task?.parentRelease}"
+                                                                          name="task.parentRelease"
+                                                                          noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                          optionValue="name"
+                                                                          optionKey="id"
+                                                                          from="${product.releases}"/></li>
+                            <li>${g.message(code:'is.sprint')}<is:select width="150"
+                                                                         value="${params.task?.parentSprint}"
+                                                                         name="task.parentSprint"
+                                                                         noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                         optionValue="${{el -> 'R'+el.parentRelease.orderNumber +' S'+ el.orderNumber}}" optionKey="id"
+                                                                         from="${product.releases*.sprints.flatten()}"/>
                             </li>
-                            <li>${g.message(code:'is.task.state')}<is:select  width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
-                                                                               value="${params.task?.state}"
-                                                                               name="task.state" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.taskStates}"/>
+                            <li>${g.message(code:'is.task.state')}<is:select  width="150"
+                                                                              value="${params.task?.state}"
+                                                                              name="task.state"
+                                                                              noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                              optionValue="${{ el -> message(code:el.value) }}"
+                                                                              optionKey="key"
+                                                                              from="${BundleUtils.taskStates}"/>
                             </li>
-                            <li>${g.message(code:'is.task.responsible')}<is:select width="150" maxHeight="200"
-                                                                               styleSelect="dropdown"
+                            <li>${g.message(code:'is.task.responsible')}<is:select width="150"
                                                                                value="${params.task?.responsible}"
-                                                                               name="task.responsible" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="${{el -> el.firstName+' '+el.lastName}}" optionKey="id" from="${tasksResponsibles}"/>
+                                                                               name="task.responsible"
+                                                                               noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                               optionValue="${{el -> el.firstName+' '+el.lastName}}"
+                                                                               optionKey="id"
+                                                                               from="${tasksResponsibles}"/>
                             </li>
                             </ul>
                     </li>
                     <li>
                         <h3 class="${params.withActors ? 'active' : ''}"><a href="#">${g.message(code:'is.ui.finder.filters.actors')} <input type="checkbox" class="hidden" ${params.withActors ? 'checked="checked"' : ''} name="withActors"/></a></h3>
                         <ul>
-                            <li>${g.message(code:'is.actor.instances')}<is:select width="150" maxHeight="200"
-                                                                                   styleSelect="dropdown"
+                            <li>${g.message(code:'is.actor.instances')}<is:select width="150"
                                                                                    value="${params.actor?.instance}"
-                                                                                   name="actor.instance" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                                   optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.actorInstances}"/>
+                                                                                   name="actor.instance"
+                                                                                   noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                                   optionValue="${{ el -> message(code:el.value) }}"
+                                                                                   optionKey="key"
+                                                                                   from="${BundleUtils.actorInstances}"/>
                             </li>
-                            <li>${g.message(code:'is.actor.use.frequency')}<is:select width="150" maxHeight="200"
-                                                                                       styleSelect="dropdown"
+                            <li>${g.message(code:'is.actor.use.frequency')}<is:select width="150"
                                                                                        value="${params.actor?.frequency}"
-                                                                                       name="actor.frequency" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                                       optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.actorFrequencies}"/>
+                                                                                       name="actor.frequency"
+                                                                                       noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                                       optionValue="${{ el -> message(code:el.value) }}"
+                                                                                       optionKey="key" from="${BundleUtils.actorFrequencies}"/>
                             </li>
-                            <li>${g.message(code:'is.actor.it.level')}<is:select width="150" maxHeight="200"
-                                                                                       styleSelect="dropdown"
-                                                                                       value="${params.actor?.level}"
-                                                                                       name="actor.level" noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                                       optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.actorLevels}"/>
+                            <li>${g.message(code:'is.actor.it.level')}<is:select width="150"
+                                                                                 value="${params.actor?.level}"
+                                                                                 name="actor.level"
+                                                                                 noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
+                                                                                 optionValue="${{ el -> message(code:el.value) }}"
+                                                                                 optionKey="key"
+                                                                                 from="${BundleUtils.actorLevels}"/>
                             </li>
                         </ul>
                     </li>
                     <li>
                         <h3 class="${params.withFeatures ? 'active' : ''}"><a href="#">${g.message(code:'is.ui.finder.filters.features')} <input type="checkbox" class="hidden" ${params.withFeatures ? 'checked="checked"' : ''} name="withFeatures"/></a></h3>
                         <ul>
-                            <li>Type<is:select   width="150" maxHeight="200"
-                                                   styleSelect="dropdown"
-                                                   value="${params.feature?.type}"
-                                                   name="feature.type" noSelection="['':'Choose a type']"
-                                                   optionValue="${{ el -> message(code:el.value) }}" optionKey="key" from="${BundleUtils.featureTypes}"/>
+                            <li>Type<is:select   width="150"
+                                                 value="${params.feature?.type}"
+                                                 name="feature.type"
+                                                 noSelection="['':'Choose a type']"
+                                                 optionValue="${{ el -> message(code:el.value) }}"
+                                                 optionKey="key"
+                                                 from="${BundleUtils.featureTypes}"/>
                             </li>
                         </ul>
                     </li>

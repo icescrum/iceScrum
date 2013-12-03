@@ -35,7 +35,7 @@
         </is:fieldInformation>
         <g:each in="${mapping}" var="mapValue" status="index">
           <is:fieldSelect for="mapping.${mapValue.key}" label="${message(code:mapValue.value)}" noborder="${index == mapping.size()-1 ? 'true' : ''}">
-            <is:select width="100" maxHeight="100" styleSelect="dropdown" from="${columns}" name="mapping.${mapValue.key}" value="${matchValues ? matchValues[mapValue.key] : ''}" noSelection="['':message(code:'is.dialog.drop.import.select.ignore')]"/>
+            <is:select width="100" from="${columns}" name="mapping.${mapValue.key}" value="${matchValues ? matchValues[mapValue.key] : ''}" noSelection="['':message(code:'is.dialog.drop.import.select.ignore')]"/>
           </is:fieldSelect>
         </g:each>
       </is:fieldset>

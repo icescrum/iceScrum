@@ -34,8 +34,13 @@
         </is:fieldInput>
 
         <is:fieldSelect label="is.task.story">
-            <is:select class="preserve" id="story_id" name="task.parentStory.id" container=".window-content" width="240" maxHeight="200"
-                       styleSelect="dropdown" from="${stories}" value="${selected?.id}" optionValue="name"
+            <is:select class="preserve"
+                       id="story_id"
+                       name="task.parentStory.id"
+                       width="240"
+                       from="${stories}"
+                       value="${selected?.id}"
+                       optionValue="name"
                        optionKey="id"/>
         </is:fieldSelect>
 
@@ -52,8 +57,12 @@
         </is:fieldSelect>
 
         <is:fieldSelect for="taskcolor" label="is.task.color" noborder="true">
-            <is:select id="taskcolor" name="task.color" container=".window-content" width="100" maxHeight="200"
-                       styleSelect="dropdown" from="${colorsLabels}" keys="${colorsKeys}" value="${task?.color}"
+            <is:select id="taskcolor"
+                       name="task.color"
+                       width="100"
+                       from="${colorsLabels}"
+                       keys="${colorsKeys}"
+                       value="${task?.color}"
                        onchange="jQuery('#postit-ipsum-1').find('.postit-layout').removeClass().addClass('postit-layout postit-'+this.value);"/>
         </is:fieldSelect>
         <div class="select-lorem-rect">

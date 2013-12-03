@@ -38,19 +38,26 @@
 
         <g:if test="${rankList}">
             <is:fieldSelect for="feature.rank" label="is.feature.rank">
-                <is:select container=".window-content" width="100" maxHeight="200" styleSelect="dropdown"
-                           from="${rankList}" name="feature.rank" value="${feature.rank}"/>
+                <is:select width="100"
+                           from="${rankList}"
+                           name="feature.rank"
+                           value="${feature.rank}"/>
             </is:fieldSelect>
         </g:if>
 
         <is:fieldSelect for="feature.value" label="is.feature.value">
-            <is:select container=".window-content" width="100" maxHeight="200" styleSelect="dropdown"
-                       from="${valuesList}" name="feature.value" value="${feature?.value}"/>
+            <is:select width="100"
+                       from="${valuesList}"
+                       name="feature.value"
+                       value="${feature?.value}"/>
         </is:fieldSelect>
 
         <is:fieldSelect for="feature.type" label="is.feature.type">
-            <is:select container=".window-content" width="100" maxHeight="200" styleSelect="dropdown"
-                       from="${typesNames}" keys="${typesId}" name="feature.type" value="${feature?.type}"/>
+            <is:select width="100"
+                       from="${typesNames}"
+                       keys="${typesId}"
+                       name="feature.type"
+                       value="${feature?.type}"/>
         </is:fieldSelect>
 
         <entry:point id="${controllerName}-${actionName}" model="[feature:feature]"/>
@@ -60,8 +67,11 @@
         </is:fieldSelect>
 
         <is:fieldSelect for="featureColor" label="is.feature.color" noborder="true">
-            <is:select class="featureColor" container=".window-content" width="100" maxHeight="200"
-                       styleSelect="dropdown" from="${colorsLabels}" keys="${colorsKeys}" name="feature.color"
+            <is:select class="featureColor"
+                       width="100"
+                       from="${colorsLabels}"
+                       keys="${colorsKeys}"
+                       name="feature.color"
                        value="${feature?.color}"
                        onchange="jQuery('#postit-ipsum-1').find('.postit-layout').removeClass().addClass('postit-layout postit-'+this.value);"/>
 

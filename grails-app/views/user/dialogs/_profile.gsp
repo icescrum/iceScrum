@@ -86,7 +86,7 @@
                     <is:input name='user.preferences.activity' id='activity' value="${user.preferences.activity}"/>
                 </is:fieldInput>
                 <is:fieldSelect for="user.preferences.language" label="is.user.preferences.language" noborder="true">
-                    <is:localeSelecter width="170" styleSelect="dropdown" name="user.preferences.language"
+                    <is:localeSelecter width="170" name="user.preferences.language"
                                        id="user.preferences.language" value="${user.preferences.language}"/>
                 </is:fieldSelect>
             </is:accordionSection>

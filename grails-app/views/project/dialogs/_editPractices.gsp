@@ -34,7 +34,7 @@
 
       <is:accordionSection title="is.dialog.project.preferences.planification.title">
         <is:fieldSelect for="product.planningPokerGameType" label="is.product.preferences.planification.estimationSuite">
-          <is:select from="${estimationSuitSelect.values().asList()}" keys="${estimationSuitSelect.keySet().asList()}" width="240" maxHeight="100" styleSelect="dropdown" name="productd.planningPokerGameType" value="${product.planningPokerGameType}"/>
+          <is:select from="${estimationSuitSelect.values().asList()}" keys="${estimationSuitSelect.keySet().asList()}" width="240" name="productd.planningPokerGameType" value="${product.planningPokerGameType}"/>
         </is:fieldSelect>
         <is:fieldInput for="productpreferencesestimatedSprintsDuration" label="is.product.preferences.planification.estimatedSprintsDuration">
           <is:input id="productpreferencesestimatedSprintsDuration" typed="[type:'numeric']" name="productd.preferences.estimatedSprintsDuration" value="${product.preferences.estimatedSprintsDuration}"/>

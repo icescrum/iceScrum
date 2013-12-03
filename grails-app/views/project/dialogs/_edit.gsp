@@ -38,8 +38,9 @@
               <is:input typed="[type:'alphanumeric',onlyletters:true,allcaps:true]" id="productkey" name="productd.pkey" value="${product.pkey}"/>
             </is:fieldInput>
             <is:fieldSelect for="productpreferencestimezone" label="is.product.preferences.timezone">
-                <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown"
-                                   name="productd.preferences.timezone" id="productpreferencestimezone"
+                <is:localeTimeZone width="250"
+                                   name="productd.preferences.timezone"
+                                   id="productpreferencestimezone"
                                    value="${product.preferences.timezone}"/>
             </is:fieldSelect>
             <is:fieldArea class="productdescription-label" for="productdescription" label="is.product.description" noborder="${!product.preferences.archived && (request.owner || request.scrumMaster) || (product.preferences.archived && request.admin)}">

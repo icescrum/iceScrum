@@ -43,7 +43,7 @@
             <is:radio id="product.preferences.hidden" name="product.preferences.hidden" value="${product.preferences.hidden}"/>
         </is:fieldRadio>
         <is:fieldSelect for="product.preferences.timezone" label="is.product.preferences.timezone">
-          <is:localeTimeZone width="250" maxHeight="200" styleSelect="dropdown" name="product.preferences.timezone" value="UTC"/>
+          <is:localeTimeZone width="250" name="product.preferences.timezone" value="UTC"/>
         </is:fieldSelect>
         <is:fieldArea for="productdescription" label="is.product.description" noborder="true" optional="true">
             <is:area rich="[preview:true,width:335,height:200]" id="productdescription" name="product.description"/>
@@ -61,7 +61,7 @@
                         id="members"
                         name="team.members"
                         appendTo="#member-autocomplete"
-                        onSelect="jQuery('.members-list').jqoteapp('#user-tmpl', ui.item)"
+                        onSelect="attachOnDomUpdate(jQuery('.members-list').jqoteapp('#user-tmpl', ui.item));"
                         renderItem="${link}"
                         minLength="2"/>
         </is:fieldInput>
@@ -74,11 +74,8 @@
                 <span class="fullname">${is.truncated(value:user.firstName+" "+user.lastName,size:17)}</span>
                 <span class="activity">${user.preferences.activity?:'&nbsp;'}</span>
                 <input type="hidden" name="members.${user.id}" value="${user.id}"/>
-                 <is:select container="#member${user.id}"
-                            width="110"
-                            maxHeight="200"
+                 <is:select width="110"
                             id="${new Date().time}"
-                            styleSelect="dropdown"
                             from="${BundleUtils.roles.values().collect {v -> message(code: v)}}"
                             keys="${BundleUtils.roles.keySet().asList()}"
                             name="role.${user.id}"
@@ -91,7 +88,7 @@
         <is:fieldSelect for="product.planningPokerGameType"
                         label="is.product.preferences.planification.estimationSuite">
             <is:select from="${estimationSuitSelect.values().asList()}" keys="${estimationSuitSelect.keySet().asList()}"
-                       width="240" maxHeight="100" styleSelect="dropdown" name="product.planningPokerGameType"
+                       width="240" name="product.planningPokerGameType"
                        id="product.planningPokerGameType" value="${product.planningPokerGameType}"/>
         </is:fieldSelect>
         <is:fieldRadio for="product.preferences.noEstimation" label="is.product.preferences.planification.noEstimation">
