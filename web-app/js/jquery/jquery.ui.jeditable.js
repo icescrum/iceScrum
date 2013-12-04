@@ -97,7 +97,9 @@
             );
         },
         plugin: function(settings, original) {
-            $('select', this).select2({minimumResultsForSearch:-1}).change(function() {
+            var defaultOptions = {minimumResultsForSearch:-1};
+            var options = $(original).data();
+            $('select', this).select2(jQuery.extend(defaultOptions, options)).click().change(function() {
                 jQuery(this).parents("form").submit();
             });
         }

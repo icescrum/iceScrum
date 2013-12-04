@@ -221,10 +221,6 @@ table.kanban .table-line .kanban-col:first-child .postit-story {
     background: #fff;
 }
 
-.mini-value form, .postit-rect.postit-story .mini-value.editable form {
-    margin-left: 40px;
-}
-
 .postit-rect .mini-value.editable form {
     margin-left: 0px;
 }
