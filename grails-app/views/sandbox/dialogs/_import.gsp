@@ -20,7 +20,7 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <g:if test="${columns && mapping}">
-  <is:dialog width="400" valid="[
+  <is:dialog width="500" valid="[
   action:'dropImport',
   controller:controllerName,
   onSuccess:'jQuery.event.trigger(\'add_story\',[data]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.story.imported')+'\');',
@@ -35,7 +35,7 @@
         </is:fieldInformation>
         <g:each in="${mapping}" var="mapValue" status="index">
           <is:fieldSelect for="mapping.${mapValue.key}" label="${message(code:mapValue.value)}" noborder="${index == mapping.size()-1 ? 'true' : ''}">
-            <is:select width="100" from="${columns}" name="mapping.${mapValue.key}" value="${matchValues ? matchValues[mapValue.key] : ''}" noSelection="['':message(code:'is.dialog.drop.import.select.ignore')]"/>
+            <is:select width="150" from="${columns}" name="mapping.${mapValue.key}" value="${matchValues ? matchValues[mapValue.key] : ''}" noSelection="['':message(code:'is.dialog.drop.import.select.ignore')]"/>
           </is:fieldSelect>
         </g:each>
       </is:fieldset>

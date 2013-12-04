@@ -100,7 +100,7 @@
 
 <g:render template="/sandbox/window/blank" model="[show:stories ? false : true]"/>
 
-<is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);"/>
+<is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);attachOnDomUpdate(jQuery('.ui-dialog'));"/>
 <is:onStream
         on="#story-table"
         events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']]]"
