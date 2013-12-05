@@ -27,12 +27,12 @@
                 <is:input id="acceptance-test-name-field${acceptanceTest?.id ?: ''}" name="acceptanceTest.name" value="${acceptanceTest?.name}"/>
             </is:fieldInput>
             <g:if test="${parentStory.state == Story.STATE_INPROGRESS}">
-                <g:set var="acceptanceTestIcons" value="${AcceptanceTestState.values().collect { 'select-icon-acceptance-test icon-acceptance-test' + it.id }}"/>
                 <is:fieldSelect for="acceptanceTest.state" label="is.ui.acceptanceTest.state">
                     <is:select
-                            icons="${acceptanceTestIcons}"
+                            width="105"
                             id="acceptance-test-state-field${acceptanceTest?.id ?: ''}"
                             name="acceptanceTest.state"
+                            data-icon-class="select-icon-acceptance-test icon-acceptance-test"
                             from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}"
                             keys="${AcceptanceTestState.values().id}"
                             value="${acceptanceTest?.state ?: ''}" />

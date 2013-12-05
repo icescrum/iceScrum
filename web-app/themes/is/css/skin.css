@@ -183,21 +183,30 @@ body {
     text-indent: 25px;
 }
 
-.select-icon-acceptance-test, .select-icon-acceptance-test:hover {
+.select-icon-acceptance-test {
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    margin-right: 7px;
+    margin-left: -2px;
+    width: 16px;
+    height: 14px;
     background-repeat: no-repeat;
-    background-position: 4px 3px;
-    text-indent: 20px;
 }
 
-.icon-acceptance-test1, .icon-acceptance-test1:hover {
+.select2-chosen .select-icon-acceptance-test {
+    margin-left: 1px;
+}
+
+.icon-acceptance-test1 {
     background-image: url(../images/icons/test-grey.png);
 }
 
-.icon-acceptance-test5, .icon-acceptance-test5:hover {
+.icon-acceptance-test5 {
     background-image: url(../images/icons/test-red.png);
 }
 
-.icon-acceptance-test10, .icon-acceptance-test10:hover {
+.icon-acceptance-test10 {
     background-image: url(../images/icons/test-green.png);
 }
 

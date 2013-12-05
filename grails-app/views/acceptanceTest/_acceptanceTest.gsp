@@ -27,12 +27,12 @@
 
         <div class="acceptance-test-state">
             <g:if test="${stateEditable}">
-                <g:set var="acceptanceTestIcons" value="${AcceptanceTestState.values().collect { 'select-icon-acceptance-test icon-acceptance-test' + it.id }}"/>
                 <is:select
-                        icons="${acceptanceTestIcons}"
+                        width="105"
                         class="acceptance-test-state-select"
                         id="acceptance-test-state-select${acceptanceTest?.id ?: ''}"
                         name="acceptanceTest.state"
+                        data-icon-class="select-icon-acceptance-test icon-acceptance-test"
                         from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}"
                         keys="${AcceptanceTestState.values().id}"
                         value="${acceptanceTest?.state ?: ''}"
