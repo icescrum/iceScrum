@@ -227,7 +227,21 @@ function attachOnDomUpdate(content){
     });
 
     $('select', content).each(function(){
-        $.icescrum.attachSelect2($(this));
+        var element = $(this);
+        var options = jQuery.extend({minimumResultsForSearch: 6}, element.data());
+        if (element.data('iconClass')) {
+            function format(state) {
+                return "<i class='" + element.data('icon-class') + state.id + "'></i>" + state.text;
+            }
+            options.formatResult = format;
+            options.formatSelection = format;
+        }
+        var select = element.select2(options);
+        if ($(this).data('change')){
+            select.change(function(event,value){
+                getFunction(element.data("change"), ["event", "value"]).apply(this,[event,value]);
+            });
+        }
     });
 
     $('input[data-tag="true"]', content).each(function(){
@@ -288,7 +302,7 @@ function attachOnDomUpdate(content){
             e.preventDefault();
         });
     });
-    $('.left-resizable[data-resizable], .right-resizable[data-resizable]').each(function(){
+    $('.left-resizable[data-resizable], .right-resizable[data-resizable]', content).each(function(){
         var elem = $(this);
         elem.removeAttr('data-resizable');
         var right = elem.hasClass('right-resizable');

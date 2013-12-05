@@ -1547,8 +1547,7 @@
                         }
                         else {
                             var select = $('.acceptance-test-state-select', acceptanceTest);
-                            $.icescrum.attachSelect2(select);
-                            select.select2('val', this.state);
+                            select.val(this.state);
                         }
                     },
 
