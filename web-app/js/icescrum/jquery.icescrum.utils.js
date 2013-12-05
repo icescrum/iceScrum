@@ -283,7 +283,7 @@
                         options.formatSelection = format;
                     }
                     var select2 = select.select2(options);
-                    if ($(this).data('change')){
+                    if (select.data('change')){
                         select2.change(function(event,value){
                             getFunction(select.data("change"), ["event", "value"]).apply(this,[event,value]);
                         });
