@@ -65,6 +65,7 @@
 
     $.editable.addInputType('selectui', {
         element : function(settings, original) {
+            settings.onblur = 'ignore';
             var select = $('<select id="' + new Date().getTime() + '"/>');
             $(this).append(select);
             return(select);
@@ -97,11 +98,12 @@
             );
         },
         plugin: function(settings, original) {
-            var defaultOptions = {minimumResultsForSearch:-1};
-            var options = $(original).data();
-            $('select', this).select2(jQuery.extend(defaultOptions, options)).click().change(function() {
-                jQuery(this).parents("form").submit();
-            });
+            var select = $('select', this);
+            select.one("change select2-close select2-blur", function(){
+                select.off();
+                select.parents("form").submit();
+            }).select2($.extend({minimumResultsForSearch:-1}, $(original).data()));
+            select.select2("open");
         }
     });
-})(jQuery);
+})($);
