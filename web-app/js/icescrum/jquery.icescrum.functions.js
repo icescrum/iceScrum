@@ -607,6 +607,11 @@
                         jQuery.event.trigger('add_' + type, [data]);
                     },
 
+                    returnToSandbox:function(template) {
+                        var data = this.objects ? this.objects : this;
+                        jQuery.event.trigger('update_story', [data]);
+                    },
+
                     estimate:function(template) {
                         $(this).each(function() {
                             $.icescrum.story.update.apply(this, [template]);
@@ -712,6 +717,9 @@
                         }
                         if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state <= $.icescrum.story.STATE_ESTIMATED && $.icescrum.user.productOwner)) || this.state > $.icescrum.story.STATE_PLANNED) {
                             $('#menu-delete-' + this.id, newObject).remove();
+                        }
+                        if (!($.icescrum.user.productOwner && (this.state == $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_ESTIMATED))) {
+                            $('#menu-return-to-sandbox-' + this.id, newObject).remove();
                         }
                         if (this.state != $.icescrum.story.STATE_SUGGESTED) {
                             $('#menu-accept-' + this.id, newObject).remove();

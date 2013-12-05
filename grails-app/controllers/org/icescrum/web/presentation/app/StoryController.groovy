@@ -567,6 +567,18 @@ class StoryController {
         }
     }
 
+    @Secured('productOwner() and !archivedProduct()')
+    def returnToSandbox = {
+        withStories{List<Story> stories ->
+            storyService.returnToSandbox(stories)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: stories as JSON)  }
+                json { renderRESTJSON(text:stories) }
+                xml  { renderRESTXML(text:stories) }
+            }
+        }
+    }
+
     @Secured('inProduct() and !archivedProduct()')
     def copy = {
         withStories{List<Story> stories ->

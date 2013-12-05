@@ -68,6 +68,16 @@
         </a>
     </li>
 </g:if>
+<g:if test="${productOwner && (story.state in [Story.STATE_ACCEPTED, Story.STATE_ESTIMATED] || template)}">
+    <li id="menu-return-to-sandbox-${story.id}">
+    <a href="${createLink(action:'returnToSandbox',controller:'story',params:[product:params.product],id:story.id)}"
+           data-ajax-trigger="returnToSandbox_story"
+           data-ajax-notice="${message(code: 'is.story.returnedToSandbox').encodeAsJavaScript()}"
+           data-ajax="true">
+            <g:message code='is.ui.backlog.menu.returnToSandbox'/>
+        </a>
+    </li>
+</g:if>
 <g:if test="${inProduct && (story.state == Story.STATE_PLANNED || story.state == Story.STATE_INPROGRESS || template)}">
     <li id="menu-add-task-${story.id}">
         <a href="#sprintPlan/add/${story.parentSprint.id}/?story.id=${story.id}">

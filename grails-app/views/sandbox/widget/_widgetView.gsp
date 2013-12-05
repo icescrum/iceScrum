@@ -55,7 +55,7 @@
 
 <is:onStream
         on="#backlog-layout-widget-${controllerName}"
-        events="[[object:'story',events:['add','update','remove','accept']]]"
+        events="[[object:'story',events:['add','update','remove','accept','returnToSandbox']]]"
         template="sandboxWidget"/>
 
 <is:onStream
