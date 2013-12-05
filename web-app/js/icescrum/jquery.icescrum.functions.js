@@ -1635,7 +1635,10 @@
                         tmpl.afterTmpl.apply(object, [tmpl,container,newObject,beforeData]);
                     }
 
-                    return $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
+                    var elem = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
+                    attachOnDomUpdate(elem);
+
+                    return elem;
                 }
             });
 })($);
