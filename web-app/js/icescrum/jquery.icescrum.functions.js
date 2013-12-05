@@ -1539,7 +1539,8 @@
                         }
                         else {
                             var select = $('.acceptance-test-state-select', acceptanceTest);
-                            select.select2({minimumResultsForSearch:-1});
+                            $.icescrum.attachSelect2(select);
+                            select.select2('val', this.state);
                         }
                     },
 

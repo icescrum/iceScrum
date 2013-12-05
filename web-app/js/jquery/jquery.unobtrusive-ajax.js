@@ -227,21 +227,7 @@ function attachOnDomUpdate(content){
     });
 
     $('select', content).each(function(){
-        var element = $(this);
-        var options = element.data();
-        if (element.data('iconClass')) {
-            function format(state) {
-                return "<i class='" + element.data('icon-class') + state.id + "'></i>" + state.text;
-            }
-            options.formatResult = format;
-            options.formatSelection = format;
-        }
-        var select = element.select2(options);
-        if ($(this).data('change')){
-            select.change(function(event,value){
-                getFunction(element.data("change"), ["event", "value"]).apply(this,[event,value]);
-            });
-        }
+        $.icescrum.attachSelect2($(this));
     });
 
     $('input[data-tag="true"]', content).each(function(){

@@ -271,6 +271,23 @@
                         return string.substring(0,size)+"...";
                     else
                         return string;
+                },
+
+                attachSelect2: function(select) {
+                    var options = jQuery.extend({minimumResultsForSearch:6}, select.data());
+                    if (select.data('icon-class')) {
+                        function format(state) {
+                            return "<i class='" + select.data('icon-class') + state.id + "'></i>" + state.text;
+                        }
+                        options.formatResult = format;
+                        options.formatSelection = format;
+                    }
+                    var select2 = select.select2(options);
+                    if ($(this).data('change')){
+                        select2.change(function(event,value){
+                            getFunction(select.data("change"), ["event", "value"]).apply(this,[event,value]);
+                        });
+                    }
                 }
             });
 
