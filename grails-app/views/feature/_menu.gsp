@@ -36,6 +36,7 @@
 <li>
     <a href="${createLink(action:'delete',controller:'feature',id:feature.id, params:[product:params.product])}"
        data-ajax-trigger="remove_feature"
+       data-ajax-confirm="${message(code:'is.ui.feature.menu.delete.confirm').encodeAsJavaScript()}"
        data-ajax-notice="${message(code: 'is.feature.deleted').encodeAsJavaScript()}"
        data-ajax="true">
        <g:message code='is.ui.feature.menu.delete'/>
