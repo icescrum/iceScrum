@@ -221,6 +221,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                 $.icescrum.o.deleting = false;
                                 if (data.dialog){
                                     $(document.body).append(data.dialog);
+                                    attachOnDomUpdate($('.ui-dialog'));
                                     return;
                                 }
                                 if (onSuccess) {
