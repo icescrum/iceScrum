@@ -34,10 +34,10 @@
 
       <is:accordionSection title="is.dialog.project.preferences.planification.title">
         <is:fieldSelect for="product.planningPokerGameType" label="is.product.preferences.planification.estimationSuite">
-          <is:select from="${estimationSuitSelect.values().asList()}" keys="${estimationSuitSelect.keySet().asList()}" width="240" name="productd.planningPokerGameType" value="${product.planningPokerGameType}"/>
+          <is:select from="${estimationSuitSelect.values().asList()}" keys="${estimationSuitSelect.keySet().asList()}" width="120" name="productd.planningPokerGameType" value="${product.planningPokerGameType}"/>
         </is:fieldSelect>
         <is:fieldInput for="productpreferencesestimatedSprintsDuration" label="is.product.preferences.planification.estimatedSprintsDuration">
-          <is:input id="productpreferencesestimatedSprintsDuration" typed="[type:'numeric']" name="productd.preferences.estimatedSprintsDuration" value="${product.preferences.estimatedSprintsDuration}"/>
+          <is:input id="productpreferencesestimatedSprintsDuration" class="small" typed="[type:'numeric']" name="productd.preferences.estimatedSprintsDuration" value="${product.preferences.estimatedSprintsDuration}"/>
         </is:fieldInput>
         <is:fieldRadio for="productpreferencesnoEstimation" label="is.product.preferences.planification.noEstimation">
           <is:radio id="productpreferencesnoEstimation" name="productd.preferences.noEstimation" value="${product.preferences.noEstimation}"/>
@@ -70,7 +70,7 @@
           <is:radio id="productpreferencesdisplayUrgentTasks" name="productd.preferences.displayUrgentTasks" value="${product.preferences.displayUrgentTasks}"/>
         </is:fieldRadio>
         <is:fieldRadio for="productpreferencesLimitUrgentTasks" label="is.product.preferences.sprint.limitUrgentTasks" noborder="true">
-          <is:input id="productpreferencesLimitUrgentTasks" name="productd.preferences.limitUrgentTasks" typed="[type:'numeric']" value="${product.preferences.limitUrgentTasks}"/>
+          <is:input id="productpreferencesLimitUrgentTasks" class="small" name="productd.preferences.limitUrgentTasks" typed="[type:'numeric']" value="${product.preferences.limitUrgentTasks}"/>
         </is:fieldRadio>
       </is:accordionSection>
 

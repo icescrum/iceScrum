@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:dialog focusable="${false}" valid="[action:'autoPlan',
+<is:dialog width="400" focusable="${false}" valid="[action:'autoPlan',
                   controller:controllerName,
                   id:params.id,
                   onSuccess:'jQuery.event.trigger(\'plan_story\',[data]); jQuery.icescrum.renderNotice(\''+g.message(code:'is.release.autoplan')+'\')',

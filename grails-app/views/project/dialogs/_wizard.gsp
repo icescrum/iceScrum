@@ -88,7 +88,7 @@
         <is:fieldSelect for="product.planningPokerGameType"
                         label="is.product.preferences.planification.estimationSuite">
             <is:select from="${estimationSuitSelect.values().asList()}" keys="${estimationSuitSelect.keySet().asList()}"
-                       width="240" name="product.planningPokerGameType"
+                       width="120" name="product.planningPokerGameType"
                        id="product.planningPokerGameType" value="${product.planningPokerGameType}"/>
         </is:fieldSelect>
         <is:fieldRadio for="product.preferences.noEstimation" label="is.product.preferences.planification.noEstimation">

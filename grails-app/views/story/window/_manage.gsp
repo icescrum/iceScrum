@@ -40,7 +40,7 @@
         <is:fieldSelect for="story.type" label="is.story.type">
             <is:select
                     data-change="jQuery.icescrum.story.displayOptions"
-                    width="150"
+                    width="120"
                     from="${typesLabels}"
                     keys="${typesKeys}"
                     name="story.type"
@@ -86,6 +86,7 @@
         <g:if test="${sprints}">
             <is:fieldSelect label="is.sprint" for="sprint.id">
                 <is:select name="sprint.id"
+                           width="240"
                            keys="${sprints*.id}"
                            noSelection="['':message(code:'is.ui.backlog.choose.sprint')]"
                            from="${sprints*.name}"
