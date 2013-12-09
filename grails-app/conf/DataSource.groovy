@@ -65,20 +65,18 @@ environments {
             url = "jdbc:hsqldb:file:prodDba;shutdown=true"
             pooled = true
             properties {
-                maxActive = 100
+                maxActive = 50
                 maxIdle = 25
                 minIdle = 5
                 initialSize = 5
-                minEvictableIdleTimeMillis = 60000
-                timeBetweenEvictionRunsMillis = 60000
+                minEvictableIdleTimeMillis = 180000
+                timeBetweenEvictionRunsMillis = 180000
                 maxWait = 10000
                 numTestsPerEvictionRun = 3
                 testOnBorrow = true
                 testWhileIdle = true
-                testOnReturn = false
+                testOnReturn = true
                 validationQuery = "SELECT 1"
-                removeAbandoned = true
-                removeAbandonedTimeout = 20
             }
         }
     }
