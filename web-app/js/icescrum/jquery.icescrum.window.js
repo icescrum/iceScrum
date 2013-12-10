@@ -107,7 +107,7 @@
                                         $dialog.dialog('close');
                                     }
                                     if (!$("#dropmenu").is(':visible')) {
-                                        $("input:visible, textarea:visible", content).first().focus()
+                                        $("input:visible:not(.select2-focusser), textarea:visible", content).first().focus()
                                     }
                                     $.icescrum.checkToolbar();
                                     $.post($.icescrum.o.push.url, {window:id});
