@@ -87,7 +87,7 @@
             </g:if>
           </is:fieldInformation>
 
-          <is:accordion id="preferences" active="0">
+          <is:accordion id="preferences" active="${0}">
 
             <g:if test="${importMustChangeValues || product.erasableByUser}">
               <is:accordionSection title="is.dialog.importProject.confirm.changeValues.title">
