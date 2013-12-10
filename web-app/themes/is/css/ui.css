@@ -1958,4 +1958,62 @@ html > body .ui-pnotify {
     font-size: 90%;
 }
 
-.atwho-view{position:absolute;top:0;left:0;display:none;margin-top:18px;background:#fff;border:1px solid #DDD;border-radius:3px;box-shadow:0 0 5px rgba(0,0,0,.1);min-width:120px;z-index:10}.atwho-view .cur{background:#36F;color:#fff}.atwho-view .cur small{color:#fff}.atwho-view strong{color:#36F}.atwho-view .cur strong{color:#fff;font:bold}.atwho-view ul{list-style:none;padding:0;margin:auto}.atwho-view ul li{display:block;padding:5px 10px;border-bottom:1px solid #DDD;cursor:pointer}.atwho-view small{font-size:smaller;color:#777;font-weight:400}
+.atwho-view {
+    color: #000000;
+    font-size: 11px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    margin-top: 18px;
+    background: #fff;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+    min-width: 120px;
+    z-index: 10
+}
+
+.atwho-view .cur {
+    box-shadow: inset 0 0 0 1px #2890f0;
+    text-shadow: rgba(0, 0, 0, 0.6) 1px 1px 0px;;
+    background: rgb(116, 180, 245); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(116, 180, 245, 1) 0%, rgba(88, 164, 244, 1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(116, 180, 245, 1)), color-stop(100%, rgba(88, 164, 244, 1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(116, 180, 245, 1) 0%, rgba(88, 164, 244, 1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top, rgba(116, 180, 245, 1) 0%, rgba(88, 164, 244, 1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(116, 180, 245, 1) 0%, rgba(88, 164, 244, 1) 100%); /* W3C */
+    color: #fff
+}
+
+.atwho-view .cur small {
+    color: #fff
+}
+
+.atwho-view strong {
+    color: #2175be
+}
+
+.atwho-view .cur strong {
+    color: #fff;
+    font: bold
+}
+
+.atwho-view ul {
+    list-style: none;
+    padding: 0;
+    margin: auto
+}
+
+.atwho-view ul li {
+    display: block;
+    padding: 1px 7px;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer
+}
+
+.atwho-view small {
+    font-size: smaller;
+    color: #777;
+    font-weight: 400
+}
