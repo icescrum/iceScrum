@@ -2269,8 +2269,9 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 
 .features-list ul li img {
     width:160px;
-    height:200px;
-    border:#c4c4c4;
+    border: 1px solid #C4C4C4;
+    height: 200px;
+    opacity: 0.75;
 }
 
 .features-list ul li a {

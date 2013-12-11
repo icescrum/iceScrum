@@ -11,15 +11,15 @@
                 <div class="features-list">
                     <ul>
                         <li>
-                            <a href="" target="_blank"><img src=""></a>
+                            <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/actors.png"/></a>
                             <a href="" class="scrum-link" target="_blank">New 1</a>
                         </li>
                         <li>
-                            <a href="" target="_blank"><img src=""></a>
+                            <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/select.png"/></a>
                             <a href="" class="scrum-link" target="_blank">New 2</a>
                         </li>
                         <li>
-                            <a href="" target="_blank"><img src=""></a>
+                            <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/returnToSandbox.png"/></a>
                             <a href="" class="scrum-link" target="_blank">New 3</a>
                         </li>
                     </ul>
