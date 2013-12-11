@@ -1,3 +1,4 @@
+<g:set var="releaseNotesURL" value="${message(code:'is.ui.whatsnew.releaseNotesURL', args:['r611'])}"/>
 <is:dialog
         resizable="false"
         withTitlebar="false"
@@ -11,20 +12,20 @@
                 <div class="features-list">
                     <ul>
                         <li>
-                            <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/actors.png"/></a>
-                            <a href="" class="scrum-link" target="_blank">Story description template and autocomplete on actors</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/actors.png"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Story description template and autocomplete on actors</a>
                         </li>
                         <li>
-                            <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/select.png"/></a>
-                            <a href="" class="scrum-link" target="_blank">Better UI and search field on large drop-down lists</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/select.png"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Better UI and search field on large drop-down lists</a>
                         </li>
                         <li>
-                            <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/returnToSandbox.png"/></a>
-                            <a href="" class="scrum-link" target="_blank">Move a story from the backlog back to the sandbox</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/returnToSandbox.png"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Move a story from the backlog back to the sandbox</a>
                         </li>
                     </ul>
                     <span class="more">
-                        <g:message code="is.ui.whatsnew.more"/> <a href="http://www.icescrum.org/en/version-r611" target="_blank" class="scrum-link">${message(code:"is.ui.whatsnew.releaseNotes", args:[g.meta(name:"app.version")])}</a>
+                        <g:message code="is.ui.whatsnew.more"/> <a href="${releaseNotesURL}" target="_blank" class="scrum-link">${message(code:"is.ui.whatsnew.releaseNotes", args:[g.meta(name:"app.version")])}</a>
                     </span>
                 </div>
             </is:fieldset>
