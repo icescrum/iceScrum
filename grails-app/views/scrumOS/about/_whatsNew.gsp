@@ -7,7 +7,7 @@
         draggable="false">
         <div class='box-form box-form-250 box-form-200-legend'>
             <is:fieldset title="is.ui.whatsnew.title" id="member-autocomplete">
-                <is:fieldInformation noborder="true">${message(code:'is.ui.whatsnew.description')}</is:fieldInformation>
+                <is:fieldInformation noborder="true">${message(code:'is.ui.whatsnew.description', args:[g.meta(name:"app.version")])}</is:fieldInformation>
                 <div class="features-list">
                     <ul>
                         <li>
@@ -24,7 +24,7 @@
                         </li>
                     </ul>
                     <span class="more">
-                        <g:message code="is.ui.whatsnew.more"/> <a href="http://www.icescrum.org" target="_blank" class="scrum-link"><g:message code="is.ui.whatsnew.releaseNotes"/></a>
+                        <g:message code="is.ui.whatsnew.more"/> <a href="http://www.icescrum.org/en/version-r611" target="_blank" class="scrum-link">${message(code:"is.ui.whatsnew.releaseNotes", args:[g.meta(name:"app.version")])}</a>
                     </span>
                 </div>
             </is:fieldset>
