@@ -305,6 +305,18 @@ class ScrumOSController {
         response.outputStream << new BASE64Decoder().decodeBuffer(imageEncoded)
     }
 
+    def whatsNew = {
+        if (params.hide){
+            if(springSecurityService.currentUser?.preferences?.displayWhatsNew){
+                springSecurityService.currentUser.preferences.displayWhatsNew = false
+            }
+            render(status:200)
+            return
+        }
+        def dialog = g.render(template: "about/whatsNew")
+        render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
+    }
+
     def version = {
         withFormat{
             html {

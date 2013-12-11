@@ -2253,3 +2253,42 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 .navigation-search .search-content, .navigation-item .dropmenu-content {
     display: none;
 }
+
+.features-list ul {
+    text-align: center;
+    margin:0;
+    padding:0;
+}
+
+.features-list ul li {
+    list-style: none;
+    display: inline-block;
+    text-align: center;
+    margin:8px;
+}
+
+.features-list ul li img {
+    width:160px;
+    height:200px;
+    border:#c4c4c4;
+}
+
+.features-list ul li a {
+    display: block;
+}
+
+.features-list .more {
+    margin-left:15px;
+}
+
+.features-list {
+    width:100%;
+    height:290px;
+    background:#fff;
+    overflow: auto;
+}
+
+.features-list a {
+    color:#4382bd;
+}
+

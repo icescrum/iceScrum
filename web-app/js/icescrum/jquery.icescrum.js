@@ -150,6 +150,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             });
 
             $.icescrum.showUpgrade();
+            $.icescrum.whatsNew();
         },
 
         log:function() {
@@ -470,8 +471,18 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     upgrade.remove();
                 }
             }
+        },
+
+        whatsNew:function(){
+            if ($(document.body).data('whatsnew')){
+                $.get($.icescrum.o.baseUrl+"whatsNew", function(data){
+                    if (data.dialog){
+                        $(document.body).append(data.dialog);
+                    }
+                });
+            }
         }
-    }
+    };
 
     $.icescrum.commands = {
         send:function(command,to,data,callback){

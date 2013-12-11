@@ -30,7 +30,7 @@
 </p>
 <h3><g:message code="is.dialog.about.version.build.title"/></h3>
 <p>
-  <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : <g:meta name="app.version"/>
+  <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : <g:meta name="app.version"/> (<a data-ajax="true" href="${g.createLink(controller: "scrumOS", action: "whatsNew")}">${message(code:'is.ui.whatsnew.title')}</a>)
 </p>
 <p>
     <strong><g:message code="is.dialog.about.appID"/></strong> : <is:appId/>

@@ -26,9 +26,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title>iceScrum -
-        <g:layoutTitle/></title>
-
+    <title>iceScrum - <g:layoutTitle/></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
     <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
     <is:loadJsVar/>
@@ -44,7 +42,7 @@
     <g:layoutHead/>
 </head>
 
-<body class="icescrum">
+<body class="icescrum" data-whatsnew="${user?.preferences?.displayWhatsNew}">
 
 <div id="application">
     <div id="head" class="${space ? 'is_header-normal' : 'is_header-full'}">
