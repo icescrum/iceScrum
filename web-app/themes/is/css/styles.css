@@ -2264,7 +2264,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     list-style: none;
     display: inline-block;
     text-align: center;
-    margin:8px;
+    margin:12px;
 }
 
 .features-list ul li img {
@@ -2285,7 +2285,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 
 .features-list {
     width:100%;
-    height:290px;
+    height:300px;
     background:#fff;
     overflow: auto;
 }

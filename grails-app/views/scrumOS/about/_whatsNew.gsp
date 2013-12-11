@@ -2,7 +2,7 @@
 <is:dialog
         resizable="false"
         withTitlebar="false"
-        width="600"
+        width="650"
         id="dialog-whatsnew"
         buttons="'${message(code:'is.button.close')}': function() { ${remoteFunction(controller:'scrumOS',action:'whatsNew',params:[hide:true])}; jQuery(this).dialog('close'); }"
         draggable="false">
