@@ -1,4 +1,5 @@
-<g:set var="releaseNotesURL" value="${message(code:'is.ui.whatsnew.releaseNotesURL', args:['r611'])}"/>
+<%@ page import="org.icescrum.core.support.ApplicationSupport;" %>
+<g:set var="releaseNotesURL" value="${message(code:'is.ui.whatsnew.releaseNotesURL', args:[ApplicationSupport.getNormalisedVersion()])}"/>
 <is:dialog
         resizable="false"
         withTitlebar="false"
