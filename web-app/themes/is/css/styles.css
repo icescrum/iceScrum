@@ -2275,6 +2275,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 }
 
 .features-list ul li a {
+    width:160px;
     display: block;
 }
 

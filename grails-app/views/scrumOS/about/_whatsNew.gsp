@@ -12,15 +12,15 @@
                     <ul>
                         <li>
                             <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/actors.png"/></a>
-                            <a href="" class="scrum-link" target="_blank">New 1</a>
+                            <a href="" class="scrum-link" target="_blank">Story description template and autocomplete on actors</a>
                         </li>
                         <li>
                             <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/select.png"/></a>
-                            <a href="" class="scrum-link" target="_blank">New 2</a>
+                            <a href="" class="scrum-link" target="_blank">Better UI and search field on large drop-down lists</a>
                         </li>
                         <li>
                             <a href="" target="_blank"><r:img uri="/themes/is/images/whatsNew/returnToSandbox.png"/></a>
-                            <a href="" class="scrum-link" target="_blank">New 3</a>
+                            <a href="" class="scrum-link" target="_blank">Move a story from the backlog back to the sandbox</a>
                         </li>
                     </ul>
                     <span class="more">
