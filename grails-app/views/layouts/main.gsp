@@ -42,7 +42,7 @@
     <g:layoutHead/>
 </head>
 
-<body class="icescrum" data-whatsnew="${user?.preferences?.displayWhatsNew}">
+<body class="icescrum" data-whatsnew="${user?.preferences?.displayWhatsNew?:''}">
 
 <div id="application">
     <div id="head" class="${space ? 'is_header-normal' : 'is_header-full'}">
