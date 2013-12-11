@@ -25,6 +25,9 @@
     $.extend($.icescrum, {
 
                 displayQuicklook:function(obj){
+                    if ($(".box-window").hasClass('window-fullscreen')){
+                        return;
+                    }
                     var elem = obj.selected ? $(obj.selected) : $(obj);
                     var type;
                     if (elem.hasClass('postit-actor') || elem.hasClass('postit-row-actor')){
