@@ -111,10 +111,10 @@ grails.project.dependency.resolution = {
         }else{
             compile ":tomcatnio:1.3.4"
         }
-        test(":spock:0.6") {
-            exclude "spock-grails-support"
-        }
-        test ":geb:$gebVersion"
+//        test(":spock:0.6") {
+//            exclude "spock-grails-support"
+//        }
+//        test ":geb:$gebVersion"
     }
 }
 
