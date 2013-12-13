@@ -262,7 +262,6 @@ log4j = {
         debug 'grails.app.service.com.kagilum'
         debug 'grails.app.controller.com.kagilum'
         debug 'grails.app.domain.com.kagilum'
-        debug 'org.codehaus.groovy.grails.plugins.DefaultGrailsPlugin'
         debug 'com.kagilum'
         debug 'org.icescrum.atmosphere'
         debug 'org.atmosphere'
