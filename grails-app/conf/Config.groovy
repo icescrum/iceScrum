@@ -32,7 +32,7 @@ import org.icescrum.web.JQueryProvider
 /*
  Public URL
 */
-grails.serverURL = "http://localhost:8080/${appName}"
+grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
 
 /*
 Administration section
@@ -265,7 +265,8 @@ log4j = {
         debug 'com.kagilum'
         debug 'org.icescrum.atmosphere'
         debug 'org.atmosphere'
-        /*debug 'grails.plugin.springcache' */
+        info  'com.hazelcast'
+         /*debug 'grails.plugin.springcache' */
     }else{
         off 'grails.plugin.springcache'
     }
