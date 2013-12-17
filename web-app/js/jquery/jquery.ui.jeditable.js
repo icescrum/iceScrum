@@ -103,7 +103,9 @@
                 select.off();
                 select.parents("form").submit();
             }).select2($.extend({minimumResultsForSearch:-1}, $(original).data()));
-            select.select2("open");
+            $.doTimeout(25, function() {
+                select.select2("open");
+            });
         }
     });
 })($);
