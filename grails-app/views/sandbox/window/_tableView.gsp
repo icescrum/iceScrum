@@ -103,7 +103,7 @@
 <is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);attachOnDomUpdate(jQuery('.ui-dialog'));"/>
 <is:onStream
         on="#story-table"
-        events="[[object:'story',events:['add','update','remove','accept','associated','dissociated']]]"
+        events="[[object:'story',events:['add','update','remove','accept','associated','dissociated','returnToSandbox']]]"
         template="sandbox"/>
 
 <is:onStream
