@@ -99,10 +99,14 @@
         },
         plugin: function(settings, original) {
             var select = $('select', this);
+            var defaultOptions = {
+                minimumResultsForSearch: -1,
+                width: 'element'
+            };
             select.one("change select2-close select2-blur", function(){
                 select.off();
                 select.parents("form").submit();
-            }).select2($.extend({minimumResultsForSearch:-1}, $(original).data()));
+            }).select2($.extend(defaultOptions, $(original).data()));
             $.doTimeout(25, function() {
                 select.select2("open");
             });
