@@ -1,3 +1,4 @@
+<%@ page import="grails.util.Metadata" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -30,7 +31,7 @@
 </p>
 <h3><g:message code="is.dialog.about.version.build.title"/></h3>
 <p>
-  <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : <g:meta name="app.version"/> (<a data-ajax="true" href="${g.createLink(controller: "scrumOS", action: "whatsNew")}">${message(code:'is.ui.whatsnew.title')}</a>)
+  <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : <g:meta name="app.version"/> <g:if test="${Metadata.current['app.promoteVersion'] == 'true'}">(<a data-ajax="true" href="${g.createLink(controller: "scrumOS", action: "whatsNew")}">${message(code:'is.ui.whatsnew.title')}</a>)</g:if>
 </p>
 <p>
     <strong><g:message code="is.dialog.about.appID"/></strong> : <is:appId/>
