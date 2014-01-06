@@ -28,7 +28,9 @@ import org.apache.log4j.PatternLayout
 import org.icescrum.core.support.ApplicationSupport
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.web.JQueryProvider
-import org.springframework.jndi.JndiTemplate
+
+import javax.naming.InitialContext
+
 /*
  Public URL
 */
@@ -47,7 +49,16 @@ icescrum.alerts.emailPerAccount = false
 
 icescrum.attachments.enable = true
 icescrum.alerts.errors.to = "dev@icescrum.org"
-icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
+
+//Server TimeZone
+try{
+    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.timezone.default")
+    if (extConfFile) {
+        icescrum.timezone.default = extConfFile;
+    }
+}catch(Exception e){
+    icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
+}
 
 println "Server Timezone : ${icescrum.timezone.default}"
 
@@ -70,7 +81,14 @@ icescrum.gravatar.enable = false
 /*
   IceScrum base dir
 */
-icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
+try{
+    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.basedir")
+    if (extConfFile) {
+        icescrum.baseDir = extConfFile;
+    }
+}catch(Exception e){
+    icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
+}
 
 /*
 Autofollowing
@@ -222,7 +240,14 @@ environments {
 icescrum.securitydebug.enable = false
 
 // log4j configuration
-icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
+try{
+    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.log.dir")
+    if (extConfFile) {
+        icescrum.log.dir = extConfFile;
+    }
+}catch(Exception e){
+    icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
+}
 println "log dir : ${icescrum.log.dir}"
 
 log4j = {
@@ -372,7 +397,7 @@ grails.resources.caching.excludes = ['js/timeline**/*.js']
 grails.resources.zip.excludes = ['/**/*.png', '/**/*.gif', '/**/*.jpg', '/**/*.gz']
 
 environments {
-    //production {
+    production {
         if (!grails.config.locations || !(grails.config.locations instanceof List)) {
             grails.config.locations = []
         }
@@ -406,7 +431,7 @@ environments {
             println "*** No external configuration file defined (${ApplicationSupport.CONFIG_ENV_NAME}). ***"
         }
         try{
-            String extConfFile = (String) new JndiTemplate().lookup("java:comp/env/icescrum_config_location")
+            String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum_config_location")?: (String) new InitialContext().lookup("java:comp/env/icescrum.config.location")
             if (extConfFile) {
                 grails.config.locations << extConfFile
                 println "*** JNDI defined config: file:${extConfFile}"
@@ -414,7 +439,7 @@ environments {
         }catch(Exception e){}
         println "(*) grails.config.locations = ${grails.config.locations}"
         println "--------------------------------------------------------"
-    //}
+    }
 }
 
 JavascriptTagLib.LIBRARY_MAPPINGS.jquery = ["jquery/jquery-${jQueryVersion}.min"]
