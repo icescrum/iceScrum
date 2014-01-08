@@ -442,6 +442,7 @@
                                     $.icescrum.story.remove.apply(this, [template]);
                                 }
                                 $.icescrum.story.add.apply(this, [template]);
+                                $("#right-properties[data-accordion=true]").accordion("option", "active", 1);
                             },
                             remove:function(tmpl) {
                                 $(tmpl.selector).remove();

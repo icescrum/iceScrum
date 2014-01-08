@@ -2300,12 +2300,6 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     color:#4382bd;
 }
 
-#right-current-view {
-    height: 60px;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
 #right-story-properties .field {
     margin: 2px;
 }

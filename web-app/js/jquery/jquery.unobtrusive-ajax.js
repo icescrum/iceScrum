@@ -247,7 +247,11 @@ function getFunction(code, argNames) {
 function attachOnDomUpdate(content){
 
     $('[data-accordion=true]', content).each(function() {
-        $(this).accordion({heightStyle: 'content'});
+        var $this = $(this);
+        $this.accordion({heightStyle: 'fill'});
+        $(window).on('resize', function() {
+            $this.accordion('refresh');
+        });
     });
 
     var typeHelper = {

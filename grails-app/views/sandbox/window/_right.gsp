@@ -21,11 +21,21 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<div id="right-current-view">
-    <h3><g:message code="is.ui.sandbox"/></h3>
-    <span id="stories-sandbox-size">${storyCount}</span> stories
-</div>
-<div id="right-story-container">
+<div id="right-properties"
+     data-accordion="true">
+    <h3><a href="#"><g:message code="is.ui.sandbox"/></a></h3>
+    <div>
+        <span id="stories-sandbox-size">${storyCount}</span> stories
+    </div>
+    <h3><a href="#">${message(code: "is.story")}</a></h3>
+    <div id="right-story-container">
+    </div>
+    <h3><a href="#"><g:message code="is.ui.backlogelement.activity.test"/></a></h3>
+    <div> </div>
+    <h3><a href="#"><g:message code="is.ui.backlogelement.activity.comments"/></a></h3>
+    <div> </div>
+    <h3><a href="#"><g:message code="is.ui.backlogelement.activity.summary"/></a></h3>
+    <div></div>
 </div>
 
 
