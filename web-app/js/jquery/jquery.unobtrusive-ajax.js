@@ -250,7 +250,9 @@ function attachOnDomUpdate(content){
         var $this = $(this);
         $this.accordion({heightStyle: 'fill'});
         $(window).on('resize', function() {
-            $this.accordion('refresh');
+            if ($this && $this.hasClass('ui-accordion')) {
+                $this.accordion('refresh');
+            }
         });
     });
 
