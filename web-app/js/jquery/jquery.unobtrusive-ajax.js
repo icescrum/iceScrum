@@ -320,7 +320,7 @@ function attachOnDomUpdate(content){
         var editableName = editable.data('editable-name');
         editable.find('.field.editable').each(function() {
             var field = $(this);
-            var fieldName = field.data('editable-field');
+            var fieldName = field.attr('name');
             var fieldType = field.data('editable-type');
             var helper = typeHelper[fieldType];
             var options = {

@@ -238,7 +238,7 @@
                 withoutHeader: true
             },
             success: function(data) {
-                $('#right-story-properties[data-elemid='+id+'] .editable[data-editable-field=notes]').html(data);
+                $('#right-story-properties[data-elemid='+id+'] .field[name=notes]').html(data);
             }
         });
     }

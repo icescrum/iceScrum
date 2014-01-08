@@ -52,7 +52,7 @@ class SandboxController {
     def index = {
         def story = Story.getInProduct(params.long('product'), params.long('id')).list()
         if (story && story.state == Story.STATE_SUGGESTED) {
-            renderRightJSON text: story
+            render status: 200, contentType: 'application/json', text: story as JSON
         } else {
             render status: 404
         }

@@ -117,7 +117,7 @@ icescrum.marshaller = [
         task:[include:['totalAttachments','totalComments'], includeShort:['sprint']],
         feature:[include:['totalAttachments','countDoneStories','state','effort'],
                  asShort:['color', 'name']],
-        story:[include:['totalAttachments','totalComments','tasks', 'testState'],
+        story:[include:['totalAttachments','totalComments','tasks', 'testState', 'tags'],
                asShort:['state', 'effort','uid']],
         sprint:[include:['activable','totalRemaining'],
                 exclude:['cliches'],
@@ -143,11 +143,6 @@ icescrum.restMarshaller = [
         release:[exclude: ['description','cliches','duration']],
         team:[exclude: ['velocity','description','preferences']],
         user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']]
-]
-
-icescrum.rightMarshaller = [
-        story:[include:['tags', 'comments', 'tasks']],
-        feature:[asShort:['color', 'name']]
 ]
 
 /* CORS Section */

@@ -33,27 +33,26 @@
          data-editable-url="${createLink(controller: 'story', action: 'update', params: [product: params.product])}"
          data-editable-name="story">
         <div>
-            <div class="field editable" data-editable-field="name" data-editable-type="text">${story.name}</div>
-            <div class="field editable" data-editable-field="description" data-editable-type="textarea">${story.description}</div>
-            <div class="field editable" data-editable-field="type" data-editable-type="selectui" data-editable-values="${storyTypes}">${story.type}</div>
-            <div class="field editable" data-editable-field="feature.id" data-editable-type="selectui" data-placeholder="${message(code: 'is.ui.story.nofeature')}" data-allow-clear="true" data-editable-values="${features}">${story.feature}</div>
+            <div class="field editable" name="name" data-editable-type="text">${story.name}</div>
+            <div class="field editable" name="description" data-editable-type="textarea">${story.description}</div>
+            <div class="field editable" name="type" data-editable-type="selectui" data-editable-values="${storyTypes}">${story.type}</div>
+            <div class="field editable" name="feature.id" data-editable-type="selectui" data-placeholder="${message(code: 'is.ui.story.nofeature')}" data-allow-clear="true" data-editable-values="${features}">${story.feature}</div>
             <input type="hidden"
                    name="story.tags"
-                   data-change="
-                   $.ajax({
-                        type: 'POST',
-                        url: $(this).closest('[data-editable=true]').data('editable-url'),
-                        data: {
-                            id: $(this).closest('[data-editable=true]').data('elemid'),
-                            'story.tags': event.val.join(','),
-                            manageTags: true
-                        }
-                   });"
+                   data-change="$.ajax({
+                                    type: 'POST',
+                                    url: $(this).closest('[data-editable=true]').data('editable-url'),
+                                    data: {
+                                        id: $(this).closest('[data-editable=true]').data('elemid'),
+                                        'story.tags': event.val.join(','),
+                                        manageTags: true
+                                    }
+                               });"
                    data-tag="true"
                    data-placeholder="${message(code:'is.backlogelement.tags')}"
                    data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
                    value="${story.tags}"/>
-            <div class="field editable" data-editable-field="notes" data-editable-type="richarea">${story.notes}</div>
+            <div class="field editable" name="notes" data-editable-type="richarea">${story.notes}</div>
         </div>
     </div>
 </div>
