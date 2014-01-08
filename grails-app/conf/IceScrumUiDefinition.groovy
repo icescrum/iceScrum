@@ -222,6 +222,7 @@ uiDefinitions = {
             help 'is.ui.sandbox.help'
             init 'list'
             toolbar true
+            right true
         }
         widget {
             title 'is.ui.sandbox'

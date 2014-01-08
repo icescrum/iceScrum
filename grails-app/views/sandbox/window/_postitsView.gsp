@@ -29,8 +29,7 @@
         emptyRendering="true"
         style="display:${stories ? 'block' : 'none'};"
         id="window-${controllerName}"
-        selectable="[rendered:productOwner,
-                    filter:'div.postit-story',
+        selectable="[filter:'div.postit-story',
                     cancel:'.postit-label, a',
                     selected:'jQuery.icescrum.dblclickSelectable(ui,300,$.icescrum.displayQuicklook)']"
         droppable='[selector:"div.postit",

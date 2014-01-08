@@ -21,6 +21,7 @@
  * Stéphane Maldini (stephane.maldini@icescrum.com)
  * Manuarii Stein (manuarii.stein@icescrum.com)
  * Damien Vitrac (damien@oocube.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 (function($){
@@ -87,6 +88,9 @@
                 }
                 var option = $('<option />').attr('value', key).append($('<div/>').text(json[key]).html());
                 $('select', this).append(option);
+            }
+            if ($(original).data('placeholder')) {
+                $('select', this).prepend('<option></option>');
             }
             /* Loop option again to set selected. IE needed this... */
             $('select', this).children().each(function() {

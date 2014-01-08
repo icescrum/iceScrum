@@ -49,6 +49,15 @@ class SandboxController {
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
+    def index = {
+        def story = Story.getInProduct(params.long('product'), params.long('id')).list()
+        if (story && story.state == Story.STATE_SUGGESTED) {
+            renderRightJSON text: story
+        } else {
+            render status: 404
+        }
+    }
+
     def list = {
         def currentProduct = Product.load(params.product)
         def stories = Story.searchByTermOrTagInSandbox(currentProduct.id, params.term).sort { Story s1, Story s2 -> s2.suggestedDate <=> s1.suggestedDate }
@@ -186,5 +195,11 @@ class SandboxController {
             def dialog = g.render(template: '/scrumOS/report')
             render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
+    }
+
+    def right = {
+        Product product = Product.get(params.long('product'))
+        def storyCount = Story.countByBacklogAndState(product, Story.STATE_SUGGESTED)
+        render template: "window/right", model: [product: product, storyCount: storyCount]
     }
 }

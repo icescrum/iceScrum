@@ -430,6 +430,31 @@
                                 $('#stories-sandbox-size').html($(tmpl.view+' .postit-story, '+tmpl.view+' .table-line').size());
                             }
                         },
+                        sandboxRight: {
+                            selector:"#right-story-properties",
+                            id:"right-story-sandbox-tmpl",
+                            view:"#right-story-container",
+                            noblank:true,
+                            select:function(template) {
+                                var tmpl = $.icescrum.story.templates[template];
+                                var existing = $(tmpl.selector);
+                                if (existing.length > 0) {
+                                    $.icescrum.story.remove.apply(this, [template]);
+                                }
+                                $.icescrum.story.add.apply(this, [template]);
+                            },
+                            remove:function(tmpl) {
+                                $(tmpl.selector).remove();
+                            },
+                            update:function(template) {
+                                var tmpl = $.icescrum.story.templates[template];
+                                var alreadyPresent = $(tmpl.selector + '[data-elemid=' + this.id + ']');
+                                if (alreadyPresent.length > 0) {
+                                    $.icescrum.story.remove.apply(this, [template]);
+                                    $.icescrum.story.add.apply(this, [template]);
+                                }
+                            }
+                        },
                         sandboxWidget:{
                             selector:'li.postit-row-story',
                             id:'postit-row-story-sandbox-tmpl',
@@ -648,6 +673,20 @@
                         });
                     },
 
+                    select:function(template) {
+                        var tmpl = $.icescrum.story.templates[template];
+                        if (tmpl.select != undefined) {
+                            tmpl.select.apply(this, [template]);
+                        }
+                    },
+
+                    unselect:function(template) {
+                        var tmpl = $.icescrum.story.templates[template];
+                        if (tmpl.unselect != undefined) {
+                            tmpl.unselect.apply(this, [template]);
+                        }
+                    },
+
                     associated:function(template) {
                         $.icescrum.story.update.apply(this, [template]);
                     },
@@ -714,6 +753,16 @@
                         var creator = (this.creator.id == $.icescrum.user.id);
                         if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state >= $.icescrum.story.STATE_SUGGESTED && this.state != $.icescrum.story.STATE_DONE && $.icescrum.user.productOwner))) {
                             $('#menu-edit-' + this.id, newObject).remove();
+                            // right
+                            $('.field.editable', newObject).each(function() {
+                                $(this).removeClass('editable');
+                            });
+                            var tags = $('input[name="story.tags"]', newObject);
+                            if (tags.val() == '') {
+                                tags.remove();
+                            } else {
+                                tags.attr('disabled','disabled');
+                            }
                         }
                         if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state <= $.icescrum.story.STATE_ESTIMATED && $.icescrum.user.productOwner)) || this.state > $.icescrum.story.STATE_PLANNED) {
                             $('#menu-delete-' + this.id, newObject).remove();
@@ -828,8 +877,8 @@
                         this.value == 2 ? $('#storyaffectVersion-field-input').show() : $('#storyaffectVersion-field-input').hide();
                     },
 
-                    storyTemplate:function(story) {
-                        return story.description ? story.description.replace(/A\[.+?-(.*?)\]/g, "$1") : "&nbsp;";
+                    storyTemplate:function(description) {
+                        return description ? description.replace(/A\[.+?-(.*?)\]/g, "$1") : "&nbsp;";
                     }
                 },
 

@@ -238,7 +238,7 @@ class StoryController {
                 storyService.associateFeature(feature, story)
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
-            } else if (story.feature && params.feature?.id == '') {
+            } else if (story.feature && featureId == '') {
                 storyService.dissociateFeature(story)
                 if (params.table && params.boolean('table'))
                     skipUpdate = true

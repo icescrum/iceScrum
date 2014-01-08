@@ -44,7 +44,7 @@
     var name =  this.name ? this.name : '';
     var size = this.state == $.icescrum.story.STATE_SUGGESTED ? 24 : 17;
     var truncatedName = name.length > size ? name.substring(0,size)+'...' : name;
-    var description =  jQuery.icescrum.story.storyTemplate(this);
+    var description =  jQuery.icescrum.story.storyTemplate(this.description);
     var effort = this.state > 1 ? (this.effort != null ? this.effort : '?') : '';
     var truncatedDescription = description.length > 50 ? description.substring(0,50)+'...' : description;
     var textState = this.state > 1 ? jQuery.icescrum.story.states[this.state] : '';

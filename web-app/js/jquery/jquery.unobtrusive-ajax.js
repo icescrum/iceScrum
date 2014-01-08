@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2014 Kagilum SAS.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
+ *
+ */
+
 function getFunction(code, argNames) {
     var fn = window, parts = (code || "").split(".");
     while (fn && parts.length) {
@@ -221,6 +245,126 @@ function getFunction(code, argNames) {
 }(jQuery));
 
 function attachOnDomUpdate(content){
+
+    $('[data-accordion=true]', content).each(function() {
+        $(this).accordion({heightStyle: 'content'});
+    });
+
+    var typeHelper = {
+        text: {
+            getValueFromText: function(textValue) {
+                return $.icescrum.htmlDecode(textValue);
+            },
+            getValueFromInput: function(inputField) {
+                return inputField.find('input').val();
+            },
+            data: function() {
+                return function(textValue) {
+                    return typeHelper.text.getValueFromText(textValue);
+                };
+            }
+        },
+        selectui: {
+            getValueFromText: function(textValue) {
+                return $.icescrum.htmlDecode(textValue);
+            },
+            getValueFromInput: function(inputField) {
+                return inputField.find('select').children('option:selected').text();
+            },
+            data: function(field) {
+                var selectValuesData = field.data('editable-values').replace(/'/g, '"');
+                var selectValues = $.parseJSON(selectValuesData);
+                return function (value) {
+                    return $.extend(selectValues, {'selected': value});
+                };
+            }
+        },
+        textarea: {
+            getValueFromText: function(textValue) {
+                return $.icescrum.htmlDecode(textValue.replace(/<br[\s\/]?>/gi, '\n'));
+            },
+            getValueFromInput: function(inputField) {
+                return inputField.find('textarea').val();
+            },
+            data: function() {
+                return function (textValue) {
+                    return typeHelper.textarea.getValueFromText(textValue);
+                };
+            }
+        },
+        richarea: {
+            getValueFromText: function(textValue) {
+                return $.icescrum.htmlDecode(textValue);
+            },
+            getValueFromInput: function(inputField) {
+                return inputField.find('textarea').val();
+            },
+            data: function() {
+                return function (textValue) {
+                    return typeHelper.richarea.getValueFromText(textValue);
+                };
+            }
+        }
+    };
+
+    $('[data-editable=true]', content).each(function() {
+        var editable = $(this);
+        var editableId = editable.data('elemid');
+        var editableURL = editable.data('editable-url');
+        var editableName = editable.data('editable-name');
+        editable.find('.field.editable').each(function() {
+            var field = $(this);
+            var fieldName = field.data('editable-field');
+            var fieldType = field.data('editable-type');
+            var helper = typeHelper[fieldType];
+            var options = {
+                type: fieldType,
+                ajaxoptions: {dataType: 'json'},
+                onblur: 'submit',
+                name: editableName + '.' + fieldName,
+                data: helper.data(field),
+                onedit: function () {
+                    field.addClass('editing');
+                },
+                onsubmit: function (settings, original) {
+                    var oldValue = helper.getValueFromText(original.revert);
+                    var newValue = helper.getValueFromInput($(original));
+                    if (oldValue == newValue) {
+                        original.reset();
+                        field.removeClass('editing');
+                        return false;
+                    }
+                    return true;
+                },
+                submitdata: function () {
+                    return {
+                        'name': fieldName,
+                        'table': true,
+                        'id': editableId
+                    };
+                },
+                callback: function (value) {
+                    field.html(value.value);
+                    field.removeClass('editing');
+                    var eventName = 'update_' + editableName;
+                    $.event.trigger(eventName, value.object);
+                }
+            };
+            if (fieldType == 'richarea') {
+                $.extend(options, {
+                    loaddata: function () {
+                        return {
+                            'id': editableId,
+                            'loadrich': true
+                        }
+                    },
+                    loadurl: editableURL,
+                    markitup: textileSettings
+                });
+            }
+            field.die().liveEditable(editableURL, options);
+        });
+    });
 
     $('textarea.selectallonce',content).one('click', function() {
         $(this).select();

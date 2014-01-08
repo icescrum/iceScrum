@@ -222,4 +222,30 @@
     </is:kanban>
 </template>
 
+<template id="right-story-sandbox-tmpl">
+    <![CDATA[
+    ?**
+    var description =  this.description ? jQuery.icescrum.story.storyTemplate(this.description.formatLine()) : '';
+    var typeTitle = $.icescrum.story.types[this.type];
+    var tags = (this.tags && this.tags.length > 0) ? this.tags.join(', ') : '';
+    var feature = this.feature ? this.feature.name : '${message(code: 'is.ui.story.nofeature')}';
+    if (this.notes) {
+        var id = this.id;
+        $.ajax({
+            url: $.icescrum.o.baseUrl + 'textileParser',
+            data: {
+                data: this.notes,
+                withoutHeader: true
+            },
+            success: function(data) {
+                $('#right-story-properties[data-elemid='+id+'] .editable[data-editable-field=notes]').html(data);
+            }
+        });
+    }
+    **?
+    <g:set var="storyExtended" value="${story << [notes:'', feature:'?**=feature**?', tags: '?**=tags**?', name: '?**=this.name**?', description:'?**=description**?', type: '?**=typeTitle**?']}"/>
+    <g:render template="/story/rightStory" model="[story: story, user: user, template: true]"/>
+    ]]>
+</template>
+
 <entry:point id="story-template" model="[story:story,user:user,tMOrSm:tMOrSm,inProduct:inProduct,columns:columns]"/>

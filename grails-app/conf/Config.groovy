@@ -145,6 +145,11 @@ icescrum.restMarshaller = [
         user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']]
 ]
 
+icescrum.rightMarshaller = [
+        story:[include:['tags', 'comments', 'tasks']],
+        feature:[asShort:['color', 'name']]
+]
+
 /* CORS Section */
 icescrum.cors.enable = true
 icescrum.cors.url.pattern = '/ws/*'
