@@ -37,7 +37,22 @@
             <div class="field editable" data-editable-field="description" data-editable-type="textarea">${story.description}</div>
             <div class="field editable" data-editable-field="type" data-editable-type="selectui" data-editable-values="${storyTypes}">${story.type}</div>
             <div class="field editable" data-editable-field="feature.id" data-editable-type="selectui" data-placeholder="${message(code: 'is.ui.story.nofeature')}" data-allow-clear="true" data-editable-values="${features}">${story.feature}</div>
-            <input type="hidden" name="story.tags" data-tag="true" data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}" value="${story.tags}"/>
+            <input type="hidden"
+                   name="story.tags"
+                   data-change="
+                   $.ajax({
+                        type: 'POST',
+                        url: $(this).closest('[data-editable=true]').data('editable-url'),
+                        data: {
+                            id: $(this).closest('[data-editable=true]').data('elemid'),
+                            'story.tags': event.val.join(','),
+                            manageTags: true
+                        }
+                   });"
+                   data-tag="true"
+                   data-placeholder="${message(code:'is.backlogelement.tags')}"
+                   data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
+                   value="${story.tags}"/>
             <div class="field editable" data-editable-field="notes" data-editable-type="richarea">${story.notes}</div>
         </div>
     </div>

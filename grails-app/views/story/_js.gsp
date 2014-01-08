@@ -227,7 +227,7 @@
     ?**
     var description =  this.description ? jQuery.icescrum.story.storyTemplate(this.description.formatLine()) : '';
     var typeTitle = $.icescrum.story.types[this.type];
-    var tags = (this.tags && this.tags.length > 0) ? this.tags.join(', ') : '';
+    var tags = (this.tags && this.tags.length > 0) ? this.tags.join(',') : '';
     var feature = this.feature ? this.feature.name : '${message(code: 'is.ui.story.nofeature')}';
     if (this.notes) {
         var id = this.id;

@@ -394,11 +394,14 @@ function attachOnDomUpdate(content){
         }
     });
 
-    $('input[data-tag="true"]', content).each(function(){
+    $('input[data-tag="true"]', content).each(function() {
         var element = $(this);
+        var url = element.data('url');
+        var placeholder = element.data('placeholder');
         var select = element.select2({
             width: "240",
             tags:[],
+            placeholder: placeholder,
             tokenSeparators: [",", " "],
             initSelection : function (element, callback) {
                 var data = [];
@@ -411,7 +414,7 @@ function attachOnDomUpdate(content){
                 return {id:term, text:term};
             },
             ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-                url: element.data('url'),
+                url: url,
                 data: function (term) {
                     return {term: term};
                 },
@@ -424,9 +427,9 @@ function attachOnDomUpdate(content){
                 }
             }
         });
-        if ($(this).data('change')){
-            select.change(function(event,value){
-                getFunction(element.data("change"), ["event", "value"]).apply(this,[event,value]);
+        if (element.data('change')){
+            select.change(function(event){
+                getFunction(element.data("change"), ["event"]).apply(this,[event]);
             });
         }
     });
