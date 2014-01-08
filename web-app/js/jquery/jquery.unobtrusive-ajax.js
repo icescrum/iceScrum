@@ -247,13 +247,7 @@ function getFunction(code, argNames) {
 function attachOnDomUpdate(content){
 
     $('[data-accordion=true]', content).each(function() {
-        var $this = $(this);
-        $this.accordion({heightStyle: 'fill'});
-        $(window).on('resize', function() {
-            if ($this && $this.hasClass('ui-accordion')) {
-                $this.accordion('refresh');
-            }
-        });
+        manageAccordion(this);
     });
 
     var typeHelper = {
@@ -460,31 +454,21 @@ function attachOnDomUpdate(content){
         elem.removeAttr('data-resizable');
         var right = elem.hasClass('right-resizable');
         var div = right ? elem.prev() : elem.next();
-        elem.data('widthSaved', elem.outerWidth());
         var resize = function(){
+            var elWidth = elem.width();
             if (right){
                 elem.css('left','auto');
             }
             if(elem.find('> div:not(.ui-resizable-handle)').length == 0 && elem.data('emptyHide') == true){
                 elem.hide();
                 div.css(right ? 'right' : 'left', 0);
-            }else if (elem.width() <= 7 && !elem.hasClass('docked')){
+            }else if (elWidth <= 7){
                 elem.addClass('ui-resizable-hidden');
                 elem.width(0);
+                elWidth = 0;
                 div.css(right ? 'right' : 'left', 7);
                 elem.find(".ui-resizable-handle").css(right ? 'left' : 'right', -7).width(7);
-                if(elem.data('dock')){
-                    var dock = $('<ul class="dock"></ul>');
-                    elem.find(".title").each(function(){
-                        var el = $('<li>'+$(this).text()+'</li>');
-                        el.appendTo(dock);
-                    });
-                    dock.prependTo(elem);
-                }
-            } else if(elem.width() > 7) {
-                if(elem.data('dock')){
-                    elem.find('.dock').remove();
-                }
+            } else if(elWidth > 7) {
                 var reconstruct = elem.hasClass('ui-resizable-hidden');
                 elem.removeClass('ui-resizable-hidden').show();
                 div.css(right ? 'right' : 'left', elem.outerWidth() + 7);
@@ -496,11 +480,24 @@ function attachOnDomUpdate(content){
                     });
                 }
             }
+            if (div.width() <= 10){
+                div.hide();
+            } else {
+                div.show();
+            }
+            if(!elem.data('eventWidth') && elem.data('eventOnWidth') && elWidth > elem.data('eventOnWidth')) {
+                elem.data('eventWidth', true);
+                elem.trigger('resizable.overWidth');
+            } else if(elem.data('eventWidth') && elem.data('eventOnWidth') && elWidth < elem.data('eventOnWidth')) {
+                elem.data('eventWidth', false);
+                elem.trigger('resizable.notOverWidth');
+            }
             $(document.body).trigger('resize');
         };
         var options = {
             handles: right ? 'w' : 'e',
             resize: resize,
+            containment: "parent",
             stop:function(){
                 elem.css('bottom','0px');
                 $(this).css('height','auto');
@@ -514,7 +511,12 @@ function attachOnDomUpdate(content){
         elem.resizable($.extend(options, elem.data()));
         elem.find(".ui-resizable-handle").css(right ? 'left' : 'right',-7);
         elem.find(".ui-resizable-handle").on('dblclick',function(){
-            elem.css('width',elem.width() <= 17 ? elem.data('widthSaved') : 0);
+            if (elem.width() <= 17){
+                elem.css('width', elem.data('widthSaved'));
+            } else {
+                elem.data('widthSaved', elem.width());
+                elem.css('width', 0);
+            }
             resize();
         });
         resize();
@@ -529,4 +531,16 @@ function attachOnDomUpdate(content){
     });
 
     $.event.trigger('domUpdate.icescrum',content);
+}
+
+function manageAccordion(element){
+    var $this = $(element);
+    $this.accordion($this.data());
+    if ($this.data('heightStyle') == 'fill'){
+        $(window).on('resize', function() {
+            if ($this && $this.hasClass('ui-accordion')) {
+                $this.accordion('refresh');
+            }
+        });
+    }
 }

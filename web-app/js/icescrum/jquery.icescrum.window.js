@@ -94,7 +94,7 @@
                                             viewSelector.find('.content').html('<span class="ico"></span>' + viewSelector.find('a[data-default-view='+view+']').text());
                                         }
                                     }
-
+                                    $(content).isWindow($(content).data());
                                     attachOnDomUpdate($(content));
 
                                     if (callback) {
@@ -165,7 +165,7 @@
         obj.data('windowid', windowid);
         obj.data('id', id);
 
-        if (opts.maximizeable) {
+        if (opts.fullScreen) {
             iconMaximize = $("#" + windowid + ' .window-maxicon');
             //icon action
             iconMaximize.parent().bind('click', function(event) {
@@ -182,12 +182,6 @@
         if (opts.widgetable) {
             $("#" + windowid + ' .window-minimize').bind('click', function(event) {
                 $.icescrum.windowToWidget(obj, event)
-            });
-        }
-
-        if (opts.closeable) {
-            $("#" + windowid + ' .window-close').bind('click', function(event) {
-                $.icescrum.closeWindow(obj, event)
             });
         }
 
@@ -208,7 +202,6 @@
 $.fn.isWindow.defaults = {
     maximizeable:false,
     widgetable:false,
-    closeable:true,
     onMaximize:null,
     onUnMaximize:null,
     onClose:null

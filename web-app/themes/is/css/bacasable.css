@@ -741,11 +741,15 @@ body:fullscreen .window-fullscreen{
 
 #right .ui-accordion .ui-accordion-header {
     margin-top:0;
-    border-top:none;
-    border-right:none;
-    border-left:none;
+    border-right-width:0;
+    border-left-width:0;
+    border-top-width:0;
     border-color: #C4C4C4;
     background-image:linear-gradient(#e4e4e4, #d8d8d8);
+}
+
+#right-properties.ui-accordion .ui-accordion-header:first-of-type {
+    border-top-width:1px;
 }
 
 #right .ui-accordion .ui-accordion-content {
@@ -770,4 +774,41 @@ body:fullscreen .window-fullscreen{
     color:#000;
     font-weight:bold;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.window-actions, .widget-actions {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    border:none;
+}
+
+#main .box .box-navigation .window-actions {
+    border: 0 none;
+    display: table-row;
+    height: 28px;
+    padding: 0;
+}
+
+.window-actions li, .widget-actions li {
+    display: table-cell;
+    list-style: none outside none;
+    padding: 0 0;
+    vertical-align: middle;
+}
+
+.window-actions li {
+    height:28px;
+}
+
+.widget-actions li {
+    height:16px;
+}
+
+.window-actions li.search {
+    padding-right: 10px;
+}
+
+.window-actions li .ui-icon, .widget-actions li .ui-icon {
+    cursor: pointer;
 }

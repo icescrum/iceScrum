@@ -126,8 +126,8 @@ li#li-roles {
 
 #main, #local {
     position: absolute;
-    top: 40px;
-    bottom: 6px;
+    top: 37px;
+    bottom: 0;
 }
 
 #main .main-content, #local .local-content {
@@ -135,8 +135,9 @@ li#li-roles {
 }
 
 #main {
-    right: 3px;
-    left: 269px;
+    right: 0;
+    left: 266px;
+    background:#F5F5F5;
 }
 
 #main .box, #main #main-content {
@@ -146,9 +147,9 @@ li#li-roles {
 
 #main .box .box-content, .window-fullscreen .box-content {
     position: absolute;
-    top: 54px;
+    top: 28px;
     left: 0;
-    bottom: 0px;
+    bottom: 0;
     right: 0;
     overflow: auto;
 }
@@ -200,12 +201,16 @@ li#li-roles {
 }
 
 #local {
-    left: 3px;
+    left: 0;
     width: 258px;
 }
 
 #local > .ui-resizable-handle, #right > .ui-resizable-handle {
     background: #F5F5F5 url(../images/application/grip.png) no-repeat center;
+}
+
+#local > .ui-resizable-handle {
+    border-left-width:1px;
 }
 
 #local > .ui-resizable-handle {
@@ -217,10 +222,10 @@ li#li-roles {
 }
 
 #right {
-    background:none repeat scroll 0 0 #e6e6e6;
+    background:none repeat scroll 0 0 #e3e3e4;
     position:absolute;
     right:0;
-    top:54px;
+    top:28px;
     bottom:0;
     height:auto;
     width:400px;
@@ -233,10 +238,9 @@ li#li-roles {
 #right > .ui-resizable-handle {
     cursor: e-resize;
     margin-left: -1px;
-    border: 0 solid #C4C4C4;
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
+    border: 1px solid #C4C4C4;
+    border-top-width: 0;
+    border-bottom-width: 0;
 }
 
 #right.ui-resizable-hidden > .ui-resizable-handle {
@@ -310,10 +314,6 @@ li#li-roles {
 
 .box .box-content, .box .box-navigation {
     border-width: 0 1px;
-}
-
-.box .box-content {
-    border-bottom-width: 1px;
 }
 
 .box .resizable {
@@ -529,7 +529,7 @@ li#li-roles {
     height: 28px;
     background-position: 0 -38px;
     position: absolute;
-    top: 26px;
+    top: 0;
     left: 0;
     width: 100%;
     padding: 0;
@@ -585,27 +585,45 @@ li#li-roles {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-#local .box .box-navigation {
+#local .box > .box-navigation {
     height: 24px;
-    background-position: 0 -66px;
+    background-position: 0 -67px;
     border-width: 0 1px;
 }
 
-#local .box-navigation ul {
+#local .box + .box > .box-navigation {
+    border-width: 1px 0 0 1px;
+}
+
+#local .box .box-navigation ul {
     padding: 0;
 }
 
-#local .box .box-navigation li {
+#local .box > .box-navigation > ul li.title {
+    color: #666;
+    display: inline-block;
+    float: left;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+#local .box > .box-navigation .widget-toolbar li {
+    padding-top: 2px;
+}
+
+#local .box > .box-navigation .widget-actions li {
     padding-top: 3px;
     padding-bottom: 2px;
 }
 
-#local .box {
-    margin-top: 5px;
-}
-
 #local .box .resizable {
     cursor: ne-resize;
+}
+
+#local .box > .box-content {
+    clear: both;
 }
 
 #local .box-first {
@@ -2341,4 +2359,17 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     background: -ms-linear-gradient(top,  #eff9fb 0%,#d7e9fb 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #eff9fb 0%,#d7e9fb 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eff9fb', endColorstr='#d7e9fb',GradientType=0 ); /* IE6-9 */
+}
+
+
+
+.button-n.on-selectable-disabled {
+    opacity: 0.3;
+    cursor:default;
+}
+
+.on-selectable-disabled.button-n:hover span {
+    background-image:none;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+    color:#777;
 }

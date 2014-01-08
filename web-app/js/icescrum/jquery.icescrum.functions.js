@@ -396,6 +396,8 @@
                         stories:'stories',
                         points:'points'
                     },
+                    timerDuplicate:null,
+                    termDuplicate:null,
                     templates:{
                         sandbox:{
                             selector:function() {
@@ -442,7 +444,7 @@
                                     $.icescrum.story.remove.apply(this, [template]);
                                 }
                                 $.icescrum.story.add.apply(this, [template]);
-                                $("#right-properties[data-accordion=true]").accordion("option", "active", 1);
+                                $("#right-properties.ui-accordion[data-accordion=true]").accordion("option", "active", 0);
                             },
                             remove:function(tmpl) {
                                 $(tmpl.selector).remove();
@@ -880,6 +882,22 @@
 
                     storyTemplate:function(description) {
                         return description ? description.replace(/A\[.+?-(.*?)\]/g, "$1") : "&nbsp;";
+                    },
+
+                    findDuplicate:function(term) {
+                        if (term.length >= 5 && this.termDuplicate != term.trim()){
+                            this.termDuplicate = term.trim();
+                            clearTimeout(this.timerDuplicate);
+                            this.timerDuplicate = setTimeout(function() {
+                                $.post($.icescrum.o.baseUrlSpace+'story/findDuplicate',{term:term.trim()})
+                                .success(function(data){
+                                    $('.duplicate').html(data ? data : '');
+                                });
+                            }, 500);
+                        } else if (term.length <= 5) {
+                            this.termDuplicate = null;
+                            $('.duplicate').html('');
+                        }
                     }
                 },
 

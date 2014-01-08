@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<li class="navigation-item button-ico button-add">
+<li class="navigation-item button-ico button-add separator">
     <a class="tool-button button-n"
        href="#${controllerName}/add"
        title="${message(code:'is.ui.sandbox.toolbar.new')}"

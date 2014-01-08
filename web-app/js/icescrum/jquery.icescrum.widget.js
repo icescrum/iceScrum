@@ -15,6 +15,7 @@
                                         if (callback) {
                                             callback();
                                         }
+                                        widget.isWidget(widget.data());
                                         attachOnDomUpdate(widget);
                                     }
                                 },
@@ -78,7 +79,7 @@
         obj.data('id', id);
 
         if (opts.windowable) {
-            iconWindow = $("#" + widgetid + ' .widget-maxicon');
+            iconWindow = $("#" + widgetid + ' .widget-window');
             iconWindow.parent().bind('click', function(event) {
                 $.icescrum.widgetToWindow(obj, event)
             });
@@ -94,37 +95,37 @@
             });
         }
 
-        if (opts.resizable) {
+        if (opts.resizableOptions) {
 
             var content = $("#widget-content-" + id, obj);
             var dif = obj.height() - content.height();
             var savedHeight = $.icescrum.product.id ? parseInt($.cookie('widget-'+id+$.icescrum.product.id)) : null;
 
             if ($('.box-blank', content).is(':visible')){
-                content.height(opts.resizable.minHeight);
+                content.height(opts.resizableOptions.minHeight);
             }else{
                 if (savedHeight && $(content.children()[0]).height() > savedHeight){
                     content.height(savedHeight);
                 }else if (!savedHeight && $(content.children()[0]).height() > opts.resizable.defaultHeight){
-                    content.height(opts.resizable.defaultHeight);
+                    content.height(opts.resizableOptions.defaultHeight);
                 }
             }
-            opts.resizable.minHeight += dif;
-            opts.resizable.zIndex = 990;
-            opts.resizable.minWidth = obj.width();
-            opts.resizable.maxWidth = obj.width();
-            opts.resizable.start = function(event, ui){
+            opts.resizableOptions.minHeight += dif;
+            opts.resizableOptions.zIndex = 990;
+            opts.resizableOptions.minWidth = obj.width();
+            opts.resizableOptions.maxWidth = obj.width();
+            opts.resizableOptions.start = function(event, ui){
                 var totalHeight = $(content.children()[0]).height() + dif;
-                obj.resizable('option','maxHeight', totalHeight >= opts.resizable.minHeight ? totalHeight : opts.resizable.minHeight);
+                obj.resizable('option','maxHeight', totalHeight >= opts.resizableOptions.minHeight ? totalHeight : opts.resizableOptions.minHeight);
             };
-            opts.resizable.resize = function(event, ui){
+            opts.resizableOptions.resize = function(event, ui){
                 content.height(ui.size.height - dif);
             };
-            opts.resizable.stop = function(event, ui){
+            opts.resizableOptions.stop = function(event, ui){
                 $.cookie('widget-'+id+$.icescrum.product.id,ui.size.height - dif);
             };
 
-            obj.resizable(opts.resizable);
+            obj.resizable(opts.resizableOptions);
         }
     };
 
@@ -132,7 +133,7 @@
 
 $.fn.isWidget.defaults = {
     windowable:false,
-    resizable:null,
+    resizableOptions:null,
     closeable:true,
     onClose:null
 };

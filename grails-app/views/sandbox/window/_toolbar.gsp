@@ -45,7 +45,7 @@
 <g:if test="${request.productOwner}">
     %{--Accept button--}%
     <li class="navigation-item ${!request.archivedProduct ? 'separator' : ''}">
-        <a class="tool-button button-n"
+        <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
            data-ajax="true"
            href="${createLink(action:'openDialogAcceptAs',params:[product:params.product])}"
            data-shortcut="ctrl+shift+a"
@@ -61,7 +61,7 @@
     </li>
 
     <li class="navigation-item separator">
-        <a class="tool-button button-n"
+        <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
            onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
            data-shortcut="ctrl+shift+c"
            data-shortcut-on="#window-id-${controllerName}"
@@ -76,7 +76,7 @@
     </li>
 
     <li class="navigation-item separator">
-        <a class="tool-button button-n"
+        <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
            onclick="jQuery.icescrum.selectableAction('story/openDialogDelete',true,null,null);"
            data-shortcut="del"
            data-shortcut-on="#window-id-${controllerName}"
@@ -123,7 +123,3 @@
                 ]"/>
 
 <entry:point id="${controllerName}-${actionName}"/>
-%{--Textfield for the auto completion search--}%
-<is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="${controllerName}" action="list" update="window-content-${controllerName}" withTags="true"/>
-</is:panelSearch>

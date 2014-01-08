@@ -76,7 +76,7 @@ uiDefinitions = {
         widget {
             title 'is.ui.backlog'
             init 'list'
-            toolbar false
+            toolbar true
             resizable = [defaultHeight:143,minHeight:26]
         }
         shortcuts = [
@@ -176,7 +176,6 @@ uiDefinitions = {
             help 'is.ui.releasePlan.help'
             init 'index'
             toolbar true
-            titleBarContent true
             before { def product, def action ->
                 def isWindowContext = actionName == 'openWindow'
                 if (!params.id && (!isWindowContext || action.contains('Chart'))) {
@@ -258,7 +257,6 @@ uiDefinitions = {
             title 'is.ui.sprintPlan'
             help 'is.ui.sprintPlan.help'
             toolbar true
-            titleBarContent true
             before { def product, def action ->
                 def isWindowContext = actionName == 'openWindow'
                 if (!params.id && (!isWindowContext || action.contains('Chart'))) {
@@ -306,7 +304,6 @@ uiDefinitions = {
             title 'is.ui.timeline'
             help 'is.ui.timeline.help'
             toolbar true
-            titleBarContent true
         }
         shortcuts = [
             [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],

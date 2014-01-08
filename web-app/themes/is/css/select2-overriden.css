@@ -157,11 +157,13 @@
 .select2-container-multi .select2-choices .select2-search-field input {
     color: #000000;
     text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+    margin: 2px 0;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice {
     background: #ffffff;
     border-color: #cacaca;
+    padding: 3px 18px 3px 3px;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice-focus {
@@ -204,6 +206,15 @@
 
 .title-bar-select2 .select2-search {
     margin-top: 3px;
+}
+
+.select2-container-multi .select2-search-choice-close {
+    right: 3px;
+    left:auto;
+}
+
+.select2-search-choice-close {
+    top:3px;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {

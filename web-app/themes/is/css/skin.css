@@ -90,10 +90,6 @@ a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-body {
-    background: url(../images/application/local.png) repeat-y 0 0;
-}
-
 .postit-details {
     background: url(../images/application/local.png) repeat-y 410px 0;
 }
@@ -536,7 +532,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.box .box-content, .buildinfos-table, .view-table table, .table th, .table .table-foot,
+#local > .ui-resizable-handle, .box .box-content, .buildinfos-table, .view-table table, .table th, .table .table-foot,
 .table .table-filters-bottom td, .box .box-content .list li, .view-postit .table,
 .table .table-line td, .box .box-content, .box .box-navigation,
 #dropmenu .dropmenu-content, #dropmenu .dropmenu-content ul li, #local .box-simple,

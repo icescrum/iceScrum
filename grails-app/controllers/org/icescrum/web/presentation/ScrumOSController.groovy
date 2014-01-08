@@ -112,12 +112,11 @@ class ScrumOSController {
 
             render is.widget([
                     id: params.window,
-                    hasToolbar: uiDefinition.widget?.toolbar,
+                    toolbar: uiDefinition.widget?.toolbar,
                     closeable: uiDefinition.widget?.closeable,
                     sortable: uiDefinition.widget?.sortable,
                     windowable: uiDefinition.window ? true : false,
                     resizable: uiDefinition.widget?.resizable ?: false,
-                    hasTitleBarContent: uiDefinition.widget?.titleBarContent,
                     title: message(code: uiDefinition.widget?.title),
                     init: uiDefinition.widget?.init
             ], {})
@@ -178,11 +177,10 @@ class ScrumOSController {
                         title: message(code: uiDefinition.window?.title),
                         help: message(code: uiDefinition.window?.help),
                         shortcuts: uiDefinition.shortcuts,
-                        hasToolbar: uiDefinition.window?.toolbar,
-                        hasTitleBarContent: uiDefinition.window?.titleBarContent,
+                        toolbar: uiDefinition.window?.toolbar,
                         hasRight: uiDefinition.window?.right,
-                        maximizeable: uiDefinition.window?.maximizeable,
-                        closeable: uiDefinition.window?.closeable,
+                        printable: uiDefinition.window?.printable,
+                        fullScreen: uiDefinition.window?.fullScreen,
                         widgetable: uiDefinition.widget ? true : false,
                         init: params.actionWindow ?: uiDefinition.window?.init
                 ], {})
@@ -317,6 +315,7 @@ class ScrumOSController {
         render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
     }
 
+    @Cacheable('applicationCache')
     def version = {
         withFormat{
             html {

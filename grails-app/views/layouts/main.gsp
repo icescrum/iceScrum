@@ -49,7 +49,7 @@
         <is:mainMenu/>
     </div>
 
-    <div id="local">
+    <div id="local" class="left-resizable" data-resizable="true" data-grid="265" data-max-width="265">
         <div class="widget-bar">
           <div id="widget-list">
             <div class="message" id="upgrade" style="display:none;">
