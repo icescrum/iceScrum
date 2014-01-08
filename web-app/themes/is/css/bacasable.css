@@ -727,3 +727,47 @@ body:fullscreen .window-fullscreen{
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+.duplicate {
+    clear: both;
+    float: left;
+    padding: 0 0 2px 222px;
+    color:#777777;
+}
+
+#right .ui-accordion-header.ui-corner-all, #right .ui-accordion-header.ui-corner-top, #right .ui-accordion-content.ui-corner-bottom {
+    border-radius:0;
+}
+
+#right .ui-accordion .ui-accordion-header {
+    margin-top:0;
+    border-top:none;
+    border-right:none;
+    border-left:none;
+    border-color: #C4C4C4;
+    background-image:linear-gradient(#e4e4e4, #d8d8d8);
+}
+
+#right .ui-accordion .ui-accordion-content {
+    border-top:1px solid #C4C4C4;
+    border-bottom:1px solid #C4C4C4;
+    border-left:none;
+    border-right:none;
+    background:none;
+    margin-bottom:1px;
+}
+
+#right .ui-accordion .ui-accordion-header:last-of-type {
+    border-bottom:none;
+    padding-bottom:2px;
+}
+
+#right .ui-accordion .ui-accordion-content:last-of-type {
+    border-bottom:none;
+}
+
+#right .ui-accordion h3 a, #right .ui-accordion h3 a:hover {
+    color:#000;
+    font-weight:bold;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
