@@ -38,7 +38,7 @@
     </li>
 </g:if>
 
-<is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}" separator="${request.scrumMaster || request.productOwner}">
+<is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}"">
   <ul>
     <li class="first">
         <a href="#${controllerName}/productCumulativeFlowChart" title="${message(code:'is.ui.timeline.charts.productCumulativeFlow')}">
@@ -75,7 +75,7 @@
 </is:panelButton>
 
 <g:if test="${product?.id}">
-    <is:panelButton alt="documents" separator="true" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
+    <is:panelButton alt="documents" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
         <ul class="dropmenu-scrollable" id="product-attachments-${product.id}">
             <g:if test="${request.inProduct}">
                 <li>
@@ -105,7 +105,7 @@
 </g:if>
 
 %{--Export--}%
-<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}" separator="true">
+<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}">
     <ul>
         <g:each in="${exportFormats}" var="format">
             <li>

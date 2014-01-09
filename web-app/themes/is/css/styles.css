@@ -440,14 +440,8 @@ li#li-roles {
     float: right;
 }
 
-.box .box-navigation .separator, #navigation .navigation-content .separator {
-    background-position: left -93px;
-    background-repeat: no-repeat;
-}
-
-#navigation .navigation-content .separator {
-    background-position: left -93px;
-    background-repeat: no-repeat;
+.box .box-navigation .navigation-item:not(:first-of-type), #navigation .navigation-content .navigation-line:nth-child(2), #navigation .navigation-content .navigation-line:nth-child(3) {
+    background: url(../images/bar/gray.png) no-repeat left -93px;
 }
 
 

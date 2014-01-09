@@ -39,7 +39,7 @@
         </a>
     </li>
 
-    <li class="navigation-item button-ico button-delete separator">
+    <li class="navigation-item button-ico button-delete">
         <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
            onclick="jQuery.icescrum.selectableAction('feature/delete',null,null,function(data){ jQuery.event.trigger('remove_feature',[data]); jQuery.icescrum.renderNotice('${message(code:'is.feature.deleted')}'); });"
            data-shortcut="del"
@@ -57,7 +57,7 @@
 </g:if>
 
 %{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view" separator="${request.productOwner}">
+<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
     <ul>
         <li class="first">
             <a href="${createLink(action:'list',controller:controllerName,params:[product:params.product])}"
@@ -81,7 +81,6 @@
         id="menu-chart"
         arrow="true"
         icon="graph"
-        separator="true"
         text="${message(code:'is.ui.toolbar.charts')}">
     <ul>
         <li class="first">
@@ -91,7 +90,7 @@
 </is:panelButton>
 
 %{--Export--}%
-<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}" separator="true">
+<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}">
     <ul>
         <g:each in="${exportFormats}" var="format">
             <li>

@@ -43,7 +43,7 @@
     </li>
 </g:if>
 <g:if test="${taskDeletable}">
-    <li class="navigation-item ${taskEditable ? 'separator' : ''}">
+    <li class="navigation-item">
         <a class="tool-button button-n"
            href="${createLink(controller:'task', action:'delete',id:task.id,params:[product:params.product])}"
            data-ajax-notice="${message(code:'is.task.deleted').encodeAsJavaScript()}"
@@ -81,7 +81,7 @@
     </g:if>
 
     <g:if test="${next}">
-        <li class="navigation-item ${previous ? 'separator' : ''}">
+        <li class="navigation-item">
             <a class="tool-button button-n"
                href="#${controllerName}/${next.id}"
                title="${message(code:'is.ui.backlogelement.toolbar.next')}"

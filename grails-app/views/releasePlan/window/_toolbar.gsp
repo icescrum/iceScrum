@@ -42,7 +42,7 @@
         </li>
 
         %{-- Sprints generation --}%
-        <li class="navigation-item separator close-release-${release.id}">
+        <li class="navigation-item close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'release', action:'generateSprints', params:[product:params.product], id:release.id)}"
                data-shortcut="ctrl+g"
@@ -62,7 +62,7 @@
 
     %{-- Automatic planification --}%
 
-        <li class="navigation-item separator close-release-${release.id}">
+        <li class="navigation-item close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'releasePlan', action:'autoPlan', params:[product:params.product], id:release.id)}"
                data-shortcut="ctrl+shift+a"
@@ -79,7 +79,7 @@
         </li>
 
     %{-- Dissociate All --}%
-        <li class="navigation-item separator close-release-${release.id}">
+        <li class="navigation-item close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'release', action:'unPlan', params:[product:params.product], id:release.id)}"
                data-shortcut="ctrl+shift+d"
@@ -99,7 +99,7 @@
         </li>
     </g:if>
 
-    <is:panelButton alt="documents" separator="${release.state <= Release.STATE_INPROGRESS && (request.productOwner || request.scrumMaster)}" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
+    <is:panelButton alt="documents" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
         <ul class="dropmenu-scrollable" id="release-attachments-${release.id}">
             %{-- vision --}%
             <li class="first">
@@ -148,7 +148,7 @@
             </g:each>
         </ul>
     </is:panelButton>
-    <is:panelButton alt="Charts" id="menu-chart" arrow="true" separator="true" icon="graph"
+    <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph"
                     text="${message(code:'is.ui.toolbar.charts')}">
         <ul>
             <li class="first">
@@ -161,7 +161,7 @@
     </is:panelButton>
 
     %{--Export--}%
-    <is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}" separator="true">
+    <is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}">
         <ul>
             <g:each in="${exportFormats}" var="format">
                 <li>

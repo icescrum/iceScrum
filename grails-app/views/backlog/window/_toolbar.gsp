@@ -41,7 +41,7 @@
 </g:if>
 
 <g:if test="${request.productOwner}">
-    <li class="navigation-item separator">
+    <li class="navigation-item">
        <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
           onclick="jQuery.icescrum.selectableAction('story/openDialogDelete',true,null,null);"
           data-shortcut="del"
@@ -58,7 +58,7 @@
 </g:if>
 
 %{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view" separator="${request.productOwner}">
+<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
     <ul>
         <li class="first">
             <a href="${createLink(action:'list',controller:controllerName,params:[product:params.product])}"
@@ -78,7 +78,7 @@
 </is:panelButton>
 
 %{--Export--}%
-<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}" separator="true">
+<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}">
     <ul>
         <g:each in="${exportFormats}" var="format">
             <li>

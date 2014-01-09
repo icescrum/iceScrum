@@ -45,7 +45,7 @@
         </li>
 
         %{--Delete button--}%
-        <li class="navigation-item button-ico button-delete separator close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
+        <li class="navigation-item button-ico button-delete close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
             <a class="tool-button button-n on-selectable-disabled on-selectable-kanban-sprint-${sprint.id}"
                onclick="jQuery.icescrum.selectableAction('task/delete',null,null,function(data){ jQuery.event.trigger('remove_task',[data]); jQuery.icescrum.renderNotice('${message(code:'is.task.deleted')}'); });"
                data-shortcut="del"
@@ -64,7 +64,7 @@
     </g:if>
 
     %{--View--}%
-    <is:panelButton alt="View" id="menu-display" arrow="true" separator="${(request.teamMember || request.scrumMaster || request.productOwner) && sprint.state != Sprint.STATE_DONE}" icon="view">
+    <is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
         <ul>
             <li class="first">
                 <a href="${createLink(action:'index',controller:controllerName,params:[product:params.product],id: sprint.id)}"
@@ -88,7 +88,6 @@
                     id="menu-filter-task"
                     arrow="true"
                     icon="filter"
-                    separator="true"
                     classDropmenu="${currentFilter == 'allTasks' ? '' : 'filter-active'}"
                     text="${message(code:'is.ui.sprintPlan.toolbar.filter.'+currentFilter)}">
         <ul class="dropmenu-scrollable">
@@ -141,7 +140,7 @@
     <g:if test="${request.scrumMaster || request.productOwner}">
 
         %{--Activate button--}%
-        <li class="navigation-item separator activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'separator':'hidden'}">
+        <li class="navigation-item activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'':'hidden'}">
             <a class="tool-button button-n"
                data-ajax="true"
                href="${createLink(action:'activate',controller:'releasePlan',params:[product:params.product],id:sprint.id)}"
@@ -161,7 +160,7 @@
         </li>
 
         %{--Close button--}%
-        <li class="navigation-item close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'separator':'hidden'}">
+        <li class="navigation-item close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'':'hidden'}">
             <a class="tool-button button-n"
                data-ajax="true"
                href="${createLink(action:'close',controller:'releasePlan',params:[product:params.product],id:sprint.id)}"
@@ -182,7 +181,7 @@
 
     </g:if>
 
-    <is:panelButton alt="documents" separator="true" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
+    <is:panelButton alt="documents" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
         <ul class="dropmenu-scrollable" id="sprint-attachments-${sprint.id}">
         %{-- doneDefinition --}%
             <li class="first">
@@ -250,7 +249,7 @@
         </ul>
     </is:panelButton>
 
-    <is:panelButton alt="Charts" separator="true" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
+    <is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
         <ul>
             <li class="first">
                 <a href="#${controllerName}/sprintBurndownRemainingChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a>
@@ -268,7 +267,7 @@
     </is:panelButton>
 
     %{--Export--}%
-    <is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}" separator="true">
+    <is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}">
         <ul>
             <g:each in="${exportFormats}" var="format">
                 <li>
@@ -281,7 +280,6 @@
     </is:panelButton>
 
     <is:reportPanel
-            separator="true"
             action="printPostits"
             id="all"
             formats="[

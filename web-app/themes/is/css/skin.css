@@ -285,8 +285,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 /////////////////////////////////////////
 */
 
-#navigation, .box .box-navigation, #navigation .navigation-content .separator,
-.box .box-navigation .separator,
+#navigation, .box .box-navigation,
 .table .table-filters td, .table th, .table .table-foot,
 .pagination .separator, #dropmenu .dropmenu-content ul li:hover,
 .field-buttons, .panel .panel-title, .dropmenu-content .menu-label,

@@ -34,7 +34,7 @@
         </a>
     </li>
     <is:errors/>
-    <li class="navigation-line separator">
+    <li class="navigation-line">
         <div class="dropmenu" id="menu-project" data-dropmenu="true">
 
           <a class="button-n clearfix dropmenu-button" onclick="return false;">

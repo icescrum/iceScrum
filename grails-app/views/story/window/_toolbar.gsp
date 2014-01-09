@@ -44,7 +44,6 @@
     <is:panelButton
             id="accept-display"
             arrow="true"
-            separator="${canEdit}"
             text="${message(code:'is.ui.backlogelement.toolbar.accept')}">
         <ul>
             <li class="first">
@@ -87,7 +86,7 @@
 
 <g:if test="${(request.productOwner && story.state <= Story.STATE_ESTIMATED) || (creator && story.state == Story.STATE_SUGGESTED)}">
 
-    <li class="navigation-item ${request.productOwner && story.state >= Story.STATE_SUGGESTED && story.state <= Story.STATE_DONE ? 'separator' : ''}">
+    <li class="navigation-item">
         <a class="tool-button button-n"
            href="${createLink(controller:'story', action:'openDialogDelete', id:story.id, params:[product:params.product])}"
            data-ajax="true"
@@ -122,7 +121,7 @@
     </g:if>
 
     <g:if test="${next}">
-        <li class="navigation-item ${previous ? 'separator' : ''}" id="next-story">
+        <li class="navigation-item" id="next-story">
             <a class="tool-button button-n"
                href="#${controllerName}/${next.id}"
                title="${message(code:'is.ui.backlogelement.toolbar.next')}"
