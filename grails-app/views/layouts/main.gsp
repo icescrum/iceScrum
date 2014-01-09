@@ -49,7 +49,17 @@
         <is:mainMenu/>
     </div>
 
-    <div id="local" class="left-resizable" data-resizable="true" data-grid="265" data-max-width="265">
+    <div id="local"
+         data-droppable="true"
+         data-drop="onDropToWidgetBar"
+         data-hover-class="local-active"
+         data-accept=".widgetable"
+         data-sortable="true"
+         data-handle=".box-title"
+         data-items=".box-widget-sortable" class="left-resizable"
+         data-resizable="true"
+         data-grid="265"
+         data-max-width="265">
         <div class="widget-bar">
           <div id="widget-list">
             <div class="message" id="upgrade" style="display:none;">
@@ -65,9 +75,11 @@
         </div>
         <div id="notifications" style="display:none;"><a id="accept_notifications">${message(code:'is.ui.html5.notifications')}</a> (<a id="hide_notifications">${message(code:'is.ui.hide')}</a>)</div>
     </div>
-    <is:desktop>
-        <g:layoutBody/>
-    </is:desktop>
+    <div id="main">
+        <div id="main-content" data-droppable="true" data-drop="onDropToWindow" data-hover-class="main-active" data-accept=".draggable-to-desktop">
+            <g:layoutBody/>
+        </div>
+    </div>
 </div>
 <is:spinner
         on401="var data = jQuery.parseJSON(xhr.responseText); document.location='${createLink(controller:'login',action:'auth')}?ref=${space ? space.config.path+'/'+space.config.key+'/' : ''}'+(data.url?data.url:'');"
@@ -75,38 +87,6 @@
         on403="jQuery.icescrum.renderNotice('${message(code:'is.error.denied')}', 'error');"
         on500="jQuery.icescrum.dialogError(xhr)"/>
 <r:layoutResources/>
-<jq:jquery>
-    $("#main-content").droppable({
-      drop:function(event, ui){
-        var id = ui.draggable.attr('id').replace('widget-id-','');
-        if (id == ui.draggable.attr('id')){
-          id = ui.draggable.attr('id').replace('elem_','');
-        }
-        $.icescrum.openWindow(id);
-      },
-      hoverClass: 'main-active',
-      accept: '.draggable-to-desktop'
-    });
-      $("#widget-list").sortable({
-        handle:".box-title",
-        items:".box-widget-sortable"
-      });
-
-      $("#local").droppable({
-        drop:function(event, ui){
-          var id = ui.draggable.attr('id').replace('elem_','');
-          if (id != ui.draggable.attr('id')){
-            if($("#window-id-"+id).is(':visible')){
-              $.icescrum.windowToWidget($("#window-id-"+id),event);
-            }else{
-              $.icescrum.addToWidgetBar(id);
-            }
-          }
-        },
-        hoverClass: 'local-active',
-        accept: '.widgetable'
-      });
-</jq:jquery>
 <entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
 <is:onStream

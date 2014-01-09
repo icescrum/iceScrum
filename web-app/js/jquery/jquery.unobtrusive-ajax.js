@@ -245,6 +245,19 @@ function getFunction(code, argNames) {
 }(jQuery));
 
 function attachOnDomUpdate(content){
+    $('[data-sortable=true]', content).each(function(){
+        var $this = $(this);
+        $this.sortable($this.data());
+    });
+
+    $('[data-droppable=true]', content).each(function(){
+        var $this = $(this);
+        var options = $this.data();
+        if ($this.data('drop')){
+            options.drop = getFunction(options.drop, ["event","ui"]);
+        }
+        $this.droppable(options);
+    });
 
     $('[data-accordion=true]', content).each(function() {
         manageAccordion(this);

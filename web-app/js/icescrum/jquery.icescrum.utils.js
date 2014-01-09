@@ -502,3 +502,23 @@ function NotesToHtml(html, textarea){
 function updateUrlFinder(){
 
 }
+
+function onDropToWidgetBar(event, ui){
+    var id = ui.draggable.attr('id').replace('elem_','');
+    if (id != ui.draggable.attr('id')) {
+        var $selector = $("#window-id-" + id);
+        if ($selector.is(':visible')) {
+            $.icescrum.windowToWidget($selector, event);
+        } else {
+            $.icescrum.addToWidgetBar(id);
+        }
+    }
+}
+
+function onDropToWindow(event, ui){
+    var id = ui.draggable.attr('id').replace('widget-id-','');
+    if (id == ui.draggable.attr('id')){
+        id = ui.draggable.attr('id').replace('elem_','');
+    }
+    $.icescrum.openWindow(id);
+}

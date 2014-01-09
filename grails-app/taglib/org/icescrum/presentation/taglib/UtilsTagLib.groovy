@@ -74,17 +74,6 @@ class UtilsTagLib {
         out << g.javascript(null, jsCode)
     }
 
-    /**
-     * Generate the iceScrum desktop (where the main window appear)
-     */
-    def desktop = { attrs, body ->
-        out << '<div id="main">'
-        out << '<div id="main-content">'
-        out << body()
-        out << '</div>'
-        out << '</div>'
-    }
-
     def simpleDesktop = { attrs, body ->
         out << '<div id="main-simple">'
         out << '<div id="main-content">'
