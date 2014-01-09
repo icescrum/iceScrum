@@ -510,18 +510,25 @@ function attachOnDomUpdate(content){
         var options = {
             handles: right ? 'w' : 'e',
             resize: resize,
-            containment: "parent",
+            start: function( event, ui ) {
+                //hack for chrome / safari with containment
+                if (elem.data('containment') == 'parent'){
+                    elem.resizable("option", "maxWidth", elem.parent().width() - 1);
+                }
+            },
             stop:function(){
                 elem.css('bottom','0px');
                 $(this).css('height','auto');
             }
         };
+        options = $.extend(options, elem.data());
+        options.containment = null;
         if (right){
             div.css('right', $(this).outerWidth() + 7);
         } else {
             div.css('left', $(this).outerWidth() + 7);
         }
-        elem.resizable($.extend(options, elem.data()));
+        elem.resizable(options);
         elem.find(".ui-resizable-handle").css(right ? 'left' : 'right',-7);
         elem.find(".ui-resizable-handle").on('dblclick',function(){
             if (elem.width() <= 17){
