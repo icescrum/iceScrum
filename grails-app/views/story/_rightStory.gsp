@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.utils.BundleUtils; org.icescrum.core.domain.Product" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -
@@ -21,9 +22,10 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<g:set var="storyTypesList" value="${org.icescrum.core.utils.BundleUtils.storyTypes.collect({k, v -> '\'' + k + '\': \'' + message(code: v) + '\''})}"/>
+<g:set var="storyTypesList" value="${BundleUtils.storyTypes.collect({k, v -> '\'' + k + '\': \'' + message(code: v) + '\''})}"/>
 <g:set var="storyTypes" value="{${storyTypesList.join(',')}}"/>
-<g:set var="featuresList" value="${org.icescrum.core.domain.Product.get(params.long('product')).features.collect({'\'' + it.id + '\': \'' + it.name + '\''})}"/>
+%{-- Remove ugly thing with ajax loading of features --}%
+<g:set var="featuresList" value="${Product.get(params.long('product'))?.features?.collect({'\'' + it.id + '\': \'' + it.name + '\''})?:[]}"/>
 <g:set var="features" value="{${featuresList.join(', ')}}"/>
 
 <div id="right-story-properties"
