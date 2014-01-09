@@ -837,9 +837,7 @@ table.kanban:not(.done) tbody.storyDone {
 }
 
 .navigation-line .with-arrow {
-    background-image: url(../images/application/arrow.png);
-    background-repeat: no-repeat;
-    background-position: right -2px;
+    background: url(../images/application/arrow.png) no-repeat right 3px;
     padding-right: 12px;
     margin-right: 6px;
 }

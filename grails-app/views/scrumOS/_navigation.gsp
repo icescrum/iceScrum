@@ -141,7 +141,7 @@
         <sec:ifLoggedIn>
             <g:set var="username" value="${user?.firstName?.encodeAsHTML() + ' ' + user?.lastName?.encodeAsHTML()}"/>
             <li class="navigation-line" id="navigation-avatar" onClick="jQuery.icescrum.showAndHideOnClickAnywhere('.user-tooltip')">
-                <is:avatar user="${user}" class="navigation-avatar"/>
+                <is:avatar user="${user}" class="navigation-avatar with-arrow"/>
             </li>
             <div class="user-tooltip">
                 <div id="user-tooltip-avatar">
