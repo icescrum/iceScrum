@@ -57,6 +57,14 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table']
         ]
+
+        exportFormats = {
+            [
+                    [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
+                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
+                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]
+            ]
+        }
     }
 
     'backlog' {
@@ -91,6 +99,14 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table']
         ]
+
+        exportFormats = {
+            [
+                [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
+                [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
+                [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]
+            ]
+        }
     }
 
     'story' {
@@ -141,6 +157,12 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table','productParkingLotChart']
         ]
+
+        exportFormats = {
+            [[code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
+                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
+                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]]
+        }
     }
 
     'project' {
@@ -161,6 +183,14 @@ uiDefinitions = {
                 view:'productCumulativeFlowChart',
                 viewTypes:['productCumulativeFlowChart','productVelocityCapacityChart','productBurnupChart','productBurndownChart','productVelocityChart','productParkingLotChart'],
         ]
+
+        exportFormats = {
+            [
+                    [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', locationHash:params.actionWindow?:'']],
+                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX', locationHash:params.actionWindow?:'']],
+                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT', locationHash:params.actionWindow?:'']]
+            ]
+        }
     }
 
     'releasePlan' {
@@ -243,6 +273,14 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table']
         ]
+
+        exportFormats = {
+            [
+                    [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
+                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
+                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]
+            ]
+        }
     }
 
     'sprintPlan' {
@@ -290,6 +328,13 @@ uiDefinitions = {
                     id
                 }
         ]
+        exportFormats = {
+            [
+                    [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', id:params.id]],
+                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX', id:params.id]],
+                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT', id:params.id]]
+            ]
+        }
     }
 
     'timeline' {
@@ -309,6 +354,13 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
             [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.timeline.ctrln.text']
         ]
+        exportFormats = {
+            [
+                [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', locationHash:params.actionWindow?:'']],
+                [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX', locationHash:params.actionWindow?:'']],
+                [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT', locationHash:params.actionWindow?:'']]
+            ]
+        }
     }
 
     'user' {

@@ -977,14 +977,4 @@ class ProjectController {
             render status: 200, contentType: 'application/json', text: attachments as JSON
         }
     }
-
-    private getExportFormats() {
-        def exportFormats = [
-                [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', locationHash:params.actionWindow?:'']],
-                [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX', locationHash:params.actionWindow?:'']],
-                [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT', locationHash:params.actionWindow?:'']]
-        ]
-        entry.hook(id:"${controllerName}-getExportFormats", model:[exportFormats:exportFormats])
-        return exportFormats
-    }
 }

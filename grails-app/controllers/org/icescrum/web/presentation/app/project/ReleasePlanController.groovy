@@ -317,10 +317,4 @@ class ReleasePlanController {
             render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
         }
     }
-
-    private getExportFormats() {
-        def exportFormats = []
-        entry.hook(id:"${controllerName}-getExportFormats", model:[exportFormats:exportFormats])
-        return exportFormats
-    }
 }

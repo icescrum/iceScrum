@@ -245,11 +245,7 @@ class TimelineController {
         def data
         def chart = null
 
-        if (params.locationHash) {
-            chart = processLocationHash(params.locationHash.decodeURL()).action
-        }
-
-        switch (chart) {
+        switch (params.locationHash) {
             case 'productCumulativeFlowChart':
                 data = productService.cumulativeFlowValues(currentProduct)
                 break
@@ -296,28 +292,5 @@ class TimelineController {
             def dialog = g.render(template: '/scrumOS/report')
             render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
-    }
-
-    /**
-     * Parse the location hash string passed in argument
-     * @param locationHash
-     * @return A Map
-     */
-    private processLocationHash(String locationHash) {
-        def data = locationHash.split('/')
-        return [
-                controller: data[0].replace('#', ''),
-                action: data.size() > 1 ? data[1] : null
-        ]
-    }
-
-    private getExportFormats() {
-        def exportFormats = [
-                [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
-                [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
-                [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]
-        ]
-        entry.hook(id:"${controllerName}-getExportFormats", model:[exportFormats:exportFormats])
-        return exportFormats
     }
 }

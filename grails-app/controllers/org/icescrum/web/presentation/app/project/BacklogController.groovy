@@ -111,14 +111,4 @@ class BacklogController {
             render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
     }
-
-    private getExportFormats() {
-        def exportFormats = [
-                [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
-                [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
-                [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]
-        ]
-        entry.hook(id:"${controllerName}-getExportFormats", model:[exportFormats:exportFormats])
-        return exportFormats
-    }
 }
