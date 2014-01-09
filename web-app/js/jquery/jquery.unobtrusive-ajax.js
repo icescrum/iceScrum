@@ -307,7 +307,7 @@ function attachOnDomUpdate(content){
         },
         richarea: {
             getValueFromText: function(textValue) {
-                return $.icescrum.htmlDecode(textValue);
+                return textValue;
             },
             getValueFromInput: function(inputField) {
                 return inputField.find('textarea').val();
@@ -316,6 +316,9 @@ function attachOnDomUpdate(content){
                 return function (textValue) {
                     return typeHelper.richarea.getValueFromText(textValue);
                 };
+            },
+            specificOptions: {
+                markitup: textileSettings
             }
         }
     };
@@ -335,12 +338,18 @@ function attachOnDomUpdate(content){
                 ajaxoptions: {dataType: 'json'},
                 onblur: 'submit',
                 name: editableName + '.' + fieldName,
-                data: helper.data(field),
+                data: function(textValue) {
+                    if (field.data('rawValue')) {
+                        textValue = field.data('rawValue');
+                    }
+                    return helper.data(field)(textValue);
+                },
                 onedit: function () {
                     field.addClass('editing');
                 },
                 onsubmit: function (settings, original) {
-                    var oldValue = helper.getValueFromText(original.revert);
+                    var oldText = field.data('rawValue') ? field.data('rawValue') : original.revert;
+                    var oldValue = helper.getValueFromText(oldText);
                     var newValue = helper.getValueFromInput($(original));
                     if (oldValue == newValue) {
                         original.reset();
@@ -357,23 +366,17 @@ function attachOnDomUpdate(content){
                     };
                 },
                 callback: function (value) {
+                    if (field.data('rawValue') != undefined) {
+                        field.data('rawValue', value.rawValue);
+                    }
                     field.html(value.value);
                     field.removeClass('editing');
                     var eventName = 'update_' + editableName;
                     $.event.trigger(eventName, value.object);
                 }
             };
-            if (fieldType == 'richarea') {
-                $.extend(options, {
-                    loaddata: function () {
-                        return {
-                            'id': editableId,
-                            'loadrich': true
-                        }
-                    },
-                    loadurl: editableURL,
-                    markitup: textileSettings
-                });
+            if (helper.specificOptions) {
+                $.extend(options, helper.specificOptions);
             }
             field.die().liveEditable(editableURL, options);
         });

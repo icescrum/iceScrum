@@ -36,7 +36,7 @@
          data-editable-name="story">
         <div>
             <div class="field editable" name="name" data-editable-type="text">${story.name}</div>
-            <div class="field editable" name="description" data-editable-type="textarea">${story.description}</div>
+            <div class="field editable" name="description" data-raw-value="${story.rawDescription}" data-editable-type="textarea">${story.description}</div>
             <div class="field editable" name="type" data-editable-type="selectui" data-editable-values="${storyTypes}">${story.type}</div>
             <div class="field editable" name="feature.id" data-editable-type="selectui" data-placeholder="${message(code: 'is.ui.story.nofeature')}" data-allow-clear="true" data-editable-values="${features}">${story.feature}</div>
             <input type="hidden"
@@ -54,7 +54,7 @@
                    data-placeholder="${message(code:'is.backlogelement.tags')}"
                    data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
                    value="${story.tags}"/>
-            <div class="field editable" name="notes" data-editable-type="richarea">${story.notes}</div>
+            <div class="field editable" name="notes" data-raw-value="${story.rawNotes}" data-editable-type="richarea">${story.notes}</div>
         </div>
     </div>
 </div>

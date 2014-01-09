@@ -289,15 +289,18 @@ class StoryController {
             //if success for table view
             if (params.table && params.boolean('table')) {
                 def returnValue
+                def rawValue
                 if (params.name == 'type')
                     returnValue = message(code: BundleUtils.storyTypes[story.type])
                 else if (params.name == 'feature.id')
                     returnValue = is.postitIcon(name: story.feature?.name?.encodeAsHTML() ?: message(code: message(code: 'is.ui.sandbox.manage.chooseFeature')), color: story.feature?.color ?: 'yellow') + (story.feature?.name?.encodeAsHTML() ?: message(code: message(code: 'is.ui.sandbox.manage.chooseFeature')))
                 else if (params.name == 'notes') {
-                    returnValue = wikitext.renderHtml(markup: 'Textile', text: story."${params.name}")
+                    returnValue = wikitext.renderHtml(markup: 'Textile', text: story.notes)
+                    rawValue = story.notes
                 }
                 else if (params.name == 'description') {
-                    returnValue = story.description?.encodeAsHTML()?.encodeAsNL2BR()
+                    returnValue = is.storyDescription(story:story)
+                    rawValue = story.description?.encodeAsHTML()?.encodeAsNL2BR()
                 }
                 else {
                     if (params.name == 'effort' && story."${params.name}" == null)
@@ -307,7 +310,11 @@ class StoryController {
                 }
                 //TODO remove fix for table update
                 story.version += 1;
-                render(status: 200, text: [value: returnValue ?: '', object: story] as JSON)
+                def result = [value: returnValue ?: '', object: story]
+                if (rawValue != null) {
+                    result.rawValue = rawValue
+                }
+                render(status: 200, text: result as JSON)
                 return
             }
             withFormat {
