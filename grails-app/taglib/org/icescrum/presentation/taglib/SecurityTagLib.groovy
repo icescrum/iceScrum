@@ -41,7 +41,7 @@ class SecurityTagLib {
       }
       else
       {
-        if (securityService.archivedProduct(params.product)){
+        if (securityService.archivedProduct(params.product.decodeProductKey())){
             res << message(code:'is.product.archived')
         }else{
             if (request.owner) {

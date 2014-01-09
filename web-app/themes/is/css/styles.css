@@ -2373,3 +2373,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
     color:#777;
 }
+
+#navigation-avatar img {
+    cursor: pointer;
+}

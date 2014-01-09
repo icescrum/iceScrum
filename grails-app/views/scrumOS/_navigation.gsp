@@ -140,12 +140,7 @@
     <ul class="navigation-content clearfix">
         <sec:ifLoggedIn>
             <g:set var="username" value="${user?.firstName?.encodeAsHTML() + ' ' + user?.lastName?.encodeAsHTML()}"/>
-            <li class="navigation-line" id="profile-name">
-                <is:link class="with-arrow" disabled="true" onClick="jQuery.icescrum.showAndHideOnClickAnywhere('.user-tooltip')">
-                    ${username}
-                </is:link>
-            </li>
-            <li class="navigation-line" id="navigation-avatar">
+            <li class="navigation-line" id="navigation-avatar" onClick="jQuery.icescrum.showAndHideOnClickAnywhere('.user-tooltip')">
                 <is:avatar user="${user}" class="navigation-avatar"/>
             </li>
             <div class="user-tooltip">
