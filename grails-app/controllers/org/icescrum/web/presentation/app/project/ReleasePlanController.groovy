@@ -73,7 +73,7 @@ class ReleasePlanController {
             render(status: 200)
             return
         }
-        render(template: 'window/toolbar', model: [release: release])
+        render(template: 'window/toolbar', model: [release: release, exportFormats:getExportFormats()])
     }
 
     def index = {
@@ -316,5 +316,11 @@ class ReleasePlanController {
             def dialog = g.render(template: '/attachment/dialogs/documents', model: [bean:release, destController:'release'])
             render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
         }
+    }
+
+    private getExportFormats() {
+        def exportFormats = []
+        entry.hook(id:"${controllerName}-getExportFormats", model:[exportFormats:exportFormats])
+        return exportFormats
     }
 }

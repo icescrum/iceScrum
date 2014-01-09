@@ -691,7 +691,7 @@
     border-top-width: 1px;
 }
 
-#dropmenu .dropmenu-content ul .first {
+#dropmenu .dropmenu-content ul li:first-of-type {
     border-top-width: 0;
 }
 

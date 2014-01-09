@@ -104,17 +104,17 @@
             template="toolbar"/>
 </g:if>
 
-%{--Print button--}%
-<is:reportPanel
-        separator="true"
-        action="print"
-        text="${message(code: 'is.ui.toolbar.print')}"
-        formats="[
-                  ['PDF', message(code:'is.report.format.pdf')],
-                  ['RTF', message(code:'is.report.format.rtf')],
-                  ['DOCX', message(code:'is.report.format.docx')],
-                  ['ODT', message(code:'is.report.format.odt')]
-                ]"
-        params="locationHash=${params.actionWindow?:''}"/>
+%{--Export--}%
+<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}" separator="true">
+    <ul>
+        <g:each in="${exportFormats}" var="format">
+            <li>
+                <div class="file-icon ${format.code.toLowerCase()}-format" style="display:inline-block">
+                    <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
+                </div>
+            </li>
+        </g:each>
+    </ul>
+</is:panelButton>
 
 <entry:point id="${controllerName}-${actionName}"/>

@@ -46,7 +46,7 @@
 
         %{--Delete button--}%
         <li class="navigation-item button-ico button-delete separator close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
-            <a class="tool-button button-n"
+            <a class="tool-button button-n on-selectable-disabled on-selectable-kanban-sprint-${sprint.id}"
                onclick="jQuery.icescrum.selectableAction('task/delete',null,null,function(data){ jQuery.event.trigger('remove_task',[data]); jQuery.icescrum.renderNotice('${message(code:'is.task.deleted')}'); });"
                data-shortcut="del"
                data-shortcut-on="#window-id-${controllerName}"
@@ -267,17 +267,18 @@
         </ul>
     </is:panelButton>
 
-    <is:reportPanel
-            separator="true"
-            action="print"
-            text="${message(code: 'is.ui.toolbar.print')}"
-            formats="[
-                      ['PDF', message(code:'is.report.format.pdf')],
-                      ['RTF', message(code:'is.report.format.rtf')],
-                      ['DOCX', message(code:'is.report.format.docx')],
-                      ['ODT', message(code:'is.report.format.odt')]
-                    ]"
-            params="id=${sprint.id}&locationHash=${params.actionWindow?:''}"/>
+    %{--Export--}%
+    <is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}" separator="true">
+        <ul>
+            <g:each in="${exportFormats}" var="format">
+                <li>
+                    <div class="file-icon ${format.code.toLowerCase()}-format" style="display:inline-block">
+                        <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
+                    </div>
+                </li>
+            </g:each>
+        </ul>
+    </is:panelButton>
 
     <is:reportPanel
             separator="true"

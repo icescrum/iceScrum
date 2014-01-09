@@ -106,7 +106,7 @@
             }else{
                 if (savedHeight && $(content.children()[0]).height() > savedHeight){
                     content.height(savedHeight);
-                }else if (!savedHeight && $(content.children()[0]).height() > opts.resizable.defaultHeight){
+                }else if (!savedHeight && $(content.children()[0]).height() > opts.resizableOptions.defaultHeight){
                     content.height(opts.resizableOptions.defaultHeight);
                 }
             }
