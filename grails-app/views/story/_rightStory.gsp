@@ -22,11 +22,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<g:set var="storyTypesList" value="${BundleUtils.storyTypes.collect({k, v -> '\'' + k + '\': \'' + message(code: v) + '\''})}"/>
-<g:set var="storyTypes" value="{${storyTypesList.join(',')}}"/>
-%{-- Remove ugly thing with ajax loading of features --}%
-<g:set var="featuresList" value="${Product.get(params.long('product'))?.features?.collect({'\'' + it.id + '\': \'' + it.name + '\''})?:[]}"/>
-<g:set var="features" value="{${featuresList.join(', ')}}"/>
+<g:set var="storyTypes" value="{${BundleUtils.storyTypes.collect({k, v -> '\'' + k + '\': \'' + message(code: v) + '\''}).join(',')}}"/>
 
 <div id="right-story-properties"
      data-elemid="${story.id}">
@@ -35,26 +31,55 @@
          data-editable-url="${createLink(controller: 'story', action: 'update', params: [product: params.product])}"
          data-editable-name="story">
         <div>
-            <div class="field editable" name="name" data-editable-type="text">${story.name}</div>
-            <div class="field editable" name="description" data-raw-value="${story.rawDescription}" data-editable-type="textarea">${story.description}</div>
-            <div class="field editable" name="type" data-editable-type="selectui" data-editable-values="${storyTypes}">${story.type}</div>
-            <div class="field editable" name="feature.id" data-editable-type="selectui" data-placeholder="${message(code: 'is.ui.story.nofeature')}" data-allow-clear="true" data-editable-values="${features}">${story.feature}</div>
-            <input type="hidden"
-                   name="story.tags"
-                   data-change="$.ajax({
-                                    type: 'POST',
-                                    url: $(this).closest('[data-editable=true]').data('editable-url'),
-                                    data: {
-                                        id: $(this).closest('[data-editable=true]').data('elemid'),
-                                        'story.tags': event.val.join(','),
-                                        manageTags: true
-                                    }
-                               });"
-                   data-tag="true"
-                   data-placeholder="${message(code:'is.backlogelement.tags')}"
-                   data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
-                   value="${story.tags}"/>
-            <div class="field editable" name="notes" data-raw-value="${story.rawNotes}" data-editable-type="richarea">${story.notes}</div>
+            <div class="field editable"
+                 name="name"
+                 data-editable-type="text">${story.name}</div>
+            <div class="field editable"
+                 name="description"
+                 data-raw-value="${story.rawDescription}"
+                 data-editable-type="textarea">${story.description}</div>
+            <div class="field editable"
+                 name="type"
+                 data-editable-type="selectui"
+                 data-editable-values="${storyTypes}">${story.type}</div>
+            <div class="field editable"
+                 name="feature.id"
+                 data-width="350"
+                 data-select-id="${story.feature.id}"
+                 data-url="${createLink(controller: 'feature', action: 'featureEntries', params: [product: params.product])}"
+                 data-editable-type="inputselect"
+                 data-placeholder="${message(code: 'is.ui.story.nofeature')}"
+                 data-allow-clear="true">${story.feature.name}</div>
+            <div class="field editable"
+                 name="dependsOn.id"
+                 data-width="350"
+                 data-select-id="${story.dependsOn.id}"
+                 data-url="${createLink(controller: 'story', action: 'dependenceEntries', id: story.id, params: [product: params.product])}"
+                 data-editable-type="inputselect"
+                 data-placeholder="${message(code: 'is.ui.story.nodependence')}"
+                 data-allow-clear="true">${story.dependsOn.name}</div>
+            <input
+                type="hidden"
+                name="story.tags"
+                data-change="
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).closest('[data-editable=true]').data('editable-url'),
+                    data: {
+                        id: $(this).closest('[data-editable=true]').data('elemid'),
+                        'story.tags': event.val.join(','),
+                        manageTags: true
+                    }
+                });"
+                data-tag="true"
+                data-placeholder="${message(code:'is.backlogelement.tags')}"
+                data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
+                value="${story.tags}"/>
+            <div
+                class="field editable"
+                name="notes"
+                data-raw-value="${story.rawNotes}"
+                data-editable-type="richarea">${story.notes}</div>
         </div>
     </div>
 </div>

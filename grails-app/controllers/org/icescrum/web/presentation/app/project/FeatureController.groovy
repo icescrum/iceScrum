@@ -290,4 +290,15 @@ class FeatureController {
     def show = {
         redirect(action:'index', controller: controllerName, params:params)
     }
+
+    @Cacheable(cache = "projectCache", keyGenerator= 'featuresKeyGenerator')
+    def featureEntries = {
+        withProduct { product ->
+            def featureEntries = product.features.collect { [id: it.id, text: it.name] }
+            if (params.term) {
+                featureEntries = featureEntries.findAll { it.text.contains(params.term) }
+            }
+            render status: 200, contentType: 'application/json', text: featureEntries as JSON
+        }
+    }
 }

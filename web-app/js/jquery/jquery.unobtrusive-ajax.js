@@ -320,6 +320,19 @@ function attachOnDomUpdate(content){
             specificOptions: {
                 markitup: textileSettings
             }
+        },
+        inputselect: {
+            getValueFromText: function(textValue) {
+                return $.icescrum.htmlDecode(textValue);
+            },
+            getValueFromInput: function(inputField) {
+                return inputField.find('input[type="hidden"]').val();
+            },
+            data: function() {
+                return function(textValue) {
+                    return typeHelper.text.getValueFromText(textValue);
+                };
+            }
         }
     };
 
@@ -423,8 +436,9 @@ function attachOnDomUpdate(content){
             createSearchChoice:function (term) {
                 return {id:term, text:term};
             },
-            ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+            ajax: {
                 url: url,
+                cache: true,
                 data: function (term) {
                     return {term: term};
                 },

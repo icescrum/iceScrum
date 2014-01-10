@@ -116,4 +116,43 @@
             });
         }
     });
+
+    $.editable.addInputType('inputselect', {
+        element : function(settings) {
+            settings.onblur = 'ignore';
+            var multiselect = $('<input type="hidden""/>');
+            $(this).append(multiselect);
+            return(multiselect);
+        },
+        plugin: function(settings, original) {
+            var select = $('input', this);
+            var editable = $(original);
+            var defaultOptions = {
+                minimumResultsForSearch: 6,
+                initSelection : function (element, callback) {
+                    callback({id: editable.data('select-id'), text: element.val()});
+                }
+            };
+            if (editable.data('url')) {
+                defaultOptions.ajax = {
+                    url: editable.data('url'),
+                    data: function() {},
+                    cache: 'true',
+                    data: function(term) {
+                        return { term: term };
+                    },
+                    results: function(data) {
+                        return { results: data };
+                    }
+                };
+            }
+            select.one("change select2-close select2-blur", function(){
+                select.off();
+                select.parents("form").submit();
+            }).select2($.extend(defaultOptions, editable.data()));
+            $.doTimeout(25, function() {
+                select.select2("open");
+            });
+        }
+    });
 })($);

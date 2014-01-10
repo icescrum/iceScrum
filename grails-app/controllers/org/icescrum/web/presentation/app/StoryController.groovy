@@ -290,23 +290,22 @@ class StoryController {
             if (params.table && params.boolean('table')) {
                 def returnValue
                 def rawValue
-                if (params.name == 'type')
+                if (params.name == 'type') {
                     returnValue = message(code: BundleUtils.storyTypes[story.type])
-                else if (params.name == 'feature.id')
+                } else if (params.name == 'feature.id') {
                     returnValue = is.postitIcon(name: story.feature?.name?.encodeAsHTML() ?: message(code: message(code: 'is.ui.sandbox.manage.chooseFeature')), color: story.feature?.color ?: 'yellow') + (story.feature?.name?.encodeAsHTML() ?: message(code: message(code: 'is.ui.sandbox.manage.chooseFeature')))
-                else if (params.name == 'notes') {
+                } else if (params.name == 'notes') {
                     returnValue = wikitext.renderHtml(markup: 'Textile', text: story.notes)
                     rawValue = story.notes
-                }
-                else if (params.name == 'description') {
+                } else if (params.name == 'description') {
                     returnValue = is.storyDescription(story:story)
                     rawValue = story.description?.encodeAsHTML()?.encodeAsNL2BR()
-                }
-                else {
-                    if (params.name == 'effort' && story."${params.name}" == null)
-                        returnValue = '?'
-                    else
-                        returnValue = story."${params.name}".encodeAsHTML()
+                } else if (params.name == 'dependsOn.id') {
+                    returnValue = story.dependsOn?.name ? story.dependsOn.name + ' (' + story.dependsOn.uid + ')': message(code: message(code: 'is.ui.sandbox.manage.chooseFeature'))
+                } else if (params.name == 'effort' && story.effort == null) {
+                    returnValue = '?'
+                } else {
+                    returnValue = story."${params.name}".encodeAsHTML()
                 }
                 //TODO remove fix for table update
                 story.version += 1;
@@ -803,6 +802,19 @@ class StoryController {
     def acceptanceTestEditor = {
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
             render(template: '/acceptanceTest/acceptanceTestForm', model: [acceptanceTest: acceptanceTest, parentStory: acceptanceTest.parentStory])
+        }
+    }
+
+    @Secured('stakeHolder() or inProduct()')
+    @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
+    def dependenceEntries = {
+        withStory { story ->
+            def stories = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
+            def storyEntries = stories.collect { [id: it.id, text: it.name + ' (' + it.uid + ')'] }
+            if (params.term) {
+                storyEntries = storyEntries.findAll { it.text.contains(params.term) }
+            }
+            render status: 200, contentType: 'application/json', text: storyEntries as JSON
         }
     }
 }
