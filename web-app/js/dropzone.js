@@ -555,7 +555,6 @@
                         }
                         file.previewElement = Dropzone.createElement(this.options.previewTemplate.trim());
                         file.previewTemplate = file.previewElement;
-                        debugger;
                         if (this.options.prepend){
                             this.previewsContainer.insertBefore(file.previewElement, this.previewsContainer.firstChild);
                         }else{
