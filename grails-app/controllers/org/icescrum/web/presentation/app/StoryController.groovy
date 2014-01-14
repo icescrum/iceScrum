@@ -23,6 +23,7 @@
  */
 package org.icescrum.web.presentation.app
 
+import org.apache.commons.io.FilenameUtils
 import org.icescrum.core.domain.Story
 
 import org.icescrum.core.utils.BundleUtils
@@ -45,6 +46,8 @@ import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 import org.icescrum.core.domain.Story.TestState
 
+import javax.servlet.http.HttpServletResponse
+
 class StoryController {
 
     def storyService
@@ -52,6 +55,7 @@ class StoryController {
     def springSecurityService
     def securityService
     def acceptanceTestService
+    def attachmentableService
 
     def toolbar = {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
@@ -617,6 +621,21 @@ class StoryController {
         }
     }
 
+    @Secured('isAuthenticated() and !archivedProduct()')
+    @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
+    def findDuplicate = {
+        def stories = null
+        withProduct{ product ->
+            def terms = params.term?.tokenize()?.findAll{ it.size() >= 5 }
+            if(terms){
+                stories = Story.search(product.id, [term:terms,list:[max:3]]).collect {
+                    is.scrumLink([controller:"story", id:it.id, title:it.description], it.name)
+                }
+            }
+            render(status:200, text: stories ? "${message(code:'is.ui.story.duplicate')} ${stories.join(" or ")}" : "")
+        }
+    }
+
     def editStory = {
         forward(action: 'edit', controller: 'story', params: [referrer: controllerName, referrerUrl:controllerName+'/'+params.id, id: params.id, product: params.product])
     }
@@ -815,6 +834,56 @@ class StoryController {
                 storyEntries = storyEntries.findAll { it.text.contains(params.term) }
             }
             render status: 200, contentType: 'application/json', text: storyEntries as JSON
+        }
+    }
+
+    def attachments = {
+        withStory{ story ->
+            if (request.method == 'POST'){
+                def upfile = params.file ?: request.getFile('file')
+                def filename = FilenameUtils.getBaseName(upfile.originalFilename?:upfile.name)
+                def ext = FilenameUtils.getExtension(upfile.originalFilename?:upfile.name)
+                def tmpF = null
+                if(upfile.originalFilename){
+                    tmpF = session.createTempFile(filename, '.' + ext)
+                    request.getFile("file").transferTo(tmpF)
+                }
+                story.addAttachment(springSecurityService.currentUser, tmpF?: upfile, upfile.originalFilename?:upfile.name)
+                def attachment = story.attachments.last()
+                render(status:200, contentType: 'application/json', text:[
+                        id:attachment.id,
+                        filename:attachment.inputName,
+                        ext:ext,
+                        size:attachment.length,
+                        provider:attachment.provider?:''] as JSON)
+            } else if(request.method == 'DELETE'){
+                def attachment = story.attachments?.find{ it.id == params.long('attachment.id') }
+                if (attachment){
+                    story.removeAttachment(attachment)
+                    render(status:200)
+                }
+            } else if(request.method == 'GET'){
+                def attachment = story.attachments?.find{ it.id == params.long('attachment.id') }
+                if (attachment) {
+                    if (attachment.url){
+                        redirect(url: "${attachment.url}")
+                        return
+                    }else{
+                        File file = attachmentableService.getFile(attachment)
+
+                        if (file.exists()) {
+                            String filename = attachment.filename
+                            ['Content-disposition': "attachment;filename=\"$filename\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+                                response.setHeader(k, v)
+                            }
+                            response.contentType = attachment.contentType
+                            response.outputStream << file.newInputStream()
+                            return
+                        }
+                    }
+                }
+                response.status = HttpServletResponse.SC_NOT_FOUND
+            }
         }
     }
 }
