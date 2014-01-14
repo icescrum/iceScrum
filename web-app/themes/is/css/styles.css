@@ -159,8 +159,8 @@ li#li-roles {
     bottom: 25px;
 }
 
-#main .box .window-content-without-toolbar, .window-fullscreen .window-content-without-toolbar {
-    top: 26px;
+#main .box .window-content-without-toolbar, .window-fullscreen .window-content-without-toolbar, #main .box .window-right-without-toolbar, .window-fullscreen .window-right-without-toolbar {
+    top: 0;
 }
 
 #main .box .window-content-toolbar, .window-fullscreen .window-content-toolbar {
@@ -2366,4 +2366,128 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 
 #navigation-avatar img {
     cursor: pointer;
+}
+
+#right-story-properties {
+    height:100%;
+}
+
+#right-story-properties > div {
+    height:100%;
+}
+
+.dz-preview {
+    float: left;
+    width: 100%;
+    clear:both;
+    background: linear-gradient(to bottom, #FFFFFF 0px, #EBEBEB 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #CACACA;
+    margin-top: 2px;
+}
+
+.dz-preview .dz-details,
+.dz-preview.dz-processing.dz-success .dz-details {
+    float:left;
+    margin: 3px 5px 3px;
+    width: 85%;
+}
+
+.dz-preview.dz-processing .dz-details {
+    width: 54%;
+}
+
+.dz-preview .dz-details .dz-filename,
+.dz-preview .dz-details .dz-size {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float:left;
+}
+
+.dz-preview .dz-details .dz-filename {
+    max-width:80%;
+}
+
+.dz-preview .dz-details .dz-size {
+    width:19%;
+    margin-left:1%;
+}
+
+.dz-preview .dz-progress {
+    display: none;
+}
+
+.dz-preview .dz-progress .dz-upload {
+    height:9px;
+    display: inline-block;
+    background: cornflowerblue;
+}
+
+.dz-preview .dz-remove {
+    float: right;
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 5px;
+    margin-top: 2px;
+}
+
+.dz-preview.dz-processing .dz-progress,
+.dz-preview.dz-error .dz-progress {
+    float:left;
+    width:30%;
+    border: 1px solid #CACACA;
+    margin: 6px 6px 6px;
+    display: block;
+}
+
+.dz-preview.dz-error .dz-upload {
+    height:9px;
+    display: inline-block;
+    background: crimson;
+    width:100% !important;
+}
+
+.dz-preview.dz-error .dz-error-message {
+    color: #FF0000;
+    display: block;
+    margin: 0px 5px 3px;
+}
+
+.dz-preview.dz-error .dz-remove {
+    margin-top:20px;
+}
+
+.dz-preview.dz-success .dz-progress {
+    display: none;
+}
+.dz-preview .file-icon {
+    line-height: 18px;
+}
+
+.drop-here {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display:none;
+    text-align: center;
+    vertical-align:middle;
+}
+
+.dz-drag-hover .drop-here {
+    background:#000;
+    display:table-cell;
+    opacity:0.5;
+}
+.drop-here .drop-title {
+    position:absolute;
+    top:45%;
+    height:50%;
+    width:100%;
+    text-align:center;
+    color: #FFF;
+    font-size: 30px;
+    opacity: 1;
+    display:table-cell;
 }

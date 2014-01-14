@@ -29,12 +29,8 @@ import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
-import org.apache.commons.io.FilenameUtils
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
-import org.icescrum.core.support.ProgressSupport
-import org.icescrum.web.upload.AjaxMultipartResolver
 import org.springframework.mail.MailException
 import org.icescrum.core.domain.Sprint
 import grails.plugin.springcache.annotations.Cacheable
@@ -190,37 +186,6 @@ class ScrumOSController {
         }
     }
 
-    @Secured('isAuthenticated()')
-    def upload = {
-        def upfile = request.getFile('file')
-        def filename = FilenameUtils.getBaseName(upfile.originalFilename)
-        def ext = FilenameUtils.getExtension(upfile.originalFilename)
-        def tmpF = session.createTempFile(filename, '.' + ext)
-        request.getFile("file").transferTo(tmpF)
-        if (!session.uploadedFiles)
-            session.uploadedFiles = [:]
-        session.uploadedFiles["${params."X-Progress-ID"}"] = tmpF.toString()
-        if (log.infoEnabled)
-            log.info "upload done for session: ${session?.id} / fileID: ${params."X-Progress-ID"}"
-        render(status: 200)
-    }
-
-    @Secured('isAuthenticated()')
-    def uploadStatus = {
-        if (log.debugEnabled)
-            log.debug "upload status for session: ${session?.id} / fileID: ${params?."X-Progress-ID" ?: 'null'}"
-        if (params."X-Progress-ID" && session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")]) {
-            if (((ProgressSupport) session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])?.complete) {
-                render(status: 200, contentType: 'application/json', text: session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
-                session.removeAttribute([AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])
-            } else {
-                render(status: 200, contentType: 'application/json', text: session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
-            }
-        } else {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.upload.error')]] as JSON)
-        }
-    }
-
     def about = {
         def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${RCU.getLocale(request)}.xml")
         if (!file.exists()) {
@@ -268,7 +233,7 @@ class ScrumOSController {
         }
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
+    //@Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
     def templates = {
         def currentSprint = null
         def product = null

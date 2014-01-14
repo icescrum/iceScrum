@@ -1,4 +1,4 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils; org.icescrum.core.domain.Product" %>
+<%@ page import="grails.converters.JSON; org.icescrum.core.utils.BundleUtils; org.icescrum.core.domain.Product" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -
@@ -26,11 +26,9 @@
 
 <div id="right-story-properties"
      data-elemid="${story.id}">
-    <div data-elemid="${story.id}"
-         data-editable="true"
-         data-editable-url="${createLink(controller: 'story', action: 'update', params: [product: params.product])}"
+    <div data-editable="true"
+         data-editable-url="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
          data-editable-name="story">
-        <div>
             <div class="field editable"
                  name="name"
                  data-editable-type="text">${story.name}</div>
@@ -66,7 +64,7 @@
                     type: 'POST',
                     url: $(this).closest('[data-editable=true]').data('editable-url'),
                     data: {
-                        id: $(this).closest('[data-editable=true]').data('elemid'),
+                        id: $('#right-story-properties').data('elemid'),
                         'story.tags': event.val.join(','),
                         manageTags: true
                     }
@@ -80,6 +78,19 @@
                 name="notes"
                 data-raw-value="${story.rawNotes}"
                 data-editable-type="richarea">${story.notes}</div>
-        </div>
+
+            <div data-dropzone="true"
+                 data-dropzone-id="right-story-properties"
+                 data-add-remove-links="${createLink(action:'attachments', controller: 'story', id:story.id, params: [product: params.product])}"
+                 data-files='${story.attachments}'
+                 data-clickable="#right-story-properties button.clickable"
+                 data-url="${createLink(action:'attachments', controller: 'story', id:story.id, params: [product: params.product])}"
+                 data-previews-container="#right-story-properties .attachments .previews"
+                 class="attachments dropzone-previews">
+                <div class="providers">
+                    <button class="clickable">file</button>
+                </div>
+                <div class="previews"></div>
+            </div>
     </div>
 </div>

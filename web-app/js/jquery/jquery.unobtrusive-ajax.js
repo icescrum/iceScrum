@@ -240,11 +240,100 @@ function getFunction(code, argNames) {
         $.post(url, postData, success);
     });
 
+    $(document).on('resizable.overWidth', '#right', function(){
+        $('#right-properties').accordion('destroy');
+        $('#right').addClass('desktop-view');
+    });
+    $(document).on('resizable.notOverWidth', '#right', function(){
+        $('#right').removeClass('desktop-view');
+        manageAccordion($('#right-properties'));
+    });
+
+    $(document).on('keydown', "div.editable", function(evt) {
+        if(evt.keyCode==9) {
+            var nextBox='';
+            var current = $("div.editable");
+            var currentBoxIndex=current.index(this);
+            if (evt.shiftKey && currentBoxIndex == 0){
+                nextBox=current.last();
+            }
+            if (!evt.shiftKey && currentBoxIndex == (current.length-1)) {
+                nextBox=current.first();
+            } else {
+                nextBox=evt.shiftKey ? current.eq(currentBoxIndex-1) : current.eq(currentBoxIndex+1);
+            }
+            $(this).find("input").blur();
+            $(nextBox).click();
+            return false;
+        }
+        return true;
+    });
+
     attachOnDomUpdate();
 
 }(jQuery));
-
 function attachOnDomUpdate(content){
+
+    $('[data-dropzone=true]', content).each(function(){
+        var $this = $(this);
+
+        var afterUpload = function(file){
+            var link = file.previewElement.querySelector("[data-dz-href]");
+            if (file.provider){
+                link.href = $this.data('url') + '?attachment.id='+file.id;
+                link.target = '_blank';
+            } else {
+                link.href = $this.data('url')+'?attachment.id='+file.id;
+                $(link).on('click', function(){
+                    $.download($this.data('url'), {'attachment.id':file.id}, 'GET');
+                    return false;
+                });
+            }
+            var name = file.previewElement.querySelector("[data-dz-name]");
+            name.title = file.name;
+            $(".dz-details", file.previewElement).addClass(file.ext+"-format");
+            if (file.size == 0){
+                file.previewElement.querySelector("[data-dz-size]").remove();
+            }
+        };
+
+        $this.data('dictCancelUpload','x');
+        $this.data('dictRemoveFile','x');
+        $this.data('previewTemplate','<div class="dz-preview dz-file-preview"><div class="dz-details file-icon"><a href="javascript:;" data-dz-href><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div></a></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>');
+        var dropZone = new Dropzone('#'+($this.data('dropzoneId')?$this.data('dropzoneId'):this.id), $this.data());
+
+        $('<div class="drop-here"><div class="drop-title">Drop your file here</div></div>').appendTo($('#'+($this.data('dropzoneId')?$this.data('dropzoneId'):this.id)));
+
+        if ($this.data('addRemoveLinks')){
+            dropZone.on("removedfile", function(file) {
+                if(file.id){
+                    $.ajax({
+                        type:'DELETE',
+                        url:$this.data('addRemoveLinks')+'?attachment.id='+file.id
+                    });
+                }
+            });
+        }
+        dropZone.on("success", function(file, data) {
+            file.id = data.id;
+            file.ext = data.ext;
+            file.provider = data.provider;
+            afterUpload(file);
+        });
+        dropZone.on("addedfile", function(file) {
+            if (file.id){
+                afterUpload(file);
+            }
+        });
+        if ($this.data('files')){
+            $($this.data('files')).each(function(){
+                dropZone.options.prepend = false;
+                dropZone.emit("addedfile", {name:this.filename, size:this.length, id:this.id, ext:this.ext, provider:this.provider });
+                dropZone.options.prepend = true;
+            });
+        }
+    });
+
     $('[data-sortable=true]', content).each(function(){
         var $this = $(this);
         $this.sortable($this.data());
@@ -338,7 +427,6 @@ function attachOnDomUpdate(content){
 
     $('[data-editable=true]', content).each(function() {
         var editable = $(this);
-        var editableId = editable.data('elemid');
         var editableURL = editable.data('editable-url');
         var editableName = editable.data('editable-name');
         editable.find('.field.editable').each(function() {
@@ -374,8 +462,7 @@ function attachOnDomUpdate(content){
                 submitdata: function () {
                     return {
                         'name': fieldName,
-                        'table': true,
-                        'id': editableId
+                        'table': true
                     };
                 },
                 callback: function (value) {

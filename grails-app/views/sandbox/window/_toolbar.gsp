@@ -23,25 +23,6 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-%{--Add button--}%
-<g:if test="${!request.archivedProduct}">
-    <li class="navigation-item button-ico button-add">
-        <a class="tool-button button-n"
-           href="#${controllerName}/add"
-           data-shortcut="ctrl+n"
-           data-shortcut-on="#window-id-${controllerName}"
-           title="${message(code:'is.ui.sandbox.toolbar.alt.new')}"
-           alt="${message(code:'is.ui.sandbox.toolbar.alt.new')}">
-                <span class="start"></span>
-                <span class="content">
-                    <span class="ico"></span>
-                    ${message(code: 'is.ui.sandbox.toolbar.new')}
-                </span>
-                <span class="end"></span>
-        </a>
-    </li>
-</g:if>
-
 <g:if test="${request.productOwner}">
     %{--Accept button--}%
     <li class="navigation-item">

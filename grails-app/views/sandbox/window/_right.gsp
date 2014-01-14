@@ -28,12 +28,11 @@
 </div>
 <div id="right-properties" data-accordion="true" data-height-style="fill">
     <h3><a href="#">${message(code: "is.story")}</a></h3>
-    <div id="right-story-container">
-    </div>
+    <div id="right-story-container"></div>
     <h3><a href="#"><g:message code="is.ui.backlogelement.activity.test"/></a></h3>
-    <div> </div>
+    <div></div>
     <h3><a href="#"><g:message code="is.ui.backlogelement.activity.comments"/></a></h3>
-    <div> </div>
+    <div></div>
     <h3><a href="#"><g:message code="is.ui.backlogelement.activity.summary"/></a></h3>
     <div></div>
 </div>
@@ -63,15 +62,6 @@ var unselectStory = function (event, ui) {
 $('#window-content-sandbox').off('selectableselected selectableunselected')
     .on('selectableselected', selectStory)
     .on('selectableunselected', unselectStory);
-
-$('#right').bind('resizable.overWidth', function(){
-    $('#right-properties').accordion('destroy');
-    $('#right').addClass('desktop-view');
-});
-$('#right').bind('resizable.notOverWidth', function(){
-    $('#right').removeClass('desktop-view');
-    manageAccordion($('#right-properties'));
-});
 </jq:jquery>
 
 <is:onStream

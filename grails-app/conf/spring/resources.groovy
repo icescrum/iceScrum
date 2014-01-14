@@ -27,7 +27,6 @@ import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.web.security.ScrumAuthenticationProcessingFilter
-import org.icescrum.web.upload.AjaxMultipartResolver
 
 beans = {
 
@@ -67,10 +66,5 @@ beans = {
 
     userDetailsService(ScrumDetailsService) {
         grailsApplication = ref('grailsApplication')
-    }
-
-    multipartResolver(AjaxMultipartResolver) {
-        maxInMemorySize = 10240
-        maxUploadSize = 1024000000
     }
 }

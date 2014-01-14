@@ -248,9 +248,10 @@
         });
     }
     **?
-    <g:set var="storyExtended" value="${story << [
+    <g:set var="storyExtended" value="${story + [
             notes:'',
             tags: '?**=tags**?',
+            attachments: '?**=JSON.stringify(this.attachments)**?',
             name: '?**=this.name**?',
             feature: [id:'?**=featureId**?', 'name':'?**=featureName**?'],
             dependsOn: [id:'?**=dependsOnId**?', 'name':'?**=dependsOnName**?'],
@@ -258,7 +259,7 @@
             rawDescription:'?**=rawDescription**?',
             description:'?**=description**?',
             type: '?**=typeTitle**?']}"/>
-    <g:render template="/story/rightStory" model="[story: story, user: user, template: true]"/>
+    <g:render template="/story/rightStory" model="[story: storyExtended, user: user, template: true]"/>
     ]]>
 </template>
 
