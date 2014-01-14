@@ -392,6 +392,9 @@
                     STATE_PLANNED:4,
                     STATE_INPROGRESS:5,
                     STATE_DONE:7,
+                    TYPE_USER_STORY:0,
+                    TYPE_DEFECT:2,
+                    TYPE_TECHNICAL_STORY:3,
                     i18n : {
                         stories:'stories',
                         points:'points'
@@ -732,6 +735,7 @@
                         if (!this.dependsOn) {
                             newObject.find('.dependsOn').remove();
                         }
+                        newObject.find('[name="affectVersion"]').toggle(this.type == $.icescrum.story.TYPE_DEFECT);
                         if(!this.acceptanceTests || this.acceptanceTests.length <= 0) {
                             newObject.find('.story-icon-acceptance-test').hide();
                         } else {

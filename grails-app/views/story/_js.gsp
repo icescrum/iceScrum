@@ -225,6 +225,7 @@
 <template id="right-story-sandbox-tmpl">
     <![CDATA[
     ?**
+    var affectVersion = this.affectVersion ? this.affectVersion : '';
     var rawDescription = this.description ? this.description : '';
     var description =  jQuery.icescrum.story.storyTemplate(rawDescription.formatLine());
     var typeTitle = $.icescrum.story.types[this.type];
@@ -253,6 +254,7 @@
             tags: '?**=tags**?',
             attachments: '?**=JSON.stringify(this.attachments)**?',
             name: '?**=this.name**?',
+            affectVersion: '?**=affectVersion**?',
             feature: [id:'?**=featureId**?', 'name':'?**=featureName**?'],
             dependsOn: [id:'?**=dependsOnId**?', 'name':'?**=dependsOnName**?'],
             rawNotes: '?**=rawNotes**?',

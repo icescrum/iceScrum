@@ -41,6 +41,12 @@
                  data-editable-type="selectui"
                  data-editable-values="${storyTypes}">${story.type}</div>
             <div class="field editable"
+                 name="affectVersion"
+                 data-source="${g.createLink(controller:'project', action: 'versions', params:[product:params.product])}"
+                 data-min-length="0"
+                 data-search-on-init="true"
+                 data-editable-type="autocompletable">${story.affectVersion}</div>
+            <div class="field editable"
                  name="feature.id"
                  data-width="350"
                  data-select-id="${story.feature.id}"

@@ -274,6 +274,14 @@ function getFunction(code, argNames) {
 }(jQuery));
 function attachOnDomUpdate(content){
 
+    $('input[data-autocompletable=true]', content).each(function() {
+        var autocompletable = $(this);
+        autocompletable.autocomplete(autocompletable.data());
+        if (autocompletable.data('searchOnInit')) {
+            autocompletable.autocomplete('search');
+        }
+    });
+
     $('[data-dropzone=true]', content).each(function(){
         var $this = $(this);
 
@@ -352,79 +360,6 @@ function attachOnDomUpdate(content){
         manageAccordion(this);
     });
 
-    var typeHelper = {
-        text: {
-            getValueFromText: function(textValue) {
-                return $.icescrum.htmlDecode(textValue);
-            },
-            getValueFromInput: function(inputField) {
-                return inputField.find('input').val();
-            },
-            data: function() {
-                return function(textValue) {
-                    return typeHelper.text.getValueFromText(textValue);
-                };
-            }
-        },
-        selectui: {
-            getValueFromText: function(textValue) {
-                return $.icescrum.htmlDecode(textValue);
-            },
-            getValueFromInput: function(inputField) {
-                return inputField.find('select').children('option:selected').text();
-            },
-            data: function(field) {
-                var selectValuesData = field.data('editable-values').replace(/'/g, '"');
-                var selectValues = $.parseJSON(selectValuesData);
-                return function (value) {
-                    return $.extend(selectValues, {'selected': value});
-                };
-            }
-        },
-        textarea: {
-            getValueFromText: function(textValue) {
-                return $.icescrum.htmlDecode(textValue.replace(/<br[\s\/]?>/gi, '\n'));
-            },
-            getValueFromInput: function(inputField) {
-                return inputField.find('textarea').val();
-            },
-            data: function() {
-                return function (textValue) {
-                    return typeHelper.textarea.getValueFromText(textValue);
-                };
-            }
-        },
-        richarea: {
-            getValueFromText: function(textValue) {
-                return textValue;
-            },
-            getValueFromInput: function(inputField) {
-                return inputField.find('textarea').val();
-            },
-            data: function() {
-                return function (textValue) {
-                    return typeHelper.richarea.getValueFromText(textValue);
-                };
-            },
-            specificOptions: {
-                markitup: textileSettings
-            }
-        },
-        inputselect: {
-            getValueFromText: function(textValue) {
-                return $.icescrum.htmlDecode(textValue);
-            },
-            getValueFromInput: function(inputField) {
-                return inputField.find('input[type="hidden"]').val();
-            },
-            data: function() {
-                return function(textValue) {
-                    return typeHelper.text.getValueFromText(textValue);
-                };
-            }
-        }
-    };
-
     $('[data-editable=true]', content).each(function() {
         var editable = $(this);
         var editableURL = editable.data('editable-url');
@@ -433,7 +368,7 @@ function attachOnDomUpdate(content){
             var field = $(this);
             var fieldName = field.attr('name');
             var fieldType = field.data('editable-type');
-            var helper = typeHelper[fieldType];
+            var helper = $.editable.customTypeHelper[fieldType];
             var options = {
                 type: fieldType,
                 ajaxoptions: {dataType: 'json'},
@@ -486,7 +421,7 @@ function attachOnDomUpdate(content){
         $(this).select();
     });
 
-    $('select', content).each(function(){
+    $('select, input[data-select="true"]', content).each(function(){
         var element = $(this);
         var options = jQuery.extend({minimumResultsForSearch: 6}, element.data());
         if (element.data('iconClass')) {
@@ -497,9 +432,14 @@ function attachOnDomUpdate(content){
             options.formatSelection = format;
         }
         var select = element.select2(options);
-        if ($(this).data('change')){
-            select.change(function(event,value){
-                getFunction(element.data("change"), ["event", "value"]).apply(this,[event,value]);
+        if (element.data('change')) {
+            select.change(function(event) {
+                getFunction(element.data("change"), ["event"]).apply(this,[event]);
+            });
+        }
+        if (element.data('openOnInit')) {
+            $.doTimeout(25, function() {
+                select.select2("open");
             });
         }
     });
