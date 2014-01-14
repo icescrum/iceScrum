@@ -412,6 +412,7 @@
                             remove:function(tmpl) {
                                 var story = $.icescrum.getDefaultView() == 'postitsView' ? $(tmpl.view+' .postit-story[data-elemid=' + this.id + ']') : $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
                                 this.rank = story.index() + 1;
+                                this.selected = story.hasClass('ui-selected');
                                 story.remove();
                                 if ($.icescrum.getDefaultView() == 'tableView') {
                                     $(tmpl.view).trigger("update");
@@ -751,6 +752,9 @@
                         }
                         if (container.hasClass('ui-selectable')) {
                             newObject.addClass('ui-selectee');
+                        }
+                        if (this.selected){
+                            newObject.addClass('ui-selected');
                         }
 
                         var creator = (this.creator.id == $.icescrum.user.id);
