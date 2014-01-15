@@ -101,7 +101,10 @@
             var select = $('select', this);
             var defaultOptions = {
                 minimumResultsForSearch: -1,
-                width: 'element'
+                containerCssClass: 'custom-select2-dropdown',
+                dropdownCssClass: 'custom-select2-dropdown',
+                width: 'element',
+                openOnInit: true
             };
             select.one("change select2-close select2-blur", function(){
                 select.off();

@@ -2300,3 +2300,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     color:#4382bd;
 }
 
+.custom-select2-dropdown {
+    text-align: left;
+    min-width: 65px;
+}
