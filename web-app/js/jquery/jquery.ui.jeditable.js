@@ -106,6 +106,8 @@
             var select = $('select', form);
             var options = {
                 minimumResultsForSearch: -1,
+                containerCssClass: 'custom-select2-dropdown',
+                dropdownCssClass: 'custom-select2-dropdown',
                 width: 'element',
                 openOnInit: true
             };

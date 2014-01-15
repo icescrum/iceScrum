@@ -2491,3 +2491,8 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     opacity: 1;
     display:table-cell;
 }
+
+.custom-select2-dropdown {
+    text-align: left;
+    min-width: 65px;
+}
