@@ -176,90 +176,121 @@
             attachOnDomUpdate(form);
         }
     });
+
+    $.editable.addInputType('atarea', {
+        element : function(settings, original) {
+            settings.onblur = 'ignore';
+            var textarea = $('<textarea data-atable="true"/>');
+            if (settings.rows) {
+                textarea.attr('rows', settings.rows);
+            } else if (settings.height != "none") {
+                textarea.height(settings.height);
+            }
+            if (settings.cols) {
+                textarea.attr('cols', settings.cols);
+            } else if (settings.width != "none") {
+                textarea.width(settings.width);
+            }
+            $(this).append(textarea);
+            return(textarea);
+        }, plugin: function(settings, original) {
+            var form = this;
+            var textarea = $('textarea', form);
+            textarea.blur(function(e) {
+                /* prevent double submit if submit was clicked */
+                if (e.relatedTarget) {
+                    t = setTimeout(function() {
+                        form.submit();
+                    }, 200);
+                }
+            });
+            textarea.data($(original).data());
+            attachOnDomUpdate(form);
+        }
+    });
 })($);
 
-$.editable.customTypeHelper = {
-    text: {
-        getValueFromText: function(textValue) {
-            return $.icescrum.htmlDecode(textValue);
-        },
-        getValueFromInput: function(inputField) {
-            return inputField.find('input').val();
-        },
-        data: function() {
-            return function(textValue) {
-                return $.editable.customTypeHelper.text.getValueFromText(textValue);
-            };
-        }
+var textHelper = {
+    getValueFromText: function(textValue) {
+        return $.icescrum.htmlDecode(textValue);
     },
-    autocompletable: {
-        getValueFromText: function(textValue) {
-            return $.icescrum.htmlDecode(textValue);
-        },
-        getValueFromInput: function(inputField) {
-            return inputField.find('input').val();
-        },
-        data: function() {
-            return function(textValue) {
-                return $.editable.customTypeHelper.text.getValueFromText(textValue);
-            };
-        }
+    getValueFromInput: function(inputField) {
+        return inputField.find('input').val();
     },
-    selectui: {
-        getValueFromText: function(textValue) {
-            return $.icescrum.htmlDecode(textValue);
-        },
-        getValueFromInput: function(inputField) {
-            return inputField.find('select').children('option:selected').text();
-        },
-        data: function(field) {
-            var selectValuesData = field.data('editable-values').replace(/'/g, '"');
-            var selectValues = $.parseJSON(selectValuesData);
-            return function (value) {
-                return $.extend(selectValues, {'selected': value});
-            };
-        }
-    },
-    textarea: {
-        getValueFromText: function(textValue) {
-            return $.icescrum.htmlDecode(textValue.replace(/<br[\s\/]?>/gi, '\n'));
-        },
-        getValueFromInput: function(inputField) {
-            return inputField.find('textarea').val();
-        },
-        data: function() {
-            return function (textValue) {
-                return $.editable.customTypeHelper.textarea.getValueFromText(textValue);
-            };
-        }
-    },
-    richarea: {
-        getValueFromText: function(textValue) {
-            return textValue;
-        },
-        getValueFromInput: function(inputField) {
-            return inputField.find('textarea').val();
-        },
-        data: function() {
-            return function (textValue) {
-                return $.editable.customTypeHelper.richarea.getValueFromText(textValue);
-            };
-        },
-        specificOptions: {
-            markitup: textileSettings
-        }
-    },
-    inputselect: {
-        getValueFromText: function(textValue) {
-            return $.icescrum.htmlDecode(textValue);
-        },
-        getValueFromInput: function(inputField) {
-            return inputField.find('input[type="hidden"]').val();
-        },
-        data: function() {
-            return function(textValue) {
-                return $.editable.customTypeHelper.inputselect.getValueFromText(textValue);
-            };
-        }
+    data: function() {
+        return function(textValue) {
+            return $.editable.customTypeHelper.text.getValueFromText(textValue);
+        };
     }
+};
+
+var selectUiHelper = {
+    getValueFromText: function(textValue) {
+        return $.icescrum.htmlDecode(textValue);
+    },
+    getValueFromInput: function(inputField) {
+        return inputField.find('select').children('option:selected').text();
+    },
+    data: function(field) {
+        var selectValuesData = field.data('editable-values').replace(/'/g, '"');
+        var selectValues = $.parseJSON(selectValuesData);
+        return function (value) {
+            return $.extend(selectValues, {'selected': value});
+        };
+    }
+};
+
+var textAreaHelper = {
+    getValueFromText: function(textValue) {
+        return $.icescrum.htmlDecode(textValue.replace(/<br[\s\/]?>/gi, '\n'));
+    },
+    getValueFromInput: function(inputField) {
+        return inputField.find('textarea').val();
+    },
+    data: function() {
+        return function (textValue) {
+            return $.editable.customTypeHelper.textarea.getValueFromText(textValue);
+        };
+    }
+};
+
+var richAreaHelper = {
+    getValueFromText: function(textValue) {
+        return textValue;
+    },
+    getValueFromInput: function(inputField) {
+        return inputField.find('textarea').val();
+    },
+    data: function() {
+        return function (textValue) {
+            return $.editable.customTypeHelper.richarea.getValueFromText(textValue);
+        };
+    },
+    specificOptions: {
+        markitup: textileSettings
+    }
+ };
+
+var inputSelectHelper = {
+    getValueFromText: function(textValue) {
+        return $.icescrum.htmlDecode(textValue);
+    },
+    getValueFromInput: function(inputField) {
+        return inputField.find('input[type="hidden"]').val();
+    },
+    data: function() {
+        return function(textValue) {
+            return $.editable.customTypeHelper.inputselect.getValueFromText(textValue);
+        };
+    }
+};
+
+$.editable.customTypeHelper = {
+    text: textHelper,
+    autocompletable: textHelper,
+    selectui: selectUiHelper,
+    textarea: textAreaHelper,
+    atarea: textAreaHelper,
+    richarea: richAreaHelper,
+    inputselect: inputSelectHelper
 };

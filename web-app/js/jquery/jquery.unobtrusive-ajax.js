@@ -589,7 +589,7 @@ function attachOnDomUpdate(content){
         });
     });
 
-    $('textarea[data-at]',content).each(function(){
+    $('textarea[data-atable="true"]',content).each(function(){
         var elem = $(this);
         elem.atwho(elem.data());
     });

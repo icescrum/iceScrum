@@ -35,7 +35,10 @@
             <div class="field editable"
                  name="description"
                  data-raw-value="${story.rawDescription}"
-                 data-editable-type="textarea">${story.description}</div>
+                 data-at="a"
+                 data-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
+                 data-data="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
+                 data-editable-type="atarea">${story.description}</div>
             <div class="field editable"
                  name="type"
                  data-editable-type="selectui"

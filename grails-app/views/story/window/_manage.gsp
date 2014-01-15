@@ -97,7 +97,9 @@
         <div class="field-area clearfix">
             <label for="storydescription">Description</label>
             <div class="area area-large" id="storydescription-field">
-                <textarea   data-at="a"
+                <textarea
+                            data-atable="true"
+                            data-at="a"
                             data-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
                             data-default="${is.generateStoryTemplate()}"
                             data-data="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
