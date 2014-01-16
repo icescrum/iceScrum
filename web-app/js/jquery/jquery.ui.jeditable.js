@@ -199,8 +199,8 @@
             var form = this;
             var textarea = $('textarea', form);
             textarea.blur(function(e) {
-                /* prevent double submit if submit was clicked */
-                if (e.relatedTarget) {
+                if (!$('.atwho-view-ul').is(':visible')) {
+                    /* prevent double submit if submit was clicked */
                     t = setTimeout(function() {
                         form.submit();
                     }, 200);
