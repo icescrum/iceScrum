@@ -2307,36 +2307,6 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     color:#4382bd;
 }
 
-#right-story-properties .field {
-    margin: 2px;
-}
-
-#right-story-properties .field:not(.editing) {
-    padding: 4px;
-}
-
-#right-story-properties .field.editable input {
-    height: 20px;
-}
-
-#right-story-properties .field.editable textarea {
-    line-height: 14px;
-}
-
-#right-story-properties .field.editable input:not(.select2-input):focus,
-#right-story-properties .field.editable textarea:focus {
-    border-color: #8fabc0;
-    background: #d7e9fb;
-    background: -moz-linear-gradient(top, #eff9fb 0%, #d7e9fb 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eff9fb), color-stop(100%,#d7e9fb)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #eff9fb 0%,#d7e9fb 100%); /* Chrome10+,Safari5.1+ */
-    background: -ms-linear-gradient(top,  #eff9fb 0%,#d7e9fb 100%); /* IE10+ */
-    background: linear-gradient(to bottom,  #eff9fb 0%,#d7e9fb 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eff9fb', endColorstr='#d7e9fb',GradientType=0 ); /* IE6-9 */
-}
-
-
-
 .button-n.on-selectable-disabled {
     opacity: 0.3;
     cursor:default;
@@ -2372,16 +2342,6 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 #right .select2-container-multi .select2-choices {
     background: none;
     border:none;
-}
-
-#right-story-properties .field:not(.editing)[data-editable-type="selectui"], #right-story-properties .field:not(.editing)[data-editable-type="inputselect"] {
-    color:#3C3C3C;
-    font-weight:bold;
-    font-size: 12px;
-    width:200px;
-    border:1px solid #D8D8D8;
-    background:#F6F6F6;
-    border-radius: 3px;
 }
 
 .dz-preview {

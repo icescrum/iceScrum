@@ -46,7 +46,6 @@
             <hr>
             <input
                  type="hidden"
-                 class="field"
                  name="feature.id"
                  data-sl2ajax
                  data-sl2ajax-element="story"
@@ -60,7 +59,6 @@
             <hr>
             <input
                  type="hidden"
-                 class="field"
                  name="dependsOn.id"
                  data-sl2ajax
                  data-sl2ajax-element="story"

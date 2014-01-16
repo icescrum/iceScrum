@@ -1,11 +1,14 @@
 .select2-container .select2-choice {
     color: #000000;
     text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
-    font-size: 11px;
+    font-size: 1.1em;
     line-height: 20px;
     height: 20px;
     border-color: #cacaca;
     background: #ffffff;
+    padding-top:3px;
+    padding-bottom:3px;
+    border-radius:0;
     background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(235,235,235,1) 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* Chrome10+,Safari5.1+ */
@@ -19,7 +22,7 @@
 }
 
 .select2-container .select2-choice abbr {
-    top: 5px;
+    top: 8px;
     background-position: right -2px;
 }
 
@@ -46,6 +49,7 @@
 
 .select2-container .select2-choice .select2-arrow {
     border: 0;
+    top:3px;
     background: #ffffff;
     background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(235,235,235,1) 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
@@ -136,7 +140,7 @@
 
 .select2-container-multi .select2-choices {
     font-size: 11px;
-    border-radius: 2px;
+    border-radius: 0;
     border-color: #cacaca;
     background: #ffffff /* Old browsers */
     background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(235,235,235,1) 100%); /* FF3.6+ */
@@ -162,8 +166,10 @@
 
 .select2-container-multi .select2-choices .select2-search-choice {
     background: #ffffff;
-    border-color: #cacaca;
+    border-color: #D8D8D8;
     padding: 3px 18px 3px 3px;
+    margin: 3px 5px 3px 0;
+    border-radius:0;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice-focus {
@@ -228,3 +234,15 @@
         background-position: right -12px;
     }
 }
+
+.select2-container-multi .select2-choices .select2-search-field, .select2-container-disabled .select2-choice {
+    background:#fff;
+    border:1px solid #DDD;
+}
+
+.select2-container-disabled .select2-choice, .select2-container .select2-default {
+    font-style: italic;
+    color:#999999;
+}
+
+.select2-container.
