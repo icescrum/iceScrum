@@ -536,36 +536,33 @@ function attachOnDomUpdate(content){
         $(this).select();
     });
 
-    $('select, input[data-select="true"]', content).each(function(){
-        var element = $(this);
-        var options = jQuery.extend({minimumResultsForSearch: 6}, element.data());
-        if (element.data('iconClass')) {
+    $('[data-sl2]', content).each(function(){
+        var $this = $(this);
+        var settings = $this.html5data('sl2');
+        if (settings.iconClass) {
             function format(state) {
-                return "<i class='" + element.data('icon-class') + state.id + "'></i>" + state.text;
+                return '<i class="' + settings.iconClass + state.id + '"></i>' + state.text;
             }
-            options.formatResult = format;
-            options.formatSelection = format;
+            settings.formatResult = format;
+            settings.formatSelection = format;
         }
-        var select = element.select2(options);
-        if (element.data('change')) {
-            select.change(function(event) {
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).closest('[data-editable=true]').data('editable-url'),
-                    data: {
-                        id: $('#right-story-properties').data('elemid'),
-                        'story.tags': event.val.join(','),
-                        manageTags: true
-                    }
-                });
-            });
+        $.extend(settings, {
+            minimumResultsForSearch: 6
+        });
+        var select = $this.select2(settings);
+        if (settings.value) {
+            $this.select2("val", settings.value);
         }
-        if (element.data('openOnInit')) {
-            $.doTimeout(25, function() {
-                select.select2("open");
-            });
-        }
-        if (element.data('allowClear')){
+        if (settings.change) {
+            select.change(function (event) {
+                var name = $this.attr('name');
+                var data = { table: true, name: name };
+                data[settings.element + '.' + name] = event.val;
+                $.post(settings.change, data, function(data) {
+                    var eventName = 'update_' + settings.element;
+                    $.event.trigger(eventName, data.object);
+                }, 'json');
+            })
         }
     });
 
@@ -575,7 +572,7 @@ function attachOnDomUpdate(content){
         $.extend(settings, {
             minimumResultsForSearch: 6,
             initSelection : function (element, callback) {
-                callback({id: settings.initid, text: element.val()});
+                callback({id: settings.value, text: element.val()});
             },
             ajax: {
                 url: settings.url,

@@ -22,7 +22,8 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<g:set var="storyTypes" value="{${BundleUtils.storyTypes.collect({k, v -> '\'' + k + '\': \'' + message(code: v) + '\''}).join(',')}}"/>
+<g:set var="storyTypes" value="[:]"/>
+<% BundleUtils.storyTypes.collect { k, v -> storyTypes[k] = message(code: v) } %>
 
 <div id="right-story-properties"
      data-elemid="${story.id}">
@@ -33,10 +34,14 @@
                  name="name"
                  data-editable-type="text">${story.name}</div>
             <hr>
-            <div class="field editable"
-                 name="type"
-                 data-editable-type="selectui"
-                 data-editable-values="${storyTypes}">${story.type}</div>
+            <select name="type"
+                    data-sl2
+                    data-sl2-width="350"
+                    data-sl2-element="story"
+                    data-sl2-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
+                    data-sl2-value="${story.type}">
+                <is:options values="${storyTypes}"/>
+            </select>
             <div class="field editable"
                  name="affectVersion"
                  data-source="${g.createLink(controller:'project', action: 'versions', params:[product:params.product])}"
@@ -50,7 +55,7 @@
                  data-sl2ajax
                  data-sl2ajax-element="story"
                  data-sl2ajax-width="350"
-                 data-sl2ajax-init-id="${story.feature.id}"
+                 data-sl2ajax-value="${story.feature.id}"
                  data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
                  data-sl2ajax-url="${createLink(controller: 'feature', action: 'featureEntries', params: [product: params.product])}"
                  data-sl2ajax-placeholder="${message(code: 'is.ui.story.nofeature')}"
@@ -63,7 +68,7 @@
                  data-sl2ajax
                  data-sl2ajax-element="story"
                  data-sl2ajax-width="350"
-                 data-sl2ajax-init-id="${story.dependsOn.id}"
+                 data-sl2ajax-value="${story.dependsOn.id}"
                  data-sl2ajax-url="${createLink(controller: 'story', action: 'dependenceEntries', id: story.id, params: [product: params.product])}"
                  data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
                  data-sl2ajax-placeholder="${message(code: 'is.ui.story.nodependence')}"

@@ -228,7 +228,6 @@
     var affectVersion = this.affectVersion ? this.affectVersion : '';
     var rawDescription = this.description ? this.description : '';
     var description =  jQuery.icescrum.story.storyTemplate(rawDescription.formatLine());
-    var typeTitle = $.icescrum.story.types[this.type];
     var tags = (this.tags && this.tags.length > 0) ? this.tags.join(',') : '';
     var featureId = this.feature ? this.feature.id : '';
     var notes = this.notes ? this.notes : '';
@@ -247,7 +246,7 @@
             rawNotes: '?**=rawNotes**?',
             rawDescription:'?**=rawDescription**?',
             description:'?**=description**?',
-            type: '?**=typeTitle**?']}"/>
+            type: '?**=this.type**?']}"/>
     <g:render template="/story/rightStory" model="[story: storyExtended, user: user, template: true]"/>
     ]]>
 </template>
