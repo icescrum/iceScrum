@@ -393,23 +393,27 @@ function attachOnDomUpdate(content){
             textileSettings,
             $this.html5data('mkp')
         );
-        var text = $this.val() ? $this.val() : settings.placeholder;
+        var rawValue = $this.val() ? $this.val() : settings.placeholder;
         var markitup = $this.markItUp(settings);
         var editor = markitup.closest('.markItUpContainer');
         var container = markitup.closest('.markItUp');
         var preview = $('<div class="markitup-preview"></div>');
         container.append(preview);
 
-        var updateText = function(value, rawValue){
-            preview.data('rawValue', rawValue);
-            if (value){
-                preview.html(value);
+        var updateText = function(rawValue){
+            if (rawValue){
+                preview.data('rawValue', rawValue);
+                $.post($.icescrum.o.baseUrl + 'textileParser', { data: rawValue, withoutHeader: true }, function(data) {
+                    preview.html(data);
+                }).complete(function(){
+                        $this.removeAttr('readonly');
+                    });
             }
-            preview.show();
             editor.hide();
+            preview.show();
         };
 
-        $.post($.icescrum.o.baseUrl + 'textileParser', { data: text, withoutHeader: true }, function(data) { updateText(data, text);  });
+        updateText(rawValue);
 
         if(settings.height){
             container.css('height',settings.height);
@@ -430,21 +434,114 @@ function attachOnDomUpdate(content){
 
             if (settings.change){
                 $this.on('blur', function(e){
-                    var data = {
-                        table:'true',
-                        name:'notes'
-                    };
-                    text = $this.val();
-                    if (text != preview.data('rawValue')){
-                        data[$this.attr('name')] = text;
+                    var data = { };
+                    rawValue = $this.val();
+                    if (rawValue != preview.data('rawValue')){
+                        data[$this.attr('name')] = rawValue;
+                        $this.attr('readonly','readonly');
                         $.post(settings.change, data, function(data){
-                            updateText(data.value, text);
+                            updateText(data.notes);
                         });
                     } else {
-                        updateText(null, text);
+                        updateText(null);
                     }
                 });
             }
+        }
+    });
+
+    $('[data-sl2]', content).each(function(){
+        var $this = $(this);
+        var settings = $this.html5data('sl2');
+        if (settings.iconClass) {
+            function format(state) {
+                return '<i class="' + settings.iconClass + state.id + '"></i>' + state.text;
+            }
+            settings.formatResult = format;
+            settings.formatSelection = format;
+        }
+        settings = $.extend({
+            minimumResultsForSearch: 6
+        }, settings);
+        var select = $this.select2(settings);
+        if (settings.value) {
+            $this.select2("val", settings.value);
+        }
+        if (settings.change) {
+            select.change(function (event) {
+                var data = { };
+                var name = $this.attr('name');
+                data[name] = event.val;
+                $.post(settings.change, data, function(data) {
+                    var eventName = 'update_' + name.split('.')[0];
+                    $.event.trigger(eventName, data);
+                }, 'json');
+            })
+        }
+    });
+
+    $('[data-sl2ajax]', content).each(function() {
+        var $this = $(this);
+        var settings = $this.html5data('sl2ajax');
+        settings = $.extend({
+            createChoiceOnEmpty:false,
+            minimumResultsForSearch: 6,
+            initSelection : function (element, callback) {
+                callback({id: settings.value, text: element.val()});
+            },
+            ajax: {
+                url: settings.url,
+                cache: 'true',
+                data: function(term) {
+                    return { term: term };
+                },
+                results: function(data) {
+                    return { results: data };
+                }
+            }
+        }, settings);
+        if (settings.createChoiceOnEmpty) {
+            settings.createSearchChoice = function (term) {
+                return {id:term, text:term};
+            };
+        }
+        var select = $this.select2(settings);
+        if (settings.change) {
+            select.change(function (event) {
+                var data = { };
+                var name = $this.attr('name');
+                data[name] = event.val;
+                $.post(settings.change, data, function(data) {
+                    var eventName = 'update_' + name.split('.')[0];
+                    $.event.trigger(eventName, data);
+                }, 'json');
+            })
+        }
+    });
+
+    $('[data-txt]', content).each(function() {
+        var $this = $(this);
+        var settings = $this.html5data('txt');
+        var enabled = $this.attr('readonly') ? false : true;
+        if (enabled && settings.change) {
+            $this.on('focus', function(event){
+                    $this.data('rawValue', $this.val());
+                })
+                .on('blur keypress', function (event) {
+                    var val = $this.val();
+                    if ((val == '' && $this.attr('required')) || (event.type == 'keypress' && event.which != 13)) {
+                        return;
+                    }
+                    var data = {};
+                    var name = $this.attr('name');
+                    data[name] = val;
+                    if($this.data('rawValue') != data[name]){
+                        $.post(settings.change, data, function(data) {
+                            var eventName = 'update_' + name.split('.')[0];
+                            $.event.trigger(eventName, data);
+                        }, 'json');
+                    }
+                });
         }
     });
 
@@ -511,8 +608,7 @@ function attachOnDomUpdate(content){
                 },
                 submitdata: function () {
                     return {
-                        'name': fieldName,
-                        'table': true
+                        'name': fieldName
                     };
                 },
                 callback: function (value) {
@@ -534,86 +630,6 @@ function attachOnDomUpdate(content){
 
     $('textarea.selectallonce',content).one('click', function() {
         $(this).select();
-    });
-
-    $('[data-txt]', content).each(function() {
-        var $this = $(this);
-        var settings = $this.html5data('txt');
-        var enabled = $this.attr('readonly') ? false : true;
-        if (enabled && settings.change) {
-            $this.on('blur', function (event) {
-                var name = $this.attr('name');
-                var data = { table: true, name: name };
-                data[settings.element + '.' + name] = $this.val();
-                $.post(settings.change, data, function(data) {
-                    var eventName = 'update_' + settings.element;
-                    $.event.trigger(eventName, data.object);
-                }, 'json');
-            })
-        }
-    });
-
-    $('[data-sl2]', content).each(function(){
-        var $this = $(this);
-        var settings = $this.html5data('sl2');
-        if (settings.iconClass) {
-            function format(state) {
-                return '<i class="' + settings.iconClass + state.id + '"></i>' + state.text;
-            }
-            settings.formatResult = format;
-            settings.formatSelection = format;
-        }
-        $.extend(settings, {
-            minimumResultsForSearch: 6
-        });
-        var select = $this.select2(settings);
-        if (settings.value) {
-            $this.select2("val", settings.value);
-        }
-        if (settings.change) {
-            select.change(function (event) {
-                var name = $this.attr('name');
-                var data = { table: true, name: name };
-                data[settings.element + '.' + name] = event.val;
-                $.post(settings.change, data, function(data) {
-                    var eventName = 'update_' + settings.element;
-                    $.event.trigger(eventName, data.object);
-                }, 'json');
-            })
-        }
-    });
-
-    $('[data-sl2ajax]', content).each(function() {
-        var $this = $(this);
-        var settings = $this.html5data('sl2ajax');
-        $.extend(settings, {
-            minimumResultsForSearch: 6,
-            initSelection : function (element, callback) {
-                callback({id: settings.value, text: element.val()});
-            },
-            ajax: {
-                url: settings.url,
-                cache: 'true',
-                data: function(term) {
-                    return { term: term };
-                },
-                results: function(data) {
-                    return { results: data };
-                }
-            }
-        });
-        var select = $this.select2(settings);
-        if (settings.change) {
-            select.change(function (event) {
-                var name = $this.attr('name');
-                var data = { table: true, name: name };
-                data[settings.element + '.' + name] = event.val;
-                $.post(settings.change, data, function(data) {
-                    var eventName = 'update_' + settings.element;
-                    $.event.trigger(eventName, data.object);
-                }, 'json');
-            })
-        }
     });
 
     $('a[data-shortcut]', content).each(function(){

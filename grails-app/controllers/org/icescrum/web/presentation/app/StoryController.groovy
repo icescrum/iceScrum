@@ -190,7 +190,12 @@ class StoryController {
 
     @Secured('isAuthenticated()')
     def update = {
+        if (!params.story){
+            returnError(text:message(code:'is.ui.no.data'))
+            return
+        }
         withStory{ Story story ->
+
             def user = springSecurityService.currentUser
             if (story.backlog.preferences.archived){
                 render(status: 403, contentType: 'application/json')
@@ -199,37 +204,22 @@ class StoryController {
             def productOwner = securityService.productOwner(story.backlog.id, springSecurityService.authentication)
             def inProduct = securityService.inProduct(story.backlog.id, springSecurityService.authentication)
 
-            if (!(params.table && params.name == 'effort' && inProduct)){
-                if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !productOwner) {
-                    render(status: 403, contentType: 'application/json')
-                    return
-                } else if (story.state > Story.STATE_SUGGESTED && !productOwner) {
-                    render(status: 403, contentType: 'application/json')
-                    return
-                }
-            }
-
-            if (params.boolean('loadrich')) {
-                render(status: 200, text: story.notes ?: '')
+            if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !productOwner) {
+                render(status: 403, contentType: 'application/json')
+                return
+            } else if (story.state > Story.STATE_SUGGESTED && !productOwner) {
+                render(status: 403, contentType: 'application/json')
                 return
             }
 
-            // If the version is different, the feature has been modified since the last loading
-            if (params.story.version && params.story.version.toLong() != story.version) {
-                returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.story')]))
-                return
-            }
-
-            else if(params.story.effort){
+            if(params.story.effort && inProduct){
                 try {
                     storyService.estimate(story,params.story.effort)
                 }catch(IllegalStateException e){
-                    retunError(text:message(code:e.message))
+                    returnError(text:message(code:e.message))
                     return
                 }
             }
-
-            def skipUpdate = false
 
             bindData(story, this.params, [include:['name','description','notes','type','affectVersion']], "story")
 
@@ -239,33 +229,21 @@ class StoryController {
                 if (!feature)
                     returnError(text:message(code: 'is.feature.error.not.exist'))
                 storyService.associateFeature(feature, story)
-                if (params.table && params.boolean('table'))
-                    skipUpdate = true
             } else if (story.feature && featureId == '') {
                 storyService.dissociateFeature(story)
-                if (params.table && params.boolean('table'))
-                    skipUpdate = true
             }
-            def dependsOnId
-            if (params.'dependsOn.id' != null) {
-                dependsOnId = params.remove('dependsOn.id')
-            } else {
-                dependsOnId = params.story.remove('dependsOn.id')
-            }
+
+            def dependsOnId = params.remove('dependsOn.id') ?: params.story.remove('dependsOn.id')
             if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
                 def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
                 if (!dependsOn)
                     returnError(text:message(code: 'is.story.error.not.exist'))
                 storyService.dependsOn(story, dependsOn)
-                if (params.table && params.boolean('table'))
-                    skipUpdate = true
             } else if (story.dependsOn && dependsOnId == '') {
                 storyService.notDependsOn(story)
-                if (params.table && params.boolean('table'))
-                    skipUpdate = true
             }
 
-            if (params.boolean('manageTags')) {
+            if (params.story.tags != null) {
                 story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
             }
 
@@ -286,44 +264,6 @@ class StoryController {
                 }
             }
 
-            if (!skipUpdate){
-                storyService.update(story)
-                if (params.boolean('manageAttachments')) {
-                    def keptAttachments = params.list('story.attachments')
-                    def addedAttachments = params.list('attachments')
-                    manageAttachments(story, keptAttachments, addedAttachments)
-                }
-            }
-            //if success for table view
-            if (params.table && params.boolean('table')) {
-                def returnValue
-                def rawValue
-                if (params.name == 'type') {
-                    returnValue = message(code: BundleUtils.storyTypes[story.type])
-                } else if (params.name == 'feature.id') {
-                    returnValue = is.postitIcon(name: story.feature?.name?.encodeAsHTML() ?: message(code: message(code: 'is.ui.sandbox.manage.chooseFeature')), color: story.feature?.color ?: 'yellow') + (story.feature?.name?.encodeAsHTML() ?: message(code: message(code: 'is.ui.sandbox.manage.chooseFeature')))
-                } else if (params.name == 'notes') {
-                    returnValue = wikitext.renderHtml(markup: 'Textile', text: story.notes)
-                    rawValue = story.notes
-                } else if (params.name == 'description') {
-                    returnValue = is.storyDescription(story:story)
-                    rawValue = story.description?.encodeAsHTML()?.encodeAsNL2BR()
-                } else if (params.name == 'dependsOn.id') {
-                    returnValue = story.dependsOn?.name ? story.dependsOn.name + ' (' + story.dependsOn.uid + ')': message(code: message(code: 'is.ui.sandbox.manage.chooseFeature'))
-                } else if (params.name == 'effort' && story.effort == null) {
-                    returnValue = '?'
-                } else {
-                    returnValue = story."${params.name}".encodeAsHTML()
-                }
-                //TODO remove fix for table update
-                story.version += 1;
-                def result = [value: returnValue ?: '', object: story]
-                if (rawValue != null) {
-                    result.rawValue = rawValue
-                }
-                render(status: 200, contentType: 'application/json', text: result as JSON)
-                return
-            }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
                 json { renderRESTJSON(text:story) }

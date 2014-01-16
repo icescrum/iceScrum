@@ -2348,15 +2348,17 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     float: left;
     width: 100%;
     clear:both;
-    background: linear-gradient(to bottom, #FFFFFF 0px, #EBEBEB 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background:#fff;
     border: 1px solid #CACACA;
     margin-top: 2px;
+    margin-bottom: 2px;
+    font-size: 1.1em;
 }
 
 .dz-preview .dz-details,
 .dz-preview.dz-processing.dz-success .dz-details {
     float:left;
-    margin: 3px 5px 3px;
+    margin: 5px;
     width: 85%;
 }
 
@@ -2396,7 +2398,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     font-size: 13px;
     font-weight: bold;
     margin-right: 5px;
-    margin-top: 2px;
+    margin-top: 4px;
 }
 
 .dz-preview.dz-processing .dz-progress,
@@ -2429,7 +2431,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     display: none;
 }
 .dz-preview .file-icon {
-    line-height: 18px;
+    line-height: 16px;
 }
 
 .drop-here {
@@ -2446,7 +2448,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 .dz-drag-hover .drop-here {
     background:#000;
     display:table-cell;
-    opacity:0.5;
+    opacity:0.2;
 }
 .drop-here .drop-title {
     position:absolute;
@@ -2470,9 +2472,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     background: #fff;
     border:1px solid #D8D8D8;
     padding:5px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    font-size: 1.1em;
     overflow: auto;
     height: inherit;
 }
@@ -2480,4 +2480,31 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 #right-story-properties .markItUpHeader {
     float:left;
     clear:both;
+}
+
+#right-story-properties textarea, #right-story-properties .markitup-preview, .previews .dz-file-preview, #right input[type="text"] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#right-story-properties .inline > div {
+    display: inline-block;
+}
+
+#right input[type="text"], .select2-container-multi .select2-choices .select2-search-field input[type="text"] {
+    background: #fff !important;
+    width:100%;
+    height: 28px;
+    font-size: 1.1em;
+    border:1px solid #D8D8D8;
+    padding-left:5px;
+}
+
+input.important, .important .select2-chosen {
+    font-weight:bold;
+}
+
+*[readonly] {
+    cursor: not-allowed;
 }

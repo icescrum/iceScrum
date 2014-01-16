@@ -913,7 +913,8 @@ class ProjectController {
         withProduct { Product product ->
             withFormat{
                 html {
-                    render product.getVersions(false, true) as JSON
+                    def versions = product.getVersions(false, true)
+                    render versions.collect{ [id:it, text:it] } as JSON
                 }
                 json { renderRESTJSON(text:product.versions) }
                 xml  { renderRESTXML(text:product.versions) }

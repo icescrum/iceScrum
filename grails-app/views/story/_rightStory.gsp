@@ -30,35 +30,42 @@
     <div data-editable="true"
          data-editable-url="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
          data-editable-name="story">
-            <input
-                 name="name"
-                 data-txt
-                 data-txt-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
-                 data-txt-element="story"
-                 value="${story.name}">
+            <input required
+                   name="story.name"
+                   type="text"
+                   class="important"
+                   data-txt
+                   data-txt-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
+                   value="${story.name}">
             <hr>
-            <select name="type"
-                    data-sl2
-                    data-sl2-width="350"
-                    data-sl2-element="story"
-                    data-sl2-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
-                    data-sl2-value="${story.type}">
-                <is:options values="${storyTypes}"/>
-            </select>
-            <div class="field editable"
-                 name="affectVersion"
-                 data-source="${g.createLink(controller:'project', action: 'versions', params:[product:params.product])}"
-                 data-min-length="0"
-                 data-search-on-init="true"
-                 data-editable-type="autocompletable">${story.affectVersion}</div>
+            <div class="inline">
+                <select name="story.type"
+                        style="width:33%;"
+                        class="important"
+                        onchange="jQuery.icescrum.story.displayOptions(this)"
+                        data-sl2
+                        data-sl2-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
+                        data-sl2-value="${story.type}">
+                    <is:options values="${storyTypes}" />
+                </select>
+            </div>
+            <hr>
+            <input type="hidden"
+                   name="story.affectVersion"
+                   style="width:90%"
+                   data-sl2ajax
+                   data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
+                   data-sl2ajax-placeholder="${message(code:'is.story.affectVersion')}"
+                   data-sl2ajax-url="${g.createLink(controller:'project', action: 'versions', params:[product:params.product])}"
+                   data-sl2ajax-allow-clear="true"
+                   data-sl2ajax-create-choice-on-empty="true"
+                   value="${story.affectVersion}"/>
             <hr>
             <input
                  type="hidden"
-                 name="feature.id"
+                 name="story.feature.id"
+                 style="width:90%;"
                  data-sl2ajax
-                 data-sl2ajax-element="story"
-                 data-sl2ajax-width="350"
-                 data-sl2ajax-value="${story.feature.id}"
                  data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
                  data-sl2ajax-url="${createLink(controller: 'feature', action: 'featureEntries', params: [product: params.product])}"
                  data-sl2ajax-placeholder="${message(code: 'is.ui.story.nofeature')}"
@@ -67,11 +74,9 @@
             <hr>
             <input
                  type="hidden"
-                 name="dependsOn.id"
+                 name="story.dependsOn.id"
+                 style="width:90%;"
                  data-sl2ajax
-                 data-sl2ajax-element="story"
-                 data-sl2ajax-width="350"
-                 data-sl2ajax-value="${story.dependsOn.id}"
                  data-sl2ajax-url="${createLink(controller: 'story', action: 'dependenceEntries', id: story.id, params: [product: params.product])}"
                  data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
                  data-sl2ajax-placeholder="${message(code: 'is.ui.story.nodependence')}"
