@@ -536,6 +536,23 @@ function attachOnDomUpdate(content){
         $(this).select();
     });
 
+    $('[data-txt]', content).each(function() {
+        var $this = $(this);
+        var settings = $this.html5data('txt');
+        var enabled = $this.attr('readonly') ? false : true;
+        if (enabled && settings.change) {
+            $this.on('blur', function (event) {
+                var name = $this.attr('name');
+                var data = { table: true, name: name };
+                data[settings.element + '.' + name] = $this.val();
+                $.post(settings.change, data, function(data) {
+                    var eventName = 'update_' + settings.element;
+                    $.event.trigger(eventName, data.object);
+                }, 'json');
+            })
+        }
+    });
+
     $('[data-sl2]', content).each(function(){
         var $this = $(this);
         var settings = $this.html5data('sl2');

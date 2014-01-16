@@ -30,9 +30,12 @@
     <div data-editable="true"
          data-editable-url="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
          data-editable-name="story">
-            <div class="field editable"
+            <input
                  name="name"
-                 data-editable-type="text">${story.name}</div>
+                 data-txt
+                 data-txt-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
+                 data-txt-element="story"
+                 value="${story.name}">
             <hr>
             <select name="type"
                     data-sl2
