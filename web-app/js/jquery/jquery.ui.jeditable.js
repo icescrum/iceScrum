@@ -121,48 +121,6 @@
         }
     });
 
-    $.editable.addInputType('inputselect', {
-        element : function(settings) {
-            settings.onblur = 'ignore';
-            var multiselect = $('<input type="hidden" data-select="true""/>');
-            $(this).append(multiselect);
-            return(multiselect);
-        },
-        plugin: function(settings, original) {
-            var form = this;
-            var select = $('input', form);
-            var editable = $(original);
-            var selectId = editable.data('select-id');
-            var url = editable.data('url');
-            var options = {
-                minimumResultsForSearch: 6,
-                openOnInit: true,
-                initSelection : function (element, callback) {
-                    callback({id: selectId, text: element.val()});
-                }
-            };
-            if (url) {
-                options.ajax = {
-                    url: url,
-                    cache: 'true',
-                    data: function(term) {
-                        return { term: term };
-                    },
-                    results: function(data) {
-                        return { results: data };
-                    }
-                };
-            }
-            $.extend(options, editable.data());
-            select.data(options);
-            select.one("change select2-close select2-blur", function(){
-                select.off();
-                form.submit();
-            });
-            attachOnDomUpdate(form);
-        }
-    });
-
     $.editable.addInputType('autocompletable', {
         element : function(settings, original) {
             var input = $('<input data-autocompletable="true"/>');
@@ -273,26 +231,11 @@ var richAreaHelper = {
     }
  };
 
-var inputSelectHelper = {
-    getValueFromText: function(textValue) {
-        return $.icescrum.htmlDecode(textValue);
-    },
-    getValueFromInput: function(inputField) {
-        return inputField.find('input[type="hidden"]').val();
-    },
-    data: function() {
-        return function(textValue) {
-            return $.editable.customTypeHelper.inputselect.getValueFromText(textValue);
-        };
-    }
-};
-
 $.editable.customTypeHelper = {
     text: textHelper,
     autocompletable: textHelper,
     selectui: selectUiHelper,
     textarea: textAreaHelper,
     atarea: textAreaHelper,
-    richarea: richAreaHelper,
-    inputselect: inputSelectHelper
+    richarea: richAreaHelper
 };

@@ -231,9 +231,9 @@
     var typeTitle = $.icescrum.story.types[this.type];
     var tags = (this.tags && this.tags.length > 0) ? this.tags.join(',') : '';
     var featureId = this.feature ? this.feature.id : '';
-    var featureName = this.feature ? this.feature.name : '${message(code: 'is.ui.story.nofeature')}';
+    var featureName = this.feature ? this.feature.name : '';
     var dependsOnId = this.dependsOn ? this.dependsOn.id : '';
-    var dependsOnName = this.dependsOn ? this.dependsOn.name + ' (' + this.dependsOn.uid + ')' : '${message(code: 'is.ui.story.nodependence')}';
+    var dependsOnName = this.dependsOn ? this.dependsOn.name + ' (' + this.dependsOn.uid + ')' : '';
     var rawNotes = this.notes ? this.notes : '';
     if (rawNotes) {
         var id = this.id;

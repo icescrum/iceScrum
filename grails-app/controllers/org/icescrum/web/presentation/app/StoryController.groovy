@@ -246,7 +246,12 @@ class StoryController {
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
             }
-            def dependsOnId = params.remove('dependsOn.id') ?: params.story.remove('dependsOn.id')
+            def dependsOnId
+            if (params.'dependsOn.id' != null) {
+                dependsOnId = params.remove('dependsOn.id')
+            } else {
+                dependsOnId = params.story.remove('dependsOn.id')
+            }
             if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
                 def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
                 if (!dependsOn)
@@ -254,7 +259,7 @@ class StoryController {
                 storyService.dependsOn(story, dependsOn)
                 if (params.table && params.boolean('table'))
                     skipUpdate = true
-            } else if (story.dependsOn && params.dependsOn?.id == '') {
+            } else if (story.dependsOn && dependsOnId == '') {
                 storyService.notDependsOn(story)
                 if (params.table && params.boolean('table'))
                     skipUpdate = true

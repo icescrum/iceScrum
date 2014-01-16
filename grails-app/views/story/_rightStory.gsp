@@ -44,23 +44,33 @@
                  data-search-on-init="true"
                  data-editable-type="autocompletable">${story.affectVersion}</div>
             <hr>
-            <div class="field editable"
+            <input
+                 type="hidden"
+                 class="field"
                  name="feature.id"
-                 data-width="350"
-                 data-select-id="${story.feature.id}"
-                 data-url="${createLink(controller: 'feature', action: 'featureEntries', params: [product: params.product])}"
-                 data-editable-type="inputselect"
-                 data-placeholder="${message(code: 'is.ui.story.nofeature')}"
-                 data-allow-clear="true">${story.feature.name}</div>
+                 data-sl2ajax
+                 data-sl2ajax-element="story"
+                 data-sl2ajax-width="350"
+                 data-sl2ajax-init-id="${story.feature.id}"
+                 data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
+                 data-sl2ajax-url="${createLink(controller: 'feature', action: 'featureEntries', params: [product: params.product])}"
+                 data-sl2ajax-placeholder="${message(code: 'is.ui.story.nofeature')}"
+                 data-sl2ajax-allow-clear="true"
+                 value="${story.feature.name}"/>
             <hr>
-            <div class="field editable"
+            <input
+                 type="hidden"
+                 class="field"
                  name="dependsOn.id"
-                 data-width="350"
-                 data-select-id="${story.dependsOn.id}"
-                 data-url="${createLink(controller: 'story', action: 'dependenceEntries', id: story.id, params: [product: params.product])}"
-                 data-editable-type="inputselect"
-                 data-placeholder="${message(code: 'is.ui.story.nodependence')}"
-                 data-allow-clear="true">${story.dependsOn.name}</div>
+                 data-sl2ajax
+                 data-sl2ajax-element="story"
+                 data-sl2ajax-width="350"
+                 data-sl2ajax-init-id="${story.dependsOn.id}"
+                 data-sl2ajax-url="${createLink(controller: 'story', action: 'dependenceEntries', id: story.id, params: [product: params.product])}"
+                 data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
+                 data-sl2ajax-placeholder="${message(code: 'is.ui.story.nodependence')}"
+                 data-sl2ajax-allow-clear="true"
+                 value="${story.dependsOn.name}"/>
             <hr>
             <div class="field editable"
                  name="description"

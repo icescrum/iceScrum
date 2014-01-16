@@ -446,7 +446,39 @@ function attachOnDomUpdate(content){
             });
         }
         if (element.data('allowClear')){
-            debugger;
+        }
+    });
+
+    $('[data-sl2ajax]', content).each(function() {
+        var $this = $(this);
+        var settings = $this.html5data('sl2ajax');
+        $.extend(settings, {
+            minimumResultsForSearch: 6,
+            initSelection : function (element, callback) {
+                callback({id: settings.initid, text: element.val()});
+            },
+            ajax: {
+                url: settings.url,
+                cache: 'true',
+                data: function(term) {
+                    return { term: term };
+                },
+                results: function(data) {
+                    return { results: data };
+                }
+            }
+        });
+        var select = $this.select2(settings);
+        if (settings.change) {
+            select.change(function (event) {
+                var name = $this.attr('name');
+                var data = { table: true, name: name };
+                data[settings.element + '.' + name] = event.val;
+                $.post(settings.change, data, function(data) {
+                    var eventName = 'update_' + settings.element;
+                    $.event.trigger(eventName, data.object);
+                }, 'json');
+            })
         }
     });
 
