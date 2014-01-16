@@ -80,39 +80,30 @@
                  data-data="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
                  data-editable-type="atarea">${story.description}</div>
             <hr>
-            <input
-                    type="hidden"
+            <input  type="hidden"
                     name="story.tags"
-                    data-change="
-                    $.ajax({
-                        type: 'POST',
-                        url: $(this).closest('[data-editable=true]').data('editable-url'),
-                        data: {
-                            id: $('#right-story-properties').data('elemid'),
-                            'story.tags': event.val.join(','),
-                            manageTags: true
-                        }
-                    });"
-                    data-tag="true"
                     style="width:100%"
-                    data-placeholder="${message(code:'is.backlogelement.tags')}"
-                    data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
+                    data-sl2tag
+                    data-sl2tag-tag-link="#finder?tag="
+                    data-sl2tag-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
+                    data-sl2tag-placeholder="${message(code:'is.backlogelement.tags')}"
+                    data-sl2tag-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
                     value="${story.tags}"/>
             <hr>
-            <div
-                class="field editable"
-                name="notes"
-                data-raw-value="${story.rawNotes}"
-                data-editable-type="richarea">${story.notes}</div>
+            <textarea name="story.notes"
+                      data-mkp
+                      data-mkp-placeholder="_Aucune notes_"
+                      data-mkp-height="170"
+                      data-mkp-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}">${story.notes}</textarea>
             <hr>
-            <div data-dz
+            <div class="attachments dropzone-previews"
+                 data-dz
                  data-dz-id="right-story-properties"
                  data-dz-add-remove-links="${createLink(action:'attachments', controller: 'story', id:story.id, params: [product: params.product])}"
                  data-dz-files='${story.attachments}'
                  data-dz-clickable="#right-story-properties button.clickable"
                  data-dz-url="${createLink(action:'attachments', controller: 'story', id:story.id, params: [product: params.product])}"
-                 data-dz-previews-container="#right-story-properties .attachments .previews"
-                 class="attachments dropzone-previews">
+                 data-dz-previews-container="#right-story-properties .attachments .previews">
                 <div class="providers">
                     <button class="clickable">file</button>
                 </div>

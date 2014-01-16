@@ -85,7 +85,6 @@ li#li-roles {
 }
 
 .rich-content {
-    max-height: 200px;
     overflow: auto;
 }
 
@@ -2504,4 +2503,21 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 .custom-select2-dropdown {
     text-align: left;
     min-width: 65px;
+}
+
+#right-story-properties textarea, #right-story-properties .markitup-preview {
+    resize: none;
+    background: #fff;
+    border:1px solid #D8D8D8;
+    padding:5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: auto;
+    height: inherit;
+}
+
+#right-story-properties .markItUpHeader {
+    float:left;
+    clear:both;
 }

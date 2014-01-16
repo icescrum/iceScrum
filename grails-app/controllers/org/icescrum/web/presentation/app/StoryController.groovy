@@ -321,7 +321,7 @@ class StoryController {
                 if (rawValue != null) {
                     result.rawValue = rawValue
                 }
-                render(status: 200, text: result as JSON)
+                render(status: 200, contentType: 'application/json', text: result as JSON)
                 return
             }
             withFormat {

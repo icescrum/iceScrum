@@ -231,26 +231,13 @@
     var typeTitle = $.icescrum.story.types[this.type];
     var tags = (this.tags && this.tags.length > 0) ? this.tags.join(',') : '';
     var featureId = this.feature ? this.feature.id : '';
+    var notes = this.notes ? this.notes : '';
     var featureName = this.feature ? this.feature.name : '';
     var dependsOnId = this.dependsOn ? this.dependsOn.id : '';
     var dependsOnName = this.dependsOn ? this.dependsOn.name + ' (' + this.dependsOn.uid + ')' : '';
-    var rawNotes = this.notes ? this.notes : '';
-    if (rawNotes) {
-        var id = this.id;
-        $.ajax({
-            url: $.icescrum.o.baseUrl + 'textileParser',
-            data: {
-                data: this.notes,
-                withoutHeader: true
-            },
-            success: function(data) {
-                $('#right-story-properties[data-elemid='+id+'] .field[name=notes]').html(data);
-            }
-        });
-    }
     **?
     <g:set var="storyExtended" value="${story + [
-            notes:'',
+            notes:'?**=notes**?',
             tags: '?**=tags**?',
             attachments: '?**=JSON.stringify(this.attachments)**?',
             name: '?**=this.name**?',
