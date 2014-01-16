@@ -86,6 +86,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.checkbox.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.ui.touch-punch.min.js'], nominify: true, bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.html5data.min.js'], nominify: true,  bundle: 'icescrum'
     }
 
     'jqplot' {

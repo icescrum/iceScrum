@@ -32,13 +32,7 @@
             <div class="field editable"
                  name="name"
                  data-editable-type="text">${story.name}</div>
-            <div class="field editable"
-                 name="description"
-                 data-raw-value="${story.rawDescription}"
-                 data-at="a"
-                 data-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
-                 data-data="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
-                 data-editable-type="atarea">${story.description}</div>
+            <hr>
             <div class="field editable"
                  name="type"
                  data-editable-type="selectui"
@@ -49,6 +43,7 @@
                  data-min-length="0"
                  data-search-on-init="true"
                  data-editable-type="autocompletable">${story.affectVersion}</div>
+            <hr>
             <div class="field editable"
                  name="feature.id"
                  data-width="350"
@@ -57,6 +52,7 @@
                  data-editable-type="inputselect"
                  data-placeholder="${message(code: 'is.ui.story.nofeature')}"
                  data-allow-clear="true">${story.feature.name}</div>
+            <hr>
             <div class="field editable"
                  name="dependsOn.id"
                  data-width="350"
@@ -65,36 +61,47 @@
                  data-editable-type="inputselect"
                  data-placeholder="${message(code: 'is.ui.story.nodependence')}"
                  data-allow-clear="true">${story.dependsOn.name}</div>
+            <hr>
+            <div class="field editable"
+                 name="description"
+                 data-raw-value="${story.rawDescription}"
+                 data-at="a"
+                 data-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
+                 data-data="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}"
+                 data-editable-type="atarea">${story.description}</div>
+            <hr>
             <input
-                type="hidden"
-                name="story.tags"
-                data-change="
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).closest('[data-editable=true]').data('editable-url'),
-                    data: {
-                        id: $('#right-story-properties').data('elemid'),
-                        'story.tags': event.val.join(','),
-                        manageTags: true
-                    }
-                });"
-                data-tag="true"
-                data-placeholder="${message(code:'is.backlogelement.tags')}"
-                data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
-                value="${story.tags}"/>
+                    type="hidden"
+                    name="story.tags"
+                    data-change="
+                    $.ajax({
+                        type: 'POST',
+                        url: $(this).closest('[data-editable=true]').data('editable-url'),
+                        data: {
+                            id: $('#right-story-properties').data('elemid'),
+                            'story.tags': event.val.join(','),
+                            manageTags: true
+                        }
+                    });"
+                    data-tag="true"
+                    style="width:100%"
+                    data-placeholder="${message(code:'is.backlogelement.tags')}"
+                    data-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
+                    value="${story.tags}"/>
+            <hr>
             <div
                 class="field editable"
                 name="notes"
                 data-raw-value="${story.rawNotes}"
                 data-editable-type="richarea">${story.notes}</div>
-
-            <div data-dropzone="true"
-                 data-dropzone-id="right-story-properties"
-                 data-add-remove-links="${createLink(action:'attachments', controller: 'story', id:story.id, params: [product: params.product])}"
-                 data-files='${story.attachments}'
-                 data-clickable="#right-story-properties button.clickable"
-                 data-url="${createLink(action:'attachments', controller: 'story', id:story.id, params: [product: params.product])}"
-                 data-previews-container="#right-story-properties .attachments .previews"
+            <hr>
+            <div data-dz
+                 data-dz-id="right-story-properties"
+                 data-dz-add-remove-links="${createLink(action:'attachments', controller: 'story', id:story.id, params: [product: params.product])}"
+                 data-dz-files='${story.attachments}'
+                 data-dz-clickable="#right-story-properties button.clickable"
+                 data-dz-url="${createLink(action:'attachments', controller: 'story', id:story.id, params: [product: params.product])}"
+                 data-dz-previews-container="#right-story-properties .attachments .previews"
                  class="attachments dropzone-previews">
                 <div class="providers">
                     <button class="clickable">file</button>

@@ -222,7 +222,7 @@ li#li-roles {
 }
 
 #right {
-    background:none repeat scroll 0 0 #e3e3e4;
+    background:none repeat scroll 0 0 #EDEDED;
     position:absolute;
     right:0;
     top:28px;
@@ -2324,21 +2324,6 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     line-height: 14px;
 }
 
-#right-story-properties .field.editable input,
-#right-story-properties .field.editable textarea,
-#right-story-properties .field.editable:not(.editing):hover {
-    padding: 3px;
-    border: 1px solid #cacaca;
-    border-radius: 3px;
-    background: #ffffff;
-    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(235,235,235,1) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* Chrome10+,Safari5.1+ */
-    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* IE10+ */
-    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(235,235,235,1) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ebebeb',GradientType=0 ); /* IE6-9 */
-}
-
 #right-story-properties .field.editable input:not(.select2-input):focus,
 #right-story-properties .field.editable textarea:focus {
     border-color: #8fabc0;
@@ -2372,8 +2357,32 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     height:100%;
 }
 
+#right-story-properties > div > hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
 #right-story-properties > div {
     height:100%;
+}
+
+#right .select2-container-multi .select2-choices {
+    background: none;
+    border:none;
+}
+
+#right-story-properties .field:not(.editing)[data-editable-type="selectui"], #right-story-properties .field:not(.editing)[data-editable-type="inputselect"] {
+    color:#3C3C3C;
+    font-weight:bold;
+    font-size: 12px;
+    width:200px;
+    border:1px solid #D8D8D8;
+    background:#F6F6F6;
+    border-radius: 3px;
 }
 
 .dz-preview {

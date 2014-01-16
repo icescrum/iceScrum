@@ -282,18 +282,24 @@ function attachOnDomUpdate(content){
         }
     });
 
-    $('[data-dropzone=true]', content).each(function(){
+    $('[data-dz]', content).each(function(){
         var $this = $(this);
-
+        var settings = $.extend({
+                dictCancelUpload:'x',
+                dictRemoveFile:'x',
+                previewTemplate:'<div class="dz-preview dz-file-preview"><div class="dz-details file-icon"><a href="javascript:;" data-dz-href><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div></a></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>'
+            },
+            $this.html5data('dz')
+        );
         var afterUpload = function(file){
             var link = file.previewElement.querySelector("[data-dz-href]");
             if (file.provider){
-                link.href = $this.data('url') + '?attachment.id='+file.id;
+                link.href = settings.url + '?attachment.id=' + file.id;
                 link.target = '_blank';
             } else {
-                link.href = $this.data('url')+'?attachment.id='+file.id;
+                link.href = settings.url + '?attachment.id=' + file.id;
                 $(link).on('click', function(){
-                    $.download($this.data('url'), {'attachment.id':file.id}, 'GET');
+                    $.download(settings.url, {'attachment.id':file.id}, 'GET');
                     return false;
                 });
             }
@@ -305,19 +311,16 @@ function attachOnDomUpdate(content){
             }
         };
 
-        $this.data('dictCancelUpload','x');
-        $this.data('dictRemoveFile','x');
-        $this.data('previewTemplate','<div class="dz-preview dz-file-preview"><div class="dz-details file-icon"><a href="javascript:;" data-dz-href><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div></a></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>');
-        var dropZone = new Dropzone('#'+($this.data('dropzoneId')?$this.data('dropzoneId'):this.id), $this.data());
+        var dropZone = new Dropzone('#' + (settings.id ? settings.id : this.id), settings);
 
-        $('<div class="drop-here"><div class="drop-title">Drop your file here</div></div>').appendTo($('#'+($this.data('dropzoneId')?$this.data('dropzoneId'):this.id)));
+        $('<div class="drop-here"><div class="drop-title">Drop your file here</div></div>').appendTo($('#' + (settings.id ? settings.id : this.id)));
 
-        if ($this.data('addRemoveLinks')){
+        if (settings.addRemoveLinks){
             dropZone.on("removedfile", function(file) {
                 if(file.id){
                     $.ajax({
                         type:'DELETE',
-                        url:$this.data('addRemoveLinks')+'?attachment.id='+file.id
+                        url:settings.addRemoveLinks+'?attachment.id='+file.id
                     });
                 }
             });
@@ -333,8 +336,8 @@ function attachOnDomUpdate(content){
                 afterUpload(file);
             }
         });
-        if ($this.data('files')){
-            $($this.data('files')).each(function(){
+        if (settings.files){
+            $(settings.files).each(function(){
                 dropZone.options.prepend = false;
                 dropZone.emit("addedfile", {name:this.filename, size:this.length, id:this.id, ext:this.ext, provider:this.provider });
                 dropZone.options.prepend = true;
@@ -442,6 +445,9 @@ function attachOnDomUpdate(content){
                 select.select2("open");
             });
         }
+        if (element.data('allowClear')){
+            debugger;
+        }
     });
 
     $('input[data-tag="true"]', content).each(function() {
@@ -449,7 +455,6 @@ function attachOnDomUpdate(content){
         var url = element.data('url');
         var placeholder = element.data('placeholder');
         var select = element.select2({
-            width: "240",
             tags:[],
             placeholder: placeholder,
             tokenSeparators: [",", " "],

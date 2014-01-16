@@ -174,7 +174,6 @@ class StoryController {
             def addedAttachments = params.list('attachments')
             manageAttachments(story, keptAttachments, addedAttachments)
             story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
-
             entry.hook(id:"${controllerName}-${actionName}", model:[story:story])
 
             withFormat {
@@ -849,7 +848,7 @@ class StoryController {
                     request.getFile("file").transferTo(tmpF)
                 }
                 story.addAttachment(springSecurityService.currentUser, tmpF?: upfile, upfile.originalFilename?:upfile.name)
-                def attachment = story.attachments.last()
+                def attachment = story.attachments.first()
                 render(status:200, contentType: 'application/json', text:[
                         id:attachment.id,
                         filename:attachment.inputName,
