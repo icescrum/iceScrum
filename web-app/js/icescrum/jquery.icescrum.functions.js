@@ -894,7 +894,10 @@
                     },
 
                     findDuplicate:function(term) {
-                        if (term.length >= 5 && this.termDuplicate != term.trim()){
+                        if (term == null || term.length <= 5) {
+                            this.termDuplicate = null;
+                            $('.duplicate').html('');
+                        } else if (term.length >= 5 && this.termDuplicate != term.trim()){
                             this.termDuplicate = term.trim();
                             clearTimeout(this.timerDuplicate);
                             this.timerDuplicate = setTimeout(function() {
@@ -903,9 +906,6 @@
                                     $('.duplicate').html(data ? data : '');
                                 });
                             }, 500);
-                        } else if (term.length <= 5) {
-                            this.termDuplicate = null;
-                            $('.duplicate').html('');
                         }
                     }
                 },

@@ -728,13 +728,6 @@ body:fullscreen .window-fullscreen{
     overflow-y: auto;
 }
 
-.duplicate {
-    clear: both;
-    float: left;
-    padding: 0 0 2px 222px;
-    color:#777777;
-}
-
 #right .ui-accordion-header.ui-corner-all, #right .ui-accordion-header.ui-corner-top, #right .ui-accordion-content.ui-corner-bottom {
     border-radius:0;
 }

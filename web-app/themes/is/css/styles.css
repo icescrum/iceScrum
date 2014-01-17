@@ -2329,8 +2329,8 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 #right-story-properties > hr {
     border: 0;
     height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
     margin-bottom: 5px;
     margin-top: 5px;
 }
@@ -2512,4 +2512,21 @@ input.important, .important .select2-chosen, #right-story-properties .atwho-prev
 
 *[readonly] {
     cursor: not-allowed;
+}
+
+.duplicate {
+    color: #6D6D6D;
+    display: inline-block;
+    font-size: 1.1em;
+    margin-left: 2px;
+    margin-top: 5px;
+
+}
+
+.select2-chosen .ico-story-3, .select2-chosen .ico-story-2, .select2-result-label .ico-story-3, .select2-result-label .ico-story-2  {
+    float: left;
+    height: 18px;
+    margin-right: 4px;
+    margin-top: 1px;
+    width: 18px;
 }

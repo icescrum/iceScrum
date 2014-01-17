@@ -403,11 +403,11 @@ event-content-list .ui-selected, .kanban .ui-selected {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.postit .ico-feature-1, .postit .ico-story-3, .postit-rect .ico-feature-1, .postit-rect .ico-story-3 {
+.postit .ico-feature-1, .postit .ico-story-3, .postit-rect .ico-feature-1, .postit-rect .ico-story-3, .select2-result-label .ico-story-3, .select2-chosen .ico-story-3  {
     background: url(../images/view/type/tech.png);
 }
 
-.postit .ico-story-2, .postit-rect .ico-story-2 {
+.postit .ico-story-2, .postit-rect .ico-story-2, .select2-result-label .ico-story-2, .select2-chosen .ico-story-2 {
     background: url(../images/view/type/bug.png);
 }
 
