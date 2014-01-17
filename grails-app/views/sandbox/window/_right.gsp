@@ -28,7 +28,10 @@
 </div>
 <div id="right-properties" data-accordion="true" data-height-style="fill">
     <h3><a href="#">${message(code: "is.story")}</a></h3>
-    <div id="right-story-container"></div>
+    <div id="right-story-container"
+         data-push
+         data-push-listen='{ "object":"story","events":["select", "unselect", "update", "remove"] }'
+         data-push-template="sandboxRight"></div>
     <h3><a href="#"><g:message code="is.ui.backlogelement.activity.test"/></a></h3>
     <div></div>
     <h3><a href="#"><g:message code="is.ui.backlogelement.activity.comments"/></a></h3>
@@ -39,7 +42,6 @@
 
 
 <jq:jquery>
-
 var selectStory = function (event, ui) {
     var id = $(ui.selected).data('elemid');
     $.ajax({
@@ -58,13 +60,7 @@ var unselectStory = function (event, ui) {
         }
     });
 };
-
 $('#window-content-sandbox').off('selectableselected selectableunselected')
     .on('selectableselected', selectStory)
     .on('selectableunselected', unselectStory);
 </jq:jquery>
-
-<is:onStream
-        on="#right-story-container"
-        events="[[object:'story',events:['select','unselect', 'update', 'remove']]]"
-        template="sandboxRight"/>

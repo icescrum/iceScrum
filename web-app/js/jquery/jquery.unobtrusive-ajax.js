@@ -455,7 +455,7 @@ function attachOnDomUpdate(content){
         }
     });
 
-    $('[data-sl2]', content).each(function(){
+    $('select[data-sl2]', content).each(function(){
         var $this = $(this);
         var settings = $this.html5data('sl2');
         if (settings.iconClass) {
@@ -468,10 +468,10 @@ function attachOnDomUpdate(content){
         settings = $.extend({
             minimumResultsForSearch: 6
         }, settings);
-        var select = $this.select2(settings);
         if (settings.value) {
-            $this.select2("val", settings.value);
+            $this.val(settings.value);
         }
+        var select = $this.select2(settings);
         if (settings.change) {
             select.change(function (event) {
                 var data = { };
@@ -479,13 +479,13 @@ function attachOnDomUpdate(content){
                 data[name] = event.val;
                 $.post(settings.change, data, function(data) {
                     var eventName = 'update_' + name.split('.')[0];
-                    $.event.trigger(eventName, data);
+                    $('#backlog-layout-window-sandbox').triggerHandler(eventName, data);
                 }, 'json');
             })
         }
     });
 
-    $('[data-sl2ajax]', content).each(function() {
+    $('input[data-sl2ajax]', content).each(function() {
         var $this = $(this);
         var settings = $this.html5data('sl2ajax');
         settings = $.extend({
@@ -524,7 +524,7 @@ function attachOnDomUpdate(content){
         }
     });
 
-    $('[data-txt]', content).each(function() {
+    $('input[data-txt]', content).each(function() {
         var $this = $(this);
         var settings = $this.html5data('txt');
         var enabled = $this.attr('readonly') ? false : true;
@@ -606,19 +606,26 @@ function attachOnDomUpdate(content){
         }
     });
 
-    $('textarea.selectallonce').one('click focus', function(){
+    $('textarea.selectallonce',content).one('click focus', function(){
         $(this).select();
         $(this).off('click focus');
     });
 
-    $('input[data-autocompletable=true]', content).each(function() {
-        var autocompletable = $(this);
-        autocompletable.autocomplete(autocompletable.data());
-        if (autocompletable.data('searchOnInit')) {
-            autocompletable.autocomplete('search');
-        }
+    $('div[data-push]', content).each(function(){
+        var $this = $(this);
+        var settings = $this.html5data('push');
+        $(settings.listen).each(function(){
+            var _object = this.object;
+            var _event = "";
+            $(this.events).each(function(){
+                _event += this+'_'+_object+'.stream '
+            });
+            $this.on(_event, function(event,object){
+                var type = event.type.split('_')[0];
+                jQuery.icescrum[_object][type].apply(object,[settings.template]);
+            });
+        });
     });
-
 
     $('[data-sortable=true]', content).each(function(){
         var $this = $(this);

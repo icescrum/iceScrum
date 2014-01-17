@@ -190,11 +190,12 @@ class StoryController {
 
     @Secured('isAuthenticated()')
     def update = {
-        if (!params.story){
-            returnError(text:message(code:'is.ui.no.data'))
-            return
-        }
         withStory{ Story story ->
+
+            if (!params.story){
+                returnError(text:message(code:'is.ui.no.data'))
+                return
+            }
 
             def user = springSecurityService.currentUser
             if (story.backlog.preferences.archived){

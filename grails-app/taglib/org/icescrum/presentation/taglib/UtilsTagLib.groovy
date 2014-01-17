@@ -139,6 +139,7 @@ class UtilsTagLib {
         out << "${val as JSON}"
     }
 
+    //TODO REMOVE
     def onStream = { attrs ->
         if (request.noPush){
             return

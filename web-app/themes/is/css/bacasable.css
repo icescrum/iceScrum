@@ -752,8 +752,7 @@ body:fullscreen .window-fullscreen{
     border-right:none;
     background:none;
     margin-bottom:1px;
-    padding:5px;
-    padding:5px;
+    padding:5px 5px 5px 6px;
 }
 
 #right .ui-accordion .ui-accordion-header:last-of-type {
