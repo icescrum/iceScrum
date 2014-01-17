@@ -2322,11 +2322,11 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     cursor: pointer;
 }
 
-#right-story-properties {
+.right-properties {
     height:100%;
 }
 
-#right-story-properties > hr {
+.right-properties > hr {
     border: 0;
     height: 0;
     border-top: 1px dashed rgba(0, 0, 0, 0.1);
@@ -2335,7 +2335,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     margin-top: 5px;
 }
 
-#right-story-properties {
+.right-properties {
     height:100%;
 }
 
@@ -2467,7 +2467,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     min-width: 65px;
 }
 
-#right-story-properties textarea, #right-story-properties .markitup-preview, #right-story-properties .atwho-preview {
+.right-properties textarea, .right-properties .markitup-preview, .right-properties .atwho-preview {
     resize: none;
     background: #fff;
     border:1px solid #D8D8D8;
@@ -2478,22 +2478,22 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     width: 100%;
 }
 
-#right-story-properties > textarea {
+.right-properties > textarea {
     max-height:100px;
 }
 
-#right-story-properties .markItUpHeader {
+.right-properties .markItUpHeader {
     float:left;
     clear:both;
 }
 
-#right-story-properties textarea, #right-story-properties .markitup-preview, .previews .dz-file-preview, #right input[type="text"], #right-story-properties .atwho-preview {
+.right-properties textarea, .right-properties .markitup-preview, .previews .dz-file-preview, #right input[type="text"], .right-properties .atwho-preview {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-#right-story-properties .inline > div {
+.right-properties .inline > div {
     display: inline-block;
 }
 
@@ -2506,9 +2506,29 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     padding-left:5px;
 }
 
-input.important, .important .select2-chosen, #right-story-properties .atwho-preview a {
+input.important, .important .select2-chosen, .right-properties .atwho-preview a {
     font-weight:bold;
 }
+
+.right-properties *::-webkit-input-placeholder {
+    font-weight: normal;
+    font-style: italic;
+    color:#6d6d6d;}
+.right-properties *:-moz-placeholder {
+    /* FF 4-18 */
+    font-weight: normal;
+    font-style: italic;
+    color:#6d6d6d;}
+.right-properties *::-moz-placeholder {
+    /* FF 19+ */
+    font-weight: normal;
+    font-style: italic;
+    color:#6d6d6d;}
+.right-properties *:-ms-input-placeholder {
+    /* IE 10+ */
+    font-weight: normal;
+    font-style: italic;
+    color:#6d6d6d;}
 
 *[readonly] {
     cursor: not-allowed;

@@ -561,6 +561,7 @@ function attachOnDomUpdate(content){
     $('[data-at]',content).each(function(){
         var $this = $(this);
         var settings = $this.html5data('at');
+        var rawValue = $this.val() ? $this.val().trim() : settings.placeholder;
         var preview = $('<div class="atwho-preview"></div>');
         preview.css('height',$this.css('height'));
         preview.insertAfter($this);
@@ -575,12 +576,22 @@ function attachOnDomUpdate(content){
             preview.show();
         };
 
-        updateText($this.val().trim());
+        updateText(rawValue);
 
         preview.on('click', function(){
             if ($this.is(':hidden')){
                 $this.atwho(settings);
-                $this.val(preview.data('rawValue'));
+                var val = '';
+                if (preview.data('rawValue') != settings.placeholder) {
+                    val = preview.data('rawValue');
+                } else if (settings.default) {
+                    val = settings.default.replace(/\\n/g,"\n"); // hack required because templates remove regular /n
+                    $this.one('click focus', function(){
+                        $this.select();
+                        $this.off('click focus');
+                    });
+                }
+                $this.val(val);
                 $this.show();
                 preview.hide();
                 $this.focus();

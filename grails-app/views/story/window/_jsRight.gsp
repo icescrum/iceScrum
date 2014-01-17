@@ -25,7 +25,7 @@
 <g:set var="storyTypes" value="[:]"/>
 <% BundleUtils.storyTypes.collect { k, v -> storyTypes[k] = message(code: v) } %>
 
-<div id="right-story-properties" data-elemid="${story.id}">
+<div id="right-story-properties" class="right-properties" data-elemid="${story.id}">
     <input required
            name="story.name"
            type="text"
@@ -52,7 +52,7 @@
            style="width:90%"
            data-sl2ajax
            data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
-           data-sl2ajax-placeholder="${message(code:'is.story.affectVersion')}"
+           data-sl2ajax-placeholder="${message(code:'is.ui.story.noaffectversion')}"
            data-sl2ajax-url="${g.createLink(controller:'project', action: 'versions', params:[product:params.product])}"
            data-sl2ajax-allow-clear="true"
            data-sl2ajax-create-choice-on-empty="true"
@@ -81,10 +81,11 @@
          value="${story.dependsOn.name}"/>
     <hr>
     <textarea name="story.description"
-         class="selectallonce"
          data-at
          data-at-at="a"
          data-at-matcher="$.icescrum.story.storyTemplate"
+         data-at-default="${is.generateStoryTemplate(newLine: '\\n')}"
+         data-at-placeholder="${message(code: 'is.ui.story.nodescription')}"
          data-at-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
          data-at-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
          data-at-data="${g.createLink(controller:'actor', action: 'search', params:[product:params.product], absolute: true)}">${story.description}</textarea>
@@ -95,13 +96,13 @@
             data-sl2tag
             data-sl2tag-tag-link="#finder?tag="
             data-sl2tag-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
-            data-sl2tag-placeholder="${message(code:'is.backlogelement.tags')}"
+            data-sl2tag-placeholder="${message(code:'is.ui.story.notags')}"
             data-sl2tag-url="${g.createLink(controller:'finder', action: 'tag', params:[product:params.product])}"
             value="${story.tags}"/>
     <hr>
     <textarea name="story.notes"
               data-mkp
-              data-mkp-placeholder="_Aucune notes_"
+              data-mkp-placeholder="_${message(code: 'is.ui.story.nonotes')}_"
               data-mkp-height="170"
               data-mkp-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}">${story.notes}</textarea>
     <hr>

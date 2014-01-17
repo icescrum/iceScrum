@@ -431,15 +431,24 @@
                             noblank:true,
                             select:function(template) {
                                 var tmpl = $.icescrum.story.templates[template];
-                                var existing = $(tmpl.selector);
+                                var view = $(tmpl.view);
+                                var existing = $(tmpl.selector, view);
                                 if (existing.length > 0) {
                                     $.icescrum.story.remove.apply(this, [template]);
                                 }
+                                var newStory = $('#right-story-new', view);
+                                $('input', newStory).val('');
+                                newStory.hide();
                                 $.icescrum.story.add.apply(this, [template]);
                                 $("#contextual-properties.ui-accordion[data-accordion=true]").accordion("option", "active", 0);
                             },
+                            unselect:function(template) {
+                                $.icescrum.story.remove.apply(this, [template]);
+                            },
                             remove:function(tmpl) {
-                                $(tmpl.selector).remove();
+                                var view = $(tmpl.view);
+                                $(tmpl.selector, view).remove();
+                                $('#right-story-new', view).show();
                             },
                             update:function(template) {
                                 var tmpl = $.icescrum.story.templates[template];

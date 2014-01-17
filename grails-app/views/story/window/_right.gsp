@@ -25,6 +25,18 @@
      data-push
      data-push-listen='{ "object":"story","events":["select", "unselect", "update", "remove"] }'
      data-push-template="sandboxRight"></div>
+    <div id="right-story-new" class="right-properties">
+        <input required
+               name="story.name"
+               type="text"
+               class="important"
+               onkeyup="jQuery.icescrum.story.findDuplicate(this.value)"
+               onblur="jQuery.icescrum.story.findDuplicate(null)"
+               placeholder="${message(code: 'is.ui.story.noname')}"
+               data-txt
+               data-txt-change="${createLink(controller: 'story', action: 'save', params: [product: params.product])}">
+        <span class="duplicate"></span>
+    </div>
 <h3><a href="#"><g:message code="is.ui.backlogelement.activity.test"/></a></h3>
 <div></div>
 <h3><a href="#"><g:message code="is.ui.backlogelement.activity.comments"/></a></h3>
