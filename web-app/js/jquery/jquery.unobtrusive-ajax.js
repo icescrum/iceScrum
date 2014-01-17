@@ -433,17 +433,22 @@ function attachOnDomUpdate(content){
             });
 
             if (settings.change){
-                $this.on('blur', function(e){
+                $this.on('blur keyup', function(event){
                     var data = { };
                     rawValue = $this.val();
-                    if (rawValue != preview.data('rawValue')){
-                        data[$this.attr('name')] = rawValue;
-                        $this.attr('readonly','readonly');
-                        $.post(settings.change, data, function(data){
-                            updateText(data.notes);
-                        });
-                    } else {
+                    if (event.type == 'keyup' && event.which == 27){
                         updateText(null);
+                    }
+                    if (event.type != 'keyup'){
+                        if (rawValue != preview.data('rawValue')){
+                            data[$this.attr('name')] = rawValue;
+                            $this.attr('readonly','readonly');
+                            $.post(settings.change, data, function(data){
+                                updateText(data.notes);
+                            });
+                        } else {
+                            updateText(null);
+                        }
                     }
                 });
             }
@@ -527,22 +532,83 @@ function attachOnDomUpdate(content){
             $this.on('focus', function(event){
                     $this.data('rawValue', $this.val());
                 })
-                .on('blur keypress', function (event) {
+                .on('blur keyup', function (event) {
                     var val = $this.val();
-                    if ((val == '' && $this.attr('required')) || (event.type == 'keypress' && event.which != 13)) {
+                    if (event.type == 'keyup' && event.which == 27){
+                        $this.val($this.data('rawValue'));
+                        $this.blur();
                         return;
                     }
-                    var data = {};
-                    var name = $this.attr('name');
-                    data[name] = val;
-                    if($this.data('rawValue') != data[name]){
-                        $.post(settings.change, data, function(data) {
-                            var eventName = 'update_' + name.split('.')[0];
-                            $.event.trigger(eventName, data);
-                        }, 'json');
+                    if (event.type != 'keyup' || (event.type == 'keyup' && event.which == 13)){
+                        if ((val == '' && $this.attr('required')) || (event.type == 'keypress' && event.which != 13)) {
+                            return;
+                        }
+                        var data = {};
+                        var name = $this.attr('name');
+                        data[name] = val;
+                        if($this.data('rawValue') != data[name]){
+                            $.post(settings.change, data, function(data) {
+                                var eventName = 'update_' + name.split('.')[0];
+                                $.event.trigger(eventName, data);
+                            }, 'json');
+                        }
                     }
                 });
         }
+    });
+
+    $('[data-at]',content).each(function(){
+        var $this = $(this);
+        var settings = $this.html5data('at');
+        var preview = $('<div class="atwho-preview"></div>');
+        preview.css('height',$this.css('height'));
+        preview.insertAfter($this);
+
+        var updateText = function(rawValue){
+            if (rawValue){
+                preview.data('rawValue', rawValue);
+                preview.html(getFunction(settings.matcher, ["val"]).apply(this, [rawValue]));
+                $this.removeAttr('readonly');
+            }
+            $this.hide();
+            preview.show();
+        };
+
+        updateText($this.val().trim());
+
+        preview.on('click', function(){
+            if ($this.is(':hidden')){
+                $this.atwho(settings);
+                $this.val(preview.data('rawValue'));
+                $this.show();
+                preview.hide();
+                $this.focus();
+            }
+        });
+
+        if (settings.change){
+            $this.on('blur keyup', function(event){
+                if (event.type == 'keyup' && event.which == 27){
+                    updateText(null);
+                } else if (event.type != 'keyup'){
+                    if ($this.val() != preview.data('rawValue')){
+                        var data = { };
+                        data[$this.attr('name')] = $this.val();
+                        $this.attr('readonly','readonly');
+                        $.post(settings.change, data, function(data){
+                            updateText(data.description);
+                        });
+                    } else {
+                        updateText(null);
+                    }
+                }
+            });
+        }
+    });
+
+    $('textarea.selectallonce').one('click focus', function(){
+        $(this).select();
+        $(this).off('click focus');
     });
 
     $('input[data-autocompletable=true]', content).each(function() {
@@ -626,10 +692,6 @@ function attachOnDomUpdate(content){
             }
             field.die().liveEditable(editableURL, options);
         });
-    });
-
-    $('textarea.selectallonce',content).one('click', function() {
-        $(this).select();
     });
 
     $('a[data-shortcut]', content).each(function(){
@@ -734,11 +796,6 @@ function attachOnDomUpdate(content){
         elem.bind("manualResize", function(){
             resize();
         });
-    });
-
-    $('textarea[data-atable="true"]',content).each(function(){
-        var elem = $(this);
-        elem.atwho(elem.data());
     });
 
     $.event.trigger('domUpdate.icescrum',content);

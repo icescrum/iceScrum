@@ -226,11 +226,10 @@
     <![CDATA[
     ?**
     var affectVersion = this.affectVersion ? this.affectVersion : '';
-    var rawDescription = this.description ? this.description : '';
-    var description =  jQuery.icescrum.story.storyTemplate(rawDescription.formatLine());
     var tags = (this.tags && this.tags.length > 0) ? this.tags.join(',') : '';
     var featureId = this.feature ? this.feature.id : '';
     var notes = this.notes ? this.notes : '';
+    var description = this.description ? this.description : '';
     var featureName = this.feature ? this.feature.name : '';
     var dependsOnId = this.dependsOn ? this.dependsOn.id : '';
     var dependsOnName = this.dependsOn ? this.dependsOn.name + ' (' + this.dependsOn.uid + ')' : '';
@@ -244,7 +243,6 @@
             feature: [id:'?**=featureId**?', 'name':'?**=featureName**?'],
             dependsOn: [id:'?**=dependsOnId**?', 'name':'?**=dependsOnName**?'],
             rawNotes: '?**=rawNotes**?',
-            rawDescription:'?**=rawDescription**?',
             description:'?**=description**?',
             type: '?**=this.type**?']}"/>
     <g:render template="/story/rightStory" model="[story: storyExtended, user: user, template: true]"/>

@@ -888,8 +888,9 @@
                         this.value == 2 ? $('#storyaffectVersion-field-input').show() : $('#storyaffectVersion-field-input').hide();
                     },
 
-                    storyTemplate:function(description) {
-                        return description ? description.replace(/A\[.+?-(.*?)\]/g, "$1") : "&nbsp;";
+                    storyTemplate:function(val) {
+                        val = val.formatLine();
+                        return val ? val.replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
                     },
 
                     findDuplicate:function(term) {
