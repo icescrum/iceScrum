@@ -30,12 +30,9 @@
            name="story.name"
            type="text"
            class="important"
-           onkeyup="jQuery.icescrum.story.findDuplicate(this.value)"
-           onblur="jQuery.icescrum.story.findDuplicate(null)"
            data-txt
            data-txt-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"
            value="${story.name}">
-    <span class="duplicate"></span>
     <hr>
     <div class="inline">
         <select name="story.type"

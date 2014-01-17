@@ -22,23 +22,11 @@
 --}%
 <div id="view-properties" data-accordion="true" data-collapsible="true">
     <h3><a href="#"><g:message code="is.ui.sandbox"/></a></h3>
-<div>
-    <span id="stories-sandbox-size">${storyCount}</span> stories
+    <div>
+        <span id="stories-sandbox-size">${storyCount}</span> stories
+    </div>
 </div>
-</div>
-<div id="right-properties" data-accordion="true" data-height-style="fill">
-    <h3><a href="#">${message(code: "is.story")}</a></h3>
-    <div id="right-story-container"
-         data-push
-         data-push-listen='{ "object":"story","events":["select", "unselect", "update", "remove"] }'
-         data-push-template="sandboxRight"></div>
-    <h3><a href="#"><g:message code="is.ui.backlogelement.activity.test"/></a></h3>
-    <div></div>
-    <h3><a href="#"><g:message code="is.ui.backlogelement.activity.comments"/></a></h3>
-    <div></div>
-    <h3><a href="#"><g:message code="is.ui.backlogelement.activity.summary"/></a></h3>
-    <div></div>
-</div>
+<g:render template="/story/window/right"/>
 
 
 <jq:jquery>

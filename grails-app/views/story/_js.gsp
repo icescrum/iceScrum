@@ -245,7 +245,7 @@
             rawNotes: '?**=rawNotes**?',
             description:'?**=description**?',
             type: '?**=this.type**?']}"/>
-    <g:render template="/story/rightStory" model="[story: storyExtended, user: user, template: true]"/>
+    <g:render template="/story/window/jsRight" model="[story: storyExtended, user: user, template: true]"/>
     ]]>
 </template>
 
