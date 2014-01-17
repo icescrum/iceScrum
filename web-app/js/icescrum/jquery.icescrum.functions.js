@@ -448,7 +448,7 @@
                                     $.icescrum.story.remove.apply(this, [template]);
                                 }
                                 $.icescrum.story.add.apply(this, [template]);
-                                $("#right-properties.ui-accordion[data-accordion=true]").accordion("option", "active", 0);
+                                $("#contextual-properties.ui-accordion[data-accordion=true]").accordion("option", "active", 0);
                             },
                             remove:function(tmpl) {
                                 $(tmpl.selector).remove();

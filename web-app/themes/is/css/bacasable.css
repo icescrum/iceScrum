@@ -741,7 +741,7 @@ body:fullscreen .window-fullscreen{
     background-image:linear-gradient(#e4e4e4, #d8d8d8);
 }
 
-#right-properties.ui-accordion .ui-accordion-header:first-of-type {
+#contextual-properties.ui-accordion .ui-accordion-header:first-of-type {
     border-top-width:1px;
 }
 

@@ -241,12 +241,12 @@ function getFunction(code, argNames) {
     });
 
     $(document).on('resizable.overWidth', '#right', function(){
-        $('#right-properties').accordion('destroy');
+        $('#contextual-properties').accordion('destroy');
         $('#right').addClass('desktop-view');
     });
     $(document).on('resizable.notOverWidth', '#right', function(){
         $('#right').removeClass('desktop-view');
-        manageAccordion($('#right-properties'));
+        manageAccordion($('#contextual-properties'));
     });
 
     $(document).on('keydown', "div.editable", function(evt) {

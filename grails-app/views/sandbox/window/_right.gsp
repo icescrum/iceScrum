@@ -20,35 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div id="view-properties" data-accordion="true" data-collapsible="true">
-    <h3><a href="#"><g:message code="is.ui.sandbox"/></a></h3>
-    <div>
-        <span id="stories-sandbox-size">${storyCount}</span> stories
-    </div>
+<div>
+    <span id="stories-sandbox-size">${storyCount}</span> stories
 </div>
-<g:render template="/story/window/right"/>
-
-
-<jq:jquery>
-var selectStory = function (event, ui) {
-    var id = $(ui.selected).data('elemid');
-    $.ajax({
-        url: '${createLink(controller:'sandbox',action:'index',params:[product: params.product])}' + '/' + id,
-        success: function (data) {
-            $.event.trigger('select_story', data);
-        }
-    });
-};
-
-var unselectStory = function (event, ui) {
-    // The timeout prevents ugly flickering
-    $.doTimeout(200, function () {
-        if ($('.story.ui-selected').length == 0) {
-            $.event.trigger('unselect_story');
-        }
-    });
-};
-$('#window-content-sandbox').off('selectableselected selectableunselected')
-    .on('selectableselected', selectStory)
-    .on('selectableunselected', unselectStory);
-</jq:jquery>
