@@ -121,53 +121,6 @@
         }
     });
 
-    $.editable.addInputType('autocompletable', {
-        element : function(settings, original) {
-            var input = $('<input data-autocompletable="true"/>');
-            if (settings.width  != 'none') { input.width(settings.width);  }
-            if (settings.height != 'none') { input.height(settings.height); }
-            input.attr('autocomplete','off');
-            $(this).append(input);
-            return(input);
-        }, plugin: function(settings, original) {
-            var form = this;
-            var input = $('input', form);
-            input.data($(original).data());
-            attachOnDomUpdate(form);
-        }
-    });
-
-    $.editable.addInputType('atarea', {
-        element : function(settings, original) {
-            settings.onblur = 'ignore';
-            var textarea = $('<textarea data-atable="true"/>');
-            if (settings.rows) {
-                textarea.attr('rows', settings.rows);
-            } else if (settings.height != "none") {
-                textarea.height(settings.height);
-            }
-            if (settings.cols) {
-                textarea.attr('cols', settings.cols);
-            } else if (settings.width != "none") {
-                textarea.width(settings.width);
-            }
-            $(this).append(textarea);
-            return(textarea);
-        }, plugin: function(settings, original) {
-            var form = this;
-            var textarea = $('textarea', form);
-            textarea.blur(function(e) {
-                if (!$('.atwho-view-ul').is(':visible')) {
-                    /* prevent double submit if submit was clicked */
-                    t = setTimeout(function() {
-                        form.submit();
-                    }, 200);
-                }
-            });
-            textarea.data($(original).data());
-            attachOnDomUpdate(form);
-        }
-    });
 })($);
 
 var textHelper = {
@@ -233,9 +186,7 @@ var richAreaHelper = {
 
 $.editable.customTypeHelper = {
     text: textHelper,
-    autocompletable: textHelper,
     selectui: selectUiHelper,
     textarea: textAreaHelper,
-    atarea: textAreaHelper,
     richarea: richAreaHelper
 };

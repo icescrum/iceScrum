@@ -41,7 +41,7 @@
         <select name="story.type"
                 style="width:33%;"
                 class="important"
-                onchange="jQuery.icescrum.story.displayOptions(this)"
+                onchange="jQuery.icescrum.story.typeChanged(this)"
                 data-sl2
                 data-sl2-icon-class="ico-story-"
                 data-sl2-change="${createLink(controller: 'story', action: 'update', params: [product: params.product, id:story.id])}"

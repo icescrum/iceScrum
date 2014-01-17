@@ -39,7 +39,6 @@
     %{-- Type --}%
         <is:fieldSelect for="story.type" label="is.story.type">
             <is:select
-                    data-change="jQuery.icescrum.story.displayOptions"
                     width="120"
                     from="${typesLabels}"
                     keys="${typesKeys}"

@@ -224,7 +224,7 @@ class StoryController {
 
             bindData(story, this.params, [include:['name','description','notes','type','affectVersion']], "story")
 
-            def featureId = params.remove('feature.id') ?: params.story.remove('feature.id')
+            def featureId = params.story.remove('feature.id')
             if (featureId && story.feature?.id != featureId.toLong()) {
                 def feature = Feature.getInProduct(params.long('product'),featureId.toLong()).list()
                 if (!feature)
@@ -234,7 +234,7 @@ class StoryController {
                 storyService.dissociateFeature(story)
             }
 
-            def dependsOnId = params.remove('dependsOn.id') ?: params.story.remove('dependsOn.id')
+            def dependsOnId = params.story.remove('dependsOn.id')
             if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
                 def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
                 if (!dependsOn)
@@ -251,11 +251,9 @@ class StoryController {
             if (params.story.rank && story.rank != params.story.rank.toInteger()) {
                 Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null
                 storyService.rank(story, rank)
-                if (params.table && params.boolean('table'))
-                    skipUpdate = true
             }
 
-            def sprintId = params.remove('sprint.id') ?: params.story.remove('sprint.id')
+            def sprintId = params.story.remove('sprint.id')
             if (sprintId && story.parentSprint?.id != sprintId.toLong()) {
                 def sprint = (Sprint)Sprint.getInProduct(params.long('product'),sprintId.toLong()).list()
                 if (!sprint){

@@ -506,6 +506,7 @@ function attachOnDomUpdate(content){
             }
         }, settings);
         if (settings.createChoiceOnEmpty) {
+            settings.minimumResultsForSearch = 0;
             settings.createSearchChoice = function (term) {
                 return {id:term, text:term};
             };

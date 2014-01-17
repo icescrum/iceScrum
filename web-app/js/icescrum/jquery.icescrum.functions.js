@@ -735,7 +735,11 @@
                         if (!this.dependsOn) {
                             newObject.find('.dependsOn').remove();
                         }
-                        newObject.find('[name="affectVersion"]').toggle(this.type == $.icescrum.story.TYPE_DEFECT);
+                        if (this.type != $.icescrum.story.TYPE_DEFECT) {
+                            var affectVersionInput = newObject.find('[name="story.affectVersion"]');
+                            affectVersionInput.hide();
+                            affectVersionInput.next('hr').hide();
+                        }
                         if(!this.acceptanceTests || this.acceptanceTests.length <= 0) {
                             newObject.find('.story-icon-acceptance-test').hide();
                         } else {
@@ -873,9 +877,9 @@
                         }
                     },
 
-                    displayOptions:function(event){
-                        var storyDescription = $('#storydescription');
-                        var defaultDescription = storyDescription.data('default');
+                    typeChanged:function(select){
+/*                      var defaultDescription = $().data('default');
+                        var storyDescription = $();
                         if (this.value == 0) {
                             if (storyDescription.val() == '') {
                                 storyDescription.val(defaultDescription);
@@ -884,8 +888,15 @@
                             if (storyDescription.val() == defaultDescription) {
                                 storyDescription.val('');
                             }
+                        }*/
+                        var affectVersionInput = $('#right-story-properties').find('[name="story.affectVersion"]');
+                        if (select.value == 2) {
+                            affectVersionInput.select2("container").show();
+                            affectVersionInput.next('hr').show();
+                        } else {
+                            affectVersionInput.select2("container").hide();
+                            affectVersionInput.next('hr').hide();
                         }
-                        this.value == 2 ? $('#storyaffectVersion-field-input').show() : $('#storyaffectVersion-field-input').hide();
                     },
 
                     storyTemplate:function(val) {
