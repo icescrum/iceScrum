@@ -149,7 +149,7 @@ class FeatureController {
 
         withFormat{
             html {
-                def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
+                def template = params.type == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
 
                 def maxRank = Feature.countByBacklog(currentProduct)
                 //Pour la vue tableau

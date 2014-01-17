@@ -403,23 +403,14 @@
                     termDuplicate:null,
                     templates:{
                         sandbox:{
-                            selector:function() {
-                                return $.icescrum.getDefaultView() == 'postitsView' ? 'div.postit-story' : 'tr.table-line';
-                            },
-                            id:function() {
-                                return $.icescrum.getDefaultView() == 'postitsView' ? 'postit-story-sandbox-tmpl' : 'table-row-story-sandbox-tmpl';
-                            },
-                            view:function() {
-                                return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-sandbox' : '#story-table';
-                            },
+                            selector:'div.postit-story',
+                            id:'postit-story-sandbox-tmpl',
+                            view:'#backlog-layout-window-sandbox',
                             remove:function(tmpl) {
-                                var story = $.icescrum.getDefaultView() == 'postitsView' ? $(tmpl.view+' .postit-story[data-elemid=' + this.id + ']') : $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
+                                var story =  $(tmpl.view+' .postit-story[data-elemid=' + this.id + ']');
                                 this.rank = story.index() + 1;
                                 this.selected = story.hasClass('ui-selected');
                                 story.remove();
-                                if ($.icescrum.getDefaultView() == 'tableView') {
-                                    $(tmpl.view).trigger("update");
-                                }
                                 $('#stories-sandbox-size').html($(tmpl.view+' .postit-story, '+tmpl.view+' .table-line').size());
                             },
                             constraintTmpl:function() {
@@ -429,9 +420,6 @@
                             afterTmpl:function(tmpl, container, newObject) {
                                 if (this.rank){
                                     $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                                }
-                                if ($.icescrum.getDefaultView() == 'tableView') {
-                                    $('#story-table').trigger("update");
                                 }
                                 $('#stories-sandbox-size').html($(tmpl.view+' .postit-story, '+tmpl.view+' .table-line').size());
                             }

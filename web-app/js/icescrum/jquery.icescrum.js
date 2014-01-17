@@ -70,7 +70,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             });
 
             $.fn.editable.defaults.placeholder = "&nbsp;";
-            $.cookie.defaults = { path: '/' };
 
             if (!window.console) window.console = {};
             if (!window.console.log) window.console.log = function () { };
@@ -113,7 +112,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     console.log("[notifications] got permission");
                     this.o.notifications = true;
                 }
-                else if(window.webkitNotifications.checkPermission() != 2 && $.cookie('hide_notifications') != "true"){
+                else if(window.webkitNotifications.checkPermission() != 2 && !localStorage['hide_notifications']){
                     $("#notifications").show();
                     $("#accept_notifications").click(function(){
                         window.webkitNotifications.requestPermission(function(){
@@ -121,12 +120,12 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                 console.log("[notifications] got permission");
                                 $.icescrum.o.notifications = true;
                             }
-                            $.cookie('hide_notifications', true, { expires: 15 });
+                            localStorage['hide_notifications'] = true;
                             $("#notifications").remove();
                         });
                     });
                     $("#hide_notifications").click(function(){
-                        $.cookie('hide_notifications', true, { expires: 15 });
+                        localStorage['hide_notifications'] = true;
                         $("#notifications").remove();
                     });
                 }else{
@@ -314,7 +313,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                                     .html(data);
                             $('.save-chart', $(container)).remove();
                             if (typeof save != 'undefined' && save) {
-                                $.cookie(container + $.icescrum.product.id, url);
+                                localStorage[container + $.icescrum.product.id] = url;
                             }
                             var test = /\/(.*)/;
                             var match = test.exec(url);
@@ -339,7 +338,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
         //really used
         displayChartFromCookie:function(container, url, save) {
-            var saveChartType = $.cookie(container + $.icescrum.product.id);
+            var saveChartType = localStorage[container + $.icescrum.product.id];
             if (saveChartType) {
                 this.displayChart(container, saveChartType, false);
             } else {
@@ -461,11 +460,11 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         showUpgrade:function(){
             if (this.o.showUpgrade){
                 var upgrade = $('#upgrade');
-                if (upgrade.length && $.cookie('hide_upgrade') != "true"){
+                if (upgrade.length && !localStorage['hide_upgrade']){
                     upgrade.show();
                     upgrade.find('.close').click(function(){
                         upgrade.remove();
-                        $.cookie('hide_upgrade', true, { expires: 30 });
+                        localStorage['hide_upgrade'] = true;
                     });
                 }else if(upgrade.length){
                     upgrade.remove();

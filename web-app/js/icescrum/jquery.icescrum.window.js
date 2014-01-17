@@ -25,19 +25,6 @@
                     this.o.fullscreen = false;
                 },
 
-                setDefaultView:function(xhr, element, view){
-                    view = view ? view : $(element).data("defaultView");
-                    $.cookie('view-'+ ($.icescrum.product.id ? $.icescrum.product.id : '-no-product'), view);
-                    if (element){
-                        $('#menu-display-list').find('.content').html('<span class="ico"></span>'+ $(element).text());
-                    }
-                },
-
-                getDefaultView:function(){
-                    var view = $.cookie('view-'+ ($.icescrum.product.id ? $.icescrum.product.id : '-no-product'));
-                    return view ? view : 'postitsView';
-                },
-
                 openWindow:function(id, callback, async) {
                     var targetWindow = id;
                     if(targetWindow.indexOf('/') >= 0) {
@@ -57,11 +44,10 @@
                             this.addToWidgetBar(this.o.currentOpenedWindow.data('id'));
                         }
                     }
-                    var view = this.getDefaultView();
                     $.ajax({
                                 type:'GET',
                                 async: async,
-                                url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? (id.indexOf('?') >= 0 ? '&' : '?') + 'viewType='+view : '' ),
+                                url:this.o.urlOpenWindow + '/' + id,
                                 beforeSend:function(){
                                     if ($('#window-loading').size() == 0){
                                         var loading = $('<div/>').attr('id','window-loading').css('opacity',0).css('z-index',998);
@@ -89,10 +75,6 @@
                                         $(content).addClass('window-fullscreen');
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
-                                        var viewSelector = $('#menu-display-list');
-                                        if (viewSelector.length != -1){
-                                            viewSelector.find('.content').html('<span class="ico"></span>' + viewSelector.find('a[data-default-view='+view+']').text());
-                                        }
                                     }
                                     $(content).isWindow($(content).data());
                                     attachOnDomUpdate($(content));

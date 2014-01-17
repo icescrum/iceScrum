@@ -30,31 +30,27 @@
         style="display:${stories ? 'block' : 'none'};"
         id="window-${controllerName}"
         selectable="[filter:'div.postit-story',
-                    cancel:'.postit-label, a',
-                    selected:'jQuery.icescrum.dblclickSelectable(ui,300,$.icescrum.displayQuicklook)']"
+                cancel:'.postit-label, a',
+                selected:'jQuery.icescrum.dblclickSelectable(ui,300,$.icescrum.displayQuicklook)']"
         droppable='[selector:"div.postit",
-                  hoverClass: "ui-selected",
-                  drop: remoteFunction(controller:"story",
-                                       action:"associateFeature",
-                                       onSuccess:"jQuery.event.trigger(\"update_story\",data)",
-                                       params:"\"product=${params.product}&feature.id=\"+ui.draggable.data(\"elemid\")+\"&id=\"+jQuery(this).data(\"elemid\")"
-                                       ),
-                  accept: ".postit-row-feature"]'
+                hoverClass: "ui-selected",
+                drop: remoteFunction(controller:"story",
+                        action:"associateFeature",
+                        onSuccess:"jQuery.event.trigger(\"update_story\",data)",
+                        params:"\"product=${params.product}&feature.id=\"+ui.draggable.data(\"elemid\")+\"&id=\"+jQuery(this).data(\"elemid\")"
+                ),
+                accept: ".postit-row-feature"]'
         dblclickable='[rendered:!productOwner,selector:".postit",callback:"\$.icescrum.displayQuicklook(obj);"]'
         value="${stories}"
         var="story">
-        <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${sprint ? sprint.id : ''}">
-            <g:render template="/story/postit" model="[story:story,user:user, sprint:sprint]"/>
-        </is:cache>
+    <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${sprint ? sprint.id : ''}">
+        <g:render template="/story/postit" model="[story:story,user:user, sprint:sprint]"/>
+    </is:cache>
 </is:backlogElementLayout>
 
 <g:render template="/sandbox/window/blank" model="[show:stories ? false : true]"/>
 
 <is:dropImport id="${controllerName}" description="is.ui.sandbox.drop.import" action="dropImport" success="jQuery(document.body).append(data.dialog);attachOnDomUpdate(jQuery('.ui-dialog'));"/>
-
-<jq:jquery>
-    jQuery('#window-title-bar-${controllerName} .content .details').html(' (<span id="stories-sandbox-size">${stories?.size()}</span>)');
-</jq:jquery>
 
 <is:shortcut key="space"
              callback="if(jQuery('#dialog').dialog('isOpen') == true){jQuery('#dialog').dialog('close'); return false;}jQuery.icescrum.dblclickSelectable(null,null,\$.icescrum.displayQuicklook,true);"

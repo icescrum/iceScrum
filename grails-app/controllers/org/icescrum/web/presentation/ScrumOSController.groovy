@@ -126,7 +126,6 @@ class ScrumOSController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window')]] as JSON)
             return
         }
-        params.viewType = params.viewType ?: 'postitsView'
 
         def uiRequested = params.window
         def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
@@ -174,7 +173,7 @@ class ScrumOSController {
                         help: message(code: uiDefinition.window?.help),
                         shortcuts: uiDefinition.shortcuts,
                         toolbar: uiDefinition.window?.toolbar,
-                        hasRight: uiDefinition.window?.right,
+                        right: uiDefinition.window?.right,
                         printable: uiDefinition.window?.printable,
                         fullScreen: uiDefinition.window?.fullScreen,
                         widgetable: uiDefinition.widget ? true : false,
@@ -233,6 +232,7 @@ class ScrumOSController {
         }
     }
 
+    //TODO replace cache when dev finish
     //@Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
     def templates = {
         def currentSprint = null

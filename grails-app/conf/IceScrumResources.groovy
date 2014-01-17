@@ -119,7 +119,6 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.resize.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.atmosphere.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.jqote2.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.cookie.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.input.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.tablesorter.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.table.js'], bundle: 'icescrum'

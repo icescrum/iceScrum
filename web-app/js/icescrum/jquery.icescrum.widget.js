@@ -44,13 +44,13 @@
                 },
 
                 saveWidgetsList:function(widgetsList){
-                    $.cookie('widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous') , $.unique(widgetsList));
+                    var key = 'widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous');
+                    localStorage[key] = JSON.stringify($.unique(widgetsList));
                 },
 
                 getWidgetsList:function(){
-                    var list = $.cookie('widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous'));
-                    list = list ? list.split(',') : [];
-                    return $.unique(list);
+                    var key = 'widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous');
+                    return localStorage[key] ? JSON.parse(localStorage[key]) : [];
                 },
 
                 removeFromWidgetsList:function(id){
@@ -99,7 +99,7 @@
 
             var content = $("#widget-content-" + id, obj);
             var dif = obj.height() - content.height();
-            var savedHeight = $.icescrum.product.id ? parseInt($.cookie('widget-'+id+$.icescrum.product.id)) : null;
+            var savedHeight = $.icescrum.product.id ? parseInt(localStorage['widget-'+id+$.icescrum.product.id]) : null;
 
             if ($('.box-blank', content).is(':visible')){
                 content.height(opts.resizableOptions.minHeight);
@@ -122,7 +122,7 @@
                 content.height(ui.size.height - dif);
             };
             opts.resizableOptions.stop = function(event, ui){
-                $.cookie('widget-'+id+$.icescrum.product.id,ui.size.height - dif);
+                localStorage['widget-'+id+$.icescrum.product.id] = ui.size.height - dif;
             };
 
             obj.resizable(opts.resizableOptions);

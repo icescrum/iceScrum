@@ -61,38 +61,9 @@ class SandboxController {
     def list = {
         def currentProduct = Product.load(params.product)
         def stories = Story.searchByTermOrTagInSandbox(currentProduct.id, params.term).sort { Story s1, Story s2 -> s2.suggestedDate <=> s1.suggestedDate }
-        def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
-        def typeSelect = BundleUtils.storyTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-
-        def featureSelect = "'':'${message(code: 'is.ui.sandbox.manage.chooseFeature')}'"
-        if (currentProduct.features) {
-            featureSelect += ','
-            featureSelect += currentProduct.features.collect {v -> "'$v.id':'${v.name.encodeAsHTML().encodeAsJavaScript()}'"}.join(',')
-        }
-
         def sprint = Sprint.findCurrentSprint(currentProduct.id).list()
-        def user = null
-        if (springSecurityService.isLoggedIn())
-            user = springSecurityService.currentUser
-        render(template: template, model: [stories: stories, typeSelect: typeSelect, featureSelect: featureSelect, sprint: sprint, user: user])
-    }
-
-    @Secured('isAuthenticated() and !archivedProduct()')
-    def add = {
-        def currentProduct = Product.get(params.product)
-
-        render(template: '/story/window/manage', model: [
-                referrer: controllerName,
-                typesLabels: BundleUtils.storyTypes.values().collect {v -> message(code: v)},
-                typesKeys: BundleUtils.storyTypes.keySet().asList(),
-                featureSelect: currentProduct.features.asList(),
-                storiesSelect: Story.findAllByStateGreaterThanEqualsAndBacklog(Story.STATE_SUGGESTED, currentProduct),
-                story: params.story
-        ])
-    }
-
-    def editStory = {
-        forward(action: 'edit', controller: 'story', params: [referrer: controllerName, id: params.id, product: params.product])
+        def user = springSecurityService.isLoggedIn() ? springSecurityService.currentUser : null
+        render(template: "${params.type ?: 'window'}/view", model: [stories: stories, sprint: sprint, user: user])
     }
 
     /**

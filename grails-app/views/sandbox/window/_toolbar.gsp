@@ -72,26 +72,6 @@
     </li>
 </g:if>
 
-%{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
-    <ul>
-        <li class="first">
-            <a href="${createLink(action:'list',controller:controllerName,params:[product:params.product])}"
-               data-default-view="postitsView"
-               data-ajax-begin="$.icescrum.setDefaultView"
-               data-ajax-update="#window-content-${controllerName}"
-               data-ajax="true">${message(code:'is.view.postitsView')}</a>
-        </li>
-        <li class="last">
-            <a href="${createLink(action:'list',controller:controllerName,params:[product:params.product, viewType:'tableView'])}"
-               data-default-view="tableView"
-               data-ajax-begin="$.icescrum.setDefaultView"
-               data-ajax-update="#window-content-${controllerName}"
-               data-ajax="true">${message(code:'is.view.tableView')}</a>
-        </li>
-    </ul>
-</is:panelButton>
-
 %{--Export--}%
 <is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}">
     <ul>

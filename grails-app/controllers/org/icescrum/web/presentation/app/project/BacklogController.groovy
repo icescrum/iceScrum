@@ -41,8 +41,8 @@ class BacklogController {
         def currentProduct = Product.get(params.product)
 
         def stories = Story.searchByTermOrTagInBacklog(currentProduct, params.term).sort { Story story -> story.rank }
-        stories = params.windowType == 'widget' ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
-        def template = params.windowType == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
+        stories = params.type == 'widget' ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
+        def template = params.type == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
 
         def typeSelect = BundleUtils.storyTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
         def rankSelect = ''

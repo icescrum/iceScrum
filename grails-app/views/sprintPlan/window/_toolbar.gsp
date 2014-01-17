@@ -279,15 +279,6 @@
         </ul>
     </is:panelButton>
 
-    <is:reportPanel
-            action="printPostits"
-            id="all"
-            formats="[
-                        ['PDF', message(code:'is.report.format.pdf')]
-                    ]"
-            text="${message(code: 'is.ui.sprintPlan.toolbar.print.stories')}"
-            params="id=${sprint.id}"/>
-
 </g:if>
 
 <jq:jquery>
