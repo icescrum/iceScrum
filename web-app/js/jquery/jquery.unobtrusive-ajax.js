@@ -756,18 +756,19 @@ function attachOnDomUpdate(content){
             $this.data('ui-droppable-init', true);
         }
         var settings = $this.html5data('ui-droppable');
+        $.each(['activate','create','deactivate','drop','out','over'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
         //to prevent unused actions & loose perf
         var $accept = $(settings.accept);
-        $accept.one('hover.data', function() {
-            $accept.off('hover.data');
-            $.each(['activate','create','deactivate','drop','out','over'], function(){
-                if (settings[this]){
-                    settings[this] = getFunction(settings[this], ["event","ui"]);
-                }
-            });
-            (settings.selector? $(settings.selector) : $this).each(function() {
-                $(this).droppable(settings);
-            });
+        $accept.one('hover', function() {
+            var $droppable = settings.selector ? $(settings.selector) : $this;
+            if (!$droppable.data('init')){
+                $droppable.droppable(settings);
+                !$droppable.data('init', true);
+            }
         });
     });
 
@@ -780,13 +781,18 @@ function attachOnDomUpdate(content){
         }
         var settings = $this.html5data('ui-draggable');
         //to prevent unused actions & loose perf
-        (settings.selector? $this.find(settings.selector) : $this).one('hover', function() {
-            $.each(['create','drag','start','stop'], function(){
-                if (settings[this]){
-                    settings[this] = getFunction(settings[this], ["event","ui"]);
-                }
-            });
-            $(this).draggable(settings);
+        var draggable = settings.selector ? settings.selector : $this;
+        $.each(['create','drag','start','stop'], function(){
+            if (settings[this] && !_.isFunction(settings[this])){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        $(document).on('hover', draggable, function() {
+            var $this = $(this);
+            if (!$this.data('init')){
+                $this.draggable(settings);
+                !$this.data('init', true);
+            }
         });
     });
 

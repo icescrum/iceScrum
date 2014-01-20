@@ -593,6 +593,19 @@
                     }
                 }
             }
+        },
+
+        onStartDragWidget:function(){
+            $(this).hide()
+        },
+
+        onStopDragWidget:function(){
+            var $this = $(this);
+            if ($this.attr('remove') == 'true') {
+                $this.remove();
+            } else {
+                $this.show();
+            }
         }
     });
 

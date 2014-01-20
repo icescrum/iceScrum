@@ -29,6 +29,8 @@
     data-ui-draggable-helper="clone"
     data-ui-draggable-connect-to-sortable='.backlog.connectableToWidgetBacklog'
     data-ui-draggable-append-to="body"
+    data-ui-draggable-start="$.icescrum.onStartDragWidget"
+    data-ui-draggable-stop="$.icescrum.onStopDragWidget"
     data-binding
     data-binding-type="story"
     data-binding-selector="li.postit-row-story"
