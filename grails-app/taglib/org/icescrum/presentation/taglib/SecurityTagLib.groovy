@@ -31,8 +31,6 @@ class SecurityTagLib {
   static namespace = 'is'
 
   def securityService
-  def aclUtilService
-  static final userAuthorities = [new GrantedAuthorityImpl(Authority.ROLE_USER)]
 
   def displayRole = {attrs ->
     def res = []
@@ -41,7 +39,7 @@ class SecurityTagLib {
       }
       else
       {
-        if (securityService.archivedProduct(params.product.decodeProductKey())){
+        if (securityService.archivedProduct(attrs.product)){
             res << message(code:'is.product.archived')
         }else{
             if (request.owner) {

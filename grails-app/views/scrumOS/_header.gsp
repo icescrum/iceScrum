@@ -216,7 +216,7 @@
                         <g:if test="${product}">
                             <div id="user-tooltip-role">
                                 ${message(code:"is.ui.details.role.name")}
-                                <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole /> </strong></a>
+                                <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole product="${product.id}"/> </strong></a>
                             </div>
                         </g:if>
                         <div id="user-tooltip-buttons">

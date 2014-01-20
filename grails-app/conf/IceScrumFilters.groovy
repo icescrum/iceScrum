@@ -35,16 +35,32 @@ class IceScrumFilters {
     def userAgentIdentService
 
     def filters = {
-        pkey(controller: 'scrumOS', action: 'index') {
+
+        permissions(controller: '*', action: '*') {
             before = {
+                if (!request.getRequestURI().contains('/ws/') && controllerName != "errors" && actionName != "browserNotSupported"){
+                    if(userAgentIdentService.isMsie(ComparisonType.LOWER, "9")){
+                        if (!request.getHeader('user-agent').contains('chromeframe')){
+                            redirect(controller:'errors',action:'browserNotSupported')
+                            return false
+                        }
+                    }
+                }
                 if (params.product) {
                     params.product = params.product.decodeProductKey()
                     if (!params.product) {
-                        redirect(controller: 'scrumOS', action: 'index')
-                        return
+                        if (controllerName == 'project' && actionName == 'feed') {
+                            render(status: 404)
+                            return
+                        } else {
+                            //TODO what happens if we already are in index action?
+                            redirect(controller: 'scrumOS', action: 'index')
+                            return
+                        }
                     }
-
                 }
+                securityService.filterRequest()
+                return
             }
         }
 
@@ -52,8 +68,8 @@ class IceScrumFilters {
             before = {
                 def webservices = false
                 if (params.product) {
-                    params.product = params.product.decodeProductKey()
                     webservices = Product.createCriteria().get {
+                        //TODO test if product is really a long
                         eq 'id', params.product.toLong()
                         preferences {
                             projections {
@@ -74,35 +90,6 @@ class IceScrumFilters {
                 }
                 return webservices
             }
-        }
-
-        permissions(controller: '*', action: '*') {
-            before = {
-                if (!request.getRequestURI().contains('/ws/') && controllerName != "errors" && actionName != "browserNotSupported"){
-                    if(userAgentIdentService.isMsie(ComparisonType.LOWER, "9")){
-                        if (!request.getHeader('user-agent').contains('chromeframe')){
-                            redirect(controller:'errors',action:'browserNotSupported')
-                            return false
-                        }
-                    }
-                }
-                securityService.filterRequest()
-                return
-            }
-        }
-
-        pkeyFeed(controller: 'project', action: 'feed') {
-            before = {
-                if (params.product) {
-                    params.product = params.product.decodeProductKey()
-                    if (!params.product) {
-                        render(status: 404)
-                        return
-                    }
-
-                }
-            }
-
         }
 
         releaseId(controller: 'releasePlan', action: '*') {

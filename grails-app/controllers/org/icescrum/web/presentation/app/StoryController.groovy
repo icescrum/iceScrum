@@ -257,75 +257,28 @@ class StoryController {
         }
     }
 
+    @Secured('inProduct()')
+    def show = {
+        redirect(action:'index', controller: controllerName, params:params)
+    }
+
+    @Secured('stakeHolder() or inProduct()')
+    @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
+    def list = {
+        def currentProduct = Product.load(params.product)
+        def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term).sort { Story story -> story.id }
+        withFormat {
+            html { render(status:200, text:stories as JSON, contentType: 'application/json') }
+            json { renderRESTJSON(text:stories) }
+            xml  { renderRESTXML(text:stories) }
+        }
+    }
+
     @Secured('isAuthenticated()')
     def openDialogDelete = {
         def state = Story.getInProduct(params.long('product'), params.list('id').first().toLong()).list()?.state
         def dialog = g.render(template: 'dialogs/delete', model:[back: params.back ? params.back : state >= Story.STATE_ACCEPTED ? '#backlog' : '#sandbox'])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-    }
-
-    @Secured('isAuthenticated()')
-    def edit = {
-        def id = params.long('subid') ? 'subid' : 'id'
-        withStory(id){Story story ->
-            if (story.state == Story.STATE_DONE) {
-                returnError(text:message(code: 'is.story.error.done'))
-                return
-            }
-
-            def user = springSecurityService.currentUser
-            def productOwner = securityService.productOwner(story.backlog.id, springSecurityService.authentication)
-
-            if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user.id) && !productOwner) {
-                render(status: 403, contentType: 'application/json')
-                return
-            } else if (story.state > Story.STATE_SUGGESTED && !productOwner) {
-                render(status: 403, contentType: 'application/json')
-                return
-            }
-
-            def product = (Product) story.backlog
-
-            def sprints = []
-            def release = Release.findCurrentOrNextRelease(story.backlog.id).list()[0]
-            if (story.state >= Story.STATE_ESTIMATED && release) {
-                Sprint.findAllByStateNotEqualAndParentRelease(Sprint.STATE_DONE, release, [sort: "orderNumber", order: "asc"])?.each {
-                    sprints << [id: it.id, name: message(code: 'is.sprint') + ' ' + it.orderNumber]
-                }
-            }
-
-            def rankList = []
-            def maxRank = 0
-            if (story.state >= Story.STATE_ACCEPTED && story.state <= Story.STATE_ESTIMATED) {
-                maxRank = Story.countByBacklogAndStateBetween(story.backlog, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED)
-            } else if (story.state >= Story.STATE_PLANNED && story.state < Story.STATE_DONE) {
-                maxRank = Story.countByParentSprintAndStateNotEqual(story.parentSprint, Story.STATE_DONE)
-            }
-            maxRank.times { rankList << (it + 1) }
-
-            def next = null
-            if (story.state == Story.STATE_SUGGESTED)
-                next = Story.findNextSuggested(params.long('product'), story.suggestedDate, !productOwner ? user.id : null).list()[0]
-            else if (story.state <= Story.STATE_ESTIMATED)
-                next = Story.findNextAcceptedOrEstimated(params.long('product'), story.rank).list()[0]
-            else if (story.state < Story.STATE_DONE)
-                next = Story.findNextStoryBySprint(story.parentSprint.id, story.rank).list()[0]
-
-            def storiesSelect = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
-
-            render(template: '/story/window/manage', model: [
-                    story: story,
-                    next: next?.id ?: null,
-                    rankList: rankList ?: null,
-                    sprints: sprints,
-                    typesLabels: BundleUtils.storyTypes.values().collect {v -> message(code: v)},
-                    typesKeys: BundleUtils.storyTypes.keySet().asList(),
-                    featureSelect: product.features.asList(),
-                    storiesSelect: storiesSelect,
-                    referrer: params.referrer,
-                    referrerUrl: params.referrerUrl
-            ])
-        }
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -454,7 +407,6 @@ class StoryController {
         withStories{List<Story> stories ->
             stories = stories.reverse()
             def elements = []
-            def storiesIds = stories*.id
             if (type == 'story') {
                 elements = storyService.acceptToBacklog(stories)
                 //case one story & d&d from sandbox to backlog
@@ -471,7 +423,7 @@ class StoryController {
                 elements = storyService.acceptToUrgentTask(stories)
             }
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [id: storiesIds, objects: elements] as JSON)  }
+                html { render status: 200, contentType: 'application/json', text: elements as JSON }
                 json { renderRESTJSON(text:elements) }
                 xml  { renderRESTXML(text:elements) }
             }
@@ -502,23 +454,6 @@ class StoryController {
         }
     }
 
-    @Secured('inProduct()')
-    def show = {
-        redirect(action:'index', controller: controllerName, params:params)
-    }
-
-    @Secured('inProduct()')
-    @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
-    def list = {
-        def currentProduct = Product.load(params.product)
-        def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term).sort { Story story -> story.id }
-        withFormat {
-            html { render(status:200, text:stories as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text:stories) }
-            xml  { renderRESTXML(text:stories) }
-        }
-    }
-
     @Secured('isAuthenticated() and !archivedProduct()')
     @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
     def findDuplicate = {
@@ -532,10 +467,6 @@ class StoryController {
             }
             render(status:200, text: stories ? "${message(code:'is.ui.story.duplicate')} ${stories.join(" or ")}" : "")
         }
-    }
-
-    def editStory = {
-        forward(action: 'edit', controller: 'story', params: [referrer: controllerName, referrerUrl:controllerName+'/'+params.id, id: params.id, product: params.product])
     }
 
     def shortURL = {
