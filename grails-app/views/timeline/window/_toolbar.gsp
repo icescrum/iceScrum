@@ -24,8 +24,9 @@
     <li class="navigation-item button-ico button-add">
         <a class="tool-button button-n"
            href="#${controllerName}/add"
-           data-shortcut="ctrl+n"
-           data-shortcut-on="#window-id-${controllerName}"
+           data-is-shortcut
+           data-is-shortcut-key="ctrl+n"
+           data-is-shortcut-on="#window-id-${controllerName}"
            title="${message(code:'is.ui.timeline.toolbar.alt.new')}"
            alt="${message(code:'is.ui.timeline.toolbar.alt.new')}">
                 <span class="start"></span>

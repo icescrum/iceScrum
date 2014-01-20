@@ -1,0 +1,262 @@
+/*
+ * Copyright (c) 2011 Kagilum SAS.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
+ *
+ */
+(function($) {
+    _.templateSettings = {
+        evaluate:    /\{\{#([\s\S]+?)\}\}/g,
+        interpolate: /\{\{[^#\{]([\s\S]+?)[^\}]\}\}/g,
+        escape:      /\{\{\{([\s\S]+?)\}\}\}/g
+    };
+
+    $.extend($.icescrum, { object:{} } );
+
+    $.extend($.icescrum.object, {
+        dataBinding:function(type, tpl, id){
+            var settings = $.extend( $.icescrum[type].binding[tpl], {container:this, watchedId:id} );
+            //Remove old binding (didn't find another way)
+            $.icescrum[type].bindings = _.filter($.icescrum[type].bindings, function(binding){ return !$.contains(document.documentElement, binding.container[0]); });
+            $.icescrum[type].bindings.push(settings);
+
+            if (!$.icescrum[type].initialized){
+                $.icescrum[type].initialized = 'process';
+                _.observe($.icescrum[type].data, 'create', function(item, index) {
+                    _.each($.icescrum[type].bindings, function(settings){
+                        if (settings.watch == 'items'){
+                            $.icescrum.object.viewBinding.add.apply(settings,[type, item, index]);
+                        }
+                    });
+                });
+                _.observe($.icescrum[type].data, 'update', function(item, index) {
+                    _.each($.icescrum[type].bindings, function(settings){
+                        if (settings.watch == 'items'){
+                            $.icescrum.object.viewBinding.update.apply(settings,[type, item, index]);
+                        }
+                        else if (settings.watch == 'item' && item.id == settings.watchedId){
+                            $.icescrum.object.viewBinding.update.apply(settings,[type, item, index]);
+                        }
+                    });
+                });
+                _.observe($.icescrum[type].data, 'delete', function(item, index) {
+                    _.each($.icescrum[type].bindings, function(settings){
+                        if (settings.watch == 'items'){
+                            $.icescrum.object.viewBinding['delete'].apply(settings,[type, item, index]);
+                        }
+                        else if (settings.watch == 'item' && item.id == settings.watchedId){
+                            $.icescrum.object.viewBinding['delete'].apply(settings,[type, item, index]);
+                        }
+                    });
+                });
+
+                _.observe($.icescrum[type].data, function() {
+                    _.each($.icescrum[type].bindings, function(settings){
+                        if (settings.watch == 'array'){
+                            $.icescrum.object.viewBinding.update.apply(settings,[type, $.icescrum[type].data]);
+                        }
+                    });
+                });
+                $.icescrum.object.fetchData(type);
+            } else {
+                if (settings.watch == 'items'){
+                    var data = settings.filter ? _.filter($.icescrum[type].data, function(item) {  if(settings.filter.apply($.icescrum[type],[item])) return item; }) : $.icescrum[type].data;
+                    var _highLight = settings.highlight;
+                    settings.highlight = false;
+                    _.each(data, function(item){
+                        $.icescrum.object.viewBinding.add.apply(settings,[type, item]);
+                    });
+                    settings.highlight = _highLight;
+                } else if(settings.watch == 'item'){
+                    $.icescrum.object.viewBinding.update.apply(settings,[type, _.findWhere($.icescrum[type].data,{id:settings.watchedId})]);
+                } else if (settings.watch == 'array'){
+                    $.icescrum.object.viewBinding.update.apply(settings,[type, $.icescrum[type].data]);
+                }
+            }
+        },
+
+        addOrUpdateToArray:function(type, item){
+            //to tackle observable on each push
+            var _indexItem;
+            if (_.isArray(item)){
+                var beenUpdated = [];
+                _.each(item, function(element, index, arr){
+                    _indexItem = _.indexOf($.icescrum[type].data, _.findWhere($.icescrum[type].data, { id: element.id } ));
+                    if (_indexItem != -1){
+                        $.icescrum[type].data[_indexItem] = element;
+                        beenUpdated.push(element.id);
+                    }
+                });
+                if (beenUpdated.length){
+                    item = _.reject(item, function(element){ return _.contains(beenUpdated, element.id) });
+                }
+                if (item.length > 0){
+                    $.icescrum[type].data.splice.apply($.icescrum[type].data, [$.icescrum[type].data.length, 0].concat(item));
+                }
+            }else{
+                _indexItem = _.indexOf($.icescrum[type].data, _.findWhere($.icescrum[type].data, {id:item.id}));
+                if (_indexItem != -1){
+                    $.icescrum[type].data[_indexItem] = item;
+                } else {
+                    $.icescrum[type].data.push(item);
+                }
+            }
+        },
+
+        removeFromArray:function(type, item){
+            var _indexItem = _.indexOf($.icescrum[type].data, _.findWhere($.icescrum[type].data, {id:item.id}));
+            if (_indexItem != -1){
+                $.icescrum[type].data.splice(_indexItem, 1);
+            }
+        },
+
+        fetchData:function(type){
+            $.get($.icescrum[type].restUrl+'/list',
+                function(data){
+                    $.icescrum.object.addOrUpdateToArray(type, data);
+                    $.icescrum[type].initialized = true;
+                }
+            );
+        },
+
+        viewBinding:{
+
+            add:function(type, item, index){
+                var filtered = _.isFunction(this.filter) ? this.filter.apply($.icescrum[type],[item]) : this.filter;
+                if (this.tpl && _.isUndefined(filtered) || filtered){
+                    var data = {};
+                    data[type] = item;
+                    var el = $.template(this.tpl, data);
+                    el = $(el).appendTo(this.container);
+                    if(this.highlight && $.icescrum[type].initialized == true){
+                        el.effect('highlight', {color: this.highlight != true ? 'blue' : null}, 1000);
+                    }
+                    attachOnDomUpdate(el);
+                }
+            },
+
+            update:function(type, item, index){
+                var filtered = _.isFunction(this.filter) ? this.filter.apply($.icescrum[type],[item]) : this.filter;
+                if (this.tpl && _.isUndefined(filtered) || filtered){
+                    var focus = $(':focus:not(document)');
+                    focus = focus.attr('id') ? (focus.attr('id').startsWith('s2id') ? focus.attr('data-focusable') : focus.attr('id')) : null;
+                    var data = {};
+                    var oldElement;
+                    data[this.watch == 'array' ? 'list' : type] = item;
+                    var el = $.template(this.tpl, data);
+                    if (this.watch == 'items'){
+                        oldElement = $(this.container).find(this.selector+'[data-elemid='+item.id+']');
+                        el = oldElement.replaceWithPush(el);
+                    } else if (this.watch == 'array'){
+                        oldElement = $(this.container).find(this.selector);
+                        el = oldElement.replaceWithPush(el);
+                    } else if (this.watch == 'item'){
+                        oldElement = $(this.container).find(this.selector);
+                        el = oldElement.html(el);
+                    }
+                    var $el = $(el);
+                    if (oldElement.hasClass('ui-selected')){
+                        $el.addClass('ui-selected');
+                    }
+                    attachOnDomUpdate(this.container);
+                    if (focus && $(focus, this.container)){
+                        if(focus.startsWith('s2id')){
+                            $('#'+focus, this.container).find('input[data-focusable="'+focus+'"]').focus();
+                        } else {
+                            $('#'+focus, this.container).focus();
+                        }
+                    }
+                } else if(!filtered && (oldElement && oldElement.length)){
+                    oldElement.remove();
+                }
+            },
+
+            'delete':function(type, item){
+                var filtered = _.isFunction(this.filter) ? this.constraint.apply($.icescrum[type],[item]) : this.filter;
+                if (_.isUndefined(filtered) || filtered){
+                    if (this.watch == 'items'){
+                        $(this.container).find(this.selector+'[data-elemid='+item.id+']').remove();
+                    }
+                    else if (this.watch == 'item'){
+                        $(this.container).find(this.selector).html("");
+                    }
+                }
+            }
+        }
+    });
+})($);
+
+//TODO remove at and of refactoring
+(function($) {
+    $.extend($.icescrum, {
+
+            addOrUpdate:function(object, _tmpl, after, append) {
+
+                    // Encoding of pushed objects is disabled temporarily
+                    // because it causes issues with HTML content (notes etc.)
+                    // A manual decoding will be required for those elements
+                    // object = $.icescrum.htmlEncodeJSON(object);
+
+                    if ($.isFunction(_tmpl.constraintTmpl)) {
+                        if (_tmpl.constraintTmpl.apply(object) == false) {
+                            return false;
+                        }
+                    }
+
+                    var tmpl;
+                    tmpl = $.extend(tmpl, _tmpl);
+                    tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(object) : tmpl.selector;
+                    tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(object) : tmpl.view;
+                    tmpl.id = $.isFunction(tmpl.id) ? tmpl.id.apply(object) : tmpl.id;
+
+                    if ($(tmpl.window + ' .box-blank:visible').length) {
+                        $(tmpl.view).show();
+                        $(tmpl.window + ' .box-blank').hide();
+                    }
+
+                    var container = $(tmpl.view);
+                    var current = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
+                    var beforeData = null;
+                    if ($.isFunction(tmpl.beforeTmpl)) {
+                        beforeData = tmpl.beforeTmpl.apply(object, [tmpl,container,current]);
+                    }
+
+                    if (current.length) {
+                        $(tmpl.selector + '[data-elemid=' + object.id + ']', container).jqoteup('#' + tmpl.id, object);
+                    }
+                    else {
+                        append ? container.jqoteapp('#' + tmpl.id, object) : container.jqotepre('#' + tmpl.id, object);
+                    }
+                    var newObject = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
+
+                    if ($.isFunction(after)) {
+                        after.apply(object, [tmpl,newObject,container]);
+                    }
+                    if ($.isFunction(tmpl.afterTmpl)) {
+                        tmpl.afterTmpl.apply(object, [tmpl,container,newObject,beforeData]);
+                    }
+
+                    var elem = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
+                    attachOnDomUpdate(elem);
+
+                    return elem;
+                }
+            });
+})($);

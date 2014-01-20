@@ -20,6 +20,8 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div>
-    <span id="stories-sandbox-size">${storyCount}</span> stories
+<div data-binding
+     data-binding-type="story"
+     data-binding-tpl="rightSandbox">
+    <span id="stories-sandbox-size"></span>
 </div>

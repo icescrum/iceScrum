@@ -23,8 +23,7 @@
 <h3><a href="#">${message(code: "is.story")}</a></h3>
 <div id="right-story-container"
      data-push
-     data-push-listen='{ "object":"story","events":["select", "unselect", "update", "remove"] }'
-     data-push-template="sandboxRight"></div>
+     data-push-listen='{ "object":"story","events":["select", "unselect", "update", "remove"], "template":"sandboxRight" }'></div>
     <div id="right-story-new" class="right-properties">
         <input required
                name="story.name"

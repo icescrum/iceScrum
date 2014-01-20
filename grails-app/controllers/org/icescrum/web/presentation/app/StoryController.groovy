@@ -57,37 +57,6 @@ class StoryController {
     def acceptanceTestService
     def attachmentableService
 
-    def toolbar = {
-        def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
-        withStory(id, params.uid?true:false) { Story story ->
-            def user = null
-            if (springSecurityService.isLoggedIn())
-                user = User.load(springSecurityService.principal.id)
-            def next
-            def previous
-
-            switch (story.state) {
-                case Story.STATE_SUGGESTED:
-                    next = Story.findNextSuggested(story.backlog.id, story.suggestedDate).list()[0] ?: null
-                    previous = Story.findPreviousSuggested(story.backlog.id, story.suggestedDate).list()[0] ?: null
-                    break
-                case Story.STATE_ACCEPTED:
-                case Story.STATE_ESTIMATED:
-                    next = Story.findNextAcceptedOrEstimated(story.backlog.id, story.rank).list()[0] ?: null
-                    previous = Story.findPreviousAcceptedOrEstimated(story.backlog.id, story.rank).list()[0] ?: null
-                    break
-                case Story.STATE_PLANNED:
-                case Story.STATE_INPROGRESS:
-                case Story.STATE_DONE:
-                    previous = Story.findByParentSprintAndRank(story.parentSprint, story.rank - 1) ?: null
-                    next = Story.findByParentSprintAndRank(story.parentSprint, story.rank + 1) ?: null
-                    break
-            }
-            def sprint = Sprint.findCurrentSprint(params.long('product')).list()
-            render(template: 'window/toolbar', model: [story: story, user: user, next: next, previous: previous, sprint: sprint])
-        }
-    }
-
     def index = {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
         withStory(id, params.uid?true:false) { Story story ->
@@ -446,20 +415,6 @@ class StoryController {
         }
     }
 
-    @Secured('(isAuthenticated()) and !archivedProduct()')
-    def associateFeature = {
-        withStory{ Story story ->
-            withFeature(params.feature.id?.toLong()){ Feature feature ->
-                storyService.associateFeature(feature, story)
-                withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                    json { renderRESTJSON(text:story) }
-                    xml  { renderRESTXML(text:story) }
-                }
-            }
-        }
-    }
-
     @Secured('productOwner() and !archivedProduct()')
     def done = {
         withStory {Story story ->
@@ -552,13 +507,10 @@ class StoryController {
     @Secured('inProduct()')
     @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
     def list = {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
-        }
         def currentProduct = Product.load(params.product)
         def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term).sort { Story story -> story.id }
         withFormat {
+            html { render(status:200, text:stories as JSON, contentType: 'application/json') }
             json { renderRESTJSON(text:stories) }
             xml  { renderRESTXML(text:stories) }
         }

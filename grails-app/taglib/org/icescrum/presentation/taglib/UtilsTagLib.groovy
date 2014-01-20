@@ -25,6 +25,7 @@
 
 package org.icescrum.presentation.taglib
 
+import org.icescrum.core.ui.UiDefinition
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
@@ -46,6 +47,9 @@ class UtilsTagLib {
 
     def grailsApplication
     def springcacheService
+    def uiDefinitionService
+    def menuBarSupport
+
     def loadJsVar = { attrs, body ->
 
         def current = pageScope.variables?.space ? pageScope.space.object : null
@@ -100,9 +104,12 @@ class UtilsTagLib {
     /**
      * Generate iceScrum main menu (project dropMenu, avatar, roles, logout, ...)
      */
-    def mainMenu = { attrs, body ->
-        out << g.render(template: '/scrumOS/navigation',
+    def header = { attrs, body ->
+        def menus = getMenuBarFromUiDefinitions()
+        out << g.render(template: '/scrumOS/header',
                 model: [
+                        menus: menus.visible.sort {it.position},
+                        menusHidden: menus.hidden.sort {it.position},
                         importEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         exportEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         creationProjectEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
@@ -150,7 +157,7 @@ class UtilsTagLib {
             it.events.each { event ->
                 events << event + '_' + it.object + '.stream'
             }
-            jqCode += "jQuery('${attrs.on}').bind('${events.join(' ')}',function(event,${it.object}){ "
+            jqCode += "jQuery(${attrs.on? '\''+attrs.on+'\'' : 'document.body' }).bind('${events.join(' ')}',function(event,${it.object}){ "
             jqCode += "var type = event.type.split('_')[0];"
             def callback = attrs.callback ?: "jQuery.icescrum.${it.object}[type].apply(${it.object}${attrs.template ? ",['" + attrs.template + "']" : ''});"
             jqCode += attrs.constraint ? " if ( ${attrs.constraint} ) { $callback }" : callback
@@ -347,5 +354,38 @@ class UtilsTagLib {
 
     def appId = {
         out << grailsApplication.config.icescrum.appID
+    }
+
+    def getMenuBarFromUiDefinitions(boolean splitHidden = true) {
+        def menus = splitHidden ? [visible:[], hidden:[]] : []
+        uiDefinitionService.getDefinitions().each {String id, UiDefinition uiDefinition ->
+            def menuBar = uiDefinition.menuBar
+            if(menuBar?.spaceDynamicBar) {
+                menuBar.show = menuBarSupport.spaceDynamicBar(id, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space)
+            }
+            def show = menuBar?.show
+            if (show in Closure) {
+                show.delegate = delegate
+                show = show()
+            }
+
+            def menu = [title: menuBar?.title,
+                    id: id,
+                    position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
+                    widgetable: uiDefinition.widget ? true : false]
+
+            if (splitHidden){
+                if (show && show.visible) {
+                    menus.visible << menu
+                } else if (show) {
+                    menus.hidden << menu
+                }
+            } else {
+                if (show){
+                    menus << menu
+                }
+            }
+        }
+        return menus
     }
 }

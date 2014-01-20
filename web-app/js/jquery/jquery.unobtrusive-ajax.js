@@ -162,7 +162,7 @@ function getFunction(code, argNames) {
             data.showOnCreate = true;
             if (data.dropmenu){
                 if (!data.left){
-                    data.left = $.constbrowser.getDropMenuTopLeft();
+                    data.left = 0;
                 }
                 elemt.dropmenu(data);
             } else {
@@ -171,7 +171,6 @@ function getFunction(code, argNames) {
             elemt.data('created',true);
         }
     });
-
 
     $(document).on('hover','.postit, .postit-rect, .tooltip-help', function(event){
         var elem = $(this);
@@ -244,6 +243,7 @@ function getFunction(code, argNames) {
         $('#contextual-properties').accordion('destroy');
         $('#right').addClass('desktop-view');
     });
+
     $(document).on('resizable.notOverWidth', '#right', function(){
         $('#right').removeClass('desktop-view');
         manageAccordion($('#contextual-properties'));
@@ -272,10 +272,16 @@ function getFunction(code, argNames) {
     attachOnDomUpdate();
 
 }(jQuery));
+
 function attachOnDomUpdate(content){
 
     $('[data-dz]', content).each(function(){
         var $this = $(this);
+        if ($this.data('dz-init')){
+            return;
+        } else {
+            $this.data('dz-init', true);
+        }
         var settings = $.extend({
                 dictCancelUpload:'x',
                 dictRemoveFile:'x',
@@ -312,7 +318,7 @@ function attachOnDomUpdate(content){
                 if(file.id){
                     $.ajax({
                         type:'DELETE',
-                        url:settings.addRemoveLinks+'?attachment.id='+file.id
+                        url:settings.url+'?attachment.id='+file.id
                     });
                 }
             });
@@ -339,6 +345,14 @@ function attachOnDomUpdate(content){
 
     $('input[data-sl2tag]', content).each(function() {
         var $this = $(this);
+        if ($this.data('sl2tag-init')){
+            return;
+        } else {
+            $this.data('sl2tag-init', true);
+        }
+        if (!$this.attr('id') && $this.attr('name')){
+            $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
+        }
         var settings = $.extend({
                 tags:[],
                 tokenSeparators: [",", " "],
@@ -375,6 +389,7 @@ function attachOnDomUpdate(content){
             }
         };
         var select = $this.select2(settings);
+        $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
         if (settings.change){
             select.change(function(event){
                 var data = { manageTags: true };
@@ -386,6 +401,14 @@ function attachOnDomUpdate(content){
 
     $('textarea[data-mkp]', content).each(function() {
         var $this = $(this);
+        if ($this.data('mkp-init')){
+            return;
+        } else {
+            $this.data('mkp-init', true);
+        }
+        if (!$this.attr('id') && $this.attr('name')){
+            $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
+        }
         var enabled = $this.attr('readonly') ? false : true;
         var settings = $.extend({
                 resizeHandle:false
@@ -409,7 +432,7 @@ function attachOnDomUpdate(content){
                         $this.removeAttr('readonly');
                     });
             }
-            editor.hide();
+            editor.addClass('select2-offscreen');
             preview.show();
         };
 
@@ -418,19 +441,22 @@ function attachOnDomUpdate(content){
         if(settings.height){
             container.css('height',settings.height);
         }
-
         if (enabled){
-            preview.on('click',function(){
-                if (editor.is(':hidden')){
+
+            var display = function(){
+                if (editor.hasClass('select2-offscreen')){
                     markitup.val(preview.data('rawValue') != settings.placeholder ? preview.data('rawValue') : '');
-                    editor.show();
+                    editor.removeClass('select2-offscreen');
                     preview.hide();
                     if(settings.height){
                         markitup.css('height', settings.height - container.find('.markItUpHeader').height());
                     }
                     markitup.focus();
                 }
-            });
+            }
+
+            preview.on('click',display);
+            $this.on('focus',display);
 
             if (settings.change){
                 $this.on('blur keyup', function(event){
@@ -457,6 +483,14 @@ function attachOnDomUpdate(content){
 
     $('select[data-sl2]', content).each(function(){
         var $this = $(this);
+        if ($this.data('sl2-init')){
+            return;
+        } else {
+            $this.data('sl2-init', true);
+        }
+        if (!$this.attr('id') && $this.attr('name')){
+            $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
+        }
         var settings = $this.html5data('sl2');
         if (settings.iconClass) {
             function format(state) {
@@ -472,14 +506,14 @@ function attachOnDomUpdate(content){
             $this.val(settings.value);
         }
         var select = $this.select2(settings);
+        $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
         if (settings.change) {
             select.change(function (event) {
                 var data = { };
                 var name = $this.attr('name');
                 data[name] = event.val;
                 $.post(settings.change, data, function(data) {
-                    var eventName = 'update_' + name.split('.')[0];
-                    $('#backlog-layout-window-sandbox').triggerHandler(eventName, data);
+                    $.icescrum.object.addOrUpdateToArray('story',data);
                 }, 'json');
             })
         }
@@ -487,6 +521,14 @@ function attachOnDomUpdate(content){
 
     $('input[data-sl2ajax]', content).each(function() {
         var $this = $(this);
+        if ($this.data('sl2ajax-init')){
+            return;
+        } else {
+            $this.data('sl2ajax-init', true);
+        }
+        if (!$this.attr('id') && $this.attr('name')){
+            $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
+        }
         var settings = $this.html5data('sl2ajax');
         settings = $.extend({
             createChoiceOnEmpty:false,
@@ -512,14 +554,14 @@ function attachOnDomUpdate(content){
             };
         }
         var select = $this.select2(settings);
+        $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
         if (settings.change) {
             select.change(function (event) {
                 var data = { };
                 var name = $this.attr('name');
                 data[name] = event.val;
                 $.post(settings.change, data, function(data) {
-                    var eventName = 'update_' + name.split('.')[0];
-                    $.event.trigger(eventName, data);
+                    $.icescrum.object.addOrUpdateToArray('story',data);
                 }, 'json');
             })
         }
@@ -527,6 +569,14 @@ function attachOnDomUpdate(content){
 
     $('input[data-txt]', content).each(function() {
         var $this = $(this);
+        if ($this.data('txt-init')){
+            return;
+        } else {
+            $this.data('txt-init', true);
+        }
+        if (!$this.attr('id') && $this.attr('name')){
+            $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
+        }
         var settings = $this.html5data('txt');
         var enabled = $this.attr('readonly') ? false : true;
         if (enabled && settings.change) {
@@ -548,9 +598,10 @@ function attachOnDomUpdate(content){
                         var name = $this.attr('name');
                         data[name] = val;
                         if($this.data('rawValue') != data[name]){
+                            $this.attr('readonly');
                             $.post(settings.change, data, function(data) {
-                                var eventName = 'update_' + name.split('.')[0];
-                                $.event.trigger(eventName, data);
+                                $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
+                                $this.removeAttr('readonly');
                             }, 'json');
                         }
                     }
@@ -560,10 +611,17 @@ function attachOnDomUpdate(content){
 
     $('[data-at]',content).each(function(){
         var $this = $(this);
+        if ($this.data('at-init')){
+            return;
+        } else {
+            $this.data('at-init', true);
+        }
+        if (!$this.attr('id') && $this.attr('name')){
+            $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
+        }
         var settings = $this.html5data('at');
         var rawValue = $this.val() ? $this.val().trim() : settings.placeholder;
         var preview = $('<div class="atwho-preview"></div>');
-        preview.css('height',$this.css('height'));
         preview.insertAfter($this);
 
         var updateText = function(rawValue){
@@ -572,31 +630,34 @@ function attachOnDomUpdate(content){
                 preview.html(getFunction(settings.matcher, ["val"]).apply(this, [rawValue]));
                 $this.removeAttr('readonly');
             }
-            $this.hide();
+            $this.addClass('select2-offscreen');
             preview.show();
         };
 
         updateText(rawValue);
 
-        preview.on('click', function(){
-            if ($this.is(':hidden')){
+        var display = function(){
+            if ($this.hasClass('select2-offscreen')){
                 $this.atwho(settings);
                 var val = '';
                 if (preview.data('rawValue') != settings.placeholder) {
                     val = preview.data('rawValue');
-                } else if (settings.default) {
-                    val = settings.default.replace(/\\n/g,"\n"); // hack required because templates remove regular /n
+                } else if (settings['default']) {
+                    val = settings['default'].replace(/\\n/g,"\n"); // hack required because templates remove regular /n
                     $this.one('click focus', function(){
                         $this.select();
                         $this.off('click focus');
                     });
                 }
                 $this.val(val);
-                $this.show();
+                $this.removeClass('select2-offscreen');
                 preview.hide();
                 $this.focus();
             }
-        });
+        }
+
+        $this.on('focus', display);
+        preview.on('click', display);
 
         if (settings.change){
             $this.on('blur keyup', function(event){
@@ -625,141 +686,148 @@ function attachOnDomUpdate(content){
 
     $('div[data-push]', content).each(function(){
         var $this = $(this);
+        if ($this.data('push-init')){
+            return;
+        } else {
+            $this.data('push-init', true);
+        }
         var settings = $this.html5data('push');
         $(settings.listen).each(function(){
-            var _object = this.object;
+            var that = this;
+            var _object = that.object;
             var _event = "";
             $(this.events).each(function(){
                 _event += this+'_'+_object+'.stream '
             });
             $this.on(_event, function(event,object){
                 var type = event.type.split('_')[0];
-                jQuery.icescrum[_object][type].apply(object,[settings.template]);
+                if (that.template){
+                    $.icescrum[_object][type].apply(object,[that.template]);
+                } else {
+                    $.icescrum[_object][type].apply(object);
+                }
             });
         });
     });
 
-    $('[data-sortable=true]', content).each(function(){
+    $('div[data-binding], ul[data-binding]', content).each(function(){
         var $this = $(this);
-        $this.sortable($this.data());
-    });
-
-    $('[data-droppable=true]', content).each(function(){
-        var $this = $(this);
-        var options = $this.data();
-        if ($this.data('drop')){
-            options.drop = getFunction(options.drop, ["event","ui"]);
+        if ($this.data('binding-init')){
+            return;
+        } else {
+            $this.data('binding-init', true);
         }
-        $this.droppable(options);
+        var settings = $this.html5data('binding');
+        $.icescrum.object.dataBinding.apply(this,[settings.type, settings.tpl]);
     });
 
-    $('[data-accordion=true]', content).each(function() {
-        manageAccordion(this);
-    });
-
-    $('[data-editable=true]', content).each(function() {
-        var editable = $(this);
-        var editableURL = editable.data('editable-url');
-        var editableName = editable.data('editable-name');
-        editable.find('.field.editable').each(function() {
-            var field = $(this);
-            var fieldName = field.attr('name');
-            var fieldType = field.data('editable-type');
-            var helper = $.editable.customTypeHelper[fieldType];
-            var options = {
-                type: fieldType,
-                ajaxoptions: {dataType: 'json'},
-                onblur: 'submit',
-                name: editableName + '.' + fieldName,
-                data: function(textValue) {
-                    if (field.data('rawValue')) {
-                        textValue = field.data('rawValue');
-                    }
-                    return helper.data(field)(textValue);
-                },
-                onedit: function () {
-                    field.addClass('editing');
-                },
-                onsubmit: function (settings, original) {
-                    var oldText = field.data('rawValue') ? field.data('rawValue') : original.revert;
-                    var oldValue = helper.getValueFromText(oldText);
-                    var newValue = helper.getValueFromInput($(original));
-                    if (oldValue == newValue) {
-                        original.reset();
-                        field.removeClass('editing');
-                        return false;
-                    }
-                    return true;
-                },
-                submitdata: function () {
-                    return {
-                        'name': fieldName
-                    };
-                },
-                callback: function (value) {
-                    if (field.data('rawValue') != undefined) {
-                        field.data('rawValue', value.rawValue);
-                    }
-                    field.html(value.value);
-                    field.removeClass('editing');
-                    var eventName = 'update_' + editableName;
-                    $.event.trigger(eventName, value.object);
-                }
-            };
-            if (helper.specificOptions) {
-                $.extend(options, helper.specificOptions);
+    $('[data-ui-selectable]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-selectable-init')){
+            return;
+        } else {
+            $this.data('ui-selectable-init', true);
+        }
+        var settings = $this.html5data('ui-selectable');
+        $.each(['selected','create','selecting','start','stop','unselected','unselecting'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
             }
-            field.die().liveEditable(editableURL, options);
+        });
+        $this.parent().selectableScroll(settings);
+        if(settings.stop){
+            settings.stop({target:this});
+        }
+    });
+
+    $('[data-ui-droppable]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-droppable-init')){
+            return;
+        } else {
+            $this.data('ui-droppable-init', true);
+        }
+        var settings = $this.html5data('ui-droppable');
+        //to prevent unused actions & loose perf
+        var $accept = $(settings.accept);
+        $accept.one('hover.data', function() {
+            $accept.off('hover.data');
+            $.each(['activate','create','deactivate','drop','out','over'], function(){
+                if (settings[this]){
+                    settings[this] = getFunction(settings[this], ["event","ui"]);
+                }
+            });
+            (settings.selector? $(settings.selector) : $this).each(function() {
+                $(this).droppable(settings);
+            });
         });
     });
 
-    $('a[data-shortcut]', content).each(function(){
-        var elem = $(this);
-        var onClean = elem.data('shortcutOn') ? elem.data('shortcutOn').replace(/\W/g, '')  : 'body';
-        var on = elem.data('shortcutOn') ? elem.data('shortcutOn')  : document.body;
-        var bind = 'keydown.'+'.'+onClean+'.'+elem.data('shortcut').replace(/\+/g,'');
-        $(on).unbind(bind);
-        $(on).bind(bind,elem.data('shortcut'),function(e){
-            if (elem.data('callback')){
-                if (!getFunction(elem.data("callback"), []).apply(this, [])){
-                    e.preventDefault();
-                    return;
+    $('[data-ui-draggable]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-draggable-init')){
+            return;
+        } else {
+            $this.data('ui-draggable-init', true);
+        }
+        var settings = $this.html5data('ui-draggable');
+        //to prevent unused actions & loose perf
+        (settings.selector? $this.find(settings.selector) : $this).one('hover', function() {
+            $.each(['create','drag','start','stop'], function(){
+                if (settings[this]){
+                    settings[this] = getFunction(settings[this], ["event","ui"]);
                 }
-            }
-            if (!elem.attr('href') || elem.data('ajax')){
-                elem.click();
-            }else if (elem.attr('href')){
-                document.location.hash = elem.attr('href');
-            }
-            e.preventDefault();
+            });
+            $(this).draggable(settings);
         });
     });
-    $('.left-resizable[data-resizable], .right-resizable[data-resizable]', content).each(function(){
-        var elem = $(this);
-        elem.removeAttr('data-resizable');
-        var right = elem.hasClass('right-resizable');
-        var div = right ? elem.prev() : elem.next();
+
+    $('[data-ui-sortable]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-sortable-init')){
+            return;
+        } else {
+            $this.data('ui-sortable-init', true);
+        }
+        var settings = $this.html5data('ui-sortable');
+        $.each(['update','receive','start','stop','activate','beforeStop','change','create','deactivate','out','over','remove','sort'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        $this.sortable(settings);
+    });
+
+    $('[data-ui-resizable-panel]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-resizable-panel-init')){
+            return;
+        } else {
+            $this.data('ui-resizable-panel-init', true);
+        }
+        var settings = $this.html5data('ui-resizable-panel');
+        var div = settings.right ? $this.prev() : $this.next();
         var resize = function(){
-            var elWidth = elem.width();
-            if (right){
-                elem.css('left','auto');
+            var elWidth = $this.width();
+            if (settings.right){
+                $this.css('left','auto');
             }
-            if(elem.find('> div:not(.ui-resizable-handle)').length == 0 && elem.data('emptyHide') == true){
-                elem.hide();
-                div.css(right ? 'right' : 'left', 0);
+            if($this.find('> div:not(.ui-resizable-handle)').length == 0 && settings.emptyHide == true){
+                $this.hide();
+                div.css(settings.right ? 'right' : 'left', 0);
             }else if (elWidth <= 7){
-                elem.addClass('ui-resizable-hidden');
-                elem.width(0);
+                $this.addClass('ui-resizable-hidden');
+                $this.width(0);
                 elWidth = 0;
-                div.css(right ? 'right' : 'left', 7);
-                elem.find(".ui-resizable-handle").css(right ? 'left' : 'right', -7).width(7);
+                div.css(settings.right ? 'right' : 'left', 7);
+                $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right', -7).width(7);
             } else if(elWidth > 7) {
-                var reconstruct = elem.hasClass('ui-resizable-hidden');
-                elem.removeClass('ui-resizable-hidden').show();
-                div.css(right ? 'right' : 'left', elem.outerWidth() + 7);
-                elem.find(".ui-resizable-handle").css(right ? 'left' : 'right',-7).width(7);
+                var reconstruct = $this.hasClass('ui-resizable-hidden');
+                $this.removeClass('ui-resizable-hidden').show();
+                div.css(settings.right ? 'right' : 'left', $this.outerWidth() + 7);
+                $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right',-7).width(7);
                 if (reconstruct){
-                    elem.find(".is-widget").each(function(){
+                    $this.find(".is-widget").each(function(){
                         var el = $(this);
                         el.isWidget(el.data());
                     });
@@ -770,50 +838,89 @@ function attachOnDomUpdate(content){
             } else {
                 div.show();
             }
-            if(!elem.data('eventWidth') && elem.data('eventOnWidth') && elWidth > elem.data('eventOnWidth')) {
-                elem.data('eventWidth', true);
-                elem.trigger('resizable.overWidth');
-            } else if(elem.data('eventWidth') && elem.data('eventOnWidth') && elWidth < elem.data('eventOnWidth')) {
-                elem.data('eventWidth', false);
-                elem.trigger('resizable.notOverWidth');
+            if(!settings.eventWidth && settings.eventOnWidth && elWidth > settings.eventOnWidth) {
+            settings.eventWidth = true;
+                $this.trigger('resizable.overWidth');
+            } else if(settings.eventWidth && settings.eventOnWidth && elWidth < settings.eventOnWidth) {
+                settings.eventWidth = false;
+                $this.trigger('resizable.notOverWidth');
             }
             $(document.body).trigger('resize');
         };
+
+        if (settings.right){
+            div.css('right', $this.outerWidth() + 7);
+        } else {
+            div.css('left', $this.outerWidth() + 7);
+        }
+        settings._containment = settings.containment == 'parent' ? 'hack' : null;
+        settings.containment = settings.containment == 'parent' ? null : settings.containment;
         var options = {
-            handles: right ? 'w' : 'e',
+            handles: settings.right ? 'w' : 'e',
             resize: resize,
             start: function( event, ui ) {
                 //hack for chrome / safari with containment
-                if (elem.data('containment') == 'parent'){
-                    elem.resizable("option", "maxWidth", elem.parent().width() - 1);
+                if (settings._containment == 'hack' && settings.containment == null){
+                    $this.resizable("option", "maxWidth", $this.parent().width() - 1);
                 }
             },
             stop:function(){
-                elem.css('bottom','0px');
+                $this.css('bottom','0px');
                 $(this).css('height','auto');
             }
         };
-        options = $.extend(options, elem.data());
-        options.containment = null;
-        if (right){
-            div.css('right', $(this).outerWidth() + 7);
-        } else {
-            div.css('left', $(this).outerWidth() + 7);
-        }
-        elem.resizable(options);
-        elem.find(".ui-resizable-handle").css(right ? 'left' : 'right',-7);
-        elem.find(".ui-resizable-handle").on('dblclick',function(){
-            if (elem.width() <= 17){
-                elem.css('width', elem.data('widthSaved'));
+        //settings.containment = 'null';
+        var _settings = $.extend(options, settings);
+        $this.resizable(_settings);
+        $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right',-7);
+        $this.find(".ui-resizable-handle").on('dblclick',function(){
+            if ($this.width() <= 17){
+                $this.css('width', settings.widthSaved);
             } else {
-                elem.data('widthSaved', elem.width());
-                elem.css('width', 0);
+                settings.widthSaved = $this.width();
+                $this.css('width', 0);
             }
             resize();
         });
         resize();
-        elem.bind("manualResize", function(){
+        $this.bind("manualResize", function(){
             resize();
+        });
+    });
+
+    $('[data-ui-accordion]', content).each(function() {
+        manageAccordion(this);
+    });
+
+    $('[data-is-shortcut]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('is-shortcut-init')){
+            return;
+        } else {
+            $this.data('is-shortcut-init', true);
+        }
+        var settings = $this.html5data('is-shortcut');
+        settings.key = settings.key.replace('arrows','up down right left');
+        $(settings.key.split(' ')).each(function(){
+            var key = this.toString();
+            var onClean = settings.on ? settings.on.replace(/\W/g, '')  : 'body';
+            var on = settings.on ? (settings.on == 'this' ? this : settings.on)  : document.body;
+            var bind = 'keydown'+'.'+onClean+'.'+key.replace(/\+/g,'');
+            $(on).unbind(bind);
+            $(on).bind(bind,key,function(e){
+                if (settings.callback){
+                    if (!getFunction(settings.callback, ['event']).apply($this, [e])){
+                        e.preventDefault();
+                        return;
+                    }
+                }
+                if (!$this.attr('href') || $this.data('ajax')){
+                    $this.click();
+                }else if ($this.attr('href')){
+                    document.location.hash = $this.attr('href');
+                }
+                e.preventDefault();
+            });
         });
     });
 
@@ -822,12 +929,19 @@ function attachOnDomUpdate(content){
 
 function manageAccordion(element){
     var $this = $(element);
-    $this.accordion($this.data());
-    if ($this.data('heightStyle') == 'fill'){
-        $(window).on('resize', function() {
-            if ($this && $this.hasClass('ui-accordion')) {
-                $this.accordion('refresh');
-            }
-        });
+    if ($this.hasClass("ui-accordion")){
+        $this.accordion( "option", "animate", false );
+        $this.accordion('refresh');
+        $this.accordion( "option", "animate", {} );
+    } else {
+        var settings = $this.html5data('ui-accordion');
+        $this.accordion(settings);
+        if (settings.heightStyle == 'fill'){
+            $(window).on('resize', function() {
+                if ($this && $this.hasClass('ui-accordion')) {
+                    $this.accordion('refresh');
+                }
+            });
+        }
     }
 }

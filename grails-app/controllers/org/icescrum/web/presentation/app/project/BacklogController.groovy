@@ -42,36 +42,13 @@ class BacklogController {
 
         def stories = Story.searchByTermOrTagInBacklog(currentProduct, params.term).sort { Story story -> story.rank }
         stories = params.type == 'widget' ? stories.findAll {it.state == Story.STATE_ESTIMATED} : stories
-        def template = params.type == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
-
-        def typeSelect = BundleUtils.storyTypes.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-        def rankSelect = ''
-
-        def maxRank = Story.countAllAcceptedOrEstimated(currentProduct?.id)?.list()[0] ?: 0
-        maxRank.times { rankSelect += "'${it + 1}':'${it + 1}'" + (it < maxRank - 1 ? ',' : '') }
-
-        def featureSelect = "'':'${message(code: 'is.ui.sandbox.manage.chooseFeature')}'"
-
-        if (currentProduct.features) {
-            featureSelect += ','
-            featureSelect += currentProduct.features.collect {v -> "'$v.id':'${v.name.encodeAsHTML().encodeAsJavaScript()}'"}.join(',')
-        }
-
         def suiteSelect = "'?':'?',"
         def currentSuite = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
 
         currentSuite = currentSuite.eachWithIndex { t, i ->
             suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
         }
-
-        render(template: template, model: [
-                stories: stories,
-                featureSelect: featureSelect,
-                typeSelect: typeSelect,
-                suiteSelect: suiteSelect,
-                rankSelect: rankSelect],
-                user: springSecurityService.currentUser,
-                params: [product: params.product])
+        render(template: "${params.type ?: 'window'}/view", model: [stories: stories, user: springSecurityService.currentUser])
     }
 
 

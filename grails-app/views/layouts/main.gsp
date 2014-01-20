@@ -30,7 +30,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
     <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
     <is:loadJsVar/>
-    <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
+    <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum,objects${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
     <sec:ifLoggedIn>
         <script src="${resource(dir: 'js/timeline/timeline_ajax', file: 'simile-ajax-api.js?bundle=true')}"
                 type="text/javascript"></script>
@@ -43,42 +43,41 @@
 </head>
 
 <body class="icescrum" ${user?.preferences?.displayWhatsNew?'data-whatsnew="true"':''}>
-
-<div id="application">
-    <div id="head" class="${space ? 'is_header-normal' : 'is_header-full'}">
-        <is:mainMenu/>
-    </div>
-
-    <div id="local"
-         data-droppable="true"
-         data-drop="onDropToWidgetBar"
-         data-hover-class="local-active"
-         data-accept=".widgetable"
-         data-sortable="true"
-         data-handle=".box-title"
-         data-items=".box-widget-sortable" class="left-resizable"
-         data-resizable="true"
-         data-grid="265"
-         data-max-width="265">
-        <div class="widget-bar">
-          <div id="widget-list">
-            <div class="message" id="upgrade" style="display:none;">
-                <span class="close"><g:message code="is.ui.hide"/></span>
-                <g:message code="is.upgrade.icescrum.pro"/>
+<is:header/>
+<div id="local"
+     data-ui-droppable
+     data-ui-droppable-drop="$.icescrum.onDropToWidgetBar"
+     data-ui-droppable-hover-class="local-active"
+     data-ui-droppable-accept=".draggable-to-widgets"
+     data-ui-sortable
+     data-ui-sortable-handle=".widget-toolbar"
+     data-ui-sortable-items=".box-widget-sortable"
+     data-ui-resizable-panel
+     data-ui-resizable-panel-right="false"
+     data-ui-resizable-panel-grid="265"
+     data-ui-resizable-panel-max-width="265">
+    <div class="widget-bar">
+      <div id="widget-list">
+        <div class="message" id="upgrade" style="display:none;">
+            <span class="close"><g:message code="is.ui.hide"/></span>
+            <g:message code="is.upgrade.icescrum.pro"/>
+        </div>
+        <g:if test="${request.archivedProduct}">
+            <div class="message" style="display:block;">
+                <g:message code="is.message.project.activate"/>
             </div>
-            <g:if test="${request.archivedProduct}">
-                <div class="message" style="display:block;">
-                    <g:message code="is.message.project.activate"/>
-                </div>
-            </g:if>
-          </div>
-        </div>
-        <div id="notifications" style="display:none;"><a id="accept_notifications">${message(code:'is.ui.html5.notifications')}</a> (<a id="hide_notifications">${message(code:'is.ui.hide')}</a>)</div>
+        </g:if>
+      </div>
     </div>
-    <div id="main">
-        <div id="main-content" data-droppable="true" data-drop="onDropToWindow" data-hover-class="main-active" data-accept=".draggable-to-desktop">
-            <g:layoutBody/>
-        </div>
+    <div id="notifications" style="display:none;"><a id="accept_notifications">${message(code:'is.ui.html5.notifications')}</a> (<a id="hide_notifications">${message(code:'is.ui.hide')}</a>)</div>
+</div>
+<div id="main">
+    <div id="main-content"
+         data-ui-droppable
+         data-ui-droppable-drop="$.icescrum.onDropToWindow"
+         data-ui-droppable-hover-class="main-active"
+         data-ui-droppable-accept=".draggable-to-main">
+        <g:layoutBody/>
     </div>
 </div>
 <is:spinner
@@ -89,11 +88,7 @@
 <r:layoutResources/>
 <entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
-<is:onStream
-            on="#application"
-            events="[[object:'product',events:['add','remove','update','redirect','archive', 'unarchive']]]"/>
-<is:onStream
-            on="#application"
-            events="[[object:'user',events:['addRoleProduct','removeRoleProduct','updateRoleProduct','updateProfile']]]"/>
+<is:onStream events="[[object:'product',events:['add','remove','update','redirect','archive', 'unarchive']]]"/>
+<is:onStream events="[[object:'user',events:['addRoleProduct','removeRoleProduct','updateRoleProduct','updateProfile']]]"/>
 </body>
 </html>

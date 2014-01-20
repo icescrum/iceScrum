@@ -15,8 +15,8 @@
                                         if (callback) {
                                             callback();
                                         }
-                                        widget.isWidget(widget.data());
-                                        attachOnDomUpdate(widget);
+                                        $(widget[0]).isWidget($(widget[0]).html5data('is'));
+                                        attachOnDomUpdate(widget[0]);
                                     }
                                 },
                                 error:function() {
@@ -86,7 +86,7 @@
             iconWindow.parents('.resizable:first').bind('dblclick', function(event) {
                 $.icescrum.widgetToWindow(obj, event)
             });
-            obj.addClass('draggable-to-desktop');
+            obj.addClass('draggable-to-main');
         }
 
         if (opts.closeable) {
@@ -110,21 +110,23 @@
                     content.height(opts.resizableOptions.defaultHeight);
                 }
             }
+            content.css('max-height', savedHeight ? savedHeight : opts.resizableOptions.defaultHeight);
             opts.resizableOptions.minHeight += dif;
             opts.resizableOptions.zIndex = 990;
             opts.resizableOptions.minWidth = obj.width();
             opts.resizableOptions.maxWidth = obj.width();
+            opts.resizableOptions.handles = 'se';
             opts.resizableOptions.start = function(event, ui){
                 var totalHeight = $(content.children()[0]).height() + dif;
                 obj.resizable('option','maxHeight', totalHeight >= opts.resizableOptions.minHeight ? totalHeight : opts.resizableOptions.minHeight);
             };
             opts.resizableOptions.resize = function(event, ui){
+                content.css('max-height','none');
                 content.height(ui.size.height - dif);
             };
             opts.resizableOptions.stop = function(event, ui){
                 localStorage['widget-'+id+$.icescrum.product.id] = ui.size.height - dif;
             };
-
             obj.resizable(opts.resizableOptions);
         }
     };
@@ -133,7 +135,7 @@
 
 $.fn.isWidget.defaults = {
     windowable:false,
-    resizableOptions:null,
+    resizableOptions:{},
     closeable:true,
     onClose:null
 };

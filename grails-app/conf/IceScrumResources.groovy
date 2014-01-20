@@ -58,8 +58,26 @@ modules = {
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.widget.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.window.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.wizard.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.functions.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.html5data.min.js'], nominify: true,  bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.js'], bundle: 'icescrum'
         resource url: [dir: 'js', file: 'dropzone.js'], bundle: 'icescrum'
+        resource url: [dir: 'js', file: 'underscore.js'], bundle: 'icescrum'
+    }
+
+    'objects' {
+        dependsOn 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.object.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.acceptancetest.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.attachment.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.comment.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.feature.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.project.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.release.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.sprint.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.actor.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.story.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.task.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.user.js'], bundle: 'icescrum'
     }
 
     'jquery' {
@@ -83,15 +101,13 @@ modules = {
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-pt.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery/datepicker', file: 'jquery.ui.datepicker-pt_BR.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery-ui.timepicker.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery-ui.selectableScroll.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.checkbox.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.ui.jeditable.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.ui.touch-punch.min.js'], nominify: true, bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.html5data.min.js'], nominify: true,  bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery-ui.touch-punch.min.js'], nominify: true, bundle: 'icescrum'
     }
 
     'jqplot' {
         dependsOn 'jquery'
-        resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.js'], bundle: 'icescrum'
         resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.barRenderer.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jqplot/plugins/jqplot.categoryAxisRenderer.min.js'], nominify: true, bundle: 'icescrum'
@@ -114,7 +130,6 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.tipTip.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.eventline.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.dropmenu.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.dnd.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.alphanumeric.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.resize.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.atmosphere.js'], bundle: 'icescrum'
@@ -122,7 +137,6 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.input.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.tablesorter.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.table.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.jeditable.min.js'], nominify:true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.select2.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.atwho.min.js'], nominify: true, bundle: 'icescrum'

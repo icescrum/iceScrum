@@ -24,6 +24,7 @@
 (function($) {
     $.extend($.icescrum, {
 
+                //TODO maybe to delete
                 displayQuicklook:function(obj){
                     if ($(".box-window").hasClass('window-fullscreen')){
                         return;
@@ -58,16 +59,9 @@
                                 .animate({opacity: 1.0}, {duration: 250, complete:$.icescrum.loading});
                     }
                 },
+
                 loadingError:function() {
                     $("#is-logo").stop(true).css('opacity', 1.0).removeClass().addClass('disconnected');
-                },
-
-                debug:function(value) {
-                    if (value) {
-                        this.o.debug = value;
-                    } else {
-                        return this.o.debug;
-                    }
                 },
 
                 htmlEncode:function(value) {
@@ -274,6 +268,98 @@
                         return string.substring(0,size)+"...";
                     else
                         return string;
+                },
+
+                selectableShortcut:function(event){
+                    var key = event.data.toLowerCase();
+                    if (_.contains(['up','down','right','left'], key)){
+                        $.icescrum.navigate.apply(this,[event]);
+                    } else {
+                        $.icescrum.selectableAll.apply(this,[event]);
+                    }
+                },
+
+                selectableAll:function(event){
+                    var $this = $(this);
+                    $this.find('.ui-selectee').addClass('ui-selected');
+                    var stop = $this.parent().selectableScroll("option" , "stop");
+                    if (stop){
+                        stop({target:$this});
+                    }
+                },
+
+                onDropToWidgetBar:function(event, ui){
+                    var id = ui.draggable.attr('id').replace('elem_','');
+                    if (id != ui.draggable.attr('id')) {
+                        var $selector = $("#window-id-" + id);
+                        if ($selector.is(':visible')) {
+                            $.icescrum.windowToWidget($selector, event);
+                        } else {
+                            $.icescrum.addToWidgetBar(id);
+                        }
+                    }
+                },
+
+                onDropToWindow:function(event, ui){
+                    var id = ui.draggable.attr('id').replace('widget-id-','');
+                    if (id == ui.draggable.attr('id')){
+                        id = ui.draggable.attr('id').replace('elem_','');
+                    }
+                    $.icescrum.openWindow(id);
+                },
+
+                navigate:function(event){
+                    var $this = $(this);
+                    var $el = $this.find('.ui-selected');
+                    //cache value
+                    if (!$this.data('is.count') || $this.data('is.count') < 1){
+                        if ($el.length == 1){
+                            var count = 1;
+                            var $_el = $el.prev();
+                            while($_el.length == 1 && $_el.position().top == $el.position().top){
+                                count++;
+                                $_el = $_el.prev();
+                            }
+                            $_el = $el.next();
+                            while($_el.length == 1 && $_el.position().top == $el.position().top){
+                                count++;
+                                $_el = $_el.next();
+                            }
+                            $this.data('is.count', count);
+                        }
+                        //reset cache value on resize
+                        $this.one('resize',function(){
+                            $this.data('is.count', -1);
+                        })
+                    }
+                    if ($this.data('is.count') >= 1){
+                        var $new = null;
+                        if ($el.length == 1){
+                            var list = $this.find('.ui-selectee');
+                            var currentIndex = $el.index();
+                            var key = event.data.toLowerCase();
+                            if (key == "up"){
+                                if (currentIndex - $this.data('is.count') >= 0)
+                                    $new = $(list.get(currentIndex - $this.data('is.count')));
+                            }else if(key == "down"){
+                                if (currentIndex + $this.data('is.count') < list.length)
+                                    $new = $(list.get(currentIndex + $this.data('is.count')));
+                            }else if(key == "left"){
+                                $new = $el.prev();
+                            }else if(key == "right"){
+                                $new = $el.next();
+                            }
+                            if ($new && $new.length){
+                                $el.removeClass('ui-selected');
+                                $new.addClass('ui-selected');
+                                $this.parent().animate({ scrollTop: ($this.parent().scrollTop() + $new.position().top) }, 250);
+                                var stop = $this.parent().selectableScroll( "option" , "stop");
+                                if (stop){
+                                    stop({target:$this});
+                                }
+                            }
+                        }
+                    }
                 }
             });
 
@@ -295,63 +381,11 @@
         select.trigger("change");
     };
 
-    $.fn.liveDraggable = function (opts) {
-        this.die('hover').live("hover", function() {
-            if (!$(this).data("init")) {
-                $(this).data("init", true).draggable(opts);
-            }
-        });
-    };
+    $.fn.replaceWithPush = function(a) {
+        var $a = $(a);
 
-    $.fn.liveDroppable = function (opts) {
-        var obj = this.selector;
-        $(opts.accept).live('dragstart', function() {
-            $(obj).each(function() {
-                var drp = $(this);
-                if (!drp.data("init")) {
-                    drp.data("init", true).droppable(opts);
-                }
-            });
-        });
-    };
-
-    $.fn.liveEditable = function (url, opts) {
-        $(this).die('hover.editable').live("hover.editable", function() {
-            if (!$(this).data("init")) {
-                $(this).data("init", true).editable(url, opts);
-            }
-        });
-    };
-
-    String.prototype.formatLine = function(remove) {
-        remove = remove ? "" : "<br/>";
-        return this.replace(/\r\n/g, remove).replace(/\n/g, remove).replace(/"/g, '\\"');
-    };
-
-    $.constbrowser = {
-
-        defaults:{
-            'dropmenuleft': 0
-        },
-        settings:{},
-
-        getDropMenuTopLeft:function() {
-            var o = $.constbrowser.getConstBrowser();
-            return o.dropmenuleft;
-        },
-
-        getConstBrowser:function() {
-            var o = $.constbrowser.defaults;
-            if ($.browser.msie) {
-                if ($.browser.version.substr(0, 1) == "7") {
-                    o = $.constbrowser.ie7;
-                }
-                else if ($.browser.version.substr(0, 1) == "6") {
-                    o = $.constbrowser.ie6;
-                }
-            }
-            return o;
-        }
+        this.replaceWith($a);
+        return $a;
     };
 
     $.extend({
@@ -375,14 +409,6 @@
             return value ? value : null;
           }
     });
-
-    $.constbrowser.ie7 = {
-        'dropmenuleft': 70
-    };
-
-    $.constbrowser.ie6 = {
-        'dropmenuleft': 70
-    };
 
     $.fn.togglePanels = function(){
       return this.each(function(){
@@ -441,6 +467,11 @@ if (typeof String.prototype.startsWith != 'function') {
   };
 }
 
+String.prototype.formatLine = function(remove) {
+    remove = remove ? "" : "<br/>";
+    return this.replace(/\r\n/g, remove).replace(/\n/g, remove).replace(/"/g, '\\"');
+};
+
 /**
  * @return {boolean}
  */
@@ -497,28 +528,4 @@ function NotesToHtml(html, textarea){
     $textarea.show().val($.trim(text));
     $textarea.parent().animate({scrollTop: $(textarea).offset().top}, 500,'easeInOutCubic');
     return false;
-}
-
-function updateUrlFinder(){
-
-}
-
-function onDropToWidgetBar(event, ui){
-    var id = ui.draggable.attr('id').replace('elem_','');
-    if (id != ui.draggable.attr('id')) {
-        var $selector = $("#window-id-" + id);
-        if ($selector.is(':visible')) {
-            $.icescrum.windowToWidget($selector, event);
-        } else {
-            $.icescrum.addToWidgetBar(id);
-        }
-    }
-}
-
-function onDropToWindow(event, ui){
-    var id = ui.draggable.attr('id').replace('widget-id-','');
-    if (id == ui.draggable.attr('id')){
-        id = ui.draggable.attr('id').replace('elem_','');
-    }
-    $.icescrum.openWindow(id);
 }

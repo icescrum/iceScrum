@@ -29,8 +29,9 @@
         <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
            data-ajax="true"
            href="${createLink(action:'openDialogAcceptAs',params:[product:params.product])}"
-           data-shortcut="ctrl+shift+a"
-           data-shortcut-on="#window-id-${controllerName}"
+           data-is-shortcut
+           data-is-shortcut-key="ctrl+shift+a"
+           data-is-shortcut-on="#window-id-${controllerName}"
            alt="${message(code:'is.ui.sandbox.toolbar.alt.accept')}"
            title="${message(code:'is.ui.sandbox.toolbar.alt.accept')}">
                 <span class="start"></span>
@@ -44,8 +45,9 @@
     <li class="navigation-item">
         <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
            onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
-           data-shortcut="ctrl+shift+c"
-           data-shortcut-on="#window-id-${controllerName}"
+           data-is-shortcut
+           data-is-shortcut-key="ctrl+shift+c"
+           data-is-shortcut-on="#window-id-${controllerName}"
            alt="${message(code:'is.ui.sandbox.toolbar.alt.clone')}"
            title="${message(code:'is.ui.sandbox.toolbar.alt.clone')}">
                 <span class="start"></span>
@@ -59,8 +61,9 @@
     <li class="navigation-item">
         <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
            onclick="jQuery.icescrum.selectableAction('story/openDialogDelete',true,null,null);"
-           data-shortcut="del"
-           data-shortcut-on="#window-id-${controllerName}"
+           data-is-shortcut
+           data-is-shortcut-key="del"
+           data-is-shortcut-on="#window-id-${controllerName}"
            alt="${message(code:'is.ui.sandbox.toolbar.alt.delete')}"
            title="${message(code:'is.ui.sandbox.toolbar.alt.delete')}">
                 <span class="start"></span>

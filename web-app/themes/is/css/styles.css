@@ -25,10 +25,6 @@
  *
  */
 
-#application, #navigation, #footer {
-    height: 100%;
-}
-
 .window-fullscreen {
     position: absolute;
     left: 3px;
@@ -1855,11 +1851,6 @@ li#li-roles {
     padding: 0;
 }
 
-#menubar-list-content {
-    background: red;
-    float: none;
-}
-
 #menubar-list-content li, #menubar-list-content li a {
     display: block;
     float: none;
@@ -2478,7 +2469,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     width: 100%;
 }
 
-.right-properties > textarea {
+.right-properties > textarea, .right-properties > .atwho-preview {
     max-height:100px;
 }
 
@@ -2549,4 +2540,75 @@ input.important, .important .select2-chosen, .right-properties .atwho-preview a 
     margin-right: 4px;
     margin-top: 1px;
     width: 18px;
+}
+
+ul.ui-sortable > .navigation-line a span {
+    -ms-user-select: none; /* IE 10+ */
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#widget-list .box {
+    margin-top:-1;
+    background:#fff;
+}
+
+.stack {
+    position: relative;
+    z-index: 10;
+    width:160px;
+    margin-left:28%;
+    margin-top:50px;
+}
+
+.stack .postit {
+    max-width: 100%;
+    height: auto;
+    vertical-align: bottom;
+    border: 10px solid #fff;
+    border-radius: 3px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.stack .postit .postit-layout {
+    background:#FDF176;
+}
+
+.stack:before, .stack:after { content: ""; border-radius: 3px; width: 100%; height: 100%; position: absolute; border: 10px solid #fff; left: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    -webkit-transition: 0.3s all ease-out;
+    -moz-transition: 0.3s all ease-out;
+    transition: 0.3s all ease-out;
+}
+.stack:before { top: 4px; z-index: -10; }
+.stack:after { top: 8px; z-index: -20; }
+
+.stack.twisted:before {
+    -webkit-transform: rotate(4deg);
+    -moz-transform: rotate(4deg);
+    transform: rotate(4deg);
+}
+.stack.twisted:after {
+    -webkit-transform: rotate(-4deg);
+    -moz-transform: rotate(-4deg);
+    transform: rotate(-4deg);
+}
+
+/* Reset all rotations on hover */
+.stack:hover:before, .stack:hover:after {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
 }

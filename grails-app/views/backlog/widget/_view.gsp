@@ -18,24 +18,24 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Damien vitrac (damien@oocube.com)
+- Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <ul class="list postit-rows"
     id="widget-${controllerName}"
-    style="display:${features ? 'block' : 'none'};"
+    style="display:${stories ? 'block' : 'none'};"
     ${request.productOwner || request.scrumMaster ? 'data-ui-draggable' : ''}
     data-ui-draggable-selector=".postit-row"
     data-ui-draggable-helper="clone"
-    data-ui-draggable-append-to="body">
-    <g:each in="${features}" var="feature">
-        <is:cache  cache="featureCache" key="postit-small-${feature.id}-${feature.lastUpdated}">
-            <li data-elemid="${feature.id}" class="postit-row postit-row-feature">
-                <is:postitIcon name="${feature.name.encodeAsHTML()}" color="${feature.color}"/>
-                <is:truncated size="30" encodedHTML="true">${feature.name.encodeAsHTML()}</is:truncated>
-            </li>
-        </is:cache>
-    </g:each>
+    data-ui-draggable-connect-to-sortable='.backlog.connectableToWidgetBacklog'
+    data-ui-draggable-append-to="body"
+    data-binding
+    data-binding-type="story"
+    data-binding-tpl="widgetBacklog">
 </ul>
-<div class="box-blank" style="display:${features ? 'none' : 'block'};">
-    ${message(code: 'is.widget.feature.empty')}
+
+<div class="box-blank" style="display:${stories ? 'none' : 'block'};">
+    ${message(code: 'is.widget.backlog.empty')}
 </div>
-<entry:point id="${controllerName}-${actionName}-widget" model="[feature:feature]"/>
+
+<entry:point id="${controllerName}-${actionName}-widget" model="[stories:stories]"/>

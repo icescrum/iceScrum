@@ -30,8 +30,9 @@
     <li class="navigation-item button-ico button-add">
         <a class="tool-button button-n"
            href="#${controllerName}/add"
-           data-shortcut="ctrl+n"
-           data-shortcut-on="#window-id-${controllerName}"
+           data-is-shortcut
+           data-is-shortcut-key="ctrl+n"
+           data-is-shortcut-on="#window-id-${controllerName}"
            title="${message(code:'is.ui.actor.toolbar.alt.new')}"
            alt="${message(code:'is.ui.actor.toolbar.alt.new')}">
                 <span class="start"></span>
@@ -47,8 +48,9 @@
     <li class="navigation-item button-ico button-delete">
         <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
            onclick="jQuery.icescrum.selectableAction('actor/delete',null,null,function(data){ jQuery.event.trigger('remove_actor',[data]); jQuery.icescrum.renderNotice('${message(code:'is.actor.deleted')}'); });"
-           data-shortcut="del"
-           data-shortcut-on="#window-id-${controllerName}"
+           data-is-shortcut
+           data-is-shortcut-key="del"
+           data-is-shortcut-on="#window-id-${controllerName}"
            alt="${message(code:'is.ui.actor.toolbar.alt.delete')}"
            title="${message(code:'is.ui.actor.toolbar.alt.delete')}">
                 <span class="start"></span>

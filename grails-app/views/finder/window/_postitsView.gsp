@@ -259,8 +259,9 @@
             <entry:point id="${controllerName}-${actionName}-side"/>
             <li id="search-submit">
                 <a id="submitForm"  class="button-s clearfix"
-                   data-shortcut="return"
-                   data-shortcut-on="#${controllerName}-form, #${controllerName}-form"
+                   data-is-shortcut
+                   data-is-shortcut-key="return"
+                   data-is-shortcut-on="#${controllerName}-form, #${controllerName}-form"
                    onclick="document.location.hash = '#finder?'+$('#finder-form').serialize(); return false;">
                     <span class="start"></span>
                     <span class="content">${message(code:'is.ui.finder.submit')}</span>

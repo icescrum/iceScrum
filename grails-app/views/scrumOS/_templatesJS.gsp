@@ -137,6 +137,8 @@
         <g:render template="/comment/js"/>
         <g:render template="/acceptanceTest/js"/>
         <g:render template="/attachment/js"/>
+
+        <g:render template="/story/js2"/>
     </g:if>
     <g:render template="/user/js"/>
 </div>

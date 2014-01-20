@@ -76,7 +76,7 @@
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
                                     }
-                                    $(content).isWindow($(content).data());
+                                    $(content).isWindow($(content).html5data('is'));
                                     attachOnDomUpdate($(content));
 
                                     if (callback) {
@@ -92,9 +92,10 @@
                                         $dialog.dialog('close');
                                     }
                                     if (!$("#dropmenu").is(':visible')) {
-                                        $("input:visible:not(.select2-focusser), textarea:visible", content).first().focus()
+                                        //TODO remove or not ?
+                                        //$("input:visible:not(.select2-focusser), textarea:visible", content).first().focus()
                                     }
-                                    $.icescrum.checkToolbar();
+                                    $.icescrum.toolbar.checkToolbar();
                                     $.post($.icescrum.o.push.url, {window:id});
                                     return false;
                                 }

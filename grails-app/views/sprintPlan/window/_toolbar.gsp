@@ -31,8 +31,9 @@
         <li class="navigation-item button-ico button-add close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
             <a class="tool-button button-n"
                href="#sprintPlan/add/${sprint.id}"
-               data-shortcut="ctrl+n"
-               data-shortcut-on="#window-id-${controllerName}"
+               data-is-shortcut
+               data-is-shortcut-key="ctrl+n"
+               data-is-shortcut-on="#window-id-${controllerName}"
                title="${message(code:'is.ui.sprintPlan.toolbar.alt.new')}"
                alt="${message(code:'is.ui.sprintPlan.toolbar.alt.new')}">
                     <span class="start"></span>
@@ -48,8 +49,9 @@
         <li class="navigation-item button-ico button-delete close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
             <a class="tool-button button-n on-selectable-disabled on-selectable-kanban-sprint-${sprint.id}"
                onclick="jQuery.icescrum.selectableAction('task/delete',null,null,function(data){ jQuery.event.trigger('remove_task',[data]); jQuery.icescrum.renderNotice('${message(code:'is.task.deleted')}'); });"
-               data-shortcut="del"
-               data-shortcut-on="#window-id-${controllerName}"
+               data-is-shortcut
+               data-is-shortcut-key="del"
+               data-is-shortcut-on="#window-id-${controllerName}"
                alt="${message(code:'is.ui.sprintPlan.toolbar.alt.delete')}"
                title="${message(code:'is.ui.sprintPlan.toolbar.alt.delete')}">
                 <span class="start"></span>
@@ -147,8 +149,9 @@
                data-ajax-trigger='{"activate_sprint":"sprint","inProgress_story":"stories"}'
                data-ajax-notice="${message(code:'is.sprint.activated').encodeAsJavaScript()}"
                data-ajax-confirm="${message(code:'is.ui.sprintPlan.toolbar.activate.confirm').encodeAsJavaScript()}"
-               data-shortcut="ctrl+shift+a"
-               data-shortcut-on="#window-id-${controllerName}"
+               data-is-shortcut
+               data-is-shortcut-key="ctrl+shift+a"
+               data-is-shortcut-on="#window-id-${controllerName}"
                alt="${message(code:'is.ui.sprintPlan.toolbar.alt.activate')}"
                title="${message(code:'is.ui.sprintPlan.toolbar.alt.activate')}">
                 <span class="start"></span>
@@ -167,8 +170,9 @@
                data-ajax-trigger='{"close_sprint":"sprint","update_story":"stories"}'
                data-ajax-notice="${message(code:'is.sprint.closed').encodeAsJavaScript()}"
                data-ajax-confirm="${message(code:'is.ui.sprintPlan.toolbar.close.confirm').encodeAsJavaScript()}"
-               data-shortcut="ctrl+shift+c"
-               data-shortcut-on="#window-id-${controllerName}"
+               data-is-shortcut
+               data-is-shortcut-key="ctrl+shift+c"
+               data-is-shortcut-on="#window-id-${controllerName}"
                alt="${message(code:'is.ui.sprintPlan.toolbar.alt.close')}"
                title="${message(code:'is.ui.sprintPlan.toolbar.alt.close')}">
                     <span class="start"></span>
@@ -186,8 +190,9 @@
         %{-- doneDefinition --}%
             <li class="first">
                 <a href="#${controllerName}/doneDefinition/${sprint.id}"
-                   data-shortcut="ctrl+shift+d"
-                   data-shortcut-on="#window-id-${controllerName}"
+                   data-is-shortcut
+                   data-is-shortcut-key="ctrl+shift+d"
+                   data-is-shortcut-on="#window-id-${controllerName}"
                    alt="${message(code:'is.ui.sprintPlan.toolbar.alt.doneDefinition')}"
                    title="${message(code:'is.ui.sprintPlan.toolbar.alt.doneDefinition')}">
                         <span class="start"></span>
@@ -201,8 +206,9 @@
             %{-- retrospective --}%
             <li>
                 <a href="#${controllerName}/retrospective/${sprint.id}"
-                   data-shortcut="ctrl+shift+r"
-                   data-shortcut-on="#window-id-${controllerName}"
+                   data-is-shortcut
+                   data-is-shortcut-key="ctrl+shift+r"
+                   data-is-shortcut-on="#window-id-${controllerName}"
                    alt="${message(code:'is.ui.sprintPlan.toolbar.alt.retrospective')}"
                    title="${message(code:'is.ui.sprintPlan.toolbar.alt.retrospective')}">
                         <span class="start"></span>
@@ -216,8 +222,9 @@
             %{-- sprint notes --}%
             <li class="last">
                 <a href="#${controllerName}/notes/${sprint.id}"
-                   data-shortcut="ctrl+shift+o"
-                   data-shortcut-on="#window-id-${controllerName}"
+                   data-is-shortcut
+                   data-is-shortcut-key="ctrl+shift+o"
+                   data-is-shortcut-on="#window-id-${controllerName}"
                    alt="${message(code:'is.ui.sprintPlan.toolbar.alt.notes')}"
                    title="${message(code:'is.ui.sprintPlan.toolbar.alt.notes')}">
                     <span class="start"></span>

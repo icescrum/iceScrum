@@ -30,7 +30,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
     $.icescrum = {
 
         defaults:{
-            debug:false,
             baseUrlSpace:null,
             baseUrl:null,
             versionUrl:null,
@@ -49,8 +48,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             openWindow:false,
             locale:'en',
             showUpgrade:true,
-            push:{enable:true,websocket:false,url:null},
-            selectedObject:{obj:'',time:'',callback:''}
+            push:{enable:true,websocket:false,url:null}
         },
         o:{},
 
@@ -69,8 +67,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 }
             });
 
-            $.fn.editable.defaults.placeholder = "&nbsp;";
-
             if (!window.console) window.console = {};
             if (!window.console.log) window.console.log = function () { };
 
@@ -85,7 +81,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             $.icescrum.initHistory();
 
             var currentWindow = location.hash.replace(/^.*#/, '');
-            var $menubar = $('li.menubar:first a');
+            var $menubar = $('#navigation').find('li.menubar:first a');
             if ($.icescrum.o.baseUrlSpace && !currentWindow && $menubar){
                 var menubar = $menubar.attr('href').replace(/^.*#/, '');
                 document.location.hash = menubar;
@@ -152,12 +148,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             $.icescrum.whatsNew();
         },
 
-        log:function() {
-            if (window.console) {
-                console.log.apply(console, arguments);
-            }
-        },
-
         renderNotice:function(text, type, title) {
             var timeout = 7000;
             var titleP = "";
@@ -196,10 +186,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 var notification = window.webkitNotifications.createNotification(image, title, $('<div/>').html(msg.replace(/<\/?[^>]+>/gi, '')).text());
                 notification.show();
             }
-        },
-
-        displayView:function() {
-            $('#menu-display-list').find('.content').html('<span class="ico"></span>');
         },
 
         selectableAction:function(action, doNotConfirm, idParam, onSuccess) {
@@ -250,37 +236,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             var params = {id:idmoved};
             params[name] = newPosition;
             call(params, source);
-        },
-
-        dblclickSelectable:function(obj, delay, callback, force) {
-            if (force != undefined && force) {
-                if ($.icescrum.o.selectedObject.obj != "" && $('#' + $.icescrum.o.selectedObject.obj.selected.id).hasClass('ui-selected')) {
-                    if ($.icescrum.o.selectedObject.callback) {
-                        callback($.icescrum.o.selectedObject.obj);
-                    }
-                }
-                return false;
-            }
-            if ($.icescrum.o.selectedObject.obj == "" || (obj.selected.id != $.icescrum.o.selectedObject.obj.selected.id)) {
-                $.icescrum.o.selectedObject.obj = obj;
-                $.icescrum.o.selectedObject.time = new Date().getTime();
-                $.icescrum.o.selectedObject.callback = callback;
-            }
-            else {
-                var c = new Date().getTime();
-                var d = c - $.icescrum.o.selectedObject.time;
-                if (d <= delay) {
-                    if ($.icescrum.o.selectedObject.callback) {
-                        $.icescrum.o.selectedObject.callback(obj);
-                    }
-                    $.icescrum.o.selectedObject = {obj:'',time:'',callback:''};
-                }
-                else {
-                    $.icescrum.o.selectedObject = {obj:'',time:'',callback:''};
-                    $.icescrum.dblclickSelectable(obj, delay, callback);
-                }
-            }
-            return false;
         },
 
         openCommentTab:function(relation) {
@@ -376,10 +331,16 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                   try {
                       var json = JSON.parse(message);
                       $(json).each(function() {
+                          //TODO remove old code
                           if (this.call && this.object) {
                               if (this.object['class']) {
                                   var type = this.object['class'].substring(this.object['class'].lastIndexOf('.') + 1).toLowerCase();
                                   this.call = (this.call == 'delete') ? 'remove' : this.call;
+                                  if (this.call == 'remove'){
+                                      $.icescrum.object.removeFromArray(type, this.object);
+                                  } else {
+                                      $.icescrum.object.addOrUpdateToArray(type, this.object);
+                                  }
                                   $.event.trigger(this.call + '_' + type + '.stream', this.object);
                               } else{
                                   $.event.trigger(this.call + '.stream', this.object);
@@ -497,17 +458,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
     }
 
 })(jQuery);
-
-$.fn.icescrum = function(options) {
-    if ((typeof options) == "string") {
-        //TODO : refactor icescrum('toolbar')
-        if (options == 'toolbar')
-            return $.icescrum[options](this, arguments);
-        else
-            return $.icescrum[options].apply(this, arguments);
-    }
-    return $.icescrum;
-};
 
 $.ui.dialog.prototype._allowInteraction = function(e) {
     return !!$(e.target).closest('.ui-dialog, .ui-datepicker, .select2-drop').length;

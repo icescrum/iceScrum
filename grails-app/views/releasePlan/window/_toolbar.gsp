@@ -28,8 +28,9 @@
         <li class="navigation-item button-ico button-add close-release-${release.id}">
             <a class="tool-button button-n"
                href="#${controllerName}/add/${release.id}"
-               data-shortcut="ctrl+n"
-               data-shortcut-on="#window-id-${controllerName}"
+               data-is-shortcut
+               data-is-shortcut-key="ctrl+n"
+               data-is-shortcut-on="#window-id-${controllerName}"
                alt="${message(code:'is.ui.releasePlan.toolbar.alt.new')}"
                title="${message(code:'is.ui.releasePlan.toolbar.alt.new')}">
                     <span class="start"></span>
@@ -45,11 +46,12 @@
         <li class="navigation-item close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'release', action:'generateSprints', params:[product:params.product], id:release.id)}"
-               data-shortcut="ctrl+g"
+               data-is-shortcut
+               data-is-shortcut-key="ctrl+g"
+               data-is-shortcut-on="#window-id-${controllerName}"
                data-ajax="true"
                data-ajax-trigger="add_sprint"
                data-ajax-notice="${message(code:'is.release.sprints.generated').encodeAsJavaScript()}"
-               data-shortcut-on="#window-id-${controllerName}"
                alt="${message(code:'is.ui.releasePlan.toolbar.alt.generateSprints')}"
                title="${message(code:'is.ui.releasePlan.toolbar.alt.generateSprints')}">
                 <span class="start"></span>
@@ -65,9 +67,10 @@
         <li class="navigation-item close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'releasePlan', action:'autoPlan', params:[product:params.product], id:release.id)}"
-               data-shortcut="ctrl+shift+a"
+               data-is-shortcut
+               data-is-shortcut-key="ctrl+shift+a"
+               data-is-shortcut-on="#window-id-${controllerName}"
                data-ajax="true"
-               data-shortcut-on="#window-id-${controllerName}"
                alt="${message(code:'is.ui.releasePlan.toolbar.alt.autoPlan')}"
                title="${message(code:'is.ui.releasePlan.toolbar.alt.autoPlan')}">
                     <span class="start"></span>
@@ -82,12 +85,13 @@
         <li class="navigation-item close-release-${release.id}">
             <a class="tool-button button-n"
                href="${createLink(controller:'release', action:'unPlan', params:[product:params.product], id:release.id)}"
-               data-shortcut="ctrl+shift+d"
+               data-is-shortcut
+               data-is-shortcut-key="ctrl+shift+d"
+               data-is-shortcut-on="#window-id-${controllerName}"
                data-ajax="true"
                data-ajax-trigger='{"sprintMesure_sprint":"sprints", "unPlan_story":"stories"}'
                data-ajax-confirm="${message(code:'is.ui.releasePlan.toolbar.warning.dissociateAll').encodeAsJavaScript()}"
                data-ajax-notice="${message(code:'is.release.stories.dissociated').encodeAsJavaScript()}"
-               data-shortcut-on="#window-id-${controllerName}"
                alt="${message(code:'is.ui.releasePlan.toolbar.alt.dissociateAll')}"
                title="${message(code:'is.ui.releasePlan.toolbar.alt.dissociateAll')}">
                     <span class="start"></span>
@@ -104,8 +108,9 @@
             %{-- vision --}%
             <li class="first">
                 <a href="#${controllerName}/vision/${release.id}"
-                   data-shortcut="ctrl+shift+v"
-                   data-shortcut-on="#window-id-${controllerName}"
+                   data-is-shortcut
+                   data-is-shortcut-key="ctrl+shift+v"
+                   data-is-shortcut-on="#window-id-${controllerName}"
                    alt="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}"
                    title="${message(code:'is.ui.releasePlan.toolbar.alt.vision')}">
                         <span class="start"></span>
@@ -117,8 +122,9 @@
             </li>
             <li>
                 <a href="#${controllerName}/notes/${release.id}"
-                   data-shortcut="ctrl+shift+o"
-                   data-shortcut-on="#window-id-${controllerName}"
+                   data-is-shortcut
+                   data-is-shortcut-key="ctrl+shift+o"
+                   data-is-shortcut-on="#window-id-${controllerName}"
                    alt="${message(code:'is.ui.releasePlan.toolbar.alt.notes')}"
                    title="${message(code:'is.ui.releasePlan.toolbar.alt.notes')}">
                     <span class="start"></span>
