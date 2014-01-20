@@ -42,6 +42,10 @@
      data-is-shortcut-callback="$.icescrum.selectableShortcut"
      data-binding
      data-binding-type="story"
-     data-binding-tpl="postit"
+     data-binding-selector="div.postit-story"
+     data-binding-tpl="tpl-postit-story"
+     data-binding-watch="items"
+     data-binding-highlight="true"
+     data-binding-config="sandbox"
      class="view-postit backlog">
 </div>

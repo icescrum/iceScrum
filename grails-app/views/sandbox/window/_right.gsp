@@ -22,6 +22,10 @@
 --}%
 <div data-binding
      data-binding-type="story"
-     data-binding-tpl="rightSandbox">
-    <span id="stories-sandbox-size"></span>
+     data-binding-watch="array"
+     data-binding-selector="#stories-sandbox-size"
+     data-binding-tpl="tpl-sandbox">
 </div>
+<script type="text/icescrum-template" id="tpl-sandbox">
+    <span id="stories-sandbox-size">** _.size( _.where(list,{ state: $.icescrum.story.STATE_SUGGESTED }) ) ** stories</span>
+</script>

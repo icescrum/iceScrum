@@ -61,6 +61,16 @@
                                 </li>
                                 **# } **
                                 **# } **
+                                **# if ($.icescrum.user.productOwner && _.contains([$.icescrum.story.STATE_ACCEPTED, $.icescrum.story.STATE_ESTIMATED], story.state)) { **
+                                    <li>
+                                        <a href="${createLink(action:'returnToSandbox', id:'** story.id **', controller:'story',params:[product:params.product])}"
+                                           data-ajax-trigger="returnToSandbox_story"
+                                           data-ajax-notice="${message(code: 'is.story.returnedToSandbox').encodeAsJavaScript()}"
+                                           data-ajax="true">
+                                            <g:message code='is.ui.backlog.menu.returnToSandbox'/>
+                                        </a>
+                                    </li>
+                                **# } **
                                 **# if ($.icescrum.user.inProduct && _.contains([$.icescrum.story.STATE_PLANNED, $.icescrum.story.STATE_INPROGRESS], story.state)) { **
                                 <li>
                                     <a href="#sprintPlan/add/** story.parentSprint.id **/?story.id=** story.id **">

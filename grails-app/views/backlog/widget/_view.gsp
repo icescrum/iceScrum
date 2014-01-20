@@ -31,7 +31,11 @@
     data-ui-draggable-append-to="body"
     data-binding
     data-binding-type="story"
-    data-binding-tpl="widgetBacklog">
+    data-binding-selector="li.postit-row-story"
+    data-binding-tpl="tpl-postit-row-story"
+    data-binding-watch="items"
+    data-binding-highlight="true"
+    data-binding-config="backlog">
 </ul>
 
 <div class="box-blank" style="display:${stories ? 'none' : 'block'};">

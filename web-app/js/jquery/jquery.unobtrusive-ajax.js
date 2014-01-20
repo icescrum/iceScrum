@@ -123,9 +123,11 @@ function getFunction(code, argNames) {
                     if (element.data("ajaxTrigger")){
                         if(typeof element.data("ajaxTrigger") == 'string'){
                             $.event.trigger(element.data("ajaxTrigger"),[data]);
+                            $.icescrum.object.addOrUpdateToArray(element.data("ajaxTrigger").split('_')[1],data);
                         }else{
                             $.each( element.data("ajaxTrigger"), function(i, n){
                                 $.event.trigger(i,[data[n]]);
+                                $.icescrum.object.addOrUpdateToArray(i.split('_')[1],[data[n]]);
                             });
                         }
                     }
@@ -563,7 +565,6 @@ function attachOnDomUpdate(content){
             select.change(function (event) {
                 var data = { };
                 var name = $this.attr('name');
-                data[name] = event.val;
                 $.post(settings.change, data, function(data) {
                     $.icescrum.object.addOrUpdateToArray('story',data);
                 }, 'json');
@@ -724,7 +725,7 @@ function attachOnDomUpdate(content){
             $this.data('binding-init', true);
         }
         var settings = $this.html5data('binding');
-        $.icescrum.object.dataBinding.apply(this,[settings.type, settings.tpl]);
+        $.icescrum.object.dataBinding.apply(this,[settings]);
     });
 
     $('[data-ui-selectable]', content).each(function(){

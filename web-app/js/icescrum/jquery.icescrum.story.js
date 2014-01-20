@@ -27,7 +27,7 @@
         var template = cache[name];
 
         if (!template){
-            template = $('script[type="text/icescrum-template"]' + name).html();
+            template = $('script[type="text/icescrum-template"]#' + name).html();
             cache[name] = template;
         }
 
@@ -65,31 +65,12 @@
                     return description ? description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
                 }
             },
-            binding: {
-                postit: {
-                    selector:'div.postit-story',
-                    tpl:'#tpl-postit-story',
-                    watch:"items",
-                    filter: function(item){ return item.state == this.STATE_SUGGESTED },
-                    highlight:true
+            config: {
+                sandbox: {
+                    filter: function(item){ return item.state == this.STATE_SUGGESTED }
                 },
-                edit: {
-                    selector:'#contextual-properties',
-                    tpl:'#tpl-edit-story',
-                    watch:"item",
-                    watchedId:null
-                },
-                rightSandbox: {
-                    selector:'#stories-sandbox-size',
-                    tpl:"#tpl-sandbox",
-                    watch:"array"
-                },
-                widgetBacklog: {
-                    selector:"li.postit-row-story",
-                    tpl:"#tpl-postit-row-story",
-                    watch:"items",
-                    filter: function(item){ return item.state == this.STATE_ESTIMATED },
-                    highlight:true
+                backlog: {
+                    filter: function(item){ return item.state == this.STATE_ESTIMATED }
                 }
             },
             onDrop:function(event, ui){
@@ -113,21 +94,26 @@
                     case 0:
                         if (selectable.data('currentState') != 0){
                             toolbarButtons.addClass('on-selectable-disabled');
-                            el = $.template('#tpl-new-story', {});
+                            el = $.template('tpl-new-story', {});
                             container.html(el);
                         }
                         break;
                     //Display form edit story
                     case 1:
                         toolbarButtons.removeClass('on-selectable-disabled');
-                        var id = selectable.find('.ui-selected').data('elemid');
-                        $.icescrum.object.dataBinding.apply(container.parent(), ['story', 'edit', id]);
+                        $.icescrum.object.dataBinding.apply(container.parent(), [{
+                            type:'story',
+                            tpl:'tpl-edit-story',
+                            watchedId:selectable.find('.ui-selected').data('elemid'),
+                            watch:'item',
+                            selector:'#contextual-properties'
+                        }]);
                         break;
                     //Display form multiple stories
                     default:
                         toolbarButtons.removeClass('on-selectable-disabled');
                         var id = selectable.find('.ui-selected:last').data('elemid');
-                        el = $.template('#tpl-multiple-stories', {story:_.findWhere($.icescrum['story'].data,{id:id})});
+                        el = $.template('tpl-multiple-stories', {story:_.findWhere($.icescrum['story'].data,{id:id})});
                         container.html(el);
                         break;
                 }
