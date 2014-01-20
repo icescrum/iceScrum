@@ -58,11 +58,18 @@
             bindings:[],
             restUrl:'/icescrum/p/1/story',
             formatters:{
-                state:function(state){
-                    return state > 1 ? $.icescrum.story.states[state] : '';
+                state:function(story){
+                    return story.state > 1 ? $.icescrum.story.states[story.state] : '';
                 },
-                description:function(description) {
-                    return description ? description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
+                description:function(story) {
+                    return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
+                },
+                type:function(story) {
+                    if (story.type == $.icescrum.story.TYPE_DEFECT && story.affectVersion){
+                        return $.icescrum.story.types[story.type]+" (version:"+" "+story.affectVersion+")";
+                    } else {
+                        return $.icescrum.story.types[story.type];
+                    }
                 }
             },
             config: {

@@ -58,19 +58,13 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
             this.o = jQuery.extend({}, this.defaults, icescrum);
 
-            $.ajaxSetup({ timeout:45000 });
-            $(document).ajaxSend(function(event, xhr, settings){
-                xhr.setRequestHeader("If-Modified-Since",new Date(1970,1,1).toUTCString());
-                xhr.setRequestHeader("Pragma","no-cache");
-                if ($.icescrum.o.push && $.icescrum.o.push.uuid && settings.url.indexOf('X-Atmosphere-tracking-id') == -1){
-                    xhr.setRequestHeader("X-Atmosphere-tracking-id", $.icescrum.o.push.uuid);
-                }
-            });
+            $.icescrum.initAjaxSetup();
 
             if (!window.console) window.console = {};
             if (!window.console.log) window.console.log = function () { };
 
             $.datepicker.setDefaults($.datepicker.regional[this.o.locale]);
+
             if (!$.getUrlVar('ref')){
                 var url = location.hash.replace(/^.*#/, '');
                 if (url != '') {
@@ -79,60 +73,10 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
 
             $.icescrum.initHistory();
-
-            var currentWindow = location.hash.replace(/^.*#/, '');
-            var $menubar = $('#navigation').find('li.menubar:first a');
-            if ($.icescrum.o.baseUrlSpace && !currentWindow && $menubar){
-                var menubar = $menubar.attr('href').replace(/^.*#/, '');
-                document.location.hash = menubar;
-                $.icescrum.removeFromWidgetsList(menubar);
-            }
-
-            if ($.icescrum.getWidgetsList().length > 0) {
-                var tmp = $.icescrum.getWidgetsList();
-                $.icescrum.saveWidgetsList([]);
-                for (i = 0; i < tmp.length; i++) {
-                    this.addToWidgetBar(tmp[i]);
-                }
-            }
-
-            $.event.trigger('init.icescrum');
-
-            if (this.o.push.enable){
-                $.icescrum.listenServer();
-            }
-
-            if (window.webkitNotifications) {
-                console.log("[notifications] are supported!");
-                if (!window.webkitNotifications.checkPermission()) {
-                    console.log("[notifications] got permission");
-                    this.o.notifications = true;
-                }
-                else if(window.webkitNotifications.checkPermission() != 2 && !localStorage['hide_notifications']){
-                    $("#notifications").show();
-                    $("#accept_notifications").click(function(){
-                        window.webkitNotifications.requestPermission(function(){
-                            if (window.webkitNotifications.checkPermission() == 0){
-                                console.log("[notifications] got permission");
-                                $.icescrum.o.notifications = true;
-                            }
-                            localStorage['hide_notifications'] = true;
-                            $("#notifications").remove();
-                        });
-                    });
-                    $("#hide_notifications").click(function(){
-                        localStorage['hide_notifications'] = true;
-                        $("#notifications").remove();
-                    });
-                }else{
-                    console.log("[notifications] permission refused");
-                    $("#notifications").remove();
-                }
-            }else{
-                $("#accept_notifications").remove();
-                console.log("Notifications are not supported for this Browser/OS version yet.");
-                this.o.notifications = false;
-            }
+            $.icescrum.initAtmosphere();
+            $.icescrum.initNotifications();
+            $.icescrum.showUpgrade();
+            $.icescrum.whatsNew();
 
             $(window).bind('resize',function(){
                 $.icescrum.checkBars();
@@ -144,48 +88,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 return true;
             });
 
-            $.icescrum.showUpgrade();
-            $.icescrum.whatsNew();
-        },
-
-        renderNotice:function(text, type, title) {
-            var timeout = 7000;
-            var titleP = "";
-            if (title) {
-                titleP = title;
-            }
-            var typeP = "notice";
-            if (typeP) {
-                typeP = type;
-            }
-            if (this.o.notifications){
-                var notification = this.displayNotification(title ? title : 'iceScrum '+ (type ?' - '+type : ''), text, type);
-                if(notification) {
-                    $.doTimeout(timeout,function(){
-                        notification.close();
-                    });
-                }
-            }else{
-                $.pnotify({
-                    pnotify_addclass:'stack-bottomleft',
-                    pnotify_animation:{effect_in: 'slide', effect_out: 'fade'},
-                    pnotify_delay:timeout,
-                    pnotify_history:false,
-                    pnotify_stack:stack_bottomleft,
-                    pnotify_text:text,
-                    pnotify_type:typeP,
-                    pnotify_title:titleP
-                });
-            }
-        },
-
-        displayNotification:function(title, msg, type){
-            var image = $.icescrum.o.baseUrl + "themes/is/images/";
-            image += type == "error" ?  "logo-disconnected.png" : "logo-connected.png";
-            if (this.o.notifications){
-                var notification = window.webkitNotifications.createNotification(image, title, $('<div/>').html(msg.replace(/<\/?[^>]+>/gi, '')).text());
-                notification.show();
-            }
+            $.event.trigger('init.icescrum');
         },
 
         selectableAction:function(action, doNotConfirm, idParam, onSuccess) {
@@ -301,84 +204,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
         },
 
-        listenServer:function() {
-            var socket = $.atmosphere;
-            var request = { url : $.icescrum.o.push.url,
-                            contentType : "application/json",
-                            data:{window : ($.icescrum.o.currentOpenedWindow ? $.icescrum.o.currentOpenedWindow.data('id') : null)},
-                            transport : $.icescrum.o.push.websocket && (window.MozWebSocket || window.WebSocket) ? 'websocket' : 'streaming',
-                            enableXDR : true,
-                            enableProtocol : true,
-                            closeTimeout: 5 * 1000,
-                            trackMessageLength : true,
-                            fallbackTransport : 'long-polling'
-            };
-
-            request.onOpen = function(response) {
-                if(response.request){
-                    $.icescrum.o.push.uuid = response.request.uuid;
-                    var window = location.hash.replace(/^.*#/, '');
-                    if (window){
-                        $.post($.icescrum.o.push.url, {window:window});
-                    }
-                    $("#is-logo").removeClass().addClass('connected');
-                }
-            };
-
-
-            request.onMessage = function (response) {
-                var message = response.responseBody;
-                  try {
-                      var json = JSON.parse(message);
-                      $(json).each(function() {
-                          //TODO remove old code
-                          if (this.call && this.object) {
-                              if (this.object['class']) {
-                                  var type = this.object['class'].substring(this.object['class'].lastIndexOf('.') + 1).toLowerCase();
-                                  this.call = (this.call == 'delete') ? 'remove' : this.call;
-                                  if (this.call == 'remove'){
-                                      $.icescrum.object.removeFromArray(type, this.object);
-                                  } else {
-                                      $.icescrum.object.addOrUpdateToArray(type, this.object);
-                                  }
-                                  $.event.trigger(this.call + '_' + type + '.stream', this.object);
-                              } else{
-                                  $.event.trigger(this.call + '.stream', this.object);
-                              }
-                          } else if(this.command) {
-                              if(this.command == 'connected' && this.object.length > 1){
-                                  var users = [];
-                                  $(this.object).each(function(){
-                                      users.push(this.fullName);
-                                  });
-                                  $('#menu-project').find('.content').attr('title',users.length+' users online ('+users.join(', ')+')');
-                              }else if (this.command == 'connected'){
-                                  $('#menu-project').find('.content').attr('title', 'Do you feel lonely?');
-                              } else {
-                                  $.icescrum.commands[this.command].apply(null,[this.data, this.from]);
-                              }
-                          }
-                      });
-                  } catch (e) {
-                      console.log('Error: ', message.data);
-                  }
-            };
-
-            request.onError = function() {
-                $("#is-logo").removeClass().addClass('disconnected');
-            };
-
-            request.onClose = function() {
-                $("#is-logo").removeClass().addClass('disconnected');
-            };
-
-            $(window).on("beforeunload", function() {
-                $(window).trigger("unload.atmosphere");
-            });
-
-            socket.subscribe(request);
-        },
-
         //really used
         formattedTaskEstimation:function(estimation, defaultChar) {
             if(estimation == null && defaultChar)
@@ -415,31 +240,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 setTimeout(function () {
                     $(document).on("click", handler)
                 ;}, 10);
-            }
-        },
-
-        showUpgrade:function(){
-            if (this.o.showUpgrade){
-                var upgrade = $('#upgrade');
-                if (upgrade.length && !localStorage['hide_upgrade']){
-                    upgrade.show();
-                    upgrade.find('.close').click(function(){
-                        upgrade.remove();
-                        localStorage['hide_upgrade'] = true;
-                    });
-                }else if(upgrade.length){
-                    upgrade.remove();
-                }
-            }
-        },
-
-        whatsNew:function(){
-            if ($(document.body).data('whatsnew')){
-                $.get($.icescrum.o.baseUrl+"whatsNew", function(data){
-                    if (data.dialog){
-                        $(document.body).append(data.dialog);
-                    }
-                });
             }
         }
     };

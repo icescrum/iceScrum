@@ -32,10 +32,8 @@
     <is:loadJsVar/>
     <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum,objects${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
     <sec:ifLoggedIn>
-        <script src="${resource(dir: 'js/timeline/timeline_ajax', file: 'simile-ajax-api.js?bundle=true')}"
-                type="text/javascript"></script>
-        <script src="${resource(dir: 'js/timeline/timeline_js', file: 'timeline-api.js?bundle=true')}"
-                type="text/javascript"></script>
+        <script src="${resource(dir: 'js/timeline/timeline_ajax', file: 'simile-ajax-api.js?bundle=true')}" type="text/javascript"></script>
+        <script src="${resource(dir: 'js/timeline/timeline_js', file: 'timeline-api.js?bundle=true')}" type="text/javascript"></script>
         <script src="${resource(dir: 'js/timeline', file: 'icescrum-painter.js')}" type="text/javascript"></script>
     </sec:ifLoggedIn>
     <r:layoutResources/>
@@ -80,11 +78,6 @@
         <g:layoutBody/>
     </div>
 </div>
-<is:spinner
-        on401="var data = jQuery.parseJSON(xhr.responseText); document.location='${createLink(controller:'login',action:'auth')}?ref=${space ? space.config.path+'/'+space.config.key+'/' : ''}'+(data.url?data.url:'');"
-        on400="var error = jQuery.parseJSON(xhr.responseText); jQuery.icescrum.renderNotice( error.notice.text, 'error', error.notice.title); "
-        on403="jQuery.icescrum.renderNotice('${message(code:'is.error.denied')}', 'error');"
-        on500="jQuery.icescrum.dialogError(xhr)"/>
 <r:layoutResources/>
 <entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>

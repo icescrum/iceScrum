@@ -565,6 +565,7 @@ function attachOnDomUpdate(content){
             select.change(function (event) {
                 var data = { };
                 var name = $this.attr('name');
+                data[name] = event.val;
                 $.post(settings.change, data, function(data) {
                     $.icescrum.object.addOrUpdateToArray('story',data);
                 }, 'json');

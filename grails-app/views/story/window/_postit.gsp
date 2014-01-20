@@ -19,10 +19,10 @@
                 **# } **
             </div>
             <p class="postit-label break-word">** story.name **</p>
-            <div class="postit-excerpt">** $.icescrum.story.formatters.description(story.description) **</div>
-            <span class="postit-ico ico-story-** story.type **"></span>
+            <div class="postit-excerpt">** $.icescrum.story.formatters.description(story) **</div>
+            <span class="postit-ico ico-story-** story.type **" title="** $.icescrum.story.formatters.type(story) **"></span>
             <div class="state task-state">
-                <span class="text-state">** $.icescrum.story.formatters.state(story.state) **</span>
+                <span class="text-state">** $.icescrum.story.formatters.state(story) **</span>
                 <div class="dropmenu-action">
                     <div id="menu-postit-story-** story.id **"
                          data-nowindows="false"
@@ -35,7 +35,7 @@
                             <ul class="small">
                                 **# if ($.icescrum.user.productOwner && story.state == $.icescrum.story.STATE_SUGGESTED) { **
                                 <li>
-                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'story',product:params.product])}"
+                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'story',product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="accept_story"
                                        data-ajax-notice="${message(code: 'is.story.acceptedAsStory').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -43,7 +43,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'feature',product:params.product])}"
+                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'feature',product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="accept_story"
                                        data-ajax-notice="${message(code: 'is.story.acceptedAsFeature').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -52,7 +52,7 @@
                                 </li>
                                 **# if ($.icescrum.sprint.current) { **
                                 <li class="menu-accept-task">
-                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'task',product:params.product])}"
+                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'task',product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="accept_story"
                                        data-ajax-notice="${message(code: 'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -63,7 +63,7 @@
                                 **# } **
                                 **# if ($.icescrum.user.productOwner && _.contains([$.icescrum.story.STATE_ACCEPTED, $.icescrum.story.STATE_ESTIMATED], story.state)) { **
                                     <li>
-                                        <a href="${createLink(action:'returnToSandbox', id:'** story.id **', controller:'story',params:[product:params.product])}"
+                                        <a href="${createLink(action:'returnToSandbox', id:'** story.id **', controller:'story',params:[product:'** jQuery.icescrum.product.pkey **'])}"
                                            data-ajax-trigger="returnToSandbox_story"
                                            data-ajax-notice="${message(code: 'is.story.returnedToSandbox').encodeAsJavaScript()}"
                                            data-ajax="true">
@@ -80,7 +80,7 @@
                                 **# } **
                                 **# if ($.icescrum.user.inProduct && story.state >= $.icescrum.story.STATE_SUGGESTED) { **
                                 <li>
-                                    <a href="${createLink(action:'copy',controller:'story', id:'** story.id **', params:[product:params.product])}"
+                                    <a href="${createLink(action:'copy',controller:'story', id:'** story.id **', params:[product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="add_story"
                                        data-ajax-notice="${message(code: 'is.story.cloned').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -90,7 +90,7 @@
                                 **# } **
                                 **# if ($.icescrum.user.poOrSm && story.state >= $.icescrum.story.STATE_PLANNED && story.state != $.icescrum.story.STATE_DONE) { **
                                 <li>
-                                    <a href="${createLink(action:'unPlan',controller:'story', id:'** story.id **', params:[product:params.product])}"
+                                    <a href="${createLink(action:'unPlan',controller:'story', id:'** story.id **', params:[product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger='{"unPlan_story":"story","sprintMesure_sprint":"sprint"}'
                                        data-ajax-confirm="${message(code:'is.ui.releasePlan.menu.story.warning.dissociate').encodeAsJavaScript()}"
                                        data-ajax-notice="${message(code: 'is.sprint.stories.dissociated').encodeAsJavaScript()}"
@@ -101,7 +101,7 @@
                                 **# } **
                                 **# if ($.icescrum.user.poOrSm && story.state >= $.icescrum.story.STATE_PLANNED && story.state != $.icescrum.story.STATE_INPROGRESS) { **
                                 <li class="menu-shift-${sprint?.parentRelease?.id}-${(sprint?.orderNumber instanceof Integer ?sprint?.orderNumber + 1:sprint?.orderNumber)} ${nextSprintExist?'':'hidden'}">
-                                    <a href="${createLink(action:'unPlan',controller:'story', id:'** story.id **',params:[product:params.product,shiftToNext:true])}"
+                                    <a href="${createLink(action:'unPlan',controller:'story', id:'** story.id **',params:[product:'** jQuery.icescrum.product.pkey **',shiftToNext:true])}"
                                        data-ajax-trigger='{"unPlan_story":"story","sprintMesure_sprint":"sprint"}'
                                        data-ajax-notice="${message(code: 'is.story.shiftedToNext').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -111,7 +111,7 @@
                                 **# } **
                                 **# if ($.icescrum.user.productOwner && story.state == $.icescrum.story.STATE_INPROGRESS) { **
                                 <li>
-                                    <a href="${createLink(action:'done',controller:'story', id:'** story.id **', params:[product:params.product])}"
+                                    <a href="${createLink(action:'done',controller:'story', id:'** story.id **', params:[product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="done_story"
                                        data-ajax-notice="${message(code: 'is.story.declaredAsDone').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -121,7 +121,7 @@
                                 **# } **
                                 **# if ($.icescrum.user.productOwner && story.state == $.icescrum.story.STATE_DONE && story.parentSprint.state == $.icescrum.sprint.STATE_INPROGRESS) { **
                                 <li>
-                                    <a href="${createLink(action:'unDone',controller:'story', id:'** story.id **', params:[product:params.product])}"
+                                    <a href="${createLink(action:'unDone',controller:'story', id:'** story.id **', params:[product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="unDone_story"
                                        data-ajax-notice="${message(code: 'is.story.declaredAsUnDone').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -132,7 +132,7 @@
                                 <entry:point id="${controllerName}-postitMenu"/>
                                 **# if (($.icescrum.user.productOwner && story.state <= $.icescrum.story.STATE_ESTIMATED) || ($.icescrum.user.productOwner && story.state <= $.icescrum.story.STATE_SUGGESTED)) { **
                                 <li>
-                                    <a href="${createLink(action:'openDialogDelete',controller:'story', id:'** story.id **',params:[product:params.product])}"
+                                    <a href="${createLink(action:'openDialogDelete',controller:'story', id:'** story.id **',params:[product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax="true">
                                         <g:message code='is.ui.sandbox.menu.delete'/>
                                     </a>

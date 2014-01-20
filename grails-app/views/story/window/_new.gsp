@@ -10,7 +10,7 @@
                placeholder="${message(code: 'is.ui.story.noname')}"
                data-txt
                data-txt-on-save="$.icescrum.story.afterSave"
-               data-txt-change="${createLink(controller: 'story', action: 'save', params: [product: params.product])}">
+               data-txt-change="${createLink(controller: 'story', action: 'save', params: [product: '** jQuery.icescrum.product.pkey **'])}">
         <span class="duplicate"></span>
     </div>
 </underscore>

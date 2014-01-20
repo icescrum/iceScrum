@@ -117,6 +117,7 @@ class UtilsTagLib {
         )
     }
 
+    //TODO to be remove
     def bundle = {attrs, body ->
         out << g.message(code: BundleUtils."${attrs.bundle}".get(attrs.value))
     }

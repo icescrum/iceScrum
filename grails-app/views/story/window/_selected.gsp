@@ -12,7 +12,7 @@
                     <div class="postit-excerpt">** story.description **</div>
                     <span class="postit-ico ico-story-** story.type **"></span>
                     <div class="state task-state">
-                        <span class="text-state">** $.icescrum.story.formatters.state(story.state) **</span>
+                        <span class="text-state">** $.icescrum.story.formatters.state(story) **</span>
                         <div class="dropmenu-action">
                             <div id="menu-postit-story-** story.id **"
                                  data-nowindows="false"
