@@ -3,9 +3,9 @@
         <div class="postit-layout **# if(story.feature){ ** postit-** story.feature.color ** **# } **">
             <p class="postit-id">
                 <is:scrumLink controller="story" id='** story.id **'>** story.id **</is:scrumLink>
-                <g:if test="${dependsOn}">
-                    <span class="dependsOn" data-elemid="${dependsOn.id}">(<is:scrumLink controller="story" id="${dependsOn.id}">${dependsOn.uid}</is:scrumLink>)</span>
-                </g:if>
+                **# if (story.dependsOn) { **
+                    <span class="dependsOn" data-elemid="** story.dependsOn.id **">(<is:scrumLink controller="story" id="** story.dependsOn.id **">** story.dependsOn.uid **</is:scrumLink>)</span>
+                **# } **
             </p>
             <div class="icon-container">
                 **# if (_.size(story.comments) > 0) { **
