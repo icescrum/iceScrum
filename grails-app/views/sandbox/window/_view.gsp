@@ -34,8 +34,12 @@
      data-ui-droppable
      data-ui-droppable-selector="div.postit"
      data-ui-droppable-hover-class="ui-selected"
-     data-ui-droppable-drop="$.icescrum.story.onDrop"
+     data-ui-droppable-drop="$.icescrum.story.onDropFeature"
      data-ui-droppable-accept=".postit-row-feature"
+     data-ui-droppable2
+     data-ui-droppable2-hover-class="main-active"
+     data-ui-droppable2-drop="$.icescrum.story.onDropToSandbox"
+     data-ui-droppable2-accept=".postit-row-story.estimated"
      data-is-shortcut=""
      data-is-shortcut="this"
      data-is-shortcut-key="ctrl+a arrows"

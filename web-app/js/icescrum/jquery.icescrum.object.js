@@ -164,6 +164,7 @@
 
             update:function(type, item, index){
                 var oldElement;
+                var filtered = _.isFunction(this.filter) ? this.filter.apply($.icescrum[type],[item]) : this.filter;
                 if (this.watch == 'items'){
                     oldElement = $(this.container).find(this.selector+'[data-elemid='+item.id+']');
                 } else if (this.watch == 'array'){
@@ -171,8 +172,12 @@
                 } else if (this.watch == 'item'){
                     oldElement = $(this.container).find(this.selector);
                 }
-                var filtered = _.isFunction(this.filter) ? this.filter.apply($.icescrum[type],[item]) : this.filter;
-                if (_.isUndefined(filtered) || filtered){
+                //filtered but not visible ? should be added
+                if((_.isUndefined(filtered) || filtered) && oldElement.length == 0){
+                    $.icescrum.object.viewBinding.add.apply(this,[type, item, index]);
+                }
+                //filtered and visible ? update!
+                else if (_.isUndefined(filtered) || filtered) {
                     var focus = $(':focus:not(document)');
                     focus = focus.attr('id') ? (focus.attr('id').startsWith('s2id') ? focus.attr('data-focusable') : focus.attr('id')) : null;
                     var data = {};
@@ -197,20 +202,19 @@
                             $('#'+focus, this.container).focus();
                         }
                     }
-                } else if(!filtered && (oldElement && oldElement.length)){
-                    oldElement.remove();
+                }
+                //not filtered and visible ? delete!
+                else if(!filtered && (oldElement && oldElement.length)){
+                    $.icescrum.object.viewBinding['delete'].apply(this,[type, item, index]);
                 }
             },
 
             'delete':function(type, item){
-                var filtered = _.isFunction(this.filter) ? this.constraint.apply($.icescrum[type],[item]) : this.filter;
-                if (_.isUndefined(filtered) || filtered){
-                    if (this.watch == 'items'){
-                        $(this.container).find(this.selector+'[data-elemid='+item.id+']').remove();
-                    }
-                    else if (this.watch == 'item'){
-                        $(this.container).find(this.selector).html("");
-                    }
+                if (this.watch == 'items'){
+                    $(this.container).find(this.selector+'[data-elemid='+item.id+']').remove();
+                }
+                else if (this.watch == 'item'){
+                    $(this.container).find(this.selector).html("");
                 }
             }
         }

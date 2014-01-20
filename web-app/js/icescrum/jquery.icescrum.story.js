@@ -80,10 +80,18 @@
                     filter: function(item){ return item.state == this.STATE_ESTIMATED }
                 }
             },
-            onDrop:function(event, ui){
-                //associate feature
-                if (ui.helper && ui.helper.hasClass('postit-row-feature')){
+            onDropFeature:function(event, ui){
+                if (ui.helper){
                     $.post($.icescrum.story.restUrl+'/update/'+$(this).data('elemid'), { 'story.feature.id':ui.helper.data('elemid') },
+                        function(data){
+                            $.icescrum.object.addOrUpdateToArray('story',data);
+                        }
+                    );
+                }
+            },
+            onDropToSandbox:function(event, ui){
+                if (ui.draggable){
+                    $.post($.icescrum.story.restUrl+'/returnToSandbox/'+ui.draggable.data('elemid'),
                         function(data){
                             $.icescrum.object.addOrUpdateToArray('story',data);
                         }

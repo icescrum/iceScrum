@@ -56,7 +56,7 @@
     text-indent: -6000em;
     display: block;
     height: 17px;
-    z-index: 1000;
+    z-index: 990;
     width: 18px;
 }
 
@@ -653,6 +653,7 @@ li#li-roles {
     font-size: 11px;
     line-height: 17px;
     padding: 3px 25px;
+    z-index:1000;
 }
 
 #local .postit-row {

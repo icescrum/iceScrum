@@ -762,12 +762,36 @@ function attachOnDomUpdate(content){
             }
         });
         //to prevent unused actions & loose perf
-        var $accept = $(settings.accept);
-        $accept.one('hover', function() {
-            var $droppable = settings.selector ? $(settings.selector) : $this;
-            if (!$droppable.data('init')){
+        $(document).one('hover', settings.accept, function() {
+            //take parent() when selectable due to selectableScroll
+            var $droppable = settings.selector ? $(settings.selector) : ($this.data('ui-selectable') != undefined ? $this.parent() : $this);
+            if (!$droppable.data('drop-init')){
                 $droppable.droppable(settings);
-                !$droppable.data('init', true);
+                !$droppable.data('drop-init', true);
+            }
+        });
+    });
+
+    $('[data-ui-droppable2]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-droppable2-init')){
+            return;
+        } else {
+            $this.data('ui-droppable2-init', true);
+        }
+        var settings = $this.html5data('ui-droppable2');
+        $.each(['activate','create','deactivate','drop','out','over'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        //to prevent unused actions & loose perf
+        $(document).one('hover', settings.accept, function() {
+            //take parent() when selectable due to selectableScroll
+            var $droppable = settings.selector ? $(settings.selector) : ($this.data('ui-selectable') != undefined ? $this.parent() : $this);
+            if (!$droppable.data('drop-init')){
+                $droppable.droppable(settings);
+                !$droppable.data('drop-init', true);
             }
         });
     });
@@ -789,9 +813,9 @@ function attachOnDomUpdate(content){
         });
         $(document).on('hover', draggable, function() {
             var $this = $(this);
-            if (!$this.data('init')){
+            if (!$this.data('drag-init')){
                 $this.draggable(settings);
-                !$this.data('init', true);
+                !$this.data('drag-init', true);
             }
         });
     });

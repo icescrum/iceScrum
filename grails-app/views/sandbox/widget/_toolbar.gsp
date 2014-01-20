@@ -21,7 +21,7 @@
 --}%
 <li class="navigation-item button-ico button-add">
     <a class="tool-button button-n"
-       href="#${controllerName}/add"
+       href="#${controllerName}"
        title="${message(code:'is.ui.sandbox.toolbar.new')}"
        alt="${message(code:'is.ui.sandbox.toolbar.new')}">
             <span class="start"></span>
