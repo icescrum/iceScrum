@@ -392,9 +392,12 @@ function attachOnDomUpdate(content){
         $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
         if (settings.change){
             select.change(function(event){
-                var data = { manageTags: true };
+                var data = { };
                 data[$this.attr('name')] = $this.val();
-                $.post(settings.change, data );
+                $.post(settings.change, data, function(data){
+                    //TODO generic
+                    $.icescrum.object.addOrUpdateToArray('story',data);
+                } );
             });
         }
     });
@@ -470,6 +473,7 @@ function attachOnDomUpdate(content){
                             data[$this.attr('name')] = rawValue;
                             $this.attr('readonly','readonly');
                             $.post(settings.change, data, function(data){
+                                //TODO generic + update array
                                 updateText(data.notes);
                             });
                         } else {
@@ -669,6 +673,7 @@ function attachOnDomUpdate(content){
                         data[$this.attr('name')] = $this.val();
                         $this.attr('readonly','readonly');
                         $.post(settings.change, data, function(data){
+                            //TODO generic + update array
                             updateText(data.description);
                         });
                     } else {
@@ -684,6 +689,7 @@ function attachOnDomUpdate(content){
         $(this).off('click focus');
     });
 
+    //TODO remove
     $('div[data-push]', content).each(function(){
         var $this = $(this);
         if ($this.data('push-init')){

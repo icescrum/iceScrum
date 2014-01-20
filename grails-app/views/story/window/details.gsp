@@ -230,30 +230,30 @@
 </div>
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'story',events:['remove']]]"
+            events="**object:'story',events:['remove'**]"
             callback="if ( story.id != jQuery(this).data('elemid') ){ return; } jQuery.icescrum.alertDeleteOrUpdateObject('${message(code:'is.story.deleted')}','project',true);"/>
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'story',events:['estimate','inProgress','done','unDone','plan','unPlan','associated','dissociated']]]"
+            events="**object:'story',events:['estimate','inProgress','done','unDone','plan','unPlan','associated','dissociated'**]"
             callback="if ( story.id != jQuery(this).data('elemid') ){ return; } document.location.reload();"/>
 
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'story',events:['accept']]]"
+            events="**object:'story',events:['accept'**]"
             callback="if ( story.id != jQuery(this).data('elemid') ){ return; } var next = jQuery('#next-story'); document.location.hash = next.length ? next.find('a').attr('href') : '#sandbox';"/>
 
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'comment',events:['add','update','remove']]]"
+            events="**object:'comment',events:['add','update','remove'**]"
             constraint="comment.backlogElement.type == 'story' && comment.backlogElement.id == ${story.id}"
             template="storyDetail"/>
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'comment',events:['add','update','remove']]]"
+            events="**object:'comment',events:['add','update','remove'**]"
             constraint="comment.backlogElement.type == 'story' && comment.backlogElement.id == ${story.id}"
             template="storyDetailSummary"/>
 <is:onStream
             on="#details-${story.id}"
-            events="[[object:'acceptancetest',events:['add','update','remove']]]"
+            events="**object:'acceptancetest',events:['add','update','remove'**]"
             constraint="acceptancetest.parentStory.id == ${story.id}"
             template="storyDetail"/>

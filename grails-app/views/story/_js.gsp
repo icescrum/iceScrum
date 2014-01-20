@@ -45,20 +45,6 @@
     <g:render template="/story/jsPostit" model="[id:'backlog',sortable:request.productOwner,editable:tMOrSm]"/>
 </template>
 
-<template id="postit-row-story-backlog-tmpl">
-    <![CDATA[
-    ?**
-    var name =  this.name ? this.name : '';
-    var truncatedName = name.length > 30 ? name.substring(0,30)+'...' : name;
-    var color = this.feature ? this.feature.color : '';
-    **?
-    <li class="postit-row postit-row-story postit-row-story-backlog" data-elemid="${story.id}">
-        <is:postitIcon name="${story.name}" color="${story.feature.color}"/>
-        ?**=this.uid **? - ?**=truncatedName**? <em>(?**=this.effort **? pts)</em>
-    </li>
-    ]]>
-</template>
-
 <template id="postit-row-story-sandbox-tmpl">
     <![CDATA[
     ?**

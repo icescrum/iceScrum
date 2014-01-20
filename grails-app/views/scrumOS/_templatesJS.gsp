@@ -22,7 +22,7 @@
 --}%
 <%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState; org.icescrum.core.domain.Story.TestState" %>
 <jq:jquery>
-    jQuery.extend(true, jQuery.icescrum, {
+    $.extend(true, $.icescrum, {
         user:{
             id:${sec.loggedInUserInfo(field: 'id') ?: 'null'},
             productOwner:${request.productOwner},
@@ -131,14 +131,19 @@
     <g:if test="${params.product}">
         <g:render template="/actor/js" model="[id:'actor']"/>
         <g:render template="/feature/js" model="[id:'feature']"/>
-        <g:render template="/story/js"/>
         <g:render template="/task/js" model="[id:'sprintPlan']"/>
         <g:render template="/sprint/js" model="[id:'releasePlan']"/>
         <g:render template="/comment/js"/>
         <g:render template="/acceptanceTest/js"/>
         <g:render template="/attachment/js"/>
 
-        <g:render template="/story/js2"/>
+        <g:render template="/story/js"/>
+        <g:render template="/story/window/edit"/>
+        <g:render template="/story/window/new"/>
+        <g:render template="/story/window/postit"/>
+        <g:render template="/story/window/row"/>
+        <g:render template="/story/window/selected"/>
+
     </g:if>
     <g:render template="/user/js"/>
 </div>

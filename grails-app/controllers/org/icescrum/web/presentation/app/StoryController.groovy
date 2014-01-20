@@ -232,6 +232,9 @@ class StoryController {
                 }
             }
 
+            //TODO remove that hack as soon as soon as Nicolas makes good wook :)
+            story.lastUpdated = new Date()
+
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
                 json { renderRESTJSON(text:story) }

@@ -252,8 +252,6 @@ class ScrumOSController {
         tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=')
                 .replaceAll('<script type="text/javascript">', '<js>').replaceAll('</script>', '</js>')
                 .replaceAll('<template ', '<script type="text/x-jqote-template" ').replaceAll('</template>', '</script>')
-                .replaceAll('%7B\\+', '{ ').replaceAll('%7B', '{')
-                .replaceAll('\\+%7D', ' }').replaceAll('%7D', '}')
                 .replaceAll('<underscore ', '<script type="text/icescrum-template" ').replaceAll('</underscore>', '</script>')
         render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
     }

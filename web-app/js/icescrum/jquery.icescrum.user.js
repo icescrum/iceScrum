@@ -41,7 +41,9 @@
             inProduct:function() {
                 return (this.scrumMaster || this.productOwner || this.teamMember);
             },
-
+            creator:function(object) {
+                return this.id == object.creator.id;
+            },
             addRoleProduct:function(){
                 if ($('li#product-'+this.product.id).length == 0){
                     var newProduct = $('<li></li>').attr('id','product-'+this.product.id);
