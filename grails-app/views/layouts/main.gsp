@@ -48,11 +48,12 @@
      data-ui-droppable-hover-class="local-active"
      data-ui-droppable-accept=".draggable-to-widgets"
      data-ui-sortable
-     data-ui-sortable-handle=".widget-toolbar"
+     data-ui-sortable-handle=".widget-toolbar,.mini-width-icon"
      data-ui-sortable-items=".box-widget-sortable"
      data-ui-resizable-panel
      data-ui-resizable-panel-right="false"
      data-ui-resizable-panel-grid="265"
+     data-ui-resizable-panel-mini-width="38"
      data-ui-resizable-panel-max-width="265">
     <div class="widget-bar">
       <div id="widget-list">

@@ -80,17 +80,17 @@
 
         if (opts.windowable) {
             iconWindow = $("#" + widgetid + ' .widget-window');
-            iconWindow.parent().bind('click', function(event) {
+            iconWindow.parent().off('click').on('click', function(event) {
                 $.icescrum.widgetToWindow(obj, event)
             });
-            iconWindow.parents('.resizable:first').bind('dblclick', function(event) {
+            iconWindow.parents('.resizable:first').off('dblclick').on('dblclick', function(event) {
                 $.icescrum.widgetToWindow(obj, event)
             });
             obj.addClass('draggable-to-main');
         }
 
         if (opts.closeable) {
-            $("#" + widgetid + ' .widget-close').bind('click', function(event) {
+            $("#" + widgetid + ' .widget-close').off('click').on('click', function(event) {
                 $.icescrum.closeWidget(obj, event)
             });
         }

@@ -73,9 +73,13 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
 
             $.icescrum.initHistory();
+
             $.icescrum.initAtmosphere();
+
             $.icescrum.initNotifications();
+
             $.icescrum.showUpgrade();
+
             $.icescrum.whatsNew();
 
             $(window).bind('resize',function(){

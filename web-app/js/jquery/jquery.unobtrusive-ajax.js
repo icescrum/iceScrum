@@ -837,6 +837,7 @@ function attachOnDomUpdate(content){
     });
 
     $('[data-ui-resizable-panel]', content).each(function(){
+        var margin = 7;
         var $this = $(this);
         if ($this.data('ui-resizable-panel-init')){
             return;
@@ -844,6 +845,7 @@ function attachOnDomUpdate(content){
             $this.data('ui-resizable-panel-init', true);
         }
         var settings = $this.html5data('ui-resizable-panel');
+        settings.miniWidth = settings.miniWidth ? settings.miniWidth : 0;
         var div = settings.right ? $this.prev() : $this.next();
         var resize = function(){
             var elWidth = $this.width();
@@ -853,21 +855,22 @@ function attachOnDomUpdate(content){
             if($this.find('> div:not(.ui-resizable-handle)').length == 0 && settings.emptyHide == true){
                 $this.hide();
                 div.css(settings.right ? 'right' : 'left', 0);
-            }else if (elWidth <= 7){
+            }else if (elWidth <= settings.miniWidth){
                 $this.addClass('ui-resizable-hidden');
-                $this.width(0);
+                $this.width(settings.miniWidth);
                 elWidth = 0;
-                div.css(settings.right ? 'right' : 'left', 7);
-                $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right', -7).width(7);
-            } else if(elWidth > 7) {
+                div.css(settings.right ? 'right' : 'left', margin + settings.miniWidth);
+                $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right', -margin).width(margin);
+            } else if(elWidth > margin) {
                 var reconstruct = $this.hasClass('ui-resizable-hidden');
                 $this.removeClass('ui-resizable-hidden').show();
-                div.css(settings.right ? 'right' : 'left', $this.outerWidth() + 7);
-                $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right',-7).width(7);
+                div.css(settings.right ? 'right' : 'left', $this.outerWidth() + margin);
+                $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right',-margin).width(margin);
                 if (reconstruct){
                     $this.find(".is-widget").each(function(){
                         var el = $(this);
-                        el.isWidget(el.data());
+                        el.resizable( "destroy" );
+                        el.isWidget(el.html5data('is'));
                     });
                 }
             }
@@ -877,7 +880,7 @@ function attachOnDomUpdate(content){
                 div.show();
             }
             if(!settings.eventWidth && settings.eventOnWidth && elWidth > settings.eventOnWidth) {
-            settings.eventWidth = true;
+                settings.eventWidth = true;
                 $this.trigger('resizable.overWidth');
             } else if(settings.eventWidth && settings.eventOnWidth && elWidth < settings.eventOnWidth) {
                 settings.eventWidth = false;
@@ -887,9 +890,9 @@ function attachOnDomUpdate(content){
         };
 
         if (settings.right){
-            div.css('right', $this.outerWidth() + 7);
+            div.css('right', $this.outerWidth() + margin);
         } else {
-            div.css('left', $this.outerWidth() + 7);
+            div.css('left', $this.outerWidth() + margin);
         }
         settings._containment = settings.containment == 'parent' ? 'hack' : null;
         settings.containment = settings.containment == 'parent' ? null : settings.containment;
@@ -910,13 +913,13 @@ function attachOnDomUpdate(content){
         //settings.containment = 'null';
         var _settings = $.extend(options, settings);
         $this.resizable(_settings);
-        $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right',-7);
+        $this.find(".ui-resizable-handle").css(settings.right ? 'left' : 'right',-margin);
         $this.find(".ui-resizable-handle").on('dblclick',function(){
-            if ($this.width() <= 17){
+            if ($this.width() <= settings.miniWidth){
                 $this.css('width', settings.widthSaved);
             } else {
                 settings.widthSaved = $this.width();
-                $this.css('width', 0);
+                $this.css('width', settings.miniWidth);
             }
             resize();
         });

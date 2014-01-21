@@ -98,9 +98,10 @@
                     );
                 }
             },
+
             selectableStop:function(event, ui){
                 var selectable = $(event.target);
-                var els = selectable.find('.ui-selected');
+                var els = selectable.find('.ui-selected:not(".new")');
                 var toolbarButtons = $(".window-toolbar > .navigation-item > .on-selectable-window-sandbox");
                 var container = $('#contextual-properties');
                 var el = null;

@@ -507,7 +507,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
 
 .ui-drop-hover, .ui-drop-hover-postit-rect,
 .view-postit .postit-placeholder, .kanban .postit-placeholder,
-.local-active, .main-active, .box .box-content.main-active, .table-line.active td {
+.local-active, .main-active, .box .box-content.main-active, .table-line.active td, #local.ui-resizable-hidden.local-active {
     background-color: #FFFAAE;
 }
 
