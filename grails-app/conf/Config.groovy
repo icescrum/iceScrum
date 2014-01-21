@@ -142,7 +142,8 @@ icescrum.restMarshaller = [
         sprint:[exclude: ['description','cliches','duration']],
         release:[exclude: ['description','cliches','duration']],
         team:[exclude: ['velocity','description','preferences']],
-        user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']]
+        user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']],
+        acceptancetest:[]
 ]
 
 /* CORS Section */

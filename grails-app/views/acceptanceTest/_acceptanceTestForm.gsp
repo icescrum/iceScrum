@@ -56,7 +56,7 @@
                data-ajax-trigger='{"update_acceptancetest":"acceptanceTest"}'
                data-ajax-success="jQuery('#acceptance-test-editor-wrapper${acceptanceTest.id}').hide();
                                   jQuery('#acceptance-test${acceptanceTest.id} .acceptance-test-content').show();"
-               href="${createLink([action: 'updateAcceptanceTest', params:[product:params.product]])}">
+               href="${createLink([controller: 'acceptanceTest', action: 'update', id: acceptanceTest.id, params:[product:params.product]])}">
                 <span class="start"></span>
                 <span class="content">${message(code:'is.ui.acceptanceTest.edit')}</span>
                 <span class="end"></span>
@@ -72,15 +72,11 @@
                                   jQuery('#acceptance-test-description-field').val('${is.generateAcceptanceTestTemplate().replaceAll('\n', '\\\\n')}');
                                   jQuery('textarea.selectallonce').one('click',function() { jQuery(this).select(); });
                                   jQuery('#acceptance-test-name-field').val('');"
-               href="${createLink([id:parentStory.id, action: 'saveAcceptanceTest', params:[product:params.product]])}">
+               href="${createLink([controller: 'acceptanceTest', action: 'save', params:[product:params.product, 'story.id':parentStory.id]])}">
                 <span class="start"></span>
                 <span class="content">${message(code:'is.button.add')}</span>
                 <span class="end"></span>
             </a>
         </g:else>
-
-        <g:if test="${acceptanceTest}">
-            <g:hiddenField name="acceptanceTest.id" value="${acceptanceTest?.id}"/>
-        </g:if>
     </form>
 </div>

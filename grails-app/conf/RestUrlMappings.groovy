@@ -79,6 +79,15 @@ class RestUrlMappings {
             }
         }
 
+        "/ws/p/$product/$story/acceptanceTest"(parseRequest: true) {
+            controller = 'acceptanceTest'
+            action = [GET: "list"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                story(matches: /\d*/)
+            }
+        }
+
         "/ws/p/$product/$controller/$id"(parseRequest: true) {
             action = [GET: "index", PUT: "update", DELETE: "delete"]
             constraints {

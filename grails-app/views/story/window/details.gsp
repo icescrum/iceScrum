@@ -228,6 +228,7 @@
         </div>
     </div>
 </div>
+%{--
 <is:onStream
             on="#details-${story.id}"
             events="**object:'story',events:['remove'**]"
@@ -256,4 +257,4 @@
             on="#details-${story.id}"
             events="**object:'acceptancetest',events:['add','update','remove'**]"
             constraint="acceptancetest.parentStory.id == ${story.id}"
-            template="storyDetail"/>
+            template="storyDetail"/>--}%

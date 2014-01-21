@@ -35,8 +35,8 @@
                         data-icon-class="select-icon-acceptance-test icon-acceptance-test"
                         from="${AcceptanceTestState.values().collect{ message(code: it.toString()) }}"
                         keys="${AcceptanceTestState.values().id}"
-                        value="${acceptanceTest?.state ?: ''}"
-                        data-url="${createLink(controller: 'story', action: 'updateAcceptanceTest', params: [product: params.product])}"/>
+                        value="${acceptanceTest.state}"
+                        data-url="${createLink(controller: 'acceptanceTest', action: 'update', id: acceptanceTest.id, params: [product: params.product])}"/>
             </g:if>
             <g:else>
                 <div class="text-icon-acceptance-test icon-acceptance-test${acceptanceTest?.state ?: ''}">
@@ -50,7 +50,7 @@
             <g:if test="${testEditable}">
                 <span class="acceptance-test-menu">
                     (
-                        <a href="${createLink(controller:"story",action: "acceptanceTestEditor",params:[product:params.product,id:acceptanceTest.id])}"
+                        <a href="${createLink(controller:"acceptanceTest",action: "editor",params:[product:params.product,id:acceptanceTest.id])}"
                            data-ajax="true"
                            data-ajax-update="#acceptance-test-editor-wrapper${acceptanceTest.id}"
                            data-ajax-success="jQuery('#acceptance-test-form-container').hide();
@@ -61,8 +61,8 @@
                     -
                         <is:link history="false"
                                 remote="true"
-                                controller="story"
-                                action="deleteAcceptanceTest"
+                                controller="acceptanceTest"
+                                action="delete"
                                 id="${acceptanceTest.id}"
                                 onSuccess="jQuery.event.trigger('remove_acceptancetest',data);">
                             ${message(code:'is.ui.acceptanceTest.delete')}
