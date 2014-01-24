@@ -61,8 +61,8 @@
                 state:function(story){
                     return story.state > 1 ? $.icescrum.story.states[story.state] : '';
                 },
-                description:function(story) {
-                    return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
+                description:function(rawDescription) {
+                    return rawDescription ? rawDescription.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
                 },
                 type:function(story) {
                     if (story.type == $.icescrum.story.TYPE_DEFECT && story.affectVersion){

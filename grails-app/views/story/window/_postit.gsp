@@ -19,7 +19,7 @@
                 **# } **
             </div>
             <p class="postit-label break-word">** story.name **</p>
-            <div class="postit-excerpt">** $.icescrum.story.formatters.description(story) **</div>
+            <div class="postit-excerpt">** $.icescrum.story.formatters.description(story.description) **</div>
             <span class="postit-ico ico-story-** story.type **" title="** $.icescrum.story.formatters.type(story) **"></span>
             <div class="state task-state">
                 <span class="text-state">** $.icescrum.story.formatters.state(story) **</span>
