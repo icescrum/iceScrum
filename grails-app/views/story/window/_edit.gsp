@@ -59,7 +59,7 @@
                 data-sl2ajax-url="${createLink(controller: 'story', action: 'dependenceEntries', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"
                 data-sl2ajax-placeholder="${message(code: 'is.ui.story.nodependence')}"
                 data-sl2ajax-allow-clear="true"
-                value="**# if (story.dependsOn) { **** story.dependsOn.name ** (** story.dependsOn.id **) **# } **"/>
+                value="**# if (story.dependsOn) { **** story.dependsOn.name ** (** story.dependsOn.uid **) **# } **"/>
         <hr>
         <textarea name="story.description"
                   data-at

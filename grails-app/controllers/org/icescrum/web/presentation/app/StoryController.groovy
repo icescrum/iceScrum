@@ -33,7 +33,6 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.User
 import grails.converters.JSON
-import grails.converters.XML
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
 import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
@@ -44,7 +43,6 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
-import org.icescrum.core.domain.Story.TestState
 
 import javax.servlet.http.HttpServletResponse
 
@@ -54,7 +52,6 @@ class StoryController {
     def featureService
     def springSecurityService
     def securityService
-    def acceptanceTestService
     def attachmentableService
 
     def index = {
@@ -157,7 +154,7 @@ class StoryController {
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('isAuthenticated() and !archivedProduct()')
     def update = {
         withStory{ Story story ->
 
@@ -166,74 +163,68 @@ class StoryController {
                 return
             }
 
-            def user = springSecurityService.currentUser
-            if (story.backlog.preferences.archived){
-                render(status: 403, contentType: 'application/json')
-                return
-            }
-            def productOwner = securityService.productOwner(story.backlog.id, springSecurityService.authentication)
-            def inProduct = securityService.inProduct(story.backlog.id, springSecurityService.authentication)
+            // Required because any change to the story will be flushed to the DB as soon as a query is made to the DB
+            // We can consider creating the transaction at a higher level (withStory ? any controller action ?)
+            Story.withTransaction {
 
-            if (story.state == Story.STATE_SUGGESTED && !(story.creator.id == user?.id) && !productOwner) {
-                render(status: 403, contentType: 'application/json')
-                return
-            } else if (story.state > Story.STATE_SUGGESTED && !productOwner) {
-                render(status: 403, contentType: 'application/json')
-                return
-            }
-
-            if(params.story.effort && inProduct){
-                try {
-                    storyService.estimate(story,params.story.effort)
-                }catch(IllegalStateException e){
-                    returnError(text:message(code:e.message))
+                // For the moment, the fact that the user is PO is passed around independently
+                // we may consider encapsulating and passing user rights around in a POJO (PO, SM, TM, SH, InProduct, creator...)
+                if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
+                    render(status: 403, contentType: 'application/json')
                     return
                 }
-            }
 
-            bindData(story, this.params, [include:['name','description','notes','type','affectVersion']], "story")
-
-            def featureId = params.story.remove('feature.id')
-            if (featureId && story.feature?.id != featureId.toLong()) {
-                def feature = Feature.getInProduct(params.long('product'),featureId.toLong()).list()
-                if (!feature)
-                    returnError(text:message(code: 'is.feature.error.not.exist'))
-                storyService.associateFeature(feature, story)
-            } else if (story.feature && featureId == '') {
-                storyService.dissociateFeature(story)
-            }
-
-            def dependsOnId = params.story.remove('dependsOn.id')
-            if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
-                def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
-                if (!dependsOn)
-                    returnError(text:message(code: 'is.story.error.not.exist'))
-                storyService.dependsOn(story, dependsOn)
-            } else if (story.dependsOn && dependsOnId == '') {
-                storyService.notDependsOn(story)
-            }
-
-            if (params.story.tags != null) {
-                story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
-            }
-
-            if (params.story.rank && story.rank != params.story.rank.toInteger()) {
-                Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null
-                storyService.rank(story, rank)
-            }
-
-            def sprintId = params.story.remove('sprint.id')
-            if (sprintId && story.parentSprint?.id != sprintId.toLong()) {
-                def sprint = (Sprint)Sprint.getInProduct(params.long('product'),sprintId.toLong()).list()
-                if (!sprint){
-                    returnError(text:message(code: 'is.sprint.error.not.exist'))
-                }else{
-                    storyService.plan(sprint, story)
+                // Experimental feature bind by setting the null string
+                // can't be generalized yet on the client side (e.g. for the moment, dependsOn relies on the field being an empty string)
+                // This can hardly be done with depends on because the other story needs to be updated and pushed manually...
+                if (params.story.'feature.id' == '') {
+                    params.story.'feature.id' = 'null'
                 }
-            }
 
-            //TODO remove that hack as soon as soon as Nicolas makes good wook :)
-            story.lastUpdated = new Date()
+                // Not bindable Params
+                // Tags
+                if (params.story.tags != null) {
+                    story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+                }
+
+                // Params passed as map with the following rules :
+                // - if the key is provided with a value then the property is intended to be set by the service
+                // - if the key is provided but the value is null then the property is intended to be cleared by the service
+                // Else, the property can still be updated by the service, only if it depends on other properties
+                Map props = [:]
+                if (params.story.rank != null) {
+                    // Here we check if the param is already parsed (from the API), we should be careful that it isn't required in other places
+                    props.rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
+                }
+                def sprintId = params.story.long('sprint.id')
+                if (sprintId != null && story.parentSprint?.id != sprintId) {
+                    def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
+                    if (!sprint) {
+                        returnError(text:message(code: 'is.sprint.error.not.exist'))
+                    } else {
+                        props.sprint = sprint
+                    }
+                } else if (params.boolean('shiftToNext')) {
+                    props.sprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
+                }
+                def dependsOnId = params.story.remove('dependsOn.id')
+                if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
+                    def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
+                    if (!dependsOn)
+                        returnError(text:message(code: 'is.story.error.not.exist'))
+                    props.dependsOn = dependsOn
+                } else if (story.dependsOn && dependsOnId == '') {
+                    props.dependsOn = null
+                }
+                if (params.story.effort != null && request.inProduct) {
+                    props.effort = params.story.effort
+                }
+
+                // Bindable Params (including the experimental "feature")
+                bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'position']], "story")
+
+                storyService.update(story, props)
+            }
 
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
@@ -279,96 +270,6 @@ class StoryController {
         def state = Story.getInProduct(params.long('product'), params.list('id').first().toLong()).list()?.state
         def dialog = g.render(template: 'dialogs/delete', model:[back: params.back ? params.back : state >= Story.STATE_ACCEPTED ? '#backlog' : '#sandbox'])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-    }
-
-    @Secured('productOwner() and !archivedProduct()')
-    def rank = {
-        withStory{ Story story ->
-            Integer rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.isNumber() ? params.story.rank.toInteger() : null
-            if (story == null || rank == null)
-                returnError(text:message(code: 'is.story.rank.error'))
-            if (storyService.rank(story, rank)) {
-                withFormat {
-                    html { render(status: 200, text: [story:story,message:(story.rank != rank) ? message(code:'is.story.dependsOn.constraints.warning', args:[]) : null ] as JSON, contentType: 'application/json')  }
-                    json { renderRESTJSON(text:story) }
-                    xml { renderRESTXML(text:story) }
-                }
-            } else {
-                returnError(text:message(code: 'is.story.rank.error'))
-            }
-
-        }
-    }
-
-    @Secured('(teamMember() or scrumMaster()) and !archivedProduct()')
-    def estimate = {
-        withStory{ Story story ->
-            try {
-                storyService.estimate(story,params.story.effort)
-                withFormat {
-                    html { render(status: 200, text: story as JSON)  }
-                    json { renderRESTJSON(text:story) }
-                    xml  { renderRESTXML(text:story) }
-                }
-            }catch(IllegalStateException e){
-                returnError(text:message(code:e.message))
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def unPlan = {
-        withStory { Story story ->
-            if (!story.parentSprint){
-                returnError(text:message(code:'is.story.error.not.inSprint'))
-                return
-            }
-            def capacity = (story.parentSprint.state == Sprint.STATE_WAIT) ? (story.parentSprint.capacity -= story.effort) : story.parentSprint.capacity
-            def sprint = [id: story.parentSprint.id, class: Sprint.class, velocity: story.parentSprint.velocity, capacity: capacity, state: story.parentSprint.state]
-
-            if (params.boolean('shiftToNext')) {
-                def nextSprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
-                if (nextSprint) {
-                    storyService.plan(nextSprint, story)
-                } else {
-                    returnError(text:message(code: 'is.story.error.not.shiftedToNext'))
-                    return
-                }
-            } else {
-                storyService.unPlan(story)
-            }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [story: story, sprint: sprint] as JSON)  }
-                json { renderRESTJSON(text:story) }
-                xml  { renderRESTXML(text:story) }
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def plan = {
-        withStory{ Story story ->
-            if (story.parentSprint?.id == params.sprint.id?.toLong()) {
-                returnError(text:message(code:'is.story.error.same.sprint.planned'))
-                return
-            }
-            withSprint(params.sprint.id.toLong()){ Sprint sprint ->
-                def oldSprint = null;
-                if (story.parentSprint) {
-                    def capacity = (story.parentSprint.state == Sprint.STATE_WAIT) ? (story.parentSprint.capacity - story.effort) : story.parentSprint.capacity
-                    oldSprint = [id: story.parentSprint.id, class: Sprint.class, velocity: story.parentSprint.velocity, capacity: capacity, state: story.parentSprint.state]
-                }
-                storyService.plan(sprint, story)
-                if (params.position && params.int('position') != 0) {
-                    storyService.rank(story, params.int('position'))
-                }
-                withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: [story: story, oldSprint: oldSprint] as JSON)  }
-                    json { renderRESTJSON(text:story) }
-                    xml  { renderRESTXML(text:story) }
-                }
-            }
-        }
     }
 
     @Secured('productOwner() and !archivedProduct()')
