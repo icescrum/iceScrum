@@ -367,7 +367,7 @@ class StoryController {
             def terms = params.term?.tokenize()?.findAll{ it.size() >= 5 }
             if(terms){
                 stories = Story.search(product.id, [term:terms,list:[max:3]]).collect {
-                    is.scrumLink([controller:"story", id:it.id, title:it.description], it.name)
+                    "<a class='scrum-link' href='${createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid, title:it.description)}'>${it.name}</a>"
                 }
             }
             render(status:200, text: stories ? "${message(code:'is.ui.story.duplicate')} ${stories.join(" or ")}" : "")
