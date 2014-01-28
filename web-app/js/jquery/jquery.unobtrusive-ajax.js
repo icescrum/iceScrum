@@ -413,11 +413,12 @@ function attachOnDomUpdate(content){
                     }
                     if (event.type != 'keyup'){
                         if (rawValue != preview.data('rawValue')){
-                            data[$this.attr('name')] = rawValue;
+                            var name = $this.attr('name');
+                            data[name] = rawValue;
                             $this.attr('readonly','readonly');
                             $.post(settings.change, data, function(data){
-                                //TODO generic + update array
-                                updateText(data.notes);
+                                $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
+                                $this.removeAttr('readonly');
                             });
                         } else {
                             updateText(null);
@@ -695,12 +696,13 @@ function attachOnDomUpdate(content){
                     updateText(null);
                 } else if (event.type != 'keyup'){
                     if ($this.val() != preview.data('rawValue')){
+                        var name = $this.attr('name');
                         var data = { };
-                        data[$this.attr('name')] = $this.val();
+                        data[name] = $this.val();
                         $this.attr('readonly','readonly');
                         $.post(settings.change, data, function(data){
-                            //TODO generic + update array
-                            updateText(data.description);
+                            $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
+                            $this.removeAttr('readonly');
                         });
                     } else {
                         updateText(null);
@@ -742,22 +744,6 @@ function attachOnDomUpdate(content){
         });
     });
 
-    $('div[data-binding], ul[data-binding]', content).each(function(){
-        var $this = $(this);
-        if ($this.data('binding-init')){
-            return;
-        } else {
-            $this.data('binding-init', true);
-        }
-        var settings = $this.html5data('binding');
-
-        if (settings.afterBinding){
-            settings.afterBinding = getFunction(settings.afterBinding, ["settings"]);
-        }
-
-        $.icescrum.object.dataBinding.apply(this,[settings]);
-    });
-
     $('div[data-ui-selectable]', content).each(function(){
 
         var $this = $(this);
@@ -781,6 +767,23 @@ function attachOnDomUpdate(content){
             }
         });
         $this.parent().selectableScroll(settings);
+        console.log('selectable initialized');
+    });
+
+    $('div[data-binding], ul[data-binding]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('binding-init')){
+            return;
+        } else {
+            $this.data('binding-init', true);
+        }
+        var settings = $this.html5data('binding');
+
+        if (settings.afterBinding){
+            settings.afterBinding = getFunction(settings.afterBinding, ["settings"]);
+        }
+
+        $.icescrum.object.dataBinding.apply(this,[settings]);
     });
 
     $('div[data-ui-tabs]', content).each(function(){

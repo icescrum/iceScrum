@@ -571,7 +571,6 @@
         },
 
         selectableStop:function(event, ui){
-            console.log('selectableStop');
             var selectable = $(event.target);
             var els = selectable.find('.ui-selected:not(".new")');
             var toolbarButtons = $(".window-toolbar > .navigation-item > .on-selectable");
