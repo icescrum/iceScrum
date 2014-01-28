@@ -677,7 +677,7 @@
             }
         },
 
-        getExport:function(select){
+        downloadExport:function(select){
             var $select = $(select);
             $select.data('ajaxBegin', function(){
                 $select.select2('readonly', true);

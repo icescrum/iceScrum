@@ -303,8 +303,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
     background: none;
 }
 
-.box .box-title .start, .box .box-title .end, .box .box-title .content, #window-dialog .field-information, .box-form .field-information, .ui-dialog .ui-widget-header, .event-header,
-.ui-progressbar-value, .ui-progressbar-value.animated {
+.box .box-title .start, .box .box-title .end, .box .box-title .content, #window-dialog .field-information, .box-form .field-information, .ui-dialog .ui-widget-header, .event-header {
     background-image: url(../images/bar/blue.png);
 }
 

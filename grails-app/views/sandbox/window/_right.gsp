@@ -35,8 +35,8 @@
     </select>
 
     <select name="export"
-            onchange="$.icescrum.getExport(this)"
-            style="width:150px;"
+            onchange="$.icescrum.downloadExport(this)"
+            style="width:100px;"
             data-sl2-placeholder="Export in"
             data-sl2-icon-class="file-icon format-"
             data-sl2>

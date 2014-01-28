@@ -1045,10 +1045,6 @@
     border: 0 none;
 }
 
-.field-file .ui-progressbar .label {
-    margin: 0;
-}
-
 .field-buttons {
     overflow: hidden;
     height: 18px;
@@ -1158,10 +1154,6 @@
 
 .box-form-200 .field-file .input {
     width: 300px;
-}
-
-.field-file .ui-progressbar-value {
-    background-position: 0 -52px;
 }
 
 /*
@@ -1357,49 +1349,4 @@
     border-width: 1px 0;
     padding: 1px 5px 0 5px;
     line-height: 16px;
-}
-
-/*
-////////////////////////////////////////////////////////////////////////////////
-//  UI Progress bar
-////////////////////////////////////////////////////////////////////////////////
-*/
-
-.ui-progressbar {
-    display: block;
-    padding: 1px;
-    height: 22px;
-    line-height: 22px;
-}
-
-.ui-progressbar .label {
-    left: 0;
-    line-height: 18px;
-    position: absolute;
-    right: 0;
-    text-align: center;
-}
-
-.field-file .ui-progressbar {
-    position: relative;
-    float: right;
-    width: 115px;
-    height: 22px;
-    line-height: 22px;
-    border: none;
-    display: block;
-}
-
-.ui-progressbar-value {
-    background-image: url("../images/bar/blue.png");
-    background-position: 0 -27px;
-}
-
-.ui-progressbar-value.animated {
-    background-image: url("../images/bar/blue.png");
-    background-position: 0 -27px;
-}
-
-.ui-progressbar-value-error {
-    background: #FD8900
 }

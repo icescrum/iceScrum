@@ -110,8 +110,16 @@ function ajaxRequest(element, options) {
         success: function (data, status, xhr) {
             ajaxOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
             if (data.dialog){
-                $(document.body).append(data.dialog);
-                attachOnDomUpdate($('.ui-dialog'));
+                var $container = $("#dialog-container");
+                var $dialog = $('#dialog');
+                if (!$container.length){
+                    $container = $("<div id='dialog-container'/>").appendTo(document.body);
+                }else {
+                    $dialog.dialog("destroy");
+                    $dialog.remove();
+                }
+                $(data.dialog).appendTo($container);
+                attachOnDomUpdate($container);
             }else{
                 if (data.dialogSuccess){
                     $(document.body).append(data.dialogSuccess);
@@ -219,7 +227,7 @@ function ajaxRequest(element, options) {
         });
     });
 
-    $(document).on('click','button.save-chart',function(event){
+    $(document).on('click','button.save-chart',function(){
         if ($.browser.msie && parseInt($.browser.version) < 9){
             alert('Browser not supported');
             return;
@@ -280,6 +288,53 @@ function ajaxRequest(element, options) {
 }(jQuery));
 
 function attachOnDomUpdate(content){
+
+    $('div[data-ui-progressbar]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('init-ui-progressbar')){
+            return;
+        } else {
+            $this.data('init-ui-progressbar', true);
+        }
+        var settings = $.extend({},$this.html5data('ui-progressbar'));
+        $.each(['change','complete','create'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        var $label = null;
+        if (settings.label){
+            $label = $('<div class="progress-label"/>').appendTo($this);
+            $label.html(settings.label);
+
+        }
+        if (settings.getProgress && settings.download){
+            $this.one("progressbarcreate", function( event, ui ) {
+                $.download(settings.download,{});
+            });
+        }
+
+        $this.progressbar(settings);
+        if (settings.getProgress){
+            $this.doTimeout('progress', 1000, function(){
+                $.get(settings.getProgress, function(data){
+                    if(data.complete || data.error){
+                        $this.progressbar("value", 100);
+                        $this.doTimeout('progress');
+                        if (data.error){
+                            $this.addClass('error');
+                        }
+                    } else if (!data.complete && !data.error){
+                        $this.progressbar("value", data.value);
+                    }
+                    if ($label){
+                        $label.html(data.label);
+                    }
+                });
+                return $(settings.stopProgressOn).length == 0;
+            });
+        }
+    });
 
     $('div[data-dz]', content).each(function(){
         var $this = $(this);
@@ -402,7 +457,7 @@ function attachOnDomUpdate(content){
                     }
                     markitup.focus();
                 }
-            }
+            };
 
             preview.on('click',display);
             $this.on('focus',display);
@@ -575,7 +630,7 @@ function attachOnDomUpdate(content){
         var select = $this.select2(settings);
         $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
         if (settings.change && !settings.change.startsWith('$')) {
-            select.change(function (event) {
+            select.change(function () {
                 var data = { };
                 var name = $this.attr('name');
                 data[name] = $this.val();
@@ -584,7 +639,7 @@ function attachOnDomUpdate(content){
                 }, 'json');
             })
         } else if (settings.change && settings.change.startsWith('$')){
-            select.change(function(event){
+            select.change(function(){
                 getFunction(settings.change, ["val"]).apply(this, [$this.val()]);
             });
         }
@@ -632,7 +687,7 @@ function attachOnDomUpdate(content){
         };
 
         if (enabled && settings.change) {
-            $this.on('focus', function(event){
+            $this.on('focus', function(){
                 $this.data('rawValue', $this.val());
             });
             if (settings.onlyReturn){
@@ -688,7 +743,7 @@ function attachOnDomUpdate(content){
                 preview.hide();
                 $this.focus();
             }
-        }
+        };
 
         $this.on('focus', display);
         preview.on('click', display);
@@ -788,22 +843,6 @@ function attachOnDomUpdate(content){
         $.icescrum.object.dataBinding.apply(this,[settings]);
     });
 
-    $('div[data-ui-tabs]', content).each(function(){
-        var $this = $(this);
-        if ($this.data('ui-tabs-init')){
-            return;
-        } else {
-            $this.data('ui-tabs-init', true);
-        }
-        var settings = $this.html5data('ui-tabs');
-        $.each(['selected','create','selecting','start','stop','unselected','unselecting'], function(){
-            if (settings[this]){
-                settings[this] = getFunction(settings[this], ["event","ui"]);
-            }
-        });
-        $this.tabs(settings);
-    });
-
     $('input[type=submit][data-ui-button], a[data-ui-button], button[data-ui-button]', content).each(function(){
         var $this = $(this);
         if ($this.data('ui-button-init')){
@@ -818,22 +857,6 @@ function attachOnDomUpdate(content){
             }
         });
         $this.button(settings);
-    });
-
-    $('div[data-ui-buttonset]', content).each(function(){
-        var $this = $(this);
-        if ($this.data('ui-buttonset-init')){
-            return;
-        } else {
-            $this.data('ui-buttonset-init', true);
-        }
-        var settings = $this.html5data('ui-buttonset');
-        $.each(['create'], function(){
-            if (settings[this]){
-                settings[this] = getFunction(settings[this], ["event","ui"]);
-            }
-        });
-        $this.buttonset(settings);
     });
 
     $('[data-ui-droppable]', content).each(function(){
@@ -987,7 +1010,7 @@ function attachOnDomUpdate(content){
         var options = {
             handles: settings.right ? 'w' : 'e',
             resize: resize,
-            start: function( event, ui ) {
+            start: function() {
                 //hack for chrome / safari with containment
                 if (settings._containment == 'hack' && settings.containment == null){
                     $this.resizable("option", "maxWidth", $this.parent().width() - 1);
@@ -1050,6 +1073,73 @@ function attachOnDomUpdate(content){
                 }
                 e.preventDefault();
             });
+        });
+    });
+
+    $('div[data-ui-tabs]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-tabs-init')){
+            return;
+        } else {
+            $this.data('ui-tabs-init', true);
+        }
+        var settings = $this.html5data('ui-tabs');
+        $.each(['selected','create','selecting','start','stop','unselected','unselecting'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        $this.tabs(settings);
+    });
+
+    $('div[data-ui-buttonset]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-buttonset-init')){
+            return;
+        } else {
+            $this.data('ui-buttonset-init', true);
+        }
+        var settings = $this.html5data('ui-buttonset');
+        $.each(['create'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        $this.buttonset(settings);
+    });
+
+    $('div[data-ui-dialog]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('init-ui-dialog')){
+            return;
+        } else {
+            $this.data('init-ui-dialog', true);
+        }
+        var settings = $.extend({
+            buttons:[],
+            modal:true,
+            resizable:false,
+            dialogClass:"is-dialog",
+            draggable:false
+        },$this.html5data('ui-dialog'));
+        $.each(['beforeClose','close','create','drag','dragStart','dragStop','focus','open','resize','resizeStart','resizeStop'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        if (settings.closeButton){
+            settings.buttons.push({
+                text:settings.closeText?settings.closeText:'Close',
+                click:function(){ $this.dialog('close'); }
+            });
+        }
+
+        $this.dialog(settings);
+        $('.ui-dialog .ui-dialog-titlebar').removeClass('ui-corner-all').addClass('ui-corner-top');
+        $('.ui-dialog .ui-dialog-titlebar-close').removeClass('ui-corner-all');
+        $('.ui-dialog .ui-dialog-content > .ui-tabs').removeClass('ui-corner-all');
+        $(window).resize(function() {
+            $this.dialog("option", "position", "center");
         });
     });
 

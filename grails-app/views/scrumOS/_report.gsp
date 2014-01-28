@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -17,26 +17,20 @@
 -
 - Authors:
 -
-- Manuarii Stein (manuarii.stein@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:dialog
-        withTitlebar="false"
-        onClose="\$.doTimeout('progressBar');"
-        buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
-        draggable="false">
-<div class="box-form">
-<is:fieldset title="is.dialog.report.generation">
-      <is:fieldInformation noborder="true">
+<div data-ui-dialog
+     data-ui-dialog-height="125"
+     data-ui-dialog-close-button="true"
+     data-ui-dialog-close-text="${message(code:'is.dialog.close')}"
+     data-ui-dialog-title="${message(code:'is.dialog.report.generation')}">
+     <div class="information">
         <g:message code="is.dialog.report.description"/>
-      </is:fieldInformation>
-      <is:progressBar
-              elementId="progress"
-              label="${message(code:'is.report.processing')}"
-              iframe="true"
-              showOnCreate="true"
-              iframeSrc="${createLink(action:actionName,controller:controllerName,params:[product:params.product,get:true,format:params.format], id:params.id?:null)}"
-              url="${createLink(action:actionName,controller:controllerName,params:[product:params.product,status:true], id:params.id?:null)}"
-              />
-  </is:fieldset>
+     </div>
+     <div data-ui-progressbar
+          data-ui-progressbar-label="${message(code:'is.report.processing')}"
+          data-ui-progressbar-stop-progress-on=".ui-dialog:hidden"
+          data-ui-progressbar-get-progress="${createLink(action:actionName,controller:controllerName,params:[product:params.product,status:true], id:params.id?:null)}"
+          data-ui-progressbar-download="${createLink(action:actionName,controller:controllerName,params:[product:params.product,get:true,format:params.format], id:params.id?:null)}">
+     </div>
 </div>
-</is:dialog>

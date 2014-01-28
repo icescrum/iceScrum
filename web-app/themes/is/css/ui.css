@@ -1415,11 +1415,6 @@ button.ui-button::-moz-focus-inner {
     height: 18px;
 }
 
-.ui-dialog .ui-dialog-titlebar-close span {
-    display: block;
-    margin: 1px;
-}
-
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus {
     padding: 0;
 }
@@ -2017,3 +2012,70 @@ html > body .ui-pnotify {
     color: #777;
     font-weight: 400
 }
+
+/* debut dialog */
+.is-dialog.ui-dialog .ui-dialog-content {
+    padding: 0;
+}
+
+.is-dialog.ui-dialog .ui-dialog-buttonpane button{
+    margin:0.2em 0.5em 0.2em 0;
+}
+
+.is-dialog.ui-dialog .ui-dialog-titlebar {
+    background: linear-gradient(#E4E4E4, #D8D8D8);
+    padding: 0 0 0 0.5em;
+    border:1px solid #AAAAAA;
+    border-bottom-width: 0;
+}
+
+.is-dialog .ui-dialog-titlebar-close.ui-state-hover, .is-dialog .ui-dialog-titlebar-close.ui-state-focus {
+    border:none;
+}
+
+.is-dialog .ui-dialog-title {
+    font-weight:bold;
+}
+
+.is-dialog.ui-dialog .ui-dialog-titlebar-close {
+    background:none;
+}
+
+.is-dialog .ui-tabs.ui-widget-content {
+    border-width:0;
+}
+
+.is-dialog .ui-progressbar {
+    margin:7px;
+}
+
+.is-dialog.ui-dialog .ui-dialog-buttonpane {
+    border-top:1px solid #DDDDDD;
+}
+
+.ui-progressbar.error .ui-progressbar-value {
+    background:#FD8900;
+}
+
+.ui-progressbar-value.ui-widget-header, .ui-dialog .ui-progressbar-value.ui-widget-header {
+    border-color:#DDDDDD;
+}
+
+.progress-label {
+    font-weight: bold;
+    left: 20px;
+    position: absolute;
+    right: 13px;
+    text-align: center;
+}
+
+.information {
+    background-color: #D1E7FB;
+    border-bottom: 1px solid #A1B2C1;
+    border-top: 1px solid #A1B2C1;
+    color: #4382BD;
+    padding: 5px 7px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* fin dialog */

@@ -67,7 +67,7 @@ class SandboxController {
                             feature: it.feature?.name,
                     ]
                 }
-                outputJasperReport('sandbox', params.format, [[product: currentProduct.name, stories: data ?: null]], currentProduct.name)
+                outputJasperReport('sandbox', params.format, [[product: product.name, stories: data ?: null]], product.name)
             } else if (params.status) {
                 render(status: 200, contentType: 'application/json', text: session.progress as JSON)
             } else {

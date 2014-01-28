@@ -315,66 +315,6 @@ table.kanban .table-line .kanban-col:first-child .postit-story {
     text-shadow: 0px;
 }
 
-/*
-////////////////////////////////////////////////////////////////////////////////
-//  input File
-////////////////////////////////////////////////////////////////////////////////
-*/
-
-.is-multifiles-filename {
-    display: none;
-}
-
-.is-multifiles-select {
-    height: 24px;
-    padding: 0;
-    float: left;
-    clear: both;
-}
-
-.is-multifiles-select .is-progressbar {
-    float: right;
-    height: 18px;
-    position: relative;
-    width: 120px;
-}
-
-.is-multifiles-select .is-progressbar .label {
-    line-height: 18px;
-}
-
-.is-multifiles-form {
-    display: none;
-}
-
-.is-multifiles-button {
-    background-position: right;
-    display: inline;
-    position: absolute;
-    overflow: hidden;
-}
-
-.is-multifiles-filename .ui-icon-cancel {
-    float: left;
-    cursor: pointer;
-}
-
-.is-multifiles-filename a {
-    color: #444;
-}
-
-.field-input .is-multifiles-checkbox {
-    float: left;
-    position: relative;
-    margin: 3px;
-    clear: both;
-}
-
-.field-input .is-multifiles-checkbox .ui-checkbox {
-    float: left;
-    margin: 5px;
-}
-
 .panel .ui-button {
     padding: 3px;
     margin: 5px;

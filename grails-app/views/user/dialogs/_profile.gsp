@@ -1,4 +1,3 @@
-<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -21,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 <is:dialog valid="[action:'update',controller:'user',id:user.id,onSuccess:'jQuery.event.trigger(\'updateProfile_user\',[data])']"
             title="is.dialog.profile"
             width="600"

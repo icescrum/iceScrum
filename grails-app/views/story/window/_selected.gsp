@@ -1,3 +1,24 @@
+%{--
+- Copyright (c) 2014 Kagilum.
+-
+- This file is part of iceScrum.
+-
+- iceScrum is free software: you can redistribute it and/or modify
+- it under the terms of the GNU Affero General Public License as published by
+- the Free Software Foundation, either version 3 of the License.
+-
+- iceScrum is distributed in the hope that it will be useful,
+- but WITHOUT ANY WARRANTY; without even the implied warranty of
+- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Affero General Public License
+- along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+-
+- Authors:
+-
+- Vincent Barrier (vbarrier@kagilum.com)
+--}%
 <%@ page import="org.icescrum.core.utils.BundleUtils; org.icescrum.core.domain.Story" %>
 <underscore id="tpl-multiple-stories">
     <g:set var="storyTypes" value="[:]"/>
@@ -25,7 +46,7 @@
                data-ajax
                data-ajax-method="POST"
                data-ajax-sync='story'
-               data-ajax-data='** JSON.stringify({id:ids}, true) **'
+               data-ajax-data='** JSON.stringify({id:ids}) **'
                data-is-shortcut
                data-is-shortcut-key="c">${message(code:'is.ui.sandbox.menu.clone')}</a>
         **# if (story.state <= $.icescrum.story.STATE_ESTIMATED) { **
