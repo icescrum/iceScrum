@@ -44,6 +44,14 @@
                             this.addToWidgetBar(this.o.currentOpenedWindow.data('id'));
                         }
                     }
+
+                    if (this.o.currentOpenedWindow != null && this.o.currentOpenedWindow.data('id') == targetWindow) {
+                        var subHash = id.split('/');
+                        subHash = subHash.length == 2 ? subHash[1] : null;
+                        this.o.currentOpenedWindow.trigger('subhashchange', [subHash]);
+                        return;
+                    }
+
                     $.ajax({
                                 type:'GET',
                                 async: async,
@@ -95,6 +103,10 @@
                                         //TODO remove or not ?
                                         //$("input:visible:not(.select2-focusser), textarea:visible", content).first().focus()
                                     }
+
+                                    $('.navigation-line.menubar').find('a.active').removeClass('active');
+                                    $('#elem_'+targetWindow).find('a').addClass('active');
+
                                     $.icescrum.toolbar.checkToolbar();
                                     $.post($.icescrum.o.push.url, {window:id});
                                     return false;
@@ -168,6 +180,7 @@
             });
         }
 
+        document.title = options.title;
         $.icescrum.o.currentOpenedWindow = obj;
     };
 

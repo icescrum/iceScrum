@@ -122,6 +122,7 @@ class ScrumOSController {
     }
 
     def openWindow = {
+
         if (!params.window) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window')]] as JSON)
             return

@@ -78,7 +78,6 @@ function getFunction(code, argNames) {
 
     function ajaxRequest(element, options) {
         var confirm, loading, duration;
-
         confirm = element.data("ajaxConfirm");
         if (confirm){
             confirm = confirm.replace(/\\n/g,"\n");
@@ -123,13 +122,15 @@ function getFunction(code, argNames) {
                     if (element.data("ajaxTrigger")){
                         if(typeof element.data("ajaxTrigger") == 'string'){
                             $.event.trigger(element.data("ajaxTrigger"),[data]);
-                            $.icescrum.object.addOrUpdateToArray(element.data("ajaxTrigger").split('_')[1],data);
                         }else{
                             $.each( element.data("ajaxTrigger"), function(i, n){
                                 $.event.trigger(i,[data[n]]);
                                 $.icescrum.object.addOrUpdateToArray(i.split('_')[1],[data[n]]);
                             });
                         }
+                    }
+                    if (element.data("ajaxSync")){
+                        $.icescrum.object.addOrUpdateToArray(element.data("ajaxSync"),data);
                     }
                     if (element.data("ajaxSuccess") && element.data("ajaxSuccess").startsWith('#')){
                         document.location.hash = element.data("ajaxSuccess");
@@ -147,13 +148,13 @@ function getFunction(code, argNames) {
         e.preventDefault();
     });
 
-    $(document).on("click", 'a[data-ajax=true]', function (evt) {
+    $(document).on("click", 'a[data-ajax]', function (evt) {
         var a = $(this);
         evt.preventDefault();
         ajaxRequest(a, {
             url:  a.attr('href'),
             type: a.attr('method') || ( a.data('ajaxForm') ? 'POST' : 'GET'),
-            data: a.data('ajaxForm') ? a.parents('form:first').serialize() : []
+            data: a.data('ajaxForm') ? a.parents('form:first').serialize() : (a.data('ajaxData') ? $.param(a.data('ajaxData'), true) : [])
         });
     });
 
@@ -277,7 +278,7 @@ function getFunction(code, argNames) {
 
 function attachOnDomUpdate(content){
 
-    $('[data-dz]', content).each(function(){
+    $('div[data-dz]', content).each(function(){
         var $this = $(this);
         if ($this.data('dz-init')){
             return;
@@ -312,8 +313,7 @@ function attachOnDomUpdate(content){
         };
 
         var dropZone = new Dropzone('#' + (settings.id ? settings.id : this.id), settings);
-
-        $('<div class="drop-here"><div class="drop-title">Drop your file here</div></div>').appendTo($('#' + (settings.id ? settings.id : this.id)));
+        $('<div class="drop-here"><div class="drop-title">Drop your file here</div></div>').appendTo($('#' + (settings.id ? settings.id : $this.attr('id'))));
 
         if (settings.addRemoveLinks){
             dropZone.on("removedfile", function(file) {
@@ -341,65 +341,6 @@ function attachOnDomUpdate(content){
                 dropZone.options.prepend = false;
                 dropZone.emit("addedfile", {name:this.filename, size:this.length, id:this.id, ext:this.ext, provider:this.provider });
                 dropZone.options.prepend = true;
-            });
-        }
-    });
-
-    $('input[data-sl2tag]', content).each(function() {
-        var $this = $(this);
-        if ($this.data('sl2tag-init')){
-            return;
-        } else {
-            $this.data('sl2tag-init', true);
-        }
-        if (!$this.attr('id') && $this.attr('name')){
-            $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
-        }
-        var settings = $.extend({
-                tags:[],
-                tokenSeparators: [",", " "],
-                initSelection : function (element, callback) {
-                    var data = [];
-                    $(element.val().split(",")).each(function () {
-                        data.push({id: this, text: this});
-                    });
-                    callback(data);
-                },
-                createSearchChoice:function (term) {
-                    return {id:term, text:term};
-                }
-            },
-            $this.html5data('sl2tag')
-        );
-        if (settings.tagLink){
-            settings.formatSelection = function(object){
-                return '<a href="'+settings.tagLink+object.text+'" onclick="document.location=this.href;">'+object.text+'</a>';
-            };
-        }
-        settings.ajax = {
-            url: settings.url,
-            cache: true,
-            data: function (term) {
-                return {term: term};
-            },
-            results: function (data) {
-                var results = [];
-                $(data).each(function(){
-                    results.push({id:this,text:this});
-                });
-                return {results:results};
-            }
-        };
-        var select = $this.select2(settings);
-        $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
-        if (settings.change){
-            select.change(function(event){
-                var data = { };
-                data[$this.attr('name')] = $this.val();
-                $.post(settings.change, data, function(data){
-                    //TODO generic
-                    $.icescrum.object.addOrUpdateToArray('story',data);
-                } );
             });
         }
     });
@@ -513,7 +454,7 @@ function attachOnDomUpdate(content){
         }
         var select = $this.select2(settings);
         $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
-        if (settings.change) {
+        if (settings.change && !settings.change.startsWith('$')) {
             select.change(function (event) {
                 var data = { };
                 var name = $this.attr('name');
@@ -522,9 +463,14 @@ function attachOnDomUpdate(content){
                     $.icescrum.object.addOrUpdateToArray('story',data);
                 }, 'json');
             })
+        } else if (settings.change && settings.change.startsWith('$')){
+            select.change(function(event){
+                getFunction(settings.change, ["val"]).apply(this, [event.val]);
+            });
         }
     });
 
+    //todo refactor to have one function for 3 sl2
     $('input[data-sl2ajax]', content).each(function() {
         var $this = $(this);
         if ($this.data('sl2ajax-init')){
@@ -561,7 +507,7 @@ function attachOnDomUpdate(content){
         }
         var select = $this.select2(settings);
         $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
-        if (settings.change) {
+        if (settings.change && !settings.change.startsWith('$')) {
             select.change(function (event) {
                 var data = { };
                 var name = $this.attr('name');
@@ -570,6 +516,73 @@ function attachOnDomUpdate(content){
                     $.icescrum.object.addOrUpdateToArray('story',data);
                 }, 'json');
             })
+        } else if (settings.change && settings.change.startsWith('$')){
+            select.change(function(event){
+                getFunction(settings.change, ["val"]).apply(this, [event.val]);
+            });
+        }
+    });
+
+    $('input[data-sl2tag]', content).each(function() {
+        var $this = $(this);
+        if ($this.data('sl2tag-init')){
+            return;
+        } else {
+            $this.data('sl2tag-init', true);
+        }
+        if (!$this.attr('id') && $this.attr('name')){
+            $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
+        }
+        var settings = $.extend({
+                tags:[],
+                tokenSeparators: [",", " "],
+                initSelection : function (element, callback) {
+                    var data = [];
+                    $(element.val().split(",")).each(function () {
+                        data.push({id: this, text: this});
+                    });
+                    callback(data);
+                },
+                createSearchChoice:function (term) {
+                    return {id:term, text:term};
+                }
+            },
+            $this.html5data('sl2tag')
+        );
+        if (settings.tagLink){
+            settings.formatSelection = function(object){
+                return '<a href="'+settings.tagLink+object.text+'" onclick="document.location=this.href;">'+object.text+'</a>';
+            };
+        }
+        settings.ajax = {
+            url: settings.url,
+            cache: true,
+            data: function (term) {
+                return {term: term};
+            },
+            results: function (data) {
+                var results = [];
+                $(data).each(function(){
+                    results.push({id:this,text:this});
+                });
+                return {results:results};
+            }
+        };
+        var select = $this.select2(settings);
+        $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
+        if (settings.change && !settings.change.startsWith('$')) {
+            select.change(function (event) {
+                var data = { };
+                var name = $this.attr('name');
+                data[name] = $this.val();
+                $.post(settings.change, data, function(data) {
+                    $.icescrum.object.addOrUpdateToArray('story',data);
+                }, 'json');
+            })
+        } else if (settings.change && settings.change.startsWith('$')){
+            select.change(function(event){
+                getFunction(settings.change, ["val"]).apply(this, [$this.val()]);
+            });
         }
     });
 
@@ -580,42 +593,53 @@ function attachOnDomUpdate(content){
         } else {
             $this.data('txt-init', true);
         }
+        $this.data('rawValue', $this.val());
         if (!$this.attr('id') && $this.attr('name')){
             $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
         }
         var settings = $this.html5data('txt');
         var enabled = $this.attr('readonly') ? false : true;
+
+        var changeFunction = function (event) {
+            var val = $this.val();
+            if (event.type == 'keyup' && event.which == 27){
+                $this.val($this.data('rawValue'));
+                $this.blur();
+                return;
+            }
+            if (event.type != 'keyup' || (event.type == 'keyup' && event.which == 13)){
+                if ((val == '' && $this.attr('required')) || (event.type == 'keypress' && event.which != 13)) {
+                    return;
+                }
+                var data = {};
+                var name = $this.attr('name');
+                data[name] = val;
+                if($this.data('rawValue') != data[name]){
+                    $this.attr('readonly');
+                    $.post(settings.change, data, function(data) {
+                        $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
+                        $this.removeAttr('readonly');
+                        if (settings.onSave){
+                            getFunction(settings.onSave, ["data"]).apply(this, [data]);
+                        }
+                    }, 'json');
+                }
+            }
+        };
+
         if (enabled && settings.change) {
             $this.on('focus', function(event){
-                    $this.data('rawValue', $this.val());
-                })
-                .on('blur keyup', function (event) {
-                    var val = $this.val();
-                    if (event.type == 'keyup' && event.which == 27){
-                        $this.val($this.data('rawValue'));
-                        $this.blur();
-                        return;
-                    }
-                    if (event.type != 'keyup' || (event.type == 'keyup' && event.which == 13)){
-                        if ((val == '' && $this.attr('required')) || (event.type == 'keypress' && event.which != 13)) {
-                            return;
-                        }
-                        var data = {};
-                        var name = $this.attr('name');
-                        data[name] = val;
-                        if($this.data('rawValue') != data[name]){
-                            $this.attr('readonly');
-                            $.post(settings.change, data, function(data) {
-                                $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
-                                $this.removeAttr('readonly');
-                            }, 'json');
-                        }
-                    }
-                });
+                $this.data('rawValue', $this.val());
+            });
+            if (settings.onlyReturn){
+                $this.on('keyup', null, 'return', changeFunction);
+            } else {
+                $this.on('blur keyup', changeFunction);
+            }
         }
     });
 
-    $('[data-at]',content).each(function(){
+    $('textarea[data-at]',content).each(function(){
         var $this = $(this);
         if ($this.data('at-init')){
             return;
@@ -633,7 +657,7 @@ function attachOnDomUpdate(content){
         var updateText = function(rawValue){
             if (rawValue){
                 preview.data('rawValue', rawValue);
-                preview.html(getFunction(settings.matcher, ["val"]).apply(this, [rawValue]));
+                preview.html(getFunction(settings.matcher, ["val"]).apply(this, [{description:rawValue}]));
                 $this.removeAttr('readonly');
             }
             $this.addClass('select2-offscreen');
@@ -726,26 +750,85 @@ function attachOnDomUpdate(content){
             $this.data('binding-init', true);
         }
         var settings = $this.html5data('binding');
+
+        if (settings.afterBinding){
+            settings.afterBinding = getFunction(settings.afterBinding, ["settings"]);
+        }
+
         $.icescrum.object.dataBinding.apply(this,[settings]);
     });
 
-    $('[data-ui-selectable]', content).each(function(){
+    $('div[data-ui-selectable]', content).each(function(){
+
         var $this = $(this);
         if ($this.data('ui-selectable-init')){
             return;
         } else {
             $this.data('ui-selectable-init', true);
         }
+
         var settings = $this.html5data('ui-selectable');
+        $.each(['selected','create','selecting','start','stop','unselected','unselecting'], function(){
+            var _func = settings[this] ? getFunction(settings[this], ["event","ui"]) : null;
+            if (this == 'stop' && settings.globalStop){
+                settings[this] = function(event, ui){
+                    if($.icescrum.selectableStop(event, ui)){
+                        _func ? _func(event, ui) : null;
+                    }
+                };
+            } else if(_func) {
+                settings[this] = _func;
+            }
+        });
+        $this.parent().selectableScroll(settings);
+    });
+
+    $('div[data-ui-tabs]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-tabs-init')){
+            return;
+        } else {
+            $this.data('ui-tabs-init', true);
+        }
+        var settings = $this.html5data('ui-tabs');
         $.each(['selected','create','selecting','start','stop','unselected','unselecting'], function(){
             if (settings[this]){
                 settings[this] = getFunction(settings[this], ["event","ui"]);
             }
         });
-        $this.parent().selectableScroll(settings);
-        if(settings.stop){
-            settings.stop({target:this});
+        $this.tabs(settings);
+    });
+
+    $('input[type=submit][data-ui-button], a[data-ui-button], button[data-ui-button]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-button-init')){
+            return;
+        } else {
+            $this.data('ui-button-init', true);
         }
+        var settings = $this.html5data('ui-button');
+        $.each(['create'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        $this.button(settings);
+    });
+
+    $('div[data-ui-buttonset]', content).each(function(){
+        var $this = $(this);
+        if ($this.data('ui-buttonset-init')){
+            return;
+        } else {
+            $this.data('ui-buttonset-init', true);
+        }
+        var settings = $this.html5data('ui-buttonset');
+        $.each(['create'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
+        $this.buttonset(settings);
     });
 
     $('[data-ui-droppable]', content).each(function(){
@@ -944,8 +1027,8 @@ function attachOnDomUpdate(content){
         settings.key = settings.key.replace('arrows','up down right left');
         $(settings.key.split(' ')).each(function(){
             var key = this.toString();
-            var onClean = settings.on ? settings.on.replace(/\W/g, '')  : 'body';
-            var on = settings.on ? (settings.on == 'this' ? this : settings.on)  : document.body;
+            var onClean = settings.on ? (settings.on == 'this' ? $this.attr('id').replace(/\W/g, '') : settings.on.replace(/\W/g, ''))  : 'body';
+            var on = settings.on ? (settings.on == 'this' ? $this : settings.on)  : document.body;
             var bind = 'keydown'+'.'+onClean+'.'+key.replace(/\+/g,'');
             $(on).unbind(bind);
             $(on).bind(bind,key,function(e){
@@ -955,7 +1038,7 @@ function attachOnDomUpdate(content){
                         return;
                     }
                 }
-                if (!$this.attr('href') || $this.data('ajax')){
+                if (!$this.attr('href') || $this.data('ajax') != undefined){
                     $this.click();
                 }else if ($this.attr('href')){
                     document.location.hash = $this.attr('href');
@@ -976,6 +1059,11 @@ function manageAccordion(element){
         $this.accordion( "option", "animate", {} );
     } else {
         var settings = $this.html5data('ui-accordion');
+        $.each(['create','beforeActivate','activate'], function(){
+            if (settings[this]){
+                settings[this] = getFunction(settings[this], ["event","ui"]);
+            }
+        });
         $this.accordion(settings);
         if (settings.heightStyle == 'fill'){
             $(window).on('resize', function() {

@@ -265,20 +265,28 @@
         },
 
         initHistory:function() {
-            $(window).hashchange(function() {
+
+            var changeWindow = function(){
                 if ($.icescrum.o.openWindow) {
                     $.icescrum.o.openWindow = false;
                 } else {
                     var url = location.hash.replace(/^.*#/, '');
                     if (url != '') {
                         $.icescrum.openWindow(url);
-                    } else {
+                    } else if (!url) {
                         if ($.icescrum.o.currentOpenedWindow) {
                             $.icescrum.closeWindow($.icescrum.o.currentOpenedWindow);
                         }
                     }
                 }
-            });
+            };
+
+            $(window).hashchange(changeWindow);
+
+            if (!$.getUrlVar('ref')){
+                changeWindow();
+            }
+
             var currentWindow = location.hash.replace(/^.*#/, '');
             var $menubar = $('#navigation').find('li.menubar:first a');
             if ($.icescrum.o.baseUrlSpace && !currentWindow && $menubar){
@@ -505,19 +513,135 @@
 
         selectableShortcut:function(event){
             var key = event.data.toLowerCase();
+            var $this = $(this);
+            var update = false;
             if (_.contains(['up','down','right','left'], key)){
-                $.icescrum.navigate.apply(this,[event]);
+                update = $.icescrum.selectableNavigate.apply(this,[event]);
             } else {
-                $.icescrum.selectableAll.apply(this,[event]);
+                //select All
+                $this.find('.ui-selectee').addClass('ui-selected');
+                update = true;
+            }
+            var stop = $this.parent().selectableScroll("option" , "stop");
+            if (stop && update){
+                stop({target:$this.parent()});
             }
         },
 
-        selectableAll:function(event){
+        selectableNavigate:function(event){
             var $this = $(this);
-            $this.find('.ui-selectee').addClass('ui-selected');
-            var stop = $this.parent().selectableScroll("option" , "stop");
-            if (stop){
-                stop({target:$this});
+            var $el = $this.find('.ui-selected');
+            //cache value
+            if (!$this.data('is.count') || $this.data('is.count') < 1){
+                var width = $el.outerWidth(true);
+                var containerWidth = $el.parent().width();
+                var count = containerWidth / width;
+                $this.data('is.count', Math.floor(count));
+                //reset cache value on resize
+                $this.one('resize',function(){
+                    $this.data('is.count', -1);
+                })
+            }
+            if ($this.data('is.count') >= 1){
+                var $new = null;
+                if ($el.length == 1){
+                    var list = $this.children();
+                    var currentIndex = $el.index();
+                    var key = event.data.toLowerCase();
+                    if (key == "up"){
+                        if (currentIndex - $this.data('is.count') >= 0)
+                            $new = $(list.get(currentIndex - $this.data('is.count')));
+                    }else if(key == "down"){
+                        if (currentIndex + $this.data('is.count') < list.length)
+                            $new = $(list.get(currentIndex + $this.data('is.count')));
+                    }else if(key == "left"){
+                        $new = $el.prev();
+                    }else if(key == "right"){
+                        $new = $el.next();
+                    }
+                    if ($new && $new.length && $new.hasClass('ui-selectee')){
+                        $el.removeClass('ui-selected');
+                        $new.addClass('ui-selected');
+                        $this.parent().animate({ scrollTop: ($this.parent().scrollTop() + $new.position().top) }, 250);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        },
+
+        selectableStop:function(event, ui){
+            console.log('selectableStop');
+            var selectable = $(event.target);
+            var els = selectable.find('.ui-selected:not(".new")');
+            var toolbarButtons = $(".window-toolbar > .navigation-item > .on-selectable");
+            var ids = els.map( function(){return $(this).data("elemid"); }).get();
+
+            if (!selectable.data('init-select-hash')){
+                $.icescrum.o.currentOpenedWindow.bind('subhashchange', $.icescrum.selectableHash);
+                selectable.data('init-select-hash', true);
+            }
+
+            if (_.isEqual(selectable.data('current'),ids)){
+                //second click grab focus
+                if (ids.length){
+                    var input = $('#contextual-properties').find('input:first:visible');
+                    if (input.is(":focus")){
+                        input.blur();
+                    }
+                    selectable.focus();
+                }
+                return false;
+            }
+            switch (els.length){
+                //no selection
+                case 0:
+                    document.location.hash = $.icescrum.o.currentOpenedWindow.data('id');
+                    toolbarButtons.addClass('on-selectable-disabled');
+                    break;
+                //one selection
+                case 1:
+                    var elem = selectable.find('.ui-selected');
+                    document.location.hash = $.icescrum.o.currentOpenedWindow.data('id') + '/' +elem.data('elemid');
+                    toolbarButtons.removeClass('on-selectable-disabled');
+                    selectable.animate({ scrollTop: (selectable.scrollTop() + elem.position().top) }, 250);
+                    break;
+                //Display multiple selection
+                default:
+                    document.location.hash = $.icescrum.o.currentOpenedWindow.data('id') + '/+';
+                    toolbarButtons.removeClass('on-selectable-disabled');
+                    break;
+            }
+            selectable.data('current', ids);
+            return true;
+        },
+
+        selectableHash:function(event){
+            var selectable = event.target ? $(event.target).find('.ui-selectable') : $(this).parent();
+            var subHash = document.location.hash.replace(/^.*#/, '').split('/');
+            subHash = subHash.length == 2 ? subHash[1] : null;
+            var id = selectable.data('current');
+            var update = false;
+            if (subHash == id || subHash == '+'){
+                //id is undefined at the first time so update with stop to init value
+                update = id == undefined;
+            } else {
+                var selecteds = selectable.find('.ui-selected');
+                selecteds.removeClass('ui-selected');
+                if (subHash && subHash != '+'){
+                    selecteds.removeClass('ui-selected');
+                    var elem = selectable.find('[data-elemid='+subHash+']');
+                    selectable.find('[data-elemid='+subHash+']').addClass('ui-selected');
+                    update = true;
+                } else {
+                    update = selecteds.length > 0;
+                }
+            }
+            if (update){
+                var stop = selectable.selectableScroll("option" , "stop");
+                if (stop){
+                    stop({target:selectable});
+                }
             }
         },
 
@@ -539,60 +663,6 @@
                 id = ui.draggable.attr('id').replace('elem_','');
             }
             $.icescrum.openWindow(id);
-        },
-
-        navigate:function(event){
-            var $this = $(this);
-            var $el = $this.find('.ui-selected');
-            //cache value
-            if (!$this.data('is.count') || $this.data('is.count') < 1){
-                if ($el.length == 1){
-                    var count = 1;
-                    var $_el = $el.prev();
-                    while($_el.length == 1 && $_el.position().top == $el.position().top){
-                        count++;
-                        $_el = $_el.prev();
-                    }
-                    $_el = $el.next();
-                    while($_el.length == 1 && $_el.position().top == $el.position().top){
-                        count++;
-                        $_el = $_el.next();
-                    }
-                    $this.data('is.count', count);
-                }
-                //reset cache value on resize
-                $this.one('resize',function(){
-                    $this.data('is.count', -1);
-                })
-            }
-            if ($this.data('is.count') >= 1){
-                var $new = null;
-                if ($el.length == 1){
-                    var list = $this.find('.ui-selectee');
-                    var currentIndex = $el.index();
-                    var key = event.data.toLowerCase();
-                    if (key == "up"){
-                        if (currentIndex - $this.data('is.count') >= 0)
-                            $new = $(list.get(currentIndex - $this.data('is.count')));
-                    }else if(key == "down"){
-                        if (currentIndex + $this.data('is.count') < list.length)
-                            $new = $(list.get(currentIndex + $this.data('is.count')));
-                    }else if(key == "left"){
-                        $new = $el.prev();
-                    }else if(key == "right"){
-                        $new = $el.next();
-                    }
-                    if ($new && $new.length){
-                        $el.removeClass('ui-selected');
-                        $new.addClass('ui-selected');
-                        $this.parent().animate({ scrollTop: ($this.parent().scrollTop() + $new.position().top) }, 250);
-                        var stop = $this.parent().selectableScroll( "option" , "stop");
-                        if (stop){
-                            stop({target:$this});
-                        }
-                    }
-                }
-            }
         },
 
         onStartDragWidget:function(){

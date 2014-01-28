@@ -21,6 +21,22 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
+
+Object.byString = function(o, s) {
+    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+    s = s.replace(/^\./, '');           // strip a leading dot
+    var a = s.split('.');
+    while (a.length) {
+        var n = a.shift();
+        if (o != null && n in o) {
+            o = o[n];
+        } else {
+            return;
+        }
+    }
+    return o;
+};
+
 (function($) {
     _.templateSettings = {
         evaluate:    /\*\*#([\s\S]+?)\*\*/g,
@@ -31,11 +47,12 @@
     $.extend($.icescrum, { object:{} } );
 
     $.extend($.icescrum.object, {
+
         dataBinding:function(_settings){
             var settings = $.extend({}, $.icescrum[_settings.type].config[_settings.config], {container:this, watchedId:_settings.id?_settings.id:null}, _settings );
             var type = settings.type;
             //Remove old binding (didn't find another way)
-            $.icescrum[type].bindings = _.filter($.icescrum[type].bindings, function(a){ return !$.contains(document.documentElement, a.container[0]); });
+            $.icescrum[type].bindings = _.filter($.icescrum[type].bindings, function(a){ return $.contains(document.documentElement, a.container); });
             $.icescrum[type].bindings.push(settings);
 
             if (!$.icescrum[type].initialized){
@@ -75,10 +92,14 @@
                         }
                     });
                 });
-                $.icescrum.object.fetchData(type);
+                $.icescrum.object.fetchData(type, settings);
             } else {
                 if (settings.watch == 'items'){
-                    var data = settings.filter ? _.filter($.icescrum[type].data, function(item) {  if(settings.filter.apply($.icescrum[type],[item])) return item; }) : $.icescrum[type].data;
+                    var data = settings.filter ? _.filter($.icescrum[type].data, function(item) {  if(settings.filter.apply($.icescrum[type],[item])) return item; else return false; }) : $.icescrum[type].data;
+                    if (settings.sort){
+                        data = _.sortBy(data, function(item) {  return settings.sort.apply(settings,[item]); });
+                    }
+                    data = settings.reverse ? data.reverse() : data;
                     var _highLight = settings.highlight;
                     settings.highlight = false;
                     _.each(data, function(item){
@@ -90,7 +111,21 @@
                 } else if (settings.watch == 'array'){
                     $.icescrum.object.viewBinding.add.apply(settings,[type, $.icescrum[type].data]);
                 }
+                if (settings.afterBinding){
+                    settings.afterBinding.apply(settings.container,[settings]);
+                }
             }
+        },
+
+        removeBinding:function(type,element,clean){
+            var config = _.find($.icescrum[type].bindings, function(a){ return element[0] == a.container; });
+            if (config){
+                $.icescrum[type].bindings = _.filter($.icescrum[type].bindings, function(a){
+                    return !(config.container == a.container);
+                });
+                $(config.container).find(config.selector).remove();
+            }
+            return config;
         },
 
         addOrUpdateToArray:function(type, item){
@@ -128,10 +163,14 @@
             }
         },
 
-        fetchData:function(type){
-            $.get($.icescrum[type].restUrl+'/list',
+        //settings of binding who init the fetchData
+        fetchData:function(type, settings){
+            $.get($.icescrum[type].restUrl()+'list',
                 function(data){
                     $.icescrum.object.addOrUpdateToArray(type, data);
+                    if (settings.afterBinding){
+                        settings.afterBinding.apply(settings.container, [settings]);
+                    }
                     $.icescrum[type].initialized = true;
                 }
             );

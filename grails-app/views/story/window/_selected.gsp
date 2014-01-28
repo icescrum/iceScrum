@@ -1,48 +1,84 @@
+<%@ page import="org.icescrum.core.utils.BundleUtils; org.icescrum.core.domain.Story" %>
 <underscore id="tpl-multiple-stories">
-    <h3><a href="#">${message(code: "is.story")}</a></h3>
+    <g:set var="storyTypes" value="[:]"/>
+    <% BundleUtils.storyTypes.collect { k, v -> storyTypes[k] = message(code: v) } %>
+    <h3><a href="#">${message(code: "is.ui.selection")}</a></h3>
     <div id="right-story-container" class="right-properties">
         <div class="stack twisted">
-            <div data-elemid="** story.id **" id="postit-story-** story.id **" class="postit story postit-story ui-selectee">
+            <div class="postit story postit-story ui-selectee">
                 <div class="postit-layout **# if(story.feature){ ** postit-** story.feature.color ** **# } **">
-                    <p class="postit-id">
-                        <a class="scrum-link" href="/icescrum/p/TESTPROJ#story/** story.id **">** story.id **</a>
-                    </p>
+                    <p class="postit-id">** story.uid **</p>
                     <div class="icon-container"></div>
                     <p class="postit-label break-word">** story.name **</p>
                     <div class="postit-excerpt">** story.description **</div>
                     <span class="postit-ico ico-story-** story.type **"></span>
                     <div class="state task-state">
                         <span class="text-state">** $.icescrum.story.formatters.state(story) **</span>
-                        <div class="dropmenu-action">
-                            <div id="menu-postit-story-** story.id **"
-                                 data-nowindows="false"
-                                 data-offset="0"
-                                 data-top="13"
-                                 class="dropmenu"
-                                 data-dropmenu="true">
-                                <span class="dropmenu-arrow">!</span>
-                                <div class="dropmenu-content ui-corner-all">
-                                    <ul class="small">
-                                        <li>
-                                            <a data-ajax="true" data-ajax-notice="Story sent back to sandbox"
-                                               data-ajax-trigger="returnToSandbox_story"
-                                               href="/icescrum/p/1/story/returnToSandbox/** story.id **">return to sandbox</a>
-                                        </li>
-                                        <li>
-                                            <a data-ajax="true"
-                                               data-ajax-notice="The story has been successfully copied to the sandbox"
-                                               data-ajax-trigger="add_story" href="/icescrum/p/1/story/copy/** story.id **">Copy</a>
-                                        </li>
-                                        <li>
-                                            <a data-ajax="true" href="/icescrum/p/1/story/openDialogDelete/** story.id **">Delete</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        **# if ($.icescrum.user.productOwner) { **
+        <div class="actions">
+            <a href="${createLink(controller: 'story', action: 'copy', params: [product: '** jQuery.icescrum.product.pkey **'])}"
+               data-ui-button
+               data-ajax
+               data-ajax-method="POST"
+               data-ajax-sync='story'
+               data-ajax-data='** JSON.stringify({id:ids}, true) **'
+               data-is-shortcut
+               data-is-shortcut-key="c">${message(code:'is.ui.sandbox.menu.clone')}</a>
+        **# if (story.state <= $.icescrum.story.STATE_ESTIMATED) { **
+            <a href="${createLink(controller: 'story', action: 'delete', params: [product: '** jQuery.icescrum.product.pkey **'])}"
+               data-ui-button
+               data-ajax
+               data-ajax-method="POST"
+               data-ajax-success="$.icescrum.story.delete"
+               data-ajax-data='** JSON.stringify({id:ids}) **'
+               data-is-shortcut
+               data-is-shortcut-key="del">${message(code:'is.ui.sandbox.menu.delete')}</a>
+        **# } **
+        **# if (story.state == $.icescrum.story.STATE_SUGGESTED) { **
+            <a href="${createLink(controller: 'story', action: 'update', params: [product: '** jQuery.icescrum.product.pkey **'])}"
+               data-ui-button
+               data-ajax
+               data-ajax-method="POST"
+               data-ajax-sync='story'
+               data-ajax-data='** JSON.stringify({id:ids, "story.state": ${Story.STATE_ACCEPTED}}, true) **'>${message(code:'is.ui.sandbox.menu.acceptAsStory')}</a>
+            <a href="${createLink(controller: 'story', action: 'acceptAsFeature', params: [product: '** jQuery.icescrum.product.pkey **'])}"
+               data-ui-button
+               data-ajax
+               data-ajax-method="POST"
+               data-ajax-success="$.icescrum.story.delete"
+               data-ajax-data='** JSON.stringify({id:ids}) **'>${message(code:'is.ui.sandbox.menu.acceptAsFeature')}</a>
+            **# if ($.icescrum.sprint.current) { **
+            <a href="${createLink(controller: 'story', action: 'acceptAsTask', params: [product: '** jQuery.icescrum.product.pkey **'])}"
+               data-ui-button
+               data-ajax
+               data-ajax-method="POST"
+               data-ajax-success="$.icescrum.story.delete"
+               data-ajax-data='** JSON.stringify({id:ids}) **'>${message(code:'is.ui.sandbox.menu.acceptAsUrgentTask')}</a>
+            **# } **
+        **# } **
+        </div>
+        <hr>
+        <input type="hidden"
+               name="story.feature.id"
+               style="width:100%;"
+               data-sl2ajax
+               data-sl2ajax-change="${createLink(controller: 'story', action: 'update', params: [product: '** jQuery.icescrum.product.pkey **'])}?** $.param({id:ids}, true) **"
+               data-sl2ajax-url="${createLink(controller: 'feature', action: 'featureEntries', params: [product: '** jQuery.icescrum.product.pkey **'])}"
+               data-sl2ajax-placeholder="${message(code: 'is.ui.story.nofeature')}"
+               data-sl2ajax-allow-clear="true"/>
+        <hr/>
+        <select name="story.type"
+                style="width:100%;"
+                class="important"
+                data-sl2
+                data-sl2-icon-class="ico-story-"
+                data-sl2-change="${createLink(controller: 'story', action: 'update', params: [product: '** jQuery.icescrum.product.pkey **'])}?** $.param({id:ids}, true) **">
+            <is:options values="${storyTypes}" />
+        </select>
+        **# } **
     </div>
 </underscore>

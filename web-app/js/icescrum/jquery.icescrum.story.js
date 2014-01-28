@@ -56,7 +56,15 @@
             termDuplicate:null,
             data:[],
             bindings:[],
-            restUrl:'/icescrum/p/1/story',
+            config: {
+                sandbox: {
+                    filter: function(item){ return item.state == this.STATE_SUGGESTED },
+                    sort:function(item){ return Object.byString(item, this.sortOn); }
+                },
+                backlog: {
+                    filter: function(item){ return item.state == this.STATE_ESTIMATED }
+                }
+            },
             formatters:{
                 state:function(story){
                     return story.state > 1 ? $.icescrum.story.states[story.state] : '';
@@ -72,17 +80,16 @@
                     }
                 }
             },
-            config: {
-                sandbox: {
-                    filter: function(item){ return item.state == this.STATE_SUGGESTED }
-                },
-                backlog: {
-                    filter: function(item){ return item.state == this.STATE_ESTIMATED }
-                }
+
+            restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'story/'; },
+
+            'delete':function(data, status, xhr, element){
+                _.each(element.data('ajaxData').id, function(item){ $.icescrum.object.removeFromArray('story', {id:item}); });
             },
+
             onDropFeature:function(event, ui){
                 if (ui.helper){
-                    $.post($.icescrum.story.restUrl+'/update/'+$(this).data('elemid'), { 'story.feature.id':ui.helper.data('elemid') },
+                    $.post($.icescrum.story.restUrl()+'update/'+$(this).data('elemid'), { 'story.feature.id':ui.helper.data('elemid') },
                         function(data){
                             $.icescrum.object.addOrUpdateToArray('story',data);
                         }
@@ -91,7 +98,7 @@
             },
             onDropToSandbox:function(event, ui){
                 if (ui.draggable){
-                    $.post($.icescrum.story.restUrl+'/returnToSandbox/'+ui.draggable.data('elemid'),
+                    $.post($.icescrum.story.restUrl()+'update/'+ui.draggable.data('elemid')+'?story.state='+ $.icescrum.story.STATE_SUGGESTED,
                         function(data){
                             $.icescrum.object.addOrUpdateToArray('story',data);
                         }
@@ -99,45 +106,63 @@
                 }
             },
 
-            selectableStop:function(event, ui){
-                var selectable = $(event.target);
-                var els = selectable.find('.ui-selected:not(".new")');
-                var toolbarButtons = $(".window-toolbar > .navigation-item > .on-selectable-window-sandbox");
+            onSelectableStop:function(event, ui){
+                var selectable = $('.window-content.ui-selectable');
                 var container = $('#contextual-properties');
-                var el = null;
-                switch (els.length){
-                    //Display form new story
-                    case 0:
-                        if (selectable.data('currentState') != 0){
-                            toolbarButtons.addClass('on-selectable-disabled');
-                            el = $.template('tpl-new-story', {});
-                            container.html(el);
-                        }
-                        break;
-                    //Display form edit story
-                    case 1:
-                        toolbarButtons.removeClass('on-selectable-disabled');
-                        $.icescrum.object.dataBinding.apply(container.parent(), [{
-                            type:'story',
-                            tpl:'tpl-edit-story',
-                            watchedId:selectable.find('.ui-selected').data('elemid'),
-                            watch:'item',
-                            selector:'#contextual-properties'
-                        }]);
-                        break;
-                    //Display form multiple stories
-                    default:
-                        toolbarButtons.removeClass('on-selectable-disabled');
-                        var id = selectable.find('.ui-selected:last').data('elemid');
-                        el = $.template('tpl-multiple-stories', {story:_.findWhere($.icescrum['story'].data,{id:id})});
-                        container.html(el);
-                        break;
+
+                var id = selectable.data('current');
+                //no selection
+                if (!id || id.length == 0){
+                    $.icescrum.story.createForm(false, container);
                 }
-                if (container){
+                //multi selection
+                else if (id.length > 1){
+                    var el = $.template('tpl-multiple-stories', {story:_.findWhere($.icescrum['story'].data, {id:_.last(id)}), ids:id});
+                    container.html(el);
+                }
+                //one selected
+                 else if (id.length == 1) {
+                    $.icescrum.object.dataBinding.apply(container.parent(), [{
+                        type:'story',
+                        tpl:'tpl-edit-story',
+                        watchedId:id[0],
+                        watch:'item',
+                        selector:'#contextual-properties'
+                    }]);
+                }
+                //update container
+                manageAccordion(container);
+                container.accordion("option", "active", 0);
+                attachOnDomUpdate(container);
+            },
+
+            createForm:function(template, container){
+                container = container ? container : $('#contextual-properties');
+                var el;
+                if (template){
+                    $.get($.icescrum.story.restUrl()+'templateEntries', {'template':template}, function(data){
+                        data.name = $('input[name="story.name"]', container).val();
+                        el = $.template('tpl-new-story', {story:data, template:template});
+                        container.html(el);
+                        manageAccordion(container);
+                        attachOnDomUpdate(container);
+                    });
+                } else {
+                    el = $.template('tpl-new-story', {story:{}, template:template});
+                    container.html(el);
                     manageAccordion(container);
                     attachOnDomUpdate(container);
                 }
-                selectable.data('currentState', els.length);
+                container.find('input:first:visible').focus();
+            },
+
+            afterSave:function(data){
+                var selectable = $('.window-content.ui-selectable');
+                selectable.find('div[data-elemid="'+data.id+'"]').addClass('ui-selected');
+                var stop = selectable.selectableScroll( "option" , "stop");
+                if (stop){
+                    stop({target:selectable});
+                }
             },
 
             findDuplicate:function(term) {
@@ -149,12 +174,27 @@
                     this.termDuplicate = term.trim();
                     clearTimeout(this.timerDuplicate);
                     this.timerDuplicate = setTimeout(function() {
-                        $.get($.icescrum.story.restUrl+'/findDuplicate',{term:term.trim()})
+                        $.get($.icescrum.story.restUrl()+'findDuplicate',{term:term.trim()})
                             .success(function(data){
                                 $('.duplicate').html(data ? data : '');
                             });
                     }, 500);
                 }
+            },
+
+            sortOnSandbox:function(select){
+                var $sandbox = $('#backlog-layout-window-sandbox');
+                var ids = [];
+                _.each($sandbox.find('.ui-selected'), function(item){ ids.push($(item).data('elemid')); });
+                var config = $.icescrum.object.removeBinding('story', $sandbox);
+                config.sortOn = $(select).val();
+                config.reverse = true;
+                $.icescrum.object.dataBinding(config);
+                _.each($sandbox.find('.ui-selectee'), function(item){
+                    if (_.contains(ids, $(item).data('elemid'))) {
+                        $(item).addClass('ui-selected');
+                    }
+                });
             },
 
 

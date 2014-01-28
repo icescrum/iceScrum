@@ -34,21 +34,7 @@
     bottom: 3px;
 }
 
-.is-logo {
-    position: relative;
-    width: 25px;
-    z-index: 997;
-    padding-right: 10px;
-}
-
 .is-logo a {
-    position: absolute;
-    display: block;
-    top: 6px;
-    left: 14px;
-    z-index: 999;
-    height: 17px;
-    width: 18px;
     z-index: 999;
 }
 
@@ -56,8 +42,10 @@
     text-indent: -6000em;
     display: block;
     height: 17px;
-    z-index: 990;
+    z-index: 999;
     width: 18px;
+    margin-left: 1px;
+    margin-top: 3px;
 }
 
 #team-details, #project-details {
@@ -121,7 +109,7 @@ li#li-roles {
 
 #main, #local {
     position: absolute;
-    top: 37px;
+    top: 35px;
     bottom: 0;
 }
 
@@ -274,8 +262,8 @@ li#li-roles {
 */
 
 #navigation {
-    height: 38px;
-    background-repeat: repeat-x;
+    background:linear-gradient(#fafafa, #f1f2f3);
+    border-bottom:1px solid #989898;
 }
 
 #navigation ul {
@@ -284,14 +272,14 @@ li#li-roles {
 }
 
 #navigation .navigation-content {
-    padding: 4px 0;
+    padding: 1px 0;
     margin: 0;
 }
 
 #navigation .navigation-content .navigation-line {
     float: left;
     list-style: none;
-    padding-left: 5px;
+    padding-left: 6px;
     list-style-type: none;
 }
 
@@ -447,11 +435,6 @@ li#li-roles {
     float: right;
 }
 
-.box .box-navigation .navigation-item:not(:first-of-type), #navigation .navigation-content .navigation-line:nth-child(2), #navigation .navigation-content .navigation-line:nth-child(3) {
-    background: url(../images/bar/gray.png) no-repeat left -93px;
-}
-
-
 .box .box-navigation ul .search, #main .box .box-navigation ul .search {
     padding: 0;
     margin: 0;
@@ -483,6 +466,11 @@ li#li-roles {
 .box .box-navigation ul .search-hover .search-button {
     background-position: 0 -30px;
 }
+
+.box .box-navigation .navigation-item:not(:first-of-type) {
+    background: url(../images/bar/gray.png) no-repeat left -93px;
+}
+
 
 #dropmenu .search-content {
     background-position: 0 -57px;
@@ -523,8 +511,8 @@ li#li-roles {
 */
 
 #main .box .box-navigation {
-    height: 28px;
-    background-position: 0 -38px;
+    height: 27px;
+    background-position: 0 -39px;
     position: absolute;
     top: 0;
     left: 0;
@@ -671,11 +659,15 @@ li#li-roles {
     display:none !important;
 }
 
-/*
-////////////////////////////////////////////////////////////////////////////////
-//	Postit Rows
-////////////////////////////////////////////////////////////////////////////////
-*/
+#right.ui-resizable-hidden #contextual-properties, #right.ui-resizable-hidden #view-properties {
+   display:none;
+}
+
+    /*
+    ////////////////////////////////////////////////////////////////////////////////
+    //	Postit Rows
+    ////////////////////////////////////////////////////////////////////////////////
+    */
 
 .postit-row.ui-draggable-dragging {
     border-width: 1px;
@@ -2455,6 +2447,9 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 .dz-preview .file-icon {
     line-height: 16px;
 }
+.previews > div:first-of-type {
+    margin-top:6px;
+}
 
 .drop-here {
     bottom: 0;
@@ -2465,6 +2460,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     display:none;
     text-align: center;
     vertical-align:middle;
+    background:#000;
 }
 
 .dz-drag-hover .drop-here {
@@ -2592,6 +2588,7 @@ ul.ui-sortable > .navigation-line a span {
     width:160px;
     margin-left:28%;
     margin-top:50px;
+    margin-bottom:25px;
 }
 
 .stack .postit {
@@ -2642,4 +2639,161 @@ ul.ui-sortable > .navigation-line a span {
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     transform: rotate(0deg);
+}
+
+#right-story-template {
+}
+
+#right-story-template .postit {
+    width: 140px;
+    margin: 20px auto;
+}
+
+#right-story-container.new input[name="story.name"] {
+    float:left; width:65%;
+    box-sizing: border-box;
+}
+
+#s2id_auto_template {
+    float:right;
+    width:35%;
+    padding-left: 5px;
+}
+
+#right .icon {
+    height:17px;
+    width:16px;
+    display:inline-block;
+    text-indent: -19999px;
+}
+
+.is-icon-link {
+    background-image:url(../images/new-ui/link.png);
+}
+
+.is-icon-paperclip {
+    background-image:url(../images/new-ui/paperclip.png);
+}
+
+.is-icon-permalink {
+    background-image:url(../images/new-ui/permalink.png);
+}
+
+#contextual-properties .is-icon-link, #contextual-properties .is-icon-paperclip {
+    vertical-align: middle;
+}
+
+#contextual-properties .is-icon-link, #contextual-properties .is-icon-permalink {
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+#contextual-properties .is-icon-paperclip {
+    margin-right: 5px;
+    margin-top: 0;
+}
+#contextual-properties .is-icon-permalink {
+    margin-top: 0;
+}
+
+.button {
+    border:1px solid #dddddd;
+    background:#fafafa;
+    padding: 2px;
+}
+
+.button.clickable, .is-icon-paperclip.clickable {
+    cursor: pointer;
+}
+
+.nav-button {
+    background:linear-gradient(#69AEEC, #58A2DB);
+    border-top:1px solid #619edf;
+    border-bottom:1px solid #58a2db;
+    color:#FFF;
+    border-radius:4px;
+    font-size: 1.1em;
+    padding: 0 19px;
+    box-sizing: border-box;
+    font-weight: 300;
+}
+
+.nav-button:hover {
+    color:#FFF;
+    text-decoration:none;
+    padding: 0 18px;
+    border:1px solid #336699;
+    background:#3E97DC;
+}
+
+.nav-button.active {
+    color:#FFF;
+    padding: 0 18px;
+    border:1px solid #336699;
+    background:#58a2db;
+}
+
+.ui-sortable li:not(.ui-droppable) .nav-button:hover, .ui-sortable .widget-toolbar title:hover {
+    background: url(../images/new-ui/grip.png) no-repeat 5px center, linear-gradient(#6baaea, #58a2db);
+    cursor: move;
+}
+
+.ui-sortable .widget-toolbar .title:hover {
+    background: url(../images/new-ui/grip.png) no-repeat 0 5px;
+    cursor: move;
+}
+
+.ui-sortable .widget-toolbar .title {
+    padding-left:10px;
+}
+
+.ui-sortable .nav-button:hover span {
+    cursor:pointer;
+}
+
+.navigation-avatar {
+    width: 26px;
+    height: 26px;
+    margin-top:-2px;
+    margin-right:5px;
+}
+
+#menu-project a {
+    color: #777777;
+    margin-left: 20px;
+    margin-right: 30px;
+    margin-top: 1px;
+}
+
+.add-new-postit {
+    float: left;
+    margin: 1px;
+    width: 153px;
+    height: 110px;
+}
+
+.add-new-postit span {
+    display: block;
+    height:100%;
+    margin: 8px 6px 8px 7px;
+    border: 3px #EDEDED dashed;
+    text-align: center;
+    line-height: 110px;
+    font-size:52px;
+    color:#EDEDED;
+}
+
+.add-new-postit span:hover {
+    border: 3px #666 dashed;
+    cursor:pointer;
+    color:#666;
+}
+
+#right .help {
+    font-size: 1.1em;
+    margin:10px;
+}
+
+#right .actions {
+    text-align: center;
 }

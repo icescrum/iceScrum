@@ -1,5 +1,6 @@
+<%@ page import="org.icescrum.core.domain.Story" %>
 <underscore id="tpl-postit-story">
-    <div data-elemid="** story.id **" id="postit-story-** story.id **" class="postit story postit-story ui-selectee">
+    <div data-elemid="** story.id **" class="postit story postit-story ui-selectee">
         <div class="postit-layout **# if(story.feature){ ** postit-** story.feature.color ** **# } **">
             <p class="postit-id">
                 <is:scrumLink controller="story" id='** story.id **'>** story.id **</is:scrumLink>
@@ -35,7 +36,7 @@
                             <ul class="small">
                                 **# if ($.icescrum.user.productOwner && story.state == $.icescrum.story.STATE_SUGGESTED) { **
                                 <li>
-                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'story',product:'** jQuery.icescrum.product.pkey **'])}"
+                                    <a href="${createLink(action:'update',controller:'story', id:'** story.id **', params:['story.state':Story.STATE_ACCEPTED,product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="accept_story"
                                        data-ajax-notice="${message(code: 'is.story.acceptedAsStory').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -43,7 +44,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'feature',product:'** jQuery.icescrum.product.pkey **'])}"
+                                    <a href="${createLink(action:'acceptAsFeature',controller:'story', id:'** story.id **', params:[product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="accept_story"
                                        data-ajax-notice="${message(code: 'is.story.acceptedAsFeature').encodeAsJavaScript()}"
                                        data-ajax="true">
@@ -52,7 +53,7 @@
                                 </li>
                                 **# if ($.icescrum.sprint.current) { **
                                 <li class="menu-accept-task">
-                                    <a href="${createLink(action:'accept',controller:'story', id:'** story.id **', params:[type:'task',product:'** jQuery.icescrum.product.pkey **'])}"
+                                    <a href="${createLink(action:'acceptAsTask',controller:'story', id:'** story.id **', params:[product:'** jQuery.icescrum.product.pkey **'])}"
                                        data-ajax-trigger="accept_story"
                                        data-ajax-notice="${message(code: 'is.story.acceptedAsUrgentTask').encodeAsJavaScript()}"
                                        data-ajax="true">

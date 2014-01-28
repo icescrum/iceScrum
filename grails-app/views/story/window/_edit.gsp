@@ -8,11 +8,13 @@
     <div id="right-story-container" class="right-properties" data-elemid="** story.id **">
         <input required
                name="story.name"
+               style="width:90%"
                type="text"
                class="important"
                data-txt
                data-txt-change="${updateUrl}"
                value="** story.name **">
+        <a href="#"><span class="icon is-icon-permalink" title="${message(code:'is.permalink')}">${message(code:'is.permalink')}</span></a>
         <hr>
         <div class="inline">
             <select name="story.type"
@@ -49,6 +51,9 @@
                 data-sl2ajax-placeholder="${message(code: 'is.ui.story.nofeature')}"
                 data-sl2ajax-allow-clear="true"
                 value="**# if (story.feature) { **** story.feature.name ****# } **"/>
+        **# if (story.feature) { **
+        <a href=""><span class="icon is-icon-link" title="** story.feature.name **">** story.feature.name **</span></a>
+        **# } **
         <hr>
         <input
                 type="hidden"
@@ -60,7 +65,16 @@
                 data-sl2ajax-placeholder="${message(code: 'is.ui.story.nodependence')}"
                 data-sl2ajax-allow-clear="true"
                 value="**# if (story.dependsOn) { **** story.dependsOn.name ** (** story.dependsOn.uid **) **# } **"/>
+        **# if (story.dependsOn) { **
+            <a href=""><span class="icon is-icon-link" title="** story.dependsOn.name **">** story.dependsOn.name **</span></a>
+        **# } **
         <hr>
+        **# if (_.size(story.dependences) > 0) {
+            _.each(story.dependences, function(item) { **
+                <a class="scrum-link" title="** item.name **">** item.name **</a>
+        **# }) **
+        <hr>
+        **# } **
         <textarea name="story.description"
                   data-at
                   data-at-at="a"
@@ -92,13 +106,22 @@
              data-dz-id="right-story-container"
              data-dz-add-remove-links="true"
              data-dz-files='** JSON.stringify(story.attachments) **'
-             data-dz-clickable="#right-story-container button.clickable"
+             data-dz-clickable="#right-story-container .clickable"
              data-dz-url="${attachmentUrl}"
              data-dz-previews-container="#right-story-container .attachments .previews">
             <div class="providers">
-                <button class="clickable">file</button>
+                <span class="icon is-icon-paperclip clickable" title="Attach file(s)">Attach file(s)</span>
+                <button data-ui-button class="clickable">Attach file(s)</button>
             </div>
             <div class="previews"></div>
         </div>
     </div>
+    <h3><a href="#">summary</a></h3>
+    <div></div>
+    <h3><a href="#">comments</a></h3>
+    <div></div>
+    <h3><a href="#">Acceptance tests</a></h3>
+    <div></div>
+    <h3><a href="#">tasks</a></h3>
+    <div></div>
 </underscore>

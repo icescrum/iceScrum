@@ -25,7 +25,15 @@
      data-binding-watch="array"
      data-binding-selector="#stories-sandbox-size"
      data-binding-tpl="tpl-sandbox">
+    <select name="sort"
+            style="width:100px;"
+            onchange="$.icescrum.story.sortOnSandbox(this)"
+            data-sl2>
+        <option value="dateCreated">date</option>
+        <option value="type">type</option>
+        <option value="feature.id">feature</option>
+    </select>
 </div>
-<script type="text/icescrum-template" id="tpl-sandbox">
+<script type="text/icescrum-template" id="tpl-sandbox" style="display:none">
     <span id="stories-sandbox-size">** _.size( _.where(list,{ state: $.icescrum.story.STATE_SUGGESTED }) ) ** stories</span>
 </script>

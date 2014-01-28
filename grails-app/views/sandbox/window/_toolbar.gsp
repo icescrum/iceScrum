@@ -26,7 +26,7 @@
 <g:if test="${request.productOwner}">
     %{--Accept button--}%
     <li class="navigation-item">
-        <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
+        <a class="tool-button button-n on-selectable-disabled on-selectable"
            data-ajax="true"
            href="${createLink(action:'openDialogAcceptAs',params:[product:params.product])}"
            data-is-shortcut
@@ -43,7 +43,7 @@
     </li>
 
     <li class="navigation-item">
-        <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
+        <a class="tool-button button-n on-selectable-disabled on-selectable"
            onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
            data-is-shortcut
            data-is-shortcut-key="ctrl+shift+c"
@@ -59,7 +59,7 @@
     </li>
 
     <li class="navigation-item">
-        <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
+        <a class="tool-button button-n on-selectable-disabled on-selectable"
            onclick="jQuery.icescrum.selectableAction('story/openDialogDelete',true,null,null);"
            data-is-shortcut
            data-is-shortcut-key="del"

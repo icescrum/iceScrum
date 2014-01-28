@@ -23,7 +23,7 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
-<div id="head" class="${space ? 'is_header-normal' : 'is_header-full'}">
+<div id="head">
     <div id="navigation">
         <div class="left">
             <ul class="navigation-content clearfix"
@@ -32,6 +32,7 @@
                 data-ui-sortable-helper="clone"
                 data-ui-sortable-delay="100"
                 data-ui-sortable-items=".menubar:visible"
+                data-ui-sortable-cancel="span"
                 data-ui-sortable-stop="$.icescrum.menuBar.stop"
                 data-ui-sortable-start="$.icescrum.menuBar.start"
                 data-ui-sortable-receive="$.icescrum.menuBar.receive"
@@ -46,10 +47,8 @@
                 <is:errors/>
                 <li class="navigation-line">
                     <div class="dropmenu" id="menu-project" data-dropmenu="true">
-                      <a class="button-n clearfix dropmenu-button" onclick="return false;">
-                        <span class="start"></span>
-                        <span class="content">${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}</span>
-                        <span class="end"><span class="arrow"></span></span>
+                      <a class="clearfix dropmenu-button" onclick="return false;">
+                        ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}
                       </a>
                       <div class="dropmenu-content ui-corner-all">
                           <ul>
@@ -145,10 +144,8 @@
                             id="elem_${menu.id}">
                             <a  data-is-shortcut
                                 data-is-shortcut-key="ctrl+${index + 1}"
-                                class='button-s clearfix' href='#${menu.id}'>
-                                <span class='start'></span>
-                                <span class='content'>${message(code: menu.title)}</span>
-                                <span class='end'></span>
+                                class='clearfix nav-button' href='#${menu.id}'>
+                                <span>${message(code: menu.title)}</span>
                             </a>
                         </li>
                     </g:each>
@@ -161,12 +158,8 @@
                             data-ui-droppable-drop="$.icescrum.menuBar.onDropHidden"
                             data-ui-droppable-accept=".menubar">
                             <div class="dropmenu" id="menubar-list" data-dropmenu="true" data-autoClick="false">
-                                <a class="button-s clearfix">
-                                    <span class="start"></span>
-                                    <span class="content">
-                                        <span class="arrow"></span>
-                                    </span>
-                                    <span class="end"></span>
+                                <a class="clearfix nav-button">
+                                    <span> < </span>
                                 </a>
                                 <div class="dropmenu-content ui-corner-all" id="menubar-list-content">
                                     <ul data-ui-sortable
@@ -184,10 +177,8 @@
                                                 class="navigation-line menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}"
                                                 hidden="true"
                                                 id="elem_${menu.id}">
-                                                <a class='button-s clearfix' href='#${menu.id}'>
-                                                    <span class='start'></span>
-                                                    <span class='content'>${message(code: menu.title)}</span>
-                                                    <span class='end'></span>
+                                                <a class='clearfix nav-button' href='#${menu.id}'>
+                                                    <span>${message(code: menu.title)}</span>
                                                 </a>
                                             </li>
                                         </g:each>

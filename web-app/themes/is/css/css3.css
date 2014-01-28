@@ -29,7 +29,7 @@
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
 }
 
-#navigation .navigation-content, .button-n, .table th, .table .table-cell,
+.button-n, .table th, .table .table-cell,
 #dropmenu .dropmenu-content ul li a, .box-form .field-information,
 .input input, .area textarea, .area [contenteditable="true"] .input textarea, .panel .panel-title,
 .box-form label, #dropmenu .dropmenu-content .menu-label,

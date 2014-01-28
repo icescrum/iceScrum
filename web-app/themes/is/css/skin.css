@@ -285,7 +285,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 /////////////////////////////////////////
 */
 
-#navigation, .box .box-navigation,
+.box .box-navigation,
 .table .table-filters td, .table th, .table .table-foot,
 .pagination .separator, #dropmenu .dropmenu-content ul li:hover,
 .field-buttons, .panel .panel-title, .dropmenu-content .menu-label,
@@ -832,16 +832,4 @@ table.kanban:not(.done) tbody.storyDone {
 
 .user-tooltip #user-tooltip-username {
     font-weight: bold;
-}
-
-.navigation-line .with-arrow {
-    background: url(../images/application/arrow.png) no-repeat right 3px;
-    padding-right: 12px;
-    margin-right: 6px;
-}
-
-.navigation-avatar {
-    width: 26px;
-    height: 26px;
-    margin-top: -3px;
 }

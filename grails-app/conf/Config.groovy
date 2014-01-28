@@ -117,7 +117,7 @@ icescrum.marshaller = [
         task:[include:['totalAttachments','totalComments'], includeShort:['sprint']],
         feature:[include:['totalAttachments','countDoneStories','state','effort'],
                  asShort:['color', 'name']],
-        story:[include:['totalAttachments','totalComments','tasks', 'testState', 'tags', 'attachments'],
+        story:[include:['totalAttachments','totalComments','tasks', 'testState', 'tags', 'attachments', 'dependences'],
                asShort:['state', 'effort','uid', 'name']],
         sprint:[include:['activable','totalRemaining'],
                 exclude:['cliches'],

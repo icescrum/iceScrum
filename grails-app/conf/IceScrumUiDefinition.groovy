@@ -251,7 +251,7 @@ uiDefinitions = {
             title 'is.ui.sandbox'
             help 'is.ui.sandbox.help'
             init 'list'
-            toolbar true
+            toolbar false
             right true
         }
         widget {

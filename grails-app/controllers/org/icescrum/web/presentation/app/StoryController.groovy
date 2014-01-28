@@ -107,6 +107,11 @@ class StoryController {
     def save = {
 
         def story = new Story()
+
+        if (templates[params.template]){
+            params.story << templates[params.template]
+        }
+
         bindData(story, this.params, [include:['name','description','notes','type','affectVersion']], "story")
 
         def featureId = params.remove('feature.id') ?: params.story.remove('feature.id')
@@ -156,78 +161,89 @@ class StoryController {
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def update = {
-        withStory{ Story story ->
+
+        withStories{ List<Story> stories ->
 
             if (!params.story){
                 returnError(text:message(code:'is.ui.no.data'))
                 return
             }
 
-            // Required because any change to the story will be flushed to the DB as soon as a query is made to the DB
-            // We can consider creating the transaction at a higher level (withStory ? any controller action ?)
-            Story.withTransaction {
+            stories.each{ Story story ->
 
-                // For the moment, the fact that the user is PO is passed around independently
-                // we may consider encapsulating and passing user rights around in a POJO (PO, SM, TM, SH, InProduct, creator...)
-                if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
-                    render(status: 403, contentType: 'application/json')
-                    return
-                }
+                // Required because any change to the story will be flushed to the DB as soon as a query is made to the DB
+                // We can consider creating the transaction at a higher level (withStory ? any controller action ?)
+                Story.withTransaction {
 
-                // Experimental feature bind by setting the null string
-                // can't be generalized yet on the client side (e.g. for the moment, dependsOn relies on the field being an empty string)
-                // This can hardly be done with depends on because the other story needs to be updated and pushed manually...
-                if (params.story.'feature.id' == '') {
-                    params.story.'feature.id' = 'null'
-                }
-
-                // Not bindable Params
-                // Tags
-                if (params.story.tags != null) {
-                    story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
-                }
-
-                // Params passed as map with the following rules :
-                // - if the key is provided with a value then the property is intended to be set by the service
-                // - if the key is provided but the value is null then the property is intended to be cleared by the service
-                // Else, the property can still be updated by the service, only if it depends on other properties
-                Map props = [:]
-                if (params.story.rank != null) {
-                    // Here we check if the param is already parsed (from the API), we should be careful that it isn't required in other places
-                    props.rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
-                }
-                def sprintId = params.story.long('sprint.id')
-                if (sprintId != null && story.parentSprint?.id != sprintId) {
-                    def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
-                    if (!sprint) {
-                        returnError(text:message(code: 'is.sprint.error.not.exist'))
-                    } else {
-                        props.sprint = sprint
+                    // For the moment, the fact that the user is PO is passed around independently
+                    // we may consider encapsulating and passing user rights around in a POJO (PO, SM, TM, SH, InProduct, creator...)
+                    if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
+                        render(status: 403, contentType: 'application/json')
+                        return
                     }
-                } else if (params.boolean('shiftToNext')) {
-                    props.sprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
-                }
-                def dependsOnId = params.story.remove('dependsOn.id')
-                if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
-                    def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
-                    if (!dependsOn)
-                        returnError(text:message(code: 'is.story.error.not.exist'))
-                    props.dependsOn = dependsOn
-                } else if (story.dependsOn && dependsOnId == '') {
-                    props.dependsOn = null
-                }
-                if (params.story.effort != null && request.inProduct) {
-                    props.effort = params.story.effort
-                }
 
-                // Bindable Params (including the experimental "feature")
-                bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'position']], "story")
+                    // Experimental feature bind by setting the null string
+                    // can't be generalized yet on the client side (e.g. for the moment, dependsOn relies on the field being an empty string)
+                    // This can hardly be done with depends on because the other story needs to be updated and pushed manually...
+                    if (params.story.'feature.id' == '') {
+                        params.story.'feature.id' = 'null'
+                    }
 
-                storyService.update(story, props)
+                    // Not bindable Params
+                    // Tags
+                    if (params.story.tags != null) {
+                        story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+                    }
+
+                    // Params passed as map with the following rules :
+                    // - if the key is provided with a value then the property is intended to be set by the service
+                    // - if the key is provided but the value is null then the property is intended to be cleared by the service
+                    // Else, the property can still be updated by the service, only if it depends on other properties
+                    Map props = [:]
+
+                    if (params.story.rank != null) {
+                        // Here we check if the param is already parsed (from the API), we should be careful that it isn't required in other places
+                        props.rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
+                    }
+
+                    if (params.story.state != null) {
+                        // Here we check if the param is already parsed (from the API), we should be careful that it isn't required in other places
+                        props.state = params.story.state instanceof Number ? params.story.state : params.story.state.toInteger()
+                    }
+
+                    def sprintId = params.story.long('sprint.id')
+                    if (sprintId != null && story.parentSprint?.id != sprintId) {
+                        def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
+                        if (!sprint) {
+                            returnError(text:message(code: 'is.sprint.error.not.exist'))
+                        } else {
+                            props.sprint = sprint
+                        }
+                    } else if (params.boolean('shiftToNext')) {
+                        props.sprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
+                    }
+                    def dependsOnId = params.story.remove('dependsOn.id')
+                    if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
+                        def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
+                        if (!dependsOn)
+                            returnError(text:message(code: 'is.story.error.not.exist'))
+                        props.dependsOn = dependsOn
+                    } else if (story.dependsOn && dependsOnId == '') {
+                        props.dependsOn = null
+                    }
+                    if (params.story.effort != null && request.inProduct) {
+                        props.effort = params.story.effort
+                    }
+
+                    // Bindable Params (including the experimental "feature")
+                    bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'position']], "story")
+
+                    storyService.update(story, props)
+                }
             }
 
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: story as JSON }
+                html { render status: 200, contentType: 'application/json', text: stories as JSON }
                 json { renderRESTJSON(text:story) }
                 xml  { renderRESTXML(text:story) }
             }
@@ -237,11 +253,9 @@ class StoryController {
     @Secured('isAuthenticated()')
     def delete = {
         withStories{List<Story> stories ->
-            def ids = []
-            stories.each { ids << [id: it.id, state: it.state] }
             storyService.delete(stories, true, params.reason? params.reason.replaceAll("(\r\n|\n)", "<br/>") :null)
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: ids as JSON)  }
+                html { render(status: 200)  }
                 json { render(status: 204) }
                 xml { render(status: 204) }
             }
@@ -262,6 +276,18 @@ class StoryController {
             html { render(status:200, text:stories as JSON, contentType: 'application/json') }
             json { renderRESTJSON(text:stories) }
             xml  { renderRESTXML(text:stories) }
+        }
+    }
+
+    @Secured('inProduct() and !archivedProduct()')
+    def copy = {
+        withStories{List<Story> stories ->
+            def copiedStories = storyService.copy(stories)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON)  }
+                json { renderRESTJSON(text:copiedStories, status: 201) }
+                xml  { renderRESTXML(text:copiedStories, status: 201) }
+            }
         }
     }
 
@@ -303,25 +329,14 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def accept = {
-        def type = params.type instanceof Map ? params.type.value : params.type
+    def acceptAsFeature = {
         withStories{List<Story> stories ->
             stories = stories.reverse()
-            def elements = []
-            if (type == 'story') {
-                elements = storyService.acceptToBacklog(stories)
-                //case one story & d&d from sandbox to backlog
-                if (params.rank){
-                    storyService.rank(stories.first(), params.int('rank'));
-                }
-            } else if (type == 'feature') {
-                elements = storyService.acceptToFeature(stories)
-                //case one story & d&d from sandbox to backlog
-                if (params.rank){
-                    featureService.rank((Feature)elements.first(), params.int('rank'));
-                }
-            } else if (type == 'task') {
-                elements = storyService.acceptToUrgentTask(stories)
+            def elements = storyService.acceptToFeature(stories)
+            //case one story & d&d from sandbox to backlog
+            //todo replace with new update feature method
+            if (params.rank){
+                featureService.rank((Feature)elements.first(), params.int('rank'));
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: elements as JSON }
@@ -332,25 +347,14 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def returnToSandbox = {
+    def acceptAsTask = {
         withStories{List<Story> stories ->
-            storyService.returnToSandbox(stories)
+            stories = stories.reverse()
+            def elements = storyService.acceptToUrgentTask(stories)
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: stories as JSON)  }
-                json { renderRESTJSON(text:stories) }
-                xml  { renderRESTXML(text:stories) }
-            }
-        }
-    }
-
-    @Secured('inProduct() and !archivedProduct()')
-    def copy = {
-        withStories{List<Story> stories ->
-            def copiedStories = storyService.copy(stories)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON)  }
-                json { renderRESTJSON(text:copiedStories, status: 201) }
-                xml  { renderRESTXML(text:copiedStories, status: 201) }
+                html { render status: 200, contentType: 'application/json', text: elements as JSON }
+                json { renderRESTJSON(text:elements) }
+                xml  { renderRESTXML(text:elements) }
             }
         }
     }
@@ -492,4 +496,28 @@ class StoryController {
             }
         }
     }
+
+    def templateEntries = {
+        if (params.template){
+            render text:templates[params.template] as JSON, contentType: 'application/json', status:200
+        } else {
+            render text:templates.collect{ key, val -> [id:key, text:key]} as JSON, contentType: 'application/json', status:200
+        }
+    }
+
+    //TODO replace with real action to save template
+    static templates = ['Functional template':[tags:'tag1,tag2,tag3',
+            description:'this is a description  for template 1',
+            notes:'Custom notes from a template',
+            feature:[id:2, name:'La feature 2'],
+            id:666],
+            'Defect template':[tags:'tag1,tag2,tag3',
+                    type:2,
+                    description:'this is a description for template 2',
+                    notes:'Custom notes from a template',
+                    feature:[id:3, name:'La feature 3'], dependsOn:[id:5,uid:5]],
+            'Other template':[type:3,
+                    description:'this is a description for template 3',
+                    notes:'Custom notes from a template',
+                    dependsOn:[id:16, uid:16]]]
 }
