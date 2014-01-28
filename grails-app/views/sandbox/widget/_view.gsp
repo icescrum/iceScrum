@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,46 +18,24 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
-- Damien vitrac (damien@oocube.com)
-- Manuarii Stein (manuarii.stein@icescrum.com)
+-
 --}%
-<is:backlogElementLayout
-        id="widget-${controllerName}"
-        container="ul"
-        emptyRendering="true"
-        style="display:${stories ? 'block' : 'none'};"
-        containerClass="list postit-rows"
-        draggable="[
-                    rendered:(request.productOwner),
-                    selector:'.postit-row',
-                    helper:'clone',
-                    connectToSortable:'.backlog.connectableToWidgetSandbox',
-                    appendTo:'body',
-                    start:'jQuery(this).hide();',
-                    stop:'if (jQuery(this).attr(\'remove\') == \'true\') { jQuery(this).remove(); } else { jQuery(this).show(); }'
-                  ]"
-        dblclickable='[rendered:(request.stakeHolder || request.inProduct), selector:".postit-row", callback:"\$.icescrum.displayQuicklook(obj);"]'
-        value="${stories}"
-        var="story">
-    <is:cache  cache="storyCache" key="postit-small-${story.id}-${story.lastUpdated}">
-        <li class="postit-row postit-row-story postit-row-story-sandbox" data-elemid="${story.id}" ${story.dependsOn ? 'data-dependsOn="'+story.dependsOn.id+'"' : ''}>
-            <is:postitIcon name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/>
-            </span>${story.uid} - <is:truncated encodedHTML="true" size="30">${story.name.encodeAsHTML()}</is:truncated>
-        </li>
-    </is:cache>
-</is:backlogElementLayout>
 
-<div class="box-blank" style="display:${stories ? 'none' : 'block'};">
-    ${message(code: 'is.widget.sandbox.empty')}
-</div>
-
+<ul class="list postit-rows"
+    id="widget-${controllerName}"
+    ${request.productOwner || request.scrumMaster ? 'data-ui-draggable' : ''}
+    data-ui-draggable-selector=".postit-row"
+    data-ui-draggable-helper="clone"
+    data-ui-draggable-connect-to-sortable='.backlog.connectableToWidgetSandbox'
+    data-ui-draggable-append-to="body"
+    data-ui-draggable-start="$.icescrum.onStartDragWidget"
+    data-ui-draggable-stop="$.icescrum.onStopDragWidget"
+    data-binding
+    data-binding-type="story"
+    data-binding-selector="li.postit-row-story"
+    data-binding-tpl="tpl-postit-row-story"
+    data-binding-watch="items"
+    data-binding-highlight="true"
+    data-binding-config="sandbox">
+</ul>
 <entry:point id="${controllerName}-${actionName}-widget" model="[stories:stories]"/>
-
-<is:onStream
-        on="#backlog-layout-widget-${controllerName}"
-        events="[[object:'story',events:['add','update','remove','accept','returnToSandbox']]]"
-        template="sandboxWidget"/>
-
-<is:onStream
-        on="#backlog-layout-widget-${controllerName}"
-        events="[[object:'feature',events:['update']]]"/>

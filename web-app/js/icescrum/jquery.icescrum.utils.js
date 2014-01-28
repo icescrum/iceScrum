@@ -675,6 +675,22 @@
             } else {
                 $this.show();
             }
+        },
+
+        getExport:function(select){
+            var $select = $(select);
+            $select.data('ajaxBegin', function(){
+                $select.select2('readonly', true);
+            });
+            $select.data('ajaxComplete', function(){
+                $select.select2('readonly', false);
+                $select.select2('data', null);
+            });
+            ajaxRequest($select, {
+                url:  $($select.find(':selected')).attr('url'),
+                type: 'GET',
+                data: []
+            });
         }
     });
 

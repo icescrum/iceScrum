@@ -14,7 +14,9 @@
                data-txt
                data-txt-change="${updateUrl}"
                value="** story.name **">
-        <a href="#"><span class="icon is-icon-permalink" title="${message(code:'is.permalink')}">${message(code:'is.permalink')}</span></a>
+        <a href="** $.icescrum.o.baseUrl **** $.icescrum.product.pkey **-** story.uid **">
+            <span class="icon is-icon-permalink" title="${message(code:'is.permalink')}">${message(code:'is.permalink')}</span>
+        </a>
         <hr>
         <div class="inline">
             <select name="story.type"

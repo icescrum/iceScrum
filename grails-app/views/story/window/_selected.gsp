@@ -60,6 +60,7 @@
                data-ajax-data='** JSON.stringify({id:ids}) **'>${message(code:'is.ui.sandbox.menu.acceptAsUrgentTask')}</a>
             **# } **
         **# } **
+            <entry:point id="tpl-multiple-stories-actions"/>
         </div>
         <hr>
         <input type="hidden"
@@ -80,5 +81,6 @@
             <is:options values="${storyTypes}" />
         </select>
         **# } **
+        <entry:point id="tpl-multiple-stories"/>
     </div>
 </underscore>

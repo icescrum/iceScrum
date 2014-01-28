@@ -96,7 +96,7 @@ Object.byString = function(o, s) {
             } else {
                 if (settings.watch == 'items'){
                     var data = settings.filter ? _.filter($.icescrum[type].data, function(item) {  if(settings.filter.apply($.icescrum[type],[item])) return item; else return false; }) : $.icescrum[type].data;
-                    if (settings.sort){
+                    if (settings.sort && settings.sortOn){
                         data = _.sortBy(data, function(item) {  return settings.sort.apply(settings,[item]); });
                     }
                     data = settings.reverse ? data.reverse() : data;

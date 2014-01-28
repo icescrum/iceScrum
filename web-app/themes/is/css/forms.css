@@ -48,14 +48,11 @@
 */
 
 .file-icon {
-    height: 15px;
-    width: auto;
-    padding-bottom: 1px;
-    line-height: 13px;
+    margin: 0;
+    padding-bottom: 3px;
     padding-left: 22px;
-    margin: 4px 0 3px 4px;
-    margin-right: 5px;
-    background-position: 0 -176px;
+    vertical-align: middle;
+    width: auto;
 }
 
 .dropmenu-content .file-icon {

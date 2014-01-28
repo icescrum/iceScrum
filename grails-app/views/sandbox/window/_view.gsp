@@ -1,6 +1,6 @@
 <%@ page import="org.icescrum.core.domain.Story; grails.converters.JSON" %>
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -

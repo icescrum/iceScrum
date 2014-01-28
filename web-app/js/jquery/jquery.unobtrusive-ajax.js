@@ -23,6 +23,9 @@
  */
 
 function getFunction(code, argNames) {
+    if ($.isFunction(code)){
+        return code;
+    }
     var fn = window, parts = (code || "").split(".");
     while (fn && parts.length) {
         fn = fn[parts.shift()];
@@ -34,29 +37,27 @@ function getFunction(code, argNames) {
     return Function.constructor.apply(null, argNames);
 }
 
-(function ($) {
+function isMethodProxySafe(method) {
+    return method === "GET" || method === "POST";
+}
 
-    function isMethodProxySafe(method) {
-        return method === "GET" || method === "POST";
+function ajaxOnBeforeSend(xhr, method) {
+    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    if (!isMethodProxySafe(method)) {
+        xhr.setRequestHeader("X-HTTP-Method-Override", method);
     }
+}
 
-    function ajaxOnBeforeSend(xhr, method) {
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        if (!isMethodProxySafe(method)) {
-            xhr.setRequestHeader("X-HTTP-Method-Override", method);
-        }
+function ajaxOnSuccess(element, data, contentType) {
+    var mode;
+    if (contentType.indexOf("application/x-javascript") !== -1) {  // jQuery already executes JavaScript for us
+        return;
     }
+    mode = (element.data("ajaxMode") || "").toUpperCase();
+    $(element.data("ajaxUpdate")).each(function (i, update) {
+        var top;
 
-    function ajaxOnSuccess(element, data, contentType) {
-        var mode;
-        if (contentType.indexOf("application/x-javascript") !== -1) {  // jQuery already executes JavaScript for us
-            return;
-        }
-        mode = (element.data("ajaxMode") || "").toUpperCase();
-        $(element.data("ajaxUpdate")).each(function (i, update) {
-            var top;
-
-            switch (mode) {
+        switch (mode) {
             case "BEFORE":
                 top = update.firstChild;
                 $("<div />").html(data).contents().each(function () {
@@ -72,77 +73,79 @@ function getFunction(code, argNames) {
                 $(update).html(data);
                 attachOnDomUpdate($(update));
                 break;
+        }
+    });
+}
+
+function ajaxRequest(element, options) {
+    var confirm, loading, duration;
+    confirm = element.data("ajaxConfirm");
+    if (confirm){
+        confirm = confirm.replace(/\\n/g,"\n");
+    }
+    if (confirm && !window.confirm(confirm)) {
+        return;
+    }
+
+    loading = $(element.data("ajaxLoading"));
+    duration = element.data("ajaxLoadingDuration") || 0;
+
+    $.extend(options, {
+        type: element.data("ajaxMethod") || undefined,
+        url: element.data("ajaxUrl") || undefined,
+        beforeSend: function (xhr) {
+            var result;
+            ajaxOnBeforeSend(xhr, options.type);
+            result = getFunction(element.data("ajaxBegin"), ["xhr", "element"]).apply(this, [xhr, element]);
+            if (result !== false) {
+                loading.show(duration);
             }
-        });
-    }
-
-    function ajaxRequest(element, options) {
-        var confirm, loading, duration;
-        confirm = element.data("ajaxConfirm");
-        if (confirm){
-            confirm = confirm.replace(/\\n/g,"\n");
-        }
-        if (confirm && !window.confirm(confirm)) {
-            return;
-        }
-
-        loading = $(element.data("ajaxLoading"));
-        duration = element.data("ajaxLoadingDuration") || 0;
-
-        $.extend(options, {
-            type: element.data("ajaxMethod") || undefined,
-            url: element.data("ajaxUrl") || undefined,
-            beforeSend: function (xhr) {
-                var result;
-                ajaxOnBeforeSend(xhr, options.type);
-                result = getFunction(element.data("ajaxBegin"), ["xhr", "element"]).apply(this, [xhr, element]);
-                if (result !== false) {
-                    loading.show(duration);
-                }
-                return result;
-            },
-            complete: function () {
-                loading.hide(duration);
-                getFunction(element.data("ajaxComplete"), ["xhr", "status"]).apply(this, arguments);
-                $('#tiptip_holder').remove();
-            },
-            success: function (data, status, xhr) {
-                ajaxOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
-                if (data.dialog){
-                    $(document.body).append(data.dialog);
+            return result;
+        },
+        complete: function () {
+            loading.hide(duration);
+            getFunction(element.data("ajaxComplete"), ["xhr", "status"]).apply(this, arguments);
+            $('#tiptip_holder').remove();
+        },
+        success: function (data, status, xhr) {
+            ajaxOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
+            if (data.dialog){
+                $(document.body).append(data.dialog);
+                attachOnDomUpdate($('.ui-dialog'));
+            }else{
+                if (data.dialogSuccess){
+                    $(document.body).append(data.dialogSuccess);
                     attachOnDomUpdate($('.ui-dialog'));
-                }else{
-                    if (data.dialogSuccess){
-                        $(document.body).append(data.dialogSuccess);
-                        attachOnDomUpdate($('.ui-dialog'));
-                    }
-                    if (element.data("ajaxNotice")){
-                        $.icescrum.renderNotice(element.data("ajaxNotice"));
-                    }
-                    if (element.data("ajaxTrigger")){
-                        if(typeof element.data("ajaxTrigger") == 'string'){
-                            $.event.trigger(element.data("ajaxTrigger"),[data]);
-                        }else{
-                            $.each( element.data("ajaxTrigger"), function(i, n){
-                                $.event.trigger(i,[data[n]]);
-                                $.icescrum.object.addOrUpdateToArray(i.split('_')[1],[data[n]]);
-                            });
-                        }
-                    }
-                    if (element.data("ajaxSync")){
-                        $.icescrum.object.addOrUpdateToArray(element.data("ajaxSync"),data);
-                    }
-                    if (element.data("ajaxSuccess") && element.data("ajaxSuccess").startsWith('#')){
-                        document.location.hash = element.data("ajaxSuccess");
-                        return
-                    }
-                    getFunction(element.data("ajaxSuccess"), ["data", "status", "xhr", "element"]).apply(this, [data, status, xhr, element]);
                 }
-            },
-            error: getFunction(element.data("ajaxFailure"), ["xhr", "status", "error"])
-        });
-        $.ajax(options);
-    }
+                if (element.data("ajaxNotice")){
+                    $.icescrum.renderNotice(element.data("ajaxNotice"));
+                }
+                if (element.data("ajaxTrigger")){
+                    if(typeof element.data("ajaxTrigger") == 'string'){
+                        $.event.trigger(element.data("ajaxTrigger"),[data]);
+                    }else{
+                        $.each( element.data("ajaxTrigger"), function(i, n){
+                            $.event.trigger(i,[data[n]]);
+                            $.icescrum.object.addOrUpdateToArray(i.split('_')[1],[data[n]]);
+                        });
+                    }
+                }
+                if (element.data("ajaxSync")){
+                    $.icescrum.object.addOrUpdateToArray(element.data("ajaxSync"),data);
+                }
+                if (element.data("ajaxSuccess") && element.data("ajaxSuccess").startsWith('#')){
+                    document.location.hash = element.data("ajaxSuccess");
+                    return
+                }
+                getFunction(element.data("ajaxSuccess"), ["data", "status", "xhr", "element"]).apply(this, [data, status, xhr, element]);
+            }
+        },
+        error: getFunction(element.data("ajaxFailure"), ["xhr", "status", "error"])
+    });
+    $.ajax(options);
+}
+
+(function ($) {
 
     $(document).bind('keydown.stream','esc', function(e){
         e.preventDefault();
@@ -288,7 +291,7 @@ function attachOnDomUpdate(content){
         var settings = $.extend({
                 dictCancelUpload:'x',
                 dictRemoveFile:'x',
-                previewTemplate:'<div class="dz-preview dz-file-preview"><div class="dz-details file-icon"><a href="javascript:;" data-dz-href><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div></a></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>'
+                previewTemplate:'<div class="dz-preview dz-file-preview"><div class="dz-details"><a href="javascript:;" data-dz-href><i class="file-icon"></i><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div></a></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>'
             },
             $this.html5data('dz')
         );
@@ -306,7 +309,7 @@ function attachOnDomUpdate(content){
             }
             var name = file.previewElement.querySelector("[data-dz-name]");
             name.title = file.name;
-            $(".dz-details", file.previewElement).addClass(file.ext+"-format");
+            $(".dz-details > i", file.previewElement).addClass("format-"+file.ext);
             if (file.size == 0){
                 file.previewElement.querySelector("[data-dz-size]").remove();
             }
@@ -767,7 +770,6 @@ function attachOnDomUpdate(content){
             }
         });
         $this.parent().selectableScroll(settings);
-        console.log('selectable initialized');
     });
 
     $('div[data-binding], ul[data-binding]', content).each(function(){

@@ -33,6 +33,20 @@
         <option value="type">type</option>
         <option value="feature.id">feature</option>
     </select>
+
+    <select name="export"
+            onchange="$.icescrum.getExport(this)"
+            style="width:150px;"
+            data-sl2-placeholder="Export in"
+            data-sl2-icon-class="file-icon format-"
+            data-sl2>
+                <option></option>
+                <g:each in="${exportFormats}" var="format">
+                    <option url="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
+                            value="${format.code.toLowerCase()}">${format.name}</option>
+                </g:each>
+    </select>
+    <entry:point id="${controllerName}-${actionName}"/>
 </div>
 <script type="text/icescrum-template" id="tpl-sandbox" style="display:none">
     <span id="stories-sandbox-size">** _.size( _.where(list,{ state: $.icescrum.story.STATE_SUGGESTED }) ) ** stories</span>

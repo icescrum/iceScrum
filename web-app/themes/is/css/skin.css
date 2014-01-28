@@ -622,87 +622,87 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     background: url("../images/form/file-types.png") no-repeat;
 }
 
-.file-icon.doc-format, .file-icon.docx-format {
+.file-icon.format-doc, .file-icon.format-docx {
     background-position: 0 0;
 }
 
-.file-icon.bmp-format {
+.file-icon.format-bmp {
     background-position: 0 -12px;
 }
 
-.file-icon.jpg-format, .file-icon.jpeg-format {
+.file-icon.format-jpg, .file-icon.format-jpeg {
     background-position: 0 -32px;
 }
 
-.file-icon.png-format {
+.file-icon.format-png {
     background-position: 0 -48px;
 }
 
-.file-icon.gif-format {
+.file-icon.format-gif {
     background-position: 0 -64px;
 }
 
-.file-icon.psd-format {
+.file-icon.format-psd {
     background-position: 0 -80px;
 }
 
-.file-icon.mp3-format, .file-icon.wav-format, .file-icon.ogg-format {
+.file-icon.format-mp3, .file-icon.format-wav, .file-icon.format-ogg {
     background-position: 0 -96px;
 }
 
-.file-icon.avi-format, .file-icon.wmv-format, .file-icon.flv-format {
+.file-icon.format-avi, .file-icon.format-wmv, .file-icon.format-flv {
     background-position: 0 -112px;
 }
 
-.file-icon.pdf-format {
+.file-icon.format-pdf {
     background-position: 0 -128px;
 }
 
-.file-icon.exe-format {
+.file-icon.format-exe {
     background-position: 0 -144px;
 }
 
-.file-icon.txt-format {
+.file-icon.format-txt {
     background-position: 0 -160px;
 }
 
-.file-icon.file-format {
+.file-icon.format-file {
     background-position: 0 -176px;
 }
 
-.file-icon.html-format {
+.file-icon.format-html {
     background-position: 0 -192px;
 }
 
-.file-icon.rtf-format {
+.file-icon.format-rtf {
     background-position: 0 -208px;
 }
 
-.file-icon.odt-format {
+.file-icon.format-odt {
     background-position: 0 -224px;
 }
 
-.file-icon.xml-format {
+.file-icon.format-xml {
     background-position: 0 -240px;
 }
 
-.file-icon.odp-format {
+.file-icon.format-odp {
     background-position: 0 -256px;
 }
 
-.file-icon.ods-format {
+.file-icon.format-ods {
     background-position: 0 -272px;
 }
 
-.file-icon.pptx-format {
+.file-icon.format-pptx {
     background-position: 0 -288px;
 }
 
-.file-icon.xlsx-format {
+.file-icon.format-xlsx {
     background-position: 0 -304px;
 }
 
-.file-icon.zip-format {
+.file-icon.format-zip {
     background-position: 0 -320px;
 }
 

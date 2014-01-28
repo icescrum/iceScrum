@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum
 -
 - This file is part of iceScrum.
 -
@@ -18,8 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
-- Damien vitrac (damien@oocube.com)
-- Manuarii Stein (manuarii.stein@icescrum.com)
+-
 --}%
 <ul class="list postit-rows"
     id="widget-${controllerName}"

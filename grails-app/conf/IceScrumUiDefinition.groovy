@@ -250,13 +250,12 @@ uiDefinitions = {
         window {
             title 'is.ui.sandbox'
             help 'is.ui.sandbox.help'
-            init 'list'
             toolbar false
             right true
         }
         widget {
             title 'is.ui.sandbox'
-            init 'list'
+            init 'index'
             toolbar true
             resizable = [defaultHeight:143,minHeight:26]
         }
@@ -270,6 +269,7 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.sandbox.ctrln.text'],
             [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.sandbox.space.text']
         ]
+
         embedded = [
                 view:'list',
                 viewTypes:['postits','table']

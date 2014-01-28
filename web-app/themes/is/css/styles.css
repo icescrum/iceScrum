@@ -228,7 +228,6 @@ li#li-roles {
 
 #right.ui-resizable-hidden > .ui-resizable-handle {
     cursor: w-resize;
-    border-right-width: 0;
 }
 
 #local.ui-resizable-hidden,#local .mini-width-icon, #local.ui-resizable-hidden .is-widget {
@@ -2386,6 +2385,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     overflow: hidden;
     text-overflow: ellipsis;
     float:left;
+    padding-top: 1px;
 }
 
 .dz-preview .dz-details .dz-filename {
@@ -2445,7 +2445,8 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     display: none;
 }
 .dz-preview .file-icon {
-    line-height: 16px;
+    float: left;
+    height: 13px;
 }
 .previews > div:first-of-type {
     margin-top:6px;
