@@ -66,12 +66,12 @@
         <a href=""><span class="icon is-icon-link" title="** story.feature.name **">** story.feature.name **</span></a>
         **# } **
         <hr>
-        <div class="field">
+        <div class="field" style="width:90%">
             <label for="story.dependsOn.id">${message(code:'is.story.dependsOn')}</label>
             <input
                 type="hidden"
                 name="story.dependsOn.id"
-                style="width:90%;"
+                style="width:100%;"
                 data-sl2ajax
                 data-sl2ajax-change="${updateUrl}"
                 data-sl2ajax-url="${createLink(controller: 'story', action: 'dependenceEntries', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"

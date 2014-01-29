@@ -253,15 +253,15 @@ function ajaxRequest(element, options) {
         $.post(url, postData, success);
     });
 
-    $(document).on('resizable.overWidth', '#right', function(){
-        $('#contextual-properties').accordion('destroy');
-        $('#right').addClass('desktop-view');
-    });
-
-    $(document).on('resizable.notOverWidth', '#right', function(){
-        $('#right').removeClass('desktop-view');
-        manageAccordion($('#contextual-properties'));
-    });
+//    $(document).on('resizable.overWidth', '#right', function(){
+//        $('#contextual-properties').accordion('destroy');
+//        $('#right').addClass('desktop-view');
+//    });
+//
+//    $(document).on('resizable.notOverWidth', '#right', function(){
+//        $('#right').removeClass('desktop-view');
+//        manageAccordion($('#contextual-properties'));
+//    });
 
     $(document).on('keydown', "div.editable", function(evt) {
         if(evt.keyCode==9) {
