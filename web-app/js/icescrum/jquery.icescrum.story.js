@@ -501,14 +501,6 @@
                 });
             },
 
-            associated:function(template) {
-                $.icescrum.story.update.apply(this, [template]);
-            },
-
-            dissociated:function(template) {
-                $.icescrum.story.update.apply(this, [template]);
-            },
-
             manageDependencies:function(){
                 var SelectDependsOn = $("#dependsOn\\.id");
                 if (SelectDependsOn.size() > 0){

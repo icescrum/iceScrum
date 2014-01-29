@@ -182,11 +182,11 @@ class StoryController {
                         return
                     }
 
-                    // Experimental feature bind by setting the null string
-                    // can't be generalized yet on the client side (e.g. for the moment, dependsOn relies on the field being an empty string)
-                    // This can hardly be done with depends on because the other story needs to be updated and pushed manually...
                     if (params.story.'feature.id' == '') {
                         params.story.'feature.id' = 'null'
+                    }
+                    if (params.story.'dependsOn.id' == '') {
+                        params.story.'dependsOn.id' = 'null'
                     }
 
                     // Not bindable Params
@@ -222,21 +222,12 @@ class StoryController {
                     } else if (params.boolean('shiftToNext')) {
                         props.sprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
                     }
-                    def dependsOnId = params.story.remove('dependsOn.id')
-                    if (dependsOnId && story.dependsOn?.id != dependsOnId.toLong()) {
-                        def dependsOn = (Story) Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
-                        if (!dependsOn)
-                            returnError(text:message(code: 'is.story.error.not.exist'))
-                        props.dependsOn = dependsOn
-                    } else if (story.dependsOn && dependsOnId == '') {
-                        props.dependsOn = null
-                    }
                     if (params.story.effort != null && request.inProduct) {
                         props.effort = params.story.effort
                     }
 
                     // Bindable Params (including the experimental "feature")
-                    bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'position']], "story")
+                    bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'position', 'dependsOn']], "story")
 
                     storyService.update(story, props)
                 }

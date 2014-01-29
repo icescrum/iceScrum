@@ -238,7 +238,7 @@
 
 <is:onStream
         on="#kanban-sprint-${sprint.id}"
-        events="[[object:'story',events:['update','estimate','unPlan','plan','done','unDone','inProgress','associated','dissociated']]]"
+        events="[[object:'story',events:['update','estimate','unPlan','plan','done','unDone','inProgress']]]"
         template="sprintPlan"/>
 
 <is:onStream

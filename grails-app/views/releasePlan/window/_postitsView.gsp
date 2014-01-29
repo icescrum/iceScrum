@@ -144,7 +144,7 @@
 
 <is:onStream
         on=".event-overflow"
-        events="[[object:'story',events:['update','estimate','unPlan','plan','done','unDone','inProgress','associated','dissociated']],[object:'feature',events:['update']]]"
+        events="[[object:'story',events:['update','estimate','unPlan','plan','done','unDone','inProgress']],[object:'feature',events:['update']]]"
         template="releasePlan"/>
 
 <is:onStream
