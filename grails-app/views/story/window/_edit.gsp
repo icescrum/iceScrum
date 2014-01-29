@@ -6,22 +6,25 @@
     <g:set var="attachmentUrl" value="${createLink(action:'attachments', controller: 'story', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <h3><a href="#">** story.id ** - ** story.name **</a></h3>
     <div id="right-story-container" class="right-properties" data-elemid="** story.id **">
-        <input required
-               name="story.name"
-               style="width:90%"
-               type="text"
-               class="important"
-               data-txt
-               data-txt-change="${updateUrl}"
-               value="** story.name **">
+        <div class="field" style="width:90%">
+            <label for="story.name">${message(code:'is.story.name')}</label>
+            <input required
+                   name="story.name"
+                   type="text"
+                   class="important"
+                   data-txt
+                   data-txt-change="${updateUrl}"
+                   value="** story.name **">
+        </div>
         <a href="** $.icescrum.o.baseUrl **** $.icescrum.product.pkey **-** story.uid **">
             <span class="icon is-icon-permalink" title="${message(code:'is.permalink')}">${message(code:'is.permalink')}</span>
         </a>
         <hr>
-        <div class="inline">
+        <div class="field" style="width:33%">
+            <label for="story.type">${message(code:'is.story.type')}</label>
             <select name="story.type"
-                    style="width:33%;"
                     class="important"
+                    style="width:100%"
                     data-sl2
                     data-sl2-icon-class="ico-story-"
                     data-sl2-change="${updateUrl}"
@@ -31,33 +34,41 @@
         </div>
         <hr>
         **# if(story.type == $.icescrum.story.TYPE_DEFECT) { **
-        <input type="hidden"
-               name="story.affectVersion"
-               style="width:90%"
-               data-sl2ajax
-               data-sl2ajax-change="${updateUrl}"
-               data-sl2ajax-placeholder="${message(code:'is.ui.story.noaffectversion')}"
-               data-sl2ajax-url="${g.createLink(controller:'project', action: 'versions', params:[product:'** jQuery.icescrum.product.pkey **'])}"
-               data-sl2ajax-allow-clear="true"
-               data-sl2ajax-create-choice-on-empty="true"
-               value="** story.affectVersion **"/>
+        <div class="field" style="width:90%">
+            <label for="story.affectVersion">${message(code:'is.story.affectVersion')}</label>
+            <input type="hidden"
+                   name="story.affectVersion"
+                   style="width:100%"
+                   data-sl2ajax
+                   data-sl2ajax-change="${updateUrl}"
+                   data-sl2ajax-placeholder="${message(code:'is.ui.story.noaffectversion')}"
+                   data-sl2ajax-url="${g.createLink(controller:'project', action: 'versions', params:[product:'** jQuery.icescrum.product.pkey **'])}"
+                   data-sl2ajax-allow-clear="true"
+                   data-sl2ajax-create-choice-on-empty="true"
+                   value="** story.affectVersion **"/>
+        </div>
         <hr>
         **# } **
-        <input
+        <div class="field" style="width:90%">
+            <label for="story.feature.id">${message(code:'is.feature')}</label>
+            <input
                 type="hidden"
                 name="story.feature.id"
-                style="width:90%;"
+                style="width:100%;"
                 data-sl2ajax
                 data-sl2ajax-change="${updateUrl}"
                 data-sl2ajax-url="${createLink(controller: 'feature', action: 'featureEntries', params: [product: '** jQuery.icescrum.product.pkey **'])}"
                 data-sl2ajax-placeholder="${message(code: 'is.ui.story.nofeature')}"
                 data-sl2ajax-allow-clear="true"
                 value="**# if (story.feature) { **** story.feature.name ****# } **"/>
+        </div>
         **# if (story.feature) { **
         <a href=""><span class="icon is-icon-link" title="** story.feature.name **">** story.feature.name **</span></a>
         **# } **
         <hr>
-        <input
+        <div class="field">
+            <label for="story.dependsOn.id">${message(code:'is.story.dependsOn')}</label>
+            <input
                 type="hidden"
                 name="story.dependsOn.id"
                 style="width:90%;"
@@ -67,6 +78,7 @@
                 data-sl2ajax-placeholder="${message(code: 'is.ui.story.nodependence')}"
                 data-sl2ajax-allow-clear="true"
                 value="**# if (story.dependsOn) { **** story.dependsOn.name ** (** story.dependsOn.uid **) **# } **"/>
+        </div>
         **# if (story.dependsOn) { **
             <a href=""><span class="icon is-icon-link" title="** story.dependsOn.name **">** story.dependsOn.name **</span></a>
         **# } **
@@ -77,31 +89,40 @@
         **# }) **
         <hr>
         **# } **
-        <textarea name="story.description"
-                  data-at
-                  data-at-at="a"
-                  data-at-matcher="$.icescrum.story.formatters.description"
-                  data-at-default="${is.generateStoryTemplate(newLine: '\\n')}"
-                  data-at-placeholder="${message(code: 'is.ui.story.nodescription')}"
-                  data-at-change="${updateUrl}"
-                  data-at-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
-                  data-at-data="${g.createLink(controller:'actor', action: 'search', params:[product:'** jQuery.icescrum.product.pkey **'], absolute: true)}">** story.description **</textarea>
+        <div class="field" style="height:100px">
+            <label for="story.description">${message(code:'is.backlogelement.description')}</label>
+            <textarea name="story.description"
+                      data-at
+                      data-at-at="a"
+                      data-at-matcher="$.icescrum.story.formatters.description"
+                      data-at-default="${is.generateStoryTemplate(newLine: '\\n')}"
+                      data-at-placeholder="${message(code: 'is.ui.story.nodescription')}"
+                      data-at-change="${updateUrl}"
+                      data-at-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
+                      data-at-data="${g.createLink(controller:'actor', action: 'search', params:[product:'** jQuery.icescrum.product.pkey **'], absolute: true)}">** story.description **</textarea>
+        </div>
         <hr>
-        <input  type="hidden"
-                name="story.tags"
-                style="width:100%"
-                data-sl2tag
-                data-sl2tag-tag-link="#finder?tag="
-                data-sl2tag-change="${updateUrl}"
-                data-sl2tag-placeholder="${message(code:'is.ui.story.notags')}"
-                data-sl2tag-url="${g.createLink(controller:'finder', action: 'tag', params:[product:'** jQuery.icescrum.product.pkey **'])}"
-                value="** story.tags **"/>
+        <div class="field">
+            <label for="story.tags">${message(code:'is.backlogelement.tags')}</label>
+            <input  type="hidden"
+                    name="story.tags"
+                    style="width:100%"
+                    data-sl2tag
+                    data-sl2tag-tag-link="#finder?tag="
+                    data-sl2tag-change="${updateUrl}"
+                    data-sl2tag-placeholder="${message(code:'is.ui.story.notags')}"
+                    data-sl2tag-url="${g.createLink(controller:'finder', action: 'tag', params:[product:'** jQuery.icescrum.product.pkey **'])}"
+                    value="** story.tags **"/>
+        </div>
         <hr>
-        <textarea name="story.notes"
-                  data-mkp
-                  data-mkp-placeholder="_${message(code: 'is.ui.story.nonotes')}_"
-                  data-mkp-height="170"
-                  data-mkp-change="${updateUrl}">** story.notes **</textarea>
+        <div class="field">
+            <label for="story.notes">${message(code:'is.backlogelement.notes')}</label>
+            <textarea name="story.notes"
+                      data-mkp
+                      data-mkp-placeholder="_${message(code: 'is.ui.story.nonotes')}_"
+                      data-mkp-height="170"
+                      data-mkp-change="${updateUrl}">** story.notes **</textarea>
+        </div>
         <hr>
         <div class="attachments dropzone-previews"
              data-dz

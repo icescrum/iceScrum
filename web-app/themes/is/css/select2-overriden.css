@@ -247,3 +247,7 @@
     font-style: italic;
     color:#6d6d6d;
 }
+
+.select2-container-active .select2-choice, .select2-container-active .select2-choices {
+    border-color:#4382BD;
+}

@@ -56,8 +56,7 @@ body, input, textarea {
     font-size: 11px;
 }
 
-.table .table-legend th .table-cell, .field-choose .field-choose-legend,
-.table-lines .table-lines-head th {
+.table .table-legend th .table-cell,.table-lines .table-lines-head th {
     font-size: 9px;
     font-weight: bold;
 }
@@ -89,8 +88,7 @@ body, input, textarea {
 }
 
 .dropmenu .dropmenu-content ul li, .box .box-navigation ul .search .search-content input,
-.box-form label, .input input, .box-form .field-information, .area [contenteditable="true"], .area textarea, .input textarea,
-.field-file {
+.box-form label, .input input, .area [contenteditable="true"], .area textarea, .input textarea {
     font-size: 11px;
     line-height: 16px;
 }
@@ -112,8 +110,7 @@ body, input, textarea {
     font-size: 11px;
 }
 
-.field-choose .field-choose-finder .list-selectable-item, .event-header .drap-container,
-.field-choose .pagination a, .browse .browse-filter input, .browse .browse-filter label {
+.event-header .drap-container, .browse .browse-filter input, .browse .browse-filter label {
     font-size: 10px;
 }
 

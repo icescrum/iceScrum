@@ -420,6 +420,13 @@ function attachOnDomUpdate(content){
             textileSettings,
             $this.html5data('mkp')
         );
+        //float label pattern
+        var $label = $this.prev("label");
+        if($label.length > 0){
+            $this.on('focus blur', function(event){
+                event.type == 'focus' ? $label.addClass("on") : $label.removeClass("on");
+            });
+        }
         var rawValue = $this.val() ? $this.val() : settings.placeholder;
         var markitup = $this.markItUp(settings);
         var editor = markitup.closest('.markItUpContainer');
@@ -476,8 +483,12 @@ function attachOnDomUpdate(content){
                             $this.attr('readonly','readonly');
                             $.post(settings.change, data, function(data){
                                 $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
-                                $this.removeAttr('readonly');
-                            });
+                            }).fail(function(){
+                                    $this.val($this.data('rawValue'));
+                                    updateText(null);
+                                }).always(function(){
+                                    $this.removeAttr('readonly');
+                                });
                         } else {
                             updateText(null);
                         }
@@ -511,16 +522,28 @@ function attachOnDomUpdate(content){
         if (settings.value) {
             $this.val(settings.value);
         }
+
+        //float label pattern
+        var $label = $this.prev("label");
+        if($label.length > 0){
+            $this.on('select2-focus select2-blur', function(event){
+                event.type == 'select2-focus' ? $label.addClass("on") : $label.removeClass("on");
+            });
+        }
         var select = $this.select2(settings);
         $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
         if (settings.change && !settings.change.startsWith('$')) {
+            $this.data('rawValue',$this.select2('val'));
             select.change(function (event) {
                 var data = { };
                 var name = $this.attr('name');
                 data[name] = event.val;
                 $.post(settings.change, data, function(data) {
+                    $this.data('rawValue',event.val);
                     $.icescrum.object.addOrUpdateToArray('story',data);
-                }, 'json');
+                }, 'json').fail(function(){
+                        $this.select2('val', $this.data('rawValue'));
+                    });
             })
         } else if (settings.change && settings.change.startsWith('$')){
             select.change(function(event){
@@ -564,16 +587,26 @@ function attachOnDomUpdate(content){
                 return {id:term, text:term};
             };
         }
+        //float label pattern
+        var $label = $this.prev("label");
+        if($label.length > 0){
+            $this.on('select2-focus select2-blur', function(event){
+                event.type == 'select2-focus' ? $label.addClass("on") : $label.removeClass("on");
+            });
+        }
         var select = $this.select2(settings);
         $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
         if (settings.change && !settings.change.startsWith('$')) {
+            $this.data('rawValue',$this.select2('val'));
             select.change(function (event) {
                 var data = { };
                 var name = $this.attr('name');
                 data[name] = event.val;
                 $.post(settings.change, data, function(data) {
                     $.icescrum.object.addOrUpdateToArray('story',data);
-                }, 'json');
+                }, 'json').fail(function(){
+                        $this.select2('val', $this.data('rawValue'));
+                    });
             })
         } else if (settings.change && settings.change.startsWith('$')){
             select.change(function(event){
@@ -627,16 +660,26 @@ function attachOnDomUpdate(content){
                 return {results:results};
             }
         };
+        //float label pattern
+        var $label = $this.prev("label");
+        if($label.length > 0){
+            $this.on('select2-focus select2-blur', function(event){
+                event.type == 'select2-focus' ? $label.addClass("on") : $label.removeClass("on");
+            });
+        }
         var select = $this.select2(settings);
         $('#s2id_'+$this.attr('id')).find('input:first').attr('data-focusable','s2id_'+$this.attr('id'));
         if (settings.change && !settings.change.startsWith('$')) {
+            $this.data('rawValue',$this.select2('val'));
             select.change(function () {
                 var data = { };
                 var name = $this.attr('name');
                 data[name] = $this.val();
                 $.post(settings.change, data, function(data) {
                     $.icescrum.object.addOrUpdateToArray('story',data);
-                }, 'json');
+                }, 'json').fail(function(){
+                        $this.select2('val', $this.data('rawValue').length > 0 ? $this.data('rawValue') : null);
+                    });
             })
         } else if (settings.change && settings.change.startsWith('$')){
             select.change(function(){
@@ -659,34 +702,44 @@ function attachOnDomUpdate(content){
         var settings = $this.html5data('txt');
         var enabled = $this.attr('readonly') ? false : true;
 
-        var changeFunction = function (event) {
-            var val = $this.val();
-            if (event.type == 'keyup' && event.which == 27){
-                $this.val($this.data('rawValue'));
-                $this.blur();
-                return;
-            }
-            if (event.type != 'keyup' || (event.type == 'keyup' && event.which == 13)){
-                if ((val == '' && $this.attr('required')) || (event.type == 'keypress' && event.which != 13)) {
-                    return;
-                }
-                var data = {};
-                var name = $this.attr('name');
-                data[name] = val;
-                if($this.data('rawValue') != data[name]){
-                    $this.attr('readonly');
-                    $.post(settings.change, data, function(data) {
-                        $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
-                        $this.removeAttr('readonly');
-                        if (settings.onSave){
-                            getFunction(settings.onSave, ["data"]).apply(this, [data]);
-                        }
-                    }, 'json');
-                }
-            }
-        };
+        //float label pattern
+        var $label = $this.prev("label");
+        if($label.length > 0){
+            $this.on('focus blur', function(event){
+                event.type == 'focus' ? $label.addClass("on") : $label.removeClass("on");
+            });
+        }
 
         if (enabled && settings.change) {
+            var changeFunction = function (event) {
+                var val = $this.val();
+                if (event.type == 'keyup' && event.which == 27){
+                    $this.val($this.data('rawValue'));
+                    $this.blur();
+                    return;
+                }
+                if (event.type != 'keyup' || (event.type == 'keyup' && event.which == 13)){
+                    if ((val == '' && $this.attr('required')) || (event.type == 'keypress' && event.which != 13)) {
+                        return;
+                    }
+                    var data = {};
+                    var name = $this.attr('name');
+                    data[name] = val;
+                    if($this.data('rawValue') != data[name]){
+                        $this.attr('readonly');
+                        $.post(settings.change, data, function(data) {
+                            $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
+                            if (settings.onSave){
+                                getFunction(settings.onSave, ["data"]).apply(this, [data]);
+                            }
+                        }, 'json').fail(function(){
+                                    $this.val($this.data('rawValue'));
+                                }).always(function(){
+                                    $this.removeAttr('readonly');
+                                });
+                    }
+                }
+            };
             $this.on('focus', function(){
                 $this.data('rawValue', $this.val());
             });
@@ -709,6 +762,15 @@ function attachOnDomUpdate(content){
             $this.attr('id', 'auto_'+$this.attr('name').replace(/\./g,'_'));
         }
         var settings = $this.html5data('at');
+
+        //float label pattern
+        var $label = $this.prev("label");
+        if($label.length > 0){
+            $this.on('focus blur', function(event){
+                event.type == 'focus' ? $label.addClass("on") : $label.removeClass("on");
+            });
+        }
+
         var rawValue = $this.val() ? $this.val().trim() : settings.placeholder;
         var preview = $('<div class="atwho-preview"></div>');
         preview.insertAfter($this);
@@ -760,8 +822,12 @@ function attachOnDomUpdate(content){
                         $this.attr('readonly','readonly');
                         $.post(settings.change, data, function(data){
                             $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
-                            $this.removeAttr('readonly');
-                        });
+                        }).fail(function(){
+                                $this.val(preview.data('rawValue'));
+                                updateText(null);
+                            }).always(function(){
+                                $this.removeAttr('readonly');
+                            });
                     } else {
                         updateText(null);
                     }
@@ -1138,6 +1204,9 @@ function attachOnDomUpdate(content){
         $('.ui-dialog .ui-dialog-titlebar').removeClass('ui-corner-all').addClass('ui-corner-top');
         $('.ui-dialog .ui-dialog-titlebar-close').removeClass('ui-corner-all');
         $('.ui-dialog .ui-dialog-content > .ui-tabs').removeClass('ui-corner-all');
+        $('.ui-dialog .ui-dialog-content .ui-accordion-header').each(function(){
+            $(this).removeClass('ui-corner-top');
+        });
         $(window).resize(function() {
             $this.dialog("option", "position", "center");
         });

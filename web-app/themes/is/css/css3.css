@@ -30,13 +30,12 @@
 }
 
 .button-n, .table th, .table .table-cell,
-#dropmenu .dropmenu-content ul li a, .box-form .field-information,
+#dropmenu .dropmenu-content ul li a,
 .input input, .area textarea, .area [contenteditable="true"] .input textarea, .panel .panel-title,
 .box-form label, #dropmenu .dropmenu-content .menu-label,
-.postit-layout, .field-choose .field-choose-legend, .button-s-light,
+.postit-layout,.button-s-light,
 .panel-box .panel-box-title, .event-line-sub, .event-header,
-.table-lines, .chat-content .chat-group, .field-file,
-.panel-line, .members .ui-selected, .event-select-item, #window-dialog .field-information {
+.table-lines, .chat-content .chat-group, .panel-line, .members .ui-selected, .event-select-item {
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
 }
 

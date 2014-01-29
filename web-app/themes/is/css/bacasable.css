@@ -365,16 +365,6 @@ comment-button-wrapper .button-s {
     margin-top: 5px;
 }
 
-#import-form .area-rich {
-    height: 65px;
-    overflow: auto;
-    width: 218px;
-}
-
-#import-form .field-area label {
-    height: 60px;
-}
-
 table.jqplot-table-legend {
     padding-top: 10px;
 }
@@ -544,14 +534,6 @@ td.jqplot-table-legend {
     margin-right: 5px;
 }
 
-.field-input .input.small input {
-    width:100px;
-}
-
-.field-input .input.small {
-    width:130px;
-}
-
 #storyaffectVersion-field input {
     width:176px;
 }
@@ -563,10 +545,6 @@ td.jqplot-table-legend {
 .restrictedViews {
     float:left;
     width: 300px;
-}
-
-.box-form .field-input .restrictedViews span.radio {
-    padding: 3px;
 }
 
 #releaseNotes, #sprintNotes {
@@ -604,11 +582,6 @@ textarea.copyNotes {
 
 .productdescription-label label {
     height:155px;
-}
-
-
-.panel .field-information {
-    border-top-width: 0;
 }
 
 .postit-row .postit-icon, .backlog .postit-layout {

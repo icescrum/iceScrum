@@ -1422,10 +1422,6 @@ li#li-roles {
     color: black;
 }
 
-#license-tab .field-information {
-    border-width: 1px;
-}
-
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //	kanban
@@ -1502,10 +1498,6 @@ li#li-roles {
     padding: 0px 7px 0 0;
     width: 28px;
     height: 28px;
-}
-
-.field-choose-state-hover {
-    background-color: #FFFAAE;
 }
 
 .browse .col1 .browse-list {
@@ -1940,12 +1932,6 @@ li#li-roles {
 
 .login-link, .retrieve-link {
     float: right;
-}
-
-#loginForm .field-information {
-    width: 318px;
-    float: left;
-    clear: both;
 }
 
 .welcome {
@@ -2650,14 +2636,16 @@ ul.ui-sortable > .navigation-line a span {
     margin: 20px auto;
 }
 
-#right-story-container.new input[name="story.name"] {
-    float:left; width:65%;
-    box-sizing: border-box;
+#right-story-container.new .field {
+    float:left;
+}
+
+#right-story-container.new .field label[for='template']{
+    left:5px;
 }
 
 #s2id_auto_template {
     float:right;
-    width:35%;
     padding-left: 5px;
 }
 
@@ -2797,4 +2785,37 @@ ul.ui-sortable > .navigation-line a span {
 
 #right .actions {
     text-align: center;
+}
+
+.field {
+    position: relative;
+    display:inline-block;
+    margin-top:12px;
+    width:100%;
+}
+label{
+    position: absolute;
+    top: -15px;
+    font-size: 1em;
+    color: #aaa;
+    opacity: 1;
+    font-weight:bold;
+}
+label.on{
+    color: #4382BD;
+}
+
+option{
+    color: black;
+}
+.watermark{
+    color: #aaa;
+}
+
+#right input[type="text"]:focus, #right textarea:focus {
+    border-color:#4382BD;
+}
+
+#right .markItUp {
+    margin:0;
 }

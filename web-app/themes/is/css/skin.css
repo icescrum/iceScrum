@@ -40,8 +40,7 @@ body, a, .table .table-line, #dropmenu .dropmenu-content ul li a:hover,
     color: #6e6b1f;
 }
 
-a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover, #local .box-simple,
-.field-information, .field-choose strong, .postit-details a,
+a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover, #local .box-simple, .postit-details a,
 .list-news strong, .event-header .drap-container,
 .kanban .kanban-label, .browse .browse-content h4, .chat-content .chat-users a,
 .chat-content .chat-status-change, .chat-content strong, .chat-content-hover .chat-selector,
@@ -66,7 +65,7 @@ a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover
 }
 
 .button-n, .table th, .pagination a, .box .box-content .list .blur,
-#dropmenu .dropmenu-content ul li a, .field-choose .field-choose-legend,
+#dropmenu .dropmenu-content ul li a,
 .table-lines .table-lines-head th, .chat-content .chat-group,
 .panel-box .panel-box-empty, .box-blank {
     color: #777;
@@ -107,19 +106,17 @@ a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover
 }
 
 .table td, .table .table-filters td .table-cell, .table th .table-cell,
-.box-form .field-choose .field-choose-left, .browse .colset-2 .col1,
+.box-form, .browse .colset-2 .col1,
 .table-lines .table-lines-item td {
     background-image: url(../images/application/separator-v.png);
     background-repeat: repeat-y;
     background-position: 0 0;
 }
 
-.box-form .field-choose .field-choose-left, .browse .colset-2 .col1 {
+.browse .colset-2 .col1 {
     background-position: right 0;
 }
 
-.box-form .field-input, .box-form .field-area, .box-form .field-select,
-.box-form .field-checkbox, .box-form .field-rich, .box-form .field-color,
 .wizard #wizard-left #steps li, .postit-details .postit-details-information p,
 .list-news li, .box-blank .box-blank-button, #version-tab p,
 .panel-line .line-left, .panel-line .line-right, .list-comments .comment,
@@ -263,7 +260,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
     background: url(../images/wizard/current.png) no-repeat 0 0;
 }
 
-.field-choose .field-choose-finder .ui-selected, .browse .browse-item-hover {
+.browse .browse-item-hover {
     background: url(../images/choose/selected.png) no-repeat 0 0;
 }
 
@@ -287,10 +284,8 @@ event-content-list .ui-selected, .kanban .ui-selected {
 
 .box .box-navigation,
 .table .table-filters td, .table th, .table .table-foot,
-.pagination .separator, #dropmenu .dropmenu-content ul li:hover,
-.field-buttons, .panel .panel-title, .dropmenu-content .menu-label,
-#spinner-app, .field-choose .field-choose-legend,
-.panel-box .panel-box-title,
+.pagination .separator, #dropmenu .dropmenu-content ul li:hover, .panel .panel-title, .dropmenu-content .menu-label,
+#spinner-app, .panel-box .panel-box-title,
 .browse .browse-legend, .table-lines .table-lines-head th, .keyboard-mappings .code, .event-select {
     background-image: url(../images/bar/gray.png);
 }
@@ -303,7 +298,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
     background: none;
 }
 
-.box .box-title .start, .box .box-title .end, .box .box-title .content, #window-dialog .field-information, .box-form .field-information, .ui-dialog .ui-widget-header, .event-header {
+.box .box-title .start, .box .box-title .end, .box .box-title .content, .ui-dialog .ui-widget-header, .event-header {
     background-image: url(../images/bar/blue.png);
 }
 
@@ -457,8 +452,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.table .line-last,.table .table-filters .first .table-cell, .table .table-foot td,
-.box-form .field-noseparator, .box-form-200-legend .panel-nolegend,
+.table .line-last,.table .table-filters .first .table-cell, .table .table-foot td, .box-form-200-legend .panel-nolegend,
 .simple #spinner-app, .pagination .pagination-action a,
 .postit-details .postit-details-information .last,
 .list-news .last, .list-comments .comment.last, .list-acceptance-tests .acceptance-test.last, .table-lines .table-lines-item td.first, #version-tab p.last,
@@ -473,9 +467,7 @@ event-content-list .ui-selected, .kanban .ui-selected {
 */
 
 #local .box .box-title .start, #local .box .box-title .end, .table .table-line td,
-.box .box-content .list .blur, .box-form .field-input label,
-.box-form .field-select label, .box-form .field-checkbox label, .box-form .field-rich label,
-.box-form .field-area label, .box-form .field-color label, .list-news .news-item-hover,
+.box .box-content .list .blur, .list-news .news-item-hover,
 .event-content-list-odd, .table-lines .table-lines-odd,
 .chat-content .chat-group, .panel-line .line-left {
     background-color: #f5f5f5;
@@ -487,7 +479,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
 #login_form .box-title .start, #login_form .box-title .end, #login_form .box-title .content,
 #dropmenu .dropmenu-content, #local .box-simple, #register-form .box-title .content,
 .table .table-row-focus td, .table .table-row-focus:first-child,
-.box-form .field-choose, .postit-row.ui-draggable-dragging, .panel-tab-button .selected,
+.box-form, .postit-row.ui-draggable-dragging, .panel-tab-button .selected,
 .panel-tab-button a:hover {
     background-color: white;
 }
@@ -498,10 +490,6 @@ body, #main .box .box-title .start, #main .box .box-title .end,
 
 #version {
     background-color: #0085ff;
-}
-
-.box-form .field-information, .event-header, #window-dialog .field-information {
-    background-color: #d1e7fb;
 }
 
 .ui-drop-hover, .ui-drop-hover-postit-rect,
@@ -534,9 +522,7 @@ body, #main .box .box-title .start, #main .box .box-title .end,
 .table .table-filters-bottom td, .box .box-content .list li, .view-postit .table,
 .table .table-line td, .box .box-content, .box .box-navigation,
 #dropmenu .dropmenu-content, #dropmenu .dropmenu-content ul li, #local .box-simple,
-.panel .panel-title, .panel, #main .box #button-bar, .window-fullscreen #button-bar,
-.field-choose .field-choose-search input, .field-choose .field-choose-legend,
-.field-choose .pagination, .postit-row.ui-draggable-dragging,
+.panel .panel-title, .panel, #main .box #button-bar, .window-fullscreen #button-bar, .postit-row.ui-draggable-dragging,
 #main .box .box-navigation ul, .panel-box, .panel-box .panel-box-title, .browse .browse-legend,
 .table-lines, .bar-pagination, .browse .browse-filter input, .browse .browse-filter, .event-select,
 #dropmenu .chat-content {
@@ -544,13 +530,8 @@ body, #main .box .box-title .start, #main .box .box-title .end,
     border-color: #c4c4c4;
 }
 
-.table .table-line td, .field-choose {
-    border-top-color: white;
-    border-style: solid;
-}
-
-.box-form .field-information, .event-header, .event-content-list,
-.members-medium .ui-selected, #window-dialog .field-information {
+.event-header, .event-content-list,
+.members-medium .ui-selected {
     border-color: #a1b2c1;
     border-style: solid;
 }
