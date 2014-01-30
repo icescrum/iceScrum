@@ -75,10 +75,6 @@ a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover
     color: #999;
 }
 
-#license {
-    color: #111;
-}
-
 .optional {
     color: #afafaf;
 }
@@ -385,10 +381,6 @@ event-content-list .ui-selected, .kanban .ui-selected {
 
 .button-setting .ico, .button-setting:hover .ico, .dropmenu-hover .button-setting .ico {
     background-image: url(../images/application/gear.gif);
-}
-
-#spinner-app .spinner-loading {
-    background-image: url(../images/application/spinner.png);
 }
 
 /*
