@@ -19,8 +19,6 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<div class="box-form">
-  <div id="license">
+<div id="license">
     ${license}
-  </div>
 </div>

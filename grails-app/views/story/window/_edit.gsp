@@ -1,7 +1,8 @@
 <%@ page import="org.icescrum.core.utils.BundleUtils" %>
 <underscore id="tpl-edit-story">
     <g:set var="storyTypes" value="[:]"/>
-    <% BundleUtils.storyTypes.collect { k, v -> storyTypes[k] = message(code: v) } %>
+    <%  //todo refactor like languages taglib return object
+        BundleUtils.storyTypes.collect { k, v -> storyTypes[k] = message(code: v) } %>
     <g:set var="updateUrl" value="${createLink(controller: 'story', action: 'update', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <g:set var="attachmentUrl" value="${createLink(action:'attachments', controller: 'story', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <h3><a href="#">** story.id ** - ** story.name **</a></h3>

@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -21,104 +21,167 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.support.ApplicationSupport" %>
-<is:dialog valid="[action:'update',controller:'user',id:user.id,onSuccess:'jQuery.event.trigger(\'updateProfile_user\',[data])']"
-            title="is.dialog.profile"
-            width="600"
-            noprefix="true"
-            resizable="false"
-            draggable="false">
-<form id="form-profile" method="post" class='box-form box-form-250 box-form-200-legend'
-      onsubmit="jQuery('.ui-dialog-buttonpane button:eq(1)').click();
-      return false;">
-    <input type="hidden" id="product" name="product" value="${params.product}"/>
-    <input type="hidden" id="user.version" name="user.version" value="${user.version}"/>
-    <is:fieldset nolegend="true" title="is.dialog.profile">
-        <is:accordion id="profile">
-            <is:accordionSection title="is.dialog.profile.general.title">
-
-                <is:fieldInput for="userfirstName" label="is.user.firstname">
-                    <is:input id="userfirstName" name="user.firstName" value="${user.firstName}"/>
-                </is:fieldInput>
-                <is:fieldInput for="userlastName" label="is.user.lastname">
-                    <is:input id="userlastName" name="user.lastName" value="${user.lastName}"/>
-                </is:fieldInput>
-                <is:fieldInput for="userusername" label="is.user.username">
-                    <is:input id="userusername" disabled="disabled" name="username" value="${user.username}"/>
-                </is:fieldInput>
-
-                <g:if test="${!user.accountExternal}">
-                    <is:fieldInput for="userpassword" label="is.user.password" class="user-password">
-                        <is:password id="userpassword" name="user.password"/>
-                    </is:fieldInput>
-                    <is:fieldInput for="confirmPassword" label="is.dialog.profile.confirmPassword" class="user-password-confirm">
-                        <is:password id="confirmPassword" name="confirmPassword"/>
-                    </is:fieldInput>
-                </g:if>
-                    <is:fieldInput for="useremail" label="is.user.email">
-                        <is:input id="useremail" name="user.email" disabled="${user.accountExternal?'disabled':false}" value="${user.email}"/>
-                    </is:fieldInput>
-
-                <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar.enable)}">
-                    <is:fieldInput for="avatar" label="is.dialog.profile.gravatar" class="profile-avatar">
-                        <a href="http://gravatar.com/emails"><is:avatar user="${user}"/></a>
-                    </is:fieldInput>
-                </g:if>
-                <g:else>
-                    <is:fieldFile class="file-avatar" for="avatar" label="" noborder="true">
-                        <is:avatar elementId="preview-avatar" user="${user}" nocache="true"/>
-                        <is:multiFilesUpload
-                                name="avatar"
-                                accept="['jpg','png','gif']"
-                                urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
-                                multi="1"
-                                onUploadComplete="jQuery('#avatar-selected').val('');jQuery('#preview-avatar').attr('src','${createLink(action:'previewAvatar',controller:'user')}?fileID='+fileID);"
-                                progress="[
-                      url:createLink(action:'uploadStatus',controller:'scrumOS'),
-                      label:message(code:'is.upload.wait'),
-                    ]"/>
-                    </is:fieldFile>
-                    <is:fieldInput class="file-avatar">
-                        <is:avatarSelector/>
-                    </is:fieldInput>
-                </g:else>
-
-                <is:fieldInput for="activity" label="is.user.preferences.activity" optional="true">
-                    <is:input name='user.preferences.activity' id='activity' value="${user.preferences.activity}"/>
-                </is:fieldInput>
-                <is:fieldSelect for="user.preferences.language" label="is.user.preferences.language" noborder="true">
-                    <is:localeSelecter width="170" name="user.preferences.language"
-                                       id="user.preferences.language" value="${user.preferences.language}"/>
-                </is:fieldSelect>
-            </is:accordionSection>
+<div data-ui-dialog
+     data-ui-dialog-close-button="true"
+     data-ui-dialog-title="${message(code:'todo.is.dialog.profile')}"
+     data-ui-dialog-width="auto">
+     <div data-ui-tabs>
+        <ul>
+            <li><a href="#profile-tab">${message(code: 'todo.is.dialog.profile.general.title')}</a></li>
             <g:if test="${projects}">
-                <is:accordionSection title="is.dialog.profile.emailsSettings">
-                    <is:fieldFile for="userpreferencesemailsSettingsonStory" label="is.dialog.profile.emailsSettings.onStory">
-                        <div class="emails-settings">
-                            <g:each var="project" in="${projects}">
-                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.onStory}"  value="${project.pkey}" name="user.preferences.emailsSettings.onStory"/>
-                            </g:each>
-                        </div>
-                    </is:fieldFile>
-                    <is:fieldFile for="userpreferencesemailsSettingsautoFollow" label="is.dialog.profile.emailsSettings.autoFollow">
-                        <div class="emails-settings">
-                            <g:each var="project" in="${projects}">
-                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.autoFollow}"  value="${project.pkey}" name="user.preferences.emailsSettings.autoFollow"/>
-                            </g:each>
-                        </div>
-                    </is:fieldFile>
-                    <is:fieldFile for="userpreferencesemailsSettingsonUrgentTask" label="is.dialog.profile.emailsSettings.onUrgentTask">
-                        <div class="emails-settings">
-                            <g:each var="project" in="${projects}">
-                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.onUrgentTask}"  value="${project.pkey}" name="user.preferences.emailsSettings.onUrgentTask"/>
-                            </g:each>
-                        </div>
-                    </is:fieldFile>
-                </is:accordionSection>
+            <li><a href="#email-tab">${message(code: 'is.dialog.profile.emailsSettings')}</a></li>
             </g:if>
-            <entry:point id="${controllerName}-${actionName}" model="[user:user]"/>
-        </is:accordion>
-    </is:fieldset>
-</form>
-<is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-profile"
-             listenOn="'#form-profile input'"/>
-</is:dialog>
+            <entry:point id="${controllerName}-${actionName}-title" model="[user:user]"/>
+        </ul>
+        <div id="profile-tab">
+            <div class="cols-2">
+                <div class="col-1">
+                    <div class="field">
+                        <label for="user.username">${message(code:'is.user.username')}</label>
+                        <input disabled
+                               name="user.username"
+                               type="text"
+                               data-txt
+                               value="${user.username}">
+                    </div>
+                    <hr/>
+                    <div class="field">
+                        <label for="user.firstName">${message(code:'is.user.firstname')}</label>
+                        <input required
+                               name="user.firstName"
+                               type="text"
+                               data-txt
+                               value="${user.firstName}">
+                    </div>
+                    <hr/>
+                    <div class="field">
+                        <label for="user.lastName">${message(code:'is.user.lastname')}</label>
+                        <input required
+                               name="user.lastName"
+                               type="text"
+                               data-txt
+                               value="${user.lastName}">
+                    </div>
+                    <hr/>
+                    <div class="field">
+                        <label for="user.email">${message(code:'is.user.email')}</label>
+                        <input required
+                            ${user.accountExternal?'readonly':''}
+                               name="user.email"
+                               type="email"
+                               data-txt
+                               value="${user.email}">
+                    </div>
+                </div><!-- no space !--><div class="col-2">
+                    <div id="user-avatar"
+                         class="avatar dropzone-previews"
+                         data-dz
+                         data-dz-clickable="#user-avatar img"
+                         data-dz-url="http://www.todo.com">
+                        <img src="/icescrum/static/JDS9hDaNVycIa6tyoauYOQOUxFxL6qxXuxGHfgbZcvO.png">
+                    </div>
+                    <div class="field">
+                        <label for="user.avatar">${message(code:'is.user.avatar')}</label>
+                        <select name="user.avatar"
+                                style="width:100%"
+                                data-sl2
+                                placeholder="${message(code:'todo.is.user.avatar.placeholder')}">
+                                <option></option>
+                                <option>${message(code:'todo.is.user.avatar.custom')}</option>
+                                <option>${message(code:'todo.is.user.avatar.gravatar')}</option>
+                                <option>${message(code:'todo.is.user.avatar.std.1')}</option>
+                                <option>${message(code:'todo.is.user.avatar.std.2')}</option>
+                                <option>${message(code:'todo.is.user.avatar.std.3')}</option>
+                                <option>${message(code:'todo.is.user.avatar.std.4')}</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="field">
+                        <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
+                        <select name="user.preferences.language"
+                                style="width:100%"
+                                data-sl2
+                                value="${user.preferences.language}">
+                            <is:options values="${is.languages()}" />
+                        </select>
+                    </div>
+                </div>
+                <hr/>
+            </div>
+            <div class="cols-2">
+            <g:if test="${!user.accountExternal}">
+                <div class="col-1">
+                    <div class="field">
+                        <label for="user.password">${message(code:'is.user.password')}</label>
+                        <input required
+                               name="user.password"
+                               type="password"
+                               data-txt
+                               value="">
+                    </div>
+                </div><!-- no space --><div class="col-2">
+                    <div class="field">
+                        <label for="user.passwordConfirm">${message(code:'todo.is.user.passwordConfirm')}</label>
+                        <input required
+                               name="user.passwordConfirm"
+                               type="password"
+                               data-txt
+                               value="">
+                    </div>
+                </div>
+            </g:if>
+            </div>
+            <hr/>
+            <div class="field">
+                <label for="user.activity">${message(code:'is.user.preferences.activity')}</label>
+                <input name="user.preferences.activity"
+                       type="text"
+                       data-txt
+                       value="${user.preferences.activity}">
+            </div>
+        </div>
+        <g:if test="${projects}">
+        <div id="email-tab">
+            <div class="field">
+                <label for="user.preferences.emailsSettings.autoFollow">${message(code:'is.dialog.profile.emailsSettings.autoFollow')}</label>
+                <select name="user.preferences.emailsSettings.autoFollow"
+                        multiple="multiple"
+                        placeholder="todo.is.Choose project(s)"
+                        data-sl2>
+                    <g:each in="${projects}" var="project">
+                        <option ${project.pkey in user.preferences.emailsSettings.autoFollow ? 'selected="selected"' : ''}
+                                value="${project.pkey}">${project.name}</option>
+                    </g:each>
+                </select>
+            </div>
+            <hr>
+            <div class="field">
+                <label for="user.preferences.emailsSettings.onStory">${message(code:'is.dialog.profile.emailsSettings.onStory')}</label>
+                <select name="user.preferences.emailsSettings.onStory"
+                        multiple="multiple"
+                        placeholder="todo.is.Choose project(s)"
+                        data-sl2>
+                    <g:each in="${projects}" var="project">
+                        <option ${project.pkey in user.preferences.emailsSettings.onStory ? 'selected="selected"' : ''}
+                                value="${project.pkey}">${project.name}</option>
+                    </g:each>
+                </select>
+            </div>
+            <hr>
+            <div class="field">
+                <label for="user.preferences.emailsSettings.onUrgentTask">${message(code:'is.dialog.profile.emailsSettings.onUrgentTask')}</label>
+                <select name="user.preferences.emailsSettings.onUrgentTask"
+                        multiple="multiple"
+                        placeholder="todo.is.Choose project(s)"
+                        data-sl2>
+                    <g:each in="${projects}" var="project">
+                        <option ${project.pkey in user.preferences.emailsSettings.onUrgentTask ? 'selected="selected"' : ''}
+                                value="${project.pkey}">${project.name}</option>
+                    </g:each>
+                </select>
+            </div>
+        </div>
+        </g:if>
+        <entry:point id="${controllerName}-${actionName}-content" model="[user:user]"/>
+     </div>
+</div>

@@ -72,7 +72,7 @@ class UserController {
     @Secured('isAuthenticated()')
     //@Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
     def openProfile = {
-        def user = User.get(springSecurityService.principal.id)
+        def user = springSecurityService.currentUser
         def dialog = g.render(template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
         render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
     }

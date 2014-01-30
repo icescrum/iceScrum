@@ -41,6 +41,7 @@
             <label for="template">Use a template</label>
             <input  type="hidden"
                     name="template"
+                    style="width:100%"
                     data-sl2ajax
                     data-sl2ajax-url="${createLink(controller: 'story', action: 'templateEntries', params: [product: '** jQuery.icescrum.product.pkey **'])}"
                     data-sl2ajax-placeholder="Choose a template"

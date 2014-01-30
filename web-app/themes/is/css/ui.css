@@ -2014,8 +2014,14 @@ html > body .ui-pnotify {
 }
 
 /* debut dialog */
-.is-dialog.ui-dialog .ui-dialog-content {
-    padding: 0;
+
+.is-dialog.ui-dialog {
+    border-radius: 0;
+}
+
+.is-dialog.ui-dialog .ui-dialog-content, .is-dialog.ui-dialog .ui-dialog-content .ui-widget-content {
+    background: #F5F5F5;
+    padding:0;
 }
 
 .is-dialog.ui-dialog .ui-dialog-buttonpane button{
@@ -2025,8 +2031,12 @@ html > body .ui-pnotify {
 .is-dialog.ui-dialog .ui-dialog-titlebar {
     background: linear-gradient(#E4E4E4, #D8D8D8);
     padding: 0 0 0 0.5em;
-    border:1px solid #AAAAAA;
-    border-bottom-width: 0;
+    border:1px solid #C4C4C4;
+    border-radius:0;
+}
+
+.is-dialog.ui-dialog .ui-tabs .ui-widget-header {
+    background: #f5f5f5;
 }
 
 .is-dialog .ui-dialog-titlebar-close.ui-state-hover, .is-dialog .ui-dialog-titlebar-close.ui-state-focus {
@@ -2039,6 +2049,7 @@ html > body .ui-pnotify {
 
 .is-dialog.ui-dialog .ui-dialog-titlebar-close {
     background:none;
+    border:none;
 }
 
 .is-dialog .ui-tabs.ui-widget-content {
@@ -2051,8 +2062,42 @@ html > body .ui-pnotify {
 
 .is-dialog.ui-dialog .ui-dialog-buttonpane {
     border-top:1px solid #DDDDDD;
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
+.is-dialog .ui-tabs .ui-tabs-nav {
+    padding:0;
+}
+
+.is-dialog .ui-tabs .ui-tabs-nav li, .is-dialog .ui-tabs .ui-tabs-nav li.ui-state-focus, .is-dialog .ui-tabs .ui-tabs-nav li.ui-state-hover {
+    margin: 0;
+    top:0;
+    border-left-width:0;
+    border-left-width:0;
+    border-top-width:0;
+    border-right-width:1px;
+    border-radius:0;
+}
+
+.is-dialog .ui-tabs .ui-tabs-nav li:last-of-type {
+    border-right-width:0;
+}
+
+.is-dialog .ui-tabs .ui-tabs-nav .ui-state-active a {
+    color:#4382BD;
+}
+
+.is-dialog .ui-tabs .ui-widget-content.ui-tabs-panel {
+    border-top-width: 1px;
+    padding: 10px;
+}
+
+.is-dialog .ui-tabs .ui-widget-content.ui-tabs-panel label {
+    top:-17px;
+}
+
+/* progressbar */
 .ui-progressbar.error .ui-progressbar-value {
     background:#FD8900;
 }
@@ -2072,7 +2117,6 @@ html > body .ui-pnotify {
 .information {
     background-color: #D1E7FB;
     border-bottom: 1px solid #A1B2C1;
-    border-top: 1px solid #A1B2C1;
     color: #4382BD;
     padding: 5px 7px;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);

@@ -205,7 +205,6 @@ li#li-roles {
 }
 
 #right {
-    background:none repeat scroll 0 0 #EDEDED;
     position:absolute;
     right:0;
     top:28px;
@@ -261,8 +260,8 @@ li#li-roles {
 */
 
 #navigation {
-    background:linear-gradient(#fafafa, #f1f2f3);
-    border-bottom:1px solid #989898;
+    background:#F5F5F5;
+    border-bottom:1px solid #C4C4C4;
 }
 
 #navigation ul {
@@ -2319,7 +2318,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 hr {
     border: 0;
     height: 0;
-    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+    border-top: 1px dashed #C4C4C4;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
     margin-bottom: 5px;
     margin-top: 5px;
@@ -2466,7 +2465,7 @@ hr {
 .right-properties textarea, .right-properties .markitup-preview, .right-properties .atwho-preview {
     resize: none;
     background: #fff;
-    border:1px solid #D8D8D8;
+    border:1px solid #C4C4C4;
     padding:5px;
     font-size: 1.1em;
     overflow: auto;
@@ -2498,7 +2497,7 @@ input[type="text"], input[type="password"], input[type="email"], .select2-contai
     width:100%;
     height: 28px;
     font-size: 1.1em;
-    border:1px solid #D8D8D8;
+    border:1px solid #C4C4C4;
     padding-left:5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -2512,23 +2511,19 @@ input.important, .important .select2-chosen, .right-properties .atwho-preview a 
 
 .right-properties *::-webkit-input-placeholder {
     font-weight: normal;
-    font-style: italic;
-    color:#6d6d6d;}
+    font-style: italic;}
 .right-properties *:-moz-placeholder {
     /* FF 4-18 */
     font-weight: normal;
-    font-style: italic;
-    color:#6d6d6d;}
+    font-style: italic;}
 .right-properties *::-moz-placeholder {
     /* FF 19+ */
     font-weight: normal;
-    font-style: italic;
-    color:#6d6d6d;}
+    font-style: italic;}
 .right-properties *:-ms-input-placeholder {
     /* IE 10+ */
     font-weight: normal;
-    font-style: italic;
-    color:#6d6d6d;}
+    font-style: italic;}
 
 *[readonly] {
     cursor: not-allowed;
@@ -2792,7 +2787,7 @@ label{
     position: absolute;
     top: -15px;
     font-size: 1em;
-    color: #aaa;
+    color: #444;
     opacity: 1;
     font-weight:bold;
 }
@@ -2807,7 +2802,7 @@ option{
     color: #aaa;
 }
 
-#right input[type="text"]:focus, #right textarea:focus {
+input:focus, #right textarea:focus {
     border-color:#4382BD;
 }
 
@@ -2822,11 +2817,48 @@ option{
 
 .col-1, .col-2 {
     display:inline-block;
-    padding:5px;
+    vertical-align:top;
+}
+.col-1 {
+    padding-right:5px;
+}
+
+.col-2 {
+    padding-left:5px;
 }
 
 .col-1, .col-2 {
     width:50%;
+}
+
+#profile-tab .avatar {
+    padding:11px;
+    position: relative;
+}
+#profile-tab .avatar .drop-here {
+    bottom: 12px;
+    left: 54px;
+    right: 54px;
+    top: 12px;
+}
+
+#profile-tab .avatar .drop-here .drop-title {
+    font-size:16px;
+    top:25%;
+}
+
+#profile-tab .avatar img {
+    display: block;
+    height: 80px;
+    width: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #C4C4C4;
+}
+
+#profile-tab .avatar img:hover {
+    cursor: pointer;
+    border-color:#4382BD;
 }
 
 #contextual-properties.ui-accordion .ui-accordion-content.fix-hidden-accordion {

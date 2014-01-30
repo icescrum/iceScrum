@@ -26,19 +26,28 @@
      data-ui-dialog-close-button="true"
      data-ui-dialog-close-text="${message(code:'is.dialog.close')}"
      data-ui-dialog-width="600">
-    <is:tabs elementId="about-tabs">
+    <div data-ui-tabs>
+        <ul>
+            <entry:point id="about-tabs-title-first"/>
+            <g:if test="${errors}">
+                <li><a href="#errors-tab">${message(code:'is.dialog.about.errors')}</a></li>
+            </g:if>
+            <li><a href="#version-tab">${message(code:'is.dialog.about.version')}</a></li>
+            <li><a href="#license-tab">${message(code:'is.dialog.about.license')}</a></li>
+            <entry:point id="about-tabs-title-last"/>
+        </ul>
+        <entry:point id="about-tabs-content-first"/>
         <g:if test="${errors}">
-            <is:tab elementId="errors-tab" class="about-tab" title="is.dialog.about.errors">
+            <div id="errors-tab" class="about-tab">
                 <g:render template="/${controllerName}/about/errors" model="[errors:errors]"/>
-            </is:tab>
+            </div>
         </g:if>
-        <entry:point id="about-tabs-first"/>
-        <is:tab elementId="version-tab" class="about-tab" title="is.dialog.about.version">
+        <div id="version-tab" class="about-tab">
             <g:render template="/${controllerName}/about/version" model="[version:about.version, server:server]"/>
-        </is:tab>
-        <is:tab elementId="license-tab" class="about-tab box" title="is.dialog.about.license">
+        </div>
+        <div id="license-tab" class="about-tab">
             <g:render template="/${controllerName}/about/license" model="[license:about.license.text().encodeAsNL2BR()]"/>
-        </is:tab>
-        <entry:point id="about-tabs-last"/>
-    </is:tabs>
+        </div>
+        <entry:point id="about-tabs-content-last"/>
+    </div>
 </div>
