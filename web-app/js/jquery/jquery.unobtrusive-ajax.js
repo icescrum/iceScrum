@@ -1218,17 +1218,24 @@ function attachOnDomUpdate(content){
 function manageAccordion(element){
     var $this = $(element);
     if ($this.hasClass("ui-accordion")){
+        var animate = $this.accordion( "option", "animate" );
         $this.accordion( "option", "animate", false );
         $this.accordion('refresh');
-        $this.accordion( "option", "animate", {} );
+        $this.accordion( "option", "animate", animate );
     } else {
         var settings = $this.html5data('ui-accordion');
+        if (settings.fixhv){
+            settings.animate = false;
+        }
         $.each(['create','beforeActivate','activate'], function(){
             if (settings[this]){
                 settings[this] = getFunction(settings[this], ["event","ui"]);
             }
         });
         $this.accordion(settings);
+        if (settings.fixhv){
+            $this.on('accordionactivate', $.icescrum.fixAccordionHiddenAndVisible);
+        }
         if (settings.heightStyle == 'fill'){
             $(window).on('resize', function() {
                 if ($this && $this.hasClass('ui-accordion')) {

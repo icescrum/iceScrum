@@ -1412,15 +1412,6 @@ li#li-roles {
     cursor: pointer;
 }
 
-/*
-////////////////////////////////////////////////////////////////////////////////
-//	About dialog
-////////////////////////////////////////////////////////////////////////////////
-*/
-
-#license {
-    color: black;
-}
 
 /*
 ////////////////////////////////////////////////////////////////////////////////
@@ -2492,7 +2483,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     clear:both;
 }
 
-.right-properties textarea, .right-properties .markitup-preview, .previews .dz-file-preview, #right input[type="text"], .right-properties .atwho-preview {
+.cols-2, .col-1, .col-2, .right-properties textarea, .right-properties .markitup-preview, .previews .dz-file-preview, #right input[type="text"], .right-properties .atwho-preview {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -2818,4 +2809,28 @@ option{
 
 #right .markItUp {
     margin:0;
+}
+
+.cols-2 {
+    width:100%;
+    display:block;
+    box-sizing: border-box;
+}
+
+.col-1, .col-2 {
+    display:inline-block;
+}
+
+.col-1, .col-2 {
+    width:50%;
+    box-sizing: border-box;
+}
+
+#contextual-properties.ui-accordion .ui-accordion-content.fix-hidden-accordion {
+    display:block !important;
+    opacity:0.6;
+}
+
+#contextual-properties.ui-accordion .ui-accordion-content.fix-hidden-accordion > *:not(.fix-hidden-accordion-visible) {
+     display:none;
 }

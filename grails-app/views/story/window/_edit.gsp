@@ -5,8 +5,8 @@
     <g:set var="updateUrl" value="${createLink(controller: 'story', action: 'update', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <g:set var="attachmentUrl" value="${createLink(action:'attachments', controller: 'story', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <h3><a href="#">** story.id ** - ** story.name **</a></h3>
-    <div id="right-story-container" class="right-properties" data-elemid="** story.id **">
-        <div class="field" style="width:90%">
+    <div id="right-story-container" class="right-properties no-fix-fill-accordion-bottom accordion-visible-on-hidden" data-elemid="** story.id **">
+        <div class="field fix-hidden-accordion-visible" style="width:90%">
             <label for="story.name">${message(code:'is.story.name')}</label>
             <input required
                    name="story.name"
@@ -19,7 +19,7 @@
         <a href="** $.icescrum.o.baseUrl **** $.icescrum.product.pkey **-** story.uid **">
             <span class="icon is-icon-permalink" title="${message(code:'is.permalink')}">${message(code:'is.permalink')}</span>
         </a>
-        <hr>
+        <hr class="fix-hidden-accordion-visible">
         <div class="field" style="width:33%">
             <label for="story.type">${message(code:'is.story.type')}</label>
             <select name="story.type"
@@ -89,7 +89,7 @@
         **# }) **
         <hr>
         **# } **
-        <div class="field" style="height:100px">
+        <div class="field fix-hidden-accordion-visible" style="height:100px">
             <label for="story.description">${message(code:'is.backlogelement.description')}</label>
             <textarea name="story.description"
                       data-at

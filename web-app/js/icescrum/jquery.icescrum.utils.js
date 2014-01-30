@@ -677,6 +677,35 @@
             }
         },
 
+        fixAccordionHiddenAndVisible:function(event, ui){
+            var $this = $(this);
+            if (ui.oldPanel){
+                if (ui.oldPanel.hasClass('accordion-visible-on-hidden')){
+                    ui.oldPanel.addClass('fix-hidden-accordion');
+                    if (!$this.data('hidden-height')){
+                        var height = 0;
+                        _.each(ui.oldPanel.find('.fix-hidden-accordion-visible'), function(item){ height += $(item).outerHeight(true); });
+                        $this.data('hidden-height', height);
+                    }
+                    ui.oldPanel.data('height', ui.oldPanel.css('height'));
+                    ui.oldPanel.css('height', "");
+                }
+                if (ui.oldPanel.hasClass('fix-fill-accordion-bottom')){
+                    ui.oldPanel.removeClass('fix-fill-accordion-bottom');
+                    ui.oldPanel.css('margin-bottom',"");
+                }
+            }
+            if (ui.newPanel){
+                if (ui.newPanel.hasClass('fix-hidden-accordion')){
+                    ui.newPanel.css('height', ui.newPanel.data('height'));
+                    ui.newPanel.removeClass('fix-hidden-accordion');
+                }
+                if (!ui.newPanel.hasClass('no-fix-fill-accordion-bottom')){
+                    ui.newPanel.css('margin-bottom', - $this.data('hidden-height') - 10);
+                }
+            }
+        },
+
         downloadExport:function(select){
             var $select = $(select);
             $select.data('ajaxBegin', function(){
