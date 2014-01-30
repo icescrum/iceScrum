@@ -140,8 +140,3 @@ body, input, textarea {
 .panel-texte p {
     line-height: 14px;
 }
-
-#license {
-    font-family: monospace;
-    font-size: 12px;
-}
