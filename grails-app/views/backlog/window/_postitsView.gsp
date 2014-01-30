@@ -59,7 +59,7 @@
                      onSuccess:"jQuery.icescrum.story.updateRank(params,data,\"#backlog-layout-window-backlog\");",
                      params:[product:params.product]]'
         editable="[controller:'story',
-                  action:'estimate',
+                  action:'update',
                   on:'div.backlog .postit-story .mini-value.editable',
                   rendered:(request.teamMember || request.scrumMaster),
                   findId:'jQuery(this).parents(\'.postit-story:first\').data(\'elemid\')',
@@ -92,7 +92,7 @@
 <is:shortcut key="ctrl+a" callback="jQuery('#backlog-layout-window-${controllerName} .ui-selectee').addClass('ui-selected');"/>
 <is:onStream
         on="#backlog-layout-window-${controllerName}"
-        events="[[object:'story',events:['add','accept','update','remove','estimate','unPlan','plan','returnToSandbox']]]"
+        events="[[object:'story',events:['add','accept','update','remove','returnToSandbox']]]"
         template="backlogWindow"/>
 
 <is:onStream

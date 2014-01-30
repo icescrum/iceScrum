@@ -172,7 +172,7 @@
     </g:if>
     <is:editable rendered="${sprint.state != Sprint.STATE_DONE && (request.teamMember || request.scrumMaster)}"
                  controller="story"
-                 action='estimate'
+                 action='update'
                  on='table.kanban div.postit-story span.mini-value.editable'
                  findId="jQuery(this).parents('.postit-story:first').data('elemid')"
                  type="selectui"
@@ -238,7 +238,7 @@
 
 <is:onStream
         on="#kanban-sprint-${sprint.id}"
-        events="[[object:'story',events:['update','estimate','unPlan','plan','done','unDone','inProgress']]]"
+        events="[[object:'story',events:['update']]]"
         template="sprintPlan"/>
 
 <is:onStream

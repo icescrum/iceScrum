@@ -465,42 +465,6 @@
                 jQuery.event.trigger('update_story', [data]);
             },
 
-            estimate:function(template) {
-                $(this).each(function() {
-                    $.icescrum.story.update.apply(this, [template]);
-                });
-            },
-
-            inProgress:function(template) {
-                $(this).each(function() {
-                    $.icescrum.story.update.apply(this, [template]);
-                });
-            },
-
-            done:function(template) {
-                $(this).each(function() {
-                    $.icescrum.story.update.apply(this, [template]);
-                });
-            },
-
-            unDone:function(template) {
-                $(this).each(function() {
-                    $.icescrum.story.update.apply(this, [template]);
-                });
-            },
-
-            plan:function(template) {
-                $(this).each(function() {
-                    $.icescrum.story.update.apply(this, [template, true]);
-                });
-            },
-
-            unPlan:function(template) {
-                $(this).each(function() {
-                    $.icescrum.story.update.apply(this, [template]);
-                });
-            },
-
             manageDependencies:function(){
                 var SelectDependsOn = $("#dependsOn\\.id");
                 if (SelectDependsOn.size() > 0){

@@ -118,5 +118,5 @@
 
 <is:onStream
         on="#story-table"
-        events="[[object:'story',events:['add','accept','update','estimate','remove','unPlan','plan','returnToSandbox']]]"
+        events="[[object:'story',events:['add','accept','update','remove','returnToSandbox']]]"
         template="backlogWindow"/>
