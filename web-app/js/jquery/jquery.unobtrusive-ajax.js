@@ -111,11 +111,11 @@ function ajaxRequest(element, options) {
             ajaxOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
             if (data.dialog){
                 var $container = $("#dialog-container");
-                var $dialog = $('#dialog');
                 if (!$container.length){
                     $container = $("<div id='dialog-container'/>").appendTo(document.body);
                 }else {
-                    $dialog.dialog("destroy");
+                    var $dialog = $('.ui-dialog-content');
+                    $dialog.dialog('destroy');
                     $dialog.remove();
                 }
                 $(data.dialog).appendTo($container);
@@ -1193,13 +1193,58 @@ function attachOnDomUpdate(content){
                 settings[this] = getFunction(settings[this], ["event","ui"]);
             }
         });
-        if (settings.closeButton){
+            if (settings.closeButton){
             settings.buttons.push({
                 text:settings.closeText?settings.closeText:'Close',
                 click:function(){ $this.dialog('close'); }
             });
+        } else if (settings.ajaxForm){
+            var formSuccess = settings.ajaxFormSuccess ? getFunction(settings.ajaxFormSuccess, ["data","form"]) : null;
+            var formError = settings.ajaxFormError ? getFunction(settings.ajaxFormError, ["xhr","form"]) : null;
+            var $form = $this.find('form:first');
+            var submitFunction = function(){
+                $.ajax({
+                    type:"POST",
+                    url:$form.attr('action'),
+                    data:$form.serialize(),
+                    success:function(data){
+                        if (formSuccess && formSuccess(data, $form)){
+                            $this.dialog('close');
+                        } else if(!formSuccess) {
+                            $this.dialog('close');
+                        }
+                    },
+                    error:function(xhr){
+                        if(formError && formError(xhr, $form)){
+                            $this.dialog('close');
+                        } else if(!formError) {
+                            try{
+                                var $error = $form.next();
+                                if (!$error.hasClass('error')){
+                                    $error = $('<div class="error"></div>').insertAfter($form);
+                                }
+                                var error = $.parseJSON(xhr.responseText);
+                                $error.html(error.notice.text);
+                                $error.show();
+                            }catch(e){
+                                $this.dialog('close');
+                            }
+                        }
+                    },
+                    global:false
+                });
+                return false;
+            };
+            $form.on('submit', submitFunction);
+            settings.buttons.push({
+                text:settings.ajaxFormSubmitText?settings.ajaxFormSubmitText:'Send',
+                click:submitFunction
+            });
+            settings.buttons.push({
+                text:settings.ajaxFormCancelText?settings.ajaxFormCancelText:'Cancel',
+                click:function(){ $this.dialog('close'); }
+            });
         }
-
         $this.dialog(settings);
         $('.ui-dialog .ui-dialog-titlebar').removeClass('ui-corner-all').addClass('ui-corner-top');
         $('.ui-dialog .ui-dialog-titlebar-close').removeClass('ui-corner-all');

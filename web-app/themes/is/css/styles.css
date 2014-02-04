@@ -1920,12 +1920,11 @@ li#li-roles {
     padding-top: 5px;
 }
 
-.login-link, .retrieve-link {
-    float: right;
-}
-
-.welcome {
-    float: left;
+.right-auth-links {
+    display: inline-block;
+    margin-left: 1%;
+    width:41%;
+    vertical-align: middle;
 }
 
 .selector-avatars {
@@ -2780,12 +2779,9 @@ ul.ui-sortable > .navigation-line a span {
 .field {
     position: relative;
     display:inline-block;
-    margin-top:12px;
     width:100%;
 }
 label{
-    position: absolute;
-    top: -15px;
     font-size: 1em;
     color: #444;
     opacity: 1;
@@ -2802,7 +2798,7 @@ option{
     color: #aaa;
 }
 
-input:focus, #right textarea:focus {
+input:focus, textarea:focus {
     border-color:#4382BD;
 }
 
@@ -2831,23 +2827,22 @@ input:focus, #right textarea:focus {
     width:50%;
 }
 
-#profile-tab .avatar {
-    padding:11px;
+#user-avatar {
+    padding:19px;
     position: relative;
 }
-#profile-tab .avatar .drop-here {
-    bottom: 12px;
-    left: 54px;
-    right: 54px;
-    top: 12px;
+
+#user-avatar img:hover {
+    cursor: pointer;
+    border-color:#4382BD;
 }
 
-#profile-tab .avatar .drop-here .drop-title {
+#user-avatar .drop-here .drop-title {
     font-size:16px;
     top:25%;
 }
 
-#profile-tab .avatar img {
+#user-avatar img, #user-avatar .drop-here {
     display: block;
     height: 80px;
     width: 80px;
@@ -2856,9 +2851,13 @@ input:focus, #right textarea:focus {
     border: 1px solid #C4C4C4;
 }
 
-#profile-tab .avatar img:hover {
-    cursor: pointer;
-    border-color:#4382BD;
+#user-avatar .drop-here {
+    top:18px;
+    display:none;
+}
+
+#user-avatar.dz-drag-hover .drop-here {
+    display:block;
 }
 
 #contextual-properties.ui-accordion .ui-accordion-content.fix-hidden-accordion {

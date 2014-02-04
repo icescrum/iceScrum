@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,63 +18,32 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stéphane Maldini (stephane.maldini@icescrum.com)
  *
  */
 package org.icescrum.web.presentation.security
 
+import org.springframework.security.authentication.CredentialsExpiredException
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.LockedException
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.User
 import org.icescrum.core.support.ApplicationSupport
-import org.springframework.security.authentication.AccountExpiredException
-import org.springframework.security.authentication.CredentialsExpiredException
-import org.springframework.security.authentication.DisabledException
-import org.springframework.security.authentication.LockedException
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+
+import javax.security.auth.login.AccountExpiredException
 
 class LoginController {
 
-    /**
-     * Dependency injection for the authenticationTrustResolver.
-     */
-    def authenticationTrustResolver
-
-    /**
-     * Dependency injection for the springSecurityService.
-     */
     def springSecurityService
-
-    /**
-     * Dependency injection to look in config options
-     */
     def grailsApplication
 
-    /**
-     * Default action; redirects to 'defaultTargetUrl' if logged in, /username/auth otherwise.
-     */
-    def index = {
-        if (springSecurityService.isLoggedIn()) {
-            redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
-        }
-        else {
-            redirect action: auth, params: params
-        }
-    }
-
-    /**
-     * Show the username page.
-     */
     def auth = {
 
         def config = SpringSecurityUtils.securityConfig
-
         if (springSecurityService.isLoggedIn()) {
-            cache false
             redirect uri: config.successHandler.defaultTargetUrl
             return
         }
@@ -93,30 +62,13 @@ class LoginController {
             RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         }
 
-        String view = 'auth'
-        String postUrl = "${config.apf.filterProcessesUrl}"
-        render view: view, model: [postUrl: postUrl, rememberMeParameter: config.rememberMe.parameter, activeLostPassword: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable), enableRegistration: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)]
-    }
-
-    /**
-     * Show denied page.
-     */
-    def denied = {
-        if (springSecurityService.isLoggedIn() &&
-                authenticationTrustResolver.isRememberMe(SecurityContextHolder.context?.authentication)) {
-            // have cookie but the page is guarded with IS_AUTHENTICATED_FULLY
-            redirect action: full, params: params
-        }
-    }
-
-    /**
-     * Login page for users with a remember-me cookie but accessing a IS_AUTHENTICATED_FULLY page.
-     */
-    def full = {
-        def config = SpringSecurityUtils.securityConfig
-        render view: 'auth', params: params,
-                model: [hasCookie: authenticationTrustResolver.isRememberMe(SecurityContextHolder.context?.authentication),
-                        postUrl: "${request.contextPath}${config.apf.filterProcessesUrl}"]
+        def dialog = g.render(template: "dialogs/auth", model: [
+                postUrl: grailsApplication.config.grails.serverURL+config.apf.filterProcessesUrl,
+                rememberMeParameter: config.rememberMe.parameter,
+                activeLostPassword: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable),
+                enableRegistration: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)
+        ])
+        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
     }
 
     def authAjax = {
@@ -127,22 +79,6 @@ class LoginController {
      * Callback after a failed username. Redirects to the auth page with a warning message.
      */
     def authfail = {
-
-        //IF the password is encode in MD5 (like an user imported
-        // from IS2, on first connect it changes is password to SHA)
-        def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
-        def password = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY]
-        def u = User.findByUsernameAndPasswordExpired(username.toString(), true)
-        if (u && u.password == password.toString().encodeAsMD5()) {
-            u.passwordExpired = false
-            u.password = springSecurityService.encodePassword(password.toString())
-            u.save()
-            springSecurityService.reauthenticate(username.toString(), password.toString())
-            if (springSecurityService.isLoggedIn()) {
-                redirect(action: 'ajaxSuccess')
-            }
-        }
-
         String msg = ''
         def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
         if (exception) {
@@ -162,7 +98,6 @@ class LoginController {
                 msg = 'is.dialog.login.error'
             }
         }
-
         if (springSecurityService.isAjax(request)) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: msg)]] as JSON)
             return
@@ -186,9 +121,6 @@ class LoginController {
         }
     }
 
-    /**
-     * The Ajax denied redirect url.
-     */
     def ajaxDenied = {
         render(status: 403, text: message(code: 'is.denied'))
     }

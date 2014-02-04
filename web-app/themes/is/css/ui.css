@@ -2024,6 +2024,10 @@ html > body .ui-pnotify {
     padding:0;
 }
 
+.ui-dialog-content > form {
+    padding:10px;
+}
+
 .is-dialog.ui-dialog .ui-dialog-buttonpane button{
     margin:0.2em 0.5em 0.2em 0;
 }
@@ -2120,6 +2124,13 @@ html > body .ui-pnotify {
     color: #4382BD;
     padding: 5px 7px;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.error {
+    background-color: #ff8888;
+    padding: 5px 7px;
+    text-shadow: 1px 1px 0 rgba(255, 112, 115, 0.8);
+    display:none;
 }
 
 /* fin dialog */

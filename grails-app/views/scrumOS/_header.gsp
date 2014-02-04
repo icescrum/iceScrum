@@ -226,15 +226,14 @@
                 </sec:ifLoggedIn>
                 <sec:ifNotLoggedIn>
                     <li class="navigation-line">
-                        <is:buttonNavigation
-                                elementId="login"
-                                noprefix='true'
-                                button="button-s button-s-black"
-                                controller="login"
-                                action="auth"
-                                onClick="this.href=this.href+'?ref=${params.product?'p/'+product.pkey:''}'+location.hash;">
-                            <g:message code="is.button.connect"/>
-                        </is:buttonNavigation>
+                        <a class="button-s button-s-black"
+                           id="login"
+                           data-ajax="true"
+                           href="${createLink(controller:'login',action:'auth')}">
+                            <span class="start"></span>
+                            <span class="content"><g:message code="is.button.connect"/></span>
+                            <span class="end"></span>
+                        </a>
                     </li>
                 </sec:ifNotLoggedIn>
                 <entry:point id="menu-right" model="[curProduct:curProduct]"/>

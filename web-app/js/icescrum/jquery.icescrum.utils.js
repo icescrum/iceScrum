@@ -271,8 +271,19 @@
                     $.icescrum.o.openWindow = false;
                 } else {
                     var url = location.hash.replace(/^.*#/, '');
+                    var openDialog = null;
                     if (url != '') {
-                        $.icescrum.openWindow(url);
+                        url = url.split('!');
+                        if (url[1]){
+                            openDialog = function(){
+                                ajaxRequest($(document.body),{url:$.icescrum.o.baseUrl+url[1]});
+                            }
+                        }
+                        if (url[0]){
+                            $.icescrum.openWindow(url, openDialog);
+                        } else {
+                            openDialog();
+                        }
                     } else if (!url) {
                         if ($.icescrum.o.currentOpenedWindow) {
                             $.icescrum.closeWindow($.icescrum.o.currentOpenedWindow);
@@ -326,10 +337,9 @@
                 if(xhr.status == 403){
                     $.icescrum.renderNotice('Access forbidden', 'error');
                 }else if(xhr.status == 401){
-                    var data = jQuery.parseJSON(xhr.responseText);
-                    document.location=$.icescrum.o.grailsServer+'/login?ref=p/'+ $.icescrum.product.pkey+'/'+(data.url?data.url:'');
+                    ajaxRequest($(document.body), {url:$.icescrum.o.grailsServer+'/login'});
                 }else if(xhr.status == 400){
-                    var error = jQuery.parseJSON(xhr.responseText);
+                    var error = $.parseJSON(xhr.responseText);
                     $.icescrum.renderNotice( error.notice.text, 'error', error.notice.title);
                 }else if(xhr.status == 500){
                     $.icescrum.dialogError(xhr);

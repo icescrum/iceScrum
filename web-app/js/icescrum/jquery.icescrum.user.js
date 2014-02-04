@@ -44,6 +44,18 @@
             creator:function(object) {
                 return this.id == object.creator.id;
             },
+            authSuccess:function(data){
+                $.doTimeout(500, function() {
+                    document.location.reload(true);
+                });
+                return false;
+            },
+            registerSuccess:function(data){
+                $.doTimeout(500, function() {
+                    document.location = $.icescrum.o.baseUrl+'?lang='+data.lang+'#!login';
+                });
+                return true;
+            },
             addRoleProduct:function(){
                 if ($('li#product-'+this.product.id).length == 0){
                     var newProduct = $('<li></li>').attr('id','product-'+this.product.id);

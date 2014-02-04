@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -18,7 +18,6 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stéphane Maldini (stephane.maldini@icescrum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
@@ -43,39 +42,6 @@ class UserController {
     def securityService
     def springSecurityService
     def grailsApplication
-
-    @Secured('inProduct()')
-    def list = {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
-        }
-        withProduct { Product product ->
-            def members = product.allUsers
-            withFormat {
-                json { renderRESTJSON(text:members) }
-                xml  { renderRESTXML(text:members) }
-            }
-        }
-    }
-
-    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
-    def register = {
-        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
-            render(status: 403)
-            return
-        }
-        render(template: 'window/register', model: [user: new User()])
-    }
-
-
-    @Secured('isAuthenticated()')
-    //@Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
-    def openProfile = {
-        def user = springSecurityService.currentUser
-        def dialog = g.render(template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
-        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
-    }
 
     def save = {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
@@ -115,10 +81,6 @@ class UserController {
                 returnError(text: message(code: 'is.user.error.password.check'))
                 return
             }
-            if (params.long('user.version') != user.version) {
-                returnError(text: message(code: 'is.stale.object', args: [message(code: 'is.user')]))
-                return
-            }
 
             def pwd = null
             if (params.user.password?.trim() != '') {
@@ -147,8 +109,8 @@ class UserController {
             }
 
             user.preferences.emailsSettings = [onStory:params.remove('user.preferences.emailsSettings.onStory'),
-                                               autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
-                                               onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
+                    autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
+                    onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
 
             def forceRefresh = (params.user.preferences.language != user.preferences.language)
             params.remove('user.username')
@@ -162,12 +124,92 @@ class UserController {
 
             render(status: 200, contentType: 'application/json',
                     text: [class:'User',user:[name: name.encodeAsHTML().encodeAsJavaScript(),
-                                                forceRefresh: forceRefresh,
-                                                refreshLink: link ?: null,
-                                                updateAvatar: is.avatar([user:user,link:true]),
-                                                userid: user.id,
-                                                notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
-                                        ]] as JSON)
+                            forceRefresh: forceRefresh,
+                            refreshLink: link ?: null,
+                            updateAvatar: is.avatar([user:user,link:true]),
+                            userid: user.id,
+                            notice: forceRefresh ? message(code: "is.user.updated.refreshLanguage") : message(code: "is.user.updated")
+                    ]] as JSON)
+        }
+    }
+
+    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
+    def register = {
+        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
+            render(status: 403)
+            return
+        }
+        def dialog = g.render(template: 'dialogs/register')
+        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+    }
+
+    @Secured('isAuthenticated()')
+    def openProfile = {
+        def user = springSecurityService.currentUser
+        def dialog = g.render(template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
+        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+    }
+
+    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
+    def retrieve = {
+        def activated = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)
+        if (!activated) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.login.retrieve.not.activated')]] as JSON)
+            return
+        }
+
+        if (!params.text) {
+            def dialog = g.render(template: 'dialogs/retrieve')
+            render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+            return
+        }
+
+        def user = User.findWhere(username:params.text)
+
+        if (!user) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.not.exist')]] as JSON)
+            return
+        }else if (!user.enabled){
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.dialog.login.error.disabled')]] as JSON)
+            return
+        }else if(user.accountExternal){
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.externalAccount')]] as JSON)
+            return
+        }
+        User.withTransaction { status ->
+            try {
+                userService.resetPassword(user)
+            } catch (MailException e) {
+                status.setRollbackOnly()
+                if (log.debugEnabled) e.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+                return
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: re.getMessage())]] as JSON)
+                return
+            } catch (Exception e) {
+                status.setRollbackOnly()
+                if (log.debugEnabled) e.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+                return
+            }
+            render(status: 200, contentType: 'application/json', text: [text: message(code: 'is.dialog.retrieve.success', args: [user.email])] as JSON)
+        }
+    }
+
+    @Secured('inProduct()')
+    def list = {
+        if (request?.format == 'html'){
+            render(status:404)
+            return
+        }
+        withProduct { Product product ->
+            def members = product.allUsers
+            withFormat {
+                json { renderRESTJSON(text:members) }
+                xml  { renderRESTXML(text:members) }
+            }
         }
     }
 
@@ -255,53 +297,6 @@ class UserController {
             }
         }
         render(status: 404)
-    }
-
-    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
-    def retrieve = {
-        def activated = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)
-        if (!activated) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.login.retrieve.not.activated')]] as JSON)
-            return
-        }
-
-        if (!params.text) {
-            render(template: 'dialogs/retrieve')
-            return
-        }
-
-        def user = User.findWhere(username:params.text)
-
-        if (!user) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.not.exist')]] as JSON)
-            return
-        }else if (!user.enabled){
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.dialog.login.error.disabled')]] as JSON)
-            return
-        }else if(user.accountExternal){
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.error.externalAccount')]] as JSON)
-            return
-        }
-        User.withTransaction { status ->
-            try {
-                userService.resetPassword(user)
-            } catch (MailException e) {
-                status.setRollbackOnly()
-                if (log.debugEnabled) e.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
-                return
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: re.getMessage())]] as JSON)
-                return
-            } catch (Exception e) {
-                status.setRollbackOnly()
-                if (log.debugEnabled) e.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
-                return
-            }
-            render(status: 200, contentType: 'application/json', text: [text: message(code: 'is.dialog.retrieve.success', args: [user.email])] as JSON)
-        }
     }
 
     @Secured('isAuthenticated()')

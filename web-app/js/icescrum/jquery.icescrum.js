@@ -211,21 +211,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 return estimation.toString().indexOf('.') == -1 ? estimation.toString().concat('.0') : estimation;
         },
 
-        redirectOnLogin:function(data){
-            var refVar = "?ref=";
-            var ref = '';
-            if (window.location.href.indexOf(refVar) > 0){
-                ref = window.location.href.slice(window.location.href.indexOf(refVar) + refVar.length);
-            }
-            var hash = ref ? ref : data ? data.url : '';
-            if(hash.indexOf('#') == 0){
-                var url = document.location.toString();
-                document.location = url.substring(0,url.indexOf('login')) + hash;
-            }else {
-                document.location = hash;
-            }
-        },
-
         showAndHideOnClickAnywhere:function(selector){
             var element = $(selector);
             if(element.css('display') == 'none') {

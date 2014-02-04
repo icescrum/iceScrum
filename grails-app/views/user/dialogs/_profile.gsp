@@ -41,7 +41,6 @@
                         <input disabled
                                name="user.username"
                                type="text"
-                               data-txt
                                value="${user.username}">
                     </div>
                     <hr/>
@@ -50,7 +49,6 @@
                         <input required
                                name="user.firstName"
                                type="text"
-                               data-txt
                                value="${user.firstName}">
                     </div>
                     <hr/>
@@ -59,7 +57,6 @@
                         <input required
                                name="user.lastName"
                                type="text"
-                               data-txt
                                value="${user.lastName}">
                     </div>
                     <hr/>
@@ -69,7 +66,6 @@
                             ${user.accountExternal?'readonly':''}
                                name="user.email"
                                type="email"
-                               data-txt
                                value="${user.email}">
                     </div>
                 </div><!-- no space !--><div class="col-2">
