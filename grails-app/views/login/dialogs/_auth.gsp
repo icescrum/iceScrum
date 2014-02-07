@@ -8,7 +8,7 @@
         <g:message code="is.welcome"/>
     </div>
     <form method="POST" action="${postUrl}">
-        <div class="field" style="width:58%">
+        <div class="field" style="width:57%">
             <label for="j_username">${message(code:'is.user.username')}</label>
             <input required
                    name="j_username"
@@ -18,13 +18,13 @@
                    value="${params.username?:''}">
         </div><!-- no space --><div class="right-auth-links">
             <g:if test="${enableRegistration}">
-                <a href="${createLink(action:'register', controller:'user')}"
+                <a tabindex="-1" href="${createLink(action:'register', controller:'user')}"
                    data-ajax="true"
                    class="scrum-link">${message(code:'is.button.register')}</a>
             </g:if>
         </div>
         <hr/>
-        <div class="field" style="width:58%">
+        <div class="field" style="width:57%">
             <label for="j_password">${message(code:'is.user.password')}</label>
             <input required
                    name="j_password"
@@ -33,7 +33,7 @@
                    value="">
         </div><!-- no space --><div class="right-auth-links">
             <g:if test="${activeLostPassword}">
-                <a href="${createLink(action:'retrieve', controller:'user')}"
+                <a tabindex="-1" href="${createLink(action:'retrieve', controller:'user')}"
                    data-ajax="true"
                    class="scrum-link">${message(code:'is.dialog.login.lostPassword')}</a>
             </g:if>

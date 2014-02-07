@@ -42,6 +42,7 @@
      data-ui-droppable2-drop="$.icescrum.story.onDropToSandbox"
      data-ui-droppable2-accept=".postit-row-story.estimated"
      data-is-shortcut
+     data-is-shortcut-on="#backlog-layout-window-${controllerName}"
      data-is-shortcut-key="a arrows"
      data-is-shortcut-callback="$.icescrum.selectableShortcut"
      data-binding

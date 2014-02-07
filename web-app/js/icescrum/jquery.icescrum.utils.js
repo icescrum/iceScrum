@@ -280,7 +280,7 @@
                             }
                         }
                         if (url[0]){
-                            $.icescrum.openWindow(url, openDialog);
+                            $.icescrum.openWindow(url[0], openDialog);
                         } else {
                             openDialog();
                         }
@@ -572,7 +572,9 @@
                     if ($new && $new.length && $new.hasClass('ui-selectee')){
                         $el.removeClass('ui-selected');
                         $new.addClass('ui-selected');
-                        $this.parent().animate({ scrollTop: ($this.parent().scrollTop() + $new.position().top) }, 250);
+                        $.doTimeout('scrollSelectable', 500, function(){
+                            $this.parent().animate({ scrollTop: ($this.parent().scrollTop() + $new.position().top) }, 100);
+                        }, true);
                         return true;
                     }
                 }
@@ -598,7 +600,8 @@
                     if (input.is(":focus")){
                         input.blur();
                     }
-                    selectable.focus();
+                    //to give focus
+                    selectable.find('.ui-selected:last a:first').focus();
                 }
                 return false;
             }

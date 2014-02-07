@@ -2798,7 +2798,7 @@ option{
     color: #aaa;
 }
 
-input:focus, textarea:focus {
+input:focus, textarea:focus, [type="checkbox"]:focus {
     border-color:#4382BD;
 }
 

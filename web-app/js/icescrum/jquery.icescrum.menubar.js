@@ -82,6 +82,12 @@
 
         //Event from menu bar
         menuBar: {
+            updateMenubar:function(sortable, id, position, hidden){
+                $.post($.icescrum.o.baseUrl+'user/menuBar',{id:id, position:position + 1, hidden: hidden ? true : false}).fail(function(){
+                    sortable.sortable('cancel');
+                });
+            },
+
             stop:function(event,ui){
                 if ($('#menubar-list-content').find('> ul .menubar').size() > 0){
                     $('#menubar-list-button').css('visibility','visible');
@@ -94,17 +100,17 @@
                 $('#menubar-list-button').css('visibility','visible');
             },
             update:function(event,ui){
-                if($(".navigation-content .menubar").index(ui.item) == -1 || ui.sender != undefined){
+                var position = $(".navigation-content .menubar").index(ui.item);
+                if(position == -1 || ui.sender != undefined){
                     return;
-                }else{
-                    //TODO replace with good code
-                    //${is.changeRank(selector: ".navigation-content .menubar", controller: "user", action: "changeMenuOrder", params:[product:params?.product?:null])}
+                }else if (ui.item.attr('id')){
+                    $.icescrum.menuBar.updateMenubar($(this),ui.item.attr('id'), position, false);
                 }
             },
             receive:function(event,ui){
                 ui.item.addClass('draggable-to-main');
                 ui.item.removeAttr('hidden');
-                //${is.changeRank(selector: ".navigation-content .menubar", controller: "user", action: "changeMenuOrder", params:[product:params?.product?:null])}
+                $.icescrum.menuBar.updateMenubar($(this),ui.item.attr('id'), $(".navigation-content .menubar").index(ui.item), false);
                 if ($('#menubar-list-content').find('> ul .menubar').size() > 0){
                     $('#menubar-list-button').css('visibility','visible');
                 }else{
@@ -114,12 +120,12 @@
             onDropHidden:function(event,ui){
                 var item = ui.draggable.clone();
                 ui.draggable.remove();
-                $('#menubar-list-content').find('> ul').append(item);
+                var container = $('#menubar-list-content').find('> ul');
+                container.append(item);
                 item.removeClass('draggable-to-main');
                 item.show();
                 item.attr('hidden','true');
-                //TODO replace with good code
-                //${is.changeRank(selector: "#menubar-list-content > ul .menubar", controller: "user", action: "changeMenuOrder", ui:"item", params:[hidden:true,product:params?.product?:null])}
+                $.icescrum.menuBar.updateMenubar($(this),ui.item.attr('id'), container.index(item), true);
             },
             hidden:{
                 start:function(event, ui) {
@@ -134,11 +140,11 @@
                     }
                 },
                 update:function(event,ui){
-                    if($("#menubar-list-content").find("> ul .menubar").index(ui.item) == -1 || ui.sender != undefined){
+                    var position = $("#menubar-list-content").find("> ul .menubar").index(ui.item);
+                    if(position == -1 || ui.sender != undefined){
                         return;
                     }else{
-                        //TODO replace with good code
-                        //${is.changeRank(selector: "#menubar-list-content > ul .menubar", controller: "user", action: "changeMenuOrder", params:[hidden:true,product:params?.product?:null])}
+                        $.icescrum.menuBar.updateMenubar($(this),ui.item.attr('id'), position, true);
                     }
                     event.stopPropagation();
                 }
