@@ -150,7 +150,6 @@ class UserController {
         render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
     }
 
-    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
     def retrieve = {
         def activated = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)
         if (!activated) {
