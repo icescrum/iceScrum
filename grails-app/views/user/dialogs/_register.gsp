@@ -124,6 +124,6 @@
                    type="text"
                    value="">
         </div>
-        <input type="submit" style="display:none;"/>
+        <input type="submit" class="hidden-submit"/>
     </form>
 </div>

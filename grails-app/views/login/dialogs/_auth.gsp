@@ -47,6 +47,6 @@
                    <g:if test='${hasCookie}'>checked='checked'</g:if>/>
             <label for='remember_me'><g:message code="is.dialog.login.rememberme"/></label>
         </div>
-        <input type="submit" style="display:none;"/>
+        <input type="submit" class="hidden-submit"/>
     </form>
 </div>

@@ -2868,3 +2868,8 @@ input:focus, textarea:focus, [type="checkbox"]:focus {
 #contextual-properties.ui-accordion .ui-accordion-content.fix-hidden-accordion > *:not(.fix-hidden-accordion-visible) {
      display:none;
 }
+
+.hidden-submit {
+    visibility: hidden;
+    position: absolute;
+}
