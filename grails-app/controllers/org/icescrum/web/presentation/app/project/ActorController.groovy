@@ -68,8 +68,8 @@ class ActorController {
             manageAttachments(actor, keptAttachments, addedAttachments)
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: actor as JSON }
-                json { render(status:201) }
-                xml  { render(status:201) }
+                json { renderRESTJSON(text:actor, status:201) }
+                xml  { renderRESTXML(text:actor, status:201) }
             }
         } catch (RuntimeException e) {
             returnError(exception:e, object:actor)
