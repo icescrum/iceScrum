@@ -129,7 +129,7 @@
 
 <div class='templates'>
     <g:if test="${params.product}">
-        <g:render template="/actor/js" model="[id:'actor']"/>
+
         <g:render template="/feature/js" model="[id:'feature']"/>
         <g:render template="/task/js" model="[id:'sprintPlan']"/>
         <g:render template="/sprint/js" model="[id:'releasePlan']"/>
@@ -143,6 +143,9 @@
         <g:render template="/story/window/postit"/>
         <g:render template="/story/window/row"/>
         <g:render template="/story/window/selected"/>
+        <g:render template="/actor/window/edit"/>
+        <g:render template="/actor/window/new"/>
+        <g:render template="/actor/window/postit"/>
 
     </g:if>
     <g:render template="/user/js"/>

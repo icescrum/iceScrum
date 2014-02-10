@@ -25,6 +25,74 @@
 
     $.extend($.icescrum, {
         actor: {
+
+            data:[],
+            bindings:[],
+            config: {
+                actors: { }
+            },
+            restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'actor/'; },
+            onSelectableStop:function(event, ui){
+                var selectable = $('.window-content.ui-selectable');
+                var container = $('#contextual-properties');
+
+                var id = selectable.data('current');
+                //no selection
+                if (!id || id.length == 0){
+                    $.icescrum.actor.createForm(false, container);
+                }
+                //multi selection
+                else if (id.length > 1){
+                    var el = $.template('tpl-multiple-actors', {actor:_.findWhere($.icescrum['actor'].data, {id:_.last(id)}), ids:id});
+                    container.html(el);
+                }
+                //one selected
+                else if (id.length == 1) {
+                    $.icescrum.object.dataBinding.apply(container.parent(), [{
+                        type:'actor',
+                        tpl:'tpl-edit-actor',
+                        watchedId:id[0],
+                        watch:'item',
+                        selector:'#contextual-properties'
+                    }]);
+                }
+                //update container
+                manageAccordion(container);
+                container.accordion("option", "active", 0);
+                attachOnDomUpdate(container);
+            },
+            createForm:function(template, container){
+                container = container ? container : $('#contextual-properties');
+                var el;
+                if (template){
+                    $.get($.icescrum.actor.restUrl()+'templateEntries', {'template':template}, function(data){
+                        data.name = $('input[name="actor.name"]', container).val();
+                        el = $.template('tpl-new-actor', {actor:data, template:template});
+                        container.html(el);
+                        manageAccordion(container);
+                        attachOnDomUpdate(container);
+                    });
+                } else {
+                    el = $.template('tpl-new-actor', {actor:{}, template:template});
+                    container.html(el);
+                    manageAccordion(container);
+                    attachOnDomUpdate(container);
+                }
+                container.find('input:first:visible').focus();
+            },
+            afterSave:function(data){
+                var selectable = $('.window-content.ui-selectable');
+                selectable.find('div[data-elemid="'+data.id+'"]').addClass('ui-selected');
+                var stop = selectable.selectableScroll( "option" , "stop");
+                if (stop){
+                    stop({target:selectable});
+                }
+            },
+
+
+
+
+            //TODO remove at end of refactoring
             templates:{
                 window:{
                     selector:function() {

@@ -113,7 +113,7 @@ grails.mail.props = ["mail.smtp.auth":"true",
  */
 icescrum.marshaller = [
         product: [exclude:['cliches']],
-        actor:[include:['totalAttachments']],
+        actor:[include:['totalAttachments', 'tags']],
         task:[include:['totalAttachments','totalComments'], includeShort:['sprint']],
         feature:[include:['totalAttachments','countDoneStories','state','effort'],
                  asShort:['color', 'name']],

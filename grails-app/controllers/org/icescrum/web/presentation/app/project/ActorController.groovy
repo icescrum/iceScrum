@@ -43,167 +43,104 @@ class ActorController {
 
     @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
     def search = {
-        def storyDescription = params.term
-        def actors = Actor.searchAllByTermOrTag(params.long('product'), storyDescription)
-        def result = []
-        actors?.each {
-            result << [name: it.name, uid: it.uid]
-        }
+        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
+        def result = actors.collect({ [name: it.name, uid: it.uid] })
         render(result as JSON)
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def save = {
-        if (!params.actor) return
-
+        // TODO error if no data
+        // Transaction ?
         def actor = new Actor()
-        bindData(actor, this.params, [include:['name','description','notes','satisfactionCriteria','instances','expertnessLevel','useFrequency']], "actor")
-
+        bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
         def product = Product.load(params.product)
         try {
             actorService.save(actor, product)
             actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
-            def keptAttachments = params.list('actor.attachments')
-            def addedAttachments = params.list('attachments')
-            manageAttachments(actor, keptAttachments, addedAttachments)
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: actor as JSON }
-                json { renderRESTJSON(text:actor, status:201) }
-                xml  { renderRESTXML(text:actor, status:201) }
+                html { render(status: 200, contentType: 'application/json', text: actor as JSON) }
+                json { renderRESTJSON(text: actor, status: 201) }
+                xml { renderRESTXML(text: actor, status: 201) }
             }
         } catch (RuntimeException e) {
-            returnError(exception:e, object:actor)
+            returnError(exception: e, object: actor)
         } catch (AttachmentException e) {
-            returnError(exception:e)
+            returnError(exception: e)
         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def update = {
-        withActor{Actor actor ->
-
-            bindData(actor, this.params, [include:['name','description','notes','satisfactionCriteria','instances','expertnessLevel','useFrequency']], "actor")
-            if (params.boolean('manageTags')) {
+        // TODO error if no data
+        // Transaction
+        withActor { Actor actor ->
+            bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
+            if (params.actor.tags != null) {
                 actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
             }
             actorService.update(actor)
-            if (params.boolean('manageAttachments')) {
-                def keptAttachments = params.list('actor.attachments')
-                def addedAttachments = params.list('attachments')
-                manageAttachments(actor, keptAttachments, addedAttachments)
-            }
-            //if success for table view
-            if (params.table && params.boolean('table')) {
-                def returnValue
-                if (params.name == 'instances')
-                    returnValue = message(code: BundleUtils.actorInstances[actor.instances])
-                else if (params.name == 'expertnessLevel')
-                    returnValue = message(code: BundleUtils.actorLevels[actor.expertnessLevel])
-                else if (params.name == 'useFrequency')
-                    returnValue = message(code: BundleUtils.actorFrequencies[actor.useFrequency])
-                else if (params.name == 'description' || params.name == 'satisfactionCriteria') {
-                    returnValue = actor."${params.name}"?.encodeAsHTML()?.encodeAsNL2BR()
-                }
-                else
-                    returnValue = actor."${params.name}".encodeAsHTML()
-                def version = actor.isDirty() ? actor.version + 1 : actor.version
-                render(status: 200, text: [version: version, value: returnValue ?: ''] as JSON)
-                return
-            }
             withFormat {
-                html { render status: 200, contentType: 'application/json', text:actor as JSON }
-                json { renderRESTJSON(text:actor) }
-                xml  { renderRESTXML(text:actor) }
+                html { render(status: 200, contentType: 'application/json', text: actor as JSON) }
+                json { renderRESTJSON(text: actor) }
+                xml { renderRESTXML(text: actor) }
             }
         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def delete = {
-        withActors{List<Actor> actors ->
+        // TODO Transaction ?
+        withActors { List<Actor> actors ->
             actors.each { actor ->
                 actorService.delete(actor)
             }
             def ids = []
             params.list('id').each { ids << [id: it] }
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: ids as JSON }
-                json { render status: 204 }
-                xml { render status: 204 }
+                html { render(status: 200, contentType: 'application/json', text: ids as JSON) }
+                json { render(status: 204) }
+                xml { render(status: 204) }
             }
         }
     }
 
+    // TODO cache
     def list = {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
-        withFormat{
-            html {
-                def template = params.type == 'widget' ? 'widget/widgetView' : params.viewType ? 'window/' + params.viewType : 'window/postitsView'
-                def frequenciesSelect = BundleUtils.actorFrequencies.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-                def instancesSelect = BundleUtils.actorInstances.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-                def levelsSelect = BundleUtils.actorLevels.collect {k, v -> "'$k':'${message(code: v)}'" }.join(',')
-                render(template: template, model: [
-                        actors: actors,
-                        frequenciesSelect: frequenciesSelect,
-                        instancesSelect: instancesSelect,
-                        levelsSelect: levelsSelect])
-            }
-            json { renderRESTJSON(text:actors) }
-            xml  { renderRESTXML(text:actors) }
-         }
-    }
-
-    @Secured('productOwner() and !archivedProduct()')
-    def add = {
-        render(template: 'window/manage', model: [
-                instancesValues: BundleUtils.actorInstances.values().collect {v -> message(code: v)},
-                instancesKeys: BundleUtils.actorInstances.keySet().asList(),
-                levelsValues: BundleUtils.actorLevels.values().collect {v -> message(code: v)},
-                levelsKeys: BundleUtils.actorLevels.keySet().asList(),
-                frequenciesValues: BundleUtils.actorFrequencies.values().collect {v -> message(code: v)},
-                frequenciesKeys: BundleUtils.actorFrequencies.keySet().asList(),
-        ])
-    }
-
-    @Secured('productOwner() and !archivedProduct()')
-    def edit = {
-        withActor{ Actor actor ->
-            def actors = Actor.findAllByBacklog(Product.load(params.product), [sort: 'useFrequency', order: 'asc']);
-            def next = null
-            def actorIndex = actors.indexOf(actor)
-            if (actors.size() > actorIndex + 1)
-                next = actors[actorIndex + 1].id
-
-            render(template: 'window/manage', model: [
-                    actor: actor,
-                    next: next ?: '',
-                    instancesValues: BundleUtils.actorInstances.values().collect {v -> message(code: v)},
-                    instancesKeys: BundleUtils.actorInstances.keySet().asList(),
-                    levelsValues: BundleUtils.actorLevels.values().collect {v -> message(code: v)},
-                    levelsKeys: BundleUtils.actorLevels.keySet().asList(),
-                    frequenciesValues: BundleUtils.actorFrequencies.values().collect {v -> message(code: v)},
-                    frequenciesKeys: BundleUtils.actorFrequencies.keySet().asList(),
-            ])
+        withFormat {
+            html { render(status: 200, text: actors as JSON, contentType: 'application/json') }
+            json { renderRESTJSON(text: actors) }
+            xml { renderRESTXML(text: actors) }
         }
     }
 
     def show = {
-        redirect(action:'index', controller: controllerName, params:params)
+        redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    @Cacheable(cache = 'actorCache', keyGenerator='actorKeyGenerator')
+    @Cacheable(cache = 'actorCache', keyGenerator = 'actorKeyGenerator')
     def index = {
-        if (request?.format == 'html'){
-            render(status:404)
+        if (request?.format == 'html') {
+            render(status: 404)
             return
         }
-
-        withActor{ Actor actor ->
+        withActor { Actor actor ->
             withFormat {
-                json { renderRESTJSON(text:actor) }
-                xml  { renderRESTXML(text:actor) }
+                json { renderRESTJSON(text: actor) }
+                xml { renderRESTXML(text: actor) }
             }
         }
+    }
+
+    // TODO cache
+    def view = {
+        render(template: "${params.type ?: 'window'}/view")
+    }
+
+    // TODO cache
+    def right = {
+        render template: "window/right", model: [exportFormats: getExportFormats()]
     }
 
     def print = {
@@ -211,7 +148,7 @@ class ActorController {
         def data = []
         def actors = Actor.findAllByBacklog(currentProduct, [sort: 'useFrequency', order: 'asc']);
         if (!actors) {
-            returnError(text:message(code: 'is.report.error.no.data'))
+            returnError(text: message(code: 'is.report.error.no.data'))
             return
         } else if (params.get) {
             actors.each {
@@ -233,7 +170,14 @@ class ActorController {
         } else {
             session.progress = new ProgressSupport()
             def dialog = g.render(template: '/scrumOS/report')
-            render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+        }
+    }
+
+    @Secured('productOwner() and !archivedProduct()')
+    def attachments = {
+        withActor { actor ->
+            manageAttachmentsNew(actor)
         }
     }
 }

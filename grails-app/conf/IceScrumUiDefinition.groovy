@@ -36,8 +36,9 @@ uiDefinitions = {
         window {
             title 'is.ui.actor'
             help 'is.ui.actor.help'
-            init 'list'
-            toolbar true
+            init 'view'
+            toolbar false
+            right true
         }
         widget {
             title 'is.ui.actor'

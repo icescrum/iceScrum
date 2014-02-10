@@ -540,7 +540,7 @@ function attachOnDomUpdate(content){
                 data[name] = event.val;
                 $.post(settings.change, data, function(data) {
                     $this.data('rawValue',event.val);
-                    $.icescrum.object.addOrUpdateToArray('story',data);
+                    $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
                 }, 'json').fail(function(){
                         $this.select2('val', $this.data('rawValue'));
                     });
@@ -603,7 +603,7 @@ function attachOnDomUpdate(content){
                 var name = $this.attr('name');
                 data[name] = event.val;
                 $.post(settings.change, data, function(data) {
-                    $.icescrum.object.addOrUpdateToArray('story',data);
+                    $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
                 }, 'json').fail(function(){
                         $this.select2('val', $this.data('rawValue'));
                     });
@@ -676,7 +676,7 @@ function attachOnDomUpdate(content){
                 var name = $this.attr('name');
                 data[name] = $this.val();
                 $.post(settings.change, data, function(data) {
-                    $.icescrum.object.addOrUpdateToArray('story',data);
+                    $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
                 }, 'json').fail(function(){
                         $this.select2('val', $this.data('rawValue').length > 0 ? $this.data('rawValue') : null);
                     });
@@ -688,7 +688,7 @@ function attachOnDomUpdate(content){
         }
     });
 
-    $('input[data-txt]', content).each(function() {
+    $('input[data-txt],textarea[data-txt]', content).each(function() {
         var $this = $(this);
         if ($this.data('txt-init')){
             return;

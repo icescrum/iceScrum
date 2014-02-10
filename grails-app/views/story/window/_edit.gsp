@@ -97,7 +97,7 @@
                       data-at-at="a"
                       data-at-matcher="$.icescrum.story.formatters.description"
                       data-at-default="${is.generateStoryTemplate(newLine: '\\n')}"
-                      data-at-placeholder="${message(code: 'is.ui.story.nodescription')}"
+                      data-at-placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"
                       data-at-change="${updateUrl}"
                       data-at-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
                       data-at-data="${g.createLink(controller:'actor', action: 'search', params:[product:'** jQuery.icescrum.product.pkey **'], absolute: true)}">** story.description **</textarea>
@@ -111,7 +111,7 @@
                     data-sl2tag
                     data-sl2tag-tag-link="#finder?tag="
                     data-sl2tag-change="${updateUrl}"
-                    data-sl2tag-placeholder="${message(code:'is.ui.story.notags')}"
+                    data-sl2tag-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                     data-sl2tag-url="${g.createLink(controller:'finder', action: 'tag', params:[product:'** jQuery.icescrum.product.pkey **'])}"
                     value="** story.tags **"/>
         </div>
@@ -120,7 +120,7 @@
             <label for="story.notes">${message(code:'is.backlogelement.notes')}</label>
             <textarea name="story.notes"
                       data-mkp
-                      data-mkp-placeholder="_${message(code: 'is.ui.story.nonotes')}_"
+                      data-mkp-placeholder="_${message(code: 'is.ui.backlogelement.nonotes')}_"
                       data-mkp-height="170"
                       data-mkp-change="${updateUrl}">** story.notes **</textarea>
         </div>
