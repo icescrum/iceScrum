@@ -169,7 +169,7 @@ class StoryController {
                 return
             }
 
-            stories.each{ Story story ->
+            stories.each { Story story ->
 
                 // Required because any change to the story will be flushed to the DB as soon as a query is made to the DB
                 // We can consider creating the transaction at a higher level (withStory ? any controller action ?)
@@ -181,16 +181,12 @@ class StoryController {
                         render(status: 403, contentType: 'application/json')
                         return
                     }
-
                     if (params.story.'feature.id' == '') {
                         params.story.'feature.id' = 'null'
                     }
                     if (params.story.'dependsOn.id' == '') {
                         params.story.'dependsOn.id' = 'null'
                     }
-
-                    // Not bindable Params
-                    // Tags
                     if (params.story.tags != null) {
                         story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
                     }
@@ -200,34 +196,40 @@ class StoryController {
                     // - if the key is provided but the value is null then the property is intended to be cleared by the service
                     // Else, the property can still be updated by the service, only if it depends on other properties
                     Map props = [:]
-
                     if (params.story.rank != null) {
-                        // Here we check if the param is already parsed (from the API), we should be careful that it isn't required in other places
                         props.rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
                     }
-
                     if (params.story.state != null) {
-                        // Here we check if the param is already parsed (from the API), we should be careful that it isn't required in other places
                         props.state = params.story.state instanceof Number ? params.story.state : params.story.state.toInteger()
                     }
-
-                    def sprintId = params.story.long('sprint.id')
-                    if (sprintId != null && story.parentSprint?.id != sprintId) {
-                        def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
-                        if (!sprint) {
-                            returnError(text:message(code: 'is.sprint.error.not.exist'))
-                        } else {
-                            props.sprint = sprint
+                    if (params.story.'parentSprint.id' == '') {
+                        props.parentSprint = null
+                    } else {
+                        def sprintId = params.story.'parentSprint.id'?.toLong()
+                        if (sprintId != null && story.parentSprint?.id != sprintId) {
+                            def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
+                            if (sprint) {
+                                props.parentSprint = sprint
+                            } else {
+                                returnError(text:message(code: 'is.sprint.error.not.exist'))
+                                return
+                            }
+                        } else if (params.boolean('shiftToNext')) {
+                            def nextSprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
+                            if (nextSprint) {
+                                props.parentSprint = nextSprint
+                            } else {
+                                returnError(text:message(code: 'is.sprint.error.not.exist'))
+                                return
+                            }
                         }
-                    } else if (params.boolean('shiftToNext')) {
-                        props.sprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
-                    }
-                    if (params.story.effort != null && request.inProduct) {
-                        props.effort = params.story.effort
                     }
 
-                    // Bindable Params (including the experimental "feature")
-                    bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'position', 'dependsOn']], "story")
+                    if (params.story.effort != null && request.inProduct) {
+                        props.effort = params.story.effort // not parsed because it can be a string or a number
+                    }
+
+                    bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']], "story")
 
                     storyService.update(story, props)
                 }
@@ -235,8 +237,9 @@ class StoryController {
 
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: stories as JSON }
-                json { renderRESTJSON(text:story) }
-                xml  { renderRESTXML(text:story) }
+                // TODO find a proper solution for multiple elements (A rest API should probably not require to manipulate arrays of resources)
+                json { renderRESTJSON(text: stories.first()) }
+                xml  { renderRESTXML(text:stories.first()) }
             }
         }
     }
@@ -440,51 +443,7 @@ class StoryController {
 
     def attachments = {
         withStory{ story ->
-            if (request.method == 'POST'){
-                def upfile = params.file ?: request.getFile('file')
-                def filename = FilenameUtils.getBaseName(upfile.originalFilename?:upfile.name)
-                def ext = FilenameUtils.getExtension(upfile.originalFilename?:upfile.name)
-                def tmpF = null
-                if(upfile.originalFilename){
-                    tmpF = session.createTempFile(filename, '.' + ext)
-                    request.getFile("file").transferTo(tmpF)
-                }
-                story.addAttachment(springSecurityService.currentUser, tmpF?: upfile, upfile.originalFilename?:upfile.name)
-                def attachment = story.attachments.first()
-                render(status:200, contentType: 'application/json', text:[
-                        id:attachment.id,
-                        filename:attachment.inputName,
-                        ext:ext,
-                        size:attachment.length,
-                        provider:attachment.provider?:''] as JSON)
-            } else if(request.method == 'DELETE'){
-                def attachment = story.attachments?.find{ it.id == params.long('attachment.id') }
-                if (attachment){
-                    story.removeAttachment(attachment)
-                    render(status:200)
-                }
-            } else if(request.method == 'GET'){
-                def attachment = story.attachments?.find{ it.id == params.long('attachment.id') }
-                if (attachment) {
-                    if (attachment.url){
-                        redirect(url: "${attachment.url}")
-                        return
-                    }else{
-                        File file = attachmentableService.getFile(attachment)
-
-                        if (file.exists()) {
-                            String filename = attachment.filename
-                            ['Content-disposition': "attachment;filename=\"$filename\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
-                                response.setHeader(k, v)
-                            }
-                            response.contentType = attachment.contentType
-                            response.outputStream << file.newInputStream()
-                            return
-                        }
-                    }
-                }
-                response.status = HttpServletResponse.SC_NOT_FOUND
-            }
+            manageAttachmentsNew(story)
         }
     }
 
