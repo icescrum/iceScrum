@@ -49,5 +49,5 @@
     <entry:point id="${controllerName}-${actionName}"/>
 </div>
 <script type="text/icescrum-template" id="tpl-sandbox" style="display:none">
-    <span id="stories-sandbox-size">** _.size( _.where(list,{ state: $.icescrum.story.STATE_SUGGESTED }) ) ** stories</span>
+    <span id="stories-sandbox-size">** _.size( _.where(list,{ state: $.icescrum.story.STATE_SUGGESTED }) ) ** ${message(code:'is.ui.story.stories')}</span>
 </script>

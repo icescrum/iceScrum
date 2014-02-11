@@ -43,6 +43,8 @@ import grails.plugin.springcache.taglib.ResultAndBuffer
 
 class UtilsTagLib {
 
+    static returnObjectForTags = ['internationalizeValues']
+
     static namespace = 'is'
 
     def grailsApplication
@@ -136,6 +138,12 @@ class UtilsTagLib {
             out << "<input type='hidden' id='avatar-selected' name='avatar-selected'/>"
             out << "</span>"
         }
+    }
+
+    def internationalizeValues = { attrs ->
+        Map internationalizedMap = [:]
+        attrs.map.collect { k, v -> internationalizedMap[k] = message(code: v) }
+        return internationalizedMap
     }
 
     def bundleLocaleToJs = { attrs ->

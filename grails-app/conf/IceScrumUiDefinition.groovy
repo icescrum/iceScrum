@@ -42,7 +42,7 @@ uiDefinitions = {
         }
         widget {
             title 'is.ui.actor'
-            init 'list'
+            init 'view'
             toolbar true
             resizable = [defaultHeight:143,minHeight:26]
         }

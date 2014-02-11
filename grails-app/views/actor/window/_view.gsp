@@ -38,8 +38,7 @@
      data-binding-tpl="tpl-postit-actor"
      data-binding-watch="items"
      data-binding-highlight="true"
-     data-binding-sort-on="type"
-     data-binding-reverse="true"
+     data-binding-sort-on="useFrequency"
      data-binding-config="actors"
      class="view-postit backlog">
     <div class="add-new-postit">

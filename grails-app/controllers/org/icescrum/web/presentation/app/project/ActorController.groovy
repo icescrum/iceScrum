@@ -133,6 +133,13 @@ class ActorController {
         }
     }
 
+    @Secured('productOwner() and !archivedProduct()')
+    def attachments = {
+        withActor { actor ->
+            manageAttachmentsNew(actor)
+        }
+    }
+
     // TODO cache
     def view = {
         render(template: "${params.type ?: 'window'}/view")
@@ -171,13 +178,6 @@ class ActorController {
             session.progress = new ProgressSupport()
             def dialog = g.render(template: '/scrumOS/report')
             render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-        }
-    }
-
-    @Secured('productOwner() and !archivedProduct()')
-    def attachments = {
-        withActor { actor ->
-            manageAttachmentsNew(actor)
         }
     }
 }

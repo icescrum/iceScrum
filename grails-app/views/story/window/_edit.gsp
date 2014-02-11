@@ -1,8 +1,5 @@
 <%@ page import="org.icescrum.core.utils.BundleUtils" %>
 <underscore id="tpl-edit-story">
-    <g:set var="storyTypes" value="[:]"/>
-    <%  //todo refactor like languages taglib return object
-        BundleUtils.storyTypes.collect { k, v -> storyTypes[k] = message(code: v) } %>
     <g:set var="updateUrl" value="${createLink(controller: 'story', action: 'update', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <g:set var="attachmentUrl" value="${createLink(action:'attachments', controller: 'story', id:'** story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <h3><a href="#">** story.id ** - ** story.name **</a></h3>
@@ -30,7 +27,7 @@
                     data-sl2-icon-class="ico-story-"
                     data-sl2-change="${updateUrl}"
                     data-sl2-value="** story.type **">
-                <is:options values="${storyTypes}" />
+                <is:options values="${is.internationalizeValues(map: BundleUtils.storyStates)}" />
             </select>
         </div>
         <hr>
@@ -134,8 +131,8 @@
              data-dz-url="${attachmentUrl}"
              data-dz-previews-container="#right-story-container .attachments .previews">
             <div class="providers">
-                <span class="icon is-icon-paperclip clickable" title="Attach file(s)">Attach file(s)</span>
-                <button data-ui-button class="clickable">Attach file(s)</button>
+                <span class="icon is-icon-paperclip clickable" title="${message(code: 'is.ui.backlogelement.attachfiles')}">${message(code: 'is.ui.backlogelement.attachfiles')}</span>
+                <button data-ui-button class="clickable">${message(code: 'is.ui.backlogelement.attachfiles')}</button>
             </div>
             <div class="previews"></div>
         </div>

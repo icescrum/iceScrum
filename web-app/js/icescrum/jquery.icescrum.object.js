@@ -95,10 +95,21 @@ Object.byString = function(o, s) {
                 $.icescrum.object.fetchData(type, settings);
             } else {
                 if (settings.watch == 'items'){
-                    var data = settings.filter ? _.filter($.icescrum[type].data, function(item) {  if(settings.filter.apply($.icescrum[type],[item])) return item; else return false; }) : $.icescrum[type].data;
+                    var data;
+                    if (settings.filter) { // TODO shouldn't we check that filter is a function?
+                        data = _.filter($.icescrum[type].data, function(item) {
+                            return (settings.filter.apply($.icescrum[type],[item])) ? item : false; // TODO why item is returned? Isn't the applied filter enough?
+                        });
+                    } else {
+                        data = $.icescrum[type].data;
+                    }
                     if (settings.sort && settings.sortOn){
                         data = _.sortBy(data, function(item) {  return settings.sort.apply(settings,[item]); });
                     }
+                    // TODO I don't know why but if a filter is applied, the ecmascript (I guess) reverse() method is used
+                    // TODO whereas if no filter is applied, the observable one is called.
+                    // TODO consequently, when no filter is applied and setting.reverse is true, the observable reverse call cause a callCreateSubscribers on all items
+                    // TODO which calls the observe("create"...) on the top of this file, which calls an "add" for each item, which duplicates them visually (but not in the data)
                     data = settings.reverse ? data.reverse() : data;
                     var _highLight = settings.highlight;
                     settings.highlight = false;

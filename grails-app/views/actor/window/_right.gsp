@@ -41,5 +41,5 @@
     <entry:point id="${controllerName}-${actionName}"/>
 </div>
 <script type="text/icescrum-template" id="tpl-actors" style="display:none">
-    <span id="actors-size">** _.size(list) ** actors</span>
+    <span id="actors-size">** _.size(list) ** ${message(code:'is.ui.actor.actors')}</span>
 </script>

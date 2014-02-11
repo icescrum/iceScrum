@@ -22,13 +22,6 @@
 --}%
 <%@ page import="org.icescrum.core.utils.BundleUtils" %>
 <underscore id="tpl-edit-actor">
-    <g:set var="actorInstances" value="[:]"/>
-    <g:set var="actorLevels" value="[:]"/>
-    <g:set var="actorFrequencies" value="[:]"/>
-    <%  //todo refactor like languages taglib return object
-        BundleUtils.actorInstances.collect { k, v -> actorInstances[k] = message(code: v) }
-        BundleUtils.actorLevels.collect { k, v -> actorLevels[k] = message(code: v) }
-        BundleUtils.actorFrequencies.collect { k, v -> actorFrequencies[k] = message(code: v) } %>
     <g:set var="updateUrl" value="${createLink(controller: 'actor', action: 'update', id:'** actor.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <g:set var="attachmentUrl" value="${createLink(action:'attachments', controller: 'actor', id:'** actor.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"/>
     <h3><a href="#">** actor.id ** - ** actor.name **</a></h3>
@@ -43,9 +36,6 @@
                    data-txt-change="${updateUrl}"
                    value="** actor.name **">
         </div>
-        <a href="** $.icescrum.o.baseUrl **** $.icescrum.product.pkey **-** actor.uid **">
-            <span class="icon is-icon-permalink" title="${message(code:'is.permalink')}">${message(code:'is.permalink')}</span>
-        </a>
         <hr class="fix-hidden-accordion-visible">
         <div class="field" style="width:30%">
             <label for="actor.instances">${message(code:'is.actor.instances')}</label>
@@ -55,7 +45,7 @@
                     data-sl2
                     data-sl2-change="${updateUrl}"
                     data-sl2-value="** actor.instances **">
-                <is:options values="${actorInstances}" />
+                <is:options values="${BundleUtils.actorInstances}" />
             </select>
         </div>
         <div class="field" style="width:30%">
@@ -66,7 +56,7 @@
                     data-sl2
                     data-sl2-change="${updateUrl}"
                     data-sl2-value="** actor.expertnessLevel **">
-                <is:options values="${actorLevels}" />
+                <is:options values="${is.internationalizeValues(map: BundleUtils.actorLevels)}" />
             </select>
         </div>
         <div class="field" style="width:30%">
@@ -77,7 +67,7 @@
                     data-sl2
                     data-sl2-change="${updateUrl}"
                     data-sl2-value="** actor.useFrequency **">
-                <is:options values="${actorFrequencies}" />
+                <is:options values="${is.internationalizeValues(map: BundleUtils.actorFrequencies)}" />
             </select>
         </div>
         <hr>
@@ -120,8 +110,8 @@
              data-dz-url="${attachmentUrl}"
              data-dz-previews-container="#right-actor-container .attachments .previews">
             <div class="providers">
-                <span class="icon is-icon-paperclip clickable" title="Attach file(s)">Attach file(s)</span>
-                <button data-ui-button class="clickable">Attach file(s)</button>
+                <span class="icon is-icon-paperclip clickable" title="${message(code: 'is.ui.backlogelement.attachfiles')}">${message(code: 'is.ui.backlogelement.attachfiles')}</span>
+                <button data-ui-button class="clickable">${message(code: 'is.ui.backlogelement.attachfiles')}</button>
             </div>
             <div class="previews"></div>
         </div>

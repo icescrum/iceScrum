@@ -143,9 +143,11 @@
         <g:render template="/story/window/postit"/>
         <g:render template="/story/window/row"/>
         <g:render template="/story/window/selected"/>
+
         <g:render template="/actor/window/edit"/>
         <g:render template="/actor/window/new"/>
         <g:render template="/actor/window/postit"/>
+        <g:render template="/actor/window/row"/>
 
     </g:if>
     <g:render template="/user/js"/>
