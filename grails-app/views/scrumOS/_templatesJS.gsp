@@ -148,6 +148,7 @@
         <g:render template="/actor/window/new"/>
         <g:render template="/actor/window/postit"/>
         <g:render template="/actor/window/row"/>
+        <g:render template="/actor/window/selected"/>
 
     </g:if>
     <g:render template="/user/js"/>

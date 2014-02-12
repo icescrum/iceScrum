@@ -34,6 +34,9 @@
                 }
             },
             restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'actor/'; },
+            'delete':function(data, status, xhr, element){
+                _.each(element.data('ajaxData').id, function(item){ $.icescrum.object.removeFromArray('actor', {id:item}); });
+            },
             onSelectableStop:function(event, ui){
                 var selectable = $('.window-content.ui-selectable');
                 var container = $('#contextual-properties');
