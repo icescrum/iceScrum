@@ -23,20 +23,6 @@
 <underscore id="tpl-new-actor">
     <h3><a href="#">${message(code: "is.ui.actor.toolbar.new")} ${message(code: "is.actor")}</a></h3>
     <div id="right-actor-container" class="right-properties new">
-        <div id="right-actor-template">
-            <div class="help">${message(code:'is.ui.actor.help')}</div>
-            **# if (template) { **
-                <div class="postit actor postit-actor">
-                    <div class="postit-layout">
-                        <p class="postit-id">
-                            <b title="Yes the devil!">666</b>
-                        </p>
-                        <p class="postit-label break-word">** actor.name **</p>
-                        <div class="postit-excerpt">** actor.description **</div>
-                    </div>
-                </div>
-            **# } **
-        </div>
         <div class="field"  style="width:100%">
             <label for="actor.name">${message(code:'is.actor.name')}</label>
             <input required="required"
@@ -48,7 +34,7 @@
                    data-txt
                    data-txt-only-return="true"
                    data-txt-on-save="$.icescrum.actor.afterSave"
-                   data-txt-change="${createLink(controller: 'actor', action: 'save', params: [product: '** jQuery.icescrum.product.pkey **', template:'** template **'])}">
+                   data-txt-change="${createLink(controller: 'actor', action: 'save', params: [product: '** jQuery.icescrum.product.pkey **'])}">
         </div>
     </div>
 </underscore>

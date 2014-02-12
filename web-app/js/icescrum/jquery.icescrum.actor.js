@@ -21,30 +21,36 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-(function($) {
+(function ($) {
 
     $.extend($.icescrum, {
         actor: {
 
-            data:[],
-            bindings:[],
+            data: [],
+            bindings: [],
             config: {
                 actors: {
-                    sort:function(item){ return Object.byString(item, this.sortOn); }
+                    sort: function(item) {
+                        return Object.byString(item, this.sortOn);
+                    }
                 }
             },
-            restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'actor/'; },
-            'delete':function(data, status, xhr, element){
-                _.each(element.data('ajaxData').id, function(item){ $.icescrum.object.removeFromArray('actor', {id:item}); });
+            restUrl: function() {
+                return $.icescrum.o.baseUrlSpace + 'actor/';
             },
-            onSelectableStop:function(event, ui){
+            'delete': function(data, status, xhr, element) {
+                _.each(element.data('ajaxData').id, function(item) {
+                    $.icescrum.object.removeFromArray('actor', {id:item});
+                });
+                $.icescrum.actor.createForm();
+            },
+            onSelectableStop: function(event, ui) {
                 var selectable = $('.window-content.ui-selectable');
                 var container = $('#contextual-properties');
-
                 var id = selectable.data('current');
-                if (!id || id.length == 0){
-                    $.icescrum.actor.createForm(false, container);
-                } else if (id.length > 1){
+                if (!id || id.length == 0) {
+                    $.icescrum.actor.createForm();
+                } else if (id.length > 1) {
                     var el = $.template('tpl-multiple-actors', {actor:_.findWhere($.icescrum['actor'].data, {id:_.last(id)}), ids:id});
                     container.html(el);
                 } else if (id.length == 1) {
@@ -60,30 +66,19 @@
                 container.accordion("option", "active", 0);
                 attachOnDomUpdate(container);
             },
-            createForm:function(template, container){
-                container = container ? container : $('#contextual-properties');
-                var el;
-                if (template){
-                    $.get($.icescrum.actor.restUrl()+'templateEntries', {'template':template}, function(data){
-                        data.name = $('input[name="actor.name"]', container).val();
-                        el = $.template('tpl-new-actor', {actor:data, template:template});
-                        container.html(el);
-                        manageAccordion(container);
-                        attachOnDomUpdate(container);
-                    });
-                } else {
-                    el = $.template('tpl-new-actor', {actor:{}, template:template});
-                    container.html(el);
-                    manageAccordion(container);
-                    attachOnDomUpdate(container);
-                }
+            createForm: function() {
+                var container = $('#contextual-properties');
+                var el = $.template('tpl-new-actor');
+                container.html(el);
+                manageAccordion(container);
+                attachOnDomUpdate(container);
                 container.find('input:first:visible').focus();
             },
-            afterSave:function(data){
+            afterSave: function(data) {
                 var selectable = $('.window-content.ui-selectable');
                 selectable.find('div[data-elemid="'+data.id+'"]').addClass('ui-selected');
-                var stop = selectable.selectableScroll( "option" , "stop");
-                if (stop){
+                var stop = selectable.selectableScroll("option", "stop");
+                if (stop) {
                     stop({target:selectable});
                 }
             }
