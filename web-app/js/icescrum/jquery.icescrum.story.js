@@ -64,11 +64,7 @@
                 actors: { // TODO WARNING experimental config
                     filter: function(item) {
                         var actorStoryUids = _.find($.icescrum.story.bindings, { config: "actors" }).uids;
-                        if (_.isArray(actorStoryUids)) {
-                            return _.contains(actorStoryUids, item.uid);
-                        } else {
-                            return false;
-                        }
+                        return _.isArray(actorStoryUids) ? _.contains(actorStoryUids, item.uid) : false;
                     }
                 },
                 backlog: {
