@@ -27,7 +27,7 @@
                     data-sl2-icon-class="ico-story-"
                     data-sl2-change="${updateUrl}"
                     data-sl2-value="** story.type **">
-                <is:options values="${is.internationalizeValues(map: BundleUtils.storyStates)}" />
+                <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
             </select>
         </div>
         <hr>

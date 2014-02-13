@@ -23,7 +23,6 @@
  */
 package org.icescrum.web.presentation.app
 
-import org.apache.commons.io.FilenameUtils
 import org.icescrum.core.domain.Story
 
 import org.icescrum.core.utils.BundleUtils
@@ -44,15 +43,12 @@ import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 
-import javax.servlet.http.HttpServletResponse
-
 class StoryController {
 
     def storyService
     def featureService
     def springSecurityService
     def securityService
-    def attachmentableService
 
     def index = {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
@@ -105,53 +101,35 @@ class StoryController {
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def save = {
-
-        def story = new Story()
-
+        if (!params.story){
+            returnError(text:message(code:'is.ui.no.data'))
+            return
+        }
         if (templates[params.template]){
             params.story << templates[params.template]
         }
-
-        bindData(story, this.params, [include:['name','description','notes','type','affectVersion']], "story")
-
-        def featureId = params.remove('feature.id') ?: params.story.remove('feature.id')
-        if (featureId) {
-            def feature = Feature.getInProduct(params.long('product'),featureId.toLong()).list()
-            if (!feature){
-                returnError(text:message(code: 'is.feature.error.not.exist'))
-                return
-            }else{
-                story.feature = feature
-            }
+        if (params.story.'feature.id' == '') {
+            params.story.'feature.id' = 'null'
         }
-
-        def dependsOnId = params.remove('dependsOn.id') ?: params.story.remove('dependsOn.id')
-        if (dependsOnId) {
-            def dependsOn = (Story)Story.getInProduct(params.long('product'),dependsOnId.toLong()).list()
-            if (!dependsOn){
-                returnError(text:message(code: 'is.story.error.not.exist'))
-                return
-            }else{
-                story.dependsOn = dependsOn
-            }
+        if (params.story.'dependsOn.id' == '') {
+            params.story.'dependsOn.id' = 'null'
         }
-
-        def user = springSecurityService.currentUser
-        def product = Product.get(params.product)
-
+        def story = new Story()
         try {
-            storyService.save(story, product, (User)user)
-            def keptAttachments = params.list('story.attachments')
-            def addedAttachments = params.list('attachments')
-            manageAttachments(story, keptAttachments, addedAttachments)
-            story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
-            entry.hook(id:"${controllerName}-${actionName}", model:[story:story])
-
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: story as JSON }
-                json { renderRESTJSON(text:story, status:201) }
-                xml  { renderRESTXML(text:story, status:201) }
+            Story.withTransaction {
+                bindData(story, this.params, [include:['name','description','notes','type','affectVersion','feature','dependsOn']], "story")
+                def user = (User) springSecurityService.currentUser
+                def product = Product.get(params.long('product'))
+                storyService.save(story, product, user)
+                story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+                entry.hook(id:"${controllerName}-${actionName}", model:[story:story])
+                withFormat {
+                    html { render status: 200, contentType: 'application/json', text: story as JSON }
+                    json { renderRESTJSON(text:story, status:201) }
+                    xml  { renderRESTXML(text:story, status:201) }
+                }
             }
+
         } catch (AttachmentException e) {
             returnError(exception:e)
         } catch (RuntimeException e) {
@@ -170,37 +148,29 @@ class StoryController {
             }
 
             stories.each { Story story ->
-
-                // Required because any change to the story will be flushed to the DB as soon as a query is made to the DB
-                // We can consider creating the transaction at a higher level (withStory ? any controller action ?)
+                if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
+                    render(status: 403)
+                    return
+                }
+                if (params.story.'feature.id' == '') {
+                    params.story.'feature.id' = 'null'
+                }
+                if (params.story.'dependsOn.id' == '') {
+                    params.story.'dependsOn.id' = 'null'
+                }
+                Map props = [:]
+                if (params.story.rank != null) {
+                    props.rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
+                }
+                if (params.story.state != null) {
+                    props.state = params.story.state instanceof Number ? params.story.state : params.story.state.toInteger()
+                }
+                if (params.story.effort != null && request.inProduct) {
+                    props.effort = params.story.effort // not parsed because it can be a string or a number
+                }
                 Story.withTransaction {
-
-                    // For the moment, the fact that the user is PO is passed around independently
-                    // we may consider encapsulating and passing user rights around in a POJO (PO, SM, TM, SH, InProduct, creator...)
-                    if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
-                        render(status: 403, contentType: 'application/json')
-                        return
-                    }
-                    if (params.story.'feature.id' == '') {
-                        params.story.'feature.id' = 'null'
-                    }
-                    if (params.story.'dependsOn.id' == '') {
-                        params.story.'dependsOn.id' = 'null'
-                    }
                     if (params.story.tags != null) {
                         story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
-                    }
-
-                    // Params passed as map with the following rules :
-                    // - if the key is provided with a value then the property is intended to be set by the service
-                    // - if the key is provided but the value is null then the property is intended to be cleared by the service
-                    // Else, the property can still be updated by the service, only if it depends on other properties
-                    Map props = [:]
-                    if (params.story.rank != null) {
-                        props.rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
-                    }
-                    if (params.story.state != null) {
-                        props.state = params.story.state instanceof Number ? params.story.state : params.story.state.toInteger()
                     }
                     if (params.story.'parentSprint.id' == '') {
                         props.parentSprint = null
@@ -224,13 +194,7 @@ class StoryController {
                             }
                         }
                     }
-
-                    if (params.story.effort != null && request.inProduct) {
-                        props.effort = params.story.effort // not parsed because it can be a string or a number
-                    }
-
                     bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']], "story")
-
                     storyService.update(story, props)
                 }
             }
@@ -264,7 +228,7 @@ class StoryController {
     @Secured('stakeHolder() or inProduct()')
     @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
     def list = {
-        def currentProduct = Product.load(params.product)
+        def currentProduct = Product.load(params.long('product'))
         def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term).sort { Story story -> story.id }
         withFormat {
             html { render(status:200, text:stories as JSON, contentType: 'application/json') }
@@ -441,8 +405,13 @@ class StoryController {
         }
     }
 
+    @Secured('isAuthenticated() and !archivedProduct()')
     def attachments = {
         withStory{ story ->
+            if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
+                render(status: 403)
+                return
+            }
             manageAttachmentsNew(story)
         }
     }

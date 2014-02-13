@@ -44,42 +44,50 @@ class ActorController {
     @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
     def search = {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
-        def result = actors.collect({ [name: it.name, uid: it.uid] })
+        def result = actors.collect { [name: it.name, uid: it.uid] }
         render(result as JSON)
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def save = {
-        // TODO error if no data
-        // Transaction ?
+        if (!params.actor){
+            returnError(text:message(code:'is.ui.no.data'))
+            return
+        }
         def actor = new Actor()
-        bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
-        def product = Product.load(params.product)
         try {
-            actorService.save(actor, product)
-            actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+            Actor.withTransaction {
+                bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
+                actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+                def product = Product.load(params.long('product'))
+                actorService.save(actor, product)
+            }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: actor as JSON) }
                 json { renderRESTJSON(text: actor, status: 201) }
                 xml { renderRESTXML(text: actor, status: 201) }
             }
-        } catch (RuntimeException e) {
-            returnError(exception: e, object: actor)
         } catch (AttachmentException e) {
             returnError(exception: e)
+        } catch (RuntimeException e) {
+            returnError(exception: e, object: actor)
         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def update = {
-        // TODO error if no data
-        // Transaction
+        if (!params.actor){
+            returnError(text:message(code:'is.ui.no.data'))
+            return
+        }
         withActor { Actor actor ->
-            bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
-            if (params.actor.tags != null) {
-                actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+            Actor.withTransaction {
+                bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
+                if (params.actor.tags != null) {
+                    actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+                }
+                actorService.update(actor)
             }
-            actorService.update(actor)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: actor as JSON) }
                 json { renderRESTJSON(text: actor) }
@@ -90,7 +98,6 @@ class ActorController {
 
     @Secured('productOwner() and !archivedProduct()')
     def delete = {
-        // TODO Transaction ?
         withActors { List<Actor> actors ->
             actors.each { actor ->
                 actorService.delete(actor)
@@ -105,7 +112,7 @@ class ActorController {
         }
     }
 
-    // TODO cache
+    @Cacheable(cache = 'actorsCache', keyGenerator = 'actorsKeyGenerator')
     def list = {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
         withFormat {
