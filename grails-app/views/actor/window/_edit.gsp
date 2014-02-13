@@ -117,5 +117,16 @@
         </div>
     </div>
     <h3><a href="#">Stories</a></h3>
-    <div></div>
+    %{-- TODO WARNING experimental feature --}%
+    <ul class="list postit-rows"
+        id="right-actor-stories"
+        data-binding
+        data-binding-type="story"
+        data-binding-selector="li.postit-row-story"
+        data-binding-tpl="tpl-postit-row-story"
+        data-binding-watch="items"
+        data-binding-highlight="true"
+        data-binding-uids="[** _.map(actor.stories, 'uid') **]"     %{-- TODO WARNING experimental attribute --}%
+        data-binding-config="actors">
+    </ul>
 </underscore>

@@ -99,15 +99,17 @@ class ActorController {
     @Secured('productOwner() and !archivedProduct()')
     def delete = {
         withActors { List<Actor> actors ->
-            actors.each { actor ->
-                actorService.delete(actor)
-            }
-            def ids = []
-            params.list('id').each { ids << [id: it] }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: ids as JSON) }
-                json { render(status: 204) }
-                xml { render(status: 204) }
+            Actor.withTransaction {
+                actors.each { actor ->
+                    actorService.delete(actor)
+                }
+                def ids = []
+                params.list('id').each { ids << [id: it] }
+                withFormat {
+                    html { render(status: 200, contentType: 'application/json', text: ids as JSON) }
+                    json { render(status: 204) }
+                    xml { render(status: 204) }
+                }
             }
         }
     }
