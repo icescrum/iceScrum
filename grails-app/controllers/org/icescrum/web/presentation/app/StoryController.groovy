@@ -108,12 +108,22 @@ class StoryController {
         if (templates[params.template]){
             params.story << templates[params.template]
         }
-        if (params.story.'feature.id' == '') {
+        if (params.story.feature?.id == '') {
             params.story.'feature.id' = 'null'
+        } else if (params.story.feature?.id) {
+            params.story.'feature.id' = params.story.feature.id
         }
-        if (params.story.'dependsOn.id' == '') {
+        //For REST XML..
+        params.story.remove('feature')
+
+        if (params.story.dependsOn?.id == '') {
             params.story.'dependsOn.id' = 'null'
+        } else if (params.story.dependsOn?.id) {
+            params.story.'dependsOn.id' = params.story.dependsOn.id
         }
+        //For REST XML..
+        params.story.remove('dependsOn')
+
         def story = new Story()
         try {
             Story.withTransaction {
@@ -143,7 +153,7 @@ class StoryController {
         withStories{ List<Story> stories ->
 
             if (!params.story){
-                returnError(text:message(code:'is.ui.no.data'))
+                returnError(text:message(code:'todo.is.ui.no.data'))
                 return
             }
 
@@ -152,12 +162,27 @@ class StoryController {
                     render(status: 403)
                     return
                 }
-                if (params.story.'feature.id' == '') {
+
+                if (request.format == 'xml' && params.story.feature == ''){
                     params.story.'feature.id' = 'null'
+                }else if (params.story.feature?.id == '') {
+                    params.story.'feature.id' = 'null'
+                } else if (params.story.feature?.id) {
+                    params.story.'feature.id' = params.story.feature.id
                 }
-                if (params.story.'dependsOn.id' == '') {
+                //For REST XML..
+                params.story.remove('feature')
+
+                if (request.format == 'xml' && params.story.dependsOn == ''){
                     params.story.'dependsOn.id' = 'null'
+                }else if (params.story.dependsOn?.id == '') {
+                    params.story.'dependsOn.id' = 'null'
+                } else if (params.story.dependsOn?.id) {
+                    params.story.'dependsOn.id' = params.story.dependsOn.id
                 }
+                //For REST XML..
+                params.story.remove('dependsOn')
+
                 Map props = [:]
                 if (params.story.rank != null) {
                     props.rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
@@ -172,10 +197,15 @@ class StoryController {
                     if (params.story.tags != null) {
                         story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
                     }
-                    if (params.story.'parentSprint.id' == '') {
+                    //for rest support
+                    if (request.format == 'xml' && params.story.parentSprint == ''){
+                        props.parentSprint = null
+                        params.story.remove('parentSprint')
+                    }
+                    else if (params.story.parentSprint?.id == '') {
                         props.parentSprint = null
                     } else {
-                        def sprintId = params.story.'parentSprint.id'?.toLong()
+                        def sprintId = params.story.parentSprint?.id?.toLong()
                         if (sprintId != null && story.parentSprint?.id != sprintId) {
                             def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
                             if (sprint) {
@@ -194,7 +224,7 @@ class StoryController {
                             }
                         }
                     }
-                    bindData(story, this.params, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']], "story")
+                    bindData(story, params, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']], "story")
                     storyService.update(story, props)
                 }
             }
