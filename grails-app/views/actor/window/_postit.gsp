@@ -20,7 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.Actor" %>
 <underscore id="tpl-postit-actor">
     <div data-elemid="** actor.id **" class="postit actor postit-actor ui-selectee">
         <div class="postit-layout">
