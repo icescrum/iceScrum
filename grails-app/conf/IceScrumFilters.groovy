@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2013/2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -16,8 +16,8 @@
  * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authors:
+ * Vincent Barrier (vbarrier@kagilum.com)
  *
- * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
 
@@ -66,7 +66,7 @@ class IceScrumFilters {
 
         webservices(uri: '/ws/**') {
             before = {
-                def webservices = false
+                def webservices
                 if (params.product) {
                     webservices = Product.createCriteria().get {
                         //TODO test if product is really a long
@@ -87,6 +87,8 @@ class IceScrumFilters {
                             }
                         }
                     }
+                } else {
+                    webservices = true
                 }
                 return webservices
             }
