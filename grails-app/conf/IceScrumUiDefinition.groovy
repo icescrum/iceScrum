@@ -136,12 +136,13 @@ uiDefinitions = {
         window {
             title 'is.ui.feature'
             help 'is.ui.feature.help'
-            init 'list'
-            toolbar true
+            init 'view'
+            toolbar false
+            right true
         }
         widget {
             title 'is.ui.feature'
-            init 'list'
+            init 'view'
             toolbar true
             resizable = [defaultHeight:143,minHeight:26]
         }

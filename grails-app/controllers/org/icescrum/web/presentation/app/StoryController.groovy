@@ -102,7 +102,7 @@ class StoryController {
     @Secured('isAuthenticated() and !archivedProduct()')
     def save = {
         if (!params.story){
-            returnError(text:message(code:'is.ui.no.data'))
+            returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
         if (templates[params.template]){
@@ -269,10 +269,10 @@ class StoryController {
 
     @Secured('inProduct() and !archivedProduct()')
     def copy = {
-        withStories{List<Story> stories ->
+        withStories{ List<Story> stories ->
             def copiedStories = storyService.copy(stories)
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON)  }
+                html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON) }
                 json { renderRESTJSON(text:copiedStories, status: 201) }
                 xml  { renderRESTXML(text:copiedStories, status: 201) }
             }
@@ -320,16 +320,17 @@ class StoryController {
     def acceptAsFeature = {
         withStories{List<Story> stories ->
             stories = stories.reverse()
-            def elements = storyService.acceptToFeature(stories)
+            def features = storyService.acceptToFeature(stories)
             //case one story & d&d from sandbox to backlog
-            //todo replace with new update feature method
-            if (params.rank){
-                featureService.rank((Feature)elements.first(), params.int('rank'));
+            if (params.rank?.isInteger()){
+                Feature feature = (Feature) features.first()
+                feature.rank = params.int('rank')
+                featureService.update(feature)
             }
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: elements as JSON }
-                json { renderRESTJSON(text:elements) }
-                xml  { renderRESTXML(text:elements) }
+                html { render status: 200, contentType: 'application/json', text: features as JSON }
+                json { renderRESTJSON(text:features) }
+                xml  { renderRESTXML(text:features) }
             }
         }
     }

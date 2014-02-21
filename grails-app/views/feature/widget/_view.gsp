@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,18 +18,18 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
+-
 --}%
-<li class="navigation-item button-ico button-add">
-    <a class="tool-button button-n"
-       href="#${controllerName}"
-       title="${message(code:'is.ui.feature.toolbar.alt.new')}"
-       alt="${message(code:'is.ui.feature.toolbar.alt.new')}">
-        <span class="start"></span>
-        <span class="content">
-            <span class="ico"></span>
-            ${message(code: 'is.ui.feature.toolbar.new')}
-        </span>
-        <span class="end"></span>
-    </a>
-</li>
-<entry:point id="${controllerName}-${actionName}-widget-toolbar"/>
+
+<ul class="list postit-rows"
+    id="widget-${controllerName}"
+    data-binding
+    data-binding-type="feature"
+    data-binding-selector="li.postit-row-feature"
+    data-binding-tpl="tpl-postit-row-feature"
+    data-binding-watch="items"
+    data-binding-highlight="true"
+    data-binding-config="features">
+</ul>
+<entry:point id="${controllerName}-${actionName}-widget" model="[features:features]"/>

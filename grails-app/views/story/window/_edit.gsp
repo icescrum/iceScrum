@@ -61,7 +61,7 @@
                 value="**# if (story.feature) { **** story.feature.name ****# } **"/>
         </div>
         **# if (story.feature) { **
-        <a href=""><span class="icon is-icon-link" title="** story.feature.name **">** story.feature.name **</span></a>
+        <a href="#feature/** story.feature.id **"><span class="icon is-icon-link" title="** story.feature.name **">** story.feature.name **</span></a>
         **# } **
         <hr>
         <div class="field" style="width:90%">

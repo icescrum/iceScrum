@@ -50,7 +50,7 @@ class ActorController {
     @Secured('productOwner() and !archivedProduct()')
     def save = {
         if (!params.actor){
-            returnError(text:message(code:'is.ui.no.data'))
+            returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
         def actor = new Actor()
@@ -74,7 +74,7 @@ class ActorController {
     @Secured('productOwner() and !archivedProduct()')
     def update = {
         if (!params.actor){
-            returnError(text:message(code:'is.ui.no.data'))
+            returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
         withActor { Actor actor ->

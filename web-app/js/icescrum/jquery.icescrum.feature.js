@@ -24,105 +24,69 @@
 (function($) {
 
     $.extend($.icescrum, {
-        feature:{
-            templates:{
-                features:{
-                    selector:function() {
-                        return $.icescrum.getDefaultView() == 'postitsView' ? 'div.postit-feature' : 'tr.table-line';
-                    },
-                    id:function() {
-                        return $.icescrum.getDefaultView() == 'postitsView' ? 'postit-feature-tmpl' : 'table-row-feature-tmpl';
-                    },
-                    view:function() {
-                        return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-feature' : '#feature-table';
-                    },
-                    remove:function(tmpl) {
-                        if ($.icescrum.getDefaultView() == 'tableView') {
-                            var tableline = $(tmpl.view+' .table-line[data-elemid=' + this.id + ']');
-                            var oldRank = tableline.data('rank');
-                            tableline.remove();
-                            $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, oldRank);
-                            $('#feature-table').trigger("update");
-                        }else{
-                            $(tmpl.view+' '+'.postit-feature[data-elemid=' + this.id + ']').remove();
-                        }
-                        $('#features-size').html($(tmpl.view+' .postit-feature, '+tmpl.view+' .table-line').size());
-                    },
-                    window:'#window-content-feature',
-                    afterTmpl:function(tmpl, container, newObject) {
-                        if ($.icescrum.getDefaultView() == 'tableView') {
-                            $('div[name=rank]', $(newObject)).text(this.rank);
-                            if(this.oldRank != this.rank) {
-                                $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank, this.id);
-                            }
-                            $('#feature-table').updateTableSorter();
-                        }else{
-                            if (this.rank && this.rank != 0) {
-                                $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                            }
-                        }
-                        $('#features-size').html($(tmpl.view+' .postit-feature, '+tmpl.view+' .table-line').size());
-                    },
-                    beforeTmpl:function(tmpl,container,current) {
-                        this.oldRank = current.data('rank');
+        feature: {
+            data: [],
+            bindings: [],
+            config: {
+                features: {
+                    sort: function(item) {
+                        return Object.byString(item, this.sortOn);
                     }
+                }
+            },
+            formatters: {
+                state:function(feature){
+                    return $.icescrum.feature.states[feature.state];
                 },
-                widget:{
-                    selector:'.postit-row-feature',
-                    id:'postit-row-feature-tmpl',
-                    view:'#backlog-layout-widget-feature',
-                    remove:function(tmpl) {
-                        $(tmpl.view+' '+'.postit-row-feature[data-elemid=' + this.id + ']').remove();
-                    },
-                    window:'#widget-content-feature',
-                    afterTmpl:function(tmpl, container, newObject) {
-                        if (this.rank && this.rank != 0) {
-                            $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                        }
-                    }
+                type: function(feature) {
+                    return $.icescrum.feature.types[feature.type];
                 }
             },
-
-            add:function(template) {
-                $(this).each(function() {
-                    $.icescrum.addOrUpdate(this, $.icescrum.feature.templates[template], $.icescrum.feature._postRendering);
+            restUrl: function() {
+                return $.icescrum.o.baseUrlSpace + 'feature/';
+            },
+            'delete': function(data, status, xhr, element) {
+                _.each(element.data('ajaxData').id, function(item) {
+                    $.icescrum.object.removeFromArray('feature', {id:item});
                 });
+                $.icescrum.feature.createForm();
             },
-
-            update:function(template) {
-                var feature = this;
-                $(feature.stories).each(function() {
-                    $('div.postit-story[data-elemid=' + this.id + '] .postit-layout').removeClass().addClass('postit-layout postit-' + feature.color);
-                    $('li.postit-row-story[data-elemid=' + this.id + '] .postit-icon').removeClass().addClass('postit-icon postit-icon-' + feature.color);
-                });
-                $('#detail-feature-' + feature.id + ' .line-right').replaceWith('<td class="line-right"><span class="postit-icon postit-icon-' + feature.color + '" title="' + feature.name + '"></span>' + feature.name + '</td>');
-                if (template){
-                    $.icescrum.addOrUpdate(feature, $.icescrum.feature.templates[template], $.icescrum.feature._postRendering);
+            onSelectableStop: function(event, ui) {
+                var selectable = $('.window-content.ui-selectable');
+                var container = $('#contextual-properties');
+                var id = selectable.data('current');
+                if (!id || id.length == 0) {
+                    $.icescrum.feature.createForm();
+                } else if (id.length > 1) {
+                    var el = $.template('tpl-multiple-features', {feature:_.findWhere($.icescrum['feature'].data, {id:_.last(id)}), ids:id});
+                    container.html(el);
+                } else if (id.length == 1) {
+                    $.icescrum.object.dataBinding.apply(container.parent(), [{
+                        type:'feature',
+                        tpl:'tpl-edit-feature',
+                        watchedId:id[0],
+                        watch:'item',
+                        selector:'#contextual-properties'
+                    }]);
                 }
+                manageAccordion(container);
+                container.accordion("option", "active", 0);
+                attachOnDomUpdate(container);
             },
-
-            remove:function(template) {
-                var tmpl;
-                tmpl = $.extend(tmpl, $.icescrum.feature.templates[template]);
-                tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
-                tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
-                $(this).each(function() {
-                    tmpl.remove.apply(this,[tmpl]);
-                });
-                if (!tmpl.noblank) {
-                    if ($(tmpl.selector, $(tmpl.view)).length == 0) {
-                        $(tmpl.view).hide();
-                        $(tmpl.window + ' .box-blank').show();
-                    }
-                }
+            createForm: function() {
+                var container = $('#contextual-properties');
+                var el = $.template('tpl-new-feature');
+                container.html(el);
+                manageAccordion(container);
+                attachOnDomUpdate(container);
+                container.find('input:first:visible').focus();
             },
-
-            _postRendering:function(tmpl, newObject, container) {
-                if (this.totalAttachments == undefined || !this.totalAttachments) {
-                    newObject.find('.postit-attachment,.table-attachment').hide()
-                }
-                if (container.hasClass('ui-selectable')) {
-                    newObject.addClass('ui-selectee');
+            afterSave: function(data) {
+                var selectable = $('.window-content.ui-selectable');
+                selectable.find('div[data-elemid="'+data.id+'"]').addClass('ui-selected');
+                var stop = selectable.selectableScroll("option", "stop");
+                if (stop) {
+                    stop({target:selectable});
                 }
             }
         }

@@ -20,28 +20,35 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<underscore id="tpl-multiple-actors">
+<underscore id="tpl-multiple-features">
     <h3><a href="#">${message(code: "is.ui.selection")}</a></h3>
-    <div id="right-actor-container" class="right-properties">
+    <div id="right-feature-container" class="right-properties">
         <div class="stack twisted">
-            <div class="postit actor postit-actor ui-selectee">
+            <div class="postit feature postit-feature ui-selectee">
                 <div class="postit-layout">
-                    <p class="postit-id">** actor.uid **</p>
+                    <p class="postit-id">** feature.uid **</p>
                     <div class="icon-container"></div>
-                    <p class="postit-label break-word">** actor.name **</p>
-                    <div class="postit-excerpt">** actor.description **</div>
+                    <p class="postit-label break-word">** feature.name **</p>
+                    <div class="postit-excerpt">** feature.description **</div>
                 </div>
             </div>
         </div>
-        <a href="${createLink(controller: 'actor', action: 'delete', params: [product: '** jQuery.icescrum.product.pkey **'])}"
+        <a href="${createLink(controller: 'feature', action: 'copyToBacklog', params: [product: '** jQuery.icescrum.product.pkey **'])}"
            data-ui-button
            data-ajax
            data-ajax-method="POST"
-           data-ajax-success="$.icescrum.actor.delete"
            data-ajax-data='** JSON.stringify({id:ids}) **'
            data-is-shortcut
-           data-is-shortcut-key="del">${message(code:'is.ui.actor.menu.delete')}</a>
-        <entry:point id="tpl-multiple-actors-actions"/>
-        <entry:point id="tpl-multiple-actors"/>
+           data-is-shortcut-key="c">${message(code:'is.ui.feature.menu.copy')}</a>
+        <a href="${createLink(controller: 'feature', action: 'delete', params: [product: '** jQuery.icescrum.product.pkey **'])}"
+           data-ui-button
+           data-ajax
+           data-ajax-method="POST"
+           data-ajax-success="$.icescrum.feature.delete"
+           data-ajax-data='** JSON.stringify({id:ids}) **'
+           data-is-shortcut
+           data-is-shortcut-key="del">${message(code:'is.ui.feature.menu.delete')}</a>
+        <entry:point id="tpl-multiple-features-actions"/>
+        <entry:point id="tpl-multiple-features"/>
     </div>
 </underscore>
