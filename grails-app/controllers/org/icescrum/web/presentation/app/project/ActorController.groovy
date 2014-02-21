@@ -34,7 +34,6 @@ import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
-import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class ActorController {
@@ -67,8 +66,6 @@ class ActorController {
                 json { renderRESTJSON(text: actor, status: 201) }
                 xml { renderRESTXML(text: actor, status: 201) }
             }
-        } catch (AttachmentException e) {
-            returnError(exception: e)
         } catch (RuntimeException e) {
             returnError(exception: e, object: actor)
         }
@@ -103,10 +100,8 @@ class ActorController {
                 actors.each { actor ->
                     actorService.delete(actor)
                 }
-                def ids = []
-                params.list('id').each { ids << [id: it] }
                 withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: ids as JSON) }
+                    html { render(status: 200)  }
                     json { render(status: 204) }
                     xml { render(status: 204) }
                 }
