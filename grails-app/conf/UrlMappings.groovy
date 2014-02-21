@@ -28,7 +28,7 @@ import com.mysql.jdbc.CommunicationsException
 class UrlMappings {
     static mappings = {
 
-        "/$controller/$action/$id?" {
+        name default: "/$controller/$action/$id?" {
         }
 
         "/$action" {

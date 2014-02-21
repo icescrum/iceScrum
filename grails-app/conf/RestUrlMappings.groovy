@@ -30,6 +30,19 @@ class RestUrlMappings {
             controller = 'scrumOS'
         }
 
+        "/ws/user"(parseRequest: true) {
+            controller = 'user'
+            action = [POST: "forceRestSave", GET: "list"]
+        }
+
+        "/ws/user/$id"(parseRequest: true) {
+            action = [GET: "index", PUT: "update"]
+            controller = 'user'
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
         "/ws/p/$product/$controller"(parseRequest: true) {
             action = [POST: "save", GET: "list"]
             constraints {
