@@ -122,7 +122,7 @@
                                       </li>
                                   </g:each>
                               </g:if>
-                              <g:if test="${publicProductsExist || moreProductsExist}">
+                              <g:if test="${browsableProductsExist || moreProductsExist}">
                                   <li>
                                       <a href="${createLink(controller:'project', action:'browse')}" data-ajax="true">
                                           <g:if test="${moreProductsExist}">

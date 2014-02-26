@@ -61,11 +61,12 @@ class ScrumOSController {
         def products = user ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : []
         def pCount = products?.size()
         def productsLimit = 9
+        def browsableProductsCount = request.admin ? Product.count() : ProductPreferences.countByHidden(false,[cache:true])
 
         def attrs = [user: user,
                      lang: RCU.getLocale(request).toString().substring(0, 2),
                      space:space,
-                     publicProductsExist: ProductPreferences.countByHidden(false,[cache:true]) ? true : false,
+                     browsableProductsExist: browsableProductsCount > 0,
                      moreProductsExist: pCount > productsLimit,
                      productFilteredsList: pCount > productsLimit ? products?.subList(0, productsLimit) : products]
         if (space)
