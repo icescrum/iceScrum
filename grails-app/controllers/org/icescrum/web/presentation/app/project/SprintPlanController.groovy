@@ -425,7 +425,7 @@ class SprintPlanController {
     }
 
     def changeFilterTasks = {
-        if (!params.filter || !params.filter in ['allTasks', 'myTasks', 'freeTasks', 'blockedTasks']) {
+        if (!params.filter || !(params.filter in ['allTasks', 'myTasks', 'freeTasks', 'blockedTasks'])) {
             def msg = message(code: 'is.user.preferences.error.not.filter')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
