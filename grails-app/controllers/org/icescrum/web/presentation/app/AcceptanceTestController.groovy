@@ -66,7 +66,12 @@ class AcceptanceTestController {
 
     @Secured('inProduct() and !archivedProduct()')
     def save = {
-        withStory('story.id') { story ->
+        if (params.acceptanceTest.parentStory.id) {
+            params.acceptanceTest.'parentStory.id' = params.acceptanceTest.parentStory.id
+        }
+        params.acceptanceTest.remove('parentStory') //For REST XML..
+        def storyId = params.acceptanceTest.'parentStory.id'.toLong()
+        withStory(storyId) { story ->
 
             if (story.state >= Story.STATE_DONE) {
                 returnError(text: message(code: 'is.acceptanceTest.error.save.storyState'))
@@ -75,7 +80,7 @@ class AcceptanceTestController {
 
             def acceptanceTest = new AcceptanceTest()
 
-            def state = params.acceptanceTest.int('state')
+            def state = params.acceptanceTest.state?.toInteger()
             if (state != null) {
                 if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                     AcceptanceTest.AcceptanceTestState newState = AcceptanceTest.AcceptanceTestState.byId(state)
@@ -118,7 +123,7 @@ class AcceptanceTestController {
                 return
             }
 
-            def state = params.acceptanceTest.int('state')
+            def state = params.acceptanceTest.state?.toInteger()
             if (state != null) {
                 if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                     AcceptanceTest.AcceptanceTestState newState = AcceptanceTest.AcceptanceTestState.byId(state)
