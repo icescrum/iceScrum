@@ -73,26 +73,11 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
     }
 
-    def gebVersion = "0.7.0"
-    def seleniumVersion = "2.25.0"
-
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-        test 'xmlunit:xmlunit:1.3'
         runtime 'mysql:mysql-connector-java:5.1.18'
         runtime 'commons-dbcp:commons-dbcp:1.4'
-
-        test "org.codehaus.geb:geb-spock:$gebVersion"
-        test("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion") {
-           exclude 'xml-apis'
        }
-       test "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
-       test "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
-       if (environment == Environment.TEST){
-           build 'org.apache.httpcomponents:httpclient:4.1.2'
-           build "org.spockframework:spock-grails-support:0.6-groovy-1.7"
-       }
-    }
 
     plugins {
         compile "org.icescrum:entry-points:0.4.2"
@@ -111,10 +96,6 @@ grails.project.dependency.resolution = {
         }else{
             compile ":tomcatnio:1.3.4"
         }
-//        test(":spock:0.6") {
-//            exclude "spock-grails-support"
-//        }
-//        test ":geb:$gebVersion"
     }
 }
 
