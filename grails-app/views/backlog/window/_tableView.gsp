@@ -23,6 +23,7 @@
 
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Story.TestState" %>
 <g:set var="sumEfforts" value="${0}"/>
+<g:set var="editableProperties" value="${ suiteSelect.length() > 8 ? [type:'selectui', values:suiteSelect] : [type:'text', typed:[type:'numeric',allow:'?.,']]}"/>
 <is:tableView>
     <is:table id="story-table"
               style="${stories ? '' : 'display:none'};"
@@ -96,7 +97,7 @@
                     name="${story.feature?.name?.encodeAsHTML()}" color="${story.feature?.color}"/><g:message
                     code="${story.feature?.name?.encodeAsHTML()?:message(code:'is.ui.backlog.choose.feature')}"/></is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'effort',disabled:!request.inProduct,name:'effort',values:suiteSelect]">${story.effort >= 0 ? story.effort : '?'}</is:tableColumn>
+                    editable="${[id:'effort',disabled:!request.inProduct,name:'effort'] << editableProperties }">${is.storyEffort(effort: story.effort)}</is:tableColumn>
             <is:tableColumn
                     editable="[type:'textarea',disabled:!request.productOwner,name:'description']">${story.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
             <is:tableColumn editable="[type:'richarea',disabled:!request.productOwner,name:'notes']"><div class="rich-content"><wikitext:renderHtml

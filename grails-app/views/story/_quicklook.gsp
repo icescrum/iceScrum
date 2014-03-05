@@ -145,7 +145,7 @@
                        type="story"
                        typeNumber="${story.type}"
                        typeTitle="${is.bundle(bundle:'storyTypes',value:story.type)}"
-                       miniValue="${story.effort >= 0 ? story.effort :'?'}"
+                       miniValue="${is.storyEffort(effort: story.effort)}"
                        color="${story.feature?.color ?: 'yellow'}"
                        testCount="${testCount}"
                        testState="${story.testState}"

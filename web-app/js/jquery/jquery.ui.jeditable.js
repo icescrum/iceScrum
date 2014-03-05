@@ -24,6 +24,24 @@
  *
  */
 (function($){
+
+    $.editable.types.text = {
+        element: function(settings, original) {
+            var input = $('<input />');
+            if (settings.width != 'none') {
+                var width = parseInt(settings.width);
+                if (width < 21) {
+                    width += 10;
+                }
+                input.width(width);
+            }
+            if (settings.height != 'none') { input.height(settings.height); }
+            input.attr('autocomplete','off');
+            $(this).append(input);
+            return(input);
+        }
+    };
+
     $.editable.addInputType('datepicker', {
         element: function(settings, original) {
 

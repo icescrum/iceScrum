@@ -175,11 +175,12 @@
                  action='estimate'
                  on='table.kanban div.postit-story span.mini-value.editable'
                  findId="jQuery(this).parents('.postit-story:first').data('elemid')"
-                 type="selectui"
                  name="story.effort"
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
-                 values="${suiteSelect}"
+                 values="${suiteSelect ?: ''}"
+                 type="${suiteSelect ? 'selectui' : 'text'}"
+                 typed="${suiteSelect ? '' : [type:'numeric',allow:'.,']}"
                  ajaxoptions = "{dataType:'json'}"
                  callback="jQuery(this).html(value.effort);jQuery(this).next().show();jQuery.event.trigger('sprintMesure_sprint', value.parentSprint);"
                  params="[product:params.product]"/>

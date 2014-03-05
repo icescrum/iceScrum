@@ -34,7 +34,7 @@
            menu="[id:'story-'+story.id,template:'/story/menu',params:[story:story, user:user, sprint:sprint, nextSprintExist:nextSprintExist, referrer:referrer]]"
            typeTitle="${is.bundle(bundle:'storyTypes',value:story.type) + (story.type == Story.TYPE_DEFECT && story.affectVersion?' ('+story.affectVersion+')':'')}"
            attachment="${story.totalAttachments}"
-           miniValue="${story.state > Story.STATE_SUGGESTED ? story.effort >= 0 ? story.effort :'?' : null}"
+           miniValue="${story.state > Story.STATE_SUGGESTED ? is.storyEffort(effort: story.effort) : null}"
            color="${story.feature?.color}"
            stateText="${story.state > Story.STATE_SUGGESTED ? is.bundle(bundle:'storyStates',value:story.state) : ''}"
            editableEstimation="${tMOrSm && story.state != Story.STATE_DONE}"

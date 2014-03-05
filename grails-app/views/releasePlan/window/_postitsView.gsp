@@ -124,11 +124,12 @@
                  action='estimate'
                  on='div.backlog .postit-story .mini-value.editable'
                  findId="jQuery(this).parents('.postit-story:first').data(\'elemid\')"
-                 type="selectui"
                  name="story.effort"
                  before="jQuery(this).next().hide();"
                  cancel="jQuery(original).next().show();"
-                 values="${suiteSelect}"
+                 values="${suiteSelect ?: ''}"
+                 type="${suiteSelect ? 'selectui' : 'text'}"
+                 typed="${suiteSelect ? '' : [type:'numeric',allow:'.,']}"
                  restrictOnNotAccess='teamMember() or scrumMaster()'
                  ajaxoptions = "{dataType:'json'}"
                  callback="jQuery(this).next().show();jQuery(this).html(value.effort);jQuery.event.trigger('sprintMesure_sprint', value.parentSprint);"

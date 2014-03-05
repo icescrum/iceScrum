@@ -23,6 +23,7 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 <g:set var="sumEfforts" value="${0}"/>
+<g:set var="editableProperties" value="${ suiteSelect.length() > 8 ? [type:'selectui', values:suiteSelect] : [type:'text', typed:[type:'numeric',allow:'?.,']]}"/>
 <is:backlogElementLayout
         emptyRendering="true"
         style="display:${stories ? 'block' : 'none'};"
@@ -58,19 +59,17 @@
                      name:"story.rank",
                      onSuccess:"jQuery.icescrum.story.updateRank(params,data,\"#backlog-layout-window-backlog\");",
                      params:[product:params.product]]'
-        editable="[controller:'story',
+        editable="${[controller:'story',
                   action:'estimate',
                   on:'div.backlog .postit-story .mini-value.editable',
                   rendered:(request.teamMember || request.scrumMaster),
                   findId:'jQuery(this).parents(\'.postit-story:first\').data(\'elemid\')',
-                  type:'selectui',
                   name:'story.effort',
                   before:'$(this).next().hide();',
                   cancel:'jQuery(original).next().show();',
-                  values:suiteSelect,
                   ajaxoptions:'{dataType:\'json\'}',
                   callback:'if (!jQuery.isNumeric(value.effort)){jQuery(this).html(\'?\'); jQuery(this).next().html(\''+message(code:'is.story.state.accepted')+'\');}else{ jQuery(this).html(value.effort); jQuery(this).next().html(\''+message(code:'is.story.state.estimated')+'\')} $(this).next().show(); $.icescrum.story.backlogTitleDetails(); ',
-                  params:[product:params.product]]"
+                  params:[product:params.product]] << editableProperties}"
         value="${stories}"
         containerClass="connectableToWidgetSandbox"
         var="story">
