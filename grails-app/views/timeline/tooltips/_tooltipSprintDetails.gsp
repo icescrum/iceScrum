@@ -24,12 +24,12 @@
 <table class="table-tooltip-sprint">
     <tr>
         <td class="entry-title"><g:message code="is.sprint.capacity"/>: </td>
-        <td class="entry-value">${sprint.capacity}</td>
+        <td class="entry-value">${is.sprintPoints(points: sprint.capacity)}</td>
     </tr>
     <g:if test="${sprint.state != Sprint.STATE_WAIT}">
     <tr>
         <td class="entry-title"><g:message code="is.sprint.velocity"/>: </td>
-        <td class="entry-value">${sprint.velocity}</td>
+        <td class="entry-value">${is.sprintPoints(points: sprint.velocity)}</td>
     </tr>
     </g:if>
     <tr>

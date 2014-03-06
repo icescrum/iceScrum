@@ -37,10 +37,10 @@
                     <div class="event-header-label">
                         <div class="event-header-velocity">
                             <g:if test="${Sprint.STATE_WAIT == sprint.state}">
-                                ${sprint.capacity?.toInteger()}
+                                ${is.sprintPoints(points: sprint.capacity)}
                             </g:if>
                             <g:else>
-                                ${sprint.velocity?.toInteger()} / ${sprint.capacity?.toInteger()}
+                                ${is.sprintPoints(points: sprint.velocity)} / ${is.sprintPoints(points: sprint.capacity)}
                             </g:else>
                         </div>
                         <div class="event-header-title">
