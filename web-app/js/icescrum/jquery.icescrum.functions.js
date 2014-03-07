@@ -764,7 +764,7 @@
                     backlogTitleDetails:function(){
                         var effort = 0, size = 0;
                         var offset = 100;  // hack for decimal values
-                        var stories = $.icescrum.getDefaultView() == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort');
+                        var stories = $.icescrum.getDefaultView() == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort, tr.table-line .table-cell-text-effort');
                         stories.each(function() {
                             size += 1;
                             if ($(this).text() != '?') {
