@@ -763,8 +763,15 @@
 
                     backlogTitleDetails:function(){
                         var effort = 0, size = 0;
+                        var offset = 100;  // hack for decimal values
                         var stories = $.icescrum.getDefaultView() == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort');
-                        stories.each(function() { size += 1; if ($(this).text() != '?') effort += Number($(this).text());});
+                        stories.each(function() {
+                            size += 1;
+                            if ($(this).text() != '?') {
+                                effort += Number($(this).text()) * offset;
+                            }
+                        });
+                        effort = effort / offset;
                         $('#window-title-bar-backlog').find('.content .details').html(' - <span id="stories-backlog-size">'+size+'</span> '+$.icescrum.story.i18n.stories+' / <span id="stories-backlog-effort">'+effort+'</span> '+$.icescrum.story.i18n.points);
                     },
 

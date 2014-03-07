@@ -82,7 +82,7 @@
 <g:render template="/backlog/window/blank" model="[show:stories ? false : true]"/>
 
 <jq:jquery>
-    jQuery('#window-title-bar-${controllerName} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${sumEfforts}</span> ${message(code: "is.ui.backlog.title.details.points")}');
+    jQuery('#window-title-bar-${controllerName} .content .details').html(' - <span id="stories-backlog-size">${stories?.size()?:0}</span> ${message(code: "is.ui.backlog.title.details.stories")} / <span id="stories-backlog-effort">${is.sprintPoints(points: sumEfforts)}</span> ${message(code: "is.ui.backlog.title.details.points")}');
 </jq:jquery>
 
 <is:shortcut key="space"
