@@ -131,7 +131,7 @@
     <g:if test="${params.product}">
         <g:render template="/actor/js" model="[id:'actor']"/>
         <g:render template="/feature/js" model="[id:'feature']"/>
-        <g:render template="/story/js"/>
+        <g:render template="/story/js" model="[product: product]"/>
         <g:render template="/task/js" model="[id:'sprintPlan']"/>
         <g:render template="/sprint/js" model="[id:'releasePlan']"/>
         <g:render template="/comment/js"/>

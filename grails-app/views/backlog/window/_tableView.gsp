@@ -23,7 +23,7 @@
 
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Story.TestState" %>
 <g:set var="sumEfforts" value="${0}"/>
-<g:set var="editableProperties" value="${ suiteSelect.length() > 8 ? [type:'selectui', values:suiteSelect] : [type:'text', typed:[type:'numeric',allow:'?.,']]}"/>
+<g:set var="editableProperties" value="${ suiteSelect.length() > 8 ? [type:'selectui', values:suiteSelect] : [type:'text']}"/>
 <is:tableView>
     <is:table id="story-table"
               style="${stories ? '' : 'display:none'};"

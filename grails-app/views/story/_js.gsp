@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.Task" %>
+<%@ page import="org.icescrum.core.domain.PlanningPokerGame; org.icescrum.core.domain.Task" %>
 <g:set var="inProduct" value="${request.inProduct}"/>
 <g:set var="tMOrSm" value="${request.teamMember || request.scrumMaster}"/>
 <g:set var="columns"
@@ -165,7 +165,7 @@
                     editable="[type:'selectui',id:'feature',disabled:!request.productOwner,detach:true,name:'feature.id']"><is:postitIcon
                     name="${story.name}" color="${story.feature.color}"/>?**=feature**?</is:tableColumn>
             <is:tableColumn
-                    editable="[type:'selectui',id:'effort',disabled:!inProduct,name:'effort']">?**=effort**?</is:tableColumn>
+                    editable="${[type: (product?.planningPokerGameType == PlanningPokerGame.CUSTOM_SUITE ? 'text' : 'selectui'), id:'effort',disabled:!inProduct,name:'effort']}">?**=effort**?</is:tableColumn>
             <is:tableColumn
                     editable="[type:'textarea',disabled:!request.productOwner,name:'description']">?**=description**?</is:tableColumn>
             <is:tableColumn
