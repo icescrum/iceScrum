@@ -13,16 +13,16 @@
                 <div class="features-list">
                     <ul>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/actors.png"/></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Story description template and autocomplete on actors</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/customEffort.png"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Custom effort on stories</a>
                         </li>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/select.png"/></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Better UI and search field on large drop-down lists</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/bugzillaServer.png"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Bugzilla integration</a>
                         </li>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/returnToSandbox.png"/></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Move a story from the backlog back to the sandbox</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/customTags.png"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Imported stories custom tags</a>
                         </li>
                     </ul>
                     <span class="more">
