@@ -34,7 +34,6 @@ import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
 import grails.plugins.springsecurity.Secured
-import org.icescrum.core.domain.PlanningPokerGame
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class FinderController {
@@ -54,17 +53,12 @@ class FinderController {
                     data = null
                 }
 
-                def suiteSelect = [:]
-                PlanningPokerGame.getInteger(product.planningPokerGameType).eachWithIndex { t, i ->
-                    suiteSelect."${t}" = t
-                }
-
                 withFormat{
                     html {
                         render(template: 'window/postitsView', model: [
                                 data: data,
                                 user:(User)springSecurityService.currentUser,
-                                suiteSelect:suiteSelect,
+                                estimates:product.stories*.effort.unique().findAll { it != null }.sort(),
                                 creators:(product.allUsers + product.stories*.creator.unique()).unique(),
                                 tasksCreators:(product.allUsers + Task.getAllCreatorsInProduct(product.id)).unique(),
                                 tasksResponsibles:(product.allUsers + Task.getAllResponsiblesInProduct(product.id)).unique(),

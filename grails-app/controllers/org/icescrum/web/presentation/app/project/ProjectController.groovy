@@ -125,7 +125,9 @@ class ProjectController {
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
     def editPractices = {
         withProduct{ Product product ->
-            def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
+            def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
+                                        (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
+                                        (PlanningPokerGame.CUSTOM_SUITE) : message(code: "is.estimationSuite.custom")]
             def dialog = g.render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
             render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }

@@ -163,25 +163,19 @@ class StoryController {
                     return
                 }
 
-                if (request.format == 'xml' && params.story.feature == ''){
-                    params.story.'feature.id' = 'null'
-                }else if (params.story.feature?.id == '') {
+                if ((request.format == 'xml' && params.story.feature == '') || params.story.feature?.id == '') {
                     params.story.'feature.id' = 'null'
                 } else if (params.story.feature?.id) {
                     params.story.'feature.id' = params.story.feature.id
                 }
-                //For REST XML..
-                params.story.remove('feature')
+                params.story.remove('feature') //For REST XML..
 
-                if (request.format == 'xml' && params.story.dependsOn == ''){
-                    params.story.'dependsOn.id' = 'null'
-                }else if (params.story.dependsOn?.id == '') {
+                if ((request.format == 'xml' && params.story.dependsOn == '') || params.story.dependsOn?.id == ''){
                     params.story.'dependsOn.id' = 'null'
                 } else if (params.story.dependsOn?.id) {
                     params.story.'dependsOn.id' = params.story.dependsOn.id
                 }
-                //For REST XML..
-                params.story.remove('dependsOn')
+                params.story.remove('dependsOn') //For REST XML..
 
                 Map props = [:]
                 if (params.story.rank != null) {
@@ -191,21 +185,22 @@ class StoryController {
                     props.state = params.story.state instanceof Number ? params.story.state : params.story.state.toInteger()
                 }
                 if (params.story.effort != null && request.inProduct) {
-                    props.effort = params.story.effort // not parsed because it can be a string or a number
+                    if (params.story.effort instanceof String) {
+                        def effort = params.story.effort.replaceAll(',', '.')
+                        props.effort = effort.isBigDecimal() ? effort.toBigDecimal() : effort // can be a "?"
+                    } else {
+                        props.effort = params.story.effort
+                    }
                 }
                 Story.withTransaction {
                     if (params.story.tags != null) {
                         story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
                     }
                     //for rest support
-                    if (request.format == 'xml' && params.story.parentSprint == ''){
-                        props.parentSprint = null
-                        params.story.remove('parentSprint')
-                    }
-                    else if (params.story.parentSprint?.id == '') {
+                    if ((request.format == 'xml' && params.story.parentSprint == '') || params.story.parentSprint?.id == '') {
                         props.parentSprint = null
                     } else {
-                        def sprintId = params.story.parentSprint?.id?.toLong()
+                        def sprintId = params.story.'parentSprint.id'?.toLong() ?: params.story.parentSprint?.id?.toLong()
                         if (sprintId != null && story.parentSprint?.id != sprintId) {
                             def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
                             if (sprint) {
@@ -288,18 +283,26 @@ class StoryController {
 
     @Secured('productOwner() and !archivedProduct()')
     def done = {
-        withStory {Story story ->
-            def testsNotSuccess = story.acceptanceTests.findAll { AcceptanceTest test -> test.stateEnum != AcceptanceTestState.SUCCESS }
-            if (testsNotSuccess.size() > 0 && !params.boolean('confirm')) {
-                def dialog = g.render(template: 'dialogs/confirmDone', model: [testsNotSuccess: testsNotSuccess.sort {it.uid}])
-                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-                return
-            }
-            storyService.done(story)
+        withStory { Story story ->
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                json { renderRESTJSON(text:story) }
-                xml  { renderRESTXML(text:story) }
+                html {
+                    def testsNotSuccess = story.acceptanceTests.findAll { AcceptanceTest test -> test.stateEnum != AcceptanceTestState.SUCCESS }
+                    if (testsNotSuccess.size() > 0 && !params.boolean('confirm')) {
+                        def dialog = g.render(template: 'dialogs/confirmDone', model: [testsNotSuccess: testsNotSuccess.sort {it.uid}])
+                        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+                        return
+                    }
+                    storyService.done(story)
+                    render(status: 200, contentType: 'application/json', text: story as JSON)
+                }
+                json {
+                    storyService.done(story)
+                    renderRESTJSON(text:story)
+                }
+                xml  {
+                    storyService.done(story)
+                    renderRESTXML(text:story)
+                }
             }
         }
     }

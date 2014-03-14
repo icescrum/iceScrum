@@ -119,9 +119,7 @@
                                                                                value="${params.story?.effort}"
                                                                                name="story.effort"
                                                                                noSelection="['':g.message(code:'is.ui.choose.or.empty')]"
-                                                                               optionValue="value"
-                                                                               optionKey="key"
-                                                                               from="${suiteSelect}"/>
+                                                                               from="${estimates}"/>
                             </li>
                             <li>${g.message(code:'is.story.dependsOn')}<is:select width="150"
                                                                                   value="${params.story?.dependsOn}"
