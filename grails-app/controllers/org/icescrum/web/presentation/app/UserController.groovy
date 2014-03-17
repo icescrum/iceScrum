@@ -24,6 +24,7 @@
 package org.icescrum.web.presentation.app
 
 import org.apache.commons.io.FilenameUtils
+import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
@@ -68,25 +69,21 @@ class UserController {
             returnError(text: message(code: 'is.user.error.password.check'))
             return
         }
-        User.withTransaction {
-            def user = new User()
-            user.preferences = new UserPreferences()
-            bindData(user, this.params, [include:['username','firstName','lastName','email', 'password']], "user")
-            bindData(user.preferences, (Map)this.params.user, [include:['language', 'filterTask', 'activity']], "preferences")
-            try {
+        def user = new User()
+        try {
+            User.withTransaction {
+                user.preferences = new UserPreferences()
+                bindData(user, this.params, [include:['username','firstName','lastName','email', 'password']], "user")
+                bindData(user.preferences, (Map)this.params.user, [include:['language', 'filterTask', 'activity']], "preferences")
                 userService.save(user)
-            } catch (RuntimeException e) {
-                if(user.errors.hasErrors())
-                    returnError(object:user, exception:e)
-                else
-                    returnError(exception:e)
-                return
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: user as JSON }
                 json { renderRESTJSON(text:user, status:201) }
                 xml  { renderRESTXML(text:user, status:201) }
             }
+        } catch (RuntimeException e) {
+            returnError(object:user, exception:e)
         }
     }
 
