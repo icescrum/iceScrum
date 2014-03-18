@@ -134,7 +134,7 @@ icescrum.marshaller = [
 icescrum.restMarshaller = [
         //global exclude
         exclude:['dateCreated','totalAttachments','totalComments'],
-        story:[exclude:['origin','backlog','value'], include: ['tags', 'dependences', 'testState','comments']],
+        story:[exclude:['backlog','value'], include: ['tags', 'dependences', 'testState','comments']],
         feature: [exclude: ['parentDomain','backlog'],include: ['tags']],
         actor: [exclude: ['backlog'],include: ['tags']],
         task:[exclude:['impediment'],include: ['tags','comments']],
