@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,13 +18,13 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stéphane Maldini (stephane.maldini@icescrum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
 package org.icescrum.presentation.taglib
 
+import grails.plugin.fluxiable.Activity
 import org.icescrum.core.ui.UiDefinition
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -41,9 +41,11 @@ import org.codehaus.groovy.grails.web.pages.GroovyPageOutputStack
 import org.codehaus.groovy.grails.web.pages.FastStringWriter
 import grails.plugin.springcache.taglib.ResultAndBuffer
 
+import java.text.SimpleDateFormat
+
 class UtilsTagLib {
 
-    static returnObjectForTags = ['internationalizeValues']
+    static returnObjectForTags = ['internationalizeValues', 'exportFormats', 'iconActivity']
 
     static namespace = 'is'
 
@@ -58,6 +60,7 @@ class UtilsTagLib {
         def p = current ? pageScope.space.params : [:]
         def locale = attrs.locale ? attrs.locale : RCU.getLocale(request).toString()
         def jsCode = """var icescrum = {
+                          isPro:${ApplicationSupport.isProVersion()},
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
                           baseUrl: "${createLink(controller: 'scrumOS')}",
                           versionUrl: "${createLink(controller: 'scrumOS', action:'version')}",
@@ -69,7 +72,6 @@ class UtilsTagLib {
                           more:"${message(code: 'is.menu.more').encodeAsJavaScript()}",
                           uploading:"${message(code:'is.upload.inprogress.wait').encodeAsJavaScript()}",
                           locale:'${locale}',
-                          showUpgrade:${!ApplicationSupport.isProVersion()},
                           push:{
                             enable:${grailsApplication.config.icescrum.push.enable?:false},
                             websocket:${grailsApplication.config.icescrum.push.websocket?:false},
@@ -78,14 +80,6 @@ class UtilsTagLib {
                           dialogErrorContent:"<div id=\'dialog\'><form method=\'post\' class=\'box-form box-form-250 box-form-250-legend\'><div  title=\'${message(code: 'is.dialog.sendError.title')}\' class=\' panel ui-corner-all\'><h3 class=\'panel-title\'>${message(code: 'is.dialog.sendError.title')}</h3><p class=\'field-information\'>${message(code: 'is.dialog.sendError.description')}</p><p class=\'field-area clearfix field-noseparator\' for=\'stackError\' label=\'${message(code: 'is.dialog.sendError.stackError')}\'><label for=\'stackError\'>${message(code: 'is.dialog.sendError.stackError')}</label><span class=\'area area-large\' id=\'stackError-field\'><span class=\'start\'></span><span class=\'content\'><textarea id=\'stackError\' name=\'stackError\' ></textarea></span><span class=\'end\'></span></span></p><p class=\'field-area clearfix field-noseparator\' for=\'comments\' label=\'${message(code: 'is.dialog.sendError.comments')}\'><label for=\'comments\'>${message(code: 'is.dialog.sendError.comments')}</label><span class=\'area area-large\' id=\'comments-field\'><span class=\'start\'></span><span class=\'content\'><textarea id=\'comments\' name=\'comments\' ></textarea></span><span class=\'end\'></span></span></p></div></form></div>"
                 };"""
         out << g.javascript(null, jsCode)
-    }
-
-    def simpleDesktop = { attrs, body ->
-        out << '<div id="main-simple">'
-        out << '<div id="main-content">'
-        out << body()
-        out << '</div>'
-        out << '</div>'
     }
 
     def changeRank = { attrs, body ->
@@ -103,9 +97,6 @@ class UtilsTagLib {
         }})"""
     }
 
-    /**
-     * Generate iceScrum main menu (project dropMenu, avatar, roles, logout, ...)
-     */
     def header = { attrs, body ->
         def menus = getMenuBarFromUiDefinitions()
         out << g.render(template: '/scrumOS/header',
@@ -119,25 +110,15 @@ class UtilsTagLib {
         )
     }
 
-    //TODO to be remove
-    def bundle = {attrs, body ->
-        out << g.message(code: BundleUtils."${attrs.bundle}".get(attrs.value))
-    }
-
-    def avatarSelector = { attrs ->
-        def avatarsDir = grailsApplication.parentContext.getResource(is.currentThemeImage().toString() + 'avatars').file
-        if (avatarsDir.isDirectory()) {
-            out << "<span class=\"selector-avatars\">"
-            avatarsDir.listFiles().each {
-                if (it.name.endsWith('.png')) {
-                    out << """<span>
-                      <img rel='${it.name}' src=\"${createLink(uri: '/' + is.currentThemeImage())}avatars/${it.name}\" onClick=\"jQuery('#preview-avatar').attr('src',jQuery(this).attr('src'));jQuery('#avatar-selected').val(jQuery(this).attr('rel'));jQuery('#avatar-field input.is-multifiles-uploaded').val('');\"/>
-                    </span>"""
-                }
-            }
-            out << "<input type='hidden' id='avatar-selected' name='avatar-selected'/>"
-            out << "</span>"
+    def exportFormats = { attrs, body ->
+        def exportFormats = uiDefinitionService.getDefinitionById(controllerName).exportFormats
+        if (exportFormats instanceof Closure){
+            exportFormats.delegate = delegate
+            exportFormats.resolveStrategy = Closure.DELEGATE_FIRST
+            exportFormats = exportFormats()
         }
+        entry.hook(id:"${controllerName}-getExportFormats", model:[exportFormats:exportFormats])
+        return exportFormats
     }
 
     def internationalizeValues = { attrs ->
@@ -153,6 +134,104 @@ class UtilsTagLib {
             val."${it.key}" = message(code: it.value)
         }
         out << "${val as JSON}"
+    }
+
+    def timeago = { attrs, body ->
+        SimpleDateFormat ISO8601UTC = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        ISO8601UTC.setTimeZone(TimeZone.getTimeZone("UTC"))
+        out << "<time class='timeago' datetime='${ISO8601UTC.format(attrs.date)}'>${formatDate([date:attrs.date, formatName:'is.date.format.short.time', timeZone:attrs.timezone?:null])}</time>"
+    }
+
+    def cache = { attrs, body ->
+        if (attrs.disabled){
+            out << body()
+            return
+        }
+
+        attrs.role = attrs.role ?: true
+        attrs.locale = attrs.locale ?: true
+        def role = ''
+
+        def key  = new CacheKeyBuilder()
+        key.append(attrs.key)
+
+        if (attrs.role){
+            if (request.admin) {
+                role = 'adm'
+            } else {
+                if (request.archivedProduct) {
+                    role += 'archived'
+                } else{
+                    if (request.scrumMaster)  {  role += 'scm'  }
+                    if (request.teamMember)   {  role += 'tm'  }
+                    if (request.productOwner) {  role += 'po'  }
+                    if (!role && request.stakeHolder) {  role += 'sh'  }
+                }
+            }
+            role = role ?: 'anonymous'
+            key.append(role)
+        }
+
+        if (attrs.locale)
+            key.append(RCU.getLocale(request).toString().substring(0, 2))
+
+        if (request.customKey){
+            key.append(request.customKey)
+        }
+
+        def resultAndBuffer = springcacheService.doWithCache(attrs.cache, key.toCacheKey()) {
+            def outputStack = GroovyPageOutputStack.currentStack()
+            def writer = new FastStringWriter()
+            outputStack.push(writer, true)
+            def result = body()
+            outputStack.pop()
+            new ResultAndBuffer(result: result, buffer: writer.buffer)
+        }
+
+        GroovyPageOutputStack.currentWriter() << resultAndBuffer.buffer
+        out << resultAndBuffer.result
+    }
+
+    def errors = {
+        def trueError = grailsApplication.config.icescrum.errors?.find{ it.error }
+        if (grailsApplication.config.icescrum.errors){
+            out << """<a data-ajax="true" href="${createLink(controller:'scrumOS',action:'about')}">
+                        <li class='navigation-line warning ${trueError ? 'warning-icon' : 'upgrade-icon'}' title="${g.message(code:'is.warning')}"></li>
+                      </a>"""
+        }
+    }
+
+    //TODO make it work for all codes type
+    def iconActivity = { attrs, body ->
+        assert attrs.code
+        def code = null
+        switch (attrs.code){
+            case Activity.CODE_SAVE:
+                code = "fa fa-plus"
+                break
+            case Activity.CODE_UPDATE:
+                code = "fa fa-edit"
+                break
+            case Activity.CODE_DELETE:
+                code = "fa fa-times"
+                break
+            case "acceptAs":
+                code = "fa fa-thumbs-up"
+                break
+            default:
+                code = ""
+                break
+        }
+        return code
+    }
+
+    def appId = {
+        out << grailsApplication.config.icescrum.appID
+    }
+
+    //TODO REMOVE
+    def bundle = {attrs, body ->
+        out << g.message(code: BundleUtils."${attrs.bundle}".get(attrs.value))
     }
 
     //TODO REMOVE
@@ -302,70 +381,7 @@ class UtilsTagLib {
         resultErrorsList
     }
 
-    def cache = { attrs, body ->
-        if (attrs.disabled){
-            out << body()
-            return
-        }
-
-        attrs.role = attrs.role ?: true
-        attrs.locale = attrs.locale ?: true
-        def role = ''
-
-        def key  = new CacheKeyBuilder()
-        key.append(attrs.key)
-
-        if (attrs.role){
-            if (request.admin) {
-                role = 'adm'
-            } else {
-                if (request.archivedProduct) {
-                    role += 'archived'
-                } else{
-                    if (request.scrumMaster)  {  role += 'scm'  }
-                    if (request.teamMember)   {  role += 'tm'  }
-                    if (request.productOwner) {  role += 'po'  }
-                    if (!role && request.stakeHolder) {  role += 'sh'  }
-                }
-            }
-            role = role ?: 'anonymous'
-            key.append(role)
-        }
-
-        if (attrs.locale)
-            key.append(RCU.getLocale(request).toString().substring(0, 2))
-
-        if (request.customKey){
-            key.append(request.customKey)
-        }
-
-        def resultAndBuffer = springcacheService.doWithCache(attrs.cache, key.toCacheKey()) {
-            def outputStack = GroovyPageOutputStack.currentStack()
-            def writer = new FastStringWriter()
-            outputStack.push(writer, true)
-            def result = body()
-            outputStack.pop()
-            new ResultAndBuffer(result: result, buffer: writer.buffer)
-        }
-
-        GroovyPageOutputStack.currentWriter() << resultAndBuffer.buffer
-        out << resultAndBuffer.result
-    }
-
-    def errors = {
-        def trueError = grailsApplication.config.icescrum.errors?.find{ it.error }
-        if (grailsApplication.config.icescrum.errors){
-            out << """<a data-ajax="true" href="${createLink(controller:'scrumOS',action:'about')}">
-                        <li class='navigation-line warning ${trueError ? 'warning-icon' : 'upgrade-icon'}' title="${g.message(code:'is.warning')}"></li>
-                      </a>"""
-        }
-    }
-
-    def appId = {
-        out << grailsApplication.config.icescrum.appID
-    }
-
-    def getMenuBarFromUiDefinitions(boolean splitHidden = true) {
+    private getMenuBarFromUiDefinitions(boolean splitHidden = true) {
         def menus = splitHidden ? [visible:[], hidden:[]] : []
         uiDefinitionService.getDefinitions().each {String id, UiDefinition uiDefinition ->
             def menuBar = uiDefinition.menuBar
@@ -380,6 +396,7 @@ class UtilsTagLib {
 
             def menu = [title: menuBar?.title,
                     id: id,
+                    icon: uiDefinition.icon,
                     position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
                     widgetable: uiDefinition.widget ? true : false]
 

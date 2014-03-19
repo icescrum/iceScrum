@@ -71,7 +71,7 @@
             </select>
         </div>
         <hr>
-        <div class="field fix-hidden-accordion-visible" style="height:100px">
+        <div class="field fix-hidden-accordion-visible" style="height:100px;margin-bottom: 1.5em;">
             <label for="actor.description">${message(code:'is.backlogelement.description')}</label>
             <textarea name="actor.description"
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"

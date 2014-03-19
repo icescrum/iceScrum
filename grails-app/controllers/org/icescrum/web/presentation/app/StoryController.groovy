@@ -391,38 +391,58 @@ class StoryController {
     }
 
     @Secured('isAuthenticated()')
-    def follow = {
+    def like = {
         withStory { Story story ->
-            def user = springSecurityService.currentUser
             try {
-                story.addFollower(user)
-                def followers = story.getTotalFollowers()
-                render(status: 200, contentType: 'application/json', text: [followers: followers + " " + message(code: 'is.followable.followers', args: [followers > 1 ? 's' : ''])] as JSON)
+                User user = springSecurityService.currentUser
+                def like = story.likers?.contains(user)
+                def result = [status: params.boolean('status') ? like : !like]
+                if (!params.boolean('status')){
+                    like ? story.removeFromLikers(user) : story.addToLikers(user)
+                    //fake update //todo allow customDirty properties
+                    story.lastUpdated = new Date()
+                    storyService.update(story, [likers:''])
+                }
+                result.likers = story.likers.size()
+                withFormat {
+                    html {
+                        result.likers += " ${message(code: 'is.likers', args: [result.likers > 1 ? 's' : ''])}"
+                        render(status: 200, contentType: 'application/json', text: result as JSON)
+                    }
+                    json { renderRESTJSON(text:result) }
+                    xml  { renderRESTXML(text:result) }
+                }
             } catch (FollowException e) {
-                if (log.debugEnabled) e.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.follow.error')]] as JSON)
+                returnError(e)
             }
         }
     }
 
     @Secured('isAuthenticated()')
-    def unfollow = {
+    def follow = {
         withStory { Story story ->
             try {
-                story.removeLink(springSecurityService.principal.id)
-                def followers = story.getTotalFollowers()
-                render(status: 200, contentType: 'application/json', text: [followers: followers + " " + message(code: 'is.followable.followers', args: [followers > 1 ? 's' : ''])] as JSON)
+                User user = springSecurityService.currentUser
+                def follow = story.followers?.contains(user)
+                def result = [status: params.boolean('status') ? follow : !follow]
+                if (!params.boolean('status')){
+                    follow ? story.removeLink(user.id) : story.addFollower(user)
+                    //fake update //todo allow customDirty properties
+                    story.lastUpdated = new Date()
+                    storyService.update(story, [followers:''])
+                }
+                result.followers = story.totalFollowers
+                withFormat {
+                    html {
+                        result.followers += " ${message(code: 'is.followable.followers', args: [result.followers > 1 ? 's' : ''])}"
+                        render(status: 200, contentType: 'application/json', text: result as JSON)
+                    }
+                    json { renderRESTJSON(text:result) }
+                    xml  { renderRESTXML(text:result) }
+                }
             } catch (FollowException e) {
-                if (log.debugEnabled) e.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.followable.unfollow.error')]] as JSON)
+                returnError(e)
             }
-        }
-    }
-
-    def followers = {
-        withStory { Story story ->
-            def followers = story.getTotalFollowers()
-            render(status: 200, contentType: 'application/json', text: [followers: followers + " " + message(code: 'is.followable.followers', args: [followers > 1 ? 's' : ''])] as JSON)
         }
     }
 

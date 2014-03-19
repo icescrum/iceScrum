@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -19,18 +19,24 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<div data-ui-dialog
-     data-ui-dialog-height="125"
-     data-ui-dialog-close-button="true"
-     data-ui-dialog-close-text="${message(code:'is.dialog.close')}"
-     data-ui-dialog-title="${message(code:'is.dialog.report.generation')}">
-     <div class="information">
+<is:modal name="report"
+          size="sm"
+          title="${message(code:'is.dialog.report.generation')}">
+    <p>
         <g:message code="is.dialog.report.description"/>
-     </div>
-     <div data-ui-progressbar
-          data-ui-progressbar-label="${message(code:'is.report.processing')}"
-          data-ui-progressbar-stop-progress-on=".ui-dialog:hidden"
-          data-ui-progressbar-get-progress="${createLink(action:actionName,controller:controllerName,params:[product:params.product,status:true], id:params.id?:null)}"
-          data-ui-progressbar-download="${createLink(action:actionName,controller:controllerName,params:[product:params.product,get:true,format:params.format], id:params.id?:null)}">
-     </div>
-</div>
+    </p>
+    <div class="progress progress-striped active">
+        <div class="progress-bar"
+             role="progressbar"
+             aria-valuenow="0"
+             aria-valuemin="0"
+             aria-valuemax="100"
+             style="width:0"
+             data-ui-progressbar
+             data-ui-progressbar-stop-progress-on=".ui-dialog:hidden"
+             data-ui-progressbar-get-progress="${createLink(action:actionName,controller:controllerName,params:[product:params.product,status:true], id:params.id?:null)}"
+             data-ui-progressbar-download="${createLink(action:actionName,controller:controllerName,params:[product:params.product,get:true,format:params.format], id:params.id?:null)}">
+            ${message(code:'is.report.processing')}
+        </div>
+    </div>
+</is:modal>

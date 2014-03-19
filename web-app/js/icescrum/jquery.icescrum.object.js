@@ -49,6 +49,9 @@ Object.byString = function(o, s) {
     $.extend($.icescrum.object, {
 
         dataBinding:function(_settings){
+            if (_settings.container){
+                _settings.container = !(_settings.container instanceof Object) ? $(_settings.container) : _settings.container;
+            }
             var settings = $.extend({}, $.icescrum[_settings.type].config[_settings.config], {container:this, watchedId:_settings.id?_settings.id:null}, _settings );
             var type = settings.type;
             //Remove old binding (didn't find another way)

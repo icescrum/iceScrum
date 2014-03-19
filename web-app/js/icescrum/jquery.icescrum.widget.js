@@ -1,30 +1,27 @@
 (function($) {
 
     jQuery.extend($.icescrum, {
-                addToWidgetBar:function(id, callback) {
-                    if ($.inArray(id,  $.icescrum.getWidgetsList()) == -1) {
-                        $.icescrum.addToWidgetsList(id);
+                openWidget:function(id, callback, force) {
+                    if ($.inArray(id, this.getWidgetsList()) == -1 || force){
                         jQuery.ajax({
-                                type:'GET',
-                                url:this.o.urlOpenWidget + '/' + id,
-                                success:function(data) {
-                                    if (data == ''){
-                                        $.icescrum.removeFromWidgetsList(id);
-                                    } else{
-                                        var widget = $(data).appendTo($.icescrum.o.widgetContainer);
-                                        if (callback) {
-                                            callback();
-                                        }
-                                        $(widget[0]).isWidget($(widget[0]).html5data('is'));
-                                        attachOnDomUpdate(widget[0]);
+                            type:'GET',
+                            url:this.o.urlOpenWidget + '/' + id,
+                            success:function(data) {
+                                if (data){
+                                    var widget = $(data).appendTo($.icescrum.o.widgetContainer);
+                                    if (callback) {
+                                        callback();
                                     }
-                                },
-                                error:function() {
-                                    $.icescrum.removeFromWidgetsList(id);
+                                    $(widget[0]).isWidget($(widget[0]).html5data('is'));
+                                    attachOnDomUpdate(widget[0]);
                                 }
-                            });
+                            },
+                            complete:function() {
+                                $.icescrum.manageWidgetsList();
+                            }
+                        });
+                        return false;
                     }
-                    return false;
                 },
 
                 widgetToWindow:function(obj, event) {
@@ -35,17 +32,21 @@
 
                 closeWidget:function(obj, event) {
                     var opts = obj.data('opts');
-                    obj.effect('blind', null, 'fast', function() { obj.remove(); });
-                    this.removeFromWidgetsList(obj.data('id'));
+                    obj.fadeOut({done:function() {
+                        obj.remove();
+                        $.icescrum.manageWidgetsList();
+                    }});
                     if (opts && opts.onClose)
                         opts.onClose();
                     if (event)
                         this.stopEvent(event);
                 },
 
-                saveWidgetsList:function(widgetsList){
-                    var key = 'widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous');
-                    localStorage[key] = JSON.stringify($.unique(widgetsList));
+                manageWidgetsList:function(){
+                        var key = 'widgets-' + ($.icescrum.product.id ? $.icescrum.product.id : 'noproduct') + '-' +($.icescrum.user.id ? $.icescrum.user.id : 'anonymous');
+                        var list = $(".widget").map(function(){return $(this).data("widgetName");}).get();
+                        localStorage[key] = JSON.stringify(list);
+                        this.checkSidebar();
                 },
 
                 getWidgetsList:function(){
@@ -53,17 +54,30 @@
                     return localStorage[key] ? JSON.parse(localStorage[key]) : [];
                 },
 
-                removeFromWidgetsList:function(id){
-                    var list = $.grep(this.getWidgetsList(), function(value) {
-                        return value != id;
-                    });
-                    this.saveWidgetsList(list);
-                },
-
-                addToWidgetsList:function(id){
+                checkSidebar:function(){
                     var list = this.getWidgetsList();
-                    list.push(id);
-                    this.saveWidgetsList(list);
+                    var $sidebar = $('#sidebar');
+                    var $container = $sidebar.parent();
+                    if ($sidebar.find('> .alert').length > 0){
+                        localStorage['sidebar'] = null;
+                    }
+                    if(localStorage['sidebar'] == 'true'){
+                        $container.addClass('sidebar-docked');
+                    }
+                    var hasContent = $sidebar.find('> div:visible:not(".sidebar-content,.sidebar-toggle")').length > 0 || list.length > 0;
+                    if (hasContent && $container.hasClass('sidebar-hidden')){
+                        $container.removeClass('sidebar-hidden');
+                        $(window).trigger('resize');
+                    } else if(!hasContent && !$container.hasClass('sidebar-hidden')) {
+                        $container.addClass('sidebar-hidden');
+                        $(window).trigger('resize');
+                    }
+                    $(document).off('click.sidebar').on('click.sidebar', '.sidebar-toggle, .sidebar-docked > #sidebar', function(e){
+                        e.stopPropagation();
+                        $container.toggleClass('sidebar-docked');
+                        localStorage['sidebar'] = $container.hasClass('sidebar-docked');
+                        $(window).trigger('resize');
+                    });
                 }
             });
 
@@ -79,25 +93,20 @@
         obj.data('id', id);
 
         if (opts.windowable) {
-            iconWindow = $("#" + widgetid + ' .widget-window');
-            iconWindow.parent().off('click').on('click', function(event) {
-                $.icescrum.widgetToWindow(obj, event)
-            });
-            iconWindow.parents('.resizable:first').off('dblclick').on('dblclick', function(event) {
-                $.icescrum.widgetToWindow(obj, event)
+            $('.widget-window', obj).parent().off('click').on('click', function(event) {
+                document.location.hash = id;
             });
             obj.addClass('draggable-to-main');
         }
 
         if (opts.closeable) {
-            $("#" + widgetid + ' .widget-close').off('click').on('click', function(event) {
+            $('.widget-close', obj).off('click').on('click', function(event) {
                 $.icescrum.closeWidget(obj, event)
             });
         }
 
         if (opts.resizableOptions) {
-
-            var content = $("#widget-content-" + id, obj);
+            var content = $('.panel-body', obj);
             var dif = obj.height() - content.height();
             var savedHeight = $.icescrum.product.id ? parseInt(localStorage['widget-'+id+$.icescrum.product.id]) : null;
 
@@ -113,16 +122,15 @@
             content.css('max-height', savedHeight ? savedHeight : opts.resizableOptions.defaultHeight);
             opts.resizableOptions.minHeight += dif;
             opts.resizableOptions.zIndex = 990;
-            opts.resizableOptions.minWidth = obj.width();
-            opts.resizableOptions.maxWidth = obj.width();
-            opts.resizableOptions.handles = 'se';
+            opts.resizableOptions.handles = 's';
             opts.resizableOptions.start = function(event, ui){
                 var totalHeight = $(content.children()[0]).height() + dif;
                 obj.resizable('option','maxHeight', totalHeight >= opts.resizableOptions.minHeight ? totalHeight : opts.resizableOptions.minHeight);
             };
             opts.resizableOptions.resize = function(event, ui){
                 content.css('max-height','none');
-                content.height(ui.size.height - dif);
+                //soustract 3 px to get something look good (WTF? should be out of box)
+                content.height(ui.size.height - dif -3);
             };
             opts.resizableOptions.stop = function(event, ui){
                 localStorage['widget-'+id+$.icescrum.product.id] = ui.size.height - dif;

@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -20,20 +20,15 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="view-chart">
-    <g:if test="${!request.readOnly}">
-      <div class="panel-line">
-          <button class="save-chart ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">${message(code:'is.button.save.as.image')}</button>
-      </div>
-    </g:if>
-  <div id="productVelocity" title="${message(code:"is.chart.productVelocity.title")}" class="chart-container">
-  </div>
-  <jq:jquery>
+<div id="productVelocity${params.modal?'-modal':''}" title="${message(code:"is.chart.productVelocity.title")}" class="chart-container">
+</div>
+<jq:jquery>
     $.jqplot.config.enablePlugins = true;
     line1 = ${userstories};
     line2 = ${technicalstories};
     line3 = ${defectstories};
-    plot1 = $.jqplot('productVelocity', [line1, line2,line3], {
+    var lines = [line1, line2,line3];
+    var config = {
         stackSeries: true,
         legend:{
           show:true,
@@ -83,21 +78,11 @@
                 tickOptions:{formatString:'%d'}
             }
         }
+    };
+
+    <entry:point id="${controllerName}-${actionName}"/>
+    plot1 = $.jqplot('productVelocity${params.modal ?'-modal':''}', lines, config);
+    $('#productVelocity${params.modal ?'-modal':''}').on('replot', function(event) {
+        plot1.replot( { resetAxes: true } );
     });
-    $('#productVelocity').bind('resize.jqplot', function(event, ui) {
-        plot1.replot();
-        $('#productVelocity').find('.jqplot-table-legend').css('bottom','-12px');
-    });
-    $('#productVelocity').find('.jqplot-table-legend').css('bottom','-12px');
-  </jq:jquery>
-</div>
-<g:if test="${withButtonBar && !request.readOnly}">
-    <is:buttonBar>
-        <is:button
-                href="#${controllerName}"
-                elementId="close"
-                type="link"
-                button="button-s button-s-black"
-                value="${message(code: 'is.button.close')}"/>
-    </is:buttonBar>
-</g:if>
+</jq:jquery>

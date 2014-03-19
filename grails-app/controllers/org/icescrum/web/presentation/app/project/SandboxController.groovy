@@ -35,13 +35,14 @@ import org.icescrum.core.domain.Product
 class SandboxController {
 
     def springSecurityService
+    def uiDefinitionService
 
     def index = {
         render(template: "${params.type ?: 'window'}/view")
     }
 
     def right = {
-        render template: "window/right", model: [exportFormats:getExportFormats()]
+        render template: "window/right"
     }
 
     def print = {

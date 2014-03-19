@@ -20,9 +20,25 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<underscore id="tpl-postit-row-actor">
-    <li data-elemid="** actor.id **" class="postit-row postit-row-actor">
-        ** actor.uid ** - ** actor.name **
-        <span title="** actor.name **" class="postit-icon postit-yellow"></span>
-    </li>
+<underscore id="tpl-actor-row">
+    <tr data-elemid="** actor.id **"
+        data-ui-popover
+        data-ui-popover-placement="right"
+        data-ui-popover-trigger="keep-hover"
+        data-ui-popover-delay="500"
+        data-ui-popover-html-content="#popover-actor-row-** actor.id ** > .content"
+        data-ui-popover-html-title="#popover-actor-row-** actor.id ** > .title"
+        class="actor-row">
+        <td>** actor.uid **</td>
+        <td>** actor.name ** </td>
+        <td id="popover-actor-row-** actor.id **" class="hidden">
+            <div class="title">
+                ** actor.name **
+            </div>
+            <div class="content">
+                ** actor.description **
+            </div>
+        </td>
+    </tr>
+
 </underscore>

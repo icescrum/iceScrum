@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,15 +18,11 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="view-chart">
-    <g:if test="${!request.readOnly}">
-        <div class="panel-line">
-            <button class="save-chart ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">${message(code:'is.button.save.as.image')}</button>
-        </div>
-    </g:if>
-  <div id="productCumulativeflow" title="${message(code:"is.chart.productCumulativeflow.title")}" class="chart-container">
-  <jq:jquery>
+<div id="productCumulativeflow${params.modal ?'-modal':''}" title="${message(code:"is.chart.productCumulativeflow.title")}" class="chart-container">
+</div>
+<jq:jquery>
     $.jqplot.config.enablePlugins = true;
     var line1 = ${suggested};
     var line2 = ${accepted};
@@ -100,22 +96,8 @@
 
     <entry:point id="${controllerName}-${actionName}"/>
 
-    plot1 = $.jqplot('productCumulativeflow', lines, config);
-    $('#productCumulativeflow').bind('resize.jqplot', function(event, ui) {
-        plot1.replot();
-        $('#productCumulativeflow').find('.jqplot-table-legend').css('bottom','-12px');
+    plot1 = $.jqplot('productCumulativeflow${params.modal ?'-modal':''}', lines, config);
+    $('#productCumulativeflow${params.modal ?'-modal':''}').on('replot', function(event) {
+        plot1.replot( { resetAxes: true } );
     });
-    $('#productCumulativeflow').find('.jqplot-table-legend').css('bottom','-12px');
-  </jq:jquery>
-  </div>
-</div>
-<g:if test="${withButtonBar && !request.readOnly}">
-    <is:buttonBar>
-        <is:button
-                href="#${controllerName}"
-                elementId="close"
-                type="link"
-                button="button-s button-s-black"
-                value="${message(code: 'is.button.close')}"/>
-    </is:buttonBar>
-</g:if>
+</jq:jquery>

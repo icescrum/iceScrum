@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,7 +18,6 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stéphane Maldini (stephane.maldini@icescrum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
@@ -69,12 +68,6 @@ class ProjectController {
 
     def index = {
         chain(controller: 'scrumOS', action: 'index', params: params)
-    }
-
-    def toolbar = {
-        withProduct { Product product ->
-            render template: "window/toolbar", model: [id: controllerName, product: product, exportFormats:getExportFormats()]
-        }
     }
 
     @Cacheable(cache = 'projectCache', keyGenerator = 'localeKeyGenerator')
@@ -302,7 +295,7 @@ class ProjectController {
             activities.addAll(Product.recentActivity(product))
             activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
 
-            render template: 'window/dashboard',
+            render template: 'window/view',
                     model: [product: product,
                             activities: activities,
                             sprint: sprint,
@@ -314,11 +307,11 @@ class ProjectController {
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productCumulativeFlowChart = {
+        params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.cumulativeFlowValues(product)
             if (values.size() > 0) {
-                render(template: 'charts/productCumulativeFlowChart', model: [
-                        withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
+                def rendered = g.render(template: 'charts/productCumulativeFlowChart', model: [
                         suggested: values.suggested as JSON,
                         accepted: values.accepted as JSON,
                         estimated: values.estimated as JSON,
@@ -327,6 +320,7 @@ class ProjectController {
                         done: values.done as JSON,
                         labels: values.label as JSON,
                         controllerName: params.controllerName ?: controllerName])
+                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productCumulativeflow.title')],rendered) : rendered, status:200)
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -336,15 +330,17 @@ class ProjectController {
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productVelocityCapacityChart = {
+        params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.productVelocityCapacityValues(product)
             if (values.size() > 0) {
-                render(template: 'charts/productVelocityCapacityChart', model: [
-                        withButtonBar: (params.withButtonBar != null) ? params.withButtonBar : true,
+                def rendered = g.render(template: 'charts/productVelocityCapacityChart', model: [
+                        modal: params.modal,
                         capacity: values.capacity as JSON,
                         velocity: values.velocity as JSON,
                         labels: values.label as JSON,
                         controllerName: params.controllerName ?: controllerName])
+                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocityCapacity.title')],rendered) : rendered, status:200)
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -352,17 +348,18 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
+    //@Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productBurnupChart = {
+        params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.productBurnupValues(product)
             if (values.size() > 0) {
-                render(template: 'charts/productBurnupChart', model: [
-                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                def rendered = g.render(template: 'charts/productBurnupChart', model: [
                         all: values.all as JSON,
                         done: values.done as JSON,
                         labels: values.label as JSON,
                         controllerName: params.controllerName ?: controllerName])
+                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnUp.title')],rendered) : rendered, status:200)
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -372,11 +369,11 @@ class ProjectController {
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productBurndownChart = {
+        params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.productBurndownValues(product)
             if (values.size() > 0) {
-                render(template: 'charts/productBurndownChart', model: [
-                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                def rendered = g.render(template: 'charts/productBurndownChart', model: [
                         userstories: values.userstories as JSON,
                         technicalstories: values.technicalstories as JSON,
                         defectstories: values.defectstories as JSON,
@@ -385,6 +382,7 @@ class ProjectController {
                         technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
                         defectstoriesLabels: values*.defectstoriesLabel as JSON,
                         controllerName: params.controllerName ?: controllerName])
+                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnDown.title')],rendered) : rendered, status:200)
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -394,11 +392,11 @@ class ProjectController {
 
     @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productVelocityChart = {
+        params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.productVelocityValues(product)
             if (values.size() > 0) {
-                render(template: 'charts/productVelocityChart', model: [
-                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                def rendered = g.render(template: 'charts/productVelocityChart', model: [
                         userstories: values.userstories as JSON,
                         technicalstories: values.technicalstories as JSON,
                         defectstories: values.defectstories as JSON,
@@ -407,6 +405,7 @@ class ProjectController {
                         technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
                         defectstoriesLabels: values*.defectstoriesLabel as JSON,
                         controllerName: params.controllerName ?: controllerName])
+                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocity.title')],rendered) : rendered, status:200)
             } else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -416,6 +415,7 @@ class ProjectController {
 
     @Cacheable(cache = "projectCache", keyGenerator= 'featuresKeyGenerator')
     def productParkingLotChart = {
+        params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = featureService.productParkingLotValues(product)
             def indexF = 1
@@ -427,12 +427,13 @@ class ProjectController {
                 valueToDisplay << value
                 indexF++
             }
-            if (valueToDisplay.size() > 0)
-                render(template: '../feature/charts/productParkinglot', model: [
-                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+            if (valueToDisplay.size() > 0){
+                def rendered = g.render(template: '../feature/charts/productParkinglot', model: [
                         values: valueToDisplay as JSON,
                         featuresNames: values.label as JSON,
                         controllerName: params.controllerName ?: controllerName])
+                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productParkinglot.title')],rendered) : rendered, status:200)
+            }
             else {
                 def msg = message(code: 'is.chart.error.no.values')
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)

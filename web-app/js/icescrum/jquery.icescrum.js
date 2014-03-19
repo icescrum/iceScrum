@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -18,8 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stéphane Maldini (stephane.maldini@icescrum.com)
- * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -36,7 +35,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             grailsServer:null,
             urlOpenWidget:null,
             urlOpenWindow:null,
-            widgetContainer:"#widget-list",
+            widgetContainer:"#sidebar .sidebar-content",
             windowContainer:"#main-content",
             deleting:false,
             fullscreen:false,
@@ -47,8 +46,9 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             dialogErrorContent:null,
             openWindow:false,
             locale:'en',
-            showUpgrade:true,
-            push:{enable:true,websocket:false,url:null}
+            isPro:false,
+            push:{enable:true,websocket:false,url:null},
+            showAsGrid:true
         },
         o:{},
 
@@ -61,23 +61,23 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if (!window.console) window.console = {};
             if (!window.console.log) window.console.log = function () { };
 
-            $.datepicker.setDefaults($.datepicker.regional[this.o.locale]);
+            //$.datepicker.setDefaults($.datepicker.regional[this.o.locale]);
+
+            $.icescrum.initLocalStorage();
 
             $.icescrum.initAjaxSetup();
 
-            $.icescrum.initHistory();
-
-            $.icescrum.initAtmosphere();
-
             $.icescrum.initNotifications();
 
-            $.icescrum.showUpgrade();
+            $.icescrum.initUpgrade();
+
+            $.icescrum.checkSidebar();
+
+            $.icescrum.initHistory();
 
             $.icescrum.whatsNew();
 
-            $(window).bind('resize',function(){
-                $.icescrum.checkBars();
-            });
+            $.icescrum.initAtmosphere();
 
             //post every 25 min to cancel session timeout
             $.doTimeout(1000 * 60 * 25,function(){
@@ -138,66 +138,18 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             call(params, source);
         },
 
+        //todo remove
         openCommentTab:function(relation) {
             $('#commentEditorContainer').show();
             $.icescrum.openTab(relation, true);
         },
 
+        //todo remove
         openTab:function(relation, scrollBottom) {
             $('.panel-box a[rel=' + relation + ']').click();
             if (scrollBottom) {
                 var contentWindow = jQuery('div .window-content');
                 contentWindow.scrollTop(contentWindow.outerHeight());
-            }
-        },
-
-        displayChart:function(container, url, save) {
-            jQuery.ajax({
-                        type:'GET',
-                        global:false,
-                        cache:true,
-                        url:$.icescrum.o.baseUrlSpace + url,
-                        data:'withButtonBar=false',
-                        beforeSend:function() {
-                            $(container).addClass('loading').html('');
-                        },
-                        success:function(data) {
-                            $(container).height(300);
-                            $(container)
-                                    .removeClass('loading')
-                                    .html(data);
-                            $('.save-chart', $(container)).remove();
-                            if (typeof save != 'undefined' && save) {
-                                localStorage[container + $.icescrum.product.id] = url;
-                            }
-                            var test = /\/(.*)/;
-                            var match = test.exec(url);
-                            if (match[1]) {
-                                if (match[1].indexOf('/') == match[1].length - 1){
-                                    match[1] = match[1].substr(0, match[1].length - 1)
-                                }
-                                $('#panel-chart').find('.right').removeClass('selected');
-                                $('#chart-' + match[1]).addClass('selected');
-                            }
-                        },
-                        error:function(XMLHttpRequest) {
-                            var data = $.parseJSON(XMLHttpRequest.responseText);
-                            $(container).css("height", null);
-                            $(container)
-                                    .removeClass('loading')
-                                    .addClass('error-loading')
-                                    .html(data.notice.text);
-                        }
-                    });
-        },
-
-        //really used
-        displayChartFromCookie:function(container, url, save) {
-            var saveChartType = localStorage[container + $.icescrum.product.id];
-            if (saveChartType) {
-                this.displayChart(container, saveChartType, false);
-            } else {
-                this.displayChart(container, url, save);
             }
         },
 
@@ -209,20 +161,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 return null;
             else
                 return estimation.toString().indexOf('.') == -1 ? estimation.toString().concat('.0') : estimation;
-        },
-
-        showAndHideOnClickAnywhere:function(selector){
-            var element = $(selector);
-            if(element.css('display') == 'none') {
-                element.show();
-                var handler = function(){
-                    element.hide();
-                    $(document).off("click", handler);
-                };
-                setTimeout(function () {
-                    $(document).on("click", handler)
-                ;}, 10);
-            }
         }
     };
 
@@ -240,7 +178,3 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
     }
 
 })(jQuery);
-
-$.ui.dialog.prototype._allowInteraction = function(e) {
-    return !!$(e.target).closest('.ui-dialog, .ui-datepicker, .select2-drop').length;
-};

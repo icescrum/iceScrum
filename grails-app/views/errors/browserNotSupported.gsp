@@ -71,11 +71,11 @@
     text-decoration: none;
 }
 #browser-detection ul.browser-list li a:hover {	text-decoration: underline; }
-#browser-detection ul.browser-list li.firefox a { background: url(../themes/is/images/firefox.gif) no-repeat left top; }
-#browser-detection ul.browser-list li.chrome a { background: url(../themes/is/images/chrome.gif) no-repeat left top; }
-#browser-detection ul.browser-list li.safari a { background: url(../themes/is/images/safari.gif) no-repeat left top; }
-#browser-detection ul.browser-list li.opera a { background: url(../themes/is/images/opera.gif) no-repeat left top; }
-#browser-detection ul.browser-list li.msie a { background: url(../themes/is/images/msie.gif) no-repeat left top; }
+#browser-detection ul.browser-list li.firefox a { background: url(../images/firefox.gif) no-repeat left top; }
+#browser-detection ul.browser-list li.chrome a { background: url(../images/chrome.gif) no-repeat left top; }
+#browser-detection ul.browser-list li.safari a { background: url(../images/safari.gif) no-repeat left top; }
+#browser-detection ul.browser-list li.opera a { background: url(../images/opera.gif) no-repeat left top; }
+#browser-detection ul.browser-list li.msie a { background: url(../images/msie.gif) no-repeat left top; }
 </style>
 
 <div id="container">

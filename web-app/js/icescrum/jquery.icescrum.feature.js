@@ -69,7 +69,6 @@
                         selector:'#contextual-properties'
                     }]);
                 }
-                manageAccordion(container);
                 container.accordion("option", "active", 0);
                 attachOnDomUpdate(container);
             },
@@ -77,7 +76,6 @@
                 var container = $('#contextual-properties');
                 var el = $.template('tpl-new-feature');
                 container.html(el);
-                manageAccordion(container);
                 attachOnDomUpdate(container);
                 container.find('input:first:visible').focus();
             },
@@ -87,6 +85,15 @@
                 var stop = selectable.selectableScroll("option", "stop");
                 if (stop) {
                     stop({target:selectable});
+                }
+            },
+            formatSelect:function(object, container){
+                if (container.hasClass('select2-container') && object.val() != ''){
+                    container.find('.select2-chosen').css('border-left','4px solid '+object.data('color'));
+                    return object.val();
+                } else {
+                    container.css('border-left','4px solid '+object.color);
+                    return object.text;
                 }
             }
         }

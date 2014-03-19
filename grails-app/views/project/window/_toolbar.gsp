@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS
 -
 - This file is part of iceScrum.
 -
@@ -18,46 +18,84 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
-- Manuarii Stein (manuarii.stein@icescrum.com)
-- Stephane Maldini (stephane.maldini@icescrum.com)
-- Nicolas Noullt (nnoullet@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+<nav class="navbar navbar-toolbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group">
+                <div class="btn-group" data-toggle="tooltip" data-ui-tooltip-container="body" title="${message(code:'todo.is.ui.export')}">
+                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <g:each in="${is.exportFormats()}" var="format">
+                            <li>
+                                <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
+                            </li>
+                        </g:each>
+                        <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
+                    </ul>
+                </div>
+                <div class="btn-group" data-toggle="tooltip" data-ui-tooltip-container="body" title="${message(code:'todo.is.ui.charts')}">
+                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-stats"></span>&nbsp;<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productCumulativeFlowChart">${message(code:'is.ui.project.charts.productCumulativeFlow')}</a></li>
+                        <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productBurnupChart">${message(code:'is.ui.project.charts.productBurnup')}</a></li>
+                        <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productBurndownChart">${message(code:'is.ui.project.charts.productBurndown')}</a></li>
+                        <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productParkingLotChart">${message(code:'is.ui.project.charts.productParkingLot')}</a></li>
+                        <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productVelocityChart">${message(code:'is.ui.project.charts.productVelocity')}</a></li>
+                        <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productVelocityCapacityChart">${message(code:'is.ui.project.charts.productVelocityCapacity')}</a></li>
+                        <entry:point id="${controllerName}-toolbar-chart" model="[product:params.product, origin:controllerName]"/>
+                    </ul>
+                </div>
+                <entry:point id="${controllerName}-toolbar" model="[product:params.product, origin:controllerName]"/>
+            </div>
+            <div class="btn-group pull-right">
+                <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
+                <g:if test="${params?.printable}">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.print')} (P)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="P"
+                            title="${message(code:'is.ui.window.print')}"
+                            href="${createLink(controller:controllerName,action:'print', params:[product:params.product?:null, format:'PDF'])}"
+                            data-ajax="true"><span class="glyphicon glyphicon-print"></span>
+                    </button>
+                </g:if>
+                <g:if test="${params?.widgetable}">
+                    <button type="button"
+                            class="btn btn-default btn-widget"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.widgetable')} (W)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="W"><span class="glyphicon glyphicon-retweet"></span>
+                    </button>
+                </g:if>
+                <g:if test="${params?.fullScreen}">
+                    <button type="button"
+                            class="btn btn-default btn-fullscreen"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.fullscreen')} (F)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="F"><span class="glyphicon glyphicon-fullscreen"></span>
+                    </button>
+                </g:if>
+            </div>
+        </div>
+    </div>
+</nav>
 
-<is:panelButton alt="Charts" id="menu-chart" arrow="true" icon="graph" text="${message(code:'is.ui.toolbar.charts')}">
-  <ul>
-    <li class="first">
-        <a href="#${controllerName}/productCumulativeFlowChart">
-            ${message(code:'is.ui.project.charts.productCumulativeFlow')}
-        </a>
-    </li>
-    <li>
-        <a href="#${controllerName}/productBurnupChart">
-            ${message(code:'is.ui.project.charts.productBurnup')}
-        </a>
-    </li>
-    <li>
-        <a href="#${controllerName}/productBurndownChart">
-            ${message(code:'is.ui.project.charts.productBurndown')}
-        </a>
-    </li>
-    <li>
-        <a href="#${controllerName}/productParkingLotChart">
-            ${message(code:'is.ui.project.charts.productParkingLot')}
-        </a>
-    </li>
-    <li>
-        <a href="#${controllerName}/productVelocityChart">
-            ${message(code:'is.ui.project.charts.productVelocity')}
-        </a>
-    </li>
-    <entry:point id="${controllerName}-${actionName}-charts" model="[product:params.product, origin:controllerName]"/>
-    <li class="last">
-        <a href="#${controllerName}/productVelocityCapacityChart">
-            ${message(code:'is.ui.project.charts.productVelocityCapacity')}
-        </a>
-    </li>
-  </ul>
-</is:panelButton>
 
 <g:if test="${product?.id}">
     <is:panelButton alt="documents" id="menu-documents" arrow="true" icon="create" text="${message(code:'is.ui.toolbar.documents')}">
@@ -88,18 +126,3 @@
             events="[[object:'attachments', events:['replaceAll']]]"
             template="toolbar"/>
 </g:if>
-
-<entry:point id="${controllerName}-${actionName}"/>
-
-%{--Export--}%
-<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}">
-    <ul>
-        <g:each in="${exportFormats}" var="format">
-            <li>
-                <div class="file-icon ${format.code.toLowerCase()}-format" style="display:inline-block">
-                    <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
-                </div>
-            </li>
-        </g:each>
-    </ul>
-</is:panelButton>

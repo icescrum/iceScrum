@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2012 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -19,17 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<li class="navigation-item button-ico button-add">
-    <a class="tool-button button-n"
-       href="#${controllerName}"
-       title="${message(code:'is.ui.actor.toolbar.alt.new')}"
-       alt="${message(code:'is.ui.actor.toolbar.alt.new')}">
-            <span class="start"></span>
-            <span class="content">
-            <span class="ico"></span>
-                ${message(code: 'is.ui.actor.toolbar.new')}
-            </span>
-            <span class="end"></span>
-    </a>
-</li>
+<a href="#${controllerName}" data-container="body" data-toggle="tooltip" class="btn btn-danger" title="${message(code:'is.ui.actor.toolbar.new')}">
+    <i class="glyphicon glyphicon-plus"></i>
+</a>
 <entry:point id="${controllerName}-${actionName}-widget-toolbar"/>

@@ -19,17 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<li class="navigation-item button-ico button-add">
-    <a class="tool-button button-n"
-       href="#${controllerName}"
-       title="${message(code:'is.ui.sandbox.toolbar.new')}"
-       alt="${message(code:'is.ui.sandbox.toolbar.new')}">
-            <span class="start"></span>
-            <span class="content">
-                <span class="ico"></span>
-                ${message(code: 'is.ui.sandbox.toolbar.new')}
-            </span>
-            <span class="end"></span>
-    </a>
-</li>
+<a href="#${controllerName}" data-container="body" data-toggle="tooltip" class="btn btn-primary" title="${message(code:'is.ui.sandbox.toolbar.new')}">
+    <i class="glyphicon glyphicon-plus"></i>
+</a>
 <entry:point id="${controllerName}-${actionName}-widget-toolbar"/>

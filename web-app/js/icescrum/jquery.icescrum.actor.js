@@ -62,15 +62,12 @@
                         selector:'#contextual-properties'
                     }]);
                 }
-                manageAccordion(container);
-                container.accordion("option", "active", 0);
                 attachOnDomUpdate(container);
             },
             createForm: function() {
                 var container = $('#contextual-properties');
                 var el = $.template('tpl-new-actor');
                 container.html(el);
-                manageAccordion(container);
                 attachOnDomUpdate(container);
                 container.find('input:first:visible').focus();
             },

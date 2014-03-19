@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,10 +18,10 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Manuarii Stein (manuarii.stein@icescrum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
+
 package org.icescrum.web.presentation.app.project
 
 import org.icescrum.core.support.ProgressSupport
@@ -197,10 +197,10 @@ class FeatureController {
         render template: "window/right", model: [exportFormats: getExportFormats()]
     }
 
-    @Cacheable(cache = "featuresCache", keyGenerator= 'featuresKeyGenerator')
+    //@Cacheable(cache = "featuresCache", keyGenerator= 'featuresKeyGenerator')
     def featureEntries = {
         withProduct { product ->
-            def featureEntries = product.features.collect { [id: it.id, text: it.name] }
+            def featureEntries = product.features.collect { [id: it.id, text: it.name, color:it.color] }
             if (params.term) {
                 featureEntries = featureEntries.findAll { it.text.contains(params.term) }
             }

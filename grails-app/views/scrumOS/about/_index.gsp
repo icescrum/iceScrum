@@ -19,35 +19,30 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-
-<div id="dialog"
-     data-ui-dialog
-     data-ui-dialog-title="${message(code:'is.about')}"
-     data-ui-dialog-close-button="true"
-     data-ui-dialog-close-text="${message(code:'is.dialog.close')}"
-     data-ui-dialog-width="600">
-    <div data-ui-tabs>
-        <ul>
-            <entry:point id="about-tabs-title-first"/>
-            <g:if test="${errors}">
-                <li><a href="#errors-tab">${message(code:'is.dialog.about.errors')}</a></li>
-            </g:if>
-            <li><a href="#version-tab">${message(code:'is.dialog.about.version')}</a></li>
-            <li><a href="#license-tab">${message(code:'is.dialog.about.license')}</a></li>
-            <entry:point id="about-tabs-title-last"/>
-        </ul>
+<is:modal name="about"
+          title="${message(code:'is.about')}">
+    <ul class="nav nav-pills nav-justified">
+        <entry:point id="about-tabs-title-first"/>
+        <g:if test="${errors}">
+            <li><a href="#errors-tab" data-toggle="tab">${message(code:'is.dialog.about.errors')}</a></li>
+        </g:if>
+        <li><a href="#version-tab" data-toggle="tab">${message(code:'is.dialog.about.version')}</a></li>
+        <li><a href="#license-tab" data-toggle="tab">${message(code:'is.dialog.about.license')}</a></li>
+        <entry:point id="about-tabs-title-last"/>
+    </ul>
+    <div class="tab-content">
         <entry:point id="about-tabs-content-first"/>
         <g:if test="${errors}">
-            <div id="errors-tab" class="about-tab">
+            <div class="tab-pane scrollable-shadow" id="errors-tab">
                 <g:render template="/${controllerName}/about/errors" model="[errors:errors]"/>
             </div>
         </g:if>
-        <div id="version-tab" class="about-tab">
+        <div class="tab-pane scrollable-shadow" id="version-tab">
             <g:render template="/${controllerName}/about/version" model="[version:about.version, server:server]"/>
         </div>
-        <div id="license-tab" class="about-tab">
-            <g:render template="/${controllerName}/about/license" model="[license:about.license.text().encodeAsNL2BR()]"/>
+        <div class="tab-pane scrollable-shadow" id="license-tab">
+            ${about.license.text().encodeAsNL2BR()}
         </div>
         <entry:point id="about-tabs-content-last"/>
     </div>
-</div>
+</is:modal>

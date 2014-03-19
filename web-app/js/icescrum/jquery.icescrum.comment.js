@@ -129,6 +129,7 @@
                     }
                 }
                 $('.comment-body', comment).load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.body,withoutHeader:true});
+                //todo change to new avatar management
                 $('.comment-avatar', comment).load(jQuery.icescrum.o.baseUrlSpace + 'user/displayAvatar', {id:this.poster.id, email:this.poster.email});
             }
 

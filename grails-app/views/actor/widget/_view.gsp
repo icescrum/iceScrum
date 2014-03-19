@@ -20,14 +20,14 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<ul class="list postit-rows"
+<table class="table table-striped"
     id="widget-${controllerName}"
     data-binding
     data-binding-type="actor"
-    data-binding-selector="li.postit-row-actor"
-    data-binding-tpl="tpl-postit-row-actor"
+    data-binding-selector="tr"
+    data-binding-tpl="tpl-actor-row"
     data-binding-watch="items"
     data-binding-highlight="true"
     data-binding-config="actors">
-</ul>
+</table>
 <entry:point id="${controllerName}-${actionName}-widget" model="[actors:actors]"/>

@@ -20,25 +20,15 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div data-ui-dialog
-     data-ui-dialog-ajax-form="true"
-     data-ui-dialog-ajax-form-success="$.icescrum.user.retrieveSuccess"
-     data-ui-dialog-ajax-form-submit-text="${message(code:'is.dialog.retrieve.button.reset')}"
-     data-ui-dialog-ajax-form-cancel-text="${message(code:'is.button.cancel')}"
-     data-ui-dialog-title="${message(code:"is.dialog.retrieve")}">
-    <div class="information">
-        <g:message code="is.dialog.retrieve.description"/>
-    </div>
-    <form method="POST" action="${createLink(action:'retrieve')}">
-        <div class="field" style="width:100%">
+<is:modal name="retrieve"
+          size="sm"
+          title="${message(code:'is.dialog.register')}"
+          form="[action:createLink(action:'retrieve'),method:'POST',success:'$.icescrum.user.retrieveSuccess',submit:message(code:'is.dialog.retrieve.button.reset')]">
+        <p>
+            <g:message code="is.dialog.retrieve.description"/>
+        </p>
+        <div class="form-group">
             <label for="text">${message(code:'is.dialog.retrieve.input')}</label>
-            <input required
-                   name="text"
-                   type="text"
-                   id="text"
-                   autofocus
-                   value="">
+            <input required class="form-control" name="text" type="text" id="text" autofocus value="">
         </div>
-        <input type="submit" class="hidden-submit"/>
-    </form>
-</div>
+</is:modal>

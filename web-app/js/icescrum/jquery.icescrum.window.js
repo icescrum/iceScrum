@@ -41,7 +41,7 @@
                     if (this.o.currentOpenedWindow != null && this.o.currentOpenedWindow.data('id') != targetWindow) {
                         $(document).unbind('keydown.' + this.o.currentOpenedWindow.data('id'));
                         if (this.o.currentOpenedWindow.data('opts').widgetable) {
-                            this.addToWidgetBar(this.o.currentOpenedWindow.data('id'));
+                            this.openWidget(this.o.currentOpenedWindow.data('id'));
                         }
                     }
 
@@ -99,61 +99,28 @@
                                     if($dialog.length){
                                         $dialog.dialog('close');
                                     }
-                                    if (!$("#dropmenu").is(':visible')) {
-                                        //TODO remove or not ?
-                                        //$("input:visible:not(.select2-focusser), textarea:visible", content).first().focus()
-                                    }
 
-                                    $('.navigation-line.menubar').find('a.active').removeClass('active');
-                                    $('#elem_'+targetWindow).find('a').addClass('active');
-
-                                    $.icescrum.toolbar.checkToolbar();
+                                    $('#mainmenu').find('.menubar.active').removeClass('active');
+                                    $('#elem_'+targetWindow).addClass('active');
+                                    $(document.body).removeClass('left-open');
                                     $.post($.icescrum.o.push.url, {window:id});
                                     return false;
                                 }
                             });
                 },
 
-                maximizeWindow:function(obj, event) {
-                    var opts = obj.data('opts');
-                    if (!this.o.fullscreen) {
-                        $(document.body).prepend(obj);
-                        this.o.fullscreen = true;
-                        $(document.body).fullScreen(true);
-
-                    } else {
-                        $('#main-content').prepend(obj);
-                        this.o.fullscreen = false;
-                    }
-                    obj.toggleClass('window-fullscreen');
-                    obj.resize();
-
-                    if (this.o.fullscreen) {
-                        obj.trigger('afterIsWindowMaximize');
-                        if (opts.afterMaximize)
-                            opts.afterMaximize();
-                    } else {
-                        obj.trigger('afterIsWindowUnMaximize');
-                        if (opts.onUnMaximize)
-                            opts.onUnMaximize();
-                    }
-                    if (event)
-                        this.stopEvent(event);
-                    $(window).trigger('resize');
-                },
-
                 windowToWidget:function(obj, event) {
                     var opts = obj.data('opts');
                     $.icescrum.closeWindow(obj);
-                    $.icescrum.addToWidgetBar(obj.data('id'));
+                    $.icescrum.openWidget(obj.data('id'));
                     this.stopEvent(event);
                 }
             });
 
     $.fn.isWindow = function(options) {
-        var opts = $.extend({}, $.fn.isWindow.defaults, options);
         var obj = $(this);
-        var windowid = $(this).attr('id'), id = windowid.substring(windowid.lastIndexOf("-") + 1, windowid.length);
+        var opts = $.extend({}, $.fn.isWindow.defaults, options);
+        var windowid = obj.attr('id'), id = windowid.substring(windowid.lastIndexOf("-") + 1, windowid.length);
         var iconMaximize;
 
         obj.data('opts', opts);
@@ -161,38 +128,42 @@
         obj.data('id', id);
 
         if (opts.fullScreen) {
-            iconMaximize = $("#" + windowid + ' .window-maxicon');
-            //icon action
-            iconMaximize.parent().bind('click', function(event) {
-                $.icescrum.maximizeWindow(obj, event)
-            });
-            //barre action
-            iconMaximize.parents('.resizable:first').bind('dblclick', function(event) {
-                if (!$(event.target).is('a,span')) {
-                    $.icescrum.maximizeWindow(obj, event)
+            obj.find('.btn-fullscreen').bind('click', function(event) {
+                if($(document).fullScreen() != null){
+                    obj.fullScreen(!$(document).fullScreen());
                 }
+            });
+            $(document).off("fullscreenchange."+windowid).on("fullscreenchange."+windowid, function() {
+                if (obj.fullScreen()){
+                    obj.addClass('window-fullscreen well');
+                    _.each(obj.find('.btn-fullscreen span'), function(btn){
+                        $(btn).toggleClass('glyphicon-resize-small').toggleClass('glyphicon-fullscreen');
+                    });
+                    obj.trigger('afterIsWindowMaximize');
+                    if (opts.afterMaximize)
+                        opts.afterMaximize();
+                }else{
+                    obj.removeClass('window-fullscreen well');
+                    _.each(obj.find('.btn-fullscreen span'), function(btn){
+                        $(btn).toggleClass('glyphicon-resize-small').toggleClass('glyphicon-fullscreen');
+                    });
+                    obj.trigger('afterIsWindowUnMaximize');
+                    if (opts.onUnMaximize)
+                        opts.onUnMaximize();
+                }
+                $(window).trigger('resize');
             });
         }
 
         if (opts.widgetable) {
-            $("#" + windowid + ' .window-minimize').bind('click', function(event) {
-                $.icescrum.windowToWidget(obj, event)
+            obj.find('.btn-widget').bind('click', function(event) {
+                $.icescrum.windowToWidget(obj, event);
             });
         }
 
         document.title = options.title;
         $.icescrum.o.currentOpenedWindow = obj;
     };
-
-    $(document).bind("fullscreenchange", function() {
-        if ($(document).fullScreen()){
-            console.log("Fullscreen on");
-        }else{
-            $.icescrum.maximizeWindow($('.box-window'));
-            console.log("Fullscreen off");
-        }
-    });
-
 })(jQuery);
 
 $.fn.isWindow.defaults = {

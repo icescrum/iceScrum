@@ -115,7 +115,7 @@ class UserController {
                 if(params.user.avatar && !(params.user.avatar in ['gravatar', 'custom'])){
                     if (params.user.avatar instanceof String){
                         params.user.avatar = params.user.avatar.split("/")?.last()
-                        props.avatar = grailsApplication.parentContext.getResource(is.currentThemeImage().toString() + 'avatars/' + params.user.avatar).file
+                        props.avatar = grailsApplication.parentContext.getResource('/images/avatars/' + params.user.avatar).file
                         props.scale = false
                     } else if (params.user.avatar){
                         def uploadedAvatar = request.getFile('user.avatar')
@@ -284,7 +284,7 @@ class UserController {
 
     def avatar = {
         def user = User.load(params.id)
-        def avatar = grailsApplication.parentContext.getResource("/${is.currentThemeImage()}avatars/avatar.png").file
+        def avatar = grailsApplication.parentContext.getResource("/images/avatars/avatar.png").file
         if (user) {
             def avat = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
             if (avat.exists()) {

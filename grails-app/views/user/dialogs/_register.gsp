@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -
@@ -20,110 +21,126 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div data-ui-dialog
-     data-ui-dialog-width="500"
-     data-ui-dialog-ajax-form="true"
-     data-ui-dialog-ajax-form-success="$.icescrum.user.registerSuccess"
-     data-ui-dialog-ajax-form-submit-text="${message(code:'is.button.register')}"
-     data-ui-dialog-ajax-form-cancel-text="${message(code:'is.button.cancel')}"
-     data-ui-dialog-title="${message(code:"is.dialog.register")}">
-    <div class="information">
-        <g:message code="is.dialog.register.description"/>
-    </div>
-    <form method="POST" action="${createLink(action:'save')}">
-
-        <div class="cols-2">
-            <div class="col-1">
-                <div class="field">
-                    <label for="username">${message(code:'is.user.username')}</label>
+<is:modal name="register"
+          title="${message(code:'is.dialog.register')}"
+          form="[action:createLink(action:'save', mapping:'default'),method:'POST',success:'$.icescrum.user.registerSuccess',submit:message(code:'is.button.register')]">
+        <p>
+            <g:message code="is.dialog.register.description"/>
+        </p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="user.username">${message(code:'is.user.username')}</label>
                     <input type="text"
-                           name="username"
+                           name="user.username"
+                           class="form-control"
                            required
                            autofocus/>
                 </div>
-                <hr/>
-                <div class="field">
-                    <label for="firstName">${message(code:'is.user.firstname')}</label>
+                <div class="form-group">
+                    <label for="user.firstName">${message(code:'is.user.firstname')}</label>
                     <input type="text"
-                           name="firstName"
+                           class="form-control"
+                           name="user.firstName"
                            required/>
                 </div>
-                <hr/>
-                <div class="field">
-                    <label for="lastName">${message(code:'is.user.lastname')}</label>
-                    <input type="text"
-                           name="lastName"
-                           required/>
-                </div>
-                <hr/>
-                <div class="field">
-                    <label for="email">${message(code:'is.user.email')}</label>
-                    <input type="email"
-                           name="email"
-                           required/>
-                </div>
-            </div><!-- no space !--><div class="col-2">
+            </div>
+            <div class="col-md-6">
                 <div id="user-avatar"
-                     class="avatar dropzone-previews"
-                     data-dz
-                     data-dz-clickable="#user-avatar img"
-                     data-dz-url="http://www.todo.com">
-                    <img src="/icescrum/static/JDS9hDaNVycIa6tyoauYOQOUxFxL6qxXuxGHfgbZcvO.png">
+                     class="avatar">
+                    <img src="${is.avatar()}">
                 </div>
-                <div class="field">
-                    <label for="user.avatar">${message(code:'is.user.avatar')}</label>
-                    <select name="user.avatar"
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="user.lastName">${message(code:'is.user.lastname')}</label>
+                    <input type="text"
+                           class="form-control"
+                           name="user.lastName"
+                           required/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="userAvatar">${message(code:'is.user.avatar')}</label>
+                    <select id= "userAvatar"
+                            name="user.avatar"
                             style="width:100%"
                             data-sl2
+                            class="form-control"
+                            data-sl2-change="$.icescrum.user.selectAvatar"
                             placeholder="${message(code:'todo.is.user.avatar.placeholder')}">
                         <option></option>
-                        <option>${message(code:'todo.is.user.avatar.custom')}</option>
-                        <option>${message(code:'todo.is.user.avatar.gravatar')}</option>
-                        <option>${message(code:'todo.is.user.avatar.std.1')}</option>
-                        <option>${message(code:'todo.is.user.avatar.std.2')}</option>
-                        <option>${message(code:'todo.is.user.avatar.std.3')}</option>
-                        <option>${message(code:'todo.is.user.avatar.std.4')}</option>
+                        <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)}">
+                            <option value="gravatar">${message(code:'todo.is.user.avatar.gravatar')}</option>
+                        </g:if>
+                        <option></option>
+                        <option value="${resource(dir: '/images/avatars', file: 'dev-ico.png')}">${message(code:'todo.is.user.avatar.std.1')}</option>
+                        <option value="${resource(dir: '/images/avatars', file: 'po-ico.png')}">${message(code:'todo.is.user.avatar.std.2')}</option>
+                        <option value="${resource(dir: '/images/avatars', file: 'sh-ico.png')}">${message(code:'todo.is.user.avatar.std.3')}</option>
+                        <option value="${resource(dir: '/images/avatars', file: 'sm-ico.png')}">${message(code:'todo.is.user.avatar.std.4')}</option>
+                        <option value="${resource(dir: '/images/avatars', file: 'admin-ico.png')}">${message(code:'todo.is.user.avatar.std.5')}</option>
                     </select>
                 </div>
-                <hr>
-                <div class="field">
-                    <label for="preferences.language">${message(code:'is.user.preferences.language')}</label>
-                    <select name="preferences.language"
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="email">${message(code:'is.user.email')}</label>
+                    <input type="email"
+                           name="user.email"
+                           class="form-control"
+                           onchange="$.icescrum.user.selectAvatar(null, '#userAvatar')"
+                           required/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
+                    <select name="user.preferences.language"
                             style="width:100%"
                             data-sl2
+                            class="form-control"
                             value="en">
                         <is:options values="${is.languages()}" />
                     </select>
                 </div>
             </div>
         </div>
-        <hr/>
-        <div class="cols-2">
-            <div class="col-1">
-                <div class="field">
-                    <label for="password">${message(code:'is.user.password')}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="user.password">${message(code:'is.user.password')}</label>
                     <input required
-                           name="password"
+                           name="user.password"
                            type="password"
+                           class="form-control"
                            value="">
                 </div>
-            </div><!-- no space --><div class="col-2">
-                <div class="field">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label for="confirmPassword">${message(code:'is.dialog.register.confirmPassword')}</label>
                     <input required
                            name="confirmPassword"
                            type="password"
+                           class="form-control"
                            value="">
                 </div>
             </div>
         </div>
-        <hr/>
-        <div class="field">
-            <label for="preferences.activity">${message(code:'is.user.preferences.activity')}</label>
-            <input name="preferences.activity"
-                   type="text"
-                   value="">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="user.preferences.activity">${message(code:'is.user.preferences.activity')}</label>
+                    <input name="user.preferences.activity"
+                           type="text"
+                           class="form-control"
+                           value="">
+                </div>
+            </div>
         </div>
-        <input type="submit" class="hidden-submit"/>
-    </form>
-</div>
+</is:modal>

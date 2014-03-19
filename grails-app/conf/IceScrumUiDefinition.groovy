@@ -27,6 +27,9 @@ import org.icescrum.core.domain.Sprint
 uiDefinitions = {
 
     'actor' {
+
+        icon = 'glyphicon glyphicon-user'
+
         menuBar {
             title 'is.ui.actor'
             defaultVisibility false
@@ -37,7 +40,6 @@ uiDefinitions = {
             title 'is.ui.actor'
             help 'is.ui.actor.help'
             init 'view'
-            toolbar false
             right true
         }
         widget {
@@ -46,14 +48,6 @@ uiDefinitions = {
             toolbar true
             resizable = [defaultHeight:143,minHeight:26]
         }
-        shortcuts = [
-            [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.del.code', text: 'is.ui.shortcut.actor.del.text'],
-            [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.actor.ctrla.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.actor.ctrln.text'],
-            [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.actor.space.text']
-        ]
         embedded = [
                 view:'list',
                 viewTypes:['postits','table']
@@ -69,6 +63,9 @@ uiDefinitions = {
     }
 
     'backlog' {
+
+        icon = 'glyphicon glyphicon-inbox'
+
         menuBar {
             title 'is.ui.backlog'
             defaultVisibility true
@@ -80,7 +77,6 @@ uiDefinitions = {
             title 'is.ui.backlog'
             help 'is.ui.backlog.help'
             init 'list'
-            toolbar true
         }
         widget {
             title 'is.ui.backlog'
@@ -88,14 +84,6 @@ uiDefinitions = {
             toolbar true
             resizable = [defaultHeight:143,minHeight:26]
         }
-        shortcuts = [
-            [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.del.code', text: 'is.ui.shortcut.backlog.del.text'],
-            [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.backlog.ctrla.text'],
-            [code: 'is.ui.shortcut.ctrlshiftc.code', text: 'is.ui.shortcut.backlog.ctrlshiftc.text'],
-            [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.backlog.space.text']
-        ]
         embedded = [
                 view:'list',
                 viewTypes:['postits','table']
@@ -120,12 +108,14 @@ uiDefinitions = {
 
         window {
             title 'is.ui.story.details'
-            toolbar true
             init 'index'
         }
     }
 
     'feature' {
+
+        icon = 'fa fa-puzzle-piece'
+
         menuBar {
             title 'is.ui.feature'
             defaultVisibility false
@@ -137,7 +127,6 @@ uiDefinitions = {
             title 'is.ui.feature'
             help 'is.ui.feature.help'
             init 'view'
-            toolbar false
             right true
         }
         widget {
@@ -147,14 +136,6 @@ uiDefinitions = {
             resizable = [defaultHeight:143,minHeight:26]
         }
 
-        shortcuts = [
-            [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.del.code', text: 'is.ui.shortcut.feature.del.text'],
-            [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.feature.ctrla.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.feature.ctrln.text'],
-            [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.feature.space.text']
-        ]
         embedded = [
                 view:'list',
                 viewTypes:['postits','table','productParkingLotChart']
@@ -168,6 +149,9 @@ uiDefinitions = {
     }
 
     'project' {
+
+        icon = 'glyphicon glyphicon-dashboard'
+
         menuBar {
             title 'is.ui.project'
             defaultVisibility true
@@ -178,7 +162,6 @@ uiDefinitions = {
         window {
             title 'is.ui.project'
             help 'is.ui.project.help'
-            toolbar true
             init 'dashboard'
         }
         embedded = [
@@ -197,6 +180,9 @@ uiDefinitions = {
     }
 
     'releasePlan' {
+
+        icon = 'glyphicon glyphicon-th'
+
         menuBar {
             title 'is.ui.releasePlan'
             defaultVisibility true
@@ -208,7 +194,6 @@ uiDefinitions = {
             title 'is.ui.releasePlan'
             help 'is.ui.releasePlan.help'
             init 'index'
-            toolbar true
             before { def product, def action ->
                 def isWindowContext = actionName == 'openWindow'
                 if (!params.id && (!isWindowContext || action.contains('Chart'))) {
@@ -220,14 +205,7 @@ uiDefinitions = {
                 isWindowContext || params.id
             }
         }
-        shortcuts = [
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.releasePlan.ctrln.text'],
-            [code: 'is.ui.shortcut.ctrlg.code', text: 'is.ui.shortcut.releasePlan.ctrlg.text'],
-            [code: 'is.ui.shortcut.ctrlshifta.code', text: 'is.ui.shortcut.releasePlan.ctrlshifta.text'],
-            [code: 'is.ui.shortcut.ctrlshiftv.code', text: 'is.ui.shortcut.releasePlan.ctrlshiftv.text'],
-            [code: 'is.ui.shortcut.ctrlshiftd.code', text: 'is.ui.shortcut.releasePlan.ctrlshiftd.text']
-        ]
+
         embedded = [
                 view:'index',
                 viewTypes:['postits','notes','releaseBurndownChart','releaseParkingLotChart'],
@@ -242,6 +220,9 @@ uiDefinitions = {
     }
 
     'sandbox' {
+
+        icon = 'fa fa-lightbulb-o'
+
         menuBar {
             title 'is.ui.sandbox'
             defaultVisibility true
@@ -252,7 +233,6 @@ uiDefinitions = {
         window {
             title 'is.ui.sandbox'
             help 'is.ui.sandbox.help'
-            toolbar false
             right true
         }
         widget {
@@ -261,16 +241,6 @@ uiDefinitions = {
             toolbar true
             resizable = [defaultHeight:143,minHeight:26]
         }
-        shortcuts = [
-            [code: 'is.ui.shortcut.ctrlf.code', text: 'is.ui.shortcut.ctrlf.text'],
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.del.code', text: 'is.ui.shortcut.sandbox.del.text'],
-            [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.sandbox.ctrla.text'],
-            [code: 'is.ui.shortcut.ctrlshifta.code', text: 'is.ui.shortcut.sandbox.ctrlshifta.text'],
-            [code: 'is.ui.shortcut.ctrlshiftc.code', text: 'is.ui.shortcut.sandbox.ctrlshiftc.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.sandbox.ctrln.text'],
-            [code: 'is.ui.shortcut.space.code', text: 'is.ui.shortcut.sandbox.space.text']
-        ]
 
         embedded = [
                 view:'list',
@@ -287,6 +257,9 @@ uiDefinitions = {
     }
 
     'sprintPlan' {
+
+        icon = 'fa fa-tasks'
+
         menuBar {
             title 'is.ui.sprintPlan'
             defaultVisibility true
@@ -297,7 +270,6 @@ uiDefinitions = {
         window {
             title 'is.ui.sprintPlan'
             help 'is.ui.sprintPlan.help'
-            toolbar true
             before { def product, def action ->
                 def isWindowContext = actionName == 'openWindow'
                 if (!params.id && (!isWindowContext || action.contains('Chart'))) {
@@ -310,16 +282,7 @@ uiDefinitions = {
             }
             right true
         }
-        shortcuts = [
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.del.code', text: 'is.ui.shortcut.sprintPlan.del.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.sprintPlan.ctrln.text'],
-            [code: 'is.ui.shortcut.ctrla.code', text: 'is.ui.shortcut.sprintPlan.ctrla.text'],
-            [code: 'is.ui.shortcut.ctrlshifta.code', text: 'is.ui.shortcut.sprintPlan.ctrlshifta.text'],
-            [code: 'is.ui.shortcut.ctrlshiftc.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftc.text'],
-            [code: 'is.ui.shortcut.ctrlshiftd.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftd.text'],
-            [code: 'is.ui.shortcut.ctrlshiftr.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftr.text']
-        ]
+
         embedded = [
                 view:'index',
                 viewTypes:['postits','table','notes','sprintBurndownRemainingChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
@@ -342,6 +305,9 @@ uiDefinitions = {
     }
 
     'timeline' {
+
+        icon = 'fa fa-clock-o'
+
         menuBar {
             title 'is.ui.timeline'
             defaultVisibility false
@@ -352,12 +318,8 @@ uiDefinitions = {
         window {
             title 'is.ui.timeline'
             help 'is.ui.timeline.help'
-            toolbar true
         }
-        shortcuts = [
-            [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
-            [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.timeline.ctrln.text']
-        ]
+
         exportFormats = {
             [
                 [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', locationHash:params.actionWindow?:'']],
@@ -371,12 +333,14 @@ uiDefinitions = {
         window {
             space = null
             title 'is.user'
-            toolbar false
             init 'profile'
         }
     }
 
     'finder' {
+
+        icon = ' glyphicon glyphicon-search'
+
         menuBar {
             title 'is.ui.finder'
             defaultVisibility false
@@ -385,7 +349,6 @@ uiDefinitions = {
         }
         window {
             title 'is.ui.finder'
-            toolbar true
             init 'index'
         }
     }
@@ -400,7 +363,6 @@ uiDefinitions = {
 
         window {
             title 'is.ui.task.details'
-            toolbar true
             init 'index'
         }
     }

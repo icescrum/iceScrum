@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,8 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stéphane Maldini (stephane.maldini@icescrum.com)
- * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -112,6 +111,7 @@ class ScrumOSController {
                     toolbar: uiDefinition.widget?.toolbar,
                     closeable: uiDefinition.widget?.closeable,
                     sortable: uiDefinition.widget?.sortable,
+                    icon: uiDefinition.icon,
                     windowable: uiDefinition.window ? true : false,
                     resizable: uiDefinition.widget?.resizable ?: false,
                     title: message(code: uiDefinition.widget?.title),
@@ -173,8 +173,7 @@ class ScrumOSController {
                         spaceName: space?.object?.name,
                         title: message(code: uiDefinition.window?.title),
                         help: message(code: uiDefinition.window?.help),
-                        shortcuts: uiDefinition.shortcuts,
-                        toolbar: uiDefinition.window?.toolbar,
+                        icon: uiDefinition.icon,
                         right: uiDefinition.window?.right,
                         printable: uiDefinition.window?.printable,
                         fullScreen: uiDefinition.window?.fullScreen,

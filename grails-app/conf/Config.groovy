@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,8 +18,6 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
- * Manuarii Stein (manuarii.stein@icescrum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
@@ -34,7 +32,7 @@ import javax.naming.InitialContext
 /*
  Public URL
 */
-grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
+grails.serverURL = "http://192.168.0.12:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
 
 /*
 Administration section
@@ -126,6 +124,7 @@ icescrum.marshaller = [
                 exclude:['cliches']
         ],
         user:[asShort:['firstName', 'lastName']],
+        userpreferences:[asShort:['activity', 'language']],
         productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
         attachment:[include: ['filename']],
         acceptancetest:[asShort:['state']]
@@ -143,6 +142,7 @@ icescrum.restMarshaller = [
         release:[exclude: ['description','cliches','duration']],
         team:[exclude: ['velocity','description','preferences']],
         user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']],
+        userpreferences:[asShort:['activity', 'language']],
         acceptancetest:[]
 ]
 
@@ -329,6 +329,8 @@ log4j = {
     off 'org.codehaus.groovy.grails.web.converters.JSONParsingParameterCreationListener'
     off 'org.codehaus.groovy.grails.web.converters.XMLParsingParameterCreationListener'
 }
+
+grails.resources.mappers.googleclosurecompiler.disable = true
 
 modulesResources = []
 

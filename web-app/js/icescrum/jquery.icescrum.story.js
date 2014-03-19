@@ -136,9 +136,6 @@
                         selector:'#contextual-properties'
                     }]);
                 }
-                //update container
-                manageAccordion(container);
-                container.accordion("option", "active", 0);
                 attachOnDomUpdate(container);
             },
 
@@ -149,16 +146,12 @@
                     $.get($.icescrum.story.restUrl()+'templateEntries', {'template':template}, function(data){
                         data.name = $('input[name="story.name"]', container).val();
                         el = $.template('tpl-new-story', {story:data, template:template});
-                        container.html(el);
-                        manageAccordion(container);
-                        attachOnDomUpdate(container);
                     });
                 } else {
                     el = $.template('tpl-new-story', {story:{}, template:template});
-                    container.html(el);
-                    manageAccordion(container);
-                    attachOnDomUpdate(container);
                 }
+                container.html(el);
+                attachOnDomUpdate(container);
                 container.find('input:first:visible').focus();
             },
 
@@ -188,19 +181,46 @@
                 }
             },
 
-            sortOnSandbox:function(select){
+            sortAndOrderOnSandbox:function(order){
                 var $sandbox = $('#backlog-layout-window-sandbox');
                 var ids = [];
-                _.each($sandbox.find('.ui-selected'), function(item){ ids.push($(item).data('elemid')); });
+
+                //preserve selected elements
+                _.each($sandbox.find('.ui-selected'), function(item){
+                    ids.push($(item).data('elemid'));
+                });
+
                 var config = $.icescrum.object.removeBinding('story', $sandbox);
-                config.sortOn = $(select).val();
-                config.reverse = true;
+                config.sortOn = $('#sort').data('value');
+                if (order){
+                    var $sort = $(order).find('span:first');
+                    if ($sort){
+                        config.reverse = !config.reverse;
+                        $sort.toggleClass('glyphicon-sort-by-attributes');
+                        $sort.toggleClass('glyphicon-sort-by-attributes-alt');
+                    }
+                }
                 $.icescrum.object.dataBinding(config);
+
+                //restore selected elements
                 _.each($sandbox.find('.ui-selectee'), function(item){
                     if (_.contains(ids, $(item).data('elemid'))) {
                         $(item).addClass('ui-selected');
                     }
                 });
+            },
+
+            formatSelect:function(object, container){
+                var type = parseInt(object.id);
+                var icon = '';
+                if (type == $.icescrum.story.TYPE_DEFECT){
+                    icon = 'fa fa-bug';
+                } else if (type == $.icescrum.story.TYPE_TECHNICAL_STORY){
+                    icon = 'fa fa-cogs';
+                } else {
+                    icon = '';
+                }
+                return '<i class="' + icon + '"></i> ' + object.text;
             },
 
 
@@ -452,7 +472,7 @@
                 if (!notFull){
                     $(this).each(function() {
                         $('.dependsOn[data-elemid=' + this.id + ']').remove();
-                        $('[data-dependsOn=' + this.id + ']').removeData('dependson').removeAttr('data-dependsOn');
+                        $('[data-dependsOn=' + this.id + ']').removeData('dependson').prop('data-dependsOn', false);
                     });
                 }
             },

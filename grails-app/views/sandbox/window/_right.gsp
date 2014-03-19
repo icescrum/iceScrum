@@ -20,34 +20,103 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+<nav class="navbar navbar-toolbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="btn-toolbar" id="${controllerName}-toolbar" role="toolbar">
+            <div class="btn-group">
+                <button type="button"
+                        data-toggle="tooltip"
+                        data-ui-tooltip-container="body"
+                        title="${message(code:'todo.is.ui.toggle.grid.list')}"
+                        onclick="$.icescrum.toggleGridList('#backlog-layout-window-${controllerName}',this)"
+                        class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-th"></span>
+                </button>
+                <div class="btn-group" data-toggle="tooltip" data-ui-tooltip-container="body" title="${message(code:'todo.is.ui.sort')}">
+                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        <span id="sort">Date</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu"
+                        data-ui-dropdown
+                        data-ui-dropdown-change-value="true"
+                        data-ui-dropdown-clickbsdropdown="$.icescrum.story.sortAndOrderOnSandbox">
+                        <li><a data-value="dateCreated">Date</a></li>
+                        <li><a data-value="type">Type</a></li>
+                        <li><a data-value="feature.id">Feature</a></li>
+                    </ul>
+                </div>
+                <button type="button"
+                        class="btn btn-default btn-sm"
+                        data-toggle="tooltip"
+                        data-ui-tooltip-container="body"
+                        title="${message(code:'todo.is.ui.order')}"
+                        onclick="$.icescrum.story.sortAndOrderOnSandbox(this)">
+                    <span class="glyphicon glyphicon-sort-by-attributes"></span>
+                </button>
+            </div>
+            <div class="btn-group" data-toggle="tooltip" data-ui-tooltip-container="body" title="${message(code:'todo.is.ui.export')}">
+                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <g:each in="${is.exportFormats()}" var="format">
+                        <li>
+                            <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
+                        </li>
+                    </g:each>
+                    <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
+                </ul>
+            </div>
+            <div class="btn-group pull-right">
+                <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
+                <g:if test="${params?.printable}">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.print')} (P)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="P"
+                            title="${message(code:'is.ui.window.print')}"
+                            href="${createLink(controller:controllerName,action:'print', params:[product:params.product?:null, format:'PDF'])}"
+                            data-ajax="true"><span class="glyphicon glyphicon-print"></span>
+                    </button>
+                </g:if>
+                <g:if test="${params?.widgetable}">
+                    <button type="button"
+                            class="btn btn-default btn-widget"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.widgetable')} (W)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="W"><span class="glyphicon glyphicon-retweet"></span>
+                    </button>
+                </g:if>
+                <g:if test="${params?.fullScreen}">
+                    <button type="button"
+                            class="btn btn-default btn-fullscreen"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.fullscreen')} (F)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="F"><span class="glyphicon glyphicon-fullscreen"></span>
+                    </button>
+                </g:if>
+            </div>
+        </div>
+    </div>
+</nav>
 <div data-binding
+     data-binding-container="#view-properties h3:first > a"
      data-binding-type="story"
      data-binding-watch="array"
-     data-binding-selector="#stories-sandbox-size"
+     data-binding-selector="span"
      data-binding-tpl="tpl-sandbox">
-    <select name="sort"
-            style="width:100px;"
-            onchange="$.icescrum.story.sortOnSandbox(this)"
-            data-sl2>
-        <option value="dateCreated">date</option>
-        <option value="type">type</option>
-        <option value="feature.id">feature</option>
-    </select>
-
-    <select name="export"
-            onchange="$.icescrum.downloadExport(this)"
-            style="width:100px;"
-            data-sl2-placeholder="Export in"
-            data-sl2-icon-class="file-icon format-"
-            data-sl2>
-                <option></option>
-                <g:each in="${exportFormats}" var="format">
-                    <option url="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
-                            value="${format.code.toLowerCase()}">${format.name}</option>
-                </g:each>
-    </select>
-    <entry:point id="${controllerName}-${actionName}"/>
 </div>
-<script type="text/icescrum-template" id="tpl-sandbox" style="display:none">
-    <span id="stories-sandbox-size">** _.size( _.where(list,{ state: $.icescrum.story.STATE_SUGGESTED }) ) ** ${message(code:'is.ui.story.stories')}</span>
+<script type="text/icescrum-template" id="tpl-sandbox">
+    <span>&nbsp;(** _.size( _.where(list,{ state: $.icescrum.story.STATE_SUGGESTED }) ) ** ${message(code:'is.ui.story.stories')})</span>
 </script>

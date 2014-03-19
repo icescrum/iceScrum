@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,21 +18,16 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="view-chart">
-    <g:if test="${!request.readOnly}">
-        <div class="panel-line">
-              <button class="save-chart ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">${message(code:'is.button.save.as.image')}</button>
-        </div>
-    </g:if>
-  <div id="productVelocityCapacity" title="${message(code:"is.chart.productVelocityCapacity.title")}" class="chart-container">
-  </div>
-  <jq:jquery>
+<div id="productVelocityCapacity${params.modal ?'-modal':''}" title="${message(code:"is.chart.productVelocityCapacity.title")}" class="chart-container">
+</div>
+<jq:jquery>
     $.jqplot.config.enablePlugins = true;
     line1 = ${capacity};
     line2 = ${velocity};
-
-    plot1 = $.jqplot('productVelocityCapacity', [line1,line2], {
+    var lines = [line1,line2];
+    var config = {
         legend:{
           show:true,
           renderer: $.jqplot.EnhancedLegendRenderer,
@@ -84,21 +79,12 @@
           show: true,
           zoom: true
         }
+    };
+
+    <entry:point id="${controllerName}-${actionName}"/>
+
+    plot1 = $.jqplot('productVelocityCapacity${params.modal ?'-modal':''}', lines, config);
+    $('#productVelocityCapacity${params.modal ?'-modal':''}').on('replot', function(event) {
+        plot1.replot( { resetAxes: true } );
     });
-    $('#productVelocityCapacity').bind('resize.jqplot', function(event, ui) {
-        plot1.replot();
-        $('#productVelocityCapacity').find('.jqplot-table-legend').css('bottom','-12px');
-    });
-    $('#productVelocityCapacity').find('.jqplot-table-legend').css('bottom','-12px');
-  </jq:jquery>
-</div>
-<g:if test="${withButtonBar && !request.readOnly}">
-    <is:buttonBar>
-        <is:button
-                href="#${controllerName}"
-                elementId="close"
-                type="link"
-                button="button-s button-s-black"
-                value="${message(code: 'is.button.close')}"/>
-    </is:buttonBar>
-</g:if>
+</jq:jquery>

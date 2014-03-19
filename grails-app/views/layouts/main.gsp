@@ -1,5 +1,6 @@
+<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,19 +19,24 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
-- Damien vitrac (damien@oocube.com)
-- Manuarii Stein (manuarii.stein@icescrum.com)
-- Stephane Maldini (stephane.maldini@icescrum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>iceScrum - <g:layoutTitle/></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
-    <r:external uri="/${is.currentThemeImage()}favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, ms-touch-action: none" />
+    <!-- iOS web app-->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link href="${r.resource(uri:'/images/iOS/icon-iphone.png')}" rel="apple-touch-icon"/>
+    <link href="${r.resource(uri:'/images/iOS/icon-ipad.png')}" rel="apple-touch-icon" sizes="76x76"/>
+    <link href="${r.resource(uri:'/images/iOS/icon-iphone-retina.png')}" rel="apple-touch-icon" sizes="120x120"/>
+    <link href="${r.resource(uri:'/images/iOS/icon-ipad-retina.png')}" rel="apple-touch-icon" sizes="152x152"/>
+    <r:external uri="/images/favicon.ico"/>
+
     <is:loadJsVar/>
-    <r:require modules="jquery,jquery-ui,jquery-ui-plugins,jquery-plugins,jqplot,icescrum,objects${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
+    <r:require modules="jquery,bootstrap,jquery-plugins,jqplot,icescrum,objects${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
     <sec:ifLoggedIn>
         <script src="${resource(dir: 'js/timeline/timeline_ajax', file: 'simile-ajax-api.js?bundle=true')}" type="text/javascript"></script>
         <script src="${resource(dir: 'js/timeline/timeline_js', file: 'timeline-api.js?bundle=true')}" type="text/javascript"></script>
@@ -39,48 +45,64 @@
     <r:layoutResources/>
     <g:layoutHead/>
 </head>
-
-<body class="icescrum" ${user?.preferences?.displayWhatsNew?'data-whatsnew="true"':''}>
+<body ${user?.preferences?.displayWhatsNew?'data-whatsnew="true"':''}>
 <is:header/>
-<div id="local"
-     data-ui-droppable
-     data-ui-droppable-drop="$.icescrum.onDropToWidgetBar"
-     data-ui-droppable-hover-class="local-active"
-     data-ui-droppable-accept=".draggable-to-widgets"
-     data-ui-sortable
-     data-ui-sortable-handle=".widget-toolbar,.mini-width-icon"
-     data-ui-sortable-items=".box-widget-sortable"
-     data-ui-resizable-panel
-     data-ui-resizable-panel-right="false"
-     data-ui-resizable-panel-grid="265"
-     data-ui-resizable-panel-mini-width="38"
-     data-ui-resizable-panel-max-width="265">
-    <div class="widget-bar">
-      <div id="widget-list">
-        <div class="message" id="upgrade" style="display:none;">
-            <span class="close"><g:message code="is.ui.hide"/></span>
-            <g:message code="is.upgrade.icescrum.pro"/>
-        </div>
-        <g:if test="${request.archivedProduct}">
-            <div class="message" style="display:block;">
-                <g:message code="is.message.project.activate"/>
+<div class="container-fluid">
+    <div class="row sidebar-hidden">
+        <g:if test="${product}">
+            <div id="sidebar" class="hidden-xs col-sm-2 col-md-3 col-lg-2 well">
+                <div class="sidebar-toggle">
+                    <button class="btn btn-xs btn-danger">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </div>
+                <g:if test="${request.archivedProduct}">
+                    <div class="alert alert-danger">
+                        <strong>${message(code:'is.message.project.activate')}</strong>
+                    </div>
+                </g:if>
+                <g:if test="${!ApplicationSupport.isProVersion()}">
+                    <div class="alert alert-info alert-dismissable" id="upgrade" style="display:none;">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong><g:message code="is.upgrade.icescrum.pro"/></strong>
+                    </div>
+                </g:if>
+                <div class="alert alert-info alert-dismissable" id="notifications" style="display:none;">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <a href="#"><strong>${message(code:'is.ui.html5.notifications')}</strong></a>
+                </div>
+                <entry:point id="sidebar-alerts"/>
+                <div class="sidebar-content"
+                     data-ui-droppable
+                     data-ui-droppable-drop="$.icescrum.onDropToWidgetBar"
+                     data-ui-droppable-accept=".draggable-to-widgets"
+                     data-ui-sortable
+                     data-ui-sortable-handle=".panel-title > .drag"
+                     data-ui-sortable-items=".widget-sortable">
+                </div>
             </div>
         </g:if>
-      </div>
+        <div id="main" class="col-xs-12 col-sm-${product ? '10' : '12'} col-md-${product ? '9' : '12'} col-lg-${product ? '10' : '12'}">
+            <div id="main-content"
+                 data-ui-droppable
+                 data-ui-droppable-hover-class="pointer"
+                 data-ui-droppable-drop="$.icescrum.onDropToWindow"
+                 data-ui-droppable-accept=".draggable-to-main">
+                <g:layoutBody/>
+            </div>
+        </div>
     </div>
-    <div id="notifications" style="display:none;"><a id="accept_notifications">${message(code:'is.ui.html5.notifications')}</a> (<a id="hide_notifications">${message(code:'is.ui.hide')}</a>)</div>
-</div>
-<div id="main">
-    <div id="main-content"
-         data-ui-droppable
-         data-ui-droppable-drop="$.icescrum.onDropToWindow"
-         data-ui-droppable-hover-class="main-active"
-         data-ui-droppable-accept=".draggable-to-main">
-        <g:layoutBody/>
-    </div>
+    <span class="hidden"
+          data-is-shortcut
+          data-is-shortcut-key="H"
+          data-is-shortcut-callback="$.icescrum.displayShortcuts"
+          title="${message(code:'todo.is.ui.this.help')}"></span>
 </div>
 <r:layoutResources/>
+
 <entry:point id="icescrum-footer"/>
+
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
 <is:onStream events="[[object:'product',events:['add','remove','update','redirect','archive', 'unarchive']]]"/>
 <is:onStream events="[[object:'user',events:['addRoleProduct','removeRoleProduct','updateRoleProduct','updateProfile']]]"/>

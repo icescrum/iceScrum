@@ -79,14 +79,15 @@ grails.project.dependency.resolution = {
 
     plugins {
         compile "org.icescrum:entry-points:0.4.2"
+
+        compile ":resources:1.1.6"
+        compile ":lesscss-resources:1.3.3"
+        compile ":closure-compiler:0.9.2"
         compile ":cache-headers:1.1.5"
         compile ":cached-resources:1.0"
-        compile ":feeds:1.5"
-        compile ":hibernate:1.3.9"
-        compile ":resources:1.1.6"
-        compile ":session-temp-files:1.0"
         compile ":zipped-resources:1.0"
-        compile ":yui-minify-resources:0.1.5"
+
+        compile ":session-temp-files:1.0"
         compile ":browser-detection:0.4.3"
         if (environment == Environment.PRODUCTION){
             compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"

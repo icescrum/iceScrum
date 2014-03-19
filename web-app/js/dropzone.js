@@ -5,7 +5,6 @@
      *
      * @param {String} path
      * @return {Object} exports
-     * @api public
      */
 
     function require(path, parent, orig) {
@@ -63,7 +62,6 @@
      *
      * @param {String} path
      * @return {String} path or null
-     * @api private
      */
 
     require.resolve = function(path) {
@@ -90,7 +88,6 @@
      * @param {String} curr
      * @param {String} path
      * @return {String}
-     * @api private
      */
 
     require.normalize = function(curr, path) {
@@ -117,7 +114,6 @@
      *
      * @param {String} path
      * @param {Function} definition
-     * @api private
      */
 
     require.register = function(path, definition) {
@@ -129,7 +125,6 @@
      *
      * @param {String} from
      * @param {String} to
-     * @api private
      */
 
     require.alias = function(from, to) {
@@ -144,7 +139,6 @@
      *
      * @param {String} parent
      * @return {Function}
-     * @api private
      */
 
     require.relative = function(parent) {
@@ -211,7 +205,6 @@
         /**
          * Initialize a new `Emitter`.
          *
-         * @api public
          */
 
         function Emitter(obj) {
@@ -223,7 +216,6 @@
          *
          * @param {Object} obj
          * @return {Object}
-         * @api private
          */
 
         function mixin(obj) {
@@ -239,7 +231,6 @@
          * @param {String} event
          * @param {Function} fn
          * @return {Emitter}
-         * @api public
          */
 
         Emitter.prototype.on =
@@ -257,7 +248,6 @@
          * @param {String} event
          * @param {Function} fn
          * @return {Emitter}
-         * @api public
          */
 
         Emitter.prototype.once = function(event, fn){
@@ -281,7 +271,6 @@
          * @param {String} event
          * @param {Function} fn
          * @return {Emitter}
-         * @api public
          */
 
         Emitter.prototype.off =
@@ -346,7 +335,6 @@
          *
          * @param {String} event
          * @return {Array}
-         * @api public
          */
 
         Emitter.prototype.listeners = function(event){
@@ -359,7 +347,6 @@
          *
          * @param {String} event
          * @return {Boolean}
-         * @api public
          */
 
         Emitter.prototype.hasListeners = function(event){

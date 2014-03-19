@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -20,82 +20,66 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="view-chart">
-    <g:if test="${!request.readOnly}">
-        <div class="panel-line">
-            <button class="save-chart ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">${message(code:'is.button.save.as.image')}</button>
-        </div>
-    </g:if>
-    <div id="productParkinglot" title="${message(code:"is.chart.productParkinglot.title")}" class="chart-container">
-    </div>
-    <jq:jquery>
-      $.jqplot.config.enablePlugins = true;
-      line1 = ${values};
-      plot1 = $.jqplot('productParkinglot', [line1], {
-          fontFamily:'Arial',
-          legend:{
-            show:true,
-            renderer: $.jqplot.EnhancedLegendRenderer,
-            location:'se',
-            rendererOptions:{
-                 numberColumns:1
-            },
-            fontSize: '11px',
-            background:'#FFFFFF',
-            fontFamily:'Arial'
-          },
-          title:{
-            text:'${message(code:"is.chart.productParkinglot.title")}',
-            fontFamily:'Arial'
-          },
-          grid: {
-            background:'#FFFFFF',
-            gridLineColor:'#CCCCCC',
-            shadow:false,
-            borderWidth:0
-          },
-          seriesDefaults:{
-              renderer: $.jqplot.BarRenderer,
-              rendererOptions:{barWidth: 50,barDirection:'horizontal', barPadding: 6, barMargin:15},
-              shadowAngle:135
-          },
-          series:[
-              {label:'${message(code:"is.chart.productParkinglot.serie.name")}',color: '#afe2ff'}
-              ],
-          axes:{
-              xaxis:{
-                min:0,
-                max:100,
-                label:'${message(code:'is.chart.productParkinglot.xaxis.label')}',
-                tickOptions:{
-                    formatString:'%d\%'
-                }
-              },
-              yaxis:{
-                renderer:$.jqplot.CategoryAxisRenderer,
-                ticks:${featuresNames},
-                rendererOptions:{tickRenderer:$.jqplot.CanvasAxisTickRenderer},
-                tickOptions:{
-                    fontSize:'11px',
-                    fontFamily:'Arial'
-                }
-              }
-          }
-      });
-      $('#productParkinglot').bind('resize.jqplot', function(event, ui) {
-            plot1.replot();
-          $('#productParkinglot').find('.jqplot-table-legend').css('bottom','-12px');
-        });
-        $('#productParkinglot').find('.jqplot-table-legend').css('bottom','-12px');
-    </jq:jquery>
+<div id="productParkinglot${params.modal?'-modal':''}" title="${message(code:"is.chart.productParkinglot.title")}" class="chart-container">
 </div>
-<g:if test="${withButtonBar && !request.readOnly}">
-    <is:buttonBar>
-        <is:button
-                href="#${controllerName}"
-                elementId="close"
-                type="link"
-                button="button-s button-s-black"
-                value="${message(code: 'is.button.close')}"/>
-    </is:buttonBar>
-</g:if>
+<jq:jquery>
+    $.jqplot.config.enablePlugins = true;
+    line1 = ${values};
+    var lines = [line1];
+    var config = {
+      fontFamily:'Arial',
+      legend:{
+        show:true,
+        renderer: $.jqplot.EnhancedLegendRenderer,
+        location:'se',
+        rendererOptions:{
+             numberColumns:1
+        },
+        fontSize: '11px',
+        background:'#FFFFFF',
+        fontFamily:'Arial'
+      },
+      title:{
+        text:'${message(code:"is.chart.productParkinglot.title")}',
+        fontFamily:'Arial'
+      },
+      grid: {
+        background:'#FFFFFF',
+        gridLineColor:'#CCCCCC',
+        shadow:false,
+        borderWidth:0
+      },
+      seriesDefaults:{
+          renderer: $.jqplot.BarRenderer,
+          rendererOptions:{barWidth: 50,barDirection:'horizontal', barPadding: 6, barMargin:15},
+          shadowAngle:135
+      },
+      series:[
+          {label:'${message(code:"is.chart.productParkinglot.serie.name")}',color: '#afe2ff'}
+          ],
+      axes:{
+          xaxis:{
+            min:0,
+            max:100,
+            label:'${message(code:'is.chart.productParkinglot.xaxis.label')}',
+            tickOptions:{
+                formatString:'%d\%'
+            }
+          },
+          yaxis:{
+            renderer:$.jqplot.CategoryAxisRenderer,
+            ticks:${featuresNames},
+            rendererOptions:{tickRenderer:$.jqplot.CanvasAxisTickRenderer},
+            tickOptions:{
+                fontSize:'11px',
+                fontFamily:'Arial'
+            }
+          }
+      }
+    };
+    <entry:point id="${controllerName}-${actionName}"/>
+    plot1 = $.jqplot('productParkinglot${params.modal?'-modal':''}', lines, config);
+    $('#productParkinglot${params.modal?'-modal':''}').on('replot', function(event) {
+        plot1.replot( { resetAxes: true } );
+    });
+</jq:jquery>

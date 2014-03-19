@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,8 +18,6 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
-- Damien vitrac (damien@oocube.com)
-- Manuarii Stein (manuarii.stein@icescrum.com)
 --}%
 <%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.domain.Sprint;" %>
 <g:set var="poOrSm" value="${request.productOwner || request.scrumMaster}"/>
@@ -134,7 +132,7 @@
                  callback="jQuery(this).next().show();jQuery(this).html(value.effort);jQuery.event.trigger('sprintMesure_sprint', value.parentSprint);"
                  params="[product:params.product]"/>
     <g:if test="${poOrSm}">
-        $.icescrum.addToWidgetBar('backlog');
+        $.icescrum.openWidget('backlog');
     </g:if>
 </jq:jquery>
 

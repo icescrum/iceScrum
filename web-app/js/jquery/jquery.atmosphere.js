@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
+/**
  * IE streaming/XDR supports is copied/highly inspired by http://code.google.com/p/jquery-stream/
  *
  * Copyright 2011, Donghwan Kim

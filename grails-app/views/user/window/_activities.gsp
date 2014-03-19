@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Manuarii Stein (manuarii.stein@icescrum.com)
+- Vincent BARRIER (vbarrier@kagilum.com)
 --}%
 <%@ page import="grails.plugin.fluxiable.Activity; grails.plugin.fluxiable.ActivityLink; org.grails.comments.Comment" %>
 <is:panel id="panel-activity">
@@ -41,7 +41,8 @@
                     <g:each in="${activities}" var="a" status="i">
                         <li ${(activities?.size() == (i + 1)) ? 'class="last"' : ''}>
                             <div class="news-item news-${a.code}">
-                            <p>${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}
+                            <p>
+                                ${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}
                                 <g:message code="is.fluxiable.${a.code}"/>
                                 <g:message code="is.${a.code.startsWith('task') ? 'task' : 'story'}"/>
                                 <g:if test="${!a.code.startsWith('task') && a.code != Activity.CODE_DELETE}">

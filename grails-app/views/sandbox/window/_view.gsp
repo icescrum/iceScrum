@@ -19,9 +19,6 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
-- Damien vitrac (damien@oocube.com)
-- Manuarii Stein (manuarii.stein@icescrum.com)
-- Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 
 <g:set var="productOwner" value="${request.productOwner}"/>
@@ -30,32 +27,36 @@
      data-ui-selectable
      data-ui-selectable-global-stop="true"
      data-ui-selectable-stop="$.icescrum.story.onSelectableStop"
-     data-ui-selectable-filter="div.postit-story"
+     data-ui-selectable-filter="div.story"
      data-ui-selectable-cancel=".postit-label, a"
+
      data-ui-droppable
-     data-ui-droppable-selector="div.postit"
+     data-ui-droppable-selector="div.story"
      data-ui-droppable-hover-class="ui-selected"
      data-ui-droppable-drop="$.icescrum.story.onDropFeature"
      data-ui-droppable-accept=".postit-row-feature"
+
      data-ui-droppable2
      data-ui-droppable2-hover-class="main-active"
      data-ui-droppable2-drop="$.icescrum.story.onDropToSandbox"
      data-ui-droppable2-accept=".postit-row-story.estimated"
+
      data-is-shortcut
      data-is-shortcut-on="#backlog-layout-window-${controllerName}"
      data-is-shortcut-key="a arrows"
      data-is-shortcut-callback="$.icescrum.selectableShortcut"
+
      data-binding
      data-binding-after-binding="$.icescrum.selectableHash"
      data-binding-type="story"
-     data-binding-selector="div.postit-story"
+     data-binding-selector="div.story"
      data-binding-tpl="tpl-postit-story"
      data-binding-watch="items"
      data-binding-highlight="true"
      data-binding-sort-on="type"
      data-binding-reverse="true"
      data-binding-config="sandbox"
-     class="view-postit backlog">
+     class="row list-group">
     <div class="add-new-postit">
         <span>+</span>
     </div>

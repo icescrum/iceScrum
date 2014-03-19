@@ -128,15 +128,20 @@
 </jq:jquery>
 
 <div class='templates'>
+    <g:render template="/user/js"/>
+
+    <!-- begin new templates -->
+    <g:render template="templates"/>
+    <!-- end new templates -->
+
     <g:if test="${params.product}">
 
-        <g:render template="/task/js" model="[id:'sprintPlan']"/>
         <g:render template="/sprint/js" model="[id:'releasePlan']"/>
         <g:render template="/comment/js"/>
         <g:render template="/acceptanceTest/js"/>
         <g:render template="/attachment/js"/>
 
-        <g:render template="/story/js"/>
+        <!-- begin new templates -->
         <g:render template="/story/window/edit"/>
         <g:render template="/story/window/new"/>
         <g:render template="/story/window/postit"/>
@@ -154,7 +159,6 @@
         <g:render template="/feature/window/postit"/>
         <g:render template="/feature/window/row"/>
         <g:render template="/feature/window/selected"/>
-
+        <!-- end new templates -->
     </g:if>
-    <g:render template="/user/js"/>
 </div>

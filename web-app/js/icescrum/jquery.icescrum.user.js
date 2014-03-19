@@ -57,15 +57,47 @@
 
             registerSuccess:function(data){
                 $.doTimeout(500, function() {
-                    document.location = $.icescrum.o.baseUrl+'?lang='+data.lang+'#!login';
+                    document.location = $.icescrum.o.baseUrl+'?lang='+data.preferences.language+'#!login';
                 });
                 return true;
             },
 
             retrieveSuccess: function(data){
                 $.doTimeout(500, function() {
-                    document.location = $.icescrum.o.baseUrl+'#!login';
+                    $('#login').click();
                 });
+                return true;
+            },
+
+            selectAvatar: function(val, select){
+                val = select ? $(select).val() : val;
+                var avatar = $('#user-avatar').find('img');
+                if (val == 'gravatar'){
+                    var email = $('input[name="email"]:valid').val();
+                    if (email){
+                        val = (document.location.href.startsWith('https') ? "https://secure.gravatar.com/avatar/" : 'http://www.gravatar.com/avatar/') + $.md5(email);
+                    } else {
+                        val = null;
+                    }
+                } else if (val == 'custom') {
+                    avatar.click();
+                    val = null;
+                }
+                if (val){
+                    avatar.attr('src', val);
+                }
+            },
+
+            avatarUploaded:function(file){
+                var avatar = $('#user-avatar').find('img');
+                var select = $('select[name="user.avatar"]');
+                avatar.attr('src', $.icescrum.o.baseUrl+'user/avatar/'+ $.icescrum.user.id+'?nocache='+new Date().getTime());
+                select.val("custom");
+                select.trigger("change");
+            },
+
+            updateSuccess:function(data){
+                //todo do something
                 return true;
             },
 
