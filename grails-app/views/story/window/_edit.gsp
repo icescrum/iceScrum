@@ -14,6 +14,10 @@
                    data-status-toggle="fa-star"
                    data-status-title="followers"><i class="fa fa-star-o"></i></a> ** story.name ** <small>**# if (story.origin) { ** ${message(code:'is.story.origin')}: ** story.origin ** **# } **</small>
                 <div class="pull-right">
+                    <span data-toggle="tooltip"
+                          title="** $.icescrum.user.formatters.fullName(story.creator) **">
+                            <img src="** $.icescrum.user.formatters.avatar(story.creator) **" alt="** $.icescrum.user.formatters.fullName(story.creator) **" height="21px"/>
+                    </span>
                     <span class="label label-default"
                           data-toggle="tooltip"
                           title="${message(code:'is.backlogelement.id')}">** story.uid **</span>

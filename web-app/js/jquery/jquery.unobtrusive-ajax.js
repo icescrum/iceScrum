@@ -782,7 +782,6 @@ function attachOnDomUpdate(content){
         }
         //override when iconClass
         $.each(['formatResult', 'formatSelection'], function(){
-            debugger;
             if (settings[this]){
                 settings[this] = getFunction(settings[this], ["object","container"]);
             }
