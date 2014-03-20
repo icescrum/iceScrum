@@ -37,6 +37,24 @@ Object.byString = function(o, s) {
     return o;
 };
 
+function propertiesUpdated(prev, now) {
+    var changes = [];
+    for (var prop in now) {
+        if (!_.contains(['version', 'lastUpdated'], prop)){
+            if (!prev || prev[prop] !== now[prop]) {
+                if (typeof now[prop] == "object") {
+                    var c = propertiesUpdated(prev[prop], now[prop]);
+                    if (! _.isEmpty(c) )
+                        changes.push(prop);
+                } else {
+                    changes.push(prop);
+                }
+            }
+        }
+    }
+    return changes;
+}
+
 (function($) {
     _.templateSettings = {
         evaluate:    /\*\*#([\s\S]+?)\*\*/g,
@@ -67,7 +85,8 @@ Object.byString = function(o, s) {
                         }
                     });
                 });
-                _.observe($.icescrum[type].data, 'update', function(item, index) {
+                _.observe($.icescrum[type].data, 'update', function(item, old_item, index) {
+                    var properties = propertiesUpdated(item, old_item);
                     _.each($.icescrum[type].bindings, function(settings){
                         if (settings.watch == 'items'){
                             $.icescrum.object.viewBinding.update.apply(settings,[type, item, index]);

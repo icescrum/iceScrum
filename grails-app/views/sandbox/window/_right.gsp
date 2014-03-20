@@ -33,17 +33,18 @@
                     <span class="glyphicon glyphicon-th"></span>
                 </button>
                 <div class="btn-group" data-toggle="tooltip" data-ui-tooltip-container="body" title="${message(code:'todo.is.ui.sort')}">
-                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-container="body">
                         <span id="sort">Date</span>
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu"
+                        role="menu"
                         data-ui-dropdown
                         data-ui-dropdown-change-value="true"
                         data-ui-dropdown-clickbsdropdown="$.icescrum.story.sortAndOrderOnSandbox">
-                        <li><a data-value="dateCreated">Date</a></li>
-                        <li><a data-value="type">Type</a></li>
-                        <li><a data-value="feature.id">Feature</a></li>
+                        <li role="menuitem"><a data-value="dateCreated">Date</a></li>
+                        <li role="menuitem"><a data-value="type">Type</a></li>
+                        <li role="menuitem"><a data-value="feature.id">Feature</a></li>
                     </ul>
                 </div>
                 <button type="button"
@@ -59,9 +60,10 @@
                 <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu"
+                    role="menu">
                     <g:each in="${is.exportFormats()}" var="format">
-                        <li>
+                        <li role="menuitem">
                             <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
                         </li>
                     </g:each>
@@ -110,13 +112,3 @@
         </div>
     </div>
 </nav>
-<div data-binding
-     data-binding-container="#view-properties h3:first > a"
-     data-binding-type="story"
-     data-binding-watch="array"
-     data-binding-selector="span"
-     data-binding-tpl="tpl-sandbox">
-</div>
-<script type="text/icescrum-template" id="tpl-sandbox">
-    <span>&nbsp;(** _.size( _.where(list,{ state: $.icescrum.story.STATE_SUGGESTED }) ) ** ${message(code:'is.ui.story.stories')})</span>
-</script>

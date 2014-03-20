@@ -109,13 +109,14 @@ grails.mail.props = ["mail.smtp.auth":"true",
 /*
   Push section
  */
+//remove total*
 icescrum.marshaller = [
         product: [exclude:['cliches']],
         actor:[include:['totalAttachments', 'tags']],
         task:[include:['totalAttachments','totalComments','tags'], includeShort:['sprint']],
         feature:[include:['totalAttachments','countDoneStories','state','effort','tags'],
                  asShort:['color', 'name']],
-        story:[include:['totalAttachments','totalComments','tasks', 'testState', 'tags', 'attachments', 'dependences'],
+        story:[include:['tasks', 'testState', 'tags', 'attachments', 'dependences'],
                asShort:['state', 'effort','uid', 'name']],
         sprint:[include:['activable','totalRemaining'],
                 exclude:['cliches'],
@@ -132,7 +133,7 @@ icescrum.marshaller = [
 
 icescrum.restMarshaller = [
         //global exclude
-        exclude:['dateCreated','totalAttachments','totalComments'],
+        exclude:['dateCreated'],
         story:[exclude:['backlog','value'], include: ['tags', 'dependences', 'testState','comments']],
         feature: [exclude: ['parentDomain','backlog'],include: ['tags']],
         actor: [exclude: ['backlog'],include: ['tags']],
@@ -221,10 +222,10 @@ grails.views.javascript.library = 'jquery'
 
 environments {
     development {
+        grails.resources.mappers.googleclosurecompiler.disable = true
         icescrum.debug.enable = true
         grails.entryPoints.debug = false
         grails.tomcat.nio = true
-        //grails.resources.debug=true
     }
     test {
         icescrum.debug.enable = true
@@ -329,8 +330,6 @@ log4j = {
     off 'org.codehaus.groovy.grails.web.converters.JSONParsingParameterCreationListener'
     off 'org.codehaus.groovy.grails.web.converters.XMLParsingParameterCreationListener'
 }
-
-grails.resources.mappers.googleclosurecompiler.disable = true
 
 modulesResources = []
 

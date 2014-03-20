@@ -50,6 +50,12 @@ class StoryController {
     def springSecurityService
     def securityService
 
+    @Secured('inProduct()')
+    def show = {
+        redirect(action:'index', controller: controllerName, params:params)
+    }
+
+    //TODO delete
     def index = {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
         withStory(id, params.uid?true:false) { Story story ->
@@ -149,7 +155,6 @@ class StoryController {
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def update = {
-
         withStories{ List<Story> stories ->
 
             if (!params.story){
@@ -243,11 +248,6 @@ class StoryController {
                 xml { render(status: 204) }
             }
         }
-    }
-
-    @Secured('inProduct()')
-    def show = {
-        redirect(action:'index', controller: controllerName, params:params)
     }
 
     @Secured('stakeHolder() or inProduct()')
@@ -376,21 +376,18 @@ class StoryController {
         }
     }
 
-    def summaryPanel = {
+    @Secured('isAuthenticated()')
+    def activities = {
         withStory { Story story ->
-            def summary = story.comments +
-                    story.getActivities().findAll{it.code != 'comment'} +
-                    story.tasks*.getActivities().flatten().findAll{it.code != 'comment'} +
-                    story.acceptanceTests*.getActivities().flatten()
-            render template: "/backlogElement/summary",
-                    model: [summary: summary.sort { it.dateCreated },
-                            backlogElement: story,
-                            product: Product.get(params.long('product'))
-                    ]
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: story.activity as JSON) }
+                json { renderRESTJSON(text:story.activities) }
+                xml  { renderRESTXML(text:story.activities) }
+            }
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('isAuthenticated() and !archivedProduct()')
     def like = {
         withStory { Story story ->
             try {
@@ -418,7 +415,7 @@ class StoryController {
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('isAuthenticated() and !archivedProduct()')
     def follow = {
         withStory { Story story ->
             try {
@@ -470,6 +467,7 @@ class StoryController {
         }
     }
 
+    //TODO replace with real action to save template
     def templateEntries = {
         if (params.template){
             render text:templates[params.template] as JSON, contentType: 'application/json', status:200

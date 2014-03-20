@@ -69,7 +69,6 @@
                     <span class="table-attachment"
                           title="${message(code: 'is.postit.attachment', args: [attachment, attachment > 1 ? 's' : ''])}"></span>
                 </g:if>
-                <g:set var="testCount" value="${story.countAcceptanceTests()}"/>
                 <g:if test="${testCount > 0}">
                     <g:set var="testCountByStateLabel" value="${story.countTestsByState().collect({ k, v -> message(code: k.toString()) + ': ' + v}).join(' / ')}" />
                     <span class="story-icon-acceptance-test icon-acceptance-test${story.testState}"

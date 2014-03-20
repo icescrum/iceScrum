@@ -39,7 +39,6 @@
            stateText="${story.state > Story.STATE_SUGGESTED ? is.bundle(bundle:'storyStates',value:story.state) : ''}"
            editableEstimation="${tMOrSm && story.state != Story.STATE_DONE}"
            sortable="[disabled:!sortable]"
-           testCount="${story.countAcceptanceTests()}"
            testState="${story.testState}"
            testCountByStateLabel="${story.countTestsByState().collect({ k, v -> message(code: k.toString()) + ': ' + v}).join(' / ')}"
            comment="${story.totalComments >= 0 ? story.totalComments : ''}">

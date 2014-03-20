@@ -113,7 +113,6 @@
                     <entry:point id="${controllerName}-${actionName}-tab-button" model="[tab:params.tab]"/>
                 </is:panelTabButton>
                 <div id="panel-tab-contents-1" class="panel-tab-contents">
-                    <g:include  action="summaryPanel" controller="story" params="[product:params.product, id:story.id]"/>
                     <g:render template="window/tasks" model="[story:story]"/>
                     <g:render template="window/tests" model="[story:story, user:user]"/>
                     <g:render template="/comment/comments" model="[commentable:story, product:story.backlog]"/>

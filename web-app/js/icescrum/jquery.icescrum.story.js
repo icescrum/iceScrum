@@ -56,6 +56,7 @@
             termDuplicate:null,
             data:[],
             bindings:[],
+            restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'story/'; },
             config: {
                 sandbox: {
                     filter: function(item){ return item.state == this.STATE_SUGGESTED },
@@ -86,13 +87,9 @@
                     }
                 }
             },
-
-            restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'story/'; },
-
             'delete':function(data, status, xhr, element){
                 _.each(element.data('ajaxData').id, function(item){ $.icescrum.object.removeFromArray('story', {id:item}); });
             },
-
             onDropFeature:function(event, ui){
                 if (ui.helper){
                     $.post($.icescrum.story.restUrl()+'update/'+$(this).data('elemid'), { 'story.feature.id':ui.helper.data('elemid') },
@@ -111,7 +108,6 @@
                     );
                 }
             },
-
             onSelectableStop:function(event, ui){
                 var selectable = $('.window-content.ui-selectable');
                 var container = $('#contextual-properties');
@@ -138,7 +134,6 @@
                 }
                 attachOnDomUpdate(container);
             },
-
             createForm:function(template, container){
                 container = container ? container : $('#contextual-properties');
                 var el;
@@ -154,7 +149,6 @@
                 attachOnDomUpdate(container);
                 container.find('input:first:visible').focus();
             },
-
             afterSave:function(data){
                 var selectable = $('.window-content.ui-selectable');
                 selectable.find('div[data-elemid="'+data.id+'"]').addClass('ui-selected');
@@ -163,7 +157,6 @@
                     stop({target:selectable});
                 }
             },
-
             findDuplicate:function(term) {
                 if (term == null || term.length <= 5) {
                     this.termDuplicate = null;
@@ -180,7 +173,6 @@
                     }, 500);
                 }
             },
-
             sortAndOrderOnSandbox:function(order){
                 var $sandbox = $('#backlog-layout-window-sandbox');
                 var ids = [];
@@ -209,7 +201,6 @@
                     }
                 });
             },
-
             formatSelect:function(object, container){
                 var type = parseInt(object.id);
                 var icon = '';
@@ -252,84 +243,6 @@
 
             //TODO remove at and of refactoring
             templates:{
-                sandbox:{
-                    selector:'div.postit-story',
-                    id:'postit-story-sandbox-tmpl',
-                    view:'#backlog-layout-window-sandbox',
-                    remove:function(tmpl) {
-                        var story =  $(tmpl.view+' .postit-story[data-elemid=' + this.id + ']');
-                        this.rank = story.index() + 1;
-                        this.selected = story.hasClass('ui-selected');
-                        story.remove();
-                        $('#stories-sandbox-size').html($(tmpl.view+' .postit-story, '+tmpl.view+' .table-line').size());
-                    },
-                    constraintTmpl:function() {
-                        return this.state == $.icescrum.story.STATE_SUGGESTED;
-                    },
-                    window:'#window-content-sandbox',
-                    afterTmpl:function(tmpl, container, newObject) {
-                        if (this.rank){
-                            $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                        }
-                        $('#stories-sandbox-size').html($(tmpl.view+' .postit-story, '+tmpl.view+' .table-line').size());
-                    }
-                },
-                sandboxRight: {
-                    selector:"#right-story-properties",
-                    id:"right-story-sandbox-tmpl",
-                    view:"#right-story-container",
-                    noblank:true,
-                    select:function(template) {
-                        var tmpl = $.icescrum.story.templates[template];
-                        var view = $(tmpl.view);
-                        var existing = $(tmpl.selector, view);
-                        if (existing.length > 0) {
-                            $.icescrum.story.remove.apply(this, [template]);
-                        }
-                        var newStory = $('#right-story-new', view);
-                        $('input', newStory).val('');
-                        newStory.hide();
-                        $.icescrum.story.add.apply(this, [template]);
-                        $("#contextual-properties.ui-accordion[data-accordion=true]").accordion("option", "active", 0);
-                    },
-                    unselect:function(template) {
-                        $.icescrum.story.remove.apply(this, [template]);
-                    },
-                    remove:function(tmpl) {
-                        var view = $(tmpl.view);
-                        $(tmpl.selector, view).remove();
-                        $('#right-story-new', view).show();
-                    },
-                    update:function(template) {
-                        var tmpl = $.icescrum.story.templates[template];
-                        var alreadyPresent = $(tmpl.selector + '[data-elemid=' + this.id + ']');
-                        if (alreadyPresent.length > 0) {
-                            $.icescrum.story.remove.apply(this, [template]);
-                            $.icescrum.story.add.apply(this, [template]);
-                        }
-                    }
-                },
-                sandboxWidget:{
-                    selector:'li.postit-row-story',
-                    id:'postit-row-story-sandbox-tmpl',
-                    view:'#backlog-layout-widget-sandbox',
-                    constraintTmpl:function() {
-                        return this.state == $.icescrum.story.STATE_SUGGESTED;
-                    },
-                    remove:function(tmpl) {
-                        $(tmpl.view+' .postit-row-story[data-elemid=' + this.id + ']:visible').remove();
-                        if ($(tmpl.selector+':visible', $(tmpl.view)).length == 0) {
-                            $(tmpl.view).hide();
-                            $(tmpl.window + ' .box-blank').show();
-                        }
-                    },
-                    afterTmpl:function(tmpl, container, newObject){
-                        if (this.dependsOn){
-                            newObject.attr('data-dependsOn',this.dependsOn.id);
-                        }
-                    },
-                    window:'#widget-content-sandbox'
-                },
                 backlogWindow:{
                     selector:function() {
                         return $.icescrum.getDefaultView() == 'postitsView' ? 'div.postit-story' : 'tr.table-line';
@@ -369,27 +282,6 @@
                             $(tmpl.view).updateTableSorter();
                         }
                     }
-                },
-                backlogWidget:{
-                    selector:'li.postit-row-story',
-                    id:'postit-row-story-backlog-tmpl',
-                    view:'#backlog-layout-widget-backlog',
-                    constraintTmpl:function() {
-                        return this.state == $.icescrum.story.STATE_ESTIMATED;
-                    },
-                    remove:function(tmpl) {
-                        $(tmpl.view+' .postit-row-story[data-elemid=' + this.id + ']:visible').remove();
-                        if ($(tmpl.selector+':visible', $(tmpl.view)).length == 0) {
-                            $(tmpl.view).hide();
-                            $(tmpl.window + ' .box-blank').show();
-                        }
-                    },
-                    afterTmpl:function(tmpl, container, newObject){
-                        if (this.dependsOn){
-                            newObject.attr('data-dependsOn',this.dependsOn.id);
-                        }
-                    },
-                    window:'#widget-content-backlog'
                 },
                 releasePlan:{
                     selector:'div.postit-story',
@@ -438,57 +330,6 @@
                         $.event.trigger('sprintMesure_sprint', this.parentSprint);
                     }
                 }
-            },
-
-            add:function(template, append) {
-                $(this).each(function() {
-                    $.icescrum.story.manageDependencies.apply(this);
-                    $.icescrum.addOrUpdate(this, $.icescrum.story.templates[template], $.icescrum.story._postRendering, append);
-                });
-            },
-
-            update:function(template, append) {
-                $(this).each(function() {
-                    $.icescrum.story.manageDependencies.apply(this);
-                    $.icescrum.story.remove.apply(this, [template, true]);
-                    $.icescrum.story.add.apply(this, [template, append]);
-                });
-            },
-
-            remove:function(template, notFull) {
-                var tmpl;
-                tmpl = $.extend(tmpl, $.icescrum.story.templates[template]);
-                tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(this) : tmpl.selector;
-                tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
-                $(this).each(function() {
-                    tmpl.remove.apply(this,[tmpl]);
-                });
-                if (!tmpl.noblank) {
-                    if ($(tmpl.selector, $(tmpl.view)).length == 0) {
-                        $(tmpl.view).hide();
-                        $(tmpl.window + ' .box-blank').show();
-                    }
-                }
-                if (!notFull){
-                    $(this).each(function() {
-                        $('.dependsOn[data-elemid=' + this.id + ']').remove();
-                        $('[data-dependsOn=' + this.id + ']').removeData('dependson').prop('data-dependsOn', false);
-                    });
-                }
-            },
-
-            accept:function(template) {
-                $(this.id).each(function() {
-                    $.icescrum.story.remove.apply({id:this,state:$.icescrum.story.STATE_SUGGESTED}, [template, true]);
-                });
-                var data = this.objects ? this.objects : this;
-                var type = this.objects ? this.objects[0]['class'].toLowerCase() : this['class'].toLowerCase();
-                jQuery.event.trigger('add_' + type, [data]);
-            },
-
-            returnToSandbox:function(template) {
-                var data = this.objects ? this.objects : this;
-                jQuery.event.trigger('update_story', [data]);
             },
 
             manageDependencies:function(){
@@ -614,13 +455,6 @@
                 }
             },
 
-            backlogTitleDetails:function(){
-                var effort = 0, size = 0;
-                var stories = $.icescrum.getDefaultView() == 'postitsView' ? $('div.postit-story .mini-value') : $('tr.table-line .table-cell-selectui-effort');
-                stories.each(function() { size += 1; if ($(this).text() != '?') effort += Number($(this).text());});
-                $('#window-title-bar-backlog').find('.content .details').html(' - <span id="stories-backlog-size">'+size+'</span> '+$.icescrum.story.i18n.stories+' / <span id="stories-backlog-effort">'+effort+'</span> '+$.icescrum.story.i18n.points);
-            },
-
             checkDependsOnPostitsView:function(ui){
                 var container = ui.placeholder.parent();
                 var currentIndex = ui.placeholder.index();
@@ -656,13 +490,6 @@
                 }else{
                     ui.placeholder.removeClass('dependsOn');
                     ui.placeholder.html("");
-                }
-            },
-
-            updateRank:function(params, data, container){
-                if(data.story.rank != params["story.rank"]){
-                    jQuery.icescrum.postit.updatePosition("div.postit-story", jQuery(".postit-story[data-elemid="+data.story.id+"]"), data.story.rank, jQuery(container));
-                    jQuery.icescrum.renderNotice(data.message)
                 }
             }
         }

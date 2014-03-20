@@ -197,7 +197,7 @@ class FeatureController {
         render template: "window/right", model: [exportFormats: getExportFormats()]
     }
 
-    //@Cacheable(cache = "featuresCache", keyGenerator= 'featuresKeyGenerator')
+    @Cacheable(cache = "featuresCache", keyGenerator= 'featuresKeyGenerator')
     def featureEntries = {
         withProduct { product ->
             def featureEntries = product.features.collect { [id: it.id, text: it.name, color:it.color] }

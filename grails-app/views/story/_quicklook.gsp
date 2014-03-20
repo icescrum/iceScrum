@@ -136,7 +136,6 @@
         </div>
 
         <div class="col2">
-            <g:set var="testCount" value="${story.countAcceptanceTests()}"/>
             <is:postit title="${story.name}"
                        id="${story.id}"
                        miniId="${story.uid}"

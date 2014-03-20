@@ -41,7 +41,7 @@
                     return user.firstName+' '+user.lastName;
                 },
                 avatar:function(user){
-                    return $.icescrum.o.baseUrl+'user/avatar/'+ $.icescrum.user.id+'?nocache='+new Date().getTime();
+                    return $.icescrum.o.baseUrl+'user/avatar/'+ $.icescrum.user.id;
                 }
             },
 

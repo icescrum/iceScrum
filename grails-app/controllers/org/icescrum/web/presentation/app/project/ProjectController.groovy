@@ -348,7 +348,7 @@ class ProjectController {
         }
     }
 
-    //@Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
+    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
     def productBurnupChart = {
         params.modal = params.boolean('modal')
         withProduct{ Product product ->
