@@ -189,7 +189,7 @@ class StoryController {
                 if (params.story.state != null) {
                     props.state = params.story.state instanceof Number ? params.story.state : params.story.state.toInteger()
                 }
-                if (params.story.effort != null && request.inProduct) {
+                if (params.story.effort != null) {
                     if (params.story.effort instanceof String) {
                         def effort = params.story.effort.replaceAll(',', '.')
                         props.effort = effort.isBigDecimal() ? effort.toBigDecimal() : effort // can be a "?"
