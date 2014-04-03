@@ -243,7 +243,7 @@ class UserController {
     def retrieve = {
 
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'todo.is.login.retrieve.not.activated')]] as JSON)
+            returnError(text:message(code: 'todo.is.login.retrieve.not.activated'))
             return
         }
 
@@ -254,7 +254,7 @@ class UserController {
             def user = User.findWhere(username:params.text)
             if (!user || !user.enabled || user.accountExternal) {
                 def code = !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.dialog.login.error.disabled' : 'is.user.error.externalAccount')
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: code)]] as JSON)
+                returnError(text:message(code: code))
             }
             else
             {
@@ -264,17 +264,14 @@ class UserController {
                         render(status: 200, contentType: 'application/json', text: [text: message(code: 'is.dialog.retrieve.success', args: [user.email])] as JSON)
                     } catch (MailException e) {
                         status.setRollbackOnly()
-                        if (log.debugEnabled) e.printStackTrace()
-                        render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+                        returnError(text:message(code: 'is.mail.error'), exception:e)
                         return
                     } catch (RuntimeException re) {
-                        if (log.debugEnabled) re.printStackTrace()
-                        render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: re.getMessage())]] as JSON)
+                        returnError(text:re.getMessage(), exception:re)
                         return
                     } catch (Exception e) {
                         status.setRollbackOnly()
-                        if (log.debugEnabled) e.printStackTrace()
-                        render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+                        returnError(text:message(code: 'is.mail.error'), exception:e)
                         return
                     }
                 }
@@ -299,7 +296,7 @@ class UserController {
     @Secured('isAuthenticated()')
     def menuBar = {
         if (!params.id && !params.position) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.preferences.error.menuBar')]] as JSON)
+            returnError(text:message(code: 'is.user.preferences.error.menuBar'))
             return
         }
         String id = "${params.id}".split("_")[1]
@@ -308,8 +305,7 @@ class UserController {
             userService.menuBar(springSecurityService.currentUser, id, position, params.boolean('hidden') ?: false)
             render(status: 200)
         } catch (RuntimeException e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.user.preferences.error.menuBar')]] as JSON)
+            returnError(text:message(code: 'is.user.preferences.error.menuBar'), exception:e)
         }
     }
 

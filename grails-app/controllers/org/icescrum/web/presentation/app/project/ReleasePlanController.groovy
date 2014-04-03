@@ -82,7 +82,7 @@ class ReleasePlanController {
             release = Release.getInProduct(params.long('product'),params.long('id')).list()
         }
         if (!release || !(release instanceof Release)) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
         def sprints = release?.sprints?.asList()
@@ -161,8 +161,8 @@ class ReleasePlanController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def autoPlan = {
         if (!params.id) {
-            def msg = message(code: 'is.release.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            def msg =
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
         if (!params.capacity) {
@@ -177,14 +177,13 @@ class ReleasePlanController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def add = {
         if (!params.id) {
-            def msg = message(code: 'is.release.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
         def release = Release.getInProduct(params.long('product'),params.long('id')).list()
 
         if (!release) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.release.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.release.error.not.exist'))
             return
         }
 
@@ -201,14 +200,13 @@ class ReleasePlanController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def edit = {
         if (!params.subid) {
-            def msg = message(code: 'is.sprint.error.not.exist')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
         def sprint = Sprint.getInProduct(params.long('product'),params.long('subid')).list()
 
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
 

@@ -59,7 +59,7 @@
                         ui.item.attr('data-hidden',true);
                     }
                     $.post($.icescrum.o.baseUrl+'user/menuBar',{id:ui.item.attr('id'), position:position + 1, hidden: hidden}).fail(function(){
-                        sortable.sortable('cancel');
+                        $menu.find('> ul:first').sortable('cancel');
                     });
                 }
             },

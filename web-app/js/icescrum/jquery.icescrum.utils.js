@@ -291,10 +291,29 @@
                             });
                         });
                     } else {
-                        $('.alert.alert-danger', settings.container).html(errors.error).show();
+                        var $alert = $('.alert.alert-danger', settings.container);
+                        if ($alert.size() == 1){
+                            $alert.html(errors.error).show();
+                        }
+                        $.icescrum.addModal($.template('modal-alert', {title:'Error', body:errors.error}));
                     }
                 }else if(xhr.status == 500){
-                    $.icescrum.dialogError(xhr);
+                    var text;
+                    if (xhr.status) {
+                        var ct = xhr.getResponseHeader("content-type") || "";
+                        if (ct.indexOf('json') > -1) {
+                            text = $.parseJSON(xhr.responseText);
+                            if (text.error != undefined) {
+                                $.icescrum.renderNotice(text.error, 'error');
+                                return;
+                            }
+                        } else {
+                            text = this.htmlDecode(xhr.responseText);
+                        }
+                    } else {
+                        text = xhr;
+                    }
+                    $.icescrum.addModal($.template('report-error', {text:text}));
                 }
             });
 
@@ -364,6 +383,7 @@
             }
         },
 
+        //todo maybe remove
         renderNotice:function(text, type, title) {
             var timeout = 7000;
             var titleP = "";
@@ -437,7 +457,7 @@
                 title = title.indexOf('(') > 0 ? title.substring(0, title.indexOf('(')) : title;
                 shortcuts.push({title:title, key:shortcut.data('isShortcutKey').split(' ')});
             });
-            var modal = $.template('tpl-list-shortcuts', {shortcuts:shortcuts});
+            var modal = $.template('shortcuts-list', {shortcuts:shortcuts});
             $.icescrum.addModal(modal);
         },
 

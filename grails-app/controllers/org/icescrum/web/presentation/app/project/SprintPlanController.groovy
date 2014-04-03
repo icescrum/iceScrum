@@ -96,7 +96,7 @@ class SprintPlanController {
             sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
 
@@ -214,7 +214,7 @@ class SprintPlanController {
     def add = {
         Sprint sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
         def stories = sprint ? Story.findAllByParentSprintAndStateLessThanEquals(sprint, Story.STATE_INPROGRESS, [sort: 'rank']) : []
@@ -294,7 +294,7 @@ class SprintPlanController {
                 }
                 sprint.doneDefinition = previous.doneDefinition
             } else {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.doneDefinition.no.previous')]] as JSON)
+                returnError(text:message(code: 'is.sprint.error.doneDefinition.no.previous'))
             }
             sprintService.updateDoneDefinition(sprint)
             redirect(action: 'doneDefinition', params: [product: params.product, id: sprint.id])
@@ -319,7 +319,7 @@ class SprintPlanController {
                 }
                 sprint.retrospective = previous.retrospective
             } else {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.retrospective.no.previous')]] as JSON)
+                returnError(text:message(code: 'is.sprint.error.retrospective.no.previous'))
             }
             sprintService.updateRetrospective(sprint)
             redirect(action: 'retrospective', params: [product: params.product, id: sprint.id])
@@ -426,8 +426,7 @@ class SprintPlanController {
 
     def changeFilterTasks = {
         if (!params.filter || !(params.filter in ['allTasks', 'myTasks', 'freeTasks', 'blockedTasks'])) {
-            def msg = message(code: 'is.user.preferences.error.not.filter')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            returnError(text:message(code: 'is.user.preferences.error.not.filter'))
             return
         }
         User user = (User) springSecurityService.currentUser
@@ -460,7 +459,7 @@ class SprintPlanController {
         def chart = null
 
         if (!sprint) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.sprint.error.not.exist')]] as JSON)
+            returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
         }
 

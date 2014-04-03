@@ -97,8 +97,7 @@ class MembersController {
             }
             render (status:200)
         }catch(RuntimeException re){
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.saved')]] as JSON)
+            returnError(text:message(code: 'is.team.error.not.saved', exception:re))
         }
     }
 
@@ -114,8 +113,7 @@ class MembersController {
             productService.removeAllRoles(product,team,u, false)
             render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
         } catch (e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
+            returnError(object:team, exception:e)
         }
     }
 }

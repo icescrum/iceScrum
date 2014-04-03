@@ -43,7 +43,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             cancelFormConfirmMessage:'Do you want to quit this form?',
             more:'more',
             uploading:'',
-            dialogErrorContent:null,
             openWindow:false,
             locale:'en',
             isPro:false,

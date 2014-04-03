@@ -81,7 +81,7 @@ class ScrumOSController {
         }
 
         if (!params.window) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.widget')]] as JSON)
+            returnError(text:message(code: 'is.error.no.widget'))
             return
         }
 
@@ -125,7 +125,7 @@ class ScrumOSController {
     def openWindow = {
 
         if (!params.window) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window')]] as JSON)
+            returnError(text:message(code: 'is.error.no.window'))
             return
         }
 
@@ -213,22 +213,23 @@ class ScrumOSController {
                     to: grailsApplication.config.icescrum.alerts.errors.to,
                     subject: "[iceScrum][report] Rapport d'erreur",
                     view: '/emails-templates/reportError',
-                    model: [error: params.stackError,
-                            comment: params.comments,
+                    model: [error: params.report.stack,
+                            comment: params.report.comment,
                             appID: grailsApplication.config.icescrum.appID,
                             ip: request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
                             date: g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
                             version: g.meta(name: 'app.version')]
             ]);
-            render(status: 200, contentType: 'application/json', text: [notice: [text: message(code: 'is.blame.sended'), type: 'notice']] as JSON)
+            //render(status: 200, contentType: 'application/json', text:message(code: 'is.blame.sended') as JSON)
+            render(status: 200)
         } catch (MailException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+            returnError(text:message(code: 'is.mail.error'), exception:e)
             return
         } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: re.getMessage())]] as JSON)
+            returnError(text:message(code: re.getMessage()), exception:re)
             return
         } catch (Exception e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+            returnError(text:message(code: 'is.mail.error'), exception:e)
             return
         }
     }
