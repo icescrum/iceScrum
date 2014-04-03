@@ -23,7 +23,7 @@
 --}%
 <is:modal name="profile"
           title="${message(code:'todo.is.dialog.profile')}"
-          form="[action:createLink(action:'update',id:user.id,mapping:'default'),method:'POST',success:'$.icescrum.user.updateSuccess',submit:message(code:'is.button.update')]">
+          form="[action:createLink(id:user.id),method:'POST',success:'$.icescrum.user.updateSuccess',submit:message(code:'is.button.update')]">
         <ul class="nav nav-pills nav-justified">
             <li><a href="#profile-tab" data-toggle="tab">${message(code: 'todo.is.dialog.profile.general.title')}</a></li>
             <g:if test="${projects}">

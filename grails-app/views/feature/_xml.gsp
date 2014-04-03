@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,7 +18,8 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
---}%<is:objectAsXML object="${object}" node="feature" indentLevel="${indentLevel}" root="${root}">
+--}%
+<is:objectAsXML object="${object}" node="feature" indentLevel="${indentLevel}" root="${root}">
     <is:propertyAsXML name="['color','value','type','rank','creationDate']"/>
     <is:propertyAsXML name="['name','notes','description','tags']" cdata="true"/>
     <is:listAsXML
@@ -29,7 +30,7 @@
             indentLevel="${indentLevel + 1}"/>
     <is:listAsXML
             name="attachments"
-            template="/addons/attachmentXml"
+            template="/attachment/xml"
             child="attachment"
             deep="${deep}"
             indentLevel="${indentLevel + 1}"/>

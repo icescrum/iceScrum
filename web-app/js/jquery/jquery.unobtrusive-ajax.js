@@ -214,11 +214,7 @@ function ajaxRequest(element, options) {
             url:  a.attr('action'),
             type: a.attr('method'),
             data: a.serialize(),
-            global:false,
-            error:function(xhr){
-                var error = $.parseJSON(xhr.responseText);
-                $error.html(error.notice.text).show();
-            }
+            container:a
         });
         return false;
     });
@@ -254,6 +250,12 @@ function ajaxRequest(element, options) {
     $(document).on('click','button.save-chart',function(){
         var $chart = $('.modal-xxl .chart-container');
         $.download($.icescrum.o.baseUrl+'saveImage', {image:$chart.toImage(),title:$chart.attr('title')});
+    });
+
+    $(document).on('click', 'a.edit-comment', function(){
+        var $this = $(this);
+        $.icescrum.comment.edit($this.data());
+        return false;
     });
 
     //todo remove ?
@@ -400,6 +402,7 @@ function ajaxRequest(element, options) {
                 }
             }
         });
+
     } else {
 
         $(window).on('load', function() {
@@ -476,15 +479,15 @@ function attachOnDomUpdate(content){
         }
         $this.on('click', function(){
             var $container = settings.container ? $(settings.container) : $(document.body);
-            var $scrollTo = settings.tabs ? $('a[href=#'+settings.id+']') : $('#'+settings.id);
+            var $scrollTo = settings.tabs ? $('.tab-content > #'+settings.id, $container) : $('#'+settings.id);
             if (settings.tabs){
-                $scrollTo.tab('show');
+                $('a[href=#'+settings.id+']', $container).tab('show');
             }
             $container.animate({ scrollTop: $scrollTo.offset().top - $container.offset().top + $container.scrollTop() - settings.offset});
         });
     });
 
-    $('[data-status]', content).each(function(){
+    $('[data-status-toggle]', content).each(function(){
         var $this = $(this);
         var settings = $this.html5data('status');
 
@@ -522,6 +525,23 @@ function attachOnDomUpdate(content){
 
         updateFunction(null, true);
         $this.on('click', updateFunction);
+    });
+
+    $('[data-ui-toggle]', content).each(function(){
+        var $this = $(this);
+        var settings = $this.html5data('ui');
+        var buttonIcon = $this.find('.glyphicon');
+        $this.on('click', function(){
+            var $content = $('#'+settings.toggle);
+            if ($content.hasClass('hidden')){
+                $content.toggleClass('hidden');
+            } else {
+                $content.toggle();
+            }
+            buttonIcon.toggleClass('glyphicon-minus');
+            buttonIcon.toggleClass('glyphicon-plus');
+            return false;
+        });
     });
 
     $('time.timeago', content).timeago();
@@ -581,27 +601,34 @@ function attachOnDomUpdate(content){
         var settings = $.extend({
                 dictCancelUpload:'x',
                 dictRemoveFile:'x',
-                previewTemplate:'<p class="dz-preview dz-file-preview list-group-item"><a href="javascript:;" data-dz-href><span class="dz-filename" data-dz-name></span>&nbsp;-&nbsp;<span class="dz-size" data-dz-size></span></a><span class="dz-progress"><span class="progress"><span class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-dz-uploadprogress></span></span></span></p><li class="dz-error-message list-group-item"><span data-dz-errormessage></span></li>'
+                previewTemplate:'<div class="dz-preview dz-file-preview"><span class="td"><a href="javascript:;" data-dz-href><span class="dz-filename" data-dz-name></span>&nbsp;-&nbsp;<span class="dz-size" data-dz-size></span></a><span class="dz-progress"><span class="progress"><span class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-dz-uploadprogress></span></span></span></span></div>'
             },
             $this.html5data('dz')
         );
         var templating = function(file){
+            if ($(file.previewElement).is('div')){
+                var $tr = $('<tr class="dz-preview dz-file-preview"></tr>');
+                $(file.previewElement).find('a.dz-remove').wrap('<td></td>').parent().appendTo($tr);
+                $($('<td></td>').append($(file.previewElement).find('span.td').html())).prependTo($tr);
+                $tr = $(file.previewElement).replaceWithPush($tr);
+                file.previewElement = $tr[0];
+            }
             var link = file.previewElement.querySelector("[data-dz-href]");
             if(link){
                 if (file.provider){
-                    link.href = settings.url + '?attachment.id=' + file.id;
+                    link.href = settings.url + '/' + file.id;
                     link.target = '_blank';
                 } else {
-                    link.href = settings.url + '?attachment.id=' + file.id;
+                    link.href = settings.url + '/' + file.id;
                     $(link).on('click', function(){
-                        $.download(settings.url, {'attachment.id':file.id}, 'GET');
+                        $.download(link, {}, 'GET');
                         return false;
                     });
                 }
             }
             var removeLink = file.previewElement.querySelector("a.dz-remove");
             if (removeLink){
-                $(removeLink).addClass('pull-right').html('<span class="glyphicon glyphicon-remove"></span>');
+                $(removeLink).addClass('delete on-hover pull-right').html('<span class="fa fa-times text-danger"></span>');
             }
 
             var name = file.previewElement.querySelector("[data-dz-name]");
@@ -633,7 +660,7 @@ function attachOnDomUpdate(content){
                 if(file.id){
                     $.ajax({
                         type:'DELETE',
-                        url:settings.url+'?attachment.id='+file.id
+                        url:settings.url+'/'+file.id
                     });
                 }
             });
@@ -667,7 +694,7 @@ function attachOnDomUpdate(content){
 
     });
 
-    $('textarea[data-mkp]', content).each(function() {
+    $('textarea[data-mkp="true"]', content).each(function() {
         var $this = $(this);
         if ($this.data('mkp-init')){
             return;
@@ -679,77 +706,102 @@ function attachOnDomUpdate(content){
         }
         var enabled = $this.attr('readonly') ? false : true;
         var settings = $.extend({
-                resizeHandle:false
+                resizeHandle:false,
+                scrollContainer:'#right'
             },
             textileSettings,
             $this.html5data('mkp')
         );
 
-        var rawValue = $this.val() ? $this.val() : settings.placeholder;
-        var markitup = $this.markItUp(settings);
-        var editor = markitup.closest('.markItUpContainer');
-        var container = markitup.closest('.markItUp');
-        var preview = $('<div class="markitup-preview"></div>');
-        container.append(preview);
+        var $preview = $this.parent().find('.markitup-preview');
+        if ($preview.size() == 0){
+            $preview = $('<div class="markitup-preview" style="display:none;"></div>');
+            $preview.insertAfter($this);
+        }
+        var $footer = $this.parent().find('.markItUpFooter');
+        var rawValue = $this.val() ? $this.val() : '';
+        var $markitup = $this.markItUp(settings);
+        var $editor = $markitup.closest('.markItUpContainer');
+        var $container = $markitup.closest('.markItUp');
 
-        var updateText = function(rawValue){
-            if (rawValue){
-                preview.data('rawValue', rawValue);
-                $.post($.icescrum.o.baseUrl + 'textileParser', { data: rawValue, withoutHeader: true }, function(data) {
-                    preview.html(data);
-                }).complete(function(){
-                        $this.prop('readonly', false);
-                    });
+        if ($footer.size() > 0){
+            $footer = $('.markItUpFooter', $editor).replaceWithPush($footer);
+        } else {
+            $footer = $('.markItUpFooter', $editor);
+        }
+        $container.append($preview);
+        $preview.data('rawValue', rawValue);
+
+        var displayPreview = function(){
+            $editor.addClass('select2-offscreen');
+            if ($preview.html() == '' || $preview.html() == $this.attr('placeholder')){
+                $preview.addClass('placeholder');
+                $preview.html($this.attr('placeholder'));
+            } else {
+                $preview.removeClass('placeholder');
             }
-            editor.addClass('select2-offscreen');
-            preview.show();
+            $preview.show();
         };
+        displayPreview();
 
-        updateText(rawValue);
+        $this.on('hide.mkp', function(){
+            displayPreview();
+        });
 
         if(settings.height){
-            container.css('height',settings.height);
+            $container.css('height',settings.height);
         }
         if (enabled){
-
             var display = function(){
-                if (editor.hasClass('select2-offscreen')){
-                    markitup.val(preview.data('rawValue') != settings.placeholder ? preview.data('rawValue') : '');
-                    editor.removeClass('select2-offscreen');
-                    preview.hide();
+                if ($editor.hasClass('select2-offscreen')){
+                    $markitup.val($preview.data('rawValue') != '' ? $preview.data('rawValue') : '');
+                    $editor.removeClass('select2-offscreen');
+                    $preview.hide();
                     if(settings.height){
-                        markitup.css('height', settings.height - container.find('.markItUpHeader').height());
+                        $markitup.css('height', settings.height - $container.find('.markItUpHeader').height());
                     }
-                    markitup.focus();
+                    $markitup.focus();
+                    var $scrollContainer = $(settings.scrollContainer);
+                    $scrollContainer.animate({ scrollTop: $footer.offset().top - $scrollContainer.offset().top + $scrollContainer.scrollTop()});
                 }
             };
-
-            preview.on('click',display);
+            $preview.on('click',display);
             $this.on('focus',display);
-
             if (settings.change){
                 $this.on('blur keyup', function(event){
                     var data = { };
                     rawValue = $this.val();
                     if (event.type == 'keyup' && event.which == 27){
-                        updateText(null);
+                        $this.trigger('cancel.mkp');
+                        displayPreview();
                     }
                     if (event.type != 'keyup'){
-                        if (rawValue != preview.data('rawValue')){
+                        if ($editor.find('.dropdown-menu:visible').size() == 1){
+                            return;
+                        }
+                        if (rawValue != $preview.data('rawValue')){
                             var name = $this.attr('name');
                             data[name] = rawValue;
                             $this.attr('readonly','readonly');
                             $.post(settings.change, data, function(data){
                                 $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
                             }).fail(function(){
-                                    $this.val($this.data('rawValue'));
-                                    updateText(null);
-                                }).always(function(){
-                                    $this.prop('readonly', false);
-                                });
+                                $this.val($preview.data('rawValue'));
+                                displayPreview();
+                            }).always(function(){
+                                $this.prop('readonly', false);
+                            });
                         } else {
-                            updateText(null);
+                            displayPreview();
                         }
+                    }
+                });
+            } else {
+                $this.on('keyup', function(event) {
+                    if (event.type == 'keyup' && event.which == 27) {
+                        $this.trigger('cancel.mkp');
+                        $this.val('');
+                        displayPreview();
                     }
                 });
             }
@@ -955,49 +1007,52 @@ function attachOnDomUpdate(content){
         }
         var settings = $this.html5data('txt');
         var enabled = $this.attr('readonly') ? false : true;
+        var name = $this.attr('name');
+        var splitted = name.split('.');
 
         if (enabled && settings.change) {
             var changeFunction = function (event) {
-                var val = $this.val();
                 if (event.type == 'keyup' && event.which == 27){
                     $this.val($this.data('rawValue'));
                     $this.blur();
                     return;
                 }
                 if (event.type != 'keyup' || (event.type == 'keyup' && event.which == 13)){
+                    var val = $this.val();
                     if ((val == '' && $this.attr('required')) || (event.type == 'keypress' && event.which != 13)) {
                         return;
                     }
                     var data = {};
-                    var name = $this.attr('name');
                     data[name] = val;
                     if($this.data('rawValue') != data[name]){
+                        $this.data('rawValue', data[name]);
                         $this.attr('readonly');
                         $.post(settings.change, data, function(data) {
-                            $.icescrum.object.addOrUpdateToArray(name.split('.')[0],data);
+                            $.icescrum.object.addOrUpdateToArray(splitted[0],data);
                             if (settings.onSave){
                                 getFunction(settings.onSave, ["data"]).apply(this, [data]);
                             }
                         }, 'json').fail(function(){
                                     $this.val($this.data('rawValue'));
+                                    $this.data('rawValue', '');
                                 }).always(function(){
                                     $this.prop('readonly', false);
                                 });
                     }
                 }
             };
-            $this.on('focus', function(){
-                $this.data('rawValue', $this.val());
-            });
             if (settings.onlyReturn){
                 $this.on('keyup', null, 'return', changeFunction);
             } else {
+                $this.on('focus', function(){
+                    $this.data('rawValue', $this.val());
+                });
                 $this.on('blur keyup', changeFunction);
             }
         }
     });
 
-    $('div[data-fixed]', content).each(function(){
+    $('div[data-fixed-container]', content).each(function(){
         var $this = $(this);
         if ($this.data('data-fixed-init')){
             return;
@@ -1016,17 +1071,20 @@ function attachOnDomUpdate(content){
             }
             var scrollTop = container.scrollTop();
             if(manual || (initialTop - scrollTop <= 0 && !$this.hasClass('fixed'))){
+                $this.next().css('margin-top', $this.outerHeight());
                 $this.addClass('fixed')
                     .css('top', container.offset().top + (settings.offsetTop ?  settings.offsetTop : 0))
                     .css('width', $this.parent().outerWidth(true) + (settings.offsetWidth ?  settings.offsetWidth : 0))
                     .css('left', container.offset().left + (settings.offsetLeft ?  settings.offsetLeft : 0))
                     .css('position', 'fixed');
+                container
             } else if (initialTop - scrollTop > 0 && $this.hasClass('fixed')) {
                 $this.removeClass('fixed')
                     .css('top', '')
                     .css('width', '')
                     .css('left','')
                     .css('position', '');
+                $this.next().css('margin-top', '');
             }
         };
         container.on(id, fixedFunction);
@@ -1116,7 +1174,7 @@ function attachOnDomUpdate(content){
         $(this).off('click focus');
     });
 
-    $('div[data-ui-selectable]', content).each(function(){
+    $('div[data-ui-selectable-filter]', content).each(function(){
         var $this = $(this);
         if ($this.data('ui-selectable-init')){
             return;
@@ -1142,7 +1200,7 @@ function attachOnDomUpdate(content){
         $this.parent().selectableScroll(settings);
     });
 
-    $('[data-binding]', content).each(function(){
+    $('[data-binding-type]', content).each(function(){
         var $this = $(this);
         if ($this.data('binding-init')){
             return;
@@ -1151,14 +1209,14 @@ function attachOnDomUpdate(content){
         }
         var settings = $this.html5data('binding');
 
-        if (settings.afterBinding){
-            settings.afterBinding = getFunction(settings.afterBinding, ["settings"]);
+        if (settings.after){
+            settings.after = getFunction(settings.after, ["settings"]);
         }
 
         $.icescrum.object.dataBinding.apply(this,[settings]);
     });
 
-    $('[data-ui-droppable]', content).each(function(){
+    $('[data-ui-droppable-drop]', content).each(function(){
         var $this = $(this);
         if ($this.data('ui-droppable-init')){
             return;
@@ -1182,7 +1240,7 @@ function attachOnDomUpdate(content){
         });
     });
 
-    $('[data-ui-droppable2]', content).each(function(){
+    $('[data-ui-droppable2-drop]', content).each(function(){
         var $this = $(this);
         if ($this.data('ui-droppable2-init')){
             return;
@@ -1237,7 +1295,7 @@ function attachOnDomUpdate(content){
         });
     });
 
-    $('[data-ui-sortable]', content).each(function(){
+    $('[data-ui-sortable-handle]', content).each(function(){
         var $this = $(this);
         if ($this.data('ui-sortable-init')){
             return;
@@ -1433,6 +1491,11 @@ function attachOnDomUpdate(content){
         var settings = $.extend({height:49, moreText:'More'},$this.html5data('ui-tabs'));
         var $dropdown = $('<li><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">'+ settings.moreText +' <span class="caret"/></a><ul class="dropdown-menu"/></li>');
         $dropdown.appendTo($this);
+
+        $this.find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $(e.relatedTarget).parent().removeClass('active');
+        });
+
         var autocollapse = function() {
             var tabsHeight = $this.innerHeight();
             var $collapsed = $dropdown.find('> ul:first');
@@ -1465,7 +1528,7 @@ function attachOnDomUpdate(content){
         $(this).find('a:first').tab('show');
     });
 
-    $('ul[data-ui-dropdown]', content).each(function(){
+    $('ul[data-ui-dropdown-clickbsdropdown]', content).each(function(){
         var $this = $(this);
         var settings = $.extend({},$this.html5data('ui-dropdown'));
         $.each(['show.bs.dropdown','shown.bs.dropdown','hide.bs.dropdown','hidden.bs.dropdown', 'click.bs.dropdown'], function(){
@@ -1473,19 +1536,15 @@ function attachOnDomUpdate(content){
                 settings[this] = getFunction(settings[this.replace(/\./g,'')], ["e"]);
             }
         });
-
         $this.dropdown(settings);
-
-        if (settings['click.bs.dropdown']){
-            if (settings['changeValue']){
-                $this.find('> li > a').on('click', function(){
-                    var $value = $this.prev().find('span:first');
-                    $value.html($(this).text());
-                    $value.data('value', $(this).data('value'));
-                });
-            }
-            $this.find('> li > a').on('click', settings['click.bs.dropdown']);
+        if (settings['changeValue']){
+            $this.find('> li > a').on('click', function(){
+                var $value = $this.prev().find('span:first');
+                $value.html($(this).text());
+                $value.data('value', $(this).data('value'));
+            });
         }
+        $this.find('> li > a').on('click', settings['click.bs.dropdown']);
     });
 
     //TODO remove

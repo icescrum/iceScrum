@@ -131,7 +131,7 @@ class UtilsTagLib {
         assert attrs.bundle
         def val = [:]
         attrs.bundle.each {
-            val."${it.key}" = message(code: it.value)
+            val."${it.key}" = attrs.code ? [value:message(code: it.value), code:it.value.split(/\./).last()] : message(code: it.value)
         }
         out << "${val as JSON}"
     }

@@ -23,41 +23,12 @@
  */
 (function($) {
     $.extend($.icescrum, {
-        attachments: {
-            templates: {
-                toolbar: {
-                    selector: 'li.attachment-line',
-                    id: 'toolbar-line-attachment-tmpl',
-                    view: function() {
-                        return 'ul#' + this.attachmentable['class'] + '-attachments-' + this.attachmentable.id;
-                    }
-                }
-            },
-
-            replaceAll:function(template) {
-                var tmpl = $.icescrum.attachments.templates[template];
-                var view = $.isFunction(tmpl.view) ? tmpl.view.apply(this) : tmpl.view;
-                var container = $(view);
-                if (container.length > 0) {
-                    var attachmentable = this.attachmentable;
-                    var controllerName = this.controllerName;
-                    // Remove all
-                    $(tmpl.selector, container).each(function() {
-                        $(this).remove();
-                    });
-                    // Add all
-                    $(this.attachments).each(function () {
-                        this.attachmentable = attachmentable; // hack to make dynamic view evaluation working in the context of each attachment
-                        this.controllerName = controllerName;
-                        $.icescrum.addOrUpdate(this, tmpl, $.icescrum.attachments._postRendering, true);
-                    });
-                }
-            },
-
-            _postRendering:function(tmpl, attachment) {
-                var filenameSpan = $('.filename', attachment);
-                var truncatedFilename = $.icescrum.truncate(filenameSpan.text(), 23);
-                filenameSpan.text(truncatedFilename);
+        attachment: {
+            'delete' : function(data, event, xhr, elem){
+                var attachmentable = _.findWhere($.icescrum[elem.data('attachmentableType')].data, {id:elem.data('attachmentableId')});
+                attachmentable.attachments = _.reject(attachmentable.attachments, function(item) {
+                    return item.id === elem.data('attachmentId');
+                });
             }
         }
     })

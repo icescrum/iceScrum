@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -18,7 +18,6 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
 class ProductUrlMappings {
@@ -124,6 +123,83 @@ class ProductUrlMappings {
         name urlProduct: "/p/$product/$controller/$action?/$id?/$type?" {
             constraints {
                 product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        //new way to handle requests (REST Style)
+
+        "/p/$product/$controller/print/$format" {
+            action = print
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                format(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/story" {
+            controller = 'story'
+            action = [GET: "list", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/story/$id" {
+            controller = 'story'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/story/$id/$action" {
+            controller = 'story'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/$type/$commentable/comment" {
+            controller = 'comment'
+            action = [GET: "list", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+                commentable(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/$type/$commentable/comment/$id" {
+            controller = 'comment'
+            action = [GET: "show", PUT:"update", DELETE:"delete"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+                id(matches: /\d*/)
+                commentable(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/$type/$attachmentable/attachment" {
+            controller = 'attachment'
+            action = [GET: "list", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                attachmentable(matches: /\d*/)
+                type(inList: ['story', 'task'])
+            }
+        }
+
+        "/p/$product/$type/$attachmentable/attachment/$id" {
+            controller = 'attachment'
+            action = [GET: "show", DELETE:"delete"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                attachmentable(matches: /\d*/)
+                id(matches: /\d*/)
+                type(inList: ['story', 'task'])
             }
         }
     }

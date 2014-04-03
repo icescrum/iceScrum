@@ -883,7 +883,6 @@
                                     return _this.emit("dragend", e);
                                 },
                                 "paste": function(e) {
-                                    noPropagation(e);
                                     return _this.paste(e);
                                 }
                             }
@@ -1090,10 +1089,10 @@
 
                 Dropzone.prototype.paste = function(e) {
                     var items, _ref;
-                    return;
                     if ((e != null ? (_ref = e.clipboardData) != null ? _ref.items : void 0 : void 0) == null) {
                         return;
                     }
+                    noPropagation(e);
                     this.emit("paste", e);
                     items = e.clipboardData.items;
                     if (items.length) {

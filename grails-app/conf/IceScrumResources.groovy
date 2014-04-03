@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Kagilum / 2010 iceScrum Technlogies.
+ * Copyright (c) 2011 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -32,8 +32,6 @@ modules = {
         resource url: [dir: "css", file: 'select2.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'select2-bootstrap.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'jquery.jqplot.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-        resource url: [dir: 'js/markitup/sets/textile', file: 'style.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-        resource url: [dir: 'js/markitup/skins/simple', file: 'style.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'styles.less'], attrs: [rel: "stylesheet/less", type:'css', media: 'print,screen,projection'], bundle: 'icescrum'
     }
 
@@ -74,7 +72,7 @@ modules = {
     }
 
     'jquery' {
-        resource url:[dir:'js/jquery', file:"jquery-1.10.2.min.js"], disposition:'head'
+        resource url:[dir:'js/jquery', file:"jquery-1.11.0.min.js"], disposition:'head'
         resource url:[dir:'js/jquery', file:"jquery-migrate-1.2.1.min.js"], disposition:'head'
         resource url:[dir:'js/jquery', file:"jquery-ui-1.10.4.custom.min.js"], bundle: 'icescrum'
     }

@@ -23,116 +23,40 @@
  */
 (function($) {
     $.extend($.icescrum, {
-        comment:{
-
-            i18n:{
-                noComment:'No comment'
+        comment: {
+            add:function(data, event, xhr, elem){
+                var commentable = _.findWhere($.icescrum[elem.data('commentableType')].data, {id:elem.data('commentableId')});
+                commentable._comments.push(data);
+                elem.find('textarea').val('').trigger('hide.mkp');
             },
-
-            templates:{
-                storyDetail:{
-                    selector:'li.comment',
-                    id:'comment-storydetail-tmpl',
-                    view:'ul.list-comments',
-                    remove:function(tmpl) {
-                        var commentList = $(tmpl.view);
-                        var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', commentList);
-                        comment.remove();
-                        if ($(tmpl.selector, commentList).length == 0) {
-                            commentList.html('<li class="panel-box-empty">' + $.icescrum.comment.i18n.noComment + '</li>');
-                        }
-                        commentList.find('li.last').removeClass('last');
-                        commentList.find('li:last').addClass('last');
-                    },
-                    afterTmpl:function(tmpl, container){
-                        container.find('li.last').removeClass('last');
-                        container.find('li:last').addClass('last');
-                    }
-                },
-                storyDetailSummary:{
-                    selector:'li.comment',
-                    id:'comment-storydetailsummary-tmpl',
-                    view:'ul.list-news',
-                    remove:function(tmpl) {
-                        var summary = $(tmpl.view);
-                        var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', summary);
-                        comment.remove();
-                        summary.find('li.last').removeClass('last');
-                        summary.find('li:last').addClass('last');
-                    }
-                },
-                taskDetail:{
-                    selector:'li.comment',
-                    id:'comment-taskdetail-tmpl',
-                    view:'ul.list-comments',
-                    remove:function(tmpl) {
-                        var commentList = $(tmpl.view);
-                        var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', commentList);
-                        comment.remove();
-                        if ($(tmpl.selector, commentList).length == 0) {
-                            commentList.html('<li class="panel-box-empty">' + $.icescrum.comment.i18n.noComment + '</li>');
-                        } else {
-                            commentList.find('li.last').removeClass('last');
-                            commentList.find('li:last').addClass('last');
-                        }
-                    }
-                },
-                taskDetailSummary:{
-                    selector:'li.comment',
-                    id:'comment-taskdetailsummary-tmpl',
-                    view:'ul.list-news',
-                    remove:function(tmpl) {
-                        var summary = $(tmpl.view);
-                        var comment = $(tmpl.selector + '[data-elemid=' + this.id + ']', summary);
-                        comment.remove();
-                        summary.find('li.last').removeClass('last');
-                        summary.find('li:last').addClass('last');
-                    }
-                }
+            update:function(data, event, xhr, elem){
+                elem.hide().parents('table:first').parent().find('.comment-editor').show().find('textarea').val('').trigger('hide');
+                var commentable = _.findWhere($.icescrum[elem.data('commentableType')].data, {id:elem.data('commentableId')});
+                var indexOf = _.indexOf(commentable._comments, _.find(commentable._comments, { id:elem.data('commentId') }));
+                //replace current comment
+                commentable._comments.splice(indexOf, 1, data);
             },
-
-            add:function(template) {
-                var tmpl = $.icescrum.comment.templates[template];
-                var commentList = $(tmpl.view);
-                if(commentList.find('li.panel-box-empty').length > 0) {
-                    commentList.html('');
-                }
-                $(this).each(function() {
-                    var comment = $.icescrum.addOrUpdate(this, tmpl, $.icescrum.comment._postRendering, true);
-                    $('.comment-lastUpdated', comment).hide();
+            'delete':function(data, event, xhr, elem){
+                var commentable = _.findWhere($.icescrum[elem.data('commentableType')].data, {id:elem.data('commentableId')});
+                commentable._comments = _.reject(commentable._comments, function(item) {
+                    return item.id === elem.data('commentId');
                 });
             },
+            edit:function(data){
+                var commentable = _.findWhere($.icescrum[data.commentableType].data, { id:data.commentableId });
+                var comment =  _.findWhere(commentable._comments, { id:data.commentId });
+                var $editor = $('#' + data.commentableType + '-' + data.commentableId + '-' + data.commentId );
+                var oldContent = $editor.html();
+                $editor = $editor.replaceWithPush($.template('comment-edit', {commentable:commentable, comment:comment}));
+                attachOnDomUpdate($editor);
+                $editor.parents('table:first').parent().find('.comment-editor').hide().find('textarea').val('').trigger('hide');
+                $editor.find('textarea').on('cancel.mkp', function(){
+                    $editor = $editor.replaceWithPush('<tr id="'+ data.commentableType + '-' + data.commentableId + '-' + data.commentId+'">'+oldContent+'</tr>');
+                    $editor.parents('table:first').parent().find('.comment-editor').show();
+                    attachOnDomUpdate($editor);
+                }).focus();
 
-            update:function(template) {
-                $(this).each(function() {
-                    $.icescrum.addOrUpdate(this, $.icescrum.comment.templates[template], $.icescrum.comment._postRendering);
-                });
-            },
-
-            remove:function(template) {
-                var tmpl = $.icescrum.comment.templates[template];
-                $(this).each(function() {
-                    tmpl.remove.apply(this, [tmpl]);
-                });
-            },
-
-            _postRendering:function(tmpl, comment, container) {
-                container.find('li.last').removeClass('last');
-                container.find('li:last').addClass('last');
-                var isPoster = (this.poster.id == $.icescrum.user.id);
-                if(!$.icescrum.user.poOrSm()) {
-                    if(!isPoster) {
-                        comment.find('.menu-comment').remove();
-                    }
-                    else {
-                        comment.find('.delete-comment').remove();
-                    }
-                }
-                $('.comment-body', comment).load(jQuery.icescrum.o.baseUrl + 'textileParser', {data:this.body,withoutHeader:true});
-                //todo change to new avatar management
-                $('.comment-avatar', comment).load(jQuery.icescrum.o.baseUrlSpace + 'user/displayAvatar', {id:this.poster.id, email:this.poster.email});
             }
-
         }
     })
 })($);

@@ -92,64 +92,7 @@
         },
 
         dialogError:function(xhr) {
-            var text;
-            if (xhr.status) {
-                var ct = xhr.getResponseHeader("content-type") || "";
-                if (ct.indexOf('json') > -1) {
-                    text = $.parseJSON(xhr.responseText);
-                    if (text.error != undefined) {
-                        $.icescrum.renderNotice(text.error, 'error');
-                        return;
-                    }
-                } else {
-                    text = this.htmlDecode(xhr.responseText);
-                }
-            } else {
-                text = xhr;
-            }
-            var $dialog = $('#dialog');
-            if($dialog.length){
-                $dialog.dialog('close');
-                $dialog.remove();
-            }
-            $(document.body).append(this.o.dialogErrorContent);
-            $('#comments').focus();
-            $('#stackError').val(text);
-            $('#stackError-field').input({className:'area'});
-            $('#comments-field').input({className:'area'});
-            //must revalidate selector
-            $('#dialog').dialog({
-                        dialogClass: 'no-titlebar',
-                        closeOnEscape:true,
-                        closeText:'Close',
-                        draggable:false,
-                        modal:true,
-                        position:'top',
-                        resizable:false,
-                        width:600,
-                        close:function(ev, ui) {
-                            $(this).remove();
-                        },
-                        buttons:{
-                            'Cancel': function() {
-                                $(this).dialog('close');
-                            },
-                            'OK': function() {
-                                $.ajax({
-                                            type:'POST',
-                                            data:$('#dialog').find('form:first').serialize(),
-                                            url:$.icescrum.o.baseUrl + 'reportError',
-                                            success:function(data, textStatus) {
-                                                $.icescrum.renderNotice(data.notice.text, data.notice.type);
-                                                $('#dialog').dialog('close');
-                                            },
-                                            error:function() {
-                                                $('#dialog').dialog('close');
-                                            }
-                                        });
-                            }
-                        }
-                    });
+
         },
 
         //TODO to be remove
@@ -327,8 +270,29 @@
                 }else if(xhr.status == 401){
                     ajaxRequest($(document.body), {url:$.icescrum.o.grailsServer+'/login'});
                 }else if(xhr.status == 400){
-                    var error = $.parseJSON(xhr.responseText);
-                    $.icescrum.renderNotice( error.notice.text, 'error', error.notice.title);
+                    var errors = $.parseJSON(xhr.responseText);
+                    if (_.isArray(errors)){
+                        _.each(errors, function(error){
+                            var $elem = $('[name="'+error.code+'"]', settings.container);
+                            $elem.addClass('error');
+                            var $popover = $elem.is('[data-at-data]') ? $elem.next() : ($elem.is('[data-mkp]') ? $elem.parent().next() : $elem);
+                            $popover.popover({
+                                content:error.text,
+                                title:'Error',
+                                trigger:'manual',
+                                placement:'top',
+                                template:'<div class="popover error"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+                            })
+                            .popover('show');
+
+                            $elem.one('click keyup focus', function(){
+                                $popover.popover('destroy');
+                                $elem.removeClass('error');
+                            });
+                        });
+                    } else {
+                        $('.alert.alert-danger', settings.container).html(errors.error).show();
+                    }
                 }else if(xhr.status == 500){
                     $.icescrum.dialogError(xhr);
                 }

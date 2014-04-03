@@ -39,7 +39,6 @@
                     </button>
                     <ul class="dropdown-menu"
                         role="menu"
-                        data-ui-dropdown
                         data-ui-dropdown-change-value="true"
                         data-ui-dropdown-clickbsdropdown="$.icescrum.story.sortAndOrderOnSandbox">
                         <li role="menuitem"><a data-value="dateCreated">Date</a></li>

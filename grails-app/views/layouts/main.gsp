@@ -74,10 +74,8 @@
                 </div>
                 <entry:point id="sidebar-alerts"/>
                 <div class="sidebar-content"
-                     data-ui-droppable
                      data-ui-droppable-drop="$.icescrum.onDropToWidgetBar"
                      data-ui-droppable-accept=".draggable-to-widgets"
-                     data-ui-sortable
                      data-ui-sortable-handle=".panel-title > .drag"
                      data-ui-sortable-items=".widget-sortable">
                 </div>
@@ -85,7 +83,6 @@
         </g:if>
         <div id="main" class="col-xs-12 col-sm-${product ? '10' : '12'} col-md-${product ? '9' : '12'} col-lg-${product ? '10' : '12'}">
             <div id="main-content"
-                 data-ui-droppable
                  data-ui-droppable-hover-class="pointer"
                  data-ui-droppable-drop="$.icescrum.onDropToWindow"
                  data-ui-droppable-accept=".draggable-to-main">

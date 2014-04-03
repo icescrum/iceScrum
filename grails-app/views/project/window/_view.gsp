@@ -92,7 +92,6 @@
                                 <span class="glyphicon glyphicon-stats"></span>&nbsp;<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu"
-                                data-ui-dropdown
                                 data-ui-dropdown-clickbsdropdown="$.icescrum.openChart"
                                 data-ui-chart-container="#panel-chart-container"
                                 data-ui-chart-cookie="${sprint && request.inProduct}"

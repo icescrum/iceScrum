@@ -32,7 +32,7 @@ import javax.naming.InitialContext
 /*
  Public URL
 */
-grails.serverURL = "http://192.168.0.12:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
+grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
 
 /*
 Administration section
@@ -111,20 +111,33 @@ grails.mail.props = ["mail.smtp.auth":"true",
  */
 //remove total*
 icescrum.marshaller = [
-        product: [exclude:['cliches']],
-        actor:[include:['totalAttachments', 'tags']],
-        task:[include:['totalAttachments','totalComments','tags'], includeShort:['sprint']],
-        feature:[include:['totalAttachments','countDoneStories','state','effort','tags'],
-                 asShort:['color', 'name']],
         story:[include:['tasks', 'testState', 'tags', 'attachments', 'dependences'],
+               textile:['notes'],
                asShort:['state', 'effort','uid', 'name']],
+
+        product: [exclude:['cliches']],
+
+        comment:[exclude:['posterId','posterClass'],
+                 textile:['body'],
+                 includeShort:['poster']],
+
+        task:[exclude:['impediment','participants'],
+              include:['tags'],
+              includeShort:['sprint']],
+
+        user:[exclude: ['password','accountExpired','accountLocked','passwordExpired'],
+              asShort:['firstName', 'lastName']],
+
+        actor:[include:['tags']],
+        feature:[include:['countDoneStories','state','effort','tags'],
+                 asShort:['color', 'name']],
         sprint:[include:['activable','totalRemaining'],
                 exclude:['cliches'],
                 asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
         release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
                 exclude:['cliches']
         ],
-        user:[asShort:['firstName', 'lastName']],
+
         userpreferences:[asShort:['activity', 'language']],
         productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
         attachment:[include: ['filename']],

@@ -30,7 +30,6 @@
     data-ui-draggable-append-to="body"
     data-ui-draggable-start="$.icescrum.onStartDragWidget"
     data-ui-draggable-stop="$.icescrum.onStopDragWidget"
-    data-binding
     data-binding-type="story"
     data-binding-selector="tr"
     data-binding-tpl="tpl-story-row"

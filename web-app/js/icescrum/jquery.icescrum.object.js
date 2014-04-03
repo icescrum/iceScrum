@@ -37,128 +37,163 @@ Object.byString = function(o, s) {
     return o;
 };
 
-function propertiesUpdated(prev, now) {
-    var changes = [];
-    for (var prop in now) {
-        if (!_.contains(['version', 'lastUpdated'], prop)){
-            if (!prev || prev[prop] !== now[prop]) {
-                if (typeof now[prop] == "object") {
-                    var c = propertiesUpdated(prev[prop], now[prop]);
-                    if (! _.isEmpty(c) )
-                        changes.push(prop);
-                } else {
-                    changes.push(prop);
+function propertiesUpdated(a, b) {
+    var diff = function(a, b, c) {
+        c = {};
+        $.each([a, b], function(index, obj) {
+            for (prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    if (!_.contains(['lastUpdated','version'], prop)){
+                        if (prop.startsWith('_')){
+                            var realProp = prop.substr(1);
+                            c[realProp]  = [a[prop], {}];
+                        }
+                        else if (typeof obj[prop] === "object" && obj[prop] !== null) {
+                            c[prop] = diff(a[prop], b[prop], c);
+                        }
+                        else {
+                            if(a === undefined || a == null) a = {};
+                            if(b === undefined || b == null) b = {};
+                            else if (a[prop] !== b[prop]) {
+                                c[prop]  = [a[prop], b[prop]];
+                            }
+                        }
+                    }
                 }
             }
+        });
+        return _.compactObject(c);
+    };
+    var res = diff(a, b);
+    var properties = [];
+    for (prop in res) {
+        if (res.hasOwnProperty(prop) && !_.isEmpty(res[prop])){
+            properties.push(prop);
         }
     }
-    return changes;
+    return properties;
 }
 
 (function($) {
-    _.templateSettings = {
-        evaluate:    /\*\*#([\s\S]+?)\*\*/g,
-        interpolate: /\*\*[^#\{]([\s\S]+?)[^\}]\*\*/g,
-        escape:      /\*\*\*([\s\S]+?)\*\*\*/g
+    var cache = {};
+    $.template = function(name, data){
+        var template = cache[name];
+        if (!template){
+            var $template = $('#tpl-' + name);
+            template = $template.html();
+            //also cache children templates
+            $(template).find('[id^="tpl"]').each(function(){
+                $.template(this.id, false);
+            });
+            cache[name] = template;
+            $template.remove();
+        }
+        return data !== false ? _.template(cache[name], data || {}).replace(/tpl-/g, '') : null;
     };
 
     $.extend($.icescrum, { object:{} } );
-
     $.extend($.icescrum.object, {
 
         dataBinding:function(_settings){
+
             if (_settings.container){
                 _settings.container = !(_settings.container instanceof Object) ? $(_settings.container) : _settings.container;
             }
-            var settings = $.extend({}, $.icescrum[_settings.type].config[_settings.config], {container:this, watchedId:_settings.id?_settings.id:null}, _settings );
-            var type = settings.type;
+            //for case where there is only on property to listen force to be an array
+            _settings.property = _settings.property ? _settings.property.replace(/\s/g,'').split(',') : null;
+            if(_settings.property && !_.isArray(_settings.property)){  _settings.property = [_settings.property]; }
+
+            var settings = $.extend({}, $.icescrum[_settings.type].config[_settings.config], {
+                container: this,
+                tpl: this.tpl ? this.tpl : this.id,
+                id: null,
+                property: null
+            }, _settings );
+            var obj = $.icescrum[settings.type];
+
             //Remove old binding (didn't find another way)
-            $.icescrum[type].bindings = _.filter($.icescrum[type].bindings, function(a){ return $.contains(document.documentElement, a.container); });
-            $.icescrum[type].bindings.push(settings);
+            obj.bindings = _.filter(obj.bindings, function(a){
+                return $.contains(document.documentElement, a.container);
+            });
+            obj.bindings.push(settings);
 
-            if (!$.icescrum[type].initialized){
-                $.icescrum[type].initialized = 'process';
-                _.observe($.icescrum[type].data, 'create', function(item, index) {
-                    _.each($.icescrum[type].bindings, function(settings){
-                        if (settings.watch == 'items'){
-                            $.icescrum.object.viewBinding.add.apply(settings,[type, item, index]);
-                        }
+            if (!obj.initialized){
+                obj.initialized = "progress";
+                _.observe(obj.data, 'create', function(item, index) {
+                    _.each(obj.bindings, function(settings){
+                        $.icescrum.object.viewBinding.add.apply(settings,[$.extend({}, obj.proxyProperties, item), index, obj.initialized === true]);
                     });
                 });
-                _.observe($.icescrum[type].data, 'update', function(item, old_item, index) {
+                _.observe(obj.data, 'update', function(item, old_item, index) {
                     var properties = propertiesUpdated(item, old_item);
-                    _.each($.icescrum[type].bindings, function(settings){
-                        if (settings.watch == 'items'){
-                            $.icescrum.object.viewBinding.update.apply(settings,[type, item, index]);
-                        }
-                        else if (settings.watch == 'item' && item.id == settings.watchedId){
-                            $.icescrum.object.viewBinding.update.apply(settings,[type, item, index]);
+                    _.each(obj.bindings, function(settings){
+                        //look for items or size OR look for specific item OR look for specific item & property
+                        if (settings.watch == 'size' || settings.watch == 'items' || settings.watch == 'item' && item.id == settings.id && !settings.property || settings.property && _.intersection(properties, settings.property).length > 0 && item.id == settings.id){
+                            $.icescrum.object.viewBinding.update.apply(settings,[$.extend({}, obj.proxyProperties, item), index]);
                         }
                     });
                 });
-                _.observe($.icescrum[type].data, 'delete', function(item, index) {
-                    _.each($.icescrum[type].bindings, function(settings){
-                        if (settings.watch == 'items'){
-                            $.icescrum.object.viewBinding['delete'].apply(settings,[type, item, index]);
-                        }
-                        else if (settings.watch == 'item' && item.id == settings.watchedId){
-                            $.icescrum.object.viewBinding['delete'].apply(settings,[type, item, index]);
+                _.observe(obj.data, 'delete', function(item, index) {
+                    _.each(obj.bindings, function(settings){
+                        //case look for items or specific item
+                        if (settings.watch == 'items' || settings.watch == 'item' && item.id == settings.id){
+                            $.icescrum.object.viewBinding['delete'].apply(settings,[item, index]);
                         }
                     });
                 });
+                _.observe(obj.data, function() {
+                    _.each(obj.bindings, function(settings){
+                        if (settings.watch == 'size'){
+                            $.icescrum.object.viewBinding.update.apply(settings,[obj.data]);
+                        }
+                    });
+                });
+                $.icescrum.object.fetchData(settings);
 
-                _.observe($.icescrum[type].data, function() {
-                    _.each($.icescrum[type].bindings, function(settings){
-                        if (settings.watch == 'array'){
-                            $.icescrum.object.viewBinding.update.apply(settings,[type, $.icescrum[type].data]);
-                        }
-                    });
-                });
-                $.icescrum.object.fetchData(type, settings);
             } else {
-                if (settings.watch == 'items'){
-                    var data;
-                    if (settings.filter) { // TODO shouldn't we check that filter is a function?
-                        data = _.filter($.icescrum[type].data, function(item) {
-                            return (settings.filter.apply($.icescrum[type],[item])) ? item : false; // TODO why item is returned? Isn't the applied filter enough?
+                var data;
+                if (settings.property || settings.watch == 'item'){
+                    data = $.extend({}, obj.proxyProperties, _.findWhere(obj.data, { id:settings.id }));
+                    //init proxy property
+                    if (!_.isEmpty(data)){
+                        _.each(settings.property, function(property){
+                            if (obj.proxyProperties.hasOwnProperty(property)){
+                                data[property]();
+                            }
                         });
-                    } else {
-                        data = $.icescrum[type].data;
                     }
-                    if (settings.sort && settings.sortOn){
-                        data = _.sortBy(data, function(item) {  return settings.sort.apply(settings,[item]); });
-                    }
-                    // TODO I don't know why but if a filter is applied, the ecmascript (I guess) reverse() method is used
-                    // TODO whereas if no filter is applied, the observable one is called.
-                    // TODO consequently, when no filter is applied and setting.reverse is true, the observable reverse call cause a callCreateSubscribers on all items
-                    // TODO which calls the observe("create"...) on the top of this file, which calls an "add" for each item, which duplicates them visually (but not in the data)
+                    $.icescrum.object.viewBinding.add.apply(settings, [data]);
+                } else if (settings.watch == 'size'){
+                    $.icescrum.object.viewBinding.add.apply(settings, [obj.data]);
+                }
+                else if (settings.watch == 'items'){
+                    data = settings.filter ? _.filter(obj.data, settings.filter) : obj.data;
+                    data = settings.sort && settings.sortOn ? _.sortBy(data, function(item) {  return settings.sort.apply(settings,[item]); }) : data;
                     data = settings.reverse ? data.reverse() : data;
-                    var _highLight = settings.highlight;
-                    settings.highlight = false;
-                    _.each(data, function(item){
-                        $.icescrum.object.viewBinding.add.apply(settings,[type, item]);
+                    _.each(data, function(item, index){
+                        $.icescrum.object.viewBinding.add.apply(settings,[$.extend({}, obj.proxyProperties, item), index, true]);
                     });
-                    settings.highlight = _highLight;
-                } else if(settings.watch == 'item'){
-                    $.icescrum.object.viewBinding.update.apply(settings,[type, _.findWhere($.icescrum[type].data,{id:settings.watchedId})]);
-                } else if (settings.watch == 'array'){
-                    $.icescrum.object.viewBinding.add.apply(settings,[type, $.icescrum[type].data]);
                 }
-                if (settings.afterBinding){
-                    settings.afterBinding.apply(settings.container,[settings]);
-                }
+            }
+            //do we have to do perform something after binding?
+            if (settings.after){
+                settings.after.apply(settings.container,[settings]);
             }
         },
 
-        removeBinding:function(type,element,clean){
-            var config = _.find($.icescrum[type].bindings, function(a){ return element[0] == a.container; });
-            if (config){
+        removeBinding:function(type, element){
+            var settings = _.find($.icescrum[type].bindings, function(a){ return element[0] == a.container; });
+            if (settings){
                 $.icescrum[type].bindings = _.filter($.icescrum[type].bindings, function(a){
-                    return !(config.container == a.container);
+                    return !(settings.container == a.container);
                 });
-                $(config.container).find(config.selector).remove();
+                if (settings.watch == 'items'){
+                    $(settings.container).html("");
+                } else {
+                    $(settings.container).remove();
+                }
             }
-            return config;
+            return settings;
         },
 
         addOrUpdateToArray:function(type, item){
@@ -197,156 +232,109 @@ function propertiesUpdated(prev, now) {
         },
 
         //settings of binding who init the fetchData
-        fetchData:function(type, settings){
-            $.get($.icescrum[type].restUrl()+'list',
+        fetchData:function(settings){
+            $.get($.icescrum[settings.type].restUrl(),
                 function(data){
-                    $.icescrum.object.addOrUpdateToArray(type, data);
-                    if (settings.afterBinding){
-                        settings.afterBinding.apply(settings.container, [settings]);
+                    $.icescrum.object.addOrUpdateToArray(settings.type, data);
+                    if (settings.after){
+                        settings.after.apply(settings.container, [settings]);
                     }
-                    $.icescrum[type].initialized = true;
+                    $.icescrum[settings.type].initialized = true;
                 }
             );
         },
 
         viewBinding:{
 
-            add:function(type, item, index){
-                var data = {};
-                var el = null;
-                if (this.watch == 'items'){
-                        var filtered = _.isFunction(this.filter) ? this.filter.apply($.icescrum[type],[item]) : this.filter;
-                    if (this.tpl && _.isUndefined(filtered) || filtered){
-                        data[type] = item;
+            add:function(item, index, noHighlight){
+                var data = {}, el, filtered;
+                filtered = this.filter ? _.filter([item], this.filter).length == 1 : true;
+                if (filtered){
+                    data[this.watch == 'size' ? 'list' : (this.object ? this.object : this.type)] = item;
+                    if (!_.isEmpty(data)){
                         el = $.template(this.tpl, data);
                         el = $(el).appendTo(this.container);
-                        if(this.highlight && $.icescrum[type].initialized == true){
-                            el.effect('highlight', {color: this.highlight != true ? 'blue' : null}, 1000);
+                        if (el){
+                            attachOnDomUpdate($(this.container));
+                            if(!noHighlight && this.highlight && $.icescrum[this.type].initialized == true){
+                                el.effect('highlight', {color: this.highlight != true ? 'blue' : null}, 1000);
+                            }
                         }
                     }
                 }
-                else if (this.watch == 'array'){
-                    data['list'] = item;
-                    el = $.template(this.tpl, data);
-                    el = $(el).appendTo(this.container);
-                }
-                if (el)
-                    attachOnDomUpdate(el);
             },
 
-            update:function(type, item, index){
-                var oldElement;
-                var filtered = _.isFunction(this.filter) ? this.filter.apply($.icescrum[type],[item]) : this.filter;
+            update:function(item, index){
+                var filtered, oldElement, el, data;
+                filtered = this.filter ? _.filter([item], this.filter).length == 1 : true;
+                //grab current view in dom
                 if (this.watch == 'items'){
-                    oldElement = $(this.container).find(this.selector+'[data-elemid='+item.id+']');
-                } else if (this.watch == 'array'){
-                    oldElement = $(this.container).find(this.selector);
-                } else if (this.watch == 'item'){
+                    oldElement = $(this.container).find('> [data-elemid='+item.id+']');
+                }
+                else if (this.watch == 'item' || this.property.length > 0){
+                    oldElement = $(this.container);
+                }
+                else if (this.watch == 'size'){
                     oldElement = $(this.container).find(this.selector);
                 }
                 //filtered but not visible ? should be added
-                if((_.isUndefined(filtered) || filtered) && oldElement.length == 0){
-                    $.icescrum.object.viewBinding.add.apply(this,[type, item, index]);
-                }
-                //filtered and visible ? update!
-                else if (_.isUndefined(filtered) || filtered) {
-                    var focus = $(':focus:not(document)');
-                    focus = focus.attr('id') ? (focus.attr('id').startsWith('s2id') ? focus.attr('data-focusable') : focus.attr('id')) : null;
-                    var data = {};
-                    data[this.watch == 'array' ? 'list' : type] = item;
-                    var el = $.template(this.tpl, data);
-                    if (this.watch == 'items'){
-                        el = oldElement.replaceWithPush(el);
-                    } else if (this.watch == 'array'){
-                        el = oldElement.replaceWithPush(el);
-                    } else if (this.watch == 'item'){
-                        el = oldElement.html(el);
-                    }
-                    var $el = $(el);
-                    if (oldElement.hasClass('ui-selected')){
-                        $el.addClass('ui-selected');
-                    }
-                    attachOnDomUpdate(this.container);
-                    if (focus && $(focus, this.container)){
-                        if(focus.startsWith('s2id')){
-                            $('#'+focus, this.container).find('input[data-focusable="'+focus+'"]').focus();
-                        } else {
-                            $('#'+focus, this.container).focus();
+                if(filtered){
+                    if (oldElement.length == 0){
+                        $.icescrum.object.viewBinding.add.apply(this,[this.type, item, index]);
+                    } else {
+                        //get current focus
+                        var focus = $(':focus:not(document)');
+                        focus = { id : focus.attr('id') ? (focus.attr('id').startsWith('s2id') ? focus.attr('data-focusable') : focus.attr('id')) : null };
+                        if ($('#'+focus.id).is('input, textarea')){
+                            var $focusCursor = $('#'+focus.id);
+                            focus.start = $focusCursor[0].selectionStart;
+                            focus.end = $focusCursor[0].selectionEnd;
+                        }
+
+                        //setup data for template
+                        data = {};
+                        data[this.watch == 'size' ? 'list' : (this.object ? this.object : this.type)] = item;
+                        //generate new view
+                        el = $.template(this.tpl, data);
+                        //find correct way to update dom
+                        if (this.watch == 'items' || this.watch == 'size'){
+                            el = oldElement.replaceWithPush(el);
+                        }
+                        else if (this.watch == 'item' || this.property.length > 0){
+                            el = oldElement.html(el);
+                        }
+                        if (oldElement.hasClass('ui-selected')){
+                            $(el).addClass('ui-selected');
+                        }
+                        //attach UI events
+                        attachOnDomUpdate(this.container);
+
+                        //restore focus
+                        if (focus.id && $('#'+focus.id, this.container).length > 0){
+                            var $newFocus = $('#'+focus.id, this.container);
+                            if(focus.id.startsWith('s2id')){
+                                $newFocus.find('input[data-focusable="'+focus.id+'"]').focus();
+                            } else {
+                                $newFocus.focus();
+                                if (focus.start != undefined){
+                                    $newFocus[0].setSelectionRange(focus.start, focus.end);
+                                }
+                            }
                         }
                     }
-                }
-                //not filtered and visible ? delete!
-                else if(!filtered && (oldElement && oldElement.length)){
-                    $.icescrum.object.viewBinding['delete'].apply(this,[type, item, index]);
+                } else if(!filtered && (oldElement && oldElement.length)){
+                    $.icescrum.object.viewBinding['delete'].apply(this,[this.type, item, index]);
                 }
             },
 
-            'delete':function(type, item){
+            'delete':function(item){
                 if (this.watch == 'items'){
-                    $(this.container).find(this.selector+'[data-elemid='+item.id+']').remove();
+                    $(this.container).find('> [data-elemid='+item.id+']').remove();
                 }
                 else if (this.watch == 'item'){
-                    $(this.container).find(this.selector).html("");
+                    this.selector ? $(this.container).find(this.selector).html("") : $(this.container).remove();
                 }
             }
         }
     });
-})($);
-
-//TODO remove at and of refactoring
-(function($) {
-    $.extend($.icescrum, {
-
-            addOrUpdate:function(object, _tmpl, after, append) {
-
-                    // Encoding of pushed objects is disabled temporarily
-                    // because it causes issues with HTML content (notes etc.)
-                    // A manual decoding will be required for those elements
-                    // object = $.icescrum.htmlEncodeJSON(object);
-
-                    if ($.isFunction(_tmpl.constraintTmpl)) {
-                        if (_tmpl.constraintTmpl.apply(object) == false) {
-                            return false;
-                        }
-                    }
-
-                    var tmpl;
-                    tmpl = $.extend(tmpl, _tmpl);
-                    tmpl.selector = $.isFunction(tmpl.selector) ? tmpl.selector.apply(object) : tmpl.selector;
-                    tmpl.view = $.isFunction(tmpl.view) ? tmpl.view.apply(object) : tmpl.view;
-                    tmpl.id = $.isFunction(tmpl.id) ? tmpl.id.apply(object) : tmpl.id;
-
-                    if ($(tmpl.window + ' .box-blank:visible').length) {
-                        $(tmpl.view).show();
-                        $(tmpl.window + ' .box-blank').hide();
-                    }
-
-                    var container = $(tmpl.view);
-                    var current = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
-                    var beforeData = null;
-                    if ($.isFunction(tmpl.beforeTmpl)) {
-                        beforeData = tmpl.beforeTmpl.apply(object, [tmpl,container,current]);
-                    }
-
-                    if (current.length) {
-                        $(tmpl.selector + '[data-elemid=' + object.id + ']', container).jqoteup('#' + tmpl.id, object);
-                    }
-                    else {
-                        append ? container.jqoteapp('#' + tmpl.id, object) : container.jqotepre('#' + tmpl.id, object);
-                    }
-                    var newObject = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
-
-                    if ($.isFunction(after)) {
-                        after.apply(object, [tmpl,newObject,container]);
-                    }
-                    if ($.isFunction(tmpl.afterTmpl)) {
-                        tmpl.afterTmpl.apply(object, [tmpl,container,newObject,beforeData]);
-                    }
-
-                    var elem = $(tmpl.selector + '[data-elemid=' + object.id + ']', container);
-                    attachOnDomUpdate(elem);
-
-                    return elem;
-                }
-            });
 })($);

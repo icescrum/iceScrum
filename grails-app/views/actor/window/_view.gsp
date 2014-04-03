@@ -22,7 +22,6 @@
 --}%
 
 <div id="backlog-layout-window-${controllerName}"
-     data-ui-selectable
      data-ui-selectable-global-stop="true"
      data-ui-selectable-stop="$.icescrum.actor.onSelectableStop"
      data-ui-selectable-filter="div.postit-actor"
@@ -31,8 +30,7 @@
      data-is-shortcut-on="#backlog-layout-window-${controllerName}"
      data-is-shortcut-key="a arrows"
      data-is-shortcut-callback="$.icescrum.selectableShortcut"
-     data-binding
-     data-binding-after-binding="$.icescrum.selectableHash"
+     data-binding-after="$.icescrum.selectableHash"
      data-binding-type="actor"
      data-binding-selector="div.postit-actor"
      data-binding-tpl="tpl-postit-actor"

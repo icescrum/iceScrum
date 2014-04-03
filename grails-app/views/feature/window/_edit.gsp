@@ -92,7 +92,6 @@
         <div class="field">
             <label for="feature.notes">${message(code:'is.backlogelement.notes')}</label>
             <textarea name="feature.notes"
-                      data-mkp
                       data-mkp-placeholder="_${message(code: 'is.ui.backlogelement.nonotes')}_"
                       data-mkp-height="170"
                       data-mkp-change="${updateUrl}">** feature.notes **</textarea>

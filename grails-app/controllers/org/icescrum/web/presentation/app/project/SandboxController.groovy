@@ -35,7 +35,6 @@ import org.icescrum.core.domain.Product
 class SandboxController {
 
     def springSecurityService
-    def uiDefinitionService
 
     def index = {
         render(template: "${params.type ?: 'window'}/view")

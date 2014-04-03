@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -71,7 +71,7 @@
             child="productOwner"/>
     <is:listAsXML
             name="attachments"
-            template="/addons/attachmentXml"
+            template="/attachment/xml"
             child="attachment"
             deep="true"/>
 </is:objectAsXML>

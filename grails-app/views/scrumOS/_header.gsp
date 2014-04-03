@@ -40,12 +40,11 @@
         </div>
         <div id="mainmenu">
             <ul class="nav navbar-nav scroll"
-                ${sec.ifLoggedIn(null,'data-ui-sortable')}
+                ${sec.ifLoggedIn(null,'data-ui-sortable-handle=".drag"')}
                 data-ui-sortable-revert="true"
                 data-ui-sortable-helper="clone"
                 data-ui-sortable-delay="100"
                 data-ui-sortable-items=".menubar"
-                data-ui-sortable-handle=".drag"
                 data-ui-sortable-cancel="span.title"
                 data-ui-sortable-stop="$.icescrum.menuBar.stop"
                 data-ui-sortable-start="$.icescrum.menuBar.start"

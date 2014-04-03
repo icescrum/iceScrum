@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -17,7 +17,7 @@
  *
  * Authors:
  *
- * Stephane Maldini (stephane.maldini@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
  */
 
 import org.springframework.security.access.AccessDeniedException
@@ -64,6 +64,19 @@ class UrlMappings {
         }
 
         "/login"(controller: 'login', action: 'auth')
+
+        "/user" {
+            controller = 'user'
+            action = [GET: "list", POST:"save"]
+        }
+
+        "/user/$id" {
+            controller = 'user'
+            action = [GET: "index", PUT:"update", POST:"update"]
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
 
         "403"(controller: "errors", action: "error403")
         "400"(controller: "errors", action: "fakeError")

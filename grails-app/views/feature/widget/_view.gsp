@@ -24,7 +24,6 @@
 
 <ul class="list postit-rows"
     id="widget-${controllerName}"
-    data-binding
     data-binding-type="feature"
     data-binding-selector="li.postit-row-feature"
     data-binding-tpl="tpl-postit-row-feature"

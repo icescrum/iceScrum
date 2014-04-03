@@ -20,8 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div data-binding
-     data-binding-type="feature"
+<div data-binding-type="feature"
      data-binding-watch="array"
      data-binding-selector="#features-size"
      data-binding-tpl="tpl-features">

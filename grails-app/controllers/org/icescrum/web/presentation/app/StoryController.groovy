@@ -34,7 +34,6 @@ import org.icescrum.core.domain.User
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
-import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.grails.followable.FollowLink
 import grails.util.GrailsNameUtils
 import org.icescrum.core.domain.Task
@@ -52,55 +51,11 @@ class StoryController {
 
     @Secured('inProduct()')
     def show = {
-        redirect(action:'index', controller: controllerName, params:params)
-    }
-
-    //TODO delete
-    def index = {
-        def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
-        withStory(id, params.uid?true:false) { Story story ->
-            def user = springSecurityService.currentUser
-            Product product = (Product) story.backlog
-            if (product.preferences.hidden && !user) {
-                redirect(controller: 'login', params: [ref: "p/${product.pkey}#story/$story.id"])
-                return
-            } else if (product.preferences.hidden && !securityService.inProduct(story.backlog, springSecurityService.authentication) && !securityService.stakeHolder(story.backlog,springSecurityService.authentication,false)) {
-                render(status: 403)
-            } else {
-                 withFormat {
-                    json { renderRESTJSON(text:story) }
-                    xml  { renderRESTXML(text:story) }
-                    html {
-                        def permalink = createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: story.uid)
-                        def criteria = FollowLink.createCriteria()
-                        def isFollower = false
-                        if (user) {
-                            isFollower = criteria.get {
-                                projections {
-                                    rowCount()
-                                }
-                                eq 'followRef', story.id
-                                eq 'followerId', user.id
-                                eq 'type', GrailsNameUtils.getPropertyName(Story.class)
-                                cache true
-                            }
-                            isFollower = isFollower == 1
-                        }
-
-                        render(view: 'window/details', model: [
-                                story: story,
-                                tasksDone: Task.countByParentStoryAndState(story, Task.STATE_DONE),
-                                typeCode: BundleUtils.storyTypes[story.type],
-                                storyStateCode: BundleUtils.storyStates[story.state],
-                                taskStateBundle: BundleUtils.taskStates,
-                                user: user,
-                                pkey: product.pkey,
-                                permalink: permalink,
-                                locale: RequestContextUtils.getLocale(request),
-                                isFollower: isFollower,
-                        ])
-                    }
-                }
+        withStory { Story story ->
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: story as JSON }
+                json { renderRESTJSON(text:story) }
+                xml  { renderRESTXML(text:story) }
             }
         }
     }
@@ -146,8 +101,6 @@ class StoryController {
                 }
             }
 
-        } catch (AttachmentException e) {
-            returnError(exception:e)
         } catch (RuntimeException e) {
             returnError(object:story, exception:e)
         }
@@ -376,13 +329,13 @@ class StoryController {
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('stakeHolder()')
     def activities = {
         withStory { Story story ->
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story.activity as JSON) }
-                json { renderRESTJSON(text:story.activities) }
-                xml  { renderRESTXML(text:story.activities) }
+                json { renderRESTJSON(text:story.activity) }
+                xml  { renderRESTXML(text:story.activity) }
             }
         }
     }
@@ -453,17 +406,6 @@ class StoryController {
                 storyEntries = storyEntries.findAll { it.text.contains(params.term) }
             }
             render status: 200, contentType: 'application/json', text: storyEntries as JSON
-        }
-    }
-
-    @Secured('isAuthenticated() and !archivedProduct()')
-    def attachments = {
-        withStory{ story ->
-            if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
-                render(status: 403)
-                return
-            }
-            manageAttachmentsNew(story)
         }
     }
 

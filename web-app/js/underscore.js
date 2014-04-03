@@ -300,3 +300,92 @@ else o=[],h(n,function(n,e,u){o[++r]=t(n,e,u)});return o}function At(n,t,e){var 
     }
 
 })();
+(function() {
+    var originalUnderscoreTemplateFunction = _.template;
+    var templateHelpers = {};
+
+    _.mixin( {
+        addTemplateHelpers : function( newHelpers ) {
+            _.extend( templateHelpers, newHelpers );
+        },
+
+        template : function( text, data, settings ) {
+// replace the built in _.template function with one that supports the addTemplateHelpers
+// function above. Basically the combo of the addTemplateHelpers function and this new
+// template function allows us to mix in global "helpers" to the data objects passed
+// to all our templates when they render. This replacement template function just wraps
+// the original _.template function, so it sould be pretty break-resistent moving forward.
+
+            if( data ) {
+// if data is supplied, the original _.template function just returns the raw value of the
+// render function (the final rentered html/text). So in this case we just extend
+// the data param with our templateHelpers and return raw value as well.
+
+                _.defaults( data, templateHelpers ); // extend data with our helper functions
+                return originalUnderscoreTemplateFunction.apply( this, arguments ); // pass the buck to the original _.template function
+            }
+
+            var template = originalUnderscoreTemplateFunction.apply( this, arguments );
+
+            var wrappedTemplate = function( data ) {
+                data = _.defaults( {}, data, templateHelpers );
+                return template.call( this, data );
+            };
+
+            return wrappedTemplate;
+        }
+    } );
+    _.mixin({
+        compactObject : function(o) {
+            _.each(o, function(v, k){
+                if(!v)
+                    delete o[k];
+            });
+            return o;
+        }
+    });
+
+    _.addTemplateHelpers( {
+        partial : function(tpl, data) {
+            return $.template(tpl, data);
+        },
+        iff : function( condition, outputString ) {
+            return condition ? outputString : "";
+        },
+        ifElse : function( condition, validString, invalidString ) {
+            return condition ? validString : invalidString;
+        },
+        noSize: function( array, outputString ){
+            return _.size(array) == 0 ? outputString : '';
+        },
+        size: function( array ){
+            return _.size(array);
+        },
+        filesize: function(size) {
+            var string;
+            if (size >= 1024 * 1024 * 1024 * 1024 / 10) {
+                size = size / (1024 * 1024 * 1024 * 1024 / 10);
+                string = "TiB";
+            } else if (size >= 1024 * 1024 * 1024 / 10) {
+                size = size / (1024 * 1024 * 1024 / 10);
+                string = "GiB";
+            } else if (size >= 1024 * 1024 / 10) {
+                size = size / (1024 * 1024 / 10);
+                string = "MiB";
+            } else if (size >= 1024 / 10) {
+                size = size / (1024 / 10);
+                string = "KiB";
+            } else {
+                size = size * 10;
+                string = "b";
+            }
+            return "<strong>" + (Math.round(size) / 10) + "</strong> " + string;
+        }
+    } );
+
+    _.templateSettings = {
+        evaluate:    /\*\*#([\s\S]+?)\*\*/g,
+        interpolate: /\*\*[^#\{]([\s\S]+?)[^\}]\*\*/g,
+        escape:      /\*\*\*([\s\S]+?)\*\*\*/g
+    };
+} )();

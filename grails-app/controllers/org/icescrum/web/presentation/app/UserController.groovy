@@ -45,15 +45,9 @@ class UserController {
     def springSecurityService
     def grailsApplication
 
-    @Secured('isAuthenticated()')
-    def index = {
-        redirect(action:'profile', controller: controllerName, params:params)
-    }
-
-    //fake save method to force authentication when using rest service (with admin
     @Secured("hasRole('ROLE_ADMIN')")
-    def forceRestSave = {
-        forward(action:'save', params:params)
+    def show = {
+        redirect(action:'index', params:params)
     }
 
     def save = {
@@ -165,7 +159,7 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def profile = {
+    def index = {
         withUser{ User user ->
             withFormat {
                 html {
@@ -221,6 +215,12 @@ class UserController {
                 }
             }
         }
+    }
+
+    //fake save method to force authentication when using rest service (with admin
+    @Secured("hasRole('ROLE_ADMIN')")
+    def forceRestSave = {
+        forward(action:'save', params:params)
     }
 
     //@Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")

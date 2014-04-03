@@ -23,7 +23,7 @@
 --}%
 <is:modal name="register"
           title="${message(code:'is.dialog.register')}"
-          form="[action:createLink(action:'save', mapping:'default'),method:'POST',success:'$.icescrum.user.registerSuccess',submit:message(code:'is.button.register')]">
+          form="[action:createLink(),method:'POST',success:'$.icescrum.user.registerSuccess',submit:message(code:'is.button.register')]">
         <p>
             <g:message code="is.dialog.register.description"/>
         </p>

@@ -60,11 +60,10 @@
 		}
 
 		return this.each(function() {
-			var $$, textarea, levels, scrollPosition, caretPosition, caretOffset,
+			var $$, textarea, scrollPosition, caretPosition, caretOffset,
 				clicked, hash, header, footer, previewWindow, template, iFrame, abort;
 			$$ = $(this);
 			textarea = this;
-			levels = [];
 			abort = false;
 			scrollPosition = caretPosition = 0;
 			caretOffset = -1;
@@ -98,7 +97,7 @@
 				$$.addClass("markItUpEditor");
 
 				// add the header before the textarea
-				header = $('<div class="markItUpHeader"></div>').insertBefore($$);
+				header = $('<div class="btn-toolbar" role="toolbar"></div>').insertBefore($$);
 				$(dropMenus(options.markupSet)).appendTo(header);
 
 				// add the footer after the textarea
@@ -144,50 +143,54 @@
 
 			// recursively build header with dropMenus from markupset
 			function dropMenus(markupSet) {
-				var ul = $('<ul></ul>'), i = 0;
-				$('li:hover > ul', ul).css('display', 'block');
+				var btnGroup = $('<div class="btn-group"></div>');
+
+                var createButton = function(button, sub){
+                    var title = (button.key) ? (button.name||'')+' [Ctrl+'+button.key+']' : (button.name||'');
+                    var key   = (button.key) ? 'accesskey="'+button.key+'"' : '';
+                    var btn = $('<a data-toggle="tooltip" data-container="body" data-placement="bottom" class="'+( sub ? '' : 'btn btn-default btn-sm' )+' '+(button.className||'')+'" '+key+' title="'+title+'" '+(sub ? 'role="menuitem" tabindex="-1"' : 'type="button"')+'>'+(button.icon ? '<i class="'+button.icon+'"></i>' : button.name)+'</a>')
+                    .bind("contextmenu", function() { // prevent contextmenu on mac and allow ctrl+click
+                        return false;
+                    }).click(function() {
+                        return false;
+                    }).focusin(function(){
+                        $$.focus();
+                    }).mousedown(function() {
+                        if (button.call) {
+                            eval(button.call)();
+                        }
+                        setTimeout(function() { markup(button); },1);
+                        btn.parents('.dropdown-menu').prev().dropdown('toggle');
+                        return false;
+                    });
+                    return btn;
+                };
+
 				$.each(markupSet, function() {
-					var button = this, t = '', title, li, j;
-					title = (button.key) ? (button.name||'')+' [Ctrl+'+button.key+']' : (button.name||'');
-					key   = (button.key) ? 'accesskey="'+button.key+'"' : '';
-					if (button.separator) {
-						li = $('<li class="markItUpSeparator">'+(button.separator||'')+'</li>').appendTo(ul);
-					} else {
-						i++;
-						for (j = levels.length -1; j >= 0; j--) {
-							t += levels[j]+"-";
-						}
-						li = $('<li class="markItUpButton markItUpButton'+t+(i)+' '+(button.className||'')+'"><a href="" '+key+' title="'+title+'">'+(button.name||'')+'</a></li>')
-						.bind("contextmenu", function() { // prevent contextmenu on mac and allow ctrl+click
-							return false;
-						}).click(function() {
-							return false;
-						}).focusin(function(){
+					var button = this, btn;
+                    if (button.dropMenu) {
+                        btn = $('<div class="btn-group btn-group-sm"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">'+(button.icon ? '<i class="'+button.icon+'"></i>' : '')+' <span class="caret"></span></button></div>')
+                            .focusin(function(){
+                                $$.focus();
+                            });
+                        btn.appendTo(btnGroup);
+                        var sub = $('<ul role="menu" class="dropdown-menu"></ul>').appendTo(btn);
+                        $.each(button.dropMenu, function(){
+                            var button = this;
+                            var li = $('<li role="presentation"></li>');
+                            createButton(button, true).appendTo(li);
+                            li.appendTo(sub);
+                        });
+                        btn.find('.dropdown-toggle').dropdown().mousedown(function(){
                             $$.focus();
-						}).mousedown(function() {
-							if (button.call) {
-								eval(button.call)();
-							}
-							setTimeout(function() { markup(button) },1);
-							return false;
-						}).hover(function() {
-								$('> ul', this).show();
-								$(document).one('click', function() { // close dropmenu if click outside
-										$('ul ul', header).hide();
-									}
-								);
-							}, function() {
-								$('> ul', this).hide();
-							}
-						).appendTo(ul);
-						if (button.dropMenu) {
-							levels.push(i);
-							$(li).addClass('markItUpDropMenu').append(dropMenus(button.dropMenu));
-						}
+                            return false;
+                        });
+                    }
+                    else {
+                        createButton(button).appendTo(btnGroup);
 					}
 				}); 
-				levels.pop();
-				return ul;
+				return btnGroup;
 			}
 
 			// markItUp! markups
@@ -494,8 +497,8 @@
 				ctrlKey = (!(e.altKey && e.ctrlKey)) ? e.ctrlKey : false;
 
 				if (e.type === 'keydown') {
-					if (ctrlKey === true) {
-						li = $("a[accesskey="+String.fromCharCode(e.keyCode)+"]", header).parent('li');
+					if (ctrlKey === true && String.fromCharCode(e.keyCode)) {
+						var li = $("a[accesskey="+String.fromCharCode(e.keyCode)+"]", header);
 						if (li.length !== 0) {
 							ctrlKey = false;
 							setTimeout(function() {

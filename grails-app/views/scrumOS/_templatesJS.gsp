@@ -41,7 +41,7 @@
                 points:"${message(code:'is.ui.backlog.title.details.points')}",
                 dependsOnWarning:"${message(code:'is.ui.story.warning.dependsOn')}"
             },
-            states: ${is.bundleLocaleToJs(bundle: BundleUtils.storyStates)},
+            states: ${is.bundleLocaleToJs(bundle: BundleUtils.storyStates, code:true)},
             types: ${is.bundleLocaleToJs(bundle: BundleUtils.storyTypes)},
             testStates: {
                 <g:each var="testStateEnum" status="index" in="${TestState.values()}">
@@ -128,37 +128,16 @@
 </jq:jquery>
 
 <div class='templates'>
-    <g:render template="/user/js"/>
-
     <!-- begin new templates -->
     <g:render template="templates"/>
     <!-- end new templates -->
 
     <g:if test="${params.product}">
-
-        <g:render template="/sprint/js" model="[id:'releasePlan']"/>
-        <g:render template="/comment/js"/>
-        <g:render template="/acceptanceTest/js"/>
-        <g:render template="/attachment/js"/>
-
         <!-- begin new templates -->
-        <g:render template="/story/window/edit"/>
-        <g:render template="/story/window/new"/>
-        <g:render template="/story/window/postit"/>
-        <g:render template="/story/window/row"/>
-        <g:render template="/story/window/selected"/>
-
-        <g:render template="/actor/window/edit"/>
-        <g:render template="/actor/window/new"/>
-        <g:render template="/actor/window/postit"/>
-        <g:render template="/actor/window/row"/>
-        <g:render template="/actor/window/selected"/>
-
-        <g:render template="/feature/window/edit"/>
-        <g:render template="/feature/window/new"/>
-        <g:render template="/feature/window/postit"/>
-        <g:render template="/feature/window/row"/>
-        <g:render template="/feature/window/selected"/>
+        <g:render template="/story/templates"/>
+        <g:render template="/comment/templates"/>
+        <g:render template="/attachment/templates"/>
+        <g:render template="/activity/templates"/>
         <!-- end new templates -->
     </g:if>
 </div>

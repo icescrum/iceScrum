@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<underscore id="tpl-list-shortcuts">
+<script type="text/icescrum-template" id="tpl-list-shortcuts">
     <is:modal title="${message(code:'todo.is.shortcuts')}" size="lg" name="shortcuts">
         <div class="row">
         **# _.each(shortcuts, function(shortcut, index){ **
@@ -35,4 +35,4 @@
         **# }); **
         **# if (shortcuts.length % 4 != 0){ ** </div> **# } **
     </is:modal>
-</underscore>
+</script>

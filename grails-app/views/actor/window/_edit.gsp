@@ -95,7 +95,6 @@
         <div class="field">
             <label for="actor.notes">${message(code:'is.backlogelement.notes')}</label>
             <textarea name="actor.notes"
-                      data-mkp
                       data-mkp-placeholder="_${message(code: 'is.ui.backlogelement.nonotes')}_"
                       data-mkp-height="170"
                       data-mkp-change="${updateUrl}">** actor.notes **</textarea>
@@ -120,7 +119,6 @@
     %{-- TODO WARNING experimental feature --}%
     <ul class="list postit-rows"
         id="right-actor-stories"
-        data-binding
         data-binding-type="story"
         data-binding-selector="li.postit-row-story"
         data-binding-tpl="tpl-postit-row-story"

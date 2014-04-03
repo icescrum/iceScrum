@@ -21,20 +21,6 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-(function(){
-    var cache = {};
-    $.template = function(name, data){
-        var template = cache[name];
-
-        if (!template){
-            template = $('script[type="text/icescrum-template"]#' + name).html();
-            cache[name] = template;
-        }
-
-        return _.template(template, data || {});
-    };
-})();
-
 (function($) {
 
     $.extend($.icescrum, {
@@ -57,24 +43,67 @@
             data:[],
             bindings:[],
             restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'story/'; },
+
+            proxyProperties:{
+                activities:function(refresh){
+                    //get fresh object from data
+                    var story = _.findWhere($.icescrum['story'].data, {id:this.id});
+                    if (refresh){
+                        delete story._activities;
+                    }
+                    if (!story.hasOwnProperty('_activities')){
+                        $.get($.icescrum.story.restUrl()+story.id+'/activities', function(data){
+                            //get synced object from data array
+                            var _story = _.findWhere($.icescrum['story'].data, {id:story.id});
+                            if (_story){
+                                _story._activities = data;
+                            }
+                        });
+                        //state loading
+                        story._activities = false;
+                    }
+                    return story._activities;
+                },
+                comments:function(refresh){
+                    //get fresh object from data
+                    var story = _.findWhere($.icescrum['story'].data, {id:this.id});
+                    if (refresh){
+                        delete story._comments;
+                    }
+                    if (!story.hasOwnProperty('_comments')){
+                        $.get($.icescrum.story.restUrl()+ story.id+'/comment', function(data){
+                            //get synced object from data array
+                            var _story = _.findWhere($.icescrum['story'].data, {id:story.id});
+                            if (_story){
+                                _story._comments = data;
+                            }
+                        });
+                        //state loading
+                        story._comments = false;
+                    }
+                    return story._comments;
+                }
+            },
+
             config: {
                 sandbox: {
-                    filter: function(item){ return item.state == this.STATE_SUGGESTED },
+                    filter: { state : 1 },
                     sort:function(item){ return Object.byString(item, this.sortOn); }
+                },
+                backlog: {
+                    filter: { state : 3 }
                 },
                 actors: { // TODO WARNING experimental config
                     filter: function(item) {
                         var actorStoryUids = _.find($.icescrum.story.bindings, { config: "actors" }).uids;
                         return _.contains(actorStoryUids, item.uid);
                     }
-                },
-                backlog: {
-                    filter: function(item){ return item.state == this.STATE_ESTIMATED }
                 }
             },
+
             formatters:{
                 state:function(story){
-                    return story.state > 1 ? $.icescrum.story.states[story.state] : '';
+                    return story.state > 1 ? $.icescrum.story.states[story.state].value : '';
                 },
                 description:function(story) {
                     return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
@@ -87,50 +116,54 @@
                     }
                 }
             },
+
             'delete':function(data, status, xhr, element){
                 _.each(element.data('ajaxData').id, function(item){ $.icescrum.object.removeFromArray('story', {id:item}); });
             },
+
             onDropFeature:function(event, ui){
                 if (ui.helper){
-                    $.post($.icescrum.story.restUrl()+'update/'+$(this).data('elemid'), { 'story.feature.id':ui.helper.data('elemid') },
-                        function(data){
+                    $.ajax({
+                        url: $.icescrum.story.restUrl()+'/'+$(this).data('elemid'),
+                        type: 'PUT',
+                        success: function(data){
                             $.icescrum.object.addOrUpdateToArray('story',data);
                         }
-                    );
+                    });
                 }
             },
             onDropToSandbox:function(event, ui){
                 if (ui.draggable){
-                    $.post($.icescrum.story.restUrl()+'update/'+ui.draggable.data('elemid')+'?story.state='+ $.icescrum.story.STATE_SUGGESTED,
-                        function(data){
-                            $.icescrum.object.addOrUpdateToArray('story',data);
+                    $.ajax({
+                        url: $.icescrum.story.restUrl()+'/'+$(this).data('elemid'),
+                        data: {'story.state': $.icescrum.story.STATE_SUGGESTED },
+                        type: 'PUT',
+                        success: function(data){
+                            $.icescrum.object.addOrUpdateToArray('story', data);
                         }
-                    );
+                    });
                 }
             },
+
             onSelectableStop:function(event, ui){
                 var selectable = $('.window-content.ui-selectable');
                 var container = $('#contextual-properties');
-
                 var id = selectable.data('current');
+                var story;
+
                 //no selection
                 if (!id || id.length == 0){
                     $.icescrum.story.createForm(false, container);
                 }
                 //multi selection
                 else if (id.length > 1){
-                    var el = $.template('tpl-multiple-stories', {story:_.findWhere($.icescrum['story'].data, {id:_.last(id)}), ids:id});
+                    var el = $.template('story-multiple', {story: _.findWhere($.icescrum['story'].data, {id:_.last(id)}), ids:id});
                     container.html(el);
                 }
                 //one selected
                  else if (id.length == 1) {
-                    $.icescrum.object.dataBinding.apply(container.parent(), [{
-                        type:'story',
-                        tpl:'tpl-edit-story',
-                        watchedId:id[0],
-                        watch:'item',
-                        selector:'#contextual-properties'
-                    }]);
+                    el = $.template('story-details', {story:  _.findWhere($.icescrum['story'].data, {id:_.last(id)})});
+                    container.html(el);
                 }
                 attachOnDomUpdate(container);
             },
@@ -140,10 +173,10 @@
                 if (template){
                     $.get($.icescrum.story.restUrl()+'templateEntries', {'template':template}, function(data){
                         data.name = $('input[name="story.name"]', container).val();
-                        el = $.template('tpl-new-story', {story:data, template:template});
+                        el = $.template('story-new', {story:data, template:template});
                     });
                 } else {
-                    el = $.template('tpl-new-story', {story:{}, template:template});
+                    el = $.template('story-new', {story:{}, template:template});
                 }
                 container.html(el);
                 attachOnDomUpdate(container);
@@ -212,285 +245,6 @@
                     icon = '';
                 }
                 return '<i class="' + icon + '"></i> ' + object.text;
-            },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //TODO remove at and of refactoring
-            templates:{
-                backlogWindow:{
-                    selector:function() {
-                        return $.icescrum.getDefaultView() == 'postitsView' ? 'div.postit-story' : 'tr.table-line';
-                    },
-                    id:function() {
-                        return $.icescrum.getDefaultView() == 'postitsView' ? 'postit-story-backlog-tmpl' : 'table-row-story-backlog-tmpl';
-                    },
-                    view:function() {
-                        return $.icescrum.getDefaultView() == 'postitsView' ? '#backlog-layout-window-backlog' : '#story-table';
-                    },
-                    constraintTmpl:function() {
-                        return this.state == $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_ESTIMATED;
-                    },
-                    remove:function(tmpl) {
-                        if ($.icescrum.getDefaultView() == 'tableView') {
-                            var tableline = $(tmpl.view+' tr.table-line'+'[data-elemid=' + this.id + ']');
-                            this.oldRank = tableline.data('rank');
-                            tableline.remove();
-                            if (!this.rank && this.oldRank && !$.icescrum.story.templates['backlogWindow'].constraintTmpl()){
-                                $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank);
-                            }
-                            $(tmpl.view).trigger("update");
-                        }else{
-                            $(tmpl.window+' '+tmpl.selector+'[data-elemid=' + this.id + ']').remove();
-                        }
-                        $.icescrum.story.backlogTitleDetails();
-                    },
-                    window:'#window-content-backlog',
-                    afterTmpl:function(tmpl, container, newObject) {
-                        $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                        $.icescrum.story.backlogTitleDetails();
-                        if ($.icescrum.getDefaultView() == 'tableView') {
-                            $('div[name=rank]', $(newObject)).text(this.rank);
-                            if(this.oldRank != this.rank) {
-                                $.icescrum.postit.updateRankAndVersion(tmpl.selector, tmpl.view, this.oldRank, this.rank, this.id);
-                            }
-                            $(tmpl.view).updateTableSorter();
-                        }
-                    }
-                },
-                releasePlan:{
-                    selector:'div.postit-story',
-                    id:'postit-story-releasePlan-tmpl',
-                    window:'#window-content-releasePlan',
-                    view:function() {
-                        return this.parentSprint ? '#backlog-layout-plan-releasePlan' + '-' + this.parentSprint.id : '';
-                    },
-                    remove:function(tmpl) {
-                        $(tmpl.window+' .postit-story[data-elemid=' + this.id + ']').remove();
-                    },
-                    constraintTmpl:function() {
-                        return this.state >= $.icescrum.story.STATE_PLANNED;
-                    },
-                    noblank:true,
-                    afterTmpl:function(tmpl, container, newObject) {
-                        $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                        $.event.trigger('sprintMesure_sprint', this.parentSprint);
-                    }
-                },
-                sprintPlan:{
-                    selector:'tr.row-story',
-                    id:'postit-story-sprintPlan-tmpl',
-                    view:function() {
-                        var storyType = this.state < $.icescrum.story.STATE_DONE ? 'story' : 'storyDone';
-                        return this.parentSprint ? '#kanban-sprint' + '-' + this.parentSprint.id + ' tbody[type=' + storyType + ']' : '';
-                    },
-                    remove:function() {
-                        $('.kanban .row-story[data-elemid=' + this.id + ']').remove();
-                    },
-                    constraintTmpl:function() {
-                        return this.state >= $.icescrum.story.STATE_PLANNED;
-                    },
-                    window:'#window-content-sprintPlan',
-                    afterTmpl:function(tmpl, container, newObject, beforeData) {
-                        $.icescrum.postit.updatePosition(tmpl.selector, newObject, this.rank, container);
-                        if (this.state == $.icescrum.story.STATE_DONE) {
-                            newObject.appendTo($(tmpl.view));
-                        } else {
-                            $.icescrum.liveSortable();
-                        }
-                        if ($(tmpl.view).is(':hidden')) {
-                            $(tmpl.view).show();
-                        }
-                        $.event.trigger('update_task', [this.tasks]);
-                        $.event.trigger('sprintMesure_sprint', this.parentSprint);
-                    }
-                }
-            },
-
-            manageDependencies:function(){
-                var SelectDependsOn = $("#dependsOn\\.id");
-                if (SelectDependsOn.size() > 0){
-                    var addOrUpdate = function(story){
-                        if (SelectDependsOn.find('option[value='+story.id+']').size() > 0){
-                            SelectDependsOn.find('option[value='+story.id+']').html(story.name+' ('+story.uid+')');
-                        }else{
-                            SelectDependsOn.append($('<option></option>').val(story.id).html(story.name+' ('+story.uid+')'));
-                        }
-                    };
-                    var form = SelectDependsOn.parents('form:first');
-                    if (!this.name || this.state < form.data('state')){
-                        SelectDependsOn.find('option[value='+this.id+']').remove();
-                    } else if (this.state > form.data('state')){
-                        addOrUpdate(this);
-                    } else if (this.state == form.data('state') && this.state == $.icescrum.story.STATE_SUGGESTED){
-                        addOrUpdate(this);
-                    } else if (this.state == form.data('state') && this.state > $.icescrum.story.STATE_SUGGESTED && this.rank < form.data('rank')){
-                        addOrUpdate(this);
-                    } else if (this.state == form.data('state') && this.state > $.icescrum.story.STATE_SUGGESTED && this.rank > form.data('rank')){
-                        SelectDependsOn.find('option[value='+this.id+']').remove();
-                    }
-                    SelectDependsOn.trigger("change");
-                }
-            },
-
-            _postRendering:function(tmpl, newObject, container) {
-                if (this.totalComments <= 0 ) {
-                    newObject.find('.postit-comment,.table-comment').hide();
-                }
-                if (!this.dependsOn) {
-                    newObject.find('.dependsOn').remove();
-                }
-                if (this.type != $.icescrum.story.TYPE_DEFECT) {
-                    var affectVersionInput = newObject.find('[name="story.affectVersion"]');
-                    affectVersionInput.hide();
-                    affectVersionInput.next('hr').hide();
-                }
-                if(!this.acceptanceTests || this.acceptanceTests.length <= 0) {
-                    newObject.find('.story-icon-acceptance-test').hide();
-                } else {
-                    var testCountByState = {};
-                    $(this.acceptanceTests).each(function() {
-                        var state = this.state;
-                        testCountByState[state] = testCountByState[state] !== undefined ? testCountByState[state] + 1 : 1;
-                    });
-                    var testCountByStateLabel = $.map(testCountByState, function(value, key) {
-                        return $.icescrum.story.testStateLabels[key] + ': ' + value;
-                    }).join(' / ');
-                    var testIcon = newObject.find('.story-icon-acceptance-test');
-                    var oldTitle = testIcon.attr('title');
-                    testIcon.attr('title', oldTitle + ' (' + testCountByStateLabel + ')');
-                }
-                if (this.totalAttachments <= 0) {
-                    newObject.find('.postit-attachment,.table-attachment').hide()
-                }
-                if (container.hasClass('ui-selectable')) {
-                    newObject.addClass('ui-selectee');
-                }
-                if (this.selected){
-                    newObject.addClass('ui-selected');
-                }
-
-                var creator = (this.creator.id == $.icescrum.user.id);
-                if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state >= $.icescrum.story.STATE_SUGGESTED && this.state != $.icescrum.story.STATE_DONE && $.icescrum.user.productOwner))) {
-                    $('#menu-edit-' + this.id, newObject).remove();
-                    // right
-                    $('.field.editable', newObject).each(function() {
-                        $(this).removeClass('editable');
-                    });
-                    var tags = $('input[name="story.tags"]', newObject);
-                    if (tags.val() == '') {
-                        tags.remove();
-                    } else {
-                        tags.attr('disabled','disabled');
-                    }
-                }
-                if (!((this.state == $.icescrum.story.STATE_SUGGESTED && creator) || (this.state <= $.icescrum.story.STATE_ESTIMATED && $.icescrum.user.productOwner)) || this.state > $.icescrum.story.STATE_PLANNED) {
-                    $('#menu-delete-' + this.id, newObject).remove();
-                }
-                if (!($.icescrum.user.productOwner && (this.state == $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_ESTIMATED))) {
-                    $('#menu-return-to-sandbox-' + this.id, newObject).remove();
-                }
-                if (this.state != $.icescrum.story.STATE_SUGGESTED) {
-                    $('#menu-accept-' + this.id, newObject).remove();
-                    $('#menu-accept-feature-' + this.id, newObject).remove();
-                }
-                if ($.icescrum.sprint.current == null) {
-                    this.state == $.icescrum.story.STATE_SUGGESTED ? $('#menu-accept-task-' + this.id, newObject).hide() : $('#menu-accept-task-' + this.id, newObject).remove();
-                } else if (this.state != $.icescrum.story.STATE_SUGGESTED) {
-                    $('#menu-accept-task-' + this.id, newObject).remove();
-                }
-                if (this.state != $.icescrum.story.STATE_INPROGRESS) {
-                    $('#menu-done-' + this.id, newObject).remove();
-                }
-                if (!(this.state >= $.icescrum.story.STATE_SUGGESTED)) {
-                    $('#menu-copy-' + this.id, newObject).remove();
-                }
-                if ( this.state < $.icescrum.story.STATE_PLANNED || this.state == $.icescrum.story.STATE_DONE) {
-                    $('#menu-unplan-' + this.id, newObject).remove();
-                    $('#menu-add-task-'+this.id,newObject).remove();
-                }
-                if (this.state != $.icescrum.story.STATE_DONE || (this.parentSprint && this.parentSprint.state != $.icescrum.sprint.STATE_INPROGRESS)) {
-                    $('#menu-undone-' + this.id, newObject).remove();
-                }
-                if (this.state == $.icescrum.story.STATE_DONE) {
-                    newObject.find('.mini-value').removeClass('editable');
-                    $('#menu-shift-' + this.id, newObject).remove();
-                }
-                if (this.state >= $.icescrum.story.STATE_PLANNED && this.state < $.icescrum.story.STATE_DONE && this.parentSprint.hasNextSprint) {
-                    $('#menu-shift-' + this.id, newObject).removeClass('hidden');
-                } else if (this.state <= $.icescrum.story.STATE_ESTIMATED) {
-                    $('#menu-shift-' + this.id, newObject).remove();
-                }
-                if (this.state < $.icescrum.story.STATE_ACCEPTED || this.state == $.icescrum.story.STATE_DONE || !$.icescrum.user.productOwner) {
-                    newObject.find('.postit-label').removeClass('postit-sortable');
-                }
-
-                if(tmpl.window) {
-                    $(tmpl.window).trigger("postRendering.story",[this, tmpl, newObject, container]);
-                }
-            },
-
-            checkDependsOnPostitsView:function(ui){
-                var container = ui.placeholder.parent();
-                var currentIndex = ui.placeholder.index();
-                var indexDependsOn = jQuery("div.postit-story[data-elemid="+ui.item.data("dependson")+"]", container).index();
-                if (indexDependsOn == -1){
-                    container.parents('.event-container').nextAll().each(function(){
-                        if (jQuery("div.postit-story[data-elemid="+ui.item.data("dependson")+"]", $(this)).index() > -1){
-                            indexDependsOn = currentIndex + 1;
-                            return false;
-                        }
-                    });
-                }
-                if (currentIndex < indexDependsOn && indexDependsOn != -1){
-                    ui.placeholder.addClass('dependsOn');
-                    ui.placeholder.html(this.i18n.dependsOnWarning);
-                    return;
-                }else{
-                    ui.placeholder.removeClass('dependsOn');
-                    ui.placeholder.html("");
-                }
-                var firstDependence = jQuery("div.postit-story[data-dependsOn="+ui.item.data("elemid")+"]:first", container).index();
-                if (firstDependence == -1){
-                    container.parents('.event-container').prevAll().each(function(){
-                        if (jQuery("div.postit-story[data-dependsOn="+ui.item.data("elemid")+"]:first", $(this)).index() > -1){
-                            firstDependence = -2;
-                            return false;
-                        }
-                    });
-                }
-                if (firstDependence != -1 && currentIndex > firstDependence){
-                    ui.placeholder.addClass('dependsOn');
-                    ui.placeholder.html(this.i18n.dependsOnWarning);
-                }else{
-                    ui.placeholder.removeClass('dependsOn');
-                    ui.placeholder.html("");
-                }
             }
         }
     });
