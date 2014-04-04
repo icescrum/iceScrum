@@ -54,6 +54,11 @@ class StoryController {
         }
     }
 
+    // TODO choose between show and index (also choose between list and index in other places)
+    def index = {
+        forward(action: 'show', params: params)
+    }
+
     @Secured('isAuthenticated() and !archivedProduct()')
     def save = {
         if (!params.story){
