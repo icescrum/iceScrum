@@ -25,7 +25,6 @@ package org.icescrum.web.presentation.app
 
 import org.icescrum.core.domain.Story
 
-import org.icescrum.core.utils.BundleUtils
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Product
@@ -34,10 +33,6 @@ import org.icescrum.core.domain.User
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
-import org.grails.followable.FollowLink
-import grails.util.GrailsNameUtils
-import org.icescrum.core.domain.Task
-import org.springframework.web.servlet.support.RequestContextUtils
 import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
@@ -47,7 +42,6 @@ class StoryController {
     def storyService
     def featureService
     def springSecurityService
-    def securityService
 
     @Secured('inProduct()')
     def show = {
