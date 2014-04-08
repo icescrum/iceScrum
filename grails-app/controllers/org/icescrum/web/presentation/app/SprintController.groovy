@@ -41,149 +41,150 @@ class SprintController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def save = {
         def releaseId = params.remove('parentRelease.id') ?: params.sprint.remove('parentRelease.id')
-        if (!releaseId){
-            returnError(text:message(code:'is.release.error.not.exist'))
+        if (!releaseId) {
+            returnError(text: message(code: 'is.release.error.not.exist'))
             return
         }
-        withRelease(releaseId.toLong()){ Release release ->
-            Sprint sprint = new Sprint()
-            if (params.sprint.startDate)
+        withRelease(releaseId.toLong()) { Release release ->
+            if (params.sprint.startDate) {
                 params.sprint.startDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.startDate)
-            if (params.sprint.endDate)
+            }
+            if (params.sprint.endDate) {
                 params.sprint.endDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.endDate)
+            }
+            Sprint sprint = new Sprint()
             try {
-                bindData(sprint, this.params, [include:['resource','goal','startDate','endDate','deliveredVersion']], "sprint")
-                sprintService.save(sprint, release)
+                Sprint.withTransaction {
+                    bindData(sprint, this.params, [include: ['resource', 'goal', 'startDate', 'endDate', 'deliveredVersion']], "sprint")
+                    sprintService.save(sprint, release)
+                }
                 withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: sprint as JSON)  }
-                    json { renderRESTJSON(text:sprint, status:201) }
-                    xml  { renderRESTXML(text:sprint, status:201) }
+                    html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                    json { renderRESTJSON(text: sprint, status: 201) }
+                    xml { renderRESTXML(text: sprint, status: 201) }
                 }
             } catch (IllegalStateException e) {
-                returnError(exception:e)
+                returnError(exception: e)
             } catch (RuntimeException e) {
-                returnError(object:sprint, exception:e)
+                returnError(object: sprint, exception: e)
             }
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def update = {
-        withSprint{ Sprint sprint ->
-            // If the version is different, the sprint has been modified since the last loading
-            if (params.sprint.version && params.long('sprint.version') != sprint.version) {
-                def msg = message(code: 'is.stale.object', args: [message(code: 'is.sprint')])
-                returnError(text:msg)
-                return
-            }
-
+        withSprint { Sprint sprint ->
             def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
             def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
-
-            bindData(sprint, params, [include:['resource','goal','deliveredVersion']], "sprint")
-
-            sprintService.update(sprint, startDate, endDate)
+            Sprint.withTransaction {
+                bindData(sprint, params, [include: ['resource', 'goal', 'deliveredVersion']], "sprint")
+                sprintService.update(sprint, startDate, endDate)
+            }
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text:sprint as JSON)  }
-                json { renderRESTJSON(text:sprint) }
-                xml  { renderRESTXML(text:sprint) }
+                html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                json { renderRESTJSON(text: sprint) }
+                xml { renderRESTXML(text: sprint) }
             }
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def delete = {
-        withSprint{ Sprint sprint ->
+        withSprint { Sprint sprint ->
             try {
-                def deletedSprints = sprintService.delete(sprint)
+                sprintService.delete(sprint)
                 withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: deletedSprints as JSON)  }
+                    html { render(status: 200) }
                     json { render(status: 204) }
                     xml { render(status: 204) }
                 }
             } catch (IllegalStateException e) {
-                returnError(exception:e)
+                returnError(exception: e)
             } catch (RuntimeException e) {
-                returnError(object:sprint, exception:e)
+                returnError(object: sprint, exception: e)
             }
         }
     }
 
 
-
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def unPlan = {
-        withSprint{ Sprint sprint ->
+        withSprint { Sprint sprint ->
             def unPlanAllStories = storyService.unPlanAll([sprint])
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)  }
+                html {
+                    render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)
+                }
                 json { renderRESTJSON(text: sprint) }
-                xml  { renderRESTXML(text: sprint) }
+                xml { renderRESTXML(text: sprint) }
             }
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def activate = {
-        withSprint{ Sprint sprint ->
+        withSprint { Sprint sprint ->
             sprintService.activate(sprint)
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)  }
-                json { renderRESTJSON(text:sprint) }
-                xml  { renderRESTXML(text:sprint) }
+                html {
+                    render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)
+                }
+                json { renderRESTJSON(text: sprint) }
+                xml { renderRESTXML(text: sprint) }
             }
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close = {
-        withSprint{ Sprint sprint ->
-            def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
+        withSprint { Sprint sprint ->
+            def unDoneStories = sprint.stories.findAll { it.state != Story.STATE_DONE }
             sprintService.close(sprint)
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)  }
-                json { renderRESTJSON(text:sprint) }
-                xml  { renderRESTXML(text:sprint) }
+                html {
+                    render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)
+                }
+                json { renderRESTJSON(text: sprint) }
+                xml { renderRESTXML(text: sprint) }
             }
         }
     }
 
-    @Cacheable(cache = 'sprintCache', keyGenerator='sprintKeyGenerator')
+    @Cacheable(cache = 'sprintCache', keyGenerator = 'sprintKeyGenerator')
     def index = {
-        if (request?.format == 'html'){
-            render(status:404)
+        if (request?.format == 'html') {
+            render(status: 404)
             return
         }
-
-        withSprint{ Sprint sprint ->
+        withSprint { Sprint sprint ->
             withFormat {
-                json { renderRESTJSON(text:sprint) }
-                xml  { renderRESTXML(text:sprint) }
+                json { renderRESTJSON(text: sprint) }
+                xml { renderRESTXML(text: sprint) }
             }
         }
     }
 
     def show = {
-        redirect(action:'index', controller: controllerName, params:params)
+        redirect(action: 'index', controller: controllerName, params: params)
     }
 
     def list = {
-        if (request?.format == 'html'){
-            render(status:404)
+        if (request?.format == 'html') {
+            render(status: 404)
             return
         }
-        if (params.id){
+        if (params.id) {
             withRelease { Release release ->
                 withFormat {
-                    json { renderRESTJSON(text:release.sprints) }
-                    xml  { renderRESTXML(text:release.sprints) }
+                    json { renderRESTJSON(text: release.sprints) }
+                    xml { renderRESTXML(text: release.sprints) }
                 }
             }
-        }else{
+        } else {
             def release = Release.findCurrentOrNextRelease(params.product).list()[0]
             withFormat {
-                json { renderRESTJSON(text:release.sprints) }
-                xml  { renderRESTXML(text:release.sprints) }
+                json { renderRESTJSON(text: release.sprints) }
+                xml { renderRESTXML(text: release.sprints) }
             }
         }
     }
