@@ -77,7 +77,7 @@ class SprintController {
             def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
             def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
             Sprint.withTransaction {
-                bindData(sprint, params, [include: ['resource', 'goal', 'deliveredVersion']], "sprint")
+                bindData(sprint, params, [include: ['resource', 'goal', 'deliveredVersion', 'retrospective', 'doneDefinition']], "sprint")
                 sprintService.update(sprint, startDate, endDate)
             }
             withFormat {

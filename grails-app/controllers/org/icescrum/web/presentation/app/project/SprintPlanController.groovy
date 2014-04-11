@@ -285,18 +285,10 @@ class SprintPlanController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def copyFromPreviousDoneDefinition = {
         withSprint{ Sprint sprint ->
-            if (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) {
-                Sprint previous
-                if (sprint.orderNumber > 1) {
-                    previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.orderNumber - 1)
-                } else {
-                    previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.parentRelease.sprints.size())
-                }
-                sprint.doneDefinition = previous.doneDefinition
-            } else {
-                returnError(text:message(code: 'is.sprint.error.doneDefinition.no.previous'))
+            Sprint.withTransaction {
+                sprint.doneDefinition = sprint.previousSprint.doneDefinition
+                sprintService.update(sprint)
             }
-            sprintService.updateDoneDefinition(sprint)
             redirect(action: 'doneDefinition', params: [product: params.product, id: sprint.id])
         }
     }
@@ -310,37 +302,11 @@ class SprintPlanController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def copyFromPreviousRetrospective = {
         withSprint{ Sprint sprint ->
-            if (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) {
-                Sprint previous
-                if (sprint.orderNumber > 1) {
-                    previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.orderNumber - 1)
-                } else {
-                    previous = Sprint.findByParentReleaseAndOrderNumber(sprint.parentRelease, sprint.parentRelease.sprints.size())
-                }
-                sprint.retrospective = previous.retrospective
-            } else {
-                returnError(text:message(code: 'is.sprint.error.retrospective.no.previous'))
+            Sprint.withTransaction {
+                sprint.retrospective = sprint.previousSprint.retrospective
+                sprintService.update(sprint)
             }
-            sprintService.updateRetrospective(sprint)
             redirect(action: 'retrospective', params: [product: params.product, id: sprint.id])
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def updateDoneDefinition = {
-        withSprint{ Sprint sprint ->
-            sprint.doneDefinition = params.doneDefinition
-            sprintService.updateDoneDefinition(sprint)
-            render(status: 200)
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def updateRetrospective = {
-        withSprint{ Sprint sprint ->
-            sprint.retrospective = params.retrospective
-            sprintService.updateRetrospective(sprint)
-            render(status: 200)
         }
     }
 
