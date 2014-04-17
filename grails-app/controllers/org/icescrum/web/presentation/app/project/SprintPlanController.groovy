@@ -408,6 +408,7 @@ class SprintPlanController {
         redirect(action: 'index', params: [product: params.product, id: params.id])
     }
 
+    // TODO check rights
     def copyRecurrentTasksFromPreviousSprint = {
         withSprint{ Sprint sprint ->
             def tasks = sprintService.copyRecurrentTasksFromPreviousSprint(sprint)

@@ -188,13 +188,4 @@ class SprintController {
             }
         }
     }
-
-    def attachments = {
-        withSprint { Sprint sprint ->
-            def keptAttachments = params.list('sprint.attachments')
-            def addedAttachments = params.list('attachments')
-            def attachments = manageAttachments(sprint, keptAttachments, addedAttachments)
-            render status: 200, contentType: 'application/json', text: attachments as JSON
-        }
-    }
 }
