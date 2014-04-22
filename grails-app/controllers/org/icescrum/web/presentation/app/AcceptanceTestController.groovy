@@ -72,39 +72,38 @@ class AcceptanceTestController {
         params.acceptanceTest.remove('parentStory') //For REST XML..
         def storyId = params.acceptanceTest.'parentStory.id'.toLong()
         withStory(storyId) { story ->
-
             if (story.state >= Story.STATE_DONE) {
                 returnError(text: message(code: 'is.acceptanceTest.error.save.storyState'))
                 return
             }
-
-            def acceptanceTest = new AcceptanceTest()
-
             def state = params.acceptanceTest.state?.toInteger()
+            def newState
             if (state != null) {
                 if (AcceptanceTest.AcceptanceTestState.exists(state)) {
-                    AcceptanceTest.AcceptanceTestState newState = AcceptanceTest.AcceptanceTestState.byId(state)
+                    newState = AcceptanceTest.AcceptanceTestState.byId(state)
                     if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
                         returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
                         return
                     }
-                    acceptanceTest.stateEnum = newState
                 } else {
                     returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
                     return
                 }
             }
-
-            bindData(acceptanceTest, this.params, [include:['name','description']], "acceptanceTest")
             User user = (User) springSecurityService.currentUser
-
+            def acceptanceTest = new AcceptanceTest()
             try {
-                acceptanceTestService.save(acceptanceTest, story, user)
+                AcceptanceTest.withTransaction {
+                    if (newState) {
+                        acceptanceTest.stateEnum = newState
+                    }
+                    bindData(acceptanceTest, this.params, [include:['name','description']], "acceptanceTest")
+                    acceptanceTestService.save(acceptanceTest, story, user)
+                }
             } catch (RuntimeException e) {
                 returnError(object: acceptanceTest, exception: e)
                 return
             }
-
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
                 json { renderRESTJSON status: 201, text:acceptanceTest }
@@ -116,32 +115,32 @@ class AcceptanceTestController {
     @Secured('inProduct() and !archivedProduct()')
     def update = {
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
-
             def story = acceptanceTest.parentStory
             if (story.state >= Story.STATE_DONE) {
                 returnError(text: message(code: 'is.acceptanceTest.error.update.storyState'))
                 return
             }
-
             def state = params.acceptanceTest.state?.toInteger()
+            def newState
             if (state != null) {
                 if (AcceptanceTest.AcceptanceTestState.exists(state)) {
-                    AcceptanceTest.AcceptanceTestState newState = AcceptanceTest.AcceptanceTestState.byId(state)
+                    newState = AcceptanceTest.AcceptanceTestState.byId(state)
                     if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
                         returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
                         return
                     }
-                    acceptanceTest.stateEnum = newState
                 } else {
                     returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
                     return
                 }
             }
-
-            bindData(acceptanceTest, this.params, [include: ['name', 'description']], "acceptanceTest")
-            User user = (User) springSecurityService.currentUser
-            acceptanceTestService.update(acceptanceTest, user, acceptanceTest.isDirty('state'))
-
+            AcceptanceTest.withTransaction {
+                if (newState) {
+                    acceptanceTest.stateEnum = newState
+                }
+                bindData(acceptanceTest, this.params, [include: ['name', 'description']], "acceptanceTest")
+                acceptanceTestService.update(acceptanceTest)
+            }
             withFormat {
                 html {
                     def responseData = [acceptanceTest: acceptanceTest]
@@ -160,10 +159,8 @@ class AcceptanceTestController {
     @Secured('inProduct() and !archivedProduct()')
     def delete = {
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
-
             def deleted = [id: acceptanceTest.id,parentStory: [id:acceptanceTest.parentStory.id]]
             acceptanceTestService.delete(acceptanceTest)
-
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: deleted as JSON }
                 json { render status: 204 }
