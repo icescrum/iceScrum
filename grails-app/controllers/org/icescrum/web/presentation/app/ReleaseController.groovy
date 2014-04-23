@@ -22,7 +22,6 @@
  */
 package org.icescrum.web.presentation.app
 
-import grails.util.GrailsNameUtils
 import org.icescrum.core.domain.Release
 
 import org.icescrum.core.domain.Sprint
@@ -31,7 +30,6 @@ import org.icescrum.core.domain.Product
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
 import grails.plugin.springcache.annotations.Cacheable
-import org.icescrum.core.domain.User
 
 @Secured('inProduct()')
 class ReleaseController {
@@ -44,17 +42,18 @@ class ReleaseController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def save = {
         withProduct { Product product ->
-            def release = new Release()
-
-            if (params.release.startDate)
+            if (params.release.startDate) {
                 params.release.startDate = new Date().parse(message(code: 'is.date.format.short'), params.release.startDate)
-            if (params.release.endDate)
+            }
+            if (params.release.endDate) {
                 params.release.endDate = new Date().parse(message(code: 'is.date.format.short'), params.release.endDate)
-
-            bindData(release, this.params, [include:['name','goal','startDate','endDate']], "release")
-
+            }
+            def release = new Release()
             try {
-                releaseService.save(release, product)
+                Release.withTransaction {
+                    bindData(release, this.params, [include:['name','goal','startDate','endDate']], "release")
+                    releaseService.save(release, product)
+                }
                 withFormat {
                     html { render status: 200, contentType: 'application/json', text: release as JSON }
                     json { renderRESTJSON(text:release, status: 201) }
@@ -75,17 +74,12 @@ class ReleaseController {
                 returnError(text:message(code:'is.release.error.update.state.done'))
                 return
             }
-            // If the version is different, the release has been modified since the last loading
-            if (params.release.version && params.long('release.version') != release.version) {
-                returnError(text:message(code: 'is.stale.object', args: [message(code: 'is.release')]))
-                return
-            }
-
             def startDate = params.release.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.startDate) : release.startDate
             def endDate = params.release.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.endDate) : release.endDate
-
-            bindData(release, this.params, [include:['name','goal']], "release")
-            releaseService.update(release, startDate, endDate)
+            Release.withTransaction {
+                bindData(release, this.params, [include: ['name', 'goal', 'vision']], "release")
+                releaseService.update(release, startDate, endDate)
+            }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text:release as JSON }
                 json { renderRESTJSON(text:release) }
@@ -201,15 +195,6 @@ class ReleaseController {
                 json { renderRESTJSON(text:product.releases) }
                 xml  { renderRESTXML(text:product.releases) }
             }
-        }
-    }
-
-    def attachments = {
-        withRelease { Release release ->
-            def keptAttachments = params.list('release.attachments')
-            def addedAttachments = params.list('attachments')
-            def attachments = manageAttachments(release, keptAttachments, addedAttachments)
-            render status: 200, contentType: 'application/json', text: attachments as JSON
         }
     }
 }

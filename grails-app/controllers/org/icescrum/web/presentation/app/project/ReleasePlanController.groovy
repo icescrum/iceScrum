@@ -233,15 +233,6 @@ class ReleasePlanController {
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
-    def updateVision = {
-        withRelease{ Release release ->
-            release.vision = params.vision
-            releaseService.updateVision(release)
-            render(status: 200)
-        }
-    }
-
     def releaseBurndownChart = {
         forward(action:"releaseBurndownChartCached", params:params)
     }

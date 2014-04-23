@@ -25,7 +25,7 @@
     <g:if test="${release.state != Release.STATE_WAIT}">
     <tr>
         <td class="entry-title"><g:message code="is.release.velocity"/>: </td>
-        <td class="entry-value">${release.releaseVelocity}</td>
+        <td class="entry-value">${release.meanVelocity}</td>
     </tr>
     </g:if>
     <tr>
