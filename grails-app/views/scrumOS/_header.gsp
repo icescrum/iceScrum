@@ -30,11 +30,11 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="hidden-xs navbar-brand"
-               data-ajax="true"
-               data-is-shortcut
-               data-is-shortcut-key="I"
-               href="${createLink(controller:'scrumOS',action:'about')}">
-                <span id="is-logo" class="disconnected" title="${message(code: 'is.about')}"><g:message code="is.shortname"/></span>
+               hotkey="{'I': showAbout}"
+               hotkey-description="${message(code: 'is.about')}"
+               ng-click="showAbout()"
+               href>
+                <span id="is-logo" class="disconnected" title="${message(code: 'is.about')} (I)"><g:message code="is.shortname"/></span>
             </a>
             <is:errors/>
         </div>
@@ -202,54 +202,46 @@
                         </div>
                     </form>
                 </g:if>
-                <sec:ifLoggedIn>
-                    <div class="navbar-user pull-left"
-                       data-ui-popover
-                       data-ui-popover-placement="bottom"
-                       data-ui-popover-id="popover-user"
-                       data-ui-popover-html-content="#user-details">
-                        <img src="${is.avatar()}" height="32px" width="32px"/>
-                    </div>
-                    <div id="user-details" class="hidden">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <img src="${is.avatar()}" height="60px" width="60px" class="pull-left"/>
-                                ${user.username}
-                                <g:if test="${product}">
-                                    <br/>
-                                    <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole product="${product.id}"/> </strong></a>
-                                </g:if>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <a class="btn btn-info"
-                                           data-is-shortcut
-                                           data-is-shortcut-key="U"
-                                           data-toggle="tooltip"
-                                           title="${message(code:'is.dialog.profile')} (U)"
-                                           href="${createLink(controller:'user', action:'openProfile')}"
-                                           data-ajax="true">${message(code:'is.dialog.profile')}</a>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <a class="btn btn-danger" href="${createLink(controller:'logout')}">${message(code:'is.logout')}</a>
-                                    </div>
+                <div ng-if="authenticated"
+                     class="navbar-user pull-left"
+                     popover-placement="bottom"
+                     popover="#user-details">
+                    <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
+                </div>
+                {{ currentUser }}
+                <div ng-if="authenticated" id="user-details" class="hidden">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <img ng-src="{{ currentUser | userAvatar }}" height="60px" width="60px" class="pull-left"/>
+                            {{ currentUser.username }}
+                            <g:if test="${product}">
+                                <br/>
+                                <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole product="${product.id}"/> </strong></a>
+                            </g:if>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <a class="btn btn-info"
+                                       hotkey="{'U':showProfile}"
+                                       tooltip="${message(code:'is.dialog.profile')} (U)"
+                                       ng-click="showProfile()">${message(code:'is.dialog.profile')}</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a class="btn btn-danger" href="${createLink(controller:'logout')}">${message(code:'is.logout')}</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </sec:ifLoggedIn>
-                <sec:ifNotLoggedIn>
-                    <button id="login"
-                            class="btn btn-primary"
-                            data-ajax="true"
-                            data-is-shortcut
-                            data-is-shortcut-key="L"
-                            data-toggle="tooltip"
-                            data-placement="bottom"
-                            title="${message(code:'is.button.connect')} (L)"
-                            href="${createLink(controller:'login',action:'auth')}"><g:message code="is.button.connect"/></button>
-                </sec:ifNotLoggedIn>
+                </div>
+                <button id="login"
+                        ng-show="!authenticated"
+                        class="btn btn-primary"
+                        hotkey="{'L':showAuthModal}"
+                        ng-click="showAuthModal()"
+                        hotkey-description="${message(code:'is.button.connect')}"
+                        tooltip="${message(code:'is.button.connect')} (L)"
+                        tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
             </div>
         </div>
     </div>

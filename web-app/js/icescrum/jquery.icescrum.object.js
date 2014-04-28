@@ -88,7 +88,11 @@ function propertiesUpdated(a, b) {
             cache[name] = template;
             $template.remove();
         }
-        return data !== false ? _.template(cache[name], data || {}).replace(/tpl-/g, '') : null;
+        try {
+            return data !== false ? _.template(cache[name], data || {}).replace(/tpl-/g, '') : null;
+        } catch(e){
+            console.log(e);
+        }
     };
 
     $.extend($.icescrum, { object:{} } );
@@ -296,19 +300,20 @@ function propertiesUpdated(a, b) {
                         data[this.watch == 'size' ? 'list' : (this.object ? this.object : this.type)] = item;
                         //generate new view
                         el = $.template(this.tpl, data);
-                        //find correct way to update dom
-                        if (this.watch == 'items' || this.watch == 'size'){
-                            el = oldElement.replaceWithPush(el);
+                        if (el){
+                            //find correct way to update dom
+                            if (this.watch == 'items' || this.watch == 'size'){
+                                el = oldElement.replaceWithPush(el);
+                            }
+                            else if (this.watch == 'item' || this.property.length > 0){
+                                el = oldElement.html(el);
+                            }
+                            if (oldElement.hasClass('ui-selected')){
+                                $(el).addClass('ui-selected');
+                            }
+                            //attach UI events
+                            attachOnDomUpdate(this.container);
                         }
-                        else if (this.watch == 'item' || this.property.length > 0){
-                            el = oldElement.html(el);
-                        }
-                        if (oldElement.hasClass('ui-selected')){
-                            $(el).addClass('ui-selected');
-                        }
-                        //attach UI events
-                        attachOnDomUpdate(this.container);
-
                         //restore focus
                         if (focus.id && $('#'+focus.id, this.container).length > 0){
                             var $newFocus = $('#'+focus.id, this.container);

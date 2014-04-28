@@ -19,8 +19,6 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<script type="text/icescrum-template" id="tpl-story-header-name">
-<a href="${g.createLink(controller:'story', action:'follow', id:'**.story.id **', params: [product: '** jQuery.icescrum.product.pkey **'])}"
-   data-status-toggle="fa-star"
-   data-status-title="followers"><i class="fa fa-star-o"></i></a> <span>** story.name **</span><small>**# if (story.origin) { ** ${message(code:'is.story.origin')}: ** story.origin ** **# } **</small>
-</script>
+
+<g:render template="/task/templates/story.tasks" />
+<g:render template="/task/templates/story.task.editor" />

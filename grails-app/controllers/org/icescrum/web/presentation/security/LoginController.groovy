@@ -41,7 +41,6 @@ class LoginController {
     def grailsApplication
 
     def auth = {
-
         def config = SpringSecurityUtils.securityConfig
         if (springSecurityService.isLoggedIn()) {
             redirect uri: config.successHandler.defaultTargetUrl
@@ -62,13 +61,11 @@ class LoginController {
             RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         }
 
-        def dialog = g.render(template: "dialogs/auth", model: [
+        render(status:200, template: "dialogs/auth", model: [
                 postUrl: grailsApplication.config.grails.serverURL+config.apf.filterProcessesUrl,
                 rememberMeParameter: config.rememberMe.parameter,
                 activeLostPassword: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable),
-                enableRegistration: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)
-        ])
-        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+                enableRegistration: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)])
     }
 
     def authAjax = {
@@ -113,12 +110,7 @@ class LoginController {
      */
     def ajaxSuccess = {
         User u = (User)springSecurityService.currentUser
-        if (u.preferences.lastProductOpened){
-            def url = grailsApplication.config.grails.serverURL+'/p/'+u.preferences.lastProductOpened
-            render(status:200, contentType: 'application/json', text:[url:url] as JSON)
-        }else{
-            render(status:200, text:'')
-        }
+        render(status:200, contentType: 'application/json', text:u as JSON)
     }
 
     def ajaxDenied = {

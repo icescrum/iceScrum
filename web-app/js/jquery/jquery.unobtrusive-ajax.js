@@ -1077,7 +1077,6 @@ function attachOnDomUpdate(content){
                     .css('width', $this.parent().outerWidth(true) + (settings.offsetWidth ?  settings.offsetWidth : 0))
                     .css('left', container.offset().left + (settings.offsetLeft ?  settings.offsetLeft : 0))
                     .css('position', 'fixed');
-                container
             } else if (initialTop - scrollTop > 0 && $this.hasClass('fixed')) {
                 $this.removeClass('fixed')
                     .css('top', '')

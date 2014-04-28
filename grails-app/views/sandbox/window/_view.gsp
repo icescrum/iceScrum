@@ -24,32 +24,9 @@
 <g:set var="productOwner" value="${request.productOwner}"/>
 
 <div id="backlog-layout-window-${controllerName}"
-     class="row list-group"
-     data-ui-selectable-global-stop="true"
-     data-ui-selectable-stop="$.icescrum.story.onSelectableStop"
-     data-ui-selectable-filter="div.story"
-     data-ui-selectable-cancel=".postit-label, a"
-
-     data-ui-droppable-selector="div.story"
-     data-ui-droppable-hover-class="ui-selected"
-     data-ui-droppable-drop="$.icescrum.story.onDropFeature"
-     data-ui-droppable-accept=".postit-row-feature"
-
-     data-ui-droppable2-hover-class="main-active"
-     data-ui-droppable2-drop="$.icescrum.story.onDropToSandbox"
-     data-ui-droppable2-accept=".postit-row-story.estimated"
-
-     data-is-shortcut
-     data-is-shortcut-on="#backlog-layout-window-${controllerName}"
-     data-is-shortcut-key="a arrows"
-     data-is-shortcut-callback="$.icescrum.selectableShortcut"
-
-     data-binding-tpl="story-postit"
-     data-binding-type="story"
-     data-binding-watch="items"
-     data-binding-sort-on="type"
-     data-binding-reverse="true"
-     data-binding-config="sandbox"
-     data-binding-highlight="true"
-     data-binding-after="$.icescrum.selectableHash">
+     class="row list-group">
+    <div ng-click="go('/sandbox/' + story.id)" ng-repeat="story in stories | filter: {state: 1} | orderBy: predicate"
+         class="item story col-xs-4 col-lg-4 ui-selectee grid-group-item">
+        {{ story.name }}
+    </div>
 </div>

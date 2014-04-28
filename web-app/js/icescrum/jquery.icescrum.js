@@ -72,7 +72,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             $.icescrum.checkSidebar();
 
-            $.icescrum.initHistory();
+            //$.icescrum.initHistory();
 
             $.icescrum.whatsNew();
 

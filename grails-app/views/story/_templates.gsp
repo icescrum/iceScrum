@@ -19,16 +19,12 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:render template="/story/templates/header" />
+<g:render template="/story/templates/story.details" />
+
 <g:render template="/story/templates/menu" />
-<g:render template="/story/templates/toolbar" />
 
 <g:render template="/story/templates/new" />
 <g:render template="/story/templates/selection" />
-<g:render template="/story/templates/details" />
-
-<g:render template="/story/templates/form" />
-<g:render template="/story/templates/tasks" />
 
 <g:render template="/story/templates/postit" />
 <g:render template="/story/templates/row" />

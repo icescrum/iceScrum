@@ -142,12 +142,6 @@ class ScrumOSController {
                 }
             }
 
-            if (!request.xhr){
-                def fragment = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: space?.params?:null).toString() - createLink(params:space?.params?:null) - '/'
-                redirect(url:createLink(absolute: true, params:space?.params?:null, fragment: fragment))
-                return
-            }
-
             def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params:space?.params?:null).toString() - request.contextPath
 
             if (!menuBarSupport.permissionDynamicBar(url)){
@@ -191,19 +185,11 @@ class ScrumOSController {
         if (!file.exists()) {
             file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
         }
-        def dialog = g.render(template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
-        render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
+        render(status: 200, template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
     }
 
     def textileParser = {
-        if (params.truncate) {
-            params.data = is.truncated([size: params.int('truncate')], params.data)
-        }
-        if (params.withoutHeader) {
-            render(text: '<div class="rich-content">'+wikitext.renderHtml([markup: "Textile"], params.data)+'</div>')
-        } else {
-            render(status: 200, template: 'textileParser')
-        }
+        render(text: wikitext.renderHtml([markup: "Textile"], params.data))
     }
 
     def reportError = {

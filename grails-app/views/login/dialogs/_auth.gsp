@@ -20,29 +20,29 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal name="register"
-          size="sm"
+<is:modal size="sm"
           title="${message(code:'is.dialog.login')}"
-          form="[action:postUrl,method:'POST',success:'$.icescrum.user.authSuccess',submit:message(code:'is.button.connect')]">
-    <h4><g:message code="is.welcome"/></h4>
+          submitButton="${message(code:'is.button.connect')}"
+          autoFillFix="true"
+          form="login(credentials)">
     <div class="form-group">
-        <label for="j_username">${message(code:'is.user.username')}</label>
+        <label for="credentials.j_username">${message(code:'is.user.username')}</label>
         <g:if test="${enableRegistration}"><div class="input-group"></g:if>
         <input required
-               name="j_username"
+               ng-model="credentials.j_username"
                type="text"
-               id="j_username"
+               id="credentials.j_username"
                class="form-control"
                autofocus
                value="${params.username?:''}">
         <g:if test="${enableRegistration}">
             <span class="input-group-btn">
-                <button href="${createLink(action:'register', controller:'user')}"
-                        data-ajax="true"
-                        tabindex="-1"
+                <button tabindex="-1"
                         class="btn btn-default"
                         type="button"
-                        data-toggle="tooltip" data-placement="top" title="${message(code:'todo.is.new')}">
+                        ng-click="showRegisterModal()"
+                        tooltip-placement="top"
+                        tooltip="${message(code:'todo.is.new')}">
                     <i class="glyphicon glyphicon-user"></i>
                 </button>
             </span>
@@ -50,22 +50,22 @@
         <g:if test="${enableRegistration}"></div></g:if>
     </div>
     <div class="form-group">
-        <label for="j_password">${message(code:'is.user.password')}</label>
+        <label for="credentials.j_password">${message(code:'is.user.password')}</label>
         <g:if test="${activeLostPassword}"><div class="input-group"></g:if>
         <input required
-               name="j_password"
+               ng-model="credentials.j_password"
                type="password"
-               id="j_password"
+               id="credentials.j_password"
                class="form-control"
                value="">
         <g:if test="${activeLostPassword}">
             <span class="input-group-btn">
-                <button href="${createLink(action:'retrieve', controller:'user')}"
-                        data-ajax="true"
-                        tabindex="-1"
+                <button tabindex="-1"
                         class="btn btn-default"
                         type="button"
-                        data-toggle="tooltip" data-placement="top" title="${message(code:'todo.is.forgot')}">
+                        ng-click="showRetrieveModal()"
+                        tooltip-placement="top"
+                        tooltip="${message(code:'todo.is.new')}">
                     <i class="glyphicon glyphicon-flash"></i>
                 </button>
             </span>

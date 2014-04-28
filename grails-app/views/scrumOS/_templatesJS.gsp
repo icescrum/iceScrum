@@ -103,11 +103,6 @@
             }
         },
         </g:if>
-        comment:{
-            i18n:{
-                noComment:"${message(code:'is.ui.backlogelement.activity.comments.no')}"
-            }
-        },
         acceptancetest:{
             i18n:{
                 noAcceptanceTest:"${message(code:'is.ui.acceptanceTest.empty')}"
@@ -135,6 +130,7 @@
     <g:if test="${params.product}">
         <!-- begin new templates -->
         <g:render template="/story/templates"/>
+        <g:render template="/task/templates"/>
         <g:render template="/comment/templates"/>
         <g:render template="/attachment/templates"/>
         <g:render template="/activity/templates"/>

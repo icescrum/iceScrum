@@ -36,15 +36,6 @@
             teamMember:false,
             stakeHolder:true,
 
-            formatters:{
-                fullName:function(user){
-                    return user.firstName+' '+user.lastName;
-                },
-                avatar:function(user){
-                    return $.icescrum.o.baseUrl+'user/avatar/'+ $.icescrum.user.id;
-                }
-            },
-
             poOrSm:function() {
                 return (this.scrumMaster || this.productOwner);
             },

@@ -78,21 +78,23 @@ class CommentController {
         def poster = springSecurityService.currentUser
         def commentable = commentableObject
         try {
+            Comment comment
             if (params['comment'] instanceof Map) {
                 Comment.withTransaction { status ->
                     try {
                         grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['addComment':null])
                         commentable.addComment(poster, params.comment.body)
                         commentable.addActivity(poster, 'comment', commentable.name)
-                        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment':null])
+                        comment = commentable.comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
+                        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment':comment])
                         if (params.type == 'story')
                             commentable.addFollower(poster)
                     } catch (Exception e) {
+                        e.printStackTrace()
                         status.setRollbackOnly()
                     }
                 }
             }
-            Comment comment = commentable.comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text:comment as JSON)  }
                 json { renderRESTJSON(text:comment) }

@@ -22,30 +22,27 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="isApp">
 <head>
     <title>iceScrum - <g:layoutTitle/></title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, ms-touch-action: none" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, ms-touch-action: none"/>
     <!-- iOS web app-->
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <link href="${r.resource(uri:'/images/iOS/icon-iphone.png')}" rel="apple-touch-icon"/>
-    <link href="${r.resource(uri:'/images/iOS/icon-ipad.png')}" rel="apple-touch-icon" sizes="76x76"/>
-    <link href="${r.resource(uri:'/images/iOS/icon-iphone-retina.png')}" rel="apple-touch-icon" sizes="120x120"/>
-    <link href="${r.resource(uri:'/images/iOS/icon-ipad-retina.png')}" rel="apple-touch-icon" sizes="152x152"/>
+    <link href="${r.resource(uri: '/images/iOS/icon-iphone.png')}" rel="apple-touch-icon"/>
+    <link href="${r.resource(uri: '/images/iOS/icon-ipad.png')}" rel="apple-touch-icon" sizes="76x76"/>
+    <link href="${r.resource(uri: '/images/iOS/icon-iphone-retina.png')}" rel="apple-touch-icon" sizes="120x120"/>
+    <link href="${r.resource(uri: '/images/iOS/icon-ipad-retina.png')}" rel="apple-touch-icon" sizes="152x152"/>
+    <!-- end iOS web app-->
     <r:external uri="/images/favicon.ico"/>
-
     <is:loadJsVar/>
-    <r:require modules="jquery,bootstrap,jquery-plugins,jqplot,icescrum,objects${grailsApplication.config?.modulesResources ? ','+grailsApplication.config.modulesResources.join(',') : ''}"/>
-    <sec:ifLoggedIn>
-        <script src="${resource(dir: 'js/timeline/timeline_ajax', file: 'simile-ajax-api.js?bundle=true')}" type="text/javascript"></script>
-        <script src="${resource(dir: 'js/timeline/timeline_js', file: 'timeline-api.js?bundle=true')}" type="text/javascript"></script>
-        <script src="${resource(dir: 'js/timeline', file: 'icescrum-painter.js')}" type="text/javascript"></script>
-    </sec:ifLoggedIn>
+    <r:require modules="jquery,bootstrap,angularjs,jquery-plugins,jqplot,icescrum,objects${grailsApplication.config?.modulesResources ? ',' + grailsApplication.config.modulesResources.join(',') : ''}"/>
     <r:layoutResources/>
     <g:layoutHead/>
 </head>
-<body ${user?.preferences?.displayWhatsNew?'data-whatsnew="true"':''}>
+<body ${user?.preferences?.displayWhatsNew ? 'data-whatsnew="true"' : ''} ng-controller="appCtrl">
 <is:header/>
 <div class="container-fluid">
     <div class="row sidebar-hidden">
@@ -59,7 +56,7 @@
                 </div>
                 <g:if test="${request.archivedProduct}">
                     <div class="alert alert-danger">
-                        <strong>${message(code:'is.message.project.activate')}</strong>
+                        <strong>${message(code: 'is.message.project.activate')}</strong>
                     </div>
                 </g:if>
                 <g:if test="${!ApplicationSupport.isProVersion()}">
@@ -70,7 +67,7 @@
                 </g:if>
                 <div class="alert alert-info alert-dismissable" id="notifications" style="display:none;">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <a href="#"><strong>${message(code:'is.ui.html5.notifications')}</strong></a>
+                    <a href="#"><strong>${message(code: 'is.ui.html5.notifications')}</strong></a>
                 </div>
                 <entry:point id="sidebar-alerts"/>
                 <div class="sidebar-content"
@@ -81,27 +78,20 @@
                 </div>
             </div>
         </g:if>
-        <div id="main" class="col-xs-12 col-sm-${product ? '10' : '12'} col-md-${product ? '9' : '12'} col-lg-${product ? '10' : '12'}">
+        <div id="main"
+             class="col-xs-12 col-sm-${product ? '10' : '12'} col-md-${product ? '9' : '12'} col-lg-${product ? '10' : '12'}">
             <div id="main-content"
                  data-ui-droppable-hover-class="pointer"
                  data-ui-droppable-drop="$.icescrum.onDropToWindow"
-                 data-ui-droppable-accept=".draggable-to-main">
+                 data-ui-droppable-accept=".draggable-to-main"
+                 ui-view>
                 <g:layoutBody/>
             </div>
         </div>
     </div>
-    <span class="hidden"
-          data-is-shortcut
-          data-is-shortcut-key="H"
-          data-is-shortcut-callback="$.icescrum.displayShortcuts"
-          title="${message(code:'todo.is.ui.this.help')}"></span>
 </div>
 <r:layoutResources/>
-
 <entry:point id="icescrum-footer"/>
-
-<g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
-<is:onStream events="[[object:'product',events:['add','remove','update','redirect','archive', 'unarchive']]]"/>
-<is:onStream events="[[object:'user',events:['addRoleProduct','removeRoleProduct','updateRoleProduct','updateProfile']]]"/>
+<g:include controller="scrumOS" action="templates" params="[product: params.product]"/>
 </body>
 </html>

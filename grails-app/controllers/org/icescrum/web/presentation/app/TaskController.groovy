@@ -23,6 +23,7 @@
  */
 package org.icescrum.web.presentation.app
 
+import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Sprint
@@ -238,7 +239,7 @@ class TaskController {
                 }
             }
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: idj as JSON) }
+                html { render(status: 200) }
                 json { render(status: 204) }
                 xml { render(status: 204) }
             }
@@ -294,6 +295,17 @@ class TaskController {
         withFormat {
             json { renderRESTJSON(text: tasks) }
             xml { renderRESTXML(text: tasks) }
+        }
+    }
+
+    @Secured('stakeHolder() and !archivedProduct()')
+    def tasksStory = {
+        withStory { Story story ->
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: story.tasks as JSON) }
+                json { renderRESTJSON(text:story.tasks) }
+                xml  { renderRESTXML(text:story.tasks) }
+            }
         }
     }
 

@@ -32,22 +32,23 @@ modules = {
         resource url: [dir: "css", file: 'select2.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'select2-bootstrap.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'jquery.jqplot.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "css", file: 'angular-hotkeys.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'styles.less'], attrs: [rel: "stylesheet/less", type:'css', media: 'print,screen,projection'], bundle: 'icescrum'
     }
 
     'icescrum' {
         dependsOn 'app-css', 'jquery-plugins'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.form.js'], bundle: 'icescrum'
+        //resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.form.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.menubar.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.postit.js'], bundle: 'icescrum'
+        //resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.postit.js'], bundle: 'icescrum'
         //todo remove ?
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.search.js'], bundle: 'icescrum'
+        //resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.search.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.utils.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.widget.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.window.js'], bundle: 'icescrum'
         //todo remove
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.wizard.js'], bundle: 'icescrum'
+        //resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.wizard.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.html5data.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.js'], bundle: 'icescrum'
         resource url: [dir: 'js', file: 'dropzone.js'], bundle: 'icescrum'
@@ -82,6 +83,33 @@ modules = {
         resource url:[dir:'js', file:"bootstrap.min.js"], disposition:'head'
     }
 
+    'angularjs' {
+        resource url:[dir:'js/angularjs/lib', file:"angular.min.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-route.min.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-resource.min.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-ui-bootstrap.min.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-ui-router.min.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-ui-select2.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-hotkeys.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app', file:"controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app', file:"services.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app', file:"filters.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app', file:"directives.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app', file:"app.js"], disposition:'head'
+
+        resource url:[dir:'js/angularjs/app/user', file:"user.controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app/user', file:"user.services.js"], disposition:'head'
+
+        resource url:[dir:'js/angularjs/app/story', file:"story.controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app/story', file:"story.services.js"], disposition:'head'
+
+        resource url:[dir:'js/angularjs/app/task', file:"task.controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app/task', file:"task.services.js"], disposition:'head'
+
+        resource url:[dir:'js/angularjs/app/comment', file:"comment.controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app/comment', file:"comment.services.js"], disposition:'head'
+    }
+
     'jqplot' {
         dependsOn 'jquery'
         resource url: [dir: "js/jquery", file: 'jqplot/jquery.jqplot.min.js'], bundle: 'icescrum'
@@ -103,20 +131,16 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery-ui.touch-punch.min.js'], bundle: 'icescrum'
         //todo remove
         resource url: [dir: 'js/jquery', file: 'jquery.pnotify.min.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.history.js'], bundle: 'icescrum'
+        //resource url: [dir: 'js/jquery', file: 'jquery.history.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.mousewheel.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.hotkeys.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.dotimeout.min.js'], bundle: 'icescrum'
-        //todo remove
-        resource url: [dir: 'js/jquery', file: 'jquery.eventline.js'], bundle: 'icescrum'
-        //todo remove
-        resource url: [dir: 'js/jquery', file: 'jquery.dropmenu.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.atmosphere.js'], bundle: 'icescrum'
         //todo remove
-        resource url: [dir: 'js/jquery', file: 'jquery.jqote2.js'], bundle: 'icescrum'
+        //resource url: [dir: 'js/jquery', file: 'jquery.jqote2.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.timeago.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.visible.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/jquery', file: 'jquery.touchSwipe.min.js'], bundle: 'icescrum'
+        //resource url: [dir: 'js/jquery', file: 'jquery.visible.js'], bundle: 'icescrum'
+        //resource url: [dir: 'js/jquery', file: 'jquery.touchSwipe.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.notify.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.select2.min.js'], bundle: 'icescrum'

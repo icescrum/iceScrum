@@ -82,7 +82,8 @@
                         story._comments = false;
                     }
                     return story._comments;
-                }
+                },
+                tasks:""
             },
 
             config: {

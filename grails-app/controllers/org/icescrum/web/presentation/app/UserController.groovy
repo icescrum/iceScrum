@@ -229,8 +229,7 @@ class UserController {
             render(status: 403)
             return
         }
-        def dialog = g.render(template: 'dialogs/register')
-        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+        render(status:200, contentType: 'application/json', template: 'dialogs/register')
     }
 
     @Secured('isAuthenticated()')
@@ -248,8 +247,7 @@ class UserController {
         }
 
         if (!params.text) {
-            def dialog = g.render(template: 'dialogs/retrieve')
-            render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+            render(status:200, template: 'dialogs/retrieve')
         } else {
             def user = User.findWhere(username:params.text)
             if (!user || !user.enabled || user.accountExternal) {
@@ -329,5 +327,20 @@ class UserController {
         }
 
         render(results as JSON)
+    }
+
+    def current = {
+        def user = [user:springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
+                    roles:[
+                            productOwner:request.productOwner,
+                            scrumMaster:request.scrumMaster,
+                            teamMember:request.teamMember,
+                            stakeHolder:request.stakeHolder
+                    ]]
+        withFormat{
+            html { render(status:200, contentType:'application/json', text: user as JSON) }
+            json { renderRESTJSON(text:user) }
+            xml  { renderRESTXML(text:user) }
+        }
     }
 }

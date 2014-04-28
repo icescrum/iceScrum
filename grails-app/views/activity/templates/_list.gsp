@@ -19,24 +19,18 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<script type="text/icescrum-template" id="tpl-activities">
-**# if (!object.activities()) { **
-<tr>
+<script type="text/ng-template" id="activity.list.html">
+<tr ng-show="selected.activities === undefined">
     <td class="empty-content">
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-**# } else if (size(object.activities()) > 0) {
-_.each(object.activities(), function(activity) { **
-<tr>
-    <td>** activity.cachedLabel **</td>
+<tr ng-repeat="activity in selected.activities">
+    <td>{{ activity.cachedLabel }}</td>
 </tr>
-**# }); **
-**# } else { **
-<tr>
+<tr ng-show="!selected.activities && selected.activities !== undefined">
     <td class="empty-content">
         <small>${message(code:'todo.is.ui.activity.empty')}</small>
     </td>
 </tr>
-**# } **
 </script>

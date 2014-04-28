@@ -13,7 +13,7 @@
                     ${' (R'+error.version?.replaceFirst('\\.','#')+')'}
                 </g:if>
             </td>
-            <td>${error.message.startsWith('is.') ? g.message(code:error.message, args:error.args?:null) : error.message}
+            <td>${error.message?.startsWith('is.') ? g.message(code:error.message, args:error.args?:null) : error.message}
                 <g:if test="${error.version}">
                     <br/>
                     <a href="${error.url}">${g.message(code:'is.warning.version.download')}</a>

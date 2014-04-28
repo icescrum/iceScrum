@@ -19,30 +19,20 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:modal name="about"
-          title="${message(code:'is.about')}">
-    <ul class="nav nav-pills nav-justified">
-        <entry:point id="about-tabs-title-first"/>
+<is:modal title="${message(code:'is.about')}">
+    <tabset type="tabsType" justified="true">
+        <entry:point id="about-tabs-first"/>
         <g:if test="${errors}">
-            <li><a href="#errors-tab" data-toggle="tab">${message(code:'is.dialog.about.errors')}</a></li>
-        </g:if>
-        <li><a href="#version-tab" data-toggle="tab">${message(code:'is.dialog.about.version')}</a></li>
-        <li><a href="#license-tab" data-toggle="tab">${message(code:'is.dialog.about.license')}</a></li>
-        <entry:point id="about-tabs-title-last"/>
-    </ul>
-    <div class="tab-content">
-        <entry:point id="about-tabs-content-first"/>
-        <g:if test="${errors}">
-            <div class="tab-pane scrollable-shadow" id="errors-tab">
+            <tab heading="${message(code:'is.dialog.about.errors')}">
                 <g:render template="/${controllerName}/about/errors" model="[errors:errors]"/>
-            </div>
+            </tab>
         </g:if>
-        <div class="tab-pane scrollable-shadow" id="version-tab">
+        <tab heading="${message(code:'is.dialog.about.version')}">
             <g:render template="/${controllerName}/about/version" model="[version:about.version, server:server]"/>
-        </div>
-        <div class="tab-pane scrollable-shadow" id="license-tab">
+        </tab>
+        <tab heading="${message(code:'is.dialog.about.license')}">
             ${about.license.text().encodeAsNL2BR()}
-        </div>
-        <entry:point id="about-tabs-content-last"/>
-    </div>
+        </tab>
+        <entry:point id="about-tabs-last"/>
+    </tabset>
 </is:modal>

@@ -182,7 +182,9 @@ class StoryController {
             }
 
             withFormat {
-                html { render status: 200, contentType: 'application/json', text: stories as JSON }
+                html {
+                    render status: 200, contentType: 'application/json', text: stories.size() > 1 ? stories : stories.first() as JSON
+                }
                 // TODO find a proper solution for multiple elements (A rest API should probably not require to manipulate arrays of resources)
                 json { renderRESTJSON(text: stories.first()) }
                 xml  { renderRESTXML(text:stories.first()) }

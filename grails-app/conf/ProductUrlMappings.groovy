@@ -136,6 +136,41 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/task" {
+            controller = 'task'
+            action = [GET: "list", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/task/$id" {
+            controller = 'task'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/task/$id/$action" {
+            controller = 'task'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/task/$type/$id" {
+            controller = 'task'
+            action = [GET: "tasksStory"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+                type(inList: ['story', 'sprint'])
+            }
+        }
+
         "/p/$product/story" {
             controller = 'story'
             action = [GET: "list", POST:"save"]
@@ -161,7 +196,7 @@ class ProductUrlMappings {
             }
         }
 
-        "/p/$product/$type/$commentable/comment" {
+        "/p/$product/comment/$type/$commentable" {
             controller = 'comment'
             action = [GET: "list", POST:"save"]
             constraints {
@@ -171,7 +206,7 @@ class ProductUrlMappings {
             }
         }
 
-        "/p/$product/$type/$commentable/comment/$id" {
+        "/p/$product/comment/$type/$commentable/$id" {
             controller = 'comment'
             action = [GET: "show", PUT:"update", DELETE:"delete"]
             constraints {
@@ -182,7 +217,7 @@ class ProductUrlMappings {
             }
         }
 
-        "/p/$product/$type/$attachmentable/attachment" {
+        "/p/$product/attachment/$type/$attachmentable" {
             controller = 'attachment'
             action = [GET: "list", POST:"save"]
             constraints {
@@ -192,7 +227,7 @@ class ProductUrlMappings {
             }
         }
 
-        "/p/$product/$type/$attachmentable/attachment/$id" {
+        "/p/$product/attachment/$type/$attachmentable/$id" {
             controller = 'attachment'
             action = [GET: "show", DELETE:"delete"]
             constraints {
