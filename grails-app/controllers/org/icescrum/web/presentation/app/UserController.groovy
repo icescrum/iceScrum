@@ -24,7 +24,6 @@
 package org.icescrum.web.presentation.app
 
 import org.apache.commons.io.FilenameUtils
-import org.icescrum.plugins.attachmentable.interfaces.AttachmentException
 import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
@@ -36,7 +35,6 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
-import grails.plugin.springcache.annotations.Cacheable
 
 class UserController {
 
@@ -127,7 +125,6 @@ class UserController {
                             autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
                             onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
                 }
-                //user
                 bindData(user, params, [include:['firstName','lastName','email']], "user")
                 //preferences using as Map for REST & HTTP support
                 if (params.user.preferences){
@@ -325,7 +322,6 @@ class UserController {
                             activity: "${user.preferences.activity ?: ''}"]
             }
         }
-
         render(results as JSON)
     }
 

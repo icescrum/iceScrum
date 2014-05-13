@@ -195,7 +195,7 @@ class StoryController {
     @Secured('isAuthenticated()')
     def delete = {
         withStories{List<Story> stories ->
-            storyService.delete(stories, true, params.reason? params.reason.replaceAll("(\r\n|\n)", "<br/>") :null)
+            storyService.delete(stories, null, params.reason? params.reason.replaceAll("(\r\n|\n)", "<br/>") :null)
             withFormat {
                 html { render(status: 200)  }
                 json { render(status: 204) }

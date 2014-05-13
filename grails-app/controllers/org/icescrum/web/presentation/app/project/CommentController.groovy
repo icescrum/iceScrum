@@ -23,14 +23,10 @@
 package org.icescrum.web.presentation.app.project
 
 import grails.converters.JSON
-import grails.converters.XML
 import grails.plugins.springsecurity.Secured
-import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
-import org.icescrum.core.domain.User
-import org.icescrum.core.event.IceScrumBacklogElementEvent
 import org.icescrum.core.event.IceScrumEventType
 
 class CommentController {
