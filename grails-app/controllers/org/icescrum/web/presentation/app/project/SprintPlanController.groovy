@@ -286,7 +286,11 @@ class SprintPlanController {
     def copyFromPreviousDoneDefinition = {
         withSprint{ Sprint sprint ->
             Sprint.withTransaction {
-                sprint.doneDefinition = sprint.previousSprint.doneDefinition
+                def previousSprint = sprint.previousSprint
+                if (!previousSprint) {
+                    returnError(text:message(code: 'is.sprint.error.doneDefinition.no.previous'))
+                }
+                sprint.doneDefinition = previousSprint.doneDefinition
                 sprintService.update(sprint)
             }
             redirect(action: 'doneDefinition', params: [product: params.product, id: sprint.id])
@@ -303,7 +307,11 @@ class SprintPlanController {
     def copyFromPreviousRetrospective = {
         withSprint{ Sprint sprint ->
             Sprint.withTransaction {
-                sprint.retrospective = sprint.previousSprint.retrospective
+                def previousSprint = sprint.previousSprint
+                if (!previousSprint) {
+                    returnError(text:message(code: 'is.sprint.error.doneDefinition.no.previous'))
+                }
+                sprint.retrospective = previousSprint.retrospective
                 sprintService.update(sprint)
             }
             redirect(action: 'retrospective', params: [product: params.product, id: sprint.id])
