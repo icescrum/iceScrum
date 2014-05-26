@@ -140,6 +140,7 @@
                                name="story.name"
                                ng-model="story.name"
                                type="text"
+                               ng-readonly="readOnly()"
                                class="form-control">
                         <span class="input-group-btn">
                             <button type="button"
@@ -160,6 +161,7 @@
                     <input type="hidden"
                            style="width:100%;"
                            class="form-control"
+                           ng-readonly="readOnly()"
                            value="{{ story.feature.id ? story.feature : '' }}"
                            ng-model="story.feature"
                            ui-select2="selectFeatureOptions"
@@ -180,6 +182,7 @@
                     <select style="width:100%"
                             class="form-control"
                             ng-model="story.type"
+                            ng-readonly="readOnly()"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
                 </select>
@@ -190,6 +193,7 @@
                            type="hidden"
                            value="{{ story.affectVersion  }}"
                            ng-model="story.affectVersion"
+                           ng-readonly="readOnly()"
                            ui-select2="selectAffectionVersionOptions"
                            data-placeholder="${message(code:'is.ui.story.noaffectversion')}"
                            style="width:100%"/>
@@ -203,6 +207,7 @@
                             class="form-control"
                             value="{{ story.dependsOn.id ? story.dependsOn : '' }}"
                             ng-model="story.dependsOn"
+                            ng-readonly="readOnly()"
                             ui-select2="selectDependsOnOptions"
                             data-placeholder="${message(code: 'is.ui.story.nodependence')}"/>
                     <span class="input-group-btn" ng-show="story.dependsOn.id">
@@ -222,6 +227,7 @@
                 <label for="story.description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
                           ng-model="story.description"
+                          ng-readonly="readOnly()"
                           ng-show="showDescriptionTextarea"
                           ng-blur="showDescriptionTextarea = false"
                           focus-me="{{ showDescriptionTextarea }}"
@@ -246,6 +252,7 @@
                        class="form-control"
                        value="{{ story.tags.join(',') }}"
                        ng-model="story.tags"
+                       ng-readonly="readOnly()"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
             </div>
@@ -254,6 +261,7 @@
                 <textarea is-markitup
                           class="form-control"
                           ng-model="story.notes"
+                          ng-readonly="readOnly()"
                           is-model-html="story.notes_html"
                           ng-show="showNotesTextarea"
                           ng-blur="showNotesTextarea = false"

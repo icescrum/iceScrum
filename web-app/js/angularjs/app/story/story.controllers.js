@@ -92,7 +92,7 @@ controllers.controller('storyHeaderCtrl',['$scope', '$state', '$filter', 'StoryS
     });
 }]);
 
-controllers.controller('storyEditCtrl',['$scope', function ($scope) {
+controllers.controller('storyEditCtrl',['$scope', 'Session', function ($scope, Session) {
     //$scope.selected is inherited from storyCtrl
     //copy story model
     $scope.story = angular.copy($scope.selected);
@@ -200,4 +200,9 @@ controllers.controller('storyEditCtrl',['$scope', function ($scope) {
             }
         }
     };
+    $scope.readOnly = function() {
+        return !Session.roles.productOwner &&
+               !Session.roles.scrumMaster &&
+               Session.user.id != $scope.story.creator.id;
+    }
 }]);

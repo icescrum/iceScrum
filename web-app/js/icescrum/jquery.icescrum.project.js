@@ -50,7 +50,7 @@
                     if (this.pkey != $.icescrum.product.pkey){
                         alert($.icescrum.product.i18n.updated);
                         var view = $.icescrum.o.currentOpenedWindow ? $.icescrum.o.currentOpenedWindow.data('id') : 'project';
-                        document.location = $.icescrum.o.baseUrl + 'p/' + this.pkey + '#' + view;
+                        document.location = $.icescrum.o.baseUrl + 'p/' + this.pkey + '#/' + view;
                         return;
                     }
 
@@ -125,7 +125,7 @@
                 if (document.location.href.indexOf($.icescrum.o.grailsServer+'/p/'+this.pkey) > -1 ){
                     document.location.reload();
                 }else{
-                    document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey+'#project';
+                    document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey+'#/project';
                 }
             }
         }

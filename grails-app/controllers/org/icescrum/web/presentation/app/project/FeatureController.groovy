@@ -194,7 +194,7 @@ class FeatureController {
 
     // TODO cache
     def right = {
-        render template: "window/right", model: [exportFormats: getExportFormats()]
+        render template: "window/right"
     }
 
     @Cacheable(cache = "featuresCache", keyGenerator= 'featuresKeyGenerator')

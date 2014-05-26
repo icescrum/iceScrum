@@ -137,13 +137,6 @@ class ActorController {
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
-    def attachments = {
-        withActor { actor ->
-            manageAttachmentsNew(actor)
-        }
-    }
-
     // TODO cache
     def view = {
         render(template: "${params.type ?: 'window'}/view")
@@ -151,7 +144,7 @@ class ActorController {
 
     // TODO cache
     def right = {
-        render template: "window/right", model: [exportFormats: getExportFormats()]
+        render template: "window/right"
     }
 
     def print = {

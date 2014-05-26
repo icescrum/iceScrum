@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -67,6 +68,48 @@ isApp
                             return StoryService.get($stateParams.id);
                         }
                     }
+                })
+                .state('actor', {
+                    url: '/actor',
+                    templateUrl: 'openWindow/actor',
+                    controller: 'actorsCtrl',
+                    resolve:{
+                        actors:function(ActorService){
+                            return ActorService.list;
+                        }
+                    }
+                })
+                .state('actor.details', {
+                    url: "/:id",
+                    templateUrl: 'actor.details.html',
+                    controller: 'actorCtrl',
+                    resolve:{
+                        ActorService:'ActorService',
+                        selected:function(ActorService, $stateParams){
+                            return ActorService.get($stateParams.id);
+                        }
+                    }
+                })
+                .state('feature', {
+                    url: '/feature',
+                    templateUrl: 'openWindow/feature',
+                    controller: 'featuresCtrl',
+                    resolve:{
+                        features:function(FeatureService){
+                            return FeatureService.list;
+                        }
+                    }
+                })
+                .state('feature.details', {
+                    url: "/:id",
+                    templateUrl: 'feature.details.html',
+                    controller: 'featureCtrl',
+                    resolve:{
+                        FeatureService:'FeatureService',
+                        selected:function(FeatureService, $stateParams){
+                            return FeatureService.get($stateParams.id);
+                        }
+                    }
                 });
         }
     ])
@@ -105,4 +148,11 @@ isApp
         5: {"value": "In progress", "code": "inprogress"},
         7: {"value": "Done", "code": "done"},
         '-1': {"value": "In the Icebox", "code": "icebox"}
+    })
+    .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
+        PO_SM: 'PO_SM',
+        PO: 'PO',
+        SM: 'SM',
+        TM: 'TM',
+        SH: 'SH'
     });

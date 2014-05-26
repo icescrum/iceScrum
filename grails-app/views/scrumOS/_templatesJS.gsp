@@ -134,6 +134,8 @@
         <g:render template="/comment/templates"/>
         <g:render template="/attachment/templates"/>
         <g:render template="/activity/templates"/>
+        <g:render template="/actor/templates"/>
+        <g:render template="/feature/templates"/>
         <!-- end new templates -->
     </g:if>
 </div>

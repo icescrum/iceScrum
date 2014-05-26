@@ -20,25 +20,73 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div data-binding-type="feature"
-     data-binding-watch="array"
-     data-binding-selector="#features-size"
-     data-binding-tpl="tpl-features">
 
-    <select name="export"
-            onchange="$.icescrum.downloadExport(this)"
-            style="width:100px;"
-            data-sl2-placeholder="Export in"
-            data-sl2-icon-class="file-icon format-"
-            data-sl2>
-                <option></option>
-                <g:each in="${exportFormats}" var="format">
-                    <option url="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
-                            value="${format.code.toLowerCase()}">${format.name}</option>
-                </g:each>
-    </select>
-    <entry:point id="${controllerName}-${actionName}"/>
-</div>
-<script type="text/icescrum-template" id="tpl-features" style="display:none">
-    <span id="features-size">** _.size(list) ** ${message(code:'is.ui.feature.features')}</span>
-</script>
+<nav class="navbar navbar-toolbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="btn-toolbar" id="${controllerName}-toolbar" role="toolbar">
+            <div class="btn-group">
+                <button type="button"
+                        data-toggle="tooltip"
+                        data-ui-tooltip-container="body"
+                        title="${message(code:'todo.is.ui.toggle.grid.list')}"
+                        onclick="$.icescrum.toggleGridList('#backlog-layout-window-${controllerName}',this)"
+                        class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-th"></span>
+                </button>
+            </div>
+            <div class="btn-group" data-toggle="tooltip" data-ui-tooltip-container="body" title="${message(code:'todo.is.ui.export')}">
+                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu"
+                    role="menu">
+                    <g:each in="${is.exportFormats()}" var="format">
+                        <li role="menuitem">
+                            <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
+                        </li>
+                    </g:each>
+                    <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
+                </ul>
+            </div>
+            <div class="btn-group pull-right">
+                <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
+                <g:if test="${params?.printable}">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.print')} (P)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="P"
+                            title="${message(code:'is.ui.window.print')}"
+                            href="${createLink(controller:controllerName,action:'print', params:[product:params.product?:null, format:'PDF'])}"
+                            data-ajax="true"><span class="glyphicon glyphicon-print"></span>
+                    </button>
+                </g:if>
+                <g:if test="${params?.widgetable}">
+                    <button type="button"
+                            class="btn btn-default btn-widget"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.widgetable')} (W)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="W"><span class="glyphicon glyphicon-retweet"></span>
+                    </button>
+                </g:if>
+                <g:if test="${params?.fullScreen}">
+                    <button type="button"
+                            class="btn btn-default btn-fullscreen"
+                            data-toggle="tooltip"
+                            data-ui-tooltip-container="body"
+                            title="${message(code:'is.ui.window.fullscreen')} (F)"
+                            data-is-shortcut
+                            data-is-shortcut-on="#window-id-${controllerName}"
+                            data-is-shortcut-key="F"><span class="glyphicon glyphicon-fullscreen"></span>
+                    </button>
+                </g:if>
+            </div>
+        </div>
+    </div>
+</nav>

@@ -22,24 +22,9 @@
 --}%
 
 <div id="backlog-layout-window-${controllerName}"
-     data-ui-selectable-global-stop="true"
-     data-ui-selectable-stop="$.icescrum.actor.onSelectableStop"
-     data-ui-selectable-filter="div.postit-actor"
-     data-ui-selectable-cancel=".postit-label, a"
-     data-is-shortcut
-     data-is-shortcut-on="#backlog-layout-window-${controllerName}"
-     data-is-shortcut-key="a arrows"
-     data-is-shortcut-callback="$.icescrum.selectableShortcut"
-     data-binding-after="$.icescrum.selectableHash"
-     data-binding-type="actor"
-     data-binding-selector="div.postit-actor"
-     data-binding-tpl="tpl-postit-actor"
-     data-binding-watch="items"
-     data-binding-highlight="true"
-     data-binding-sort-on="useFrequency"
-     data-binding-config="actors"
-     class="view-postit backlog">
-    <div class="add-new-postit">
-        <span>+</span>
+     class="row list-group">
+    <div ng-click="go('/actor/' + actor.id)" ng-repeat="actor in actors | orderBy: predicate"
+         class="item actor col-xs-4 col-lg-4 ui-selectee grid-group-item">
+        {{ actor.name }}
     </div>
 </div>

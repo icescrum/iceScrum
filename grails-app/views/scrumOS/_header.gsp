@@ -131,11 +131,11 @@
                             </li>
                             <g:each var="curProduct" in="${productFilteredsList}">
                                 <li id='product-${curProduct.id}' class="projects ${(curProduct.owner.id == user?.id) ? 'owner' : ''}">
-                                    <g:link class="${(product?.id == curProduct.id) ? 'active' : ''}" controller="scrumOS"
-                                            params="[product:curProduct.pkey]"
-                                            onClick="${(product?.id == curProduct.id) ? ' jQuery.icescrum.renderNotice(\''+g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')])+'\'); return false;' : ''}">
+                                    <a class="${(product?.id == curProduct.id) ? 'active' : ''}"
+                                       href="${createLink(controller: "scrumOS", params: [product:curProduct.pkey])}/"
+                                       onClick="${(product?.id == curProduct.id) ? ' jQuery.icescrum.renderNotice(\''+g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')])+'\'); return false;' : ''}">
                                         <is:truncated encodedHTML="true" size="25">${curProduct.name.encodeAsHTML()}</is:truncated>
-                                    </g:link>
+                                    </a>
                                 </li>
                             </g:each>
                         </g:if>
@@ -159,7 +159,7 @@
                                 data-toggle="tooltip"
                                 data-placement="bottom"
                                 title="${message(code: menu.title)} (CTRL+${index + 1})"
-                                href='#${menu.id}'>
+                                href='#/${menu.id}'>
                                 <span class="drag text-muted">
                                     <span class="glyphicon glyphicon-th"></span>
                                     <span class="glyphicon glyphicon-th"></span>
@@ -178,7 +178,7 @@
                                         data-toggle="tooltip"
                                         data-placement="left"
                                         title="${message(code: menu.title)} (CTRL+${index + menus.size() + 1})"
-                                        href='#${menu.id}'>
+                                        href='#/${menu.id}'>
                                         <span class="drag text-muted">
                                             <span class="glyphicon glyphicon-th"></span>
                                             <span class="glyphicon glyphicon-th"></span>
@@ -201,16 +201,26 @@
                             </span>
                         </div>
                     </form>
+                    <!-- Todo remove, user role change for dev only -->
+                    <div style="padding: 13px" class="pull-left">
+                        <a ng-class="{ 'text-warning': roles.productOwner && roles.scrumMaster }" ng-click="changeRole('PO_SM')" href="#">PO_SM</a>
+                        <a ng-class="{ 'text-warning': roles.productOwner && (!roles.scrumMaster) }" ng-click="changeRole('PO')" href="#">PO</a>
+                        <a ng-class="{ 'text-warning': roles.scrumMaster && (!roles.productOwner) }" ng-click="changeRole('SM')" href="#">SM</a>
+                        <a ng-class="{ 'text-warning': roles.teamMember }" ng-click="changeRole('TM')" href="#">TM</a>
+                        <a ng-class="{ 'text-warning': roles.stakeHolder }" ng-click="changeRole('SH')" href="#">SH</a>
+                    </div>
                 </g:if>
-                <div ng-if="authenticated"
+            <!-- TODO Replace by angular UI to enable biding (when popover html template will be available) -->
+            <div ng-if="currentUser.username"
                      class="navbar-user pull-left"
-                     popover-placement="bottom"
-                     popover="#user-details">
+                     data-ui-popover
+                     data-ui-popover-placement="bottom"
+                     data-ui-popover-id="popover-user"
+                     data-ui-popover-html-content="#user-details">
                     <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
                 </div>
-                {{ currentUser }}
-                <div ng-if="authenticated" id="user-details" class="hidden">
-                    <div class="panel panel-default">
+            <div ng-if="currentUser.username" id="user-details" class="hidden">
+                <div class="panel panel-default">
                         <div class="panel-body">
                             <img ng-src="{{ currentUser | userAvatar }}" height="60px" width="60px" class="pull-left"/>
                             {{ currentUser.username }}
@@ -235,7 +245,7 @@
                     </div>
                 </div>
                 <button id="login"
-                        ng-show="!authenticated"
+                        ng-show="!(currentUser.username)"
                         class="btn btn-primary"
                         hotkey="{'L':showAuthModal}"
                         ng-click="showAuthModal()"

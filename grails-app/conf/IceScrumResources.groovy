@@ -103,6 +103,12 @@ modules = {
         resource url:[dir:'js/angularjs/app/story', file:"story.controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app/story', file:"story.services.js"], disposition:'head'
 
+        resource url:[dir:'js/angularjs/app/actor', file:"actor.controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app/actor', file:"actor.services.js"], disposition:'head'
+
+        resource url:[dir:'js/angularjs/app/feature', file:"feature.controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app/feature', file:"feature.services.js"], disposition:'head'
+
         resource url:[dir:'js/angularjs/app/task', file:"task.controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app/task', file:"task.services.js"], disposition:'head'
 

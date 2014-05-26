@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -25,8 +26,10 @@ var controllers = angular.module('controllers', []);
 
 controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($scope, $modal, Session) {
     $scope.currentUser = Session.user;
-    $scope.authenticated = Session.authenticated;
-
+    $scope.roles = Session.roles;
+    $scope.changeRole = function(newRole) {
+        Session.changeRole(newRole);
+    };
     $scope.showAbout = function () {
         $modal.open({
             templateUrl: 'scrumOS/about',
@@ -69,6 +72,20 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
 controllers.controller('sandboxCtrl', ['$scope', '$location', '$state', 'stories', function ($scope, $location, $state, stories) {
     $scope.stories = stories;
     $scope.predicate = 'suggestedDate';
+    $scope.go = function(url){
+        $location.path(url);
+    };
+}]);
+
+controllers.controller('actorsCtrl', ['$scope', '$location', 'actors', function ($scope, $location, actors) {
+    $scope.actors = actors;
+    $scope.go = function(url){
+        $location.path(url);
+    };
+}]);
+
+controllers.controller('featuresCtrl', ['$scope', '$location', 'features', function ($scope, $location, features) {
+    $scope.features = features;
     $scope.go = function(url){
         $location.path(url);
     };

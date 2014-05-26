@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum SAS.
+- Copyright (c) 2014 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -21,10 +21,4 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<div id="backlog-layout-window-${controllerName}"
-     class="row list-group">
-    <div ng-click="go('/feature/' + feature.id)" ng-repeat="feature in features | orderBy: predicate"
-         class="item feature col-xs-4 col-lg-4 ui-selectee grid-group-item">
-        {{ feature.name }}
-    </div>
-</div>
+<g:render template="/feature/templates/feature.details" />

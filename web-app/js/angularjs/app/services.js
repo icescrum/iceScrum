@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -38,24 +39,48 @@ services.factory('AuthService',['$http', 'Session', '$state', function ($http, S
                 });
         }
     };
-}]).service('Session',['$q','User', function ($q, User) {
+}]).service('Session',['$q','User', 'USER_ROLES', function ($q, User, USER_ROLES) {
     var self = this;
     self.user = {};
-    self.authenticated = false;
-    self.roles = {};
-
-    this.destroy = function () {
-        self.user = {};
-        self.authenticated = false;
-        self.roles = {};
+    var defaultRoles = {
+        productOwner: false,
+        scrumMaster: false,
+        teamMember: false,
+        stakeHolder: false
     };
-
+    self.roles = _.clone(defaultRoles);
+    this.destroy = function () {
+        _.merge(self.roles, defaultRoles);
+        // TODO WARNING this removes the binding, not a problem for the moment because the logout is followed by a refresh
+        // If we want to keep the window active we will need to remove the properties and keep the object reference
+        // Or maybe there is another way to preserve the binding while changing the reference...
+        self.user = {};
+    };
     this.create = function (){
-        User.current().$promise.then(function(data){
-            self.user = data.user;
-            self.roles = data.roles;
-            self.authenticated = self.user ? true : false;
-        })
+        User.current().$promise.then(function(data) {
+            _.extend(self.user, data.user);
+            _.merge(self.roles, data.roles);
+        });
+    };
+    this.changeRole = function(newUserRole) {
+        var newRoles = {};
+        switch (newUserRole) {
+            case USER_ROLES.PO_SM:
+                newRoles.productOwner = true;
+                newRoles.scrumMaster = true;
+                break;
+            case USER_ROLES.PO:
+                newRoles.productOwner = true;
+                break;
+            case USER_ROLES.SM:
+                newRoles.scrumMaster = true;
+                break;
+            case USER_ROLES.TM:
+                newRoles.teamMember = true;
+                break;
+        }
+        newRoles.stakeHolder = true;
+        _.merge(self.roles, defaultRoles, newRoles);
     };
 }]);
 
@@ -105,6 +130,15 @@ var formObjectData = function (obj, prefix) {
     _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
     _prefix = _prefix.toLowerCase();
 
+    // TODO consider making it available at top level or replacing it
+    // Custom functions because the real ones aren't available yet (apart from firefox)
+    function startsWith(str, start) {
+        return str.lastIndexOf(start, 0) === 0
+    }
+    function endsWith(str, end) {
+        return str.indexOf(end, str.length - end.length) !== -1;
+    }
+
     for (name in obj) {
         value = obj[name];
         if (value instanceof Array) {
@@ -132,10 +166,11 @@ var formObjectData = function (obj, prefix) {
             //no class info needed
             && !_.contains(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
             //no angular object
-            && !name.startsWith('$')
+            && !startsWith(name, '$')
             //no custom count / html values
-            && !name.endsWith('_count') && !name.endsWith('_html'))
+            && !endsWith(name, '_count') && !endsWith(name, '_html')) {
             query += encodeURIComponent(_prefix + name) + '=' + encodeURIComponent(value) + '&';
+        }
     }
 
     return query.length ? query.substr(0, query.length - 1) : query;

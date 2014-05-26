@@ -196,6 +196,40 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/actor" {
+            controller = 'actor'
+            action = [GET: "list", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/actor/$id" {
+            controller = 'actor'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/feature" {
+            controller = 'feature'
+            action = [GET: "list", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/feature/$id" {
+            controller = 'feature'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+
         "/p/$product/comment/$type/$commentable" {
             controller = 'comment'
             action = [GET: "list", POST:"save"]
