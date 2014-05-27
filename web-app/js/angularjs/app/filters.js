@@ -36,7 +36,7 @@ filters
 })
     .filter('descriptionHtml', function() {
     return function(story) {
-        return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
+        return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#/actor/$1">$2</a>') : "";
     };
 })
     .filter('sanitize', ['$sce', function($sce) {

@@ -21,6 +21,8 @@
 --}%
 <g:render template="/story/templates/story.details" />
 
+<g:render template="/story/templates/nested.stories" />
+
 <g:render template="/story/templates/menu" />
 
 <g:render template="/story/templates/new" />

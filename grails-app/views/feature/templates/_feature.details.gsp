@@ -138,10 +138,18 @@
                      ng-bind-html="feature.notes_html | sanitize"></div>
             </div>
         </form>
-        <tabset type="tabsType">
+        <tabset type="{{ tabsType }}">
             <tab heading="${message(code: 'is.ui.backlogelement.attachment')}"
                  active="tabActive['attachments']"
                  scroll-to-tab="#right">
+            </tab>
+            <tab select="stories(selected)"
+                 heading="${message(code: 'todo.is.ui.stories')}"
+                 active="tabActive['stories']"
+                 scroll-to-tab="#right">
+                <table class="table table-striped">
+                    <tbody ng-include src="'nested.stories.html'"></tbody>
+                </table>
             </tab>
         </tabset>
     </div>

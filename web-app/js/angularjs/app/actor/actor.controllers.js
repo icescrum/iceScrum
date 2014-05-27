@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('actorCtrl', ['$scope', '$state', 'selected', 'ActorService', function ($scope, $state, selected, ActorService) {
+controllers.controller('actorCtrl', ['$scope', '$state', 'selected', 'ActorService', 'StoryService', function ($scope, $state, selected, ActorService, StoryService) {
     $scope.selected = selected;
     $scope.tabsType = 'tabs nav-tabs-google';
     $scope.tabActive = {'attachments': true};
@@ -34,10 +34,12 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'selected', 'ActorServi
             $scope.$digest();
         });
     };
-
     $scope['delete'] = function (actor) {
         ActorService.delete(actor);
         $state.go('^');
+    };
+    $scope.stories = function(actor){
+        actor.stories = _.where(StoryService.list, { actor: { id: actor.id }});
     };
 }]);
 
