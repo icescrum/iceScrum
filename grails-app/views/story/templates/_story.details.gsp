@@ -235,7 +235,7 @@
                           data-at-at="a"
                           data-at-matcher="$.icescrum.story.formatters.description"
                           data-at-default="${is.generateStoryTemplate(newLine: '\\n')}"
-                          data-at-placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"
+                          placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"
                           data-at-change="${updateUrl}"
                           data-at-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
                           data-at-data="${g.createLink(controller:'actor', action: 'search', params:[product:'** jQuery.icescrum.product.pkey **'], absolute: true)}"></textarea>
@@ -244,7 +244,7 @@
                      ng-click="showDescriptionTextarea = true"
                      ng-focus="showDescriptionTextarea = true"
                      tabindex="0"
-                     ng-bind-html="story | descriptionHtml | sanitize"></div>
+                     ng-bind-html="(story.description ? (story | descriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
             </div>
             <div class="form-group">
                 <input type="hidden"
@@ -271,7 +271,7 @@
                      ng-click="showNotesTextarea = true"
                      ng-focus="showNotesTextarea = true"
                      tabindex="0"
-                     ng-bind-html="story.notes_html | sanitize"></div>
+                     ng-bind-html="(story.notes_html ? story.notes_html : '${message(code: 'is.ui.backlogelement.nonotes')}') | sanitize"></div>
             </div>
         </form>
         <tabset type="{{ tabsType }}">

@@ -135,7 +135,7 @@
                      ng-click="showNotesTextarea = true"
                      ng-focus="showNotesTextarea = true"
                      tabindex="0"
-                     ng-bind-html="feature.notes_html | sanitize"></div>
+                     ng-bind-html="(feature.notes_html ? feature.notes_html : '${message(code: 'is.ui.backlogelement.nonotes')}') | sanitize"></div>
             </div>
         </form>
         <tabset type="{{ tabsType }}">
