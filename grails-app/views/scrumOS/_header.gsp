@@ -39,17 +39,7 @@
             <is:errors/>
         </div>
         <div id="mainmenu">
-            <ul class="nav navbar-nav scroll"
-                ${sec.ifLoggedIn(null,'data-ui-sortable-handle=".drag"')}
-                data-ui-sortable-revert="true"
-                data-ui-sortable-helper="clone"
-                data-ui-sortable-delay="100"
-                data-ui-sortable-items=".menubar"
-                data-ui-sortable-cancel="span.title"
-                data-ui-sortable-stop="$.icescrum.menuBar.stop"
-                data-ui-sortable-start="$.icescrum.menuBar.start"
-                data-ui-sortable-update="$.icescrum.menuBar.update"
-                data-ui-sortable-connect-with="#menubar-list-content">
+            <ul class="nav navbar-nav scroll" ui-sortable="menubarSortableOptions">
                 <li class="dropdown contextual-menu">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>
@@ -150,12 +140,13 @@
                     </ul>
                 </li>
                 <entry:point id="menu-left" model="[product:product]"/>
+                <!-- Todo enable cache -->
                 <is:cache cache="userCache" key="user-${user?.username?:'anonymous'}-${user?.lastUpdated}-${product?.lastUpdated}" disabled="${product ? true : true}" role="false" locale="false">
                     <li class="menubar hidden">&nbsp;</li>
                     <g:each in="${menus}" var="menu" status="index">
                         <li class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
-                            <a  data-is-shortcut
-                                data-is-shortcut-key="ctrl+${index + 1}"
+                            <a  hotkey="{ 'ctrl+${index + 1}' : hotkeyClick }"
+                                hotkey-description="${message(code:'todo.is.open.view')} ${message(code: menu.title)}"
                                 data-toggle="tooltip"
                                 data-placement="bottom"
                                 title="${message(code: menu.title)} (CTRL+${index + 1})"
@@ -164,7 +155,7 @@
                                     <span class="glyphicon glyphicon-th"></span>
                                     <span class="glyphicon glyphicon-th"></span>
                                 </span>
-                                <i class="visible-xs ${menu.icon}"></i> ${message(code: menu.title)}</a>
+                                <i class="visible-xs ${menu.icon}"></i><span class="title"> ${message(code: menu.title)}</span></a>
                         </li>
                     </g:each>
                     <li class="dropdown menubar-hidden">
@@ -173,8 +164,8 @@
                             <li class="menubar hidden" data-hidden="true">&nbsp;</li>
                             <g:each in="${menusHidden}" var="menu" status="index">
                                 <li data-hidden="true" class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
-                                    <a  data-is-shortcut
-                                        data-is-shortcut-key="ctrl+${index + menus.size() + 1}"
+                                    <a  hotkey="{ 'ctrl+${index + menus.size() + 1}' : hotkeyClick }"
+                                        hotkey-description="${message(code:'todo.is.open.view')} ${message(code: menu.title)}"
                                         data-toggle="tooltip"
                                         data-placement="left"
                                         title="${message(code: menu.title)} (CTRL+${index + menus.size() + 1})"
@@ -183,7 +174,7 @@
                                             <span class="glyphicon glyphicon-th"></span>
                                             <span class="glyphicon glyphicon-th"></span>
                                         </span>
-                                        <i class="visible-xs ${menu.icon}"></i> ${message(code: menu.title)}</a>
+                                        <i class="visible-xs ${menu.icon}"></i><span class="title"> ${message(code: menu.title)}</span></a>
                                 </li>
                             </g:each>
                         </ul>

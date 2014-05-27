@@ -51,6 +51,18 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
             size:'sm'
         });
     };
+    $scope.menubarSortableOptions = {
+        revert:true,
+        handle:'.drag',
+        helper:'clone',
+        delay:100,
+        items:'.menubar',
+        cancel:'span.title',
+        stop:$.icescrum.menuBar.stop,
+        start:$.icescrum.menuBar.start,
+        update:$.icescrum.menuBar.update,
+        connectWith:"#menubar-list-content"
+    }
 }]).controller('loginCtrl',['$scope', '$rootScope','$modalInstance' , 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, $modalInstance, AUTH_EVENTS, AuthService) {
     $scope.credentials = {
         j_username: '',

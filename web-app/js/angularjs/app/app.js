@@ -129,8 +129,18 @@ isApp
             }
         };
     }]).
-    run(['Session', function(Session){
+    run(['Session', '$rootScope', '$timeout', function(Session, $rootScope, $timeout){
         Session.create();
+        //used to handle click with shortcut hotkeys
+        $rootScope.hotkeyClick = function(event, hotkey) {
+            if (hotkey.el && hotkey.el.is( "a" )){
+                event.preventDefault();
+                $timeout(function(){
+                    hotkey.el.click();
+                });
+
+            }
+        };
     }])
     .constant('AUTH_EVENTS', {
         loginSuccess: 'auth-login-success',

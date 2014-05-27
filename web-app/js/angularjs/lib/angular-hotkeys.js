@@ -86,8 +86,9 @@
              * @param {String}   description Description for the keycombo
              * @param {Function} callback    function to execute when keycombo pressed
              * @param {Boolean}  persistent  Whether the hotkey persists navigation events
+             * @param {Boolean}  el  elem if hotkey is from directive
              */
-            function Hotkey (combo, description, callback, persistent) {
+            function Hotkey (combo, description, callback, persistent, el) {
                 // TODO: Check that the values are sane because we could
                 // be trying to instantiate a new Hotkey with outside dev's
                 // supplied values
@@ -95,6 +96,7 @@
                 this.description = description;
                 this.callback = callback;
                 this.persistent = persistent;
+                this.el = el;
             }
 
             /**
@@ -206,8 +208,9 @@
              * @param {string}   description description for the help menu
              * @param {Function} callback    method to call when key is pressed
              * @param {boolean}  persistent  if true, the binding is preserved upon route changes
+             * @param {Boolean}  el  elem if hotkey is from directive
              */
-            function _add (combo, description, callback, persistent) {
+            function _add (combo, description, callback, persistent, el) {
                 // a config object was passed instead, so unwrap it:
                 if (combo instanceof Object) {
                     description = combo.description;
@@ -232,7 +235,7 @@
                 }
 
                 Mousetrap.bind(combo, wrapApply(callback));
-                scope.hotkeys.push(new Hotkey(combo, description, callback, persistent));
+                scope.hotkeys.push(new Hotkey(combo, description, callback, persistent, el));
 
             }
 
@@ -323,7 +326,7 @@
 
                     angular.forEach(scope.$eval(attrs.hotkey), function (func, hotkey) {
                         key = hotkey;
-                        hotkeys.add(hotkey, attrs.hotkeyDescription, func);
+                        hotkeys.add(hotkey, attrs.hotkeyDescription, func, true, el);
                     });
 
                     // remove the hotkey if the directive is destroyed:

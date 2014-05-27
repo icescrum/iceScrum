@@ -274,7 +274,7 @@
                      ng-bind-html="story.notes_html | sanitize"></div>
             </div>
         </form>
-        <tabset type="tabsType">
+        <tabset type="{{ tabsType }}">
             <tab select="activities(selected)"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
                  active="tabActive['activities']"
