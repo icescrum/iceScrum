@@ -44,84 +44,6 @@
             bindings:[],
             restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'story/'; },
 
-            proxyProperties:{
-                activities:function(refresh){
-                    //get fresh object from data
-                    var story = _.findWhere($.icescrum['story'].data, {id:this.id});
-                    if (refresh){
-                        delete story._activities;
-                    }
-                    if (!story.hasOwnProperty('_activities')){
-                        $.get($.icescrum.story.restUrl()+story.id+'/activities', function(data){
-                            //get synced object from data array
-                            var _story = _.findWhere($.icescrum['story'].data, {id:story.id});
-                            if (_story){
-                                _story._activities = data;
-                            }
-                        });
-                        //state loading
-                        story._activities = false;
-                    }
-                    return story._activities;
-                },
-                comments:function(refresh){
-                    //get fresh object from data
-                    var story = _.findWhere($.icescrum['story'].data, {id:this.id});
-                    if (refresh){
-                        delete story._comments;
-                    }
-                    if (!story.hasOwnProperty('_comments')){
-                        $.get($.icescrum.story.restUrl()+ story.id+'/comment', function(data){
-                            //get synced object from data array
-                            var _story = _.findWhere($.icescrum['story'].data, {id:story.id});
-                            if (_story){
-                                _story._comments = data;
-                            }
-                        });
-                        //state loading
-                        story._comments = false;
-                    }
-                    return story._comments;
-                },
-                tasks:""
-            },
-
-            config: {
-                sandbox: {
-                    filter: { state : 1 },
-                    sort:function(item){ return Object.byString(item, this.sortOn); }
-                },
-                backlog: {
-                    filter: { state : 3 }
-                },
-                actors: { // TODO WARNING experimental config
-                    filter: function(item) {
-                        var actorStoryUids = _.find($.icescrum.story.bindings, { config: "actors" }).uids;
-                        return _.contains(actorStoryUids, item.uid);
-                    }
-                }
-            },
-
-            formatters:{
-                state:function(story){
-                    return story.state > 1 ? $.icescrum.story.states[story.state].value : '';
-                },
-                description:function(story) {
-                    return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#actor/$1">$2</a>') : "";
-                },
-                type:function(story) {
-                    if (story.type == $.icescrum.story.TYPE_DEFECT && story.affectVersion){
-                        return $.icescrum.story.types[story.type]+" (version:"+" "+story.affectVersion+")";
-                    } else {
-                        return $.icescrum.story.types[story.type];
-                    }
-                }
-            },
-
-            'delete':function(data, status, xhr, element){
-                _.each(element.data('ajaxData').id, function(item){ $.icescrum.object.removeFromArray('story', {id:item}); });
-            },
-
             onDropFeature:function(event, ui){
                 if (ui.helper){
                     $.ajax({
@@ -168,29 +90,7 @@
                 }
                 attachOnDomUpdate(container);
             },
-            createForm:function(template, container){
-                container = container ? container : $('#contextual-properties');
-                var el;
-                if (template){
-                    $.get($.icescrum.story.restUrl()+'templateEntries', {'template':template}, function(data){
-                        data.name = $('input[name="story.name"]', container).val();
-                        el = $.template('story-new', {story:data, template:template});
-                    });
-                } else {
-                    el = $.template('story-new', {story:{}, template:template});
-                }
-                container.html(el);
-                attachOnDomUpdate(container);
-                container.find('input:first:visible').focus();
-            },
-            afterSave:function(data){
-                var selectable = $('.window-content.ui-selectable');
-                selectable.find('div[data-elemid="'+data.id+'"]').addClass('ui-selected');
-                var stop = selectable.selectableScroll( "option" , "stop");
-                if (stop){
-                    stop({target:selectable});
-                }
-            },
+
             findDuplicate:function(term) {
                 if (term == null || term.length <= 5) {
                     this.termDuplicate = null;
@@ -207,6 +107,7 @@
                     }, 500);
                 }
             },
+
             sortAndOrderOnSandbox:function(order){
                 var $sandbox = $('#backlog-layout-window-sandbox');
                 var ids = [];
@@ -234,18 +135,6 @@
                         $(item).addClass('ui-selected');
                     }
                 });
-            },
-            formatSelect:function(object, container){
-                var type = parseInt(object.id);
-                var icon = '';
-                if (type == $.icescrum.story.TYPE_DEFECT){
-                    icon = 'fa fa-bug';
-                } else if (type == $.icescrum.story.TYPE_TECHNICAL_STORY){
-                    icon = 'fa fa-cogs';
-                } else {
-                    icon = '';
-                }
-                return '<i class="' + icon + '"></i> ' + object.text;
             }
         }
     });

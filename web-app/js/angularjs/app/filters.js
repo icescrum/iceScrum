@@ -34,6 +34,20 @@ filters
         return user ?  'user/avatar/'+ user.id : '';
     };
 })
+    .filter('contrastColor', function() {
+    return function(bg) {
+        //convert hex to rgb
+        if (bg.indexOf('#') == 0){
+            var bigint = parseInt(bg.substring(1), 16);
+            var r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
+            bg = 'rgb('+r+', '+g+', '+b+')';
+        }
+        //get r,g,b and decide
+        var rgb = bg.replace(/^(rgb|rgba)\(/,'').replace(/\)$/,'').replace(/\s/g,'').split(',');
+        var yiq = ((rgb[0]*299)+(rgb[1]*587)+(rgb[2]*114))/1000;
+        return (yiq >= 128) ? '' : 'light-color';
+    };
+})
     .filter('descriptionHtml', function() {
     return function(story) {
         return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#/actor/$1">$2</a>') : "";

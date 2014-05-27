@@ -33,6 +33,7 @@ modules = {
         resource url: [dir: "css", file: 'select2-bootstrap.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'jquery.jqplot.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'angular-hotkeys.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "css", file: 'angular-colorpicker.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'styles.less'], attrs: [rel: "stylesheet/less", type:'css', media: 'print,screen,projection'], bundle: 'icescrum'
     }
 
@@ -62,11 +63,9 @@ modules = {
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.acceptancetest.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.attachment.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.comment.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.feature.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.project.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.release.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.sprint.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.actor.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.story.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.task.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.user.js'], bundle: 'icescrum'
@@ -90,6 +89,7 @@ modules = {
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-bootstrap.min.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-router.min.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-select2.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-ui-colorpicker.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-hotkeys.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"services.js"], disposition:'head'

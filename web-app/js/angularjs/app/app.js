@@ -31,7 +31,8 @@ var isApp = angular.module('isApp', [
     'ui.router',
     'ui.bootstrap',
     'ui.select2',
-    'cfp.hotkeys'
+    'cfp.hotkeys',
+    'colorpicker.module'
 ]);
 
 isApp

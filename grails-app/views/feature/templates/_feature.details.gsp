@@ -60,15 +60,49 @@
     <div id="right-feature-container"
          class="right-properties new panel-body">
         <form ng-submit="update(feature)" name='featureForm' show-validation ng-controller="featureEditCtrl">
-            <div class="clearfix no-padding">
-                <div class="col-md-6 form-group">
-                    <label for="feature.name">${message(code:'is.feature.name')}</label>
+            <div class="form-group">
+                <label for="feature.name">${message(code:'is.feature.name')}</label>
+                <div class="input-group">
                     <input required
                            name="feature.name"
                            ng-model="feature.name"
                            ng-readonly="readOnly()"
                            type="text"
                            class="form-control">
+                    <span class="input-group-btn">
+                        <button type="button"
+                                tabindex="-1"
+                                popover-title="${message(code:'is.permalink')}"
+                                popover="** $.icescrum.o.grailsServer **/** $.icescrum.product.pkey **-** feature.uid **"
+                                popover-append-to-body="true"
+                                popover-placement="left"
+                                class="btn btn-default">
+                            <i class="fa fa-link"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="clearfix no-padding">
+                <div class="col-md-6 form-group">
+                    <label for="feature.type">${message(code:'is.feature.type')}</label>
+                    <div class="input-group">
+                        <select style="width:100%"
+                            class="form-control"
+                            ng-model="feature.type"
+                            ng-readonly="readOnly()"
+                            ui-select2>
+                            <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}" />
+                        </select>
+                        <span class="input-group-btn">
+                            <button colorpicker
+                                    class="btn {{ feature.color | contrastColor }}"
+                                    type="button"
+                                    style="background-color:{{ feature.color }};"
+                                    colorpicker-position="top"
+                                    value="#bf3d3d"
+                                    ng-model="feature.color"><i class="fa fa-pencil"></i></button>
+                        </span>
+                    </div>
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="feature.value">${message(code:'is.feature.value')}</label>
@@ -78,28 +112,6 @@
                             ng-readonly="readOnly()"
                             ui-select2>
                         <is:options values="${PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)}" />
-                    </select>
-                </div>
-            </div>
-            <div class="clearfix no-padding">
-                <div class="col-md-6 form-group">
-                    <label for="feature.type">${message(code:'is.feature.type')}</label>
-                    <select style="width:100%"
-                            class="form-control"
-                            ng-model="feature.type"
-                            ng-readonly="readOnly()"
-                            ui-select2>
-                        <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}" />
-                    </select>
-                </div>
-                <div class="col-md-6 form-group">
-                    <label for="feature.color">${message(code:'is.feature.color')}</label>
-                    <select style="width:100%"
-                            class="form-control"
-                            ng-model="feature.color"
-                            ng-readonly="readOnly()"
-                            ui-select2>
-                        <is:options values="${is.internationalizeValues(map: BundleUtils.colorsSelect)}" />
                     </select>
                 </div>
             </div>
