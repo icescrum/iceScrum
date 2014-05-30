@@ -20,12 +20,16 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('taskCtrl', ['$scope', 'TaskService', function ($scope, TaskService) {
+controllers.controller('taskCtrl', ['$scope', 'TaskService', 'Session', function ($scope, TaskService, Session) {
     $scope.save = function(task, obj){
         TaskService.save(task, obj);
     };
 
     $scope['delete'] = function(task, story){
         TaskService.delete(task, story);
-    }
+    };
+
+    $scope.deletable = function() {
+        return Session.poOrSm() || Session.creator($scope.task);
+    };
 }]);

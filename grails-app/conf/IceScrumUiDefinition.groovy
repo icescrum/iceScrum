@@ -41,6 +41,7 @@ uiDefinitions = {
             help 'is.ui.actor.help'
             init 'view'
             right true
+            toolbar true
         }
         widget {
             title 'is.ui.actor'
@@ -128,6 +129,7 @@ uiDefinitions = {
             help 'is.ui.feature.help'
             init 'view'
             right true
+            toolbar true
         }
         widget {
             title 'is.ui.feature'

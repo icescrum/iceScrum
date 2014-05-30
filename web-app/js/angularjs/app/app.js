@@ -53,9 +53,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                         filterListParams: { state:1 }
                     },
                     resolve:{
-                        stories:function(StoryService){
+                        stories:['StoryService', function(StoryService){
                             return StoryService.list;
-                        }
+                        }]
                     }
                 })
                 .state('sandbox.details', {
@@ -63,10 +63,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                     templateUrl: 'story.details.html',
                     controller: 'storyCtrl',
                     resolve:{
-                        StoryService:'StoryService',
-                        selected:function(StoryService, $stateParams){
+                        selected:['StoryService', '$stateParams', function(StoryService, $stateParams){
                             return StoryService.get($stateParams.id);
-                        }
+                        }]
                     }
                 })
                 .state('sandbox.details.tab', {
@@ -77,9 +76,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                     templateUrl: 'openWindow/actor',
                     controller: 'actorsCtrl',
                     resolve:{
-                        actors:function(ActorService){
+                        actors:['ActorService', function(ActorService){
                             return ActorService.list;
-                        }
+                        }]
                     }
                 })
                 .state('actor.details', {
@@ -87,20 +86,22 @@ isApp.config(['$stateProvider', '$httpProvider',
                     templateUrl: 'actor.details.html',
                     controller: 'actorCtrl',
                     resolve:{
-                        ActorService:'ActorService',
-                        selected:function(ActorService, $stateParams){
+                        selected:['ActorService', '$stateParams', function(ActorService, $stateParams){
                             return ActorService.get($stateParams.id);
-                        }
+                        }]
                     }
+                })
+                .state('actor.details.tab', {
+                    url: "/:tabId"
                 })
                 .state('feature', {
                     url: '/feature',
                     templateUrl: 'openWindow/feature',
                     controller: 'featuresCtrl',
                     resolve:{
-                        features:function(FeatureService){
+                        features:['FeatureService', function(FeatureService){
                             return FeatureService.list;
-                        }
+                        }]
                     }
                 })
                 .state('feature.details', {
@@ -108,11 +109,13 @@ isApp.config(['$stateProvider', '$httpProvider',
                     templateUrl: 'feature.details.html',
                     controller: 'featureCtrl',
                     resolve:{
-                        FeatureService:'FeatureService',
-                        selected:function(FeatureService, $stateParams){
+                        selected:['FeatureService', '$stateParams', function(FeatureService, $stateParams){
                             return FeatureService.get($stateParams.id);
-                        }
+                        }]
                     }
+                })
+                .state('feature.details.tab', {
+                    url: "/:tabId"
                 });
         }
     ])

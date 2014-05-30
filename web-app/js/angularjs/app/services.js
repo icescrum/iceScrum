@@ -62,6 +62,12 @@ services.factory('AuthService',['$http', 'Session', '$state', function ($http, S
             _.merge(self.roles, data.roles);
         });
     };
+    this.poOrSm = function() {
+        return self.roles.productOwner || self.roles.scrumMaster;
+    };
+    this.creator = function(item) {
+        return self.user.id == item.creator.id;
+    };
     this.changeRole = function(newUserRole) {
         var newRoles = {};
         switch (newUserRole) {
@@ -81,6 +87,41 @@ services.factory('AuthService',['$http', 'Session', '$state', function ($http, S
         }
         newRoles.stakeHolder = true;
         _.merge(self.roles, defaultRoles, newRoles);
+    };
+}]).service('FormService', [function() {
+    this.previous = function (list, element) {
+        var ind = list.indexOf(element);
+        return ind > 0 ? list[ind - 1] : null;
+    };
+    this.next = function (list, element) {
+        var ind = list.indexOf(element);
+        return ind + 1 <= list.length ? list[ind + 1] : null;
+    };
+    this.selectTagsOptions = {
+        tags: [],
+        multiple: true,
+        simple_tags: true,
+        tokenSeparators: [",", " "],
+        createSearchChoice: function (term) {
+            return { id: term, text: term };
+        },
+        formatSelection: function (object) {
+            return '<a href="#finder/?tag=' + object.text + '" onclick="document.location=this.href;"> <i class="fa fa-tag"></i> ' + object.text + '</a>';
+        },
+        ajax: {
+            url: 'finder/tag',
+            cache: 'true',
+            data: function (term) {
+                return {term: term};
+            },
+            results: function (data) {
+                var results = [];
+                angular.forEach(data, function (result) {
+                    results.push({id: result, text: result});
+                });
+                return {results: results};
+            }
+        }
     };
 }]);
 

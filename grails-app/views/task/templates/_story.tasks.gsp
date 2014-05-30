@@ -36,12 +36,12 @@
         <div class="content">
             <span class="clearfix text-muted"><a href="#">{{ task.name }}</a></span>
             {{ task.description }}
-            **# if($.icescrum.user.poOrSm() || task.creator.id == $.icescrum.creator.id) { ** <a href
-                                                                                                 ng-click="delete(task, selected)"
-                                                                                                 tooltip-placement="left"
-                                                                                                 tooltip="${message(code:'todo.is.ui.task.delete')}"
-                                                                                                 class="on-hover delete"><i class="fa fa-times text-danger"></i></a>
-            **# } **
+            <a href
+                ng-if="deletable()"
+                ng-click="delete(task, selected)"
+                tooltip-placement="left"
+                tooltip="${message(code:'todo.is.ui.task.delete')}"
+                class="on-hover delete"><i class="fa fa-times text-danger"></i></a>
             <small class="clearfix text-muted">
                 <time class='timeago' datetime='{{ task.dateCreated }}'>
                     {{ task.dateCreated }}

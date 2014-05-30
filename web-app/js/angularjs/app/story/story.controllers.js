@@ -25,14 +25,18 @@ controllers.controller('storyCtrl', ['$scope', '$state', 'selected', 'StoryServi
     $scope.tabsType = 'tabs nav-tabs-google';
     $scope.tabSelected = {};
     //watch from url change outside and keep updated of which tab is selected (getting params tabId in view)
-    $scope.$watch('$state.params', function(newValue, oldValue){
+    $scope.$watch('$state.params', function() {
         if ($state.params.id == selected.id){
             $scope.tabSelected[$state.params.tabId] = true;
         }
     });
     //for buttons in story header
     $scope.setTabSelected = function(tab){
-        $state.go('.', {tabId:tab});
+        if ($state.params.tabId) {
+            $state.go('.', {tabId:tab});
+        } else {
+            $state.go('.tab', {tabId:tab});
+        }
     };
 
     $scope.update = function(story) {
@@ -71,21 +75,16 @@ controllers.controller('storyCtrl', ['$scope', '$state', 'selected', 'StoryServi
     };
 }]);
 
-controllers.controller('storyHeaderCtrl',['$scope', '$state', '$filter', 'StoryStates', 'StoryService', function ($scope, $state, $filter, StoryStates, StoryService) {
-    //$scope.selected is inherited from storyCtrl
-    //show follow & like status
+controllers.controller('storyHeaderCtrl',['$scope', '$state', '$filter', 'StoryStates', 'StoryService', 'FormService', function ($scope, $state, $filter, StoryStates, StoryService, FormService) {
     StoryService.follow($scope.selected, true);
     StoryService.like($scope.selected, true);
     //manage display next / previous
     var list = $state.current.data.filterListParams ? $filter('filter')(StoryService.list, $state.current.data.filterListParams) : StoryService.list;
-    var ind = list.indexOf($scope.selected);
-    $scope.previous = ind > 0 ? list[ind - 1] : null;
-    $scope.next = ind + 1 <= list.length ? list[ind + 1] : null;
+    $scope.previous = FormService.previous(list, $scope.selected);
+    $scope.next = FormService.next(list, $scope.selected);
     //compute progress state
     $scope.progressStates = [];
-    var width = 100 / _.filter(_.keys(StoryStates), function (key) {
-        return key > 0
-    }).length;
+    var width = 100 / _.filter(_.keys(StoryStates), function (key) { return key > 0 }).length;
     _.each(StoryStates, function (state, key) {
         var date = $scope.selected[state.code.toLowerCase() + 'Date'];
         if (date != null) {
@@ -98,7 +97,7 @@ controllers.controller('storyHeaderCtrl',['$scope', '$state', '$filter', 'StoryS
     });
 }]);
 
-controllers.controller('storyEditCtrl',['$scope', 'Session', function ($scope, Session) {
+controllers.controller('storyEditCtrl',['$scope', 'Session', 'FormService', function ($scope, Session, FormService) {
     //$scope.selected is inherited from storyCtrl
     //copy story model
     $scope.story = angular.copy($scope.selected);
@@ -127,32 +126,7 @@ controllers.controller('storyEditCtrl',['$scope', 'Session', function ($scope, S
         }
     };
     //select tags
-    $scope.selectTagsOptions = {
-        tags:[],
-        multiple:true,
-        simple_tags:true,
-        tokenSeparators: [",", " "],
-        createSearchChoice:function (term) {
-            return {id:term, text:term};
-        },
-        formatSelection:function(object){
-            return '<a href="#finder/?tag='+object.text+'" onclick="document.location=this.href;"> <i class="fa fa-tag"></i> '+object.text+'</a>';
-        },
-        ajax: {
-            url: 'finder/tag',
-            cache: 'true',
-            data: function (term) {
-                return {term: term};
-            },
-            results: function (data) {
-                var results = [];
-                angular.forEach(data, function(result){
-                    results.push({id:result,text:result});
-                });
-                return {results:results};
-            }
-        }
-    };
+    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
     //select feature
     $scope.selectFeatureOptions = {
         formatResult: function(object, container){
@@ -207,8 +181,6 @@ controllers.controller('storyEditCtrl',['$scope', 'Session', function ($scope, S
         }
     };
     $scope.readOnly = function() {
-        return !Session.roles.productOwner &&
-               !Session.roles.scrumMaster &&
-               Session.user.id != $scope.story.creator.id;
+        return !(Session.poOrSm() || Session.creator($scope.story));
     }
 }]);

@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.Story; grails.converters.JSON" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -
@@ -20,11 +21,45 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
-<div id="backlog-layout-window-${controllerName}"
-     class="row list-group">
-    <div ng-click="go('/actor/' + actor.id)" ng-repeat="actor in actors | orderBy: predicate"
-         class="item actor col-xs-4 col-lg-4 ui-selectee grid-group-item">
-        {{ actor.name }}
+<div ui-selectable
+     id="backlog-layout-window-${controllerName}"
+     class="postits list-group">
+    <div ng-repeat="actor in actors"
+         class="postit-container item grid-group-item">
+        <div style="{{ '#f9f157' | createGradientBackground }}"
+             class="postit actor #f9f157">
+            <div class="head">
+                <span class="id">{{ actor.id }}</span>
+            </div>
+            <div class="content">
+                <h3 class="title" ng-bind-html="actor.name | sanitize" ellipsis></h3>
+                <div class="description" ng-bind-html="actor.description | sanitize" ellipsis></div>
+            </div>
+            <div class="tags">
+                <a ng-repeat="tag in actor.tags" href="#"><span class="tag">{{ tag }}</span></a>
+            </div>
+            <div class="actions">
+                <span class="action">
+                    <a href="#" tooltip="${message(code: 'todo.is.actor.actions')}" tooltip-append-to-body="true">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                </span>
+                <span class="action" ng-class="{'active':actor.attachments_count}">
+                    <a href="#/actor/{{ actor.id }}/attachments"
+                       tooltip="{{ actor.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
+                       tooltip-append-to-body="true">
+                        <i class="fa fa-paperclip"></i>
+                    </a>
+                </span>
+                <span class="action" ng-class="{'active':actor.stories_count}">
+                    <a href="#/actor/{{ actor.id }}/tasks"
+                       tooltip="{{ actor.stories_count }} ${message(code:'todo.is.actor.stories')}"
+                       tooltip-append-to-body="true">
+                        <i class="fa fa-tasks"></i>
+                        <span class="badge" ng-show="actor.stories_count">{{ actor.stories_count }}</span>
+                    </a>
+                </span>
+            </div>
+        </div>
     </div>
 </div>

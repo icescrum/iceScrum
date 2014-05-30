@@ -24,10 +24,18 @@
 controllers.controller('actorCtrl', ['$scope', '$state', 'selected', 'ActorService', 'StoryService', function ($scope, $state, selected, ActorService, StoryService) {
     $scope.selected = selected;
     $scope.tabsType = 'tabs nav-tabs-google';
-    $scope.tabActive = {'attachments': true};
-    $scope.setTabActive = function (tabId) {
-        $scope.tabActive = {};
-        $scope.tabActive[tabId] = true;
+    $scope.tabSelected = {};
+    $scope.$watch('$state.params', function() {
+        if ($state.params.id == selected.id){
+            $scope.tabSelected[$state.params.tabId] = true;
+        }
+    });
+    $scope.setTabSelected = function(tab){
+        if ($state.params.tabId) {
+            $state.go('.', {tabId:tab});
+        } else {
+            $state.go('.tab', {tabId:tab});
+        }
     };
     $scope.update = function (actor) {
         ActorService.update(actor, function () {
@@ -43,41 +51,14 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'selected', 'ActorServi
     };
 }]);
 
-controllers.controller('actorHeaderCtrl', ['$scope', 'ActorService', function ($scope, ActorService) {
-    var list = ActorService.list;
-    var ind = list.indexOf($scope.selected);
-    $scope.previous = ind > 0 ? list[ind - 1] : null;
-    $scope.next = ind + 1 <= list.length ? list[ind + 1] : null;
+controllers.controller('actorHeaderCtrl', ['$scope', 'ActorService', 'FormService', function ($scope, ActorService, FormService) {
+    $scope.previous = FormService.previous(ActorService.list, $scope.selected);
+    $scope.next = FormService.next(ActorService.list, $scope.selected);
 }]);
 
-controllers.controller('actorEditCtrl', ['$scope', 'Session', function ($scope, Session) {
+controllers.controller('actorEditCtrl', ['$scope', 'Session', 'FormService', function ($scope, Session, FormService) {
     $scope.actor = angular.copy($scope.selected);
-    $scope.selectTagsOptions = {
-        tags: [],
-        multiple: true,
-        simple_tags: true,
-        tokenSeparators: [",", " "],
-        createSearchChoice: function (term) {
-            return { id: term, text: term };
-        },
-        formatSelection: function (object) {
-            return '<a href="#finder/?tag=' + object.text + '" onclick="document.location=this.href;"> <i class="fa fa-tag"></i> ' + object.text + '</a>';
-        },
-        ajax: {
-            url: 'finder/tag',
-            cache: 'true',
-            data: function (term) {
-                return {term: term};
-            },
-            results: function (data) {
-                var results = [];
-                angular.forEach(data, function (result) {
-                    results.push({id: result, text: result});
-                });
-                return {results: results};
-            }
-        }
-    };
+    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
     $scope.readOnly = function() {
         return !Session.roles.productOwner;
     };

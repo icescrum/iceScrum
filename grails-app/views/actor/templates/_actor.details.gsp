@@ -26,9 +26,9 @@
     <div id="actor-header"
          class="panel-heading"
          ng-controller="actorHeaderCtrl"
-         is-fixed="#right"
-         is-fixed-offset-top="1"
-         is-fixed-offset-width="-2">
+         fixed="#right"
+         fixed-offset-top="1"
+         fixed-offset-width="-2">
         <h3 class="panel-title">
             <span>{{ selected.name }}</span>
             <div class="pull-right">
@@ -52,6 +52,22 @@
                  tooltip-append-to-body="true">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-cog"></span> <span class="caret"></span>
+                </button>
+            </div>
+            <div class="btn-group pull-right">
+                <button name="attachments" class="btn btn-default"
+                        ng-click="setTabSelected('attachments')"
+                        tooltip="{{ selected.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                        tooltip-append-to-body="true">
+                    <span class="fa fa-paperclip"></span>
+                    <span class="badge" ng-show="selected.attachments_count">{{ selected.attachments_count }}</span>
+                </button>
+                <button name="stories" class="btn btn-default"
+                        ng-click="setTabSelected('stories')"
+                        tooltip="{{ selected.stories_count }} ${message(code:'todo.is.actor.stories')}"
+                        tooltip-append-to-body="true">
+                    <span class="fa fa-tasks"></span>
+                    <span class="badge" ng-show="selected.stories_count">{{ selected.stories_count }}</span>
                 </button>
             </div>
         </div>
@@ -140,13 +156,14 @@
             </div>
         </form>
         <tabset type="{{ tabsType }}">
-            <tab heading="${message(code: 'is.ui.backlogelement.attachment')}"
-                 active="tabActive['attachments']"
+            <tab select="setTabSelected('attachments');"
+                 heading="${message(code: 'is.ui.backlogelement.attachment')}"
+                 active="tabSelected.attachments"
                  scroll-to-tab="#right">
             </tab>
-            <tab select="stories(selected)"
-                 heading="${message(code: 'todo.is.ui.stories')}"
-                 active="tabActive['stories']"
+            <tab select="stories(selected); setTabSelected('stories');"
+                 heading="${message(code: 'todo.is.actor.stories')}"
+                 active="tabSelected.stories"
                  scroll-to-tab="#right">
                 <table class="table table-striped">
                     <tbody ng-include src="'nested.stories.html'"></tbody>
