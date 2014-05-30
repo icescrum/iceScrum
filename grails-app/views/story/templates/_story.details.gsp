@@ -25,19 +25,17 @@
     <div id="story-header"
          class="panel-heading"
          ng-controller="storyHeaderCtrl"
-         is-fixed="#right"
-         is-fixed-offset-top="1"
-         is-fixed-offset-width="-2">
+         fixed="#right"
+         fixed-offset-top="1"
+         fixed-offset-width="-2">
         <h3 class="panel-title">
             <a href
                tooltip="{{ selected.follow.followers }}"
                tooltip-append-to-body="true"
                ng-click="follow(selected)"
-               ng-switch on="selected.follow.status"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star"
-                                                                                                 ng-switch-when="true"></i></a>
+               ng-switch on="selected.follow.status"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
             <span>{{ selected.name }}</span><small ng-show="selected.origin">${message(code: 'is.story.origin')}: {{ selected.origin }}</small>
-
-            <div class="pull-right">
+                <div class="pull-right">
                 <span tooltip="${message(code: 'is.story.creator')} : {{ selected.creator | userFullName }}">
                     <img ng-src="{{ selected.creator | userAvatar }}" alt="{{ selected.creator | userFullName }}"
                          height="21px"/>
@@ -66,7 +64,7 @@
                 </button>
             </div>
             <div class="btn-group pull-right">
-                <a class="btn btn-default"
+                <button class="btn btn-default"
                    ng-click="like(selected)"
                    ng-switch on="selected.like.status"
                    role="button"
@@ -76,22 +74,22 @@
                     <i class="fa fa-thumbs-o-up" ng-switch-default></i>
                     <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
                     <span class="badge"ng-show="selected.like.likers">{{ selected.like.likers }}</span>
-                </a>
+                </button>
                 <button name="activities" class="btn btn-default"
-                        ng-click="setTabActive('activities')"
+                        ng-click="setTabSelected('activities')"
                         tooltip="${message(code:'todo.is.story.lastActivity')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-clock-o"></span>
                 </button>
                 <button name="attachments" class="btn btn-default"
-                        ng-click="setTabActive('attachments')"
+                        ng-click="setTabSelected('attachments')"
                         tooltip="{{ selected.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-paperclip"></span>
                     <span class="badge" ng-show="selected.attachments_count">{{ selected.attachments_count }}</span>
                 </button>
                 <button name="comments" class="btn btn-default"
-                        ng-click="setTabActive('comments')"
+                        ng-click="setTabSelected('comments')"
                         tooltip="{{ selected.comments.length }} ${message(code:'todo.is.story.comments')}"
                         tooltip-append-to-body="true"
                         ng-switch on="{{ selected.comments_count }}">
@@ -100,14 +98,14 @@
                     <span class="badge" ng-show="selected.comments_count">{{ selected.comments_count }}</span>
                 </button>
                 <button name="tasks" class="btn btn-default"
-                        ng-click="setTabActive('tasks')"
+                        ng-click="setTabSelected('tasks')"
                         tooltip="{{ selected.tasks_count }} ${message(code:'todo.is.story.tasks')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-tasks"></span>
                     <span class="badge" ng-show="selected.tasks_count">{{ selected.tasks_count }}</span>
                 </button>
                 <button name="tests" class="btn btn-default"
-                        ng-click="setTabActive('tests')"
+                        ng-click="setTabSelected('tests')"
                         tooltip="{{ selected.tests.length }} ${message(code:'todo.is.acceptanceTests')}"
                         tooltip-append-to-body="true"
                         tooltip-placement="left"
@@ -275,38 +273,40 @@
             </div>
         </form>
         <tabset type="{{ tabsType }}">
-            <tab select="activities(selected)"
+            <tab select="activities(selected); setTabSelected('activities');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
-                 active="tabActive['activities']"
+                 active="tabSelected.activities"
                  scroll-to-tab="#right">
                 <table class="table table-striped">
                     <tbody ng-include src="'activity.list.html'"></tbody>
                 </table>
             </tab>
-            <tab heading="${message(code: 'is.ui.backlogelement.attachment')}"
-                 active="tabActive['attachments']"
+            <tab select="setTabSelected('attachments');"
+                 heading="${message(code: 'is.ui.backlogelement.attachment')}"
+                 active="tabSelected.attachments"
                  scroll-to-tab="#right">
             </tab>
-            <tab select="comments(selected)"
+            <tab select="comments(selected); setTabSelected('comments');"
                  heading="${message(code: 'is.ui.backlogelement.activity.comments')}"
-                 active="tabActive['comments']"
+                 active="tabSelected.comments"
                  scroll-to-tab="#right">
                 <table class="table table-striped">
                     <tbody ng-include src="'comment.list.html'"></tbody>
                 </table>
                 <div ng-include src="'comment.editor.html'"></div>
             </tab>
-            <tab select="tasks(selected)"
+            <tab select="tasks(selected); setTabSelected('tasks');"
                  heading="${message(code: 'is.ui.backlogelement.activity.task')}"
-                 active="tabActive['tasks']"
+                 active="tabSelected.tasks"
                  scroll-to-tab="#right">
                 <div ng-include src="'story.task.new.html'"></div>
                 <table class="table table-striped">
                     <tbody ng-include src="'story.tasks.html'"></tbody>
                 </table>
             </tab>
-            <tab heading="${message(code: 'is.ui.backlogelement.activity.test')}"
-                 active="tabActive['tests']"
+            <tab select="setTabSelected('tests');"
+                 heading="${message(code: 'is.ui.backlogelement.activity.test')}"
+                 active="tabSelected.tests"
                  scroll-to-tab="#right">
             </tab>
         </tabset>

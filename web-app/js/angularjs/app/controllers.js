@@ -60,7 +60,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
         start:$.icescrum.menuBar.start,
         update:$.icescrum.menuBar.update,
         connectWith:"#menubar-list-content"
-    }
+    };
 }]).controller('loginCtrl',['$scope', '$rootScope','$modalInstance' , 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, $modalInstance, AUTH_EVENTS, AuthService) {
     $scope.credentials = {
         j_username: '',
@@ -80,8 +80,17 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
 }]);
 
 controllers.controller('sandboxCtrl', ['$scope', '$location', '$state', 'stories', function ($scope, $location, $state, stories) {
+    $scope.orderBy = {
+        reverse: false,
+        status: false,
+        current: {id:'suggestedDate', name:'Date'},
+        values:[
+            {id:'suggestedDate', name:'Date'},
+            {id:'feature.id', name:'Feature'},
+            {id:'type', name:'Type'}
+        ]
+    };
     $scope.stories = stories;
-    $scope.predicate = 'suggestedDate';
     $scope.go = function(url){
         $location.path(url);
     };

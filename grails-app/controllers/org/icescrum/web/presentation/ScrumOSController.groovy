@@ -169,6 +169,7 @@ class ScrumOSController {
                         help: message(code: uiDefinition.window?.help),
                         icon: uiDefinition.icon,
                         right: uiDefinition.window?.right,
+                        toolbar: uiDefinition.window?.toolbar,
                         printable: uiDefinition.window?.printable,
                         fullScreen: uiDefinition.window?.fullScreen,
                         widgetable: uiDefinition.widget ? true : false,
@@ -270,7 +271,7 @@ class ScrumOSController {
         render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
     }
 
-    @Cacheable('applicationCache')
+    @Cacheable(cache = 'applicationCache')
     def version = {
         withFormat{
             html {

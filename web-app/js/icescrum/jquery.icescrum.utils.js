@@ -184,55 +184,6 @@
             socket.subscribe(request);
         },
 
-        initHistory:function() {
-
-            var changeWindow = function(){
-                if ($.icescrum.o.openWindow) {
-                    $.icescrum.o.openWindow = false;
-                } else {
-                    var url = location.hash.replace(/^.*#/, '');
-                    var openDialog = null;
-                    if (url != '') {
-                        url = url.split('!');
-                        if (url[1]){
-                            openDialog = function(){
-                                ajaxRequest($(document.body),{url:$.icescrum.o.baseUrl+url[1]});
-                            }
-                        }
-                        if (url[0]){
-                            $.icescrum.openWindow(url[0], openDialog);
-                        } else {
-                            openDialog();
-                        }
-                    } else if (!url) {
-                        if ($.icescrum.o.currentOpenedWindow) {
-                            $.icescrum.closeWindow($.icescrum.o.currentOpenedWindow);
-                        }
-                    }
-                }
-            };
-
-            $(window).hashchange(changeWindow);
-
-            if (!$.getUrlVar('ref')){
-                changeWindow();
-            }
-
-            var currentWindow = location.hash.replace(/^.*#/, '');
-            var $menubar = $('#mainmenu').find('li.menubar:not(.hidden):first a');
-            if ($.icescrum.o.baseUrlSpace && !currentWindow && $menubar){
-                var menubar = $menubar.attr('href').replace(/^.*#/, '');
-                document.location.hash = menubar;
-            }
-
-            if ($.icescrum.getWidgetsList().length > 0) {
-                var tmp = $.icescrum.getWidgetsList();
-                for (i = 0; i < tmp.length; i++) {
-                    this.openWidget(tmp[i], null, true);
-                }
-            }
-        },
-
         initLocalStorage:function(){
             if(!localStorage['date_storage']){
                 localStorage['date_storage'] = new Date();

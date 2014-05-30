@@ -35,8 +35,7 @@ var isApp = angular.module('isApp', [
     'colorpicker.module'
 ]);
 
-isApp
-    .config(['$stateProvider', '$httpProvider',
+isApp.config(['$stateProvider', '$httpProvider',
         function ($stateProvider, $httpProvider) {
             $httpProvider.interceptors.push([
                 '$injector',
@@ -51,7 +50,7 @@ isApp
                     templateUrl: 'openWindow/sandbox',
                     controller: 'sandboxCtrl',
                     data: {
-                        filterList: { state:1 }
+                        filterListParams: { state:1 }
                     },
                     resolve:{
                         stories:function(StoryService){
@@ -69,6 +68,9 @@ isApp
                             return StoryService.get($stateParams.id);
                         }
                     }
+                })
+                .state('sandbox.details.tab', {
+                    url: "/:tabId"
                 })
                 .state('actor', {
                     url: '/actor',
@@ -130,11 +132,11 @@ isApp
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', function(Session, $rootScope, $timeout){
+    run(['Session', '$rootScope', '$timeout', '$state', function(Session, $rootScope, $timeout, $state){
         Session.create();
         //used to handle click with shortcut hotkeys
         $rootScope.hotkeyClick = function(event, hotkey) {
-            if (hotkey.el && hotkey.el.is( "a" )){
+            if (hotkey.el && (hotkey.el.is( "a" ) || hotkey.el.is( "button" ))){
                 event.preventDefault();
                 $timeout(function(){
                     hotkey.el.click();
@@ -142,6 +144,8 @@ isApp
 
             }
         };
+        //To be able to track state in app
+        $rootScope.$state = $state;
     }])
     .constant('AUTH_EVENTS', {
         loginSuccess: 'auth-login-success',

@@ -23,10 +23,16 @@
 controllers.controller('storyCtrl', ['$scope', '$state', 'selected', 'StoryService', 'TaskService', 'CommentService', function ($scope, $state, selected, StoryService, TaskService, CommentService) {
     $scope.selected = selected;
     $scope.tabsType = 'tabs nav-tabs-google';
-    $scope.tabActive = {'activities':true};
-    $scope.setTabActive = function(tabId){
-        $scope.tabActive = {};
-        $scope.tabActive[tabId] = true;
+    $scope.tabSelected = {};
+    //watch from url change outside and keep updated of which tab is selected (getting params tabId in view)
+    $scope.$watch('$state.params', function(newValue, oldValue){
+        if ($state.params.id == selected.id){
+            $scope.tabSelected[$state.params.tabId] = true;
+        }
+    });
+    //for buttons in story header
+    $scope.setTabSelected = function(tab){
+        $state.go('.', {tabId:tab});
     };
 
     $scope.update = function(story) {
@@ -71,7 +77,7 @@ controllers.controller('storyHeaderCtrl',['$scope', '$state', '$filter', 'StoryS
     StoryService.follow($scope.selected, true);
     StoryService.like($scope.selected, true);
     //manage display next / previous
-    var list = $state.current.data.filterList ? $filter('filter')(StoryService.list, $state.current.data.filterList) : StoryService.list;
+    var list = $state.current.data.filterListParams ? $filter('filter')(StoryService.list, $state.current.data.filterListParams) : StoryService.list;
     var ind = list.indexOf($scope.selected);
     $scope.previous = ind > 0 ? list[ind - 1] : null;
     $scope.next = ind + 1 <= list.length ? list[ind + 1] : null;

@@ -75,13 +75,13 @@ directives.directive('focusMe', function($timeout) {
             });
         }
     };
-}]).directive('isFixed', [function() {
+}]).directive('fixed', [function() {
     return {
         restrict: 'A',
         scope: {},
         link: function(scope, element, attrs) {
             var $this = element;
-            var container = $(attrs['isFixed']);
+            var container = $(attrs['fixed']);
             var initialTop = element.offset().top - container.offset().top + container.scrollTop();
             var id = 'scroll.fixed'+(new Date().getTime());
             var fixedFunction = function(event, manual) {
@@ -94,9 +94,9 @@ directives.directive('focusMe', function($timeout) {
                 if(manual || (initialTop - scrollTop <= 0 && !$this.hasClass('fixed'))){
                     $this.next().css('margin-top', $this.outerHeight());
                     $this.addClass('fixed')
-                        .css('top', container.offset().top + parseInt((attrs['isFixedOffsetTop'] ?  attrs['isFixedOffsetTop'] : 0)))
-                        .css('width', $this.parent().outerWidth(true) + parseInt(attrs['isFixedOffsetWidth'] ?  attrs['isFixedOffsetWidth'] : 0))
-                        .css('left', container.offset().left + parseInt((attrs['isFixedOffsetLeft'] ?  attrs['isFixedOffsetLeft'] : 0)))
+                        .css('top', container.offset().top + parseInt((attrs['fixedOffsetTop'] ?  attrs['fixedOffsetTop'] : 0)))
+                        .css('width', $this.parent().outerWidth(true) + parseInt(attrs['fixedOffsetWidth'] ?  attrs['fixedOffsetWidth'] : 0))
+                        .css('left', container.offset().left + parseInt((attrs['fixedOffsetLeft'] ?  attrs['fixedOffsetLeft'] : 0)))
                         .css('position', 'fixed');
                 } else if (initialTop - scrollTop > 0 && $this.hasClass('fixed')) {
                     $this.removeClass('fixed')
@@ -150,7 +150,7 @@ directives.directive('focusMe', function($timeout) {
                 });
             }
         }
-}]).directive('formAutofillFix', function ($timeout) {
+}]).directive('formAutofillFix', ['$timeout', function($timeout) {
     return function (scope, element, attrs) {
         element.prop('method', 'post');
         if (attrs.ngSubmit) {
@@ -167,6 +167,30 @@ directives.directive('focusMe', function($timeout) {
                         scope.$apply(attrs.ngSubmit);
                     });
             });
+        }
+    };
+}]).directive('ellipsis', [function () {
+    return {
+        required: 'ngBindHtml',
+        restrict: 'A',
+        priority: 100,
+        link: function ($scope, element, attrs, ctrl) {
+            element.data('hasEllipsis', false);
+            $scope.$watch(element.html(), function(value) {
+                if (! element.data('hasEllipsis')) {
+                    // apply ellipsis only one
+                    element.data('hasEllipsis',true);
+                    element.ellipsis();
+                }
+            });
+        }
+    };
+}]).directive('uiSelectable', function () {
+    return {
+        restrict: 'A',
+        priority: 100,
+        link: function (scope, el, attrs) {
+            el.selectable({ filter: "> .item", cancel: "a" });
         }
     };
 });

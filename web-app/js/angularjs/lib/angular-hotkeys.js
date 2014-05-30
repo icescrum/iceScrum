@@ -323,7 +323,6 @@
                 restrict: 'A',
                 link: function (scope, el, attrs) {
                     var key;
-
                     angular.forEach(scope.$eval(attrs.hotkey), function (func, hotkey) {
                         key = hotkey;
                         hotkeys.add(hotkey, attrs.hotkeyDescription, func, true, el);

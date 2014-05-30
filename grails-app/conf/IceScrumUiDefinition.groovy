@@ -234,6 +234,7 @@ uiDefinitions = {
             title 'is.ui.sandbox'
             help 'is.ui.sandbox.help'
             right true
+            toolbar true
         }
         widget {
             title 'is.ui.sandbox'

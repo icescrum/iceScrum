@@ -72,17 +72,15 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             $.icescrum.checkSidebar();
 
-            //$.icescrum.initHistory();
-
             $.icescrum.whatsNew();
 
             $.icescrum.initAtmosphere();
 
             //post every 25 min to cancel session timeout
-            $.doTimeout(1000 * 60 * 25,function(){
+            /*$.doTimeout(1000 * 60 * 25,function(){
                 $.get($.icescrum.o.versionUrl);
                 return true;
-            });
+            });*/
 
             $.event.trigger('init.icescrum');
         },
@@ -137,20 +135,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             call(params, source);
         },
 
-        //todo remove
-        openCommentTab:function(relation) {
-            $('#commentEditorContainer').show();
-            $.icescrum.openTab(relation, true);
-        },
-
-        //todo remove
-        openTab:function(relation, scrollBottom) {
-            $('.panel-box a[rel=' + relation + ']').click();
-            if (scrollBottom) {
-                var contentWindow = jQuery('div .window-content');
-                contentWindow.scrollTop(contentWindow.outerHeight());
-            }
-        },
 
         //really used
         formattedTaskEstimation:function(estimation, defaultChar) {

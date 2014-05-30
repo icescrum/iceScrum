@@ -41,7 +41,7 @@
         <div id="mainmenu">
             <ul class="nav navbar-nav scroll" ui-sortable="menubarSortableOptions">
                 <li class="dropdown contextual-menu">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle">
                         ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu">
@@ -50,10 +50,8 @@
                         </li>
                         <g:if test="${creationProjectEnable}">
                             <li>
-                                <a data-is-shortcut
-                                   data-is-shortcut-key="SHIFT+N"
-                                   href="${createLink(controller:'project', action:'openWizard')}"
-                                   data-ajax="true">
+                                <a hotkey="{ 'shift+n': hotkeyClick}"
+                                   href="${createLink(controller:'project', action:'openWizard')}">
                                     <g:message code="is.projectmenu.submenu.project.create"/> <small class="text-muted">(SHIFT+N)</small>
                                 </a>
                             </li>
@@ -144,12 +142,11 @@
                 <is:cache cache="userCache" key="user-${user?.username?:'anonymous'}-${user?.lastUpdated}-${product?.lastUpdated}" disabled="${product ? true : true}" role="false" locale="false">
                     <li class="menubar hidden">&nbsp;</li>
                     <g:each in="${menus}" var="menu" status="index">
-                        <li class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
+                        <li ng-class="{active:$state.includes('${menu.id}')}" class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
                             <a  hotkey="{ 'ctrl+${index + 1}' : hotkeyClick }"
                                 hotkey-description="${message(code:'todo.is.open.view')} ${message(code: menu.title)}"
-                                data-toggle="tooltip"
-                                data-placement="bottom"
-                                title="${message(code: menu.title)} (CTRL+${index + 1})"
+                                tooltip="${message(code: menu.title)} (CTRL+${index + 1})"
+                                tooltip-placement="bottom"
                                 href='#/${menu.id}'>
                                 <span class="drag text-muted">
                                     <span class="glyphicon glyphicon-th"></span>
@@ -159,16 +156,15 @@
                         </li>
                     </g:each>
                     <li class="dropdown menubar-hidden">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
+                        <a class="dropdown-toggle" href="#">${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
                         <ul class="dropdown-menu">
                             <li class="menubar hidden" data-hidden="true">&nbsp;</li>
                             <g:each in="${menusHidden}" var="menu" status="index">
-                                <li data-hidden="true" class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
+                                <li data-hidden="true" ng-class="{active:$state.includes('${menu.id}')}" class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
                                     <a  hotkey="{ 'ctrl+${index + menus.size() + 1}' : hotkeyClick }"
                                         hotkey-description="${message(code:'todo.is.open.view')} ${message(code: menu.title)}"
-                                        data-toggle="tooltip"
-                                        data-placement="left"
-                                        title="${message(code: menu.title)} (CTRL+${index + menus.size() + 1})"
+                                        tooltip-placement="left"
+                                        tooltip="${message(code: menu.title)} (CTRL+${index + menus.size() + 1})"
                                         href='#/${menu.id}'>
                                         <span class="drag text-muted">
                                             <span class="glyphicon glyphicon-th"></span>
