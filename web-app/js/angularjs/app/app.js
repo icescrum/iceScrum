@@ -167,6 +167,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         7: {"value": "Done", "code": "done"},
         '-1': {"value": "In the Icebox", "code": "icebox"}
     })
+    .constant('FeatureStates', {
+        0: {"value": "todo.To do", "code": "wait"},
+        1: {"value": "todo.In progress", "code": "inprogress"},
+        2: {"value": "todo.Done", "code": "done"}
+    })
     .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
         PO_SM: 'PO_SM',
         PO: 'PO',

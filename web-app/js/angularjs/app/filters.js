@@ -65,10 +65,13 @@ filters
             return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#/actor/$1">$2</a>') : "";
         };
     })
-    .filter('i18n', ['StoryStates', function(StoryStates) {
+    .filter('i18n', ['StoryStates', 'FeatureStates', function(StoryStates, FeatureStates) {
         return function(id, type){
-            if (type == 'story'){
+            if (type == 'storyState'){
                 return StoryStates[id].value;
+            }
+            if (type == 'featureState') {
+                return FeatureStates[id].value;
             }
         }
     }])

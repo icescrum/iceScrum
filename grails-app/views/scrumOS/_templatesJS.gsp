@@ -123,12 +123,8 @@
 </jq:jquery>
 
 <div class='templates'>
-    <!-- begin new templates -->
     <g:render template="templates"/>
-    <!-- end new templates -->
-
     <g:if test="${params.product}">
-        <!-- begin new templates -->
         <g:render template="/story/templates"/>
         <g:render template="/task/templates"/>
         <g:render template="/comment/templates"/>
@@ -136,6 +132,5 @@
         <g:render template="/activity/templates"/>
         <g:render template="/actor/templates"/>
         <g:render template="/feature/templates"/>
-        <!-- end new templates -->
     </g:if>
 </div>

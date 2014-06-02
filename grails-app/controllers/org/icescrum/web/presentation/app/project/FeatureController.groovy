@@ -192,11 +192,6 @@ class FeatureController {
         render(template: "${params.type ?: 'window'}/view")
     }
 
-    // TODO cache
-    def right = {
-        render template: "window/right"
-    }
-
     @Cacheable(cache = "featuresCache", keyGenerator= 'featuresKeyGenerator')
     def featureEntries = {
         withProduct { product ->

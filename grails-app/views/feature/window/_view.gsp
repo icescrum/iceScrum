@@ -30,6 +30,7 @@
              class="postit story {{ feature.color | contrastColor }}">
             <div class="head">
                 <span class="id">{{ feature.id }}</span>
+                <span class="estimation">{{ feature.value ? feature.value : '' }}</span>
             </div>
             <div class="content">
                 <h3 class="title" ng-bind-html="feature.name | sanitize" ellipsis></h3>
@@ -60,6 +61,12 @@
                     </a>
                 </span>
             </div>
+            <div class="progress">
+                <span class="status">3/6</span>
+                <div class="progress-bar" style="width:16.666666666666668%">
+                </div>
+            </div>
+            <div class="state">{{ feature.state | i18n:'featureState' }}</div>
         </div>
     </div>
 </div>

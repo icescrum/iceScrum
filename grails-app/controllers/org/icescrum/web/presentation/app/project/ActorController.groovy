@@ -142,11 +142,6 @@ class ActorController {
         render(template: "${params.type ?: 'window'}/view")
     }
 
-    // TODO cache
-    def right = {
-        render template: "window/right"
-    }
-
     def print = {
         def currentProduct = Product.load(params.product)
         def data = []

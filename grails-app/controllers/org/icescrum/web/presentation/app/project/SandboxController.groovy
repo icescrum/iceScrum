@@ -40,10 +40,6 @@ class SandboxController {
         render(template: "${params.type ?: 'window'}/view")
     }
 
-    def right = {
-        render template: "window/right"
-    }
-
     def print = {
         withProduct { Product product ->
             def data = []
