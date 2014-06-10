@@ -110,13 +110,13 @@
                 </button>
                 <button name="tests" class="btn btn-default"
                         ng-click="setTabSelected('tests')"
-                        tooltip="{{ selected.tests.length }} ${message(code:'todo.is.acceptanceTests')}"
+                        tooltip="{{ selected.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                         tooltip-append-to-body="true"
                         tooltip-placement="left"
-                        ng-switch on="{{ selected.tests.length > 0 }}">
-                    <span class="fa fa-check-square-o" ng-switch-default></span>
-                    <span class="fa fa-check-square" ng-switch-when="true"></span>
-                    <span class="badge" ng-if="selected.tests.length > 0">{{ selected.tests.length }}</span>
+                        ng-switch on="{{ selected.acceptanceTests_count }}">
+                    <span class="fa fa-check-square-o" ng-switch-when="0"></span>
+                    <span class="fa fa-check-square" ng-switch-default></span>
+                    <span class="badge" ng-if="selected.acceptanceTests_count">{{ selected.acceptanceTests_count }}</span>
                 </button>
             </div>
         </div>
@@ -245,6 +245,7 @@
                      ng-show="!showDescriptionTextarea"
                      ng-click="showDescriptionTextarea = true"
                      ng-focus="showDescriptionTextarea = true"
+                     ng-class="{'placeholder': !story.description}"
                      tabindex="0"
                      ng-bind-html="(story.description ? (story | descriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
             </div>
@@ -272,8 +273,9 @@
                      ng-show="!showNotesTextarea"
                      ng-click="showNotesTextarea = true"
                      ng-focus="showNotesTextarea = true"
+                     ng-class="{'placeholder': !story.notes_html}"
                      tabindex="0"
-                     ng-bind-html="(story.notes_html ? story.notes_html : '${message(code: 'is.ui.backlogelement.nonotes')}') | sanitize"></div>
+                     ng-bind-html="(story.notes_html ? story.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
             </div>
         </form>
         <tabset type="{{ tabsType }}">
@@ -304,9 +306,13 @@
                     <tbody ng-include src="'story.tasks.html'"></tbody>
                 </table>
             </tab>
-            <tab select="setTabSelected('tests');"
+            <tab select="acceptanceTests(selected); setTabSelected('tests');"
                  heading="${message(code: 'is.ui.backlogelement.activity.test')}"
                  active="tabSelected.tests">
+                <div ng-include src="'story.acceptanceTest.editor.html'"></div>
+                <table class="table table-striped">
+                    <tbody ng-include src="'story.acceptanceTests.html'"></tbody>
+                </table>
             </tab>
         </tabset>
     </div>

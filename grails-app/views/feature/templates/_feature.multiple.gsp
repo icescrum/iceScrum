@@ -20,6 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
-<g:render template="/feature/templates/feature.details" />
-<g:render template="/feature/templates/feature.multiple" />
+<script type="text/ng-template" id="feature.multiple.html">
+{{ ids }}
+</script>

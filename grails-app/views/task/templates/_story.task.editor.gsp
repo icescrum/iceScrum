@@ -36,12 +36,15 @@
     </tr>
     <tr ng-show="showTaskForm">
         <td>
-            <form ng-controller="taskCtrl" ng-submit="save(task, selected)">
+            <form ng-controller="taskCtrl"
+                  show-validation
+                  ng-submit="save(task, selected)">
                 <div class="clearfix no-padding">
                     <div class="form-group col-sm-9">
                         <label>${message(code:'is.backlogelement.name')}</label>
                         <input required
                                type="text"
+                               focus-me="{{ showTaskForm }}"
                                ng-model="task.name"
                                class="form-control">
                     </div>

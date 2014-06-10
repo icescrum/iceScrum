@@ -95,8 +95,18 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
+                    .state('actor.multiple', {
+                        url: "/{listId:[0-9]+[\,][0-9]+}",
+                        templateUrl: 'actor.multiple.html',
+                        controller: 'actorMultipleCtrl',
+                        resolve:{
+                            listId:['$stateParams', function($stateParams){
+                                return $stateParams.listId.split(',');
+                            }]
+                        }
+                    })
                     .state('actor.details', {
-                        url: "/:id",
+                        url: "/{id:[0-9]+}",
                         templateUrl: 'actor.details.html',
                         controller: 'actorCtrl',
                         resolve:{
@@ -106,7 +116,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                         .state('actor.details.tab', {
-                            url: "/:tabId"
+                            url: "/{tabId:.+}"
                         })
                 .state('feature', {
                     url: '/feature',
@@ -118,8 +128,18 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
+                    .state('feature.multiple', {
+                        url: "/{listId:[0-9]+[\,][0-9]+}",
+                        templateUrl: 'feature.multiple.html',
+                        controller: 'featureMultipleCtrl',
+                        resolve:{
+                            listId:['$stateParams', function($stateParams){
+                                return $stateParams.listId.split(',');
+                            }]
+                        }
+                    })
                     .state('feature.details', {
-                        url: "/:id",
+                        url: "/{id:[0-9]+}",
                         templateUrl: 'feature.details.html',
                         controller: 'featureCtrl',
                         resolve:{
@@ -129,7 +149,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                         .state('feature.details.tab', {
-                            url: "/:tabId"
+                            url: "/{tabId:.+}"
                         });
         }
     ])

@@ -23,7 +23,7 @@
 <div id="backlog-layout-window-${controllerName}"
      ui-selectable="selectableOptions"
      ui-selectable-list="stories"
-     ng-class="{'grid-group': !view.asList, 'list-group': view.asList}"
+     ng-class="view.asList ? 'list-group' : 'grid-group'"
      class="postits">
     <div ng-class="{ 'ui-selected':$state.params.id == story.id }"
          data-id="{{ story.id }}"
@@ -79,14 +79,14 @@
                         <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
                     </a>
                 </span>
-                <span class="action">
+                <span class="action" ng-class="{'active':story.acceptanceTests_count}">
                     <a href="#/sandbox/{{ story.id }}/tests"
-                       tooltip="{{ story.tests.length }} ${message(code:'todo.is.acceptanceTests')}"
+                       tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                        tooltip-append-to-body="true"
-                       ng-switch on="{{ story.tests.length > 0 }}">
-                        <i class="fa fa-check-square-o" ng-switch-default></i>
-                        <i class="fa fa-check-square" ng-switch-when="true"></i>
-                        <span class="badge" ng-if="story.tests.length > 0">{{ story.tests.length }}</span>
+                       ng-switch on="{{ story.acceptanceTests_count }}">
+                        <i class="fa fa-check-square-o" ng-switch-when="0"></i>
+                        <i class="fa fa-check-square" ng-switch-default></i>
+                        <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
                     </a>
                 </span>
             </div>

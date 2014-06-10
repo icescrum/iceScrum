@@ -271,5 +271,23 @@ class ProductUrlMappings {
                 type(inList: ['story', 'task'])
             }
         }
+
+        "/p/$product/acceptanceTest/story/$parentStory" {
+            controller = 'acceptanceTest'
+            action = [GET: "list"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                parentStory(matches: /\d*/)
+            }
+        }
+
+        "/p/$product/acceptanceTest" {
+            controller = 'acceptanceTest'
+            action = [POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
     }
 }

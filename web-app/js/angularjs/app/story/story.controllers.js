@@ -20,7 +20,7 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('storyCtrl', ['$scope', '$state', '$timeout', 'selected', 'StoryService', 'TaskService', 'CommentService', function ($scope, $state, $timeout, selected, StoryService, TaskService, CommentService) {
+controllers.controller('storyCtrl', ['$scope', '$state', '$timeout', 'selected', 'StoryService', 'TaskService', 'CommentService', 'AcceptanceTestService', function ($scope, $state, $timeout, selected, StoryService, TaskService, CommentService, AcceptanceTestService) {
     $scope.selected = selected;
     $scope.tabsType = 'tabs nav-tabs-google';
     if ($state.params.tabId){
@@ -78,6 +78,10 @@ controllers.controller('storyCtrl', ['$scope', '$state', '$timeout', 'selected',
     //grab tasks when needed
     $scope.tasks = function(story){
         TaskService.list(story);
+    };
+
+    $scope.acceptanceTests = function(story){
+        AcceptanceTestService.list(story);
     };
 
     //grab comments when needed

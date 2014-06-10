@@ -169,7 +169,7 @@ restResource.factory('Resource', [ '$resource', function ($resource) {
 var formObjectData = function (obj, prefix) {
     var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
     _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
-    _prefix = _prefix.toLowerCase();
+    //_prefix = _prefix.toLowerCase(); TODO Uncomment if useful (commented because it prevents the use of acceptanceTests that have camel case)
 
     // TODO consider making it available at top level or replacing it
     // Custom functions because the real ones aren't available yet (apart from firefox)

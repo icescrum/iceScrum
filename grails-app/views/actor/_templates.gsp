@@ -22,3 +22,4 @@
 --}%
 
 <g:render template="/actor/templates/actor.details" />
+<g:render template="/actor/templates/actor.multiple" />

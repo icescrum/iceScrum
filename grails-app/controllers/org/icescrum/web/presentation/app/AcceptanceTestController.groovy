@@ -38,12 +38,9 @@ class AcceptanceTestController {
     // TODO inProduct is probably to restrictive (what about SHs?)
     @Secured('inProduct()')
     def index = {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
-        }
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
             withFormat {
+                html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
                 json { renderRESTJSON text:acceptanceTest }
                 xml  { renderRESTXML text:acceptanceTest }
             }
@@ -53,12 +50,9 @@ class AcceptanceTestController {
     // TODO inProduct is probably to restrictive (what about SHs?)
     @Secured('inProduct()')
     def list = {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
-        }
-        def acceptanceTests = params.story ? AcceptanceTest.getAllInStory(params.long('product'), params.long('story')) : AcceptanceTest.getAllInProduct(params.long('product'))
+        def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(params.long('product'), params.long('parentStory')) : AcceptanceTest.getAllInProduct(params.long('product'))
         withFormat {
+            html { render status: 200, contentType: 'application/json', text: acceptanceTests as JSON }
             json { renderRESTJSON text: acceptanceTests }
             xml  { renderRESTXML text: acceptanceTests }
         }

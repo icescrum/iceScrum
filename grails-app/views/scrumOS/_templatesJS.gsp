@@ -132,5 +132,6 @@
         <g:render template="/activity/templates"/>
         <g:render template="/actor/templates"/>
         <g:render template="/feature/templates"/>
+        <g:render template="/acceptanceTest/templates"/>
     </g:if>
 </div>

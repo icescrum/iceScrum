@@ -112,6 +112,9 @@ modules = {
 
         resource url:[dir:'js/angularjs/app/comment', file:"comment.controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app/comment', file:"comment.services.js"], disposition:'head'
+
+        resource url:[dir:'js/angularjs/app/acceptanceTest', file:"acceptanceTest.controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app/acceptanceTest', file:"acceptanceTest.services.js"], disposition:'head'
     }
 
     'jqplot' {

@@ -21,13 +21,23 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('actorCtrl', ['$scope', '$state', 'selected', 'ActorService', 'StoryService', function ($scope, $state, selected, ActorService, StoryService) {
+controllers.controller('actorCtrl', ['$scope', '$state', '$timeout', 'selected', 'ActorService', 'StoryService', function ($scope, $state, $timeout, selected, ActorService, StoryService) {
     $scope.selected = selected;
     $scope.tabsType = 'tabs nav-tabs-google';
-    $scope.tabSelected = {};
+    if ($state.params.tabId){
+        $scope.tabSelected = {};
+        $scope.tabSelected[$state.params.tabId] = true;
+    } else {
+        $scope.tabSelected = {'attachments':true};
+    }
     $scope.$watch('$state.params', function() {
-        if ($state.params.id == selected.id){
+        if ($state.params.tabId){
             $scope.tabSelected[$state.params.tabId] = true;
+            $timeout((function(){
+                var container = angular.element('#right');
+                var pos = angular.element('#right .nav-tabs-google [active="tabSelected.'+$state.params.tabId+'"]').position().top + container.scrollTop();
+                container.animate({ scrollTop : pos }, 1000);
+            }));
         }
     });
     $scope.setTabSelected = function(tab){
@@ -62,5 +72,9 @@ controllers.controller('actorEditCtrl', ['$scope', 'Session', 'FormService', fun
     $scope.readOnly = function() {
         return !Session.roles.productOwner;
     };
+}]);
+
+controllers.controller('actorMultipleCtrl', ['$scope', '$state', 'listId', function ($scope, $state, listId) {
+    $scope.ids = listId;
 }]);
 

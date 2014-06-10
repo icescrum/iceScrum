@@ -29,21 +29,25 @@
          fixed="#right"
          fixed-offset-top="1"
          fixed-offset-width="-2">
-        <h3 class="panel-title">
-            <span>{{ selected.name }}</span>
-            <div class="pull-right">
-                <span class="label label-default"
-                      tooltip="${message(code: 'is.backlogelement.id')}">{{ selected.uid }}</span>
-                <a ng-if="previous"
-                   class="btn btn-xs btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#feature/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="next"
-                   class="btn btn-xs btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#feature/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+        <h3 class="panel-title row">
+            <div class="col-sm-8">
+                <span>{{ selected.name }}</span>
+            </div>
+            <div class="col-sm-4">
+                <div class="pull-right">
+                    <span class="label label-default"
+                          tooltip="${message(code: 'is.backlogelement.id')}">{{ selected.uid }}</span>
+                    <a ng-if="previous"
+                       class="btn btn-xs btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#feature/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                    <a ng-if="next"
+                       class="btn btn-xs btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#feature/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                </div>
             </div>
         </h3>
         <div class="actions">
@@ -162,20 +166,19 @@
                      ng-show="!showNotesTextarea"
                      ng-click="showNotesTextarea = true"
                      ng-focus="showNotesTextarea = true"
+                     ng-class="{'placeholder': !feature.notes_html}"
                      tabindex="0"
-                     ng-bind-html="(feature.notes_html ? feature.notes_html : '${message(code: 'is.ui.backlogelement.nonotes')}') | sanitize"></div>
+                     ng-bind-html="(feature.notes_html ? feature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
             </div>
         </form>
         <tabset type="{{ tabsType }}">
-            <tab select="setTabSelected('attachments');"
+            <tab select="$state.params.tabId ? setTabSelected('attachments') : ''"
                  heading="${message(code: 'is.ui.backlogelement.attachment')}"
-                 active="tabSelected.attachments"
-                 scroll-to-tab="#right">
+                 active="tabSelected.attachments">
             </tab>
             <tab select="stories(selected); setTabSelected('stories');"
                  heading="${message(code: 'todo.is.feature.stories')}"
-                 active="tabSelected.stories"
-                 scroll-to-tab="#right">
+                 active="tabSelected.stories">
                 <table class="table table-striped">
                     <tbody ng-include src="'nested.stories.html'"></tbody>
                 </table>

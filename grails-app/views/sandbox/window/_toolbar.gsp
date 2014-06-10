@@ -47,7 +47,7 @@
             ng-click="orderBy.reverse = !orderBy.reverse"
             tooltip="${message(code:'todo.is.ui.order')}"
             tooltip-append-to-body="true">
-        <span class="glyphicon glyphicon-sort-by-attributes{{ reverse ? '-alt' : ''}}"></span>
+        <span class="glyphicon glyphicon-sort-by-attributes{{ orderBy.reverse ? '-alt' : ''}}"></span>
     </button>
 </div>
 <div class="btn-group" tooltip-append-to-body="true" dropdown tooltip="${message(code:'todo.is.ui.export')}">

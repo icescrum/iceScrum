@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2011 Kagilum SAS.
+- Copyright (c) 2014 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -17,19 +17,9 @@
 -
 - Authors:
 -
+- Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.AcceptanceTest" %>
-
-<g:set var="acceptanceTest" value="[id:'?**=this.id**?',
-                             creator:[id:'?**=this.poster.id**?'],
-                             name:'?**=this.name**?',
-                             state: '?**=this.state**?',
-                             description:'?**=this.description**?',
-                             uid:'?**=this.uid**?',
-                             body:'?**=this.body**?']"/>
-
-<template id="acceptancetest-storydetail-tmpl">
-      <g:render template="/acceptanceTest/acceptanceTest"
-          model="[acceptanceTest:acceptanceTest, template:true]"/>
-</template>
+<script type="text/ng-template" id="actor.multiple.html">
+{{ ids }}
+</script>

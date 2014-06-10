@@ -21,11 +21,15 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div ui-selectable
-     id="backlog-layout-window-${controllerName}"
-     class="postits list-group">
-    <div ng-repeat="actor in actors"
-         class="postit-container item grid-group-item">
+<div id="backlog-layout-window-${controllerName}"
+     ui-selectable="selectableOptions"
+     ui-selectable-list="actors"
+     ng-class="view.asList ? 'list-group' : 'grid-group'"
+     class="postits">
+    <div ng-class="{ 'ui-selected':$state.params.id == actor.id }"
+         data-id="{{ actor.id }}"
+         ng-repeat="actor in actors | orderBy:orderBy.current.id:orderBy.reverse"
+         class="postit-container">
         <div style="{{ '#f9f157' | createGradientBackground }}"
              class="postit actor #f9f157">
             <div class="head">
@@ -52,7 +56,7 @@
                     </a>
                 </span>
                 <span class="action" ng-class="{'active':actor.stories_count}">
-                    <a href="#/actor/{{ actor.id }}/tasks"
+                    <a href="#/actor/{{ actor.id }}/stories"
                        tooltip="{{ actor.stories_count }} ${message(code:'todo.is.actor.stories')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-tasks"></i>

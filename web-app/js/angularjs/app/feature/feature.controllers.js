@@ -21,17 +21,32 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('featureCtrl', ['$scope', '$state', 'selected', 'FeatureService', 'StoryService', function ($scope, $state, selected, FeatureService, StoryService) {
+controllers.controller('featureCtrl', ['$scope', '$state', '$timeout', 'selected', 'FeatureService', 'StoryService', function ($scope, $state, $timeout, selected, FeatureService, StoryService) {
     $scope.selected = selected;
     $scope.tabsType = 'tabs nav-tabs-google';
-    $scope.tabSelected = {};
+    if ($state.params.tabId){
+        $scope.tabSelected = {};
+        $scope.tabSelected[$state.params.tabId] = true;
+    } else {
+        $scope.tabSelected = {'attachments':true};
+    }
     $scope.$watch('$state.params', function() {
-        if ($state.params.id == selected.id){
+        if ($state.params.tabId){
             $scope.tabSelected[$state.params.tabId] = true;
+            //scrollToTab
+            $timeout((function(){
+                var container = angular.element('#right');
+                var pos = angular.element('#right .nav-tabs-google [active="tabSelected.'+$state.params.tabId+'"]').position().top + container.scrollTop();
+                container.animate({ scrollTop : pos }, 1000);
+            }));
         }
     });
     $scope.setTabSelected = function(tab){
-        $state.go('.', {tabId:tab});
+        if ($state.params.tabId) {
+            $state.go('.', {tabId:tab});
+        } else {
+            $state.go('.tab', {tabId:tab});
+        }
     };
     $scope.update = function (feature) {
         FeatureService.update(feature, function () {
@@ -58,5 +73,9 @@ controllers.controller('featureEditCtrl', ['$scope', 'Session', 'FormService', f
     $scope.readOnly = function() {
         return !Session.roles.productOwner;
     };
+}]);
+
+controllers.controller('featureMultipleCtrl', ['$scope', '$state', 'listId', function ($scope, $state, listId) {
+    $scope.ids = listId;
 }]);
 

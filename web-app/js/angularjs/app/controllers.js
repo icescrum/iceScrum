@@ -79,12 +79,13 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
     };
 }]);
 
-controllers.controller('sandboxCtrl', ['$scope', '$location', '$state', 'stories', function ($scope, $location, $state, stories) {
+controllers.controller('sandboxCtrl', ['$scope', '$state', 'stories', function ($scope, $state, stories) {
     $scope.orderBy = {
         reverse: false,
         status: false,
         current: {id:'suggestedDate', name:'Date'},
         values:[
+            {id:'name', name:'Name'},
             {id:'tasks_count', name:'Tasks'},
             {id:'suggestedDate', name:'Date'},
             {id:'feature.id', name:'Feature'},
@@ -113,16 +114,69 @@ controllers.controller('sandboxCtrl', ['$scope', '$location', '$state', 'stories
     $scope.stories = stories;
 }]);
 
-controllers.controller('actorsCtrl', ['$scope', '$location', 'actors', function ($scope, $location, actors) {
-    $scope.actors = actors;
-    $scope.go = function(url){
-        $location.path(url);
+controllers.controller('actorsCtrl', ['$scope', '$state', 'actors', function ($scope, $state, actors) {
+
+    $scope.orderBy = {
+        reverse: false,
+        status: false,
+        current: {id:'dateCreated', name:'todo.Date'},
+        values:[
+            {id:'dateCreated', name:'todo.Date'},
+            {id:'name', name:'todo.Name'},
+            {id:'stories_count', name:'todo.Stories'}
+        ]
     };
+
+    $scope.selectableOptions = {
+        filter:"> .postit-container",
+        cancel: "a",
+        stop:function(e, ui, selectedItems) {
+            switch (selectedItems.length){
+                case 0:
+                    $state.go('actor');
+                    break;
+                case 1:
+                    $state.go($state.params.tabId ? 'actor.details.tab' : 'actor.details', { id: selectedItems[0].id });
+                    break;
+                default:
+                    $state.go('actor.multiple',{listId:_.pluck(selectedItems, 'id').join(",")});
+                    break;
+            }
+        }
+    };
+    $scope.actors = actors;
 }]);
 
-controllers.controller('featuresCtrl', ['$scope', '$location', 'features', function ($scope, $location, features) {
-    $scope.features = features;
-    $scope.go = function(url){
-        $location.path(url);
+controllers.controller('featuresCtrl', ['$scope', '$state', 'features', function ($scope, $state, features) {
+
+    $scope.orderBy = {
+        reverse: false,
+        status: false,
+        current: {id:'dateCreated', name:'todo.Date'},
+        values:[
+            {id:'dateCreated', name:'todo.Date'},
+            {id:'name', name:'todo.Name'},
+            {id:'stories_count', name:'todo.Stories'},
+            {id:'value', name:'todo.Value'}
+        ]
     };
+
+    $scope.selectableOptions = {
+        filter:"> .postit-container",
+        cancel: "a",
+        stop:function(e, ui, selectedItems) {
+            switch (selectedItems.length){
+                case 0:
+                    $state.go('feature');
+                    break;
+                case 1:
+                    $state.go($state.params.tabId ? 'feature.details.tab' : 'feature.details', { id: selectedItems[0].id });
+                    break;
+                default:
+                    $state.go('feature.multiple',{listId:_.pluck(selectedItems, 'id').join(",")});
+                    break;
+            }
+        }
+    };
+    $scope.features = features;
 }]);
