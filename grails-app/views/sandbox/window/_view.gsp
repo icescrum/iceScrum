@@ -20,11 +20,15 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<div ui-selectable
-     id="backlog-layout-window-${controllerName}"
-     class="postits list-group">
-    <div ng-repeat="story in stories | filter: $state.current.data.filterListParams | orderBy:orderBy.current.id:orderBy.reverse"
-         class="postit-container item grid-group-item">
+<div id="backlog-layout-window-${controllerName}"
+     ui-selectable="selectableOptions"
+     ui-selectable-list="stories"
+     ng-class="{'grid-group': !view.asList, 'list-group': view.asList}"
+     class="postits">
+    <div ng-class="{ 'ui-selected':$state.params.id == story.id }"
+         data-id="{{ story.id }}"
+         ng-repeat="story in stories | filter: $state.current.data.filterListParams | orderBy:orderBy.current.id:orderBy.reverse"
+         class="postit-container">
         <div style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
              class="postit story {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }}">
             <div class="head">
@@ -95,3 +99,6 @@
         </div>
     </div>
 </div>
+<script>
+    angular.element(document).injector().get('StoryService').add(${stories as JSON});
+</script>

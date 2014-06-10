@@ -185,12 +185,4 @@ directives.directive('focusMe', function($timeout) {
             });
         }
     };
-}]).directive('uiSelectable', function () {
-    return {
-        restrict: 'A',
-        priority: 100,
-        link: function (scope, el, attrs) {
-            el.selectable({ filter: "> .item", cancel: "a" });
-        }
-    };
-});
+}]);

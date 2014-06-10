@@ -236,7 +236,7 @@ table {
   }
   #contextual-properties .panel-heading.fixed {
     border-bottom: 1px solid @gray-lighter;
-    padding: 5px 20px;
+    padding: 10px 20px;
     margin-left: 12px;
   }
 }
@@ -936,17 +936,6 @@ p.empty {
   }
 }
 
-.item{  //for grid / list
-  &.list-group-item{
-    float: none;
-    width: 100%;
-    background-color: @body-bg;
-  }
-  &.list-group-item:nth-of-type(odd):hover,&.list-group-item:hover{
-    background: @gray-lighter;
-  }
-}
-
 /** on hover utility **/
 .panel .on-hover:not(td), #sidebar > .on-hover{
   display:none;
@@ -1091,175 +1080,292 @@ a[data-toggle="tab"] button {
 @postit-content-height: 70px;
 
 .postits {
-  margin-left:12px;
-  margin-top:10px;
-  float:left;
-  clear:both;
-  .postit-container {
-    font-family: "Myriad Pro", Arial, sans-serif;
-    float:left;
-    padding:0;
-    margin: 9px;
-    &.ui-selected {
-      padding: 6px;
-      margin: 2px;
-      border-radius:3px;
-      border: 1px solid @postit-border-blue;
-      background-image: -moz-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
-      background-image: -o-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
-      background-image: -webkit-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
-      background-image: linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
-    }
-    .postit {
-      width: 196px;
-      height: 145px;
-      padding: 0 5px;
-      position:relative;
-      color:@postit-dark;
-      border: 1px solid @postit-border;
-      border-radius: 3px 3px 0px 0px;
-      box-shadow: 0 1px 2px rgba(0,0,0,.25), inset 0 0 3px rgba(255,255,255,.75);
-      &.invert {
-        color:@invert-color;
+  &.grid-group {
+    margin-left: 12px;
+    margin-top: 10px;
+    float: left;
+    clear: both;
+    .postit-container {
+      font-family: "Myriad Pro", Arial, sans-serif;
+      float: left;
+      padding: 0;
+      margin: 9px;
+      &.ui-selectee, &.ui-selected {
+        cursor: pointer;
+      }
+      &.ui-selected {
+        padding: 6px;
+        margin: 2px;
+        border-radius: 3px;
+        border: 1px solid @postit-border-blue;
+        background-image: -moz-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
+        background-image: -o-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
+        background-image: -webkit-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
+        background-image: linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
+      }
+      .postit {
+        width: 196px;
+        height: 145px;
+        padding: 0 5px;
+        position: relative;
+        color: @postit-dark;
+        border: 1px solid @postit-border;
+        border-radius: 3px 3px 0px 0px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .25), inset 0 0 3px rgba(255, 255, 255, .75);
+        &.invert {
+          color: @invert-color;
+          .head {
+            a.follow {
+              color: @invert-color;
+              text-decoration: none;
+            }
+            .estimation {
+              text-shadow: 0 1px 1px rgba(255, 255, 255, .15);
+            }
+          }
+          .content {
+            text-shadow: 0 1px 0 #666;
+          }
+          .tags {
+            a:hover {
+              .tag {
+                background-color: rgba(0, 0, 0, 0);
+              }
+            }
+            .tag {
+              background: rgba(0, 0, 0, 0.2);
+              color: @invert-color;
+            }
+          }
+          .actions {
+            > .action {
+              i {
+                color: @invert-color;
+              }
+              a .badge {
+                color: @invert-color;
+              }
+            }
+          }
+        }
         .head {
+          padding-top: 3px;
+          height: 25px;
           a.follow {
-            color: @invert-color;
-            text-decoration:none;
+            color: @postit-dark;
+            vertical-align: top;
+            font-size: 16px;
+          }
+          .id, .estimation {
+            display: inline-block;
+          }
+          .id {
+            font-size: 12px;
+            padding-top: 2px;
+            font-weight: 700;
           }
           .estimation {
-            text-shadow: 0 1px 1px rgba(255,255,255,.15);
+            font-size: 18px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+            position: absolute;
+            right: 5px;
           }
         }
         .content {
-          text-shadow: 0 1px 0 #666;
+          height: 65px;
+          text-shadow: 0 1px 0 #fff;
+          padding-right: 10px;
+          padding-left: 10px;
+          h3.title {
+            margin: 0;
+            font-size: 16px;
+            text-align: center;
+            max-height: @postit-content-height;
+          }
+          .description {
+            visibility: hidden;
+            display: inline-block;
+            max-height: @postit-content-height;
+          }
         }
         .tags {
+          height: 20px;
+          padding-top: 2px;
+          text-align: right;
+          padding-right: 5px;
           a:hover {
+            text-decoration: none;
             .tag {
-              background-color: rgba(0, 0, 0, 0);
+              background-color: rgba(255, 255, 255, 1);
             }
           }
           .tag {
-            background:rgba(0, 0, 0, 0.2);
-            color: @invert-color;
+            color: @postit-dark;
+            background-color: rgba(255, 255, 255, .6);
+            font-size: 10px;
+            padding: 1px 2px;
+            border-radius: 2px;
           }
         }
         .actions {
+          padding-top: 4px;
           > .action {
-            i {
-              color: @invert-color;
+            width: 33px;
+            text-align: center;
+            display: inline-block;
+            a {
+              visibility: hidden;
+              text-decoration: none;
+              .badge {
+                background: none;
+                display: inline;
+                padding: 0px;
+                font-size: 10px;
+                border-radius: 0;
+                color: @postit-dark;
+              }
             }
-            a .badge {
-              color:@invert-color;
+            i {
+              color: @postit-dark;
+              &.fa-comment-o {
+                vertical-align: top;
+              }
+            }
+            &.active {
+              a {
+                visibility: visible;
+              }
+            }
+          }
+        }
+        .progress {
+          height: 10px;
+          margin-bottom: 0;
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          padding: 0;
+          border:none;
+          color: @postit-dark;
+          background: rgba(255, 255, 255, 0.6);
+          .progress-bar {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.9);
+          }
+          .status {
+            top: 0.5px;
+            left: 5px;
+            position: absolute;
+            font-size: 9px;
+            line-height: 10px;
+            display: none;
+          }
+        }
+        .state {
+          right: 5px;
+          font-size: 9px;
+          line-height: 10px;
+          color: @postit-dark;
+          position: absolute;
+          margin-top: 1.5px;
+        }
+        &:hover {
+          .content {
+            .title > div {
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+            .description {
+              font-size: 12px;
+              font-style: italic;
+              overflow: hidden;
+              visibility: visible;
+            }
+          }
+          .actions {
+            > .action a {
+              visibility: visible;
+            }
+          }
+          .progress {
+            .status {
+              display: inline-block;
             }
           }
         }
       }
+    }
+  }
+  &.list-group {
+    padding:5px;
+    > :last-child {
+      border-bottom-width:1px;
+    }
+    > .postit-container:nth-child(odd){
+      background-color: #EFEFEF;
+    }
+    .postit {
+      height:55px;
+      position:relative;
+      background-image: none !important;
+      border:1px solid #B1B1B1;
+      border-bottom-width:0;
       .head {
-        padding-top:3px;
-        height:25px;
-        a.follow {
-          color:@postit-dark;
-          vertical-align: top;
-          font-size:16px;
-        }
-        .id, .estimation {
-          display: inline-block;
-        }
-        .id {
-          font-size: 12px;
-          padding-top: 2px;
-          font-weight: 700;
-        }
-        .estimation {
-          font-size:18px;
-          text-shadow: 0 1px 1px rgba(0,0,0,.15);
-          position:absolute;
-          right:5px;
-        }
+        height:100%;
+        float:left;
+        padding-top: 16px;
+        padding-left: 5px;
+        padding-right: 5px;
       }
       .content {
-        height:65px;
-        text-shadow: 0 1px 0 #fff;
-        padding-right:10px;
-        padding-left:10px;
-        h3.title {
-          margin:0;
+        .title {
           font-size:16px;
-          text-align:center;
-          max-height:@postit-content-height;
-        }
-        .description {
-          visibility:hidden;
-          display:inline-block;
-          max-height:@postit-content-height;
+          margin:0;
+          padding:2px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
       }
-      .tags {
-        height:20px;
-        padding-top: 2px;
-        text-align: right;
-        padding-right: 5px;
-        a:hover {
-          text-decoration: none;
-          .tag {
-            background-color: rgba(255,255,255,1);
-          }
-        }
-        .tag {
-          color: @postit-dark;
-          background-color: rgba(255,255,255,.6);
-          font-size: 10px;
-          padding: 1px 2px;
-          border-radius:2px;
-        }
+      .state {
+        display:none;
       }
       .actions {
-        padding-top:4px;
-        > .action {
-          width:33px;
-          text-align: center;
-          display:inline-block;
-          a {
-            visibility:hidden;
-            text-decoration:none;
-            .badge {
-              background:none;
-              display: inline;
-              padding: 0px;
-              font-size: 10px;
-              border-radius:0;
-              color:@postit-dark;
-            }
-          }
-          i {
-            color: @postit-dark;
-            &.fa-comment-o {
-              vertical-align:top;
-            }
-          }
-          &.active {
-            a {
-              visibility:visible;
-            }
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        text-align: right;
+        .action {
+          display: inline-block;
+          margin-top: 13px;
+          margin-right: 20px;
+          font-size:16px;
+          display:none;
+        }
+      }
+      &:hover {
+        .actions {
+          .action {
+            display:inline-block;
           }
         }
       }
-      .progress {
+      .progress{
+        margin-bottom:0;
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:0;
+        border:none;
+        background: rgba(255, 255, 255, 0.6);
         height: 10px;
-        margin-bottom: 0;
-        background: rgba(255,255,255,0.6);
-        border-width: 0;
-        border-color:@postit-border;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        padding:0;
-        color:@postit-dark;
         .progress-bar {
-          text-align:left;
-          background:rgba(255,255,255,0.9);
+          text-align: left;
+          background: rgba(255, 255, 255, 0.9);
         }
         .status {
           top: 0.5px;
@@ -1267,40 +1373,7 @@ a[data-toggle="tab"] button {
           position: absolute;
           font-size: 9px;
           line-height: 10px;
-          display:none;
-        }
-      }
-      .state {
-        right: 5px;
-        font-size: 9px;
-        line-height: 10px;
-        color:@postit-dark;
-        position: absolute;
-        margin-top: 1.5px;
-      }
-      &:hover {
-        .content {
-          .title > div {
-            text-overflow:ellipsis;
-            white-space:nowrap;
-            overflow:hidden;
-          }
-          .description {
-            font-size:12px;
-            font-style:italic;
-            overflow:hidden;
-            visibility:visible;
-          }
-        }
-        .actions {
-          > .action a {
-            visibility:visible;
-          }
-        }
-        .progress {
-          .status {
-            display:inline-block;
-          }
+          display: none;
         }
       }
     }

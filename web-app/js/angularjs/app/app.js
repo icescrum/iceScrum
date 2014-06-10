@@ -29,6 +29,8 @@ var isApp = angular.module('isApp', [
     'filters',
     'directives',
     'ui.router',
+    'ui.selectable',
+    'ui.sortable',
     'ui.bootstrap',
     'ui.select2',
     'cfp.hotkeys',
@@ -50,7 +52,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                     templateUrl: 'openWindow/sandbox',
                     controller: 'sandboxCtrl',
                     data: {
-                        filterListParams: { state:1 }
+                        filterListParams: {
+                            state:1
+                        }
                     },
                     resolve:{
                         stories:['StoryService', function(StoryService){
@@ -58,19 +62,29 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
-                .state('sandbox.details', {
-                    url: "/:id",
-                    templateUrl: 'story.details.html',
-                    controller: 'storyCtrl',
-                    resolve:{
-                        selected:['StoryService', '$stateParams', function(StoryService, $stateParams){
-                            return StoryService.get($stateParams.id);
-                        }]
-                    }
-                })
-                .state('sandbox.details.tab', {
-                    url: "/:tabId"
-                })
+                    .state('sandbox.multiple', {
+                        url: "/{listId:[0-9]+[\,][0-9]+}",
+                        templateUrl: 'story.multiple.html',
+                        controller: 'storyMultipleCtrl',
+                        resolve:{
+                            listId:['$stateParams', function($stateParams){
+                                return $stateParams.listId.split(',');
+                            }]
+                        }
+                    })
+                    .state('sandbox.details', {
+                        url: "/{id:[0-9]+}",
+                        templateUrl: 'story.details.html',
+                        controller: 'storyCtrl',
+                        resolve:{
+                            selected:['StoryService', '$stateParams', function(StoryService, $stateParams){
+                                return StoryService.get($stateParams.id);
+                            }]
+                        }
+                    })
+                        .state('sandbox.details.tab', {
+                            url: "/{tabId:.+}"
+                        })
                 .state('actor', {
                     url: '/actor',
                     templateUrl: 'openWindow/actor',
@@ -81,19 +95,19 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
-                .state('actor.details', {
-                    url: "/:id",
-                    templateUrl: 'actor.details.html',
-                    controller: 'actorCtrl',
-                    resolve:{
-                        selected:['ActorService', '$stateParams', function(ActorService, $stateParams){
-                            return ActorService.get($stateParams.id);
-                        }]
-                    }
-                })
-                .state('actor.details.tab', {
-                    url: "/:tabId"
-                })
+                    .state('actor.details', {
+                        url: "/:id",
+                        templateUrl: 'actor.details.html',
+                        controller: 'actorCtrl',
+                        resolve:{
+                            selected:['ActorService', '$stateParams', function(ActorService, $stateParams){
+                                return ActorService.get($stateParams.id);
+                            }]
+                        }
+                    })
+                        .state('actor.details.tab', {
+                            url: "/:tabId"
+                        })
                 .state('feature', {
                     url: '/feature',
                     templateUrl: 'openWindow/feature',
@@ -104,19 +118,19 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
-                .state('feature.details', {
-                    url: "/:id",
-                    templateUrl: 'feature.details.html',
-                    controller: 'featureCtrl',
-                    resolve:{
-                        selected:['FeatureService', '$stateParams', function(FeatureService, $stateParams){
-                            return FeatureService.get($stateParams.id);
-                        }]
-                    }
-                })
-                .state('feature.details.tab', {
-                    url: "/:tabId"
-                });
+                    .state('feature.details', {
+                        url: "/:id",
+                        templateUrl: 'feature.details.html',
+                        controller: 'featureCtrl',
+                        resolve:{
+                            selected:['FeatureService', '$stateParams', function(FeatureService, $stateParams){
+                                return FeatureService.get($stateParams.id);
+                            }]
+                        }
+                    })
+                        .state('feature.details.tab', {
+                            url: "/:tabId"
+                        });
         }
     ])
     .factory('AuthInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', function ($rootScope, $q, AUTH_EVENTS) {
@@ -149,6 +163,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         };
         //To be able to track state in app
         $rootScope.$state = $state;
+
+        //to switch between grid / list view
+        $rootScope.view = {
+            asList:true
+        };
     }])
     .constant('AUTH_EVENTS', {
         loginSuccess: 'auth-login-success',

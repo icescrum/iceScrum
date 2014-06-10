@@ -31,35 +31,47 @@ services.factory( 'Story', [ 'Resource', function( $resource ) {
         });
 }]);
 
-services.service("StoryService", ['Story', '$q', function(Story, $q) {
-    var list = Story.query();
+services.service("StoryService", ['Story', '$q', '$timeout', '$rootScope', function(Story, $q, $timeout, $rootScope) {
+    this.list = [];
+    var self = this;
 
-    this.list = list;
+    this.add = function(stories){
+        angular.forEach(stories, function(story) {
+            self.list.push(story);
+        });
+        $timeout(function(){
+            $rootScope.$apply();
+        })
+    };
 
     this.get = function(id){
-        var story;
-        var deferred = $q.defer();
-        this.list.$promise.then(function(list){
-            story = _.find(list , function(rw){ return rw.id == id });
-            deferred.resolve(story);
-        });
-        return deferred.promise;
+        if (self.list.$promise){
+            var story;
+            var deferred = $q.defer();
+            self.list.$promise.then(function(list){
+                story = _.find(list , function(rw){ return rw.id == id });
+                deferred.resolve(story);
+            });
+            return deferred.promise;
+        } else {
+            return _.find(self.list , function(rw){ return rw.id == id });
+        }
     };
 
     this.update = function(story, callback){
         story.$update(function(data){
-            var index = list.indexOf(_.find(list, function(st){ return st.id == story.id }));
+            var index = self.list.indexOf(_.find(self.list, function(st){ return st.id == story.id }));
             if (index){
-                list.splice(index, 1, data);
+                self.list.splice(index, 1, data);
             }
         });
     };
 
     this['delete'] = function(story){
         story.$delete(function(){
-            var index = list.indexOf(story);
+            var index = self.list.indexOf(story);
             if (index){
-                list.splice(index, 1);
+                self.list.splice(index, 1);
             }
         });
     };

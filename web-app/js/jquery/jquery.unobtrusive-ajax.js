@@ -259,33 +259,6 @@ function ajaxRequest(element, options) {
 
 function attachOnDomUpdate(content){
 
-    //clean popover & tooltip
-    $('div.tooltip:visible').hide();
-    $('div.popover:visible').hide();
-
-    if (isTouchDevice){
-        $('.scrollable', content).each(function(){
-            var $container = $(this);
-            $container.on('touchstart', function(e){
-                var event = e.originalEvent;
-                this.allowUp = (this.scrollTop > 0);
-                this.allowDown = (this.scrollTop < this.scrollHeight - document.body.clientHeight);
-                this.slideBeginY = event.pageY;
-            });
-
-            $container.on('touchmove', function(e){
-                var event = e.originalEvent;
-                var up = (event.pageY > this.slideBeginY);
-                var down = (event.pageY < this.slideBeginY);
-                this.slideBeginY = event.pageY;
-                if ((up && this.allowUp) || (down && this.allowDown) && !$(document.body).hasClass('left-open'))
-                    e.stopPropagation();
-                else
-                    e.preventDefault();
-            });
-        });
-    }
-
     $('[data-ui-chart-default]', content).each(function(){
         var settings = $(this).html5data('ui-chart');
         if (settings.cookie){

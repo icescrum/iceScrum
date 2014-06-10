@@ -24,9 +24,9 @@
     <button type="button"
             tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
             tooltip-append-to-body="true"
-            onclick="$.icescrum.toggleGridList('#backlog-layout-window-${controllerName}',this)"
+            ng-click="view.asList = !view.asList"
             class="btn btn-default">
-        <span class="glyphicon glyphicon-th"></span>
+        <span class="glyphicon glyphicon-th" ng-class="{'glyphicon-th-list': view.asList, 'glyphicon-th': !view.asList}"></span>
     </button>
     <div class="btn-group"
          dropdown

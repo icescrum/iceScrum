@@ -86,6 +86,8 @@ modules = {
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-router.min.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-select2.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-colorpicker.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-ui-selectable.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-ui-sortable.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-hotkeys.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"services.js"], disposition:'head'

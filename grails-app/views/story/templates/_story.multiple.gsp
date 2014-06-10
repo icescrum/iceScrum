@@ -19,20 +19,6 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:render template="/story/templates/story.details" />
-<g:render template="/story/templates/story.multiple" />
-<g:render template="/story/templates/nested.stories" />
-
-<g:render template="/story/templates/menu" />
-
-<g:render template="/story/templates/new" />
-<g:render template="/story/templates/selection" />
-
-<g:render template="/story/templates/postit" />
-<g:render template="/story/templates/row" />
-
-
-
-
-
-
+<script type="text/ng-template" id="story.multiple.html">
+{{ ids }}
+</script>

@@ -85,15 +85,32 @@ controllers.controller('sandboxCtrl', ['$scope', '$location', '$state', 'stories
         status: false,
         current: {id:'suggestedDate', name:'Date'},
         values:[
+            {id:'tasks_count', name:'Tasks'},
             {id:'suggestedDate', name:'Date'},
             {id:'feature.id', name:'Feature'},
             {id:'type', name:'Type'}
         ]
     };
-    $scope.stories = stories;
-    $scope.go = function(url){
-        $location.path(url);
+
+    $scope.selectableOptions = {
+        filter:"> .postit-container",
+        cancel: "a",
+        stop:function(e, ui, selectedItems) {
+            switch (selectedItems.length){
+                case 0:
+                    $state.go('sandbox');
+                    break;
+                case 1:
+                    $state.go($state.params.tabId ? 'sandbox.details.tab' : 'sandbox.details', { id: selectedItems[0].id });
+                    break;
+                default:
+                    $state.go('sandbox.multiple',{listId:_.pluck(selectedItems, 'id').join(",")});
+                    break;
+            }
+        } 
     };
+
+    $scope.stories = stories;
 }]);
 
 controllers.controller('actorsCtrl', ['$scope', '$location', 'actors', function ($scope, $location, actors) {

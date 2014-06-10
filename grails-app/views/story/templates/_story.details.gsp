@@ -28,31 +28,35 @@
          fixed="#right"
          fixed-offset-top="1"
          fixed-offset-width="-2">
-        <h3 class="panel-title">
-            <a href
-               tooltip="{{ selected.follow.followers }}"
-               tooltip-append-to-body="true"
-               ng-click="follow(selected)"
-               ng-switch on="selected.follow.status"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
-            <span>{{ selected.name }}</span><small ng-show="selected.origin">${message(code: 'is.story.origin')}: {{ selected.origin }}</small>
+        <h3 class="panel-title row">
+            <div class="col-sm-8">
+                <a href
+                   tooltip="{{ selected.follow.followers }}"
+                   tooltip-append-to-body="true"
+                   ng-click="follow(selected)"
+                   ng-switch on="selected.follow.status"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
+                <span>{{ selected.name }}</span><small ng-show="selected.origin">${message(code: 'is.story.origin')}: {{ selected.origin }}</small>
+            </div>
+            <div class="col-sm-4">
                 <div class="pull-right">
-                <span tooltip="${message(code: 'is.story.creator')} : {{ selected.creator | userFullName }}">
-                    <img ng-src="{{ selected.creator | userAvatar }}" alt="{{ selected.creator | userFullName }}"
-                         height="21px"/>
-                </span>
-                <span class="label label-default"
-                      tooltip="${message(code: 'is.backlogelement.id')}">{{ selected.uid }}</span>
+                    <span tooltip="${message(code: 'is.story.creator')} : {{ selected.creator | userFullName }}">
+                        <img ng-src="{{ selected.creator | userAvatar }}" alt="{{ selected.creator | userFullName }}"
+                             height="21px"/>
+                    </span>
+                    <span class="label label-default"
+                          tooltip="${message(code: 'is.backlogelement.id')}">{{ selected.uid }}</span>
 
-                <a ng-if="previous"
-                   class="btn btn-xs btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#sandbox/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="next"
-                   class="btn btn-xs btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#sandbox/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    <a ng-if="previous"
+                       class="btn btn-xs btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#sandbox/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                    <a ng-if="next"
+                       class="btn btn-xs btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#sandbox/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                </div>
             </div>
         </h3>
         <div class="actions">
@@ -273,23 +277,20 @@
             </div>
         </form>
         <tabset type="{{ tabsType }}">
-            <tab select="activities(selected); setTabSelected('activities');"
+            <tab select="activities(selected); ($state.params.tabId ? setTabSelected('activities') : '');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
-                 active="tabSelected.activities"
-                 scroll-to-tab="#right">
+                 active="tabSelected.activities">
                 <table class="table table-striped">
                     <tbody ng-include src="'activity.list.html'"></tbody>
                 </table>
             </tab>
             <tab select="setTabSelected('attachments');"
                  heading="${message(code: 'is.ui.backlogelement.attachment')}"
-                 active="tabSelected.attachments"
-                 scroll-to-tab="#right">
+                 active="tabSelected.attachments">
             </tab>
             <tab select="comments(selected); setTabSelected('comments');"
                  heading="${message(code: 'is.ui.backlogelement.activity.comments')}"
-                 active="tabSelected.comments"
-                 scroll-to-tab="#right">
+                 active="tabSelected.comments">
                 <table class="table table-striped">
                     <tbody ng-include src="'comment.list.html'"></tbody>
                 </table>
@@ -297,8 +298,7 @@
             </tab>
             <tab select="tasks(selected); setTabSelected('tasks');"
                  heading="${message(code: 'is.ui.backlogelement.activity.task')}"
-                 active="tabSelected.tasks"
-                 scroll-to-tab="#right">
+                 active="tabSelected.tasks">
                 <div ng-include src="'story.task.new.html'"></div>
                 <table class="table table-striped">
                     <tbody ng-include src="'story.tasks.html'"></tbody>
@@ -306,8 +306,7 @@
             </tab>
             <tab select="setTabSelected('tests');"
                  heading="${message(code: 'is.ui.backlogelement.activity.test')}"
-                 active="tabSelected.tests"
-                 scroll-to-tab="#right">
+                 active="tabSelected.tests">
             </tab>
         </tabset>
     </div>

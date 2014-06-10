@@ -37,7 +37,9 @@ class SandboxController {
     def springSecurityService
 
     def index = {
-        render(template: "${params.type ?: 'window'}/view")
+        withProduct { Product product ->
+            render(template: "${params.type ?: 'window'}/view", model: [stories: Story.findAllByBacklogAndState(product,Story.STATE_SUGGESTED)])
+        }
     }
 
     def print = {

@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 -
 --}%
-<table class="table table-striped postit-rows scrollable"
+<table class="table table-striped postit-rows"
     id="widget-${controllerName}"
     ${request.productOwner || request.scrumMaster ? 'data-ui-draggable' : ''}
     data-ui-draggable-selector="#widget-${controllerName} > tbody > tr"

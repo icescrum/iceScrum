@@ -677,19 +677,6 @@
             }
         },
 
-        toggleGridList:function(container, button){
-            var $button = $(button);
-            var $containerItems = $(container).find('.item');
-            $button.find('span').toggleClass('glyphicon-th').toggleClass('glyphicon-th-list');
-            if ($button.find('span').hasClass('glyphicon-th')){
-                $containerItems.removeClass('list-group-item').addClass('grid-group-item');
-                $.icescrum.o.showAsGrid = true;
-            } else {
-                $containerItems.addClass('list-group-item');
-                $.icescrum.o.showAsGrid = false;
-            }
-        },
-
         onDropToWindow:function(event, ui){
             //hack when drop to dropdown hidden menu
             if ($('.menubar-hidden .ui-sortable-placeholder').length > 0){

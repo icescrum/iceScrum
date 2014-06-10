@@ -20,14 +20,25 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('storyCtrl', ['$scope', '$state', 'selected', 'StoryService', 'TaskService', 'CommentService', function ($scope, $state, selected, StoryService, TaskService, CommentService) {
+controllers.controller('storyCtrl', ['$scope', '$state', '$timeout', 'selected', 'StoryService', 'TaskService', 'CommentService', function ($scope, $state, $timeout, selected, StoryService, TaskService, CommentService) {
     $scope.selected = selected;
     $scope.tabsType = 'tabs nav-tabs-google';
-    $scope.tabSelected = {};
+    if ($state.params.tabId){
+        $scope.tabSelected = {};
+        $scope.tabSelected[$state.params.tabId] = true;
+    } else {
+        $scope.tabSelected = {'activities':true};
+    }
     //watch from url change outside and keep updated of which tab is selected (getting params tabId in view)
     $scope.$watch('$state.params', function() {
-        if ($state.params.id == selected.id){
+        if ($state.params.tabId){
             $scope.tabSelected[$state.params.tabId] = true;
+            //scrollToTab
+            $timeout((function(){
+                var container = angular.element('#right');
+                var pos = angular.element('#right .nav-tabs-google [active="tabSelected.'+$state.params.tabId+'"]').position().top + container.scrollTop();
+                container.animate({ scrollTop : pos }, 1000);
+            }));
         }
     });
     //for buttons in story header
@@ -183,4 +194,8 @@ controllers.controller('storyEditCtrl',['$scope', 'Session', 'FormService', func
     $scope.readOnly = function() {
         return !(Session.poOrSm() || Session.creator($scope.story));
     }
+}]);
+
+controllers.controller('storyMultipleCtrl', ['$scope', '$state', 'listId', function ($scope, $state, listId) {
+    $scope.ids = listId;
 }]);
