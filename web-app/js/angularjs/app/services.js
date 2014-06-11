@@ -139,7 +139,7 @@ restResource.factory('Resource', [ '$resource', function ($resource) {
                 }
             },
             update: {
-                method: 'put',
+                method: 'post',
                 isArray: false,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: function (data) {
