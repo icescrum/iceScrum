@@ -139,7 +139,7 @@ restResource.factory('Resource', [ '$resource', function ($resource) {
                 }
             },
             update: {
-                method: 'post',
+                method: 'put',
                 isArray: false,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: function (data) {
@@ -169,7 +169,7 @@ restResource.factory('Resource', [ '$resource', function ($resource) {
 var formObjectData = function (obj, prefix) {
     var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
     _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
-    //_prefix = _prefix.toLowerCase(); TODO Uncomment if useful (commented because it prevents the use of acceptanceTests that have camel case)
+    _prefix = toLowerCaseFirstLetter(_prefix);
 
     // TODO consider making it available at top level or replacing it
     // Custom functions because the real ones aren't available yet (apart from firefox)
@@ -178,6 +178,9 @@ var formObjectData = function (obj, prefix) {
     }
     function endsWith(str, end) {
         return str.indexOf(end, str.length - end.length) !== -1;
+    }
+    function toLowerCaseFirstLetter(str) {
+        return str.charAt(0).toLowerCase() + str.substring(1);
     }
 
     for (name in obj) {
