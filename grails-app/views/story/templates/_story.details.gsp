@@ -309,7 +309,24 @@
             <tab select="acceptanceTests(selected); setTabSelected('tests');"
                  heading="${message(code: 'is.ui.backlogelement.activity.test')}"
                  active="tabSelected.tests">
-                <div ng-include src="'story.acceptanceTest.editor.html'"></div>
+                <table class="table" ng-controller="acceptanceTestCtrl">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <button class="btn btn-sm pull-right"
+                                    ng-class="getShowForm() ? 'btn-danger' : 'btn-primary'"
+                                    ng-click="toggleShowForm()"
+                                    tooltip="${message(code:'todo.is.ui.acceptanceTest.new')}"
+                                    tooltip-append-to-body="body">
+                                <span class="fa" ng-class="getShowForm() ? 'fa-times' : 'fa-plus'"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-show="getShowForm()">
+                        <td><div ng-init="formType='save'" ng-include src="'story.acceptanceTest.editor.html'"></div></td>
+                    </tr>
+                    </tbody>
+                </table>
                 <table class="table table-striped">
                     <tbody ng-include src="'story.acceptanceTests.html'"></tbody>
                 </table>

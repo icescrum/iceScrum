@@ -74,7 +74,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             $.icescrum.whatsNew();
 
-            $.icescrum.initAtmosphere();
+            //$.icescrum.initAtmosphere(); TODO rewire atmosphere
 
             //post every 25 min to cancel session timeout
             /*$.doTimeout(1000 * 60 * 25,function(){

@@ -289,5 +289,14 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/acceptanceTest/$id" {
+            controller = 'acceptanceTest'
+            action = [POST:"update", DELETE:"delete"]
+            constraints {
+                id(matches: /\d*/)
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
     }
 }

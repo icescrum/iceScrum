@@ -22,6 +22,13 @@
  */
 controllers.controller('storyCtrl', ['$scope', '$state', '$timeout', 'selected', 'StoryService', 'TaskService', 'CommentService', 'AcceptanceTestService', function ($scope, $state, $timeout, selected, StoryService, TaskService, CommentService, AcceptanceTestService) {
     $scope.selected = selected;
+
+    $scope.acceptanceTestEdit = {};
+    $scope.editAcceptanceTest = function(id, value) {
+        $scope.acceptanceTestEdit = {};
+        $scope.acceptanceTestEdit[id] = value;
+    };
+
     $scope.tabsType = 'tabs nav-tabs-google';
     if ($state.params.tabId){
         $scope.tabSelected = {};

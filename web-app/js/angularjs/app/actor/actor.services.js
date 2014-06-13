@@ -26,12 +26,12 @@ services.factory('Actor', [ 'Resource', function ($resource) {
 }]);
 
 services.service("ActorService", ['Actor', '$q', function (Actor, $q) {
-    var list = Actor.query();
-    this.list = list;
+    var self = this;
+    this.list = Actor.query();
     this.get = function (id) {
         var actor;
         var deferred = $q.defer();
-        this.list.$promise.then(function (list) {
+        self.list.$promise.then(function (list) {
             actor = _.find(list, function (rw) {
                 return rw.id == id
             });
@@ -41,19 +41,17 @@ services.service("ActorService", ['Actor', '$q', function (Actor, $q) {
     };
     this.update = function (actor, callback) {
         actor.$update(function (data) {
-            var index = list.indexOf(_.find(list, function (st) {
-                return st.id == actor.id
-            }));
-            if (index) {
-                list.splice(index, 1, data);
+            var index = self.list.indexOf(_.find(self.list, function (currentActor) { return currentActor.id == actor.id }));
+            if (index != -1) {
+                self.list.splice(index, 1, data);
             }
         });
     };
     this['delete'] = function (actor) {
         actor.$delete(function () {
-            var index = list.indexOf(actor);
-            if (index) {
-                list.splice(index, 1);
+            var index = self.list.indexOf(actor);
+            if (index != -1) {
+                self.list.splice(index, 1);
             }
         });
     };

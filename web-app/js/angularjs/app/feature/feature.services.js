@@ -26,12 +26,12 @@ services.factory('Feature', [ 'Resource', function ($resource) {
 }]);
 
 services.service("FeatureService", ['Feature', '$q', function (Feature, $q) {
-    var list = Feature.query();
-    this.list = list;
+    var self = this;
+    this.list = Feature.query();
     this.get = function (id) {
         var feature;
         var deferred = $q.defer();
-        this.list.$promise.then(function (list) {
+        self.list.$promise.then(function (list) {
             feature = _.find(list, function (rw) {
                 return rw.id == id
             });
@@ -41,19 +41,17 @@ services.service("FeatureService", ['Feature', '$q', function (Feature, $q) {
     };
     this.update = function (feature, callback) {
         feature.$update(function (data) {
-            var index = list.indexOf(_.find(list, function (st) {
-                return st.id == feature.id
-            }));
-            if (index) {
-                list.splice(index, 1, data);
+            var index = self.list.indexOf(_.find(self.list, function (currentFeature) { return currentFeature.id == feature.id }));
+            if (index != -1) {
+                self.list.splice(index, 1, data);
             }
         });
     };
     this['delete'] = function (feature) {
         feature.$delete(function () {
-            var index = list.indexOf(feature);
-            if (index) {
-                list.splice(index, 1);
+            var index = self.list.indexOf(feature);
+            if (index != -1) {
+                self.list.splice(index, 1);
             }
         });
     };

@@ -56,7 +56,6 @@ modules = {
     'objects' {
         dependsOn 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.object.js'], bundle: 'icescrum'
-        resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.acceptancetest.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.attachment.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.comment.js'], bundle: 'icescrum'
         resource url: [dir: 'js/icescrum', file: 'jquery.icescrum.project.js'], bundle: 'icescrum'

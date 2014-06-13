@@ -61,7 +61,7 @@ services.service("StoryService", ['Story', '$q', '$timeout', '$rootScope', funct
     this.update = function(story, callback){
         story.$update(function(data){
             var index = self.list.indexOf(_.find(self.list, function(st){ return st.id == story.id }));
-            if (index){
+            if (index != -1) {
                 self.list.splice(index, 1, data);
             }
         });
@@ -70,7 +70,7 @@ services.service("StoryService", ['Story', '$q', '$timeout', '$rootScope', funct
     this['delete'] = function(story){
         story.$delete(function(){
             var index = self.list.indexOf(story);
-            if (index){
+            if (index != -1) {
                 self.list.splice(index, 1);
             }
         });

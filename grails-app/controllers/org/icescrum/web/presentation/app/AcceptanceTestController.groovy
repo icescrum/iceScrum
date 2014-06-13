@@ -137,11 +137,11 @@ class AcceptanceTestController {
             }
             withFormat {
                 html {
-                    def responseData = [acceptanceTest: acceptanceTest]
-                    if (request.productOwner && story.testStateEnum == Story.TestState.SUCCESS) {
-                        responseData.dialogSuccess = g.render(template: 'dialogs/suggestDone', model: [storyId: story.id])
-                    }
-                    render(status: 200, contentType: 'application/json', text: responseData as JSON)
+                    // TODO suggest story done when last acceptance test done
+//                    if (request.productOwner && story.testStateEnum == Story.TestState.SUCCESS) {
+//                        responseData.dialogSuccess = g.render(template: 'dialogs/suggestDone', model: [storyId: story.id])
+//                    }
+                    render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
                 }
                 json { renderRESTJSON text:acceptanceTest }
                 xml  { renderRESTXML text:acceptanceTest }

@@ -21,9 +21,50 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'StoryStates', function ($scope, AcceptanceTestService, StoryStates) {
-    $scope.save = function(acceptanceTest, obj){
-        AcceptanceTestService.save(acceptanceTest, obj);
+controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'hotkeys', function ($scope, AcceptanceTestService, hotkeys) {
+
+    $scope.setShowForm = function(show) { $scope.editAcceptanceTest($scope.acceptanceTest ? $scope.acceptanceTest.id : -1, show) };
+    $scope.getShowForm = function() { return ($scope.acceptanceTestEdit[$scope.acceptanceTest ? $scope.acceptanceTest.id : -1] == true) };
+
+    $scope.acceptanceTest = angular.copy($scope.readOnlyAcceptanceTest);
+
+    $scope.setShortCut = function() {
+        var cancelKey = 'esc';
+        hotkeys.del(cancelKey);
+        hotkeys.add({
+            combo: cancelKey,
+            allowIn: ['INPUT', 'TEXTAREA'],
+            callback: function(event, hotkey) {
+                $scope.cancel();
+            }
+        });
+    };
+
+    $scope.toggleShowForm = function() {
+        $scope.setShowForm(!$scope.getShowForm());
+    };
+
+    $scope.submitForm = function(type, acceptanceTest, story){
+        if (type == 'save') {
+            AcceptanceTestService.save(acceptanceTest, story);
+            // TODO remove the existing data from the form after saving new story
+        } else if (type == 'update') {
+            AcceptanceTestService.update(acceptanceTest, story);
+        }
+        $scope.setShowForm(false);
+    };
+
+    $scope.switchState = function(acceptanceTest, story) {
+        if (!$scope.stateReadOnly()) {
+            // TODO use constants, not hardcoded values
+            var newState = {
+                1: 5,
+                5: 10,
+                10: 1
+            };
+            acceptanceTest.state = newState[acceptanceTest.state];
+            AcceptanceTestService.update(acceptanceTest, story);
+        }
     };
 
     $scope['delete'] = function(acceptanceTest, story){
@@ -32,5 +73,17 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
 
     $scope.readOnly = function() {
         return this.selected.state == 7; // TODO use constants, not hardcoded values
+    };
+
+    $scope.stateReadOnly = function() {
+        return $scope.readOnly() || (this.selected.state < 4); // TODO use constants, not hardcoded values
+    };
+
+    $scope.cancel = function() {
+        $scope.setShowForm(false);
+        if ($scope.readOnlyAcceptanceTest) {
+            $scope.acceptanceTest = angular.copy($scope.readOnlyAcceptanceTest);
+        }
+        // TODO remove the existing data from the form after cancelling new story
     };
 }]);

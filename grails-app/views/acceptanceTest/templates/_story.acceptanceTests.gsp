@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
 %{--
 - Copyright (c) 2014 Kagilum.
 -
@@ -26,18 +27,45 @@
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="acceptanceTest in selected.acceptanceTests" ng-controller="acceptanceTestCtrl">
+<tr ng-repeat="readOnlyAcceptanceTest in selected.acceptanceTests" ng-controller="acceptanceTestCtrl">
     <td>
         <div class="content">
-            <span class="clearfix">{{ acceptanceTest.name }}</span>
-            <i class="fa fa-check" ng-class="{1:'text-muted', 5:'text-danger', 10:'text-success'}[acceptanceTest.state]"/>
-            <a href
-                ng-if="!readOnly()"
-                ng-click="delete(acceptanceTest, selected)"
-                tooltip-placement="left"
-                tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"
-            class="on-hover delete"><i class="fa fa-times text-danger"></i></a>
-            {{ acceptanceTest.description }}
+            <div ng-show="!getShowForm()">
+                <div class="pull-right">
+                    <a href
+                       class="btn btn-xs btn-primary"
+                       role="button"
+                       tooltip-placement="left"
+                       tooltip="${message(code:'todo.is.ui.acceptanceTest.edit')}"
+                       ng-if="!readOnly()"
+                       ng-click="setShowForm(true)"><i class="fa fa-pencil"></i></a>
+                    <a href
+                       class="btn btn-xs btn-danger"
+                       role="button"
+                       tooltip-placement="left"
+                       tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"
+                       ng-if="!readOnly()"
+                       ng-click="delete(readOnlyAcceptanceTest, selected)"><i class="fa fa-times"></i></a>
+                    <a href
+                       class="btn btn-xs"
+                       role="button"
+                       ng-class="{${AcceptanceTestState.TOCHECK.id}:'btn-default', ${AcceptanceTestState.FAILED.id}:'btn-danger', ${AcceptanceTestState.SUCCESS.id}:'btn-success'}[readOnlyAcceptanceTest.state]"
+                       ng-click="switchState(readOnlyAcceptanceTest, selected)"
+                       tooltip-placement="left"
+                       tooltip="${message(code:'todo.is.ui.acceptanceTest.state')}">
+                        <i class="fa fa-check"/>
+                    </a>
+                </div>
+                <div>
+                    <span class="label label-default"
+                          tooltip-placement="left"
+                          tooltip="${message(code: 'is.backlogelement.id')}">{{ readOnlyAcceptanceTest.uid }}</span>
+                    <strong>{{ readOnlyAcceptanceTest.name }}</strong>
+                </div>
+                <br/>
+                <div ng-bind-html="readOnlyAcceptanceTest.description_html | sanitize"></div>
+            </div>
+            <div ng-include ng-show="getShowForm()" ng-init="formType='update'" src="'story.acceptanceTest.editor.html'"></div>
         </div>
     </td>
 </tr>

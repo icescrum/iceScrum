@@ -22,12 +22,9 @@
  *
  */
 services.factory( 'AcceptanceTest', [ 'Resource', function( $resource ) {
-    return $resource( 'acceptanceTest/:type/:storyId',
+    return $resource( 'acceptanceTest/:type/:storyId/:id',
         { id: '@id' } ,
-        {
-            query:           {method:'GET', isArray:true, cache: true},
-            activities:      {method:'GET', isArray:true, params:{action:'activities'}}
-        });
+        { query:           {method:'GET', isArray:true, cache: true} });
 }]);
 
 services.service("AcceptanceTestService", ['AcceptanceTest', function(AcceptanceTest) {
@@ -43,10 +40,18 @@ services.service("AcceptanceTestService", ['AcceptanceTest', function(Acceptance
         acceptanceTest.$delete(function(){
             if (story){
                 var index = story.acceptanceTests.indexOf(acceptanceTest);
-                if (index != -1){
+                if (index != -1) {
                     story.acceptanceTests.splice(index, 1);
                     story.acceptanceTests_count -= 1;
                 }
+            }
+        });
+    };
+    this.update = function(acceptanceTest, story){
+        acceptanceTest.$update(function(data){
+            var index = story.acceptanceTests.indexOf(_.find(story.acceptanceTests, function(currentAcceptanceTest){ return currentAcceptanceTest.id == acceptanceTest.id }));
+            if (index != -1) {
+                story.acceptanceTests.splice(index, 1, data);
             }
         });
     };
