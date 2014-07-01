@@ -57,18 +57,20 @@
     <strong><g:message code="is.dialog.about.version.buildTag"/></strong> : <g:meta name="environment.BUILD_TAG"/>
   </p>
 </g:if>
-<p>
+<p class="${request.authenticated ? '' : 'last'}">
   <strong><g:message code="is.dialog.about.version.env"/></strong> : ${System.getProperty('grails.env')}
 </p>
-<p>
-  <strong><g:message code="is.dialog.about.version.grailsVersion"/></strong> : <g:meta name="app.grails.version"/>
-</p>
-<p>
-  <strong><g:message code="is.dialog.about.version.javaVersion"/></strong> : ${System.getProperty('java.version')}
-</p>
-<p class="last">
-    <strong><g:message code="is.dialog.about.version.serverVersion"/></strong> : ${server}
-</p>
+<g:if test="${request.authenticated}">
+    <p>
+        <strong><g:message code="is.dialog.about.version.grailsVersion"/></strong> : <g:meta name="app.grails.version"/>
+    </p>
+    <p>
+        <strong><g:message code="is.dialog.about.version.javaVersion"/></strong> : ${System.getProperty('java.version')}
+    </p>
+    <p class="last">
+        <strong><g:message code="is.dialog.about.version.serverVersion"/></strong> : ${server}
+    </p>
+</g:if>
 <h3><g:message code="is.dialog.about.version.plugins.title"/></h3>
 <g:set var="pluginManager" value="${applicationContext.getBean('pluginManager').allPlugins.sort({it.name.toUpperCase()})}"/>
 <is:table class="buildinfos-table">
