@@ -317,7 +317,8 @@
                                     ng-class="getShowForm() ? 'btn-danger' : 'btn-primary'"
                                     ng-click="toggleShowForm()"
                                     tooltip="${message(code:'todo.is.ui.acceptanceTest.new')}"
-                                    tooltip-append-to-body="body">
+                                    tooltip-append-to-body="body"
+                                    tooltip-placement="left">
                                 <span class="fa" ng-class="getShowForm() ? 'fa-times' : 'fa-plus'"></span>
                             </button>
                         </td>

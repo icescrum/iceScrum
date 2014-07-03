@@ -23,31 +23,32 @@
  */
 controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'hotkeys', function ($scope, AcceptanceTestService, hotkeys) {
 
-    $scope.setShowForm = function(show) { $scope.editAcceptanceTest($scope.acceptanceTest ? $scope.acceptanceTest.id : -1, show) };
-    $scope.getShowForm = function() { return ($scope.acceptanceTestEdit[$scope.acceptanceTest ? $scope.acceptanceTest.id : -1] == true) };
-
-    $scope.acceptanceTest = angular.copy($scope.readOnlyAcceptanceTest);
-
-    $scope.setShortCut = function() {
-        var cancelKey = 'esc';
-        hotkeys.del(cancelKey);
-        hotkeys.add({
-            combo: cancelKey,
-            allowIn: ['INPUT', 'TEXTAREA'],
-            callback: function(event, hotkey) {
-                $scope.cancel();
-            }
-        });
+    $scope.setShowForm = function(show) {
+        $scope.editAcceptanceTest($scope.acceptanceTest ? $scope.acceptanceTest.id : -1, show)
     };
 
+    $scope.getShowForm = function() {
+        return ($scope.acceptanceTestEdit[$scope.acceptanceTest ? $scope.acceptanceTest.id : -1] == true)
+    };
+
+    function initAcceptanceTest() {
+        return $scope.readOnlyAcceptanceTest ? angular.copy($scope.readOnlyAcceptanceTest): { state: 1 }; // TODO use constants, not hardcoded values
+    }
+
+    $scope.acceptanceTest = initAcceptanceTest();
+
     $scope.toggleShowForm = function() {
-        $scope.setShowForm(!$scope.getShowForm());
+        if (!$scope.getShowForm()) {
+            $scope.setShowForm(true);
+        } else {
+            $scope.cancel();
+        }
     };
 
     $scope.submitForm = function(type, acceptanceTest, story){
         if (type == 'save') {
             AcceptanceTestService.save(acceptanceTest, story);
-            // TODO remove the existing data from the form after saving new story
+            $scope.acceptanceTest = initAcceptanceTest();
         } else if (type == 'update') {
             AcceptanceTestService.update(acceptanceTest, story);
         }
@@ -81,9 +82,6 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
 
     $scope.cancel = function() {
         $scope.setShowForm(false);
-        if ($scope.readOnlyAcceptanceTest) {
-            $scope.acceptanceTest = angular.copy($scope.readOnlyAcceptanceTest);
-        }
-        // TODO remove the existing data from the form after cancelling new story
+        $scope.acceptanceTest = initAcceptanceTest();
     };
 }]);

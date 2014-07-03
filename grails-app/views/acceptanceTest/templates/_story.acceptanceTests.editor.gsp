@@ -29,7 +29,6 @@
         <div class="col-md-6 form-group">
             <label>${message(code:'is.backlogelement.name')}</label>
             <input required
-                   ng-focus="setShortCut(true)"
                    type="text"
                    ng-model="acceptanceTest.name"
                    focus-me="{{ getShowForm() }}"
@@ -42,7 +41,6 @@
                     class="form-control"
                     ng-model="acceptanceTest.state"
                     ng-readonly="stateReadOnly()"
-                    ng-init="acceptanceTest.state || (acceptanceTest.state=${AcceptanceTestState.TOCHECK.id})"
                     ui-select2>
                 <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
             </select>
@@ -53,26 +51,25 @@
         <textarea is-markitup
                   class="form-control"
                   ng-model="acceptanceTest.description"
-                  ng-init="acceptanceTest.description || (acceptanceTest.description='${is.generateAcceptanceTestTemplate()}')"
                   is-model-html="acceptanceTest.description_html"
                   ng-show="showDescriptionTextarea"
-                  ng-blur="showDescriptionTextarea = false;"
+                  ng-blur="showDescriptionTextarea = false; (acceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (acceptanceTest.description = '')"
                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
         <div class="markitup-preview"
              ng-show="!showDescriptionTextarea"
              ng-click="showDescriptionTextarea = true"
-             ng-focus="showDescriptionTextarea = true; setShortCut(true)"
+             ng-focus="showDescriptionTextarea = true; acceptanceTest.description || (acceptanceTest.description = '${is.generateAcceptanceTestTemplate()}')"
              ng-class="{'placeholder': !acceptanceTest.description_html}"
              tabindex="0"
              ng-bind-html="(acceptanceTest.description_html ? acceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>') | sanitize"></div>
     </div>
     <div class="btn-toolbar pull-right">
         <button class="btn confirmation btn-danger pull-right"
-            tooltip-append-to-body="true"
-            tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
-            type="button"
-            ng-click="cancel()">
-        ${message(code:'is.button.cancel')}
+                tooltip-append-to-body="true"
+                tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
+                type="button"
+                ng-click="cancel()">
+            ${message(code:'is.button.cancel')}
         </button>
         <button class="btn btn-primary pull-right"
                 tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
@@ -80,6 +77,6 @@
                 type="submit">
             ${message(code:'todo.is.ui.save')}
         </button>
-    </div
+    </div>
 </form>
 </script>
