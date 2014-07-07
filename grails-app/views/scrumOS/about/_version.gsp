@@ -63,6 +63,7 @@
     <p>
       <strong><g:message code="is.dialog.about.version.env"/></strong> : ${System.getProperty('grails.env')}
     </p>
+<g:if test="${request.authenticated}">
     <p>
       <strong><g:message code="is.dialog.about.version.grailsVersion"/></strong> : <g:meta name="app.grails.version"/>
     </p>
@@ -72,7 +73,7 @@
     <p>
         <strong><g:message code="is.dialog.about.version.serverVersion"/></strong> : ${server}
     </p>
-</div>
+</g:if>
 <h4><g:message code="is.dialog.about.version.plugins.title"/></h4>
 <g:set var="pluginManager" value="${applicationContext.getBean('pluginManager').allPlugins.sort({it.name.toUpperCase()})}"/>
 <div class="table-responsive">
