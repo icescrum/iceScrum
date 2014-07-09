@@ -201,13 +201,13 @@ class TimelineController {
     def edit = {
         withRelease{ Release release ->
             def product = release.parentProduct
-            def previousRelease = product.releases.find {it.orderNumber == release.orderNumber - 1}
-            def next = product.releases.find {it.orderNumber == release.orderNumber + 1}
+            def previousRelease = release.previousRelease
+            def nextRelease = release.nextRelease
 
             render(template: 'window/manage', model: [
                     product: product,
                     release: release,
-                    next: next?.id ?: null,
+                    next: nextRelease?.id ?: null,
                     previousRelease: previousRelease,
             ])
         }

@@ -167,7 +167,7 @@ class StoryController {
                                 return
                             }
                         } else if (params.boolean('shiftToNext')) {
-                            def nextSprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
+                            def nextSprint = story.parentSprint.nextSprint
                             if (nextSprint) {
                                 props.parentSprint = nextSprint
                             } else {
