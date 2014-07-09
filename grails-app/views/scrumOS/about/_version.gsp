@@ -74,6 +74,7 @@
         <strong><g:message code="is.dialog.about.version.serverVersion"/></strong> : ${server}
     </p>
 </g:if>
+</div>
 <h4><g:message code="is.dialog.about.version.plugins.title"/></h4>
 <g:set var="pluginManager" value="${applicationContext.getBean('pluginManager').allPlugins.sort({it.name.toUpperCase()})}"/>
 <div class="table-responsive">
