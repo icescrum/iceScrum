@@ -136,7 +136,7 @@ icescrum.marshaller = [
         userpreferences:[asShort:['activity', 'language']],
         productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
         attachment:[include: ['filename']],
-        acceptancetest:[asShort:['state']]
+        acceptancetest:[textile:['description'], asShort:['state']]
 ]
 
 icescrum.restMarshaller = [
