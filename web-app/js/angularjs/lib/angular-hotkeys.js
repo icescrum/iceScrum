@@ -111,8 +111,9 @@
              * @param {string}   action      the type of event to listen for (for mousetrap)
              * @param {array}    allowIn     an array of tag names to allow this combo in ('INPUT', 'SELECT', and/or 'TEXTAREA')
              * @param {Boolean}  persistent  Whether the hotkey persists navigation events
+             * @param {Boolean}  el  elem if hotkey is from directive
              */
-            function Hotkey (combo, description, callback, action, allowIn, persistent) {
+            function Hotkey (combo, description, callback, action, allowIn, persistent, el) {
                 // TODO: Check that the values are sane because we could
                 // be trying to instantiate a new Hotkey with outside dev's
                 // supplied values
@@ -123,6 +124,7 @@
                 this.action = action;
                 this.allowIn = allowIn;
                 this.persistent = persistent;
+                this.el = el;
             }
 
             /**
@@ -274,8 +276,9 @@
              * @param {string}   action      the type of event to listen for (for mousetrap)
              * @param {array}    allowIn     an array of tag names to allow this combo in ('INPUT', 'SELECT', and/or 'TEXTAREA')
              * @param {boolean}  persistent  if true, the binding is preserved upon route changes
+             * @param {boolean}  el  elem if hotkey is from directive
              */
-            function _add (combo, description, callback, action, allowIn, persistent) {
+            function _add (combo, description, callback, action, allowIn, persistent, el) {
 
                 // used to save original callback for "allowIn" wrapping:
                 var _callback;
@@ -292,6 +295,7 @@
                     action      = combo.action;
                     persistent  = combo.persistent;
                     allowIn     = combo.allowIn;
+                    el          = combo.el;
                     combo       = combo.combo;
                 }
 
@@ -366,7 +370,7 @@
                     Mousetrap.bind(combo, wrapApply(callback));
                 }
 
-                var hotkey = new Hotkey(combo, description, callback, action, allowIn, persistent);
+                var hotkey = new Hotkey(combo, description, callback, action, allowIn, persistent, el);
                 scope.hotkeys.push(hotkey);
                 return hotkey;
             }
@@ -530,7 +534,9 @@
                             description: attrs.hotkeyDescription,
                             callback: func,
                             action: attrs.hotkeyAction,
-                            allowIn: allowIn
+                            allowIn: allowIn,
+                            persistent: undefined,
+                            el: el
                         });
                     });
 
