@@ -197,36 +197,30 @@
                         <a ng-class="{ 'text-warning': roles.stakeHolder }" ng-click="changeRole('SH')" href="#">SH</a>
                     </div>
                 </g:if>
-            <!-- TODO Replace by angular UI to enable biding (when popover html template will be available) -->
-            <div ng-if="currentUser.username"
-                     class="navbar-user pull-left"
-                     data-ui-popover
-                     data-ui-popover-placement="bottom"
-                     data-ui-popover-id="popover-user"
-                     data-ui-popover-html-content="#user-details">
+                <div ng-if="currentUser.username"
+                     data-toggle="dropdown"
+                     class="navbar-user pull-left dropdown-toggle">
                     <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
                 </div>
-            <div ng-if="currentUser.username" id="user-details" class="hidden">
-                <div class="panel panel-default">
-                        <div class="panel-body">
-                            <img ng-src="{{ currentUser | userAvatar }}" height="60px" width="60px" class="pull-left"/>
-                            {{ currentUser.username }}
-                            <g:if test="${product}">
-                                <br/>
-                                <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole product="${product.id}"/> </strong></a>
-                            </g:if>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <a class="btn btn-info"
-                                       hotkey="{'U':showProfile}"
-                                       tooltip="${message(code:'is.dialog.profile')} (U)"
-                                       ng-click="showProfile()">${message(code:'is.dialog.profile')}</a>
-                                </div>
-                                <div class="col-xs-6">
-                                    <a class="btn btn-danger" href="${createLink(controller:'logout')}">${message(code:'is.logout')}</a>
-                                </div>
+                <div ng-if="currentUser.username" class="panel panel-default dropdown-menu">
+                    <div class="panel-body">
+                        <img ng-src="{{ currentUser | userAvatar }}" height="60px" width="60px" class="pull-left"/>
+                        {{ currentUser.username }}
+                        <g:if test="${product}">
+                            <br/>
+                            <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole product="${product.id}"/> </strong></a>
+                        </g:if>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <a class="btn btn-info"
+                                   hotkey="{'U':showProfile}"
+                                   tooltip="${message(code:'is.dialog.profile')} (U)"
+                                   ng-click="showProfile()">${message(code:'is.dialog.profile')}</a>
+                            </div>
+                            <div class="col-xs-6">
+                                <a class="btn btn-danger" href="${createLink(controller:'logout')}">${message(code:'is.logout')}</a>
                             </div>
                         </div>
                     </div>
