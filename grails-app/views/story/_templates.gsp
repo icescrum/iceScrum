@@ -28,8 +28,6 @@
 <g:render template="/story/templates/new" />
 <g:render template="/story/templates/selection" />
 
-<g:render template="/story/templates/postit" />
-<g:render template="/story/templates/row" />
 
 
 
