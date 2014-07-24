@@ -29,6 +29,7 @@
                     ng-class="{'btn-danger':showTaskForm, 'btn-primary':!showTaskForm}"
                     ng-click="$parent.showTaskForm = !$parent.showTaskForm"
                     tooltip="${message(code:'todo.is.ui.task.new')}"
+                    tooltip-placement="left"
                     tooltip-append-to-body="body">
                 <span class="fa" ng-class="{'fa-times':showTaskForm, 'fa-plus':!showTaskForm}"></span>
             </button>
