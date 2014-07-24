@@ -41,7 +41,7 @@ services.service("ActorService", ['Actor', '$q', function (Actor, $q) {
     };
     this.update = function (actor, callback) {
         actor.$update(function (data) {
-            var index = self.list.indexOf(_.find(self.list, function (currentActor) { return currentActor.id == actor.id }));
+            var index = self.list.indexOf(_.findWhere(self.list, { 'id': actor.id }));
             if (index != -1) {
                 self.list.splice(index, 1, data);
             }
