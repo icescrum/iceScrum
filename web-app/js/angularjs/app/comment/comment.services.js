@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 services.factory( 'Comment', [ 'Resource', function( $resource ) {
@@ -50,6 +51,17 @@ services.service("CommentService", ['Comment', '$q', function(Comment, $q) {
                     commentable.comments.splice(index, 1);
                     commentable.comments_count -= 1;
                 }
+            }
+        });
+    };
+    this.update = function(comment, commentable){
+        comment.type = commentable.class.toLowerCase();
+        comment.typeId = commentable.id;
+        comment.commentable = {id:commentable.id};
+        comment.$update(function(data){
+            var index = commentable.comments.indexOf(_.findWhere(commentable.comments, { id: comment.id }));
+            if (index != -1) {
+                commentable.comments.splice(index, 1, data);
             }
         });
     };

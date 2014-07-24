@@ -101,9 +101,9 @@ grails.mail.port = 465
 grails.mail.username = "username@gmail.com"
 grails.mail.password = ""
 grails.mail.props = ["mail.smtp.auth":"true",
-        "mail.smtp.socketFactory.port":"465",
-        "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-        "mail.smtp.socketFactory.fallback":"false"]*/
+                     "mail.smtp.socketFactory.port":"465",
+                     "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+                     "mail.smtp.socketFactory.fallback":"false"]*/
 
 
 /*
@@ -114,6 +114,8 @@ icescrum.marshaller = [
         story:[include:['testState', 'tags', 'dependences', 'comments', 'attachments'],
                textile:['notes'],
                asShort:['state', 'effort','uid', 'name']],
+
+        comment: [include: ['poster']],
 
         product: [exclude:['cliches']],
 
