@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
 class ProductUrlMappings {
@@ -242,7 +243,7 @@ class ProductUrlMappings {
 
         "/p/$product/comment/$type/$commentable/$id" {
             controller = 'comment'
-            action = [GET: "show", PUT:"update", DELETE:"delete"]
+            action = [GET: "show", PUT:"update", DELETE:"delete", POST:'update']
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task'])
