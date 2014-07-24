@@ -75,6 +75,11 @@ filters
             }
         }
     }])
+    .filter('lineReturns', function() {
+        return function(text) {
+            return text ? text.replace(/\n/g, '<br/>') : "";
+        }
+    })
     .filter('sanitize', ['$sce', function($sce) {
         return function(html) {
             return html ? $sce.trustAsHtml(html) : "";

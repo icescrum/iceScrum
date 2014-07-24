@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
 <tr ng-show="selected.tasks === undefined">
@@ -26,27 +27,26 @@
     </td>
 </tr>
 <tr ng-repeat="task in selected.tasks" ng-controller="taskCtrl">
-    <td class="avatar">
-        <img ng-src="{{task.creator | userAvatar}}"
-             alt="{{task.creator | userFullName}}"
-             tooltip="{{task.creator | userFullName}}"
-             width="25px">
-    </td>
     <td>
         <div class="content">
-            <span class="clearfix text-muted"><a href="#">{{ task.name }}</a></span>
-            {{ task.description }}
-            <a href
-                ng-if="deletable()"
-                ng-click="delete(task, selected)"
-                tooltip-placement="left"
-                tooltip="${message(code:'todo.is.ui.task.delete')}"
-                class="on-hover delete"><i class="fa fa-times text-danger"></i></a>
-            <small class="clearfix text-muted">
-                <time class='timeago' datetime='{{ task.dateCreated }}'>
-                    {{ task.dateCreated }}
-                </time> <i class="fa fa-clock-o"></i>
-            </small>
+            <div class="pull-right">
+                <a href
+                   class="btn btn-xs btn-danger"
+                   role="button"
+                   tooltip-placement="left"
+                   tooltip="${message(code:'todo.is.ui.task.delete')}"
+                   ng-if="deletable()"
+                   ng-click="delete(task, selected)"><i class="fa fa-times"></i></a>
+            </div>
+            <div>
+                <span class="label label-default"
+                      tooltip-placement="left"
+                      tooltip="${message(code: 'is.backlogelement.id')}">{{ task.uid }}</span>
+                <strong>{{ task.name }}</strong>
+            </div>
+            <div class="pretty-printed"
+                 ng-bind-html="task.description | lineReturns | sanitize"/>
+            </div>
         </div>
     </td>
 </tr>
