@@ -41,7 +41,7 @@ services.service("FeatureService", ['Feature', '$q', function (Feature, $q) {
     };
     this.update = function (feature, callback) {
         feature.$update(function (data) {
-            var index = self.list.indexOf(_.find(self.list, function (currentFeature) { return currentFeature.id == feature.id }));
+            var index = self.list.indexOf(_.findWhere(self.list, { id: feature.id }));
             if (index != -1) {
                 self.list.splice(index, 1, data);
             }
