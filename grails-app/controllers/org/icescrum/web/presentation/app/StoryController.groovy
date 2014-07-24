@@ -28,7 +28,8 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.Template
 import org.icescrum.core.domain.User
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
@@ -40,6 +41,8 @@ import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 class StoryController {
 
     def storyService
+    def taskService
+    def acceptanceTestService
     def featureService
     def springSecurityService
 
@@ -65,9 +68,16 @@ class StoryController {
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
-        if (templates[params.template]){
-            params.story << templates[params.template]
+        def tasks
+        def acceptanceTests
+        if (params.story.template?.id != null) {
+            def template = Template.findByProductAndId(Product.get(params.long('product')), params.story.template.id.toLong())
+            def parsedTemplateData = JSON.parse(template.serializedData) as Map
+            tasks = parsedTemplateData.remove('tasks')
+            acceptanceTests = parsedTemplateData.remove('acceptanceTests')
+            params.story << parsedTemplateData
         }
+        params.story.remove('template')
         if (params.story.feature?.id == '') {
             params.story.'feature.id' = 'null'
         } else if (params.story.feature?.id) {
@@ -92,6 +102,18 @@ class StoryController {
                 def product = Product.get(params.long('product'))
                 storyService.save(story, product, user)
                 story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+                tasks.each {
+                    def task = new Task()
+                    bindData(task, it, [include:['color', 'description', 'estimation', 'name', 'notes', 'tags']])
+                    story.addToTasks(task)
+                    taskService.save(task, springSecurityService.currentUser)
+                }
+                acceptanceTests.each {
+                    def acceptanceTest = new AcceptanceTest()
+                    bindData(acceptanceTest, it, [include:['description', 'name']])
+                    acceptanceTestService.save(acceptanceTest, story, springSecurityService.currentUser)
+                    story.addToAcceptanceTests(acceptanceTest) // required so the acceptance tests are returned with the story in JSON
+                }
                 entry.hook(id:"${controllerName}-${actionName}", model:[story:story])
                 withFormat {
                     html { render status: 200, contentType: 'application/json', text: story as JSON }
@@ -410,28 +432,68 @@ class StoryController {
         }
     }
 
-    //TODO replace with real action to save template
-    def templateEntries = {
-        if (params.template){
-            render text:templates[params.template] as JSON, contentType: 'application/json', status:200
-        } else {
-            render text:templates.collect{ key, val -> [id:key, text:key]} as JSON, contentType: 'application/json', status:200
+    @Secured('isAuthenticated() and !archivedProduct()')
+    def saveTemplate = {
+        withStory { story ->
+            def product = Product.get(params.long('product'))
+            def templateName = params.template.name
+            // Custom marshalling
+            def copyFields = { source, fieldNames ->
+                def copy = [:]
+                fieldNames.each { fieldName ->
+                    def fieldValue = source."$fieldName"
+                    if (fieldValue != null) {
+                        copy[fieldName] = fieldValue.hasProperty('id') ? [id: fieldValue.id] : fieldValue
+                    }
+                }
+                return copy
+            }
+            def storyData = copyFields(story, ['affectVersion', 'description', 'notes', 'tags', 'type', 'dependsOn', 'feature'])
+            if (story.tasks) {
+                storyData.tasks = story.tasks.collect { task ->
+                    copyFields(task, ['color', 'description', 'estimation', 'name', 'notes', 'tags', 'type'])
+                }
+            }
+            if (story.acceptanceTests) {
+                storyData.acceptanceTests = story.acceptanceTests.collect { acceptanceTest ->
+                    copyFields(acceptanceTest, ['description', 'name'])
+                }
+            }
+            def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: product)
+            if (template.save()) {
+                render(status: 200)
+            } else {
+                throw new RuntimeException(template.errors?.toString())
+            }
         }
     }
 
-    //TODO replace with real action to save template
-    static templates = ['Functional template':[tags:'tag1,tag2,tag3',
-            description:'this is a description  for template 1',
-            notes:'Custom notes from a template',
-            feature:[id:2, name:'La feature 2'],
-            id:666],
-            'Defect template':[tags:'tag1,tag2,tag3',
-                    type:2,
-                    description:'this is a description for template 2',
-                    notes:'Custom notes from a template',
-                    feature:[id:3, name:'La feature 3'], dependsOn:[id:5,uid:5]],
-            'Other template':[type:3,
-                    description:'this is a description for template 3',
-                    notes:'Custom notes from a template',
-                    dependsOn:[id:16, uid:16]]]
+    // TODO cache on all templates
+    @Secured('isAuthenticated() and !archivedProduct()')
+    def templateEntries = {
+        def templates = Template.findAllByParentProduct(Product.get(params.long('product')))
+        render(text: templates.collect{[id:it.id, text:it.name]} as JSON, contentType: 'application/json', status: 200)
+    }
+
+    @Secured('isAuthenticated() and !archivedProduct()')
+    def templatePreview = {
+        if (params.template) {
+            def product = Product.get(params.long('product'))
+            def template = Template.findByParentProductAndId(product, params.long('template'))
+            def parsedData = JSON.parse(template.serializedData) as Map
+            if (parsedData.feature) {
+                def feature = Feature.getInProduct(product.id, parsedData.feature.id.toLong()).list()
+                if (feature) {
+                    parsedData.feature.color = feature.color
+                }
+            }
+            if (parsedData.tasks) {
+                parsedData.tasks_count = parsedData.tasks.size()
+            }
+            if (parsedData.acceptanceTests) {
+                parsedData.acceptanceTests_count = parsedData.acceptanceTests.size()
+            }
+            render(text: parsedData as JSON, contentType: 'application/json', status: 200)
+        }
+    }
 }
