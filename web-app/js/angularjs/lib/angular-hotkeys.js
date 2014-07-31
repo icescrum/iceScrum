@@ -1,5 +1,5 @@
 /*! 
- * angular-hotkeys v1.4.0
+ * angular-hotkeys v1.4.1
  * https://chieffancypants.github.io/angular-hotkeys
  * Copyright (c) 2014 Wes Cruver
  * License: MIT
@@ -29,7 +29,7 @@
          * Cheat sheet template in the event you want to totally customize it.
          * @type {String}
          */
-        this.template = '<div class="cfp-hotkeys-container fade" ng-class="{in: helpVisible}"><div class="cfp-hotkeys">' +
+        this.template = '<div class="cfp-hotkeys-container fade" ng-class="{in: helpVisible}" style="display: none;"><div class="cfp-hotkeys">' +
             '<h4 class="cfp-hotkeys-title">{{ title }}</h4>' +
             '<table><tbody>' +
             '<tr ng-repeat="hotkey in hotkeys | filter:{ description: \'!$$undefined$$\' }">' +
@@ -39,7 +39,7 @@
             '<td class="cfp-hotkeys-text">{{ hotkey.description }}</td>' +
             '</tr>' +
             '</tbody></table>' +
-            '<div class="cfp-hotkeys-close" ng-click="helpVisible = false">×</div>' +
+            '<div class="cfp-hotkeys-close" ng-click="toggleCheatSheet()">×</div>' +
             '</div></div>';
 
         /**
@@ -173,6 +173,13 @@
              */
             scope.title = 'Keyboard Shortcuts:';
 
+            /**
+             * Expose toggleCheatSheet to hotkeys scope so we can call it using
+             * ng-click from the template
+             * @type {function}
+             */
+            scope.toggleCheatSheet = toggleCheatSheet;
+
 
             /**
              * Holds references to the different scopes that have bound hotkeys
@@ -187,7 +194,7 @@
             $rootScope.$on('$routeChangeSuccess', function (event, route) {
                 purgeHotkeys();
 
-                if (route.hotkeys) {
+                if (route && route.hotkeys) {
                     angular.forEach(route.hotkeys, function (hotkey) {
                         // a string was given, which implies this is a function that is to be
                         // $eval()'d within that controller's scope
@@ -506,7 +513,7 @@
                 bindTo                : bindTo,
                 template              : this.template,
                 toggleCheatSheet      : toggleCheatSheet,
-                includeCheatSheat     : this.includeCheatSheat,
+                includeCheatSheet     : this.includeCheatSheet,
                 cheatSheetHotkey      : this.cheatSheetHotkey,
                 cheatSheetDescription : this.cheatSheetDescription,
                 purgeHotkeys          : purgeHotkeys
@@ -517,7 +524,7 @@
         }];
     })
 
-        .directive('hotkey', function (hotkeys) {
+        .directive('hotkey', ['hotkeys', function (hotkeys) {
             return {
                 restrict: 'A',
                 link: function (scope, el, attrs) {
@@ -546,12 +553,12 @@
                     });
                 }
             };
-        })
+        }])
 
-        .run(function(hotkeys) {
+        .run(['hotkeys', function(hotkeys) {
             // force hotkeys to run by injecting it. Without this, hotkeys only runs
             // when a controller or something else asks for it via DI.
-        });
+        }]);
 
 })();
 

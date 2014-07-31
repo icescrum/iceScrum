@@ -1,13 +1,12 @@
 /*! 
- * angular-hotkeys v1.0.0
+ * angular-hotkeys v1.4.1
  * https://chieffancypants.github.io/angular-hotkeys
  * Copyright (c) 2014 Wes Cruver
  * License: MIT
  */
 .cfp-hotkeys-container {
-    display: table;
+    display: table !important;
     position: fixed;
-    z-index: -1024;
     width: 100%;
     height: 100%;
     top: 0;
@@ -17,8 +16,20 @@
     background-color: rgba(255,255,255,0.9);
 }
 
+.cfp-hotkeys-container.fade {
+    z-index: -1024;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    -o-transition: opacity 0.15s linear;
+    transition: opacity 0.15s linear;
+}
+
 .cfp-hotkeys-container.fade.in {
-    z-index: 1024;
+    z-index: 10002;
+    visibility: visible;
+    opacity: 1;
 }
 
 .cfp-hotkeys-title {
@@ -54,8 +65,10 @@
     color: #fff;
     background-color: #333;
     border: 1px solid #333;
+    border-radius: 5px;
     text-align: center;
     margin-right: 5px;
+    box-shadow: inset 0 1px 0 #666, 0 1px 0 #bbb;
     padding: 5px 9px;
     font-size: 1em;
 }
@@ -72,10 +85,15 @@
     font-size: 2em;
     font-weight: bold;
     padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 45px;
+    min-width: 45px;
     text-align: center;
 }
 
 .cfp-hotkeys-close:hover {
+    background-color: #fff;
     cursor: pointer;
 }
 
