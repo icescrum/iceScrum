@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:modal title="${message(code:'is.about')}">
-    <tabset type="tabsType" justified="true">
+    <tabset type="tabsType" justified="true" ng-init="{{ tabsType = 'pills' }}">
         <entry:point id="about-tabs-first"/>
         <g:if test="${errors}">
             <tab heading="${message(code:'is.dialog.about.errors')}">

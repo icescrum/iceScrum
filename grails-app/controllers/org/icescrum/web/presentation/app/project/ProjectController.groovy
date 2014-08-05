@@ -156,7 +156,7 @@ class ProjectController {
     }
 
     @Secured('isAuthenticated()')
-    def openWizard = {
+    def add = {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
             if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
                 render(status: 403)
@@ -180,14 +180,12 @@ class ProjectController {
         if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
             privateOption = false
         }
-        def dialog = g.render(template: "dialogs/wizard", model: [ product: product,
-                                                            estimationSuitSelect: estimationSuitSelect,
-                                                            privateOption: privateOption,
-                                                            user:springSecurityService.currentUser,
-                                                            rolesLabels: BundleUtils.roles.values().collect {v -> message(code: v)},
-                                                            rolesKeys: BundleUtils.roles.keySet().asList()])
-        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-
+        render(status:200, template: "dialogs/new", model: [product: product,
+                                                               estimationSuitSelect: estimationSuitSelect,
+                                                               privateOption: privateOption,
+                                                               user:springSecurityService.currentUser,
+                                                               rolesLabels: BundleUtils.roles.values().collect {v -> message(code: v)},
+                                                               rolesKeys: BundleUtils.roles.keySet().asList()])
     }
 
     @Secured('isAuthenticated()')

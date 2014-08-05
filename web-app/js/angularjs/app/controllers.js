@@ -30,19 +30,9 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
     $scope.changeRole = function(newRole) {
         Session.changeRole(newRole);
     };
+
     $scope.showAbout = function () {
-        $modal.open({
-            templateUrl: 'scrumOS/about',
-            controller:function ($scope, $modalInstance) {
-                $scope.tabsType = 'pills';
-                $scope.ok = function () {
-                    $modalInstance.close();
-                };
-                $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
-                };
-            }
-        });
+        $modal.open({ templateUrl: 'scrumOS/about' });
     };
     $scope.showAuthModal = function () {
         $modal.open({
@@ -51,16 +41,18 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
             size:'sm'
         });
     };
+
     $scope.menubarSortableOptions = {
         revert:true,
         helper:'clone',
         delay: 100,
-        items:'.menubar',
+        items:'> li.menubar',
+        placeholder: 'menubar ui-sortable-placeholder',
         stop:$.icescrum.menuBar.stop,
         start:$.icescrum.menuBar.start,
-        update:$.icescrum.menuBar.update,
-        connectWith:"#menubar-list-content"
+        update:$.icescrum.menuBar.update
     };
+
 }]).controller('loginCtrl',['$scope', '$rootScope','$modalInstance' , 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, $modalInstance, AUTH_EVENTS, AuthService) {
     $scope.credentials = {
         j_username: '',

@@ -51,21 +51,21 @@
                         <g:if test="${creationProjectEnable}">
                             <li>
                                 <a hotkey="{ 'shift+n': hotkeyClick}"
-                                   href="${createLink(controller:'project', action:'openWizard')}">
+                                   href="#project/new">
                                     <g:message code="is.projectmenu.submenu.project.create"/> <small class="text-muted">(SHIFT+N)</small>
                                 </a>
                             </li>
                         </g:if>
                         <g:if test="${importEnable}">
                             <li>
-                                <a href="${createLink(controller:'project', action:'importProject')}" data-ajax="true">
+                                <a href="#project/import">
                                     <g:message code="is.projectmenu.submenu.project.import"/>
                                 </a>
                             </li>
                         </g:if>
                         <g:if test="${browsableProductsExist}">
                             <li>
-                                <a href="${createLink(controller:'project', action:'browse')}" data-ajax="true">
+                                <a href="#project/list">
                                     <g:message code="is.projectmenu.submenu.project.browse"/>
                                 </a>
                             </li>
@@ -149,8 +149,7 @@
                                 tooltip-placement="bottom"
                                 href='#/${menu.id}'>
                                 <span class="drag text-muted">
-                                    <span class="glyphicon glyphicon-th"></span>
-                                    <span class="glyphicon glyphicon-th"></span>
+                                    <i class="fa fa-ellipsis-v"></i>
                                 </span>
                                 <i class="visible-xs ${menu.icon}"></i><span class="title"> ${message(code: menu.title)}</span></a>
                         </li>

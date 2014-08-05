@@ -34,7 +34,8 @@ var isApp = angular.module('isApp', [
     'ui.bootstrap',
     'ui.select2',
     'cfp.hotkeys',
-    'colorpicker.module'
+    'colorpicker.module',
+    'mgo-angular-wizard'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
@@ -47,6 +48,57 @@ isApp.config(['$stateProvider', '$httpProvider',
             ]);
             $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
             $stateProvider
+                .state('root', {
+                    url:'/'
+                })
+                .state('project', {
+                    url: '/project',
+                    controller: 'projectCtrl'
+                })
+                .state('project.new', {
+                    url: "/new",
+                    onEnter: function($state, $modal) {
+                        var modal = $modal.open({
+                            templateUrl: "project/add",
+                            size:'lg',
+                            controller:function($scope){
+                                $scope.product = {};
+
+                                $scope.today = function() {
+                                    $scope.dt = new Date();
+                                };
+                                $scope.today();
+
+                                // Disable weekend selection
+                                $scope.disabled = function(date, mode) {
+                                    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+                                };
+
+                                $scope.dateOptions = {
+                                    formatYear: 'yy',
+                                    startingDay: 1,
+                                    opened:false,
+                                    format:'dd/MM/yyyy',
+                                    maxDate:'2015-06-22',
+                                    minDate:new Date()
+                                };
+
+                                $scope.open = function($event) {
+                                    $event.preventDefault();
+                                    $event.stopPropagation();
+                                    $scope.dateOptions.opened = true;
+                                };
+                            }
+                        });
+                        modal.result.then(
+                            function(result) {
+                                $state.transitionTo('root');
+                            }, function(){
+                                $state.transitionTo('root');
+                            });
+                    }
+                })
+
                 .state('sandbox', {
                     url: '/sandbox',
                     templateUrl: 'openWindow/sandbox',
@@ -85,6 +137,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         .state('sandbox.details.tab', {
                             url: "/{tabId:.+}"
                         })
+
                 .state('actor', {
                     url: '/actor',
                     templateUrl: 'openWindow/actor',
@@ -118,6 +171,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         .state('actor.details.tab', {
                             url: "/{tabId:.+}"
                         })
+
                 .state('feature', {
                     url: '/feature',
                     templateUrl: 'openWindow/feature',
@@ -188,6 +242,12 @@ isApp.config(['$stateProvider', '$httpProvider',
         $rootScope.view = {
             asList:true
         };
+
+        //store previous state
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState){
+            $rootScope.previousState = fromState;
+        });
+
     }])
     .constant('AUTH_EVENTS', {
         loginSuccess: 'auth-login-success',

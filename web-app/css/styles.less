@@ -330,15 +330,15 @@ form .alert.alert-danger {
 
 /** drag element **/
 .drag, .table > tbody > tr > td.drag {
-  line-height: 0.5em;
   padding:0;
-  font-size:0.5em;
   vertical-align:middle;
-  text-align: center;
-  width: 1em;
   cursor:move;
   cursor: -webkit-grab;
   cursor: -moz-grab;
+  line-height: 18px;
+  width: 0.5em;
+  color: #666;
+  font-size: 1em;
 }
 
 .dropdown-menu > li > a .drag > span.glyphicon:first-of-type{
@@ -356,11 +356,11 @@ span.drag {
   vertical-align:text-top;
 }
 
-.drag span {
+.drag span, .drag i {
   visibility:hidden;
 }
 
-ul[data-ui-sortable-handle]  li.menubar:hover .drag span,
+ul[ui-sortable]  li.menubar:hover .drag i,
 table[data-ui-draggable] > tr:hover .drag span,
 .sidebar-content[data-ui-droppable-drop] .panel-title:hover .drag span {
   visibility:visible;
@@ -1304,14 +1304,17 @@ a[data-toggle="tab"] button {
     > :last-child {
       border-bottom-width:1px;
     }
-    > .postit-container:nth-child(odd){
+    nth-child(odd){
       background-color: #EFEFEF;
+    }
+    > .postit-container:nth-child(2n+1) {
+      background-color: #F9F9F9;
     }
     .postit {
       height:55px;
       position:relative;
       background-image: none !important;
-      border:1px solid #B1B1B1;
+      border: 1px solid #DCDCDC;
       border-bottom-width:0;
       .head {
         height:100%;
@@ -1375,6 +1378,62 @@ a[data-toggle="tab"] button {
           font-size: 9px;
           line-height: 10px;
           display: none;
+        }
+      }
+    }
+  }
+}
+.wizard {
+  .modal-body {
+    padding-left:15px;
+    padding-top:0;
+    padding-bottom:0;
+  }
+  .steps {
+    height:inherit;
+    padding-bottom:15px;
+    padding-top:15px;
+  }
+  .step {
+    height:100%;
+    input[type=submit] {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+    }
+  }
+  .steps-indicator {
+    background-color:@light-bg;
+    padding:0;
+    list-style:none;
+    li {
+      line-height: 40px;
+      cursor: pointer;
+      &.default {
+        pointer-events: none;
+      }
+      > a {
+        color: @gray-light;
+        padding: 3px 15px;
+        > i {
+          float:right;
+          margin-top: 12px;
+          margin-right: -6px;
+        }
+        &:hover {
+          color:@body-bg;
+          > i {
+            color:@body-bg;
+          }
+        }
+      }
+      &.current, &.editing, &.current:hover, &.editing:hover {
+        > a, > a:hover {
+          background-color:@brand-primary;
+          color:@body-bg;
+          > i {
+            color:@body-bg;
+          }
         }
       }
     }

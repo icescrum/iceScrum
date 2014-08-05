@@ -48,9 +48,9 @@ modules = {
         //todo remove
         resource url: [dir: 'js/jquery', file: 'jquery.html5data.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.js'], bundle: 'icescrum'
-        resource url: [dir: 'js', file: 'dropzone.js'], bundle: 'icescrum'
-        resource url: [dir: 'js', file: 'underscore.js'], bundle: 'icescrum'
-        resource url: [dir: 'js', file: 'fastclick.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/lib', file: 'dropzone.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/lib', file: 'underscore.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/lib', file: 'fastclick.js'], bundle: 'icescrum'
     }
 
     'objects' {
@@ -73,7 +73,7 @@ modules = {
 
     'bootstrap' {
         dependsOn 'jquery'
-        resource url:[dir:'js', file:"bootstrap.min.js"], disposition:'head'
+        resource url:[dir:'js/lib', file:"bootstrap.min.js"], disposition:'head'
     }
 
     'angularjs' {
@@ -96,6 +96,9 @@ modules = {
         resource url:[dir:'js/angularjs/app/user', file:"user.controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app/user', file:"user.services.js"], disposition:'head'
 
+        resource url:[dir:'js/angularjs/app/project', file:"project.controllers.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/app/project', file:"project.services.js"], disposition:'head'
+
         resource url:[dir:'js/angularjs/app/story', file:"story.controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app/story', file:"story.services.js"], disposition:'head'
 
@@ -113,6 +116,8 @@ modules = {
 
         resource url:[dir:'js/angularjs/app/acceptanceTest', file:"acceptanceTest.controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app/acceptanceTest', file:"acceptanceTest.services.js"], disposition:'head'
+
+        resource url:[dir:'js/lib', file:"bootstrap-wizard.min.js"], disposition:'head'
     }
 
     'jqplot' {
