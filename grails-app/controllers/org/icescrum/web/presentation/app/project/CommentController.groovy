@@ -83,8 +83,9 @@ class CommentController {
                         commentable.addActivity(poster, 'comment', commentable.name)
                         comment = commentable.comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
                         grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment':comment])
-                        if (params.type == 'story')
-                            commentable.addFollower(poster)
+                        if (params.type == 'story') {
+                            commentable.addToFollowers(poster)
+                        }
                     } catch (Exception e) {
                         e.printStackTrace()
                         status.setRollbackOnly()

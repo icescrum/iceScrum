@@ -22,39 +22,28 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.acceptanceTests.html">
-<tr ng-show="selected.acceptanceTests === undefined">
+<tr ng-show="story.acceptanceTests === undefined">
     <td class="empty-content">
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="readOnlyAcceptanceTest in selected.acceptanceTests" ng-controller="acceptanceTestCtrl">
+<tr ng-repeat="readOnlyAcceptanceTest in story.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
     <td>
         <div class="content">
             <div ng-show="!getShowForm()">
                 <div class="pull-right">
-                    <a href
-                       class="btn btn-xs btn-primary"
-                       role="button"
-                       tooltip-placement="left"
-                       tooltip="${message(code:'todo.is.ui.acceptanceTest.edit')}"
-                       ng-if="!readOnly()"
-                       ng-click="setShowForm(true)"><i class="fa fa-pencil"></i></a>
-                    <a href
-                       class="btn btn-xs btn-danger"
-                       role="button"
-                       tooltip-placement="left"
-                       tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"
-                       ng-if="!readOnly()"
-                       ng-click="delete(readOnlyAcceptanceTest, selected)"><i class="fa fa-times"></i></a>
-                    <a href
-                       class="btn btn-xs"
-                       role="button"
-                       ng-class="{${AcceptanceTestState.TOCHECK.id}:'btn-default', ${AcceptanceTestState.FAILED.id}:'btn-danger', ${AcceptanceTestState.SUCCESS.id}:'btn-success'}[readOnlyAcceptanceTest.state]"
-                       ng-click="switchState(readOnlyAcceptanceTest, selected)"
-                       tooltip-placement="left"
-                       tooltip="${message(code:'todo.is.ui.acceptanceTest.state')}">
-                        <i class="fa fa-check"/>
-                    </a>
+                    <button class="btn btn-xs btn-primary"
+                            type="button"
+                            tooltip-placement="left"
+                            tooltip="${message(code:'todo.is.ui.acceptanceTest.edit')}"
+                            ng-if="!readOnly()"
+                            ng-click="setShowForm(true)"><span class="fa fa-pencil"></span></button>
+                    <button class="btn btn-xs btn-danger"
+                            type="button"
+                            tooltip-placement="left"
+                            tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"
+                            ng-if="!readOnly()"
+                            ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [readOnlyAcceptanceTest, story])"><span class="fa fa-times"></span></button>
                 </div>
                 <div>
                     <span class="label label-default"
@@ -62,14 +51,19 @@
                           tooltip="${message(code: 'is.backlogelement.id')}">{{ readOnlyAcceptanceTest.uid }}</span>
                     <strong>{{ readOnlyAcceptanceTest.name }}</strong>
                 </div>
-                <br/>
+                <select ng-model="readOnlyAcceptanceTest.state"
+                        ng-readonly="stateReadOnly()"
+                        ng-change="switchState(readOnlyAcceptanceTest, story)"
+                        ui-select2="selectAcceptanceTestStateOptions">
+                    <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
+                </select>
                 <div ng-bind-html="readOnlyAcceptanceTest.description_html | sanitize"></div>
             </div>
-            <div ng-include ng-show="getShowForm()" ng-init="formType='update'" src="'story.acceptanceTest.editor.html'"></div>
+            <div ng-include="'story.acceptanceTest.editor.html'" ng-show="getShowForm()" ng-init="formType='update'"></div>
         </div>
     </td>
 </tr>
-<tr ng-show="!selected.acceptanceTests.length">
+<tr ng-show="!story.acceptanceTests.length">
     <td class="empty-content">
         <small>${message(code:'todo.is.ui.acceptanceTest.empty')}</small>
     </td>

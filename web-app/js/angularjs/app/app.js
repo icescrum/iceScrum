@@ -33,6 +33,7 @@ var isApp = angular.module('isApp', [
     'ui.sortable',
     'ui.bootstrap',
     'ui.select2',
+    'xeditable',
     'cfp.hotkeys',
     'colorpicker.module',
     'mgo-angular-wizard'
@@ -100,7 +101,6 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
 
                 .state('sandbox', {
-                    url: '/sandbox',
                     templateUrl: 'openWindow/sandbox',
                     controller: 'sandboxCtrl',
                     data: {
@@ -114,8 +114,13 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
+                    .state('sandbox.new', {
+                        url: "/sandbox",
+                        templateUrl: 'story.new.html',
+                        controller: 'storyNewCtrl'
+                    })
                     .state('sandbox.multiple', {
-                        url: "/{listId:[0-9]+[\,][0-9]+}",
+                        url: "/sandbox/{listId:[0-9]+(?:[\,][0-9]+)+}",
                         templateUrl: 'story.multiple.html',
                         controller: 'storyMultipleCtrl',
                         resolve:{
@@ -125,14 +130,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('sandbox.details', {
-                        url: "/{id:[0-9]+}",
+                        url: "/sandbox/{id:[0-9]+}",
                         templateUrl: 'story.details.html',
-                        controller: 'storyCtrl',
-                        resolve:{
-                            selected:['StoryService', '$stateParams', function(StoryService, $stateParams){
-                                return StoryService.get($stateParams.id);
-                            }]
-                        }
+                        controller: 'storyDetailsCtrl'
                     })
                         .state('sandbox.details.tab', {
                             url: "/{tabId:.+}"
@@ -223,24 +223,55 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', function(Session, $rootScope, $timeout, $state){
+    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'editableOptions', 'uiSelect2Config', function(Session, $rootScope, $timeout, $state, $modal, editableOptions, uiSelect2Config){
         Session.create();
-        //used to handle click with shortcut hotkeys
+
+        editableOptions.theme = 'bs3';
+
+        uiSelect2Config.minimumResultsForSearch = 6;
+
+            //used to handle click with shortcut hotkeys
         $rootScope.hotkeyClick = function(event, hotkey) {
             if (hotkey.el && (hotkey.el.is( "a" ) || hotkey.el.is( "button" ))){
                 event.preventDefault();
                 $timeout(function(){
                     hotkey.el.click();
                 });
-
             }
         };
         //To be able to track state in app
         $rootScope.$state = $state;
 
+        $rootScope.confirm = function(message, callback, args) {
+            $modal.open({
+                templateUrl: 'confirm.modal.html',
+                size: 'sm',
+                controller: function($scope, $modalInstance, hotkeys) {
+                    $scope.message = message;
+                    $scope.submit = function() {
+                        if (args) {
+                            callback.apply(callback, args);
+                        } else {
+                            callback();
+                        }
+                        $modalInstance.close();
+                    };
+                    // Required because there is not input so the form cannot be submitted by "return"
+                    hotkeys.bindTo($scope) // to remove the hotkey when the scope is destroyed
+                        .add({
+                            combo: 'return',
+                            callback: $scope.submit
+                        });
+                }
+            });
+        };
+
+        // TODO Change ugly hack
+        $rootScope.serverUrl = icescrum.grailsServer;
+
         //to switch between grid / list view
         $rootScope.view = {
-            asList:true
+            asList:false
         };
 
         //store previous state

@@ -19,32 +19,32 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.details.html">
 <div class="panel panel-default">
     <div id="story-header"
          class="panel-heading"
-         ng-controller="storyHeaderCtrl"
          fixed="#right"
          fixed-offset-top="1"
          fixed-offset-width="-2">
         <h3 class="panel-title row">
             <div class="col-sm-8">
                 <a href
-                   tooltip="{{ selected.follow.followers }}"
+                   tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                    tooltip-append-to-body="true"
-                   ng-click="follow(selected)"
-                   ng-switch on="selected.follow.status"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
-                <span>{{ selected.name }}</span><small ng-show="selected.origin">${message(code: 'is.story.origin')}: {{ selected.origin }}</small>
+                   ng-click="follow(story)"
+                   ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
+                <span>{{ story.name }}</span><small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
             </div>
             <div class="col-sm-4">
                 <div class="pull-right">
-                    <span tooltip="${message(code: 'is.story.creator')} : {{ selected.creator | userFullName }}">
-                        <img ng-src="{{ selected.creator | userAvatar }}" alt="{{ selected.creator | userFullName }}"
+                    <span tooltip="${message(code: 'is.story.creator')} : {{ story.creator | userFullName }}">
+                        <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
                              height="21px"/>
                     </span>
                     <span class="label label-default"
-                          tooltip="${message(code: 'is.backlogelement.id')}">{{ selected.uid }}</span>
+                          tooltip="${message(code: 'is.backlogelement.id')}">{{ story.uid }}</span>
 
                     <a ng-if="previous"
                        class="btn btn-xs btn-default"
@@ -66,57 +66,69 @@
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-cog"></span> <span class="caret"></span>
                 </button>
+                <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
             </div>
             <div class="btn-group pull-right">
                 <button class="btn btn-default"
-                   ng-click="like(selected)"
-                   ng-switch on="selected.like.status"
-                   role="button"
-                   tabindex="0"
-                   tooltip="{{ selected.like.likers }}"
-                   tooltip-append-to-body="true">
+                        type="button"
+                        ng-click="like(story)"
+                        ng-switch="story.liked"
+                        role="button"
+                        tabindex="0"
+                        tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
+                        tooltip-append-to-body="true">
                     <i class="fa fa-thumbs-o-up" ng-switch-default></i>
                     <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
-                    <span class="badge"ng-show="selected.like.likers">{{ selected.like.likers }}</span>
+                    <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
                 </button>
-                <button name="activities" class="btn btn-default"
+                <button name="activities"
+                        class="btn btn-default"
+                        type="button"
                         ng-click="setTabSelected('activities')"
                         tooltip="${message(code:'todo.is.story.lastActivity')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-clock-o"></span>
                 </button>
-                <button name="attachments" class="btn btn-default"
+                <button name="attachments"
+                        class="btn btn-default"
+                        type="button"
                         ng-click="setTabSelected('attachments')"
-                        tooltip="{{ selected.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                        tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-paperclip"></span>
-                    <span class="badge" ng-show="selected.attachments_count">{{ selected.attachments_count }}</span>
+                    <span class="badge" ng-show="story.attachments_count">{{ story.attachments_count }}</span>
                 </button>
-                <button name="comments" class="btn btn-default"
+                <button name="comments"
+                        class="btn btn-default"
+                        type="button"
                         ng-click="setTabSelected('comments')"
-                        tooltip="{{ selected.comments.length }} ${message(code:'todo.is.story.comments')}"
+                        tooltip="{{ story.comments.length }} ${message(code:'todo.is.story.comments')}"
                         tooltip-append-to-body="true"
-                        ng-switch on="{{ selected.comments_count }}">
+                        ng-switch="{{ story.comments_count }}">
                     <span class="fa fa-comment-o" ng-switch-default></span>
                     <span class="fa fa-comment" ng-switch-when="true"></span>
-                    <span class="badge" ng-show="selected.comments_count">{{ selected.comments_count }}</span>
+                    <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
                 </button>
-                <button name="tasks" class="btn btn-default"
+                <button name="tasks"
+                        class="btn btn-default"
+                        type="button"
                         ng-click="setTabSelected('tasks')"
-                        tooltip="{{ selected.tasks_count }} ${message(code:'todo.is.story.tasks')}"
+                        tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-tasks"></span>
-                    <span class="badge" ng-show="selected.tasks_count">{{ selected.tasks_count }}</span>
+                    <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
                 </button>
-                <button name="tests" class="btn btn-default"
+                <button name="tests"
+                        class="btn btn-default"
+                        type="button"
                         ng-click="setTabSelected('tests')"
-                        tooltip="{{ selected.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
+                        tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                         tooltip-append-to-body="true"
                         tooltip-placement="left"
-                        ng-switch on="{{ selected.acceptanceTests_count }}">
+                        ng-switch="{{ story.acceptanceTests_count }}">
                     <span class="fa fa-check-square-o" ng-switch-when="0"></span>
                     <span class="fa fa-check-square" ng-switch-default></span>
-                    <span class="badge" ng-if="selected.acceptanceTests_count">{{ selected.acceptanceTests_count }}</span>
+                    <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
                 </button>
             </div>
         </div>
@@ -142,13 +154,13 @@
                                name="story.name"
                                ng-model="story.name"
                                type="text"
-                               ng-readonly="readOnly()"
+                               ng-readonly="readOnly(story)"
                                class="form-control">
                         <span class="input-group-btn">
                             <button type="button"
                                     tabindex="-1"
                                     popover-title="${message(code:'is.permalink')}"
-                                    popover="** $.icescrum.o.grailsServer **/** $.icescrum.product.pkey **-** story.uid **"
+                                    popover="{{ serverUrl + '/TODOPKEY-' + story.uid }}"
                                     popover-append-to-body="true"
                                     popover-placement="left"
                                     class="btn btn-default">
@@ -161,9 +173,8 @@
                     <label for="story.feature.id">${message(code:'is.feature')}</label>
                     <div ng-class="{'input-group':story.feature.id, 'select2-border':story.feature.id}">
                     <input type="hidden"
-                           style="width:100%;"
                            class="form-control"
-                           ng-readonly="readOnly()"
+                           ng-readonly="readOnly(story)"
                            value="{{ story.feature.id ? story.feature : '' }}"
                            ng-model="story.feature"
                            ui-select2="selectFeatureOptions"
@@ -181,10 +192,9 @@
             <div class="clearfix no-padding">
                 <div ng-class="{ 'form-group':true, 'col-md-6' : story.type == 2 }">
                     <label for="story.type">${message(code:'is.story.type')}</label>
-                    <select style="width:100%"
-                            class="form-control"
+                    <select class="form-control"
                             ng-model="story.type"
-                            ng-readonly="readOnly()"
+                            ng-readonly="readOnly(story)"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
                 </select>
@@ -195,10 +205,9 @@
                            type="hidden"
                            value="{{ story.affectVersion  }}"
                            ng-model="story.affectVersion"
-                           ng-readonly="readOnly()"
+                           ng-readonly="readOnly(story)"
                            ui-select2="selectAffectionVersionOptions"
-                           data-placeholder="${message(code:'is.ui.story.noaffectversion')}"
-                           style="width:100%"/>
+                           data-placeholder="${message(code:'is.ui.story.noaffectversion')}"/>
                 </div>
             </div>
             <div class="form-group">
@@ -209,7 +218,7 @@
                             class="form-control"
                             value="{{ story.dependsOn.id ? story.dependsOn : '' }}"
                             ng-model="story.dependsOn"
-                            ng-readonly="readOnly()"
+                            ng-readonly="readOnly(story)"
                             ui-select2="selectDependsOnOptions"
                             data-placeholder="${message(code: 'is.ui.story.nodependence')}"/>
                     <span class="input-group-btn" ng-show="story.dependsOn.id">
@@ -229,7 +238,7 @@
                 <label for="story.description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
                           ng-model="story.description"
-                          ng-readonly="readOnly()"
+                          ng-readonly="readOnly(story)"
                           ng-show="showDescriptionTextarea"
                           ng-blur="showDescriptionTextarea = false"
                           focus-me="{{ showDescriptionTextarea }}"
@@ -251,11 +260,10 @@
             </div>
             <div class="form-group">
                 <input type="hidden"
-                       style="width:100%"
                        class="form-control"
                        value="{{ story.tags.join(',') }}"
                        ng-model="story.tags"
-                       ng-readonly="readOnly()"
+                       ng-readonly="readOnly(story)"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
             </div>
@@ -264,7 +272,7 @@
                 <textarea is-markitup
                           class="form-control"
                           ng-model="story.notes"
-                          ng-readonly="readOnly()"
+                          ng-readonly="readOnly(story)"
                           is-model-html="story.notes_html"
                           ng-show="showNotesTextarea"
                           ng-blur="showNotesTextarea = false"
@@ -279,57 +287,95 @@
             </div>
         </form>
         <tabset type="{{ tabsType }}">
-            <tab select="activities(selected); ($state.params.tabId ? setTabSelected('activities') : '');"
+            <tab select="activities(story); ($state.params.tabId ? setTabSelected('activities') : '');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
                  active="tabSelected.activities">
                 <table class="table table-striped">
-                    <tbody ng-include src="'activity.list.html'"></tbody>
+                    <tbody ng-include="'activity.list.html'" ng-init="selected = story"></tbody>
                 </table>
             </tab>
             <tab select="setTabSelected('attachments');"
                  heading="${message(code: 'is.ui.backlogelement.attachment')}"
                  active="tabSelected.attachments">
             </tab>
-            <tab select="comments(selected); setTabSelected('comments');"
+            <tab select="comments(story); setTabSelected('comments');"
                  heading="${message(code: 'is.ui.backlogelement.activity.comments')}"
                  active="tabSelected.comments">
                 <table class="table table-striped">
-                    <tbody ng-include src="'comment.list.html'"></tbody>
+                    <tbody ng-include="'comment.list.html'" ng-init="selected = story"></tbody>
                 </table>
-                <div ng-include src="'comment.editor.html'"></div>
+                <table class="table" ng-controller="commentCtrl">
+                    <tbody>
+                    <tr>
+                        <td ng-switch="getShowForm()">
+                            <button ng-switch-default
+                                    class="btn btn-sm btn-primary pull-right"
+                                    type="button"
+                                    ng-click="setShowForm(true)"
+                                    tooltip="${message(code:'todo.is.ui.comment.new')}'"
+                                    tooltip-append-to-body="body"
+                                    tooltip-placement="left">
+                                <span class="fa fa-plus"></span>
+                            </button>
+                            <button ng-switch-when="true"
+                                    class="btn btn-sm btn-default pull-right "
+                                    type="button"
+                                    ng-click="setShowForm(false)"
+                                    tooltip="${message(code:'todo.is.ui.hide')}"
+                                    tooltip-append-to-body="body"
+                                    tooltip-placement="left">
+                                <span class="fa fa-minus"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-show="getShowForm()">
+                        <td><div ng-init="formType='save'" ng-include="'comment.editor.html'"></div></td>
+                    </tr>
+                    </tbody>
+                </table>
             </tab>
-            <tab select="tasks(selected); setTabSelected('tasks');"
+            <tab select="tasks(story); setTabSelected('tasks');"
                  heading="${message(code: 'is.ui.backlogelement.activity.task')}"
                  active="tabSelected.tasks">
-                <div ng-include src="'story.task.new.html'"></div>
+                <div ng-include="'story.task.new.html'" ng-controller="taskCtrl"></div>
                 <table class="table table-striped">
-                    <tbody ng-include src="'story.tasks.html'"></tbody>
+                    <tbody ng-include="'story.tasks.html'"></tbody>
                 </table>
             </tab>
-            <tab select="acceptanceTests(selected); setTabSelected('tests');"
+            <tab select="acceptanceTests(story); setTabSelected('tests');"
                  heading="${message(code: 'is.ui.backlogelement.activity.test')}"
                  active="tabSelected.tests">
                 <table class="table" ng-controller="acceptanceTestCtrl">
                     <tbody>
                     <tr>
-                        <td>
-                            <button class="btn btn-sm pull-right"
-                                    ng-class="getShowForm() ? 'btn-danger' : 'btn-primary'"
-                                    ng-click="toggleShowForm()"
-                                    tooltip="${message(code:'todo.is.ui.acceptanceTest.new')}"
+                        <td ng-switch="getShowForm()">
+                            <button ng-switch-default
+                                    class="btn btn-sm btn-primary pull-right"
+                                    type="button"
+                                    ng-click="setShowForm(true)"
+                                    tooltip="${message(code:'todo.is.ui.acceptanceTest.new')}'"
                                     tooltip-append-to-body="body"
                                     tooltip-placement="left">
-                                <span class="fa" ng-class="getShowForm() ? 'fa-times' : 'fa-plus'"></span>
+                                <span class="fa fa-plus"></span>
+                            </button>
+                            <button ng-switch-when="true"
+                                    class="btn btn-sm btn-default pull-right "
+                                    type="button"
+                                    ng-click="setShowForm(false)"
+                                    tooltip="${message(code:'todo.is.ui.hide')}"
+                                    tooltip-append-to-body="body"
+                                    tooltip-placement="left">
+                                <span class="fa fa-minus"></span>
                             </button>
                         </td>
                     </tr>
                     <tr ng-show="getShowForm()">
-                        <td><div ng-init="formType='save'" ng-include src="'story.acceptanceTest.editor.html'"></div></td>
+                        <td><div ng-init="formType='save'" ng-include="'story.acceptanceTest.editor.html'"></div></td>
                     </tr>
                     </tbody>
                 </table>
                 <table class="table table-striped">
-                    <tbody ng-include src="'story.acceptanceTests.html'"></tbody>
+                    <tbody ng-include="'story.acceptanceTests.html'"></tbody>
                 </table>
             </tab>
         </tabset>

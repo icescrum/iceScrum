@@ -44,7 +44,11 @@
 
 @invert-color : #FFFFFF;
 
-
+.duplicate {
+  color: #6D6D6D;
+  margin-top: 5px;
+  padding: 4px 7px;
+}
 
 @draggable-bg:  rgba(250, 169, 55, 0.8);
 .text-overflow() {
@@ -216,21 +220,23 @@ table {
     max-height:200px;
     overflow: auto;
   }
-  .actions {
-    margin-top:15px;
-    .pull-right {
-      .btn-default {
-        .badge {
-          background: none;
-          color: @brand-primary;
-          display: inline-block;
-          font-size: 0.8em;
-          text-align: right;
-          font-weight: bold;
-          position: absolute;
-          left: 0;
-          top: 15px;
-          right: -5px;
+  .panel-heading {
+    .actions {
+      margin-top: 15px;
+      .pull-right {
+        .btn-default {
+          .badge {
+            background: none;
+            color: @brand-primary;
+            display: inline-block;
+            font-size: 0.8em;
+            text-align: right;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 15px;
+            right: -5px;
+          }
         }
       }
     }
@@ -1080,7 +1086,73 @@ a[data-toggle="tab"] button {
 @postit-dark: #434343;
 @postit-content-height: 70px;
 
+
 .postits {
+  &.standalone {
+    .postit-container {
+      font-family: "Myriad Pro", Arial, sans-serif;
+      float: left;
+      padding: 0;
+      margin: 0 30px 15px 10px;
+      .postit {
+        z-index: 10;
+        .postits.grid-group .postit-container .postit;
+        background: white;
+      }
+      &.stack {
+        margin-bottom: 20px;
+        &:before, &:after {
+          width: 196px;
+          height: 145px;
+          color: @postit-dark;
+          border: 1px solid @postit-border;
+          border-radius: 3px 3px 0px 0px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, .25), inset 0 0 3px rgba(255, 255, 255, .75);
+          content: "";
+          position: absolute;
+          -webkit-transition: 0.3s all ease-out;
+          -moz-transition: 0.3s all ease-out;
+          transition: 0.3s all ease-out;
+          background: white;
+          opacity: 0.8;
+        }
+        @postit-stack-offset: 4px;
+        &:before {
+          top: @postit-stack-offset;
+          z-index: 1;
+        }
+        &:after {
+          top: 2 * @postit-stack-offset;
+          z-index: 0;
+        }
+        @postit-twisted-offset: 4deg;
+        &.twisted {
+          &:before {
+            -webkit-transform: rotate(@postit-twisted-offset);
+            -moz-transform: rotate(@postit-twisted-offset);
+            transform: rotate(@postit-twisted-offset);
+          }
+          &:after {
+            -webkit-transform: rotate(-@postit-twisted-offset);
+            -moz-transform: rotate(-@postit-twisted-offset);
+            transform: rotate(-@postit-twisted-offset);
+          }
+        }
+        &:hover {
+          &:before {
+            -webkit-transform: rotate(0deg) translateX(@postit-stack-offset);
+            -moz-transform: rotate(0deg) translateX(@postit-stack-offset);
+            transform: rotate(0deg) translateX(@postit-stack-offset);
+          }
+          &:hover:after {
+            -webkit-transform: rotate(0deg) translateX(2 * @postit-stack-offset);
+            -moz-transform: rotate(0deg) translateX(2 * @postit-stack-offset);
+            transform: rotate(0deg) translateX(2 * @postit-stack-offset);
+          }
+        }
+      }
+    }
+  }
   &.grid-group {
     margin-left: 12px;
     margin-top: 10px;
@@ -1185,6 +1257,10 @@ a[data-toggle="tab"] button {
           }
           .description {
             visibility: hidden;
+            display: inline-block;
+            max-height: @postit-content-height;
+          }
+          .description-template {
             display: inline-block;
             max-height: @postit-content-height;
           }

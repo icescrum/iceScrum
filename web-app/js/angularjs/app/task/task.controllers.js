@@ -18,18 +18,25 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('taskCtrl', ['$scope', 'TaskService', 'Session', function ($scope, TaskService, Session) {
-    $scope.save = function(task, obj){
+controllers.controller('taskCtrl', ['$scope', 'TaskService', 'Session', function($scope, TaskService, Session) {
+    $scope.showForm = false;
+    $scope.setShowForm = function(show) {
+        $scope.showForm = show;
+    };
+    $scope.save = function(task, obj) {
         TaskService.save(task, obj);
     };
-
-    $scope['delete'] = function(task, story){
+    $scope['delete'] = function(task, story) {
         TaskService.delete(task, story);
     };
-
     $scope.deletable = function() {
         return Session.poOrSm() || Session.creator($scope.task);
     };
+    $scope.cancel = function() {
+        $scope.setShowForm(false);
+        $scope.task = {};
+    }
 }]);

@@ -18,28 +18,42 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.editor.html">
-    <table class="table comment-editor">
-        <tbody>
-        <tr class="comment-editor">
-            <td class="avatar">
-                <img ng-src="{{comment.poster | userAvatar}}" width="25px">
-            </td>
-            <td>
-                <form ng-controller="commentCtrl" ng-submit="save(comment, selected)">
-                    <textarea required
-                              ng-model="comment.body"
-                              class="form-control"
-                              placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
-                    <div>
-                        <small class="text-muted">${message(code:'todo.is.ui.comment.cancel')}</small>
-                        <button type="submit" ng-show="!comment.id" class="btn btn-primary btn-sm pull-right">${message(code:'todo.is.ui.comment.post')}</button>
-                        <button type="submit" ng-show="comment.id" class="btn btn-primary btn-sm pull-right">${message(code:'todo.is.ui.comment.update')}</button>
-                    </div>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<form ng-submit="submitForm(formType, comment, selected)"
+      show-validation>
+    <div class="form-group">
+        <textarea required
+              ng-model="comment.body"
+              class="form-control"
+              focus-me="{{ getShowForm() }}"
+              placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
+    </div>
+    <div class="btn-toolbar pull-right">
+        <button ng-if="formType == 'save'"
+                class="btn btn-primary pull-right"
+                tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
+                tooltip-append-to-body="true"
+                type="submit">
+            ${message(code:'todo.is.ui.save')}
+        </button>
+        <button ng-if="formType == 'update'"
+                class="btn btn-primary pull-right"
+                tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
+                tooltip-append-to-body="true"
+                type="submit">
+            ${message(code:'todo.is.ui.update')}
+        </button>
+        <button class="btn confirmation btn-default pull-right"
+                tooltip-append-to-body="true"
+                tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
+                type="button"
+                hotkey="{'esc': hotkeyClick }"
+                hotkey-allow-in="INPUT, TEXTAREA"
+                ng-click="cancel()">
+            ${message(code:'is.button.cancel')}
+        </button>
+    </div>
+</form>
 </script>

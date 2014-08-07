@@ -21,53 +21,51 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('featureCtrl', ['$scope', '$state', '$timeout', 'selected', 'FeatureService', 'StoryService', function ($scope, $state, $timeout, selected, FeatureService, StoryService) {
+controllers.controller('featureCtrl', ['$scope', '$state', '$timeout', 'selected', 'FeatureService', 'StoryService', function($scope, $state, $timeout, selected, FeatureService, StoryService) {
     $scope.selected = selected;
     $scope.tabsType = 'tabs nav-tabs-google';
-    if ($state.params.tabId){
+    if ($state.params.tabId) {
         $scope.tabSelected = {};
         $scope.tabSelected[$state.params.tabId] = true;
     } else {
-        $scope.tabSelected = {'attachments':true};
+        $scope.tabSelected = {'attachments': true};
     }
     $scope.$watch('$state.params', function() {
-        if ($state.params.tabId){
+        if ($state.params.tabId) {
             $scope.tabSelected[$state.params.tabId] = true;
-            //scrollToTab
-            $timeout((function(){
+            $timeout((function() {
                 var container = angular.element('#right');
-                var pos = angular.element('#right .nav-tabs-google [active="tabSelected.'+$state.params.tabId+'"]').position().top + container.scrollTop();
-                container.animate({ scrollTop : pos }, 1000);
+                var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();
+                container.animate({ scrollTop: pos }, 1000);
             }));
         }
     });
-    $scope.setTabSelected = function(tab){
+    $scope.setTabSelected = function(tab) {
         if ($state.params.tabId) {
-            $state.go('.', {tabId:tab});
+            $state.go('.', {tabId: tab});
         } else {
-            $state.go('.tab', {tabId:tab});
+            $state.go('.tab', {tabId: tab});
         }
     };
-    $scope.update = function (feature) {
-        FeatureService.update(feature, function () {
-            $scope.$digest();
+    $scope.update = function(feature) {
+        FeatureService.update(feature);
+    };
+    $scope['delete'] = function(feature) {
+        FeatureService.delete(feature).then(function() {
+            $state.go('^');
         });
     };
-    $scope['delete'] = function (feature) {
-        FeatureService.delete(feature);
-        $state.go('^');
-    };
-    $scope.stories = function(feature){
+    $scope.stories = function(feature) {
         feature.stories = _.where(StoryService.list, { feature: { id: feature.id }});
     };
 }]);
 
-controllers.controller('featureHeaderCtrl', ['$scope', 'FeatureService', 'FormService', function ($scope, FeatureService, FormService) {
+controllers.controller('featureHeaderCtrl', ['$scope', 'FeatureService', 'FormService', function($scope, FeatureService, FormService) {
     $scope.previous = FormService.previous(FeatureService.list, $scope.selected);
     $scope.next = FormService.next(FeatureService.list, $scope.selected);
 }]);
 
-controllers.controller('featureEditCtrl', ['$scope', 'Session', 'FormService', function ($scope, Session, FormService) {
+controllers.controller('featureEditCtrl', ['$scope', 'Session', 'FormService', function($scope, Session, FormService) {
     $scope.feature = angular.copy($scope.selected);
     $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
     $scope.readOnly = function() {
@@ -75,7 +73,7 @@ controllers.controller('featureEditCtrl', ['$scope', 'Session', 'FormService', f
     };
 }]);
 
-controllers.controller('featureMultipleCtrl', ['$scope', '$state', 'listId', function ($scope, $state, listId) {
+controllers.controller('featureMultipleCtrl', ['$scope', '$state', 'listId', function($scope, $state, listId) {
     $scope.ids = listId;
 }]);
 

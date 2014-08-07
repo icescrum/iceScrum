@@ -66,7 +66,7 @@
                 </div>
                 <div class="form-group"
                     <label for="report.comment">${message(code:'is.dialog.sendError.comments')}</label>
-                    <textarea autofocus name="report.comment" required style="width:100%;"></textarea>
+                    <textarea focus-me="true" name="report.comment" required style="width:100%;"></textarea>
                 </div>
 </is:modal>
 </script>

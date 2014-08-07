@@ -53,13 +53,10 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
         update:$.icescrum.menuBar.update
     };
 
-}]).controller('loginCtrl',['$scope', '$rootScope','$modalInstance' , 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, $modalInstance, AUTH_EVENTS, AuthService) {
+}]).controller('loginCtrl',['$scope', '$rootScope','$modalInstance', 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, $modalInstance, AUTH_EVENTS, AuthService) {
     $scope.credentials = {
         j_username: '',
         j_password: ''
-    };
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
     };
     $scope.login = function (credentials) {
         AuthService.login(credentials).then(function () {
@@ -84,14 +81,17 @@ controllers.controller('sandboxCtrl', ['$scope', '$state', 'stories', function (
             {id:'type', name:'Type'}
         ]
     };
-
+    $scope.goToNewStory = function() {
+        $state.go('sandbox.new');
+    };
+    $scope.defaultStoryState = 1; // TODO use constants, not hardcoded values
     $scope.selectableOptions = {
         filter:"> .postit-container",
         cancel: "a",
         stop:function(e, ui, selectedItems) {
             switch (selectedItems.length){
                 case 0:
-                    $state.go('sandbox');
+                    $state.go('sandbox.new');
                     break;
                 case 1:
                     $state.go($state.params.tabId ? 'sandbox.details.tab' : 'sandbox.details', { id: selectedItems[0].id });
@@ -102,8 +102,16 @@ controllers.controller('sandboxCtrl', ['$scope', '$state', 'stories', function (
             }
         } 
     };
-
     $scope.stories = stories;
+    $scope.isSelected = function(story) {
+        if ($state.params.id) {
+            return $state.params.id == story.id ;
+        } else if ($state.params.listId) {
+            return _.contains($state.params.listId.split(','), story.id.toString());
+        } else {
+            return false;
+        }
+    }
 }]);
 
 controllers.controller('actorsCtrl', ['$scope', '$state', 'actors', function ($scope, $state, actors) {

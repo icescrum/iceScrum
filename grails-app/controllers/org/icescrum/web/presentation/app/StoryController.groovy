@@ -34,7 +34,6 @@ import org.icescrum.core.domain.User
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
-import org.grails.followable.FollowException
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 
@@ -202,14 +201,13 @@ class StoryController {
                     storyService.update(story, props)
                 }
             }
-
+            def returnData = stories.size() > 1 ? stories : stories.first()
             withFormat {
                 html {
-                    render status: 200, contentType: 'application/json', text: stories.size() > 1 ? stories : stories.first() as JSON
+                    render status: 200, contentType: 'application/json', text: returnData as JSON
                 }
-                // TODO find a proper solution for multiple elements (A rest API should probably not require to manipulate arrays of resources)
-                json { renderRESTJSON(text: stories.first()) }
-                xml  { renderRESTXML(text:stories.first()) }
+                json { renderRESTJSON(text: returnData) }
+                xml  { renderRESTXML(text: returnData) }
             }
         }
     }
@@ -243,9 +241,10 @@ class StoryController {
         withStories{ List<Story> stories ->
             def copiedStories = storyService.copy(stories)
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: copiedStories as JSON) }
-                json { renderRESTJSON(text:copiedStories, status: 201) }
-                xml  { renderRESTXML(text:copiedStories, status: 201) }
+                def returnData = copiedStories.size() > 1 ? copiedStories : copiedStories.first()
+                html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
+                json { renderRESTJSON(text: returnData, status: 201) }
+                xml  { renderRESTXML(text: returnData, status: 201) }
             }
         }
     }
@@ -365,56 +364,48 @@ class StoryController {
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def like = {
-        withStory { Story story ->
-            try {
+        withStories { List<Story> stories ->
+            stories.each { Story story ->
                 User user = springSecurityService.currentUser
-                def like = story.likers?.contains(user)
-                def result = [status: params.boolean('status') ? like : !like]
-                if (!params.boolean('status')){
-                    like ? story.removeFromLikers(user) : story.addToLikers(user)
-                    //fake update //todo allow customDirty properties
-                    story.lastUpdated = new Date()
-                    storyService.update(story, [likers:''])
+                if (story.liked) {
+                    story.removeFromLikers(user)
+                } else {
+                    story.addToLikers(user)
                 }
-                result.likers = story.likers.size()
-                withFormat {
-                    html {
-                        result.likers += " ${message(code: 'is.likers', args: [result.likers > 1 ? 's' : ''])}"
-                        render(status: 200, contentType: 'application/json', text: result as JSON)
-                    }
-                    json { renderRESTJSON(text:result) }
-                    xml  { renderRESTXML(text:result) }
+                storyService.update(story)
+            }
+            def returnData = stories.size() > 1 ? stories : stories.first()
+            withFormat {
+                html {
+                    render status: 200, contentType: 'application/json', text: returnData as JSON
                 }
-            } catch (FollowException e) {
-                returnError(e)
+                json { renderRESTJSON(text: returnData) }
+                xml  { renderRESTXML(text: returnData) }
             }
         }
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def follow = {
-        withStory { Story story ->
-            try {
+        withStories { List<Story> stories ->
+            stories.each { Story story ->
                 User user = springSecurityService.currentUser
-                def follow = story.followers?.contains(user)
-                def result = [status: params.boolean('status') ? follow : !follow]
-                if (!params.boolean('status')){
-                    follow ? story.removeLink(user.id) : story.addFollower(user)
-                    //fake update //todo allow customDirty properties
-                    story.lastUpdated = new Date()
-                    storyService.update(story, [followers:''])
-                }
-                result.followers = story.totalFollowers
-                withFormat {
-                    html {
-                        result.followers += " ${message(code: 'is.followable.followers', args: [result.followers > 1 ? 's' : ''])}"
-                        render(status: 200, contentType: 'application/json', text: result as JSON)
+                if (params.follow == null || params.boolean('follow') != story.followed) {
+                    if (story.followed) {
+                        story.removeFromFollowers(user)
+                    } else {
+                        story.addToFollowers(user)
                     }
-                    json { renderRESTJSON(text:result) }
-                    xml  { renderRESTXML(text:result) }
+                    storyService.update(story)
                 }
-            } catch (FollowException e) {
-                returnError(e)
+            }
+            def returnData = stories.size() > 1 ? stories : stories.first()
+            withFormat {
+                html {
+                    render status: 200, contentType: 'application/json', text: returnData as JSON
+                }
+                json { renderRESTJSON(text: returnData) }
+                xml  { renderRESTXML(text: returnData) }
             }
         }
     }
@@ -465,6 +456,18 @@ class StoryController {
             } else {
                 throw new RuntimeException(template.errors?.toString())
             }
+        }
+    }
+
+    @Secured('productOwner() and !archivedProduct()')
+    def deleteTemplate = {
+        def product = Product.get(params.long('product'))
+        def template = Template.findByIdAndParentProduct(params.long('template.id'), product)
+        if (template) {
+            template.delete()
+            render(status: 204)
+        } else {
+            returnError(text:message(code:'todo.is.ui.story.template.not.found'))
         }
     }
 

@@ -21,38 +21,31 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('Actor', [ 'Resource', function ($resource) {
-    return $resource('actor/:id/:action', { id: '@id' }, { query: {method: 'GET', isArray: true, cache: true} });
+services.factory('Actor', ['Resource', function($resource) {
+    return $resource('actor/:id/:action');
 }]);
 
-services.service("ActorService", ['Actor', '$q', function (Actor, $q) {
+services.service("ActorService", ['Actor', function(Actor) {
     var self = this;
     this.list = Actor.query();
-    this.get = function (id) {
-        var actor;
-        var deferred = $q.defer();
-        self.list.$promise.then(function (list) {
-            actor = _.find(list, function (rw) {
-                return rw.id == id
+    this.get = function(id) {
+        return self.list.$promise.then(function(list) {
+            return _.find(list, function(rw) {
+                return rw.id == id;
             });
-            deferred.resolve(actor);
         });
-        return deferred.promise;
     };
-    this.update = function (actor, callback) {
-        actor.$update(function (data) {
+    this.update = function(actor) {
+        return actor.$update(function(data) {
             var index = self.list.indexOf(_.findWhere(self.list, { 'id': actor.id }));
             if (index != -1) {
                 self.list.splice(index, 1, data);
             }
         });
     };
-    this['delete'] = function (actor) {
-        actor.$delete(function () {
-            var index = self.list.indexOf(actor);
-            if (index != -1) {
-                self.list.splice(index, 1);
-            }
+    this['delete'] = function(actor) {
+        return actor.$delete(function() {
+            _.remove(self.list, { id: actor.id });
         });
     };
 }]);

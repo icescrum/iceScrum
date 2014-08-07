@@ -95,8 +95,7 @@
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="actor.instances">${message(code:'is.actor.instances')}</label>
-                    <select style="width:100%"
-                            class="form-control"
+                    <select class="form-control"
                             ng-model="actor.instances"
                             ng-readonly="readOnly()"
                             ui-select2>
@@ -107,8 +106,7 @@
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">
                     <label for="actor.expertnessLevel">${message(code:'is.actor.it.level')}</label>
-                    <select style="width:100%"
-                            class="form-control"
+                    <select class="form-control"
                             ng-model="actor.expertnessLevel"
                             ng-readonly="readOnly()"
                             ui-select2>
@@ -117,8 +115,7 @@
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="actor.useFrequency">${message(code:'is.actor.use.frequency')}</label>
-                    <select style="width:100%"
-                            class="form-control"
+                    <select class="form-control"
                             ng-model="actor.useFrequency"
                             ng-readonly="readOnly()"
                             ui-select2>
@@ -135,7 +132,6 @@
             </div>
             <div class="form-group">
                 <input type="hidden"
-                       style="width:100%"
                        class="form-control"
                        value="{{ actor.tags.join(',') }}"
                        ng-model="actor.tags"
@@ -171,7 +167,7 @@
                  heading="${message(code: 'todo.is.actor.stories')}"
                  active="tabSelected.stories">
                 <table class="table table-striped">
-                    <tbody ng-include src="'nested.stories.html'"></tbody>
+                    <tbody ng-include="'nested.stories.html'"></tbody>
                 </table>
             </tab>
         </tabset>

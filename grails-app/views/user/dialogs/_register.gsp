@@ -35,7 +35,7 @@
                            name="user.username"
                            class="form-control"
                            required
-                           autofocus/>
+                           focus-me="true"/>
                 </div>
                 <div class="form-group">
                     <label for="user.firstName">${message(code:'is.user.firstname')}</label>
@@ -67,7 +67,6 @@
                     <label for="userAvatar">${message(code:'is.user.avatar')}</label>
                     <select id= "userAvatar"
                             name="user.avatar"
-                            style="width:100%"
                             data-sl2
                             class="form-control"
                             data-sl2-change="$.icescrum.user.selectAvatar"
@@ -101,7 +100,6 @@
                 <div class="form-group">
                     <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
                     <select name="user.preferences.language"
-                            style="width:100%"
                             data-sl2
                             class="form-control"
                             value="en">

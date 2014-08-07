@@ -18,44 +18,39 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory( 'Task', [ 'Resource', function( $resource ) {
-    return $resource( 'task/:type/:typeId/:id/:action',
-        { id: '@id' } ,
+services.factory('Task', [ 'Resource', function($resource) {
+    return $resource('task/:type/:typeId/:id/:action',
+        {},
         {
-            query:           {method:'GET', isArray:true, cache: true},
-            activities:      {method:'GET', isArray:true, params:{action:'activities'}}
+            activities: {method: 'GET', isArray: true, params: {action: 'activities'}}
         });
 }]);
 
-services.service("TaskService", ['Task', '$q', function(Task, $q) {
-    this.save = function(task, obj){
+services.service("TaskService", ['Task', function(Task) {
+    this.save = function(task, obj) {
         task.class = 'task';
-        if (obj.class == 'Story'){
-            task.parentStory = {id:obj.id};
+        if (obj.class == 'Story') {
+            task.parentStory = {id: obj.id};
         } else {
-            task.backlog = {id:obj.id};
+            task.backlog = {id: obj.id};
         }
-        Task.save(task, function(task){
+        return Task.save(task, function(task) {
             obj.tasks.push(task);
-            obj.tasks_count += 1;
+            obj.tasks_count = obj.tasks.length;
+        }).$promise;
+    };
+    this['delete'] = function(task, obj) {
+        return task.$delete(function() {
+            _.remove(obj.tasks, { id: task.id });
+            obj.tasks_count = obj.tasks.length;
         });
     };
-    this['delete'] = function(task, obj){
-        task.$delete(function(){
-            if (obj){
-                var index = obj.tasks.indexOf(task);
-                if (index != -1){
-                    obj.tasks.splice(index, 1);
-                    obj.tasks_count -= 1;
-                }
-            }
-        });
-    };
-    this.list = function(obj){
-        Task.query({ typeId: obj.id, type:obj.class.toLowerCase() }, function(data){
+    this.list = function(obj) {
+        return Task.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
             obj.tasks = data;
-        });
+        }).$promise;
     }
 }]);

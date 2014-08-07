@@ -21,43 +21,46 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory( 'AcceptanceTest', [ 'Resource', function( $resource ) {
-    return $resource( 'acceptanceTest/:type/:storyId/:id',
-        { id: '@id' } ,
-        { query:           {method:'GET', isArray:true, cache: true} });
+services.factory('AcceptanceTest', [ 'Resource', function($resource) {
+    return $resource('acceptanceTest/:type/:storyId/:id');
 }]);
 
 services.service("AcceptanceTestService", ['AcceptanceTest', function(AcceptanceTest) {
-    this.save = function(acceptanceTest, story){
+    this.save = function(acceptanceTest, story) {
         acceptanceTest.class = 'acceptanceTest';
-        acceptanceTest.parentStory = {id:story.id};
-        AcceptanceTest.save(acceptanceTest, function(acceptanceTest){
+        acceptanceTest.parentStory = { id: story.id };
+        return AcceptanceTest.save(acceptanceTest, function(acceptanceTest) {
             story.acceptanceTests.push(acceptanceTest);
-            story.acceptanceTests_count += 1;
+            story.acceptanceTests_count = story.acceptanceTests.length;
+        }).$promise;
+    };
+    this['delete'] = function(acceptanceTest, story) {
+        return acceptanceTest.$delete(function() {
+            _.remove(story.acceptanceTests, { id: acceptanceTest.id });
+            story.acceptanceTests_count = story.acceptanceTests.length;
         });
     };
-    this['delete'] = function(acceptanceTest, story){
-        acceptanceTest.$delete(function(){
-            if (story){
-                var index = story.acceptanceTests.indexOf(acceptanceTest);
-                if (index != -1) {
-                    story.acceptanceTests.splice(index, 1);
-                    story.acceptanceTests_count -= 1;
-                }
-            }
-        });
-    };
-    this.update = function(acceptanceTest, story){
-        acceptanceTest.$update(function(data){
-            var index = story.acceptanceTests.indexOf(_.find(story.acceptanceTests, function(currentAcceptanceTest){ return currentAcceptanceTest.id == acceptanceTest.id }));
+    this.update = function(acceptanceTest, story) {
+        return acceptanceTest.$update(function(data) {
+            var index = story.acceptanceTests.indexOf(_.findWhere(story.acceptanceTests, { id: acceptanceTest.id }));
             if (index != -1) {
                 story.acceptanceTests.splice(index, 1, data);
             }
         });
     };
-    this.list = function(story){
-        AcceptanceTest.query({ storyId: story.id, type: 'story' }, function(data) {
+    this.list = function(story) {
+        return AcceptanceTest.query({ storyId: story.id, type: 'story' }, function(data) {
             story.acceptanceTests = data;
-        });
-    }
+            story.acceptanceTests_count = story.acceptanceTests.length;
+        }).$promise;
+    };
+    this.readOnly = function(story) {
+        return story.state == 7; // TODO use constants, not hardcoded values
+    };
+    this.stateReadOnly = function(story) {
+        return this.readOnly(story) || (story.state < 4); // TODO use constants, not hardcoded values
+    };
+    this.initAcceptanceTest = function(existingAcceptanceTest) {
+        return existingAcceptanceTest ? angular.copy(existingAcceptanceTest) : { state: 1 }; // TODO use constants, not hardcoded values
+    };
 }]);

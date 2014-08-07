@@ -37,11 +37,10 @@
         </div>
         <div class="col-md-6 form-group">
             <label>${message(code:'is.ui.acceptanceTest.state')}</label>
-            <select style="width:100%"
-                    class="form-control"
+            <select class="form-control"
                     ng-model="acceptanceTest.state"
                     ng-readonly="stateReadOnly()"
-                    ui-select2>
+                    ui-select2="selectAcceptanceTestStateOptions">
                 <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
             </select>
         </div>
@@ -64,18 +63,26 @@
              ng-bind-html="(acceptanceTest.description_html ? acceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>') | sanitize"></div>
     </div>
     <div class="btn-toolbar pull-right">
-        <button class="btn confirmation btn-danger pull-right"
+        <button ng-if="formType == 'save'"
+                class="btn btn-primary pull-right"
+                tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
+                tooltip-append-to-body="true"
+                type="submit">
+            ${message(code:'todo.is.ui.save')}
+        </button>
+        <button ng-if="formType == 'update'"
+                class="btn btn-primary pull-right"
+                tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
+                tooltip-append-to-body="true"
+                type="submit">
+            ${message(code:'todo.is.ui.update')}
+        </button>
+        <button class="btn confirmation btn-default pull-right"
                 tooltip-append-to-body="true"
                 tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
                 type="button"
                 ng-click="cancel()">
             ${message(code:'is.button.cancel')}
-        </button>
-        <button class="btn btn-primary pull-right"
-                tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
-                tooltip-append-to-body="true"
-                type="submit">
-            ${message(code:'todo.is.ui.save')}
         </button>
     </div>
 </form>

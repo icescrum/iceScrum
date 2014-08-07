@@ -185,7 +185,7 @@ class ProductUrlMappings {
             action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
             constraints {
                 product(matches: /[0-9A-Z]*/)
-                id(matches: /\d*/)
+                id(matches: /\d+(,\d+)*/)
             }
         }
 
@@ -193,7 +193,7 @@ class ProductUrlMappings {
             controller = 'story'
             constraints {
                 product(matches: /[0-9A-Z]*/)
-                id(matches: /\d*/)
+                id(matches: /\d+(,\d+)*/)
             }
         }
 

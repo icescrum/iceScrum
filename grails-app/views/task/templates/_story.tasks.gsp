@@ -21,22 +21,21 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<tr ng-show="selected.tasks === undefined">
+<tr ng-show="story.tasks === undefined">
     <td class="empty-content">
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="task in selected.tasks" ng-controller="taskCtrl">
+<tr ng-repeat="task in story.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
     <td>
         <div class="content">
             <div class="pull-right">
-                <a href
-                   class="btn btn-xs btn-danger"
-                   role="button"
-                   tooltip-placement="left"
-                   tooltip="${message(code:'todo.is.ui.task.delete')}"
-                   ng-if="deletable()"
-                   ng-click="delete(task, selected)"><i class="fa fa-times"></i></a>
+                <button class="btn btn-xs btn-danger"
+                        type="button"
+                        tooltip-placement="left"
+                        tooltip="${message(code:'todo.is.ui.task.delete')}"
+                        ng-if="deletable()"
+                        ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [task, story])"><span class="fa fa-times"></span></button>
             </div>
             <div>
                 <span class="label label-default"
@@ -50,7 +49,7 @@
         </div>
     </td>
 </tr>
-<tr ng-show="!selected.tasks.length">
+<tr ng-show="!story.tasks.length">
     <td class="empty-content">
         <small>${message(code:'todo.is.ui.task.empty')}</small>
     </td>

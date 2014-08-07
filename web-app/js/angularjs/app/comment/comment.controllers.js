@@ -18,18 +18,50 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('commentCtrl', ['$scope', 'CommentService', function ($scope, CommentService) {
-    $scope.save = function(comment, commentable){
-        CommentService.save(comment, commentable);
-    };
+controllers.controller('commentCtrl', ['$scope', 'CommentService', 'Session', function($scope, CommentService, Session) {
 
-    $scope.edit = function(comment, commentable){
-        $scope.$parent.editComment = true;
+    $scope.setShowForm = function(show) {
+        $scope.editComment($scope.comment.id, show);
     };
+    $scope.getShowForm = function() {
+        return ($scope.commentEdit[$scope.comment.id] == true);
+    };
+    function initComment() {
+        return $scope.readOnlyComment ? angular.copy($scope.readOnlyComment) : {};
+    }
 
-    $scope['delete'] = function(comment, commentable){
+    $scope.comment = initComment();
+    if (_.isEmpty($scope.comment)) {
+        $scope.setShowForm(true);
+    }
+
+    $scope.submitForm = function(type, comment, commentable) {
+        var promise;
+        if (type == 'save') {
+            promise = CommentService.save(comment, commentable).then(function() {
+                $scope.comment = initComment();
+            });
+        } else if (type == 'update') {
+            promise = CommentService.update(comment, commentable);
+        }
+        promise.then(function() {
+            $scope.setShowForm(false);
+        });
+    };
+    $scope.cancel = function() {
+        $scope.setShowForm(false);
+        $scope.comment = initComment();
+    };
+    $scope['delete'] = function(comment, commentable) {
         CommentService.delete(comment, commentable);
+    };
+    $scope.deletable = function() {
+        return Session.poOrSm() || Session.user.id == $scope.comment.poster.id;
+    };
+    $scope.readOnly = function() {
+        return Session.user.id != $scope.comment.poster.id;
     };
 }]);

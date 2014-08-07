@@ -93,7 +93,7 @@
                         <button type="button"
                                 tabindex="-1"
                                 popover-title="${message(code:'is.permalink')}"
-                                popover="** $.icescrum.o.grailsServer **/** $.icescrum.product.pkey **-** feature.uid **"
+                                popover="{{ serverUrl + '/TODOPKEY-F' + feature.uid }}"
                                 popover-append-to-body="true"
                                 popover-placement="left"
                                 class="btn btn-default">
@@ -106,11 +106,10 @@
                 <div class="col-md-6 form-group">
                     <label for="feature.type">${message(code:'is.feature.type')}</label>
                     <div class="input-group">
-                        <select style="width:100%"
-                            class="form-control"
-                            ng-model="feature.type"
-                            ng-readonly="readOnly()"
-                            ui-select2>
+                        <select class="form-control"
+                                ng-model="feature.type"
+                                ng-readonly="readOnly()"
+                                ui-select2>
                             <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}" />
                         </select>
                         <span class="input-group-btn">
@@ -126,8 +125,7 @@
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="feature.value">${message(code:'is.feature.value')}</label>
-                    <select style="width:100%"
-                            class="form-control"
+                    <select class="form-control"
                             ng-model="feature.value"
                             ng-readonly="readOnly()"
                             ui-select2>
@@ -144,7 +142,6 @@
             </div>
             <div class="form-group">
                 <input type="hidden"
-                       style="width:100%"
                        class="form-control"
                        value="{{ feature.tags.join(',') }}"
                        ng-model="feature.tags"
@@ -180,7 +177,7 @@
                  heading="${message(code: 'todo.is.feature.stories')}"
                  active="tabSelected.stories">
                 <table class="table table-striped">
-                    <tbody ng-include src="'nested.stories.html'"></tbody>
+                    <tbody ng-include="'nested.stories.html'"></tbody>
                 </table>
             </tab>
         </tabset>

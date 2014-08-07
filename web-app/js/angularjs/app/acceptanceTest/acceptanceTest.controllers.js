@@ -21,67 +21,63 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'hotkeys', function ($scope, AcceptanceTestService, hotkeys) {
+controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', function($scope, AcceptanceTestService) {
 
     $scope.setShowForm = function(show) {
-        $scope.editAcceptanceTest($scope.acceptanceTest ? $scope.acceptanceTest.id : -1, show)
+        $scope.editAcceptanceTest($scope.acceptanceTest.id, show)
     };
-
     $scope.getShowForm = function() {
-        return ($scope.acceptanceTestEdit[$scope.acceptanceTest ? $scope.acceptanceTest.id : -1] == true)
+        return ($scope.acceptanceTestEdit[$scope.acceptanceTest.id] == true)
     };
-
-    function initAcceptanceTest() {
-        return $scope.readOnlyAcceptanceTest ? angular.copy($scope.readOnlyAcceptanceTest): { state: 1 }; // TODO use constants, not hardcoded values
-    }
-
-    $scope.acceptanceTest = initAcceptanceTest();
-
-    $scope.toggleShowForm = function() {
-        if (!$scope.getShowForm()) {
-            $scope.setShowForm(true);
-        } else {
-            $scope.cancel();
-        }
-    };
-
-    $scope.submitForm = function(type, acceptanceTest, story){
+    $scope.acceptanceTest = AcceptanceTestService.initAcceptanceTest($scope.readOnlyAcceptanceTest);
+    $scope.submitForm = function(type, acceptanceTest, story) {
+        var promise;
         if (type == 'save') {
-            AcceptanceTestService.save(acceptanceTest, story);
-            $scope.acceptanceTest = initAcceptanceTest();
+            promise = AcceptanceTestService.save(acceptanceTest, story).then(function() {
+                $scope.acceptanceTest = AcceptanceTestService.initAcceptanceTest($scope.readOnlyAcceptanceTest);
+            });
         } else if (type == 'update') {
-            AcceptanceTestService.update(acceptanceTest, story);
+            promise = AcceptanceTestService.update(acceptanceTest, story);
         }
-        $scope.setShowForm(false);
+        promise.then(function() {
+            $scope.setShowForm(false);
+        });
     };
-
-    $scope.switchState = function(acceptanceTest, story) {
-        if (!$scope.stateReadOnly()) {
-            // TODO use constants, not hardcoded values
-            var newState = {
-                1: 5,
-                5: 10,
-                10: 1
-            };
-            acceptanceTest.state = newState[acceptanceTest.state];
-            AcceptanceTestService.update(acceptanceTest, story);
-        }
-    };
-
-    $scope['delete'] = function(acceptanceTest, story){
-        AcceptanceTestService.delete(acceptanceTest, story);
-    };
-
-    $scope.readOnly = function() {
-        return this.selected.state == 7; // TODO use constants, not hardcoded values
-    };
-
-    $scope.stateReadOnly = function() {
-        return $scope.readOnly() || (this.selected.state < 4); // TODO use constants, not hardcoded values
-    };
-
     $scope.cancel = function() {
         $scope.setShowForm(false);
-        $scope.acceptanceTest = initAcceptanceTest();
+        $scope.acceptanceTest = AcceptanceTestService.initAcceptanceTest($scope.readOnlyAcceptanceTest);
+    };
+    $scope.switchState = function(acceptanceTest, story) {
+        AcceptanceTestService.update(acceptanceTest, story);
+    };
+    $scope['delete'] = function(acceptanceTest, story) {
+        AcceptanceTestService.delete(acceptanceTest, story);
+    };
+    $scope.readOnly = function() {
+        return AcceptanceTestService.readOnly(this.story);
+    };
+    $scope.stateReadOnly = function() {
+        return AcceptanceTestService.stateReadOnly(this.story);
+    };
+    function formatAcceptanceTestStateOption(state) {
+        var colorClass;
+        // TODO use constants, not hardcoded values
+        switch (state.id) {
+            case "1":
+                colorClass = 'text-default';
+                break;
+            case "5":
+                colorClass = 'text-danger';
+                break;
+            case "10":
+                colorClass = 'text-success';
+                break;
+        }
+        return "<div class='" + colorClass + "'><i class='fa fa-check'></i>" + state.text + "</div>";
+    }
+
+    $scope.selectAcceptanceTestStateOptions = {
+        formatResult: formatAcceptanceTestStateOption,
+        formatSelection: formatAcceptanceTestStateOption
     };
 }]);

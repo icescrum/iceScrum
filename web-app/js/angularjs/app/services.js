@@ -24,11 +24,11 @@
 
 var services = angular.module('services', [ 'restResource' ]);
 
-services.factory('AuthService',['$http', 'Session', '$state', function ($http, Session) {
+services.factory('AuthService',['$http', '$rootScope', 'Session', function ($http, $rootScope, Session) {
     return {
         login: function (credentials) {
             return $http
-                .post('j_spring_security_check', credentials, {
+                .post($rootScope.serverUrl + '/j_spring_security_check', credentials, {
                     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                     transformRequest: function (data) {
                         return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
@@ -39,7 +39,7 @@ services.factory('AuthService',['$http', 'Session', '$state', function ($http, S
                 });
         }
     };
-}]).service('Session',['$q','User', 'USER_ROLES', function ($q, User, USER_ROLES) {
+}]).service('Session',['UserService', 'USER_ROLES', function (UserService, USER_ROLES) {
     var self = this;
     self.user = {};
     var defaultRoles = {
@@ -51,13 +51,10 @@ services.factory('AuthService',['$http', 'Session', '$state', function ($http, S
     self.roles = _.clone(defaultRoles);
     this.destroy = function () {
         _.merge(self.roles, defaultRoles);
-        // TODO WARNING this removes the binding, not a problem for the moment because the logout is followed by a refresh
-        // If we want to keep the window active we will need to remove the properties and keep the object reference
-        // Or maybe there is another way to preserve the binding while changing the reference...
         self.user = {};
     };
-    this.create = function (){
-        User.current().$promise.then(function(data) {
+    this.create = function() {
+        UserService.getCurrent().then(function(data) {
             _.extend(self.user, data.user);
             _.merge(self.roles, data.roles);
         });
@@ -125,11 +122,13 @@ services.factory('AuthService',['$http', 'Session', '$state', function ($http, S
     };
 }]);
 
-//extend default resource to be more RESTFul compliant
 var restResource = angular.module('restResource', [ 'ngResource' ]);
 restResource.factory('Resource', [ '$resource', function ($resource) {
     return function (url, params, methods) {
-        var defaults = {
+        var defaultParams = {
+            id: '@id'
+        };
+        var defaultMethods = {
             save: {
                 method: 'post',
                 isArray: false,
@@ -138,31 +137,17 @@ restResource.factory('Resource', [ '$resource', function ($resource) {
                     return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
                 }
             },
-            update: {
-                method: 'post',
-                isArray: false,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: function (data) {
-                    return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
-                }
-            },
-            create: { method: 'post' }
-        };
-
-        methods = angular.extend(defaults, methods);
-
-        var resource = $resource(url, params, methods);
-
-        resource.prototype.$save = function () {
-            if (!this.id) {
-                return this.$create();
-            }
-            else {
-                return this.$update();
+            query: {
+                method: 'get',
+                isArray: true,
+                cache: true
             }
         };
-
-        return resource;
+        defaultMethods.update = angular.copy(defaultMethods.save); // for the moment there is no difference between save & update
+        var updateArrayOptions = angular.copy(defaultMethods.save);
+        updateArrayOptions.isArray = true;
+        defaultMethods.updateArray = updateArrayOptions;
+        return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));
     };
 }]);
 

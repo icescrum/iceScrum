@@ -38,8 +38,6 @@
                 stories:'stories',
                 points:'points'
             },
-            timerDuplicate:null,
-            termDuplicate:null,
             data:[],
             bindings:[],
             restUrl: function(){ return $.icescrum.o.baseUrlSpace + 'story/'; },
@@ -89,23 +87,6 @@
                     container.html(el);
                 }
                 attachOnDomUpdate(container);
-            },
-
-            findDuplicate:function(term) {
-                if (term == null || term.length <= 5) {
-                    this.termDuplicate = null;
-                    $('.duplicate').html('');
-                } else if (term.length >= 5 && this.termDuplicate != term.trim()){
-                    //TODO maybe local search ?
-                    this.termDuplicate = term.trim();
-                    clearTimeout(this.timerDuplicate);
-                    this.timerDuplicate = setTimeout(function() {
-                        $.get($.icescrum.story.restUrl()+'findDuplicate',{term:term.trim()})
-                            .success(function(data){
-                                $('.duplicate').html(data ? data : '');
-                            });
-                    }, 500);
-                }
             },
 
             sortAndOrderOnSandbox:function(order){

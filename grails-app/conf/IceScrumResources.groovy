@@ -34,6 +34,7 @@ modules = {
         resource url: [dir: "css", file: 'jquery.jqplot.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'angular-hotkeys.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'angular-colorpicker.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "css", file: 'angular-xeditable.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'styles.less'], attrs: [rel: "stylesheet/less", type:'css', media: 'print,screen,projection'], bundle: 'icescrum'
     }
 
@@ -87,6 +88,7 @@ modules = {
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-selectable.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-sortable.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-hotkeys.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-xeditable.min.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"services.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"filters.js"], disposition:'head'

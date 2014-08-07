@@ -23,6 +23,7 @@
 <is:modal size="sm"
           title="${message(code:'is.dialog.login')}"
           submitButton="${message(code:'is.button.connect')}"
+          closeButton="${message(code:'is.button.cancel')}"
           autoFillFix="true"
           form="login(credentials)">
     <div class="form-group">
@@ -33,7 +34,7 @@
                type="text"
                id="credentials.j_username"
                class="form-control"
-               autofocus
+               focus-me="true"
                value="${params.username?:''}">
         <g:if test="${enableRegistration}">
             <span class="input-group-btn">

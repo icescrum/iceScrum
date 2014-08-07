@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.list.html">
 <tr ng-show="selected.comments === undefined">
@@ -25,36 +26,39 @@
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="comment in selected.comments" ng-controller="commentCtrl">
-    <img ng-src="{{comment.poster | userAvatar}}"
-         alt="{{comment.poster | userFullName}}"
-         tooltip="{{comment.poster | userFullName}}"
-         width="25px">
+<tr ng-repeat="readOnlyComment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
     <td>
         <div class="content">
-            <span class="clearfix text-muted">
-                ${message(code:'todo.is.ui.comment.by')} <a href="#">{{comment.poster | userFullName}}</a>
-                **# if(comment.poster.id == $.icescrum.user.id) { ** - <a href
-                                                                          ng-click="edit(comment, selected)"
-                                                                          tooltip="${message(code:'todo.is.ui.comment.edit')}"
-                                                                          class="text-muted"
-                                                                          tooltip-append-to-body="true">${message(code:'todo.is.ui.comment.edit')}</a>
-                **# } **
-            </span>
-            <div class="pretty-printed">
-                {{ comment.body }}
+            <div ng-show="!getShowForm()">
+                <div class="pull-right">
+                    <button class="btn btn-xs btn-primary"
+                            type="button"
+                            tooltip-placement="left"
+                            tooltip="${message(code:'todo.is.ui.comment.edit')}"
+                            ng-if="!readOnly()"
+                            ng-click="setShowForm(true)"><span class="fa fa-pencil"></span></button>
+                    <button class="btn btn-xs btn-danger"
+                            type="button"
+                            tooltip-placement="left"
+                            tooltip="${message(code:'todo.is.ui.comment.delete')}"
+                            ng-if="deletable()"
+                            ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [readOnlyComment, selected])"><span class="fa fa-times"></span></button>
+                </div>
+                <img class="inline-block"
+                     ng-src="{{readOnlyComment.poster | userAvatar}}"
+                     alt="{{readOnlyComment.poster | userFullName}}"
+                     tooltip="{{readOnlyComment.poster | userFullName}}"
+                     width="25px"/>
+                <span class="text-muted">
+                    <time class='timeago' datetime='{{ readOnlyComment.dateCreated }}'>
+                        {{ readOnlyComment.dateCreated }}
+                    </time> <span ng-show="readOnlyComment.dateCreated != readOnlyComment.lastUpdated">${message(code:'todo.is.ui.commnent.edited')}</span> <i class="fa fa-clock-o"></i>
+                </span>
+                <div class="pretty-printed"
+                     ng-bind-html="readOnlyComment.body | lineReturns | sanitize">
+                </div>
             </div>
-            **# if($.icescrum.user.poOrSm() || comment.poster.id == $.icescrum.user.id) { ** <a href
-                                                                                                ng-click="delete(comment, selected)"
-                                                                                                tooltip="${message(code:'todo.is.ui.comment.delete')}"
-                                                                                                class="on-hover delete"
-                                                                                                tooltip-append-to-body="true"><i class="fa fa-times text-danger"></i></a>
-            **# } **
-            <small class="clearfix text-muted">
-                <time class='timeago' datetime='{{ comment.dateCreated }}'>
-                    {{ comment.dateCreated }}
-                </time> <span ng-show="comment.dateCreated != comment.lastUpdated">${message(code:'todo.is.ui.commnent.edited')}</span> <i class="fa fa-clock-o"></i>
-            </small>
+            <div ng-include="'comment.editor.html'" ng-show="getShowForm()" ng-init="formType='update'"></div>
         </div>
     </td>
 </tr>

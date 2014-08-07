@@ -18,13 +18,19 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory( 'User', [ 'Resource', function( $resource ) {
-    return $resource( 'user/:id/:action',
-        { id: '@id' } ,
+services.factory('User', [ 'Resource', function($resource) {
+    return $resource('user/:id/:action',
+        {},
         {
-            query:        {method:'GET', isArray:true, cache: true},
-            current:      {method:'GET', params:{action:'current'}}
+            current: {method: 'GET', params: {action: 'current'}}
         });
+}]);
+
+services.service("UserService", ['User', function(User) {
+    this.getCurrent = function() {
+        return User.current().$promise;
+    }
 }]);

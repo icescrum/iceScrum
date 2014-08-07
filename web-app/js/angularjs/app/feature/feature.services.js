@@ -21,38 +21,31 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('Feature', [ 'Resource', function ($resource) {
-    return $resource('feature/:id/:action', { id: '@id' }, { query: {method: 'GET', isArray: true, cache: true} });
+services.factory('Feature', [ 'Resource', function($resource) {
+    return $resource('feature/:id/:action');
 }]);
 
-services.service("FeatureService", ['Feature', '$q', function (Feature, $q) {
+services.service("FeatureService", ['Feature', function(Feature) {
     var self = this;
     this.list = Feature.query();
-    this.get = function (id) {
-        var feature;
-        var deferred = $q.defer();
-        self.list.$promise.then(function (list) {
-            feature = _.find(list, function (rw) {
-                return rw.id == id
+    this.get = function(id) {
+        return self.list.$promise.then(function(list) {
+            return _.find(list, function(rw) {
+                return rw.id == id;
             });
-            deferred.resolve(feature);
         });
-        return deferred.promise;
     };
-    this.update = function (feature, callback) {
-        feature.$update(function (data) {
+    this.update = function(feature) {
+        return feature.$update(function(data) {
             var index = self.list.indexOf(_.findWhere(self.list, { id: feature.id }));
             if (index != -1) {
                 self.list.splice(index, 1, data);
             }
         });
     };
-    this['delete'] = function (feature) {
-        feature.$delete(function () {
-            var index = self.list.indexOf(feature);
-            if (index != -1) {
-                self.list.splice(index, 1);
-            }
+    this['delete'] = function(feature) {
+        return feature.$delete(function() {
+            _.remove(self.list, { id: feature.id });
         });
     };
 }]);

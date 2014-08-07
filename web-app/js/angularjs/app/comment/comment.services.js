@@ -21,53 +21,45 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory( 'Comment', [ 'Resource', function( $resource ) {
-    return $resource( 'comment/:type/:typeId/:id',
-        { id: '@id', typeId:'@typeId', type:'@type' } ,
-        {
-            query: {method:'GET', isArray:true, cache: true}
-        });
+services.factory('Comment', [ 'Resource', function($resource) {
+    return $resource('comment/:type/:typeId/:id', { typeId: '@typeId', type: '@type' });
 }]);
 
-services.service("CommentService", ['Comment', '$q', function(Comment, $q) {
-    this.save = function(comment, commentable){
+services.service("CommentService", ['Comment', function(Comment) {
+    this.save = function(comment, commentable) {
         comment.class = 'comment';
         comment.type = commentable.class.toLowerCase();
         comment.typeId = commentable.id;
-        comment.commentable = {id:commentable.id};
-        Comment.save(comment, function(comment){
+        comment.commentable = {id: commentable.id};
+        return Comment.save(comment, function(comment) {
             commentable.comments.push(comment);
-            commentable.comments_count += 1;
-        });
+            commentable.comments_count = commentable.comments.length;
+        }).$promise;
     };
-    this['delete'] = function(comment, commentable){
+    this['delete'] = function(comment, commentable) {
         comment.type = commentable.class.toLowerCase();
         comment.typeId = commentable.id;
-        comment.commentable = {id:commentable.id};
-        comment.$delete(function(){
-            if (commentable){
-                var index = commentable.comments.indexOf(comment);
-                if (index != -1){
-                    commentable.comments.splice(index, 1);
-                    commentable.comments_count -= 1;
-                }
-            }
+        comment.commentable = {id: commentable.id};
+        return comment.$delete(function() {
+            _.remove(commentable.comments, { id: comment.id });
+            commentable.comments_count = commentable.comments.length;
         });
     };
-    this.update = function(comment, commentable){
+    this.update = function(comment, commentable) {
         comment.type = commentable.class.toLowerCase();
         comment.typeId = commentable.id;
-        comment.commentable = {id:commentable.id};
-        comment.$update(function(data){
+        comment.commentable = {id: commentable.id};
+        return comment.$update(function(data) {
             var index = commentable.comments.indexOf(_.findWhere(commentable.comments, { id: comment.id }));
             if (index != -1) {
                 commentable.comments.splice(index, 1, data);
             }
         });
     };
-    this.list = function(commentable){
-        Comment.query({ typeId: commentable.id, type:commentable.class.toLowerCase() }, function(data){
+    this.list = function(commentable) {
+        return Comment.query({ typeId: commentable.id, type: commentable.class.toLowerCase() }, function(data) {
             commentable.comments = data;
-        });
+            commentable.comments_count = commentable.comments.length;
+        }).$promise;
     }
 }]);

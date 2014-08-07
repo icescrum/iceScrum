@@ -19,25 +19,27 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div id="backlog-layout-window-${controllerName}"
      ui-selectable="selectableOptions"
      ui-selectable-list="stories"
      ng-class="view.asList ? 'list-group' : 'grid-group'"
      class="postits">
-    <div ng-class="{ 'ui-selected':$state.params.id == story.id }"
+    <div ng-class="{ 'ui-selected': isSelected(story) }"
          data-id="{{ story.id }}"
          ng-repeat="story in stories | filter: $state.current.data.filterListParams | orderBy:orderBy.current.id:orderBy.reverse"
+         ng-controller="storyCtrl"
          class="postit-container">
         <div style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
              class="postit story {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }}">
             <div class="head">
                 <a href
                    class="follow"
-                   tooltip="{{ story.follow.followers }}"
+                   tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                    tooltip-append-to-body="true"
                    ng-click="follow(story)"
-                   ng-switch on="story.follow.status"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
+                   ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
                 <span class="id">{{ story.id }}</span>
                 <span class="estimation">{{ story.effort ? story.effort + ' pt' : '' }}</span>
             </div>
@@ -50,9 +52,10 @@
             </div>
             <div class="actions">
                 <span class="action">
-                    <a href="#" tooltip="${message(code: 'todo.is.story.actions')}" tooltip-append-to-body="true">
+                    <a data-toggle="dropdown" data-container="body" tooltip="${message(code: 'todo.is.story.actions')}" tooltip-append-to-body="true">
                         <i class="fa fa-cog"></i>
                     </a>
+                    <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
                 </span>
                 <span class="action" ng-class="{'active':story.attachments_count}">
                     <a href="#/sandbox/{{ story.id }}/attachments"
@@ -65,7 +68,7 @@
                     <a href="#/sandbox/{{ story.id }}/comments"
                        tooltip="{{ story.comments_count }} ${message(code:'todo.is.story.comments')}"
                        tooltip-append-to-body="true"
-                       ng-switch on="{{ selected.comments_count }}">
+                       ng-switch="{{ story.comments_count }}">
                         <i class="fa fa-comment-o" ng-switch-default></i>
                         <i class="fa fa-comment" ng-switch-when="true"></i>
                         <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
@@ -83,7 +86,7 @@
                     <a href="#/sandbox/{{ story.id }}/tests"
                        tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                        tooltip-append-to-body="true"
-                       ng-switch on="{{ story.acceptanceTests_count }}">
+                       ng-switch="{{ story.acceptanceTests_count }}">
                         <i class="fa fa-check-square-o" ng-switch-when="0"></i>
                         <i class="fa fa-check-square" ng-switch-default></i>
                         <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
@@ -100,5 +103,5 @@
     </div>
 </div>
 <script>
-    angular.element(document).injector().get('StoryService').add(${stories as JSON});
+    angular.element(document).injector().get('StoryService').initList(${stories as JSON});
 </script>

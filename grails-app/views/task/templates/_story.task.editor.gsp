@@ -18,34 +18,44 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
 <script type="text/ng-template" id="story.task.new.html">
-<table class="table" ng-init="showTaskForm = false">
+<table class="table">
     <tbody>
     <tr>
-        <td>
-            <button class="btn btn-sm pull-right"
-                    ng-class="{'btn-danger':showTaskForm, 'btn-primary':!showTaskForm}"
-                    ng-click="$parent.showTaskForm = !$parent.showTaskForm"
+        <td ng-switch="showForm">
+            <button ng-switch-default
+                    class="btn btn-sm btn-primary pull-right"
+                    type="button"
+                    ng-click="setShowForm(true)"
                     tooltip="${message(code:'todo.is.ui.task.new')}"
                     tooltip-placement="left"
                     tooltip-append-to-body="body">
-                <span class="fa" ng-class="{'fa-times':showTaskForm, 'fa-plus':!showTaskForm}"></span>
+                <span class="fa fa-plus"></span>
+            </button>
+            <button ng-switch-when="true"
+                    class="btn btn-sm btn-default pull-right"
+                    type="button"
+                    ng-click="setShowForm(false)"
+                    tooltip="${message(code:'todo.is.ui.hide')}"
+                    tooltip-placement="left"
+                    tooltip-append-to-body="body">
+                <span class="fa fa-minus"></span>
             </button>
         </td>
     </tr>
-    <tr ng-show="showTaskForm">
+    <tr ng-show="showForm">
         <td>
-            <form ng-controller="taskCtrl"
-                  show-validation
+            <form show-validation
                   ng-submit="save(task, selected)">
                 <div class="clearfix no-padding">
                     <div class="form-group col-sm-9">
                         <label>${message(code:'is.backlogelement.name')}</label>
                         <input required
                                type="text"
-                               focus-me="{{ showTaskForm }}"
+                               focus-me="{{ showForm }}"
                                ng-model="task.name"
                                class="form-control">
                     </div>
@@ -62,12 +72,21 @@
                     <label>${message(code:'is.backlogelement.description')}</label>
                     <textarea ng-model="task.description" style="min-height:50px;" class="form-control"></textarea>
                 </div>
-                <button class="btn btn-primary pull-right"
-                        tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
-                        tooltip-append-to-body="true"
-                        type="submit">
-                    ${message(code:'todo.is.ui.save')}
-                </button>
+                <div class="btn-toolbar pull-right">
+                    <button class="btn btn-primary pull-right"
+                            tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
+                            tooltip-append-to-body="true"
+                            type="submit">
+                        ${message(code:'todo.is.ui.save')}
+                    </button>
+                    <button class="btn confirmation btn-default pull-right"
+                            tooltip-append-to-body="true"
+                            tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
+                            type="button"
+                            ng-click="cancel()">
+                        ${message(code:'is.button.cancel')}
+                    </button>
+                </div>
             </form>
         </td>
     </tr>
