@@ -42,8 +42,7 @@
                                name="product.pkey"
                                type="text"
                                class="form-control"
-                               ng-model="product.pkey"
-                               ng-readonly="readOnly()">
+                               ng-model="product.pkey">
                     </div>
                 </div>
                 <div class="clearfix no-padding">

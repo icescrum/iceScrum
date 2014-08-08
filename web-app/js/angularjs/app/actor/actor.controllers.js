@@ -69,7 +69,7 @@ controllers.controller('actorEditCtrl', ['$scope', 'Session', 'FormService', fun
     $scope.actor = angular.copy($scope.selected);
     $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
     $scope.readOnly = function() {
-        return !Session.roles.productOwner;
+        return !Session.po();
     };
 }]);
 

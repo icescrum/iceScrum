@@ -22,33 +22,33 @@
 --}%
 
 <script type="text/ng-template" id="story.menu.html">
-<li ng-if="acceptable(story)">
+<li ng-if="authorized('accept', story)">
     <a ng-click="accept(story)">
         <g:message code='is.ui.sandbox.menu.acceptAsStory'/>
     </a>
 </li>
-<li ng-if="acceptable(story)">
+<li ng-if="authorized('accept', story)">
     <a ng-click="acceptAs(story, 'Feature')">
         <g:message code='is.ui.sandbox.menu.acceptAsFeature'/>
     </a>
 </li>
-<li ng-if="acceptable(story)">
+<li ng-if="authorized('accept', story)">
     <a ng-click="acceptAs(story, 'Task')">
         <g:message code='is.ui.sandbox.menu.acceptAsUrgentTask'/>
     </a>
 </li>
 <li>
-    <a ng-click="copy(story)">
+    <a ng-if="authorized('create')" ng-click="copy(story)">
         <g:message code='is.ui.releasePlan.menu.story.clone'/>
     </a>
 </li>
 <li>
-    <a ng-if="!readOnly(story)" ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [story])">
+    <a ng-if="authorized('delete', story)" ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [story])">
         <g:message code='is.ui.sandbox.menu.delete'/>
     </a>
 </li>
 <li>
-    <a ng-click="showNewTemplateModal(story)">
+    <a ng-if="authorized('create')" ng-click="showNewTemplateModal(story)">
         ${message(code: 'todo.is.ui.story.template.new')}
     </a>
 </li>

@@ -27,6 +27,7 @@ var controllers = angular.module('controllers', []);
 controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($scope, $modal, Session) {
     $scope.currentUser = Session.user;
     $scope.roles = Session.roles;
+    // TODO remove, user role change for dev only
     $scope.changeRole = function(newRole) {
         Session.changeRole(newRole);
     };

@@ -97,6 +97,7 @@
                            type="text"
                            class="form-control"
                            ng-change="findDuplicates(story.name)"
+                           ng-readonly="!authorized('create')"
                            placeholder="${message(code: 'is.ui.story.noname')}"/>
                            <div ng-if="messageDuplicate"
                                 class="duplicate bg-warning"
@@ -104,15 +105,16 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="story.template">${message(code: 'todo.is.ui.story.template.choose')}</label>
-                    <div ng-class="{'input-group':templateEditable()}">
+                    <div ng-class="{'input-group': authorized('updateTemplate')}">
                         <input type="hidden"
                                name="story.template"
                                class="form-control"
                                ng-model="story.template"
+                               ng-readonly="!authorized('create')"
                                ng-change="templateSelected()"
                                data-placeholder="${message(code:'todo.is.ui.story.template.placeholder')}"
                                ui-select2="selectTemplateOptions"/>
-                        <span class="input-group-btn" ng-show="templateEditable()">
+                        <span class="input-group-btn" ng-show="authorized('updateTemplate')">
                             <button type="button"
                                     tabindex="-1"
                                     tooltip="${message(code:'todo.is.ui.story.template.edit')}"
@@ -126,7 +128,7 @@
                     </div>
                 </div>
             </div>
-            <div class="btn-toolbar pull-right">
+            <div ng-if="authorized('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                         tooltip-append-to-body="true"

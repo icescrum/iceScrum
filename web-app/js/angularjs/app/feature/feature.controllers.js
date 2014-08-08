@@ -69,7 +69,7 @@ controllers.controller('featureEditCtrl', ['$scope', 'Session', 'FormService', f
     $scope.feature = angular.copy($scope.selected);
     $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
     $scope.readOnly = function() {
-        return !Session.roles.productOwner;
+        return !Session.po();
     };
 }]);
 

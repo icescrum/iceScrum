@@ -105,7 +105,7 @@
                     <div ng-class="{'input-group':storyPreview.feature.id, 'select2-border':storyPreview.feature.id}">
                         <input type="hidden"
                                class="form-control"
-                               ng-readonly="readOnly()"
+                               ng-readonly="!authorized('updateMultiple', topStory)"
                                ng-model="storyPreview.feature"
                                ui-select2="selectFeatureOptions"
                                data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
@@ -122,13 +122,13 @@
                     <label for="story.type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
                             ng-model="storyPreview.type"
-                            ng-readonly="readOnly()"
+                            ng-readonly="!authorized('updateMultiple', topStory)"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
                     </select>
                 </div>
             </div>
-            <div ng-if="!readOnly()"
+            <div ng-if="authorized('updateMultiple', topStory)"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
@@ -145,9 +145,8 @@
                 </button>
             </div>
             <hr/>
-            <div ng-if="!readOnly()"
-                 class="btn-toolbar">
-                 <div ng-if="acceptable(topStory)"
+            <div class="btn-toolbar">
+                 <div ng-if="authorized('accept', topStory)"
                       class="btn-group">
                     <button type="button"
                             class="btn btn-default dropdown-toggle"
@@ -172,7 +171,8 @@
                         </li>
                     </ul>
                  </div>
-                <div class="btn-group">
+                <div ng-if="authorized('updateMultiple', topStory)"
+                     class="btn-group">
                     <button type="button"
                             class="btn btn-default"
                             ng-click="copyMultiple()">
@@ -184,7 +184,8 @@
                         <g:message code='is.ui.sandbox.menu.delete'/>
                     </button>
                 </div>
-                <div class="btn-group">
+                <div ng-if="authorized('follow')"
+                     class="btn-group">
                     <button type="button"
                             ng-switch="allFollowed"
                             class="btn btn-default"

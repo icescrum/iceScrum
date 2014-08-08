@@ -62,6 +62,15 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     this.poOrSm = function() {
         return self.roles.productOwner || self.roles.scrumMaster;
     };
+    this.po = function() {
+        return self.roles.productOwner;
+    };
+    this.sm = function() {
+        return self.roles.scrumMaster;
+    };
+    this.authenticated = function() {
+        return !_.isEmpty(self.user);
+    };
     this.creator = function(item) {
         return self.user.id == item.creator.id;
     };

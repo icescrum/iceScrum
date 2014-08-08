@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', '$state', 'Session', 'StoryService', function($scope, $state, Session, StoryService) {
+controllers.controller('storyCtrl', ['$scope', 'StoryService', function($scope, StoryService) {
     $scope.accept = function(story) {
         StoryService.accept(story).then($scope.goToNewStory);
     };
@@ -35,26 +35,23 @@ controllers.controller('storyCtrl', ['$scope', '$state', 'Session', 'StoryServic
     $scope['delete'] = function(story) {
         StoryService.delete(story).then($scope.goToNewStory);
     };
-    $scope.acceptable = function(story) {
-        return Session.roles.productOwner && story.state == 1; // TODO use constants, not hardcoded values;
-    };
-    $scope.readOnly = function(story) {
-        return !(Session.poOrSm() || Session.creator(story));
+    $scope.authorized = function(action, story) {
+        return StoryService.authorized(action, story);
     };
     $scope.selectFeatureOptions = {
-        formatResult: function(object, container){
-            container.css('border-left','4px solid '+object.color);
+        formatResult: function(object, container) {
+            container.css('border-left', '4px solid ' + object.color);
             return object.text ? object.text : object.name;
         },
-        formatSelection: function(object, container){
-            container.css('border-color',object.color);
+        formatSelection: function(object, container) {
+            container.css('border-color', object.color);
             return object.text ? object.text : object.name;
         },
-        allowClear:true,
-        createChoiceOnEmpty:false,
+        allowClear: true,
+        createChoiceOnEmpty: false,
         //important to preserve logic id='' server side
-        resultAsEmptyId:true,
-        initSelection : function (element, callback) {
+        resultAsEmptyId: true,
+        initSelection: function(element, callback) {
             callback(JSON.parse(element.val()));
         },
         ajax: {
@@ -70,7 +67,7 @@ controllers.controller('storyCtrl', ['$scope', '$state', 'Session', 'StoryServic
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller','$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'TaskService', 'CommentService', 'AcceptanceTestService', 'FormService',
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'TaskService', 'CommentService', 'AcceptanceTestService', 'FormService',
     function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, TaskService, CommentService, AcceptanceTestService, FormService) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         $scope.story = {};
@@ -167,7 +164,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller','$state', '$
         };
     }]);
 
-controllers.controller('storyEditCtrl', ['$scope', '$stateParams', 'Session', 'FormService', 'StoryService', function($scope, $stateParams, Session, FormService, StoryService) {
+controllers.controller('storyEditCtrl', ['$scope', '$stateParams', 'FormService', 'StoryService', function($scope, $stateParams, FormService, StoryService) {
     $scope.story = {}; // We cannnot use the story inherited from parent scope because it may not be retrieved yet (promise)
     $scope.selectDependsOnOptions = {
         formatSelection: function(object) {
@@ -219,7 +216,7 @@ controllers.controller('storyEditCtrl', ['$scope', '$stateParams', 'Session', 'F
     $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
 }]);
 
-controllers.controller('storyMultipleCtrl', ['$scope', '$state', '$controller', 'StoryService', 'listId', 'Session', function($scope, $state, $controller, StoryService, listId, Session) {
+controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
     $scope.topStory = {};
     $scope.storyPreview = {};
@@ -233,7 +230,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$state', '$controller', 
                 type: $scope.topStory.type
             };
             $scope.stories = stories;
-            $scope.allFollowed =  _.every(stories, 'followed');
+            $scope.allFollowed = _.every(stories, 'followed');
         });
     }
     refreshStories();
@@ -257,99 +254,91 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$state', '$controller', 
     $scope.acceptAsMultiple = function(target) {
         StoryService.acceptAsMultiple(listId, target).then($scope.goToNewStory);
     };
-    $scope.acceptable = function(story) {
-        return Session.roles.productOwner && story.state == 1; // TODO use constants, not hardcoded values;
-    };
-    $scope.readOnly = function() {
-        return !Session.poOrSm()
-    }
 }]);
 
-controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '$timeout', 'StoryService', 'hotkeys', 'Session', function($scope, $state, $http, $modal, $timeout, StoryService, hotkeys, Session) {
-    function initStory() {
-        var defaultStory = {};
-        if ($scope.story && $scope.story.template) {
-            defaultStory.template = $scope.story.template
-        }
-        return defaultStory;
-    }
-
-    hotkeys
-        .bindTo($scope) // to remove the hotkey when the scope is destroyed
-        .add({
-            combo: 'esc',
-            allowIn: ['INPUT'],
-            callback: function() {
-                $scope.story = initStory();
+controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '$timeout', '$controller', 'StoryService', 'hotkeys',
+    function($scope, $state, $http, $modal, $timeout, $controller, StoryService, hotkeys) {
+        $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
+        function initStory() {
+            var defaultStory = {};
+            if ($scope.story && $scope.story.template) {
+                defaultStory.template = $scope.story.template
             }
-        });
-    $scope.story = initStory();
-    $scope.templateSelected = function() {
-        if ($scope.story.template) {
-            $http.get('story/templatePreview?template=' + $scope.story.template.id).success(function(storyPreview) {
-                $scope.storyPreview = storyPreview;
+            return defaultStory;
+        }
+        hotkeys
+            .bindTo($scope) // to remove the hotkey when the scope is destroyed
+            .add({
+                combo: 'esc',
+                allowIn: ['INPUT'],
+                callback: function() {
+                    $scope.story = initStory();
+                }
             });
-        } else {
-            $scope.storyPreview = {}
-        }
-    };
-    $scope.templateEditable = function() {
-        return Session.roles.productOwner;
-    };
-    $scope.selectTemplateOptions = {
-        allowClear: true,
-        ajax: {
-            url: 'story/templateEntries',
-            cache: 'true',
-            data: function(term) {
-                return { term: term };
-            },
-            results: function(data) {
-                return { results: data };
-            }
-        }
-    };
-    $scope.showEditTemplateModal = function(story) {
-        $modal.open({
-            templateUrl: 'story.template.edit.html',
-            size: 'sm',
-            controller: function($scope, $http) {
-                $scope.templateEntries = [];
-                $http.get('story/templateEntries').success(function(templateEntries) {
-                    $scope.templateEntries = templateEntries;
+        $scope.story = initStory();
+        $scope.templateSelected = function() {
+            if ($scope.story.template) {
+                $http.get('story/templatePreview?template=' + $scope.story.template.id).success(function(storyPreview) {
+                    $scope.storyPreview = storyPreview;
                 });
-                $scope.deleteTemplate = function(templateEntry) {
-                    StoryService.deleteTemplate(templateEntry.id).then(function() {
-                        _.remove($scope.templateEntries, { id: templateEntry.id });
-                    });
-                }
-            }
-        });
-    };
-    $scope.save = function(story, andContinue) {
-        StoryService.save(story).then(function(story) {
-            if (andContinue) {
-                $scope.story = initStory();
             } else {
-                $state.go('^.details', { id: story.id });
+                $scope.storyPreview = {}
             }
-        });
-    };
-    $scope.findDuplicates = function(term) {
-        if (term == null || term.length <= 5) {
-            $scope.messageDuplicate = '';
-        } else if (term.length >= 5){
-            var trimmedTerm = term.trim();
-            //TODO maybe local search ?
-            $timeout.cancel($scope.timerDuplicate);
-            $scope.timerDuplicate = $timeout(function() {
-                if ($scope.lastSearchedTerm != trimmedTerm) {
-                    $http.get('story/findDuplicate?term=' + trimmedTerm).success(function(messageDuplicate){
-                        $scope.lastSearchedTerm = trimmedTerm;
-                        $scope.messageDuplicate = messageDuplicate ? messageDuplicate : '';
-                    });
+        };
+        $scope.selectTemplateOptions = {
+            allowClear: true,
+            ajax: {
+                url: 'story/templateEntries',
+                cache: 'true',
+                data: function(term) {
+                    return { term: term };
+                },
+                results: function(data) {
+                    return { results: data };
                 }
-            }, 500);
-        }
-    };
-}]);
+            }
+        };
+        $scope.showEditTemplateModal = function(story) {
+            $modal.open({
+                templateUrl: 'story.template.edit.html',
+                size: 'sm',
+                controller: function($scope, $http) {
+                    $scope.templateEntries = [];
+                    $http.get('story/templateEntries').success(function(templateEntries) {
+                        $scope.templateEntries = templateEntries;
+                    });
+                    $scope.deleteTemplate = function(templateEntry) {
+                        StoryService.deleteTemplate(templateEntry.id).then(function() {
+                            _.remove($scope.templateEntries, { id: templateEntry.id });
+                        });
+                    }
+                }
+            });
+        };
+        $scope.save = function(story, andContinue) {
+            StoryService.save(story).then(function(story) {
+                if (andContinue) {
+                    $scope.story = initStory();
+                } else {
+                    $state.go('^.details', { id: story.id });
+                }
+            });
+        };
+        $scope.findDuplicates = function(term) {
+            if (term == null || term.length <= 5) {
+                $scope.messageDuplicate = '';
+            } else if (term.length >= 5) {
+                var trimmedTerm = term.trim();
+                //TODO maybe local search ?
+                $timeout.cancel($scope.timerDuplicate);
+                $scope.timerDuplicate = $timeout(function() {
+                    if ($scope.lastSearchedTerm != trimmedTerm) {
+                        $http.get('story/findDuplicate?term=' + trimmedTerm).success(function(messageDuplicate) {
+                            $scope.lastSearchedTerm = trimmedTerm;
+                            $scope.messageDuplicate = messageDuplicate ? messageDuplicate : '';
+                        });
+                    }
+                }, 500);
+            }
+        };
+    }]);

@@ -29,7 +29,7 @@ services.factory('Story', ['Resource', function($resource) {
         });
 }]);
 
-services.service("StoryService", ['$q', '$http', 'Story', function($q, $http, Story) {
+services.service("StoryService", ['$q', '$http', 'Story', 'Session', function($q, $http, Story, Session) {
     this.list = [];
     this.isListResolved = $q.defer();
 
@@ -156,4 +156,29 @@ services.service("StoryService", ['$q', '$http', 'Story', function($q, $http, St
             });
         }).$promise;
     };
+    this.authorized = function(action, story) {
+        switch (action) {
+            case 'update':
+                return (Session.po() && story.state >= 1 && story.state < 7) || (Session.creator(story) && story.state ==  1);  // TODO use constants, not hardcoded values;
+                break;
+            case 'delete':
+                return (Session.po() && story.state < 4) || (Session.creator(story) && story.state ==  1);  // TODO use constants, not hardcoded values;
+                break;
+            case 'updateMultiple':
+                return Session.po() && story.state >= 1 && story.state < 7; // TODO use constants, not hardcoded values;
+                break;
+            case 'create':
+            case 'follow':
+                return Session.authenticated();
+                break;
+            case 'updateTemplate':
+                return Session.po();
+                break;
+            case 'accept':
+                return Session.po() && story.state == 1; // TODO use constants, not hardcoded values;
+                break;
+            default:
+                return false;
+        }
+    }
 }]);
