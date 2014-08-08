@@ -25,7 +25,7 @@ services.factory('AcceptanceTest', [ 'Resource', function($resource) {
     return $resource('acceptanceTest/:type/:storyId/:id');
 }]);
 
-services.service("AcceptanceTestService", ['AcceptanceTest', function(AcceptanceTest) {
+services.service("AcceptanceTestService", ['AcceptanceTest', 'StoryStatesByName', function(AcceptanceTest, StoryStatesByName) {
     this.save = function(acceptanceTest, story) {
         acceptanceTest.class = 'acceptanceTest';
         acceptanceTest.parentStory = { id: story.id };
@@ -55,10 +55,10 @@ services.service("AcceptanceTestService", ['AcceptanceTest', function(Acceptance
         }).$promise;
     };
     this.readOnly = function(story) {
-        return story.state == 7; // TODO use constants, not hardcoded values
+        return story.state == StoryStatesByName.DONE;
     };
     this.stateReadOnly = function(story) {
-        return this.readOnly(story) || (story.state < 4); // TODO use constants, not hardcoded values
+        return this.readOnly(story) || (story.state < StoryStatesByName.PLANNED);
     };
     this.initAcceptanceTest = function(existingAcceptanceTest) {
         return existingAcceptanceTest ? angular.copy(existingAcceptanceTest) : { state: 1 }; // TODO use constants, not hardcoded values

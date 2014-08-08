@@ -29,7 +29,7 @@ services.factory('Story', ['Resource', function($resource) {
         });
 }]);
 
-services.service("StoryService", ['$q', '$http', 'Story', 'Session', function($q, $http, Story, Session) {
+services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryStatesByName', function($q, $http, Story, Session, StoryStatesByName) {
     this.list = [];
     this.isListResolved = $q.defer();
 
@@ -98,7 +98,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', function($q
         return $http.post('story/deleteTemplate?template.id=' + templateId);
     };
     this.accept = function(story) {
-        story.state = 2; // TODO use constants, not hardcoded values
+        story.state = StoryStatesByName.ACCEPTED;
         return this.update(story);
     };
     this.acceptAs = function(story, target) {
@@ -136,7 +136,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', function($q
         }).$promise;
     };
     this.acceptMultiple = function(ids) {
-        var fields = { state : 2 }; // TODO use constants, not hardcoded values
+        var fields = { state : StoryStatesByName.ACCEPTED };
         return this.updateMultiple(ids, fields);
     };
     this.acceptAsMultiple = function(ids, target) {
@@ -159,13 +159,15 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', function($q
     this.authorized = function(action, story) {
         switch (action) {
             case 'update':
-                return (Session.po() && story.state >= 1 && story.state < 7) || (Session.creator(story) && story.state ==  1);  // TODO use constants, not hardcoded values;
+                return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
+                       (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
                 break;
             case 'delete':
-                return (Session.po() && story.state < 4) || (Session.creator(story) && story.state ==  1);  // TODO use constants, not hardcoded values;
+                return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
+                       (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
                 break;
             case 'updateMultiple':
-                return Session.po() && story.state >= 1 && story.state < 7; // TODO use constants, not hardcoded values;
+                return Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
                 break;
             case 'create':
             case 'follow':
@@ -175,7 +177,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', function($q
                 return Session.po();
                 break;
             case 'accept':
-                return Session.po() && story.state == 1; // TODO use constants, not hardcoded values;
+                return Session.po() && story.state == StoryStatesByName.SUGGESTED;
                 break;
             default:
                 return false;

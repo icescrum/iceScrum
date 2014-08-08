@@ -297,6 +297,15 @@ isApp.config(['$stateProvider', '$httpProvider',
         7: {"value": "Done", "code": "done"},
         '-1': {"value": "In the Icebox", "code": "icebox"}
     })
+    .constant('StoryStatesByName', {
+        "SUGGESTED": 1,
+        "ACCEPTED": 2,
+        "ESTIMATED": 3,
+        "PLANNED": 4,
+        "IN_PROGRESS": 5,
+        "DONE": 6,
+        "ICEBOX": -1
+    })
     .constant('FeatureStates', {
         0: {"value": "todo.To do", "code": "wait"},
         1: {"value": "todo.In progress", "code": "inprogress"},

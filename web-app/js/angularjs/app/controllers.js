@@ -69,7 +69,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
     };
 }]);
 
-controllers.controller('sandboxCtrl', ['$scope', '$state', 'stories', function ($scope, $state, stories) {
+controllers.controller('sandboxCtrl', ['$scope', '$state', 'StoryStatesByName', 'stories', function ($scope, $state, StoryStatesByName, stories) {
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -85,7 +85,7 @@ controllers.controller('sandboxCtrl', ['$scope', '$state', 'stories', function (
     $scope.goToNewStory = function() {
         $state.go('sandbox.new');
     };
-    $scope.defaultStoryState = 1; // TODO use constants, not hardcoded values
+    $scope.defaultStoryState = StoryStatesByName.SUGGESTED;
     $scope.selectableOptions = {
         filter:"> .postit-container",
         cancel: "a",
