@@ -56,13 +56,6 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             });
         });
     };
-    this.getMultiple = function(ids) {
-        return self.isListResolved.promise.then(function() {
-            return _.filter(self.list, function(story) {
-                return _.contains(ids, story.id.toString());
-            });
-        });
-    };
     this.update = function(story) {
         return story.$update(function(updatedStory) {
             var index = self.list.indexOf(_.findWhere(self.list, { id: story.id }));
@@ -110,6 +103,13 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return Story.update({ id: story.id, action: 'copy'}, {}, function(story) {
             self.list.push(story);
         }).$promise;
+    };
+    this.getMultiple = function(ids) {
+        return self.isListResolved.promise.then(function() {
+            return _.filter(self.list, function(story) {
+                return _.contains(ids, story.id.toString());
+            });
+        });
     };
     this.updateMultiple = function(ids, updatedFields) {
         return Story.updateArray({ id: ids }, { story: updatedFields }, function(stories) {

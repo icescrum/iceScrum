@@ -138,7 +138,6 @@ isApp.config(['$stateProvider', '$httpProvider',
                         })
 
                 .state('actor', {
-                    url: '/actor',
                     templateUrl: 'openWindow/actor',
                     controller: 'actorsCtrl',
                     resolve:{
@@ -147,8 +146,13 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
+                    .state('actor.new', {
+                        url: '/actor',
+                        templateUrl: 'actor.new.html',
+                        controller: 'actorNewCtrl'
+                    })
                     .state('actor.multiple', {
-                        url: "/{listId:[0-9]+[\,][0-9]+}",
+                        url: "/actor/{listId:[0-9]+(?:[\,][0-9]+)+}",
                         templateUrl: 'actor.multiple.html',
                         controller: 'actorMultipleCtrl',
                         resolve:{
@@ -158,9 +162,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('actor.details', {
-                        url: "/{id:[0-9]+}",
+                        url: "/actor/{id:[0-9]+}",
                         templateUrl: 'actor.details.html',
-                        controller: 'actorCtrl',
+                        controller: 'actorDetailsCtrl',
                         resolve:{
                             selected:['ActorService', '$stateParams', function(ActorService, $stateParams){
                                 return ActorService.get($stateParams.id);
@@ -172,7 +176,6 @@ isApp.config(['$stateProvider', '$httpProvider',
                         })
 
                 .state('feature', {
-                    url: '/feature',
                     templateUrl: 'openWindow/feature',
                     controller: 'featuresCtrl',
                     resolve:{
@@ -181,8 +184,13 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
+                    .state('feature.new', {
+                        url: '/feature',
+                        templateUrl: 'feature.new.html',
+                        controller: 'featureNewCtrl'
+                    })
                     .state('feature.multiple', {
-                        url: "/{listId:[0-9]+[\,][0-9]+}",
+                        url: "/feature/{listId:[0-9]+(?:[\,][0-9]+)+}",
                         templateUrl: 'feature.multiple.html',
                         controller: 'featureMultipleCtrl',
                         resolve:{
@@ -192,9 +200,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('feature.details', {
-                        url: "/{id:[0-9]+}",
+                        url: "/feature/{id:[0-9]+}",
                         templateUrl: 'feature.details.html',
-                        controller: 'featureCtrl',
+                        controller: 'featureDetailsCtrl',
                         resolve:{
                             selected:['FeatureService', '$stateParams', function(FeatureService, $stateParams){
                                 return FeatureService.get($stateParams.id);

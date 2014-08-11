@@ -21,59 +21,85 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('actorCtrl', ['$scope', '$state', '$timeout', 'selected', 'ActorService', 'StoryService', function($scope, $state, $timeout, selected, ActorService, StoryService) {
-    $scope.selected = selected;
-    $scope.tabsType = 'tabs nav-tabs-google';
-    if ($state.params.tabId) {
-        $scope.tabSelected = {};
-        $scope.tabSelected[$state.params.tabId] = true;
-    } else {
-        $scope.tabSelected = {'attachments': true};
-    }
-    $scope.$watch('$state.params', function() {
-        if ($state.params.tabId) {
-            $scope.tabSelected[$state.params.tabId] = true;
-            $timeout((function() {
-                var container = angular.element('#right');
-                var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();
-                container.animate({ scrollTop: pos }, 1000);
-            }));
-        }
-    });
-    $scope.setTabSelected = function(tab) {
-        if ($state.params.tabId) {
-            $state.go('.', {tabId: tab});
-        } else {
-            $state.go('.tab', {tabId: tab});
-        }
+
+controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', function($scope, $state, ActorService) {
+    $scope.authorized = function(action) {
+        return ActorService.authorized(action);
     };
     $scope.update = function(actor) {
         ActorService.update(actor);
     };
     $scope['delete'] = function(actor) {
-        ActorService.delete(actor).then(function() {
-            $state.go('^');
+        ActorService.delete(actor).then($scope.goToNewActor);
+    };
+}]);
+
+controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$controller', 'selected', 'ActorService', 'StoryService', 'FormService',
+    function($scope, $state, $timeout, $controller, selected, ActorService, StoryService, FormService) {
+        $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
+        $scope.actor = selected;
+        $scope.tabsType = 'tabs nav-tabs-google';
+        if ($state.params.tabId) {
+            $scope.tabSelected = {};
+            $scope.tabSelected[$state.params.tabId] = true;
+        } else {
+            $scope.tabSelected = {'attachments': true};
+        }
+        $scope.$watch('$state.params', function() {
+            if ($state.params.tabId) {
+                $scope.tabSelected[$state.params.tabId] = true;
+                $timeout((function() {
+                    var container = angular.element('#right');
+                    var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();
+                    container.animate({ scrollTop: pos }, 1000);
+                }));
+            }
+        });
+        $scope.setTabSelected = function(tab) {
+            if ($state.params.tabId) {
+                $state.go('.', {tabId: tab});
+            } else {
+                $state.go('.tab', {tabId: tab});
+            }
+        };
+        $scope.stories = function(actor) {
+            actor.stories = _.where(StoryService.list, { actor: { id: actor.id }});
+        };
+        // header
+        $scope.previous = FormService.previous(ActorService.list, $scope.actor);
+        $scope.next = FormService.next(ActorService.list, $scope.actor);
+    }]);
+
+controllers.controller('actorEditCtrl', ['$scope', 'FormService', function($scope, FormService) {
+    $scope.actor = angular.copy($scope.actor);
+    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
+}]);
+
+controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'ActorService', function($scope, $state, $controller, ActorService) {
+    $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
+    $scope.save = function(actor, andContinue) {
+        ActorService.save(actor).then(function(actor) {
+            if (andContinue) {
+                $scope.actor = {};
+            } else {
+                $state.go('^.details', { id: actor.id });
+            }
         });
     };
-    $scope.stories = function(actor) {
-        actor.stories = _.where(StoryService.list, { actor: { id: actor.id }});
-    };
 }]);
 
-controllers.controller('actorHeaderCtrl', ['$scope', 'ActorService', 'FormService', function($scope, ActorService, FormService) {
-    $scope.previous = FormService.previous(ActorService.list, $scope.selected);
-    $scope.next = FormService.next(ActorService.list, $scope.selected);
-}]);
-
-controllers.controller('actorEditCtrl', ['$scope', 'Session', 'FormService', function($scope, Session, FormService) {
-    $scope.actor = angular.copy($scope.selected);
-    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-    $scope.readOnly = function() {
-        return !Session.po();
-    };
-}]);
-
-controllers.controller('actorMultipleCtrl', ['$scope', '$state', 'listId', function($scope, $state, listId) {
+controllers.controller('actorMultipleCtrl', ['$scope', '$controller', 'listId', 'ActorService', function($scope, $controller, listId, ActorService) {
+    $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
     $scope.ids = listId;
+    $scope.topActor = {};
+    ActorService.getMultiple(listId).then(function(actors) {
+        $scope.topActor = _.first(actors);
+    });
+    $scope.deleteMultiple = function() {
+        ActorService.deleteMultiple(listId).then($scope.goToNewActor);
+    };
+    $scope.updateMultiple = function(updatedFields) {
+        ActorService.updateMultiple(listId, updatedFields);
+    };
 }]);
 

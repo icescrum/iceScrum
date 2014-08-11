@@ -25,7 +25,7 @@ services.factory('Feature', [ 'Resource', function($resource) {
     return $resource('feature/:id/:action');
 }]);
 
-services.service("FeatureService", ['Feature', function(Feature) {
+services.service("FeatureService", ['Feature', 'Session', function(Feature, Session) {
     var self = this;
     this.list = Feature.query();
     this.get = function(id) {
@@ -34,6 +34,12 @@ services.service("FeatureService", ['Feature', function(Feature) {
                 return rw.id == id;
             });
         });
+    };
+    this.save = function(feature) {
+        feature.class = 'feature';
+        return Feature.save(feature, function(feature) {
+            self.list.push(feature);
+        }).$promise;
     };
     this.update = function(feature) {
         return feature.$update(function(data) {
@@ -47,5 +53,41 @@ services.service("FeatureService", ['Feature', function(Feature) {
         return feature.$delete(function() {
             _.remove(self.list, { id: feature.id });
         });
+    };
+    this.getMultiple = function(ids) {
+        return self.list.$promise.then(function() {
+            return _.filter(self.list, function(feature) {
+                return _.contains(ids, feature.id.toString());
+            });
+        });
+    };
+    this.updateMultiple = function(ids, updatedFields) {
+        return Feature.updateArray({ id: ids }, { feature: updatedFields }, function(features) {
+            angular.forEach(features, function(feature) {
+                var index = self.list.indexOf(_.findWhere(self.list, { id: feature.id }));
+                if (index != -1) {
+                    self.list.splice(index, 1, feature);
+                }
+            });
+        }).$promise;
+    };
+    this.deleteMultiple = function(ids) {
+        return Feature.delete({id: ids}, function() {
+            _.remove(self.list, function(feature) {
+                return _.contains(ids, feature.id.toString());
+            });
+        }).$promise;
+    };
+    this.authorized = function(action) {
+        switch (action) {
+            case 'create':
+            case 'updateMultiple':
+            case 'update':
+            case 'delete':
+                return Session.po();
+                break;
+            default:
+                return false;
+        }
     };
 }]);

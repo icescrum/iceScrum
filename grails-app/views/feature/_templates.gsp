@@ -23,3 +23,5 @@
 
 <g:render template="/feature/templates/feature.details" />
 <g:render template="/feature/templates/feature.multiple" />
+<g:render template="/feature/templates/feature.new" />
+<g:render template="/feature/templates/feature.menu" />

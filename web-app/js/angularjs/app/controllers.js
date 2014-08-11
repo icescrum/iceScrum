@@ -112,11 +112,10 @@ controllers.controller('sandboxCtrl', ['$scope', '$state', 'StoryStatesByName', 
         } else {
             return false;
         }
-    }
+    };
 }]);
 
 controllers.controller('actorsCtrl', ['$scope', '$state', 'actors', function ($scope, $state, actors) {
-
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -127,14 +126,16 @@ controllers.controller('actorsCtrl', ['$scope', '$state', 'actors', function ($s
             {id:'stories_count', name:'todo.Stories'}
         ]
     };
-
+    $scope.goToNewActor = function() {
+        $state.go('actor.new');
+    };
     $scope.selectableOptions = {
         filter:"> .postit-container",
         cancel: "a",
         stop:function(e, ui, selectedItems) {
             switch (selectedItems.length){
                 case 0:
-                    $state.go('actor');
+                    $state.go('actor.new');
                     break;
                 case 1:
                     $state.go($state.params.tabId ? 'actor.details.tab' : 'actor.details', { id: selectedItems[0].id });
@@ -146,10 +147,18 @@ controllers.controller('actorsCtrl', ['$scope', '$state', 'actors', function ($s
         }
     };
     $scope.actors = actors;
+    $scope.isSelected = function(feature) {
+        if ($state.params.id) {
+            return $state.params.id == feature.id ;
+        } else if ($state.params.listId) {
+            return _.contains($state.params.listId.split(','), feature.id.toString());
+        } else {
+            return false;
+        }
+    };
 }]);
 
 controllers.controller('featuresCtrl', ['$scope', '$state', 'features', function ($scope, $state, features) {
-
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -161,14 +170,16 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'features', function
             {id:'value', name:'todo.Value'}
         ]
     };
-
+    $scope.goToNewFeature = function() {
+        $state.go('feature.new');
+    };
     $scope.selectableOptions = {
         filter:"> .postit-container",
         cancel: "a",
         stop:function(e, ui, selectedItems) {
             switch (selectedItems.length){
                 case 0:
-                    $state.go('feature');
+                    $state.go('feature.new');
                     break;
                 case 1:
                     $state.go($state.params.tabId ? 'feature.details.tab' : 'feature.details', { id: selectedItems[0].id });
@@ -180,4 +191,13 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'features', function
         }
     };
     $scope.features = features;
+    $scope.isSelected = function(feature) {
+        if ($state.params.id) {
+            return $state.params.id == feature.id ;
+        } else if ($state.params.listId) {
+            return _.contains($state.params.listId.split(','), feature.id.toString());
+        } else {
+            return false;
+        }
+    };
 }]);

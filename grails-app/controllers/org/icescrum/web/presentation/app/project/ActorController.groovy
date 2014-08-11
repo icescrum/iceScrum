@@ -73,22 +73,25 @@ class ActorController {
 
     @Secured('productOwner() and !archivedProduct()')
     def update = {
-        if (!params.actor){
-            returnError(text:message(code:'todo.is.ui.no.data'))
-            return
-        }
-        withActor { Actor actor ->
-            Actor.withTransaction {
-                bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
-                if (params.actor.tags != null) {
-                    actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
-                }
-                actorService.update(actor)
+        withActors { List<Actor> actors ->
+            if (!params.actor) {
+                returnError(text: message(code: 'todo.is.ui.no.data'))
+                return
             }
+            actors.each { Actor actor ->
+                Actor.withTransaction {
+                    bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
+                    if (params.actor.tags != null) {
+                        actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+                    }
+                    actorService.update(actor)
+                }
+            }
+            def returnData = actors.size() > 1 ? actors : actors.first()
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: actor as JSON) }
-                json { renderRESTJSON(text: actor) }
-                xml { renderRESTXML(text: actor) }
+                html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
+                json { renderRESTJSON(text: returnData) }
+                xml { renderRESTXML(text: returnData) }
             }
         }
     }

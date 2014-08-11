@@ -25,7 +25,7 @@ services.factory('Actor', ['Resource', function($resource) {
     return $resource('actor/:id/:action');
 }]);
 
-services.service("ActorService", ['Actor', function(Actor) {
+services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
     var self = this;
     this.list = Actor.query();
     this.get = function(id) {
@@ -34,6 +34,12 @@ services.service("ActorService", ['Actor', function(Actor) {
                 return rw.id == id;
             });
         });
+    };
+    this.save = function(actor) {
+        actor.class = 'actor';
+        return Actor.save(actor, function(actor) {
+            self.list.push(actor);
+        }).$promise;
     };
     this.update = function(actor) {
         return actor.$update(function(data) {
@@ -47,5 +53,41 @@ services.service("ActorService", ['Actor', function(Actor) {
         return actor.$delete(function() {
             _.remove(self.list, { id: actor.id });
         });
+    };
+    this.getMultiple = function(ids) {
+        return self.list.$promise.then(function() {
+            return _.filter(self.list, function(actor) {
+                return _.contains(ids, actor.id.toString());
+            });
+        });
+    };
+    this.updateMultiple = function(ids, updatedFields) {
+        return Actor.updateArray({ id: ids }, { actor: updatedFields }, function(actors) {
+            angular.forEach(actors, function(actor) {
+                var index = self.list.indexOf(_.findWhere(self.list, { id: actor.id }));
+                if (index != -1) {
+                    self.list.splice(index, 1, actor);
+                }
+            });
+        }).$promise;
+    };
+    this.deleteMultiple = function(ids) {
+        return Actor.delete({id: ids}, function() {
+            _.remove(self.list, function(actor) {
+                return _.contains(ids, actor.id.toString());
+            });
+        }).$promise;
+    };
+    this.authorized = function(action) {
+        switch (action) {
+            case 'create':
+            case 'updateMultiple':
+            case 'update':
+            case 'delete':
+                return Session.po();
+                break;
+            default:
+                return false;
+        }
     };
 }]);

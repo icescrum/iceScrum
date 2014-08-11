@@ -52,7 +52,7 @@
             </div>
             <div class="actions">
                 <span class="action">
-                    <a data-toggle="dropdown" data-container="body" tooltip="${message(code: 'todo.is.story.actions')}" tooltip-append-to-body="true">
+                    <a data-toggle="dropdown" tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
                         <i class="fa fa-cog"></i>
                     </a>
                     <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>

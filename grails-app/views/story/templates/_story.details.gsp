@@ -61,7 +61,7 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
-                 tooltip="${message(code: 'todo.is.story.actions')}"
+                 tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-cog"></span> <span class="caret"></span>
@@ -144,7 +144,7 @@
     </div>
 
     <div id="right-story-container"
-         class="right-properties new panel-body">
+         class="panel-body">
         <form ng-submit="update(story)" name='storyForm' show-validation ng-controller="storyEditCtrl">
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">

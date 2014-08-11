@@ -66,23 +66,26 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def update = {
-        if (!params.feature){
-            returnError(text:message(code:'todo.is.ui.no.data'))
-            return
-        }
-        withFeature{ Feature feature ->
-            Feature.withTransaction {
-                bindData(feature, this.params, [include:['name','description','notes','color','type','value','rank']], "feature")
-                if (params.feature.tags != null) {
-                    feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
+        withFeatures { List<Feature> features ->
+            if (!params.feature) {
+                returnError(text: message(code: 'todo.is.ui.no.data'))
+                return
+            }
+            features.each { Feature feature ->
+                Feature.withTransaction {
+                    bindData(feature, this.params, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']], "feature")
+                    if (params.feature.tags != null) {
+                        feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
+                    }
+                    featureService.update(feature)
+                    entry.hook(id: "${controllerName}-${actionName}", model: [feature: feature]) // TODO check if still needed
                 }
-                featureService.update(feature)
-                entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature]) // TODO check if still needed
-                withFormat {
-                    html { render status: 200, contentType: 'application/json', text:feature as JSON }
-                    json { renderRESTJSON(text:feature) }
-                    xml  { renderRESTXML(text:feature) }
-                }
+            }
+            def returnData = features.size() > 1 ? features : features.first()
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text:returnData as JSON }
+                json { renderRESTJSON(text:returnData) }
+                xml  { renderRESTXML(text:returnData) }
             }
         }
     }

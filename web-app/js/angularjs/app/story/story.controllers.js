@@ -126,7 +126,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.$watch('$state.params', function() {
             if ($state.params.tabId) {
                 $scope.tabSelected[$state.params.tabId] = true;
-                //scrollToTab
                 $timeout((function() {
                     var container = angular.element('#right');
                     var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();

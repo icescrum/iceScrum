@@ -21,7 +21,10 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<g:render template="/actor/templates/actor.details" />
-<g:render template="/actor/templates/actor.multiple" />
-<g:render template="/actor/templates/actor.new" />
-<g:render template="/actor/templates/actor.menu" />
+<script type="text/ng-template" id="actor.menu.html">
+<li>
+    <a ng-if="authorized('delete')" ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [actor])">
+        <g:message code='is.ui.actor.menu.delete'/>
+    </a>
+</li>
+</script>

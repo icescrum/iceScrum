@@ -36,28 +36,36 @@ filters
     })
     .filter('contrastColor', function() {
         return function(bg) {
-            //convert hex to rgb
-            if (bg.indexOf('#') == 0){
-                var bigint = parseInt(bg.substring(1), 16);
-                var r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
-                bg = 'rgb('+r+', '+g+', '+b+')';
+            if (bg) {
+                //convert hex to rgb
+                if (bg.indexOf('#') == 0){
+                    var bigint = parseInt(bg.substring(1), 16);
+                    var r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
+                    bg = 'rgb('+r+', '+g+', '+b+')';
+                }
+                //get r,g,b and decide
+                var rgb = bg.replace(/^(rgb|rgba)\(/,'').replace(/\)$/,'').replace(/\s/g,'').split(',');
+                var yiq = ((rgb[0]*299)+(rgb[1]*587)+(rgb[2]*114))/1000;
+                return (yiq >= 169) ? '' : 'invert';
+            } else {
+                return '';
             }
-            //get r,g,b and decide
-            var rgb = bg.replace(/^(rgb|rgba)\(/,'').replace(/\)$/,'').replace(/\s/g,'').split(',');
-            var yiq = ((rgb[0]*299)+(rgb[1]*587)+(rgb[2]*114))/1000;
-            return (yiq >= 169) ? '' : 'invert';
         };
     })
     .filter('createGradientBackground', function() {
         return function(color) {
-            var ratio = 18;
-            var num = parseInt(color.substring(1),16),
-                ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
-                amt = Math.round(2.55 * ratio),
-                R = ((num >> 16) & 255) + amt,
-                G = ((num >> 8) & 255) + amt,
-                B = (num & 255) + amt;
-            return "background-image: -moz-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); background-image: -o-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); background-image: -webkit-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); background-image: linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%);"
+            if (color) {
+                var ratio = 18;
+                var num = parseInt(color.substring(1), 16),
+                    ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
+                    amt = Math.round(2.55 * ratio),
+                    R = ((num >> 16) & 255) + amt,
+                    G = ((num >> 8) & 255) + amt,
+                    B = (num & 255) + amt;
+                return "background-image: -moz-linear-gradient(bottom, rgba(" + ra + "," + ga + "," + ba + ",1) 0%, rgba(" + R + "," + G + "," + B + ",0.7) 100%); background-image: -o-linear-gradient(bottom, rgba(" + ra + "," + ga + "," + ba + ",1) 0%, rgba(" + R + "," + G + "," + B + ",0.7) 100%); background-image: -webkit-linear-gradient(bottom, rgba(" + ra + "," + ga + "," + ba + ",1) 0%, rgba(" + R + "," + G + "," + B + ",0.7) 100%); background-image: linear-gradient(bottom, rgba(" + ra + "," + ga + "," + ba + ",1) 0%, rgba(" + R + "," + G + "," + B + ",0.7) 100%);"
+            } else {
+                return '';
+            }
         };
     })
     .filter('descriptionHtml', function() {

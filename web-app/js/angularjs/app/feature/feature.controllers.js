@@ -21,59 +21,89 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('featureCtrl', ['$scope', '$state', '$timeout', 'selected', 'FeatureService', 'StoryService', function($scope, $state, $timeout, selected, FeatureService, StoryService) {
-    $scope.selected = selected;
-    $scope.tabsType = 'tabs nav-tabs-google';
-    if ($state.params.tabId) {
-        $scope.tabSelected = {};
-        $scope.tabSelected[$state.params.tabId] = true;
-    } else {
-        $scope.tabSelected = {'attachments': true};
-    }
-    $scope.$watch('$state.params', function() {
-        if ($state.params.tabId) {
-            $scope.tabSelected[$state.params.tabId] = true;
-            $timeout((function() {
-                var container = angular.element('#right');
-                var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();
-                container.animate({ scrollTop: pos }, 1000);
-            }));
-        }
-    });
-    $scope.setTabSelected = function(tab) {
-        if ($state.params.tabId) {
-            $state.go('.', {tabId: tab});
-        } else {
-            $state.go('.tab', {tabId: tab});
-        }
+
+controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', function($scope, $state, FeatureService) {
+    $scope.authorized = function(action) {
+        return FeatureService.authorized(action);
     };
     $scope.update = function(feature) {
         FeatureService.update(feature);
     };
     $scope['delete'] = function(feature) {
-        FeatureService.delete(feature).then(function() {
-            $state.go('^');
+        FeatureService.delete(feature).then($scope.goToNewFeature);
+    };
+}]);
+
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$controller', 'selected', 'FeatureService', 'StoryService', 'FormService',
+    function($scope, $state, $timeout, $controller, selected, FeatureService, StoryService, FormService) {
+        $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
+        $scope.feature = selected;
+        $scope.tabsType = 'tabs nav-tabs-google';
+        if ($state.params.tabId) {
+            $scope.tabSelected = {};
+            $scope.tabSelected[$state.params.tabId] = true;
+        } else {
+            $scope.tabSelected = {'attachments': true};
+        }
+        $scope.$watch('$state.params', function() {
+            if ($state.params.tabId) {
+                $scope.tabSelected[$state.params.tabId] = true;
+                $timeout((function() {
+                    var container = angular.element('#right');
+                    var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();
+                    container.animate({ scrollTop: pos }, 1000);
+                }));
+            }
+        });
+        $scope.setTabSelected = function(tab) {
+            if ($state.params.tabId) {
+                $state.go('.', {tabId: tab});
+            } else {
+                $state.go('.tab', {tabId: tab});
+            }
+        };
+        $scope.stories = function(feature) {
+            feature.stories = _.where(StoryService.list, { feature: { id: feature.id }});
+        };
+        // Header
+        $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
+        $scope.next = FormService.next(FeatureService.list, $scope.feature);
+    }]);
+
+controllers.controller('featureEditCtrl', ['$scope', 'FormService', function($scope, FormService) {
+    $scope.feature = angular.copy($scope.feature);
+    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
+}]);
+
+controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', function($scope, $state, $controller, FeatureService) {
+    $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
+    $scope.save = function(feature, andContinue) {
+        FeatureService.save(feature).then(function(feature) {
+            if (andContinue) {
+                $scope.feature = {};
+            } else {
+                $state.go('^.details', { id: feature.id });
+            }
         });
     };
-    $scope.stories = function(feature) {
-        feature.stories = _.where(StoryService.list, { feature: { id: feature.id }});
-    };
 }]);
 
-controllers.controller('featureHeaderCtrl', ['$scope', 'FeatureService', 'FormService', function($scope, FeatureService, FormService) {
-    $scope.previous = FormService.previous(FeatureService.list, $scope.selected);
-    $scope.next = FormService.next(FeatureService.list, $scope.selected);
-}]);
-
-controllers.controller('featureEditCtrl', ['$scope', 'Session', 'FormService', function($scope, Session, FormService) {
-    $scope.feature = angular.copy($scope.selected);
-    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-    $scope.readOnly = function() {
-        return !Session.po();
-    };
-}]);
-
-controllers.controller('featureMultipleCtrl', ['$scope', '$state', 'listId', function($scope, $state, listId) {
+controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId', 'FeatureService', function($scope, $controller, listId, FeatureService) {
+    $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
     $scope.ids = listId;
+    $scope.topFeature = {};
+    $scope.featurePreview = {};
+    FeatureService.getMultiple(listId).then(function(features) {
+        $scope.topFeature = _.first(features);
+        $scope.featurePreview = {
+            type: $scope.topFeature.type
+        };
+    });
+    $scope.deleteMultiple = function() {
+        FeatureService.deleteMultiple(listId).then($scope.goToNewFeature);
+    };
+    $scope.updateMultiple = function(updatedFields) {
+        FeatureService.updateMultiple(listId, updatedFields);
+    };
 }]);
 

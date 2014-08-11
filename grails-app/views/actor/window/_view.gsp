@@ -26,9 +26,10 @@
      ui-selectable-list="actors"
      ng-class="view.asList ? 'list-group' : 'grid-group'"
      class="postits">
-    <div ng-class="{ 'ui-selected':$state.params.id == actor.id }"
+    <div ng-class="{ 'ui-selected': isSelected(actor) }"
          data-id="{{ actor.id }}"
          ng-repeat="actor in actors | orderBy:orderBy.current.id:orderBy.reverse"
+         ng-controller="actorCtrl"
          class="postit-container">
         <div style="{{ '#f9f157' | createGradientBackground }}"
              class="postit actor #f9f157">
@@ -44,9 +45,10 @@
             </div>
             <div class="actions">
                 <span class="action">
-                    <a href="#" tooltip="${message(code: 'todo.is.actor.actions')}" tooltip-append-to-body="true">
+                    <a data-toggle="dropdown" tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
                         <i class="fa fa-cog"></i>
                     </a>
+                    <ul class="dropdown-menu" ng-include="'actor.menu.html'"></ul>
                 </span>
                 <span class="action" ng-class="{'active':actor.attachments_count}">
                     <a href="#/actor/{{ actor.id }}/attachments"

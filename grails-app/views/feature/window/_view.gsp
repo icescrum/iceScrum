@@ -26,9 +26,10 @@
      ui-selectable-list="features"
      ng-class="view.asList ? 'list-group' : 'grid-group'"
      class="postits">
-    <div ng-class="{ 'ui-selected':$state.params.id == feature.id }"
+    <div ng-class="{ 'ui-selected': isSelected(feature) }"
          data-id="{{ feature.id }}"
          ng-repeat="feature in features | orderBy:orderBy.current.id:orderBy.reverse"
+         ng-controller="featureCtrl"
          class="postit-container">
         <div style="{{ feature.color | createGradientBackground }}"
              class="postit story {{ feature.color | contrastColor }}">
@@ -45,9 +46,10 @@
             </div>
             <div class="actions">
                 <span class="action">
-                    <a href="#" tooltip="${message(code: 'todo.is.feature.actions')}" tooltip-append-to-body="true">
+                    <a data-toggle="dropdown" tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
                         <i class="fa fa-cog"></i>
                     </a>
+                    <ul class="dropdown-menu" ng-include="'feature.menu.html'"></ul>
                 </span>
                 <span class="action" ng-class="{'active':feature.attachments_count}">
                     <a href="#/feature/{{ feature.id }}/attachments"

@@ -28,8 +28,7 @@
         <h3 class="panel-title">${message(code: "is.ui.sandbox.toolbar.new")} ${message(code: "is.story")}</h3>
         <div class="help-block">${message(code:'is.ui.sandbox.help')}</div>
     </div>
-    <div id="right-story-container"
-         class="right-properties new panel-body">
+    <div class="panel-body">
         <div class="postits standalone">
             <div class="postit-container stack twisted">
                 <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
@@ -51,7 +50,7 @@
                     </div>
                     <div class="actions">
                         <span class="action">
-                            <a tooltip="${message(code: 'todo.is.story.actions')}" tooltip-append-to-body="true">
+                            <a tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
                                 <i class="fa fa-cog"></i>
                             </a>
                         </span>

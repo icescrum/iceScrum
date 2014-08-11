@@ -23,20 +23,18 @@
 --}%
 <script type="text/ng-template" id="actor.details.html">
 <div class="panel panel-default">
-    <div id="actor-header"
-         class="panel-heading"
-         ng-controller="actorHeaderCtrl"
+    <div class="panel-heading"
          fixed="#right"
          fixed-offset-top="1"
          fixed-offset-width="-2">
         <h3 class="panel-title row">
             <div class="col-sm-8">
-                <span>{{ selected.name }}</span>
+                <span>{{ actor.name }}</span>
             </div>
             <div class="col-sm-4">
                 <div class="pull-right">
                     <span class="label label-default"
-                          tooltip="${message(code: 'is.backlogelement.id')}">{{ selected.uid }}</span>
+                          tooltip="${message(code: 'is.backlogelement.id')}">{{ actor.uid }}</span>
                     <a ng-if="previous"
                        class="btn btn-xs btn-default"
                        role="button"
@@ -52,33 +50,33 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
-                 tooltip="${message(code: 'todo.is.actor.actions')}"
+                 tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-cog"></span> <span class="caret"></span>
                 </button>
+                <ul class="dropdown-menu" ng-include="'actor.menu.html'"></ul>
             </div>
             <div class="btn-group pull-right">
                 <button name="attachments" class="btn btn-default"
                         ng-click="setTabSelected('attachments')"
-                        tooltip="{{ selected.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                        tooltip="{{ actor.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-paperclip"></span>
-                    <span class="badge" ng-show="selected.attachments_count">{{ selected.attachments_count }}</span>
+                    <span class="badge" ng-show="actor.attachments_count">{{ actor.attachments_count }}</span>
                 </button>
                 <button name="stories" class="btn btn-default"
                         ng-click="setTabSelected('stories')"
-                        tooltip="{{ selected.stories_count }} ${message(code:'todo.is.actor.stories')}"
+                        tooltip="{{ actor.stories_count }} ${message(code:'todo.is.actor.stories')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-tasks"></span>
-                    <span class="badge" ng-show="selected.stories_count">{{ selected.stories_count }}</span>
+                    <span class="badge" ng-show="actor.stories_count">{{ actor.stories_count }}</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="right-actor-container"
-         class="right-properties new panel-body">
+    <div class="panel-body">
         <form ng-submit="update(actor)"
               name='actorForm'
               show-validation
@@ -163,11 +161,11 @@
                  heading="${message(code: 'is.ui.backlogelement.attachment')}"
                  active="tabSelected.attachments">
             </tab>
-            <tab select="stories(selected); setTabSelected('stories');"
+            <tab select="stories(actor); setTabSelected('stories');"
                  heading="${message(code: 'todo.is.actor.stories')}"
                  active="tabSelected.stories">
                 <table class="table table-striped">
-                    <tbody ng-include="'nested.stories.html'"></tbody>
+                    <tbody ng-include="'nested.stories.html'" ng-init="selected = actor"></tbody>
                 </table>
             </tab>
         </tabset>
