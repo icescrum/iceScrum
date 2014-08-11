@@ -33,7 +33,6 @@ var isApp = angular.module('isApp', [
     'ui.sortable',
     'ui.bootstrap',
     'ui.select2',
-    'xeditable',
     'cfp.hotkeys',
     'colorpicker.module',
     'mgo-angular-wizard'
@@ -223,10 +222,8 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'editableOptions', 'uiSelect2Config', function(Session, $rootScope, $timeout, $state, $modal, editableOptions, uiSelect2Config){
+    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config){
         Session.create();
-
-        editableOptions.theme = 'bs3';
 
         uiSelect2Config.minimumResultsForSearch = 6;
 
