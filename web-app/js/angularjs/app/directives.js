@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -174,15 +175,51 @@ directives.directive('focusMe', function($timeout) {
         required: 'ngBindHtml',
         restrict: 'A',
         priority: 100,
-        link: function ($scope, element, attrs, ctrl) {
+        link: function (scope, element) {
             element.data('hasEllipsis', false);
-            $scope.$watch(element.html(), function(value) {
-                if (! element.data('hasEllipsis')) {
-                    // apply ellipsis only one
+            scope.$watch(element.html(), function(value) {
+                // apply only once
+                if (!element.data('hasEllipsis')) {
                     element.data('hasEllipsis',true);
                     element.ellipsis();
                 }
             });
         }
     };
+}]).directive('timeago', [function() {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.data('hasTimeago', false);
+            var dateTimeNotParsed = attrs.datetime;
+            scope.$watch(dateTimeNotParsed, function(value) {
+                // apply only once
+                if (!element.data('hasTimeago')) {
+                    element.data('hasTimeago',true);
+                    element.timeago();
+                }
+            });
+        }
+    };
 }]);
+
+//.directive('ajax2', ['$http', function ($http) {
+//    return {
+//        restrict: 'A',
+//        scope: {
+//            success:  '&ajaxSuccess'
+//        },
+//        link: function (scope, element, attrs) {
+//            element.on("click", function (event) {
+//                var options = {
+//                    method: attrs.ajaxMethod ? attrs.ajaxMethod : 'GET',
+//                    url: attrs.href
+//                };
+//                $http(options).success(function(data){
+//                    scope.success({data: data});
+//                });
+//                return false;
+//            });
+//        }
+//    };
+//}]);

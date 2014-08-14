@@ -116,5 +116,8 @@
             </div>
         </form>
     </div>
+    <div class="panel-footer">
+        ${message(code: 'is.ui.feature.total.value')} {{ totalValue(features) }}
+    </div>
 </div>
 </script>

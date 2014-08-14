@@ -247,6 +247,15 @@ isApp.config(['$stateProvider', '$httpProvider',
         //To be able to track state in app
         $rootScope.$state = $state;
 
+
+        $rootScope.editableMode = false;
+        $rootScope.setEditableMode = function(editableMode) {
+            $rootScope.editableMode = editableMode;
+        };
+        $rootScope.getEditableMode = function() {
+            return $rootScope.editableMode;
+        };
+
         $rootScope.confirm = function(message, callback, args) {
             $modal.open({
                 templateUrl: 'confirm.modal.html',

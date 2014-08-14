@@ -68,9 +68,9 @@
                     <a href="#/sandbox/{{ story.id }}/comments"
                        tooltip="{{ story.comments_count }} ${message(code:'todo.is.story.comments')}"
                        tooltip-append-to-body="true"
-                       ng-switch="{{ story.comments_count }}">
-                        <i class="fa fa-comment-o" ng-switch-default></i>
-                        <i class="fa fa-comment" ng-switch-when="true"></i>
+                       ng-switch="story.comments_count">
+                        <i class="fa fa-comment-o" ng-switch-when="0"></i>
+                        <i class="fa fa-comment" ng-switch-default></i>
                         <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
                     </a>
                 </span>
@@ -86,7 +86,7 @@
                     <a href="#/sandbox/{{ story.id }}/tests"
                        tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                        tooltip-append-to-body="true"
-                       ng-switch="{{ story.acceptanceTests_count }}">
+                       ng-switch="story.acceptanceTests_count">
                         <i class="fa fa-check-square-o" ng-switch-when="0"></i>
                         <i class="fa fa-check-square" ng-switch-default></i>
                         <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>

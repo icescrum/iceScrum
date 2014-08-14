@@ -63,9 +63,9 @@
                         <span class="action" ng-class="{'active':topStory.comments_count}">
                             <a tooltip="{{ topStory.comments_count }} ${message(code:'todo.is.story.comments')}"
                                tooltip-append-to-body="true"
-                               ng-switch="{{ topStory.comments_count }}">
-                                <i class="fa fa-comment-o" ng-switch-default></i>
-                                <i class="fa fa-comment" ng-switch-when="true"></i>
+                               ng-switch="topStory.comments_count">
+                                <i class="fa fa-comment-o" ng-switch-when="0"></i>
+                                <i class="fa fa-comment" ng-switch-default></i>
                                 <span class="badge" ng-show="topStory.comments_count">{{ topStory.comments_count }}</span>
                             </a>
                         </span>
@@ -79,7 +79,7 @@
                         <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
                             <a tooltip="{{ topStory.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                                tooltip-append-to-body="true"
-                               ng-switch="{{ topStory.acceptanceTests_count }}">
+                               ng-switch="topStory.acceptanceTests_count">
                                 <i class="fa fa-check-square-o" ng-switch-when="0"></i>
                                 <i class="fa fa-check-square" ng-switch-default></i>
                                 <span class="badge" ng-if="topStory.acceptanceTests_count">{{ topStory.acceptanceTests_count }}</span>

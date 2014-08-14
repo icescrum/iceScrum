@@ -72,7 +72,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         return !_.isEmpty(self.user);
     };
     this.creator = function(item) {
-        return self.user.id == item.creator.id;
+        return this.authenticated  && !_.isEmpty(item) && !_.isEmpty(item.creator) && self.user.id == item.creator.id;
     };
     this.changeRole = function(newUserRole) {
         var newRoles = {};

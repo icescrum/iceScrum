@@ -71,8 +71,12 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
     function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, TaskService, CommentService, AcceptanceTestService, FormService) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         $scope.story = {};
+        $scope.editableStory = {};
         StoryService.get($stateParams.id).then(function(story) {
             $scope.story = story;
+            // For edit
+            $scope.editableStory = angular.copy(story);
+            $scope.selectDependsOnOptions.ajax.url = 'story/' + $scope.story.id + '/dependenceEntries';
             // For header
             var list = $state.current.data.filterListParams ? $filter('filter')(StoryService.list, $state.current.data.filterListParams) : StoryService.list;
             $scope.previous = FormService.previous(list, $scope.story);
@@ -141,7 +145,9 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             }
         };
         $scope.update = function(story) {
-            StoryService.update(story);
+            StoryService.update(story).then(function(story) {
+                $scope.story = story;
+            });
         };
         $scope.follow = function(story) {
             StoryService.follow(story);
@@ -161,59 +167,64 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.comments = function(story) {
             CommentService.list(story);
         };
+        // edit;
+        $scope.setEditableStoryMode = function(editableMode) {
+            $scope.setEditableMode(editableMode);
+            if (!editableMode) {
+                $scope.editableStory = angular.copy($scope.story);
+            }
+        };
+        $scope.getEditableStoryMode = function(story) {
+            return $scope.getEditableMode() && $scope.authorized('update', story);
+        };
+        $scope.cancel = function() {
+            $scope.editableStory = angular.copy($scope.story);
+        };
+        $scope.selectDependsOnOptions = {
+            formatSelection: function(object) {
+                return object.text ? object.text : object.name + ' (' + object.id + ')';
+            },
+            allowClear: true,
+            createChoiceOnEmpty: false,
+            resultAsEmptyId: true, //important to preserve logic id='' server side
+            initSelection: function(element, callback) {
+                callback(JSON.parse(element.val()));
+            },
+            ajax: {
+                // The URL can't be known yet (the story will be known only after promise completion
+                cache: 'true',
+                data: function(term) {
+                    return { term: term };
+                },
+                results: function(data) {
+                    return { results: data };
+                }
+            }
+        };
+
+        $scope.selectAffectionVersionOptions = {
+            allowClear: true,
+            createChoiceOnEmpty: true,
+            resultAsString: true,
+            createSearchChoice: function(term) {
+                return {id: term, text: term};
+            },
+            initSelection: function(element, callback) {
+                callback({id: element.val(), text: element.val()});
+            },
+            ajax: {
+                url: 'project/versions',
+                cache: 'true',
+                data: function(term) {
+                    return { term: term };
+                },
+                results: function(data) {
+                    return { results: data };
+                }
+            }
+        };
+        $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
     }]);
-
-controllers.controller('storyEditCtrl', ['$scope', '$stateParams', 'FormService', 'StoryService', function($scope, $stateParams, FormService, StoryService) {
-    $scope.story = {}; // We cannnot use the story inherited from parent scope because it may not be retrieved yet (promise)
-    $scope.selectDependsOnOptions = {
-        formatSelection: function(object) {
-            return object.text ? object.text : object.name + ' (' + object.id + ')';
-        },
-        allowClear: true,
-        createChoiceOnEmpty: false,
-        resultAsEmptyId: true, //important to preserve logic id='' server side
-        initSelection: function(element, callback) {
-            callback(JSON.parse(element.val()));
-        },
-        ajax: {
-            // The URL can't be known yet (the story will be known only after promise completion
-            cache: 'true',
-            data: function(term) {
-                return { term: term };
-            },
-            results: function(data) {
-                return { results: data };
-            }
-        }
-    };
-    StoryService.get($stateParams.id).then(function(story) {
-        $scope.story = angular.copy(story);
-        $scope.selectDependsOnOptions.ajax.url = 'story/' + $scope.story.id + '/dependenceEntries';
-
-    });
-    $scope.selectAffectionVersionOptions = {
-        allowClear: true,
-        createChoiceOnEmpty: true,
-        resultAsString: true,
-        createSearchChoice: function(term) {
-            return {id: term, text: term};
-        },
-        initSelection: function(element, callback) {
-            callback({id: element.val(), text: element.val()});
-        },
-        ajax: {
-            url: 'project/versions',
-            cache: 'true',
-            data: function(term) {
-                return { term: term };
-            },
-            results: function(data) {
-                return { results: data };
-            }
-        }
-    };
-    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-}]);
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl

@@ -57,6 +57,25 @@
                 </button>
                 <ul class="dropdown-menu" ng-include="'feature.menu.html'"></ul>
             </div>
+            <button type="button"
+                    tabindex="-1"
+                    popover-title="${message(code:'is.permalink')}"
+                    popover="{{ serverUrl + '/TODOPKEY-F' + feature.uid }}"
+                    popover-append-to-body="true"
+                    popover-placement="left"
+                    class="btn btn-default">
+                <i class="fa fa-link"></i>
+            </button>
+            <button class="btn btn-primary"
+                    type="button"
+                    tooltip="${message(code:'todo.is.ui.editable.enable')}"
+                    ng-if="authorized('update', feature) && !getEditableMode(feature)"
+                    ng-click="setEditableFeatureMode(true)"><span class="fa fa-pencil"></span></button>
+            <button class="btn btn-default"
+                    type="button"
+                    tooltip="${message(code:'todo.is.ui.editable.disable')}"
+                    ng-if="getEditableFeatureMode(feature)"
+                    ng-click="setEditableFeatureMode(false)"><span class="fa fa-pencil-square-o"></span></button>
             <div class="btn-group pull-right">
                 <button name="attachments" class="btn btn-default"
                         ng-click="setTabSelected('attachments')"
@@ -77,55 +96,45 @@
     </div>
 
     <div class="panel-body">
-        <form ng-submit="update(feature)" name='featureForm' show-validation ng-controller="featureEditCtrl">
+        <form ng-submit="update(editableFeature)"
+              ng-class="{'form-disabled': !getEditableFeatureMode(feature)}"
+              name='featureForm'
+              show-validation>
             <div class="form-group">
                 <label for="feature.name">${message(code:'is.feature.name')}</label>
-                <div class="input-group">
-                    <input required
-                           name="feature.name"
-                           ng-model="feature.name"
-                           ng-readonly="readOnly()"
-                           type="text"
-                           class="form-control">
-                    <span class="input-group-btn">
-                        <button type="button"
-                                tabindex="-1"
-                                popover-title="${message(code:'is.permalink')}"
-                                popover="{{ serverUrl + '/TODOPKEY-F' + feature.uid }}"
-                                popover-append-to-body="true"
-                                popover-placement="left"
-                                class="btn btn-default">
-                            <i class="fa fa-link"></i>
-                        </button>
-                    </span>
-                </div>
+                <input required
+                       ng-disabled="!getEditableFeatureMode(feature)"
+                       name="editableFeature.name"
+                       ng-model="editableFeature.name"
+                       type="text"
+                       class="form-control">
             </div>
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">
                     <label for="feature.type">${message(code:'is.feature.type')}</label>
                     <div class="input-group">
                         <select class="form-control"
-                                ng-model="feature.type"
-                                ng-readonly="readOnly()"
+                                ng-disabled="!getEditableFeatureMode(feature)"
+                                ng-model="editableFeature.type"
                                 ui-select2>
                             <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}" />
                         </select>
-                        <span class="input-group-btn">
+                        <span class="input-group-btn" ng-if="getEditableFeatureMode(feature)">
                             <button colorpicker
-                                    class="btn {{ feature.color | contrastColor }}"
+                                    class="btn {{ editableFeature.color | contrastColor }}"
                                     type="button"
-                                    style="background-color:{{ feature.color }};"
+                                    style="background-color:{{ editableFeature.color }};"
                                     colorpicker-position="top"
                                     value="#bf3d3d"
-                                    ng-model="feature.color"><i class="fa fa-pencil"></i></button>
+                                    ng-model="editableFeature.color"><i class="fa fa-pencil"></i></button>
                         </span>
                     </div>
                 </div>
                 <div class="col-md-6 form-group">
                     <label for="feature.value">${message(code:'is.feature.value')}</label>
                     <select class="form-control"
-                            ng-model="feature.value"
-                            ng-readonly="readOnly()"
+                            ng-disabled="!getEditableFeatureMode(feature)"
+                            ng-model="editableFeature.value"
                             ui-select2>
                         <is:options values="${PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)}" />
                     </select>
@@ -134,16 +143,17 @@
             <div class="form-group">
                 <label for="feature.description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
+                          ng-disabled="!getEditableFeatureMode(feature)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
-                          ng-model="feature.description"
-                          ng-readonly="readOnly()"/></textarea>
+                          ng-model="editableFeature.description"></textarea>
             </div>
             <div class="form-group">
+                <label for="feature.tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
+                       ng-disabled="!getEditableFeatureMode(feature)"
                        class="form-control"
-                       value="{{ feature.tags.join(',') }}"
-                       ng-model="feature.tags"
-                       ng-readonly="readOnly()"
+                       value="{{ editableFeature.tags.join(',') }}"
+                       ng-model="editableFeature.tags"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
             </div>
@@ -151,19 +161,34 @@
                 <label for="feature.notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
                           class="form-control"
-                          ng-model="feature.notes"
-                          is-model-html="feature.notes_html"
+                          ng-model="editableFeature.notes"
+                          is-model-html="editableFeature.notes_html"
                           ng-show="showNotesTextarea"
                           ng-blur="showNotesTextarea = false"
-                          ng-readonly="readOnly()"
                           placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                 <div class="markitup-preview"
+                     ng-disabled="!getEditableFeatureMode(feature)"
                      ng-show="!showNotesTextarea"
-                     ng-click="showNotesTextarea = true"
-                     ng-focus="showNotesTextarea = true"
-                     ng-class="{'placeholder': !feature.notes_html}"
+                     ng-click="showNotesTextarea = getEditableFeatureMode(feature)"
+                     ng-focus="showNotesTextarea = getEditableFeatureMode(feature)"
+                     ng-class="{'placeholder': !editableFeature.notes_html}"
                      tabindex="0"
-                     ng-bind-html="(feature.notes_html ? feature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+                     ng-bind-html="(editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+            </div>
+            <div class="btn-toolbar" ng-if="getEditableFeatureMode(editableFeature)">
+                <button class="btn btn-primary pull-right"
+                        tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
+                        tooltip-append-to-body="true"
+                        type="submit">
+                    ${message(code:'todo.is.ui.update')}
+                </button>
+                <button class="btn confirmation btn-default pull-right"
+                        tooltip-append-to-body="true"
+                        tooltip="${message(code:'is.button.cancel')}"
+                        type="button"
+                        ng-click="cancel()">
+                    ${message(code:'is.button.cancel')}
+                </button>
             </div>
         </form>
         <tabset type="{{ tabsType }}">

@@ -47,7 +47,7 @@
                             <div class="activity clearfix">
                                 <span class="text-muted ${is.iconActivity(code:a.code)}"></span>
                                 <div class="content">
-                                    <small class="text-muted pull-right"><is:timeago date="${a.dateCreated}"/> <span class="fa fa-clock-o"></span></small>
+                                    <small class="text-muted pull-right">${a.dateCreated}<span class="fa fa-clock-o"></span></small>
                                     <span class="clearfix">
                                         <is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
                                         <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.${a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'}"/>

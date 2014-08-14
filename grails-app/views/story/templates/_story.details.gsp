@@ -68,6 +68,24 @@
                 </button>
                 <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
             </div>
+            <button type="button"
+                    popover-title="${message(code:'is.permalink')}"
+                    popover="{{ serverUrl + '/TODOPKEY-' + story.uid }}"
+                    popover-append-to-body="true"
+                    popover-placement="left"
+                    class="btn btn-default">
+                <span class="fa fa-link"></span>
+            </button>
+            <button class="btn btn-primary"
+                    type="button"
+                    tooltip="${message(code:'todo.is.ui.editable.enable')}"
+                    ng-if="authorized('update', story) && !getEditableMode(story)"
+                    ng-click="setEditableStoryMode(true)"><span class="fa fa-pencil"></span></button>
+            <button class="btn btn-default"
+                    type="button"
+                    tooltip="${message(code:'todo.is.ui.editable.disable')}"
+                    ng-if="getEditableStoryMode(story)"
+                    ng-click="setEditableStoryMode(false)"><span class="fa fa-pencil-square-o"></span></button>
             <div class="btn-group pull-right">
                 <button class="btn btn-default"
                         type="button"
@@ -104,9 +122,9 @@
                         ng-click="setTabSelected('comments')"
                         tooltip="{{ story.comments.length }} ${message(code:'todo.is.story.comments')}"
                         tooltip-append-to-body="true"
-                        ng-switch="{{ story.comments_count }}">
-                    <span class="fa fa-comment-o" ng-switch-default></span>
-                    <span class="fa fa-comment" ng-switch-when="true"></span>
+                        ng-switch="story.comments_count">
+                    <span class="fa fa-comment-o" ng-switch-when="0"></span>
+                    <span class="fa fa-comment" ng-switch-default></span>
                     <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
                 </button>
                 <button name="tasks"
@@ -125,7 +143,7 @@
                         tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                         tooltip-append-to-body="true"
                         tooltip-placement="left"
-                        ng-switch="{{ story.acceptanceTests_count }}">
+                        ng-switch="story.acceptanceTests_count">
                     <span class="fa fa-check-square-o" ng-switch-when="0"></span>
                     <span class="fa fa-check-square" ng-switch-default></span>
                     <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
@@ -145,100 +163,97 @@
 
     <div id="right-story-container"
          class="panel-body">
-        <form ng-submit="update(story)" name='storyForm' show-validation ng-controller="storyEditCtrl">
+        <form ng-submit="update(editableStory)"
+              ng-class="{'form-disabled': !getEditableStoryMode(story)}"
+              show-validation>
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">
                     <label for="story.name">${message(code:'is.story.name')}</label>
-                    <div class="input-group">
-                        <input required
-                               name="story.name"
-                               ng-model="story.name"
-                               type="text"
-                               ng-readonly="readOnly(story)"
-                               class="form-control">
-                        <span class="input-group-btn">
-                            <button type="button"
-                                    tabindex="-1"
-                                    popover-title="${message(code:'is.permalink')}"
-                                    popover="{{ serverUrl + '/TODOPKEY-' + story.uid }}"
-                                    popover-append-to-body="true"
-                                    popover-placement="left"
-                                    class="btn btn-default">
-                                <i class="fa fa-link"></i>
-                            </button>
-                        </span>
-                    </div>
+                    <input required
+                           ng-disabled="!getEditableStoryMode(story)"
+                           name="editableStory.name"
+                           ng-model="editableStory.name"
+                           type="text"
+                           class="form-control">
                 </div>
-                <div class="col-md-6 form-group">
+                <div class="col-md-6 form-group" ng-switch="getEditableStoryMode(story) || !editableStory.feature">
                     <label for="story.feature.id">${message(code:'is.feature')}</label>
-                    <div ng-class="{'input-group':story.feature.id, 'select2-border':story.feature.id}">
-                    <input type="hidden"
-                           class="form-control"
-                           ng-readonly="readOnly(story)"
-                           value="{{ story.feature.id ? story.feature : '' }}"
-                           ng-model="story.feature"
-                           ui-select2="selectFeatureOptions"
-                           data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
-                        <span class="input-group-btn" ng-show="story.feature.id">
-                            <a href="#feature/{{ story.feature.id }}"
-                               title="{{ story.feature.name }}"
+                    <div ng-switch-when="true"
+                         ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
+                        <input type="hidden"
+                               ng-disabled="!getEditableStoryMode(story)"
+                               class="form-control"
+                               value="{{ editableStory.feature.id ? editableStory.feature : '' }}"
+                               ng-model="editableStory.feature"
+                               ui-select2="selectFeatureOptions"
+                               data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
+                        <span class="input-group-btn" ng-show="editableStory.feature.id">
+                            <a href="#feature/{{ editableStory.feature.id }}"
+                               title="{{ editableStory.feature.name }}"
                                class="btn btn-default">
                                 <i class="fa fa-external-link"></i>
                             </a>
                         </span>
                     </div>
+                    <a ng-switch-default href="#feature/{{ editableStory.feature.id }}">
+                        <input type="text"
+                               class="form-control"
+                               value="{{ editableStory.feature.name }}"
+                               disabled="disabled"/>
+                    </a>
                 </div>
             </div>
             <div class="clearfix no-padding">
-                <div ng-class="{ 'form-group':true, 'col-md-6' : story.type == 2 }">
+                <div class="form-group"
+                     ng-class="{ 'col-md-6' : editableStory.type == 2 }">
                     <label for="story.type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
-                            ng-model="story.type"
-                            ng-readonly="readOnly(story)"
+                            ng-disabled="!getEditableStoryMode(story)"
+                            ng-model="editableStory.type"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
                 </select>
                 </div>
-                <div ng-class="{ 'form-group':true, 'col-md-6':true}" ng-show="story.type == 2">
+                <div class="form-group col-md-6"
+                     ng-show="editableStory.type == 2">
                     <label for="story.affectVersion">${message(code:'is.story.affectVersion')}</label>
                     <input class="form-control"
+                           ng-disabled="!getEditableStoryMode(story)"
                            type="hidden"
-                           value="{{ story.affectVersion  }}"
-                           ng-model="story.affectVersion"
-                           ng-readonly="readOnly(story)"
+                           value="{{ editableStory.affectVersion  }}"
+                           ng-model="editableStory.affectVersion"
                            ui-select2="selectAffectionVersionOptions"
                            data-placeholder="${message(code:'is.ui.story.noaffectversion')}"/>
                 </div>
             </div>
             <div class="form-group">
                 <label for="story.dependsOn.id">${message(code:'is.story.dependsOn')}</label>
-                <div ng-class="{'input-group':story.dependsOn.id}">
+                <div ng-class="{'input-group':editableStory.dependsOn.id}">
                     <input  type="hidden"
+                            ng-disabled="!getEditableStoryMode(story)"
                             style="width:100%;"
                             class="form-control"
-                            value="{{ story.dependsOn.id ? story.dependsOn : '' }}"
-                            ng-model="story.dependsOn"
-                            ng-readonly="readOnly(story)"
+                            value="{{ editableStory.dependsOn.id ? editableStory.dependsOn : '' }}"
+                            ng-model="editableStory.dependsOn"
                             ui-select2="selectDependsOnOptions"
                             data-placeholder="${message(code: 'is.ui.story.nodependence')}"/>
-                    <span class="input-group-btn" ng-show="story.dependsOn.id">
-                        <a href="#story/{{ story.dependsOn.id }}"
-                           title="{{ story.dependsOn.name }}"
+                    <span class="input-group-btn" ng-show="editableStory.dependsOn.id">
+                        <a href="#story/{{ editableStory.dependsOn.id }}"
+                           title="{{ editableStory.dependsOn.name }}"
                            class="btn btn-default">
                             <i class="fa fa-external-link"></i>
                         </a>
                     </span>
                 </div>
-                <div class="clearfix" style="margin-top: 15px;" ng-if="story.dependences.length">
+                <div class="clearfix" style="margin-top: 15px;" ng-if="editableStory.dependences.length">
                     <strong>${message(code:'is.story.dependences')} :</strong>
-                    <a class="scrum-link" title="{{ dependence.name }}" ng-repeat="dependence in story.dependences">{{ dependence.name }}</a>
+                    <a class="scrum-link" title="{{ dependence.name }}" ng-repeat="dependence in editableStory.dependences">{{ dependence.name }}</a>
                 </div>
             </div>
             <div class="form-group">
                 <label for="story.description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
-                          ng-model="story.description"
-                          ng-readonly="readOnly(story)"
+                          ng-model="editableStory.description"
                           ng-show="showDescriptionTextarea"
                           ng-blur="showDescriptionTextarea = false"
                           focus-me="{{ showDescriptionTextarea }}"
@@ -251,19 +266,21 @@
                           data-at-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
                           data-at-data="${g.createLink(controller:'actor', action: 'search', params:[product:'** jQuery.icescrum.product.pkey **'], absolute: true)}"></textarea>
                 <div class="atwho-preview form-control-static"
+                     ng-disabled="!getEditableStoryMode(story)"
                      ng-show="!showDescriptionTextarea"
-                     ng-click="showDescriptionTextarea = true"
-                     ng-focus="showDescriptionTextarea = true"
-                     ng-class="{'placeholder': !story.description}"
+                     ng-click="showDescriptionTextarea = getEditableStoryMode(story)"
+                     ng-focus="showDescriptionTextarea = getEditableStoryMode(story)"
+                     ng-class="{'placeholder': !editableStory.description}"
                      tabindex="0"
-                     ng-bind-html="(story.description ? (story | descriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
+                     ng-bind-html="(editableStory.description ? (editableStory | descriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
             </div>
             <div class="form-group">
+                <label for="story.tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
+                       ng-disabled="!getEditableStoryMode(story)"
                        class="form-control"
-                       value="{{ story.tags.join(',') }}"
-                       ng-model="story.tags"
-                       ng-readonly="readOnly(story)"
+                       value="{{ editableStory.tags.join(',') }}"
+                       ng-model="editableStory.tags"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
             </div>
@@ -271,19 +288,34 @@
                 <label for="story.notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
                           class="form-control"
-                          ng-model="story.notes"
-                          ng-readonly="readOnly(story)"
-                          is-model-html="story.notes_html"
+                          ng-model="editableStory.notes"
+                          is-model-html="editableStory.notes_html"
                           ng-show="showNotesTextarea"
                           ng-blur="showNotesTextarea = false"
                           placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                 <div class="markitup-preview"
+                     ng-disabled="!getEditableStoryMode(story)"
                      ng-show="!showNotesTextarea"
-                     ng-click="showNotesTextarea = true"
-                     ng-focus="showNotesTextarea = true"
-                     ng-class="{'placeholder': !story.notes_html}"
+                     ng-click="showNotesTextarea = getEditableStoryMode(story)"
+                     ng-focus="showNotesTextarea = getEditableStoryMode(story)"
+                     ng-class="{'placeholder': !editableStory.notes_html}"
                      tabindex="0"
-                     ng-bind-html="(story.notes_html ? story.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+                     ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+            </div>
+            <div class="btn-toolbar" ng-if="getEditableStoryMode(story)">
+                <button class="btn btn-primary pull-right"
+                        tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
+                        tooltip-append-to-body="true"
+                        type="submit">
+                    ${message(code:'todo.is.ui.update')}
+                </button>
+                <button class="btn confirmation btn-default pull-right"
+                        tooltip-append-to-body="true"
+                        tooltip="${message(code:'is.button.cancel')}"
+                        type="button"
+                        ng-click="cancel()">
+                    ${message(code:'is.button.cancel')}
+                </button>
             </div>
         </form>
         <tabset type="{{ tabsType }}">

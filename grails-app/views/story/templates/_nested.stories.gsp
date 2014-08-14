@@ -27,21 +27,15 @@
     </td>
 </tr>
 <tr ng-repeat="story in selected.stories">
-    <td class="avatar">
-        <img ng-src="{{story.creator | userAvatar}}"
-             alt="{{story.creator | userFullName}}"
-             tooltip="{{story.creator | userFullName}}"
-             width="25px">
-    </td>
     <td>
         <div class="content">
-            <span class="clearfix text-muted"><a href="#">{{ story.name }}</a></span>
-            <span ng-bind-html="story | descriptionHtml | sanitize"></span>
-            <small class="clearfix text-muted">
-                <time class='timeago' datetime='{{ story.dateCreated }}'>
-                    {{ story.dateCreated }}
-                </time> <i class="fa fa-clock-o"></i>
-            </small>
+            <span class="label label-default"
+                  tooltip-placement="left"
+                  tooltip="${message(code: 'is.backlogelement.id')}">{{ story.uid }}</span>
+            <a href="#">{{ story.name }}</a>
+            <div class="pretty-printed"
+                 ng-bind-html="story | descriptionHtml | sanitize">
+            </div>
         </div>
     </td>
 </tr>

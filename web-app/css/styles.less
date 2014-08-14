@@ -214,11 +214,13 @@ table {
       margin-bottom:0;
     }
   }
-  textarea, .atwho-preview {
-    min-height:100px;
+  textarea, .atwho-preview, .markitup-preview {
+    &:not([disabled]) {
+      min-height:70px;
+    }
   }
   .markitup-preview, textarea, .atwho-preview {
-    max-height:200px;
+    max-height: 132px;
     overflow: auto;
   }
   .panel-heading {
@@ -406,6 +408,62 @@ table[data-ui-draggable] > tr:hover .drag span,
 /** popover error **/
 .form-control.error:focus, .form-control.error {
   border-color:@brand-danger;
+}
+
+// White background for disabled inputs
+.form-control[disabled] {
+  &, &:hover {
+    background: none;
+    border: none;
+    cursor: text;
+    box-shadow: none;
+  }
+}
+.select2-container.select2-container-disabled {
+  box-shadow: none;
+  .select2-choice, .select2-choices {
+    &, &:hover {
+      background: none;
+      border: none;
+      cursor: text;
+      box-shadow: none;
+      .select2-arrow {
+        display: none;
+      }
+    }
+  }
+}
+.form-group div[disabled] {
+  border: none;
+  &:focus {
+    outline: #000000 solid 0px;
+  }
+}
+// Reduce size of disabled inputs in disabled forms
+form.form-disabled {
+  label {
+    margin-bottom: 0px;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+  .form-control {
+    &[disabled] {
+      padding-bottom: 0px;
+      padding-top: 0px;
+      height: 20px;
+    }
+  }
+  .select2-container.select2-container-disabled {
+    height: 20px;
+    .select2-choice, .select2-choices {
+      .select2-chosen {
+        padding-bottom: 0px;
+        padding-top: 0px;
+        height:20px;
+      }
+    }
+  }
 }
 
 .popover.error {

@@ -26,9 +26,6 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
     $scope.authorized = function(action) {
         return FeatureService.authorized(action);
     };
-    $scope.update = function(feature) {
-        FeatureService.update(feature);
-    };
     $scope['delete'] = function(feature) {
         FeatureService.delete(feature).then($scope.goToNewFeature);
     };
@@ -38,6 +35,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
     function($scope, $state, $timeout, $controller, selected, FeatureService, StoryService, FormService) {
         $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
         $scope.feature = selected;
+        $scope.editableFeature = angular.copy(selected);
         $scope.tabsType = 'tabs nav-tabs-google';
         if ($state.params.tabId) {
             $scope.tabSelected = {};
@@ -68,12 +66,26 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
         // Header
         $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
         $scope.next = FormService.next(FeatureService.list, $scope.feature);
+        // Edit
+        $scope.update = function(feature) {
+            FeatureService.update(feature).then(function(feature) {
+                $scope.feature = feature;
+            });
+        };
+        $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
+        $scope.setEditableFeatureMode = function(editableMode) {
+            $scope.setEditableMode(editableMode);
+            if (!editableMode) {
+                $scope.editableFeature = angular.copy($scope.feature);
+            }
+        };
+        $scope.getEditableFeatureMode = function(feature) {
+            return $scope.getEditableMode() && $scope.authorized('update', feature);
+        };
+        $scope.cancel = function() {
+            $scope.editableFeature = angular.copy($scope.feature);
+        };
     }]);
-
-controllers.controller('featureEditCtrl', ['$scope', 'FormService', function($scope, FormService) {
-    $scope.feature = angular.copy($scope.feature);
-    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-}]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', function($scope, $state, $controller, FeatureService) {
     $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
@@ -93,12 +105,19 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
     $scope.ids = listId;
     $scope.topFeature = {};
     $scope.featurePreview = {};
+    $scope.features = [];
     FeatureService.getMultiple(listId).then(function(features) {
+        $scope.features = features;
         $scope.topFeature = _.first(features);
         $scope.featurePreview = {
             type: $scope.topFeature.type
         };
     });
+    $scope.totalValue = function(features) {
+        return _.reduce(features, function(sum, feature) {
+            return sum + feature.value;
+        }, 0);
+    };
     $scope.deleteMultiple = function() {
         FeatureService.deleteMultiple(listId).then($scope.goToNewFeature);
     };

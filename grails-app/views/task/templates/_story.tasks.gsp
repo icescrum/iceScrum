@@ -44,7 +44,7 @@
                 <strong>{{ task.name }}</strong>
             </div>
             <div class="pretty-printed"
-                 ng-bind-html="task.description | lineReturns | sanitize"/>
+                 ng-bind-html="task.description | lineReturns | sanitize">
             </div>
         </div>
     </td>

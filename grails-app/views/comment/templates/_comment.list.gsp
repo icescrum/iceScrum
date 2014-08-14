@@ -50,9 +50,9 @@
                      tooltip="{{readOnlyComment.poster | userFullName}}"
                      width="25px"/>
                 <span class="text-muted">
-                    <time class='timeago' datetime='{{ readOnlyComment.dateCreated }}'>
+                    <time timeago datetime="'{{ readOnlyComment.dateCreated }}'">
                         {{ readOnlyComment.dateCreated }}
-                    </time> <span ng-show="readOnlyComment.dateCreated != readOnlyComment.lastUpdated">${message(code:'todo.is.ui.commnent.edited')}</span> <i class="fa fa-clock-o"></i>
+                    </time> <i class="fa fa-clock-o"></i> <span ng-show="readOnlyComment.dateCreated != readOnlyComment.lastUpdated">(${message(code:'todo.is.ui.commnent.edited')})</span>
                 </span>
                 <div class="pretty-printed"
                      ng-bind-html="readOnlyComment.body | lineReturns | sanitize">

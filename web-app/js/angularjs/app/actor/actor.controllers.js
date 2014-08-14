@@ -26,9 +26,6 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
     $scope.authorized = function(action) {
         return ActorService.authorized(action);
     };
-    $scope.update = function(actor) {
-        ActorService.update(actor);
-    };
     $scope['delete'] = function(actor) {
         ActorService.delete(actor).then($scope.goToNewActor);
     };
@@ -38,6 +35,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
     function($scope, $state, $timeout, $controller, selected, ActorService, StoryService, FormService) {
         $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
         $scope.actor = selected;
+        $scope.editableActor = angular.copy(selected);
         $scope.tabsType = 'tabs nav-tabs-google';
         if ($state.params.tabId) {
             $scope.tabSelected = {};
@@ -68,12 +66,27 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
         // header
         $scope.previous = FormService.previous(ActorService.list, $scope.actor);
         $scope.next = FormService.next(ActorService.list, $scope.actor);
+        // edit
+        $scope.update = function(actor) {
+            ActorService.update(actor).then(function(actor) {
+                $scope.actor = actor;
+            });
+        };
+        $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
+        $scope.setEditableActorMode = function(editableMode) {
+            $scope.setEditableMode(editableMode);
+            if (!editableMode) {
+                $scope.editableActor = angular.copy($scope.actor);
+            }
+        };
+        $scope.getEditableActorMode = function(actor) {
+            return $scope.getEditableMode() && $scope.authorized('update', actor);
+        };
+        $scope.cancel = function() {
+            $scope.editableActor = angular.copy($scope.actor);
+        };
     }]);
 
-controllers.controller('actorEditCtrl', ['$scope', 'FormService', function($scope, FormService) {
-    $scope.actor = angular.copy($scope.actor);
-    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-}]);
 
 controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'ActorService', function($scope, $state, $controller, ActorService) {
     $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl

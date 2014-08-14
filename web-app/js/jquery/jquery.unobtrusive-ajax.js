@@ -344,8 +344,6 @@ function attachOnDomUpdate(content){
         });
     });
 
-    $('time.timeago', content).timeago();
-
     $('div[data-ui-progressbar]', content).each(function(){
 
         var $this = $(this);

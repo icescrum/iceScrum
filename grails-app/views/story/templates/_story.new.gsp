@@ -67,7 +67,7 @@
                         <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
                             <a tooltip="{{ storyPreview.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                                tooltip-append-to-body="true"
-                               ng-switch="{{ storyPreview.acceptanceTests_count }}">
+                               ng-switch="storyPreview.acceptanceTests_count">
                                 <i class="fa fa-check-square-o" ng-switch-when="0"></i>
                                 <i class="fa fa-check-square" ng-switch-default></i>
                                 <span class="badge" ng-if="storyPreview.acceptanceTests_count">{{ storyPreview.acceptanceTests_count }}</span>

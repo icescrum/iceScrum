@@ -135,12 +135,6 @@ class UtilsTagLib {
         out << "${val as JSON}"
     }
 
-    def timeago = { attrs, body ->
-        SimpleDateFormat ISO8601UTC = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        ISO8601UTC.setTimeZone(TimeZone.getTimeZone("UTC"))
-        out << "<time class='timeago' datetime='${ISO8601UTC.format(attrs.date)}'>${formatDate([date:attrs.date, formatName:'is.date.format.short.time', timeZone:attrs.timezone?:null])}</time>"
-    }
-
     def cache = { attrs, body ->
         if (attrs.disabled){
             out << body()

@@ -57,6 +57,16 @@
                 </button>
                 <ul class="dropdown-menu" ng-include="'actor.menu.html'"></ul>
             </div>
+            <button class="btn btn-primary"
+                    type="button"
+                    tooltip="${message(code:'todo.is.ui.editable.enable')}"
+                    ng-if="authorized('update', actor) && !getEditableMode(actor)"
+                    ng-click="setEditableActorMode(true)"><span class="fa fa-pencil"></span></button>
+            <button class="btn btn-default"
+                    type="button"
+                    tooltip="${message(code:'todo.is.ui.editable.disable')}"
+                    ng-if="getEditableActorMode(actor)"
+                    ng-click="setEditableActorMode(false)"><span class="fa fa-pencil-square-o"></span></button>
             <div class="btn-group pull-right">
                 <button name="attachments" class="btn btn-default"
                         ng-click="setTabSelected('attachments')"
@@ -77,16 +87,17 @@
     </div>
 
     <div class="panel-body">
-        <form ng-submit="update(actor)"
+        <form ng-submit="update(editableActor)"
+              ng-class="{'form-disabled': !getEditableActorMode(actor)}"
               name='actorForm'
-              show-validation
-              ng-controller="actorEditCtrl">
+              show-validation>
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">
                     <label for="actor.name">${message(code:'is.actor.name')}</label>
                     <input required
-                           name="actor.name"
-                           ng-model="actor.name"
+                           ng-disabled="!getEditableActorMode(actor)"
+                           name="editableActor.name"
+                           ng-model="editableActor.name"
                            ng-readonly="readOnly()"
                            type="text"
                            class="form-control">
@@ -94,7 +105,8 @@
                 <div class="col-md-6 form-group">
                     <label for="actor.instances">${message(code:'is.actor.instances')}</label>
                     <select class="form-control"
-                            ng-model="actor.instances"
+                            ng-disabled="!getEditableActorMode(actor)"
+                            ng-model="editableActor.instances"
                             ng-readonly="readOnly()"
                             ui-select2>
                         <is:options values="${BundleUtils.actorInstances}" />
@@ -105,7 +117,8 @@
                 <div class="col-md-6 form-group">
                     <label for="actor.expertnessLevel">${message(code:'is.actor.it.level')}</label>
                     <select class="form-control"
-                            ng-model="actor.expertnessLevel"
+                            ng-disabled="!getEditableActorMode(actor)"
+                            ng-model="editableActor.expertnessLevel"
                             ng-readonly="readOnly()"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.actorLevels)}" />
@@ -114,7 +127,8 @@
                 <div class="col-md-6 form-group">
                     <label for="actor.useFrequency">${message(code:'is.actor.use.frequency')}</label>
                     <select class="form-control"
-                            ng-model="actor.useFrequency"
+                            ng-disabled="!getEditableActorMode(actor)"
+                            ng-model="editableActor.useFrequency"
                             ng-readonly="readOnly()"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.actorFrequencies)}" />
@@ -124,15 +138,18 @@
             <div class="form-group">
                 <label for="actor.description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
+                          ng-disabled="!getEditableActorMode(actor)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
-                          ng-model="actor.description"
+                          ng-model="editableActor.description"
                           ng-readonly="readOnly()"></textarea>
             </div>
             <div class="form-group">
+                <label for="actor.tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
+                       ng-disabled="!getEditableActorMode(actor)"
                        class="form-control"
-                       value="{{ actor.tags.join(',') }}"
-                       ng-model="actor.tags"
+                       value="{{ editableActor.tags.join(',') }}"
+                       ng-model="editableActor.tags"
                        ng-readonly="readOnly()"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
@@ -141,19 +158,35 @@
                 <label for="actor.notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
                           class="form-control"
-                          ng-model="actor.notes"
-                          is-model-html="actor.notes_html"
+                          ng-model="editableActor.notes"
+                          is-model-html="editableActor.notes_html"
                           ng-show="showNotesTextarea"
                           ng-blur="showNotesTextarea = false"
                           ng-readonly="readOnly()"
                           placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                 <div class="markitup-preview"
+                     ng-disabled="!getEditableActorMode(actor)"
                      ng-show="!showNotesTextarea"
-                     ng-click="showNotesTextarea = true"
-                     ng-focus="showNotesTextarea = true"
-                     ng-class="{'placeholder': !actor.notes_html}"
+                     ng-click="showNotesTextarea = getEditableActorMode(actor)"
+                     ng-focus="showNotesTextarea = getEditableActorMode(actor)"
+                     ng-class="{'placeholder': !editableActor.notes_html}"
                      tabindex="0"
-                     ng-bind-html="(actor.notes_html ? actor.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+                     ng-bind-html="(editableActor.notes_html ? editableActor.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+            </div>
+            <div class="btn-toolbar" ng-if="getEditableActorMode(editableActor)">
+                <button class="btn btn-primary pull-right"
+                        tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
+                        tooltip-append-to-body="true"
+                        type="submit">
+                    ${message(code:'todo.is.ui.update')}
+                </button>
+                <button class="btn confirmation btn-default pull-right"
+                        tooltip-append-to-body="true"
+                        tooltip="${message(code:'is.button.cancel')}"
+                        type="button"
+                        ng-click="cancel()">
+                    ${message(code:'is.button.cancel')}
+                </button>
             </div>
         </form>
         <tabset type="{{ tabsType }}">
