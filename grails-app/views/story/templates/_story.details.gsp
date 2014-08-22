@@ -35,7 +35,7 @@
                    tooltip-append-to-body="true"
                    ng-click="follow(story)"
                    ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
-                <span>{{ story.name }}</span><small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
+                <span>{{ story.name }}</span> <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
             </div>
             <div class="col-sm-4">
                 <div class="pull-right">
