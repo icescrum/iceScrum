@@ -101,7 +101,7 @@
                            ng-readonly="!authorizedStory('create')"
                            placeholder="${message(code: 'is.ui.story.noname')}"/>
                            <div ng-if="messageDuplicate"
-                                class="duplicate bg-warning"
+                                class="help-block bg-warning"
                                 ng-bind-html="messageDuplicate | sanitize"></div>
                 </div>
                 <div class="form-group col-md-6">
