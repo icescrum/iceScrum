@@ -328,12 +328,6 @@
             </div>
         </form>
 
-
-    </div>
-</div>
-<div class="panel panel-default">
-    <div class="panel-body">
-
     <tabset type="{{ tabsType }}">
             <tab select="activities(story); ($state.params.tabId ? setTabSelected('activities') : '');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
