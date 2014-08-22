@@ -78,14 +78,15 @@ services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
             });
         }).$promise;
     };
-    this.authorized = function(action) {
+    this.authorizedActor = function(action) {
         switch (action) {
             case 'create':
-            case 'updateMultiple':
             case 'update':
             case 'delete':
+            case 'deleteMultiple':
                 return Session.po();
-                break;
+            case 'menu':
+                return this.authorizedActor('delete');
             default:
                 return false;
         }

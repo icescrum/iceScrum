@@ -22,14 +22,15 @@
 --}%
 
 <script type="text/ng-template" id="story.task.new.html">
-<table class="table">
+<table ng-if="authorizedTask('create')"
+       class="table">
     <tbody>
     <tr>
-        <td ng-switch="showForm">
+        <td ng-switch="showTaskForm">
             <button ng-switch-default
                     class="btn btn-sm btn-primary pull-right"
                     type="button"
-                    ng-click="setShowForm(true)"
+                    ng-click="setShowTaskForm(true)"
                     tooltip="${message(code:'todo.is.ui.task.new')}"
                     tooltip-placement="left"
                     tooltip-append-to-body="body">
@@ -38,7 +39,7 @@
             <button ng-switch-when="true"
                     class="btn btn-sm btn-default pull-right"
                     type="button"
-                    ng-click="setShowForm(false)"
+                    ng-click="setShowTaskForm(false)"
                     tooltip="${message(code:'todo.is.ui.hide')}"
                     tooltip-placement="left"
                     tooltip-append-to-body="body">
@@ -46,16 +47,18 @@
             </button>
         </td>
     </tr>
-    <tr ng-show="showForm">
+    <tr ng-show="showTaskForm">
         <td>
-            <form show-validation
-                  ng-submit="save(task, selected)">
+            <form ng-submit="save(task, selected)"
+                  name="formHolder.taskForm"
+                  show-validation
+                  novalidate>
                 <div class="clearfix no-padding">
                     <div class="form-group col-sm-9">
                         <label>${message(code:'is.backlogelement.name')}</label>
                         <input required
                                type="text"
-                               focus-me="{{ showForm }}"
+                               focus-me="{{ showTaskForm }}"
                                ng-model="task.name"
                                class="form-control">
                     </div>
@@ -64,7 +67,7 @@
                         <input ng-model="task.estimation"
                                type="number"
                                step="any"
-                               pattern="[0-9]+([\.|,][0-9]+)?"
+                               ng-pattern="/[0-9]+([\.|,][0-9]+)?$/"
                                class="form-control">
                     </div>
                 </div>
@@ -74,6 +77,7 @@
                 </div>
                 <div class="btn-toolbar pull-right">
                     <button class="btn btn-primary pull-right"
+                            ng-class="{ disabled: !formHolder.taskForm.$dirty || formHolder.taskForm.$invalid  }"
                             tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                             tooltip-append-to-body="true"
                             type="submit">
@@ -83,7 +87,7 @@
                             tooltip-append-to-body="true"
                             tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
                             type="button"
-                            ng-click="cancel()">
+                            ng-click="resetTaskForm()">
                         ${message(code:'is.button.cancel')}
                     </button>
                 </div>

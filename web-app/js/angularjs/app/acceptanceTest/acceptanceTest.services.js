@@ -25,7 +25,7 @@ services.factory('AcceptanceTest', [ 'Resource', function($resource) {
     return $resource('acceptanceTest/:type/:storyId/:id');
 }]);
 
-services.service("AcceptanceTestService", ['AcceptanceTest', 'StoryStatesByName', function(AcceptanceTest, StoryStatesByName) {
+services.service("AcceptanceTestService", ['AcceptanceTest', 'StoryStatesByName', 'Session', function(AcceptanceTest, StoryStatesByName, Session) {
     this.save = function(acceptanceTest, story) {
         acceptanceTest.class = 'acceptanceTest';
         acceptanceTest.parentStory = { id: story.id };
@@ -54,13 +54,16 @@ services.service("AcceptanceTestService", ['AcceptanceTest', 'StoryStatesByName'
             story.acceptanceTests_count = story.acceptanceTests.length;
         }).$promise;
     };
-    this.readOnly = function(story) {
-        return story.state == StoryStatesByName.DONE;
-    };
-    this.stateReadOnly = function(story) {
-        return this.readOnly(story) || (story.state < StoryStatesByName.PLANNED);
-    };
-    this.initAcceptanceTest = function(existingAcceptanceTest) {
-        return existingAcceptanceTest ? angular.copy(existingAcceptanceTest) : { state: 1 }; // TODO use constants, not hardcoded values
+    this.authorizedAcceptanceTest = function(action, acceptanceTest) {
+        switch (action) {
+            case 'create':
+            case 'update':
+            case 'delete':
+                return acceptanceTest.parentStory.state < StoryStatesByName.DONE && Session.inProduct();
+            case 'updateState':
+                return acceptanceTest.parentStory.state == StoryStatesByName.IN_PROGRESS && Session.inProduct();
+            default:
+                return false;
+        }
     };
 }]);

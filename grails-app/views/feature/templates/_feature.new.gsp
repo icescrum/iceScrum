@@ -54,7 +54,8 @@
 
         <form ng-submit="save(feature, false)"
               name='featureForm'
-              show-validation>
+              show-validation
+              novalidate>
             <div class="clearfix no-padding">
                 <div class="form-group col-md-6">
                     <label for="feature.name">${message(code:'is.feature.name')}</label>
@@ -63,11 +64,11 @@
                            ng-model="feature.name"
                            type="text"
                            class="form-control"
-                           ng-readonly="!authorized('create')"
+                           ng-readonly="!authorizedFeature('create')"
                            placeholder="${message(code: 'is.ui.feature.noname')}"/>
                 </div>
             </div>
-            <div ng-if="authorized('create')" class="btn-toolbar pull-right">
+            <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                         tooltip-append-to-body="true"

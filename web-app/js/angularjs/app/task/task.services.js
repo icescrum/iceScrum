@@ -29,7 +29,7 @@ services.factory('Task', [ 'Resource', function($resource) {
         });
 }]);
 
-services.service("TaskService", ['Task', function(Task) {
+services.service("TaskService", ['Task', 'Session', function(Task, Session) {
     this.save = function(task, obj) {
         task.class = 'task';
         if (obj.class == 'Story') {
@@ -52,5 +52,15 @@ services.service("TaskService", ['Task', function(Task) {
         return Task.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
             obj.tasks = data;
         }).$promise;
-    }
+    };
+    this.authorizedTask = function(action, task) {
+        switch (action) {
+            case 'create':
+                return Session.inProduct();
+            case 'delete':
+                return Session.poOrSm() || Session.creator(task);
+            default:
+                return false;
+        }
+    };
 }]);

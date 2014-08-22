@@ -231,6 +231,14 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/feature/$id/$action" {
+            controller = 'feature'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+
         "/p/$product/comment/$type/$commentable" {
             controller = 'comment'
             action = [GET: "list", POST:"save"]

@@ -22,7 +22,8 @@
 --}%
 
 <is:modal title="${message(code:'is.dialog.wizard')}" class="wizard" footer="${false}">
-    <form novalidate>
+    <form show-validation
+          novalidate>
         <wizard class="row" on-finish="finishedWizard()" style="height:450px;">
             <wz-step title="${message(code:"is.dialog.wizard.section.project")}">
                 <h4>${message(code:"is.dialog.wizard.section.project")}</h4>

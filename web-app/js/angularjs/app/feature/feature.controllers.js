@@ -23,11 +23,14 @@
  */
 
 controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', function($scope, $state, FeatureService) {
-    $scope.authorized = function(action) {
-        return FeatureService.authorized(action);
+    $scope.authorizedFeature = function(action) {
+        return FeatureService.authorizedFeature(action);
     };
     $scope['delete'] = function(feature) {
         FeatureService.delete(feature).then($scope.goToNewFeature);
+    };
+    $scope.copyToBacklog = function(feature) {
+        FeatureService.copyToBacklog(feature);
     };
 }]);
 
@@ -35,7 +38,11 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
     function($scope, $state, $timeout, $controller, selected, FeatureService, StoryService, FormService) {
         $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
         $scope.feature = selected;
-        $scope.editableFeature = angular.copy(selected);
+        $scope.initEditableFeature = function() {
+            $scope.editableFeature = angular.copy(selected);
+            $scope.editableFeatureReference = angular.copy(selected);
+        };
+        $scope.initEditableFeature();
         $scope.tabsType = 'tabs nav-tabs-google';
         if ($state.params.tabId) {
             $scope.tabSelected = {};
@@ -67,24 +74,42 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
         $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
         $scope.next = FormService.next(FeatureService.list, $scope.feature);
         // Edit
+        $scope.isDirty = function() {
+            return !_.isEqual($scope.editableFeature, $scope.editableFeatureReference);
+        };
         $scope.update = function(feature) {
             FeatureService.update(feature).then(function(feature) {
                 $scope.feature = feature;
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-        $scope.setEditableFeatureMode = function(editableMode) {
-            $scope.setEditableMode(editableMode);
-            if (!editableMode) {
-                $scope.editableFeature = angular.copy($scope.feature);
-            }
+        $scope.enableEditableFeatureMode = function() {
+            $scope.setEditableMode(true);
+        };
+        $scope.disableEditableStoryMode = function() {
+            $scope.setEditableMode(false);
+            $scope.initEditableFeature();
         };
         $scope.getEditableFeatureMode = function(feature) {
-            return $scope.getEditableMode() && $scope.authorized('update', feature);
+            return $scope.getEditableMode() && $scope.authorizedFeature('update', feature);
         };
-        $scope.cancel = function() {
-            $scope.editableFeature = angular.copy($scope.feature);
-        };
+        $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
+        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+            if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+                event.preventDefault(); // cancel the state change
+                $scope.mustConfirmStateChange = false;
+                $scope.confirm({
+                    message: 'todo.is.ui.dirty.confirm',
+                    condition: $scope.isDirty(),
+                    callback: function () {
+                        $state.go(toState, toParams)
+                    },
+                    closeCallback: function() {
+                        $scope.mustConfirmStateChange = true;
+                    }
+                });
+            }
+        });
     }]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', function($scope, $state, $controller, FeatureService) {
@@ -110,7 +135,7 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
         $scope.features = features;
         $scope.topFeature = _.first(features);
         $scope.featurePreview = {
-            type: $scope.topFeature.type
+            type: _.every(features, { type: $scope.topFeature.type }) ? $scope.topFeature.type : null
         };
     });
     $scope.totalValue = function(features) {
@@ -123,6 +148,9 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
     };
     $scope.updateMultiple = function(updatedFields) {
         FeatureService.updateMultiple(listId, updatedFields);
+    };
+    $scope.copyToBacklogMultiple = function() {
+        FeatureService.copyToBacklogMultiple(listId);
     };
 }]);
 

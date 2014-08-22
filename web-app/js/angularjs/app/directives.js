@@ -127,7 +127,7 @@ directives.directive('focusMe', function($timeout) {
                 var input = formGroupEl.find('input[ng-model],textarea[ng-model]');
                 if (input.length > 0) {
                     scope.$watch(function() {
-                        return input.hasClass('ng-invalid');
+                        return input.hasClass('ng-invalid') && input.hasClass('ng-dirty');
                     }, function(isInvalid) {
                         formGroupEl.toggleClass('has-error', isInvalid);
                     });

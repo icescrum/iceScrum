@@ -23,8 +23,8 @@
  */
 
 controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', function($scope, $state, ActorService) {
-    $scope.authorized = function(action) {
-        return ActorService.authorized(action);
+    $scope.authorizedActor = function(action) {
+        return ActorService.authorizedActor(action);
     };
     $scope['delete'] = function(actor) {
         ActorService.delete(actor).then($scope.goToNewActor);
@@ -35,7 +35,11 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
     function($scope, $state, $timeout, $controller, selected, ActorService, StoryService, FormService) {
         $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
         $scope.actor = selected;
-        $scope.editableActor = angular.copy(selected);
+        $scope.initEditableActor = function() {
+            $scope.editableActor = angular.copy(selected);
+            $scope.editableActorReference = angular.copy(selected);
+        };
+        $scope.initEditableActor();
         $scope.tabsType = 'tabs nav-tabs-google';
         if ($state.params.tabId) {
             $scope.tabSelected = {};
@@ -67,24 +71,42 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
         $scope.previous = FormService.previous(ActorService.list, $scope.actor);
         $scope.next = FormService.next(ActorService.list, $scope.actor);
         // edit
+        $scope.isDirty = function() {
+            return !_.isEqual($scope.editableActor, $scope.editableActorReference);
+        };
         $scope.update = function(actor) {
             ActorService.update(actor).then(function(actor) {
                 $scope.actor = actor;
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-        $scope.setEditableActorMode = function(editableMode) {
-            $scope.setEditableMode(editableMode);
-            if (!editableMode) {
-                $scope.editableActor = angular.copy($scope.actor);
-            }
+        $scope.enableEditableActorMode = function() {
+            $scope.setEditableMode(true);
+        };
+        $scope.disableEditableActorMode = function() {
+            $scope.setEditableMode(false);
+            $scope.initEditableActor();
         };
         $scope.getEditableActorMode = function(actor) {
-            return $scope.getEditableMode() && $scope.authorized('update', actor);
+            return $scope.getEditableMode() && $scope.authorizedActor('update', actor);
         };
-        $scope.cancel = function() {
-            $scope.editableActor = angular.copy($scope.actor);
-        };
+        $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
+        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+            if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+                event.preventDefault(); // cancel the state change
+                $scope.mustConfirmStateChange = false;
+                $scope.confirm({
+                    message: 'todo.is.ui.dirty.confirm',
+                    condition: $scope.isDirty(),
+                    callback: function () {
+                        $state.go(toState, toParams)
+                    },
+                    closeCallback: function() {
+                        $scope.mustConfirmStateChange = true;
+                    }
+                });
+            }
+        });
     }]);
 
 

@@ -50,6 +50,7 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
+                 ng-if="authorizedFeature('menu')"
                  tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -69,13 +70,13 @@
             <button class="btn btn-primary"
                     type="button"
                     tooltip="${message(code:'todo.is.ui.editable.enable')}"
-                    ng-if="authorized('update', feature) && !getEditableMode(feature)"
-                    ng-click="setEditableFeatureMode(true)"><span class="fa fa-pencil"></span></button>
+                    ng-if="authorizedFeature('update', feature) && !getEditableMode(feature)"
+                    ng-click="enableEditableFeatureMode()"><span class="fa fa-pencil"></span></button>
             <button class="btn btn-default"
                     type="button"
                     tooltip="${message(code:'todo.is.ui.editable.disable')}"
                     ng-if="getEditableFeatureMode(feature)"
-                    ng-click="setEditableFeatureMode(false)"><span class="fa fa-pencil-square-o"></span></button>
+                    ng-click="confirm({ message: '${message(code: 'todo.is.ui.dirty.confirm')}', callback: disableEditableFeatureMode, condition: isDirty() })"><span class="fa fa-pencil-square-o"></span></button>
             <div class="btn-group pull-right">
                 <button name="attachments" class="btn btn-default"
                         ng-click="setTabSelected('attachments')"
@@ -99,7 +100,8 @@
         <form ng-submit="update(editableFeature)"
               ng-class="{'form-disabled': !getEditableFeatureMode(feature)}"
               name='featureForm'
-              show-validation>
+              show-validation
+              novalidate>
             <div class="form-group">
                 <label for="feature.name">${message(code:'is.feature.name')}</label>
                 <input required
@@ -177,16 +179,18 @@
             </div>
             <div class="btn-toolbar" ng-if="getEditableFeatureMode(editableFeature)">
                 <button class="btn btn-primary pull-right"
+                        ng-class="{ disabled: !isDirty() }"
                         tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'todo.is.ui.update')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
+                        ng-class="{ disabled: !isDirty() }"
                         tooltip-append-to-body="true"
                         tooltip="${message(code:'is.button.cancel')}"
                         type="button"
-                        ng-click="cancel()">
+                        ng-click="initEditableFeature()">
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>

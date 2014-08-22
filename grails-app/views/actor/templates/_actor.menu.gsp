@@ -23,7 +23,7 @@
 
 <script type="text/ng-template" id="actor.menu.html">
 <li>
-    <a ng-if="authorized('delete')" ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [actor])">
+    <a ng-if="authorizedActor('delete')" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [actor] })">
         <g:message code='is.ui.actor.menu.delete'/>
     </a>
 </li>

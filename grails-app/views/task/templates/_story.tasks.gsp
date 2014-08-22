@@ -34,8 +34,8 @@
                         type="button"
                         tooltip-placement="left"
                         tooltip="${message(code:'todo.is.ui.task.delete')}"
-                        ng-if="deletable()"
-                        ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [task, story])"><span class="fa fa-times"></span></button>
+                        ng-if="authorizedTask('delete', task)"
+                        ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"><span class="fa fa-times"></span></button>
             </div>
             <div>
                 <span class="label label-default"

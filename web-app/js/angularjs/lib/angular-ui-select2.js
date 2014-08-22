@@ -47,6 +47,11 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                         angular.forEach(select2_data, function(el, ind){
                             model += ind == 0 ? el.id : ','+el.id;
                         });
+                    } else if (opts.array_tags) {
+                        model = [];
+                        angular.forEach(select2_data, function(el){
+                            model.push(el.id);
+                        });
                     } else {
                         if (!select2_data && opts.resultAsEmptyId){
                             model = {id:''};
@@ -65,10 +70,9 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                     if (!angular_data) {
                         return model;
                     }
-
-                    if (opts.simple_tags) {
+                    if (opts.simple_tags || opts.array_tags) {
                         model = [];
-                        angular.forEach( angular_data, function(value, index) {
+                        angular.forEach(angular_data, function(value) {
                             model.push({'id': value, 'text': value});
                         });
                     } else {

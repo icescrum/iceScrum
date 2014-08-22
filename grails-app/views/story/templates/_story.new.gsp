@@ -85,18 +85,20 @@
         </div>
 
         <form ng-submit="save(story, false)"
-              name='storyForm'
-              show-validation>
+              name='formHolder.storyForm'
+              show-validation
+              novalidate>
             <div class="clearfix no-padding">
                 <div class="form-group col-md-6">
                     <label for="story.name">${message(code:'is.story.name')}</label>
                     <input required
+                           ng-maxlength="100"
                            name="story.name"
                            ng-model="story.name"
                            type="text"
                            class="form-control"
                            ng-change="findDuplicates(story.name)"
-                           ng-readonly="!authorized('create')"
+                           ng-readonly="!authorizedStory('create')"
                            placeholder="${message(code: 'is.ui.story.noname')}"/>
                            <div ng-if="messageDuplicate"
                                 class="duplicate bg-warning"
@@ -104,16 +106,16 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="story.template">${message(code: 'todo.is.ui.story.template.choose')}</label>
-                    <div ng-class="{'input-group': authorized('updateTemplate')}">
+                    <div ng-class="{'input-group': authorizedStory('updateTemplate')}">
                         <input type="hidden"
                                name="story.template"
                                class="form-control"
                                ng-model="story.template"
-                               ng-readonly="!authorized('create')"
+                               ng-readonly="!authorizedStory('create')"
                                ng-change="templateSelected()"
-                               data-placeholder="${message(code:'todo.is.ui.story.template.placeholder')}"
+                               data-placeholder="${message(code:'todo.is.ui.story.placeholder')}"
                                ui-select2="selectTemplateOptions"/>
-                        <span class="input-group-btn" ng-show="authorized('updateTemplate')">
+                        <span class="input-group-btn" ng-show="authorizedStory('updateTemplate')">
                             <button type="button"
                                     tabindex="-1"
                                     tooltip="${message(code:'todo.is.ui.story.template.edit')}"
@@ -127,14 +129,16 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="authorized('create')" class="btn-toolbar pull-right">
+            <div ng-if="authorizedStory('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
+                        ng-class="{ disabled: formHolder.storyForm.$invalid }"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'todo.is.ui.save')}
                 </button>
                 <button class="btn btn-primary pull-right"
+                        ng-class="{ disabled: formHolder.storyForm.$invalid }"
                         tooltip="${message(code:'todo.is.ui.save.and.continue')} (SHIFT+RETURN)"
                         tooltip-append-to-body="true"
                         hotkey="{'shift+return': hotkeyClick }"

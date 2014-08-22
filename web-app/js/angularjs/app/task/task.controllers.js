@@ -21,22 +21,31 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('taskCtrl', ['$scope', 'TaskService', 'Session', function($scope, TaskService, Session) {
-    $scope.showForm = false;
-    $scope.setShowForm = function(show) {
-        $scope.showForm = show;
+controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+    $scope.showTaskForm = false;
+    $scope.setShowTaskForm = function(show) {
+        $scope.showTaskForm = show;
     };
     $scope.save = function(task, obj) {
-        TaskService.save(task, obj);
+        TaskService.save(task, obj).then($scope.resetTaskForm);
     };
     $scope['delete'] = function(task, story) {
         TaskService.delete(task, story);
     };
-    $scope.deletable = function() {
-        return Session.poOrSm() || Session.creator($scope.task);
+    $scope.authorizedTask = function(action, task) {
+        return TaskService.authorizedTask(action, task);
     };
-    $scope.cancel = function() {
-        $scope.setShowForm(false);
+    $scope.resetTaskForm = function() {
+        $scope.setShowTaskForm(false);
         $scope.task = {};
-    }
+        if ($scope.formHolder.taskForm) {
+            $scope.formHolder.taskForm.$setPristine();
+        }
+    };
+    $scope.disabledForm = function() {
+        console.log($scope.formHolder.taskForm.$dirty && !$scope.formHolder.taskForm.$invalid);
+        return $scope.formHolder.taskForm.$dirty && !$scope.formHolder.taskForm.$invalid;
+    };
+    // Init
+    $scope.formHolder = {};
 }]);

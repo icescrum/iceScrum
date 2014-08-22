@@ -455,6 +455,8 @@
     /* 5 */
 }
 
+/* Custom stuff */
+
 .select2-search input {
     box-shadow:none;
     border-radius:0;
@@ -501,4 +503,8 @@
 
 .select2-border .select2-chosen {
     border-left:4px solid;
+}
+
+.select2-container .select2-choice div {
+    border-left: none;
 }

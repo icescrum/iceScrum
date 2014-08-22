@@ -61,12 +61,14 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
+                 ng-if="authorizedStory('menu', story)"
                  tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-cog"></span> <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
+                <ul class="dropdown-menu"
+                    ng-include="'story.menu.html'"></ul>
             </div>
             <button type="button"
                     popover-title="${message(code:'is.permalink')}"
@@ -76,29 +78,29 @@
                     class="btn btn-default">
                 <span class="fa fa-link"></span>
             </button>
+            <button class="btn btn-default"
+                    type="button"
+                    ng-click="like(story)"
+                    ng-switch="story.liked"
+                    role="button"
+                    tabindex="0"
+                    tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
+                    tooltip-append-to-body="true">
+                <i class="fa fa-thumbs-o-up" ng-switch-default></i>
+                <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
+                <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
+            </button>
             <button class="btn btn-primary"
                     type="button"
                     tooltip="${message(code:'todo.is.ui.editable.enable')}"
-                    ng-if="authorized('update', story) && !getEditableMode(story)"
-                    ng-click="setEditableStoryMode(true)"><span class="fa fa-pencil"></span></button>
+                    ng-if="authorizedStory('update', story) && !getEditableMode(story)"
+                    ng-click="enableEditableStoryMode()"><span class="fa fa-pencil"></span></button>
             <button class="btn btn-default"
                     type="button"
                     tooltip="${message(code:'todo.is.ui.editable.disable')}"
                     ng-if="getEditableStoryMode(story)"
-                    ng-click="setEditableStoryMode(false)"><span class="fa fa-pencil-square-o"></span></button>
+                    ng-click="confirm({ message: '${message(code: 'todo.is.ui.dirty.confirm')}', callback: disableEditableStoryMode, condition: isDirty() })"><span class="fa fa-pencil-square-o"></span></button>
             <div class="btn-group pull-right">
-                <button class="btn btn-default"
-                        type="button"
-                        ng-click="like(story)"
-                        ng-switch="story.liked"
-                        role="button"
-                        tabindex="0"
-                        tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
-                        tooltip-append-to-body="true">
-                    <i class="fa fa-thumbs-o-up" ng-switch-default></i>
-                    <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
-                    <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
-                </button>
                 <button name="activities"
                         class="btn btn-default"
                         type="button"
@@ -164,12 +166,15 @@
     <div id="right-story-container"
          class="panel-body">
         <form ng-submit="update(editableStory)"
+              name='formHolder.storyForm'
               ng-class="{'form-disabled': !getEditableStoryMode(story)}"
-              show-validation>
+              show-validation
+              novalidate>
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">
                     <label for="story.name">${message(code:'is.story.name')}</label>
                     <input required
+                           ng-maxlength="100"
                            ng-disabled="!getEditableStoryMode(story)"
                            name="editableStory.name"
                            ng-model="editableStory.name"
@@ -253,6 +258,7 @@
             <div class="form-group">
                 <label for="story.description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
+                          ng-maxlength="3000"
                           ng-model="editableStory.description"
                           ng-show="showDescriptionTextarea"
                           ng-blur="showDescriptionTextarea = false"
@@ -287,6 +293,7 @@
             <div class="form-group">
                 <label for="story.notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
+                          ng-maxlength="5000"
                           class="form-control"
                           ng-model="editableStory.notes"
                           is-model-html="editableStory.notes_html"
@@ -304,21 +311,30 @@
             </div>
             <div class="btn-toolbar" ng-if="getEditableStoryMode(story)">
                 <button class="btn btn-primary pull-right"
+                        ng-class="{ disabled: !isDirty() || formHolder.storyForm.$invalid }"
                         tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'todo.is.ui.update')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
+                        ng-class="{ disabled: !isDirty() }"
                         tooltip-append-to-body="true"
                         tooltip="${message(code:'is.button.cancel')}"
                         type="button"
-                        ng-click="cancel()">
+                        ng-click="resetStoryForm()">
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>
         </form>
-        <tabset type="{{ tabsType }}">
+
+
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+
+    <tabset type="{{ tabsType }}">
             <tab select="activities(story); ($state.params.tabId ? setTabSelected('activities') : '');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
                  active="tabSelected.activities">
@@ -338,12 +354,12 @@
                 </table>
                 <table class="table" ng-controller="commentCtrl">
                     <tbody>
-                    <tr>
-                        <td ng-switch="getShowForm()">
+                    <tr ng-if="authorizedComment('create')">
+                        <td ng-switch="getShowCommentForm()">
                             <button ng-switch-default
                                     class="btn btn-sm btn-primary pull-right"
                                     type="button"
-                                    ng-click="setShowForm(true)"
+                                    ng-click="setShowCommentForm(true)"
                                     tooltip="${message(code:'todo.is.ui.comment.new')}'"
                                     tooltip-append-to-body="body"
                                     tooltip-placement="left">
@@ -352,7 +368,7 @@
                             <button ng-switch-when="true"
                                     class="btn btn-sm btn-default pull-right "
                                     type="button"
-                                    ng-click="setShowForm(false)"
+                                    ng-click="setShowCommentForm(false)"
                                     tooltip="${message(code:'todo.is.ui.hide')}"
                                     tooltip-append-to-body="body"
                                     tooltip-placement="left">
@@ -360,7 +376,7 @@
                             </button>
                         </td>
                     </tr>
-                    <tr ng-show="getShowForm()">
+                    <tr ng-show="getShowCommentForm()">
                         <td><div ng-init="formType='save'" ng-include="'comment.editor.html'"></div></td>
                     </tr>
                     </tbody>
@@ -379,12 +395,12 @@
                  active="tabSelected.tests">
                 <table class="table" ng-controller="acceptanceTestCtrl">
                     <tbody>
-                    <tr>
-                        <td ng-switch="getShowForm()">
+                    <tr ng-if="authorizedAcceptanceTest('create', editableAcceptanceTest)">
+                        <td ng-switch="getShowAcceptanceTestForm()">
                             <button ng-switch-default
                                     class="btn btn-sm btn-primary pull-right"
                                     type="button"
-                                    ng-click="setShowForm(true)"
+                                    ng-click="setShowAcceptanceTestForm(true)"
                                     tooltip="${message(code:'todo.is.ui.acceptanceTest.new')}'"
                                     tooltip-append-to-body="body"
                                     tooltip-placement="left">
@@ -393,7 +409,7 @@
                             <button ng-switch-when="true"
                                     class="btn btn-sm btn-default pull-right "
                                     type="button"
-                                    ng-click="setShowForm(false)"
+                                    ng-click="setShowAcceptanceTestForm(false)"
                                     tooltip="${message(code:'todo.is.ui.hide')}"
                                     tooltip-append-to-body="body"
                                     tooltip-placement="left">
@@ -401,7 +417,7 @@
                             </button>
                         </td>
                     </tr>
-                    <tr ng-show="getShowForm()">
+                    <tr ng-show="getShowAcceptanceTestForm()">
                         <td><div ng-init="formType='save'" ng-include="'story.acceptanceTest.editor.html'"></div></td>
                     </tr>
                     </tbody>

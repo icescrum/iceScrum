@@ -25,7 +25,7 @@ services.factory('Comment', [ 'Resource', function($resource) {
     return $resource('comment/:type/:typeId/:id', { typeId: '@typeId', type: '@type' });
 }]);
 
-services.service("CommentService", ['Comment', function(Comment) {
+services.service("CommentService", ['Comment', 'Session', function(Comment, Session) {
     this.save = function(comment, commentable) {
         comment.class = 'comment';
         comment.type = commentable.class.toLowerCase();
@@ -61,5 +61,17 @@ services.service("CommentService", ['Comment', function(Comment) {
             commentable.comments = data;
             commentable.comments_count = commentable.comments.length;
         }).$promise;
+    };
+    this.authorizedComment = function(action, comment) {
+        switch (action) {
+            case 'create':
+                return Session.authenticated();
+            case 'update':
+                return Session.user.id == comment.poster.id;
+            case 'delete':
+                return Session.poOrSm() || Session.user.id == comment.poster.id;
+            default:
+                return false;
+        }
     }
 }]);

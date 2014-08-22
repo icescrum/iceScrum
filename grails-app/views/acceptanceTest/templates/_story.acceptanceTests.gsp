@@ -27,39 +27,40 @@
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="readOnlyAcceptanceTest in story.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
+<tr ng-repeat="acceptanceTest in story.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
     <td>
         <div class="content">
-            <div ng-show="!getShowForm()">
+            <div ng-show="!getShowAcceptanceTestForm()">
                 <div class="pull-right">
                     <button class="btn btn-xs btn-primary"
                             type="button"
                             tooltip-placement="left"
                             tooltip="${message(code:'todo.is.ui.acceptanceTest.edit')}"
-                            ng-if="!readOnly()"
-                            ng-click="setShowForm(true)"><span class="fa fa-pencil"></span></button>
+                            ng-if="authorizedAcceptanceTest('update', acceptanceTest)"
+                            ng-click="setShowAcceptanceTestForm(true)"><span class="fa fa-pencil"></span></button>
                     <button class="btn btn-xs btn-danger"
                             type="button"
                             tooltip-placement="left"
                             tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"
-                            ng-if="!readOnly()"
-                            ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [readOnlyAcceptanceTest, story])"><span class="fa fa-times"></span></button>
+                            ng-if="authorizedAcceptanceTest('delete', acceptanceTest)"
+                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, story] })"><span class="fa fa-times"></span></button>
                 </div>
                 <div>
                     <span class="label label-default"
                           tooltip-placement="left"
-                          tooltip="${message(code: 'is.backlogelement.id')}">{{ readOnlyAcceptanceTest.uid }}</span>
-                    <strong>{{ readOnlyAcceptanceTest.name }}</strong>
+                          tooltip="${message(code: 'is.backlogelement.id')}">{{ acceptanceTest.uid }}</span>
+                    <strong>{{ acceptanceTest.name }}</strong>
                 </div>
-                <select ng-model="readOnlyAcceptanceTest.state"
-                        ng-readonly="stateReadOnly()"
-                        ng-change="switchState(readOnlyAcceptanceTest, story)"
+                <select class="acceptance-test-state-noform"
+                        ng-model="acceptanceTest.state"
+                        ng-readonly="!authorizedAcceptanceTest('updateState', acceptanceTest)"
+                        ng-change="saveOrUpdate('update', acceptanceTest, story)"
                         ui-select2="selectAcceptanceTestStateOptions">
                     <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
                 </select>
-                <div ng-bind-html="readOnlyAcceptanceTest.description_html | sanitize"></div>
+                <div ng-bind-html="acceptanceTest.description_html | sanitize"></div>
             </div>
-            <div ng-include="'story.acceptanceTest.editor.html'" ng-show="getShowForm()" ng-init="formType='update'"></div>
+            <div ng-include="'story.acceptanceTest.editor.html'" ng-show="getShowAcceptanceTestForm()" ng-init="formType='update'"></div>
         </div>
     </td>
 </tr>

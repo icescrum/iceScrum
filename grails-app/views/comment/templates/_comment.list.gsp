@@ -26,39 +26,39 @@
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="readOnlyComment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
+<tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
     <td>
         <div class="content">
-            <div ng-show="!getShowForm()">
+            <div ng-show="!getShowCommentForm()">
                 <div class="pull-right">
                     <button class="btn btn-xs btn-primary"
                             type="button"
                             tooltip-placement="left"
                             tooltip="${message(code:'todo.is.ui.comment.edit')}"
-                            ng-if="!readOnly()"
-                            ng-click="setShowForm(true)"><span class="fa fa-pencil"></span></button>
+                            ng-if="authorizedComment('update', comment)"
+                            ng-click="setShowCommentForm(true)"><span class="fa fa-pencil"></span></button>
                     <button class="btn btn-xs btn-danger"
                             type="button"
                             tooltip-placement="left"
                             tooltip="${message(code:'todo.is.ui.comment.delete')}"
-                            ng-if="deletable()"
-                            ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [readOnlyComment, selected])"><span class="fa fa-times"></span></button>
+                            ng-if="authorizedComment('delete', comment)"
+                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [comment, selected] })"><span class="fa fa-times"></span></button>
                 </div>
                 <img class="inline-block"
-                     ng-src="{{readOnlyComment.poster | userAvatar}}"
-                     alt="{{readOnlyComment.poster | userFullName}}"
-                     tooltip="{{readOnlyComment.poster | userFullName}}"
+                     ng-src="{{comment.poster | userAvatar}}"
+                     alt="{{comment.poster | userFullName}}"
+                     tooltip="{{comment.poster | userFullName}}"
                      width="25px"/>
                 <span class="text-muted">
-                    <time timeago datetime="'{{ readOnlyComment.dateCreated }}'">
-                        {{ readOnlyComment.dateCreated }}
-                    </time> <i class="fa fa-clock-o"></i> <span ng-show="readOnlyComment.dateCreated != readOnlyComment.lastUpdated">(${message(code:'todo.is.ui.commnent.edited')})</span>
+                    <time timeago datetime="'{{ comment.dateCreated }}'">
+                        {{ comment.dateCreated }}
+                    </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.commnent.edited')})</span>
                 </span>
                 <div class="pretty-printed"
-                     ng-bind-html="readOnlyComment.body | lineReturns | sanitize">
+                     ng-bind-html="comment.body | lineReturns | sanitize">
                 </div>
             </div>
-            <div ng-include="'comment.editor.html'" ng-show="getShowForm()" ng-init="formType='update'"></div>
+            <div ng-include="'comment.editor.html'" ng-show="getShowCommentForm()" ng-init="formType='update'"></div>
         </div>
     </td>
 </tr>

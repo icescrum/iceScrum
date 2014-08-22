@@ -67,11 +67,11 @@
             </div>
         </div>
         <div class="btn-toolbar">
-            <div ng-if="authorized('updateMultiple')"
+            <div ng-if="authorizedActor('deleteMultiple')"
                  class="btn-group">
                 <button type="button"
                         class="btn btn-default"
-                        ng-click="confirm('${message(code: 'is.confirm.delete')}', deleteMultiple)">
+                        ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
                     <g:message code='is.ui.actor.menu.delete'/>
                 </button>
             </div>

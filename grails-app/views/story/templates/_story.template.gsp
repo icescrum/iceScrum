@@ -48,7 +48,7 @@
                         type="button"
                         tooltip-placement="left"
                         tooltip="${message(code:'todo.is.ui.story.template.delete')}"
-                        ng-click="confirm('${message(code: 'is.confirm.delete')}', deleteTemplate, [templateEntry])"><span class="fa fa-times"></span></button>
+                        ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteTemplate, args: [templateEntry] })"><span class="fa fa-times"></span></button>
             </td>
         </tr>
     </table>

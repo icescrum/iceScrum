@@ -75,19 +75,23 @@
         </div>
         <form ng-submit="updateMultiple(featurePreview)"
               name='featureForm'
-              show-validation>
+              show-validation
+              novalidate>
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">
                     <label for="feature.type">${message(code:'is.feature.type')}</label>
                     <select class="form-control"
+                            required
                             ng-model="featurePreview.type"
-                            ng-readonly="!authorized('updateMultiple')"
+                            ng-readonly="!authorizedFeature('updateMultiple')"
+                            data-placeholder="${message(code: 'todo.is.ui.feature.type.placeholder')}"
                             ui-select2>
+                        <option></option>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}" />
                     </select>
                 </div>
             </div>
-            <div ng-if="authorized('updateMultiple')"
+            <div ng-if="authorizedFeature('updateMultiple')"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
@@ -105,11 +109,19 @@
             </div>
             <hr/>
             <div class="btn-toolbar">
-                <div ng-if="authorized('updateMultiple')"
+                <div ng-if="authorizedFeature('copyToBacklogMultiple')"
                      class="btn-group">
                     <button type="button"
                             class="btn btn-default"
-                            ng-click="confirm('${message(code: 'is.confirm.delete')}', deleteMultiple)">
+                            ng-click="copyToBacklogMultiple()">
+                        <g:message code='is.ui.feature.menu.copy'/>
+                    </button>
+                </div>
+                <div ng-if="authorizedFeature('deleteMultiple')"
+                     class="btn-group">
+                    <button type="button"
+                            class="btn btn-default"
+                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
                         <g:message code='is.ui.feature.menu.delete'/>
                     </button>
                 </div>

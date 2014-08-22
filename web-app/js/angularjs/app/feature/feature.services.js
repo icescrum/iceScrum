@@ -49,6 +49,9 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
             }
         });
     };
+    this.copyToBacklog = function(feature) {
+        return feature.$update({ action: 'copyToBacklog' });
+    };
     this['delete'] = function(feature) {
         return feature.$delete(function() {
             _.remove(self.list, { id: feature.id });
@@ -71,6 +74,9 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
             });
         }).$promise;
     };
+    this.copyToBacklogMultiple = function(ids) {
+        return Feature.updateArray({ id: ids, action: 'copyToBacklog' }, {}).$promise;
+    };
     this.deleteMultiple = function(ids) {
         return Feature.delete({id: ids}, function() {
             _.remove(self.list, function(feature) {
@@ -78,14 +84,18 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
             });
         }).$promise;
     };
-    this.authorized = function(action) {
+    this.authorizedFeature = function(action) {
         switch (action) {
             case 'create':
             case 'updateMultiple':
+            case 'copyToBacklog':
+            case 'copyToBacklogMultiple':
             case 'update':
             case 'delete':
+            case 'deleteMultiple':
                 return Session.po();
-                break;
+            case 'menu':
+                return this.authorizedFeature('copyToBacklog') || this.authorizedFeature('delete');
             default:
                 return false;
         }

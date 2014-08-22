@@ -35,8 +35,8 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', function($scope, 
     $scope['delete'] = function(story) {
         StoryService.delete(story).then($scope.goToNewStory);
     };
-    $scope.authorized = function(action, story) {
-        return StoryService.authorized(action, story);
+    $scope.authorizedStory = function(action, story) {
+        return StoryService.authorizedStory(action, story);
     };
     $scope.selectFeatureOptions = {
         formatResult: function(object, container) {
@@ -70,12 +70,14 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', function($scope, 
 controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'TaskService', 'CommentService', 'AcceptanceTestService', 'FormService',
     function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, TaskService, CommentService, AcceptanceTestService, FormService) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
+        $scope.formHolder = {};
         $scope.story = {};
         $scope.editableStory = {};
+        $scope.editableStoryReference = {};
         StoryService.get($stateParams.id).then(function(story) {
             $scope.story = story;
             // For edit
-            $scope.editableStory = angular.copy(story);
+            $scope.resetStoryForm();
             $scope.selectDependsOnOptions.ajax.url = 'story/' + $scope.story.id + '/dependenceEntries';
             // For header
             var list = $state.current.data.filterListParams ? $filter('filter')(StoryService.list, $state.current.data.filterListParams) : StoryService.list;
@@ -147,6 +149,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.update = function(story) {
             StoryService.update(story).then(function(story) {
                 $scope.story = story;
+                $scope.resetStoryForm();
             });
         };
         $scope.follow = function(story) {
@@ -168,17 +171,25 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             CommentService.list(story);
         };
         // edit;
-        $scope.setEditableStoryMode = function(editableMode) {
-            $scope.setEditableMode(editableMode);
-            if (!editableMode) {
-                $scope.editableStory = angular.copy($scope.story);
-            }
+        $scope.isDirty = function() {
+            return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
+        };
+        $scope.enableEditableStoryMode = function() {
+            $scope.setEditableMode(true);
+        };
+        $scope.disableEditableStoryMode = function() {
+            $scope.setEditableMode(false);
+            $scope.resetStoryForm();
         };
         $scope.getEditableStoryMode = function(story) {
-            return $scope.getEditableMode() && $scope.authorized('update', story);
+            return $scope.getEditableMode() && $scope.authorizedStory('update', story);
         };
-        $scope.cancel = function() {
+        $scope.resetStoryForm = function() {
             $scope.editableStory = angular.copy($scope.story);
+            $scope.editableStoryReference = angular.copy($scope.story);
+            if ($scope.formHolder.storyForm) {
+                $scope.formHolder.storyForm.$setPristine();
+            }
         };
         $scope.selectDependsOnOptions = {
             formatSelection: function(object) {
@@ -201,7 +212,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
-
         $scope.selectAffectionVersionOptions = {
             allowClear: true,
             createChoiceOnEmpty: true,
@@ -224,6 +234,23 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             }
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
+        $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
+        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+            if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+                event.preventDefault(); // cancel the state change
+                $scope.mustConfirmStateChange = false;
+                $scope.confirm({
+                    message: 'todo.is.ui.dirty.confirm',
+                    condition: $scope.isDirty(),
+                    callback: function () {
+                        $state.go(toState, toParams)
+                    },
+                    closeCallback: function() {
+                        $scope.mustConfirmStateChange = true;
+                    }
+                });
+            }
+        });
     }]);
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
@@ -236,8 +263,8 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
         StoryService.getMultiple(listId).then(function(stories) {
             $scope.topStory = _.first(stories);
             $scope.storyPreview = {
-                feature: angular.copy($scope.topStory.feature),
-                type: $scope.topStory.type
+                feature: _.every(stories, { feature: $scope.topStory.feature }) ? $scope.topStory.feature : null,
+                type: _.every(stories, { type: $scope.topStory.type }) ? $scope.topStory.type : null
             };
             $scope.stories = stories;
             $scope.allFollowed = _.every(stories, 'followed');
@@ -269,23 +296,25 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
 controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '$timeout', '$controller', 'StoryService', 'hotkeys',
     function($scope, $state, $http, $modal, $timeout, $controller, StoryService, hotkeys) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
-        function initStory() {
+        $scope.formHolder = {};
+        $scope.resetStoryForm = function() {
             var defaultStory = {};
             if ($scope.story && $scope.story.template) {
                 defaultStory.template = $scope.story.template
             }
-            return defaultStory;
-        }
+            $scope.story = defaultStory;
+            if ($scope.formHolder.storyForm) {
+                $scope.formHolder.storyForm.$setPristine();
+            }
+        };
         hotkeys
             .bindTo($scope) // to remove the hotkey when the scope is destroyed
             .add({
                 combo: 'esc',
                 allowIn: ['INPUT'],
-                callback: function() {
-                    $scope.story = initStory();
-                }
+                callback: $scope.resetStoryForm
             });
-        $scope.story = initStory();
+        $scope.resetStoryForm();
         $scope.templateSelected = function() {
             if ($scope.story.template) {
                 $http.get('story/templatePreview?template=' + $scope.story.template.id).success(function(storyPreview) {
@@ -328,7 +357,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
         $scope.save = function(story, andContinue) {
             StoryService.save(story).then(function(story) {
                 if (andContinue) {
-                    $scope.story = initStory();
+                    $scope.resetStoryForm();
                 } else {
                     $state.go('^.details', { id: story.id });
                 }

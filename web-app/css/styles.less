@@ -410,13 +410,14 @@ table[data-ui-draggable] > tr:hover .drag span,
   border-color:@brand-danger;
 }
 
-// White background for disabled inputs
+/** White background for disabled inputs **/
 .form-control[disabled] {
   &, &:hover {
     background: none;
     border: none;
     cursor: text;
     box-shadow: none;
+    resize: none;
   }
 }
 .select2-container.select2-container-disabled {
@@ -439,7 +440,7 @@ table[data-ui-draggable] > tr:hover .drag span,
     outline: #000000 solid 0px;
   }
 }
-// Reduce size of disabled inputs in disabled forms
+/** Reduce size of disabled inputs in disabled forms **/
 form.form-disabled {
   label {
     margin-bottom: 0px;
@@ -447,21 +448,34 @@ form.form-disabled {
   .form-group {
     margin-bottom: 10px;
   }
-  .form-control {
+  .form-control[disabled] {
+    padding-bottom: 0px;
+    padding-top: 0px;
+    height: 20px;
+  }
+  .markitup-preview, .atwho-preview {
     &[disabled] {
       padding-bottom: 0px;
       padding-top: 0px;
-      height: 20px;
     }
   }
-  .select2-container.select2-container-disabled {
+  .select2-container.select2-container-disabled:not(.select2-container-multi) {
     height: 20px;
-    .select2-choice, .select2-choices {
-      .select2-chosen {
-        padding-bottom: 0px;
-        padding-top: 0px;
-        height:20px;
-      }
+    .select2-choice .select2-chosen {
+      padding-bottom: 0px;
+      padding-top: 0px;
+      height:20px;
+    }
+  }
+}
+
+.select2-container.acceptance-test-state-noform {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  &.select2-container-disabled {
+    margin-bottom: 0;
+    .select2-chosen {
+      padding-left: 0;
     }
   }
 }

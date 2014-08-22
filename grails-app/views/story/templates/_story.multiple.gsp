@@ -97,14 +97,15 @@
         </div>
         <form ng-submit="updateMultiple(storyPreview)"
               name='storyForm'
-              show-validation>
+              show-validation
+              novalidate>
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">
                     <label for="story.feature.id">${message(code:'is.feature')}</label>
                     <div ng-class="{'input-group':storyPreview.feature.id, 'select2-border':storyPreview.feature.id}">
                         <input type="hidden"
                                class="form-control"
-                               ng-readonly="!authorized('updateMultiple', topStory)"
+                               ng-readonly="!authorizedStory('updateMultiple', topStory)"
                                ng-model="storyPreview.feature"
                                ui-select2="selectFeatureOptions"
                                data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
@@ -120,14 +121,17 @@
                 <div class="col-md-6 form-group">
                     <label for="story.type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
+                            required
                             ng-model="storyPreview.type"
-                            ng-readonly="!authorized('updateMultiple', topStory)"
+                            ng-readonly="!authorizedStory('updateMultiple', topStory)"
+                            data-placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}"
                             ui-select2>
+                        <option></option>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
                     </select>
                 </div>
             </div>
-            <div ng-if="authorized('updateMultiple', topStory)"
+            <div ng-if="authorizedStory('updateMultiple', topStory)"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
@@ -145,7 +149,7 @@
             </div>
             <hr/>
             <div class="btn-toolbar">
-                 <div ng-if="authorized('accept', topStory)"
+                 <div ng-if="authorizedStory('accept', topStory)"
                       class="btn-group">
                     <button type="button"
                             class="btn btn-default dropdown-toggle"
@@ -170,20 +174,21 @@
                         </li>
                     </ul>
                  </div>
-                <div ng-if="authorized('updateMultiple', topStory)"
-                     class="btn-group">
+                <div class="btn-group">
                     <button type="button"
+                            ng-if="authorizedStory('copyMultiple', topStory)"
                             class="btn btn-default"
                             ng-click="copyMultiple()">
                         <g:message code='is.ui.releasePlan.menu.story.clone'/>
                     </button>
                     <button type="button"
+                            ng-if="authorizedStory('deleteMultiple', topStory)"
                             class="btn btn-default"
-                            ng-click="confirm('${message(code: 'is.confirm.delete')}', deleteMultiple)">
+                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
                         <g:message code='is.ui.sandbox.menu.delete'/>
                     </button>
                 </div>
-                <div ng-if="authorized('follow')"
+                <div ng-if="authorizedStory('followMultiple')"
                      class="btn-group">
                     <button type="button"
                             ng-switch="allFollowed"

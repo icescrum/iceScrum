@@ -71,6 +71,9 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     this.authenticated = function() {
         return !_.isEmpty(self.user);
     };
+    this.inProduct = function() {
+        return self.roles.productOwner || self.roles.scrumMaster || self.roles.teamMember;
+    };
     this.creator = function(item) {
         return this.authenticated  && !_.isEmpty(item) && !_.isEmpty(item.creator) && self.user.id == item.creator.id;
     };
@@ -106,7 +109,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     this.selectTagsOptions = {
         tags: [],
         multiple: true,
-        simple_tags: true,
+        array_tags: true,
         tokenSeparators: [",", " "],
         createSearchChoice: function (term) {
             return { id: term, text: term };
@@ -182,9 +185,8 @@ var formObjectData = function (obj, prefix) {
         if (value instanceof Array) {
             for (i = 0; i < value.length; ++i) {
                 subValue = value[i];
-                fullSubName = name + '[' + i + ']';
                 innerObj = {};
-                innerObj[fullSubName] = subValue;
+                innerObj[name] = subValue;
                 query += formObjectData(innerObj, _prefix) + '&';
             }
         }

@@ -21,63 +21,59 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', function($scope, AcceptanceTestService) {
+controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'AcceptanceTestStatesByName', function($scope, AcceptanceTestService, AcceptanceTestStatesByName) {
 
-    $scope.setShowForm = function(show) {
-        $scope.editAcceptanceTest($scope.acceptanceTest.id, show)
+    $scope.setShowAcceptanceTestForm = function(show) {
+        $scope.editAcceptanceTest($scope.editableAcceptanceTest.id, show);
     };
-    $scope.getShowForm = function() {
-        return ($scope.acceptanceTestEdit[$scope.acceptanceTest.id] == true)
+    $scope.getShowAcceptanceTestForm = function() {
+        return ($scope.acceptanceTestEdit[$scope.editableAcceptanceTest.id] == true);
     };
-    $scope.acceptanceTest = AcceptanceTestService.initAcceptanceTest($scope.readOnlyAcceptanceTest);
-    $scope.submitForm = function(type, acceptanceTest, story) {
+    $scope.resetAcceptanceTestForm = function() {
+        $scope.editableAcceptanceTest = $scope.acceptanceTest ? angular.copy($scope.acceptanceTest) : {
+            parentStory: $scope.story,
+            state: AcceptanceTestStatesByName.TOCHECK
+        };
+        $scope.setShowAcceptanceTestForm(false);
+        if ($scope.formHolder.acceptanceTestForm) {
+            $scope.formHolder.acceptanceTestForm.$setPristine();
+        }
+    };
+    $scope.saveOrUpdate = function(type, acceptanceTest, story) {
         var promise;
         if (type == 'save') {
-            promise = AcceptanceTestService.save(acceptanceTest, story).then(function() {
-                $scope.acceptanceTest = AcceptanceTestService.initAcceptanceTest($scope.readOnlyAcceptanceTest);
-            });
+            promise = AcceptanceTestService.save(acceptanceTest, story);
         } else if (type == 'update') {
             promise = AcceptanceTestService.update(acceptanceTest, story);
         }
-        promise.then(function() {
-            $scope.setShowForm(false);
-        });
-    };
-    $scope.cancel = function() {
-        $scope.setShowForm(false);
-        $scope.acceptanceTest = AcceptanceTestService.initAcceptanceTest($scope.readOnlyAcceptanceTest);
-    };
-    $scope.switchState = function(acceptanceTest, story) {
-        AcceptanceTestService.update(acceptanceTest, story);
+        promise.then($scope.resetAcceptanceTestForm);
     };
     $scope['delete'] = function(acceptanceTest, story) {
         AcceptanceTestService.delete(acceptanceTest, story);
     };
-    $scope.readOnly = function() {
-        return AcceptanceTestService.readOnly(this.story);
-    };
-    $scope.stateReadOnly = function() {
-        return AcceptanceTestService.stateReadOnly(this.story);
+    $scope.authorizedAcceptanceTest = function(action, acceptanceTest) {
+        return AcceptanceTestService.authorizedAcceptanceTest(action, acceptanceTest);
     };
     function formatAcceptanceTestStateOption(state) {
         var colorClass;
-        // TODO use constants, not hardcoded values
-        switch (state.id) {
-            case "1":
+        switch (parseInt(state.id)) {
+            case AcceptanceTestStatesByName.TOCHECK:
                 colorClass = 'text-default';
                 break;
-            case "5":
+            case AcceptanceTestStatesByName.FAILED:
                 colorClass = 'text-danger';
                 break;
-            case "10":
+            case AcceptanceTestStatesByName.SUCCESS:
                 colorClass = 'text-success';
                 break;
         }
-        return "<div class='" + colorClass + "'><i class='fa fa-check'></i>" + state.text + "</div>";
+        return "<div class='" + colorClass + "'><i class='fa fa-check'></i> " + state.text + "</div>";
     }
-
     $scope.selectAcceptanceTestStateOptions = {
         formatResult: formatAcceptanceTestStateOption,
         formatSelection: formatAcceptanceTestStateOption
     };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetAcceptanceTestForm();
 }]);

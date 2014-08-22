@@ -21,47 +21,41 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('commentCtrl', ['$scope', 'CommentService', 'Session', function($scope, CommentService, Session) {
-
-    $scope.setShowForm = function(show) {
-        $scope.editComment($scope.comment.id, show);
+controllers.controller('commentCtrl', ['$scope', 'CommentService', function($scope, CommentService) {
+    $scope.setShowCommentForm = function(show) {
+        $scope.editComment($scope.editableComment.id, show);
     };
-    $scope.getShowForm = function() {
-        return ($scope.commentEdit[$scope.comment.id] == true);
+    $scope.getShowCommentForm = function() {
+        return ($scope.commentEdit[$scope.editableComment.id] == true);
     };
-    function initComment() {
-        return $scope.readOnlyComment ? angular.copy($scope.readOnlyComment) : {};
-    }
-
-    $scope.comment = initComment();
-    if (_.isEmpty($scope.comment)) {
-        $scope.setShowForm(true);
-    }
-
-    $scope.submitForm = function(type, comment, commentable) {
+    $scope.resetCommentForm = function() {
+        $scope.editableComment = $scope.comment ? angular.copy($scope.comment) : {};
+        if ($scope.getShowCommentForm()) {
+            $scope.setShowCommentForm(false);
+        }
+        if ($scope.formHolder.commentForm) {
+            $scope.formHolder.commentForm.$setPristine();
+        }
+    };
+    $scope.saveOrUpdate = function(type, comment, commentable) {
         var promise;
         if (type == 'save') {
-            promise = CommentService.save(comment, commentable).then(function() {
-                $scope.comment = initComment();
-            });
+            promise = CommentService.save(comment, commentable);
         } else if (type == 'update') {
             promise = CommentService.update(comment, commentable);
         }
-        promise.then(function() {
-            $scope.setShowForm(false);
-        });
-    };
-    $scope.cancel = function() {
-        $scope.setShowForm(false);
-        $scope.comment = initComment();
+        promise.then($scope.resetCommentForm);
     };
     $scope['delete'] = function(comment, commentable) {
         CommentService.delete(comment, commentable);
     };
-    $scope.deletable = function() {
-        return Session.poOrSm() || Session.user.id == $scope.comment.poster.id;
+    $scope.authorizedComment = function(action, comment) {
+        return CommentService.authorizedComment(action, comment);
     };
-    $scope.readOnly = function() {
-        return Session.user.id != $scope.comment.poster.id;
-    };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetCommentForm();
+    if (_.isEmpty($scope.editableComment) && $scope.authorizedComment('create')) {
+        $scope.setShowCommentForm(true);
+    }
 }]);

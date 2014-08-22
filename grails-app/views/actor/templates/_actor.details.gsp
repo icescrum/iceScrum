@@ -50,23 +50,25 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
+                 ng-if="authorizedActor('menu')"
                  tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-cog"></span> <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" ng-include="'actor.menu.html'"></ul>
+                <ul class="dropdown-menu"
+                    ng-include="'actor.menu.html'"></ul>
             </div>
             <button class="btn btn-primary"
                     type="button"
                     tooltip="${message(code:'todo.is.ui.editable.enable')}"
-                    ng-if="authorized('update', actor) && !getEditableMode(actor)"
-                    ng-click="setEditableActorMode(true)"><span class="fa fa-pencil"></span></button>
+                    ng-if="authorizedActor('update', actor) && !getEditableMode(actor)"
+                    ng-click="enableEditableActorMode()"><span class="fa fa-pencil"></span></button>
             <button class="btn btn-default"
                     type="button"
                     tooltip="${message(code:'todo.is.ui.editable.disable')}"
                     ng-if="getEditableActorMode(actor)"
-                    ng-click="setEditableActorMode(false)"><span class="fa fa-pencil-square-o"></span></button>
+                    ng-click="confirm({ message: '${message(code: 'todo.is.ui.dirty.confirm')}', callback: disableEditableActorMode, condition: isDirty() })"><span class="fa fa-pencil-square-o"></span></button>
             <div class="btn-group pull-right">
                 <button name="attachments" class="btn btn-default"
                         ng-click="setTabSelected('attachments')"
@@ -90,7 +92,8 @@
         <form ng-submit="update(editableActor)"
               ng-class="{'form-disabled': !getEditableActorMode(actor)}"
               name='actorForm'
-              show-validation>
+              show-validation
+              novalidate>
             <div class="clearfix no-padding">
                 <div class="col-md-6 form-group">
                     <label for="actor.name">${message(code:'is.actor.name')}</label>
@@ -98,7 +101,6 @@
                            ng-disabled="!getEditableActorMode(actor)"
                            name="editableActor.name"
                            ng-model="editableActor.name"
-                           ng-readonly="readOnly()"
                            type="text"
                            class="form-control">
                 </div>
@@ -107,7 +109,6 @@
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"
                             ng-model="editableActor.instances"
-                            ng-readonly="readOnly()"
                             ui-select2>
                         <is:options values="${BundleUtils.actorInstances}" />
                 </select>
@@ -119,7 +120,6 @@
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"
                             ng-model="editableActor.expertnessLevel"
-                            ng-readonly="readOnly()"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.actorLevels)}" />
                     </select>
@@ -129,7 +129,6 @@
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"
                             ng-model="editableActor.useFrequency"
-                            ng-readonly="readOnly()"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.actorFrequencies)}" />
                     </select>
@@ -140,8 +139,7 @@
                 <textarea class="form-control"
                           ng-disabled="!getEditableActorMode(actor)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
-                          ng-model="editableActor.description"
-                          ng-readonly="readOnly()"></textarea>
+                          ng-model="editableActor.description"></textarea>
             </div>
             <div class="form-group">
                 <label for="actor.tags">${message(code:'is.backlogelement.tags')}</label>
@@ -150,7 +148,6 @@
                        class="form-control"
                        value="{{ editableActor.tags.join(',') }}"
                        ng-model="editableActor.tags"
-                       ng-readonly="readOnly()"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
             </div>
@@ -162,7 +159,6 @@
                           is-model-html="editableActor.notes_html"
                           ng-show="showNotesTextarea"
                           ng-blur="showNotesTextarea = false"
-                          ng-readonly="readOnly()"
                           placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                 <div class="markitup-preview"
                      ng-disabled="!getEditableActorMode(actor)"
@@ -175,16 +171,18 @@
             </div>
             <div class="btn-toolbar" ng-if="getEditableActorMode(editableActor)">
                 <button class="btn btn-primary pull-right"
+                        ng-class="{ disabled: !isDirty() }"
                         tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'todo.is.ui.update')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
+                        ng-class="{ disabled: !isDirty() }"
                         tooltip-append-to-body="true"
                         tooltip="${message(code:'is.button.cancel')}"
                         type="button"
-                        ng-click="cancel()">
+                        ng-click="initEditableActor()">
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>

@@ -21,18 +21,21 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.editor.html">
-<form ng-submit="submitForm(formType, comment, selected)"
-      show-validation>
+<form ng-submit="saveOrUpdate(formType, editableComment, selected)"
+      name="formHolder.commentForm"
+      show-validation
+      novalidate>
     <div class="form-group">
         <textarea required
-              ng-model="comment.body"
+              ng-model="editableComment.body"
               class="form-control"
-              focus-me="{{ getShowForm() }}"
+              focus-me="{{ getShowCommentForm() }}"
               placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
     </div>
     <div class="btn-toolbar pull-right">
         <button ng-if="formType == 'save'"
                 class="btn btn-primary pull-right"
+                ng-class="{ disabled: !formHolder.commentForm.$dirty || formHolder.commentForm.$invalid  }"
                 tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                 tooltip-append-to-body="true"
                 type="submit">
@@ -40,6 +43,7 @@
         </button>
         <button ng-if="formType == 'update'"
                 class="btn btn-primary pull-right"
+                ng-class="{ disabled: !formHolder.commentForm.$dirty || formHolder.commentForm.$invalid  }"
                 tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
                 tooltip-append-to-body="true"
                 type="submit">
@@ -51,7 +55,7 @@
                 type="button"
                 hotkey="{'esc': hotkeyClick }"
                 hotkey-allow-in="INPUT, TEXTAREA"
-                ng-click="cancel()">
+                ng-click="resetCommentForm()">
             ${message(code:'is.button.cancel')}
         </button>
     </div>

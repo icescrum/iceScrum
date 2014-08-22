@@ -95,7 +95,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return this.update(story);
     };
     this.acceptAs = function(story, target) {
-        return story.$updateArray({ action: 'acceptAs' + target}, function() {
+        return story.$update({ action: 'acceptAs' + target}, function() {
             _.remove(self.list, { id: story.id });
         });
     };
@@ -156,29 +156,27 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             });
         }).$promise;
     };
-    this.authorized = function(action, story) {
+    this.authorizedStory = function(action, story) {
         switch (action) {
+            case 'create':
+            case 'createTemplate':
+            case 'followMultiple':
+                return Session.authenticated();
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
-                break;
+            case 'updateMultiple':
+                return Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
+            case 'accept':
+                return Session.po() && story.state == StoryStatesByName.SUGGESTED;
+            case 'copyMultiple':
+            case 'updateTemplate':
+                return Session.po();
             case 'delete':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
-                break;
-            case 'updateMultiple':
-                return Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
-                break;
-            case 'create':
-            case 'follow':
-                return Session.authenticated();
-                break;
-            case 'updateTemplate':
-                return Session.po();
-                break;
-            case 'accept':
-                return Session.po() && story.state == StoryStatesByName.SUGGESTED;
-                break;
+            case 'menu':
+                return this.authorizedStory('accept', story) || this.authorizedStory('create') || this.authorizedStory('createTemplate') || this.authorizedStory('delete', story);
             default:
                 return false;
         }

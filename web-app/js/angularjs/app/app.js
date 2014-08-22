@@ -247,7 +247,6 @@ isApp.config(['$stateProvider', '$httpProvider',
         //To be able to track state in app
         $rootScope.$state = $state;
 
-
         $rootScope.editableMode = false;
         $rootScope.setEditableMode = function(editableMode) {
             $rootScope.editableMode = editableMode;
@@ -256,28 +255,41 @@ isApp.config(['$stateProvider', '$httpProvider',
             return $rootScope.editableMode;
         };
 
-        $rootScope.confirm = function(message, callback, args) {
-            $modal.open({
-                templateUrl: 'confirm.modal.html',
-                size: 'sm',
-                controller: function($scope, $modalInstance, hotkeys) {
-                    $scope.message = message;
-                    $scope.submit = function() {
-                        if (args) {
-                            callback.apply(callback, args);
-                        } else {
-                            callback();
-                        }
-                        $modalInstance.close();
-                    };
-                    // Required because there is not input so the form cannot be submitted by "return"
-                    hotkeys.bindTo($scope) // to remove the hotkey when the scope is destroyed
-                        .add({
-                            combo: 'return',
-                            callback: $scope.submit
-                        });
+        $rootScope.confirm = function(options) {
+            var callCallback = function() {
+                if (options.args) {
+                    options.callback.apply(options.callback, options.args);
+                } else {
+                    options.callback();
                 }
-            });
+            };
+            if (options.condition !== false) {
+                var modal = $modal.open({
+                    templateUrl: 'confirm.modal.html',
+                    size: 'sm',
+                    controller: function($scope, $modalInstance, hotkeys) {
+                        $scope.message = options.message;
+                        $scope.submit = function() {
+                            callCallback();
+                            $modalInstance.close(true);
+                        };
+                        // Required because there is not input so the form cannot be submitted by "return"
+                        hotkeys.bindTo($scope) // to remove the hotkey when the scope is destroyed
+                            .add({
+                                combo: 'return',
+                                callback: $scope.submit
+                            });
+                    }
+                });
+                var callCloseCallback = function(confirmed) {
+                    if (!confirmed && options.closeCallback) {
+                        options.closeCallback();
+                    }
+                };
+                modal.result.then(callCloseCallback, callCloseCallback);
+            } else {
+                callCallback();
+            }
         };
 
         // TODO Change ugly hack
@@ -319,6 +331,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         "IN_PROGRESS": 5,
         "DONE": 6,
         "ICEBOX": -1
+    })
+    .constant('AcceptanceTestStatesByName', {
+        "TOCHECK": 1,
+        "FAILED": 5,
+        "SUCCESS": 10
     })
     .constant('FeatureStates', {
         0: {"value": "todo.To do", "code": "wait"},

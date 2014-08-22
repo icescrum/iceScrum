@@ -162,12 +162,4 @@ class AcceptanceTestController {
             }
         }
     }
-
-    // TODO check if it still usefull in the new UI
-    @Secured('inProduct() and !archivedProduct()')
-    def editor = {
-        withAcceptanceTest { AcceptanceTest acceptanceTest ->
-            render(template: '/acceptanceTest/acceptanceTestForm', model: [acceptanceTest: acceptanceTest, parentStory: acceptanceTest.parentStory])
-        }
-    }
 }

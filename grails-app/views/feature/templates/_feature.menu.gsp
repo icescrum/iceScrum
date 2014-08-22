@@ -23,7 +23,10 @@
 
 <script type="text/ng-template" id="feature.menu.html">
 <li>
-    <a ng-if="authorized('delete')" ng-click="confirm('${message(code: 'is.confirm.delete')}', delete, [feature])">
+    <a ng-if="authorizedFeature('copyToBacklog')" ng-click="copyToBacklog(feature)">
+        <g:message code='is.ui.feature.menu.copy'/>
+    </a>
+    <a ng-if="authorizedFeature('delete')" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
         <g:message code='is.ui.feature.menu.delete'/>
     </a>
 </li>

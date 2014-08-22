@@ -49,7 +49,8 @@
 
         <form ng-submit="save(actor, false)"
               name='actorForm'
-              show-validation>
+              show-validation
+              novalidate>
             <div class="clearfix no-padding">
                 <div class="form-group col-md-6">
                     <label for="actor.name">${message(code:'is.actor.name')}</label>
@@ -58,11 +59,11 @@
                            ng-model="actor.name"
                            type="text"
                            class="form-control"
-                           ng-readonly="!authorized('create')"
+                           ng-readonly="!authorizedActor('create')"
                            placeholder="${message(code: 'is.ui.actor.noname')}"/>
                 </div>
             </div>
-            <div ng-if="authorized('create')" class="btn-toolbar pull-right">
+            <div ng-if="authorizedActor('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                         tooltip-append-to-body="true"
