@@ -47,54 +47,56 @@
                 <h3 class="title" ng-bind-html="story.name | sanitize" ellipsis></h3>
                 <div class="description" ng-bind-html="story.description | sanitize" ellipsis></div>
             </div>
-            <div class="tags">
-                <a ng-repeat="tag in story.tags" href="#"><span class="tag">{{ tag }}</span></a>
-            </div>
-            <div class="actions">
-                <span class="action">
-                    <a ng-class="{ disabled: !authorizedStory('menu', story) }"
-                       data-toggle="dropdown"
-                       tooltip="${message(code: 'todo.is.ui.actions')}"
-                       tooltip-append-to-body="true">
-                        <i class="fa fa-cog"></i>
-                    </a>
-                    <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
-                </span>
-                <span class="action" ng-class="{'active':story.attachments_count}">
-                    <a href="#/sandbox/{{ story.id }}/attachments"
-                       tooltip="{{ story.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
-                       tooltip-append-to-body="true">
-                        <i class="fa fa-paperclip"></i>
-                    </a>
-                </span>
-                <span class="action" ng-class="{'active':story.comments_count}">
-                    <a href="#/sandbox/{{ story.id }}/comments"
-                       tooltip="{{ story.comments_count }} ${message(code:'todo.is.story.comments')}"
-                       tooltip-append-to-body="true"
-                       ng-switch="story.comments_count">
-                        <i class="fa fa-comment-o" ng-switch-when="0"></i>
-                        <i class="fa fa-comment" ng-switch-default></i>
-                        <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
-                    </a>
-                </span>
-                <span class="action" ng-class="{'active':story.tasks_count}">
-                    <a href="#/sandbox/{{ story.id }}/tasks"
-                       tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
-                       tooltip-append-to-body="true">
-                        <i class="fa fa-tasks"></i>
-                        <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
-                    </a>
-                </span>
-                <span class="action" ng-class="{'active':story.acceptanceTests_count}">
-                    <a href="#/sandbox/{{ story.id }}/tests"
-                       tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
-                       tooltip-append-to-body="true"
-                       ng-switch="story.acceptanceTests_count">
-                        <i class="fa fa-check-square-o" ng-switch-when="0"></i>
-                        <i class="fa fa-check-square" ng-switch-default></i>
-                        <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
-                    </a>
-                </span>
+            <div class="footer">
+                <div class="tags">
+                    <a ng-repeat="tag in story.tags" href="#"><span class="tag">{{ tag }}</span></a>
+                </div>
+                <div class="actions">
+                    <span class="action">
+                        <a ng-class="{ disabled: !authorizedStory('menu', story) }"
+                           data-toggle="dropdown"
+                           tooltip="${message(code: 'todo.is.ui.actions')}"
+                           tooltip-append-to-body="true">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
+                    </span>
+                    <span class="action" ng-class="{'active':story.attachments_count}">
+                        <a href="#/sandbox/{{ story.id }}/attachments"
+                           tooltip="{{ story.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
+                           tooltip-append-to-body="true">
+                            <i class="fa fa-paperclip"></i>
+                        </a>
+                    </span>
+                    <span class="action" ng-class="{'active':story.comments_count}">
+                        <a href="#/sandbox/{{ story.id }}/comments"
+                           tooltip="{{ story.comments_count }} ${message(code:'todo.is.story.comments')}"
+                           tooltip-append-to-body="true"
+                           ng-switch="story.comments_count">
+                            <i class="fa fa-comment-o" ng-switch-when="0"></i>
+                            <i class="fa fa-comment" ng-switch-default></i>
+                            <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
+                        </a>
+                    </span>
+                    <span class="action" ng-class="{'active':story.tasks_count}">
+                        <a href="#/sandbox/{{ story.id }}/tasks"
+                           tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
+                           tooltip-append-to-body="true">
+                            <i class="fa fa-tasks"></i>
+                            <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
+                        </a>
+                    </span>
+                    <span class="action" ng-class="{'active':story.acceptanceTests_count}">
+                        <a href="#/sandbox/{{ story.id }}/tests"
+                           tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
+                           tooltip-append-to-body="true"
+                           ng-switch="story.acceptanceTests_count">
+                            <i class="fa fa-check-square-o" ng-switch-when="0"></i>
+                            <i class="fa fa-check-square" ng-switch-default></i>
+                            <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
+                        </a>
+                    </span>
+                </div>
             </div>
             <div class="progress">
                 <span class="status">3/6</span>

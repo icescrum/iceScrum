@@ -11,7 +11,7 @@ angular.module('ui.selectable', [])
             return {
                 scope: {
                     items:"=uiSelectableList",
-                    selectableConfig:"=uiSelectable",
+                    selectableConfig:"=uiSelectable"
                 },
                 link: function(scope, element) {
                     var selectedItems = [];

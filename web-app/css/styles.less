@@ -20,20 +20,10 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 **/
+@import (reference) "todc/todc-bootstrap.less";
 
-@fromTop: 45px;
-@gray-darker:   lighten(#000, 13.5%); // #222
-@gray-dark:     lighten(#000, 20%);   // #333
-@gray:          lighten(#000, 33.5%); // #555
-@gray-light:    lighten(#000, 60%);   // #999
-@gray-lighter:  lighten(#000, 93.5%); // #eee
 @light-bg:      #F5F5F5;
 @body-bg:       #fff;
-@brand-primary: #4d90fe;
-@brand-success: #35aa47;
-@brand-info:    #5bc0de;
-@brand-warning: #faa937;
-@brand-danger:  #d84a38;
 
 @state-suggested:#FFCC33;
 @state-accepted:#0044CC;
@@ -42,7 +32,14 @@
 @state-inProgress:#FF9933;
 @state-done :#009900;
 
+@postit-border: #b1b1b1;
+@postit-border-blue: #b5c7eb;
+@postit-content-height: 70px;
+
+@draggable-bg :rgba(250, 169, 55, 0.8);
 @invert-color : #FFFFFF;
+
+@fromTop: 47px;
 
 .help-block {
   margin-bottom: 0px;
@@ -50,12 +47,6 @@
 }
 
 @draggable-bg:  rgba(250, 169, 55, 0.8);
-.text-overflow() {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 
 html,body,#main-content
 {
@@ -937,7 +928,6 @@ form.form-disabled {
       padding:0;
     }
     .navbar-header {
-      padding-left: em;
       margin:0;
     }
     form {
@@ -1150,12 +1140,6 @@ a[data-toggle="tab"] button {
   color:@invert-color;
 }
 
-@postit-border: #b1b1b1;
-@postit-border-blue: #b5c7eb;
-@postit-dark: #434343;
-@postit-content-height: 70px;
-
-
 .postits {
   &.standalone {
     .postit-container {
@@ -1173,7 +1157,7 @@ a[data-toggle="tab"] button {
         &:before, &:after {
           width: 196px;
           height: 145px;
-          color: @postit-dark;
+          color: @gray;
           border: 1px solid @postit-border;
           border-radius: 3px 3px 0px 0px;
           box-shadow: 0 1px 2px rgba(0, 0, 0, .25), inset 0 0 3px rgba(255, 255, 255, .75);
@@ -1222,6 +1206,11 @@ a[data-toggle="tab"] button {
       }
     }
   }
+  .postit-container {
+    &.ui-selectee, &.ui-selected {
+      cursor: pointer;
+    }
+  }
   &.grid-group {
     margin-left: 12px;
     margin-top: 10px;
@@ -1232,9 +1221,6 @@ a[data-toggle="tab"] button {
       float: left;
       padding: 0;
       margin: 9px;
-      &.ui-selectee, &.ui-selected {
-        cursor: pointer;
-      }
       &.ui-selected {
         padding: 6px;
         margin: 2px;
@@ -1250,7 +1236,7 @@ a[data-toggle="tab"] button {
         height: 145px;
         padding: 0 5px;
         position: relative;
-        color: @postit-dark;
+        color: @gray;
         border: 1px solid @postit-border;
         border-radius: 3px 3px 0px 0px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, .25), inset 0 0 3px rgba(255, 255, 255, .75);
@@ -1293,16 +1279,11 @@ a[data-toggle="tab"] button {
         .head {
           padding-top: 3px;
           height: 25px;
-          a.follow {
-            color: @postit-dark;
-            vertical-align: top;
-            font-size: 16px;
-          }
           .id, .estimation {
             display: inline-block;
           }
           .id {
-            font-size: 12px;
+            font-size: @font-size-base;
             padding-top: 2px;
             font-weight: 700;
           }
@@ -1345,8 +1326,10 @@ a[data-toggle="tab"] button {
               background-color: rgba(255, 255, 255, 1);
             }
           }
+          margin-right:-4px;
           .tag {
-            color: @postit-dark;
+            color: @gray;
+            margin-right:4px;
             background-color: rgba(255, 255, 255, .6);
             font-size: 10px;
             padding: 1px 2px;
@@ -1361,21 +1344,6 @@ a[data-toggle="tab"] button {
             display: inline-block;
             a {
               visibility: hidden;
-              text-decoration: none;
-              .badge {
-                background: none;
-                display: inline;
-                padding: 0px;
-                font-size: 10px;
-                border-radius: 0;
-                color: @postit-dark;
-              }
-            }
-            i {
-              color: @postit-dark;
-              &.fa-comment-o {
-                vertical-align: top;
-              }
             }
             &.active {
               a {
@@ -1393,7 +1361,7 @@ a[data-toggle="tab"] button {
           bottom: 0;
           padding: 0;
           border:none;
-          color: @postit-dark;
+          color: @gray;
           background: rgba(255, 255, 255, 0.6);
           .progress-bar {
             text-align: left;
@@ -1412,7 +1380,7 @@ a[data-toggle="tab"] button {
           right: 5px;
           font-size: 9px;
           line-height: 10px;
-          color: @postit-dark;
+          color: @gray;
           position: absolute;
           margin-top: 1.5px;
         }
@@ -1445,85 +1413,153 @@ a[data-toggle="tab"] button {
     }
   }
   &.list-group {
-    padding:5px;
-    > :last-child {
-      border-bottom-width:1px;
-    }
-    nth-child(odd){
-      background-color: #EFEFEF;
-    }
-    > .postit-container:nth-child(2n+1) {
-      background-color: #F9F9F9;
-    }
-    .postit {
-      height:55px;
-      position:relative;
-      background-image: none !important;
-      border: 1px solid #DCDCDC;
-      border-bottom-width:0;
-      .head {
-        height:100%;
-        float:left;
-        padding-top: 16px;
-        padding-left: 5px;
-        padding-right: 5px;
-      }
-      .content {
-        .title {
-          font-size:16px;
-          margin:0;
-          padding:2px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-        }
-      }
-      .state {
-        display:none;
-      }
-      .actions {
-        position: absolute;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        top: 0;
-        text-align: right;
-        .action {
-          display: inline-block;
-          margin-top: 13px;
-          margin-right: 20px;
-          font-size:16px;
-          display:none;
-        }
-      }
-      &:hover {
-        .actions {
-          .action {
-            display:inline-block;
+    .postit-container {
+      .make-md-column(12);
+      padding:3px 2px;
+      &.ui-selected {
+        padding:1px 0px;
+        .postit {
+          border:2px solid #BFC0BF;
+          .content {
+            border-left:#BFC0BF 2px solid;
+          }
+          &, .footer, .content, .status {
+            background-color: #E5E9F0;
           }
         }
       }
-      .progress{
-        margin-bottom:0;
-        position:absolute;
-        left:0;
-        right:0;
-        bottom:0;
-        border:none;
-        background: rgba(255, 255, 255, 0.6);
-        height: 10px;
-        .progress-bar {
-          text-align: left;
-          background: rgba(255, 255, 255, 0.9);
+    }
+    .postit {
+      @shared-margin: 9px;
+      .make-md-column(12);
+      position: relative;
+      background-size: 8px 100%;
+      background-repeat: no-repeat;
+      background-color: @gray-lighter;
+      padding: 0 0 0 8px;
+      .head {
+        .make-md-column(2);
+        a.follow i, .id {
+          margin-top:@shared-margin;
+          font-size:18px;
         }
-        .status {
-          top: 0.5px;
-          left: 5px;
+        .id, .id.invert {
+          vertical-align: top;
+          display: inline-block;
+          margin-left: 10px;
+          margin-top: 6px;
+          line-height: 24px;
+          color:@gray;
+        }
+      }
+      .content {
+        .make-md-column(7);
+        border-left:#FFF 2px solid;
+        color:@gray;
+        .title {
+          margin: 0 0 @shared-margin 0;
+          font-size:18px;
+        }
+        padding-top:@shared-margin;
+        padding-bottom:9px;
+      }
+      .footer {
+        .make-md-column(3);
+        position: absolute;
+        bottom: 0px;
+        top: 0px;
+        right: 0px;
+        .actions {
           position: absolute;
-          font-size: 9px;
-          line-height: 10px;
-          display: none;
+          bottom: @shared-margin;
+          left: 0px;
+          right: @shared-margin;
+          text-align:right;
+          span.action {
+            min-width:40px;
+            display:inline-block;
+            text-align:left;
+            & > a {
+              font-size:18px;
+              .badge {
+                font-size: @font-size-base;
+              }
+            }
+            &:not(:first-of-type):not(.active) > a > i:not(:hover) {
+              color:@gray-light;
+            }
+          }
         }
+        .tags {
+          text-align: right;
+          margin-top: @shared-margin;
+          margin-right:-4px;
+          .tag {
+            color: @gray;
+            margin-right:4px;
+          }
+        }
+        .content,.footer {
+          background-color:#F0F2F7;
+        }
+      }
+
+      .progress, .state {
+        .make-md-column(2);
+        position: absolute;
+        display: block;
+        color: @gray;
+      }
+
+      .progress {
+        height: 23px;
+        border: medium none;
+        margin: 0px;
+        bottom: 4px;
+        padding: 0px 15px 0px 15px;
+        .status {
+          position: absolute;
+          left: 15px;
+          top: 0px;
+          right: 1px;
+          font-size: @font-size-base;
+          background-color: @gray-lighter;
+        }
+        .progress-bar {
+          background-color:@gray-dark;
+        }
+      }
+
+      .state {
+        bottom: 10px;
+        text-align:right;
+        line-height: 16px;
+      }
+    }
+  }
+  .head {
+    a.follow {
+      color: @gray;
+      vertical-align: top;
+      font-size: 16px;
+    }
+  }
+  .badge {
+    background: none;
+    display: inline;
+    padding: 0px;
+    font-size: 10px;
+    border-radius: 0;
+    color: @gray;
+  }
+  .actions {
+    a {
+      text-decoration: none;
+    }
+    i {
+      color: @gray;
+      &.fa-comment-o {
+        vertical-align: text-top;
       }
     }
   }
@@ -1579,6 +1615,7 @@ a[data-toggle="tab"] button {
           > i {
             color:@body-bg;
           }
+
         }
       }
     }
