@@ -35,8 +35,7 @@ class AcceptanceTestController {
     def springSecurityService
     def acceptanceTestService
 
-    // TODO inProduct is probably to restrictive (what about SHs?)
-    @Secured('inProduct()')
+    // TODO private products
     def index = {
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
             withFormat {
@@ -47,8 +46,7 @@ class AcceptanceTestController {
         }
     }
 
-    // TODO inProduct is probably to restrictive (what about SHs?)
-    @Secured('inProduct()')
+    // TODO private products
     def list = {
         def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(params.long('product'), params.long('parentStory')) : AcceptanceTest.getAllInProduct(params.long('product'))
         withFormat {
