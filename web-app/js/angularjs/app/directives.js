@@ -85,20 +85,24 @@ directives.directive('focusMe', function($timeout) {
             var container = $(attrs['fixed']);
             var initialTop = element.offset().top - container.offset().top + container.scrollTop();
             var id = 'scroll.fixed'+(new Date().getTime());
+            var idR = 'resize.fixed'+(new Date().getTime());
             var fixedFunction = function(event, manual) {
                 //remove event
                 if (!$this.is(':visible')){
                     container.off( id );
+                    $(window).off( idR );
                     return;
                 }
                 var scrollTop = container.scrollTop();
-                if(manual || (initialTop - scrollTop <= 0 && !$this.hasClass('fixed'))){
-                    $this.next().css('margin-top', $this.outerHeight());
-                    $this.addClass('fixed')
-                        .css('top', container.offset().top + parseInt((attrs['fixedOffsetTop'] ?  attrs['fixedOffsetTop'] : 0)))
-                        .css('width', $this.parent().outerWidth(true) + parseInt(attrs['fixedOffsetWidth'] ?  attrs['fixedOffsetWidth'] : 0))
-                        .css('left', container.offset().left + parseInt((attrs['fixedOffsetLeft'] ?  attrs['fixedOffsetLeft'] : 0)))
-                        .css('position', 'fixed');
+                if(manual || (initialTop - scrollTop <= 0)){
+                    $this.css('width', $this.parent().outerWidth(true) + parseInt(attrs['fixedOffsetWidth'] ?  attrs['fixedOffsetWidth'] : 0))
+                         .css('left', container.offset().left + parseInt((attrs['fixedOffsetLeft'] ?  attrs['fixedOffsetLeft'] : 0)));
+                    if (!$this.hasClass('fixed')){
+                        $this.next().css('margin-top', $this.outerHeight());
+                        $this.addClass('fixed')
+                            .css('top', container.offset().top + parseInt((attrs['fixedOffsetTop'] ?  attrs['fixedOffsetTop'] : 0)))
+                            .css('position', 'fixed');
+                    }
                 } else if (initialTop - scrollTop > 0 && $this.hasClass('fixed')) {
                     $this.removeClass('fixed')
                         .css('top', '')
@@ -108,8 +112,22 @@ directives.directive('focusMe', function($timeout) {
                     $this.next().css('margin-top', '');
                 }
             };
+
             container.on(id, fixedFunction);
             container.scroll();
+
+            //when resize
+            $(window).on(idR, function(e) {
+                fixedFunction(null);
+            });
+
+            //when transition
+            $('#main, #sidebar').on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+                function(e) {
+                    fixedFunction(null);
+                }
+            );
+
         }
     };
 }]).directive('showValidation', [function() {

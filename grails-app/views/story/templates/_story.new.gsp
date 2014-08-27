@@ -89,7 +89,7 @@
               show-validation
               novalidate>
             <div class="clearfix no-padding">
-                <div class="form-group col-md-6">
+                <div class="form-half">
                     <label for="story.name">${message(code:'is.story.name')}</label>
                     <input required
                            ng-maxlength="100"
@@ -104,7 +104,7 @@
                                 class="help-block bg-warning"
                                 ng-bind-html="messageDuplicate | sanitize"></div>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-half">
                     <label for="story.template">${message(code: 'todo.is.ui.story.template.choose')}</label>
                     <div ng-class="{'input-group': authorizedStory('updateTemplate')}">
                         <input type="hidden"

@@ -28,10 +28,10 @@
          fixed-offset-top="1"
          fixed-offset-width="-2">
         <h3 class="panel-title row">
-            <div class="col-sm-8">
+            <div class="the-title">
                 <span>{{ actor.name }}</span>
             </div>
-            <div class="col-sm-4">
+            <div class="the-id">
                 <div class="pull-right">
                     <span class="label label-default"
                           tooltip="${message(code: 'is.backlogelement.id')}">{{ actor.uid }}</span>
@@ -95,7 +95,7 @@
               show-validation
               novalidate>
             <div class="clearfix no-padding">
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="actor.name">${message(code:'is.actor.name')}</label>
                     <input required
                            ng-disabled="!getEditableActorMode(actor)"
@@ -104,7 +104,7 @@
                            type="text"
                            class="form-control">
                 </div>
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="actor.instances">${message(code:'is.actor.instances')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"
@@ -115,7 +115,7 @@
                 </div>
             </div>
             <div class="clearfix no-padding">
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="actor.expertnessLevel">${message(code:'is.actor.it.level')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"
@@ -124,7 +124,7 @@
                         <is:options values="${is.internationalizeValues(map: BundleUtils.actorLevels)}" />
                     </select>
                 </div>
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="actor.useFrequency">${message(code:'is.actor.use.frequency')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"

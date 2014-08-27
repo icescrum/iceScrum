@@ -21,6 +21,8 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 **/
 @import (reference) "todc/todc-bootstrap.less";
+@import (reference) "bootstrap/less/forms.less";
+@import (reference) "bootstrap/less/responsive-utilities.less";
 
 @light-bg:      #F5F5F5;
 @body-bg:       #fff;
@@ -39,7 +41,7 @@
 @draggable-bg :rgba(250, 169, 55, 0.8);
 @invert-color : #FFFFFF;
 
-@fromTop: 47px;
+@fromTop: 46px;
 
 .help-block {
   margin-bottom: 0px;
@@ -106,6 +108,15 @@ table {
 }
 
 #main {
+  .make-xs-column(12);
+  .make-sm-column(12);
+  .make-md-column(12);
+  .make-lg-column(12);
+  &.in-product {
+    .make-sm-column(10);
+    .make-md-column(9);
+    .make-lg-column(10);
+  }
   right:0;
   padding:0;
   > div {
@@ -115,6 +126,13 @@ table {
 
 *[type="text/icescrum-template"] {
   display:none;
+}
+
+
+#sidebar {
+  .make-sm-column(2);
+  .make-md-column(3);
+  .make-sm-column(2);
 }
 
 #sidebar, #main {
@@ -133,6 +151,10 @@ table {
   overflow-x: hidden;
   overflow-y: auto;
   padding: 3px 0 0;
+  &.with-right {
+    .make-md-column(7);
+    .make-lg-column(8);
+  }
   .panel-body {
     padding-top:0;
   }
@@ -191,6 +213,9 @@ table {
 }
 
 #right {
+  .make-md-column(5);
+  .make-lg-column(4);
+  .well;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -285,6 +310,9 @@ table {
     > li {
       &.active {
         border-bottom: 4px solid @brand-primary;
+      }
+      > a {
+        padding-bottom: 5px;
       }
     }
   }
@@ -391,6 +419,17 @@ table[data-ui-draggable] > tr:hover .drag span,
   .navbar-user {
     margin-top:6px;
     cursor:pointer;
+  }
+  #panel-current-user {
+    padding-bottom:0;
+    .panel-footer {
+      padding:0;
+      & div.row div {
+        .make-xs-column(6);
+        text-align: center;
+        padding: 3px;
+      }
+    }
   }
 }
 /** popover error **/
@@ -541,6 +580,7 @@ form.form-disabled {
 /** help modal & keys **/
 
 .help-keys {
+  .make-md-column(3);
   padding: 1em;
   .help-key span {
     background-color: @gray-lighter;
@@ -707,6 +747,8 @@ form.form-disabled {
 
 /* sidebar management (docked / hidden) */
 #sidebar {
+  .well;
+  .hidden-xs;
   left:0;
   .sidebar-toggle{
     display:none;
@@ -782,6 +824,7 @@ form.form-disabled {
       .ui-resizable-handle{
         display:none !important;
       }
+
     }
   }
   .sidebar-hidden {
@@ -969,6 +1012,11 @@ form.form-disabled {
   }
 }
 
+.form-half {
+  .make-md-column(6);
+  .form-group;
+}
+
 /**************** custom ****************/
 
 #right-story-container {
@@ -1083,9 +1131,27 @@ tr:hover .on-hover span {
 }
 
 #story-header {
+  .the-title {
+    .make-md-column(12);
+    .make-lg-column(8);
+  }
+  .the-id {
+    .make-md-column(12);
+    .make-lg-column(4);
+  }
+  .actions {
+    .clearfix();
+    .actions-left, .actions-right {
+      .make-md-column(12);
+      .make-lg-column(6);
+      padding:0;
+      margin-bottom:10px;
+    }
+  }
   .progress {
-    margin-top: 10px;
+    .make-sm-column(12);
     margin-bottom: 5px;
+    padding:2px;
     border:1px solid #DCDCDC;
     .progress-bar {
       opacity:0.6;
@@ -1419,6 +1485,7 @@ a[data-toggle="tab"] button {
       &.ui-selected {
         padding:1px 0px;
         .postit {
+          min-height: 59px;
           border:2px solid #BFC0BF;
           .content {
             border-left:#BFC0BF 2px solid;
@@ -1426,19 +1493,25 @@ a[data-toggle="tab"] button {
           &, .footer, .content, .status {
             background-color: #E5E9F0;
           }
+          .head, .footer, .content {
+            min-height: 59px;
+          }
         }
       }
     }
     .postit {
+      .clearfix();
       @shared-margin: 9px;
-      .make-md-column(12);
+      min-height: 55px;
       position: relative;
       background-size: 8px 100%;
       background-repeat: no-repeat;
       background-color: @gray-lighter;
       padding: 0 0 0 8px;
       .head {
-        .make-md-column(2);
+        .make-sm-column(2);
+        .make-xs-column(3);
+        min-height: 59px;
         a.follow i, .id {
           margin-top:@shared-margin;
           font-size:18px;
@@ -1453,7 +1526,10 @@ a[data-toggle="tab"] button {
         }
       }
       .content {
-        .make-md-column(7);
+        .make-lg-column(9);
+        .make-sm-column(7);
+        .make-xs-column(9);
+        min-height: 59px;
         border-left:#FFF 2px solid;
         color:@gray;
         .title {
@@ -1464,7 +1540,10 @@ a[data-toggle="tab"] button {
         padding-bottom:9px;
       }
       .footer {
-        .make-md-column(3);
+        .make-lg-column(2);
+        .make-sm-column(3);
+        .hidden-xs;
+        min-height: 59px;
         position: absolute;
         bottom: 0px;
         top: 0px;
@@ -1485,7 +1564,7 @@ a[data-toggle="tab"] button {
                 font-size: @font-size-base;
               }
             }
-            &:not(:first-of-type):not(.active) > a > i:not(:hover) {
+            &:not(:first-of-type):not(.active) > a > i:not(:hover), & > a.disabled i {
               color:@gray-light;
             }
           }
@@ -1505,7 +1584,9 @@ a[data-toggle="tab"] button {
       }
 
       .progress, .state {
-        .make-md-column(2);
+        .make-lg-column(1);
+        .make-sm-column(2);
+        .make-xs-column(3);
         position: absolute;
         display: block;
         color: @gray;
@@ -1521,7 +1602,7 @@ a[data-toggle="tab"] button {
           position: absolute;
           left: 15px;
           top: 0px;
-          right: 1px;
+          right: 2px;
           font-size: @font-size-base;
           background-color: @gray-lighter;
         }
@@ -1534,6 +1615,13 @@ a[data-toggle="tab"] button {
         bottom: 10px;
         text-align:right;
         line-height: 16px;
+        @media (max-width: 767px) {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          width: 38px;
+          left:45px;
+        }
       }
     }
   }

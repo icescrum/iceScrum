@@ -24,7 +24,7 @@
     <is:modal title="${message(code:'todo.is.shortcuts')}" size="lg" name="shortcuts">
         <div class="row">
         **# _.each(shortcuts, function(shortcut, index){ **
-            <div class="col-md-3 help-keys">
+            <div class="help-keys">
                 <kdb class="help-key">
                     <span>** shortcut.key **</span>
                 </kdb> <span>** shortcut.title **</span>

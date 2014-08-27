@@ -29,7 +29,7 @@
          fixed-offset-top="1"
          fixed-offset-width="-2">
         <h3 class="panel-title row">
-            <div class="col-sm-8">
+            <div class="the-title">
                 <a href
                    tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                    tooltip-append-to-body="true"
@@ -37,7 +37,7 @@
                    ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
                 <span>{{ story.name }}</span> <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
             </div>
-            <div class="col-sm-4">
+            <div class="the-id">
                 <div class="pull-right">
                     <span tooltip="${message(code: 'is.story.creator')} : {{ story.creator | userFullName }}">
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
@@ -60,105 +60,111 @@
             </div>
         </h3>
         <div class="actions">
-            <div class="btn-group"
-                 ng-if="authorizedStory('menu', story)"
-                 tooltip="${message(code: 'todo.is.ui.actions')}"
-                 tooltip-append-to-body="true">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="fa fa-cog"></span> <span class="caret"></span>
+            <div class="actions-left">
+                <div class="btn-group"
+                     ng-if="authorizedStory('menu', story)"
+                     tooltip="${message(code: 'todo.is.ui.actions')}"
+                     tooltip-append-to-body="true">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-cog"></span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu"
+                        ng-include="'story.menu.html'"></ul>
+                </div>
+                <button type="button"
+                        popover-title="${message(code:'is.permalink')}"
+                        popover="{{ serverUrl + '/TODOPKEY-' + story.uid }}"
+                        popover-append-to-body="true"
+                        popover-placement="left"
+                        class="btn btn-default">
+                    <span class="fa fa-link"></span>
                 </button>
-                <ul class="dropdown-menu"
-                    ng-include="'story.menu.html'"></ul>
+                <button class="btn btn-default"
+                        type="button"
+                        ng-click="like(story)"
+                        ng-switch="story.liked"
+                        role="button"
+                        tabindex="0"
+                        tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
+                        tooltip-append-to-body="true">
+                    <i class="fa fa-thumbs-o-up" ng-switch-default></i>
+                    <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
+                    <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
+                </button>
+                <button class="btn btn-primary"
+                        type="button"
+                        tooltip="${message(code:'todo.is.ui.editable.enable')}"
+                        ng-if="authorizedStory('update', story) && !getEditableMode(story)"
+                        ng-click="enableEditableStoryMode()"><span class="fa fa-pencil"></span></button>
+                <button class="btn btn-default"
+                        type="button"
+                        tooltip="${message(code:'todo.is.ui.editable.disable')}"
+                        ng-if="getEditableStoryMode(story)"
+                        ng-click="confirm({ message: '${message(code: 'todo.is.ui.dirty.confirm')}', callback: disableEditableStoryMode, condition: isDirty() })"><span class="fa fa-pencil-square-o"></span></button>
             </div>
-            <button type="button"
-                    popover-title="${message(code:'is.permalink')}"
-                    popover="{{ serverUrl + '/TODOPKEY-' + story.uid }}"
-                    popover-append-to-body="true"
-                    popover-placement="left"
-                    class="btn btn-default">
-                <span class="fa fa-link"></span>
-            </button>
-            <button class="btn btn-default"
-                    type="button"
-                    ng-click="like(story)"
-                    ng-switch="story.liked"
-                    role="button"
-                    tabindex="0"
-                    tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
-                    tooltip-append-to-body="true">
-                <i class="fa fa-thumbs-o-up" ng-switch-default></i>
-                <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
-                <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
-            </button>
-            <button class="btn btn-primary"
-                    type="button"
-                    tooltip="${message(code:'todo.is.ui.editable.enable')}"
-                    ng-if="authorizedStory('update', story) && !getEditableMode(story)"
-                    ng-click="enableEditableStoryMode()"><span class="fa fa-pencil"></span></button>
-            <button class="btn btn-default"
-                    type="button"
-                    tooltip="${message(code:'todo.is.ui.editable.disable')}"
-                    ng-if="getEditableStoryMode(story)"
-                    ng-click="confirm({ message: '${message(code: 'todo.is.ui.dirty.confirm')}', callback: disableEditableStoryMode, condition: isDirty() })"><span class="fa fa-pencil-square-o"></span></button>
-            <div class="btn-group pull-right">
-                <button name="activities"
-                        class="btn btn-default"
-                        type="button"
-                        ng-click="setTabSelected('activities')"
-                        tooltip="${message(code:'todo.is.story.lastActivity')}"
-                        tooltip-append-to-body="true">
-                    <span class="fa fa-clock-o"></span>
-                </button>
-                <button name="attachments"
-                        class="btn btn-default"
-                        type="button"
-                        ng-click="setTabSelected('attachments')"
-                        tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
-                        tooltip-append-to-body="true">
-                    <span class="fa fa-paperclip"></span>
-                    <span class="badge" ng-show="story.attachments_count">{{ story.attachments_count }}</span>
-                </button>
-                <button name="comments"
-                        class="btn btn-default"
-                        type="button"
-                        ng-click="setTabSelected('comments')"
-                        tooltip="{{ story.comments.length }} ${message(code:'todo.is.story.comments')}"
-                        tooltip-append-to-body="true"
-                        ng-switch="story.comments_count">
-                    <span class="fa fa-comment-o" ng-switch-when="0"></span>
-                    <span class="fa fa-comment" ng-switch-default></span>
-                    <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
-                </button>
-                <button name="tasks"
-                        class="btn btn-default"
-                        type="button"
-                        ng-click="setTabSelected('tasks')"
-                        tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
-                        tooltip-append-to-body="true">
-                    <span class="fa fa-tasks"></span>
-                    <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
-                </button>
-                <button name="tests"
-                        class="btn btn-default"
-                        type="button"
-                        ng-click="setTabSelected('tests')"
-                        tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
-                        tooltip-append-to-body="true"
-                        tooltip-placement="left"
-                        ng-switch="story.acceptanceTests_count">
-                    <span class="fa fa-check-square-o" ng-switch-when="0"></span>
-                    <span class="fa fa-check-square" ng-switch-default></span>
-                    <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
-                </button>
+            <div class="actions-right">
+                <div class="btn-group pull-right">
+                    <button name="activities"
+                            class="btn btn-default"
+                            type="button"
+                            ng-click="setTabSelected('activities')"
+                            tooltip="${message(code:'todo.is.story.lastActivity')}"
+                            tooltip-append-to-body="true">
+                        <span class="fa fa-clock-o"></span>
+                    </button>
+                    <button name="attachments"
+                            class="btn btn-default"
+                            type="button"
+                            ng-click="setTabSelected('attachments')"
+                            tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                            tooltip-append-to-body="true">
+                        <span class="fa fa-paperclip"></span>
+                        <span class="badge" ng-show="story.attachments_count">{{ story.attachments_count }}</span>
+                    </button>
+                    <button name="comments"
+                            class="btn btn-default"
+                            type="button"
+                            ng-click="setTabSelected('comments')"
+                            tooltip="{{ story.comments.length }} ${message(code:'todo.is.story.comments')}"
+                            tooltip-append-to-body="true"
+                            ng-switch="story.comments_count">
+                        <span class="fa fa-comment-o" ng-switch-when="0"></span>
+                        <span class="fa fa-comment" ng-switch-default></span>
+                        <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
+                    </button>
+                    <button name="tasks"
+                            class="btn btn-default"
+                            type="button"
+                            ng-click="setTabSelected('tasks')"
+                            tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
+                            tooltip-append-to-body="true">
+                        <span class="fa fa-tasks"></span>
+                        <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
+                    </button>
+                    <button name="tests"
+                            class="btn btn-default"
+                            type="button"
+                            ng-click="setTabSelected('tests')"
+                            tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
+                            tooltip-append-to-body="true"
+                            tooltip-placement="left"
+                            ng-switch="story.acceptanceTests_count">
+                        <span class="fa fa-check-square-o" ng-switch-when="0"></span>
+                        <span class="fa fa-check-square" ng-switch-default></span>
+                        <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="progress">
-            <div ng-repeat="progressState in progressStates"
-                 class="progress-bar progress-bar-{{ progressState.code }}"
-                 tooltip-placement="left"
-                 tooltip-append-to-body="true"
-                 tooltip="{{ progressState.name }}" style="width:{{ progressState.width }}%">
-                {{ progressState.days }}
+        <div class="progress-container">
+            <div class="progress">
+                <div ng-repeat="progressState in progressStates"
+                     class="progress-bar progress-bar-{{ progressState.code }}"
+                     tooltip-placement="left"
+                     tooltip-append-to-body="true"
+                     tooltip="{{ progressState.name }}" style="width:{{ progressState.width }}%">
+                    {{ progressState.days }}
+                </div>
             </div>
         </div>
     </div>
@@ -171,7 +177,7 @@
               show-validation
               novalidate>
             <div class="clearfix no-padding">
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="story.name">${message(code:'is.story.name')}</label>
                     <input required
                            ng-maxlength="100"
@@ -181,7 +187,7 @@
                            type="text"
                            class="form-control">
                 </div>
-                <div class="col-md-6 form-group" ng-switch="getEditableStoryMode(story) || !editableStory.feature">
+                <div class="form-half" ng-switch="getEditableStoryMode(story) || !editableStory.feature">
                     <label for="story.feature.id">${message(code:'is.feature')}</label>
                     <div ng-switch-when="true"
                          ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
@@ -210,7 +216,7 @@
             </div>
             <div class="clearfix no-padding">
                 <div class="form-group"
-                     ng-class="{ 'col-md-6' : editableStory.type == 2 }">
+                     ng-class="{ 'form-half' : editableStory.type == 2 }">
                     <label for="story.type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableStoryMode(story)"
@@ -219,7 +225,7 @@
                         <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
                 </select>
                 </div>
-                <div class="form-group col-md-6"
+                <div class="form-half"
                      ng-show="editableStory.type == 2">
                     <label for="story.affectVersion">${message(code:'is.story.affectVersion')}</label>
                     <input class="form-control"

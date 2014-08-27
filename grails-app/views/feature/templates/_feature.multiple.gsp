@@ -78,7 +78,7 @@
               show-validation
               novalidate>
             <div class="clearfix no-padding">
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="feature.type">${message(code:'is.feature.type')}</label>
                     <select class="form-control"
                             required

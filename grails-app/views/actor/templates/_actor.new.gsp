@@ -52,7 +52,7 @@
               show-validation
               novalidate>
             <div class="clearfix no-padding">
-                <div class="form-group col-md-6">
+                <div class="form-half">
                     <label for="actor.name">${message(code:'is.actor.name')}</label>
                     <input required
                            name="actor.name"

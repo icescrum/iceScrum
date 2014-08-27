@@ -28,10 +28,10 @@
          fixed-offset-top="1"
          fixed-offset-width="-2">
         <h3 class="panel-title row">
-            <div class="col-sm-8">
+            <div class="the-title">
                 <span>{{ feature.name }}</span>
             </div>
-            <div class="col-sm-4">
+            <div class="the-id">
                 <div class="pull-right">
                     <span class="label label-default"
                           tooltip="${message(code: 'is.backlogelement.id')}">{{ feature.uid }}</span>
@@ -112,7 +112,7 @@
                        class="form-control">
             </div>
             <div class="clearfix no-padding">
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="feature.type">${message(code:'is.feature.type')}</label>
                     <div class="input-group">
                         <select class="form-control"
@@ -132,7 +132,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="feature.value">${message(code:'is.feature.value')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableFeatureMode(feature)"

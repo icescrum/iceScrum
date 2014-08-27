@@ -57,7 +57,7 @@
               show-validation
               novalidate>
             <div class="clearfix no-padding">
-                <div class="form-group col-md-6">
+                <div class="form-half">
                     <label for="feature.name">${message(code:'is.feature.name')}</label>
                     <input required
                            name="feature.name"

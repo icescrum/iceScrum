@@ -100,7 +100,7 @@
               show-validation
               novalidate>
             <div class="clearfix no-padding">
-                <div class="col-md-6 form-group">
+                <div class="form-half">
                     <label for="story.feature.id">${message(code:'is.feature')}</label>
                     <div ng-class="{'input-group':storyPreview.feature.id, 'select2-border':storyPreview.feature.id}">
                         <input type="hidden"
@@ -118,7 +118,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-6 form-group">
+                <div class=" form-group">
                     <label for="story.type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
                             required

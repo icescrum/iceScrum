@@ -28,7 +28,7 @@
       show-validation
       novalidate>
     <div class="clearfix no-padding">
-        <div class="col-md-6 form-group">
+        <div class="form-half">
             <label>${message(code:'is.backlogelement.name')}</label>
             <input required
                    type="text"
@@ -37,7 +37,7 @@
                    class="form-control"
                    placeholder="${message(code: 'is.ui.backlogelement.noname')}">
         </div>
-        <div class="col-md-6 form-group">
+        <div class="form-half">
             <label>${message(code:'is.ui.acceptanceTest.state')}</label>
             <select class="form-control"
                     ng-model="editableAcceptanceTest.state"

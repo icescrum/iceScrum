@@ -47,7 +47,7 @@
 <div class="container-fluid">
     <div class="row sidebar-hidden">
         <g:if test="${product}">
-            <div id="sidebar" class="hidden-xs col-sm-2 col-md-3 col-lg-2 well">
+            <div id="sidebar">
                 <div class="sidebar-toggle">
                     <button class="btn btn-xs btn-danger">
                         <span class="glyphicon glyphicon-chevron-left"></span>
@@ -78,8 +78,7 @@
                 </div>
             </div>
         </g:if>
-        <div id="main"
-             class="col-xs-12 col-sm-${product ? '10' : '12'} col-md-${product ? '9' : '12'} col-lg-${product ? '10' : '12'}">
+        <div id="main">
             <div id="main-content"
                  data-ui-droppable-hover-class="pointer"
                  data-ui-droppable-drop="$.icescrum.onDropToWindow"
