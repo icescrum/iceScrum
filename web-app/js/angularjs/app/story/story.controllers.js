@@ -29,6 +29,9 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', function($scope, 
     $scope.acceptAs = function(story, target) {
         StoryService.acceptAs(story, target).then($scope.goToNewStory);
     };
+    $scope.follow = function(story) {
+        StoryService.follow(story);
+    };
     $scope.copy = function(story) {
         StoryService.copy(story);
     };
@@ -151,9 +154,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 $scope.story = story;
                 $scope.resetStoryForm();
             });
-        };
-        $scope.follow = function(story) {
-            StoryService.follow(story);
         };
         $scope.like = function(story) {
             StoryService.like(story);
