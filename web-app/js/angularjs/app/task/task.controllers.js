@@ -22,10 +22,6 @@
  *
  */
 controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
-    $scope.showTaskForm = false;
-    $scope.setShowTaskForm = function(show) {
-        $scope.showTaskForm = show;
-    };
     $scope.save = function(task, obj) {
         TaskService.save(task, obj).then($scope.resetTaskForm);
     };
@@ -36,16 +32,17 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
         return TaskService.authorizedTask(action, task);
     };
     $scope.resetTaskForm = function() {
-        $scope.setShowTaskForm(false);
         $scope.task = {};
         if ($scope.formHolder.taskForm) {
             $scope.formHolder.taskForm.$setPristine();
         }
     };
     $scope.disabledForm = function() {
-        console.log($scope.formHolder.taskForm.$dirty && !$scope.formHolder.taskForm.$invalid);
         return $scope.formHolder.taskForm.$dirty && !$scope.formHolder.taskForm.$invalid;
     };
     // Init
     $scope.formHolder = {};
+    if ($scope.task === undefined) {
+        $scope.task = {};
+    }
 }]);

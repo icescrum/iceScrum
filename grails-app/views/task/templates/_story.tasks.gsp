@@ -28,23 +28,27 @@
 </tr>
 <tr ng-repeat="task in story.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
     <td>
-        <div class="content">
-            <div class="pull-right">
-                <button class="btn btn-xs btn-danger"
-                        type="button"
-                        tooltip-placement="left"
-                        tooltip="${message(code:'todo.is.ui.task.delete')}"
-                        ng-if="authorizedTask('delete', task)"
-                        ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"><span class="fa fa-times"></span></button>
+        <div class="content form-editable" ng-mouseover="showDelete=authorizedTask('delete', task)" ng-mouseleave="showDelete=false">
+            <div class="clearfix no-padding">
+                <div class="col-sm-1" ng-switch="showDelete">
+                    <p class="elemid form-control-static" ng-switch-default>{{ task.uid }}</p>
+                    <button ng-switch-when="true"
+                            class="btn btn-danger"
+                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"
+                            tooltip-placement="left"
+                            tooltip-append-to-body="true"
+                            tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"><span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <div class="form-group col-sm-8">
+                    <span class="form-control form-control-static">{{ task.name }}</span>
+                </div>
+                <div class="form-group col-sm-3">
+                    <span class="form-control form-control-static text-right">{{ task.estimation }}</span>
+                </div>
             </div>
-            <div>
-                <span class="label label-default"
-                      tooltip-placement="left"
-                      tooltip="${message(code: 'is.backlogelement.id')}">{{ task.uid }}</span>
-                <strong>{{ task.name }}</strong>
-            </div>
-            <div class="pretty-printed"
-                 ng-bind-html="task.description | lineReturns | sanitize">
+            <div class="clearfix no-padding" ng-if="task.description">
+                 <p class="form-control form-control-static" ng-bind-html="task.description | lineReturns | sanitize"></p>
             </div>
         </div>
     </td>

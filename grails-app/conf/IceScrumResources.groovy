@@ -80,6 +80,7 @@ modules = {
         resource url:[dir:'js/angularjs/lib', file:"angular.min.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-route.min.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-resource.min.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-elastic.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-bootstrap-0.11.0.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-router.min.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-select2.js"], disposition:'head'

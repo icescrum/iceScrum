@@ -23,30 +23,20 @@
  */
 controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'AcceptanceTestStatesByName', function($scope, AcceptanceTestService, AcceptanceTestStatesByName) {
 
-    $scope.setShowAcceptanceTestForm = function(show) {
-        $scope.editAcceptanceTest($scope.editableAcceptanceTest.id, show);
-    };
-    $scope.getShowAcceptanceTestForm = function() {
-        return ($scope.acceptanceTestEdit[$scope.editableAcceptanceTest.id] == true);
-    };
     $scope.resetAcceptanceTestForm = function() {
         $scope.editableAcceptanceTest = $scope.acceptanceTest ? angular.copy($scope.acceptanceTest) : {
             parentStory: $scope.story,
             state: AcceptanceTestStatesByName.TOCHECK
         };
-        $scope.setShowAcceptanceTestForm(false);
         if ($scope.formHolder.acceptanceTestForm) {
             $scope.formHolder.acceptanceTestForm.$setPristine();
         }
     };
-    $scope.saveOrUpdate = function(type, acceptanceTest, story) {
-        var promise;
-        if (type == 'save') {
-            promise = AcceptanceTestService.save(acceptanceTest, story);
-        } else if (type == 'update') {
-            promise = AcceptanceTestService.update(acceptanceTest, story);
-        }
-        promise.then($scope.resetAcceptanceTestForm);
+    $scope.save = function(acceptanceTest, story) {
+        AcceptanceTestService.save(acceptanceTest, story).then($scope.resetAcceptanceTestForm);
+    };
+    $scope.update = function(acceptanceTest, story) {
+        AcceptanceTestService.update(acceptanceTest, story);
     };
     $scope['delete'] = function(acceptanceTest, story) {
         AcceptanceTestService.delete(acceptanceTest, story);
@@ -72,6 +62,21 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.selectAcceptanceTestStateOptions = {
         formatResult: formatAcceptanceTestStateOption,
         formatSelection: formatAcceptanceTestStateOption
+    };
+    $scope.showForm = function(value) {
+        $scope.formHolder.showForm = value;
+    };
+    $scope.editForm = function(value) {
+        $scope.formHolder.editing = value;
+    };
+    $scope.blurEditable = function(acceptanceTest, story, $event) {
+        if ($($event.target).hasClass('ng-valid')) {
+            $scope.showForm(false);
+            $scope.editForm(false);
+            if ($($event.target).hasClass('ng-dirty')) {
+                AcceptanceTestService.update(acceptanceTest, story);
+            }
+        }
     };
     // Init
     $scope.formHolder = {};

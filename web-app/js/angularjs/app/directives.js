@@ -153,22 +153,6 @@ directives.directive('focusMe', function($timeout) {
             }
         }
     }
-}]).directive('scrollToTab', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function(scope, element, attrs) {
-                var getActive = $parse(attrs.active);
-                scope.$parent.$watch(getActive, function(value, oldVal){
-                    if (value !== oldVal && value == true){
-                        var container = attrs.scrollToTab ? $(attrs.scrollToTab) : $(element).parent();
-                        var pos = $(element).position().top + container.scrollTop();
-                        container.animate({
-                            scrollTop : pos
-                        }, 1000);
-                    }
-                });
-            }
-        }
 }]).directive('formAutofillFix', ['$timeout', function($timeout) {
     return function (scope, element, attrs) {
         element.prop('method', 'post');
@@ -220,6 +204,25 @@ directives.directive('focusMe', function($timeout) {
         }
     };
 }]);
+
+
+//.directive('scrollToTab', ['$parse', function($parse) {
+//    return {
+//        restrict: 'A',
+//        link: function(scope, element, attrs) {
+//            var getActive = $parse(attrs.active);
+//            scope.$parent.$watch(getActive, function(value, oldVal){
+//                if (value !== oldVal && value == true){
+//                    var container = attrs.scrollToTab ? $(attrs.scrollToTab) : $(element).parent();
+//                    var pos = $(element).position().top + container.scrollTop();
+//                    container.animate({
+//                        scrollTop : pos
+//                    }, 1000);
+//                }
+//            });
+//        }
+//    }
+//}])
 
 //.directive('ajax2', ['$http', function ($http) {
 //    return {

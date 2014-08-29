@@ -87,7 +87,7 @@
                 <h3 class="panel-title">
                     <g:message code="is.ui.project.chart.title"/>
                     <small class="pull-right">
-                        <div class="btn-group" data-toggle="tooltip" title="${message(code:'todo.is.ui.charts')}">
+                        <div class="btn-group" tooltip="${message(code:'todo.is.ui.charts')}">
                             <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                                 <span class="glyphicon glyphicon-stats"></span>&nbsp;<span class="caret"></span>
                             </button>
@@ -124,7 +124,7 @@
                     <g:message code="is.ui.project.description.title"/>
                     <g:if test="${request.productOwner}">
                         <small class="pull-right on-hover">
-                            <a class="text-muted" data-toggle="tooltip" title="${message(code:'default.button.edit.label')}" href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
+                            <a class="text-muted" tooltip="${message(code:'default.button.edit.label')}" href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
                                 <i class="fa fa-edit fa-lg"></i>
                             </a>
                         </small>
@@ -146,7 +146,7 @@
                     <g:message code="is.ui.project.vision.title"/>
                     <g:if test="${request.productOwner && release?.id}">
                         <small class="pull-right on-hover">
-                            <a class="text-muted" data-toggle="tooltip" href="#releasePlan/vision/${release.id}" title="${message(code:'default.button.edit.label')}">
+                            <a class="text-muted" href="#releasePlan/vision/${release.id}" tooltip="${message(code:'default.button.edit.label')}">
                                 <i class="fa fa-edit fa-lg"></i>
                             </a>
                         </small>
@@ -175,7 +175,7 @@
                     <g:message code="is.ui.project.doneDefinition.title"/>
                     <g:if test="${(request.productOwner || request.scrumMaster) && sprint?.id}">
                         <small class="pull-right on-hover">
-                            <a class="text-muted" data-toggle="tooltip" href="#sprintPlan/doneDefinition/${sprint.id}" title="${message(code:'default.button.edit.label')}">
+                            <a class="text-muted" href="#sprintPlan/doneDefinition/${sprint.id}" tooltip="${message(code:'default.button.edit.label')}">
                                 <i class="fa fa-edit fa-lg"></i>
                             </a>
                         </small>
@@ -204,7 +204,7 @@
                     <g:message code="is.ui.project.retrospective.title"/>
                     <g:if test="${(request.productOwner || request.scrumMaster) && sprint?.id}">
                         <small class="pull-right on-hover">
-                            <a class="text-muted" data-toggle="tooltip" href="#sprintPlan/retrospective/${sprint.id}" title="${message(code:'default.button.edit.label')}">
+                            <a class="text-muted" href="#sprintPlan/retrospective/${sprint.id}" tooltip="${message(code:'default.button.edit.label')}">
                                 <i class="fa fa-edit fa-lg"></i>
                             </a>
                         </small>

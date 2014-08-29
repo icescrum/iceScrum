@@ -22,29 +22,14 @@
  *
  */
 controllers.controller('commentCtrl', ['$scope', 'CommentService', function($scope, CommentService) {
-    $scope.setShowCommentForm = function(show) {
-        $scope.editComment($scope.editableComment.id, show);
-    };
-    $scope.getShowCommentForm = function() {
-        return ($scope.commentEdit[$scope.editableComment.id] == true);
-    };
     $scope.resetCommentForm = function() {
         $scope.editableComment = $scope.comment ? angular.copy($scope.comment) : {};
-        if ($scope.getShowCommentForm()) {
-            $scope.setShowCommentForm(false);
-        }
         if ($scope.formHolder.commentForm) {
             $scope.formHolder.commentForm.$setPristine();
         }
     };
-    $scope.saveOrUpdate = function(type, comment, commentable) {
-        var promise;
-        if (type == 'save') {
-            promise = CommentService.save(comment, commentable);
-        } else if (type == 'update') {
-            promise = CommentService.update(comment, commentable);
-        }
-        promise.then($scope.resetCommentForm);
+    $scope.save = function(comment, commentable) {
+        CommentService.save(comment, commentable).then($scope.resetCommentForm);
     };
     $scope['delete'] = function(comment, commentable) {
         CommentService.delete(comment, commentable);
@@ -52,10 +37,22 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', function($sco
     $scope.authorizedComment = function(action, comment) {
         return CommentService.authorizedComment(action, comment);
     };
+    $scope.showForm = function(value) {
+        $scope.formHolder.showForm = value;
+    };
+    $scope.editForm = function(value) {
+        $scope.formHolder.editing = value;
+    };
+    $scope.blurEditable = function(comment, commentable, $event) {
+        if ($($event.target).hasClass('ng-valid')) {
+            $scope.showForm(false);
+            $scope.editForm(false);
+            if ($($event.target).hasClass('ng-dirty')) {
+                CommentService.update(comment, commentable);
+            }
+        }
+    };
     // Init
     $scope.formHolder = {};
     $scope.resetCommentForm();
-    if (_.isEmpty($scope.editableComment) && $scope.authorizedComment('create')) {
-        $scope.setShowCommentForm(true);
-    }
 }]);

@@ -33,9 +33,8 @@
                      data-dz-url="${attachmentUrl}"
                      data-dz-previews-container="#** id ** .previews">
                     <button class="btn btn-primary clickable"
-                            data-toggle="tooltip"
-                            data-ui-tooltip-container="body"
-                            title="${message(code:'todo.is.ui.attach.files')}">
+                            tooltip-append-to-body="true"
+                            tooltip="${message(code:'todo.is.ui.attach.files')}">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>

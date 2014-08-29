@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<a href="#${controllerName}" data-container="body" data-toggle="tooltip" class="btn btn-primary" title="${message(code:'is.ui.sandbox.toolbar.new')}">
+<a href="#${controllerName}" tooltip-append-to-body="true" class="btn btn-primary" tooltip="${message(code:'is.ui.sandbox.toolbar.new')}">
     <i class="glyphicon glyphicon-plus"></i>
 </a>
 <entry:point id="${controllerName}-${actionName}-widget-toolbar"/>

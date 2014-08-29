@@ -30,37 +30,69 @@
 <tr ng-repeat="acceptanceTest in story.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
     <td>
         <div class="content">
-            <div ng-show="!getShowAcceptanceTestForm()">
-                <div class="pull-right">
-                    <button class="btn btn-xs btn-primary"
-                            type="button"
-                            tooltip-placement="left"
-                            tooltip="${message(code:'todo.is.ui.acceptanceTest.edit')}"
-                            ng-if="authorizedAcceptanceTest('update', acceptanceTest)"
-                            ng-click="setShowAcceptanceTestForm(true)"><span class="fa fa-pencil"></span></button>
-                    <button class="btn btn-xs btn-danger"
-                            type="button"
-                            tooltip-placement="left"
-                            tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"
-                            ng-if="authorizedAcceptanceTest('delete', acceptanceTest)"
-                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, story] })"><span class="fa fa-times"></span></button>
+            <form name="formHolder.acceptanceTestForm"
+                  class="form-editable"
+                  ng-class="{ 'form-editing': (formHolder.editing || formHolder.showForm) && authorizedAcceptanceTest('update', editableAcceptanceTest) }"
+                  ng-mouseleave="showForm(false)"
+                  show-validation
+                  novalidate>
+                <div class="clearfix no-padding">
+                    <div class="col-sm-1"
+                         ng-switch="(formHolder.editing || formHolder.showForm) && authorizedAcceptanceTest('delete', editableAcceptanceTest)"
+                         ng-mouseover="showForm(true)">
+                        <p ng-switch-default
+                           class="elemid form-control-static">{{ editableAcceptanceTest.uid }}</p>
+                        <button ng-switch-when="true"
+                                class="btn btn-danger"
+                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, story] })"
+                                tooltip-placement="left"
+                                tooltip-append-to-body="true"
+                                tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"><span class="fa fa-times"></span>
+                        </button>
+                    </div>
+                    <div class="col-sm-8 form-group">
+                        <input required
+                               ng-maxlength="255"
+                               ng-mouseover="showForm(true)"
+                               ng-focus="editForm(true)"
+                               ng-blur="blurEditable(editableAcceptanceTest, story, $event)"
+                               type="text"
+                               ng-model="editableAcceptanceTest.name"
+                               class="form-control"
+                               placeholder="${message(code: 'is.ui.backlogelement.noname')}">
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <select class="form-control"
+                                ng-focus="editForm(true)"
+                                ng-mouseover="showForm(true)"
+                                ng-blur="blurEditable(editableAcceptanceTest, story, $event)"
+                                ng-model="editableAcceptanceTest.state"
+                                ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
+                                ui-select2="selectAcceptanceTestStateOptions">
+                            <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <span class="label label-default"
-                          tooltip-placement="left"
-                          tooltip="${message(code: 'is.backlogelement.id')}">{{ acceptanceTest.uid }}</span>
-                    <strong>{{ acceptanceTest.name }}</strong>
+                <div class="form-group">
+                    <textarea is-markitup
+                              class="form-control"
+                              msd-elastic
+                              ng-maxlength="1000"
+                              ng-model="editableAcceptanceTest.description"
+                              is-model-html="editableAcceptanceTest.description_html"
+                              ng-show="showDescriptionTextarea"
+                              ng-blur="blurEditable(editableAcceptanceTest, story, $event); showDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
+                              placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
+                    <div class="markitup-preview"
+                         ng-show="!showDescriptionTextarea"
+                         ng-mouseover="showForm(true)"
+                         ng-click="showDescriptionTextarea = true"
+                         ng-focus="editForm(true); showDescriptionTextarea = true; editableAcceptanceTest.description || (editableAcceptanceTest.description = '${is.generateAcceptanceTestTemplate()}')"
+                         ng-class="{'placeholder': !editableAcceptanceTest.description_html}"
+                         tabindex="0"
+                         ng-bind-html="(editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>') | sanitize"></div>
                 </div>
-                <select class="acceptance-test-state-noform"
-                        ng-model="acceptanceTest.state"
-                        ng-readonly="!authorizedAcceptanceTest('updateState', acceptanceTest)"
-                        ng-change="saveOrUpdate('update', acceptanceTest, story)"
-                        ui-select2="selectAcceptanceTestStateOptions">
-                    <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
-                </select>
-                <div ng-bind-html="acceptanceTest.description_html | sanitize"></div>
-            </div>
-            <div ng-include="'story.acceptanceTest.editor.html'" ng-show="getShowAcceptanceTestForm()" ng-init="formType='update'"></div>
+            </form>
         </div>
     </td>
 </tr>

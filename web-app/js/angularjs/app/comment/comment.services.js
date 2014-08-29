@@ -25,7 +25,7 @@ services.factory('Comment', [ 'Resource', function($resource) {
     return $resource('comment/:type/:typeId/:id', { typeId: '@typeId', type: '@type' });
 }]);
 
-services.service("CommentService", ['Comment', 'Session', function(Comment, Session) {
+services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Comment, Session) {
     this.save = function(comment, commentable) {
         comment.class = 'comment';
         comment.type = commentable.class.toLowerCase();
@@ -49,18 +49,19 @@ services.service("CommentService", ['Comment', 'Session', function(Comment, Sess
         comment.type = commentable.class.toLowerCase();
         comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
-        return comment.$update(function(data) {
-            var index = commentable.comments.indexOf(_.findWhere(commentable.comments, { id: comment.id }));
-            if (index != -1) {
-                commentable.comments.splice(index, 1, data);
-            }
+        return comment.$update(function(returnedComment) {
+            angular.extend(_.findWhere(commentable.comments, { id: comment.id }), returnedComment);
         });
     };
     this.list = function(commentable) {
-        return Comment.query({ typeId: commentable.id, type: commentable.class.toLowerCase() }, function(data) {
-            commentable.comments = data;
-            commentable.comments_count = commentable.comments.length;
-        }).$promise;
+        if (_.isEmpty(commentable.comments)) {
+            return Comment.query({ typeId: commentable.id, type: commentable.class.toLowerCase() }, function(data) {
+                commentable.comments = data;
+                commentable.comments_count = commentable.comments.length;
+            }).$promise;
+        } else {
+            return $q.when(commentable.comments);
+        }
     };
     this.authorizedComment = function(action, comment) {
         switch (action) {

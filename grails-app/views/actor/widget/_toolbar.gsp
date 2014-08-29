@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<a href="#${controllerName}" data-container="body" data-toggle="tooltip" class="btn btn-danger" title="${message(code:'is.ui.actor.toolbar.new')}">
+<a href="#${controllerName}" tooltip-append-to-body="true" class="btn btn-danger" tooltip="${message(code:'is.ui.actor.toolbar.new')}">
     <i class="glyphicon glyphicon-plus"></i>
 </a>
 <entry:point id="${controllerName}-${actionName}-widget-toolbar"/>

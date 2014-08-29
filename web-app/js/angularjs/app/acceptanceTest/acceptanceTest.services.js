@@ -25,7 +25,7 @@ services.factory('AcceptanceTest', [ 'Resource', function($resource) {
     return $resource('acceptanceTest/:type/:storyId/:id');
 }]);
 
-services.service("AcceptanceTestService", ['AcceptanceTest', 'StoryStatesByName', 'Session', function(AcceptanceTest, StoryStatesByName, Session) {
+services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesByName', 'Session', function($q, AcceptanceTest, StoryStatesByName, Session) {
     this.save = function(acceptanceTest, story) {
         acceptanceTest.class = 'acceptanceTest';
         acceptanceTest.parentStory = { id: story.id };
@@ -41,18 +41,19 @@ services.service("AcceptanceTestService", ['AcceptanceTest', 'StoryStatesByName'
         });
     };
     this.update = function(acceptanceTest, story) {
-        return acceptanceTest.$update(function(data) {
-            var index = story.acceptanceTests.indexOf(_.findWhere(story.acceptanceTests, { id: acceptanceTest.id }));
-            if (index != -1) {
-                story.acceptanceTests.splice(index, 1, data);
-            }
+        return acceptanceTest.$update(function(returnedAcceptanceTest) {
+            angular.extend(_.findWhere(story.acceptanceTests, { id: returnedAcceptanceTest.id }), returnedAcceptanceTest);
         });
     };
     this.list = function(story) {
-        return AcceptanceTest.query({ storyId: story.id, type: 'story' }, function(data) {
-            story.acceptanceTests = data;
-            story.acceptanceTests_count = story.acceptanceTests.length;
-        }).$promise;
+        if (_.isEmpty(story.acceptanceTests)) {
+            return AcceptanceTest.query({ storyId: story.id, type: 'story' }, function(data) {
+                story.acceptanceTests = data;
+                story.acceptanceTests_count = story.acceptanceTests.length;
+            }).$promise;
+        } else {
+            return $q.when(story.acceptanceTests);
+        }
     };
     this.authorizedAcceptanceTest = function(action, acceptanceTest) {
         switch (action) {

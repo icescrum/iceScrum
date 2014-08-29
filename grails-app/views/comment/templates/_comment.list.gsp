@@ -29,36 +29,45 @@
 <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
     <td>
         <div class="content">
-            <div ng-show="!getShowCommentForm()">
-                <div class="pull-right">
-                    <button class="btn btn-xs btn-primary"
-                            type="button"
+            <form name="formHolder.commentForm"
+                  ng-mouseleave="showForm(false)"
+                  class="form-editable"
+                  ng-class="{ 'form-editing': (formHolder.editing || formHolder.showForm) && authorizedComment('update', editableComment) }"
+                  show-validation
+                  novalidate>
+                <div ng-switch="(formHolder.editing || formHolder.showForm) && authorizedComment('delete', editableComment)"
+                      class="form-group" >
+                    <img class="comment-avatar"
+                         ng-switch-default
+                         ng-mouseover="showForm(true)"
+                         ng-src="{{comment.poster | userAvatar}}"
+                         alt="{{comment.poster | userFullName}}"/>
+                    <button ng-switch-when="true"
+                            class="btn btn-danger"
+                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, story] })"
                             tooltip-placement="left"
-                            tooltip="${message(code:'todo.is.ui.comment.edit')}"
-                            ng-if="authorizedComment('update', comment)"
-                            ng-click="setShowCommentForm(true)"><span class="fa fa-pencil"></span></button>
-                    <button class="btn btn-xs btn-danger"
-                            type="button"
-                            tooltip-placement="left"
-                            tooltip="${message(code:'todo.is.ui.comment.delete')}"
-                            ng-if="authorizedComment('delete', comment)"
-                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [comment, selected] })"><span class="fa fa-times"></span></button>
+                            tooltip-append-to-body="true"
+                            tooltip="${message(code:'todo.is.ui.comment.delete')}"><span class="fa fa-times"></span>
+                    </button>
+                    <span>{{comment.poster | userFullName}}</span>
+                    <span class="text-muted">
+                        <time timeago datetime="'{{ comment.dateCreated }}'">
+                            {{ comment.dateCreated }}
+                        </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>
+                    </span>
                 </div>
-                <img class="inline-block"
-                     ng-src="{{comment.poster | userAvatar}}"
-                     alt="{{comment.poster | userFullName}}"
-                     tooltip="{{comment.poster | userFullName}}"
-                     width="25px"/>
-                <span class="text-muted">
-                    <time timeago datetime="'{{ comment.dateCreated }}'">
-                        {{ comment.dateCreated }}
-                    </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.commnent.edited')})</span>
-                </span>
-                <div class="pretty-printed"
-                     ng-bind-html="comment.body | lineReturns | sanitize">
+                <div class="form-group">
+                    <textarea required
+                              msd-elastic
+                              ng-maxlength="5000"
+                              ng-blur="blurEditable(editableComment, selected, $event)"
+                              ng-mouseover="showForm(true)"
+                              ng-focus="editForm(true)"
+                              ng-model="editableComment.body"
+                              class="form-control"
+                              placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
                 </div>
-            </div>
-            <div ng-include="'comment.editor.html'" ng-show="getShowCommentForm()" ng-init="formType='update'"></div>
+            </form>
         </div>
     </td>
 </tr>

@@ -41,9 +41,10 @@
             },
 
             stop:function(event,ui){
-                var $mainmenu = $('#mainmenu');
-                var $arrow = $mainmenu.find('.menubar-hidden');
-                $arrow.find('.dropdown-menu').dropdown('toggle');
+                // TODO FIX
+                // var $mainmenu = $('#mainmenu');
+                // var $arrow = $mainmenu.find('.menubar-hidden');
+                // $arrow.find('.dropdown-menu').dropdown('toggle');
                 $.icescrum.menuBar.checkMenuBar();
                 $.icescrum.checkSidebar();
             },
@@ -107,12 +108,13 @@
                 // Update the arrow visibility
                 var visibility = $('.menubar:not(.hidden)', $listHidden).size() == 0 ? 'hidden' : 'visible';
                 $arrow.css('visibility', visibility);
-                $mainmenu.find('> ul > li.menubar:visible').off('mousedown.dropdown').on('mousedown.dropdown',function(){
-                    var $dropdown = $arrow.find('.dropdown-menu');
-                    if (!$arrow.hasClass('open')){
-                        $dropdown.dropdown('toggle');
-                    }
-                });
+                // TODO FIX
+//                $mainmenu.find('> ul > li.menubar:visible').off('mousedown.dropdown').on('mousedown.dropdown',function(){
+//                    var $dropdown = $arrow.find('.dropdown-menu');
+//                    if (!$arrow.hasClass('open')){
+//                        $dropdown.dropdown('toggle');
+//                    }
+//                });
 
                 $mainmenu.find('li.menubar > a').off('mousedown.tooltip').on('mousedown.tooltip',function(){
                     $(this).tooltip('hide');

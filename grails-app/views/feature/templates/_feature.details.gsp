@@ -105,6 +105,7 @@
             <div class="form-group">
                 <label for="feature.name">${message(code:'is.feature.name')}</label>
                 <input required
+                       ng-maxlength="100"
                        ng-disabled="!getEditableFeatureMode(feature)"
                        name="editableFeature.name"
                        ng-model="editableFeature.name"
@@ -145,6 +146,7 @@
             <div class="form-group">
                 <label for="feature.description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
+                          ng-maxlength="3000"
                           ng-disabled="!getEditableFeatureMode(feature)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                           ng-model="editableFeature.description"></textarea>
@@ -163,6 +165,7 @@
                 <label for="feature.notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
                           class="form-control"
+                          ng-maxlength="5000"
                           ng-model="editableFeature.notes"
                           is-model-html="editableFeature.notes_html"
                           ng-show="showNotesTextarea"
@@ -195,6 +198,10 @@
                 </button>
             </div>
         </form>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
         <tabset type="{{ tabsType }}">
             <tab select="$state.params.tabId ? setTabSelected('attachments') : ''"
                  heading="${message(code: 'is.ui.backlogelement.attachment')}"
@@ -203,7 +210,7 @@
             <tab select="stories(feature); setTabSelected('stories');"
                  heading="${message(code: 'todo.is.feature.stories')}"
                  active="tabSelected.stories">
-                <table class="table table-striped">
+                <table class="table">
                     <tbody ng-include="'nested.stories.html'" ng-init="selected = feature"></tbody>
                 </table>
             </tab>

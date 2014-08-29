@@ -52,7 +52,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
                 $scope.tabSelected[$state.params.tabId] = true;
                 $timeout((function() {
                     var container = angular.element('#right');
-                    var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();
+                    var pos = angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
                     container.animate({ scrollTop: pos }, 1000);
                 }));
             }
@@ -117,6 +117,7 @@ controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'Acto
             if (andContinue) {
                 $scope.actor = {};
             } else {
+                $scope.setEditableMode(true);
                 $state.go('^.details', { id: actor.id });
             }
         });

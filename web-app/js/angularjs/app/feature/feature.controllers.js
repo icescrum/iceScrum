@@ -55,7 +55,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
                 $scope.tabSelected[$state.params.tabId] = true;
                 $timeout((function() {
                     var container = angular.element('#right');
-                    var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();
+                    var pos = angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
                     container.animate({ scrollTop: pos }, 1000);
                 }));
             }
@@ -119,6 +119,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
             if (andContinue) {
                 $scope.feature = {};
             } else {
+                $scope.setEditableMode(true);
                 $state.go('^.details', { id: feature.id });
             }
         });

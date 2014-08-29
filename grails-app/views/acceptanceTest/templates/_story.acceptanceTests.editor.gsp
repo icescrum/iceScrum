@@ -23,22 +23,23 @@
 --}%
 
 <script type="text/ng-template" id="story.acceptanceTest.editor.html">
-<form ng-submit="saveOrUpdate(formType, editableAcceptanceTest, selected)"
+<form ng-submit="save(editableAcceptanceTest, selected)"
       name="formHolder.acceptanceTestForm"
       show-validation
       novalidate>
     <div class="clearfix no-padding">
-        <div class="form-half">
-            <label>${message(code:'is.backlogelement.name')}</label>
+        <div class="col-sm-1">
+            <p class="elemid form-control-static">42</p>
+        </div>
+        <div class="col-sm-8 form-group">
             <input required
                    type="text"
+                   ng-maxlength="255"
                    ng-model="editableAcceptanceTest.name"
-                   focus-me="{{ getShowAcceptanceTestForm() }}"
                    class="form-control"
                    placeholder="${message(code: 'is.ui.backlogelement.noname')}">
         </div>
-        <div class="form-half">
-            <label>${message(code:'is.ui.acceptanceTest.state')}</label>
+        <div class="col-sm-3 form-group">
             <select class="form-control"
                     ng-model="editableAcceptanceTest.state"
                     ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
@@ -48,9 +49,10 @@
         </div>
     </div>
     <div class="form-group">
-        <label>${message(code:'is.backlogelement.description')}</label>
         <textarea is-markitup
+                  msd-elastic
                   class="form-control"
+                  ng-maxlength="1000"
                   ng-model="editableAcceptanceTest.description"
                   is-model-html="editableAcceptanceTest.description_html"
                   ng-show="showDescriptionTextarea"
@@ -65,28 +67,12 @@
              ng-bind-html="(editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>') | sanitize"></div>
     </div>
     <div class="btn-toolbar pull-right">
-        <button ng-if="formType == 'save'"
-                class="btn btn-primary pull-right"
+        <button class="btn btn-primary pull-right"
                 ng-class="{ disabled: !formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid }"
                 tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                 tooltip-append-to-body="true"
                 type="submit">
             ${message(code:'todo.is.ui.save')}
-        </button>
-        <button ng-if="formType == 'update'"
-                class="btn btn-primary pull-right"
-                ng-class="{ disabled: !formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid }"
-                tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
-                tooltip-append-to-body="true"
-                type="submit">
-            ${message(code:'todo.is.ui.update')}
-        </button>
-        <button class="btn confirmation btn-default pull-right"
-                tooltip-append-to-body="true"
-                tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
-                type="button"
-                ng-click="resetAcceptanceTestForm()">
-            ${message(code:'is.button.cancel')}
         </button>
     </div>
 </form>

@@ -29,7 +29,7 @@ services.factory('Task', [ 'Resource', function($resource) {
         });
 }]);
 
-services.service("TaskService", ['Task', 'Session', function(Task, Session) {
+services.service("TaskService", ['$q', 'Task', 'Session', function($q, Task, Session) {
     this.save = function(task, obj) {
         task.class = 'task';
         if (obj.class == 'Story') {
@@ -49,9 +49,13 @@ services.service("TaskService", ['Task', 'Session', function(Task, Session) {
         });
     };
     this.list = function(obj) {
-        return Task.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
-            obj.tasks = data;
-        }).$promise;
+        if (_.isEmpty(obj.tasks)) {
+            return Task.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
+                obj.tasks = data;
+            }).$promise;
+        } else {
+            return $q.when(obj.tasks);
+        }
     };
     this.authorizedTask = function(action, task) {
         switch (action) {

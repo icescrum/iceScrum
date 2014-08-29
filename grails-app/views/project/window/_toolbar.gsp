@@ -24,7 +24,7 @@
     <div class="container-fluid">
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group">
-                <div class="btn-group" data-toggle="tooltip" data-ui-tooltip-container="body" title="${message(code:'todo.is.ui.export')}">
+                <div class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.export')}">
                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
                     </button>
@@ -37,7 +37,7 @@
                         <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
                     </ul>
                 </div>
-                <div class="btn-group" data-toggle="tooltip" data-ui-tooltip-container="body" title="${message(code:'todo.is.ui.charts')}">
+                <div class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.charts')}">
                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-stats"></span>&nbsp;<span class="caret"></span>
                     </button>
@@ -58,9 +58,8 @@
                 <g:if test="${params?.printable}">
                     <button type="button"
                             class="btn btn-default"
-                            data-toggle="tooltip"
-                            data-ui-tooltip-container="body"
-                            title="${message(code:'is.ui.window.print')} (P)"
+                            tooltip-append-to-body="true"
+                            tooltip="${message(code:'is.ui.window.print')} (P)"
                             data-is-shortcut
                             data-is-shortcut-on="#window-id-${controllerName}"
                             data-is-shortcut-key="P"
@@ -72,9 +71,8 @@
                 <g:if test="${params?.widgetable}">
                     <button type="button"
                             class="btn btn-default btn-widget"
-                            data-toggle="tooltip"
-                            data-ui-tooltip-container="body"
-                            title="${message(code:'is.ui.window.widgetable')} (W)"
+                            tooltip-append-to-body="true"
+                            tooltip="${message(code:'is.ui.window.widgetable')} (W)"
                             data-is-shortcut
                             data-is-shortcut-on="#window-id-${controllerName}"
                             data-is-shortcut-key="W"><span class="glyphicon glyphicon-retweet"></span>
@@ -83,9 +81,8 @@
                 <g:if test="${params?.fullScreen}">
                     <button type="button"
                             class="btn btn-default btn-fullscreen"
-                            data-toggle="tooltip"
-                            data-ui-tooltip-container="body"
-                            title="${message(code:'is.ui.window.fullscreen')} (F)"
+                            tooltip-append-to-body="true"
+                            tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
                             data-is-shortcut
                             data-is-shortcut-on="#window-id-${controllerName}"
                             data-is-shortcut-key="F"><span class="glyphicon glyphicon-fullscreen"></span>

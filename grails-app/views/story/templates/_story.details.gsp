@@ -223,7 +223,7 @@
                             ng-model="editableStory.type"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
-                </select>
+                    </select>
                 </div>
                 <div class="form-half"
                      ng-show="editableStory.type == 2">
@@ -333,8 +333,11 @@
                 </button>
             </div>
         </form>
-
-    <tabset type="{{ tabsType }}">
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <tabset type="{{ tabsType }}">
             <tab select="activities(story); ($state.params.tabId ? setTabSelected('activities') : '');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
                  active="tabSelected.activities">
@@ -349,35 +352,13 @@
             <tab select="comments(story); setTabSelected('comments');"
                  heading="${message(code: 'is.ui.backlogelement.activity.comments')}"
                  active="tabSelected.comments">
-                <table class="table table-striped">
+                <table class="table">
                     <tbody ng-include="'comment.list.html'" ng-init="selected = story"></tbody>
                 </table>
                 <table class="table" ng-controller="commentCtrl">
                     <tbody>
                     <tr ng-if="authorizedComment('create')">
-                        <td ng-switch="getShowCommentForm()">
-                            <button ng-switch-default
-                                    class="btn btn-sm btn-primary pull-right"
-                                    type="button"
-                                    ng-click="setShowCommentForm(true)"
-                                    tooltip="${message(code:'todo.is.ui.comment.new')}'"
-                                    tooltip-append-to-body="body"
-                                    tooltip-placement="left">
-                                <span class="fa fa-plus"></span>
-                            </button>
-                            <button ng-switch-when="true"
-                                    class="btn btn-sm btn-default pull-right "
-                                    type="button"
-                                    ng-click="setShowCommentForm(false)"
-                                    tooltip="${message(code:'todo.is.ui.hide')}"
-                                    tooltip-append-to-body="body"
-                                    tooltip-placement="left">
-                                <span class="fa fa-minus"></span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr ng-show="getShowCommentForm()">
-                        <td><div ng-init="formType='save'" ng-include="'comment.editor.html'"></div></td>
+                        <td><div ng-include="'comment.editor.html'"></div></td>
                     </tr>
                     </tbody>
                 </table>
@@ -385,8 +366,12 @@
             <tab select="tasks(story); setTabSelected('tasks');"
                  heading="${message(code: 'is.ui.backlogelement.activity.task')}"
                  active="tabSelected.tasks">
-                <div ng-include="'story.task.new.html'" ng-controller="taskCtrl"></div>
-                <table class="table table-striped">
+                <table ng-controller="taskCtrl"
+                       class="table">
+                    <tbody ng-if="authorizedTask('create')"
+                           ng-include="'story.task.new.html'"></tbody>
+                </table>
+                <table class="table">
                     <tbody ng-include="'story.tasks.html'"></tbody>
                 </table>
             </tab>
@@ -396,33 +381,11 @@
                 <table class="table" ng-controller="acceptanceTestCtrl">
                     <tbody>
                     <tr ng-if="authorizedAcceptanceTest('create', editableAcceptanceTest)">
-                        <td ng-switch="getShowAcceptanceTestForm()">
-                            <button ng-switch-default
-                                    class="btn btn-sm btn-primary pull-right"
-                                    type="button"
-                                    ng-click="setShowAcceptanceTestForm(true)"
-                                    tooltip="${message(code:'todo.is.ui.acceptanceTest.new')}'"
-                                    tooltip-append-to-body="body"
-                                    tooltip-placement="left">
-                                <span class="fa fa-plus"></span>
-                            </button>
-                            <button ng-switch-when="true"
-                                    class="btn btn-sm btn-default pull-right "
-                                    type="button"
-                                    ng-click="setShowAcceptanceTestForm(false)"
-                                    tooltip="${message(code:'todo.is.ui.hide')}"
-                                    tooltip-append-to-body="body"
-                                    tooltip-placement="left">
-                                <span class="fa fa-minus"></span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr ng-show="getShowAcceptanceTestForm()">
-                        <td><div ng-init="formType='save'" ng-include="'story.acceptanceTest.editor.html'"></div></td>
+                        <td><div ng-include="'story.acceptanceTest.editor.html'"></div></td>
                     </tr>
                     </tbody>
                 </table>
-                <table class="table table-striped">
+                <table class="table">
                     <tbody ng-include="'story.acceptanceTests.html'"></tbody>
                 </table>
             </tab>

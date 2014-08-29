@@ -101,16 +101,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             });
         });
-        $scope.acceptanceTestEdit = {};
-        $scope.editAcceptanceTest = function(id, value) {
-            $scope.acceptanceTestEdit = {};
-            $scope.acceptanceTestEdit[id] = value;
-        };
-        $scope.commentEdit = {};
-        $scope.editComment = function(id, value) {
-            $scope.commentEdit = {};
-            $scope.commentEdit[id] = value;
-        };
         $scope.showNewTemplateModal = function(story) {
             $modal.open({
                 templateUrl: 'story.template.new.html',
@@ -137,7 +127,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 $scope.tabSelected[$state.params.tabId] = true;
                 $timeout((function() {
                     var container = angular.element('#right');
-                    var pos = angular.element('#right .nav-tabs-google [active="tabSelected.' + $state.params.tabId + '"]').position().top + container.scrollTop();
+                    var pos = angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
                     container.animate({ scrollTop: pos }, 1000);
                 }));
             }
@@ -359,6 +349,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                 if (andContinue) {
                     $scope.resetStoryForm();
                 } else {
+                    $scope.setEditableMode(true);
                     $state.go('^.details', { id: story.id });
                 }
             });

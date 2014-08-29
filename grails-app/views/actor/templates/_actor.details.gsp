@@ -59,6 +59,15 @@
                 <ul class="dropdown-menu"
                     ng-include="'actor.menu.html'"></ul>
             </div>
+            <button type="button"
+                    tabindex="-1"
+                    popover-title="${message(code:'is.permalink')}"
+                    popover="{{ serverUrl + '/TODOPKEY-A' + actor.uid }}"
+                    popover-append-to-body="true"
+                    popover-placement="left"
+                    class="btn btn-default">
+                <i class="fa fa-link"></i>
+            </button>
             <button class="btn btn-primary"
                     type="button"
                     tooltip="${message(code:'todo.is.ui.editable.enable')}"
@@ -99,6 +108,7 @@
                     <label for="actor.name">${message(code:'is.actor.name')}</label>
                     <input required
                            ng-disabled="!getEditableActorMode(actor)"
+                           ng-maxlength="100"
                            name="editableActor.name"
                            ng-model="editableActor.name"
                            type="text"
@@ -137,6 +147,7 @@
             <div class="form-group">
                 <label for="actor.description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
+                          ng-maxlength="3000"
                           ng-disabled="!getEditableActorMode(actor)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                           ng-model="editableActor.description"></textarea>
@@ -155,6 +166,7 @@
                 <label for="actor.notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
                           class="form-control"
+                          ng-maxlength="5000"
                           ng-model="editableActor.notes"
                           is-model-html="editableActor.notes_html"
                           ng-show="showNotesTextarea"
@@ -187,6 +199,10 @@
                 </button>
             </div>
         </form>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
         <tabset type="{{ tabsType }}">
             <tab select="$state.params.tabId ? setTabSelected('attachments') : ''"
                  heading="${message(code: 'is.ui.backlogelement.attachment')}"
@@ -195,7 +211,7 @@
             <tab select="stories(actor); setTabSelected('stories');"
                  heading="${message(code: 'todo.is.actor.stories')}"
                  active="tabSelected.stories">
-                <table class="table table-striped">
+                <table class="table">
                     <tbody ng-include="'nested.stories.html'" ng-init="selected = actor"></tbody>
                 </table>
             </tab>

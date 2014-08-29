@@ -83,21 +83,6 @@ table {
         width:30px;
         padding-right:0;
       }
-      .content {
-        position: relative;
-        font-size:90%;
-        .delete {
-          position: absolute;
-          right: 0;
-          top: 0;
-          &.on-hover {
-            display:none;
-          }
-        }
-        &:hover .delete {
-          display:block;
-        }
-      }
       &.empty-content {
         width: 100%;
         padding: 10px;
@@ -185,7 +170,7 @@ table {
   border-top: 1px solid rgb(192, 192, 192);
   padding:5px 8px;
   &.placeholder {
-    color: #999999;
+    color: #757575;
   }
   background: @body-bg;
   color: #555;
@@ -229,15 +214,6 @@ table {
       margin-bottom:0;
     }
   }
-  textarea, .atwho-preview, .markitup-preview {
-    &:not([disabled]) {
-      min-height:70px;
-    }
-  }
-  .markitup-preview, textarea, .atwho-preview {
-    max-height: 132px;
-    overflow: auto;
-  }
   .panel-heading {
     .actions {
       margin-top: 15px;
@@ -261,6 +237,116 @@ table {
     border-bottom: 1px solid @gray-lighter;
     padding: 10px 20px;
     margin-left: 12px;
+  }
+  /** White background for disabled inputs **/
+  .form-control[disabled] {
+    &, &:hover {
+      background: none;
+      border: none;
+      cursor: text;
+      box-shadow: none;
+      resize: none;
+    }
+  }
+  .select2-container.select2-container-disabled {
+    box-shadow: none;
+    .select2-choice, .select2-choices {
+      &, &:hover {
+        background: none;
+        border: none;
+        cursor: text;
+        box-shadow: none;
+        .select2-arrow {
+          display: none;
+        }
+      }
+    }
+  }
+  .form-group div[disabled] {
+    border: none;
+    &:focus {
+      outline: #000000 solid 0px;
+    }
+  }
+  /** White background and smaller size for editable inputs **/
+  .tab-content {
+    .form-group {
+      margin-bottom: 8px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+    }
+  }
+  .form-editable:not(.form-editing) {
+    .form-control {
+      background: none;
+      border-color: transparent;
+      cursor: text;
+      box-shadow: none;
+      resize: none;
+    }
+    .markitup-preview, .atwho-preview, textarea {
+      min-height: 0;
+      max-height: 115px;
+    }
+    .select2-container {
+      box-shadow: none;
+      .select2-choice, .select2-choices {
+        &, &:hover {
+          background: none;
+          border-color: transparent;
+          cursor: text;
+          box-shadow: none;
+          .select2-arrow {
+            display: none;
+          }
+        }
+      }
+    }
+    .form-group div {
+      border-color: transparent;
+    }
+  }
+  /** Reduce size of disabled inputs in disabled forms **/
+  form.form-disabled {
+    label {
+      margin-bottom: 0px;
+    }
+    .form-control[disabled] {
+      padding-bottom: 0px;
+      padding-top: 0px;
+      height: 20px;
+    }
+    .markitup-preview, .atwho-preview, textarea {
+      &[disabled] {
+        min-height: 0;
+        padding-bottom: 0px;
+        padding-top: 0px;
+      }
+    }
+    .select2-container.select2-container-disabled:not(.select2-container-multi) {
+      height: 20px;
+      .select2-choice .select2-chosen {
+        padding-bottom: 0px;
+        padding-top: 0px;
+        height:20px;
+      }
+    }
+  }
+  p.elemid {
+    background-color: rgb(193, 193, 193);
+    color: white;
+    border-radius: 0.25em;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .comment-avatar {
+    display: inline-block;
+    margin-right: 6px;
+    width: 30px;
   }
 }
 
@@ -435,76 +521,6 @@ table[data-ui-draggable] > tr:hover .drag span,
 /** popover error **/
 .form-control.error:focus, .form-control.error {
   border-color:@brand-danger;
-}
-
-/** White background for disabled inputs **/
-.form-control[disabled] {
-  &, &:hover {
-    background: none;
-    border: none;
-    cursor: text;
-    box-shadow: none;
-    resize: none;
-  }
-}
-.select2-container.select2-container-disabled {
-  box-shadow: none;
-  .select2-choice, .select2-choices {
-    &, &:hover {
-      background: none;
-      border: none;
-      cursor: text;
-      box-shadow: none;
-      .select2-arrow {
-        display: none;
-      }
-    }
-  }
-}
-.form-group div[disabled] {
-  border: none;
-  &:focus {
-    outline: #000000 solid 0px;
-  }
-}
-/** Reduce size of disabled inputs in disabled forms **/
-form.form-disabled {
-  label {
-    margin-bottom: 0px;
-  }
-  .form-group {
-    margin-bottom: 10px;
-  }
-  .form-control[disabled] {
-    padding-bottom: 0px;
-    padding-top: 0px;
-    height: 20px;
-  }
-  .markitup-preview, .atwho-preview {
-    &[disabled] {
-      padding-bottom: 0px;
-      padding-top: 0px;
-    }
-  }
-  .select2-container.select2-container-disabled:not(.select2-container-multi) {
-    height: 20px;
-    .select2-choice .select2-chosen {
-      padding-bottom: 0px;
-      padding-top: 0px;
-      height:20px;
-    }
-  }
-}
-
-.select2-container.acceptance-test-state-noform {
-  margin-top: 7px;
-  margin-bottom: 7px;
-  &.select2-container-disabled {
-    margin-bottom: 0;
-    .select2-chosen {
-      padding-left: 0;
-    }
-  }
 }
 
 .popover.error {
@@ -1130,7 +1146,7 @@ tr:hover .on-hover span {
   border-radius:0;
 }
 
-#story-header {
+.panel-heading {
   .the-title {
     .make-md-column(12);
     .make-lg-column(8);
@@ -1184,8 +1200,11 @@ tr:hover .on-hover span {
   background-color:@state-done;
 }
 
-.tab-content table.table:not(:last-of-type) {
-  margin-bottom:0;
+.tab-content table.table {
+  margin-bottom: 5px;
+  &:not(:last-of-type) {
+    margin-bottom:0;
+  }
 }
 
 /** tab tasks **/
@@ -1408,11 +1427,11 @@ a[data-toggle="tab"] button {
             width: 33px;
             text-align: center;
             display: inline-block;
-            a {
+            > a {
               visibility: hidden;
             }
             &.active {
-              a {
+              > a {
                 visibility: visible;
               }
             }

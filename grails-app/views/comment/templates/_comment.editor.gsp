@@ -21,42 +21,26 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.editor.html">
-<form ng-submit="saveOrUpdate(formType, editableComment, selected)"
+<form ng-submit="save(editableComment, selected)"
       name="formHolder.commentForm"
       show-validation
       novalidate>
     <div class="form-group">
         <textarea required
-              ng-model="editableComment.body"
-              class="form-control"
-              focus-me="{{ getShowCommentForm() }}"
-              placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
+                  ng-maxlength="5000"
+                  msd-elastic
+                  ng-model="editableComment.body"
+                  class="form-control"
+                  placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
     </div>
     <div class="btn-toolbar pull-right">
-        <button ng-if="formType == 'save'"
+        <button
                 class="btn btn-primary pull-right"
                 ng-class="{ disabled: !formHolder.commentForm.$dirty || formHolder.commentForm.$invalid  }"
                 tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                 tooltip-append-to-body="true"
                 type="submit">
             ${message(code:'todo.is.ui.save')}
-        </button>
-        <button ng-if="formType == 'update'"
-                class="btn btn-primary pull-right"
-                ng-class="{ disabled: !formHolder.commentForm.$dirty || formHolder.commentForm.$invalid  }"
-                tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
-                tooltip-append-to-body="true"
-                type="submit">
-            ${message(code:'todo.is.ui.update')}
-        </button>
-        <button class="btn confirmation btn-default pull-right"
-                tooltip-append-to-body="true"
-                tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
-                type="button"
-                hotkey="{'esc': hotkeyClick }"
-                hotkey-allow-in="INPUT, TEXTAREA"
-                ng-click="resetCommentForm()">
-            ${message(code:'is.button.cancel')}
         </button>
     </div>
 </form>

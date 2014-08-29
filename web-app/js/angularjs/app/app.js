@@ -33,6 +33,7 @@ var isApp = angular.module('isApp', [
     'ui.sortable',
     'ui.bootstrap',
     'ui.select2',
+    'monospaced.elastic',
     'cfp.hotkeys',
     'colorpicker.module',
     'mgo-angular-wizard'

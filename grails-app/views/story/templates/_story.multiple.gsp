@@ -118,7 +118,7 @@
                         </span>
                     </div>
                 </div>
-                <div class=" form-group">
+                <div class="form-half">
                     <label for="story.type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
                             required
