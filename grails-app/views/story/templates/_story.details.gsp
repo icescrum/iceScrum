@@ -267,21 +267,17 @@
                           ng-maxlength="3000"
                           ng-model="editableStory.description"
                           ng-show="showDescriptionTextarea"
-                          ng-blur="showDescriptionTextarea = false"
+                          ng-blur="blurDescription('${is.generateStoryTemplate(newLine: '\\n')}')"
+                          at="atOptions"
                           focus-me="{{ showDescriptionTextarea }}"
-                          data-at
-                          data-at-at="a"
-                          data-at-matcher="$.icescrum.story.formatters.description"
-                          data-at-default="${is.generateStoryTemplate(newLine: '\\n')}"
-                          placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"
-                          data-at-change="${updateUrl}"
-                          data-at-tpl="<li data-value='A[<%='${uid}'%>-<%='${name}'%>]'><%='${name}'%></li>"
-                          data-at-data="${g.createLink(controller:'actor', action: 'search', params:[product:'** jQuery.icescrum.product.pkey **'], absolute: true)}"></textarea>
+                          placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                 <div class="atwho-preview form-control-static"
                      ng-disabled="!getEditableStoryMode(story)"
                      ng-show="!showDescriptionTextarea"
-                     ng-click="showDescriptionTextarea = getEditableStoryMode(story)"
-                     ng-focus="showDescriptionTextarea = getEditableStoryMode(story)"
+                     ng-click="clickDescriptionPreview($event, '${message(code: 'is.ui.backlogelement.nodescription')}')"
+                     ng-focus="focusDescriptionPreview($event)"
+                     ng-mousedown="descriptionPreviewMouseDown = true"
+                     ng-mouseup="descriptionPreviewMouseDown = false"
                      ng-class="{'placeholder': !editableStory.description}"
                      tabindex="0"
                      ng-bind-html="(editableStory.description ? (editableStory | descriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>

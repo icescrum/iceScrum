@@ -26,6 +26,7 @@ icescrum.theme = 'is'
 modules = {
     'app-css' {
         resource url: [dir: "css", file: 'jquery-ui-1.10.4.custom.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
+        resource url: [dir: "css", file: 'jquery.atwho.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'bootstrap.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "themes/$icescrum.theme/css", file: 'todc-bootstrap.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
         resource url: [dir: "css", file: 'font-awesome.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
@@ -144,6 +145,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.notify.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.select2.min.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.caret.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.atwho.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.autoellipsis-1.0.10.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'icescrum'

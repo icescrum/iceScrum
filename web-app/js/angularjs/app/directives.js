@@ -203,6 +203,22 @@ directives.directive('focusMe', function($timeout) {
             });
         }
     };
+}]).directive('at', [function() {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.data('hasAt', false);
+            scope.$watch(element.val(), function(value) {
+                // apply only once
+                if (!element.data('hasAt')) {
+                    element.data('hasAt',true);
+                    var atOptions = scope.$eval(attrs.at);
+                    element.atwho(atOptions);
+                }
+            });
+        }
+    };
+
 }]);
 
 

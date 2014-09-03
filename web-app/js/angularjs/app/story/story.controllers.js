@@ -241,6 +241,34 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 });
             }
         });
+        $scope.atOptions = {
+            tpl: "<li data-value='A[${uid}-${name}]'>${name}</li>",
+            data: "actor/search",
+            at: 'a'
+        };
+        $scope.clickDescriptionPreview = function($event, template) {
+            if($event.target.nodeName != 'A' && $scope.getEditableStoryMode($scope.story)) {
+                $scope.showDescriptionTextarea = true;
+                if (!$scope.editableStory.description) {
+                    ($scope.editableStory.description = template);
+                }
+            }
+        };
+        $scope.focusDescriptionPreview = function($event) {
+            if (!$scope.descriptionPreviewMouseDown) {
+                $timeout(function() {
+                    angular.element($event.target).triggerHandler('click');
+                });
+            }
+        };
+        $scope.blurDescription = function(template) {
+            if (!$('.atwho-view:visible').length) { // ugly hack
+                $scope.showDescriptionTextarea = false;
+                if ($scope.editableStory.description.trim() == template.trim()) {
+                    $scope.editableStory.description = '';
+                }
+            }
+        };
     }]);
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
