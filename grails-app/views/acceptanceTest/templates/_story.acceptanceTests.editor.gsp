@@ -55,13 +55,13 @@
                   ng-maxlength="1000"
                   ng-model="editableAcceptanceTest.description"
                   is-model-html="editableAcceptanceTest.description_html"
-                  ng-show="showDescriptionTextarea"
-                  ng-blur="showDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
+                  ng-show="showAcceptanceTestDescriptionTextarea"
+                  ng-blur="showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
         <div class="markitup-preview"
-             ng-show="!showDescriptionTextarea"
-             ng-click="showDescriptionTextarea = true"
-             ng-focus="showDescriptionTextarea = true; editableAcceptanceTest.description || (editableAcceptanceTest.description = '${is.generateAcceptanceTestTemplate()}')"
+             ng-show="!showAcceptanceTestDescriptionTextarea"
+             ng-click="showAcceptanceTestDescriptionTextarea = true"
+             ng-focus="showAcceptanceTestDescriptionTextarea = true; editableAcceptanceTest.description || (editableAcceptanceTest.description = '${is.generateAcceptanceTestTemplate()}')"
              ng-class="{'placeholder': !editableAcceptanceTest.description_html}"
              tabindex="0"
              ng-bind-html="(editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>') | sanitize"></div>

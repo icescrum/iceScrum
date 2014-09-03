@@ -35,9 +35,6 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.save = function(acceptanceTest, story) {
         AcceptanceTestService.save(acceptanceTest, story).then($scope.resetAcceptanceTestForm);
     };
-    $scope.update = function(acceptanceTest, story) {
-        AcceptanceTestService.update(acceptanceTest, story);
-    };
     $scope['delete'] = function(acceptanceTest, story) {
         AcceptanceTestService.delete(acceptanceTest, story);
     };
