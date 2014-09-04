@@ -178,23 +178,24 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="story.name">${message(code:'is.story.name')}</label>
+                    <label for="name">${message(code:'is.story.name')}</label>
                     <input required
                            ng-maxlength="100"
                            ng-disabled="!getEditableStoryMode(story)"
-                           name="editableStory.name"
+                           name="name"
                            ng-model="editableStory.name"
                            type="text"
                            class="form-control">
                 </div>
                 <div class="form-half" ng-switch="getEditableStoryMode(story) || !editableStory.feature">
-                    <label for="story.feature.id">${message(code:'is.feature')}</label>
+                    <label for="feature">${message(code:'is.feature')}</label>
                     <div ng-switch-when="true"
                          ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
                         <input type="hidden"
                                ng-disabled="!getEditableStoryMode(story)"
                                class="form-control"
                                value="{{ editableStory.feature.id ? editableStory.feature : '' }}"
+                               name="feature"
                                ng-model="editableStory.feature"
                                ui-select2="selectFeatureOptions"
                                data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
@@ -217,9 +218,10 @@
             <div class="clearfix no-padding">
                 <div class="form-group"
                      ng-class="{ 'form-half' : editableStory.type == 2 }">
-                    <label for="story.type">${message(code:'is.story.type')}</label>
+                    <label for="type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableStoryMode(story)"
+                            name="type"
                             ng-model="editableStory.type"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
@@ -227,24 +229,26 @@
                 </div>
                 <div class="form-half"
                      ng-show="editableStory.type == 2">
-                    <label for="story.affectVersion">${message(code:'is.story.affectVersion')}</label>
+                    <label for="affectVersion">${message(code:'is.story.affectVersion')}</label>
                     <input class="form-control"
                            ng-disabled="!getEditableStoryMode(story)"
                            type="hidden"
                            value="{{ editableStory.affectVersion  }}"
+                           name="affectVersion"
                            ng-model="editableStory.affectVersion"
                            ui-select2="selectAffectionVersionOptions"
                            data-placeholder="${message(code:'is.ui.story.noaffectversion')}"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="story.dependsOn.id">${message(code:'is.story.dependsOn')}</label>
+                <label for="dependsOn">${message(code:'is.story.dependsOn')}</label>
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">
                     <input  type="hidden"
                             ng-disabled="!getEditableStoryMode(story)"
                             style="width:100%;"
                             class="form-control"
                             value="{{ editableStory.dependsOn.id ? editableStory.dependsOn : '' }}"
+                            name="dependsOn"
                             ng-model="editableStory.dependsOn"
                             ui-select2="selectDependsOnOptions"
                             data-placeholder="${message(code: 'is.ui.story.nodependence')}"/>
@@ -262,9 +266,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="story.description">${message(code:'is.backlogelement.description')}</label>
+                <label for="description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
                           ng-maxlength="3000"
+                          name="description"
                           ng-model="editableStory.description"
                           ng-show="showDescriptionTextarea"
                           ng-blur="blurDescription('${is.generateStoryTemplate(newLine: '\\n')}')"
@@ -274,7 +279,7 @@
                 <div class="atwho-preview form-control-static"
                      ng-disabled="!getEditableStoryMode(story)"
                      ng-show="!showDescriptionTextarea"
-                     ng-click="clickDescriptionPreview($event, '${message(code: 'is.ui.backlogelement.nodescription')}')"
+                     ng-click="clickDescriptionPreview($event, '${is.generateStoryTemplate(newLine: '\\n')}')"
                      ng-focus="focusDescriptionPreview($event)"
                      ng-mousedown="descriptionPreviewMouseDown = true"
                      ng-mouseup="descriptionPreviewMouseDown = false"
@@ -283,20 +288,22 @@
                      ng-bind-html="(editableStory.description ? (editableStory | descriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
             </div>
             <div class="form-group">
-                <label for="story.tags">${message(code:'is.backlogelement.tags')}</label>
+                <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
                        ng-disabled="!getEditableStoryMode(story)"
                        class="form-control"
                        value="{{ editableStory.tags.join(',') }}"
+                       name="tags"
                        ng-model="editableStory.tags"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
             </div>
             <div class="form-group">
-                <label for="story.notes">${message(code:'is.backlogelement.notes')}</label>
+                <label for="notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
                           ng-maxlength="5000"
                           class="form-control"
+                          name="notes"
                           ng-model="editableStory.notes"
                           is-model-html="editableStory.notes_html"
                           ng-show="showNotesTextarea"

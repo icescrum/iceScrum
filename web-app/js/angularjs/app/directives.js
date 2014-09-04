@@ -136,23 +136,21 @@ directives.directive('focusMe', function($timeout) {
     return {
         restrict: "A",
         link: function(scope, element, attrs, ctrl) {
-            if (element.get(0).nodeName.toLowerCase() === 'form') {
-                element.find('.form-group').each(function(i, formGroup) {
-                    showValidation(angular.element(formGroup));
+            var inputs = element.find('input[ng-model], textarea[ng-model]');
+            angular.forEach(inputs, function(it) {
+                var input = angular.element(it);
+                scope.$watch(function() {
+                    return input.hasClass('ng-invalid') && input.hasClass('ng-dirty');
+                }, function(newIsInvalid, oldIsInvalid) {
+                    if (newIsInvalid && !oldIsInvalid) {
+                        input.parent().addClass('has-error');
+                        input.parent().append('<div class="help-block bg-danger">error</div>');
+                    } else if (!newIsInvalid && oldIsInvalid) {
+                        input.parent().removeClass('has-error');
+                        input.parent().find('.help-block').remove();
+                    }
                 });
-            } else {
-                showValidation(element);
-            }
-            function showValidation(formGroupEl) {
-                var input = formGroupEl.find('input[ng-model],textarea[ng-model]');
-                if (input.length > 0) {
-                    scope.$watch(function() {
-                        return input.hasClass('ng-invalid') && input.hasClass('ng-dirty');
-                    }, function(isInvalid) {
-                        formGroupEl.toggleClass('has-error', isInvalid);
-                    });
-                }
-            }
+            });
         }
     }
 }]).directive('formAutofillFix', ['$timeout', function($timeout) {
