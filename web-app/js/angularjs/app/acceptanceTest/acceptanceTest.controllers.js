@@ -66,7 +66,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.editForm = function(value) {
         $scope.formHolder.editing = value;
     };
-    $scope.blurEditable = function(acceptanceTest, story, $event) {
+    $scope.blurAcceptanceTest = function(acceptanceTest, story, $event) {
         if ($($event.target).hasClass('ng-valid')) {
             $scope.showForm(false);
             $scope.editForm(false);

@@ -47,7 +47,10 @@ directives.directive('focusMe', function($timeout) {
         link: function(scope, element, attrs) {
             var settings = $.extend({
                     resizeHandle:false,
-                    scrollContainer:'#right'
+                    scrollContainer:'#right',
+                    afterInsert: function() {
+                        element.triggerHandler('input');
+                    }
                 },
                 textileSettings);
             var markitup = element.markItUp(settings);
@@ -62,7 +65,6 @@ directives.directive('focusMe', function($timeout) {
                     container.hide();
                 }
             });
-
             element.bind('blur', function() {
                 var val = element.val();
                 scope.$apply($http({

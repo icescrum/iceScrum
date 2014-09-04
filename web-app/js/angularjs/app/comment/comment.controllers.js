@@ -43,7 +43,7 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', function($sco
     $scope.editForm = function(value) {
         $scope.formHolder.editing = value;
     };
-    $scope.blurEditable = function(comment, commentable, $event) {
+    $scope.blurComment = function(comment, commentable, $event) {
         if ($($event.target).hasClass('ng-valid')) {
             $scope.showForm(false);
             $scope.editForm(false);

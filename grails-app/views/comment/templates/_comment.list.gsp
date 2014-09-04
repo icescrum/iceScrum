@@ -60,7 +60,7 @@
                     <textarea required
                               msd-elastic
                               ng-maxlength="5000"
-                              ng-blur="blurEditable(editableComment, selected, $event)"
+                              ng-blur="blurComment(editableComment, selected, $event)"
                               ng-mouseover="showForm(true)"
                               ng-focus="editForm(true)"
                               ng-model="editableComment.body"

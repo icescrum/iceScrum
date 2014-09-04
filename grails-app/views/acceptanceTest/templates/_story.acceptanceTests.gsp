@@ -55,7 +55,7 @@
                                ng-maxlength="255"
                                ng-mouseover="showForm(true)"
                                ng-focus="editForm(true)"
-                               ng-blur="blurEditable(editableAcceptanceTest, story, $event)"
+                               ng-blur="blurAcceptanceTest(editableAcceptanceTest, story, $event)"
                                type="text"
                                ng-model="editableAcceptanceTest.name"
                                class="form-control"
@@ -65,7 +65,7 @@
                         <select class="form-control"
                                 ng-focus="editForm(true)"
                                 ng-mouseover="showForm(true)"
-                                ng-blur="blurEditable(editableAcceptanceTest, story, $event)"
+                                ng-blur="blurAcceptanceTest(editableAcceptanceTest, story, $event)"
                                 ng-model="editableAcceptanceTest.state"
                                 ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
                                 ui-select2="selectAcceptanceTestStateOptions">
@@ -81,7 +81,7 @@
                               ng-model="editableAcceptanceTest.description"
                               is-model-html="editableAcceptanceTest.description_html"
                               ng-show="showAcceptanceTestDescriptionTextarea"
-                              ng-blur="blurEditable(editableAcceptanceTest, story, $event); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
+                              ng-blur="blurAcceptanceTest(editableAcceptanceTest, story, $event); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
                               placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                     <div class="markitup-preview"
                          ng-show="!showAcceptanceTestDescriptionTextarea"
