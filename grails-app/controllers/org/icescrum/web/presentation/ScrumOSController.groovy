@@ -46,6 +46,7 @@ class ScrumOSController {
     def uiDefinitionService
     def grailsApplication
     def servletContext
+    def messageSource
 
     def index = {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
@@ -230,11 +231,13 @@ class ScrumOSController {
             product = Product.get(params.product)
             currentSprint = Sprint.findCurrentSprint(product.id).list() ?: null
         }
+        def i18nMessages = messageSource.getAllMessages(RCU.getLocale(request))
         def tmpl = g.render(
                 template: 'templatesJS',
                 model: [id: controllerName,
                         currentSprint: currentSprint,
-                        product:product
+                        product: product,
+                        i18nMessages: i18nMessages as JSON
                 ])
 
         tmpl = "${tmpl}".split("<div class='templates'>")

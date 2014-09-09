@@ -22,6 +22,7 @@
 --}%
 <%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState; org.icescrum.core.domain.Story.TestState" %>
 <jq:jquery>
+    angular.element(document).injector().get('$rootScope').initMessages(${i18nMessages});
     $.extend(true, $.icescrum, {
         user:{
             id:${sec.loggedInUserInfo(field: 'id') ?: 'null'},

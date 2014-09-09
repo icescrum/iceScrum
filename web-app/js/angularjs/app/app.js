@@ -248,6 +248,14 @@ isApp.config(['$stateProvider', '$httpProvider',
         //To be able to track state in app
         $rootScope.$state = $state;
 
+        var messages = {};
+        $rootScope.initMessages = function(initMessages) {
+            messages = initMessages;
+        };
+        $rootScope.message = function(code) {
+            return messages[code] ? messages[code] : code;
+        };
+
         $rootScope.editableMode = false;
         $rootScope.setEditableMode = function(editableMode) {
             $rootScope.editableMode = editableMode;
