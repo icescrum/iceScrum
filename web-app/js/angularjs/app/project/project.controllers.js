@@ -21,4 +21,5 @@
  *
  */
 controllers.controller('projectCtrl', ['$scope', function ($scope) {
+    $scope.formHolder = {};
 }]);

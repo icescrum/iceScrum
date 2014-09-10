@@ -63,6 +63,7 @@
                               ng-blur="blurComment(editableComment, selected, $event)"
                               ng-mouseover="showForm(true)"
                               ng-focus="editForm(true)"
+                              name="body"
                               ng-model="editableComment.body"
                               class="form-control"
                               placeholder="${message(code:'todo.is.ui.comment')}"></textarea>

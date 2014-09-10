@@ -36,21 +36,23 @@
                     <input required
                            ng-maxlength="100"
                            type="text"
+                           name="name"
                            ng-model="task.name"
                            placeholder="${message(code: 'is.ui.backlogelement.noname')}"
                            class="form-control">
                 </div>
                 <div class="form-group col-sm-3">
-                    <input ng-model="task.estimation"
+                    <input name="estimation"
+                           ng-model="task.estimation"
                            type="number"
                            step="any"
                            placeholder="${message(code: 'todo.is.ui.task.noestimate')}"
-                           ng-pattern="/[0-9]+([\.|,][0-9]+)?$/"
                            class="form-control text-right">
                 </div>
             </div>
             <div class="form-group">
-                <textarea ng-model="task.description"
+                <textarea name="description"
+                          ng-model="task.description"
                           msd-elastic
                           ng-maxlength="3000"
                           placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"

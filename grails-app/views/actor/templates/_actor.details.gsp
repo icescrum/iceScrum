@@ -105,19 +105,20 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="actor.name">${message(code:'is.actor.name')}</label>
+                    <label for="name">${message(code:'is.actor.name')}</label>
                     <input required
                            ng-disabled="!getEditableActorMode(actor)"
                            ng-maxlength="100"
-                           name="editableActor.name"
+                           name="name"
                            ng-model="editableActor.name"
                            type="text"
                            class="form-control">
                 </div>
                 <div class="form-half">
-                    <label for="actor.instances">${message(code:'is.actor.instances')}</label>
+                    <label for="instances">${message(code:'is.actor.instances')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"
+                            name="instances"
                             ng-model="editableActor.instances"
                             ui-select2>
                         <is:options values="${BundleUtils.actorInstances}" />
@@ -126,18 +127,20 @@
             </div>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="actor.expertnessLevel">${message(code:'is.actor.it.level')}</label>
+                    <label for="expertnessLevel">${message(code:'is.actor.it.level')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"
+                            name="expertnessLevel"
                             ng-model="editableActor.expertnessLevel"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.actorLevels)}" />
                     </select>
                 </div>
                 <div class="form-half">
-                    <label for="actor.useFrequency">${message(code:'is.actor.use.frequency')}</label>
+                    <label for="useFrequency">${message(code:'is.actor.use.frequency')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableActorMode(actor)"
+                            name="useFrequency"
                             ng-model="editableActor.useFrequency"
                             ui-select2>
                         <is:options values="${is.internationalizeValues(map: BundleUtils.actorFrequencies)}" />
@@ -145,7 +148,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="actor.description">${message(code:'is.backlogelement.description')}</label>
+                <label for="description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
                           ng-maxlength="3000"
                           ng-disabled="!getEditableActorMode(actor)"
@@ -153,20 +156,22 @@
                           ng-model="editableActor.description"></textarea>
             </div>
             <div class="form-group">
-                <label for="actor.tags">${message(code:'is.backlogelement.tags')}</label>
+                <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
                        ng-disabled="!getEditableActorMode(actor)"
                        class="form-control"
                        value="{{ editableActor.tags.join(',') }}"
+                       name="tags"
                        ng-model="editableActor.tags"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
             </div>
             <div class="form-group">
-                <label for="actor.notes">${message(code:'is.backlogelement.notes')}</label>
+                <label for="notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
                           class="form-control"
                           ng-maxlength="5000"
+                          name="notes"
                           ng-model="editableActor.notes"
                           is-model-html="editableActor.notes_html"
                           ng-show="showNotesTextarea"

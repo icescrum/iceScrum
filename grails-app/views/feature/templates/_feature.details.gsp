@@ -103,21 +103,22 @@
               show-validation
               novalidate>
             <div class="form-group">
-                <label for="feature.name">${message(code:'is.feature.name')}</label>
+                <label for="name">${message(code:'is.feature.name')}</label>
                 <input required
                        ng-maxlength="100"
                        ng-disabled="!getEditableFeatureMode(feature)"
-                       name="editableFeature.name"
+                       name="name"
                        ng-model="editableFeature.name"
                        type="text"
                        class="form-control">
             </div>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="feature.type">${message(code:'is.feature.type')}</label>
+                    <label for="type">${message(code:'is.feature.type')}</label>
                     <div class="input-group">
                         <select class="form-control"
                                 ng-disabled="!getEditableFeatureMode(feature)"
+                                name="type"
                                 ng-model="editableFeature.type"
                                 ui-select2>
                             <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}" />
@@ -129,14 +130,16 @@
                                     style="background-color:{{ editableFeature.color }};"
                                     colorpicker-position="top"
                                     value="#bf3d3d"
+                                    name="color"
                                     ng-model="editableFeature.color"><i class="fa fa-pencil"></i></button>
                         </span>
                     </div>
                 </div>
                 <div class="form-half">
-                    <label for="feature.value">${message(code:'is.feature.value')}</label>
+                    <label for="value">${message(code:'is.feature.value')}</label>
                     <select class="form-control"
                             ng-disabled="!getEditableFeatureMode(feature)"
+                            name="value"
                             ng-model="editableFeature.value"
                             ui-select2>
                         <is:options values="${PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)}" />
@@ -144,28 +147,31 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="feature.description">${message(code:'is.backlogelement.description')}</label>
+                <label for="description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
                           ng-maxlength="3000"
                           ng-disabled="!getEditableFeatureMode(feature)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
+                          name="description"
                           ng-model="editableFeature.description"></textarea>
             </div>
             <div class="form-group">
-                <label for="feature.tags">${message(code:'is.backlogelement.tags')}</label>
+                <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
                        ng-disabled="!getEditableFeatureMode(feature)"
                        class="form-control"
                        value="{{ editableFeature.tags.join(',') }}"
+                       name="tags"
                        ng-model="editableFeature.tags"
                        data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
                        ui-select2="selectTagsOptions"/>
             </div>
             <div class="form-group">
-                <label for="feature.notes">${message(code:'is.backlogelement.notes')}</label>
+                <label for="notes">${message(code:'is.backlogelement.notes')}</label>
                 <textarea is-markitup
                           class="form-control"
                           ng-maxlength="5000"
+                          name="notes"
                           ng-model="editableFeature.notes"
                           is-model-html="editableFeature.notes_html"
                           ng-show="showNotesTextarea"

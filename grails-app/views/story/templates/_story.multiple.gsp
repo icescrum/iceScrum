@@ -101,11 +101,12 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="story.feature.id">${message(code:'is.feature')}</label>
+                    <label for="feature">${message(code:'is.feature')}</label>
                     <div ng-class="{'input-group':storyPreview.feature.id, 'select2-border':storyPreview.feature.id}">
                         <input type="hidden"
                                class="form-control"
                                ng-readonly="!authorizedStory('updateMultiple', topStory)"
+                               name="feature"
                                ng-model="storyPreview.feature"
                                ui-select2="selectFeatureOptions"
                                data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
@@ -119,9 +120,10 @@
                     </div>
                 </div>
                 <div class="form-half">
-                    <label for="story.type">${message(code:'is.story.type')}</label>
+                    <label for="type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
                             required
+                            name="type"
                             ng-model="storyPreview.type"
                             ng-readonly="!authorizedStory('updateMultiple', topStory)"
                             data-placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}"

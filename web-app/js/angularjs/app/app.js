@@ -252,8 +252,13 @@ isApp.config(['$stateProvider', '$httpProvider',
         $rootScope.initMessages = function(initMessages) {
             messages = initMessages;
         };
-        $rootScope.message = function(code) {
-            return messages[code] ? messages[code] : code;
+        $rootScope.message = function(code, args) {
+            var text = messages[code] ? messages[code] : code;
+            angular.forEach(args, function(arg, index) {
+                var placeholderMatcher = new RegExp('\\{' + index + '\\}', 'g');
+                text = text.replace(placeholderMatcher, arg);
+            });
+            return text;
         };
 
         $rootScope.editableMode = false;

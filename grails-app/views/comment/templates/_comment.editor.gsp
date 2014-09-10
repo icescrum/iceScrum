@@ -29,6 +29,7 @@
         <textarea required
                   ng-maxlength="5000"
                   msd-elastic
+                  name="body"
                   ng-model="editableComment.body"
                   class="form-control"
                   placeholder="${message(code:'todo.is.ui.comment')}"></textarea>

@@ -57,6 +57,7 @@
                                ng-focus="editForm(true)"
                                ng-blur="blurAcceptanceTest(editableAcceptanceTest, story, $event)"
                                type="text"
+                               name="name"
                                ng-model="editableAcceptanceTest.name"
                                class="form-control"
                                placeholder="${message(code: 'is.ui.backlogelement.noname')}">
@@ -66,6 +67,7 @@
                                 ng-focus="editForm(true)"
                                 ng-mouseover="showForm(true)"
                                 ng-blur="blurAcceptanceTest(editableAcceptanceTest, story, $event)"
+                                name="state"
                                 ng-model="editableAcceptanceTest.state"
                                 ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
                                 ui-select2="selectAcceptanceTestStateOptions">
@@ -78,6 +80,7 @@
                               class="form-control"
                               msd-elastic
                               ng-maxlength="1000"
+                              name="description"
                               ng-model="editableAcceptanceTest.description"
                               is-model-html="editableAcceptanceTest.description_html"
                               ng-show="showAcceptanceTestDescriptionTextarea"

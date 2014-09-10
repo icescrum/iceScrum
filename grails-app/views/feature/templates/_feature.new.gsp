@@ -58,9 +58,9 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="feature.name">${message(code:'is.feature.name')}</label>
+                    <label for="name">${message(code:'is.feature.name')}</label>
                     <input required
-                           name="feature.name"
+                           name="name"
                            ng-model="feature.name"
                            type="text"
                            class="form-control"

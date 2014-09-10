@@ -132,22 +132,59 @@ directives.directive('focusMe', function($timeout) {
 
         }
     };
-}]).directive('showValidation', [function() {
+}]).directive('showValidation', ['$compile', '$rootScope', function($compile, $rootScope) {
     return {
         restrict: "A",
-        link: function(scope, element, attrs, ctrl) {
+        link: function(scope, element, attrs) {
+            var form = scope.$eval(attrs.name);
             var inputs = element.find('input[ng-model], textarea[ng-model]');
             angular.forEach(inputs, function(it) {
                 var input = angular.element(it);
+                var container = input.parent();
+                var inputModel = form[input.attr('name')];
                 scope.$watch(function() {
-                    return input.hasClass('ng-invalid') && input.hasClass('ng-dirty');
+                    return inputModel.$invalid;
                 }, function(newIsInvalid, oldIsInvalid) {
                     if (newIsInvalid && !oldIsInvalid) {
-                        input.parent().addClass('has-error');
-                        input.parent().append('<div class="help-block bg-danger">error</div>');
+                        var childScope = scope.$new();
+                        childScope.inputModel = inputModel;
+                        childScope.errorMessages = function(errors) {
+                            return  _.transform(errors, function(errorMessages, value, key) {
+                                if (value) {
+                                    var text = input.val();
+                                    var name = input.siblings("label[for='" + input.attr('name') + "']").text();
+                                    var errorMessage = '';
+                                    if (key == 'required') {
+                                        errorMessage = $rootScope.message('default.blank.message', [name]);
+                                    } else if (key == 'min') {
+                                        errorMessage = $rootScope.message('default.invalid.min.message', [name, '', text, input.attr(key)]);
+                                    } else if (key == 'max') {
+                                        errorMessage = $rootScope.message('default.invalid.max.message', [name, '', text, input.attr(key)]);
+                                    } else if (key == 'minlength') {
+                                        errorMessage = $rootScope.message('default.invalid.min.size.message', [name, '', text, input.attr('ng-' + key)]);
+                                    } else if (key == 'maxlength') {
+                                        errorMessage = $rootScope.message('default.invalid.max.size.message', [name, '', text,  input.attr('ng-' + key)]);
+                                    } else if (key == 'pattern') {
+                                        errorMessage = $rootScope.message('default.doesnt.match.message', [name, '', text, input.attr('ng-' + key)]);
+                                    } else if (key == 'url') {
+                                        errorMessage = $rootScope.message('default.invalid.url.message', [name, '', text]);
+                                    } else if (key == 'email') {
+                                        errorMessage = $rootScope.message('default.invalid.email.message', [name, '', text]);
+                                    } else if (key == 'number') {
+                                        errorMessage = $rootScope.message('typeMismatch.java.lang.Integer', [name]);
+                                    }
+                                    errorMessages.push(errorMessage);
+                                }
+                            }, []);
+                        };
+                        childScope.input = input;
+                        container.addClass('has-error');
+                        var template = '<div class="help-block bg-danger"><ul ng-repeat="errorMessage in errorMessages(inputModel.$error)"><li>{{ errorMessage }}</li></ul></div>';
+                        var compiledTemplate = angular.element($compile(template)(childScope));
+                        container.append(compiledTemplate);
                     } else if (!newIsInvalid && oldIsInvalid) {
-                        input.parent().removeClass('has-error');
-                        input.parent().find('.help-block').remove();
+                        container.removeClass('has-error');
+                        container.find('.help-block').remove();
                     }
                 });
             });

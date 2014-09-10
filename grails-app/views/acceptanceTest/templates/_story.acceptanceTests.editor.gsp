@@ -35,12 +35,14 @@
             <input required
                    type="text"
                    ng-maxlength="255"
+                   name="name"
                    ng-model="editableAcceptanceTest.name"
                    class="form-control"
                    placeholder="${message(code: 'is.ui.backlogelement.noname')}">
         </div>
         <div class="col-sm-3 form-group">
             <select class="form-control"
+                    name="state"
                     ng-model="editableAcceptanceTest.state"
                     ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
                     ui-select2="selectAcceptanceTestStateOptions">
@@ -53,6 +55,7 @@
                   msd-elastic
                   class="form-control"
                   ng-maxlength="1000"
+                  name="description"
                   ng-model="editableAcceptanceTest.description"
                   is-model-html="editableAcceptanceTest.description_html"
                   ng-show="showAcceptanceTestDescriptionTextarea"

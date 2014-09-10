@@ -22,7 +22,8 @@
 --}%
 
 <is:modal title="${message(code:'is.dialog.wizard')}" class="wizard" footer="${false}">
-    <form show-validation
+    <form name="formHolder.projectForm"
+          show-validation
           novalidate>
         <wizard class="row" on-finish="finishedWizard()" style="height:450px;">
             <wz-step title="${message(code:"is.dialog.wizard.section.project")}">
@@ -30,17 +31,17 @@
                 <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
                 <div class="clearfix no-padding">
                     <div class="col-md-9 form-group">
-                        <label for="product.name">${message(code:'is.product.name')}</label>
+                        <label for="name">${message(code:'is.product.name')}</label>
                         <input required
-                               name="product.name"
+                               name="name"
                                type="text"
                                class="form-control"
                                ng-model="product.name">
                     </div>
                     <div class="col-md-3 form-group">
-                        <label for="product.pkey">${message(code:'is.product.pkey')}</label>
+                        <label for="pkey">${message(code:'is.product.pkey')}</label>
                         <input required
-                               name="product.pkey"
+                               name="pkey"
                                type="text"
                                class="form-control"
                                ng-model="product.pkey">
@@ -50,6 +51,7 @@
                     <div class="col-md-8 form-group">
                         <label for="product.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
                         <select class="form-control"
+                                name="timezone"
                                 ng-model="product.preferences.timezone"
                                 ui-select2></select>
                     </div>
@@ -67,6 +69,7 @@
                         <p class="input-group">
                             <input type="text" class="form-control"
                                    datepicker-popup="{{dateOptions.format}}"
+                                   name="dt"
                                    ng-model="dt"
                                    is-open="dateOptions.opened"
                                    min-date="dateOptions.minDate"
@@ -100,10 +103,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="product.description">${message(code:'is.product.description')}</label>
+                    <label for="description">${message(code:'is.product.description')}</label>
                     <textarea is-markitup
                               class="form-control"
                               placeholder="${message(code: 'todo.is.ui.product.description.placeholder')}"
+                              name="description"
                               ng-model="product.description"
                               ng-show="showDescriptionTextarea"
                               ng-blur="showDescriptionTextarea = false"

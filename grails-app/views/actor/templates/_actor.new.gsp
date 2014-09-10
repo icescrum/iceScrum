@@ -53,9 +53,9 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="actor.name">${message(code:'is.actor.name')}</label>
+                    <label for="name">${message(code:'is.actor.name')}</label>
                     <input required
-                           name="actor.name"
+                           name="name"
                            ng-model="actor.name"
                            type="text"
                            class="form-control"

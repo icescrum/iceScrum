@@ -79,9 +79,10 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="feature.type">${message(code:'is.feature.type')}</label>
+                    <label for="type">${message(code:'is.feature.type')}</label>
                     <select class="form-control"
                             required
+                            name="type"
                             ng-model="featurePreview.type"
                             ng-readonly="!authorizedFeature('updateMultiple')"
                             data-placeholder="${message(code: 'todo.is.ui.feature.type.placeholder')}"

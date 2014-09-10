@@ -90,10 +90,10 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="story.name">${message(code:'is.story.name')}</label>
+                    <label for="name">${message(code:'is.story.name')}</label>
                     <input required
                            ng-maxlength="100"
-                           name="story.name"
+                           name="name"
                            ng-model="story.name"
                            type="text"
                            class="form-control"
