@@ -51,7 +51,7 @@
     </is:fieldset>
 
     <is:fieldset title="is.dialog.wizard.section.team" description="is.dialog.wizard.section.team.description" id="member-autocomplete">
-        <is:fieldInput for="team.members" label="is.dialog.wizard.section.team.find" class="members">
+        <is:fieldInput for="findMembers" label="is.dialog.wizard.section.team.find" class="members">
             <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
             <is:autoCompleteSkin
                         controller="user"
@@ -59,7 +59,7 @@
                         cache="true"
                         filter="jQuery('#member'+object.id).length == 0 ? true : false"
                         id="members"
-                        name="team.members"
+                        name="findMembers"
                         appendTo="#member-autocomplete"
                         onSelect="attachOnDomUpdate(jQuery('.members-list').jqoteapp('#user-tmpl', ui.item));"
                         renderItem="${link}"
