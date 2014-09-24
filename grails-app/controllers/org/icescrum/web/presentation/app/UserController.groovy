@@ -325,9 +325,8 @@ class UserController {
 
     @Secured('isAuthenticated()')
     def findUsers = {
-        def users
         def results = []
-        users = org.icescrum.core.domain.User.findUsersLike(params.term ?: '',false).list()
+        def users = User.findUsersLike(false, params.term.trim(), [max: 10, offset: 0])
         users?.each { User user ->
             if(user.enabled || params.showDisabled) {
                 results << [id: user.id,

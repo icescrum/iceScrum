@@ -128,34 +128,37 @@ class TaskController {
                 return
             }
         }
-
-        def task = new Task()
-        bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
-
-        User user = (User) springSecurityService.currentUser
-
-        sprint = sprint ? Sprint.getInProduct(params.product.toLong(), sprint.toLong()).list() : sprint
-        if (!sprint) {
-            returnError(text: message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-
+        def task
         try {
-            if (type == 'recurrent')
-                taskService.saveRecurrentTask(task, sprint, user)
-            else if (type == 'urgent')
-                taskService.saveUrgentTask(task, sprint, user)
-            else
-                taskService.saveStoryTask(task, story, user)
+            Task.withTransaction {
+                task = new Task()
+                bindData(task, this.params, [include:['name','estimation','description','notes', 'color']], "task")
 
-            task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
-            def keptAttachments = params.list('task.attachments')
-            def addedAttachments = params.list('attachments')
-            manageAttachments(task, keptAttachments, addedAttachments)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
-                json { renderRESTJSON(status:201, text:task) }
-                xml  { renderRESTXML(status:201, text:task) }
+                User user = (User) springSecurityService.currentUser
+
+                sprint = sprint ? Sprint.getInProduct(params.product.toLong(), sprint.toLong()).list() : sprint
+                if (!sprint) {
+                    returnError(text: message(code: 'is.sprint.error.not.exist'))
+                    return
+                }
+
+
+                if (type == 'recurrent')
+                    taskService.saveRecurrentTask(task, sprint, user)
+                else if (type == 'urgent')
+                    taskService.saveUrgentTask(task, sprint, user)
+                else
+                    taskService.saveStoryTask(task, story, user)
+
+                task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
+                def keptAttachments = params.list('task.attachments')
+                def addedAttachments = params.list('attachments')
+                manageAttachments(task, keptAttachments, addedAttachments)
+                withFormat {
+                    html { render(status: 200, contentType: 'application/json', text: task as JSON)  }
+                    json { renderRESTJSON(status:201, text:task) }
+                    xml  { renderRESTXML(status:201, text:task) }
+                }
             }
         } catch (AttachmentException e) {
             returnError(object: task, exception: e)

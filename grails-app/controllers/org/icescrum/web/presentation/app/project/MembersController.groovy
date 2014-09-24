@@ -118,4 +118,11 @@ class MembersController {
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
         }
     }
+
+    @Secured('isAuthenticated()')
+    def team = {
+        def team = Team.get(params.long('id'))
+        def members = team && securityService.owner(team,springSecurityService.authentication) ? productService.getAllMembersProduct(team.products.asList().first()) : []
+        render(status: 200, contentType: 'application/json', text: [members: members] as JSON)
+    }
 }

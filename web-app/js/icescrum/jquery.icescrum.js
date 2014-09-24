@@ -481,6 +481,37 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                     }
                 });
             }
+        },
+
+        chooseOrDisplayTeam:function(select){
+            var val = $(select).val();
+            $('.new-team, .existing-members-list').removeClass('choosen').hide();
+            if(val != ''){
+                var $existingTeam = $('#existing-team');
+                $existingTeam.html('').addClass('choosen').show();
+                $.get($.icescrum.o.baseUrl+"members/team/"+val, function(data){
+                    $.each(data.members,function(){
+                        if (this.role != 3){
+                            $('#stakeholder-autocomplete').find('#member'+this.id).remove();
+                            $existingTeam.jqoteapp('#user-tmpl-readonly', this);
+                        }
+                    });
+                })
+            } else {
+                $('.new-team').addClass('choosen').show();
+            }
+        },
+
+        toggleStakeHolders:function(value){
+            var stake = jQuery('#show-stakeholders');
+            if(value =='0'){
+                stake.css('display',  'none');
+                stake.prev().addClass('field-noseparator')
+
+            }else{
+                stake.css('display',  'block');
+                stake.prev().removeClass('field-noseparator')
+            }
         }
     };
 

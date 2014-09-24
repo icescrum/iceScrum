@@ -33,11 +33,12 @@
                 addRoleProduct:"${message(code:'is.user.role.added.product')}",
                 updateRoleProduct:"${message(code:'is.user.role.updated.product')}",
                 removeRoleProduct:"${message(code:'is.user.role.removed.product')}"
-            }
-        },
-        story:{
-            i18n : {
-                stories:"${message(code:'is.ui.backlog.title.details.stories')}",
+            },
+            roles:${is.bundleLocaleToJs(bundle: BundleUtils.roles)}
+    },
+    story:{
+        i18n : {
+            stories:"${message(code:'is.ui.backlog.title.details.stories')}",
                 points:"${message(code:'is.ui.backlog.title.details.points')}",
                 dependsOnWarning:"${message(code:'is.ui.story.warning.dependsOn')}"
             },
