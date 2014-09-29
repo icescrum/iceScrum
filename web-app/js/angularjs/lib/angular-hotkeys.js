@@ -1,5 +1,5 @@
 /*! 
- * angular-hotkeys v1.4.2
+ * angular-hotkeys v1.4.5
  * https://chieffancypants.github.io/angular-hotkeys
  * Copyright (c) 2014 Wes Cruver
  * License: MIT
@@ -24,6 +24,13 @@
          * @type {Boolean}
          */
         this.includeCheatSheet = true;
+
+        /**
+         * Configurable setting for the cheat sheet title
+         * @type {String}
+         */
+
+        this.templateTitle = 'Keyboard Shortcuts:';
 
         /**
          * Cheat sheet template in the event you want to totally customize it.
@@ -171,7 +178,7 @@
              * Holds the title string for the help menu
              * @type {String}
              */
-            scope.title = 'Keyboard Shortcuts:';
+            scope.title = this.templateTitle;
 
             /**
              * Expose toggleCheatSheet to hotkeys scope so we can call it using
@@ -393,9 +400,10 @@
 
                 Mousetrap.unbind(combo);
 
-                if (combo instanceof Array) {
+                if (angular.isArray(combo)) {
                     var retStatus = true;
-                    for (var i = 0; i < combo.length; i++) {
+                    var i = combo.length;
+                    while (i--) {
                         retStatus = _del(combo[i]) && retStatus;
                     }
                     return retStatus;
@@ -445,17 +453,20 @@
              * @param  {Object} scope The scope to bind to
              */
             function bindTo (scope) {
-                // Add the scope to the list of bound scopes
-                boundScopes[scope.$id] = [];
+                // Only initialize once to allow multiple calls for same scope.
+                if (!(scope.$id in boundScopes)) {
 
-                scope.$on('$destroy', function () {
-                    var i = boundScopes[scope.$id].length;
-                    while (i--) {
-                        _del(boundScopes[scope.$id][i]);
-                        delete boundScopes[scope.$id][i];
-                    }
-                });
+                    // Add the scope to the list of bound scopes
+                    boundScopes[scope.$id] = [];
 
+                    scope.$on('$destroy', function () {
+                        var i = boundScopes[scope.$id].length;
+                        while (i--) {
+                            _del(boundScopes[scope.$id][i]);
+                            delete boundScopes[scope.$id][i];
+                        }
+                    });
+                }
                 // return an object with an add function so we can keep track of the
                 // hotkeys and their scope that we added via this chaining method
                 return {
@@ -516,7 +527,8 @@
                 includeCheatSheet     : this.includeCheatSheet,
                 cheatSheetHotkey      : this.cheatSheetHotkey,
                 cheatSheetDescription : this.cheatSheetDescription,
-                purgeHotkeys          : purgeHotkeys
+                purgeHotkeys          : purgeHotkeys,
+                templateTitle         : this.templateTitle
             };
 
             return publicApi;
