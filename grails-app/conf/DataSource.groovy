@@ -51,6 +51,25 @@ environments {
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
             url = "jdbc:hsqldb:file:devDba"
             loggingSql = false
+
+            // POSTGRESQL
+/*            driverClassName = "org.postgresql.Driver"
+            username = "postgres"
+            password = "root"
+            url = "jdbc:postgresql://localhost:5432/icescrum"*/
+
+            // SQL Server
+/*            driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+            username = "sa"
+            password = "root"
+            url = "jdbc:sqlserver://localhost:1433;databaseName=icescrum"*/
+
+            // Oracle
+/*            dataSource.driverClassName = "oracle.jdbc.driver.OracleDriver"
+            dataSource.dialect = "org.hibernate.dialect.Oracle10gDialect"
+            dataSource.url = "jdbc:oracle:thin:@localhost:1521:XE"
+            dataSource.username = "root"
+            dataSource.password = "root"*/
         }
     }
     test {
