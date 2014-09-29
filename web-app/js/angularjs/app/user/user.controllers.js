@@ -18,8 +18,39 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('userCtrl', ['$scope', 'UserService', function ($scope, UserService) {
+controllers.controller('userCtrl', ['$scope', 'UserService', 'User', '$modalInstance', function ($scope, UserService, User, $modalInstance) {
+    $scope.update = function(user) {
+        UserService.update(user).then(function() {
+            $modalInstance.close();
+        });
+    };
+    $scope.refreshAvatar = function(user){
+        var url;
+        var avatar = user.avatar;
+        var avatarImg = angular.element('#user-avatar').find('img');
+        if (avatar == 'gravatar'){
+            url = user.email ? "https://secure.gravatar.com/avatar/" + $.md5(user.email) : null;
+        } else if (avatar == 'custom') {
+            avatarImg.triggerHandler('click');
+            url = null;
+        } else {
+            url = avatar;
+        }
+        avatarImg.attr('src', url);
+    };
+    $scope.setTabSelected = function(tab) {
+        $scope.tabSelected = {};
+        $scope.tabSelected[tab] = true;
+    };
 
+    // Init
+    $scope.currentUser = {};
+    $scope.formHolder = {};
+    $scope.tabSelected = { 'general': true };
+    UserService.getCurrent().then(function(data) {
+        $scope.currentUser = angular.copy(new User(data.user));
+    });
 }]);

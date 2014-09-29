@@ -136,61 +136,82 @@ directives.directive('focusMe', function($timeout) {
     return {
         restrict: "A",
         link: function(scope, element, attrs) {
-            var form = scope.$eval(attrs.name);
-            var inputs = element.find('input[ng-model], textarea[ng-model]');
-            angular.forEach(inputs, function(it) {
-                var input = angular.element(it);
-                var container = input.parent();
-                var inputModel = form[input.attr('name')];
-                scope.$watch(function() {
-                    return inputModel.$invalid;
-                }, function(newIsInvalid, oldIsInvalid) {
-                    if (newIsInvalid && !oldIsInvalid) {
-                        var childScope = scope.$new();
-                        childScope.inputModel = inputModel;
-                        childScope.errorMessages = function(errors) {
-                            return  _.transform(errors, function(errorMessages, value, key) {
-                                if (value) {
-                                    var text = input.val();
-                                    var name = input.siblings("label[for='" + input.attr('name') + "']").text();
-                                    var errorMessage = '';
-                                    if (key == 'required') {
-                                        errorMessage = $rootScope.message('default.blank.message', [name]);
-                                    } else if (key == 'min') {
-                                        errorMessage = $rootScope.message('default.invalid.min.message', [name, '', text, input.attr(key)]);
-                                    } else if (key == 'max') {
-                                        errorMessage = $rootScope.message('default.invalid.max.message', [name, '', text, input.attr(key)]);
-                                    } else if (key == 'minlength') {
-                                        errorMessage = $rootScope.message('default.invalid.min.size.message', [name, '', text, input.attr('ng-' + key)]);
-                                    } else if (key == 'maxlength') {
-                                        errorMessage = $rootScope.message('default.invalid.max.size.message', [name, '', text,  input.attr('ng-' + key)]);
-                                    } else if (key == 'pattern') {
-                                        errorMessage = $rootScope.message('default.doesnt.match.message', [name, '', text, input.attr('ng-' + key)]);
-                                    } else if (key == 'url') {
-                                        errorMessage = $rootScope.message('default.invalid.url.message', [name, '', text]);
-                                    } else if (key == 'email') {
-                                        errorMessage = $rootScope.message('default.invalid.email.message', [name, '', text]);
-                                    } else if (key == 'number') {
-                                        errorMessage = $rootScope.message('typeMismatch.java.lang.Integer', [name]);
+            scope.$watch(function() {
+                return scope.$eval(attrs.name);
+            }, function(form, oldForm) {
+                var inputs = element.find('input[ng-model], textarea[ng-model]');
+                angular.forEach(inputs, function(it) {
+                    var input = angular.element(it);
+                    var container = input.parent();
+                    var inputModel = form[input.attr('name')];
+                    scope.$watch(function() {
+                        return inputModel.$invalid && inputModel.$dirty;
+                    }, function(newIsInvalid, oldIsInvalid) {
+                        if (newIsInvalid && !oldIsInvalid) {
+                            var childScope = scope.$new();
+                            childScope.inputModel = inputModel;
+                            childScope.errorMessages = function(errors) {
+                                return  _.transform(errors, function(errorMessages, value, key) {
+                                    if (value) {
+                                        var text = input.val();
+                                        var name = input.siblings("label[for='" + input.attr('name') + "']").text();
+                                        var errorMessage = '';
+                                        if (key == 'required') {
+                                            errorMessage = $rootScope.message('default.blank.message');
+                                        } else if (key == 'min') {
+                                            errorMessage = $rootScope.message('default.invalid.min.message', ['', '', '', input.attr(key)]);
+                                        } else if (key == 'max') {
+                                            errorMessage = $rootScope.message('default.invalid.max.message', ['', '', '', input.attr(key)]);
+                                        } else if (key == 'minlength') {
+                                            errorMessage = $rootScope.message('default.invalid.min.size.message', ['', '', '', input.attr('ng-' + key)]);
+                                        } else if (key == 'maxlength') {
+                                            errorMessage = $rootScope.message('default.invalid.max.size.message', ['', '', '', input.attr('ng-' + key)]);
+                                        } else if (key == 'pattern') {
+                                            errorMessage = $rootScope.message('default.doesnt.match.message', ['', '', '', input.attr('ng-' + key)]);
+                                        } else if (key == 'url') {
+                                            errorMessage = $rootScope.message('default.invalid.url.message');
+                                        } else if (key == 'email') {
+                                            errorMessage = $rootScope.message('default.invalid.email.message');
+                                        } else if (key == 'number') {
+                                            errorMessage = $rootScope.message('typeMismatch.java.lang.Integer');
+                                        } else if (key == 'match') {
+                                            errorMessage = $rootScope.message('is.user.password.check');
+                                        }
+                                        errorMessages.push(errorMessage);
                                     }
-                                    errorMessages.push(errorMessage);
-                                }
-                            }, []);
-                        };
-                        childScope.input = input;
-                        container.addClass('has-error');
-                        var template = '<div class="help-block bg-danger"><ul ng-repeat="errorMessage in errorMessages(inputModel.$error)"><li>{{ errorMessage }}</li></ul></div>';
-                        var compiledTemplate = angular.element($compile(template)(childScope));
-                        container.append(compiledTemplate);
-                    } else if (!newIsInvalid && oldIsInvalid) {
-                        container.removeClass('has-error');
-                        container.find('.help-block').remove();
-                    }
+                                }, []);
+                            };
+                            childScope.input = input;
+                            container.addClass('has-error');
+                            var template = '<div class="help-block bg-danger" ng-repeat="errorMessage in errorMessages(inputModel.$error)"><span>{{ errorMessage }}</span></div>';
+                            var compiledTemplate = angular.element($compile(template)(childScope));
+                            container.append(compiledTemplate);
+                        } else if (!newIsInvalid && oldIsInvalid) {
+                            container.removeClass('has-error');
+                            container.find('.help-block').remove();
+                        }
+                    });
                 });
-            });
+            }, true);
         }
     }
-}]).directive('formAutofillFix', ['$timeout', function($timeout) {
+}]).directive('match', function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        scope: {
+            match: '='
+        },
+        link: function(scope, elem, attrs, ctrl) {
+            scope.$watch(function() {
+                var modelValue = ctrl.$modelValue || ctrl.$$invalidModelValue;
+                return (ctrl.$pristine && angular.isUndefined(modelValue)) || scope.match === modelValue;
+            }, function(currentValue) {
+                ctrl.$setValidity('match', currentValue);
+            });
+        }
+    };
+}).directive('formAutofillFix', ['$timeout', function($timeout) {
     return function (scope, element, attrs) {
         element.prop('method', 'post');
         if (attrs.ngSubmit) {

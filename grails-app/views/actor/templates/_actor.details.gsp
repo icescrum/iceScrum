@@ -153,6 +153,7 @@
                           ng-maxlength="3000"
                           ng-disabled="!getEditableActorMode(actor)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
+                          name="description"
                           ng-model="editableActor.description"></textarea>
             </div>
             <div class="form-group">

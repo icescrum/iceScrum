@@ -108,5 +108,5 @@
     </div>
 </div>
 <script>
-    angular.element(document).injector().get('StoryService').initList(${stories as JSON});
+    angular.element(document).injector().get('StoryService').addStories(${stories as JSON});
 </script>

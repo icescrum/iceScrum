@@ -27,16 +27,12 @@ var services = angular.module('services', [ 'restResource' ]);
 services.factory('AuthService',['$http', '$rootScope', 'Session', function ($http, $rootScope, Session) {
     return {
         login: function (credentials) {
-            return $http
-                .post($rootScope.serverUrl + '/j_spring_security_check', credentials, {
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                    transformRequest: function (data) {
-                        return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
-                    }
-                })
-                .then(function () {
-                    Session.create();
-                });
+            return $http.post($rootScope.serverUrl + '/j_spring_security_check', credentials, {
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                transformRequest: function (data) {
+                    return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
+                }
+            })
         }
     };
 }]).service('Session',['UserService', 'USER_ROLES', function (UserService, USER_ROLES) {
@@ -49,10 +45,6 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         stakeHolder: false
     };
     self.roles = _.clone(defaultRoles);
-    this.destroy = function () {
-        _.merge(self.roles, defaultRoles);
-        self.user = {};
-    };
     this.create = function() {
         UserService.getCurrent().then(function(data) {
             _.extend(self.user, data.user);
@@ -77,6 +69,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     this.creator = function(item) {
         return this.authenticated  && !_.isEmpty(item) && !_.isEmpty(item.creator) && self.user.id == item.creator.id;
     };
+    // TODO remove, user role change for dev only
     this.changeRole = function(newUserRole) {
         var newRoles = {};
         switch (newUserRole) {
@@ -135,7 +128,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
 }]);
 
 var restResource = angular.module('restResource', [ 'ngResource' ]);
-restResource.factory('Resource', [ '$resource', function ($resource) {
+restResource.factory('Resource', ['$resource', function ($resource) {
     return function (url, params, methods) {
         var defaultParams = {
             id: '@id'

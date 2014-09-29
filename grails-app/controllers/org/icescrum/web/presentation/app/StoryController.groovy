@@ -23,6 +23,7 @@
  */
 package org.icescrum.web.presentation.app
 
+import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Story
 
 import org.icescrum.core.domain.Feature
@@ -359,6 +360,21 @@ class StoryController {
                 json { renderRESTJSON(text:story.activity) }
                 xml  { renderRESTXML(text:story.activity) }
             }
+        }
+    }
+
+    // TODO check permissions
+    def listByType = {
+        def stories
+        if (params.type == 'actor') {
+            withActor { Actor actor -> stories = actor.stories }
+        } else if (params.type == 'feature') {
+            withFeature { Feature feature -> stories = feature.stories }
+        }
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: stories as JSON) }
+            json { renderRESTJSON(text: stories) }
+            xml  { renderRESTXML(text: stories) }
         }
     }
 

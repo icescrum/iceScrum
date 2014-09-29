@@ -27,6 +27,7 @@ var controllers = angular.module('controllers', []);
 controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($scope, $modal, Session) {
     $scope.currentUser = Session.user;
     $scope.roles = Session.roles;
+
     // TODO remove, user role change for dev only
     $scope.changeRole = function(newRole) {
         Session.changeRole(newRole);
@@ -35,9 +36,12 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
     $scope.showAbout = function () {
         $modal.open({ templateUrl: 'scrumOS/about' });
     };
+    $scope.showProfile = function () {
+        $modal.open({ templateUrl: $scope.serverUrl + '/user/openProfile', controller: 'userCtrl' });
+    };
     $scope.showAuthModal = function () {
         $modal.open({
-            templateUrl: 'login/auth',
+            templateUrl: $scope.serverUrl + '/login/auth',
             controller:'loginCtrl',
             size:'sm'
         });
@@ -60,9 +64,14 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
         j_password: ''
     };
     $scope.login = function (credentials) {
-        AuthService.login(credentials).then(function () {
-            $modalInstance.close();
-            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+        AuthService.login(credentials).then(function (stuff) {
+            var lastOpenedUrl = stuff.data.url;
+            var normalizedCurrentLocation = window.location.href.charAt(window.location.href.length - 1) == '/' ? window.location.href.substring(0, window.location.href.length - 1) : window.location.href;
+            if (normalizedCurrentLocation == $rootScope.serverUrl && lastOpenedUrl) {
+                document.location = lastOpenedUrl;
+            } else {
+                document.location.reload(true);
+            }
         }, function () {
             $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
         });

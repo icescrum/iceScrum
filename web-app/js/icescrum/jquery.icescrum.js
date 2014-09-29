@@ -61,6 +61,11 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if (!window.console.log) window.console.log = function () { };
 
             //$.datepicker.setDefaults($.datepicker.regional[this.o.locale]);
+            if ($.timeago.locales[this.o.locale]) {
+                $.timeago.settings.strings = $.timeago.locales[this.o.locale];
+            } if ($.fn.select2.locales[this.o.locale]) {
+                $.extend($.fn.select2.defaults, $.fn.select2.locales[this.o.locale]);
+            }
 
             $.icescrum.initLocalStorage();
 

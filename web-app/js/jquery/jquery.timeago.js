@@ -37,6 +37,7 @@
     var $t = $.timeago;
 
     $.extend($.timeago, {
+        locales: {},
         settings: {
             refreshMillis: 60000,
             allowPast: true,

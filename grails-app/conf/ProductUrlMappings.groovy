@@ -197,6 +197,16 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/story/$type/$id" {
+            controller = 'story'
+            action = [GET: "listByType"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+                type(inList: ['actor', 'feature'])
+            }
+        }
+
         "/p/$product/actor" {
             controller = 'actor'
             action = [GET: "list", POST:"save"]

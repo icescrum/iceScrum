@@ -232,8 +232,7 @@ class UserController {
     @Secured('isAuthenticated()')
     def openProfile = {
         def user = springSecurityService.currentUser
-        def dialog = g.render(template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
-        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+        render(status:200, template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
     }
 
     def retrieve = {

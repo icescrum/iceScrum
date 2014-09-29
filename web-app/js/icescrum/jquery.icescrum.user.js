@@ -69,25 +69,6 @@
                 return true;
             },
 
-            selectAvatar: function(val, select){
-                val = select ? $(select).val() : val;
-                var avatar = $('#user-avatar').find('img');
-                if (val == 'gravatar'){
-                    var email = $('input[name="email"]:valid').val();
-                    if (email){
-                        val = (document.location.href.startsWith('https') ? "https://secure.gravatar.com/avatar/" : 'http://www.gravatar.com/avatar/') + $.md5(email);
-                    } else {
-                        val = null;
-                    }
-                } else if (val == 'custom') {
-                    avatar.click();
-                    val = null;
-                }
-                if (val){
-                    avatar.attr('src', val);
-                }
-            },
-
             avatarUploaded:function(file){
                 var avatar = $('#user-avatar').find('img');
                 var select = $('select[name="user.avatar"]');

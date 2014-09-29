@@ -32,5 +32,8 @@ services.factory('User', [ 'Resource', function($resource) {
 services.service("UserService", ['User', function(User) {
     this.getCurrent = function() {
         return User.current().$promise;
+    };
+    this.update = function(user) {
+        return user.$update();
     }
 }]);

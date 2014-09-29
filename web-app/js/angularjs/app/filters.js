@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -29,11 +30,11 @@ filters
             return user ? user.firstName+' '+user.lastName : '';
         };
     })
-    .filter('userAvatar', function() {
+    .filter('userAvatar', ['$rootScope', function($rootScope) {
         return function(user) {
-            return user ?  'user/avatar/'+ user.id : '';
+            return user ?  $rootScope.serverUrl + '/user/avatar/'+ user.id : '';
         };
-    })
+    }])
     .filter('contrastColor', function() {
         return function(bg) {
             if (bg) {

@@ -68,7 +68,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
             }
         };
         $scope.stories = function(feature) {
-            feature.stories = _.where(StoryService.list, { feature: { id: feature.id }});
+            StoryService.listByType(feature);
         };
         // Header
         $scope.previous = FormService.previous(FeatureService.list, $scope.feature);

@@ -36,7 +36,8 @@ var isApp = angular.module('isApp', [
     'monospaced.elastic',
     'cfp.hotkeys',
     'colorpicker.module',
-    'mgo-angular-wizard'
+    'mgo-angular-wizard',
+    'ngPasswordStrength'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
@@ -321,9 +322,7 @@ isApp.config(['$stateProvider', '$httpProvider',
 
     }])
     .constant('AUTH_EVENTS', {
-        loginSuccess: 'auth-login-success',
         loginFailed: 'auth-login-failed',
-        logoutSuccess: 'auth-logout-success',
         sessionTimeout: 'auth-session-timeout',
         notAuthenticated: 'auth-not-authenticated',
         notAuthorized: 'auth-not-authorized'

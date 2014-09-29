@@ -73,8 +73,7 @@ icescrum.project.private.default = false
   IceScrum css theme
  */
 icescrum.theme = 'is'
-icescrum.gravatar.secure = false
-icescrum.gravatar.enable = false
+icescrum.gravatar.enable = true
 
 /*
   IceScrum base dir
@@ -135,7 +134,7 @@ icescrum.marshaller = [
                 exclude:['cliches']
         ],
 
-        userpreferences:[asShort:['activity', 'language']],
+        userpreferences:[asShort:['activity', 'language', 'emailsSettings']],
         productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
         attachment:[include: ['filename']],
         acceptancetest:[textile:['description'], asShort:['state']]

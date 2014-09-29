@@ -22,7 +22,7 @@
  *
  */
 services.factory('Story', ['Resource', function($resource) {
-    return $resource('story/:id/:action',
+    return $resource('story/:type/:typeId/:id/:action',
         {},
         {
             activities: {method: 'GET', isArray: true, params: {action: 'activities'}}
@@ -35,11 +35,14 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
 
     var self = this;
 
-    this.initList = function(stories) {
-        if (self.list.length == 0) {
-            angular.forEach(stories, function(story) {
+    this.addStories = function(stories) {
+        var listWasEmpty = _.isEmpty(self.list);
+        angular.forEach(stories, function(story) {
+            if (_.chain(self.list).where({ id: story.id }).isEmpty().value()) {
                 self.list.push(new Story(story));
-            });
+            }
+        });
+        if (listWasEmpty) {
             self.isListResolved.resolve(true);
         }
     };
@@ -48,6 +51,30 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return Story.save(story, function(story) {
             self.list.push(story);
         }).$promise;
+    };
+    this.listByType = function(obj) {
+        var stories = [];
+        var mustLoad = false;
+        angular.forEach(obj.stories, function(story) {
+            var alreadyLoadedStory = _.find(self.list, { id: story.id });
+            if (!_.isEmpty(alreadyLoadedStory)) {
+                stories.push(alreadyLoadedStory);
+            } else {
+                mustLoad = true;
+            }
+        });
+        obj.stories = stories;
+        if (mustLoad) {
+            Story.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
+                angular.forEach(data, function(story) {
+                    if (_.chain(obj.stories).where({ id: story.id }).isEmpty().value()) {
+                        var newStory = new Story(story);
+                        obj.stories.push(newStory);
+                        self.list.push(newStory);
+                    }
+                });
+            })
+        }
     };
     this.get = function(id) {
         return self.isListResolved.promise.then(function() {

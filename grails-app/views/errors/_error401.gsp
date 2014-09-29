@@ -20,5 +20,5 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 <script type="text/javascript">
-  document.location="${createLink(controller:'login', params:[ref:ref])}"
+  document.location="${createLink(controller: 'login', action: 'auth', params:[ref:ref])}"
 </script>

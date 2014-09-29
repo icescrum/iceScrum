@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 package org.icescrum.web.presentation.security
@@ -61,8 +62,8 @@ class LoginController {
             RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         }
 
-        render(status:200, template: "dialogs/auth", model: [
-                postUrl: grailsApplication.config.grails.serverURL+config.apf.filterProcessesUrl,
+        render(status: 200, template: "dialogs/auth", model: [
+                postUrl: grailsApplication.config.grails.serverURL + config.apf.filterProcessesUrl,
                 rememberMeParameter: config.rememberMe.parameter,
                 activeLostPassword: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable),
                 enableRegistration: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)])
@@ -81,36 +82,33 @@ class LoginController {
         if (exception) {
             if (exception instanceof AccountExpiredException) {
                 msg = 'is.dialog.login.error.account.expired'
-            }
-            else if (exception instanceof CredentialsExpiredException) {
+            } else if (exception instanceof CredentialsExpiredException) {
                 msg = 'is.dialog.login.error.credentials.expired'
-            }
-            else if (exception instanceof DisabledException) {
+            } else if (exception instanceof DisabledException) {
                 msg = 'is.dialog.login.error.disabled'
-            }
-            else if (exception instanceof LockedException) {
+            } else if (exception instanceof LockedException) {
                 msg = 'is.dialog.login.error.locked'
-            }
-            else {
+            } else {
                 msg = 'is.dialog.login.error'
             }
         }
         if (springSecurityService.isAjax(request)) {
-            render(status: 400, contentType: 'application/json', text:[error:message(code: msg)] as JSON)
+            render(status: 400, contentType: 'application/json', text: [error: message(code: msg)] as JSON)
             return
-        }
-        else {
+        } else {
             flash.message = msg
             redirect action: auth, params: params
         }
     }
 
-    /**
-     * The Ajax success redirect url.
-     */
     def ajaxSuccess = {
-        User u = (User)springSecurityService.currentUser
-        render(status:200, contentType: 'application/json', text:u as JSON)
+        User u = (User) springSecurityService.currentUser
+        if (u.preferences.lastProductOpened) {
+            def url = grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProductOpened + '/'
+            render(status: 200, contentType: 'application/json', text: [url: url] as JSON)
+        } else {
+            render(status: 200, text: '')
+        }
     }
 
     def ajaxDenied = {

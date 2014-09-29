@@ -39,12 +39,14 @@
             </div>
             <div class="the-id">
                 <div class="pull-right">
-                    <span tooltip="${message(code: 'is.story.creator')} : {{ story.creator | userFullName }}">
+                    <span tooltip="${message(code: 'is.story.creator')} : {{ story.creator | userFullName }}"
+                          tooltip-append-to-body="true">
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
                              height="21px"/>
                     </span>
                     <span class="label label-default"
-                          tooltip="${message(code: 'is.backlogelement.id')}">{{ story.uid }}</span>
+                          tooltip="${message(code: 'is.backlogelement.id')}"
+                          tooltip-append-to-body="true">{{ story.uid }}</span>
 
                     <a ng-if="previous"
                        class="btn btn-xs btn-default"

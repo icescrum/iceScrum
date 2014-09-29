@@ -18,6 +18,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
 <nav id="header" class="navbar navbar-masthead navbar-default" role="navigation">
@@ -188,7 +189,7 @@
                         </div>
                     </form>
                     <!-- Todo remove, user role change for dev only -->
-                    <div style="padding: 13px" class="pull-left">
+                    <div style="padding: 13px" class="pull-left" ng-if="false">
                         <a ng-class="{ 'text-warning': roles.productOwner && roles.scrumMaster }" ng-click="changeRole('PO_SM')">PO_SM</a>
                         <a ng-class="{ 'text-warning': roles.productOwner && (!roles.scrumMaster) }" ng-click="changeRole('PO')">PO</a>
                         <a ng-class="{ 'text-warning': roles.scrumMaster && (!roles.productOwner) }" ng-click="changeRole('SM')">SM</a>

@@ -51,6 +51,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.unobtrusive-ajax.js'], bundle: 'icescrum'
         resource url: [dir: 'js/lib', file: 'dropzone.js'], bundle: 'icescrum'
         resource url: [dir: 'js/lib', file: 'underscore.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/lib', file: 'underscore.string.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/lib', file: 'fastclick.js'], bundle: 'icescrum'
     }
 
@@ -89,6 +90,7 @@ modules = {
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-selectable.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-ui-sortable.js"], disposition:'head'
         resource url:[dir:'js/angularjs/lib', file:"angular-hotkeys.js"], disposition:'head'
+        resource url:[dir:'js/angularjs/lib', file:"angular-password-strength.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"controllers.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"services.js"], disposition:'head'
         resource url:[dir:'js/angularjs/app', file:"filters.js"], disposition:'head'
@@ -142,9 +144,11 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.dotimeout.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.atmosphere.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.timeago.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.timeago.fr.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.notify.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.select2.min.js'], bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.select2.fr.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.caret.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.atwho.min.js'], bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.autoellipsis-1.0.10.min.js'], bundle: 'icescrum'
