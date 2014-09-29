@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<%@ page import="org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils" %>
+<%@ page import="grails.plugin.springsecurity.SpringSecurityUtils" %>
 <g:form action="updateVision" method="post" name="visionForm" class="box-form box-form-200-legend">
     <is:fieldset title="is.ui.releasePlan.vision.properties.title">
         <is:fieldArea for="vision" label="is.release.vision" noborder="true" class="rich-large">

@@ -22,7 +22,7 @@
 package org.icescrum.web.presentation.app.project
 
 import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 import org.apache.commons.io.FilenameUtils
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task

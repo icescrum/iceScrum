@@ -24,7 +24,7 @@
 package org.icescrum.web.security
 
 import javax.servlet.http.HttpServletRequest
-import org.codehaus.groovy.grails.plugins.springsecurity.RequestHolderAuthenticationFilter
+import grails.plugin.springsecurity.web.authentication.RequestHolderAuthenticationFilter
 
 class ScrumAuthenticationProcessingFilter extends RequestHolderAuthenticationFilter {
   @Override

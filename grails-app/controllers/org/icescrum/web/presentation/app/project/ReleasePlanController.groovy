@@ -32,7 +32,7 @@ import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 import java.text.DecimalFormat
 import org.icescrum.core.domain.Task
 

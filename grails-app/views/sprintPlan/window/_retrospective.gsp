@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<%@ page import="org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils" %>
+<%@ page import="grails.plugin.springsecurity.SpringSecurityUtils" %>
 <g:form action="updateRetrospective" method="post" name="retrospectiveForm" class="box-form box-form-200-legend">
     <is:fieldset title="is.ui.sprintPlan.retrospective.properties.title">
         <is:fieldArea for="retrospective" label="is.sprint.retrospective" noborder="true" class="rich-large">

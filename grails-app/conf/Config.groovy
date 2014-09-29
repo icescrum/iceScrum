@@ -309,8 +309,7 @@ log4j = {
 
     if (ApplicationSupport.booleanValue(icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
-        /* debug 'org.codehaus.groovy.grails.plugins.springsecurity',
-                'grails.plugins.springsecurity'*/
+        /* debug 'grails.plugin.springsecurity'*/
     }
 
     appenders {

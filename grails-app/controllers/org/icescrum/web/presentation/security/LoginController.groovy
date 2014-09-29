@@ -30,7 +30,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.User
 import org.icescrum.core.support.ApplicationSupport
 

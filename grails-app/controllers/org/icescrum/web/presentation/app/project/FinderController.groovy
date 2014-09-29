@@ -33,7 +33,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class FinderController {

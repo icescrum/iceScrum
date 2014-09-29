@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<%@ page import="org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils" %>
+<%@ page import="grails.plugin.springsecurity.SpringSecurityUtils" %>
 <g:form action="updateDoneDefinition" method="post" name="doneDefinitionForm" class="box-form box-form-200-legend">
     <is:fieldset title="is.ui.sprintPlan.doneDefinition.properties.title">
         <is:fieldArea for="doneDefinition" label="is.sprint.doneDefinition" noborder="true" class="rich-large">

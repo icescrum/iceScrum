@@ -33,7 +33,7 @@ import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
 import grails.plugin.springcache.annotations.Cacheable
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class ActorController {

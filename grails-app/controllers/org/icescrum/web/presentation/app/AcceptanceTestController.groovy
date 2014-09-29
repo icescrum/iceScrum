@@ -25,7 +25,7 @@
 package org.icescrum.web.presentation.app
 
 import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.User

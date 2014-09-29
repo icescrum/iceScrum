@@ -23,7 +23,7 @@
 
 package org.icescrum.web.presentation.app
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Story

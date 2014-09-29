@@ -29,7 +29,7 @@ import org.icescrum.core.ui.UiDefinition
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.utils.BundleUtils

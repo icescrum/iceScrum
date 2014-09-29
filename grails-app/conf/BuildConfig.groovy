@@ -18,28 +18,27 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
 import grails.util.GrailsNameUtils
 import grails.util.Environment
 
+grails.servlet.version = "3.0" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
+grails.project.target.level = 1.6
+grails.project.source.level = 1.6
 grails.project.war.file = "target/${appName}.war"
+grails.project.dependency.resolver = "maven"
 
 grails.project.war.osgi.headers = false
+grails.tomcat.nio = true
 
-def environment = Environment.getCurrent()
-
-if (environment != Environment.PRODUCTION){
-    println "use inline plugin in env: ${environment}"
+if (Environment.current != Environment.PRODUCTION){
+    println "use inline plugin in env: ${Environment.current}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
-}
-
-coverage {
-    enabledByDefault = false
-    xml = true
 }
 
 grails.war.resources = { stagingDir ->
@@ -53,7 +52,7 @@ grails.war.resources = { stagingDir ->
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global"){
-        excludes "xml-apis"
+        excludes "xml-apis", "maven-publisher"
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
@@ -69,31 +68,30 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repository.codehaus.org"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
+        mavenRepo 'http://repo.spring.io/milestone'
     }
 
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         runtime 'mysql:mysql-connector-java:5.1.18'
-        runtime 'commons-dbcp:commons-dbcp:1.4'
     }
 
     plugins {
         compile "org.icescrum:entry-points:0.4.2"
-
-        compile ":resources:1.1.6"
         compile ":lesscss-resources:1.3.3"
         compile ":closure-compiler:0.9.2"
-        compile ":cache-headers:1.1.5"
+        compile ":cache-headers:1.1.7"
         compile ":cached-resources:1.0"
         compile ":zipped-resources:1.0"
 
         compile ":session-temp-files:1.0"
         compile ":browser-detection:0.4.3"
+        runtime ":resources:1.2.9"
+        // runtime ":database-migration:1.4.0" TODO Uncomment
+        runtime ":hibernate:3.6.10.17" // TODO switch to :hibernate4:4.3.5.5
+        build ":tomcat:7.0.54"
         if (environment == Environment.PRODUCTION){
             compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"
-            compile ":tomcat:1.3.9"
-        } else{
-            compile ":tomcatnio:1.3.4"
         }
     }
 }

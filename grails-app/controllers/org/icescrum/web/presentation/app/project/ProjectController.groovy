@@ -37,8 +37,8 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
 import grails.plugin.springcache.annotations.Cacheable
-import grails.plugins.springsecurity.Secured
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.annotation.Secured
+import grails.plugin.springsecurity.SpringSecurityUtils
 import org.springframework.security.access.AccessDeniedException
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
