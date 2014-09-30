@@ -130,6 +130,8 @@ class UtilsTagLib {
 
     // TODO replace with new cache taglib
     def cache = { attrs, body ->
+        out << body()
+        return
 //        if (attrs.disabled){
 //            out << body()
 //            return
