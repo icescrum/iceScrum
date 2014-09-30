@@ -85,7 +85,7 @@ grails.project.dependency.resolution = {
         compile ":session-temp-files:1.0"
         compile ":browser-detection:0.4.3"
         // runtime ":database-migration:1.4.0" TODO enable new migration
-        runtime ":hibernate:3.6.10.17" // TODO switch to :hibernate4:4.3.5.5
+        runtime ":hibernate4:4.3.5.5" // TODO switch to :hibernate4:4.3.5.5
         build ":tomcat:7.0.54"
         if (environment == Environment.PRODUCTION){
             compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"

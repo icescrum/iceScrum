@@ -62,11 +62,11 @@
                         <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)}">
                             <option value="gravatar">${message(code:'todo.is.user.avatar.gravatar')}</option>
                         </g:if>
-                        <option value="${resource(dir: '/images/avatars', file: 'dev-ico.png')}">${message(code:'todo.is.user.avatar.std.1')}</option>
-                        <option value="${resource(dir: '/images/avatars', file: 'po-ico.png')}">${message(code:'todo.is.user.avatar.std.2')}</option>
-                        <option value="${resource(dir: '/images/avatars', file: 'sh-ico.png')}">${message(code:'todo.is.user.avatar.std.3')}</option>
-                        <option value="${resource(dir: '/images/avatars', file: 'sm-ico.png')}">${message(code:'todo.is.user.avatar.std.4')}</option>
-                        <option value="${resource(dir: '/images/avatars', file: 'admin-ico.png')}">${message(code:'todo.is.user.avatar.std.5')}</option>
+                        <option value="${asset.assetPath(src: 'images/avatars/dev-ico.png')}">${message(code:'todo.is.user.avatar.std.1')}</option>
+                        <option value="${asset.assetPath(src: 'images/avatars/po-ico.png')}">${message(code:'todo.is.user.avatar.std.2')}</option>
+                        <option value="${asset.assetPath(src: 'images/avatars/sh-ico.png')}">${message(code:'todo.is.user.avatar.std.3')}</option>
+                        <option value="${asset.assetPath(src: 'images/avatars/sm-ico.png')}">${message(code:'todo.is.user.avatar.std.4')}</option>
+                        <option value="${asset.assetPath(src: 'images/avatars/admin-ico.png')}">${message(code:'todo.is.user.avatar.std.5')}</option>
                     </select>
                 </div>
             </div>

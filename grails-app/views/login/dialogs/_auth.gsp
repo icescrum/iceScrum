@@ -21,11 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <html lang="en" ng-app="isApp">
- <head>
-     <asset:stylesheet href="application.css"/>
- </head>
 <body>
-
 <is:modal size="sm"
           title="${message(code:'is.dialog.login')}"
           submitButton="${message(code:'is.button.connect')}"
@@ -89,8 +85,5 @@
         </label>
     </div>
 </is:modal>
-
-
-<asset:javascript src="application.js"/>
 </body>
 </html>

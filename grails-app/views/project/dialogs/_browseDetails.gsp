@@ -25,7 +25,7 @@
 </ul>
 <div id="tabs-description">
   <div class="browse-informations clearfix">
-    <img src="${resource(dir: is.currentThemeImage(), file: 'choose/default.png')}" class="ico">
+    <img src="${asset.assetPath(src:'images/default.png')}" class="ico">
     <h4>${product.name.encodeAsHTML()}</h4>
     <div class="description">
       <wikitext:renderHtml markup="Textile">${is.truncated(value:product.description,size:1000,encodedHTML:false)}</wikitext:renderHtml>

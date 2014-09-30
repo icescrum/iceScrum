@@ -55,7 +55,6 @@ class ScrumOSController {
 
         def space = ApplicationSupport.getCurrentSpace(params)
         if (space){
-            space.indexScrumOS.delegate = delegate
             space.indexScrumOS(space, user, securityService, springSecurityService)
         }
 
@@ -125,6 +124,7 @@ class ScrumOSController {
         }
     }
 
+    @Secured(['permitAll'])
     def openWindow() {
 
         if (!params.window) {
@@ -184,6 +184,7 @@ class ScrumOSController {
         }
     }
 
+    @Secured(['permitAll'])
     def about() {
         def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${RCU.getLocale(request)}.xml")
         if (!file.exists()) {

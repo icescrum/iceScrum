@@ -31,7 +31,7 @@ class IceScrumMessageSource extends PluginAwareResourceBundleMessageSource {
     public Map<String, String> getAllMessages(Locale locale) {
         def propertiesHolders = ([] << getMergedProperties(locale)) << getMergedPluginProperties(locale)
         def messages = [:]
-        propertiesHolders.each { PropertiesHolder holder ->
+        propertiesHolders.each { def holder ->
             holder.properties.each { key, val ->
                 messages[key] = val
             }

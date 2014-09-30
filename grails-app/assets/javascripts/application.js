@@ -1,6 +1,6 @@
 //= require vendors/jquery/jquery-1.11.0.min
 //= require vendors/jquery/jquery-migrate-1.2.1.min
-//= require vendors/jquery-jqplot/jquery-jqplot.min
+//= require vendors/jquery-jqplot/jquery.jqplot.min
 //= require_tree vendors/jquery
 
 //= require vendors/bootstrap/bootstrap.min

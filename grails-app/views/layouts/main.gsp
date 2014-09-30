@@ -31,17 +31,18 @@
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, ms-touch-action: none"/>
     <!-- iOS web app-->
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <link href="${r.resource(uri: '/images/iOS/icon-iphone.png')}" rel="apple-touch-icon"/>
-    <link href="${r.resource(uri: '/images/iOS/icon-ipad.png')}" rel="apple-touch-icon" sizes="76x76"/>
-    <link href="${r.resource(uri: '/images/iOS/icon-iphone-retina.png')}" rel="apple-touch-icon" sizes="120x120"/>
-    <link href="${r.resource(uri: '/images/iOS/icon-ipad-retina.png')}" rel="apple-touch-icon" sizes="152x152"/>
+
+    <asset:link rel="apple-touch-icon" href="iOS/icon-iphone.png"/>
+    <asset:link rel="apple-touch-icon" href="iOS/icon-ipad.png" sizes="76x76"/>
+    <asset:link rel="apple-touch-icon" href="iOS/icon-iphone-retina.png" sizes="120x120"/>
+    <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
     <!-- end iOS web app-->
     %{--<r:external uri="/images/favicon.ico"/>--}%
     <is:loadJsVar/>
     <asset:stylesheet href="application.css"/>
     <g:layoutHead/>
 </head>
-<body ${user?.preferences?.displayWhatsNew ? 'data-whatsnew="true"' : ''} ng-controller="appCtrl">
+<body data-whatsnew="${user?.preferences?.displayWhatsNew}" ng-controller="appCtrl">
 <is:header/>
 <div class="container-fluid">
     <div class="row sidebar-hidden">

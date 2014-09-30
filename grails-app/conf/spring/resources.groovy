@@ -22,7 +22,6 @@
  */
 
 import grails.plugin.springsecurity.SpringSecurityUtils
-import org.codehaus.groovy.grails.context.support.PluginAwareResourceBundleMessageSource
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
@@ -71,9 +70,8 @@ beans = {
         grailsApplication = ref('grailsApplication')
     }
 
-    def beanconf = springConfig.getBeanConfig('messageSource')
-    def beandef = beanconf ? beanconf.beanDefinition : springConfig.getBeanDefinition('messageSource')
-    if (beandef?.beanClassName == PluginAwareResourceBundleMessageSource.class.canonicalName) {
-        beandef.beanClassName = IceScrumMessageSource.class.canonicalName
+    //TODO why was it so complicated before???
+    messageSource(IceScrumMessageSource)  {
+        basenames = "WEB-INF/grails-app/i18n/messages"
     }
 }
