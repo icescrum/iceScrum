@@ -77,20 +77,13 @@ grails.project.dependency.resolution = {
 
     plugins {
         compile "org.icescrum:entry-points:0.4.2"
-        compile ("org.icescrum:lesscss-resources:1.7.0.1.1") {
-            excludes "slf4j-simple"
-        }
 
-        compile ':scaffolding:2.1.1'
-        compile ":closure-compiler:0.9.2"
+        compile ':scaffolding:2.1.1' // TODO consider removing it
         compile ":cache-headers:1.1.7"
-        compile ":cached-resources:1.0"
-        compile ":zipped-resources:1.0"
-        
+        compile ":asset-pipeline:1.9.9"
         compile ":session-temp-files:1.0"
         compile ":browser-detection:0.4.3"
-        runtime ":resources:1.2.9"
-        // runtime ":database-migration:1.4.0" TODO Uncomment
+        // runtime ":database-migration:1.4.0" TODO enable new migration
         runtime ":hibernate:3.6.10.17" // TODO switch to :hibernate4:4.3.5.5
         build ":tomcat:7.0.54"
         if (environment == Environment.PRODUCTION){

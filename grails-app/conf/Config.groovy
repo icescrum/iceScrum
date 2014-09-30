@@ -234,7 +234,6 @@ grails.views.javascript.library = 'jquery'
 
 environments {
     development {
-        grails.resources.mappers.googleclosurecompiler.disable = true
         icescrum.debug.enable = true
         grails.entryPoints.debug = false
         grails.tomcat.nio = true
@@ -339,8 +338,6 @@ log4j = {
     off 'org.codehaus.groovy.grails.web.converters.XMLParsingParameterCreationListener'
 }
 
-modulesResources = []
-
 /*
 
 SECURITY SECTION
@@ -385,9 +382,6 @@ grails {
 CLIENT MODULES SECTION
 
 */
-grails.resources.caching.excludes = ['js/timeline**/*.js']
-grails.resources.zip.excludes = ['/**/*.png', '/**/*.gif', '/**/*.jpg', '/**/*.gz']
-
 environments {
     production {
         if (!grails.config.locations || !(grails.config.locations instanceof List)) {
