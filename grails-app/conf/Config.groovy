@@ -21,6 +21,9 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
+
+import grails.util.Metadata
+import grails.util.Holders
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
 import org.icescrum.core.support.ApplicationSupport
@@ -281,11 +284,11 @@ log4j = {
 
     warn  'org.mortbay.log'
 
-    if (grails.entryPoints.debug) {
+    if (Holders.config.grails.entryPoints.debug) {
         debug 'org.icescrum.plugins.entryPoints'
     }
 
-    if (ApplicationSupport.booleanValue(icescrum.debug.enable)) {
+    if (ApplicationSupport.booleanValue(Holders.config.icescrum.debug.enable)) {
         debug 'grails.app.service.org.icescrum'
         debug 'grails.app.controller.org.icescrum'
         debug 'grails.app.domain.org.icescrum'
@@ -302,28 +305,25 @@ log4j = {
         debug 'org.icescrum.atmosphere'
         debug 'org.atmosphere'
         info  'com.hazelcast'
-         /*debug 'grails.plugin.springcache' */
-    }else{
-        off 'grails.plugin.springcache'
     }
 
-    if (ApplicationSupport.booleanValue(icescrum.securitydebug.enable)) {
+    if (ApplicationSupport.booleanValue(Holders.config.icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
         /* debug 'grails.plugin.springsecurity'*/
     }
 
     appenders {
         appender new DailyRollingFileAppender(name: "icescrumFileLog",
-                fileName: "${icescrum.log.dir}/${appName}.log",
+                fileName: "${Holders.config.icescrum.log.dir}/${Metadata.current.'app.name'}.log",
                 datePattern: "'.'yyyy-MM-dd",
                 layout: logLayoutPattern
         )
 
-        rollingFile name: "stacktrace", maxFileSize: 1024, file: "${icescrum.log.dir}/stacktrace.log"
+        rollingFile name: "stacktrace", maxFileSize: 1024, file: "${Holders.config.icescrum.log.dir}/stacktrace.log"
     }
 
     root {
-        if (ApplicationSupport.booleanValue(icescrum.debug.enable)) {
+        if (ApplicationSupport.booleanValue(Holders.config.icescrum.debug.enable)) {
             debug 'stdout', 'icescrumFileLog'
             error 'stdout', 'icescrumFileLog'
             info 'stdout', 'icescrumFileLog'
@@ -343,30 +343,12 @@ modulesResources = []
 
 /*
 
- CACHE SECTION
-
- */
-
-springcache {
-    defaults {
-        timeToLive = 432000
-        timeToIdle = 0
-    }
-    caches {
-        applicationCache {
-            eternal = true
-        }
-    }
-}
-
-/*
-
 SECURITY SECTION
 
 */
 
 grails {
-    plugins {
+    plugin {
         springsecurity {
             userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
             userLookup.authorityJoinClassName = 'org.icescrum.core.domain.security.UserAuthority'
