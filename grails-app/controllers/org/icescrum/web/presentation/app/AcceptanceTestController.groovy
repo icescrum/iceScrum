@@ -36,7 +36,7 @@ class AcceptanceTestController {
     def acceptanceTestService
 
     // TODO private products
-    def index = {
+    def index() {
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
@@ -47,7 +47,7 @@ class AcceptanceTestController {
     }
 
     // TODO private products
-    def list = {
+    def list() {
         def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(params.long('product'), params.long('parentStory')) : AcceptanceTest.getAllInProduct(params.long('product'))
         withFormat {
             html { render status: 200, contentType: 'application/json', text: acceptanceTests as JSON }
@@ -57,7 +57,7 @@ class AcceptanceTestController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def save = {
+    def save() {
         if (params.acceptanceTest.parentStory.id) {
             params.acceptanceTest.'parentStory.id' = params.acceptanceTest.parentStory.id
         }
@@ -105,7 +105,7 @@ class AcceptanceTestController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def update = {
+    def update() {
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
             def story = acceptanceTest.parentStory
             if (story.state >= Story.STATE_DONE) {
@@ -149,7 +149,7 @@ class AcceptanceTestController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def delete = {
+    def delete() {
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
             def deleted = [id: acceptanceTest.id,parentStory: [id:acceptanceTest.parentStory.id]]
             acceptanceTestService.delete(acceptanceTest)

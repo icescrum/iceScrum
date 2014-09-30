@@ -40,7 +40,7 @@ class FinderController {
 
         def springSecurityService
 
-        def index = {
+        def index() {
             withProduct { Product product ->
                 def data = [:]
 
@@ -70,7 +70,7 @@ class FinderController {
             }
         }
 
-        def tag = {
+        def tag() {
             withProduct{ Product p ->
                 if ((p.preferences.hidden && !request.inProduct) || (!p.preferences.hidden && !springSecurityService.isLoggedIn())){
                     render status:403, text:''

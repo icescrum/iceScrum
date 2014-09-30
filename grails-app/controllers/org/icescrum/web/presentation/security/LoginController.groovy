@@ -41,7 +41,7 @@ class LoginController {
     def springSecurityService
     def grailsApplication
 
-    def auth = {
+    def auth() {
         def config = SpringSecurityUtils.securityConfig
         if (springSecurityService.isLoggedIn()) {
             redirect uri: config.successHandler.defaultTargetUrl
@@ -69,14 +69,14 @@ class LoginController {
                 enableRegistration: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)])
     }
 
-    def authAjax = {
+    def authAjax() {
         render(status: 401, text: [error: message(code: 'is.denied')] as JSON)
     }
 
     /**
      * Callback after a failed username. Redirects to the auth page with a warning message.
      */
-    def authfail = {
+    def authfail() {
         String msg = ''
         def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
         if (exception) {
@@ -101,7 +101,7 @@ class LoginController {
         }
     }
 
-    def ajaxSuccess = {
+    def ajaxSuccess() {
         User u = (User) springSecurityService.currentUser
         if (u.preferences.lastProductOpened) {
             def url = grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProductOpened + '/'
@@ -111,7 +111,7 @@ class LoginController {
         }
     }
 
-    def ajaxDenied = {
+    def ajaxDenied() {
         render(status: 403, text: message(code: 'is.denied'))
     }
 }

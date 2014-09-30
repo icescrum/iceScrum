@@ -29,7 +29,7 @@ import org.icescrum.core.domain.Story
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 
 @Secured('inProduct()')
 class SprintController {
@@ -39,7 +39,7 @@ class SprintController {
     def springSecurityService
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def save = {
+    def save() {
         def releaseId = params.remove('parentRelease.id') ?: params.sprint.remove('parentRelease.id')
         if (!releaseId) {
             returnError(text: message(code: 'is.release.error.not.exist'))
@@ -72,7 +72,7 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def update = {
+    def update() {
         withSprint { Sprint sprint ->
             def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
             def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
@@ -89,7 +89,7 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def delete = {
+    def delete() {
         withSprint { Sprint sprint ->
             try {
                 sprintService.delete(sprint)
@@ -108,7 +108,7 @@ class SprintController {
 
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def unPlan = {
+    def unPlan() {
         withSprint { Sprint sprint ->
             def unPlanAllStories = storyService.unPlanAll([sprint])
             withFormat {
@@ -122,7 +122,7 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def activate = {
+    def activate() {
         withSprint { Sprint sprint ->
             sprintService.activate(sprint)
             withFormat {
@@ -136,7 +136,7 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def close = {
+    def close() {
         withSprint { Sprint sprint ->
             def unDoneStories = sprint.stories.findAll { it.state != Story.STATE_DONE }
             sprintService.close(sprint)
@@ -150,8 +150,8 @@ class SprintController {
         }
     }
 
-    @Cacheable(cache = 'sprintCache', keyGenerator = 'sprintKeyGenerator')
-    def index = {
+    @Cacheable('sprintCache') //, keyGenerator = 'sprintKeyGenerator')
+    def index() {
         if (request?.format == 'html') {
             render(status: 404)
             return
@@ -164,11 +164,11 @@ class SprintController {
         }
     }
 
-    def show = {
+    def show() {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    def list = {
+    def list() {
         if (request?.format == 'html') {
             render(status: 404)
             return

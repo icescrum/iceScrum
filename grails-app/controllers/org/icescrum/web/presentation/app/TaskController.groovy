@@ -29,7 +29,7 @@ import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 
@@ -40,7 +40,7 @@ class TaskController {
     def springSecurityService
     def taskService
 
-    def toolbar = {
+    def toolbar() {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
         withTask(id, params.uid ? true : false) { Task task ->
             def user = null
@@ -54,7 +54,7 @@ class TaskController {
     }
 
     @Secured('permitAll()')
-    def shortURL = {
+    def shortURL() {
         withProduct { Product product ->
             if (!springSecurityService.isLoggedIn() && product.preferences.hidden) {
                 redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + is.createScrumLink(controller: 'task', params: [uid: params.id]))
@@ -64,7 +64,7 @@ class TaskController {
         }
     }
 
-    def index = {
+    def index() {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
         withTask(id, params.uid ? true : false) { Task task ->
             def product = task.parentProduct
@@ -94,7 +94,7 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def save = {
+    def save() {
         if (params.task?.estimation instanceof String) {
             try {
                 params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
@@ -133,7 +133,7 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def update = {
+    def update() {
         withTask { Task task ->
             User user = (User) springSecurityService.currentUser
             if (params.task.estimation instanceof String) {
@@ -187,7 +187,7 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def take = {
+    def take() {
         withTask { Task task ->
             User user = (User) springSecurityService.currentUser
             Task.withTransaction {
@@ -203,7 +203,7 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def unassign = {
+    def unassign() {
         withTask { Task task ->
             User user = (User) springSecurityService.currentUser
             if (task.responsible?.id != user.id) {
@@ -228,7 +228,7 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def delete = {
+    def delete() {
         withTasks { List<Task> tasks ->
             User user = (User) springSecurityService.currentUser
             def idj = []
@@ -247,7 +247,7 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def copy = {
+    def copy() {
         withTask { Task task ->
             User user = (User) springSecurityService.currentUser
             def copiedTask = taskService.copy(task, user)
@@ -260,18 +260,18 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def attachments = {
+    def attachments() {
         withTask { task ->
             manageAttachmentsNew(task)
         }
     }
 
-    def show = {
+    def show() {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    @Cacheable(cache = 'taskCache', keyGenerator = 'tasksKeyGenerator')
-    def list = {
+    @Cacheable('taskCache') //, keyGenerator = 'tasksKeyGenerator')
+    def list() {
         if (request?.format == 'html') {
             render(status: 404)
             return
@@ -299,7 +299,7 @@ class TaskController {
     }
 
     @Secured('stakeHolder() and !archivedProduct()')
-    def tasksStory = {
+    def tasksStory() {
         withStory { Story story ->
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story.tasks as JSON) }
@@ -309,7 +309,7 @@ class TaskController {
         }
     }
 
-    def summaryPanel = {
+    def summaryPanel() {
         withTask { Task task ->
             def summary = task.comments + task.getActivities()
             summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
@@ -321,8 +321,8 @@ class TaskController {
         }
     }
 
-    @Cacheable(cache = 'taskCache', keyGenerator = 'tasksKeyGenerator')
-    def mylyn = {
+    @Cacheable('taskCache') //, keyGenerator = 'tasksKeyGenerator')
+    def mylyn() {
         def sprint = (Sprint) params.id ? Sprint.getInProduct(params.product.toLong(), params.id.toLong()).list() : Sprint.findCurrentOrNextSprint(params.product.toLong()).list()
         if (!sprint) {
             returnError(text: message(code: 'is.sprint.error.not.exist'))

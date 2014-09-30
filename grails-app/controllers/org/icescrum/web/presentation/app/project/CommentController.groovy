@@ -34,7 +34,7 @@ class CommentController {
     def springSecurityService
 
     @Secured('stakeHolder()')
-    def show = {
+    def show() {
         if (request?.format == 'html'){
             render(status:404)
             return
@@ -56,7 +56,7 @@ class CommentController {
     }
 
     @Secured('stakeHolder()')
-    def list = {
+    def list() {
         def commentable = commentableObject
         if (commentable) {
             withFormat {
@@ -70,7 +70,7 @@ class CommentController {
     }
 
     @Secured('isAuthenticated() and stakeHolder() and !archivedProduct()')
-    def save = {
+    def save() {
         def poster = springSecurityService.currentUser
         def commentable = commentableObject
         try {
@@ -103,7 +103,7 @@ class CommentController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def update = {
+    def update() {
         if (params.id == null) {
             returnError(text:message(code: 'is.ui.backlogelement.comment.error.not.exists'))
             return
@@ -133,7 +133,7 @@ class CommentController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def delete = {
+    def delete() {
         if (params.id == null) {
             returnError(text:message(code: 'is.ui.backlogelement.comment.error.not.exists'))
             return

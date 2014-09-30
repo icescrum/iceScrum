@@ -31,7 +31,7 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import java.text.DecimalFormat
 import org.icescrum.core.domain.Task
@@ -43,7 +43,7 @@ class ReleasePlanController {
     def releaseService
     def featureService
 
-    def titleBarContent = {
+    def titleBarContent() {
         def release
         if (params.id) {
             release = Release.getInProduct(params.long('product'),params.long('id')).list()
@@ -64,7 +64,7 @@ class ReleasePlanController {
         render(template: 'window/titleBarContent', model: [releases: releasesHtml, release: release])
     }
 
-    def toolbar = {
+    def toolbar() {
         def release
         if (params.id) {
             release = Release.getInProduct(params.long('product'),params.long('id')).list()
@@ -76,7 +76,7 @@ class ReleasePlanController {
         render(template: 'window/toolbar', model: [release: release, exportFormats:getExportFormats()])
     }
 
-    def index = {
+    def index() {
         def release
         if (params.id) {
             release = Release.getInProduct(params.long('product'),params.long('id')).list()
@@ -104,7 +104,7 @@ class ReleasePlanController {
 
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def close = {
+    def close() {
         withSprint{Sprint sprint ->
             def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
             if ((unDoneStories?.size() > 0 || !sprint.deliveredVersion) && !params.confirm) {
@@ -128,7 +128,7 @@ class ReleasePlanController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def activate = {
+    def activate() {
         withSprint{Sprint sprint ->
             if (sprint.orderNumber == 1 && sprint.parentRelease.state == Release.STATE_WAIT && !params.confirm) {
                 def dialog = g.render(template: "dialogs/confirmActivateSprintAndRelease", model: [sprint: sprint, release: sprint.parentRelease])
@@ -147,7 +147,7 @@ class ReleasePlanController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def delete = {
+    def delete() {
         withSprint{Sprint sprint ->
             if (sprint.orderNumber < sprint.parentRelease.sprints.size() && !params.confirm) {
                 def dialog = g.render(template: "dialogs/confirmDeleteSprint", model: [sprint: sprint, release: sprint.parentRelease])
@@ -159,7 +159,7 @@ class ReleasePlanController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def autoPlan = {
+    def autoPlan() {
         if (!params.id) {
             def msg =
             returnError(text:message(code: 'is.release.error.not.exist'))
@@ -175,7 +175,7 @@ class ReleasePlanController {
 
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def add = {
+    def add() {
         if (!params.id) {
             returnError(text:message(code: 'is.release.error.not.exist'))
             return
@@ -198,7 +198,7 @@ class ReleasePlanController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def edit = {
+    def edit() {
         if (!params.subid) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
             return
@@ -223,22 +223,22 @@ class ReleasePlanController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def editStory = {
+    def editStory() {
         forward(action: 'edit', controller: 'story', params: [referrer: controllerName])
     }
 
-    def vision = {
+    def vision() {
         withRelease{ Release release ->
             render(template: 'window/visionView', model: [release: release])
         }
     }
 
-    def releaseBurndownChart = {
+    def releaseBurndownChart() {
         forward(action:"releaseBurndownChartCached", params:params)
     }
 
-    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
-    def releaseBurndownChartCached = {
+    @Cacheable("releaseCache") //, keyGenerator = 'releaseKeyGenerator')
+    def releaseBurndownChartCached() {
         withRelease{ Release release ->
             def values = releaseService.releaseBurndownValues(release)
             if (values.size() > 0) {
@@ -256,12 +256,12 @@ class ReleasePlanController {
         }
     }
 
-    def releaseParkingLotChart = {
+    def releaseParkingLotChart() {
         forward(action:"releaseParkingLotChartCached", params:params)
     }
 
-    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
-    def releaseParkingLotChartCached = {
+    @Cacheable("releaseCache") //, keyGenerator = 'releaseKeyGenerator')
+    def releaseParkingLotChartCached() {
         withRelease{ Release release ->
             def values = featureService.releaseParkingLotValues(release)
 
@@ -282,12 +282,12 @@ class ReleasePlanController {
         }
     }
 
-    def notes = {
+    def notes() {
         forward(action:"notesCached", params:params)
     }
 
-    @Cacheable(cache = "releaseCache", keyGenerator = 'releaseKeyGenerator')
-    def notesCached = {
+    @Cacheable("releaseCache") //, keyGenerator = 'releaseKeyGenerator')
+    def notesCached() {
         withRelease{ Release release ->
             render(status:200,
                     template: 'window/notes',
@@ -300,7 +300,7 @@ class ReleasePlanController {
     }
 
     @Secured('inProduct()')
-    def addDocument = {
+    def addDocument() {
         withRelease { Release release ->
             def dialog = g.render(template: '/attachment/dialogs/documents', model: [bean:release, destController:'release'])
             render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON

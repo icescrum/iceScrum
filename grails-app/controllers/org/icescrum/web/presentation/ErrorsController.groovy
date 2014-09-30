@@ -28,14 +28,14 @@ class ErrorsController {
 
     def springSecurityService
 
-    def error403 = {
+    def error403() {
         if (springSecurityService.isAjax(request))
             render(status: 403, text: [error: message(code: 'is.error.denied')])
         else{
             render(status: 403, text: message(code: 'is.error.denied'))
         }
     }
-    def error401 = {
+    def error401() {
         if (springSecurityService.isAjax(request))
             render(status: 401, text: '')
         else {
@@ -43,21 +43,19 @@ class ErrorsController {
         }
     }
 
-    def fakeError = {
+    def fakeError() {
 
     }
 
-
-
-    def browserNotSupported = {
+    def browserNotSupported() {
 
     }
 
-    def database = {
+    def database() {
         render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.database')] as JSON)
     }
 
-    def memory = {
+    def memory() {
         render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.memory')] as JSON)
     }
 }

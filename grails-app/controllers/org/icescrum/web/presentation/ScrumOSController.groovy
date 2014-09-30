@@ -32,7 +32,7 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.springframework.mail.MailException
 import org.icescrum.core.domain.Sprint
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import org.springframework.security.acls.domain.BasePermission
 import org.icescrum.core.domain.preferences.ProductPreferences
 import sun.misc.BASE64Decoder
@@ -48,7 +48,7 @@ class ScrumOSController {
     def servletContext
     def messageSource
 
-    def index = {
+    def index() {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
 
         def space = ApplicationSupport.getCurrentSpace(params)
@@ -75,7 +75,7 @@ class ScrumOSController {
     }
 
 
-    def openWidget = {
+    def openWidget() {
         if (!request.xhr){
             redirect(controller: 'scrumOS', action: 'index')
             return
@@ -123,7 +123,7 @@ class ScrumOSController {
         }
     }
 
-    def openWindow = {
+    def openWindow() {
 
         if (!params.window) {
             returnError(text:message(code: 'is.error.no.window'))
@@ -182,7 +182,7 @@ class ScrumOSController {
         }
     }
 
-    def about = {
+    def about() {
         def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${RCU.getLocale(request)}.xml")
         if (!file.exists()) {
             file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
@@ -190,11 +190,11 @@ class ScrumOSController {
         render(status: 200, template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
     }
 
-    def textileParser = {
+    def textileParser() {
         render(text: wikitext.renderHtml([markup: "Textile"], params.data))
     }
 
-    def reportError = {
+    def reportError() {
         try {
             notificationEmailService.send([
                     from: springSecurityService.currentUser?.email?:null,
@@ -223,8 +223,8 @@ class ScrumOSController {
     }
 
     //TODO replace cache when dev finish and clean old code
-    //@Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
-    def templates = {
+    //@Cacheable('projectCache') //, keyGenerator = 'projectUserKeyGenerator')
+    def templates() {
         def currentSprint = null
         def product = null
         if (params.long('product')) {
@@ -247,7 +247,7 @@ class ScrumOSController {
         render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
     }
 
-    def saveImage = {
+    def saveImage() {
         if (!params.image){
             render(status:404)
             return
@@ -262,7 +262,7 @@ class ScrumOSController {
         response.outputStream << new BASE64Decoder().decodeBuffer(imageEncoded)
     }
 
-    def whatsNew = {
+    def whatsNew() {
         if (params.hide){
             if(springSecurityService.currentUser?.preferences?.displayWhatsNew){
                 springSecurityService.currentUser.preferences.displayWhatsNew = false
@@ -274,8 +274,8 @@ class ScrumOSController {
         render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
     }
 
-    @Cacheable(cache = 'applicationCache')
-    def version = {
+    @Cacheable('applicationCache')
+    def version() {
         withFormat{
             html {
                 render(status:'200', text:g.meta([name:'app.version']))

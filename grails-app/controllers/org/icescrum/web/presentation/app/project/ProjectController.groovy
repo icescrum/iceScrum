@@ -36,7 +36,7 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.springframework.security.access.AccessDeniedException
@@ -66,12 +66,12 @@ class ProjectController {
     def securityService
     def attachmentableService
 
-    def index = {
+    def index() {
         chain(controller: 'scrumOS', action: 'index', params: params)
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'localeKeyGenerator')
-    def feed = {
+    @Cacheable('projectCache') //, keyGenerator = 'localeKeyGenerator')
+    def feed() {
         cache validFor: 300
         withProduct{ Product product ->
             def activities = Story.recentActivity(product)
@@ -97,7 +97,7 @@ class ProjectController {
     }
 
     @Secured('owner() or scrumMaster()')
-    def edit = {
+    def edit() {
         withProduct{ Product product ->
             def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
             if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
@@ -116,7 +116,7 @@ class ProjectController {
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
-    def editPractices = {
+    def editPractices() {
         withProduct{ Product product ->
             def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
                                         (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
@@ -127,7 +127,7 @@ class ProjectController {
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
-    def update = {
+    def update() {
         withProduct('productd.id'){ Product product ->
             def msg
             if (params.long('productd.version') != product.version) {
@@ -156,7 +156,7 @@ class ProjectController {
     }
 
     @Secured('isAuthenticated()')
-    def add = {
+    def add() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
             if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
                 render(status: 403)
@@ -189,7 +189,7 @@ class ProjectController {
     }
 
     @Secured('isAuthenticated()')
-    def save = {
+    def save() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
             if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
                 render(status: 403)
@@ -285,7 +285,7 @@ class ProjectController {
         }
     }
 
-    def dashboard = {
+    def dashboard() {
         withProduct{ Product product ->
             def sprint = Sprint.findCurrentOrLastSprint(product.id).list()[0]
             def release = Release.findCurrentOrNextRelease(product.id).list()[0]
@@ -303,8 +303,8 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
-    def productCumulativeFlowChart = {
+    @Cacheable("projectCache") //, keyGenerator= 'releasesKeyGenerator')
+    def productCumulativeFlowChart() {
         params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.cumulativeFlowValues(product)
@@ -326,8 +326,8 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
-    def productVelocityCapacityChart = {
+    @Cacheable("projectCache") //, keyGenerator= 'releasesKeyGenerator')
+    def productVelocityCapacityChart() {
         params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.productVelocityCapacityValues(product)
@@ -346,8 +346,8 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
-    def productBurnupChart = {
+    @Cacheable("projectCache") //, keyGenerator= 'releasesKeyGenerator')
+    def productBurnupChart() {
         params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.productBurnupValues(product)
@@ -365,8 +365,8 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
-    def productBurndownChart = {
+    @Cacheable("projectCache") //, keyGenerator= 'releasesKeyGenerator')
+    def productBurndownChart() {
         params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.productBurndownValues(product)
@@ -388,8 +388,8 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "projectCache", keyGenerator= 'releasesKeyGenerator')
-    def productVelocityChart = {
+    @Cacheable("projectCache") //, keyGenerator= 'releasesKeyGenerator')
+    def productVelocityChart() {
         params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = productService.productVelocityValues(product)
@@ -411,8 +411,8 @@ class ProjectController {
         }
     }
 
-    @Cacheable(cache = "projectCache", keyGenerator= 'featuresKeyGenerator')
-    def productParkingLotChart = {
+    @Cacheable("projectCache") //, keyGenerator= 'featuresKeyGenerator')
+    def productParkingLotChart() {
         params.modal = params.boolean('modal')
         withProduct{ Product product ->
             def values = featureService.productParkingLotValues(product)
@@ -440,7 +440,7 @@ class ProjectController {
     }
 
     @Secured('productOwner() or scrumMaster()')
-    def export = {
+    def export() {
         withProduct{ Product product ->
             if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
                 if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
@@ -476,7 +476,7 @@ class ProjectController {
     }
 
     @Secured('isAuthenticated()')
-    def importProject = {
+    def importProject() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {
             if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
                 render(status: 403)
@@ -555,7 +555,7 @@ class ProjectController {
     }
 
     @Secured('isAuthenticated()')
-    def saveImport = {
+    def saveImport() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {
             if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
                 render(status: 403)
@@ -701,7 +701,7 @@ class ProjectController {
     /**
      * Export the project elements in multiple format (PDF, DOCX, RTF, ODT)
      */
-    def print = {
+    def print() {
         withProduct{ Product product ->
             def data
             def chart = null
@@ -761,7 +761,7 @@ class ProjectController {
     }
 
     @Secured('owner()')
-    def delete = {
+    def delete() {
         withProduct{ Product product ->
             def id = product.id
             try {
@@ -775,7 +775,7 @@ class ProjectController {
     }
 
     @Secured('owner() or scrumMaster()')
-    def archive = {
+    def archive() {
         withProduct{ Product product ->
             try {
                 productService.archive(product)
@@ -788,7 +788,7 @@ class ProjectController {
     }
 
     @Secured("hasRole('ROLE_ADMIN')")
-    def unArchive = {
+    def unArchive() {
         withProduct{ Product product ->
             try {
                 productService.unArchive(product)
@@ -814,14 +814,14 @@ class ProjectController {
     }
 
     @Secured('permitAll')
-    @Cacheable(cache = 'applicationCache', keyGenerator = 'localeKeyGenerator')
-    def browse = {
+    @Cacheable('applicationCache') //, keyGenerator = 'localeKeyGenerator')
+    def browse() {
         def dialog = g.render(template: 'dialogs/browse')
         render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
     }
 
     @Secured('permitAll')
-    def browseList = {
+    def browseList() {
 
         def term = '%'+params.term+'%' ?: '';
         def options = [offset:params.int('offset') ?: 0, max: 9, sort: "name", order: "asc", cache:true]
@@ -841,8 +841,8 @@ class ProjectController {
     }
 
     @Secured('permitAll')
-    @Cacheable(cache = 'projectCache', keyGenerator = 'projectKeyGenerator')
-    def browseDetails = {
+    @Cacheable('projectCache') //, keyGenerator = 'projectKeyGenerator')
+    def browseDetails() {
         withProduct('id'){ Product product ->
             if (!securityService.owner(product, springSecurityService.authentication)){
                 if ((product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication))) {
@@ -853,7 +853,7 @@ class ProjectController {
         }
     }
 
-    def printPostits = {
+    def printPostits() {
         withProduct{ Product product ->
             def stories1 = []
             def stories2 = []
@@ -910,7 +910,7 @@ class ProjectController {
         }
     }
 
-    def versions = {
+    def versions() {
         withProduct { Product product ->
             withFormat{
                 html {
@@ -963,7 +963,7 @@ class ProjectController {
     }
 
     @Secured('inProduct()')
-    def addDocument = {
+    def addDocument() {
         withProduct { Product product ->
             def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:product, destController:'project'])
             render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
@@ -971,7 +971,7 @@ class ProjectController {
     }
 
     @Secured('inProduct()')
-    def attachments = {
+    def attachments() {
         withProduct { Product product ->
             def keptAttachments = params.list('product.attachments')
             def addedAttachments = params.list('attachments')

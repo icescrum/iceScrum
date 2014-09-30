@@ -37,7 +37,7 @@ import org.icescrum.core.domain.PlanningPokerGame
 class BacklogController {
     def springSecurityService
 
-    def list = {
+    def list() {
         def currentProduct = Product.get(params.product)
 
         def stories = Story.searchByTermOrTagInBacklog(currentProduct, params.term).sort { Story story -> story.rank }
@@ -52,11 +52,11 @@ class BacklogController {
     }
 
 
-    def editStory = {
+    def editStory() {
         forward(action: 'edit', controller: 'story', params: [referrer: controllerName, id: params.id, product: params.product])
     }
 
-    def print = {
+    def print() {
         def currentProduct = Product.get(params.product)
         def data = []
         def stories = Story.findAllByBacklogAndStateBetween(currentProduct, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])

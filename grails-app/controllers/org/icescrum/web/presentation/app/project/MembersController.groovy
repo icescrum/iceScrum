@@ -37,7 +37,7 @@ class MembersController {
     def productService
     def securityService
 
-    def edit = {
+    def edit() {
         def product = Product.get(params.product)
         def members = productService.getAllMembersProduct(product)
         def ownerSelect = product.owner
@@ -65,7 +65,7 @@ class MembersController {
     }
 
     @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
-    def update = {
+    def update() {
         def product = Product.get(params.product)
         def team = Team.get(product.firstTeam.id)
         def currentMembers = productService.getAllMembersProduct(product)
@@ -102,7 +102,7 @@ class MembersController {
     }
 
     @Secured(['inProduct() or stakeHolder()', 'RUN_AS_PERMISSIONS_MANAGER'])
-     def leaveTeam = {
+     def leaveTeam() {
         def product = Product.get(params.product)
         def user = springSecurityService.currentUser
         def team = Team.get(product.firstTeam.id)

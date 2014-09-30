@@ -27,7 +27,7 @@ package org.icescrum.web.presentation.app.project
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
@@ -40,7 +40,7 @@ class FeatureController {
     def springSecurityService
 
     @Secured('productOwner() and !archivedProduct()')
-    def save = {
+    def save() {
         if (!params.feature){
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
@@ -65,7 +65,7 @@ class FeatureController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def update = {
+    def update() {
         withFeatures { List<Feature> features ->
             if (!params.feature) {
                 returnError(text: message(code: 'todo.is.ui.no.data'))
@@ -91,7 +91,7 @@ class FeatureController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def delete = {
+    def delete() {
         withFeatures{ List<Feature> features ->
             Feature.withTransaction {
                 features.each { feature ->
@@ -106,8 +106,8 @@ class FeatureController {
         }
     }
 
-    @Cacheable(cache = "featuresCache", keyGenerator= 'featuresKeyGenerator')
-    def list = {
+    @Cacheable("featuresCache") //, keyGenerator= 'featuresKeyGenerator')
+    def list() {
         def features = Feature.searchAllByTermOrTag(params.long('product'), params.term).sort { Feature feature -> feature.rank }
         withFormat{
             html { render(status: 200, text: features as JSON, contentType: 'application/json') }
@@ -117,7 +117,7 @@ class FeatureController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def copyToBacklog = {
+    def copyToBacklog() {
         withFeatures{ List<Feature> features ->
             List<Story> stories = featureService.copyToBacklog(features)
             withFormat {
@@ -128,11 +128,11 @@ class FeatureController {
         }
     }
 
-    def productParkingLotChart = {
+    def productParkingLotChart() {
         forward controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName]
     }
 
-    def print = {
+    def print() {
         def currentProduct = Product.get(params.product)
         def values = featureService.productParkingLotValues(currentProduct)
         def data = []
@@ -165,8 +165,8 @@ class FeatureController {
         }
     }
 
-    @Cacheable(cache = 'featureCache', keyGenerator='featureKeyGenerator')
-    def index = {
+    @Cacheable('featureCache') //, keyGenerator='featureKeyGenerator')
+    def index() {
         if (request?.format == 'html'){
             render(status:404)
             return
@@ -179,24 +179,24 @@ class FeatureController {
         }
     }
 
-    def show = {
+    def show() {
         redirect(action:'index', controller: controllerName, params:params)
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def attachments = {
+    def attachments() {
         withFeature { feature ->
             manageAttachmentsNew(feature)
         }
     }
 
     // TODO cache
-    def view = {
+    def view() {
         render(template: "${params.type ?: 'window'}/view")
     }
 
-    @Cacheable(cache = "featuresCache", keyGenerator= 'featuresKeyGenerator')
-    def featureEntries = {
+    @Cacheable("featuresCache") //, keyGenerator= 'featuresKeyGenerator')
+    def featureEntries() {
         withProduct { product ->
             def featureEntries = product.features.collect { [id: it.id, text: it.name, color:it.color] }
             if (params.term) {

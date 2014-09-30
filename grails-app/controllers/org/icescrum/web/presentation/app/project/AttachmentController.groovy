@@ -38,7 +38,7 @@ class AttachmentController {
     def springSecurityService
     def attachmentableService
 
-    def show = {
+    def show() {
         def attachmentable = attachmentableObject
         if (attachmentable) {
             def attachment = attachmentable.attachments?.find { it.id == params.long('id') }
@@ -65,7 +65,7 @@ class AttachmentController {
     }
 
     @Secured('isAuthenticated() and stakeHolder()')
-    def list = {
+    def list() {
         def attachmentable = attachmentableObject
         if (attachmentable) {
             withFormat {
@@ -79,7 +79,7 @@ class AttachmentController {
     }
 
     @Secured('isAuthenticated() and stakeHolder()')
-    def save = {
+    def save() {
         def attachmentable = attachmentableObject
         if (attachmentable) {
             def upfile = params.file ?: request.getFile('file')
@@ -103,7 +103,7 @@ class AttachmentController {
         }
     }
 
-    def delete = {
+    def delete() {
         def attachmentable = attachmentableObject
         if (attachmentable) {
             def attachment = attachmentable.attachments?.find{ it.id == params.long('id') }
@@ -120,7 +120,7 @@ class AttachmentController {
         }
     }
 
-    private getAttachmentableObject(){
+    private getAttachmentableObject() {
         def attachmentable
         switch (params.type){
             case 'story':

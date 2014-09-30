@@ -33,7 +33,7 @@ import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Template
 import org.icescrum.core.domain.User
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
@@ -47,7 +47,7 @@ class StoryController {
     def springSecurityService
 
     @Secured('inProduct()')
-    def show = {
+    def show() {
         withStory { Story story ->
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: story as JSON }
@@ -58,12 +58,12 @@ class StoryController {
     }
 
     // TODO choose between show and index (also choose between list and index in other places)
-    def index = {
+    def index() {
         forward(action: 'show', params: params)
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def save = {
+    def save() {
         if (!params.story){
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
@@ -128,7 +128,7 @@ class StoryController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def update = {
+    def update() {
         withStories{ List<Story> stories ->
 
             if (!params.story){
@@ -214,7 +214,7 @@ class StoryController {
     }
 
     @Secured('isAuthenticated()')
-    def delete = {
+    def delete() {
         withStories{List<Story> stories ->
             storyService.delete(stories, null, params.reason? params.reason.replaceAll("(\r\n|\n)", "<br/>") :null)
             withFormat {
@@ -226,8 +226,8 @@ class StoryController {
     }
 
     @Secured('stakeHolder() or inProduct()')
-    @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
-    def list = {
+    @Cacheable('storyCache') //, keyGenerator='storiesKeyGenerator')
+    def list() {
         def currentProduct = Product.load(params.long('product'))
         def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term).sort { Story story -> story.id }
         withFormat {
@@ -238,7 +238,7 @@ class StoryController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def copy = {
+    def copy() {
         withStories{ List<Story> stories ->
             def copiedStories = storyService.copy(stories)
             withFormat {
@@ -251,14 +251,14 @@ class StoryController {
     }
 
     @Secured('isAuthenticated()')
-    def openDialogDelete = {
+    def openDialogDelete() {
         def state = Story.getInProduct(params.long('product'), params.list('id').first().toLong()).list()?.state
         def dialog = g.render(template: 'dialogs/delete', model:[back: params.back ? params.back : state >= Story.STATE_ACCEPTED ? '#backlog' : '#sandbox'])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def done = {
+    def done() {
         withStory { Story story ->
             withFormat {
                 html {
@@ -284,7 +284,7 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def unDone = {
+    def unDone() {
         withStory {Story story ->
             storyService.unDone(story)
             withFormat {
@@ -296,7 +296,7 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def acceptAsFeature = {
+    def acceptAsFeature() {
         withStories{List<Story> stories ->
             stories = stories.reverse()
             def features = storyService.acceptToFeature(stories)
@@ -315,7 +315,7 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def acceptAsTask = {
+    def acceptAsTask() {
         withStories{List<Story> stories ->
             stories = stories.reverse()
             def elements = storyService.acceptToUrgentTask(stories)
@@ -328,8 +328,8 @@ class StoryController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
-    def findDuplicate = {
+    @Cacheable('storyCache') //, keyGenerator='storiesKeyGenerator')
+    def findDuplicate() {
         def stories = null
         withProduct{ product ->
             def terms = params.term?.tokenize()?.findAll{ it.size() >= 5 }
@@ -342,7 +342,7 @@ class StoryController {
         }
     }
 
-    def shortURL = {
+    def shortURL() {
         withProduct{ Product product ->
             if (!springSecurityService.isLoggedIn() && product.preferences.hidden){
                 redirect(url:createLink(controller:'login', action: 'auth')+'?ref='+is.createScrumLink(controller: 'story', params:[uid: params.id]))
@@ -353,7 +353,7 @@ class StoryController {
     }
 
     @Secured('stakeHolder()')
-    def activities = {
+    def activities() {
         withStory { Story story ->
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: story.activity as JSON) }
@@ -364,7 +364,7 @@ class StoryController {
     }
 
     // TODO check permissions
-    def listByType = {
+    def listByType() {
         def stories
         if (params.type == 'actor') {
             withActor { Actor actor -> stories = actor.stories }
@@ -379,7 +379,7 @@ class StoryController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def like = {
+    def like() {
         withStories { List<Story> stories ->
             stories.each { Story story ->
                 User user = springSecurityService.currentUser
@@ -402,7 +402,7 @@ class StoryController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def follow = {
+    def follow() {
         withStories { List<Story> stories ->
             stories.each { Story story ->
                 User user = springSecurityService.currentUser
@@ -427,8 +427,8 @@ class StoryController {
     }
 
     @Secured('stakeHolder() or inProduct()')
-    @Cacheable(cache = 'storyCache', keyGenerator='storiesKeyGenerator')
-    def dependenceEntries = {
+    @Cacheable('storyCache') //, keyGenerator='storiesKeyGenerator')
+    def dependenceEntries() {
         withStory { story ->
             def stories = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
             def storyEntries = stories.collect { [id: it.id, text: it.name + ' (' + it.uid + ')'] }
@@ -440,7 +440,7 @@ class StoryController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def saveTemplate = {
+    def saveTemplate() {
         withStory { story ->
             def product = Product.get(params.long('product'))
             def templateName = params.template.name
@@ -476,7 +476,7 @@ class StoryController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def deleteTemplate = {
+    def deleteTemplate() {
         def product = Product.get(params.long('product'))
         def template = Template.findByIdAndParentProduct(params.long('template.id'), product)
         if (template) {
@@ -489,13 +489,13 @@ class StoryController {
 
     // TODO cache on all templates
     @Secured('isAuthenticated() and !archivedProduct()')
-    def templateEntries = {
+    def templateEntries() {
         def templates = Template.findAllByParentProduct(Product.get(params.long('product')))
         render(text: templates.collect{[id:it.id, text:it.name]} as JSON, contentType: 'application/json', status: 200)
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def templatePreview = {
+    def templatePreview() {
         if (params.template) {
             def product = Product.get(params.long('product'))
             def template = Template.findByParentProductAndId(product, params.long('template'))

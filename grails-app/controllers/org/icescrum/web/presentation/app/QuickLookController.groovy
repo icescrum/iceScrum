@@ -30,7 +30,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.icescrum.core.utils.BundleUtils
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.converters.JSON
 
 @Secured("stakeHolder() or inProduct()")
@@ -38,7 +38,7 @@ class QuickLookController {
 
     def springSecurityService
 
-    def index = {
+    def index() {
         if (params.story?.id) {
             forward(action:'story', params:['story.id':params.story.id])
         }
@@ -56,8 +56,8 @@ class QuickLookController {
         }
     }
 
-    @Cacheable(cache = 'storyCache', keyGenerator = 'storyKeyGenerator')
-    def story = {
+    @Cacheable('storyCache') //, keyGenerator = 'storyKeyGenerator')
+    def story() {
         withStory('story.id'){ Story story ->
             def dialog = g.render(template: "/story/quicklook", model: [
                     story: story,
@@ -69,8 +69,8 @@ class QuickLookController {
         }
     }
 
-    @Cacheable(cache = 'taskCache', keyGenerator = 'taskKeyGenerator')
-    def task = {
+    @Cacheable('taskCache') //, keyGenerator = 'taskKeyGenerator')
+    def task() {
         withTask('task.id'){ Task task ->
             def dialog = g.render(template: "/task/quicklook", model: [
                     task: task,
@@ -81,8 +81,8 @@ class QuickLookController {
         }
     }
 
-    @Cacheable(cache = 'featureCache', keyGenerator = 'featureKeyGenerator')
-    def feature = {
+    @Cacheable('featureCache') //, keyGenerator = 'featureKeyGenerator')
+    def feature() {
         withFeature('feature.id'){ Feature feature ->
             def sum = feature.stories?.sum { story -> story.effort ?: 0 }
             def effort = sum ?: '?'
@@ -99,8 +99,8 @@ class QuickLookController {
         }
     }
 
-    @Cacheable(cache = 'actorCache', keyGenerator = 'actorKeyGenerator')
-    def actor = {
+    @Cacheable('actorCache') //, keyGenerator = 'actorKeyGenerator')
+    def actor() {
         withActor('actor.id'){ Actor actor ->
             def dialog = g.render(template: "/actor/quicklook", model: [
                     actor: actor,

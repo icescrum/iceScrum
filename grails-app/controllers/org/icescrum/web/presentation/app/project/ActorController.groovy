@@ -32,7 +32,7 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
@@ -40,15 +40,15 @@ class ActorController {
     def actorService
     def springSecurityService
 
-    @Cacheable(cache = 'searchActors', keyGenerator = 'actorsKeyGenerator')
-    def search = {
+    @Cacheable('searchActors') //, keyGenerator = 'actorsKeyGenerator')
+    def search() {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
         def result = actors.collect { [name: it.name, uid: it.uid] }
         render(result as JSON)
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def save = {
+    def save() {
         if (!params.actor){
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
@@ -72,7 +72,7 @@ class ActorController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def update = {
+    def update() {
         withActors { List<Actor> actors ->
             if (!params.actor) {
                 returnError(text: message(code: 'todo.is.ui.no.data'))
@@ -97,7 +97,7 @@ class ActorController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def delete = {
+    def delete() {
         withActors { List<Actor> actors ->
             Actor.withTransaction {
                 actors.each { actor ->
@@ -112,8 +112,8 @@ class ActorController {
         }
     }
 
-    @Cacheable(cache = 'actorsCache', keyGenerator = 'actorsKeyGenerator')
-    def list = {
+    @Cacheable('actorsCache') //, keyGenerator = 'actorsKeyGenerator')
+    def list() {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
         withFormat {
             html { render(status: 200, text: actors as JSON, contentType: 'application/json') }
@@ -122,12 +122,12 @@ class ActorController {
         }
     }
 
-    def show = {
+    def show() {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    @Cacheable(cache = 'actorCache', keyGenerator = 'actorKeyGenerator')
-    def index = {
+    @Cacheable('actorCache') //, keyGenerator = 'actorKeyGenerator')
+    def index() {
         if (request?.format == 'html') {
             render(status: 404)
             return
@@ -141,11 +141,11 @@ class ActorController {
     }
 
     // TODO cache
-    def view = {
+    def view() {
         render(template: "${params.type ?: 'window'}/view")
     }
 
-    def print = {
+    def print() {
         def currentProduct = Product.load(params.product)
         def data = []
         def actors = Actor.findAllByBacklog(currentProduct, [sort: 'useFrequency', order: 'asc']);

@@ -32,7 +32,7 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Sprint
@@ -50,7 +50,7 @@ class SprintPlanController {
     def taskService
     def userService
 
-    def titleBarContent = {
+    def titleBarContent() {
         def currentProduct = Product.load(params.product)
         def sprint
         if (params.id) {
@@ -68,7 +68,7 @@ class SprintPlanController {
                         sprintsName: sprintsName])
     }
 
-    def toolbar = {
+    def toolbar() {
         def sprint
         if (params.id) {
             sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
@@ -83,7 +83,7 @@ class SprintPlanController {
                         sprint: sprint ?: null])
     }
 
-    def index = {
+    def index() {
         Sprint sprint
 
         User user = (User) springSecurityService.currentUser
@@ -161,7 +161,7 @@ class SprintPlanController {
     }
 
 
-    def updateTable = {
+    def updateTable() {
 
         withTask{ Task task ->
             if (params.boolean('loadrich')) {
@@ -211,7 +211,7 @@ class SprintPlanController {
         }
     }
 
-    def add = {
+    def add() {
         Sprint sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
         if (!sprint) {
             returnError(text:message(code: 'is.sprint.error.not.exist'))
@@ -242,7 +242,7 @@ class SprintPlanController {
         ])
     }
 
-    def edit = {
+    def edit() {
         withTask('subid'){Task task ->
             def selected = (task.type == Task.TYPE_RECURRENT) ? [id: 'recurrent'] : (task.type == Task.TYPE_URGENT) ? [id: 'urgent'] : task.parentStory
             def sprint = task.backlog
@@ -272,18 +272,18 @@ class SprintPlanController {
         }
     }
 
-    def editStory = {
+    def editStory() {
         forward(action: 'edit', controller: 'story', params: [referrer: controllerName, id: params.id, product: params.product])
     }
 
-    def doneDefinition = {
+    def doneDefinition() {
         withSprint{ Sprint sprint ->
             render(template: 'window/doneDefinition', model: [sprint: sprint])
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def copyFromPreviousDoneDefinition = {
+    def copyFromPreviousDoneDefinition() {
         withSprint{ Sprint sprint ->
             Sprint.withTransaction {
                 def previousSprint = sprint.previousSprint
@@ -297,14 +297,14 @@ class SprintPlanController {
         }
     }
 
-    def retrospective = {
+    def retrospective() {
         withSprint{ Sprint sprint ->
             render(template: 'window/retrospective', model: [sprint: sprint])
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def copyFromPreviousRetrospective = {
+    def copyFromPreviousRetrospective() {
         withSprint{ Sprint sprint ->
             Sprint.withTransaction {
                 def previousSprint = sprint.previousSprint
@@ -318,12 +318,12 @@ class SprintPlanController {
         }
     }
 
-    def sprintBurndownRemainingChart = {
+    def sprintBurndownRemainingChart() {
         forward(action: "sprintBurndownRemainingChartCached", params:params)
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
-    def sprintBurndownRemainingChartCached = {
+    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
+    def sprintBurndownRemainingChartCached() {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurndownRemainingValues(sprint)
             if (values.size() > 0) {
@@ -338,12 +338,12 @@ class SprintPlanController {
         }
     }
 
-    def sprintBurnupTasksChart = {
+    def sprintBurnupTasksChart() {
         forward(action:"sprintBurnupTasksChartCached",params:params)
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
-    def sprintBurnupTasksChartCached = {
+    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
+    def sprintBurnupTasksChartCached() {
             withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupTasksValues(sprint)
             if (values.size() > 0) {
@@ -358,12 +358,12 @@ class SprintPlanController {
         }
     }
 
-    def sprintBurnupStoriesChart = {
+    def sprintBurnupStoriesChart() {
         forward(action:"sprintBurnupStoriesChartCached",params:params)
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
-    def sprintBurnupStoriesChartCached = {
+    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
+    def sprintBurnupStoriesChartCached() {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupStoriesValues(sprint)
             if (values.size() > 0) {
@@ -378,12 +378,12 @@ class SprintPlanController {
         }
     }
 
-    def sprintBurnupPointsChart = {
+    def sprintBurnupPointsChart() {
         forward(action:"sprintBurnupPointsChartCached",params:params)
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
-    def sprintBurnupPointsChartCached = {
+    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
+    def sprintBurnupPointsChartCached() {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupStoriesValues(sprint)
             if (values.size() > 0) {
@@ -398,7 +398,7 @@ class SprintPlanController {
         }
     }
 
-    def changeFilterTasks = {
+    def changeFilterTasks() {
         if (!params.filter || !(params.filter in ['allTasks', 'myTasks', 'freeTasks', 'blockedTasks'])) {
             returnError(text:message(code: 'is.user.preferences.error.not.filter'))
             return
@@ -409,7 +409,7 @@ class SprintPlanController {
         redirect(action: 'index', params: [product: params.product, id: params.id])
     }
 
-    def changeHideDoneState = {
+    def changeHideDoneState() {
         User user = (User) springSecurityService.currentUser
         user.preferences.hideDoneState = !user.preferences.hideDoneState
         userService.update(user)
@@ -417,7 +417,7 @@ class SprintPlanController {
     }
 
     // TODO check rights
-    def copyRecurrentTasksFromPreviousSprint = {
+    def copyRecurrentTasksFromPreviousSprint() {
         withSprint{ Sprint sprint ->
             def tasks = sprintService.copyRecurrentTasksFromPreviousSprint(sprint)
             render(status: 200, contentType: 'application/json', text: tasks as JSON)
@@ -427,7 +427,7 @@ class SprintPlanController {
     /**
      * Export the sprint backlog elements in multiple format (PDF, DOCX, RTF, ODT)
      */
-    def print = {
+    def print() {
         def currentProduct = Product.load(params.product)
         Sprint sprint = (Sprint)Sprint.getInProduct(params.long('product'),params.long('id')).list()
         def data
@@ -492,12 +492,12 @@ class SprintPlanController {
         }
     }
 
-    def notes = {
+    def notes() {
         forward(action: "notesCached", params:params)
     }
 
-    @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
-    def notesCached = {
+    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
+    def notesCached() {
         withSprint{ Sprint sprint ->
             render(status:200,
                    template: 'window/notes',
@@ -509,7 +509,7 @@ class SprintPlanController {
         }
     }
 
-    def printPostits = {
+    def printPostits() {
         withSprint{ Sprint sprint ->
             def product = sprint.parentProduct
             def stories1 = []
@@ -580,7 +580,7 @@ class SprintPlanController {
     }
 
     @Secured('inProduct()')
-    def addDocument = {
+    def addDocument() {
         withSprint { Sprint sprint ->
             def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:sprint, destController:'sprint'])
             render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON

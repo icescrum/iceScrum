@@ -31,7 +31,7 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
-import grails.plugin.springcache.annotations.Cacheable
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
@@ -41,14 +41,14 @@ class TimelineController {
     def featureService
     def springSecurityService
 
-    def toolbar = {
+    def toolbar() {
         withProduct { Product product ->
             render template: "window/toolbar", model: [id: controllerName, product: product, exportFormats:getExportFormats()]
         }
     }
 
-    @Cacheable(cache = 'releaseCache', keyGenerator = 'releasesRoleKeyGenerator')
-    def titleBarContent = {
+    @Cacheable('releaseCache') //, keyGenerator = 'releasesRoleKeyGenerator')
+    def titleBarContent() {
         def currentProduct = Product.get(params.product);
         def releasesName = []
         def releasesDate = []
@@ -67,8 +67,8 @@ class TimelineController {
         render(template: 'window/titleBarContent', model: [releasesName: releasesName, releasesDate: releasesDate, currentRelease: params.long('id'), releasesIds: releasesIds])
     }
 
-    @Cacheable(cache = 'releaseCache', keyGenerator = 'releasesKeyGenerator')
-    def index = {
+    @Cacheable('releaseCache') //, keyGenerator = 'releasesKeyGenerator')
+    def index() {
 
         def currentProduct = Product.get(params.product)
         if (!currentProduct.releases) {
@@ -79,8 +79,8 @@ class TimelineController {
         render(template: 'window/timelineView')
     }
 
-    @Cacheable(cache = 'releaseCache', keyGenerator = 'releasesRoleKeyGenerator')
-    def timeLineList = {
+    @Cacheable('releaseCache') //, keyGenerator = 'releasesRoleKeyGenerator')
+    def timeLineList() {
         def currentProduct = Product.get(params.product)
         def list = []
 
@@ -174,7 +174,7 @@ class TimelineController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def add = {
+    def add() {
         def currentProduct = Product.get(params.product)
         def previousRelease = currentProduct.releases.max {s1, s2 -> s1.orderNumber <=> s2.orderNumber}
         def release = new Release()
@@ -198,7 +198,7 @@ class TimelineController {
 
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def edit = {
+    def edit() {
         withRelease{ Release release ->
             def product = release.parentProduct
             def previousRelease = release.previousRelease
@@ -213,34 +213,34 @@ class TimelineController {
         }
     }
 
-    def productCumulativeFlowChart = {
+    def productCumulativeFlowChart() {
         forward controller: 'project', action: 'productCumulativeFlowChart', params: ['controllerName': controllerName]
     }
 
-    def productVelocityCapacityChart = {
+    def productVelocityCapacityChart() {
         forward controller: 'project', action: 'productVelocityCapacityChart', params: ['controllerName': controllerName]
     }
 
-    def productBurnupChart = {
+    def productBurnupChart() {
         forward controller: 'project', action: 'productBurnupChart', params: ['controllerName': controllerName]
     }
 
-    def productBurndownChart = {
+    def productBurndownChart() {
         forward controller: 'project', action: 'productBurndownChart', params: ['controllerName': controllerName]
     }
 
-    def productVelocityChart = {
+    def productVelocityChart() {
         forward controller: 'project', action: 'productVelocityChart', params: ['controllerName': controllerName]
     }
 
-    def productParkingLotChart = {
+    def productParkingLotChart() {
         forward controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName]
     }
 
     /**
      * Export the timeline elements in multiple format (PDF, DOCX, RTF, ODT)
      */
-    def print = {
+    def print() {
         def currentProduct = Product.get(params.product)
         def data
         def chart = null

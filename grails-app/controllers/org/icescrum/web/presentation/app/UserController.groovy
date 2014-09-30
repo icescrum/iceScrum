@@ -44,11 +44,11 @@ class UserController {
     def grailsApplication
 
     @Secured("hasRole('ROLE_ADMIN')")
-    def show = {
+    def show() {
         redirect(action:'index', params:params)
     }
 
-    def save = {
+    def save() {
         if ((request?.format != 'html' || !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) && !request.admin) {
             render(status: 403)
             return
@@ -80,7 +80,7 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def update = {
+    def update() {
         withUser{ User user ->
 
             // profile is personal
@@ -143,7 +143,7 @@ class UserController {
     }
 
     @Secured("hasRole('ROLE_ADMIN')")
-    def list = {
+    def list() {
         if (request?.format == 'html'){
             render(status:404)
             return
@@ -156,7 +156,7 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def index = {
+    def index() {
         withUser{ User user ->
             withFormat {
                 html {
@@ -216,12 +216,12 @@ class UserController {
 
     //fake save method to force authentication when using rest service (with admin
     @Secured("hasRole('ROLE_ADMIN')")
-    def forceRestSave = {
+    def forceRestSave() {
         forward(action:'save', params:params)
     }
 
-    //@Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
-    def register = {
+    //@Cacheable('applicationCache') //, keyGenerator="localeKeyGenerator")
+    def register() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
             render(status: 403)
             return
@@ -230,12 +230,12 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def openProfile = {
+    def openProfile() {
         def user = springSecurityService.currentUser
         render(status:200, template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
     }
 
-    def retrieve = {
+    def retrieve() {
 
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)) {
             returnError(text:message(code: 'todo.is.login.retrieve.not.activated'))
@@ -273,7 +273,7 @@ class UserController {
         }
     }
 
-    def avatar = {
+    def avatar() {
         def user = User.load(params.id)
         def avatar = grailsApplication.parentContext.getResource("/images/avatars/avatar.png").file
         if (user) {
@@ -288,7 +288,7 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def menuBar = {
+    def menuBar() {
         if (!params.id && !params.position) {
             returnError(text:message(code: 'is.user.preferences.error.menuBar'))
             return
@@ -304,12 +304,12 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def profileURL = {
+    def profileURL() {
         redirect(url: is.createScrumLink(controller: 'user', action: 'profile', id: params.id))
     }
 
     @Secured('isAuthenticated()')
-    def findUsers = {
+    def findUsers() {
         def users
         def results = []
         users = User.findUsersLike(params.term ?: '',false).list()
@@ -324,7 +324,7 @@ class UserController {
         render(results as JSON)
     }
 
-    def current = {
+    def current() {
         def user = [user:springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
                     roles:[
                             productOwner:request.productOwner,

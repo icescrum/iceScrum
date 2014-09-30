@@ -36,13 +36,13 @@ class SandboxController {
 
     def springSecurityService
 
-    def index = {
+    def index() {
         withProduct { Product product ->
             render(template: "${params.type ?: 'window'}/view", model: [stories: Story.findAllByBacklogAndState(product,Story.STATE_SUGGESTED)])
         }
     }
 
-    def print = {
+    def print() {
         withProduct { Product product ->
             def data = []
             def stories = Story.findAllByBacklogAndState(product, Story.STATE_SUGGESTED, [sort: 'suggestedDate', order: 'desc'])
