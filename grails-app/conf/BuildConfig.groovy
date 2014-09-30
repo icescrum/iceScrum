@@ -77,7 +77,9 @@ grails.project.dependency.resolution = {
 
     plugins {
         compile "org.icescrum:entry-points:0.4.2"
-        compile "org.icescrum:lesscss-resources:1.7.0.1.1"
+        compile ("org.icescrum:lesscss-resources:1.7.0.1.1") {
+            excludes "slf4j-simple"
+        }
 
         compile ':scaffolding:2.1.1'
         compile ":closure-compiler:0.9.2"
