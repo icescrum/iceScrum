@@ -24,6 +24,7 @@
 
 package org.icescrum.web.presentation
 
+import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -48,6 +49,7 @@ class ScrumOSController {
     def servletContext
     def messageSource
 
+    @Secured(['permitAll'])
     def index() {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
 

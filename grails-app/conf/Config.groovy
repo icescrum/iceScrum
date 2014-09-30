@@ -159,6 +159,11 @@ icescrum.restMarshaller = [
         acceptancetest:[]
 ]
 
+// Assets
+grails.assets.less.compile = 'less4j'
+grails.assets.excludes = ["**/*.less"]
+grails.assets.includes = ["styles.less"]
+
 /* CORS Section */
 icescrum.cors.enable = true
 icescrum.cors.url.pattern = '/ws/*'
@@ -347,6 +352,16 @@ SECURITY SECTION
 grails {
     plugin {
         springsecurity {
+            rejectIfNoRule = false
+            fii.rejectPublicInvocations = true
+            controllerAnnotations.staticRules = [
+                    '/assets/**':      ['permitAll'],
+                    '/**/js/**':       ['permitAll'],
+                    '/**/css/**':      ['permitAll'],
+                    '/**/images/**':   ['permitAll'],
+                    '/**/favicon.ico': ['permitAll']
+            ]
+
             userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
             userLookup.authorityJoinClassName = 'org.icescrum.core.domain.security.UserAuthority'
             authority.className = 'org.icescrum.core.domain.security.Authority'

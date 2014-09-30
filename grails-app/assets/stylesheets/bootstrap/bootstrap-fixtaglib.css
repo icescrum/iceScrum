@@ -1,0 +1,17 @@
+
+/* Table Sorting */
+th.asc a, th.desc a {
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+/* Date Picker CSS */
+select[name*='_day'], select[name*='_hour'], select[name*='_minute']  {
+    width:50px;
+}
+select[name*='_month'] {
+    width:100px;
+}
+select[name*='_year'] {
+    width:75px;
+}

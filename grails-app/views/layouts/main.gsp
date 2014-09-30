@@ -36,10 +36,8 @@
     <link href="${r.resource(uri: '/images/iOS/icon-iphone-retina.png')}" rel="apple-touch-icon" sizes="120x120"/>
     <link href="${r.resource(uri: '/images/iOS/icon-ipad-retina.png')}" rel="apple-touch-icon" sizes="152x152"/>
     <!-- end iOS web app-->
-    <r:external uri="/images/favicon.ico"/>
+    %{--<r:external uri="/images/favicon.ico"/>--}%
     <is:loadJsVar/>
-    <r:require modules="jquery,bootstrap,angularjs,jquery-plugins,jqplot,icescrum,objects${grailsApplication.config?.modulesResources ? ',' + grailsApplication.config.modulesResources.join(',') : ''}"/>
-    <asset:javascript src="application.js"/>
     <asset:stylesheet href="application.css"/>
     <g:layoutHead/>
 </head>
@@ -90,6 +88,7 @@
         </div>
     </div>
 </div>
+<asset:javascript src="application.js"/>
 <entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="templates" params="[product: params.product]"/>
 </body>
