@@ -37,6 +37,7 @@ beans = {
 
     authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
         def conf = SpringSecurityUtils.securityConfig
+        storeLastUsername = false
         authenticationManager = ref('authenticationManager')
         sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
         authenticationSuccessHandler = ref('authenticationSuccessHandler')
