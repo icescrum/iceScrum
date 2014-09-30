@@ -1,14 +1,19 @@
 /*
 *= require bootstrap/bootstrap.min.css
 *= require todc/todc-bootstrap.min.css
+
 *= require jquery-ui-1.10.4.custom.min.css
 *= require jquery.atwho.css
+*= require jquery.jqplot.min.css
+
 *= require font-awesome.min.css
+
 *= require select2.css
 *= require select2-bootstrap.css
-*= require jquery.jqplot.min.css
+
 *= require angular-hotkeys.css
 *= require angular-colorpicker.css
+
 *= require styles.less
 *= encoding UTF-8
 */

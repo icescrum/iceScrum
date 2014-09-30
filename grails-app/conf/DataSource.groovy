@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,85 +18,57 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
+ *
  */
-
-dataSource {
-    driverClassName = "org.hsqldb.jdbcDriver"
-    username = "sa"
-    password = ""
-}
 hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
+    cache.use_second_level_cache=true
+    cache.provider_class='net.sf.ehcache.hibernate.EhCacheProvider'
 }
-
 // environment specific settings
 environments {
     development {
         dataSource {
-            /*driverClassName="com.mysql.jdbc.Driver"
-            dialect="org.hibernate.dialect.MySQL5InnoDBDialect"
-            url="jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
-            username="root"
-            password="root"
-            driverClassName = "oracle.jdbc.driver.OracleDriver"
-            dialect = "org.hibernate.dialect.Oracle10gDialect"
-            username = "kagilum"
-            password = "kagilum"
-            dbCreate = "update" // one of 'create', 'create-drop','update'
-            url = "jdbc:oracle:thin:@192.168.0.10:1521:XE"*/
-            //dbCreate = "update"
-            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            url = "jdbc:hsqldb:file:devDba"
-            loggingSql = false
-
-            // POSTGRESQL
-/*            driverClassName = "org.postgresql.Driver"
-            username = "postgres"
-            password = "root"
-            url = "jdbc:postgresql://localhost:5432/icescrum"*/
-
-            // SQL Server
-/*            driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+            dbCreate = "create"
+            url = "jdbc:h2:mem:devDb"
+            driverClassName = "org.h2.Driver"
             username = "sa"
-            password = "root"
-            url = "jdbc:sqlserver://localhost:1433;databaseName=icescrum"*/
-
-            // Oracle
-/*            dataSource.driverClassName = "oracle.jdbc.driver.OracleDriver"
-            dataSource.dialect = "org.hibernate.dialect.Oracle10gDialect"
-            dataSource.url = "jdbc:oracle:thin:@localhost:1521:XE"
-            dataSource.username = "root"
-            dataSource.password = "root"*/
+            password = ""
         }
     }
     test {
         dataSource {
             dbCreate = "create-drop"
-            url = "jdbc:hsqldb:file:testDba"
+            url = "jdbc:h2:mem:testDb"
+            driverClassName = "org.h2.Driver"
+            username = "sa"
+            password = ""
         }
     }
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:hsqldb:file:prodDba;shutdown=true"
             pooled = true
-            properties {
-                maxActive = 50
-                maxIdle = 25
-                minIdle = 5
-                initialSize = 5
-                minEvictableIdleTimeMillis = 180000
-                timeBetweenEvictionRunsMillis = 180000
-                maxWait = 10000
-                numTestsPerEvictionRun = 3
-                testOnBorrow = true
-                testWhileIdle = true
-                testOnReturn = true
-                validationQuery = "SELECT 1"
-            }
+            username = "root"
+            password = ""
+            dialect = org.grails.db.Utf8InnodbDialect
+            driverClassName = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://localhost/grails"
+            dbCreate = "update"
+            initialSize = 5
+            maxActive = 50
+            minIdle = 5
+            maxIdle = 25
+            maxWait = 10000
+            maxAge = 10 * 60000
+            timeBetweenEvictionRunsMillis = 5000
+            minEvictableIdleTimeMillis = 60000
+            validationQuery = "SELECT 1"
+            validationQueryTimeout = 3
+            validationInterval = 15000
+            testOnBorrow = true
+            testWhileIdle = true
+            testOnReturn = false
+            jdbcInterceptors = "ConnectionState;StatementCache(max=200)"
+            defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
         }
     }
 }
