@@ -22,10 +22,12 @@
  */
 
 import grails.plugin.springsecurity.SpringSecurityUtils
+import org.codehaus.groovy.grails.context.support.PluginAwareResourceBundleMessageSource
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.support.MenuBarSupport
+import org.icescrum.i18n.IceScrumMessageSource
 import org.icescrum.web.security.ScrumAuthenticationProcessingFilter
 
 beans = {
@@ -35,6 +37,7 @@ beans = {
 
     authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
         def conf = SpringSecurityUtils.securityConfig
+        storeLastUsername = false
         authenticationManager = ref('authenticationManager')
         sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
         authenticationSuccessHandler = ref('authenticationSuccessHandler')
@@ -66,5 +69,11 @@ beans = {
 
     userDetailsService(ScrumDetailsService) {
         grailsApplication = ref('grailsApplication')
+    }
+
+    def beanconf = springConfig.getBeanConfig('messageSource')
+    def beandef = beanconf ? beanconf.beanDefinition : springConfig.getBeanDefinition('messageSource')
+    if (beandef?.beanClassName == PluginAwareResourceBundleMessageSource.class.canonicalName) {
+        beandef.beanClassName = IceScrumMessageSource.class.canonicalName
     }
 }
