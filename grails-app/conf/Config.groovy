@@ -352,14 +352,21 @@ SECURITY SECTION
 grails {
     plugin {
         springsecurity {
+            password.algorithm = 'SHA-256'
+            password.hash.iterations = 1
+
             rejectIfNoRule = false
             fii.rejectPublicInvocations = true
             controllerAnnotations.staticRules = [
-                    '/assets/**':      ['permitAll'],
-                    '/**/js/**':       ['permitAll'],
-                    '/**/css/**':      ['permitAll'],
-                    '/**/images/**':   ['permitAll'],
-                    '/**/favicon.ico': ['permitAll']
+                    //app controllers rules
+                    '/scrumOS/**':                    ['permitAll'],
+                    '/user/**':                       ['permitAll'],
+
+                    '/assets/**':                     ['permitAll'],
+                    '/**/js/**':                      ['permitAll'],
+                    '/**/css/**':                     ['permitAll'],
+                    '/**/images/**':                  ['permitAll'],
+                    '/**/favicon.ico':                ['permitAll']
             ]
 
             userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
@@ -378,11 +385,11 @@ grails {
 
             rememberMe {
                 cookieName = 'iceScrum'
-                key = 'twelveMe'
+                key = 'VincNicoJuShazam'
             }
 
             useRunAs = true
-            runAs.key = 'tw3lv3Scrum!'
+            runAs.key = 'VincNicoJuShazam!'
             acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
             ldap.authorities.retrieveGroupRoles = false
             ldap.authorities.groupSearchFilter = ""

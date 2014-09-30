@@ -221,6 +221,7 @@ class UserController {
     }
 
     //@Cacheable('applicationCache') //, keyGenerator="localeKeyGenerator")
+    @Secured('!isAuthenticated()')
     def register() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
             render(status: 403)
@@ -273,7 +274,6 @@ class UserController {
         }
     }
 
-    @Secured(['permitAll'])
     def avatar() {
         def user = User.load(params.id)
         def avatar = grailsApplication.parentContext.getResource("/images/avatars/avatar.png").file
@@ -325,7 +325,6 @@ class UserController {
         render(results as JSON)
     }
 
-    @Secured(['permitAll'])
     def current() {
         def user = [user:springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
                     roles:[

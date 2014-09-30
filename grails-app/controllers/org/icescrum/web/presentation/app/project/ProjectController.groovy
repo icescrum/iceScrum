@@ -813,14 +813,12 @@ class ProjectController {
         ]
     }
 
-    @Secured('permitAll')
     @Cacheable('applicationCache') //, keyGenerator = 'localeKeyGenerator')
     def browse() {
         def dialog = g.render(template: 'dialogs/browse')
         render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
     }
 
-    @Secured('permitAll')
     def browseList() {
 
         def term = '%'+params.term+'%' ?: '';
@@ -840,7 +838,6 @@ class ProjectController {
         render template: "/components/browserColumn", plugin: 'icescrum-core', model: [name: 'project-browse', max: 9, total: total, term: params.term, offset: params.int('offset') ?: 0, browserCollection: results, actionDetails: 'browseDetails']
     }
 
-    @Secured('permitAll')
     @Cacheable('projectCache') //, keyGenerator = 'projectKeyGenerator')
     def browseDetails() {
         withProduct('id'){ Product product ->

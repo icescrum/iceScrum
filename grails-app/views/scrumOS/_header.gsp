@@ -155,26 +155,28 @@
                                 <i class="visible-xs ${menu.icon}"></i><span class="title"> ${message(code: menu.title)}</span></a>
                         </li>
                     </g:each>
-                    <li class="dropdown menubar-hidden">
-                        <a class="dropdown-toggle" href="#">${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li class="menubar hidden" data-hidden="true">&nbsp;</li>
-                            <g:each in="${menusHidden}" var="menu" status="index">
-                                <li data-hidden="true" ng-class="{active:$state.includes('${menu.id}')}" class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
-                                    <a  hotkey="{ 'ctrl+${index + menus.size() + 1}' : hotkeyClick }"
-                                        hotkey-description="${message(code:'todo.is.open.view')} ${message(code: menu.title)}"
-                                        tooltip-placement="left"
-                                        tooltip="${message(code: menu.title)} (CTRL+${index + menus.size() + 1})"
-                                        href='#/${menu.id}'>
-                                        <span class="drag text-muted">
-                                            <span class="glyphicon glyphicon-th"></span>
-                                            <span class="glyphicon glyphicon-th"></span>
-                                        </span>
-                                        <i class="visible-xs ${menu.icon}"></i><span class="title"> ${message(code: menu.title)}</span></a>
-                                </li>
-                            </g:each>
-                        </ul>
-                    </li>
+                    <g:if test="${menusHidden}">
+                        <li class="dropdown menubar-hidden">
+                            <a class="dropdown-toggle" href="#">${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li class="menubar hidden" data-hidden="true">&nbsp;</li>
+                                <g:each in="${menusHidden}" var="menu" status="index">
+                                    <li data-hidden="true" ng-class="{active:$state.includes('${menu.id}')}" class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
+                                        <a  hotkey="{ 'ctrl+${index + menus.size() + 1}' : hotkeyClick }"
+                                            hotkey-description="${message(code:'todo.is.open.view')} ${message(code: menu.title)}"
+                                            tooltip-placement="left"
+                                            tooltip="${message(code: menu.title)} (CTRL+${index + menus.size() + 1})"
+                                            href='#/${menu.id}'>
+                                            <span class="drag text-muted">
+                                                <span class="glyphicon glyphicon-th"></span>
+                                                <span class="glyphicon glyphicon-th"></span>
+                                            </span>
+                                            <i class="visible-xs ${menu.icon}"></i><span class="title"> ${message(code: menu.title)}</span></a>
+                                    </li>
+                                </g:each>
+                            </ul>
+                        </li>
+                    </g:if>
                 </is:cache>
             </ul>
             <entry:point id="menu-right" model="[curProduct:curProduct]"/>

@@ -49,7 +49,6 @@ class ScrumOSController {
     def servletContext
     def messageSource
 
-    @Secured(['permitAll'])
     def index() {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
 
@@ -124,7 +123,6 @@ class ScrumOSController {
         }
     }
 
-    @Secured(['permitAll'])
     def openWindow() {
 
         if (!params.window) {
@@ -184,7 +182,6 @@ class ScrumOSController {
         }
     }
 
-    @Secured(['permitAll'])
     def about() {
         def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${RCU.getLocale(request)}.xml")
         if (!file.exists()) {
