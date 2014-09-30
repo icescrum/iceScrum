@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2014 Kagilum SAS.
+ *
+ * This file is part of iceScrum.
+ *
+ * iceScrum is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * iceScrum is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
+ *
+ */
+
+/*modules = {*/
+/*'app-css' {*/
+    /*resource url: [dir: "css", file: 'jquery-ui-1.10.4.custom.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'jquery.atwho.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'bootstrap.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "themes/$icescrum.theme/css", file: 'todc-bootstrap.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'font-awesome.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'select2.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'select2-bootstrap.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'jquery.jqplot.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'angular-hotkeys.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'angular-colorpicker.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*resource url: [dir: "css", file: 'styles.less'], attrs: [rel: "stylesheet/less", type:'css', media: 'print,screen,projection'], bundle: 'icescrum'*/
+/*}*/

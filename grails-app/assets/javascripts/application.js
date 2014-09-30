@@ -24,20 +24,6 @@
 
 //icescrum.theme = 'is'
 //
-//modules = {
-//    'app-css' {
-//        resource url: [dir: "css", file: 'jquery-ui-1.10.4.custom.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'jquery.atwho.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'bootstrap.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "themes/$icescrum.theme/css", file: 'todc-bootstrap.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'font-awesome.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'select2.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'select2-bootstrap.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'jquery.jqplot.min.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'angular-hotkeys.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'angular-colorpicker.css'], attrs: [media: 'print,screen,projection'], bundle: 'icescrum'
-//resource url: [dir: "css", file: 'styles.less'], attrs: [rel: "stylesheet/less", type:'css', media: 'print,screen,projection'], bundle: 'icescrum'
-//}
 //
 //'icescrum' {
 //    dependsOn 'app-css', 'jquery-plugins'
