@@ -81,6 +81,7 @@ grails.project.dependency.resolution = {
         compile ':scaffolding:2.1.1' // TODO consider removing it
         compile ":cache-headers:1.1.7"
         compile ":asset-pipeline:1.9.9"
+        compile ":less-asset-pipeline:1.10.0"
         compile ":session-temp-files:1.0"
         compile ":browser-detection:0.4.3"
         // runtime ":database-migration:1.4.0" TODO enable new migration
