@@ -363,7 +363,8 @@ class StoryController {
         }
     }
 
-    // TODO check permissions
+    // TODO change permissions (private product & co)
+    @Secured('permitAll')
     def listByType() {
         def stories
         if (params.type == 'actor') {

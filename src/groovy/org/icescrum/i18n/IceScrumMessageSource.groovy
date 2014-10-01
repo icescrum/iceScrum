@@ -25,13 +25,13 @@
 package org.icescrum.i18n
 
 import org.codehaus.groovy.grails.context.support.PluginAwareResourceBundleMessageSource
-import org.springframework.context.support.ReloadableResourceBundleMessageSource.PropertiesHolder
+import org.codehaus.groovy.grails.context.support.ReloadableResourceBundleMessageSource.PropertiesHolder
 
 class IceScrumMessageSource extends PluginAwareResourceBundleMessageSource {
     public Map<String, String> getAllMessages(Locale locale) {
         def propertiesHolders = ([] << getMergedProperties(locale)) << getMergedPluginProperties(locale)
         def messages = [:]
-        propertiesHolders.each { def holder ->
+        propertiesHolders.each { PropertiesHolder holder ->
             holder.properties.each { key, val ->
                 messages[key] = val
             }

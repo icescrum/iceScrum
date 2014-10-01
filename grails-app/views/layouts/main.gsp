@@ -31,13 +31,12 @@
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, ms-touch-action: none"/>
     <!-- iOS web app-->
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-
     <asset:link rel="apple-touch-icon" href="iOS/icon-iphone.png"/>
     <asset:link rel="apple-touch-icon" href="iOS/icon-ipad.png" sizes="76x76"/>
     <asset:link rel="apple-touch-icon" href="iOS/icon-iphone-retina.png" sizes="120x120"/>
     <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
     <!-- end iOS web app-->
-    %{--<r:external uri="/images/favicon.ico"/>--}%
+    <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
     <is:loadJsVar/>
     <asset:stylesheet href="application.css"/>
     <g:layoutHead/>

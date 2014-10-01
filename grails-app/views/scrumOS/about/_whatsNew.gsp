@@ -13,15 +13,15 @@
                 <div class="features-list">
                     <ul>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="images/whatsNew/actors.png"/></a>
+                            <a href="${releaseNotesURL}" target="_blank"></a>
                             <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Story description template and autocomplete on actors</a>
                         </li>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="images/whatsNew/select.png"/></a>
+                            <a href="${releaseNotesURL}" target="_blank"></a>
                             <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Better UI and search field on large drop-down lists</a>
                         </li>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="images/whatsNew/returnToSandbox.png"/></a>
+                            <a href="${releaseNotesURL}" target="_blank"></a>
                             <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Move a story from the backlog back to the sandbox</a>
                         </li>
                     </ul>

@@ -70,7 +70,6 @@ beans = {
         grailsApplication = ref('grailsApplication')
     }
 
-    //TODO why was it so complicated before???
     messageSource(IceScrumMessageSource)  {
         basenames = "WEB-INF/grails-app/i18n/messages"
     }
