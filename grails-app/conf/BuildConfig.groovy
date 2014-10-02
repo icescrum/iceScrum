@@ -86,7 +86,7 @@ grails.project.dependency.resolution = {
         // runtime ":database-migration:1.4.0" TODO enable new migration
         runtime ":hibernate4:4.3.5.5"
         build ":tomcat:7.0.54"
-        if (environment == Environment.PRODUCTION){
+        if (Environment.current == Environment.PRODUCTION){
             compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"
         }
     }
