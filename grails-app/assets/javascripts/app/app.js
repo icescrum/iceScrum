@@ -60,11 +60,11 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                 .state('project.new', {
                     url: "/new",
-                    onEnter: function($state, $modal) {
+                    onEnter: ["$state", "$modal", function($state, $modal) {
                         var modal = $modal.open({
                             templateUrl: "project/add",
                             size:'lg',
-                            controller:function($scope){
+                            controller:["$scope", function($scope){
                                 $scope.product = {};
 
                                 $scope.today = function() {
@@ -91,7 +91,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                                     $event.stopPropagation();
                                     $scope.dateOptions.opened = true;
                                 };
-                            }
+                            }]
                         });
                         modal.result.then(
                             function(result) {
@@ -99,7 +99,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                             }, function(){
                                 $state.transitionTo('root');
                             });
-                    }
+                    }]
                 })
 
                 .state('sandbox', {
@@ -247,7 +247,7 @@ isApp.config(['$stateProvider', '$httpProvider',
 
         uiSelect2Config.minimumResultsForSearch = 6;
 
-            //used to handle click with shortcut hotkeys
+        //used to handle click with shortcut hotkeys
         $rootScope.hotkeyClick = function(event, hotkey) {
             if (hotkey.el && (hotkey.el.is( "a" ) || hotkey.el.is( "button" ))){
                 event.preventDefault();
@@ -292,7 +292,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                 var modal = $modal.open({
                     templateUrl: 'confirm.modal.html',
                     size: 'sm',
-                    controller: function($scope, $modalInstance, hotkeys) {
+                    controller: ["$scope", "$modalInstance", "hotkeys", function($scope, $modalInstance, hotkeys) {
                         $scope.message = options.message;
                         $scope.submit = function() {
                             callCallback();
@@ -304,7 +304,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                                 combo: 'return',
                                 callback: $scope.submit
                             });
-                    }
+                    }]
                 });
                 var callCloseCallback = function(confirmed) {
                     if (!confirmed && options.closeCallback) {

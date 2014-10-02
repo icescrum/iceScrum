@@ -105,13 +105,13 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             $modal.open({
                 templateUrl: 'story.template.new.html',
                 size: 'sm',
-                controller: function($scope, $modalInstance) {
+                controller: ["$scope", "$modalInstance", function($scope, $modalInstance) {
                     $scope.submit = function(template) {
                         StoryService.saveTemplate(story, template.name).then(function() {
                             $modalInstance.close();
                         });
                     };
-                }
+                }]
             });
         };
         $scope.tabsType = 'tabs nav-tabs-google';
@@ -365,7 +365,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
             $modal.open({
                 templateUrl: 'story.template.edit.html',
                 size: 'sm',
-                controller: function($scope, $http) {
+                controller: ["$scope", "$http", function($scope, $http) {
                     $scope.templateEntries = [];
                     $http.get('story/templateEntries').success(function(templateEntries) {
                         $scope.templateEntries = templateEntries;
@@ -375,7 +375,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                             _.remove($scope.templateEntries, { id: templateEntry.id });
                         });
                     }
-                }
+                }]
             });
         };
         $scope.save = function(story, andContinue) {

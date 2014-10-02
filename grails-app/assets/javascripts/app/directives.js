@@ -23,7 +23,7 @@
  */
 
 var directives = angular.module('directives', []);
-directives.directive('focusMe', function($timeout) {
+directives.directive('focusMe', ["$timeout", function($timeout) {
     return {
         scope: { trigger: '@focusMe' },
         link: function(scope, element) {
@@ -36,7 +36,7 @@ directives.directive('focusMe', function($timeout) {
             });
         }
     };
-}).directive('isMarkitup', ['$http',function($http) {
+}]).directive('isMarkitup', ['$http', function($http) {
     return {
         restrict: 'A',
         scope: {
