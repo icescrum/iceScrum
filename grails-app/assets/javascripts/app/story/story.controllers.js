@@ -124,10 +124,12 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         //watch from url change outside and keep updated of which tab is selected (getting params tabId in view)
         $scope.$watch('$state.params', function() {
             if ($state.params.tabId) {
-                $scope.tabSelected[$state.params.tabId] = true;
+                if ($state.params.tabId != 'attachments') {
+                    $scope.tabSelected[$state.params.tabId] = true;
+                }
                 $timeout((function() {
                     var container = angular.element('#right');
-                    var pos = angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
+                    var pos = $state.params.tabId == 'attachments' ? angular.element('#right .table.attachments').offset().top - angular.element('#right .panel-body').offset().top - 9 : angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
                     container.animate({ scrollTop: pos }, 1000);
                 }));
             }

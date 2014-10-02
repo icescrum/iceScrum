@@ -88,6 +88,85 @@ filters
             return text ? text.replace(/\n/g, '<br/>') : "";
         }
     })
+    .filter('filesize', function() {
+        return function(size) {
+            var string;
+            if (size >= 1024 * 1024 * 1024 * 1024 / 10) {
+                size = size / (1024 * 1024 * 1024 * 1024 / 10);
+                string = "TiB";
+            } else if (size >= 1024 * 1024 * 1024 / 10) {
+                size = size / (1024 * 1024 * 1024 / 10);
+                string = "GiB";
+            } else if (size >= 1024 * 1024 / 10) {
+                size = size / (1024 * 1024 / 10);
+                string = "MiB";
+            } else if (size >= 1024 / 10) {
+                size = size / (1024 / 10);
+                string = "KiB";
+            } else {
+                size = size * 10;
+                string = "b";
+            }
+            return (Math.round(size) / 10) + string;
+        }
+    })
+    .filter('fileicon', function() {
+        return function(ext) {
+            if (ext.indexOf('.') > -1){
+                ext = ext.substring(ext.indexOf('.') + 1);
+            }
+            var icon;
+            switch (ext){
+                case 'xls':
+                case 'csv':
+                case 'xlsx':
+                    icon = 'file-excel-o';
+                    break;
+                case 'pdf':
+                    icon = 'file-pdf-o';
+                    break;
+                case 'txt':
+                    icon = 'file-text-o';
+                    break;
+                case 'doc':
+                case 'docx':
+                    icon = 'file-word-o';
+                    break;
+                case 'ppt':
+                case 'pptx':
+                    icon = 'file-powerpoint-o';
+                    break;
+                case 'zip':
+                case 'rar':
+                case 'gz':
+                case 'gzip':
+                    icon = 'file-archive-o';
+                    break;
+                case 'png':
+                case 'gif':
+                case 'jpg':
+                case 'jpeg':
+                case 'bmp':
+                    icon = 'file-image-o';
+                    break;
+                case 'mp3':
+                case 'wave':
+                case 'aac':
+                    icon = 'file-audio-o';
+                    break;
+                case 'avi':
+                case 'flv':
+                case 'mp4':
+                case 'mpg':
+                case 'mpeg':
+                    icon = 'file-movie-o';
+                    break;
+                default :
+                    icon = 'file-o';
+            }
+            return icon;
+        }
+    })
     .filter('sanitize', ['$sce', function($sce) {
         return function(html) {
             return html ? $sce.trustAsHtml(html) : "";
