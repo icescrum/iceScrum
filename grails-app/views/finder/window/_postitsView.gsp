@@ -10,33 +10,25 @@
             <g:if test="${type.key == 'stories'}">
                 <div class="search-group"><g:message code="is.story"/> (${type.value?.size()?:0})</div>
                 <g:each in="${type.value}" var="story">
-                    <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
-                        <g:render template="/story/postit" model="[story:story,user:user, sprint:sprint]"/>
-                    </is:cache>
+                    <g:render template="/story/postit" model="[story:story,user:user, sprint:sprint]"/>
                 </g:each>
             </g:if>
             <g:if test="${type.key == 'tasks'}">
                 <div class="search-group"><g:message code="is.task"/> (${type.value?.size()?:0})</div>
                 <g:each in="${type.value}" var="task">
-                    <is:cache cache="taskCache" key="postit-norect-${task.id}-${task.lastUpdated}">
-                        <g:render template="/task/postit" model="[task:task, user:user, rect:'false']"/>
-                    </is:cache>
+                    <g:render template="/task/postit" model="[task:task, user:user, rect:'false']"/>
                 </g:each>
             </g:if>
             <g:if test="${type.key == 'features'}">
                 <div class="search-group"><g:message code="is.feature"/> (${type.value?.size()?:0})</div>
                 <g:each in="${type.value}" var="feature">
-                    <is:cache cache="featureCache" key="postit-${feature.id}-${feature.lastUpdated}">
-                        <g:render template="/feature/postit" model="[feature:feature]"/>
-                    </is:cache>
+                    <g:render template="/feature/postit" model="[feature:feature]"/>
                 </g:each>
             </g:if>
             <g:if test="${type.key == 'actors'}">
                 <div class="search-group"><g:message code="is.actor"/> (${type.value?.size()?:0})</div>
                 <g:each in="${type.value}" var="actor">
-                    <is:cache cache="actorCache" key="postit-${actor.id}-${actor.lastUpdated}">
-                        <g:render template="/actor/postit" model="[actor:actor]"/>
-                    </is:cache>
+                    <g:render template="/actor/postit" model="[actor:actor]"/>
                 </g:each>
             </g:if>
     </is:backlogElementLayout>

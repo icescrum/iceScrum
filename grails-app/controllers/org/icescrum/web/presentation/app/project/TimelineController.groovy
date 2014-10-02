@@ -31,7 +31,6 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
-import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
@@ -47,7 +46,6 @@ class TimelineController {
         }
     }
 
-    @Cacheable('releaseCache') //, keyGenerator = 'releasesRoleKeyGenerator')
     def titleBarContent() {
         def currentProduct = Product.get(params.product);
         def releasesName = []
@@ -67,7 +65,6 @@ class TimelineController {
         render(template: 'window/titleBarContent', model: [releasesName: releasesName, releasesDate: releasesDate, currentRelease: params.long('id'), releasesIds: releasesIds])
     }
 
-    @Cacheable('releaseCache') //, keyGenerator = 'releasesKeyGenerator')
     def index() {
 
         def currentProduct = Product.get(params.product)
@@ -79,7 +76,6 @@ class TimelineController {
         render(template: 'window/timelineView')
     }
 
-    @Cacheable('releaseCache') //, keyGenerator = 'releasesRoleKeyGenerator')
     def timeLineList() {
         def currentProduct = Product.get(params.product)
         def list = []

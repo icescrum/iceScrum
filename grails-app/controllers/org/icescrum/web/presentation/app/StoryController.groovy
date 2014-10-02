@@ -33,7 +33,6 @@ import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Template
 import org.icescrum.core.domain.User
 import grails.converters.JSON
-import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
@@ -226,7 +225,6 @@ class StoryController {
     }
 
     @Secured('stakeHolder() or inProduct()')
-    @Cacheable('storyCache') //, keyGenerator='storiesKeyGenerator')
     def list() {
         def currentProduct = Product.load(params.long('product'))
         def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term).sort { Story story -> story.id }
@@ -328,7 +326,6 @@ class StoryController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    @Cacheable('storyCache') //, keyGenerator='storiesKeyGenerator')
     def findDuplicate() {
         def stories = null
         withProduct{ product ->
@@ -428,7 +425,6 @@ class StoryController {
     }
 
     @Secured('stakeHolder() or inProduct()')
-    @Cacheable('storyCache') //, keyGenerator='storiesKeyGenerator')
     def dependenceEntries() {
         withStory { story ->
             def stories = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}

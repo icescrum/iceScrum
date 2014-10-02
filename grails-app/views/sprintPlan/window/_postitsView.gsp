@@ -68,9 +68,7 @@
         <g:each in="${columns}" var="column">
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${urgentTasks?.sort{it.rank}?.findAll{it.state == column.key}}" var="task">
-                    <is:cache  cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:render template="/task/postit" model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
-                    </is:cache>
+                    <g:render template="/task/postit" model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
                 </g:each>
                 &nbsp;
             </is:kanbanColumn>
@@ -99,9 +97,7 @@
         <g:each in="${columns}" var="column" status="i">
             <is:kanbanColumn key="${column.key}">
                 <g:each in="${recurrentTasks?.sort{it.rank}?.findAll{ it.state == column.key} }" var="task">
-                    <is:cache cache="taskCache" key="postit-${task.id}-${task.lastUpdated}">
-                        <g:render template="/task/postit" model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
-                    </is:cache>
+                    <g:render template="/task/postit" model="[task:task,user:user,assignOnBeginTask:assignOnBeginTask]"/>
                 </g:each>
                 &nbsp;
             </is:kanbanColumn>
@@ -117,10 +113,8 @@
                    type="story"
                    emptyRendering="true">
             <is:kanbanColumn elementId="column-story-${story.id}">
-                <is:cache cache="storyCache" key="postit-${story.id}-${story.lastUpdated}-${nextSprintExist}">
-                    <g:render  template="/story/postit"
-                               model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"/>
-                </is:cache>
+                <g:render template="/story/postit"
+                          model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"/>
             </is:kanbanColumn>
 
         %{-- Workflow Columns --}%
@@ -143,10 +137,8 @@
                    type="storyDone"
                    emptyRendering="true">
         <is:kanbanColumn elementId="column-story-${story.id}">
-            <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
-                <g:render template="/story/postit"
-                           model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"/>
-            </is:cache>
+            <g:render template="/story/postit"
+                      model="[story:story,user:user,sprint:sprint,nextSprintExist:nextSprintExist,referrer:sprint.id]"/>
         </is:kanbanColumn>
 
     %{-- Workflow Columns --}%

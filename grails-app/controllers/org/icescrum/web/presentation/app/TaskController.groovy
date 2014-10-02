@@ -29,7 +29,6 @@ import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
-import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 
@@ -270,7 +269,6 @@ class TaskController {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    @Cacheable('taskCache') //, keyGenerator = 'tasksKeyGenerator')
     def list() {
         if (request?.format == 'html') {
             render(status: 404)
@@ -321,7 +319,6 @@ class TaskController {
         }
     }
 
-    @Cacheable('taskCache') //, keyGenerator = 'tasksKeyGenerator')
     def mylyn() {
         def sprint = (Sprint) params.id ? Sprint.getInProduct(params.product.toLong(), params.id.toLong()).list() : Sprint.findCurrentOrNextSprint(params.product.toLong()).list()
         if (!sprint) {

@@ -29,55 +29,53 @@
 
         <entry:point id="${controllerName}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
 
-        <is:cache cache="projectCache" role="false" disabled="true" key="${product.id}-${product.lastUpdated}-${activities.size() ? activities?.first()?.dateCreated :''}">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <g:message code="is.ui.project.activity.title"/>
-                        <small class="pull-right">
-                            <g:link class="rss" data-toggle="tooltip" title="${message(code:'todo.is.ui.rss')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
-                                <i class="fa fa-rss fa-lg"></i>
-                            </g:link>
-                        </small>
-                    </h3>
-                </div>
-                <div class="panel-body activities">
-                    <g:if test="${activities.size() > 0}">
-                        <g:each in="${activities}" var="a" status="i">
-                            <div class="activity clearfix">
-                                <span class="text-muted ${is.iconActivity(code:a.code)}"></span>
-                                <div class="content">
-                                    <small class="text-muted pull-right">${a.dateCreated}<span class="fa fa-clock-o"></span></small>
-                                    <span class="clearfix">
-                                        <is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
-                                        <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.${a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'}"/>
-                                        <g:if test="${a.code != Activity.CODE_DELETE}">
-                                            <is:scrumLink controller="story" id="${a.cachedId}" params="${a.code == 'comment' ? ['tab':'comments'] : []}">
-                                                ${a.cachedLabel.encodeAsHTML()}
-                                            </is:scrumLink>
-                                        </g:if>
-                                        <g:else>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <g:message code="is.ui.project.activity.title"/>
+                    <small class="pull-right">
+                        <g:link class="rss" data-toggle="tooltip" title="${message(code:'todo.is.ui.rss')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
+                            <i class="fa fa-rss fa-lg"></i>
+                        </g:link>
+                    </small>
+                </h3>
+            </div>
+            <div class="panel-body activities">
+                <g:if test="${activities.size() > 0}">
+                    <g:each in="${activities}" var="a" status="i">
+                        <div class="activity clearfix">
+                            <span class="text-muted ${is.iconActivity(code:a.code)}"></span>
+                            <div class="content">
+                                <small class="text-muted pull-right">${a.dateCreated}<span class="fa fa-clock-o"></span></small>
+                                <span class="clearfix">
+                                    <is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
+                                    <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.${a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'}"/>
+                                    <g:if test="${a.code != Activity.CODE_DELETE}">
+                                        <is:scrumLink controller="story" id="${a.cachedId}" params="${a.code == 'comment' ? ['tab':'comments'] : []}">
                                             ${a.cachedLabel.encodeAsHTML()}
-                                        </g:else>
-                                    </span>
-                                    <div class="sub-content">
-                                        <img src="${is.avatar(user:a.poster)}" height="25px" class="pull-left"/>
-                                        <span class="text-muted">${a.cachedDescription}</span>
-                                    </div>
+                                        </is:scrumLink>
+                                    </g:if>
+                                    <g:else>
+                                        ${a.cachedLabel.encodeAsHTML()}
+                                    </g:else>
+                                </span>
+                                <div class="sub-content">
+                                    <img src="${is.avatar(user:a.poster)}" height="25px" class="pull-left"/>
+                                    <span class="text-muted">${a.cachedDescription}</span>
                                 </div>
                             </div>
-                        </g:each>
-                    </g:if>
-                    <g:else>
-                        <div class="panel-box-empty">
-                            <div style="text-align: center; padding:5px; font-size:14px;">
-                                <a class="scrum-link" target="_blank" href="https://www.kagilum.com/documentation/getting-started-with-icescrum">${message(code:'is.ui.getting.started')}</a>
-                            </div>
                         </div>
-                    </g:else>
-                </div>
+                    </g:each>
+                </g:if>
+                <g:else>
+                    <div class="panel-box-empty">
+                        <div style="text-align: center; padding:5px; font-size:14px;">
+                            <a class="scrum-link" target="_blank" href="https://www.kagilum.com/documentation/getting-started-with-icescrum">${message(code:'is.ui.getting.started')}</a>
+                        </div>
+                    </div>
+                </g:else>
             </div>
-        </is:cache>
+        </div>
         <entry:point id="${controllerName}-${actionName}-bottom-right" model="[sprint:sprint,release:release,product:product,activities:activities]"/>
     </div>
     <div class="col-md-7 col-md-pull-5 col-sm-7 col-sm-pull-5">

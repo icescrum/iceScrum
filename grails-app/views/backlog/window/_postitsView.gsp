@@ -75,9 +75,7 @@
         containerClass="connectableToWidgetSandbox"
         var="story">
         <g:set var="sumEfforts" value="${sumEfforts += story.effort ?: 0}"/>
-    <is:cache  cache="storyCache" key="postit-${story.id}-${story.lastUpdated}">
         <g:render template="/story/postit" model="[story:story,user:user,sortable:request.productOwner]"/>
-    </is:cache>
 </is:backlogElementLayout>
 
 <g:render template="/backlog/window/blank" model="[show:stories ? false : true]"/>

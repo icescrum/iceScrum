@@ -297,7 +297,6 @@ log4j = {
         debug 'grails.app.controller.org.icescrum'
         debug 'grails.app.domain.org.icescrum'
         debug 'grails.app.org.icescrum'
-        debug 'org.icescrum.cache'
         debug 'org.icescrum.core'
         debug 'org.icescrum.plugins'
         debug 'org.icescrum.plugins.chat'

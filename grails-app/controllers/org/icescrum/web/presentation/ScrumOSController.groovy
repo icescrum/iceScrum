@@ -33,7 +33,6 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.springframework.mail.MailException
 import org.icescrum.core.domain.Sprint
-import grails.plugin.cache.Cacheable
 import org.springframework.security.acls.domain.BasePermission
 import org.icescrum.core.domain.preferences.ProductPreferences
 import sun.misc.BASE64Decoder
@@ -222,8 +221,6 @@ class ScrumOSController {
         }
     }
 
-    //TODO replace cache when dev finish and clean old code
-    //@Cacheable('projectCache') //, keyGenerator = 'projectUserKeyGenerator')
     def templates() {
         def currentSprint = null
         def product = null
@@ -274,7 +271,6 @@ class ScrumOSController {
         render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
     }
 
-    @Cacheable('applicationCache')
     def version() {
         withFormat{
             html {

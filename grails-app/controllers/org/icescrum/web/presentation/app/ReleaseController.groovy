@@ -29,7 +29,6 @@ import org.icescrum.core.domain.Product
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import grails.plugin.cache.Cacheable
 
 @Secured('inProduct()')
 class ReleaseController {
@@ -165,7 +164,6 @@ class ReleaseController {
         }
     }
 
-    @Cacheable('releaseCache') //, keyGenerator='releaseKeyGenerator')
     def index() {
         if (request?.format == 'html'){
             render(status:404)
@@ -184,7 +182,6 @@ class ReleaseController {
         redirect(action:'index', controller: controllerName, params:params)
     }
 
-    @Cacheable('releaseCache') //, keyGenerator = 'releasesKeyGenerator')
     def list() {
         if (request?.format == 'html'){
             render(status:404)

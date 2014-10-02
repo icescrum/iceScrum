@@ -29,7 +29,6 @@ import org.icescrum.core.domain.Story
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import grails.plugin.cache.Cacheable
 
 @Secured('inProduct()')
 class SprintController {
@@ -150,7 +149,6 @@ class SprintController {
         }
     }
 
-    @Cacheable('sprintCache') //, keyGenerator = 'sprintKeyGenerator')
     def index() {
         if (request?.format == 'html') {
             render(status: 404)

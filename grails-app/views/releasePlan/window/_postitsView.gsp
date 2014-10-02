@@ -28,8 +28,7 @@
     <g:each in="${sprints}" var="sprint" status="u">
             <g:set var="nextSprintExist" value="${sprint.hasNextSprint}"/>
             <is:event title="${message(code:'is.sprint')} ${sprint.orderNumber}"
-                      elemid="${sprint.id}"
-                      cacheable="[cache:'SprintCache',key:'sprintEvent',disabled:sprint.state != Sprint.STATE_DONE]">
+                      elemid="${sprint.id}">
             %{-- Header of the sprint column --}%
                 <is:eventHeader class="state-${sprint.state}">
                     <div class="event-header-label">
@@ -103,10 +102,8 @@
                             value="${sprint.stories?.sort{it.rank}}"
                             var="story"
                             emptyRendering="true">
-                            <is:cache cache="storyCache" key="postit-rect-${story.id}-${story.lastUpdated}-${nextSprintExist}">
-                                <g:render template="/story/postit"
-                                           model="[story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"/>
-                            </is:cache>
+                            <g:render template="/story/postit"
+                                      model="[story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"/>
                     </is:backlogElementLayout>
                 </is:eventContent>
 

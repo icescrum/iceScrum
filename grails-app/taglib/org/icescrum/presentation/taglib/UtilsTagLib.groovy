@@ -128,59 +128,6 @@ class UtilsTagLib {
         out << "${val as JSON}"
     }
 
-    // TODO replace with new cache taglib
-    def cache = { attrs, body ->
-        out << body()
-        return
-//        if (attrs.disabled){
-//            out << body()
-//            return
-//        }
-//
-//        attrs.role = attrs.role ?: true
-//        attrs.locale = attrs.locale ?: true
-//        def role = ''
-//
-//        def key  = new CacheKeyBuilder()
-//        key.append(attrs.key)
-//
-//        if (attrs.role){
-//            if (request.admin) {
-//                role = 'adm'
-//            } else {
-//                if (request.archivedProduct) {
-//                    role += 'archived'
-//                } else{
-//                    if (request.scrumMaster)  {  role += 'scm'  }
-//                    if (request.teamMember)   {  role += 'tm'  }
-//                    if (request.productOwner) {  role += 'po'  }
-//                    if (!role && request.stakeHolder) {  role += 'sh'  }
-//                }
-//            }
-//            role = role ?: 'anonymous'
-//            key.append(role)
-//        }
-//
-//        if (attrs.locale)
-//            key.append(RCU.getLocale(request).toString().substring(0, 2))
-//
-//        if (request.customKey){
-//            key.append(request.customKey)
-//        }
-//
-//        def resultAndBuffer = springcacheService.doWithCache(attrs.cache, key.toCacheKey()) {
-//            def outputStack = GroovyPageOutputStack.currentStack()
-//            def writer = new FastStringWriter()
-//            outputStack.push(writer, true)
-//            def result = body()
-//            outputStack.pop()
-//            new ResultAndBuffer(result: result, buffer: writer.buffer)
-//        }
-//
-//        GroovyPageOutputStack.currentWriter() << resultAndBuffer.buffer
-//        out << resultAndBuffer.result
-    }
-
     def errors = {
         def trueError = grailsApplication.config.icescrum.errors?.find{ it.error }
         if (grailsApplication.config.icescrum.errors){

@@ -220,7 +220,6 @@ class UserController {
         forward(action:'save', params:params)
     }
 
-    //@Cacheable('applicationCache') //, keyGenerator="localeKeyGenerator")
     @Secured('!isAuthenticated()')
     def register() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {

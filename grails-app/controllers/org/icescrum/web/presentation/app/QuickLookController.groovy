@@ -30,7 +30,6 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.icescrum.core.utils.BundleUtils
-import grails.plugin.cache.Cacheable
 import grails.converters.JSON
 
 @Secured("stakeHolder() or inProduct()")
@@ -56,7 +55,6 @@ class QuickLookController {
         }
     }
 
-    @Cacheable('storyCache') //, keyGenerator = 'storyKeyGenerator')
     def story() {
         withStory('story.id'){ Story story ->
             def dialog = g.render(template: "/story/quicklook", model: [
@@ -69,7 +67,6 @@ class QuickLookController {
         }
     }
 
-    @Cacheable('taskCache') //, keyGenerator = 'taskKeyGenerator')
     def task() {
         withTask('task.id'){ Task task ->
             def dialog = g.render(template: "/task/quicklook", model: [
@@ -81,7 +78,6 @@ class QuickLookController {
         }
     }
 
-    @Cacheable('featureCache') //, keyGenerator = 'featureKeyGenerator')
     def feature() {
         withFeature('feature.id'){ Feature feature ->
             def sum = feature.stories?.sum { story -> story.effort ?: 0 }
@@ -99,7 +95,6 @@ class QuickLookController {
         }
     }
 
-    @Cacheable('actorCache') //, keyGenerator = 'actorKeyGenerator')
     def actor() {
         withActor('actor.id'){ Actor actor ->
             def dialog = g.render(template: "/actor/quicklook", model: [

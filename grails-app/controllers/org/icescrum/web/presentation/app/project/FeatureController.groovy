@@ -27,7 +27,6 @@ package org.icescrum.web.presentation.app.project
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
-import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
@@ -106,7 +105,6 @@ class FeatureController {
         }
     }
 
-    @Cacheable("featuresCache") //, keyGenerator= 'featuresKeyGenerator')
     def list() {
         def features = Feature.searchAllByTermOrTag(params.long('product'), params.term).sort { Feature feature -> feature.rank }
         withFormat{
@@ -165,7 +163,6 @@ class FeatureController {
         }
     }
 
-    @Cacheable('featureCache') //, keyGenerator='featureKeyGenerator')
     def index() {
         if (request?.format == 'html'){
             render(status:404)
@@ -195,7 +192,6 @@ class FeatureController {
         render(template: "${params.type ?: 'window'}/view")
     }
 
-    @Cacheable("featuresCache") //, keyGenerator= 'featuresKeyGenerator')
     def featureEntries() {
         withProduct { product ->
             def featureEntries = product.features.collect { [id: it.id, text: it.name, color:it.color] }

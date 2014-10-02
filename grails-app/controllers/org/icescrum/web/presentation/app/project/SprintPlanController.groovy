@@ -32,7 +32,6 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
-import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Sprint
@@ -322,7 +321,6 @@ class SprintPlanController {
         forward(action: "sprintBurndownRemainingChartCached", params:params)
     }
 
-    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
     def sprintBurndownRemainingChartCached() {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurndownRemainingValues(sprint)
@@ -342,7 +340,6 @@ class SprintPlanController {
         forward(action:"sprintBurnupTasksChartCached",params:params)
     }
 
-    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupTasksChartCached() {
             withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupTasksValues(sprint)
@@ -362,7 +359,6 @@ class SprintPlanController {
         forward(action:"sprintBurnupStoriesChartCached",params:params)
     }
 
-    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupStoriesChartCached() {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupStoriesValues(sprint)
@@ -382,7 +378,6 @@ class SprintPlanController {
         forward(action:"sprintBurnupPointsChartCached",params:params)
     }
 
-    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
     def sprintBurnupPointsChartCached() {
         withSprint{ Sprint sprint ->
             def values = sprintService.sprintBurnupStoriesValues(sprint)
@@ -496,7 +491,6 @@ class SprintPlanController {
         forward(action: "notesCached", params:params)
     }
 
-    @Cacheable("sprintCache") //, keyGenerator = 'sprintKeyGenerator')
     def notesCached() {
         withSprint{ Sprint sprint ->
             render(status:200,

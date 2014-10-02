@@ -32,7 +32,6 @@ import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
-import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
@@ -40,7 +39,6 @@ class ActorController {
     def actorService
     def springSecurityService
 
-    @Cacheable('searchActors') //, keyGenerator = 'actorsKeyGenerator')
     def search() {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
         def result = actors.collect { [name: it.name, uid: it.uid] }
@@ -112,7 +110,6 @@ class ActorController {
         }
     }
 
-    @Cacheable('actorsCache') //, keyGenerator = 'actorsKeyGenerator')
     def list() {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
         withFormat {
@@ -126,7 +123,6 @@ class ActorController {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    @Cacheable('actorCache') //, keyGenerator = 'actorKeyGenerator')
     def index() {
         if (request?.format == 'html') {
             render(status: 404)

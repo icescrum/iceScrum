@@ -31,7 +31,6 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import grails.converters.JSON
-import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import java.text.DecimalFormat
 import org.icescrum.core.domain.Task
@@ -237,7 +236,6 @@ class ReleasePlanController {
         forward(action:"releaseBurndownChartCached", params:params)
     }
 
-    @Cacheable("releaseCache") //, keyGenerator = 'releaseKeyGenerator')
     def releaseBurndownChartCached() {
         withRelease{ Release release ->
             def values = releaseService.releaseBurndownValues(release)
@@ -260,7 +258,6 @@ class ReleasePlanController {
         forward(action:"releaseParkingLotChartCached", params:params)
     }
 
-    @Cacheable("releaseCache") //, keyGenerator = 'releaseKeyGenerator')
     def releaseParkingLotChartCached() {
         withRelease{ Release release ->
             def values = featureService.releaseParkingLotValues(release)
@@ -286,7 +283,6 @@ class ReleasePlanController {
         forward(action:"notesCached", params:params)
     }
 
-    @Cacheable("releaseCache") //, keyGenerator = 'releaseKeyGenerator')
     def notesCached() {
         withRelease{ Release release ->
             render(status:200,
