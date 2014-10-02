@@ -125,7 +125,7 @@
                             class="btn btn-default"
                             type="button"
                             ng-click="setTabSelected('attachments')"
-                            tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                            tooltip="{{ story.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
                             tooltip-append-to-body="true">
                         <span class="fa fa-paperclip"></span>
                         <span class="badge" ng-show="story.attachments_count">{{ story.attachments_count }}</span>
@@ -334,7 +334,7 @@
                         <h2>${message(code:'todo.is.ui.drop.here')}</h2>
                     </div>
                     <table class="table table-striped attachments">
-                        <tbody ng-include="'attachment.list.html'"></tbody>
+                        <tbody ng-include="'attachment.list.html'" ng-init="selected = story"></tbody>
                     </table>
                 </div>
 

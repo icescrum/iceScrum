@@ -20,6 +20,11 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="attachment.list.html">
+    <tr ng-show="selected.attachments === undefined">
+        <td class="empty-content">
+            <i class="fa fa-refresh fa-spin"></i>
+        </td>
+    </tr>
     <tr ng-repeat="attachment in selected.attachments | orderBy:'dateCreated'">
         <td>
             <div class="col-sm-8">
@@ -53,6 +58,11 @@
                     <button class="btn btn-xs btn-info ng-hide"    ng-click="file.retry()"  ng-show="file.error"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
+        </td>
+    </tr>
+    <tr ng-show="!selected.attachments && selected.attachments !== undefined">
+        <td class="empty-content">
+            <small>${message(code:'todo.is.ui.comment.empty')}</small>
         </td>
     </tr>
 </script>
