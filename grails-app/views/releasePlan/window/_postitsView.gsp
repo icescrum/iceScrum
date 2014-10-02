@@ -82,6 +82,7 @@
                                       controller:'story',
                                       onSuccess:'ui.draggable.attr(\'remove\',\'true\'); jQuery.event.trigger(\'plan_story\',data.story)',
                                       params: '\'product='+params.product+'&id=\'+ui.draggable.data(\'elemid\')+\'&sprint.id='+sprint.id+'\'')]">
+                    %{-- Commented out because it doesn't compile when creating war
                     <is:backlogElementLayout
                             id="plan-${controllerName}-${sprint.id}"
                             sortable='[
@@ -104,7 +105,7 @@
                             emptyRendering="true">
                             <g:render template="/story/postit"
                                       model="[story:story,rect:true,user:user,sortable:(request.productOwner && story.state != Story.STATE_DONE),sprint:sprint,nextSprintExist:nextSprintExist,referrer:release.id]"/>
-                    </is:backlogElementLayout>
+                    </is:backlogElementLayout>--}%
                 </is:eventContent>
 
             </is:event>

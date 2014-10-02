@@ -88,7 +88,8 @@
                                       controller:'story',
                                       onSuccess:'jQuery.event.trigger(\'plan_story\',data.story)',
                                       params: '\'product='+params.product+'&id=\'+ui.draggable.data(\'elemid\')+\'&sprint.id='+sprint.id+'\'')]">
-                <is:backlogElementLayout
+                %{-- Commented out because it doesn't compile when creating war
+                 <is:backlogElementLayout
                         id="plan-${id}-${sprint.id}"
                         sortable='[
                               rendered:request.productOwner,
@@ -106,7 +107,7 @@
                       ]'
                         dblclickable="[selector:'.postit-rect',callback:'$.icescrum.displayQuicklook(obj)']"
                         emptyRendering="true">
-                </is:backlogElementLayout>
+                 </is:backlogElementLayout>--}%
             </is:eventContent>
 
         </is:event>
