@@ -104,9 +104,11 @@ class AttachmentController {
                     def service = grailsApplication.mainContext[params.type + 'Service']
                     service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment': null])
                     attachmentable.addAttachment(springSecurityService.currentUser, new File(info.filePath), info.filename)
-                    service.publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment': attachmentable.attachments.first()])
+                    def attachment = attachmentable.attachments.first()
+                    service.publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment': attachment])
                     FileUploadInfoStorage.instance.remove(info)
-                    render(status: 200, contentType: 'application/json', text:attachmentable as JSON)
+                    def res = ['filename':attachment.filename, 'length':attachment.length, 'ext':attachment.ext, 'id':attachment.id, attachmentable:[id:attachmentable.id, 'class':params.type]]
+                    render(status: 200, contentType: 'application/json', text:res as JSON)
                 } else {
                     render(status:200)
                 }
@@ -116,6 +118,7 @@ class AttachmentController {
         }
     }
 
+    @Secured('productOwner() or scrumMaster()')
     def delete() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {

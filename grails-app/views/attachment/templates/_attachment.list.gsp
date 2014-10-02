@@ -25,7 +25,7 @@
             <i class="fa fa-refresh fa-spin"></i>
         </td>
     </tr>
-    <tr ng-repeat="attachment in selected.attachments | orderBy:'dateCreated'">
+    <tr ng-repeat="attachment in selected.attachments">
         <td>
             <div class="col-sm-8">
                 <div class="filename" title="{{ attachment.filename }}">
@@ -35,12 +35,12 @@
             <div class="col-sm-4 text-right">
                 <div class="btn-group">
                     <a href="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}" tooltip="todo.is.attachment.download" tooltip-append-to-body="true" class="btn btn-default btn-xs"><i class="fa fa-download"></i></a>
-                    <button tooltip="todo.is.attachment.delete" tooltip-append-to-body="true" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
+                    <button ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [attachment, story] })" tooltip="todo.is.attachment.delete" tooltip-append-to-body="true" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
                 </div>
             </div>
         </td>
     </tr>
-    <tr ng-repeat="file in $flow.files">
+    <tr ng-repeat="file in $flow.files | flowFilesNotCompleted">
         <td>
             <div class="col-sm-8">
                 <div class="filename" title="{{file.name}}"><i class="fa fa-{{ file.name | fileicon }}"></i> {{ file.name }}</div>
@@ -55,7 +55,8 @@
                 <div class="btn-group">
                     <button class="btn btn-xs btn-warning ng-hide" tooltip="todo.is.attachment.pause" tooltip-append-to-body="true" type="button" ng-click="file.pause()"  ng-show="!file.paused && file.isUploading()"><i class="fa fa-pause"></i></button>
                     <button class="btn btn-xs btn-warning ng-hide" tooltip="todo.is.attachment.resume" tooltip-append-to-body="true" type="button" ng-click="file.resume()" ng-show="file.paused"><i class="fa fa-play"></i></button>
-                    <button class="btn btn-xs btn-danger"          tooltip="todo.is.attachment.cancel" tooltip-append-to-body="true" type="button" ng-click="file.cancel()"><i class="fa fa-close"></i></button>
+                    <button class="btn btn-xs btn-danger ng-hide"  tooltip="todo.is.attachment.cancel" tooltip-append-to-body="true" type="button" ng-click="file.cancel()" ng-show="file.isComplete()"><i class="fa fa-close"></i></button>
+                    <button class="btn btn-danger btn-xs ng-hide"  tooltip="todo.is.attachment.delete" tooltip-append-to-body="true" type="button" ng-show="file.isUploading()" ng-show="!file.paused && !file.isUploading()" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [attachment, story] })"><i class="fa fa-close"></i></button>
                     <button class="btn btn-xs btn-info ng-hide"    tooltip="todo.is.attachment.retry" tooltip-append-to-body="true" type="button" ng-click="file.retry()"  ng-show="file.error"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
@@ -63,7 +64,7 @@
     </tr>
     <tr ng-show="!selected.attachments && selected.attachments !== undefined">
         <td class="empty-content">
-            <small>${message(code:'todo.is.ui.comment.empty')}</small>
+            <small>${message(code:'todo.is.ui.attachment.empty')}</small>
         </td>
     </tr>
 </script>

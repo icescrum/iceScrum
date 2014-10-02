@@ -327,17 +327,6 @@
                      tabindex="0"
                      ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
             </div>
-            <div class="form-group">
-                <label>${message(code:'is.backlogelement.attachment')}</label>
-                <div class="form-control-static">
-                    <div class="drop-zone">
-                        <h2>${message(code:'todo.is.ui.drop.here')}</h2>
-                    </div>
-                    <table class="table table-striped attachments">
-                        <tbody ng-include="'attachment.list.html'" onload=" selected = story;  clazz = 'story'; "></tbody>
-                    </table>
-                </div>
-            </div>
             <div class="btn-toolbar" ng-if="getEditableStoryMode(story)">
                 <button class="btn btn-primary pull-right"
                         ng-class="{ disabled: !isDirty() || formHolder.storyForm.$invalid }"
@@ -354,6 +343,20 @@
                         ng-click="resetStoryForm()">
                     ${message(code:'is.button.cancel')}
                 </button>
+            </div>
+            <div class="form-group">
+                <label>${message(code:'is.backlogelement.attachment')}</label>
+                <div>
+                    <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i> todo.is.ui.new.upload</button>
+                </div>
+                <div class="form-control-static">
+                    <div class="drop-zone">
+                        <h2>${message(code:'todo.is.ui.drop.here')}</h2>
+                    </div>
+                    <table class="table table-striped attachments" ng-controller="attachmentCtrl">
+                        <tbody ng-include="'attachment.list.html'" onload=" selected = story;  clazz = 'story'; "></tbody>
+                    </table>
+                </div>
             </div>
         </form>
     </div>
