@@ -334,7 +334,7 @@
                         <h2>${message(code:'todo.is.ui.drop.here')}</h2>
                     </div>
                     <table class="table table-striped attachments">
-                        <tbody ng-include="'attachment.list.html'" onload=" selected = story "></tbody>
+                        <tbody ng-include="'attachment.list.html'" onload=" selected = story;  clazz = 'story'; "></tbody>
                     </table>
                 </div>
             </div>

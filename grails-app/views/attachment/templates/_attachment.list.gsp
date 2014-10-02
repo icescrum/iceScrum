@@ -28,13 +28,14 @@
     <tr ng-repeat="attachment in selected.attachments | orderBy:'dateCreated'">
         <td>
             <div class="col-sm-8">
-                <div class="filename" title="{{ attachment.filename }}"><i class="fa fa-{{ attachment.ext | fileicon }}"></i> {{ attachment.filename }}</div>
+                <div class="filename" title="{{ attachment.filename }}">
+                    <i class="fa fa-{{ attachment.ext | fileicon }}"></i> <a href="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}">{{ attachment.filename }}</a></div>
                 <div><small>{{ attachment.length | filesize }}</small></div>
             </div>
             <div class="col-sm-4 text-right">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-xs"><i class="fa fa-download"></i></button>
-                    <button ng-click="" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
+                    <a href="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}" tooltip="todo.is.attachment.download" tooltip-append-to-body="true" class="btn btn-default btn-xs"><i class="fa fa-download"></i></a>
+                    <button tooltip="todo.is.attachment.delete" tooltip-append-to-body="true" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
                 </div>
             </div>
         </td>
@@ -52,10 +53,10 @@
                     </div>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-xs btn-warning ng-hide" ng-click="file.pause()"  ng-show="!file.paused && file.isUploading()"><i class="fa fa-pause"></i></button>
-                    <button class="btn btn-xs btn-warning ng-hide" ng-click="file.resume()" ng-show="file.paused"><i class="fa fa-play"></i></button>
-                    <button class="btn btn-xs btn-danger"          ng-click="file.cancel()"><i class="fa fa-close"></i></button>
-                    <button class="btn btn-xs btn-info ng-hide"    ng-click="file.retry()"  ng-show="file.error"><i class="fa fa-refresh"></i></button>
+                    <button class="btn btn-xs btn-warning ng-hide" tooltip="todo.is.attachment.pause" tooltip-append-to-body="true" type="button" ng-click="file.pause()"  ng-show="!file.paused && file.isUploading()"><i class="fa fa-pause"></i></button>
+                    <button class="btn btn-xs btn-warning ng-hide" tooltip="todo.is.attachment.resume" tooltip-append-to-body="true" type="button" ng-click="file.resume()" ng-show="file.paused"><i class="fa fa-play"></i></button>
+                    <button class="btn btn-xs btn-danger"          tooltip="todo.is.attachment.cancel" tooltip-append-to-body="true" type="button" ng-click="file.cancel()"><i class="fa fa-close"></i></button>
+                    <button class="btn btn-xs btn-info ng-hide"    tooltip="todo.is.attachment.retry" tooltip-append-to-body="true" type="button" ng-click="file.retry()"  ng-show="file.error"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
         </td>

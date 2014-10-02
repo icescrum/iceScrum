@@ -40,6 +40,7 @@ class AttachmentController {
     def springSecurityService
     def attachmentableService
 
+    @Secured('isAuthenticated() and stakeHolder()')
     def show() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
