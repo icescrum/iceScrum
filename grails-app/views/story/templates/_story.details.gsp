@@ -334,10 +334,9 @@
                         <h2>${message(code:'todo.is.ui.drop.here')}</h2>
                     </div>
                     <table class="table table-striped attachments">
-                        <tbody ng-include="'attachment.list.html'" ng-init="selected = story"></tbody>
+                        <tbody ng-include="'attachment.list.html'" onload=" selected = story "></tbody>
                     </table>
                 </div>
-
             </div>
             <div class="btn-toolbar" ng-if="getEditableStoryMode(story)">
                 <button class="btn btn-primary pull-right"
