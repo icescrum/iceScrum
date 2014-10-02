@@ -269,6 +269,12 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
+
+        $scope.attachmentQuery = function($flow, story){
+            $flow.opts.query = { 'type':'story', 'attachmentable':story.id };
+            $flow.upload();
+        }
+
     }]);
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {

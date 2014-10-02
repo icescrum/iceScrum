@@ -37,7 +37,8 @@ var isApp = angular.module('isApp', [
     'cfp.hotkeys',
     'colorpicker.module',
     'mgo-angular-wizard',
-    'ngPasswordStrength'
+    'ngPasswordStrength',
+    'flow'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
@@ -216,6 +217,15 @@ isApp.config(['$stateProvider', '$httpProvider',
                         });
         }
     ])
+    .config(['flowFactoryProvider', function (flowFactoryProvider) {
+        flowFactoryProvider.defaults = {
+            target: 'attachment/save',
+            simultaneousUploads: 4
+        };
+        flowFactoryProvider.on('catchAll', function (event) {
+            console.log('catchAll', arguments);
+        });
+    }])
     .factory('AuthInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', function ($rootScope, $q, AUTH_EVENTS) {
         return {
             responseError: function (response) {

@@ -41,7 +41,7 @@
     <asset:stylesheet href="application.css"/>
     <g:layoutHead/>
 </head>
-<body data-whatsnew="${user?.preferences?.displayWhatsNew}" ng-controller="appCtrl">
+<body data-whatsnew="${user?.preferences?.displayWhatsNew}" ng-controller="appCtrl" flow-prevent-drop="">
 <is:header/>
 <div class="container-fluid">
     <div class="row sidebar-hidden">

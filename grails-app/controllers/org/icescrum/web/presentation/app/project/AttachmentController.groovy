@@ -27,6 +27,8 @@ import org.apache.commons.io.FilenameUtils
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.event.IceScrumEventType
+import org.icescrum.web.FileUploadInfo
+import org.icescrum.web.FileUploadInfoStorage
 
 import javax.servlet.http.HttpServletResponse
 
@@ -39,7 +41,7 @@ class AttachmentController {
     def attachmentableService
 
     def show() {
-        def attachmentable = attachmentableObject
+        def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
             def attachment = attachmentable.attachments?.find { it.id == params.long('id') }
             if (attachment) {
@@ -66,7 +68,7 @@ class AttachmentController {
 
     @Secured('isAuthenticated() and stakeHolder()')
     def list() {
-        def attachmentable = attachmentableObject
+        def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: attachmentable.attachments as JSON) }
@@ -80,31 +82,41 @@ class AttachmentController {
 
     @Secured('isAuthenticated() and stakeHolder()')
     def save() {
-        def attachmentable = attachmentableObject
-        if (attachmentable) {
-            def upfile = params.file ?: request.getFile('file')
-            def filename = FilenameUtils.getBaseName(upfile.originalFilename?:upfile.name)
-            def ext = FilenameUtils.getExtension(upfile.originalFilename?:upfile.name)
-            def tmpF = null
-            if(upfile.originalFilename){
-                tmpF = session.createTempFile(filename, '.' + ext)
-                request.getFile("file").transferTo(tmpF)
+        def chunkNumber  = params.int('flowChunkNumber') != null ? params.int('flowChunkNumber') : -1
+        def info = getFileUploadInfo(params)
+        if (request.method == 'GET') {
+            if (info.uploadedChunks.contains(new FileUploadInfo.ChunkNumber(chunkNumber))) {
+                render(status:200)
+            } else {
+                render(status:404)
             }
-            grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment':null])
-            attachmentable.addAttachment(springSecurityService.currentUser, tmpF?: upfile, upfile.originalFilename?:upfile.name)
-            def attachment = attachmentable.attachments.first()
-            grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment':attachment])
-            render(status: 200, contentType: 'application/json', text: [
-                    id      : attachment.id,
-                    filename: attachment.inputName,
-                    ext     : ext,
-                    size    : attachment.length,
-                    provider: attachment.provider ?: ''] as JSON)
+        } else if(request.method == 'POST') {
+            def attachmentable = getAttachmentableObject(params)
+            if (attachmentable) {
+                RandomAccessFile raf = new RandomAccessFile(info.filePath, "rw")
+                raf.seek((chunkNumber - 1) * info.chunkSize)
+                def file = params.file ?: request.getFile('file')
+                raf.write(file.getBytes())
+                raf.close()
+                info.uploadedChunks.add(new FileUploadInfo.ChunkNumber(chunkNumber))
+                if (info.checkIfUploadFinished()) {
+                    def service = grailsApplication.mainContext[params.type + 'Service']
+                    service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment': null])
+                    attachmentable.addAttachment(springSecurityService.currentUser, new File(info.filePath), info.filename)
+                    service.publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment': attachmentable.attachments.first()])
+                    FileUploadInfoStorage.instance.remove(info)
+                    render(status: 200, contentType: 'application/json', text:attachmentable as JSON)
+                } else {
+                    render(status:200)
+                }
+            } else {
+                render(status:404)
+            }
         }
     }
 
     def delete() {
-        def attachmentable = attachmentableObject
+        def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
             def attachment = attachmentable.attachments?.find{ it.id == params.long('id') }
             if (attachment){
@@ -120,7 +132,7 @@ class AttachmentController {
         }
     }
 
-    private getAttachmentableObject() {
+    private static getAttachmentableObject(def params) {
         def attachmentable
         switch (params.type){
             case 'story':
@@ -133,6 +145,19 @@ class AttachmentController {
                 attachmentable = null
         }
         attachmentable
+    }
+
+    private static FileUploadInfo getFileUploadInfo(def params) {
+
+        def info = ['chunkSize'          : (params.remove('flowChunkSize') ?: -1).toInteger(),
+                    'totalSize'          : (params.remove('flowTotalSize') ?: -1).toLong(),
+                    'identifier'         : params.remove('flowIdentifier'),
+                    'filename'           : params.remove('flowFilename'),
+                    'relativePath'       : params.remove("flowRelativePath")]
+
+        def test = new File(System.getProperty("java.io.tmpdir"), (String)info.filename)
+        info.filePath = test.absolutePath + ".temp"
+        return FileUploadInfoStorage.instance.get(info)
     }
 
 }

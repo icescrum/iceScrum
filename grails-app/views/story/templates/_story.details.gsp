@@ -22,7 +22,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.details.html">
-<div class="panel panel-default">
+<div class="panel panel-default"
+     flow-drop
+     flow-files-submitted="attachmentQuery($flow, story)"
+     flow-drop-enabled="authorizedStory('upload',story)"
+     flow-drag-enter="class='panel panel-default drop-enabled'"
+     flow-drag-leave="class='panel panel-default'"
+     flow-init
+     ng-class="authorizedStory('upload',story) && class">
     <div id="story-header"
          class="panel-heading"
          fixed="#right"
@@ -320,6 +327,12 @@
                      tabindex="0"
                      ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
             </div>
+            <div class="form-group">
+                <label>${message(code:'is.backlogelement.attachment')}</label>
+                <div class="form-control-static drop-zone">
+                    <h4>Drop me here</h4>
+                </div>
+            </div>
             <div class="btn-toolbar" ng-if="getEditableStoryMode(story)">
                 <button class="btn btn-primary pull-right"
                         ng-class="{ disabled: !isDirty() || formHolder.storyForm.$invalid }"
@@ -349,10 +362,6 @@
                 <table class="table table-striped">
                     <tbody ng-include="'activity.list.html'" ng-init="selected = story"></tbody>
                 </table>
-            </tab>
-            <tab select="setTabSelected('attachments');"
-                 heading="${message(code: 'is.ui.backlogelement.attachment')}"
-                 active="tabSelected.attachments">
             </tab>
             <tab select="comments(story); setTabSelected('comments');"
                  heading="${message(code: 'is.ui.backlogelement.activity.comments')}"

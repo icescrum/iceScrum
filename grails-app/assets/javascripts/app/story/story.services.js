@@ -189,6 +189,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             case 'createTemplate':
             case 'followMultiple':
                 return Session.authenticated();
+            case 'upload':
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);

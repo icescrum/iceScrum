@@ -1073,22 +1073,6 @@ p.empty {
   font-style: italic;
 }
 
-.drop-here {
-  left: 0;
-  top: 0;
-  height:100%;
-  width:100%;
-  position: absolute;
-  background:rgba(34,34,34,0.8);
-  display:none;
-  z-index: 100;
-  .drop-title {
-    color: @body-bg;
-    margin-top: 50%;
-    text-align: center;
-  }
-}
-
 /** on hover utility **/
 .panel .on-hover:not(td), #sidebar > .on-hover{
   display:none;
@@ -1767,6 +1751,24 @@ a[data-toggle="tab"] button {
     padding: 4px;
     li {
       border: none;
+    }
+  }
+}
+
+.drop-zone {
+  visibility: hidden;
+  height: 50px;
+}
+
+.drop-enabled {
+  .drop-zone {
+    visibility: visible;
+    border:3px dashed @gray;
+    color:@brand-primary;
+    h4 {
+      text-align: center;
+      vertical-align: middle;
+      margin-top:7px;
     }
   }
 }
