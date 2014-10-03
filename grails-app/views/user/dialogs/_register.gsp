@@ -76,11 +76,11 @@
                             <option value="gravatar">${message(code:'todo.is.user.avatar.gravatar')}</option>
                         </g:if>
                         <option></option>
-                        <option value="${asset.assetPath(src: 'images/avatars/dev-ico.png')}">${message(code:'todo.is.user.avatar.std.1')}</option>
-                        <option value="${asset.assetPath(src: 'images/avatars/po-ico.png')}">${message(code:'todo.is.user.avatar.std.2')}</option>
-                        <option value="${asset.assetPath(src: 'images/avatars/sh-ico.png')}">${message(code:'todo.is.user.avatar.std.3')}</option>
-                        <option value="${asset.assetPath(src: 'images/avatars/sm-ico.png')}">${message(code:'todo.is.user.avatar.std.4')}</option>
-                        <option value="${asset.assetPath(src: 'images/avatars/admin-ico.png')}">${message(code:'todo.is.user.avatar.std.5')}</option>
+                        <option value="${asset.assetPath(src: 'avatars/dev-ico.png')}">${message(code:'todo.is.user.avatar.std.1')}</option>
+                        <option value="${asset.assetPath(src: 'avatars/po-ico.png')}">${message(code:'todo.is.user.avatar.std.2')}</option>
+                        <option value="${asset.assetPath(src: 'avatars/sh-ico.png')}">${message(code:'todo.is.user.avatar.std.3')}</option>
+                        <option value="${asset.assetPath(src: 'avatars/sm-ico.png')}">${message(code:'todo.is.user.avatar.std.4')}</option>
+                        <option value="${asset.assetPath(src: 'avatars/admin-ico.png')}">${message(code:'todo.is.user.avatar.std.5')}</option>
                     </select>
                 </div>
             </div>
