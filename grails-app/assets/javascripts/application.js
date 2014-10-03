@@ -11,6 +11,7 @@
 //= require vendors/angular/angular-route.min
 //= require vendors/angular/angular-resource.min
 
+//= require vendors/angular/plugins/ng-pdfviewer.min
 //= require_tree vendors/i18n
 
 //= require_tree vendors
@@ -30,6 +31,5 @@
 // Todo remove
 // jquery/jquery.html5data.min.js
 // jquery/jquery.unobtrusive-ajax.js
-// lib/dropzone.js
 // lib/fastclick.js
 

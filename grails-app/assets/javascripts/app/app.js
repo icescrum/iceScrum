@@ -38,7 +38,8 @@ var isApp = angular.module('isApp', [
     'colorpicker.module',
     'mgo-angular-wizard',
     'ngPasswordStrength',
-    'flow'
+    'flow',
+    'ngPDFViewer'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
