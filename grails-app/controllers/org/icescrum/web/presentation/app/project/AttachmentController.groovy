@@ -155,6 +155,7 @@ class AttachmentController {
 
         def info = ['chunkSize'          : (params.remove('flowChunkSize') ?: -1).toInteger(),
                     'totalSize'          : (params.remove('flowTotalSize') ?: -1).toLong(),
+                    'totalChunks'        : params.int('flowTotalChunks'),
                     'identifier'         : params.remove('flowIdentifier'),
                     'filename'           : params.remove('flowFilename'),
                     'relativePath'       : params.remove("flowRelativePath")]

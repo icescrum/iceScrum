@@ -4,6 +4,7 @@ public class FileUploadInfo {
 
     int      chunkSize
     long     totalSize
+    int      totalChunks
     String   identifier
     String   filename
     String   relativePath
@@ -33,17 +34,15 @@ public class FileUploadInfo {
     }
     public boolean checkIfUploadFinished() {
         //check if upload finished
-        int count = (int) Math.ceil(((double) totalSize) / ((double) chunkSize));
-        for(int i = 1; i < count + 1; i ++) {
-            if (!uploadedChunks.contains(new ChunkNumber(i))) {
-                return false
-            }
+        if (totalChunks == uploadedChunks.size()){
+            //Upload finished, change filename.
+            File file = new File(filePath)
+            String new_path = file.absolutePath.substring(0, file.absolutePath.length() - ".temp".length())
+            file.renameTo(new File(new_path))
+            filePath = new_path
+            return true
+        } else {
+            return false
         }
-        //Upload finished, change filename.
-        File file = new File(filePath)
-        String new_path = file.absolutePath.substring(0, file.absolutePath.length() - ".temp".length())
-        file.renameTo(new File(new_path))
-        filePath = new_path
-        return true
     }
 }
