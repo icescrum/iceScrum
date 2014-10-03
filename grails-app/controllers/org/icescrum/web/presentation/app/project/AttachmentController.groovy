@@ -85,15 +85,31 @@ class AttachmentController {
     def save() {
         def chunkNumber  = params.int('flowChunkNumber') != null ? params.int('flowChunkNumber') : -1
         def info = getFileUploadInfo(params)
+        def _attachmentable = getAttachmentableObject(params)
+
+        def handleEndOfUpload = { attachmentable ->
+            def service = grailsApplication.mainContext[params.type + 'Service']
+            service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment': null])
+            attachmentable.addAttachment(springSecurityService.currentUser, new File(info.filePath), info.filename)
+            def attachment = attachmentable.attachments.first()
+            service.publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment': attachment])
+            FileUploadInfoStorage.instance.remove(info)
+            def res = ['filename':attachment.filename, 'length':attachment.length, 'ext':attachment.ext, 'id':attachment.id, attachmentable:[id:attachmentable.id, 'class':params.type]]
+            render(status: 200, contentType: 'application/json', text:res as JSON)
+        }
+
         if (request.method == 'GET') {
             if (info.uploadedChunks.contains(new FileUploadInfo.ChunkNumber(chunkNumber))) {
-                render(status:200)
+                if(info.checkIfUploadFinished()){
+                    handleEndOfUpload(_attachmentable)
+                }else {
+                    render(status:200)
+                }
             } else {
                 render(status:404)
             }
         } else if(request.method == 'POST') {
-            def attachmentable = getAttachmentableObject(params)
-            if (attachmentable) {
+            if (_attachmentable) {
                 RandomAccessFile raf = new RandomAccessFile(info.filePath, "rw")
                 raf.seek((chunkNumber - 1) * info.chunkSize)
                 def file = params.file ?: request.getFile('file')
@@ -101,14 +117,7 @@ class AttachmentController {
                 raf.close()
                 info.uploadedChunks.add(new FileUploadInfo.ChunkNumber(chunkNumber))
                 if (info.checkIfUploadFinished()) {
-                    def service = grailsApplication.mainContext[params.type + 'Service']
-                    service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment': null])
-                    attachmentable.addAttachment(springSecurityService.currentUser, new File(info.filePath), info.filename)
-                    def attachment = attachmentable.attachments.first()
-                    service.publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment': attachment])
-                    FileUploadInfoStorage.instance.remove(info)
-                    def res = ['filename':attachment.filename, 'length':attachment.length, 'ext':attachment.ext, 'id':attachment.id, attachmentable:[id:attachmentable.id, 'class':params.type]]
-                    render(status: 200, contentType: 'application/json', text:res as JSON)
+                    handleEndOfUpload(_attachmentable)
                 } else {
                     render(status:200)
                 }
