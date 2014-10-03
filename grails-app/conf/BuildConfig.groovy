@@ -76,7 +76,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile "org.icescrum:entry-points:0.4.2"
+        compile "org.icescrum:entry-points:1.0"
 
         compile ':scaffolding:2.1.1' // TODO consider removing it
         compile ":cache-headers:1.1.7"
