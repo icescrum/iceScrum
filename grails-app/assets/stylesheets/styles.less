@@ -1068,12 +1068,6 @@ table[data-ui-draggable] > tr:hover .drag span,
 
 /**************** custom ****************/
 
-#right-story-container {
-  &.dz-drag-hover .drop-here {
-    display: block;
-  }
-}
-
 .chart-container {
   height:100%;
   width:100%;
@@ -1085,14 +1079,6 @@ p.empty {
 
 /** on hover utility **/
 .panel .on-hover:not(td), #sidebar > .on-hover{
-  display:none;
-}
-
-.panel .dz-preview:hover .on-hover.delete {
-  display: block;
-}
-
-.panel  .dz-preview .on-hover.delete {
   display:none;
 }
 
@@ -1113,27 +1099,6 @@ tr:hover .on-hover span {
   display: block;
   &.inline {
     display:inline;
-  }
-}
-
-.dz-file-preview {
-  &.dz-processing.dz-success > a:first-of-type, &.dz-success > a:first-of-type, &> a:first-of-type {
-    max-width: 80%;
-    display:inline-block;
-    overflow: hidden;
-    .text-overflow();
-  }
-
-  &.dz-processing > a:first-of-type {
-    max-width: 50%;
-  }
-
-  .dz-progress {
-    > .progress {
-      display: inline-block;
-      width: 100%;
-      margin-bottom: 0;
-    }
   }
 }
 

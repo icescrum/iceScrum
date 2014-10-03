@@ -21,4 +21,3 @@
 --}%
 <g:render template="/attachment/templates/list" />
 <g:render template="/attachment/templates/preview" />
-<g:render template="/attachment/templates/editor" />
