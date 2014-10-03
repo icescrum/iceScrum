@@ -68,7 +68,9 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
             }
         };
         $scope.stories = function(feature) {
-            StoryService.listByType(feature);
+            if (_.isEmpty(feature.stories)) {
+                StoryService.listByType(feature);
+            }
         };
         // Header
         $scope.previous = FormService.previous(FeatureService.list, $scope.feature);

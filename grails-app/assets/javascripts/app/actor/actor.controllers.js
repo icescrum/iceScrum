@@ -65,7 +65,9 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
             }
         };
         $scope.stories = function(actor) {
-            StoryService.listByType(actor);
+            if (_.isEmpty(actor.stories)) {
+                StoryService.listByType(actor);
+            }
         };
         // header
         $scope.previous = FormService.previous(ActorService.list, $scope.actor);

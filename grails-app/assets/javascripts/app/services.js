@@ -175,7 +175,7 @@ var formObjectData = function (obj, prefix) {
 
     for (name in obj) {
         value = obj[name];
-        if (value instanceof Array) {
+        if (value instanceof Array && !endsWith(name, '_ids')) {
             for (i = 0; i < value.length; ++i) {
                 subValue = value[i];
                 innerObj = {};

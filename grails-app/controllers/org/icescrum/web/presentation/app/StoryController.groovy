@@ -360,8 +360,7 @@ class StoryController {
         }
     }
 
-    // TODO change permissions (private product & co)
-    @Secured('permitAll')
+    @Secured('stakeHolder() and !archivedProduct()')
     def listByType() {
         def stories
         if (params.type == 'actor') {
@@ -484,7 +483,6 @@ class StoryController {
         }
     }
 
-    // TODO cache on all templates
     @Secured('isAuthenticated() and !archivedProduct()')
     def templateEntries() {
         def templates = Template.findAllByParentProduct(Product.get(params.long('product')))

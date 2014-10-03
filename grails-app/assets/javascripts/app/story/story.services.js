@@ -53,17 +53,17 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         }).$promise;
     };
     this.listByType = function(obj) {
-        var stories = [];
+        var alreadyLoadedStories = [];
         var mustLoad = false;
-        angular.forEach(obj.stories, function(story) {
+        angular.forEach(obj.stories_ids, function(story) {
             var alreadyLoadedStory = _.find(self.list, { id: story.id });
             if (!_.isEmpty(alreadyLoadedStory)) {
-                stories.push(alreadyLoadedStory);
+                alreadyLoadedStories.push(alreadyLoadedStory);
             } else {
                 mustLoad = true;
             }
         });
-        obj.stories = stories;
+        obj.stories = alreadyLoadedStories;
         if (mustLoad) {
             Story.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
                 angular.forEach(data, function(story) {
