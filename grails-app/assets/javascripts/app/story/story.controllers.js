@@ -233,8 +233,11 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 $scope.mustConfirmStateChange = false;
                 $scope.confirm({
                     message: 'todo.is.ui.dirty.confirm',
-                    condition: $scope.isDirty(),
+                    condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
                     callback: function () {
+                        if ($scope.flow != undefined && $scope.flow.isUploading()){
+                            $scope.flow.cancel();
+                        }
                         $state.go(toState, toParams)
                     },
                     closeCallback: function() {
@@ -273,6 +276,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         };
 
         $scope.attachmentQuery = function($flow, story){
+            //to add flow in storyDetailsCtrl scope
+            $scope.flow = $flow;
             $flow.opts.query = { 'type':'story', 'attachmentable':story.id };
             $flow.upload();
         }
