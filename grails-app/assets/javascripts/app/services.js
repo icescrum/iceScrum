@@ -35,9 +35,9 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
             })
         }
     };
-}]).service('Session',['UserService', 'USER_ROLES', function (UserService, USER_ROLES) {
+}]).service('Session',['UserService', 'USER_ROLES', 'User', function (UserService, USER_ROLES, User) {
     var self = this;
-    self.user = {};
+    self.user = new User();
     var defaultRoles = {
         productOwner: false,
         scrumMaster: false,

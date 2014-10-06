@@ -32,7 +32,8 @@ filters
     })
     .filter('userAvatar', ['$rootScope', function($rootScope) {
         return function(user) {
-            return user ?  $rootScope.serverUrl + '/user/avatar/'+ user.id : '';
+            var nocache = (new Date(user.lastUpdated).getTime());
+            return user ?  $rootScope.serverUrl + '/user/avatar/'+ user.id + '?test=' + nocache : '';
         };
     }])
     .filter('contrastColor', function() {

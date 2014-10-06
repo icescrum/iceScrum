@@ -92,6 +92,7 @@ class AttachmentController {
             render(status: 200, contentType: 'application/json', text:res as JSON)
         }
         if (_attachmentable) {
+            UtilsWebComponents.handleUpload.delegate = this
             UtilsWebComponents.handleUpload(request, params, endOfUpload)
         } else {
             render(status:404)

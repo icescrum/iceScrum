@@ -21,10 +21,11 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('userCtrl', ['$scope', 'UserService', 'User', '$modalInstance', function ($scope, UserService, User, $modalInstance) {
+controllers.controller('userCtrl', ['$scope', 'UserService', 'User', '$modalInstance', 'Session', function ($scope, UserService, User, $modalInstance, Session) {
     $scope.update = function(user) {
-        UserService.update(user).then(function() {
+        UserService.update(user).then(function(userUpdated) {
             $modalInstance.close();
+            angular.extend(Session.user, userUpdated);
         });
     };
     $scope.refreshAvatar = function(user){
@@ -47,10 +48,7 @@ controllers.controller('userCtrl', ['$scope', 'UserService', 'User', '$modalInst
     };
 
     // Init
-    $scope.currentUser = {};
+    $scope.dataUser = {};
     $scope.formHolder = {};
-    $scope.tabSelected = { 'general': true };
-    UserService.getCurrent().then(function(data) {
-        $scope.currentUser = angular.copy(new User(data.user));
-    });
+    $scope.dataUser = angular.copy(Session.user);
 }]);

@@ -24,6 +24,8 @@
 package org.icescrum.web.presentation.app
 
 import org.apache.commons.io.FilenameUtils
+import org.icescrum.components.FileUploadInfo
+import org.icescrum.components.UtilsWebComponents
 import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
@@ -89,6 +91,27 @@ class UserController {
                 return
             }
 
+            Map props = [:]
+            def papa = params
+            if(params.flowIdentifier){
+                User.withTransaction {
+                    def endOfUpload = {FileUploadInfo uploadInfo ->
+                        def uploadedAvatar = new File(uploadInfo.filePath)
+                        props.avatar = uploadedAvatar.canonicalPath
+                        props.scale = true
+                        userService.update(user, props)
+                        withFormat {
+                            html { render status: 200, contentType: 'application/json', text: user as JSON }
+                            json { renderRESTJSON(text:user) }
+                            xml  { renderRESTXML(text:user) }
+                        }
+                    }
+                    UtilsWebComponents.handleUpload.delegate = this
+                    UtilsWebComponents.handleUpload(request, params, endOfUpload)
+                }
+                return;
+            }
+
             if (!params.user){
                 returnError(text:message(code:'todo.is.ui.no.data'))
                 return
@@ -100,7 +123,6 @@ class UserController {
             }
 
             User.withTransaction {
-                Map props = [:]
                 if (params.user.password?.trim() != ''){
                     props.pwd = params.user.password
                 }
@@ -112,12 +134,13 @@ class UserController {
                     } else if (params.user.avatar){
                         def uploadedAvatar = request.getFile('user.avatar')
                         props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${FilenameUtils.getExtension(uploadedAvatar.originalFilename)}")
+                        props.scale = true
                         uploadedAvatar.transferTo(props.avatar)
                     }
                     if (props.avatar){
                         props.avatar = props.avatar.canonicalPath
                     }
-                } else if (params.user.avatar == null && params.user.avatar == 'gravatar'){
+                } else if (params.user.avatar == 'gravatar'){
                     props.avatar = null
                 }
                 if (params.user.preferences && params.user.preferences['emailsSettings']){
@@ -274,20 +297,19 @@ class UserController {
     }
 
     def avatar() {
-        def user = User.load(params.id)
-        def avatar
-        if (user) {
-            def avat = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
-            if (avat.exists()) {
-                avatar = avat
+        withUser { User user ->
+            def avatar = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
+            if (!avatar.exists()){
+                if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)){
+                    redirect url:"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()
+                    return
+                }
+                avatar = grailsApplication.parentContext.getResource("../grails-app/assets/images/avatars/avatar.png").file
             }
+            OutputStream out = response.getOutputStream()
+            out.write(avatar.bytes)
+            out.close()
         }
-        if (!avatar) {
-            avatar = grailsApplication.parentContext.getResource("../grails-app/assets/images/avatars/avatar.png").file
-        }
-        OutputStream out = response.getOutputStream()
-        out.write(avatar.bytes)
-        out.close()
     }
 
     @Secured('isAuthenticated()')
