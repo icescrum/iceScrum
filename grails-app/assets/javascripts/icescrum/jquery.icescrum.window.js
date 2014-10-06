@@ -84,7 +84,7 @@
                                     } else {
                                         $($.icescrum.o.windowContainer).html('').html(data);
                                     }
-                                    $(content).isWindow($(content).html5data('is'));
+                                    $(content).isWindow($(content).data('is'));
                                     attachOnDomUpdate($(content));
 
                                     if (callback) {

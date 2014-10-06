@@ -12,7 +12,7 @@
                                     if (callback) {
                                         callback();
                                     }
-                                    $(widget[0]).isWidget($(widget[0]).html5data('is'));
+                                    $(widget[0]).isWidget($(widget[0]).data('is'));
                                     attachOnDomUpdate(widget[0]);
                                 }
                             },

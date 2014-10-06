@@ -27,9 +27,3 @@
 //= require_tree app
 
 //= encoding UTF-8
-
-// Todo remove
-// jquery/jquery.html5data.min.js
-// jquery/jquery.unobtrusive-ajax.js
-// lib/fastclick.js
-

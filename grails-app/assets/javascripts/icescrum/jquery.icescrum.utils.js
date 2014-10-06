@@ -414,7 +414,7 @@
 
         openChart:function(){
             var $this = $(this);
-            var settings = $this.html5data('ui-chart');
+            var settings = $this.data('ui-chart');
             var $btn = $this.closest('.btn-group').find('.btn');
             return $.icescrum.displayChart(settings.container, $this.attr('href'), settings.save, $btn);
         },
