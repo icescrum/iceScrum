@@ -259,7 +259,7 @@ function propertiesUpdated(a, b) {
                         el = $.template(this.tpl, data);
                         el = $(el).appendTo(this.container);
                         if (el){
-                            attachOnDomUpdate($(this.container));
+//                            attachOnDomUpdate($(this.container));
                             if(!noHighlight && this.highlight && $.icescrum[this.type].initialized == true){
                                 el.effect('highlight', {color: this.highlight != true ? 'blue' : null}, 1000);
                             }
@@ -312,7 +312,7 @@ function propertiesUpdated(a, b) {
                                 $(el).addClass('ui-selected');
                             }
                             //attach UI events
-                            attachOnDomUpdate(this.container);
+//                            attachOnDomUpdate(this.container);
                         }
                         //restore focus
                         if (focus.id && $('#'+focus.id, this.container).length > 0){

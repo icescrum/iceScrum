@@ -86,7 +86,7 @@
                     el = $.template('story-details', {story:  _.findWhere($.icescrum['story'].data, {id:_.last(id)})});
                     container.html(el);
                 }
-                attachOnDomUpdate(container);
+//                attachOnDomUpdate(container);
             },
 
             sortAndOrderOnSandbox:function(order){

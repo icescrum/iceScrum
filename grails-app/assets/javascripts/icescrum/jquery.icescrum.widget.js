@@ -13,7 +13,7 @@
                                         callback();
                                     }
                                     $(widget[0]).isWidget($(widget[0]).data('is'));
-                                    attachOnDomUpdate(widget[0]);
+//                                    attachOnDomUpdate(widget[0]);
                                 }
                             },
                             complete:function() {

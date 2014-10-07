@@ -85,7 +85,7 @@
                                         $($.icescrum.o.windowContainer).html('').html(data);
                                     }
                                     $(content).isWindow($(content).data('is'));
-                                    attachOnDomUpdate($(content));
+//                                    attachOnDomUpdate($(content));
 
                                     if (callback) {
                                         callback();

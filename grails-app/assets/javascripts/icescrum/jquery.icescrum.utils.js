@@ -397,7 +397,7 @@
                 $dialog.remove();
             }
             $(modal).appendTo($container);
-            attachOnDomUpdate($container);
+//            attachOnDomUpdate($container);
         },
 
         displayShortcuts:function(){
@@ -453,7 +453,7 @@
                         dialog.on('shown.bs.modal',function(){
                             $chart.trigger('replot');
                         });
-                        attachOnDomUpdate($container);
+//                        attachOnDomUpdate($container);
                     }
                 },
                 error:function(XMLHttpRequest) {
