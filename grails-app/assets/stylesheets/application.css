@@ -22,12 +22,12 @@
 **/
 
 /*
-*= encoding UTF-8
+*= encoding          UTF-8
 
-*= require vendors/bootstrap/bootstrap.min.css
-*= require vendors/todc/todc-bootstrap.min.css
+*= require           vendors/bootstrap/bootstrap.min.css
+*= require           vendors/todc/todc-bootstrap.min.css
 
-*= require vendors/select2/jquery.select2.css
+*= require           vendors/select2/jquery.select2.css
 *= require_full_tree vendors/select2
 
 *= require_full_tree vendors/jquery
