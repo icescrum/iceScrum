@@ -36,4 +36,8 @@
 *= require_full_tree vendors/jquery-jqplot
 *= require_full_tree vendors/jquery-ui
 *= require_full_tree app
+
+Plugins probably need to come after all to override standard style
+(by default plugins are scanned AFTER the app)
+*= require_full_tree plugins
 */
