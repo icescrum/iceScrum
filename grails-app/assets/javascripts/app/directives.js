@@ -277,44 +277,24 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
         }
     };
 
-}]);
-
-
-//.directive('scrollToTab', ['$parse', function($parse) {
-//    return {
-//        restrict: 'A',
-//        link: function(scope, element, attrs) {
-//            var getActive = $parse(attrs.active);
-//            scope.$parent.$watch(getActive, function(value, oldVal){
-//                if (value !== oldVal && value == true){
-//                    var container = attrs.scrollToTab ? $(attrs.scrollToTab) : $(element).parent();
-//                    var pos = $(element).position().top + container.scrollTop();
-//                    container.animate({
-//                        scrollTop : pos
-//                    }, 1000);
-//                }
-//            });
-//        }
-//    }
-//}])
-
-//.directive('ajax2', ['$http', function ($http) {
-//    return {
-//        restrict: 'A',
-//        scope: {
-//            success:  '&ajaxSuccess'
-//        },
-//        link: function (scope, element, attrs) {
-//            element.on("click", function (event) {
-//                var options = {
-//                    method: attrs.ajaxMethod ? attrs.ajaxMethod : 'GET',
-//                    url: attrs.href
-//                };
-//                $http(options).success(function(data){
-//                    scope.success({data: data});
-//                });
-//                return false;
-//            });
-//        }
-//    };
-//}]);
+}]).directive('capitalize', function() {
+        return {
+            require: 'ngModel',
+            link: function(scope, element, attrs, modelCtrl) {
+                var capitalize = function(inputValue) {
+                    if(inputValue == undefined) inputValue = '';
+                    if(attrs.noSpace){
+                        inputValue = inputValue.replace(/[\s]/g, '');
+                    }
+                    var capitalized = inputValue.toUpperCase();
+                    if(capitalized !== inputValue) {
+                        modelCtrl.$setViewValue(capitalized);
+                        modelCtrl.$render();
+                    }
+                    return capitalized;
+                };
+                modelCtrl.$parsers.push(capitalize);
+                capitalize(scope[attrs.ngModel]);
+            }
+        };
+});

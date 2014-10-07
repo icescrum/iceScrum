@@ -134,13 +134,5 @@
         <g:render template="/actor/templates"/>
         <g:render template="/feature/templates"/>
         <g:render template="/acceptanceTest/templates"/>
-        <script type="text/ng-template" id="confirm.modal.html">
-        <is:modal form="submit()"
-                  submitButton="${message(code:'todo.is.ui.confirm')}"
-                  closeButton="${message(code:'is.button.cancel')}"
-                  title="${message(code:'todo.is.ui.confirm.title')}">
-            {{ message }}
-        </is:modal>
-        </script>
     </g:if>
 </div>

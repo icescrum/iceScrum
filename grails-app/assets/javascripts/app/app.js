@@ -66,31 +66,47 @@ isApp.config(['$stateProvider', '$httpProvider',
                             templateUrl: "project/add",
                             size:'lg',
                             controller:["$scope", function($scope){
-                                $scope.product = {};
 
-                                $scope.today = function() {
-                                    $scope.dt = new Date();
-                                };
-                                $scope.today();
-
-                                // Disable weekend selection
-                                $scope.disabled = function(date, mode) {
-                                    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+                                $scope.product = {
+                                    startDate:new Date(),
+                                    endDate:new Date(new Date().setMonth(new Date().getMonth()+3))
                                 };
 
-                                $scope.dateOptions = {
-                                    formatYear: 'yy',
+                                $scope.$watch('product.startDate', function(){
+                                    $scope.productMinDate = new Date($scope.product.startDate).setDate($scope.product.startDate.getDate()+1);
+                                });
+
+                                $scope.$watch('product.endDate', function(){
+                                    $scope.productMaxDate = new Date($scope.product.endDate).setDate($scope.product.endDate.getDate()-1);
+                                });
+
+                                $scope.startDate = {
                                     startingDay: 1,
                                     opened:false,
                                     format:'dd/MM/yyyy',
-                                    maxDate:'2015-06-22',
-                                    minDate:new Date()
+                                    disabled:function(date, mode) {
+                                        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+                                    }
+
                                 };
 
-                                $scope.open = function($event) {
+                                $scope.endDate = {
+                                    startingDay: 1,
+                                    opened:false,
+                                    format:'dd/MM/yyyy',
+                                    disabled:function(date, mode) {
+                                        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+                                    }
+                                };
+
+                                $scope.open = function($event, endDate) {
                                     $event.preventDefault();
                                     $event.stopPropagation();
-                                    $scope.dateOptions.opened = true;
+                                    if(endDate) {
+                                        $scope.endDate.opened = true;
+                                    } else {
+                                        $scope.startDate.opened = true;
+                                    }
                                 };
                             }]
                         });
