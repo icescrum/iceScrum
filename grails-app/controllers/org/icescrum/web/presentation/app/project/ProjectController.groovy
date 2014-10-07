@@ -910,6 +910,19 @@ class ProjectController {
         }
     }
 
+    @Secured(['permitAll()'])
+    def available() {
+        def result = false
+        //test for name
+        if (params.property == 'name'){
+            result = request.JSON.value && Product.countByName(request.JSON.value) == 0
+        //test for pkey
+        } else if (params.property == 'pkey'){
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && Product.countByPkey(request.JSON.value) == 0
+        }
+        render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
+    }
+
     private exportProduct(Product product, boolean withProgress){
 
         def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"

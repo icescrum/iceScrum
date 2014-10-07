@@ -78,6 +78,14 @@ class UrlMappings {
             }
         }
 
+        "/project/available/$property" {
+            controller = 'project'
+            action = [POST: "available"]
+            constraints {
+                property(inList: ['name', 'pkey'])
+            }
+        }
+
         "403"(controller: "errors", action: "error403")
         "400"(controller: "errors", action: "fakeError")
         "302"(controller: "errors", action: "fakeError")

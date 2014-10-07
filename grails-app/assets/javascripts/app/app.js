@@ -39,7 +39,8 @@ var isApp = angular.module('isApp', [
     'mgo-angular-wizard',
     'ngPasswordStrength',
     'flow',
-    'ngPDFViewer'
+    'ngPDFViewer',
+    'remoteValidation'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
@@ -61,23 +62,19 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                 .state('project.new', {
                     url: "/new",
-                    onEnter: ["$state", "$modal", function($state, $modal) {
+                    onEnter: ["$state", "$modal", 'WizardHandler', function($state, $modal, WizardHandler) {
                         var modal = $modal.open({
                             templateUrl: "project/add",
                             size:'lg',
                             controller:["$scope", function($scope){
-
                                 $scope.product = {
                                     startDate:new Date(),
                                     endDate:new Date(new Date().setMonth(new Date().getMonth()+3))
                                 };
 
-                                $scope.$watch('product.startDate', function(){
-                                    $scope.productMinDate = new Date($scope.product.startDate).setDate($scope.product.startDate.getDate()+1);
-                                });
-
-                                $scope.$watch('product.endDate', function(){
-                                    $scope.productMaxDate = new Date($scope.product.endDate).setDate($scope.product.endDate.getDate()-1);
+                                $scope.$watchCollection('[product.startDate, product.endDate]', function(newValues){
+                                    $scope.productMinDate = new Date(newValues[0]).setDate(newValues[0].getDate()+1);
+                                    $scope.productMaxDate = new Date(newValues[1]).setDate(newValues[1].getDate()-1);
                                 });
 
                                 $scope.startDate = {
@@ -89,24 +86,20 @@ isApp.config(['$stateProvider', '$httpProvider',
                                     }
 
                                 };
+                                $scope.endDate = angular.copy($scope.startDate);
 
-                                $scope.endDate = {
-                                    startingDay: 1,
-                                    opened:false,
-                                    format:'dd/MM/yyyy',
-                                    disabled:function(date, mode) {
-                                        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-                                    }
-                                };
-
-                                $scope.open = function($event, endDate) {
+                                $scope.openDatepicker = function($event, openEndDate) {
                                     $event.preventDefault();
                                     $event.stopPropagation();
-                                    if(endDate) {
+                                    if(openEndDate) {
                                         $scope.endDate.opened = true;
                                     } else {
                                         $scope.startDate.opened = true;
                                     }
+                                };
+
+                                $scope.isCurrentStep = function(index){
+                                    return WizardHandler.wizard().currentStepNumber() == index
                                 };
                             }]
                         });

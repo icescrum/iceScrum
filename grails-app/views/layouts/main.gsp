@@ -27,8 +27,7 @@
     <title>iceScrum - <g:layoutTitle/></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, ms-touch-action: none"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <!-- iOS web app-->
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <asset:link rel="apple-touch-icon" href="iOS/icon-iphone.png"/>

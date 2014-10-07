@@ -98,6 +98,7 @@ html,body,#main-content
 
 body {
   overflow: hidden;
+  -ms-touch-action: none !important;
 }
 
 label {
@@ -1793,4 +1794,8 @@ a[data-toggle="tab"] button {
     padding:0px;
     border:3px solid @brand-primary;
   }
+}
+
+ul.dropdown-menu[datepicker-popup-wrap]{
+  padding:6px;
 }

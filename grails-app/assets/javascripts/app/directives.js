@@ -139,9 +139,10 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             scope.$watch(function() {
                 return scope.$eval(attrs.name);
             }, function(form, oldForm) {
-                var inputs = element.find('input[ng-model], textarea[ng-model]');
+                var inputs = element.find('input[ng-model]:not([validation-watched]), textarea[ng-model]:not([validation-watched])');
                 angular.forEach(inputs, function(it) {
                     var input = angular.element(it);
+                    input.attr('validation-watched','');
                     var container = input.parent();
                     var inputModel = form[input.attr('name')];
                     scope.$watch(function() {
@@ -153,7 +154,6 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                             childScope.errorMessages = function(errors) {
                                 return  _.transform(errors, function(errorMessages, value, key) {
                                     if (value) {
-                                        var text = input.val();
                                         var name = input.siblings("label[for='" + input.attr('name') + "']").text();
                                         var errorMessage = '';
                                         if (key == 'required') {
@@ -176,6 +176,8 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                                             errorMessage = $rootScope.message('typeMismatch.java.lang.Integer');
                                         } else if (key == 'match') {
                                             errorMessage = $rootScope.message('is.user.password.check');
+                                        } else if (key == 'unique') {
+                                            errorMessage = $rootScope.message('default.unique.message');
                                         }
                                         errorMessages.push(errorMessage);
                                     }
@@ -183,7 +185,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                             };
                             childScope.input = input;
                             container.addClass('has-error');
-                            var template = '<div class="help-block bg-danger" ng-repeat="errorMessage in errorMessages(inputModel.$error)"><span>{{ errorMessage }}</span></div>';
+                            var template = '<div class="help-block bg-danger"><span ng-repeat="errorMessage in errorMessages(inputModel.$error)">{{ errorMessage }}</span></div>';
                             var compiledTemplate = angular.element($compile(template)(childScope));
                             container.append(compiledTemplate);
                         } else if (!newIsInvalid && oldIsInvalid) {
