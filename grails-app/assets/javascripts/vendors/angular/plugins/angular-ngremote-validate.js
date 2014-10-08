@@ -129,6 +129,7 @@
 
                             for( ; i < l; i++ ) {
                                 httpOpts.url =  options.urls[ i ];
+                                httpOpts.url = httpOpts.url.startsWith('http') ? httpOpts.url : scope.serverUrl + httpOpts.url;
                                 calls.push( $http( httpOpts ) );
                             }
 

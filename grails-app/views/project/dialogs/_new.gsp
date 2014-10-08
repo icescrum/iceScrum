@@ -40,7 +40,7 @@
                                    class="form-control"
                                    ng-model="product.name"
                                    ng-required="isCurrentStep(1)"
-                                   ng-remote-validate="{ 'project/available/name' : 'unique' }">
+                                   ng-remote-validate="/project/available/name">
                             <span class="input-group-btn">
                                 <button class="btn"
                                         tooltip="{{product.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.product.preferences.project.public')}' }}"
@@ -62,7 +62,7 @@
                                class="form-control"
                                ng-model="product.pkey"
                                ng-pattern="/^[A-Z0-9]*$/"
-                               ng-remote-validate="{ 'project/available/pkey' : 'unique' }"
+                               ng-remote-validate="/project/available/pkey"
                                ng-required="isCurrentStep(1)">
                     </div>
                 </div>

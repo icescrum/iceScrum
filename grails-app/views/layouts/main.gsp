@@ -42,7 +42,7 @@
     <script type="text/javascript" src="${grailsApplication.config.grails.serverURL}/assets/pdfjs/pdf.js"></script>
     <g:layoutHead/>
 </head>
-<body data-whatsnew="${user?.preferences?.displayWhatsNew}" ng-controller="appCtrl" flow-prevent-drop="">
+<body data-whatsnew="${user?.preferences?.displayWhatsNew?:false}" ng-controller="appCtrl" flow-prevent-drop="">
 <is:header/>
 <div class="container-fluid">
     <div class="row sidebar-hidden">

@@ -122,8 +122,9 @@
                                 <li id='product-${curProduct.id}' class="projects ${(curProduct.owner.id == user?.id) ? 'owner' : ''}">
                                     <a class="${(product?.id == curProduct.id) ? 'active' : ''}"
                                        href="${createLink(controller: "scrumOS", params: [product:curProduct.pkey])}/"
-                                       onClick="${(product?.id == curProduct.id) ? ' jQuery.icescrum.renderNotice(\''+g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')])+'\'); return false;' : ''}">
-                                        <is:truncated encodedHTML="true" size="25">${curProduct.name.encodeAsHTML()}</is:truncated>
+                                       title="${curProduct.name.encodeAsHTML()}"
+                                       ${(product?.id == curProduct.id) ? 'onClick="jQuery.icescrum.renderNotice(\''+g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')])+'\'); return false;"' : ''}>
+                                       ${curProduct.name.encodeAsHTML()}
                                     </a>
                                 </li>
                             </g:each>
