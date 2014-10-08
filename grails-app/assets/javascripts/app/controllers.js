@@ -24,7 +24,7 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($scope, $modal, Session) {
+controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS', function ($scope, $modal, Session, AUTH_EVENTS) {
     $scope.currentUser = Session.user;
     $scope.roles = Session.roles;
 
@@ -46,6 +46,10 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', function ($sco
             size:'sm'
         });
     };
+
+    $scope.$on(AUTH_EVENTS.notAuthenticated, function(event, e){
+        $scope.showAuthModal();
+    });
 
     $scope.menubarSortableOptions = {
         revert:true,

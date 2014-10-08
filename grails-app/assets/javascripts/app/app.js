@@ -65,44 +65,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                     onEnter: ["$state", "$modal", 'WizardHandler', function($state, $modal, WizardHandler) {
                         var modal = $modal.open({
                             templateUrl: "project/add",
-                            size:'lg',
-                            controller:["$scope", function($scope){
-                                $scope.product = {
-                                    startDate:new Date(),
-                                    endDate:new Date(new Date().setMonth(new Date().getMonth()+3))
-                                };
-
-                                $scope.$watchCollection('[product.startDate, product.endDate]', function(newValues){
-                                    $scope.productMinDate = new Date(newValues[0]).setDate(newValues[0].getDate()+1);
-                                    $scope.productMaxDate = new Date(newValues[1]).setDate(newValues[1].getDate()-1);
-                                });
-
-                                $scope.startDate = {
-                                    startingDay: 1,
-                                    opened:false,
-                                    format:'dd/MM/yyyy',
-                                    disabled:function(date, mode) {
-                                        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-                                    }
-
-                                };
-                                $scope.endDate = angular.copy($scope.startDate);
-
-                                $scope.openDatepicker = function($event, openEndDate) {
-                                    $event.preventDefault();
-                                    $event.stopPropagation();
-                                    if(openEndDate) {
-                                        $scope.endDate.opened = true;
-                                    } else {
-                                        $scope.startDate.opened = true;
-                                    }
-                                };
-
-                                $scope.isCurrentStep = function(index){
-                                    return WizardHandler.wizard().currentStepNumber() == index
-                                };
-                            }]
-                        });
+                            size: 'lg',
+                            controller: 'newProjectCtrl'
+                            });
                         modal.result.then(
                             function(result) {
                                 $state.transitionTo('root');

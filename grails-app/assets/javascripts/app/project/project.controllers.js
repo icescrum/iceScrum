@@ -20,6 +20,47 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ['$scope', function ($scope) {
-    $scope.formHolder = {};
+controllers.controller('projectCtrl', ["$scope", function($scope) {
+}]);
+
+controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', function($scope, WizardHandler){
+    $scope.product = {
+        startDate:new Date(),
+        endDate:new Date(new Date().setMonth(new Date().getMonth()+3)),
+        name:'test',
+        pkey:'AZERTY',
+        preferences:{
+            timezone:'Europe/Paris'
+        }
+    };
+
+    $scope.$watchCollection('[product.startDate, product.endDate]', function(newValues){
+        $scope.productMinDate = new Date(newValues[0]).setDate(newValues[0].getDate()+1);
+        $scope.productMaxDate = new Date(newValues[1]).setDate(newValues[1].getDate()-1);
+    });
+
+    $scope.startDate = {
+        startingDay: 1,
+        opened:false,
+        format:'dd/MM/yyyy',
+        disabled:function(date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        }
+
+    };
+    $scope.endDate = angular.copy($scope.startDate);
+
+    $scope.openDatepicker = function($event, openEndDate) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        if(openEndDate) {
+            $scope.endDate.opened = true;
+        } else {
+            $scope.startDate.opened = true;
+        }
+    };
+
+    $scope.isCurrentStep = function(index){
+        return WizardHandler.wizard().currentStepNumber() == index
+    };
 }]);

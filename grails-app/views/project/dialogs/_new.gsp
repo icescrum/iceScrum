@@ -22,14 +22,13 @@
 --}%
 
 <is:modal title="${message(code:'is.dialog.wizard')}" class="wizard" footer="${false}">
-    <form name="formHolder.projectForm"
+    <form name="newProjectForm"
           show-validation
           novalidate>
         <wizard class="row" style="height:450px;">
-
             <wz-step title="${message(code:"is.dialog.wizard.section.project")}">
                 <h4>${message(code:"is.dialog.wizard.section.project")}</h4>
-                <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')} {{ isCurrentStep(0) }}</p>
+                <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
                 <div class="row">
                     <div class="col-md-8 form-group">
                         <label for="name">${message(code:'is.product.name')}</label>
@@ -138,23 +137,25 @@
                              ng-bind-html="(product.description_html ? product.description_html : '<p>${message(code: 'todo.is.ui.product.description.placeholder')}</p>') | sanitize"></div>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-default pull-right" ng-disabled="formHolder.projectForm.$invalid" wz-next="validate()" value="Continue" />
+                <input type="submit" class="btn btn-default pull-right" ng-disabled="newProjectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.step2')}" />
             </wz-step>
 
             <wz-step title="${message(code:"is.dialog.wizard.section.team")}">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <h4>${message(code:"is.dialog.wizard.section.team")}</h4>
+                        <p class="help-block">${message(code:'is.dialog.wizard.section.team.description')}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Team</h4>
                         <label for="team.name">${message(code:'is.team.name')}</label>
                         <input name="team.name"
                                type="text"
                                class="form-control"
                                ng-model="team.name">
-                        <label>${message(code:'todo.is.ui.choose.member')}</label>
-                        <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
                     </div>
-                    <div class="col-md-6">
-                        <h4>Team members <small>3 members</small></h4>
+                    <div class="col-md-8">
+                        <h4>Team members<small>{{ team.members.length }} member(s)</small></h4>
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -164,20 +165,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>Avatar</td>
-                                <td>Mark Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <td>Avatar</td>
-                                <td>Jacob Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <td>Avatar</td>
-                                <td>Larry the Bird</td>
-                                <td>@twitter</td>
+                            <tr ng-repeat="member in team.members">
+                                <td>{{ member | userAvatar }}</td>
+                                <td>{{ member.name }}</td>
+                                <td>{{ member.role }}</td>
                             </tr>
                             </tbody>
                         </table>
