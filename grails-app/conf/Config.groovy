@@ -32,72 +32,54 @@ import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
 
-/*
- Public URL
-*/
-grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
+/* Public URL */
+grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http') ?: '8080'}/${appName}"
 
-/*
-Administration section
- */
+/* Administration */
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = true
-
 icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = true
 icescrum.alerts.default.from = "webmaster@icescrum.org"
 icescrum.alerts.emailPerAccount = false
-
 icescrum.attachments.enable = true
 icescrum.alerts.errors.to = "dev@icescrum.org"
+icescrum.gravatar.enable = true
 
-//Server TimeZone
-try{
+/* Server TimeZone */
+try {
     String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.timezone.default")
     if (extConfFile) {
         icescrum.timezone.default = extConfFile;
     }
-}catch(Exception e){
+} catch (Exception e) {
     icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
 }
-
 println "Server Timezone : ${icescrum.timezone.default}"
 
-/*
-Project administration section
- */
+/* Project administration */
 icescrum.project.import.enable = true
 icescrum.project.export.enable = true
 icescrum.project.creation.enable = true
 icescrum.project.private.enable = true
 icescrum.project.private.default = false
 
-/*
-  IceScrum css theme
- */
-icescrum.theme = 'is'
-icescrum.gravatar.enable = true
-
-/*
-  IceScrum base dir
-*/
-try{
+/* iceScrum base dir */
+try {
     String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.basedir")
     if (extConfFile) {
         icescrum.baseDir = extConfFile;
     }
-}catch(Exception e){
+} catch (Exception e) {
     icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
 }
 
-/*
-Autofollowing
- */
+/* Autofollowing */
 icescrum.auto_follow_productowner = true
 icescrum.auto_follow_stakeholder  = true
 icescrum.auto_follow_scrummaster  = true
 
-/*  Mail section  */
+/*  Mail */
 /*grails.mail.host = "smtp.gmail.com"
 grails.mail.port = 465
 grails.mail.username = "username@gmail.com"
@@ -107,10 +89,7 @@ grails.mail.props = ["mail.smtp.auth":"true",
                      "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
                      "mail.smtp.socketFactory.fallback":"false"]*/
 
-
-/*
-  Push section
- */
+/* Push */
 //remove total*
 icescrum.marshaller = [
         story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed'],
@@ -161,7 +140,7 @@ icescrum.restMarshaller = [
         acceptancetest:[]
 ]
 
-// Assets
+/* Assets */
 grails.assets.less.compile = 'less4j'
 grails.assets.excludes = ["**/*.less"]
 grails.assets.includes = ["styles.less"]
@@ -169,20 +148,18 @@ grails.assets.plugin."browser-detection".excludes = ["**/*"]
 grails.assets.plugin."commentable".excludes = ["**/*"]
 grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
 
-/* CORS Section */
+/* CORS */
 icescrum.cors.enable = true
 icescrum.cors.url.pattern = '/ws/*'
 
-/*
-    Check for update
-*/
+/* Check for update */
 icescrum.check.enable   = true
 icescrum.check.url      = 'http://www.icescrum.org'
 icescrum.check.path     = 'check.php'
 icescrum.check.interval = 1440 //in minutes (24h)
 icescrum.check.timeout  = 5000
 
-//Array for visual & catched errors
+/* Array for visual & catched errors */
 icescrum.errors = []
 /*
  Attachmentable section
@@ -201,13 +178,11 @@ grails.attachmentable.taskDir = {
 }
 
 grails.taggable.preserve.case = true
-/*
-  Default grails config
- */
 
+/* Default grails config */
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
-grails.mime.use.accept.header = false
+grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident'] // experiment
 grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
         xml: ['text/xml', 'application/xml'],
         text: 'text/plain',
@@ -226,6 +201,8 @@ grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
 grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"
 grails.converters.encoding = "UTF-8"
+
+grails.controllers.defaultScope = 'singleton' // big experiment
 
 // enable Sitemesh preprocessing of GSP pages
 grails.views.gsp.sitemesh.preprocess = true
@@ -262,13 +239,13 @@ environments {
 
 icescrum.securitydebug.enable = false
 
-// log4j configuration
-try{
+/* log4j configuration */
+try {
     String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.log.dir")
     if (extConfFile) {
         icescrum.log.dir = extConfFile;
     }
-}catch(Exception e){
+} catch (Exception e) {
     icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
 }
 println "log dir : ${icescrum.log.dir}"
@@ -335,7 +312,7 @@ log4j = {
             debug 'stdout', 'icescrumFileLog'
             error 'stdout', 'icescrumFileLog'
             info 'stdout', 'icescrumFileLog'
-        }else{
+        } else {
             debug 'icescrumFileLog'
             error 'icescrumFileLog'
             info 'icescrumFileLog'
@@ -347,12 +324,7 @@ log4j = {
     off 'org.codehaus.groovy.grails.web.converters.XMLParsingParameterCreationListener'
 }
 
-/*
-
-SECURITY SECTION
-
-*/
-
+/* Security */
 grails {
     plugin {
         springsecurity {
@@ -398,16 +370,12 @@ grails {
             ldap.authorities.retrieveGroupRoles = false
             ldap.authorities.groupSearchFilter = ""
             ldap.authorities.groupSearchBase = ""
-            ldap.active=false
+            ldap.active = false
         }
     }
 }
 
-/*
-
-CLIENT MODULES SECTION
-
-*/
+/* User config */
 environments {
     production {
         if (!grails.config.locations || !(grails.config.locations instanceof List)) {
@@ -442,13 +410,13 @@ environments {
         else {
             println "*** No external configuration file defined (${ApplicationSupport.CONFIG_ENV_NAME}). ***"
         }
-        try{
-            String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum_config_location")?: (String) new InitialContext().lookup("java:comp/env/icescrum.config.location")
+        try {
+            String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum_config_location") ?: (String) new InitialContext().lookup("java:comp/env/icescrum.config.location")
             if (extConfFile) {
                 grails.config.locations << extConfFile
                 println "*** JNDI defined config: file:${extConfFile}"
             }
-        }catch(Exception e){}
+        } catch (Exception e) {}
         println "(*) grails.config.locations = ${grails.config.locations}"
         println "--------------------------------------------------------"
     }
