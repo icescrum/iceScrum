@@ -25,15 +25,16 @@
     <form name="newProjectForm"
           show-validation
           novalidate>
-        <wizard class="row" style="height:450px;">
+        <wizard class="row">
             <wz-step title="${message(code:"is.dialog.wizard.section.project")}">
                 <h4>${message(code:"is.dialog.wizard.section.project")}</h4>
                 <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
                 <div class="row">
-                    <div class="col-md-8 form-group">
+                    <div class="col-sm-8 form-group">
                         <label for="name">${message(code:'is.product.name')}</label>
                         <p class="input-group">
                             <input required
+                                   autofocus="autofocus"
                                    name="name"
                                    type="text"
                                    class="form-control"
@@ -52,7 +53,7 @@
                             </span>
                         </p>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-sm-4 form-group">
                         <label for="pkey">${message(code:'is.product.pkey')}</label>
                         <input required
                                name="pkey"
@@ -66,7 +67,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 form-group">
+                    <div class="col-sm-4 form-group">
                         <label for="product.startDate">${message(code:'is.product.startDate')}</label>
                         <p class="input-group">
                             <input required
@@ -86,7 +87,7 @@
                             </span>
                         </p>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-sm-4 form-group">
                         <label for="product.endDate">${message(code:'is.release.endDate')}</label>
                         <p class="input-group">
                             <input required
@@ -107,7 +108,7 @@
                             </span>
                         </p>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-sm-4 form-group">
                         <label for="product.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
                         <is:localeTimeZone required="required"
                                            class="form-control"
@@ -118,7 +119,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 form-group">
+                    <div class="col-sm-12 form-group">
                         <label for="description">${message(code:'is.product.description')}</label>
                         <textarea is-markitup
                                   name="product.description"
@@ -137,38 +138,52 @@
                              ng-bind-html="(product.description_html ? product.description_html : '<p>${message(code: 'todo.is.ui.product.description.placeholder')}</p>') | sanitize"></div>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-default pull-right" ng-disabled="newProjectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.step2')}" />
+                <div class="wizard-next">
+                    <input type="submit" class="btn btn-default" ng-disabled="newProjectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.step2')}" />
+                </div>
             </wz-step>
 
             <wz-step title="${message(code:"is.dialog.wizard.section.team")}">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-sm-12">
                         <h4>${message(code:"is.dialog.wizard.section.team")}</h4>
                         <p class="help-block">${message(code:'is.dialog.wizard.section.team.description')}</p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-sm-5">
                         <h4>Team</h4>
                         <label for="team.name">${message(code:'is.team.name')}</label>
-                        <input name="team.name"
-                               type="text"
-                               class="form-control"
-                               ng-model="team.name">
+                        <p class="input-group typeahead">
+                            <input type="text"
+                                   name="team.name"
+                                   autofocus="autofocus"
+                                   ng-model="team.name"
+                                   typeahead="team as team.name for team in searchTeam($viewValue)"
+                                   typeahead-loading="searching"
+                                   typeahead-on-select="selectTeam($item, $model, $label)"
+                                   typeahead-template-url="select.or.create.team.html"
+                                   typeahead-input-formatter=""
+                                   ng-disabled="team.selected"
+                                   class="form-control">
+                            <span class="input-group-addon"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>
+                        </p>
                     </div>
-                    <div class="col-md-8">
-                        <h4>Team members<small>{{ team.members.length }} member(s)</small></h4>
+                    <div class="col-sm-7" ng-show="team.selected">
+                        <h4>{{ team.members.length }} team member(s):</h4>
                         <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>Name</th>
-                                <th>Role</th>
+                                <th>${message(code:'todo.is.ui.team.name')}</th>
+                                <th>${message(code:'todo.is.ui.team.role')}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="member in team.members">
-                                <td>{{ member | userAvatar }}</td>
-                                <td>{{ member.name }}</td>
-                                <td>{{ member.role }}</td>
+                                <td><img ng-src="{{ member | userAvatar }}" height="32" width="32" title="{{ member.username }}"></td>
+                                <td><span title="{{ member.username }}" class="text-overflow">{{ member.firstName }} {{ member.lastName }}</span></td>
+                                <td>
+                                    <input type="checkbox" name="member.role" ng-model="member.scrumMaster" ng-disabled="team.id">
+                                </td>
                             </tr>
                             </tbody>
                         </table>

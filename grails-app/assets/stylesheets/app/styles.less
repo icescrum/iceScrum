@@ -1665,17 +1665,12 @@ a[data-toggle="tab"] button {
     padding-bottom:0;
   }
   .steps {
-    height:inherit;
     padding-bottom:15px;
     padding-top:15px;
+    background: #fff;
   }
   .step {
     height:100%;
-    input[type=submit] {
-      position: absolute;
-      bottom: 15px;
-      right: 15px;
-    }
   }
   .steps-indicator {
     background-color:@light-bg;
@@ -1712,6 +1707,31 @@ a[data-toggle="tab"] button {
 
         }
       }
+    }
+  }
+  .wizard-next {
+    text-align:right;
+  }
+}
+
+@media (max-width:767px) {
+  .wizard {
+    .nav>li{
+      display: inline-block;
+      > a {
+        display: inline-block;
+      }
+    }
+  }
+}
+@media (min-width:768px){
+  .wizard {
+    .steps{
+    }
+    .steps-indicator {
+    }
+    .modal-body > form > div.row {
+      background: @light-bg;
     }
   }
 }
@@ -1803,3 +1823,12 @@ a[data-toggle="tab"] button {
 ul.dropdown-menu[datepicker-popup-wrap]{
   padding:6px;
 }
+
+.typeahead {
+    .input-group-addon {
+      &>i.fa-close {
+        cursor:pointer;
+      }
+    }
+}
+

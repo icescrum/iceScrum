@@ -23,7 +23,7 @@
 controllers.controller('projectCtrl', ["$scope", function($scope) {
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', function($scope, WizardHandler){
+controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', function($scope, WizardHandler, $http){
     $scope.product = {
         startDate:new Date(),
         endDate:new Date(new Date().setMonth(new Date().getMonth()+3)),
@@ -63,4 +63,32 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', function($s
     $scope.isCurrentStep = function(index){
         return WizardHandler.wizard().currentStepNumber() == index
     };
+
+    $scope.searchTeam = function(val){
+        return $http.get($scope.serverUrl+ '/team/search', {
+            params: {
+                value: val
+            }
+        }).then(function(response){
+            return response.data;
+        });
+    };
+
+    $scope.team = {};
+    $scope.selectTeam = function($item, $model, $label){
+        $scope.team = $model;
+        $scope.team.selected = true;
+        if ($model.members && $model.scrumMasters){
+            $scope.team.members = $model.members.map(function(member){
+                member.scrumMaster = _.find($model.scrumMasters, function(sm){ return member.id == sm.id }) ? true : false;
+                return member;
+            })
+        }
+    };
+    $scope.unSelectTeam = function(){
+        if ($scope.team.selected){
+            $scope.team = {};
+        }
+    }
+
 }]);

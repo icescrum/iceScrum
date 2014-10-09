@@ -15,12 +15,12 @@ angular.module("step.html", []).run(["$templateCache", function($templateCache) 
 angular.module("wizard.html", []).run(["$templateCache", function($templateCache) {
     $templateCache.put("wizard.html",
             "<div>\n" +
-            "    <div class=\"steps col-md-9 col-md-push-3\" ng-transclude></div>\n" +
-            "    <ul class=\"steps-indicator col-md-3 col-md-pull-9 steps-{{steps.length}} nav nav-list\" style=\"height:inherit;\" ng-if=\"!hideIndicators\">\n" +
+            "    <ul class=\"steps-indicator col-sm-3 steps-{{steps.length}} nav nav-list\" ng-if=\"!hideIndicators\">\n" +
             "      <li ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in steps\">\n" +
             "        <a ng-click=\"goTo(step)\">{{step.title || step.wzTitle}}</a>\n" +
             "      </li>\n" +
             "    </ul>\n" +
+            "    <div class=\"steps col-sm-9\" ng-transclude></div>\n" +
             "</div>\n" +
             "");
 }]);

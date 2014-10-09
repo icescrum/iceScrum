@@ -153,6 +153,20 @@ class ProjectController {
         }
     }
 
+    @Secured('owner()')
+    def delete() {
+        withProduct{ Product product ->
+            def id = product.id
+            try {
+                productService.delete(product)
+                render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
+            }
+        }
+    }
+
     @Secured('isAuthenticated()')
     def add() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
@@ -280,6 +294,77 @@ class ProjectController {
                 render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: product) + renderErrors(bean: team)]] as JSON)
                 return
             }
+        }
+    }
+
+    @Secured('owner() or scrumMaster()')
+    def archive() {
+        withProduct{ Product product ->
+            try {
+                productService.archive(product)
+                render(status: 200, contentType: 'application/json', text:[class:'Product',id:product.id] as JSON)
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
+            }
+        }
+    }
+
+    @Secured("hasRole('ROLE_ADMIN')")
+    def unArchive() {
+        withProduct{ Product product ->
+            try {
+                productService.unArchive(product)
+                render(status: 200, contentType: 'application/json', text:[class:'Product',id:product.id] as JSON)
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
+            }
+        }
+    }
+
+    @Secured(['stakeHolder() or inProduct()'])
+    def versions() {
+        withProduct { Product product ->
+            withFormat{
+                html {
+                    def versions = product.getVersions(false, true)
+                    render versions.collect{ [id:it, text:it] } as JSON
+                }
+                json { renderRESTJSON(text:product.versions) }
+                xml  { renderRESTXML(text:product.versions) }
+            }
+        }
+    }
+
+    @Secured(['permitAll()'])
+    def available() {
+        def result = false
+        //test for name
+        if (params.property == 'name'){
+            result = request.JSON.value && Product.countByName(request.JSON.value) == 0
+            //test for pkey
+        } else if (params.property == 'pkey'){
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && Product.countByPkey(request.JSON.value) == 0
+        }
+        render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
+    }
+
+    @Secured('inProduct()')
+    def addDocument() {
+        withProduct { Product product ->
+            def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:product, destController:'project'])
+            render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
+        }
+    }
+
+    @Secured('inProduct()')
+    def attachments() {
+        withProduct { Product product ->
+            def keptAttachments = params.list('product.attachments')
+            def addedAttachments = params.list('attachments')
+            def attachments = manageAttachments(product, keptAttachments, addedAttachments)
+            render status: 200, contentType: 'application/json', text: attachments as JSON
         }
     }
 
@@ -622,6 +707,177 @@ class ProjectController {
         }
     }
 
+    /**
+     * Export the project elements in multiple format (PDF, DOCX, RTF, ODT)
+     */
+    def print() {
+        withProduct{ Product product ->
+            def data
+            def chart = null
+
+            if (params.locationHash) {
+                chart = processLocationHash(params.locationHash.decodeURL()).action
+            }
+
+            switch (chart) {
+                case 'productCumulativeFlowChart':
+                    data = productService.cumulativeFlowValues(product)
+                    break
+                case 'productBurnupChart':
+                    data = productService.productBurnupValues(product)
+                    break
+                case 'productBurndownChart':
+                    data = productService.productBurndownValues(product)
+                    break
+                case 'productParkingLotChart':
+                    data = featureService.productParkingLotValues(product)
+                    break
+                case 'productVelocityChart':
+                    data = productService.productVelocityValues(product)
+                    break
+                case 'productVelocityCapacityChart':
+                    data = productService.productVelocityCapacityValues(product)
+                    break
+                default:
+                    chart = 'timeline'
+                    data = [
+                            [
+                                    releaseStateBundle: BundleUtils.releaseStates,
+                                    releases: product.releases,
+                                    productCumulativeFlowChart: productService.cumulativeFlowValues(product),
+                                    productBurnupChart: productService.productBurnupValues(product),
+                                    productBurndownChart: productService.productBurndownValues(product),
+                                    productParkingLotChart: featureService.productParkingLotValues(product),
+                                    productVelocityChart: productService.productVelocityValues(product),
+                                    productVelocityCapacityChart: productService.productVelocityCapacityValues(product)
+                            ]
+                    ]
+                    break
+            }
+
+            if (data.size() <= 0) {
+                returnError(text:message(code: 'is.report.error.no.data'))
+            } else if (params.get) {
+                outputJasperReport(chart ?: 'timeline', params.format, data, product.name, ['labels.projectName': product.name])
+            } else if (params.status) {
+                render(status: 200, contentType: 'application/json', text: session.progress as JSON)
+            } else {
+                session.progress = new ProgressSupport()
+                def dialog = g.render(template: '/scrumOS/report')
+                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+            }
+        }
+    }
+
+    def printPostits() {
+        withProduct{ Product product ->
+            def stories1 = []
+            def stories2 = []
+            def first = 0
+            def stories = Story.findAllByBacklog(product, [sort: 'state', order: 'asc'])
+            if (!stories) {
+                returnError(text:message(code: 'is.report.error.no.data'))
+                return
+            } else if (params.get) {
+                stories.each {
+                    def testsByState = it.countTestsByState()
+                    def story = [
+                            name: it.name,
+                            id: it.uid,
+                            effort: it.effort,
+                            state: message(code: BundleUtils.storyStates[it.state]),
+                            description: is.storyDescription([story: it, displayBR: true]),
+                            notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
+                            type: message(code: BundleUtils.storyTypes[it.type]),
+                            suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
+                            acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,
+                            estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.estimatedDate]) : null,
+                            plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.plannedDate]) : null,
+                            inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.inProgressDate]) : null,
+                            doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.doneDate ?: null]) : null,
+                            rank: it.rank ?: null,
+                            sprint: it.parentSprint?.orderNumber ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.orderNumber : null,
+                            creator: it.creator.firstName + ' ' + it.creator.lastName,
+                            feature: it.feature?.name ?: null,
+                            dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
+                            permalink:createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid),
+                            featureColor: it.feature?.color ?: null,
+                            nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
+                            nbTestsFailed: testsByState[AcceptanceTestState.FAILED],
+                            nbTestsSuccess: testsByState[AcceptanceTestState.SUCCESS]
+                    ]
+                    if (first == 0) {
+                        stories1 << story
+                        first = 1
+                    } else {
+                        stories2 << story
+                        first = 0
+                    }
+
+                }
+                outputJasperReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
+            } else if (params.status) {
+                render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
+            } else {
+                session.progress = new ProgressSupport()
+                def dialog = g.render(template: '/scrumOS/report')
+                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+            }
+        }
+    }
+
+    private exportProduct(Product product, boolean withProgress){
+
+        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+        def tempdir = System.getProperty("java.io.tmpdir");
+        tempdir = (tempdir.endsWith("/") || tempdir.endsWith("\\")) ? tempdir : tempdir + System.getProperty("file.separator")
+        def xml = new File(tempdir + projectName + '.xml')
+        try {
+            StreamCharBuffer xmlFile = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
+            xml.withWriter('UTF-8'){ out ->
+                xmlFile.writeTo(out)
+            }
+            def files = []
+
+            product.stories*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.actors*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.releases*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.sprints*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.attachments.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+
+            def tasks = []
+            product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }
+            tasks*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+
+            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+                response.setHeader(k, v)
+            }
+            response.contentType = 'application/zip'
+            ApplicationSupport.zipExportFile(response.outputStream, files, xml, 'attachments')
+        } catch (Exception e) {
+            if (log.debugEnabled)
+                e.printStackTrace()
+            if (withProgress)
+                session.progress.progressError(message(code: 'is.export.error'))
+        } finally {
+            xml.delete()
+        }
+    }
+
+    /**
+     * Parse the location hash string passed in argument
+     * @param locationHash
+     * @return A Map
+     */
+    private processLocationHash(String locationHash) {
+        def data = locationHash.split('/')
+        return [
+                controller: data[0].replace('#', ''),
+                action: data.size() > 1 ? data[1] : null
+        ]
+    }
+
     private def validateImport(def full = false, def erasableByUser = false) {
 
         def p = session['import'].product
@@ -688,295 +944,5 @@ class ProjectController {
             }
         }
         return beansErrors
-    }
-
-    /**
-     * Export the project elements in multiple format (PDF, DOCX, RTF, ODT)
-     */
-    def print() {
-        withProduct{ Product product ->
-            def data
-            def chart = null
-
-            if (params.locationHash) {
-                chart = processLocationHash(params.locationHash.decodeURL()).action
-            }
-
-            switch (chart) {
-                case 'productCumulativeFlowChart':
-                    data = productService.cumulativeFlowValues(product)
-                    break
-                case 'productBurnupChart':
-                    data = productService.productBurnupValues(product)
-                    break
-                case 'productBurndownChart':
-                    data = productService.productBurndownValues(product)
-                    break
-                case 'productParkingLotChart':
-                    data = featureService.productParkingLotValues(product)
-                    break
-                case 'productVelocityChart':
-                    data = productService.productVelocityValues(product)
-                    break
-                case 'productVelocityCapacityChart':
-                    data = productService.productVelocityCapacityValues(product)
-                    break
-                default:
-                    chart = 'timeline'
-                    data = [
-                            [
-                                    releaseStateBundle: BundleUtils.releaseStates,
-                                    releases: product.releases,
-                                    productCumulativeFlowChart: productService.cumulativeFlowValues(product),
-                                    productBurnupChart: productService.productBurnupValues(product),
-                                    productBurndownChart: productService.productBurndownValues(product),
-                                    productParkingLotChart: featureService.productParkingLotValues(product),
-                                    productVelocityChart: productService.productVelocityValues(product),
-                                    productVelocityCapacityChart: productService.productVelocityCapacityValues(product)
-                            ]
-                    ]
-                    break
-            }
-
-            if (data.size() <= 0) {
-                returnError(text:message(code: 'is.report.error.no.data'))
-            } else if (params.get) {
-                outputJasperReport(chart ?: 'timeline', params.format, data, product.name, ['labels.projectName': product.name])
-            } else if (params.status) {
-                render(status: 200, contentType: 'application/json', text: session.progress as JSON)
-            } else {
-                session.progress = new ProgressSupport()
-                def dialog = g.render(template: '/scrumOS/report')
-                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
-            }
-        }
-    }
-
-    @Secured('owner()')
-    def delete() {
-        withProduct{ Product product ->
-            def id = product.id
-            try {
-                productService.delete(product)
-                render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
-            }
-        }
-    }
-
-    @Secured('owner() or scrumMaster()')
-    def archive() {
-        withProduct{ Product product ->
-            try {
-                productService.archive(product)
-                render(status: 200, contentType: 'application/json', text:[class:'Product',id:product.id] as JSON)
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
-            }
-        }
-    }
-
-    @Secured("hasRole('ROLE_ADMIN')")
-    def unArchive() {
-        withProduct{ Product product ->
-            try {
-                productService.unArchive(product)
-                render(status: 200, contentType: 'application/json', text:[class:'Product',id:product.id] as JSON)
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
-            }
-        }
-    }
-
-    /**
-     * Parse the location hash string passed in argument
-     * @param locationHash
-     * @return A Map
-     */
-    private processLocationHash(String locationHash) {
-        def data = locationHash.split('/')
-        return [
-                controller: data[0].replace('#', ''),
-                action: data.size() > 1 ? data[1] : null
-        ]
-    }
-
-    def browse() {
-        def dialog = g.render(template: 'dialogs/browse')
-        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
-    }
-
-    def browseList() {
-
-        def term = '%'+params.term+'%' ?: '';
-        def options = [offset:params.int('offset') ?: 0, max: 9, sort: "name", order: "asc", cache:true]
-        def currentUser = springSecurityService.currentUser
-
-        def products = securityService.admin(springSecurityService.authentication) ? Product.findAllByNameIlike(term, options) : Product.searchPublicAndMyProducts(currentUser,term,options)
-        def total =  securityService.admin(springSecurityService.authentication) ? Product.countByNameIlike(term, [cache:true]) : Product.countPublicAndMyProducts(currentUser,term,[cache:true])[0]
-
-        def results = []
-        products?.each {
-            results << [id: it.id, label: it.name.encodeAsHTML(),
-                    image: asset.assetPath(src:'images/default.png')
-            ]
-        }
-
-        render template: "/components/browserColumn", plugin: 'icescrum-core', model: [name: 'project-browse', max: 9, total: total, term: params.term, offset: params.int('offset') ?: 0, browserCollection: results, actionDetails: 'browseDetails']
-    }
-
-    def browseDetails() {
-        withProduct('id'){ Product product ->
-            if (!securityService.owner(product, springSecurityService.authentication)){
-                if ((product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication))) {
-                    throw new AccessDeniedException('denied')
-                }
-            }
-            render template: "dialogs/browseDetails", model: [product: product]
-        }
-    }
-
-    def printPostits() {
-        withProduct{ Product product ->
-            def stories1 = []
-            def stories2 = []
-            def first = 0
-            def stories = Story.findAllByBacklog(product, [sort: 'state', order: 'asc'])
-            if (!stories) {
-                returnError(text:message(code: 'is.report.error.no.data'))
-                return
-            } else if (params.get) {
-                stories.each {
-                    def testsByState = it.countTestsByState()
-                    def story = [
-                            name: it.name,
-                            id: it.uid,
-                            effort: it.effort,
-                            state: message(code: BundleUtils.storyStates[it.state]),
-                            description: is.storyDescription([story: it, displayBR: true]),
-                            notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
-                            type: message(code: BundleUtils.storyTypes[it.type]),
-                            suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
-                            acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,
-                            estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.estimatedDate]) : null,
-                            plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.plannedDate]) : null,
-                            inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.inProgressDate]) : null,
-                            doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.doneDate ?: null]) : null,
-                            rank: it.rank ?: null,
-                            sprint: it.parentSprint?.orderNumber ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.orderNumber : null,
-                            creator: it.creator.firstName + ' ' + it.creator.lastName,
-                            feature: it.feature?.name ?: null,
-                            dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
-                            permalink:createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid),
-                            featureColor: it.feature?.color ?: null,
-                            nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
-                            nbTestsFailed: testsByState[AcceptanceTestState.FAILED],
-                            nbTestsSuccess: testsByState[AcceptanceTestState.SUCCESS]
-                    ]
-                    if (first == 0) {
-                        stories1 << story
-                        first = 1
-                    } else {
-                        stories2 << story
-                        first = 0
-                    }
-
-                }
-                outputJasperReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
-            } else if (params.status) {
-                render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
-            } else {
-                session.progress = new ProgressSupport()
-                def dialog = g.render(template: '/scrumOS/report')
-                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
-            }
-        }
-    }
-
-    def versions() {
-        withProduct { Product product ->
-            withFormat{
-                html {
-                    def versions = product.getVersions(false, true)
-                    render versions.collect{ [id:it, text:it] } as JSON
-                }
-                json { renderRESTJSON(text:product.versions) }
-                xml  { renderRESTXML(text:product.versions) }
-             }
-        }
-    }
-
-    @Secured(['permitAll()'])
-    def available() {
-        def result = false
-        //test for name
-        if (params.property == 'name'){
-            result = request.JSON.value && Product.countByName(request.JSON.value) == 0
-        //test for pkey
-        } else if (params.property == 'pkey'){
-            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && Product.countByPkey(request.JSON.value) == 0
-        }
-        render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
-    }
-
-    private exportProduct(Product product, boolean withProgress){
-
-        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
-        def tempdir = System.getProperty("java.io.tmpdir");
-        tempdir = (tempdir.endsWith("/") || tempdir.endsWith("\\")) ? tempdir : tempdir + System.getProperty("file.separator")
-        def xml = new File(tempdir + projectName + '.xml')
-        try {
-            StreamCharBuffer xmlFile = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
-            xml.withWriter('UTF-8'){ out ->
-                xmlFile.writeTo(out)
-            }
-            def files = []
-
-            product.stories*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.actors*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.releases*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.sprints*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.attachments.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-
-            def tasks = []
-            product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }
-            tasks*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-
-            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
-                response.setHeader(k, v)
-            }
-            response.contentType = 'application/zip'
-            ApplicationSupport.zipExportFile(response.outputStream, files, xml, 'attachments')
-        } catch (Exception e) {
-            if (log.debugEnabled)
-                e.printStackTrace()
-            if (withProgress)
-                session.progress.progressError(message(code: 'is.export.error'))
-        } finally {
-            xml.delete()
-        }
-    }
-
-    @Secured('inProduct()')
-    def addDocument() {
-        withProduct { Product product ->
-            def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:product, destController:'project'])
-            render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
-        }
-    }
-
-    @Secured('inProduct()')
-    def attachments() {
-        withProduct { Product product ->
-            def keptAttachments = params.list('product.attachments')
-            def addedAttachments = params.list('attachments')
-            def attachments = manageAttachments(product, keptAttachments, addedAttachments)
-            render status: 200, contentType: 'application/json', text: attachments as JSON
-        }
     }
 }

@@ -121,6 +121,8 @@ icescrum.marshaller = [
 
         product: [exclude:['cliches']],
 
+        team: [include:['members', 'scrumMasters']],
+
         task:[exclude:['impediment','participants'],
               include:['tags']],
 

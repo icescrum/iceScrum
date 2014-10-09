@@ -197,7 +197,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             }, true);
         }
     }
-}]).directive('match', function () {
+}]).directive('isMatch', function () {
     return {
         require: 'ngModel',
         restrict: 'A',

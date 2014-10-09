@@ -135,7 +135,7 @@
                         <input name="confirmPassword"
                                type="password"
                                class="form-control"
-                               match="dataUser.password"
+                               is-match="dataUser.password"
                                ng-model="passwordConfirm">
                     </div>
                 </div>

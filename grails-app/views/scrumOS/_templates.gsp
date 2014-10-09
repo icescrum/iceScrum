@@ -28,3 +28,9 @@
         {{ message }}
     </is:modal>
 </script>
+
+<script type="text/ng-template" id="select.or.create.team.html">
+<a>
+    <span ng-show="!match.model.id">${message(code:'todo.is.ui.create.team')} </span><span>{{ match.model.name }}</span>
+</a>
+</script>
