@@ -63,44 +63,28 @@ class StoryController {
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def save() {
-        if (!params.story){
+        def storyParams = params.story
+        if (!storyParams){
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
         def tasks
         def acceptanceTests
-        if (params.story.template?.id != null) {
-            def template = Template.findByParentProductAndId(Product.get(params.long('product')), params.story.template.id.toLong())
+        if (storyParams.template?.id != null) {
+            def template = Template.findByParentProductAndId(Product.get(params.long('product')), storyParams.template.id.toLong())
             def parsedTemplateData = JSON.parse(template.serializedData) as Map
             tasks = parsedTemplateData.remove('tasks')
             acceptanceTests = parsedTemplateData.remove('acceptanceTests')
-            params.story << parsedTemplateData
+            storyParams << parsedTemplateData
         }
-        params.story.remove('template')
-        if (params.story.feature?.id == '') {
-            params.story.'feature.id' = 'null'
-        } else if (params.story.feature?.id) {
-            params.story.'feature.id' = params.story.feature.id
-        }
-        //For REST XML..
-        params.story.remove('feature')
-
-        if (params.story.dependsOn?.id == '') {
-            params.story.'dependsOn.id' = 'null'
-        } else if (params.story.dependsOn?.id) {
-            params.story.'dependsOn.id' = params.story.dependsOn.id
-        }
-        //For REST XML..
-        params.story.remove('dependsOn')
-
         def story = new Story()
         try {
             Story.withTransaction {
-                bindData(story, this.params, [include:['name','description','notes','type','affectVersion','feature','dependsOn']], "story")
+                bindData(story, storyParams, [include:['name','description','notes','type','affectVersion','feature','dependsOn']])
                 def user = (User) springSecurityService.currentUser
                 def product = Product.get(params.long('product'))
                 storyService.save(story, product, user)
-                story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+                story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
                 tasks.each {
                     def task = new Task()
                     bindData(task, it, [include:['color', 'description', 'estimation', 'name', 'notes', 'tags']])
@@ -129,56 +113,40 @@ class StoryController {
     @Secured('isAuthenticated() and !archivedProduct()')
     def update() {
         withStories{ List<Story> stories ->
-
-            if (!params.story){
+            def storyParams = params.story
+            if (!storyParams){
                 returnError(text:message(code:'todo.is.ui.no.data'))
                 return
             }
-
             stories.each { Story story ->
                 if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
                     render(status: 403)
                     return
                 }
-
-                if ((request.format == 'xml' && params.story.feature == '') || params.story.feature?.id == '') {
-                    params.story.'feature.id' = 'null'
-                } else if (params.story.feature?.id) {
-                    params.story.'feature.id' = params.story.feature.id
-                }
-                params.story.remove('feature') //For REST XML..
-
-                if ((request.format == 'xml' && params.story.dependsOn == '') || params.story.dependsOn?.id == ''){
-                    params.story.'dependsOn.id' = 'null'
-                } else if (params.story.dependsOn?.id) {
-                    params.story.'dependsOn.id' = params.story.dependsOn.id
-                }
-                params.story.remove('dependsOn') //For REST XML..
-
                 Map props = [:]
-                if (params.story.rank != null) {
-                    props.rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
+                if (storyParams.rank != null) {
+                    props.rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
                 }
-                if (params.story.state != null) {
-                    props.state = params.story.state instanceof Number ? params.story.state : params.story.state.toInteger()
+                if (storyParams.state != null) {
+                    props.state = storyParams.state instanceof Number ? storyParams.state : storyParams.state.toInteger()
                 }
-                if (params.story.effort != null) {
-                    if (params.story.effort instanceof String) {
-                        def effort = params.story.effort.replaceAll(',', '.')
+                if (storyParams.effort != null) {
+                    if (storyParams.effort instanceof String) {
+                        def effort = storyParams.effort.replaceAll(',', '.')
                         props.effort = effort.isBigDecimal() ? effort.toBigDecimal() : effort // can be a "?"
                     } else {
-                        props.effort = params.story.effort
+                        props.effort = storyParams.effort
                     }
                 }
                 Story.withTransaction {
-                    if (params.story.tags != null) {
-                        story.tags = params.story.tags instanceof String ? params.story.tags.split(',') : (params.story.tags instanceof String[] || params.story.tags instanceof List) ? params.story.tags : null
+                    if (storyParams.tags != null) {
+                        story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
                     }
                     //for rest support
-                    if ((request.format == 'xml' && params.story.parentSprint == '') || params.story.parentSprint?.id == '') {
+                    if ((request.format == 'xml' && storyParams.parentSprint == '') || storyParams.parentSprint?.id == '') {
                         props.parentSprint = null
                     } else {
-                        def sprintId = params.story.'parentSprint.id'?.toLong() ?: params.story.parentSprint?.id?.toLong()
+                        def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
                         if (sprintId != null && story.parentSprint?.id != sprintId) {
                             def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
                             if (sprint) {
@@ -197,7 +165,7 @@ class StoryController {
                             }
                         }
                     }
-                    bindData(story, params, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']], "story")
+                    bindData(story, storyParams, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']])
                     storyService.update(story, props)
                 }
             }

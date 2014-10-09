@@ -21,7 +21,9 @@
  */
 
 
+import groovy.util.slurpersupport.GPathResult
 import org.geeks.browserdetection.ComparisonType
+import org.grails.databinding.xml.GPathResultMap
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -90,6 +92,19 @@ class IceScrumFilters {
                     }
                 } else {
                     webservices = true
+                }
+                if (webservices) {
+                    // Replace old parseRequest, warning: the request body (InputStream) cannot be read after that, that a one shot
+                    request.withFormat {
+                        json {
+                            params << request.JSON
+                        }
+                        xml {
+                            GPathResult xml = request.XML
+                            GPathResultMap xmlMap = new GPathResultMap(xml) // Warning: GPathResultMap does not support .remove() Map operation
+                            params[xml.name()] = xmlMap
+                        }
+                    }
                 }
                 return webservices
             }

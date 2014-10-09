@@ -39,22 +39,23 @@ class SprintController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def save() {
-        def releaseId = params.remove('parentRelease.id') ?: params.sprint.remove('parentRelease.id')
+        def sprintParams = params.sprint
+        def releaseId = params.parentRelease?.id ?: sprintParams.parentRelease?.id
         if (!releaseId) {
             returnError(text: message(code: 'is.release.error.not.exist'))
             return
         }
         withRelease(releaseId.toLong()) { Release release ->
-            if (params.sprint.startDate) {
-                params.sprint.startDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.startDate)
+            if (sprintParams.startDate) {
+                sprintParams.startDate = new Date().parse(message(code: 'is.date.format.short'), sprintParams.startDate)
             }
-            if (params.sprint.endDate) {
-                params.sprint.endDate = new Date().parse(message(code: 'is.date.format.short'), params.sprint.endDate)
+            if (sprintParams.endDate) {
+                sprintParams.endDate = new Date().parse(message(code: 'is.date.format.short'), sprintParams.endDate)
             }
             Sprint sprint = new Sprint()
             try {
                 Sprint.withTransaction {
-                    bindData(sprint, this.params, [include: ['resource', 'goal', 'startDate', 'endDate', 'deliveredVersion']], "sprint")
+                    bindData(sprint, sprintParams, [include: ['resource', 'goal', 'startDate', 'endDate', 'deliveredVersion']])
                     sprintService.save(sprint, release)
                 }
                 withFormat {
@@ -72,11 +73,12 @@ class SprintController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def update() {
+        def sprintParams = params.sprint
         withSprint { Sprint sprint ->
-            def startDate = params.sprint.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.startDate') ?: params.sprint.remove('startDate')) : sprint.startDate
-            def endDate = params.sprint.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.remove('sprint.endDate') ?: params.sprint.remove('endDate')) : sprint.endDate
+            def startDate = sprintParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), sprintParams.startDate) : sprint.startDate
+            def endDate = sprintParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), sprintParams.endDate) : sprint.endDate
             Sprint.withTransaction {
-                bindData(sprint, params, [include: ['resource', 'goal', 'deliveredVersion', 'retrospective', 'doneDefinition']], "sprint")
+                bindData(sprint, sprintParams, [include: ['resource', 'goal', 'deliveredVersion', 'retrospective', 'doneDefinition']])
                 sprintService.update(sprint, startDate, endDate)
             }
             withFormat {

@@ -47,15 +47,16 @@ class ActorController {
 
     @Secured('productOwner() and !archivedProduct()')
     def save() {
-        if (!params.actor){
+        def actorParams = params.actor
+        if (!actorParams){
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
         def actor = new Actor()
         try {
             Actor.withTransaction {
-                bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
-                actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+                bindData(actor, actorParams, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']])
+                actor.tags = actorParams.tags instanceof String ? actorParams.tags.split(',') : (actorParams.tags instanceof String[] || actorParams.tags instanceof List) ? actorParams.tags : null
                 def product = Product.load(params.long('product'))
                 actorService.save(actor, product)
             }
@@ -71,16 +72,17 @@ class ActorController {
 
     @Secured('productOwner() and !archivedProduct()')
     def update() {
+        def actorParams = params.actor
         withActors { List<Actor> actors ->
-            if (!params.actor) {
+            if (!actorParams) {
                 returnError(text: message(code: 'todo.is.ui.no.data'))
                 return
             }
             actors.each { Actor actor ->
                 Actor.withTransaction {
-                    bindData(actor, this.params, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']], "actor")
-                    if (params.actor.tags != null) {
-                        actor.tags = params.actor.tags instanceof String ? params.actor.tags.split(',') : (params.actor.tags instanceof String[] || params.actor.tags instanceof List) ? params.actor.tags : null
+                    bindData(actor, actorParams, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']])
+                    if (actorParams.tags != null) {
+                        actor.tags = actorParams.tags instanceof String ? actorParams.tags.split(',') : (actorParams.tags instanceof String[] || actorParams.tags instanceof List) ? actorParams.tags : null
                     }
                     actorService.update(actor)
                 }

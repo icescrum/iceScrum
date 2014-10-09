@@ -30,12 +30,12 @@ class RestUrlMappings {
             controller = 'scrumOS'
         }
 
-        "/ws/user"(parseRequest: true) {
+        "/ws/user" {
             controller = 'user'
             action = [POST: "forceRestSave", GET: "list"]
         }
 
-        "/ws/user/$id"(parseRequest: true) {
+        "/ws/user/$id" {
             action = [GET: "index", PUT: "update"]
             controller = 'user'
             constraints {
@@ -43,14 +43,14 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/$controller"(parseRequest: true) {
+        "/ws/p/$product/$controller" {
             action = [POST: "save", GET: "list"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/$id/sprint"(parseRequest: true) {
+        "/ws/p/$product/$id/sprint" {
             controller = 'sprint'
             action = [GET: "list"]
             constraints {
@@ -59,7 +59,7 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/task/$filter"(parseRequest: true) {
+        "/ws/p/$product/task/$filter" {
             controller = 'task'
             action = [GET: "list"]
             constraints {
@@ -68,7 +68,7 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/finder/tag"(parseRequest: true) {
+        "/ws/p/$product/finder/tag" {
             controller = 'finder'
             action = [GET: "tag"]
             constraints {
@@ -76,14 +76,14 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/finder"(parseRequest: true) {
+        "/ws/p/$product/finder" {
             controller = 'finder'
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/$sprint/task/$filter?"(parseRequest: true) {
+        "/ws/p/$product/$sprint/task/$filter?" {
             controller = 'task'
             action = [GET: "list"]
             constraints {
@@ -92,7 +92,7 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/$story/acceptanceTest"(parseRequest: true) {
+        "/ws/p/$product/$story/acceptanceTest" {
             controller = 'acceptanceTest'
             action = [GET: "list"]
             constraints {
@@ -101,7 +101,7 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/$controller/$id"(parseRequest: true) {
+        "/ws/p/$product/$controller/$id" {
             action = [GET: "index", PUT: "update", DELETE: "delete"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
@@ -109,7 +109,7 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/$controller/$id/$action"(parseRequest: true) {
+        "/ws/p/$product/$controller/$id/$action" {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)

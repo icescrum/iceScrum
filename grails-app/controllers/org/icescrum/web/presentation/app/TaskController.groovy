@@ -94,30 +94,28 @@ class TaskController {
 
     @Secured('inProduct() and !archivedProduct()')
     def save() {
-        if (params.task?.estimation instanceof String) {
+        def taskParams = params.task
+        if (!taskParams){
+            returnError(text:message(code:'todo.is.ui.no.data'))
+            return
+        }
+        if (taskParams?.estimation instanceof String) {
             try {
-                params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
+                taskParams.estimation = taskParams.estimation in ['?', ""] ? null : taskParams.estimation.replace(/,/, '.').toFloat()
             } catch (NumberFormatException e) {
                 returnError(text: message(code: 'is.task.error.estimation.number'))
                 return
             }
         }
-        if (params.task.sprint?.id) {
-            params.task.'backlog.id' = params.task.sprint.id // Bind "sprint" parameter to "backlog" property
-        } else if (params.task.'sprint.id') {
-            params.task.'backlog.id'= params.task.remove('sprint.id') // Bind "sprint" parameter to "backlog" property
+        if (!taskParams.backlog) {
+            taskParams.backlog = taskParams.sprint
         }
-        params.task.remove('sprint') //For REST XML..
-        if (params.task.parentStory?.id) {
-            params.task.'parentStory.id' = params.task.parentStory.id
-        }
-        params.task.remove('parentStory') //For REST XML..
         Task task = new Task()
         try {
             Task.withTransaction {
-                bindData(task, this.params, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']], "task")
+                bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']])
                 taskService.save(task, springSecurityService.currentUser)
-                task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
+                task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: task as JSON) }
@@ -133,49 +131,37 @@ class TaskController {
 
     @Secured('inProduct() and !archivedProduct()')
     def update() {
+        def taskParams = params.task
+        if (!taskParams) {
+            returnError(text: message(code: 'todo.is.ui.no.data'))
+            return
+        }
         withTask { Task task ->
             User user = (User) springSecurityService.currentUser
-            if (params.task.estimation instanceof String) {
+            if (taskParams.estimation instanceof String) {
                 try {
-                    params.task.estimation = params.task.estimation in ['?', ""] ? null : params.task.estimation.replace(/,/, '.').toFloat()
+                    taskParams.estimation = taskParams.estimation in ['?', ""] ? null : taskParams.estimation.replace(/,/, '.').toFloat()
                 } catch (NumberFormatException e) {
                     returnError(text: message(code: 'is.task.error.estimation.number'))
                     return
                 }
             }
-            if ((request.format == 'xml' && params.task.parentStory == '') || params.task.parentStory?.id == '') {
-                params.task.'parentStory.id' = 'null'
-            } else if (params.task.parentStory?.id) {
-                params.task.'parentStory.id' = params.task.parentStory.id
+            if (!taskParams.backlog) {
+                taskParams.backlog = taskParams.sprint
             }
-            params.task.remove('parentStory') //For REST XML..
-            if (params.task.'parentStory.id' && params.task.'parentStory.id' != 'null') {
-                params.task.type = ''
-            }
-            if (params.task.type && params.task.type != 'null') {
-                params.task.'parentStory.id' = 'null'
-            }
-            if (params.task.sprint?.id) {
-                params.task.'backlog.id' = params.task.sprint.id // Bind "sprint" parameter to "backlog" property
-            } else if (params.task.'sprint.id') {
-                params.task.'backlog.id'= params.task.remove('sprint.id') // Bind "sprint" parameter to "backlog" property
-            }
-
             def props = [:]
-            Integer rank = params.task.rank instanceof String ? params.task.rank.toInteger() : params.task.rank
+            Integer rank = taskParams.rank instanceof String ? taskParams.rank.toInteger() : taskParams.rank
             if (rank != null) {
                 props.rank = rank
             }
-            Integer state = params.task.state instanceof String ? params.task.state.toInteger() : params.task.state
+            Integer state = taskParams.state instanceof String ? taskParams.state.toInteger() : taskParams.state
             if (state != null) {
                 props.state = state
             }
-
-            params.task.remove('sprint') //For REST XML..
             Task.withTransaction {
-                bindData(task, this.params, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']], "task")
+                bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']])
                 taskService.update(task, user, false, props)
-                task.tags = params.task.tags instanceof String ? params.task.tags.split(',') : (params.task.tags instanceof String[] || params.task.tags instanceof List) ? params.task.tags : null
+                task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
                 withFormat {
                     html { render(status: 200, contentType: 'application/json', text: task as JSON) }
                     json { renderRESTJSON(text: task) }

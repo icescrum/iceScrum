@@ -58,17 +58,18 @@ class AcceptanceTestController {
 
     @Secured('inProduct() and !archivedProduct()')
     def save() {
-        if (params.acceptanceTest.parentStory.id) {
-            params.acceptanceTest.'parentStory.id' = params.acceptanceTest.parentStory.id
+        def acceptanceTestParams = params.acceptanceTest
+        if (!acceptanceTestParams) {
+            returnError(text: message(code: 'todo.is.ui.no.data'))
+            return
         }
-        params.acceptanceTest.remove('parentStory') //For REST XML..
-        def storyId = params.acceptanceTest.'parentStory.id'.toLong()
+        def storyId = acceptanceTestParams.parentStory.id.toLong()
         withStory(storyId) { story ->
             if (story.state >= Story.STATE_DONE) {
                 returnError(text: message(code: 'is.acceptanceTest.error.save.storyState'))
                 return
             }
-            def state = params.acceptanceTest.state?.toInteger()
+            def state = acceptanceTestParams.state?.toInteger()
             def newState
             if (state != null) {
                 if (AcceptanceTest.AcceptanceTestState.exists(state)) {
@@ -89,7 +90,7 @@ class AcceptanceTestController {
                     if (newState) {
                         acceptanceTest.stateEnum = newState
                     }
-                    bindData(acceptanceTest, this.params, [include:['name','description']], "acceptanceTest")
+                    bindData(acceptanceTest, acceptanceTestParams, [include:['name','description']])
                     acceptanceTestService.save(acceptanceTest, story, user)
                 }
             } catch (RuntimeException e) {
@@ -106,13 +107,18 @@ class AcceptanceTestController {
 
     @Secured('inProduct() and !archivedProduct()')
     def update() {
+        def acceptanceTestParams = params.acceptanceTest
+        if (!acceptanceTestParams) {
+            returnError(text: message(code: 'todo.is.ui.no.data'))
+            return
+        }
         withAcceptanceTest { AcceptanceTest acceptanceTest ->
             def story = acceptanceTest.parentStory
             if (story.state >= Story.STATE_DONE) {
                 returnError(text: message(code: 'is.acceptanceTest.error.update.storyState'))
                 return
             }
-            def state = params.acceptanceTest.state?.toInteger()
+            def state = acceptanceTestParams.state?.toInteger()
             def newState
             if (state != null) {
                 if (AcceptanceTest.AcceptanceTestState.exists(state)) {
@@ -130,7 +136,7 @@ class AcceptanceTestController {
                 if (newState) {
                     acceptanceTest.stateEnum = newState
                 }
-                bindData(acceptanceTest, this.params, [include: ['name', 'description']], "acceptanceTest")
+                bindData(acceptanceTest, acceptanceTestParams, [include: ['name', 'description']])
                 acceptanceTestService.update(acceptanceTest)
             }
             withFormat {

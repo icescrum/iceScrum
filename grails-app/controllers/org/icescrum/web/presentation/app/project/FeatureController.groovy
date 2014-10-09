@@ -40,15 +40,16 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def save() {
-        if (!params.feature){
+        def featureParams = params.feature
+        if (!featureParams){
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
         def feature = new Feature()
         try {
             Feature.withTransaction {
-                bindData(feature, this.params, [include:['name','description','notes','color','type','value','rank']], "feature")
-                feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
+                bindData(feature, featureParams, [include:['name','description','notes','color','type','value','rank']])
+                feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
                 def product = Product.load(params.long('product'))
                 featureService.save(feature, product)
                 entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature]) // TODO check if still needed
@@ -66,15 +67,16 @@ class FeatureController {
     @Secured('productOwner() and !archivedProduct()')
     def update() {
         withFeatures { List<Feature> features ->
-            if (!params.feature) {
+            def featureParams = params.feature
+            if (!featureParams) {
                 returnError(text: message(code: 'todo.is.ui.no.data'))
                 return
             }
             features.each { Feature feature ->
                 Feature.withTransaction {
-                    bindData(feature, this.params, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']], "feature")
-                    if (params.feature.tags != null) {
-                        feature.tags = params.feature.tags instanceof String ? params.feature.tags.split(',') : (params.feature.tags instanceof String[] || params.feature.tags instanceof List) ? params.feature.tags : null
+                    bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
+                    if (featureParams.tags != null) {
+                        feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
                     }
                     featureService.update(feature)
                     entry.hook(id: "${controllerName}-${actionName}", model: [feature: feature]) // TODO check if still needed

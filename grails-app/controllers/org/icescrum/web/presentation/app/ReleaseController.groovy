@@ -41,16 +41,17 @@ class ReleaseController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def save() {
         withProduct { Product product ->
-            if (params.release.startDate) {
-                params.release.startDate = new Date().parse(message(code: 'is.date.format.short'), params.release.startDate)
+            def releaseParams = params.release
+            if (releaseParams.startDate) {
+                releaseParams.startDate = new Date().parse(message(code: 'is.date.format.short'), releaseParams.startDate)
             }
-            if (params.release.endDate) {
-                params.release.endDate = new Date().parse(message(code: 'is.date.format.short'), params.release.endDate)
+            if (releaseParams.endDate) {
+                releaseParams.endDate = new Date().parse(message(code: 'is.date.format.short'), releaseParams.endDate)
             }
             def release = new Release()
             try {
                 Release.withTransaction {
-                    bindData(release, this.params, [include:['name','goal','startDate','endDate']], "release")
+                    bindData(release, releaseParams, [include:['name','goal','startDate','endDate']])
                     releaseService.save(release, product)
                 }
                 withFormat {
@@ -68,15 +69,16 @@ class ReleaseController {
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def update() {
+        def releaseParams = params.release
         withRelease{ Release release ->
             if (release.state == Release.STATE_DONE){
                 returnError(text:message(code:'is.release.error.update.state.done'))
                 return
             }
-            def startDate = params.release.startDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.startDate) : release.startDate
-            def endDate = params.release.endDate ? new Date().parse(message(code: 'is.date.format.short'), params.release.endDate) : release.endDate
+            def startDate = releaseParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.startDate) : release.startDate
+            def endDate = releaseParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.endDate) : release.endDate
             Release.withTransaction {
-                bindData(release, this.params, [include: ['name', 'goal', 'vision']], "release")
+                bindData(release, releaseParams, [include: ['name', 'goal', 'vision']], "release")
                 releaseService.update(release, startDate, endDate)
             }
             withFormat {
