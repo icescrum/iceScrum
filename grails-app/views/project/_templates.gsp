@@ -21,3 +21,4 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:render template="/project/templates/form" />
+<g:render template="/project/templates/form.practices" />

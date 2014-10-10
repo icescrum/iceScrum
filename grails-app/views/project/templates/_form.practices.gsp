@@ -20,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<script type="script/ng-template" id="form.practices.html">
-
+<script type="text/ng-template" id="form.practices.html">
+    <h4>${message(code:"is.dialog.wizard.section.project")}</h4>
+    <p class="help-block">${message(code:'is.dialog.wizard.section.project.practices')}</p>
 </script>

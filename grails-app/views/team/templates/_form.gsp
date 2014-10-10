@@ -30,7 +30,8 @@
             <h4>${message(code:'is.team')}</h4>
             <label for="team.name">${message(code:'todo.is.ui.create.or.select.team')}</label>
             <p class="input-group typeahead">
-                <input required
+                <input autocomplete="off"
+                       required
                        type="text"
                        name="team.name"
                        autofocus="autofocus"
@@ -51,7 +52,8 @@
             <div ng-show="!team.id">
                 <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
                 <p class="input-group typeahead">
-                    <input type="text"
+                    <input autocomplete="off"
+                           type="text"
                            name="member.search"
                            id="member.search"
                            autofocus="autofocus"
