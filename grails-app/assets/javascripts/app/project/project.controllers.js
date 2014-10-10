@@ -129,7 +129,6 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', 'S
     };
 
     $scope.removeTeamMember = function($member){
-        debugger;
         $scope.team.members = _.filter($scope.team.members, function(_member){
             return _member.email != $member.email;
         });

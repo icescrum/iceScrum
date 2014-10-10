@@ -125,7 +125,10 @@
 
 <div class='templates'>
     <g:render template="templates"/>
+    <g:render template="/project/templates"/>
+    <g:render template="/team/templates"/>
     <g:if test="${params.product}">
+        <g:render template="/story/templates"/>
         <g:render template="/story/templates"/>
         <g:render template="/task/templates"/>
         <g:render template="/comment/templates"/>
