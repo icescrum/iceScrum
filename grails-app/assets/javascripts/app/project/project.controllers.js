@@ -23,7 +23,7 @@
 controllers.controller('projectCtrl', ["$scope", function($scope) {
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', function($scope, WizardHandler, $http){
+controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', 'Session', function($scope, WizardHandler, $http, Session){
     $scope.product = {
         startDate:new Date(),
         endDate:new Date(new Date().setMonth(new Date().getMonth()+3)),
@@ -64,6 +64,8 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', fu
         return WizardHandler.wizard().currentStepNumber() == index
     };
 
+
+    $scope.team = {};
     $scope.searchTeam = function(val){
         return $http.get($scope.serverUrl+ '/team/search', {
             params: {
@@ -74,10 +76,17 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', fu
         });
     };
 
-    $scope.team = {};
     $scope.selectTeam = function($item, $model, $label){
         $scope.team = $model;
         $scope.team.selected = true;
+        //Add current user to the team
+        if (!$scope.team.id){
+            var current = angular.copy(Session.user);
+            $scope.team.members = [];
+            $scope.team.members.push(current);
+            $scope.team.scrumMasters = [];
+            $scope.team.scrumMasters.push(current);
+        }
         if ($model.members && $model.scrumMasters){
             $scope.team.members = $model.members.map(function(member){
                 member.scrumMaster = _.find($model.scrumMasters, function(sm){ return member.id == sm.id }) ? true : false;
@@ -85,10 +94,45 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', fu
             })
         }
     };
+
     $scope.unSelectTeam = function(){
         if ($scope.team.selected){
             $scope.team = {};
+            $scope.member = {};
         }
-    }
+    };
+
+    $scope.member = {};
+    $scope.searchMembers = function(val){
+        return $http.get($scope.serverUrl+ '/user/search', {
+            params: {
+                value: val,
+                invit:true
+            }
+        }).then(function(response){
+            return _.chain(response.data)
+                        .filter(function(member){
+                            return !_.find($scope.team.members, function(_member){
+                                return member.email == _member.email;
+                            });
+                        }).map(function(member){
+                            member.name = member.firstName+' '+member.lastName;
+                            return member;
+                        })
+                    .value();
+        });
+    };
+
+    $scope.addTeamMember = function($item, $model, $label){
+        $scope.team.members.push($model);
+        $scope.member = {};
+    };
+
+    $scope.removeTeamMember = function($member){
+        debugger;
+        $scope.team.members = _.filter($scope.team.members, function(_member){
+            return _member.email != $member.email;
+        });
+    };
 
 }]);

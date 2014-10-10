@@ -34,3 +34,9 @@
     <span ng-show="!match.model.id">${message(code:'todo.is.ui.create.team')} </span><span>{{ match.model.name }}</span>
 </a>
 </script>
+
+<script type="text/ng-template" id="select.member.html">
+<a>
+    <span ng-show="!match.model.id">${message(code:'todo.is.ui.user.will.be.invited')} </span><span>{{ match.model.firstName }} {{ match.model.lastName }}</span>
+</a>
+</script>

@@ -33,7 +33,7 @@ filters
     .filter('userAvatar', ['$rootScope', function($rootScope) {
         return function(user) {
             var nocache = (new Date(user.lastUpdated).getTime());
-            return user ?  $rootScope.serverUrl + '/user/avatar/'+ user.id + '?test=' + nocache : '';
+            return user.id ?  $rootScope.serverUrl + '/user/avatar/'+ user.id + '?test=' + nocache : $rootScope.serverUrl + '/assets/avatars/avatar.png';
         };
     }])
     .filter('contrastColor', function() {

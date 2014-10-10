@@ -30,7 +30,7 @@
                 <h4>${message(code:"is.dialog.wizard.section.project")}</h4>
                 <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
                 <div class="row">
-                    <div class="col-sm-8 form-group">
+                    <div class="col-sm-8 col-xs-8 form-group">
                         <label for="name">${message(code:'is.product.name')}</label>
                         <p class="input-group">
                             <input required
@@ -42,18 +42,18 @@
                                    ng-required="isCurrentStep(1)"
                                    ng-remote-validate="/project/available/name">
                             <span class="input-group-btn">
-                                <button class="btn"
+                                <a class="btn"
                                         tooltip="{{product.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.product.preferences.project.public')}' }}"
                                         tooltip-append-to-body="true"
                                         type="button"
                                         ng-click="product.preferences.hidden = !product.preferences.hidden"
                                         ng-class="{ 'btn-danger': product.preferences.hidden, 'btn-success': !product.preferences.hidden }">
                                     <i class="fa fa-lock" ng-class="{ 'fa-lock': product.preferences.hidden, 'fa-unlock': !product.preferences.hidden }"></i>
-                                </button>
+                                </a>
                             </span>
                         </p>
                     </div>
-                    <div class="col-sm-4 form-group">
+                    <div class="col-sm-4 col-xs-4 form-group">
                         <label for="pkey">${message(code:'is.product.pkey')}</label>
                         <input required
                                name="pkey"
@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4 form-group">
+                    <div class="col-sm-4 col-xs-6 form-group">
                         <label for="product.startDate">${message(code:'is.product.startDate')}</label>
                         <p class="input-group">
                             <input required
@@ -87,7 +87,7 @@
                             </span>
                         </p>
                     </div>
-                    <div class="col-sm-4 form-group">
+                    <div class="col-sm-4 col-xs-6 form-group">
                         <label for="product.endDate">${message(code:'is.release.endDate')}</label>
                         <p class="input-group">
                             <input required
@@ -108,7 +108,7 @@
                             </span>
                         </p>
                     </div>
-                    <div class="col-sm-4 form-group">
+                    <div class="col-sm-4 col-xs-12 form-group">
                         <label for="product.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
                         <is:localeTimeZone required="required"
                                            class="form-control"
@@ -150,38 +150,65 @@
                         <p class="help-block">${message(code:'is.dialog.wizard.section.team.description')}</p>
                     </div>
                     <div class="col-sm-5">
-                        <h4>Team</h4>
-                        <label for="team.name">${message(code:'is.team.name')}</label>
+                        <h4>${message(code:'is.team')}</h4>
+                        <label for="team.name">${message(code:'todo.is.ui.create.or.select.team')}</label>
                         <p class="input-group typeahead">
-                            <input type="text"
+                            <input required
+                                   type="text"
                                    name="team.name"
                                    autofocus="autofocus"
-                                   ng-model="team.name"
+                                   class="form-control"
                                    typeahead="team as team.name for team in searchTeam($viewValue)"
                                    typeahead-loading="searching"
                                    typeahead-on-select="selectTeam($item, $model, $label)"
                                    typeahead-template-url="select.or.create.team.html"
-                                   typeahead-input-formatter=""
                                    ng-disabled="team.selected"
-                                   class="form-control">
+                                   typeahead-wait-ms="250"
+                                   ng-model="team.name"
+                                   ng-required="isCurrentStep(2)">
                             <span class="input-group-addon"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>
                         </p>
                     </div>
                     <div class="col-sm-7" ng-show="team.selected">
-                        <h4>{{ team.members.length }} team member(s):</h4>
-                        <table class="table table-striped">
+                        <h4>{{ team.name }} <small>{{ team.members.length }} ${message(code:'todo.is.ui.team.members')}</small></h4>
+                        <div ng-show="!team.id">
+                            <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
+                            <p class="input-group typeahead">
+                                <input type="text"
+                                       name="member.search"
+                                       id="member.search"
+                                       autofocus="autofocus"
+                                       class="form-control"
+                                       ng-model="member.name"
+                                       typeahead="member as member.name for member in searchMembers($viewValue)"
+                                       typeahead-loading="searchingMember"
+                                       typeahead-wait-ms="250"
+                                       typeahead-on-select="addTeamMember($item, $model, $label)"
+                                       typeahead-template-url="select.member.html">
+                                <span class="input-group-addon">
+                                    <i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
+                                </span>
+                            </p>
+                        </div>
+                        <table class="table table-striped table-responsive">
                             <thead>
                             <tr>
-                                <th></th>
+                                <th>${message(code:'todo.is.ui.team.members')}</th>
                                 <th>${message(code:'todo.is.ui.team.name')}</th>
-                                <th>${message(code:'todo.is.ui.team.role')}</th>
+                                <th class="text-right">${message(code:'todo.is.ui.team.role')}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="member in team.members">
-                                <td><img ng-src="{{ member | userAvatar }}" height="32" width="32" title="{{ member.username }}"></td>
-                                <td><span title="{{ member.username }}" class="text-overflow">{{ member.firstName }} {{ member.lastName }}</span></td>
                                 <td>
+                                    <a class="btn btn-danger btn-xs" ng-click="removeTeamMember(member)" ng-show="!team.id"><i class="fa fa-close"></i></a>
+                                    <img ng-src="{{ member | userAvatar }}" height="24" width="24" title="{{ member.username }}">
+                                </td>
+                                <td>
+                                    <span title="{{ member.username }}" class="text-overflow">{{ member.firstName }} {{ member.lastName }}</span>
+                                    <span ng-show="!member.id"><small>${message(code:'todo.is.ui.user.will.be.invited')}</small></span>
+                                </td>
+                                <td class="text-right">
                                     <input type="checkbox" name="member.role" ng-model="member.scrumMaster" ng-disabled="team.id">
                                 </td>
                             </tr>
@@ -189,15 +216,21 @@
                         </table>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-default pull-right" wz-next value="Go on" />
+                <div class="wizard-next">
+                    <input type="submit" class="btn btn-default" ng-disabled="!team.members.length > 0" wz-next value="${message(code:'todo.is.ui.wizard.step3')}" />
+                </div>
             </wz-step>
 
             <wz-step title="${message(code:"is.dialog.wizard.section.options")}">
-                <input type="submit" class="btn btn-default pull-right" wz-next value="Finish now" />
+                <div class="wizard-next">
+                    <input type="submit" class="btn btn-default" ng-disabled="newProjectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.step4')}" />
+                </div>
             </wz-step>
 
             <wz-step title="${message(code:"is.dialog.wizard.section.starting")}">
-                <input type="submit" class="btn btn-default pull-right" wz-next value="Finish now" />
+                <div class="wizard-next">
+                    <input type="submit" class="btn btn-default" ng-disabled="newProjectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.finish')}" />
+                </div>
             </wz-step>
 
         </wizard>

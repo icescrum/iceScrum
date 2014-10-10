@@ -24,6 +24,7 @@
 package org.icescrum.web.presentation.app
 
 import org.apache.commons.io.FilenameUtils
+import org.apache.commons.validator.GenericValidator
 import org.icescrum.components.FileUploadInfo
 import org.icescrum.components.UtilsWebComponents
 import org.springframework.security.acls.domain.BasePermission
@@ -333,20 +334,17 @@ class UserController {
         redirect(url: is.createScrumLink(controller: 'user', action: 'profile', id: params.id))
     }
 
-    @Secured('isAuthenticated()')
-    def findUsers() {
-        def users
-        def results = []
-        users = User.findUsersLike(params.term ?: '',false).list()
-        users?.each { User user ->
-            if(user.enabled || params.showDisabled) {
-                results << [id: user.id,
-                            name: "$user.firstName $user.lastName",
-                            avatar: is.avatar([user:user,link:true]),
-                            activity: "${user.preferences.activity ?: ''}"]
-            }
+    @Secured(['isAuthenticated()'])
+    def search() {
+        def users = User.findUsersLike(params.value ?: '', false, params.boolean('showDisabled'), [:])
+        if (!users && params.boolean('invit') && GenericValidator.isEmail(params.value)){
+            users << [id:null, firstName:params.value.split('@')[0], lastName:'', email:params.value]
         }
-        render(results as JSON)
+        withFormat{
+            html { render(status:200, contentType:'application/json', text: users as JSON) }
+            json { renderRESTJSON(text:users) }
+            xml  { renderRESTXML(text:users) }
+        }
     }
 
     def current() {
