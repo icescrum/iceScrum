@@ -37,6 +37,7 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$controller', 'selected', 'FeatureService', 'StoryService', 'FormService',
     function($scope, $state, $timeout, $controller, selected, FeatureService, StoryService, FormService) {
         $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
+        $scope.formHolder = {};
         $scope.feature = selected;
         $scope.initEditableFeature = function() {
             $scope.editableFeature = angular.copy(selected);
@@ -85,15 +86,12 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-        $scope.enableEditableFeatureMode = function() {
-            $scope.setEditableMode(true);
-        };
-        $scope.disableEditableStoryMode = function() {
+        $scope.disableEditableFeatureMode = function() {
             $scope.setEditableMode(false);
             $scope.initEditableFeature();
         };
-        $scope.getEditableFeatureMode = function(feature) {
-            return $scope.getEditableMode() && $scope.authorizedFeature('update', feature);
+        $scope.getShowFeatureForm = function(feature) {
+            return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedFeature('update', feature);
         };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
@@ -112,6 +110,9 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$timeout', '$
                 });
             }
         });
+        $scope.formHover = function(value) {
+            $scope.formHolder.formHover = value;
+        };
     }]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', function($scope, $state, $controller, FeatureService) {

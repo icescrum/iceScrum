@@ -100,16 +100,6 @@
                     <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
                     <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
                 </button>
-                <button class="btn btn-primary"
-                        type="button"
-                        tooltip="${message(code:'todo.is.ui.editable.enable')}"
-                        ng-if="authorizedStory('update', story) && !getEditableMode(story)"
-                        ng-click="enableEditableStoryMode()"><span class="fa fa-pencil"></span></button>
-                <button class="btn btn-default"
-                        type="button"
-                        tooltip="${message(code:'todo.is.ui.editable.disable')}"
-                        ng-if="getEditableStoryMode(story)"
-                        ng-click="confirm({ message: '${message(code: 'todo.is.ui.dirty.confirm')}', callback: disableEditableStoryMode, condition: isDirty() })"><span class="fa fa-pencil-square-o"></span></button>
             </div>
             <div class="actions-right">
                 <div class="btn-group pull-right">
@@ -182,7 +172,10 @@
          class="panel-body">
         <form ng-submit="update(editableStory)"
               name='formHolder.storyForm'
-              ng-class="{'form-disabled': !getEditableStoryMode(story)}"
+              class="form-editable"
+              ng-mouseleave="formHover(false)"
+              ng-mouseover="formHover(true)"
+              ng-class="{'form-editing': getShowStoryForm(story)}"
               show-validation
               novalidate>
             <div class="clearfix no-padding">
@@ -190,18 +183,19 @@
                     <label for="name">${message(code:'is.story.name')}</label>
                     <input required
                            ng-maxlength="100"
-                           ng-disabled="!getEditableStoryMode(story)"
+                           ng-focus="setEditableMode(true)"
+                           ng-disabled="!getShowStoryForm(story)"
                            name="name"
                            ng-model="editableStory.name"
                            type="text"
                            class="form-control">
                 </div>
-                <div class="form-half" ng-switch="getEditableStoryMode(story) || !editableStory.feature">
+                <div class="form-half">
                     <label for="feature">${message(code:'is.feature')}</label>
-                    <div ng-switch-when="true"
-                         ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
+                    <div ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
                         <input type="hidden"
-                               ng-disabled="!getEditableStoryMode(story)"
+                               ng-focus="setEditableMode(true)"
+                               ng-disabled="!getShowStoryForm(story)"
                                class="form-control"
                                value="{{ editableStory.feature.id ? editableStory.feature : '' }}"
                                name="feature"
@@ -216,12 +210,6 @@
                             </a>
                         </span>
                     </div>
-                    <a ng-switch-default href="#feature/{{ editableStory.feature.id }}">
-                        <input type="text"
-                               class="form-control"
-                               value="{{ editableStory.feature.name }}"
-                               disabled="disabled"/>
-                    </a>
                 </div>
             </div>
             <div class="clearfix no-padding">
@@ -229,7 +217,8 @@
                      ng-class="{ 'form-half' : editableStory.type == 2 }">
                     <label for="type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
-                            ng-disabled="!getEditableStoryMode(story)"
+                            ng-focus="setEditableMode(true)"
+                            ng-disabled="!getShowStoryForm(story)"
                             name="type"
                             ng-model="editableStory.type"
                             ui-select2>
@@ -240,7 +229,8 @@
                      ng-show="editableStory.type == 2">
                     <label for="affectVersion">${message(code:'is.story.affectVersion')}</label>
                     <input class="form-control"
-                           ng-disabled="!getEditableStoryMode(story)"
+                           ng-focus="setEditableMode(true)"
+                           ng-disabled="!getShowStoryForm(story)"
                            type="hidden"
                            value="{{ editableStory.affectVersion  }}"
                            name="affectVersion"
@@ -253,7 +243,8 @@
                 <label for="dependsOn">${message(code:'is.story.dependsOn')}</label>
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">
                     <input  type="hidden"
-                            ng-disabled="!getEditableStoryMode(story)"
+                            ng-focus="setEditableMode(true)"
+                            ng-disabled="!getShowStoryForm(story)"
                             style="width:100%;"
                             class="form-control"
                             value="{{ editableStory.dependsOn.id ? editableStory.dependsOn : '' }}"
@@ -286,12 +277,12 @@
                           focus-me="{{ showDescriptionTextarea }}"
                           placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                 <div class="atwho-preview form-control-static"
-                     ng-disabled="!getEditableStoryMode(story)"
+                     ng-disabled="!getShowStoryForm(story)"
                      ng-show="!showDescriptionTextarea"
                      ng-click="clickDescriptionPreview($event, '${is.generateStoryTemplate(newLine: '\\n')}')"
                      ng-focus="focusDescriptionPreview($event)"
-                     ng-mousedown="descriptionPreviewMouseDown = true"
-                     ng-mouseup="descriptionPreviewMouseDown = false"
+                     ng-mousedown="$parent.descriptionPreviewMouseDown = true"
+                     ng-mouseup="$parent.descriptionPreviewMouseDown = false"
                      ng-class="{'placeholder': !editableStory.description}"
                      tabindex="0"
                      ng-bind-html="(editableStory.description ? (editableStory | descriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
@@ -299,7 +290,8 @@
             <div class="form-group">
                 <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
-                       ng-disabled="!getEditableStoryMode(story)"
+                       ng-focus="setEditableMode(true)"
+                       ng-disabled="!getShowStoryForm(story)"
                        class="form-control"
                        value="{{ editableStory.tags.join(',') }}"
                        name="tags"
@@ -319,15 +311,15 @@
                           ng-blur="showNotesTextarea = false"
                           placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                 <div class="markitup-preview"
-                     ng-disabled="!getEditableStoryMode(story)"
+                     ng-disabled="!getShowStoryForm(story)"
                      ng-show="!showNotesTextarea"
-                     ng-click="showNotesTextarea = getEditableStoryMode(story)"
-                     ng-focus="showNotesTextarea = getEditableStoryMode(story)"
+                     ng-click="showNotesTextarea = getShowStoryForm(story)"
+                     ng-focus="setEditableMode(true); showNotesTextarea = getShowStoryForm(story)"
                      ng-class="{'placeholder': !editableStory.notes_html}"
                      tabindex="0"
                      ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
             </div>
-            <div class="btn-toolbar" ng-if="getEditableStoryMode(story)">
+            <div class="btn-toolbar" ng-if="getShowStoryForm(story) && getEditableMode()">
                 <button class="btn btn-primary pull-right"
                         ng-class="{ disabled: !isDirty() || formHolder.storyForm.$invalid }"
                         tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
@@ -336,11 +328,10 @@
                     ${message(code:'todo.is.ui.update')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
-                        ng-class="{ disabled: !isDirty() }"
                         tooltip-append-to-body="true"
                         tooltip="${message(code:'is.button.cancel')}"
                         type="button"
-                        ng-click="resetStoryForm()">
+                        ng-click="disableEditableStoryMode()">
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>

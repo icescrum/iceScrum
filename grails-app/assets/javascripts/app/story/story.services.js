@@ -201,6 +201,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             case 'updateTemplate':
                 return Session.po();
             case 'delete':
+            case 'deleteMultiple':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             case 'menu':

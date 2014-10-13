@@ -129,7 +129,6 @@
     <g:render template="/team/templates"/>
     <g:if test="${params.product}">
         <g:render template="/story/templates"/>
-        <g:render template="/story/templates"/>
         <g:render template="/task/templates"/>
         <g:render template="/comment/templates"/>
         <g:render template="/attachment/templates"/>

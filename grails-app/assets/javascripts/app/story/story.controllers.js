@@ -166,15 +166,12 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.isDirty = function() {
             return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
         };
-        $scope.enableEditableStoryMode = function() {
-            $scope.setEditableMode(true);
-        };
         $scope.disableEditableStoryMode = function() {
             $scope.setEditableMode(false);
             $scope.resetStoryForm();
         };
-        $scope.getEditableStoryMode = function(story) {
-            return $scope.getEditableMode() && $scope.authorizedStory('update', story);
+        $scope.getShowStoryForm = function(story) {
+            return ($scope.getEditableMode() || $scope.formHolder.formHover)  && $scope.authorizedStory('update', story);
         };
         $scope.resetStoryForm = function() {
             $scope.editableStory = angular.copy($scope.story);
@@ -252,7 +249,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             at: 'a'
         };
         $scope.clickDescriptionPreview = function($event, template) {
-            if($event.target.nodeName != 'A' && $scope.getEditableStoryMode($scope.story)) {
+            if ($event.target.nodeName != 'A' && $scope.getShowStoryForm($scope.story)) {
                 $scope.showDescriptionTextarea = true;
                 if (!$scope.editableStory.description) {
                     ($scope.editableStory.description = template);
@@ -274,14 +271,15 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
-
         $scope.attachmentQuery = function($flow, story){
             //to add flow in storyDetailsCtrl scope
             $scope.flow = $flow;
             $flow.opts.query = { 'type':'story', 'attachmentable':story.id };
             $flow.upload();
-        }
-
+        };
+        $scope.formHover = function(value) {
+            $scope.formHolder.formHover = value;
+        };
     }]);
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {

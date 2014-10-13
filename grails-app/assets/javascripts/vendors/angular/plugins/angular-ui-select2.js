@@ -191,6 +191,14 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                     elm.select2("destroy");
                 });
 
+                elm.bind("select2-focus", function() {
+                    elm.triggerHandler('focus');
+                });
+
+                elm.bind("select2-blur", function() {
+                    elm.triggerHandler('blur');
+                });
+
                 attrs.$observe('disabled', function (value) {
                     elm.select2('enable', !value);
                 });

@@ -67,16 +67,6 @@
                     class="btn btn-default">
                 <i class="fa fa-link"></i>
             </button>
-            <button class="btn btn-primary"
-                    type="button"
-                    tooltip="${message(code:'todo.is.ui.editable.enable')}"
-                    ng-if="authorizedFeature('update', feature) && !getEditableMode(feature)"
-                    ng-click="enableEditableFeatureMode()"><span class="fa fa-pencil"></span></button>
-            <button class="btn btn-default"
-                    type="button"
-                    tooltip="${message(code:'todo.is.ui.editable.disable')}"
-                    ng-if="getEditableFeatureMode(feature)"
-                    ng-click="confirm({ message: '${message(code: 'todo.is.ui.dirty.confirm')}', callback: disableEditableFeatureMode, condition: isDirty() })"><span class="fa fa-pencil-square-o"></span></button>
             <div class="btn-group pull-right">
                 <button name="attachments" class="btn btn-default"
                         ng-click="setTabSelected('attachments')"
@@ -98,15 +88,19 @@
 
     <div class="panel-body">
         <form ng-submit="update(editableFeature)"
-              ng-class="{'form-disabled': !getEditableFeatureMode(feature)}"
-              name='featureForm'
+              name='formHolder.featureForm'
+              class="form-editable"
+              ng-mouseleave="formHover(false)"
+              ng-mouseover="formHover(true)"
+              ng-class="{'form-editing': getShowFeatureForm(feature)}"
               show-validation
               novalidate>
             <div class="form-group">
                 <label for="name">${message(code:'is.feature.name')}</label>
                 <input required
                        ng-maxlength="100"
-                       ng-disabled="!getEditableFeatureMode(feature)"
+                       ng-focus="setEditableMode(true)"
+                       ng-disabled="!getShowFeatureForm(feature)"
                        name="name"
                        ng-model="editableFeature.name"
                        type="text"
@@ -117,13 +111,14 @@
                     <label for="type">${message(code:'is.feature.type')}</label>
                     <div class="input-group">
                         <select class="form-control"
-                                ng-disabled="!getEditableFeatureMode(feature)"
+                                ng-focus="setEditableMode(true)"
+                                ng-disabled="!getShowFeatureForm(feature)"
                                 name="type"
                                 ng-model="editableFeature.type"
                                 ui-select2>
                             <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}" />
                         </select>
-                        <span class="input-group-btn" ng-if="getEditableFeatureMode(feature)">
+                        <span class="input-group-btn" ng-if="getShowFeatureForm(feature)">
                             <button colorpicker
                                     class="btn {{ editableFeature.color | contrastColor }}"
                                     type="button"
@@ -138,7 +133,8 @@
                 <div class="form-half">
                     <label for="value">${message(code:'is.feature.value')}</label>
                     <select class="form-control"
-                            ng-disabled="!getEditableFeatureMode(feature)"
+                            ng-focus="setEditableMode(true)"
+                            ng-disabled="!getShowFeatureForm(feature)"
                             name="value"
                             ng-model="editableFeature.value"
                             ui-select2>
@@ -150,7 +146,8 @@
                 <label for="description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
                           ng-maxlength="3000"
-                          ng-disabled="!getEditableFeatureMode(feature)"
+                          ng-focus="setEditableMode(true)"
+                          ng-disabled="!getShowFeatureForm(feature)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                           name="description"
                           ng-model="editableFeature.description"></textarea>
@@ -158,7 +155,8 @@
             <div class="form-group">
                 <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
-                       ng-disabled="!getEditableFeatureMode(feature)"
+                       ng-focus="setEditableMode(true)"
+                       ng-disabled="!getShowFeatureForm(feature)"
                        class="form-control"
                        value="{{ editableFeature.tags.join(',') }}"
                        name="tags"
@@ -178,15 +176,15 @@
                           ng-blur="showNotesTextarea = false"
                           placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                 <div class="markitup-preview"
-                     ng-disabled="!getEditableFeatureMode(feature)"
+                     ng-disabled="!getShowFeatureForm(feature)"
                      ng-show="!showNotesTextarea"
-                     ng-click="showNotesTextarea = getEditableFeatureMode(feature)"
-                     ng-focus="showNotesTextarea = getEditableFeatureMode(feature)"
+                     ng-click="showNotesTextarea = getShowFeatureForm(feature)"
+                     ng-focus="setEditableMode(true); showNotesTextarea = getShowFeatureForm(feature)"
                      ng-class="{'placeholder': !editableFeature.notes_html}"
                      tabindex="0"
                      ng-bind-html="(editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
             </div>
-            <div class="btn-toolbar" ng-if="getEditableFeatureMode(editableFeature)">
+            <div class="btn-toolbar" ng-if="getShowFeatureForm(editableFeature)">
                 <button class="btn btn-primary pull-right"
                         ng-class="{ disabled: !isDirty() }"
                         tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
@@ -195,11 +193,10 @@
                     ${message(code:'todo.is.ui.update')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
-                        ng-class="{ disabled: !isDirty() }"
                         tooltip-append-to-body="true"
                         tooltip="${message(code:'is.button.cancel')}"
                         type="button"
-                        ng-click="initEditableFeature()">
+                        ng-click="disableEditableFeatureMode()">
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>

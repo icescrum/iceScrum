@@ -34,6 +34,7 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
 controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$controller', 'selected', 'ActorService', 'StoryService', 'FormService',
     function($scope, $state, $timeout, $controller, selected, ActorService, StoryService, FormService) {
         $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
+        $scope.formHolder = {};
         $scope.actor = selected;
         $scope.initEditableActor = function() {
             $scope.editableActor = angular.copy(selected);
@@ -82,15 +83,12 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-        $scope.enableEditableActorMode = function() {
-            $scope.setEditableMode(true);
-        };
         $scope.disableEditableActorMode = function() {
             $scope.setEditableMode(false);
             $scope.initEditableActor();
         };
-        $scope.getEditableActorMode = function(actor) {
-            return $scope.getEditableMode() && $scope.authorizedActor('update', actor);
+        $scope.getShowActorForm = function(actor) {
+            return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedActor('update', actor);
         };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
@@ -109,6 +107,9 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
                 });
             }
         });
+        $scope.formHover = function(value) {
+            $scope.formHolder.formHover = value;
+        };
     }]);
 
 

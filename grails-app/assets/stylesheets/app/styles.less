@@ -274,9 +274,9 @@ table {
   }
   /** White background for disabled inputs **/
   .form-control[disabled] {
-    &, &:hover {
+    & {
       background: none;
-      border: none;
+      border-color: transparent;
       cursor: text;
       box-shadow: none;
       resize: none;
@@ -287,7 +287,7 @@ table {
     .select2-choice, .select2-choices {
       &, &:hover {
         background: none;
-        border: none;
+        border-color: transparent;
         cursor: text;
         box-shadow: none;
         .select2-arrow {
@@ -303,6 +303,9 @@ table {
     }
   }
   /** White background and smaller size for editable inputs **/
+  .form-group {
+    margin-bottom: 10px;
+  }
   .tab-content {
     .form-group {
       margin-bottom: 8px;
@@ -310,7 +313,7 @@ table {
   }
   .markitup-preview, .atwho-preview, textarea {
     max-height: 115px;
-    overflow: hidden;
+    overflow: auto;
   }
   .form-editable:not(.form-editing) {
     .form-control {
@@ -341,32 +344,7 @@ table {
       border-color: transparent;
     }
   }
-  /** Reduce size of disabled inputs in disabled forms **/
-  form.form-disabled {
-    label {
-      margin-bottom: 0px;
-    }
-    .form-control[disabled] {
-      padding-bottom: 0px;
-      padding-top: 0px;
-      height: 20px;
-    }
-    .markitup-preview, .atwho-preview, textarea {
-      &[disabled] {
-        min-height: 0;
-        padding-bottom: 0px;
-        padding-top: 0px;
-      }
-    }
-    .select2-container.select2-container-disabled:not(.select2-container-multi) {
-      height: 20px;
-      .select2-choice .select2-chosen {
-        padding-bottom: 0px;
-        padding-top: 0px;
-        height:20px;
-      }
-    }
-  }
+
   p.elemid {
     background-color: rgb(193, 193, 193);
     color: white;
