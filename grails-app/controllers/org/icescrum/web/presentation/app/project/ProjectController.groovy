@@ -62,18 +62,13 @@ class ProjectController {
     def featureService
     def attachmentableService
 
-    def index() {
-        chain(controller: 'scrumOS', action: 'index', params: params)
-    }
-
-    @Secured('isAuthenticated()')
+    @Secured(['isAuthenticated()'])
     def add() {
         render(status:200, template: "dialogs/new")
     }
 
-    @Secured('isAuthenticated()')
+    @Secured(['isAuthenticated()'])
     def save() {
-
         def teamParams = params.product?.remove('team')
         def productPreferencesParams = params.product?.remove('preferences')
         def productParams = params.remove('product')
@@ -137,13 +132,11 @@ class ProjectController {
                 productService.addTeamsToProduct product, [team.id]
 
                 if (productParams.generateSprints){
-                    def release = new Release(name: "R1",
-                            startDate: product.startDate,
-                            vision: params.vision,
-                            endDate: product.endDate)
+                    def release = new Release(name: "Release 1", startDate: product.startDate, endDate: product.endDate)
                     releaseService.save(release, product)
                     sprintService.generateSprints(release, productParams.generateSprints)
                 }
+
                 render(status:200, contentType: 'application/json', text:product as JSON)
             } catch (IllegalStateException ise) {
                 status.setRollbackOnly()
@@ -156,6 +149,7 @@ class ProjectController {
         }
     }
 
+    @Secured('stakeHolder() or inProduct()')
     def feed() {
         cache validFor: 300
         withProduct{ Product product ->

@@ -50,18 +50,16 @@ class UrlMappings {
             }
         }
 
+        name privateURL: "/ws/$controller/$action/$id?" {
+        }
+
+        //New url mapping
         "/" {
             controller = 'scrumOS'
             action = 'index'
         }
 
-        name privateURL: "/ws/$controller/$action/$id?" {
-        }
-
         "/login"(controller: 'login', action: 'auth')
-
-
-
 
         "/user" {
             controller = 'user'
@@ -89,9 +87,13 @@ class UrlMappings {
             }
         }
 
-
-
-
+        "/feed/$product" {
+            controller = 'project'
+            action = 'feed'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
 
         "/project" {
             controller = 'project'
