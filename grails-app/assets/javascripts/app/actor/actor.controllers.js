@@ -31,17 +31,19 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
     };
 }]);
 
-controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$controller', 'selected', 'ActorService', 'StoryService', 'FormService',
-    function($scope, $state, $timeout, $controller, selected, ActorService, StoryService, FormService) {
+controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', '$timeout', '$controller', 'ActorService', 'StoryService', 'FormService',
+    function($scope, $state, $stateParams, $timeout, $controller, ActorService, StoryService, FormService) {
         $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
         $scope.formHolder = {};
-        $scope.actor = selected;
-        $scope.initEditableActor = function() {
-            $scope.editableActor = angular.copy(selected);
-            $scope.editableActorReference = angular.copy(selected);
-        };
-        $scope.initEditableActor();
-        $scope.tabsType = 'tabs nav-tabs-google';
+        $scope.actor = {};
+        ActorService.get($stateParams.id).then(function(actor) {
+            $scope.actor = actor;
+            // For edit
+            $scope.resetActorForm();
+            // For header
+            $scope.previous = FormService.previous(ActorService.list, $scope.actor);
+            $scope.next = FormService.next(ActorService.list, $scope.actor);
+        });
         if ($state.params.tabId) {
             $scope.tabSelected = {};
             $scope.tabSelected[$state.params.tabId] = true;
@@ -70,9 +72,6 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
                 StoryService.listByType(actor);
             }
         };
-        // header
-        $scope.previous = FormService.previous(ActorService.list, $scope.actor);
-        $scope.next = FormService.next(ActorService.list, $scope.actor);
         // edit
         $scope.isDirty = function() {
             return !_.isEqual($scope.editableActor, $scope.editableActorReference);
@@ -80,15 +79,23 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
         $scope.update = function(actor) {
             ActorService.update(actor).then(function(actor) {
                 $scope.actor = actor;
+                $scope.resetActorForm();
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
         $scope.disableEditableActorMode = function() {
             $scope.setEditableMode(false);
-            $scope.initEditableActor();
+            $scope.resetActorForm();
         };
         $scope.getShowActorForm = function(actor) {
             return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedActor('update', actor);
+        };
+        $scope.resetActorForm = function() {
+            $scope.editableActor = angular.copy($scope.actor);
+            $scope.editableActorReference = angular.copy($scope.actor);
+            if ($scope.formHolder.actorForm) {
+                $scope.formHolder.actorForm.$setPristine();
+            }
         };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
@@ -113,12 +120,27 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$timeout', '$co
     }]);
 
 
-controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'ActorService', function($scope, $state, $controller, ActorService) {
+controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'ActorService', 'hotkeys', function($scope, $state, $controller, ActorService, hotkeys) {
     $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
+    $scope.formHolder = {};
+    $scope.resetActorForm = function() {
+        $scope.actor = {};
+        if ($scope.formHolder.actorForm) {
+            $scope.formHolder.actorForm.$setPristine();
+        }
+    };
+    hotkeys
+        .bindTo($scope) // to remove the hotkey when the scope is destroyed
+        .add({
+            combo: 'esc',
+            allowIn: ['INPUT'],
+            callback: $scope.resetActorForm
+        });
+    $scope.resetActorForm();
     $scope.save = function(actor, andContinue) {
         ActorService.save(actor).then(function(actor) {
             if (andContinue) {
-                $scope.actor = {};
+                $scope.resetActorForm();
             } else {
                 $scope.setEditableMode(true);
                 $state.go('^.details', { id: actor.id });

@@ -71,7 +71,7 @@
     </div>
     <div class="btn-toolbar pull-right">
         <button class="btn btn-primary pull-right"
-                ng-class="{ disabled: !formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid }"
+                ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid"
                 tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                 tooltip-append-to-body="true"
                 type="submit">

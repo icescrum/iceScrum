@@ -188,7 +188,7 @@
             </div>
             <div class="btn-toolbar" ng-if="getShowActorForm(editableActor)">
                 <button class="btn btn-primary pull-right"
-                        ng-class="{ disabled: !isDirty() }"
+                        ng-disabled="!isDirty() || formHolder.actorForm.$invalid"
                         tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
@@ -207,7 +207,7 @@
 </div>
 <div class="panel panel-default">
     <div class="panel-body">
-        <tabset type="{{ tabsType }}">
+        <tabset type="tabs nav-tabs-google">
             <tab select="$state.params.tabId ? setTabSelected('attachments') : ''"
                  heading="${message(code: 'is.ui.backlogelement.attachment')}"
                  active="tabSelected.attachments">

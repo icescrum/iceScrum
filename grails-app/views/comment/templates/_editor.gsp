@@ -35,9 +35,8 @@
                   placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
     </div>
     <div class="btn-toolbar pull-right">
-        <button
-                class="btn btn-primary pull-right"
-                ng-class="{ disabled: !formHolder.commentForm.$dirty || formHolder.commentForm.$invalid  }"
+        <button class="btn btn-primary pull-right"
+                ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid"
                 tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                 tooltip-append-to-body="true"
                 type="submit">

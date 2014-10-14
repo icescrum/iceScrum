@@ -321,7 +321,7 @@
             </div>
             <div class="btn-toolbar" ng-if="getShowStoryForm(story) && getEditableMode()">
                 <button class="btn btn-primary pull-right"
-                        ng-class="{ disabled: !isDirty() || formHolder.storyForm.$invalid }"
+                        ng-disabled="!isDirty() || formHolder.storyForm.$invalid"
                         tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
@@ -354,7 +354,7 @@
 </div>
 <div class="panel panel-default">
     <div class="panel-body">
-        <tabset type="{{ tabsType }}">
+        <tabset type="tabs nav-tabs-google">
             <tab select="activities(story); ($state.params.tabId ? setTabSelected('activities') : '');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
                  active="tabSelected.activities">

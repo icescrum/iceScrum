@@ -53,7 +53,7 @@
         </div>
 
         <form ng-submit="save(feature, false)"
-              name='featureForm'
+              name='formHolder.featureForm'
               show-validation
               novalidate>
             <div class="clearfix no-padding">
@@ -70,12 +70,14 @@
             </div>
             <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
+                        ng-disabled="formHolder.featureForm.$invalid"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'todo.is.ui.save')}
                 </button>
                 <button class="btn btn-primary pull-right"
+                        ng-disabled="formHolder.featureForm.$invalid"
                         tooltip="${message(code:'todo.is.ui.save.and.continue')} (SHIFT+RETURN)"
                         tooltip-append-to-body="true"
                         hotkey="{'shift+return': hotkeyClick }"

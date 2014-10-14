@@ -131,14 +131,14 @@
             </div>
             <div ng-if="authorizedStory('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
-                        ng-class="{ disabled: formHolder.storyForm.$invalid }"
+                        ng-disabled="formHolder.storyForm.$invalid"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'todo.is.ui.save')}
                 </button>
                 <button class="btn btn-primary pull-right"
-                        ng-class="{ disabled: formHolder.storyForm.$invalid }"
+                        ng-disabled="formHolder.storyForm.$invalid"
                         tooltip="${message(code:'todo.is.ui.save.and.continue')} (SHIFT+RETURN)"
                         tooltip-append-to-body="true"
                         hotkey="{'shift+return': hotkeyClick }"

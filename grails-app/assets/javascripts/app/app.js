@@ -142,12 +142,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('actor.details', {
                         url: "/actor/{id:[0-9]+}",
                         templateUrl: 'actor.details.html',
-                        controller: 'actorDetailsCtrl',
-                        resolve:{
-                            selected:['ActorService', '$stateParams', function(ActorService, $stateParams){
-                                return ActorService.get($stateParams.id);
-                            }]
-                        }
+                        controller: 'actorDetailsCtrl'
                     })
                         .state('actor.details.tab', {
                             url: "/{tabId:.+}"
@@ -180,12 +175,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('feature.details', {
                         url: "/feature/{id:[0-9]+}",
                         templateUrl: 'feature.details.html',
-                        controller: 'featureDetailsCtrl',
-                        resolve:{
-                            selected:['FeatureService', '$stateParams', function(FeatureService, $stateParams){
-                                return FeatureService.get($stateParams.id);
-                            }]
-                        }
+                        controller: 'featureDetailsCtrl'
                     })
                         .state('feature.details.tab', {
                             url: "/{tabId:.+}"

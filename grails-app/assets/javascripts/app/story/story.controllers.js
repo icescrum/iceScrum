@@ -114,7 +114,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }]
             });
         };
-        $scope.tabsType = 'tabs nav-tabs-google';
         if ($state.params.tabId) {
             $scope.tabSelected = {};
             $scope.tabSelected[$state.params.tabId] = true;
