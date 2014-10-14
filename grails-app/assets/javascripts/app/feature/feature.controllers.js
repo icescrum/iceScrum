@@ -122,7 +122,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
         };
     }]);
 
-controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', function($scope, $state, $controller, FeatureService) {
+controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {
     $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
     $scope.formHolder = {};
     $scope.resetFeatureForm = function() {
