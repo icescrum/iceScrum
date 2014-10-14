@@ -22,3 +22,4 @@
 --}%
 <g:render template="/project/templates/form" />
 <g:render template="/project/templates/form.practices" />
+<g:render template="/project/templates/user.item" />

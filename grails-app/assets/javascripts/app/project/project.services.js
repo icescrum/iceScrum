@@ -21,9 +21,16 @@
  *
  */
 services.factory( 'Project', [ 'Resource', function( $resource ) {
-    return $resource( 'project/:id/:action',
+    return $resource( icescrum.grailsServer + '/' + 'project/:id/:action',
         { id: '@id' } ,
         {
-            query:        {method:'GET', isArray:true, cache: true}
+            query: {method:'GET', isArray:true, cache: true}
         });
+}]);
+
+services.service("ProjectService", ['Project', function(Project) {
+    this.save = function (project) {
+        project.class = 'product';
+        return Project.save(project).$promise;
+    };
 }]);

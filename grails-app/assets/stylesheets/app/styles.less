@@ -101,7 +101,7 @@ body {
   -ms-touch-action: none !important;
 }
 
-label {
+label:not(.btn):not(.checkbox-inline) {
   line-height: 1em;
   width: 100%;
   .text-overflow();
@@ -1692,6 +1692,7 @@ a[data-toggle="tab"] button {
   }
   .wizard-next {
     text-align:right;
+    margin-top:10px;
   }
 }
 
@@ -1817,5 +1818,25 @@ ul.dropdown-menu[datepicker-popup-wrap]{
         cursor:pointer;
       }
     }
+}
+
+.list-users {
+  margin-top:20px;
+  .user {
+    border:1px solid @legend-border-color;
+    background:#fff;
+    padding: 2px 4px;
+    margin: 2px;
+    display:inline-block;
+    .name {
+      padding-left: 5px;
+      padding-right:5px;
+      display:inline-block;
+      vertical-align: middle;
+    }
+    .btn {
+      cursor:pointer;
+    }
+  }
 }
 

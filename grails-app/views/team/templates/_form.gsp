@@ -77,7 +77,9 @@
                     <th class="text-right">${message(code:'todo.is.ui.team.role')}</th>
                 </tr>
                 </thead>
-                <tbody ng-include="'wizard.members.list.html'"></tbody>
+                <tbody ng-repeat="member in team.members"
+                       ng-include="'wizard.members.list.html'">
+                </tbody>
             </table>
         </div>
     </div>

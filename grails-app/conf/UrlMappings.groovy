@@ -55,15 +55,13 @@ class UrlMappings {
             action = 'index'
         }
 
-        "/textileParser" {
-            controller = 'scrumOS'
-            action = 'textileParser'
-        }
-
         name privateURL: "/ws/$controller/$action/$id?" {
         }
 
         "/login"(controller: 'login', action: 'auth')
+
+
+
 
         "/user" {
             controller = 'user'
@@ -76,6 +74,28 @@ class UrlMappings {
             constraints {
                 id(matches: /\d*/)
             }
+        }
+
+        "/user/current" {
+            controller = 'user'
+            action = [GET: "current"]
+        }
+
+        "/p/$product/user/current" {
+            controller = 'user'
+            action = [GET: "current"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+
+
+
+
+        "/project" {
+            controller = 'project'
+            action = [GET: "index", POST:"save"]
         }
 
         "/project/available/$property" {

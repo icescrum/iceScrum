@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.security.Authority; grails.plugin.springsecurity.SpringSecurityUtils; org.icescrum.core.support.ApplicationSupport" %>
 %{--
 - Copyright (c) 2014 Kagilum.
 -
@@ -32,19 +33,21 @@
                        name="name"
                        type="text"
                        class="form-control"
-                       ng-model="product.name"
+                       ng-model="project.name"
                        ng-required="isCurrentStep(1)"
                        ng-remote-validate="/project/available/name">
-                <span class="input-group-btn">
-                    <a class="btn"
-                       tooltip="{{product.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.product.preferences.project.public')}' }}"
-                       tooltip-append-to-body="true"
-                       type="button"
-                       ng-click="product.preferences.hidden = !product.preferences.hidden"
-                       ng-class="{ 'btn-danger': product.preferences.hidden, 'btn-success': !product.preferences.hidden }">
-                        <i class="fa fa-lock" ng-class="{ 'fa-lock': product.preferences.hidden, 'fa-unlock': !product.preferences.hidden }"></i>
-                    </a>
-                </span>
+                <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
+                    <span class="input-group-btn">
+                        <a class="btn"
+                           tooltip="{{project.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.product.preferences.project.public')}' }}"
+                           tooltip-append-to-body="true"
+                           type="button"
+                           ng-click="project.preferences.hidden = !project.preferences.hidden"
+                           ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
+                            <i class="fa fa-lock" ng-class="{ 'fa-lock': project.preferences.hidden, 'fa-unlock': !project.preferences.hidden }"></i>
+                        </a>
+                    </span>
+                </g:if>
             </p>
         </div>
         <div class="col-sm-4 col-xs-4 form-group">
@@ -54,27 +57,27 @@
                    type="text"
                    capitalize
                    class="form-control"
-                   ng-model="product.pkey"
+                   ng-model="project.pkey"
                    ng-pattern="/^[A-Z0-9]*$/"
-                   ng-remote-validate="/project/available/pkey"
-                   ng-required="isCurrentStep(1)">
+                   ng-required="isCurrentStep(1)"
+                   ng-remote-validate="/project/available/pkey">
         </div>
     </div>
     <div class="row">
         <div class="col-sm-4 col-xs-6 form-group">
-            <label for="product.startDate">${message(code:'is.product.startDate')}</label>
+            <label for="project.startDate">${message(code:'is.product.startDate')}</label>
             <p class="input-group">
                 <input required
                        type="text"
                        class="form-control"
-                       name="product.startDate"
-                       ng-model="product.startDate"
+                       name="project.startDate"
+                       ng-model="project.startDate"
                        datepicker-popup="{{startDate.format}}"
                        datepicker-options="startDate"
                        is-open="startDate.opened"
                        close-text="Close"
                        show-button-bar="false"
-                       max-date="productMaxDate"
+                       max-date="projectMaxDate"
                        ng-required="isCurrentStep(1)"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, false)"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -82,19 +85,19 @@
             </p>
         </div>
         <div class="col-sm-4 col-xs-6 form-group">
-            <label for="product.endDate">${message(code:'is.release.endDate')}</label>
+            <label for="project.endDate">${message(code:'is.release.endDate')}</label>
             <p class="input-group">
                 <input required
                        type="text"
                        class="form-control"
-                       name="product.endDate"
-                       ng-model="product.endDate"
+                       name="project.endDate"
+                       ng-model="project.endDate"
                        datepicker-popup="{{endDate.format}}"
                        datepicker-options="endDate"
                        is-open="endDate.opened"
                        close-text="Close"
                        show-button-bar="false"
-                       min-date="productMinDate"
+                       min-date="projectMinDate"
                        ng-class="{current:step.selected}"
                        ng-required="isCurrentStep(1)"/>
                 <span class="input-group-btn">
@@ -103,12 +106,12 @@
             </p>
         </div>
         <div class="col-sm-4 col-xs-12 form-group">
-            <label for="product.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
+            <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
             <is:localeTimeZone required="required"
                                class="form-control"
                                ng-required="isCurrentStep(1)"
-                               name="product.preferences.timezone"
-                               ng-model="product.preferences.timezone"
+                               name="project.preferences.timezone"
+                               ng-model="project.preferences.timezone"
                                ui-select2=""></is:localeTimeZone>
         </div>
     </div>
@@ -116,20 +119,74 @@
         <div class="col-sm-12 form-group">
             <label for="description">${message(code:'is.product.description')}</label>
             <textarea is-markitup
-                      name="product.description"
+                      name="project.description"
                       class="form-control"
                       placeholder="${message(code: 'todo.is.ui.product.description.placeholder')}"
-                      ng-model="product.description"
+                      ng-model="project.description"
                       ng-show="showDescriptionTextarea"
                       ng-blur="showDescriptionTextarea = false"
-                      is-model-html="product.description_html"></textarea>
+                      is-model-html="project.description_html"></textarea>
             <div class="markitup-preview"
                  tabindex="0"
                  ng-show="!showDescriptionTextarea"
                  ng-click="showDescriptionTextarea = true"
                  ng-focus="showDescriptionTextarea = true"
-                 ng-class="{'placeholder': !product.description_html}"
-                 ng-bind-html="(product.description_html ? product.description_html : '<p>${message(code: 'todo.is.ui.product.description.placeholder')}</p>') | sanitize"></div>
+                 ng-class="{'placeholder': !project.description_html}"
+                 ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.product.description.placeholder')}</p>') | sanitize"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <label for="productOwners.search">${message(code:'todo.is.ui.select.productowner')}</label>
+            <p class="input-group typeahead">
+                <input autocomplete="off"
+                       type="text"
+                       name="productOwner.search"
+                       id="productOwner.search"
+                       autofocus="autofocus"
+                       class="form-control"
+                       ng-model="po.name"
+                       typeahead="po as po.name for po in searchUsers($viewValue)"
+                       typeahead-loading="searchingPo"
+                       typeahead-wait-ms="250"
+                       typeahead-on-select="addUser($item, 'po')"
+                       typeahead-template-url="select.member.html">
+                <span class="input-group-addon">
+                    <i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searchingPo, 'fa-refresh':searchingPo, 'fa-close':po.name }"></i>
+                </span>
+            </p>
+        </div>
+        <div class="col-sm-8 list-users">
+            <div ng-class="{'well':project.productowners.length > 0}">
+                <ng-include ng-init="role = 'po';" ng-repeat="user in project.productowners" src="'user.item.html'"></ng-include>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="project.preferences.hidden">
+        <div class="col-sm-4">
+            <label for="stakeHolders.search">${message(code:'todo.is.ui.select.stakeholder')}</label>
+            <p class="input-group typeahead">
+                <input autocomplete="off"
+                       type="text"
+                       name="stakeHolder.search"
+                       id="stakeHolder.search"
+                       autofocus="autofocus"
+                       class="form-control"
+                       ng-model="sh.name"
+                       typeahead="sh as sh.name for sh in searchUsers($viewValue)"
+                       typeahead-loading="searchingSh"
+                       typeahead-wait-ms="250"
+                       typeahead-on-select="addUser($item, 'sh')"
+                       typeahead-template-url="select.member.html">
+                <span class="input-group-addon">
+                    <i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh, 'fa-close':sh.name }"></i>
+                </span>
+            </p>
+        </div>
+        <div class="col-sm-8 list-users">
+            <div ng-class="{'well':project.stakeholders.length > 0}">
+                <ng-include ng-init="role = 'sh';" ng-repeat="user in project.stakeholders" src="'user.item.html'"></ng-include>
+            </div>
         </div>
     </div>
 </script>

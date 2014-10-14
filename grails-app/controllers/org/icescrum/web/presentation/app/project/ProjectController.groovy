@@ -25,7 +25,6 @@
 package org.icescrum.web.presentation.app.project
 
 import org.icescrum.core.domain.preferences.ProductPreferences
-import org.icescrum.core.domain.preferences.TeamPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
@@ -38,7 +37,6 @@ import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
 import grails.plugin.springsecurity.annotation.Secured
 import grails.plugin.springsecurity.SpringSecurityUtils
-import org.springframework.security.access.AccessDeniedException
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.Release
@@ -62,11 +60,100 @@ class ProjectController {
     def releaseService
     def springSecurityService
     def featureService
-    def securityService
     def attachmentableService
 
     def index() {
         chain(controller: 'scrumOS', action: 'index', params: params)
+    }
+
+    @Secured('isAuthenticated()')
+    def add() {
+        render(status:200, template: "dialogs/new")
+    }
+
+    @Secured('isAuthenticated()')
+    def save() {
+
+        def teamParams = params.product?.remove('team')
+        def productPreferencesParams = params.product?.remove('preferences')
+        def productParams = params.remove('product')
+
+        if (!productParams || !teamParams) {
+            returnError(text:message(code:'todo.is.ui.no.data'))
+        }
+
+        productParams.startDate = new Date().parse('dd-MM-yyyy', productParams.startDate)
+        productParams.endDate = new Date().parse('dd-MM-yyyy', productParams.endDate)
+
+        if (productPreferencesParams.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+            productPreferencesParams.hidden = true
+        }
+
+        //Case user choose to generate sprints
+        if (productParams.generateSprints?.after(productParams.endDate) || productParams.generateSprints?.after(productParams.endDate) || productParams.generateSprints == productParams.endDate) {
+            def msg = message(code: 'is.product.error.firstSprint')
+            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            return
+        }
+
+        def team
+        def product = new Product()
+        product.preferences = new ProductPreferences()
+        Product.withTransaction { status ->
+            bindData(product, productParams, [include:['name','description','startDate','endDate','pkey']])
+            bindData(product.preferences, productPreferencesParams, [include:['timezone','noEstimation','displayRecurrentTasks','displayUrgentTasks','estimatedSprintsDuration']])
+            try {
+                if (!teamParams?.id){
+                    team = new Team()
+                    bindData(team, teamParams, [include:['name']])
+                    def members  = teamParams.members?.id*.collect { it.toLong() }?.flatten() ?: []
+                    def scrumMasters = teamParams.scrumMasters?.id*.collect { it.toLong() }?.flatten() ?: []
+                    if (!scrumMasters && !members){
+                        render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.noMember')]] as JSON)
+                        return
+                    }
+                    teamService.save(team, members, scrumMasters)
+                } else {
+                    team = Team.findById(teamParams.id)
+                    //TODO
+                    // Update old team name
+                    //Ugly code
+                    //I know
+                    //I like it
+                    def updateTeamName = team.name.split('team')
+                    if (updateTeamName.size() > 1 && (updateTeamName[1].trim().startsWith('201'))){
+                        def i = 0
+                        team.name = "${updateTeamName[0]}"
+                        while(!team.validate()){
+                            team.name = "${updateTeamName[0]} ${i}"
+                            i++
+                        }
+                        team.save()
+                    }
+                }
+                def productOwners = productParams.productOwners?.id*.collect { it.toLong() }?.flatten() ?: []
+                def stakeHolders  = productParams.stakeHolders?.id*.collect { it.toLong() }?.flatten() ?: []
+                productService.save(product, productOwners, stakeHolders)
+                productService.addTeamsToProduct product, [team.id]
+
+                if (productParams.generateSprints){
+                    def release = new Release(name: "R1",
+                            startDate: product.startDate,
+                            vision: params.vision,
+                            endDate: product.endDate)
+                    releaseService.save(release, product)
+                    sprintService.generateSprints(release, productParams.generateSprints)
+                }
+                render(status:200, contentType: 'application/json', text:product as JSON)
+            } catch (IllegalStateException ise) {
+                status.setRollbackOnly()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            } catch (RuntimeException re) {
+                status.setRollbackOnly()
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: product) + renderErrors(bean: team)]] as JSON)
+            }
+        }
     }
 
     def feed() {
@@ -163,136 +250,6 @@ class ProjectController {
             } catch (RuntimeException re) {
                 if (log.debugEnabled) re.printStackTrace()
                 render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
-            }
-        }
-    }
-
-    @Secured('isAuthenticated()')
-    def add() {
-        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
-            if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                render(status: 403)
-                return
-            }
-        }
-
-        def product = new Product()
-        def countPlusUn = Product.count() + 1
-        product.name = "${message(code: "is.product.template.name")} ${countPlusUn}"
-        product.pkey = "PROJ${countPlusUn}"
-        product.startDate = new Date()
-        product.endDate = new Date() + 90
-        product.preferences = new ProductPreferences()
-        if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.default)) {
-            product.preferences.hidden = true
-        }
-        def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE): message(code: "is.estimationSuite.fibonacci"), (PlanningPokerGame.INTEGER_SUITE): message(code: "is.estimationSuite.integer")]
-
-        def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
-        if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-            privateOption = false
-        }
-        render(status:200, template: "dialogs/new", model: [product: product,
-                                                               estimationSuitSelect: estimationSuitSelect,
-                                                               privateOption: privateOption,
-                                                               user:springSecurityService.currentUser,
-                                                               rolesLabels: BundleUtils.roles.values().collect {v -> message(code: v)},
-                                                               rolesKeys: BundleUtils.roles.keySet().asList()])
-    }
-
-    @Secured('isAuthenticated()')
-    def save() {
-        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
-            if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                render(status: 403)
-                return
-            }
-        }
-
-        if (!params.product) return
-        def product = new Product()
-        product.preferences = new ProductPreferences()
-        params.product.startDate = new Date().parse(message(code: 'is.date.format.short'), params.product.startDate)
-        params.product.endDate = new Date().parse(message(code: 'is.date.format.short'), params.product.endDate)
-        params.firstSprint = new Date().parse(message(code: 'is.date.format.short'), params.firstSprint)
-
-        product.properties = params.product
-
-        if (params.product.preferences.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-            product.preferences.hidden = true
-        }
-
-        if (params.firstSprint.after(product.endDate)) {
-            def msg = message(code: 'is.product.error.firstSprint')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-
-        if (params.firstSprint.after(product.endDate) || params.firstSprint == product.endDate) {
-            def msg = message(code: 'is.product.error.firstSprint')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-
-        def team = null
-        Product.withTransaction { status ->
-            try {
-                team = new Team()
-                team.name = params.product.name+" team "+new Date().toTimestamp()
-                team.preferences = new TeamPreferences()
-                team.properties = params.team
-
-                def members  = []
-                def productOwners = []
-                def scrumMasters  = []
-                def stakeHolders = []
-                params.members?.each{ k,v ->
-                    switch(params.role."${k}"){
-                        case Authority.MEMBER.toString():
-                            members.add(v.toLong())
-                            break;
-                        case Authority.SCRUMMASTER.toString():
-                            scrumMasters.add(v.toLong())
-                            break;
-                        case Authority.PRODUCTOWNER.toString():
-                            productOwners.add(v.toLong())
-                            break;
-                        case Authority.STAKEHOLDER.toString():
-                            stakeHolders.add(v.toLong())
-                            break;
-                        case Authority.PO_AND_SM.toString():
-                            scrumMasters.add(v.toLong())
-                            productOwners.add(v.toLong())
-                            break;
-                    }
-                }
-
-                if (!scrumMasters && !members && !productOwners){
-                    render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.noMember')]] as JSON)
-                    return
-                }
-
-                teamService.save team, members, scrumMasters
-                productService.save(product, productOwners, stakeHolders)
-                productService.addTeamsToProduct product, [team.id]
-
-                def release = new Release(name: "R1",
-                        startDate: product.startDate,
-                        vision: params.vision,
-                        endDate: product.endDate)
-                releaseService.save(release, product)
-                sprintService.generateSprints(release, params.firstSprint)
-                render(status:200, contentType: 'application/json', text:product as JSON)
-
-            } catch (IllegalStateException ise) {
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-                status.setRollbackOnly()
-                return
-            } catch (RuntimeException re) {
-                status.setRollbackOnly()
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: product) + renderErrors(bean: team)]] as JSON)
-                return
             }
         }
     }

@@ -21,6 +21,7 @@
  */
 
 
+import grails.plugin.springsecurity.SpringSecurityUtils
 import groovy.util.slurpersupport.GPathResult
 import org.geeks.browserdetection.ComparisonType
 import org.grails.databinding.xml.GPathResultMap
@@ -28,6 +29,8 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils
 
 class IceScrumFilters {
@@ -48,22 +51,44 @@ class IceScrumFilters {
                         }
                     }
                 }
-                if (params.product) {
+                if (params.product && (actionName != 'save' && controllerName != 'project')) {
                     params.product = params.product.decodeProductKey()
                     if (!params.product) {
                         request.pkey = null
                         if (controllerName == 'project' && actionName == 'feed') {
                             render(status: 404)
-                            return
+                            return false
                         } else {
                             //TODO what happens if we already are in index action?
                             redirect(controller: 'scrumOS', action: 'index')
-                            return
+                            return false
                         }
                     }
                 }
                 securityService.filterRequest()
                 return
+            }
+        }
+
+        projectCreationEnableSave(controller:'project', action:'save') {
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        render(status: 403)
+                        return false
+                    }
+                }
+            }
+        }
+
+        projectCreationEnableAdd(controller:'project', action:'add'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        render(status: 403)
+                        return false
+                    }
+                }
             }
         }
 

@@ -23,20 +23,28 @@
 controllers.controller('projectCtrl', ["$scope", function($scope) {
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', 'Session', function($scope, WizardHandler, $http, Session){
-    $scope.product = {
+controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 'ProjectService', '$filter', '$http', 'Session', function($scope, WizardHandler, Project, ProjectService, $filter, $http, Session){
+
+    $scope.project = new Project();
+
+    angular.extend($scope.project, {
         startDate:new Date(),
         endDate:new Date(new Date().setMonth(new Date().getMonth()+3)),
-        name:'test',
-        pkey:'AZERTY',
+        planningPokerGameType:1,
         preferences:{
-            timezone:'Europe/Paris'
-        }
-    };
+            noEstimation:false,
+            sprintDuration:14,
+            displayRecurrentTasks:true,
+            displayUrgentTasks:true,
+            hidden:true
+        },
+        productowners:[Session.user],
+        stakeholders:[]
+    });
 
-    $scope.$watchCollection('[product.startDate, product.endDate]', function(newValues){
-        $scope.productMinDate = new Date(newValues[0]).setDate(newValues[0].getDate()+1);
-        $scope.productMaxDate = new Date(newValues[1]).setDate(newValues[1].getDate()-1);
+    $scope.$watchCollection('[project.startDate, project.endDate]', function(newValues){
+        $scope.projectMinDate = new Date(newValues[0]).setDate(newValues[0].getDate()+1);
+        $scope.projectMaxDate = new Date(newValues[1]).setDate(newValues[1].getDate()-1);
     });
 
     $scope.startDate = {
@@ -64,46 +72,7 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', 'S
         return WizardHandler.wizard().currentStepNumber() == index
     };
 
-
-    $scope.team = {};
-    $scope.searchTeam = function(val){
-        return $http.get($scope.serverUrl+ '/team/search', {
-            params: {
-                value: val
-            }
-        }).then(function(response){
-            return response.data;
-        });
-    };
-
-    $scope.selectTeam = function($item, $model, $label){
-        $scope.team = $model;
-        $scope.team.selected = true;
-        //Add current user to the team
-        if (!$scope.team.id){
-            var current = angular.copy(Session.user);
-            $scope.team.members = [];
-            $scope.team.members.push(current);
-            $scope.team.scrumMasters = [];
-            $scope.team.scrumMasters.push(current);
-        }
-        if ($model.members && $model.scrumMasters){
-            $scope.team.members = $model.members.map(function(member){
-                member.scrumMaster = _.find($model.scrumMasters, function(sm){ return member.id == sm.id }) ? true : false;
-                return member;
-            })
-        }
-    };
-
-    $scope.unSelectTeam = function(){
-        if ($scope.team.selected){
-            $scope.team = {};
-            $scope.member = {};
-        }
-    };
-
-    $scope.member = {};
-    $scope.searchMembers = function(val){
+    $scope.searchUsers = function(val){
         return $http.get($scope.serverUrl+ '/user/search', {
             params: {
                 value: val,
@@ -111,27 +80,68 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', '$http', 'S
             }
         }).then(function(response){
             return _.chain(response.data)
-                        .filter(function(member){
-                            return !_.find($scope.team.members, function(_member){
-                                return member.email == _member.email;
+                .filter(function(u){
+                    var found = _.find($scope.project.productowners, function(_u){
+                        return u.email == _u.email;
+                    });
+                    if (!found){
+                        found = _.find($scope.project.stakeholders, function(_u){
+                            return u.email == _u.email;
+                        });
+                    }
+                    if (!found){
+                        if ($scope.project.team){
+                            found = _.find($scope.project.team.members, function(_u){
+                                return u.email == _u.email;
                             });
-                        }).map(function(member){
-                            member.name = member.firstName+' '+member.lastName;
-                            return member;
-                        })
-                    .value();
+                        }
+                    }
+                    return !found;
+                })
+                .map(function(member){
+                    member.name = member.firstName+' '+member.lastName;
+                    return member;
+                })
+                .value();
         });
     };
 
-    $scope.addTeamMember = function($item, $model, $label){
-        $scope.team.members.push($model);
-        $scope.member = {};
+    $scope.po = {};
+    $scope.sh = {};
+    $scope.addUser = function(user, role){
+        if(role == 'po'){
+            $scope.project.productowners.push(user);
+            $scope.po = {};
+        } else if(role == 'sh'){
+            $scope.project.stakeholders.push(user);
+            $scope.sh = {};
+        }
     };
 
-    $scope.removeTeamMember = function($member){
-        $scope.team.members = _.filter($scope.team.members, function(_member){
-            return _member.email != $member.email;
+    $scope.removeUser = function(user, role){
+        if(role == 'po'){
+            $scope.project.productowners = _.filter($scope.project.productowners, function(_member){
+                return _member.email != user.email;
+            });
+        } else if(role == 'sh'){
+            $scope.project.stakeholders = _.filter($scope.project.stakeholders, function(_member){
+                return _member.email != user.email;
+            });
+        }
+    };
+
+    $scope.createProject = function(project){
+        var p = angular.copy(project);
+
+        p.startDate = $filter( 'date')(project.startDate, "dd-MM-yyyy");
+        p.endDate = $filter( 'date')(project.endDate, "dd-MM-yyyy");
+        p.team.members = p.team.members.map(function(member){  return {id:member.id}; });
+        p.team.scrumMasters = p.team.scrumMasters.map(function(sm){ return {id:sm.id}; });
+        p.stakeholders = p.stakeholders.map(function(u){ return {id:u.id}; });
+        p.productowners = p.productowners.map(function(u){ return {id:u.id}; });
+
+        ProjectService.save(p).then(function(project){
+            document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
         });
     };
-
 }]);

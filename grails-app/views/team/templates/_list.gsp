@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="wizard.members.list.html">
-    <tr ng-repeat="member in team.members">
+    <tr>
             <td>
             <a class="btn btn-danger btn-xs" ng-click="removeTeamMember(member)" ng-show="!team.id"><i class="fa fa-close"></i></a>
     <img ng-src="{{ member | userAvatar }}" height="24" width="24" title="{{ member.username }}">
