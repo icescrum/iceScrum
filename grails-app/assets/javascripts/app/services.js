@@ -35,9 +35,11 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
             })
         }
     };
-}]).service('Session',['UserService', 'USER_ROLES', 'User', function (UserService, USER_ROLES, User) {
+}]).service('Session',['UserService', 'USER_ROLES', 'User', 'Project', function (UserService, USER_ROLES, User, Project) {
     var self = this;
     self.user = new User();
+    self.project = new Project();
+
     var defaultRoles = {
         productOwner: false,
         scrumMaster: false,
@@ -45,12 +47,18 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         stakeHolder: false
     };
     self.roles = _.clone(defaultRoles);
+
     this.create = function() {
         UserService.getCurrent().then(function(data) {
             _.extend(self.user, data.user);
             _.merge(self.roles, data.roles);
         });
     };
+
+    this.setUser = function(user){
+        _.extend(self.user, user);
+    };
+
     this.poOrSm = function() {
         return self.roles.productOwner || self.roles.scrumMaster;
     };
@@ -68,6 +76,9 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     };
     this.creator = function(item) {
         return this.authenticated  && !_.isEmpty(item) && !_.isEmpty(item.creator) && self.user.id == item.creator.id;
+    };
+    this.owner = function(item) {
+        return !_.isEmpty(item) && !_.isEmpty(item.owner) && self.user.id == item.owner.id;
     };
     // TODO remove, user role change for dev only
     this.changeRole = function(newUserRole) {
@@ -90,6 +101,15 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         newRoles.stakeHolder = true;
         _.merge(self.roles, defaultRoles, newRoles);
     };
+
+    this.setProject = function(project){
+        _.extend(self.project, project);
+    };
+
+    this.getProject = function(){
+        return self.project;
+    };
+
 }]).service('FormService', [function() {
     this.previous = function (list, element) {
         var ind = list.indexOf(element);

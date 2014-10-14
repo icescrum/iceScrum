@@ -39,7 +39,7 @@
             </a>
             <is:errors/>
         </div>
-        <div id="mainmenu">
+        <div id="mainmenu" ng-controller="projectCtrl">
             <ul class="nav navbar-nav scroll" ui-sortable="menubarSortableOptions">
                 <li class="dropdown contextual-menu">
                     <a class="dropdown-toggle">
@@ -81,30 +81,21 @@
                                     <g:message code="is.projectmenu.submenu.project.team"/>
                                 </a>
                             </li>
-                            <g:if test="${ownerOrSm}">
-                                <li>
-                                    <a href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
-                                        <g:message code="is.projectmenu.submenu.project.edit"/>
-                                    </a>
-                                </li>
-                            </g:if>
-                            <g:if test="${ownerOrSm}">
-                                <li>
-                                    <a href="${createLink(controller:'project', action:'editPractices',params:[product:product.id])}" data-ajax="true">
-                                        <g:message code="is.projectmenu.submenu.project.editPractices"/>
-                                    </a>
-                                </li>
-                            </g:if>
-                            <g:if test="${request.owner}">
-                                <li>
-                                    <a href="${createLink(action:'delete',controller:'project',params:[product:params.product])}"
-                                       data-ajax="true"
-                                       data-ajax-trigger="remove_product"
-                                       data-ajax-confirm="${message(code:'is.projectmenu.submenu.project.delete').encodeAsJavaScript()}">
-                                        <g:message code="is.projectmenu.submenu.project.delete"/>
-                                    </a>
-                                </li>
-                            </g:if>
+                            <li ng-if="authorizedProject('edit', currentProject)">
+                                <a href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
+                                    <g:message code="is.projectmenu.submenu.project.edit"/>
+                                </a>
+                            </li>
+                            <li ng-if="authorizedProject('edit', currentProject)">
+                                <a href="${createLink(controller:'project', action:'editPractices',params:[product:product.id])}" data-ajax="true">
+                                    <g:message code="is.projectmenu.submenu.project.editPractices"/>
+                                </a>
+                            </li>
+                            <li ng-if="authorizedProject('delete', currentProject)">
+                                <a href ng-click="delete(currentProject, '${message(code:'is.projectmenu.submenu.project.delete').encodeAsJavaScript()}')">
+                                    <g:message code="is.projectmenu.submenu.project.delete"/>
+                                </a>
+                            </li>
                             <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
                                 <li>
                                     <a href="${createLink(controller:'project', action:'export',params:[product:product.id])}" data-ajax="true">

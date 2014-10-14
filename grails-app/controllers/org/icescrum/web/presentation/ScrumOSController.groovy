@@ -232,10 +232,10 @@ class ScrumOSController {
         def tmpl = g.render(
                 template: 'templatesJS',
                 model: [id: controllerName,
-                        currentSprint: currentSprint,
+                        user:springSecurityService.currentUser,
                         product: product,
-                        i18nMessages: i18nMessages as JSON
-                ])
+                        currentSprint: currentSprint,
+                        i18nMessages: i18nMessages as JSON])
 
         tmpl = "${tmpl}".split("<div class='templates'>")
         tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=')

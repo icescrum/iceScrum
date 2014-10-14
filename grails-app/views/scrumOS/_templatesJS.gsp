@@ -24,37 +24,6 @@
 <jq:jquery>
     angular.element(document).injector().get('$rootScope').initMessages(${i18nMessages});
     $.extend(true, $.icescrum, {
-        user:{
-            id:${sec.loggedInUserInfo(field: 'id') ?: 'null'},
-            productOwner:${request.productOwner},
-            scrumMaster:${request.scrumMaster},
-            teamMember:${request.teamMember},
-            stakeHolder:${request.stakeHolder},
-            i18n:{
-                addRoleProduct:"${message(code:'is.user.role.added.product')}",
-                updateRoleProduct:"${message(code:'is.user.role.updated.product')}",
-                removeRoleProduct:"${message(code:'is.user.role.removed.product')}"
-            }
-        },
-        story:{
-            i18n : {
-                stories:"${message(code:'is.ui.backlog.title.details.stories')}",
-                points:"${message(code:'is.ui.backlog.title.details.points')}",
-                dependsOnWarning:"${message(code:'is.ui.story.warning.dependsOn')}"
-            },
-            states: ${is.bundleLocaleToJs(bundle: BundleUtils.storyStates, code:true)},
-            types: ${is.bundleLocaleToJs(bundle: BundleUtils.storyTypes)},
-            testStates: {
-                <g:each var="testStateEnum" status="index" in="${TestState.values()}">
-                ${testStateEnum.name()}: ${testStateEnum.id}${index == TestState.values().size() - 1 ? '' : ','}
-                </g:each>
-            },
-            testStateLabels: {
-                <g:each var="testStateEnum" status="index" in="${TestState.values()}">
-                "${testStateEnum.id}": "${message(code: testStateEnum.toString())}"${index == TestState.values().size() - 1 ? '' : ','}
-                </g:each>
-            }
-        },
         sprint:{
             ${currentSprint ? 'current:' + (currentSprint as JSON) + ',' : ''}
             i18n:{
@@ -70,39 +39,8 @@
         release:{
             states:${is.bundleLocaleToJs(bundle: BundleUtils.releaseStates)}
         },
-        task:{
-            BLOCKED:"${g.message(code: 'is.task.blocked')}",
-            UNBLOCK:"${g.message(code: 'is.ui.sprintPlan.menu.task.unblock')}",
-            BLOCK:"${g.message(code: 'is.ui.sprintPlan.menu.task.block')}"
-        },
-        actor:{
-            instances:${is.bundleLocaleToJs(bundle: BundleUtils.actorInstances)},
-            expertnessLevel:${is.bundleLocaleToJs(bundle: BundleUtils.actorLevels)},
-            useFrequency:${is.bundleLocaleToJs(bundle: BundleUtils.actorFrequencies)}
-        },
-        feature:{
-            types:${is.bundleLocaleToJs(bundle: BundleUtils.featureTypes)},
-            states:${is.bundleLocaleToJs(bundle: BundleUtils.featureStates)}
-        },
         <g:if test="${product}">
-        product:{
-            id:${product.id},
-            pkey:"${product.pkey}",
-            limitUrgentTasks:${product.preferences.limitUrgentTasks},
-            hidden:${product.preferences.hidden},
-            displayUrgentTasks:${product.preferences.displayUrgentTasks},
-            displayRecurrentTasks:${product.preferences.displayRecurrentTasks},
-            limitUrgentTasks:${product.preferences.limitUrgentTasks},
-            assignOnBeginTask:${product.preferences.assignOnBeginTask},
-            timezoneOffset:${TimeZone.getTimeZone(product.preferences.timezone).rawOffset/3600000},
-            estimatedSprintsDuration:${product.preferences.estimatedSprintsDuration},
-            i18n: {
-                deleted:"${g.message(code: 'is.product.deleted')}",
-                updated:"${g.message(code: 'is.product.updated')}",
-                archived:"${g.message(code: 'is.product.archived')}",
-                unArchived:"${g.message(code: 'is.product.unArchived')}"
-            }
-        },
+
         </g:if>
         acceptancetest:{
             i18n:{
@@ -138,3 +76,10 @@
         <g:render template="/acceptanceTest/templates"/>
     </g:if>
 </div>
+<script>
+    angular.element(document).ready(function () {
+        var Session = angular.element(document).injector().get('Session');
+        Session.setUser(${user as JSON});
+        Session.setProject(${product as JSON});
+    });
+</script>

@@ -98,7 +98,8 @@ icescrum.marshaller = [
 
         comment: [include: ['poster']],
 
-        product: [exclude:['cliches']],
+        product: [include: ['owner'],
+                  exclude:['cliches']],
 
         team: [include:['members', 'scrumMasters']],
 

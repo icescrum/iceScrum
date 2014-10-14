@@ -28,9 +28,25 @@ services.factory( 'Project', [ 'Resource', function( $resource ) {
         });
 }]);
 
-services.service("ProjectService", ['Project', function(Project) {
+services.service("ProjectService", ['Project', 'Session', function(Project, Session) {
     this.save = function (project) {
         project.class = 'product';
         return Project.save(project).$promise;
     };
+
+    this['delete'] = function(project) {
+        return project.$delete();
+    };
+
+    this.authorizedProject = function(action, project) {
+        switch (action) {
+            case 'edit':
+                return Session.owner(project) && Session.sm();
+            case 'owner':
+            case 'delete':
+                return Session.owner(project);
+            default:
+                return false;
+        }
+    }
 }]);

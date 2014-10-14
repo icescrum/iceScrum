@@ -151,7 +151,7 @@ class ProjectController {
 
     @Secured('stakeHolder() or inProduct()')
     def feed() {
-        cache validFor: 300
+        //todo make cache
         withProduct{ Product product ->
             def activities = Story.recentActivity(product)
             activities.addAll(Product.recentActivity(product))
@@ -234,7 +234,7 @@ class ProjectController {
         }
     }
 
-    @Secured('owner()')
+    @Secured(['owner()'])
     def delete() {
         withProduct{ Product product ->
             def id = product.id

@@ -100,6 +100,15 @@ class UrlMappings {
             action = [GET: "index", POST:"save"]
         }
 
+        "/project/$product" {
+            controller = 'project'
+            action = [DELETE: "delete", PUT:"update"]
+            constraints {
+                //must be the id
+                product(matches: /\d*/)
+            }
+        }
+
         "/project/available/$property" {
             controller = 'project'
             action = [POST: "available"]

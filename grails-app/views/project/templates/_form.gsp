@@ -156,8 +156,8 @@
                 </span>
             </p>
         </div>
-        <div class="col-sm-8 list-users">
-            <div ng-class="{'well':project.productowners.length > 0}">
+        <div class="col-sm-8">
+            <div ng-class="{'list-users':project.productowners.length > 0}">
                 <ng-include ng-init="role = 'po';" ng-repeat="user in project.productowners" src="'user.item.html'"></ng-include>
             </div>
         </div>
@@ -183,8 +183,8 @@
                 </span>
             </p>
         </div>
-        <div class="col-sm-8 list-users">
-            <div ng-class="{'well':project.stakeholders.length > 0}">
+        <div class="col-sm-8">
+            <div ng-class="{'list-users':project.stakeholders.length > 0}">
                 <ng-include ng-init="role = 'sh';" ng-repeat="user in project.stakeholders" src="'user.item.html'"></ng-include>
             </div>
         </div>

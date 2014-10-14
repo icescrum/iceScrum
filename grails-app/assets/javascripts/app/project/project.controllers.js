@@ -20,7 +20,21 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", function($scope) {
+controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', function($scope, ProjectService, Session) {
+    $scope.currentProject = Session.getProject();
+    $scope['delete'] = function(project, message) {
+        $scope.confirm({
+            message:message,
+            callback:function(){
+                ProjectService.delete(project).then(function(){
+                    document.location = $scope.serverUrl;
+                });
+            }
+        })
+    };
+    $scope.authorizedProject = function(action, project) {
+       return ProjectService.authorizedProject(action, project);
+    };
 }]);
 
 controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 'ProjectService', '$filter', '$http', 'Session', function($scope, WizardHandler, Project, ProjectService, $filter, $http, Session){
@@ -132,14 +146,12 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 
 
     $scope.createProject = function(project){
         var p = angular.copy(project);
-
         p.startDate = $filter( 'date')(project.startDate, "dd-MM-yyyy");
         p.endDate = $filter( 'date')(project.endDate, "dd-MM-yyyy");
         p.team.members = p.team.members.map(function(member){  return {id:member.id}; });
         p.team.scrumMasters = p.team.scrumMasters.map(function(sm){ return {id:sm.id}; });
         p.stakeholders = p.stakeholders.map(function(u){ return {id:u.id}; });
         p.productowners = p.productowners.map(function(u){ return {id:u.id}; });
-
         ProjectService.save(p).then(function(project){
             document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
         });
