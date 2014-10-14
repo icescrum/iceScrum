@@ -270,27 +270,6 @@ class ProductUrlMappings {
             }
         }
 
-        "/p/$product/attachment/$type/$attachmentable" {
-            controller = 'attachment'
-            action = [GET: "list", POST:"save"]
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task'])
-            }
-        }
-
-        "/p/$product/attachment/$type/$attachmentable/$id" {
-            controller = 'attachment'
-            action = [GET: "show", DELETE:"delete"]
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                attachmentable(matches: /\d*/)
-                id(matches: /\d*/)
-                type(inList: ['story', 'task'])
-            }
-        }
-
         "/p/$product/acceptanceTest/story/$parentStory" {
             controller = 'acceptanceTest'
             action = [GET: "list"]

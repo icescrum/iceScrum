@@ -51,7 +51,7 @@ class IceScrumFilters {
                         }
                     }
                 }
-                if (params.product && (actionName != 'save' && controllerName != 'project')) {
+                if (params.product && !(actionName == 'save' && controllerName == 'project')) {
                     params.product = params.product.decodeProductKey()
                     if (!params.product) {
                         request.pkey = null

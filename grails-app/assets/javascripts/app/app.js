@@ -64,7 +64,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     url: "/new",
                     onEnter: ["$state", "$modal", 'WizardHandler', function($state, $modal, WizardHandler) {
                         var modal = $modal.open({
-                            templateUrl: icescrum.serverUrl + '/' + "project/add",
+                            templateUrl: icescrum.grailsServer + '/' + "project/add",
                             size: 'lg',
                             controller: 'newProjectCtrl'
                             });

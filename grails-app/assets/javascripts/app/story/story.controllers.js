@@ -273,7 +273,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.attachmentQuery = function($flow, story){
             //to add flow in storyDetailsCtrl scope
             $scope.flow = $flow;
-            $flow.opts.query = { 'type':'story', 'attachmentable':story.id };
+            $flow.opts.target = 'attachment/story/' + story.id + '/flow';
             $flow.upload();
         };
         $scope.formHover = function(value) {
