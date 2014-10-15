@@ -35,7 +35,6 @@
     padding: 10px 15px;
     font-size: 13px;
     font-family: "Trebuchet MS", Arial, sans-serif;
-    border: 1px solid #D6D6C1;
 }
 #browser-detection p {
     width: auto;
@@ -57,13 +56,13 @@
     clear: both;
     margin-top: 3px;
     padding: 7px 0;
-    border-top: 1px solid #deeef5;
-    border-bottom: 1px solid #deeef5;
+    border-top: 2px solid #5bc0de;
+    border-bottom: 2px solid #5bc0de;
     width: 100%;
 }
 #browser-detection ul.browser-list li { text-align: left; }
 #browser-detection ul.browser-list li a {
-    width: 60px;
+    width: 55px;
     height: 55px;
     display: block;
     color: #666666;
@@ -71,11 +70,11 @@
     text-decoration: none;
 }
 #browser-detection ul.browser-list li a:hover {	text-decoration: underline; }
-#browser-detection ul.browser-list li.firefox a { background: url(../images/firefox.gif) no-repeat left top; }
-#browser-detection ul.browser-list li.chrome a { background: url(../images/chrome.gif) no-repeat left top; }
-#browser-detection ul.browser-list li.safari a { background: url(../images/safari.gif) no-repeat left top; }
-#browser-detection ul.browser-list li.opera a { background: url(../images/opera.gif) no-repeat left top; }
-#browser-detection ul.browser-list li.msie a { background: url(../images/msie.gif) no-repeat left top; }
+#browser-detection ul.browser-list li.firefox a { background: url(../images/firefox.jpg) no-repeat left top; }
+#browser-detection ul.browser-list li.chrome a { background: url(../images/chrome.jpg) no-repeat left top; }
+#browser-detection ul.browser-list li.safari a { background: url(../images/safari.jpg) no-repeat left top; }
+#browser-detection ul.browser-list li.opera a { background: url(../images/opera.jpg) no-repeat left top; }
+#browser-detection ul.browser-list li.msie a { background: url(../images/msie.jpg) no-repeat left top; }
 </style>
 
 <div id="container">
@@ -90,9 +89,9 @@
         <ul class="browser-list">
             <li class="firefox"><a target="_blank" href="http://www.getfirefox.com/">Mozilla Firefox</a></li>
             <li class="chrome"><a target="_blank" href="http://www.google.com/chrome/">Google Chrome</a></li>
-            <li class="msie"><a target="_blank" href="http://www.getie.com/">Internet Explorer</a></li>
-            <li class="opera"><a target="_blank" href="http://www.opera.com/">Opera</a></li>
             <li class="safari"><a target="_blank" href="http://www.apple.com/safari/">Apple Safari</a></li>
+            <li class="opera"><a target="_blank" href="http://www.opera.com/">Opera</a></li>
+            <li class="msie"><a target="_blank" href="http://www.getie.com/">Internet Explorer</a></li>
         </ul>
 
         <div class="clear"></div>

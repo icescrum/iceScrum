@@ -145,7 +145,6 @@ icescrum.restMarshaller = [
 grails.assets.less.compile = 'less4j'
 grails.assets.excludes = ["**/*.less"]
 grails.assets.includes = ["styles.less"]
-grails.assets.plugin."browser-detection".excludes = ["**/*"]
 grails.assets.plugin."commentable".excludes = ["**/*"]
 grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
 
@@ -338,7 +337,7 @@ grails {
                     //app controllers rules
                     '/scrumOS/**':                    ['permitAll'],
                     '/user/**':                       ['permitAll'],
-
+                    '/errors/**':                     ['permitAll'],
                     '/assets/**':                     ['permitAll'],
                     '/**/js/**':                      ['permitAll'],
                     '/**/css/**':                     ['permitAll'],
