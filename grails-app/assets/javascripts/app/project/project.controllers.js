@@ -22,9 +22,10 @@
  */
 controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', function($scope, ProjectService, Session) {
     $scope.currentProject = Session.getProject();
-    $scope['delete'] = function(project, message) {
+
+    $scope['delete'] = function(project) {
         $scope.confirm({
-            message:message,
+            message:$scope.message('todo.is.ui.projectmenu.submenu.project.delete'),
             callback:function(){
                 ProjectService.delete(project).then(function(){
                     document.location = $scope.serverUrl;
@@ -32,6 +33,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', fu
             }
         })
     };
+
     $scope.authorizedProject = function(action, project) {
        return ProjectService.authorizedProject(action, project);
     };

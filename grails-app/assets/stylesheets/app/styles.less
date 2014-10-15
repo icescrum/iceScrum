@@ -529,9 +529,12 @@ table[data-ui-draggable] > tr:hover .drag span,
       }
     }
   }
-  li.projects a {
+  li.project a {
     .text-overflow();
     width: 185px;
+    &.active {
+      font-weight:bold;
+    }
   }
 }
 /** popover error **/
@@ -1440,9 +1443,7 @@ a[data-toggle="tab"] button {
         &:hover {
           .content {
             .title > div {
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow: hidden;
+              .text-overflow();
             }
             .description {
               font-size: 12px;
@@ -1603,9 +1604,7 @@ a[data-toggle="tab"] button {
         text-align:right;
         line-height: 16px;
         @media (max-width: 767px) {
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
+          .text-overflow();
           width: 38px;
           left:45px;
         }
@@ -1750,9 +1749,7 @@ a[data-toggle="tab"] button {
 .table.attachments {
   margin-bottom:0;
   .filename {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    .text-overflow();
   }
 }
 

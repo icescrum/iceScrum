@@ -59,15 +59,15 @@
                         </g:if>
                         <g:if test="${importEnable}">
                             <li>
-                                <a href="#project/import">
-                                    <g:message code="is.projectmenu.submenu.project.import"/>
+                                <a hotkey="{ 'shift+i': hotkeyClick}" href="#project/import">
+                                    <g:message code="is.projectmenu.submenu.project.import"/> <small class="text-muted">(SHIFT+I)</small>
                                 </a>
                             </li>
                         </g:if>
                         <g:if test="${browsableProductsExist}">
                             <li>
-                                <a href="#project/list">
-                                    <g:message code="is.projectmenu.submenu.project.browse"/>
+                                <a hotkey="{ 'shift+l': hotkeyClick}" href="#project/list">
+                                    <g:message code="is.projectmenu.submenu.project.browse"/> <small class="text-muted">(SHIFT+L)</small>
                                 </a>
                             </li>
                         </g:if>
@@ -77,29 +77,29 @@
                                 ${message(code: 'todo.is.current.project')}
                             </li>
                             <li>
-                                <a href="${createLink(controller:'members', action:'edit',params:[product:product.id])}" data-ajax="true">
-                                    <g:message code="is.projectmenu.submenu.project.team"/>
+                                <a hotkey="{ 'shift+t': hotkeyClick}" href="#project/members">
+                                    <g:message code="is.projectmenu.submenu.project.team"/> <small class="text-muted">(SHIFT+T)</small>
                                 </a>
                             </li>
                             <li ng-if="authorizedProject('edit', currentProject)">
-                                <a href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
-                                    <g:message code="is.projectmenu.submenu.project.edit"/>
+                                <a hotkey="{ 'shift+e': hotkeyClick}" href="#project/edit">
+                                    <g:message code="is.projectmenu.submenu.project.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                 </a>
                             </li>
                             <li ng-if="authorizedProject('edit', currentProject)">
-                                <a href="${createLink(controller:'project', action:'editPractices',params:[product:product.id])}" data-ajax="true">
-                                    <g:message code="is.projectmenu.submenu.project.editPractices"/>
+                                <a hotkey="{ 'shift+d': hotkeyClick}" href="#project/practices">
+                                    <g:message code="is.projectmenu.submenu.project.editPractices"/> <small class="text-muted">(SHIFT+D)</small>
                                 </a>
                             </li>
                             <li ng-if="authorizedProject('delete', currentProject)">
-                                <a href ng-click="delete(currentProject, '${message(code:'is.projectmenu.submenu.project.delete').encodeAsJavaScript()}')">
+                                <a href ng-click="delete(currentProject)">
                                     <g:message code="is.projectmenu.submenu.project.delete"/>
                                 </a>
                             </li>
                             <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
                                 <li>
-                                    <a href="${createLink(controller:'project', action:'export',params:[product:product.id])}" data-ajax="true">
-                                        <g:message code="is.projectmenu.submenu.project.export"/>
+                                    <a hotkey="{ 'shift+d': hotkeyClick}"href="#project/export">
+                                        <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
                                     </a>
                                 </li>
                             </g:if>
@@ -110,11 +110,10 @@
                                 ${message(code: 'is.projectmenu.submenu.project.my.title')}
                             </li>
                             <g:each var="curProduct" in="${productFilteredsList}">
-                                <li id='product-${curProduct.id}' class="projects ${(curProduct.owner.id == user?.id) ? 'owner' : ''}">
-                                    <a class="${(product?.id == curProduct.id) ? 'active' : ''}"
-                                       href="${createLink(controller: "scrumOS", params: [product:curProduct.pkey])}/"
-                                       title="${curProduct.name.encodeAsHTML()}"
-                                       ${(product?.id == curProduct.id) ? 'onClick="jQuery.icescrum.renderNotice(\''+g.message(code:'is.ui.alreadyOpen', args:[g.message(code:'is.product')])+'\'); return false;"' : ''}>
+                                <li class="project">
+                                    <a class="${product?.id == curProduct.id ? 'active' : ''}"
+                                       href="${product?.id == curProduct.id ? '' : createLink(controller: "scrumOS", params: [product:curProduct.pkey])}/"
+                                       title="${curProduct.name.encodeAsHTML()}">
                                        ${curProduct.name.encodeAsHTML()}
                                     </a>
                                 </li>
