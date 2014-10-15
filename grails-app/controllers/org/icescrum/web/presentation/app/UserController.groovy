@@ -24,6 +24,7 @@
 package org.icescrum.web.presentation.app
 
 import org.apache.commons.io.FilenameUtils
+import org.apache.commons.io.filefilter.WildcardFileFilter
 import org.apache.commons.validator.GenericValidator
 import org.icescrum.components.FileUploadInfo
 import org.icescrum.components.UtilsWebComponents
@@ -299,8 +300,9 @@ class UserController {
 
     def avatar() {
         withUser { User user ->
-            def avatar = new File(grailsApplication.config.icescrum.images.users.dir.toString() + user.id + '.png')
-            if (!avatar.exists()){
+            File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter)new WildcardFileFilter("${user.id}.*"))
+            def avatar = files ? files[0] : null
+            if (!avatar?.exists()){
                 if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)){
                     redirect url:"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()
                     return
