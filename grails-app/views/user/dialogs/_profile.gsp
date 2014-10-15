@@ -33,7 +33,10 @@
              select="setTabSelected('general')">
             <div flow-files-added="dataUser.avatar = 'custom';"
                  flow-files-submitted="$flow.upload()"
+                 flow-files-success="dataUser.avatar = 'custom'"
+                 flow-file-added="!! {png:1,jpg:1,jpeg:1} [$file.getExtension()]"
                  flow-init="{target:'${createLink(controller:'user', action:'update', id:user.id)}', singleFile:true, simultaneousUploads:1}"
+                 flow-single-file="true"
                  flow-drop>
                 <div class="row">
                     <div class="form-half">
@@ -50,10 +53,8 @@
                                          src="${"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()}"/>
                                 </g:if>
                                 <div class="choose-file">
-                                    <span flow-single-file="true"
-                                      ng-class="{'hide': dataUser.avatar == 'custom' }"
-                                      flow-files-success="dataUser.avatar = 'custom'"
-                                       flow-btn class="btn btn-default"><i class="fa fa-photo"></i></span>
+                                    <span ng-class="{'hide': dataUser.avatar == 'custom' }"
+                                          flow-btn class="btn btn-default"><i class="fa fa-photo"></i></span>
                                     <img flow-btn
                                          ng-class="{'selected': dataUser.avatar == 'custom', 'hide': dataUser.avatar != 'custom' }"
                                          flow-img="$flow.files[0] ? $flow.files[0] : '${asset.assetPath(src: 'avatars/dev-ico.png')}'" />
