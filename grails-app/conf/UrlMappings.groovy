@@ -124,7 +124,7 @@ class UrlMappings {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'actor', 'feature'])
             }
         }
 
@@ -134,7 +134,7 @@ class UrlMappings {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'actor', 'feature'])
             }
         }
 
@@ -145,7 +145,7 @@ class UrlMappings {
                 product(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
                 id(matches: /\d*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'actor', 'feature'])
             }
         }
 

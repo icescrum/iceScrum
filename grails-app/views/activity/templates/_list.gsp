@@ -20,15 +20,15 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="activity.list.html">
-<tr ng-show="selected.activities === undefined">
+<tr ng-show="getSelected().activities === undefined">
     <td class="empty-content">
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="activity in selected.activities">
+<tr ng-repeat="activity in getSelected().activities">
     <td>{{ activity.cachedLabel }}</td>
 </tr>
-<tr ng-show="!selected.activities && selected.activities !== undefined">
+<tr ng-show="!getSelected().activities && getSelected().activities !== undefined">
     <td class="empty-content">
         <small>${message(code:'todo.is.ui.activity.empty')}</small>
     </td>

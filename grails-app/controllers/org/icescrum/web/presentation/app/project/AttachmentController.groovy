@@ -24,6 +24,8 @@ package org.icescrum.web.presentation.app.project
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.components.UtilsWebComponents
+import org.icescrum.core.domain.Actor
+import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.event.IceScrumEventType
@@ -125,6 +127,12 @@ class AttachmentController {
                 break
             case 'task':
                 attachmentable = Task.getInProduct(params.long('product'),params.long('attachmentable'))
+                break
+            case 'actor':
+                attachmentable = Actor.getInProduct(params.long('product'),params.long('attachmentable')).list()
+                break
+            case 'feature':
+                attachmentable = Feature.getInProduct(params.long('product'),params.long('attachmentable')).list()
                 break
             default:
                 attachmentable = null

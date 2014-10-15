@@ -90,6 +90,7 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
             case 'updateMultiple':
             case 'copyToBacklog':
             case 'copyToBacklogMultiple':
+            case 'upload':
             case 'update':
             case 'delete':
             case 'deleteMultiple':

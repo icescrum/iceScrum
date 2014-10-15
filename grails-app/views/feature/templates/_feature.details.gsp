@@ -22,7 +22,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="feature.details.html">
-<div class="panel panel-default">
+<div class="panel panel-default"
+     flow-drop
+     flow-files-submitted="attachmentQuery($flow, feature)"
+     flow-drop-enabled="authorizedFeature('upload', feature)"
+     flow-drag-enter="class='panel panel-default drop-enabled'"
+     flow-drag-leave="class='panel panel-default'"
+     flow-init
+     ng-class="authorizedFeature('upload', feature) && class">
     <div class="panel-heading"
          fixed="#right"
          fixed-offset-top="1"
@@ -184,7 +191,7 @@
                      tabindex="0"
                      ng-bind-html="(editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
             </div>
-            <div class="btn-toolbar" ng-if="getShowFeatureForm(editableFeature)">
+            <div class="btn-toolbar" ng-if="getShowFeatureForm(editableFeature) && getEditableMode()">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="!isDirty() || formHolder.featureForm.$invalid"
                         tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
@@ -200,21 +207,31 @@
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>
+            <div class="form-group">
+                <label>${message(code:'is.backlogelement.attachment')}</label>
+                <div ng-if="authorizedFeature('upload', feature)">
+                    <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i> todo.is.ui.new.upload</button>
+                </div>
+                <div class="form-control-static">
+                    <div class="drop-zone">
+                        <h2>${message(code:'todo.is.ui.drop.here')}</h2>
+                    </div>
+                    <table class="table table-striped attachments" ng-controller="attachmentCtrl">
+                        <tbody ng-include="'attachment.list.html'"></tbody>
+                    </table>
+                </div>
+            </div>
         </form>
     </div>
 </div>
 <div class="panel panel-default">
     <div class="panel-body">
         <tabset type="tabs nav-tabs-google">
-            <tab select="$state.params.tabId ? setTabSelected('attachments') : ''"
-                 heading="${message(code: 'is.ui.backlogelement.attachment')}"
-                 active="tabSelected.attachments">
-            </tab>
-            <tab select="stories(feature); setTabSelected('stories');"
+            <tab select="stories(feature); ($state.params.tabId ? setTabSelected('stories') : '');"
                  heading="${message(code: 'todo.is.feature.stories')}"
                  active="tabSelected.stories">
                 <table class="table">
-                    <tbody ng-include="'nested.stories.html'" ng-init="selected = feature"></tbody>
+                    <tbody ng-include="'nested.stories.html'"></tbody>
                 </table>
             </tab>
         </tabset>

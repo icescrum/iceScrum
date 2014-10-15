@@ -138,7 +138,6 @@ class ActorController {
         }
     }
 
-    // TODO cache
     def view() {
         render(template: "${params.type ?: 'window'}/view")
     }

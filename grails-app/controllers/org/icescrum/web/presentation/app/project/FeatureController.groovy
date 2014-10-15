@@ -189,7 +189,6 @@ class FeatureController {
         }
     }
 
-    // TODO cache
     def view() {
         render(template: "${params.type ?: 'window'}/view")
     }

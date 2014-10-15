@@ -48,14 +48,16 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             $scope.tabSelected = {};
             $scope.tabSelected[$state.params.tabId] = true;
         } else {
-            $scope.tabSelected = {'attachments': true};
+            $scope.tabSelected = {'stories': true};
         }
         $scope.$watch('$state.params', function() {
             if ($state.params.tabId) {
-                $scope.tabSelected[$state.params.tabId] = true;
+                if ($state.params.tabId != 'attachments') {
+                    $scope.tabSelected[$state.params.tabId] = true;
+                }
                 $timeout((function() {
                     var container = angular.element('#right');
-                    var pos = angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
+                    var pos = $state.params.tabId == 'attachments' ? angular.element('#right .table.attachments').offset().top - angular.element('#right .panel-body').offset().top - 9 : angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
                     container.animate({ scrollTop: pos }, 1000);
                 }));
             }
@@ -104,8 +106,11 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
                 $scope.mustConfirmStateChange = false;
                 $scope.confirm({
                     message: 'todo.is.ui.dirty.confirm',
-                    condition: $scope.isDirty(),
+                    condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
                     callback: function () {
+                        if ($scope.flow != undefined && $scope.flow.isUploading()){
+                            $scope.flow.cancel();
+                        }
                         $state.go(toState, toParams)
                     },
                     closeCallback: function() {
@@ -114,6 +119,15 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
                 });
             }
         });
+        $scope.getSelected = function() {
+            return $scope.actor;
+        };
+        $scope.clazz = 'actor';
+        $scope.attachmentQuery = function($flow, actor){
+            $scope.flow = $flow;
+            $flow.opts.target = 'attachment/actor/' + actor.id + '/flow';
+            $flow.upload();
+        };
         $scope.formHover = function(value) {
             $scope.formHolder.formHover = value;
         };

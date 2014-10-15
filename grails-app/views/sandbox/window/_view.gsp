@@ -66,6 +66,7 @@
                            tooltip="{{ story.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
                            tooltip-append-to-body="true">
                             <i class="fa fa-paperclip"></i>
+                            <span class="badge" ng-show="story.attachments_count">{{ story.attachments_count }}</span>
                         </a>
                     </span>
                     <span class="action" ng-class="{'active':story.comments_count}">

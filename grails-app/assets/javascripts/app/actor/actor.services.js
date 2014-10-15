@@ -81,6 +81,7 @@ services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
     this.authorizedActor = function(action) {
         switch (action) {
             case 'create':
+            case 'upload':
             case 'update':
             case 'delete':
             case 'deleteMultiple':

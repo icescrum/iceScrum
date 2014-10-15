@@ -109,8 +109,8 @@ icescrum.marshaller = [
         user:[exclude: ['password','accountExpired','accountLocked','passwordExpired'],
               asShort:['firstName', 'lastName']],
 
-        actor:[include:['tags']],
-        feature:[include:['countDoneStories','state','effort','tags'],
+        actor:[include:['tags', 'attachments']],
+        feature:[include:['countDoneStories','state','effort','tags','attachments'],
                  asShort:['color', 'name']],
         sprint:[include:['activable','totalRemaining'],
                 exclude:['cliches'],
@@ -183,7 +183,8 @@ grails.taggable.preserve.case = true
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident'] // experiment
-grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
+grails.mime.types = [
+        html: ['text/html', 'application/xhtml+xml'],
         xml: ['text/xml', 'application/xml'],
         text: 'text/plain',
         js: 'text/javascript',

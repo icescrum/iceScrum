@@ -25,7 +25,7 @@ controllers.controller('attachmentCtrl', ['$scope', '$modal', 'AttachmentService
     //manual save from flow js
     $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
         var attachment = JSON.parse(message);
-        AttachmentService.save(attachment, $scope.story);
+        AttachmentService.save(attachment, $scope.getSelected());
     });
     $scope['delete'] = function(attachment, attachmentable) {
         AttachmentService.delete(attachment, attachmentable);

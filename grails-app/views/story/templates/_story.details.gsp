@@ -25,11 +25,11 @@
 <div class="panel panel-default"
      flow-drop
      flow-files-submitted="attachmentQuery($flow, story)"
-     flow-drop-enabled="authorizedStory('upload',story)"
+     flow-drop-enabled="authorizedStory('upload', story)"
      flow-drag-enter="class='panel panel-default drop-enabled'"
      flow-drag-leave="class='panel panel-default'"
      flow-init
-     ng-class="authorizedStory('upload',story) && class">
+     ng-class="authorizedStory('upload', story) && class">
     <div id="story-header"
          class="panel-heading"
          fixed="#right"
@@ -337,7 +337,7 @@
             </div>
             <div class="form-group">
                 <label>${message(code:'is.backlogelement.attachment')}</label>
-                <div>
+                <div ng-if="authorizedStory('upload', story)">
                     <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i> todo.is.ui.new.upload</button>
                 </div>
                 <div class="form-control-static">
@@ -345,7 +345,7 @@
                         <h2>${message(code:'todo.is.ui.drop.here')}</h2>
                     </div>
                     <table class="table table-striped attachments" ng-controller="attachmentCtrl">
-                        <tbody ng-include="'attachment.list.html'" onload=" selected = story;  clazz = 'story'; "></tbody>
+                        <tbody ng-include="'attachment.list.html'"></tbody>
                     </table>
                 </div>
             </div>
@@ -359,14 +359,14 @@
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
                  active="tabSelected.activities">
                 <table class="table table-striped">
-                    <tbody ng-include="'activity.list.html'" ng-init="selected = story"></tbody>
+                    <tbody ng-include="'activity.list.html'"></tbody>
                 </table>
             </tab>
             <tab select="comments(story); setTabSelected('comments');"
                  heading="${message(code: 'is.ui.backlogelement.activity.comments')}"
                  active="tabSelected.comments">
                 <table class="table">
-                    <tbody ng-include="'comment.list.html'" ng-init="selected = story"></tbody>
+                    <tbody ng-include="'comment.list.html'"></tbody>
                 </table>
                 <table class="table" ng-controller="commentCtrl">
                     <tbody>

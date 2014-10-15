@@ -21,12 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="nested.stories.html">
-<tr ng-show="selected.stories === undefined">
+<tr ng-show="getSelected().stories === undefined">
     <td class="empty-content">
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="story in selected.stories">
+<tr ng-repeat="story in getSelected().stories">
     <td>
         <div class="content">
             <span class="label label-default"
@@ -39,7 +39,7 @@
         </div>
     </td>
 </tr>
-<tr ng-show="!selected.stories.length">
+<tr ng-show="!getSelected().stories.length">
     <td class="empty-content">
         <small>${message(code:'todo.is.ui.story.empty')}</small>
     </td>

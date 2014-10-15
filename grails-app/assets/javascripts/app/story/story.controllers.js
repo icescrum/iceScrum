@@ -270,6 +270,10 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
+        $scope.getSelected = function() {
+            return $scope.story;
+        };
+        $scope.clazz = 'story';
         $scope.attachmentQuery = function($flow, story){
             //to add flow in storyDetailsCtrl scope
             $scope.flow = $flow;

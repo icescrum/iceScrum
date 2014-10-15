@@ -21,12 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.list.html">
-<tr ng-show="selected.comments === undefined">
+<tr ng-show="getSelected().comments === undefined">
     <td class="empty-content">
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
+<tr ng-repeat="comment in getSelected().comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
     <td>
         <div class="content">
             <form name="formHolder.commentForm"
@@ -60,7 +60,7 @@
                     <textarea required
                               msd-elastic
                               ng-maxlength="5000"
-                              ng-blur="blurComment(editableComment, selected, $event)"
+                              ng-blur="blurComment(editableComment, getSelected(), $event)"
                               ng-mouseover="showForm(true)"
                               ng-focus="editForm(true)"
                               name="body"
@@ -72,7 +72,7 @@
         </div>
     </td>
 </tr>
-<tr ng-show="!selected.comments && selected.comments !== undefined">
+<tr ng-show="!getSelected().comments && getSelected().comments !== undefined">
     <td class="empty-content">
         <small>${message(code:'todo.is.ui.comment.empty')}</small>
     </td>

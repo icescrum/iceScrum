@@ -66,8 +66,8 @@
                         </g:if>
                         <g:if test="${browsableProductsExist}">
                             <li>
-                                <a hotkey="{ 'shift+l': hotkeyClick}" href="#project/list">
-                                    <g:message code="is.projectmenu.submenu.project.browse"/> <small class="text-muted">(SHIFT+L)</small>
+                                <a hotkey="{ 'shift+a': hotkeyClick}" href="#project/list">
+                                    <g:message code="is.projectmenu.submenu.project.browse"/> <small class="text-muted">(SHIFT+A)</small>
                                 </a>
                             </li>
                         </g:if>
@@ -219,10 +219,10 @@
                 <button id="login"
                         ng-show="!(currentUser.username)"
                         class="btn btn-primary"
-                        hotkey="{'L':showAuthModal}"
+                        hotkey="{'shift+l':showAuthModal}"
                         ng-click="showAuthModal()"
                         hotkey-description="${message(code:'is.button.connect')}"
-                        tooltip="${message(code:'is.button.connect')} (L)"
+                        tooltip="${message(code:'is.button.connect')} (SHIFT+L)"
                         tooltip-append-to-body="true"
                         tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
             </div>
