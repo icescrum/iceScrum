@@ -297,6 +297,24 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
 
+        $rootScope.showCopyModal = function(title, value) {
+            $modal.open({
+                templateUrl: 'copy.html',
+                size: 'sm',
+                controller: ["$scope", "$modalInstance", 'hotkeys', function($scope, $modalInstance, hotkeys) {
+                    $scope.title = title;
+                    $scope.value = value;
+                    hotkeys
+                        .bindTo($scope)
+                        .add({
+                            combo: 'mod+c',
+                            allowIn: ['INPUT'],
+                            callback: $modalInstance.close
+                        });
+                }]
+            });
+        };
+
         // TODO Change ugly hack
         $rootScope.serverUrl = icescrum.grailsServer;
 

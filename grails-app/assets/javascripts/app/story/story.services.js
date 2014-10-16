@@ -204,8 +204,6 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             case 'deleteMultiple':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
-            case 'menu':
-                return this.authorizedStory('accept', story) || this.authorizedStory('create') || this.authorizedStory('createTemplate') || this.authorizedStory('delete', story);
             default:
                 return false;
         }

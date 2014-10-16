@@ -53,8 +53,7 @@
                 </div>
                 <div class="actions">
                     <span class="action">
-                        <a ng-class="{ disabled: !authorizedStory('menu', story) }"
-                           data-toggle="dropdown"
+                        <a data-toggle="dropdown"
                            tooltip="${message(code: 'todo.is.ui.actions')}"
                            tooltip-append-to-body="true">
                             <i class="fa fa-cog"></i>

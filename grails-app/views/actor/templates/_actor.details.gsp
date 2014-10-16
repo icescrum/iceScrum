@@ -57,7 +57,6 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
-                 ng-if="authorizedActor('menu')"
                  tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -66,19 +65,10 @@
                 <ul class="dropdown-menu"
                     ng-include="'actor.menu.html'"></ul>
             </div>
-            <button type="button"
-                    tabindex="-1"
-                    popover-title="${message(code:'is.permalink')}"
-                    popover="{{ serverUrl + '/TODOPKEY-A' + actor.uid }}"
-                    popover-append-to-body="true"
-                    popover-placement="left"
-                    class="btn btn-default">
-                <i class="fa fa-link"></i>
-            </button>
            <div class="btn-group pull-right">
                 <button name="attachments" class="btn btn-default"
                         ng-click="setTabSelected('attachments')"
-                        tooltip="{{ actor.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                        tooltip="{{ actor.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-paperclip"></span>
                     <span class="badge" ng-show="actor.attachments_count">{{ actor.attachments_count }}</span>

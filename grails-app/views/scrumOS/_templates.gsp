@@ -40,3 +40,10 @@
     <span ng-show="!match.model.id">${message(code:'todo.is.ui.user.will.be.invited')} </span><span>{{ match.model.firstName }} {{ match.model.lastName }}</span>
 </a>
 </script>
+
+<script type="text/ng-template" id="copy.html">
+<is:modal title="{{ title }}">
+    <p>${ message(code: 'todo.is.ui.copy.instructions')}</p>
+    <input type="text" focus-me="true" select-on-focus class="form-control" value="{{ value }}"/>
+</is:modal>
+</script>

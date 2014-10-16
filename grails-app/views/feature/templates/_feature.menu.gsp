@@ -30,4 +30,9 @@
         <g:message code='is.ui.feature.menu.delete'/>
     </a>
 </li>
+<li>
+    <a ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-F' + feature.uid)">
+        ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
+    </a>
+</li>
 </script>

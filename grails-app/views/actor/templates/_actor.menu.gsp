@@ -27,4 +27,9 @@
         <g:message code='is.ui.actor.menu.delete'/>
     </a>
 </li>
+<li>
+    <a ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-A' + actor.uid)">
+        ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
+    </a>
+</li>
 </script>

@@ -299,4 +299,13 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                 capitalize(scope[attrs.ngModel]);
             }
         };
+}).directive('selectOnFocus', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element) {
+            element.on('focus', function () {
+                this.select();
+            });
+        }
+    };
 });

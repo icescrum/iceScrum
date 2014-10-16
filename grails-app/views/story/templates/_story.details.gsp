@@ -71,35 +71,27 @@
         <div class="actions">
             <div class="actions-left">
                 <div class="btn-group"
-                     ng-if="authorizedStory('menu', story)"
                      tooltip="${message(code: 'todo.is.ui.actions')}"
                      tooltip-append-to-body="true">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu"
-                        ng-include="'story.menu.html'"></ul>
+                    <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
                 </div>
-                <button type="button"
-                        popover-title="${message(code:'is.permalink')}"
-                        popover="{{ serverUrl + '/TODOPKEY-' + story.uid }}"
-                        popover-append-to-body="true"
-                        popover-placement="left"
-                        class="btn btn-default">
-                    <span class="fa fa-link"></span>
-                </button>
-                <button class="btn btn-default"
-                        type="button"
-                        ng-click="like(story)"
-                        ng-switch="story.liked"
-                        role="button"
-                        tabindex="0"
-                        tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
-                        tooltip-append-to-body="true">
-                    <i class="fa fa-thumbs-o-up" ng-switch-default></i>
-                    <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
-                    <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
-                </button>
+                <div class="btn-group">
+                    <button class="btn btn-default"
+                            type="button"
+                            ng-click="like(story)"
+                            ng-switch="story.liked"
+                            role="button"
+                            tabindex="0"
+                            tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
+                            tooltip-append-to-body="true">
+                        <i class="fa fa-thumbs-o-up" ng-switch-default></i>
+                        <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
+                        <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
+                    </button>
+                </div>
             </div>
             <div class="actions-right">
                 <div class="btn-group pull-right">

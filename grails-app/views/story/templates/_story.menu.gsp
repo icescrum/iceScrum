@@ -52,4 +52,9 @@
         ${message(code: 'todo.is.ui.story.template.new')}
     </a>
 </li>
+<li>
+    <a ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-' + story.uid)">
+        ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
+    </a>
+</li>
 </script>

@@ -95,8 +95,6 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
             case 'delete':
             case 'deleteMultiple':
                 return Session.po();
-            case 'menu':
-                return this.authorizedFeature('copyToBacklog') || this.authorizedFeature('delete');
             default:
                 return false;
         }

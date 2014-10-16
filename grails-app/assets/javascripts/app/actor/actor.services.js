@@ -86,8 +86,6 @@ services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
             case 'delete':
             case 'deleteMultiple':
                 return Session.po();
-            case 'menu':
-                return this.authorizedActor('delete');
             default:
                 return false;
         }
