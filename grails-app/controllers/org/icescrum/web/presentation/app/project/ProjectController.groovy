@@ -857,7 +857,7 @@ class ProjectController {
     private String exportProductXML (Product product) {
         def writer = new StringWriter()
         def builder = new MarkupBuilder(writer)
-        builder.mkp.xmlDeclaration(version: "1.0", encoding: "utf-8")
+        builder.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8")
         builder.export(version: meta(name: "app.version")) {
             product.xml(builder)
         }
