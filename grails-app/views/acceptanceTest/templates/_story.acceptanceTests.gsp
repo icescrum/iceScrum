@@ -32,14 +32,14 @@
         <div class="content">
             <form name="formHolder.acceptanceTestForm"
                   class="form-editable"
-                  ng-class="{ 'form-editing': (formHolder.editing || formHolder.showForm) && authorizedAcceptanceTest('update', editableAcceptanceTest) }"
-                  ng-mouseleave="showForm(false)"
+                  ng-class="{ 'form-editing': (formHolder.editing || formHolder.formHover) && authorizedAcceptanceTest('update', editableAcceptanceTest) }"
+                  ng-mouseleave="formHover(false)"
+                  ng-mouseover="formHover(true)"
                   show-validation
                   novalidate>
                 <div class="clearfix no-padding">
                     <div class="col-sm-1"
-                         ng-switch="(formHolder.editing || formHolder.showForm) && authorizedAcceptanceTest('delete', editableAcceptanceTest)"
-                         ng-mouseover="showForm(true)">
+                         ng-switch="(formHolder.editing || formHolder.formHover) && authorizedAcceptanceTest('delete', editableAcceptanceTest)">
                         <p ng-switch-default
                            class="elemid form-control-static">{{ editableAcceptanceTest.uid }}</p>
                         <button ng-switch-when="true"
@@ -53,9 +53,8 @@
                     <div class="col-sm-8 form-group">
                         <input required
                                ng-maxlength="255"
-                               ng-mouseover="showForm(true)"
                                ng-focus="editForm(true)"
-                               ng-blur="blurAcceptanceTest(editableAcceptanceTest, story, $event)"
+                               ng-blur="updateAcceptanceTest(editableAcceptanceTest, story)"
                                type="text"
                                name="name"
                                ng-model="editableAcceptanceTest.name"
@@ -65,11 +64,9 @@
                     <div class="col-sm-3 form-group">
                         <select class="form-control"
                                 ng-focus="editForm(true)"
-                                ng-mouseover="showForm(true)"
-                                ng-blur="blurAcceptanceTest(editableAcceptanceTest, story, $event)"
+                                ng-change="updateAcceptanceTest(editableAcceptanceTest, story)"
                                 name="state"
                                 ng-model="editableAcceptanceTest.state"
-                                ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
                                 ui-select2="selectAcceptanceTestStateOptions">
                             <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
                         </select>
@@ -84,11 +81,10 @@
                               ng-model="editableAcceptanceTest.description"
                               is-model-html="editableAcceptanceTest.description_html"
                               ng-show="showAcceptanceTestDescriptionTextarea"
-                              ng-blur="blurAcceptanceTest(editableAcceptanceTest, story, $event); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
+                              ng-blur="updateAcceptanceTest(editableAcceptanceTest, story); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
                               placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                     <div class="markitup-preview"
                          ng-show="!showAcceptanceTestDescriptionTextarea"
-                         ng-mouseover="showForm(true)"
                          ng-click="showAcceptanceTestDescriptionTextarea = true"
                          ng-focus="editForm(true); showAcceptanceTestDescriptionTextarea = true; editableAcceptanceTest.description || (editableAcceptanceTest.description = '${is.generateAcceptanceTestTemplate()}')"
                          ng-class="{'placeholder': !editableAcceptanceTest.description_html}"

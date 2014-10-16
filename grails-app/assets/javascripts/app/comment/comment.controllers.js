@@ -37,17 +37,17 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', function($sco
     $scope.authorizedComment = function(action, comment) {
         return CommentService.authorizedComment(action, comment);
     };
-    $scope.showForm = function(value) {
-        $scope.formHolder.showForm = value;
+    $scope.formHover = function(value) {
+        $scope.formHolder.formHover = value;
     };
     $scope.editForm = function(value) {
         $scope.formHolder.editing = value;
     };
-    $scope.blurComment = function(comment, commentable, $event) {
-        if ($($event.target).hasClass('ng-valid')) {
-            $scope.showForm(false);
+    $scope.updateComment = function(comment, commentable) {
+        if (!$scope.formHolder.commentForm.$invalid) {
+            $scope.formHover(false);
             $scope.editForm(false);
-            if ($($event.target).hasClass('ng-dirty')) {
+            if ($scope.formHolder.commentForm.$dirty) {
                 CommentService.update(comment, commentable);
             }
         }

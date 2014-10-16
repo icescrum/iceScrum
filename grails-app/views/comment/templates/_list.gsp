@@ -30,16 +30,16 @@
     <td>
         <div class="content">
             <form name="formHolder.commentForm"
-                  ng-mouseleave="showForm(false)"
+                  ng-mouseleave="formHover(false)"
+                  ng-mouseover="formHover(true)"
                   class="form-editable"
-                  ng-class="{ 'form-editing': (formHolder.editing || formHolder.showForm) && authorizedComment('update', editableComment) }"
+                  ng-class="{ 'form-editing': (formHolder.editing || formHolder.formHover) && authorizedComment('update', editableComment) }"
                   show-validation
                   novalidate>
-                <div ng-switch="(formHolder.editing || formHolder.showForm) && authorizedComment('delete', editableComment)"
+                <div ng-switch="(formHolder.editing || formHolder.formHover) && authorizedComment('delete', editableComment)"
                       class="form-group" >
                     <img class="comment-avatar"
                          ng-switch-default
-                         ng-mouseover="showForm(true)"
                          ng-src="{{comment.poster | userAvatar}}"
                          alt="{{comment.poster | userFullName}}"/>
                     <button ng-switch-when="true"
@@ -60,13 +60,19 @@
                     <textarea required
                               msd-elastic
                               ng-maxlength="5000"
-                              ng-blur="blurComment(editableComment, getSelected(), $event)"
-                              ng-mouseover="showForm(true)"
-                              ng-focus="editForm(true)"
+                              ng-blur="updateComment(editableComment, getSelected()); showCommentBodyTextarea = false;"
+                              is-markitup
                               name="body"
                               ng-model="editableComment.body"
-                              class="form-control"
-                              placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
+                              is-model-html="editableComment.body_html"
+                              ng-show="showCommentBodyTextarea"
+                              class="form-control"></textarea>
+                    <div class="markitup-preview"
+                         ng-show="!showCommentBodyTextarea"
+                         ng-click="editForm(true); showCommentBodyTextarea = true"
+                         ng-focus="editForm(true); showCommentBodyTextarea = true"
+                         tabindex="0"
+                         ng-bind-html="editableComment.body_html | sanitize"></div>
                 </div>
             </form>
         </div>

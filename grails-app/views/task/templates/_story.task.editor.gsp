@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="story.task.new.html">
 <tr>
     <td>
-        <form ng-submit="save(task, selected)"
+        <form ng-submit="save(task, getSelected())"
               name="formHolder.taskForm"
               show-validation
               novalidate>

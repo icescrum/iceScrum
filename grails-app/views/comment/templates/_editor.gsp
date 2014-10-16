@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.editor.html">
-<form ng-submit="save(editableComment, selected)"
+<form ng-submit="save(editableComment, getSelected())"
       name="formHolder.commentForm"
       show-validation
       novalidate>
@@ -30,9 +30,20 @@
                   ng-maxlength="5000"
                   msd-elastic
                   name="body"
+                  is-markitup
+                  ng-blur="showCommentBodyTextarea = false"
                   ng-model="editableComment.body"
                   class="form-control"
+                  is-model-html="editableComment.body_html"
+                  ng-show="showCommentBodyTextarea"
                   placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
+        <div class="markitup-preview"
+             ng-show="!showCommentBodyTextarea"
+             tabindex="0"
+             ng-click="showCommentBodyTextarea = true"
+             ng-focus="showCommentBodyTextarea = true"
+             ng-class="{'placeholder': !editableComment.body_html}"
+             ng-bind-html="(editableComment.body_html ? editableComment.body_html : '<p>${message(code: 'todo.is.ui.comment')}</p>') | sanitize"></div>
     </div>
     <div class="btn-toolbar pull-right">
         <button class="btn btn-primary pull-right"

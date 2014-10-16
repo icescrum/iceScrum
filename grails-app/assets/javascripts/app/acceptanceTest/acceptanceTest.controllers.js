@@ -60,17 +60,17 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         formatResult: formatAcceptanceTestStateOption,
         formatSelection: formatAcceptanceTestStateOption
     };
-    $scope.showForm = function(value) {
-        $scope.formHolder.showForm = value;
+    $scope.formHover = function(value) {
+        $scope.formHolder.formHover = value;
     };
     $scope.editForm = function(value) {
         $scope.formHolder.editing = value;
     };
-    $scope.blurAcceptanceTest = function(acceptanceTest, story, $event) {
-        if ($($event.target).hasClass('ng-valid')) {
-            $scope.showForm(false);
+    $scope.updateAcceptanceTest = function(acceptanceTest, story) {
+        if (!$scope.formHolder.acceptanceTestForm.$invalid) {
+            $scope.formHover(false);
             $scope.editForm(false);
-            if ($($event.target).hasClass('ng-dirty')) {
+            if ($scope.formHolder.acceptanceTestForm.$dirty) {
                 AcceptanceTestService.update(acceptanceTest, story);
             }
         }

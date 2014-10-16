@@ -23,7 +23,7 @@
 --}%
 
 <script type="text/ng-template" id="story.acceptanceTest.editor.html">
-<form ng-submit="save(editableAcceptanceTest, selected)"
+<form ng-submit="save(editableAcceptanceTest, getSelected())"
       name="formHolder.acceptanceTestForm"
       show-validation
       novalidate>

@@ -96,7 +96,7 @@ icescrum.marshaller = [
                textile:['notes'],
                asShort:['state', 'effort','uid', 'name']],
 
-        comment: [include: ['poster']],
+        comment: [textile:['body'], include: ['poster']],
 
         product: [include: ['owner'],
                   exclude:['cliches']],
