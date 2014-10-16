@@ -57,28 +57,35 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                     value:0,
                     label:""
                 };
+                $scope.zip = true;
                 $scope.type = 'primary';
-                var progress = function() {
-                    $http({
-                        method: "get",
-                        url: "project/exportStatus"
-                    }).then(function (response) {
-                        if (!response.data.error && !response.data.complete) {
-                            status = $timeout(progress, 500);
-                        } else if (response.data.error){
+                $scope.started = false;
+
+                $scope.start = function(){
+                    $scope.started = true;
+                    var progress = function() {
+                        $http({
+                            method: "get",
+                            url: "project/exportStatus"
+                        }).then(function (response) {
+                            if (!response.data.error && !response.data.complete) {
+                                status = $timeout(progress, 500);
+                            } else if (response.data.error){
+                                $scope.type = 'danger';
+                            } else if (response.data.complete){
+                                $scope.type = 'success';
+                            }
+                            $scope.progress = response.data;
+                        }, function(){
                             $scope.type = 'danger';
-                        } else if (response.data.complete){
-                            $scope.type = 'success';
-                        }
-                        $scope.progress = response.data;
-                    }, function(){
-                        $scope.type = 'danger';
-                        $scope.progress.label = $scope.message("Error during export");
-                        $scope.progress.value = 100;
-                    });
-                };
-                $scope.downloadFile("project/export");
-                status = $timeout(progress, 500);
+                            $scope.progress.label = $scope.message("Error during export");
+                            $scope.progress.value = 100;
+                        });
+                    };
+                    debugger;
+                    $scope.downloadFile("project/export" + ($scope.zip ? "?zip=true" : ""));
+                    status = $timeout(progress, 500);
+                }
             }]
         });
         modal.result.then(

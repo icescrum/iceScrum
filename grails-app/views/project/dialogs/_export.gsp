@@ -24,5 +24,17 @@
     <div class="help-block">
         <g:message code="is.dialog.exportProject.description"/>
     </div>
-    <progressbar value="progress.value" type="{{ type }}"><b>{{progress.label}}</b></progressbar>
+    <form class="form-inline" role="form" ng-show="!started" ng-submit="start()">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="zip"> ${message(code:'todo.is.ui.export.zip')}
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary" >${message(code:'todo.is.ui.export')}</button>
+    </form>
+    <div ng-show="started">
+        <progressbar value="progress.value" type="{{ type }}">
+            <b>{{progress.label}}</b>
+        </progressbar>
+    </div>
 </is:modal>

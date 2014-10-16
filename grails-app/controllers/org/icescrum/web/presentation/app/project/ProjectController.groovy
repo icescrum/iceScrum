@@ -212,7 +212,6 @@ class ProjectController {
                 Product.withNewSession {
                     withFormat {
                         html {
-
                             params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
                         }
                         xml {
