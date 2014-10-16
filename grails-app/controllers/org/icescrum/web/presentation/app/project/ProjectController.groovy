@@ -24,6 +24,7 @@
 
 package org.icescrum.web.presentation.app.project
 
+import grails.converters.XML
 import groovy.xml.MarkupBuilder
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.security.Authority
@@ -178,20 +179,38 @@ class ProjectController {
         }
     }
 
-    //TODO make it for real
-    @Secured(['permitAll()'])
+    @Secured('owner() or scrumMaster() or productOwner()')
     def export() {
-       task {
-            def writer = new StringWriter()
-            Product.withNewSession {
-                def product = Product.get(params.product)
-                def builder = new MarkupBuilder(writer)
-                builder.mkp.xmlDeclaration(version: "1.0", encoding: "utf-8")
-                builder.export(version:meta(name:"app.version")){
-                    product.xml(builder)
+        if (params.status){
+            if(session.progress) {
+                withFormat {
+                    html {
+                        render(status:200, contentType:"application/json", text:session.progress  as JSON)
+                    }
+                    xml {
+                        render(status:200, contentType:"text/xml", text:session.progress  as XML)
+                    }
                 }
+            } else {
+                render(status: 404)
             }
-            render(text: writer.toString(), contentType: "text/xml")
+            return
+        }
+        withProduct { Product _product ->
+            return task {
+                session.progress = new ProgressSupport()
+                Product.withNewSession {
+                    withFormat {
+                        html {
+                            params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
+                        }
+                        xml {
+                            params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
+                        }
+                    }
+                }
+                session.progress = null
+            }
         }
     }
 
@@ -754,45 +773,6 @@ class ProjectController {
         }
     }
 
-    private exportProduct(Product product, boolean withProgress){
-
-        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
-        def tempdir = System.getProperty("java.io.tmpdir");
-        tempdir = (tempdir.endsWith("/") || tempdir.endsWith("\\")) ? tempdir : tempdir + System.getProperty("file.separator")
-        def xml = new File(tempdir + projectName + '.xml')
-        try {
-            StreamCharBuffer xmlFile = g.render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
-            xml.withWriter('UTF-8'){ out ->
-                xmlFile.writeTo(out)
-            }
-            def files = []
-
-            product.stories*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.actors*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.releases*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.sprints*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.attachments.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-
-            def tasks = []
-            product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }
-            tasks*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-
-            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
-                response.setHeader(k, v)
-            }
-            response.contentType = 'application/zip'
-            ApplicationSupport.zipExportFile(response.outputStream, files, xml, 'attachments')
-        } catch (Exception e) {
-            if (log.debugEnabled)
-                e.printStackTrace()
-            if (withProgress)
-                session.progress.progressError(message(code: 'is.export.error'))
-        } finally {
-            xml.delete()
-        }
-    }
-
     /**
      * Parse the location hash string passed in argument
      * @param locationHash
@@ -872,5 +852,48 @@ class ProjectController {
             }
         }
         return beansErrors
+    }
+
+    private String exportProductXML (Product product) {
+        def writer = new StringWriter()
+        def builder = new MarkupBuilder(writer)
+        builder.mkp.xmlDeclaration(version: "1.0", encoding: "utf-8")
+        builder.export(version: meta(name: "app.version")) {
+            product.xml(builder)
+        }
+        return writer.toString()
+    }
+
+    private void exportProductZIP (Product product) {
+        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+        def tempdir = System.getProperty("java.io.tmpdir");
+        tempdir = (tempdir.endsWith("/") || tempdir.endsWith("\\")) ? tempdir : tempdir + System.getProperty("file.separator")
+        def xml = new File(tempdir + projectName + '.xml')
+        try {
+            xml.withWriter('UTF-8'){ writer ->
+                def builder = new MarkupBuilder(writer)
+                product.xml(builder)
+            }
+            def files = []
+            product.stories*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.actors*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.releases*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.sprints*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            product.attachments.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            def tasks = []
+            product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }
+            tasks*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
+            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+                response.setHeader(k, v)
+            }
+            response.contentType = 'application/zip'
+            ApplicationSupport.zipExportFile(response.outputStream, files, xml, 'attachments')
+        } catch (Exception e) {
+            if (log.debugEnabled)
+                e.printStackTrace()
+        } finally {
+            xml.delete()
+        }
     }
 }
