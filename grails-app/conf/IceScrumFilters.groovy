@@ -92,6 +92,28 @@ class IceScrumFilters {
             }
         }
 
+        projectImportEnable(controller:'project', action:'import'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        render(status: 403)
+                        return false
+                    }
+                }
+            }
+        }
+
+        projectExportEnable(controller:'project', action:'export'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        render(status: 403)
+                        return false
+                    }
+                }
+            }
+        }
+
         webservices(uri: '/ws/**') {
             before = {
                 def webservices

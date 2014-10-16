@@ -32,6 +32,7 @@ class SecurityTagLib {
 
   def securityService
 
+    //TODO remove ?
   def displayRole = {attrs ->
     def res = []
       if (request.admin) {

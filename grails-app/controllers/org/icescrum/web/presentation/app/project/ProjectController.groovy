@@ -24,6 +24,7 @@
 
 package org.icescrum.web.presentation.app.project
 
+import groovy.xml.MarkupBuilder
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
@@ -50,6 +51,8 @@ import com.sun.syndication.io.SyndFeedOutput
 import org.codehaus.groovy.grails.web.util.StreamCharBuffer
 import org.apache.commons.io.FilenameUtils
 import java.text.DecimalFormat
+
+import static grails.async.Promises.*
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController {
@@ -175,6 +178,23 @@ class ProjectController {
         }
     }
 
+    //TODO make it for real
+    @Secured(['permitAll()'])
+    def export() {
+       task {
+            def writer = new StringWriter()
+            Product.withNewSession {
+                def product = Product.get(params.product)
+                def builder = new MarkupBuilder(writer)
+                builder.mkp.xmlDeclaration(version: "1.0", encoding: "utf-8")
+                builder.export(version:meta(name:"app.version")){
+                    product.xml(builder)
+                }
+            }
+            render(text: writer.toString(), contentType: "text/xml")
+        }
+    }
+
     @Secured('owner() or scrumMaster()')
     def edit() {
         withProduct{ Product product ->
@@ -248,6 +268,19 @@ class ProjectController {
         }
     }
 
+    @Secured(['permitAll()'])
+    def available() {
+        def result = false
+        //test for name
+        if (params.property == 'name'){
+            result = request.JSON.value && Product.countByName(request.JSON.value) == 0
+            //test for pkey
+        } else if (params.property == 'pkey'){
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && Product.countByPkey(request.JSON.value) == 0
+        }
+        render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
+    }
+
     @Secured('owner() or scrumMaster()')
     def archive() {
         withProduct{ Product product ->
@@ -286,19 +319,6 @@ class ProjectController {
                 xml  { renderRESTXML(text:product.versions) }
             }
         }
-    }
-
-    @Secured(['permitAll()'])
-    def available() {
-        def result = false
-        //test for name
-        if (params.property == 'name'){
-            result = request.JSON.value && Product.countByName(request.JSON.value) == 0
-            //test for pkey
-        } else if (params.property == 'pkey'){
-            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && Product.countByPkey(request.JSON.value) == 0
-        }
-        render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
     }
 
     @Secured('inProduct()')
@@ -467,51 +487,8 @@ class ProjectController {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
-    def export() {
-        withProduct{ Product product ->
-            if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
-                if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                    render(status: 403)
-                    return
-                }
-            }
-
-            withFormat {
-                html {
-                    if (params.status) {
-                        render(status: 200, contentType: 'application/json', text: session.progress as JSON)
-                    }
-                    else if (params.get) {
-                        session.progress.updateProgress(0, message(code: 'is.export.start'))
-                        exportProduct(product, true)
-                        session.progress?.completeProgress(message(code: 'is.export.complete'))
-                    } else {
-                        session.progress = new ProgressSupport()
-                        def dialog = g.render(template: 'dialogs/export')
-                        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-                    }
-                }
-                xml {
-                    if (params.zip){
-                        exportProduct(product, false)
-                    }else{
-                        render(contentType: 'text/xml', template: '/project/xml', model: [object: product, deep: true, root: true], encoding: 'UTF-8')
-                    }
-                }
-            }
-        }
-    }
-
     @Secured('isAuthenticated()')
-    def importProject() {
-        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {
-            if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                render(status: 403)
-                return
-            }
-        }
-
+    def "import"() {
         def user = User.load(springSecurityService.principal.id)
         if (params.cancel) {
             session['import'] = null

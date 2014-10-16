@@ -76,7 +76,22 @@ isApp.config(['$stateProvider', '$httpProvider',
                             });
                     }]
                 })
-
+                .state('project.import', {
+                    url: "/import",
+                    onEnter: ["$state", "$modal", 'WizardHandler', function($state, $modal, WizardHandler) {
+                        var modal = $modal.open({
+                            templateUrl: icescrum.grailsServer + '/' + "project/import",
+                            size: 'md',
+                            controller: 'importProjectCtrl'
+                        });
+                        modal.result.then(
+                            function(result) {
+                                $state.transitionTo('root');
+                            }, function(){
+                                $state.transitionTo('root');
+                            });
+                    }]
+                })
                 .state('sandbox', {
                     templateUrl: 'openWindow/sandbox',
                     controller: 'sandboxCtrl',

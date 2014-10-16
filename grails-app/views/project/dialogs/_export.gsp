@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -18,26 +18,12 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:dialog
-        resizable="false"
-      withTitlebar="false"
-      onClose="jQuery.doTimeout('progressBar');"
-      buttons="'${message(code:'is.button.cancel')}': function() { jQuery(this).dialog('close'); }, '${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
-      draggable="false">
-<div class="box-form">
-    <is:fieldset title="is.dialog.exportProject.title">
-        <is:fieldInformation noborder="true">
-            <g:message code="is.dialog.exportProject.description"/>
-        </is:fieldInformation>
-        <is:progressBar
-                elementId="progress"
-                label="${message(code:'is.export.start')}"
-                iframe="true"
-                showOnCreate="true"
-                iframeSrc="${createLink(action:'export',controller:controllerName,params:[product:params.product,get:true])}"
-                onComplete="jQuery.doTimeout(2000,function(){\$('#dialog').dialog('close')})"
-                url="${createLink(action:'export',controller:controllerName,params:[product:params.product,status:true])}"/>
-    </is:fieldset>
-</div>
-</is:dialog>
+<is:modal title="${message(code:'is.dialog.exportProject.title')}" footer="${false}">
+    <div class="help-block">
+        <g:message code="is.dialog.exportProject.description"/>
+    </div>
+    <div class="row">
+    </div>
+</is:modal>

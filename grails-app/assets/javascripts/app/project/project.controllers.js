@@ -23,6 +23,24 @@
 controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', function($scope, ProjectService, Session) {
     $scope.currentProject = Session.getProject();
 
+    $scope['import'] = function() {
+        $scope.confirm({
+            message:$scope.message('todo.is.ui.projectmenu.submenu.project.import'),
+            callback:function(){
+
+            }
+        })
+    };
+
+    $scope['export'] = function(project) {
+        $scope.confirm({
+            message:$scope.message('todo.is.ui.projectmenu.submenu.project.export'),
+            callback:function(){
+
+            }
+        })
+    };
+
     $scope['delete'] = function(project) {
         $scope.confirm({
             message:$scope.message('todo.is.ui.projectmenu.submenu.project.delete'),

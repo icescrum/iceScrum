@@ -79,14 +79,6 @@ class UrlMappings {
             action = [GET: "current"]
         }
 
-        "/p/$product/user/current" {
-            controller = 'user'
-            action = [GET: "current"]
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-            }
-        }
-
         "/feed/$product" {
             controller = 'project'
             action = 'feed'
@@ -98,6 +90,11 @@ class UrlMappings {
         "/project" {
             controller = 'project'
             action = [GET: "index", POST:"save"]
+        }
+
+        "/project/import" {
+            controller = 'project'
+            action = [GET: "import", POST:"import"]
         }
 
         "/project/$product" {
@@ -114,6 +111,23 @@ class UrlMappings {
             action = [POST: "available"]
             constraints {
                 property(inList: ['name', 'pkey'])
+            }
+        }
+
+        //Everything under project context
+        "/p/$product/export" {
+            controller = 'project'
+            action = 'export'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/user/current" {
+            controller = 'user'
+            action = [GET: "current"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
             }
         }
 

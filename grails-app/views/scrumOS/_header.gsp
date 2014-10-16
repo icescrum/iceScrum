@@ -59,7 +59,7 @@
                         </g:if>
                         <g:if test="${importEnable}">
                             <li>
-                                <a hotkey="{ 'shift+i': hotkeyClick}" href="#project/import">
+                                <a hotkey="{ 'shift+i': import}" href="" ng-click="import()">
                                     <g:message code="is.projectmenu.submenu.project.import"/> <small class="text-muted">(SHIFT+I)</small>
                                 </a>
                             </li>
@@ -91,18 +91,18 @@
                                     <g:message code="is.projectmenu.submenu.project.editPractices"/> <small class="text-muted">(SHIFT+D)</small>
                                 </a>
                             </li>
+                            <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
+                                <li>
+                                    <a hotkey="{ 'shift+d': export}" href="" ng-click="export(currentProject)">
+                                        <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
+                                    </a>
+                                </li>
+                            </g:if>
                             <li ng-if="authorizedProject('delete', currentProject)">
                                 <a href ng-click="delete(currentProject)">
                                     <g:message code="is.projectmenu.submenu.project.delete"/>
                                 </a>
                             </li>
-                            <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
-                                <li>
-                                    <a hotkey="{ 'shift+d': hotkeyClick}"href="#project/export">
-                                        <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
-                                    </a>
-                                </li>
-                            </g:if>
                         </g:if>
                         <g:if test="${productFilteredsList}">
                             <li role="presentation" class="divider" style='display:${productFilteredsList ?'block':'none'}'></li>
@@ -112,7 +112,7 @@
                             <g:each var="curProduct" in="${productFilteredsList}">
                                 <li class="project">
                                     <a class="${product?.id == curProduct.id ? 'active' : ''}"
-                                       href="${product?.id == curProduct.id ? '' : createLink(controller: "scrumOS", params: [product:curProduct.pkey])}/"
+                                       href="${product?.id == curProduct.id ? '' : createLink(controller: "scrumOS", params: [product:curProduct.pkey])+'/'}"
                                        title="${curProduct.name.encodeAsHTML()}">
                                        ${curProduct.name.encodeAsHTML()}
                                     </a>
