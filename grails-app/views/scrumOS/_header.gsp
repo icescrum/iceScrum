@@ -91,7 +91,7 @@
                                     <g:message code="is.projectmenu.submenu.project.editPractices"/> <small class="text-muted">(SHIFT+D)</small>
                                 </a>
                             </li>
-                            <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
+                            <g:if test="${exportEnable && (request.scrumMaster || request.productOwner || request.owner)}">
                                 <li>
                                     <a hotkey="{ 'shift+d': export}" href="" ng-click="export(currentProject)">
                                         <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>

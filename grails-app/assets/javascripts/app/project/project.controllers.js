@@ -20,25 +20,77 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', function($scope, ProjectService, Session) {
+controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$modal', '$timeout', function($scope, ProjectService, Session, $modal, $timeout) {
     $scope.currentProject = Session.getProject();
 
-    $scope['import'] = function() {
-        $scope.confirm({
-            message:$scope.message('todo.is.ui.projectmenu.submenu.project.import'),
-            callback:function(){
+    $scope['import'] = function(project) {
+        var modal = $modal.open({
+            templateUrl: icescrum.grailsServer + '/' + "project/importDialog",
+            size: 'md',
+            controller: function($scope){
 
             }
-        })
+        });
+        modal.result.then(
+            function(result) {
+
+            },
+            function(){
+
+            }
+        );
     };
 
     $scope['export'] = function(project) {
-        $scope.confirm({
-            message:$scope.message('todo.is.ui.projectmenu.submenu.project.export'),
-            callback:function(){
-
+        var status;
+        var stopStatus = function() {
+            if (angular.isDefined(status)) {
+                $timeout.cancel(status);
+                status = undefined;
             }
-        })
+        };
+        var modal = $modal.open({
+            templateUrl: "project/exportDialog",
+            size: 'sm',
+            controller: ['$scope', '$timeout', '$http',function($scope, $timeout, $http){
+                $scope.progress = {
+                    value:0,
+                    label:""
+                };
+                $scope.type = 'primary';
+                var progress = function() {
+                    $http({
+                        method: "get",
+                        url: "project/exportStatus"
+                    }).then(function (response) {
+                        if (!response.data.error && !response.data.complete) {
+                            status = $timeout(progress, 500);
+                        } else if (response.data.error){
+                            $scope.type = 'danger';
+                        } else if (response.data.complete){
+                            $scope.type = 'success';
+                        }
+                        $scope.progress = response.data;
+                    }, function(){
+                        $scope.type = 'danger';
+                        $scope.progress.label = $scope.message("Error during export");
+                        $scope.progress.value = 100;
+                    });
+                };
+                $scope.downloadFile("project/export");
+                status = $timeout(progress, 500);
+            }]
+        });
+        modal.result.then(
+            function(result) {
+                stopStatus();
+                $scope.downloadFile("");
+            },
+            function(){
+                stopStatus();
+                $scope.downloadFile("");
+            }
+        );
     };
 
     $scope['delete'] = function(project) {

@@ -153,7 +153,7 @@ class ProjectController {
         }
     }
 
-    @Secured('stakeHolder() or inProduct()')
+    @Secured(['stakeHolder() or inProduct()'])
     def feed() {
         //todo make cache
         withProduct{ Product product ->
@@ -179,68 +179,51 @@ class ProjectController {
         }
     }
 
+    @Secured(['owner() or scrumMaster() or productOwner()'])
+    def exportDialog() {
+        render(status:200, template: "dialogs/export")
+    }
+
+    @Secured(['owner() or scrumMaster() or productOwner()'])
+    def exportStatus() {
+        if(session.progress) {
+            withFormat {
+                html {
+                    render(status:200, contentType:"application/json", text:session.progress  as JSON)
+                }
+                xml {
+                    render(status:200, contentType:"text/xml", text:session.progress  as XML)
+                }
+            }
+            //we already sent the error so reset progress
+            if (session.progress.error){
+                session.progress = null
+            }
+        } else {
+            render(status: 404)
+        }
+    }
+
     @Secured('owner() or scrumMaster() or productOwner()')
     def export() {
-        if (params.status){
-            if(session.progress) {
-                withFormat {
-                    html {
-                        render(status:200, contentType:"application/json", text:session.progress  as JSON)
-                    }
-                    xml {
-                        render(status:200, contentType:"text/xml", text:session.progress  as XML)
-                    }
-                }
-            } else {
-                render(status: 404)
-            }
-            return
-        }
         withProduct { Product _product ->
             return task {
                 session.progress = new ProgressSupport()
                 Product.withNewSession {
                     withFormat {
                         html {
+
                             params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
                         }
                         xml {
                             params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
                         }
                     }
+                    session.progress.value = 100
+                    session.progress.complete = true
+                    session.progress.label = message(code:'todo.is.ui.progress.complete')
                 }
-                session.progress = null
             }
-        }
-    }
-
-    @Secured('owner() or scrumMaster()')
-    def edit() {
-        withProduct{ Product product ->
-            def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
-            if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                privateOption = false
-            }
-            def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
-            def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
-
-            def dialog = g.render(template: "dialogs/edit",
-                                  model: [product: product,
-                                          privateOption: privateOption,
-                                          possibleViews: possibleViews,
-                                          restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-        }
-    }
-
-    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
-    def editPractices() {
-        withProduct{ Product product ->
-            def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
-                                        (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
-                                        (PlanningPokerGame.CUSTOM_SUITE) : message(code: "is.estimationSuite.custom")]
-            def dialog = g.render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
 
@@ -355,6 +338,36 @@ class ProjectController {
             def addedAttachments = params.list('attachments')
             def attachments = manageAttachments(product, keptAttachments, addedAttachments)
             render status: 200, contentType: 'application/json', text: attachments as JSON
+        }
+    }
+
+    @Secured('owner() or scrumMaster()')
+    def edit() {
+        withProduct{ Product product ->
+            def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
+            if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                privateOption = false
+            }
+            def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
+            def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
+
+            def dialog = g.render(template: "dialogs/edit",
+                    model: [product: product,
+                            privateOption: privateOption,
+                            possibleViews: possibleViews,
+                            restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+        }
+    }
+
+    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
+    def editPractices() {
+        withProduct{ Product product ->
+            def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
+                                        (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
+                                        (PlanningPokerGame.CUSTOM_SUITE) : message(code: "is.estimationSuite.custom")]
+            def dialog = g.render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
 
@@ -861,6 +874,11 @@ class ProjectController {
         builder.export(version: meta(name: "app.version")) {
             product.xml(builder)
         }
+        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+        ['Content-disposition': "attachment;filename=\"${projectName+'.xml'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+            response.setHeader(k, v)
+        }
+        response.contentType = 'application/octet'
         return writer.toString()
     }
 

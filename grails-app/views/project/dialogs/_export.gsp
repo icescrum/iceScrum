@@ -20,10 +20,9 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal title="${message(code:'is.dialog.exportProject.title')}" footer="${false}">
+<is:modal title="${message(code:'is.dialog.exportProject.title')}">
     <div class="help-block">
         <g:message code="is.dialog.exportProject.description"/>
     </div>
-    <div class="row">
-    </div>
+    <progressbar value="progress.value" type="{{ type }}"><b>{{progress.label}}</b></progressbar>
 </is:modal>

@@ -76,22 +76,6 @@ isApp.config(['$stateProvider', '$httpProvider',
                             });
                     }]
                 })
-                .state('project.import', {
-                    url: "/import",
-                    onEnter: ["$state", "$modal", 'WizardHandler', function($state, $modal, WizardHandler) {
-                        var modal = $modal.open({
-                            templateUrl: icescrum.grailsServer + '/' + "project/import",
-                            size: 'md',
-                            controller: 'importProjectCtrl'
-                        });
-                        modal.result.then(
-                            function(result) {
-                                $state.transitionTo('root');
-                            }, function(){
-                                $state.transitionTo('root');
-                            });
-                    }]
-                })
                 .state('sandbox', {
                     templateUrl: 'openWindow/sandbox',
                     controller: 'sandboxCtrl',
@@ -236,6 +220,16 @@ isApp.config(['$stateProvider', '$httpProvider',
                 });
             }
         };
+
+        var $download;
+        $rootScope.downloadFile = function (url) {
+            if ($download) {
+                $download.attr('src', url);
+            } else {
+                $download = $('<iframe>', { id: 'idown', src: url }).hide().appendTo('body');
+            }
+        };
+
         //To be able to track state in app
         $rootScope.$state = $state;
 
