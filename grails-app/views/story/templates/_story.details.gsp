@@ -51,10 +51,8 @@
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
                              height="21px"/>
                     </span>
-                    <span class="label label-default"
-                          tooltip="${message(code: 'is.backlogelement.id')}"
-                          tooltip-append-to-body="true">{{ story.uid }}</span>
-
+                    <button class="btn btn-xs btn-default"
+                            disabled="disabled">{{ story.uid }}</button>
                     <a ng-if="previous"
                        class="btn btn-xs btn-default"
                        role="button"

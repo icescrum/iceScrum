@@ -29,9 +29,8 @@
 <tr ng-repeat="story in getSelected().stories">
     <td>
         <div class="content">
-            <span class="label label-default"
-                  tooltip-placement="left"
-                  tooltip="${message(code: 'is.backlogelement.id')}">{{ story.uid }}</span>
+            <button class="btn btn-xs btn-default"
+                    disabled="disabled">{{ story.uid }}</button>
             <a href="#">{{ story.name }}</a>
             <div class="pretty-printed"
                  ng-bind-html="story | descriptionHtml | sanitize">

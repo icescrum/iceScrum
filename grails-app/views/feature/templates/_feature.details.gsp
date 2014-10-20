@@ -40,8 +40,8 @@
             </div>
             <div class="the-id">
                 <div class="pull-right">
-                    <span class="label label-default"
-                          tooltip="${message(code: 'is.backlogelement.id')}">{{ feature.uid }}</span>
+                    <button class="btn btn-xs btn-default"
+                            disabled="disabled">{{ feature.uid }}</button>
                     <a ng-if="previous"
                        class="btn btn-xs btn-default"
                        role="button"

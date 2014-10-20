@@ -31,7 +31,9 @@
         <div class="content form-editable" ng-mouseover="showDelete=authorizedTask('delete', task)" ng-mouseleave="showDelete=false">
             <div class="clearfix no-padding">
                 <div class="col-sm-1" ng-switch="showDelete">
-                    <p class="elemid form-control-static" ng-switch-default>{{ task.uid }}</p>
+                    <button ng-switch-default
+                            class="btn btn-default elemid"
+                            disabled="disabled">{{ task.uid }}</button>
                     <button ng-switch-when="true"
                             class="btn btn-danger"
                             ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"

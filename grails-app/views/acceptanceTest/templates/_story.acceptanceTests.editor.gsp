@@ -29,9 +29,9 @@
       novalidate>
     <div class="clearfix no-padding">
         <div class="col-sm-1">
-            <p class="elemid form-control-static">42</p>
+            <button class="btn btn-default elemid" disabled="disabled">42</button>
         </div>
-        <div class="col-sm-8 form-group">
+        <div class="col-sm-7 form-group">
             <input required
                    type="text"
                    ng-maxlength="255"
@@ -40,7 +40,7 @@
                    class="form-control"
                    placeholder="${message(code: 'is.ui.backlogelement.noname')}">
         </div>
-        <div class="col-sm-3 form-group">
+        <div class="col-sm-4 form-group">
             <select class="form-control"
                     name="state"
                     ng-model="editableAcceptanceTest.state"

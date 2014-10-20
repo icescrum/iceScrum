@@ -30,7 +30,7 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="col-sm-1">
-                    <p class="elemid form-control-static">42</p>
+                    <button class="btn btn-default elemid" disabled="disabled">42</button>
                 </div>
                 <div class="form-group col-sm-8">
                     <input required

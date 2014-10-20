@@ -40,8 +40,9 @@
                 <div class="clearfix no-padding">
                     <div class="col-sm-1"
                          ng-switch="(formHolder.editing || formHolder.formHover) && authorizedAcceptanceTest('delete', editableAcceptanceTest)">
-                        <p ng-switch-default
-                           class="elemid form-control-static">{{ editableAcceptanceTest.uid }}</p>
+                        <button ng-switch-default
+                                class="btn btn-default elemid"
+                                disabled="disabled">{{ editableAcceptanceTest.uid }}</button>
                         <button ng-switch-when="true"
                                 class="btn btn-danger"
                                 ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, story] })"
@@ -50,7 +51,7 @@
                                 tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"><span class="fa fa-times"></span>
                         </button>
                     </div>
-                    <div class="col-sm-8 form-group">
+                    <div class="col-sm-7 form-group">
                         <input required
                                ng-maxlength="255"
                                ng-focus="editForm(true)"
@@ -61,7 +62,7 @@
                                class="form-control"
                                placeholder="${message(code: 'is.ui.backlogelement.noname')}">
                     </div>
-                    <div class="col-sm-3 form-group">
+                    <div class="col-sm-4 form-group">
                         <select class="form-control"
                                 ng-focus="editForm(true)"
                                 ng-change="updateAcceptanceTest(editableAcceptanceTest, story)"
