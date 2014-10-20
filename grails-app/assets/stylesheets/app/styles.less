@@ -192,7 +192,6 @@ table {
       }
     }
     &.fixed {
-      border-top: 1px solid #DFDFDF;
       padding-top: 7px;
       padding-bottom: 4px;
     }
@@ -235,6 +234,7 @@ table {
   .make-md-column(5);
   .make-lg-column(4);
   .well;
+  border:none;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -297,7 +297,7 @@ table {
     }
   }
   .form-group div[disabled] {
-    border: none;
+    border-color: transparent;
     &:focus {
       outline: #000000 solid 0px;
     }
@@ -1862,5 +1862,8 @@ ul.dropdown-menu[datepicker-popup-wrap]{
       .make-xs-column(1);
     }
   }
+}
 
+.dropdown-toggle {
+  cursor: pointer;
 }
