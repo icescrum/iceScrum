@@ -36,6 +36,8 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
         $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
         $scope.formHolder = {};
         $scope.actor = {};
+        $scope.editableActor = {};
+        $scope.editableActorReference = {};
         ActorService.get($stateParams.id).then(function(actor) {
             $scope.actor = actor;
             // For edit

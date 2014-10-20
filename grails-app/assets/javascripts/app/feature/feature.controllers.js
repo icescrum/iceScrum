@@ -39,6 +39,8 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
         $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
         $scope.formHolder = {};
         $scope.feature = {};
+        $scope.editableFeature = {};
+        $scope.editableFeatureReference = {};
         FeatureService.get($stateParams.id).then(function(feature) {
             $scope.feature = feature;
             // For edit
