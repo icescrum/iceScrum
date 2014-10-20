@@ -67,6 +67,7 @@
                                 ng-change="updateAcceptanceTest(editableAcceptanceTest, story)"
                                 name="state"
                                 ng-model="editableAcceptanceTest.state"
+                                ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
                                 ui-select2="selectAcceptanceTestStateOptions">
                             <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
                         </select>

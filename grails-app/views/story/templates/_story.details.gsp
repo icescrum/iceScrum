@@ -175,7 +175,7 @@
                     <label for="name">${message(code:'is.story.name')}</label>
                     <input required
                            ng-maxlength="100"
-                           ng-focus="setEditableMode(true)"
+                           ng-focus="editForm(true)"
                            ng-disabled="!getShowStoryForm(story)"
                            name="name"
                            ng-model="editableStory.name"
@@ -186,7 +186,7 @@
                     <label for="feature">${message(code:'is.feature')}</label>
                     <div ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
                         <input type="hidden"
-                               ng-focus="setEditableMode(true)"
+                               ng-focus="editForm(true)"
                                ng-disabled="!getShowStoryForm(story)"
                                class="form-control"
                                value="{{ editableStory.feature.id ? editableStory.feature : '' }}"
@@ -209,7 +209,7 @@
                      ng-class="{ 'form-half' : editableStory.type == 2 }">
                     <label for="type">${message(code:'is.story.type')}</label>
                     <select class="form-control"
-                            ng-focus="setEditableMode(true)"
+                            ng-focus="editForm(true)"
                             ng-disabled="!getShowStoryForm(story)"
                             name="type"
                             ng-model="editableStory.type"
@@ -221,7 +221,7 @@
                      ng-show="editableStory.type == 2">
                     <label for="affectVersion">${message(code:'is.story.affectVersion')}</label>
                     <input class="form-control"
-                           ng-focus="setEditableMode(true)"
+                           ng-focus="editForm(true)"
                            ng-disabled="!getShowStoryForm(story)"
                            type="hidden"
                            value="{{ editableStory.affectVersion  }}"
@@ -235,7 +235,7 @@
                 <label for="dependsOn">${message(code:'is.story.dependsOn')}</label>
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">
                     <input  type="hidden"
-                            ng-focus="setEditableMode(true)"
+                            ng-focus="editForm(true)"
                             ng-disabled="!getShowStoryForm(story)"
                             style="width:100%;"
                             class="form-control"
@@ -282,7 +282,7 @@
             <div class="form-group">
                 <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
-                       ng-focus="setEditableMode(true)"
+                       ng-focus="editForm(true)"
                        ng-disabled="!getShowStoryForm(story)"
                        class="form-control"
                        value="{{ editableStory.tags.join(',') }}"
@@ -306,7 +306,7 @@
                      ng-disabled="!getShowStoryForm(story)"
                      ng-show="!showNotesTextarea"
                      ng-click="showNotesTextarea = getShowStoryForm(story)"
-                     ng-focus="setEditableMode(true); showNotesTextarea = getShowStoryForm(story)"
+                     ng-focus="editForm(true); showNotesTextarea = getShowStoryForm(story)"
                      ng-class="{'placeholder': !editableStory.notes_html}"
                      tabindex="0"
                      ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
@@ -323,7 +323,7 @@
                         tooltip-append-to-body="true"
                         tooltip="${message(code:'is.button.cancel')}"
                         type="button"
-                        ng-click="disableEditableStoryMode()">
+                        ng-click="editForm(false)">
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>

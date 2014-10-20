@@ -21,7 +21,8 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('commentCtrl', ['$scope', 'CommentService', function($scope, CommentService) {
+controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', function($scope, CommentService, hotkeys) {
+    // Functions
     $scope.resetCommentForm = function() {
         $scope.editableComment = $scope.comment ? angular.copy($scope.comment) : {};
         if ($scope.formHolder.commentForm) {
@@ -42,6 +43,15 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', function($sco
     };
     $scope.editForm = function(value) {
         $scope.formHolder.editing = value;
+        if (value) {
+            hotkeys.bindTo($scope).add({
+                combo: 'esc',
+                allowIn: ['TEXTAREA'],
+                callback: $scope.resetCommentForm
+            });
+        } else {
+            hotkeys.del('esc');
+        }
     };
     $scope.updateComment = function(comment, commentable) {
         if (!$scope.formHolder.commentForm.$invalid) {

@@ -96,7 +96,7 @@
                 <label for="name">${message(code:'is.feature.name')}</label>
                 <input required
                        ng-maxlength="100"
-                       ng-focus="setEditableMode(true)"
+                       ng-focus="editForm(true)"
                        ng-disabled="!getShowFeatureForm(feature)"
                        name="name"
                        ng-model="editableFeature.name"
@@ -108,7 +108,7 @@
                     <label for="type">${message(code:'is.feature.type')}</label>
                     <div class="input-group">
                         <select class="form-control"
-                                ng-focus="setEditableMode(true)"
+                                ng-focus="editForm(true)"
                                 ng-disabled="!getShowFeatureForm(feature)"
                                 name="type"
                                 ng-model="editableFeature.type"
@@ -130,7 +130,7 @@
                 <div class="form-half">
                     <label for="value">${message(code:'is.feature.value')}</label>
                     <select class="form-control"
-                            ng-focus="setEditableMode(true)"
+                            ng-focus="editForm(true)"
                             ng-disabled="!getShowFeatureForm(feature)"
                             name="value"
                             ng-model="editableFeature.value"
@@ -143,7 +143,7 @@
                 <label for="description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
                           ng-maxlength="3000"
-                          ng-focus="setEditableMode(true)"
+                          ng-focus="editForm(true)"
                           ng-disabled="!getShowFeatureForm(feature)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                           name="description"
@@ -152,7 +152,7 @@
             <div class="form-group">
                 <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
-                       ng-focus="setEditableMode(true)"
+                       ng-focus="editForm(true)"
                        ng-disabled="!getShowFeatureForm(feature)"
                        class="form-control"
                        value="{{ editableFeature.tags.join(',') }}"
@@ -176,7 +176,7 @@
                      ng-disabled="!getShowFeatureForm(feature)"
                      ng-show="!showNotesTextarea"
                      ng-click="showNotesTextarea = getShowFeatureForm(feature)"
-                     ng-focus="setEditableMode(true); showNotesTextarea = getShowFeatureForm(feature)"
+                     ng-focus="editForm(true); showNotesTextarea = getShowFeatureForm(feature)"
                      ng-class="{'placeholder': !editableFeature.notes_html}"
                      tabindex="0"
                      ng-bind-html="(editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
@@ -193,7 +193,7 @@
                         tooltip-append-to-body="true"
                         tooltip="${message(code:'is.button.cancel')}"
                         type="button"
-                        ng-click="disableEditableFeatureMode()">
+                        ng-click="editForm(false)">
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>

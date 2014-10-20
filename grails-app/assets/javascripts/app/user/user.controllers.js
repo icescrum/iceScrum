@@ -22,6 +22,7 @@
  *
  */
 controllers.controller('userCtrl', ['$scope', 'UserService', 'User', '$modalInstance', 'Session', function ($scope, UserService, User, $modalInstance, Session) {
+    // Functions
     $scope.update = function(user) {
         UserService.update(user).then(function(userUpdated) {
             $modalInstance.close();
@@ -46,7 +47,6 @@ controllers.controller('userCtrl', ['$scope', 'UserService', 'User', '$modalInst
         $scope.tabSelected = {};
         $scope.tabSelected[tab] = true;
     };
-
     // Init
     $scope.dataUser = {};
     $scope.formHolder = {};

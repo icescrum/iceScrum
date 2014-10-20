@@ -21,8 +21,8 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'AcceptanceTestStatesByName', function($scope, AcceptanceTestService, AcceptanceTestStatesByName) {
-
+controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'AcceptanceTestStatesByName', 'hotkeys', function($scope, AcceptanceTestService, AcceptanceTestStatesByName, hotkeys) {
+    // Functions
     $scope.resetAcceptanceTestForm = function() {
         $scope.editableAcceptanceTest = $scope.acceptanceTest ? angular.copy($scope.acceptanceTest) : {
             parentStory: $scope.story,
@@ -41,6 +41,31 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.authorizedAcceptanceTest = function(action, acceptanceTest) {
         return AcceptanceTestService.authorizedAcceptanceTest(action, acceptanceTest);
     };
+    $scope.formHover = function(value) {
+        $scope.formHolder.formHover = value;
+    };
+    $scope.editForm = function(value) {
+        if (value) {
+            hotkeys.bindTo($scope).add({
+                combo: 'esc',
+                allowIn: ['INPUT', 'TEXTAREA', 'SELECT'],
+                callback: $scope.resetAcceptanceTestForm
+            });
+        } else {
+            hotkeys.del('esc');
+        }
+        $scope.formHolder.editing = value;
+    };
+    $scope.updateAcceptanceTest = function(acceptanceTest, story) {
+        if (!$scope.formHolder.acceptanceTestForm.$invalid) {
+            $scope.formHover(false);
+            $scope.editForm(false);
+            if ($scope.formHolder.acceptanceTestForm.$dirty) {
+                AcceptanceTestService.update(acceptanceTest, story);
+            }
+        }
+    };
+    // Settings
     function formatAcceptanceTestStateOption(state) {
         var colorClass;
         switch (parseInt(state.id)) {
@@ -59,21 +84,6 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.selectAcceptanceTestStateOptions = {
         formatResult: formatAcceptanceTestStateOption,
         formatSelection: formatAcceptanceTestStateOption
-    };
-    $scope.formHover = function(value) {
-        $scope.formHolder.formHover = value;
-    };
-    $scope.editForm = function(value) {
-        $scope.formHolder.editing = value;
-    };
-    $scope.updateAcceptanceTest = function(acceptanceTest, story) {
-        if (!$scope.formHolder.acceptanceTestForm.$invalid) {
-            $scope.formHover(false);
-            $scope.editForm(false);
-            if ($scope.formHolder.acceptanceTestForm.$dirty) {
-                AcceptanceTestService.update(acceptanceTest, story);
-            }
-        }
     };
     // Init
     $scope.formHolder = {};

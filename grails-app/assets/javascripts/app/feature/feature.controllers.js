@@ -88,9 +88,11 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-        $scope.disableEditableFeatureMode = function() {
-            $scope.setEditableMode(false);
-            $scope.resetFeatureForm();
+        $scope.editForm = function(value) {
+            $scope.setEditableMode(value); // global
+            if (!value) {
+                $scope.resetFeatureForm();
+            }
         };
         $scope.getShowFeatureForm = function(feature) {
             return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedFeature('update', feature);
@@ -138,21 +140,13 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {
     $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
-    $scope.formHolder = {};
+    // Functions
     $scope.resetFeatureForm = function() {
         $scope.feature = {};
         if ($scope.formHolder.featureForm) {
             $scope.formHolder.featureForm.$setPristine();
         }
     };
-    hotkeys
-        .bindTo($scope) // to remove the hotkey when the scope is destroyed
-        .add({
-            combo: 'esc',
-            allowIn: ['INPUT'],
-            callback: $scope.resetFeatureForm
-        });
-    $scope.resetFeatureForm();
     $scope.save = function(feature, andContinue) {
         FeatureService.save(feature).then(function(feature) {
             if (andContinue) {
@@ -163,21 +157,19 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
             }
         });
     };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetFeatureForm();
+    hotkeys.bindTo($scope).add({
+        combo: 'esc',
+        allowIn: ['INPUT'],
+        callback: $scope.resetFeatureForm
+    });
 }]);
 
 controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId', 'FeatureService', function($scope, $controller, listId, FeatureService) {
     $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
-    $scope.ids = listId;
-    $scope.topFeature = {};
-    $scope.featurePreview = {};
-    $scope.features = [];
-    FeatureService.getMultiple(listId).then(function(features) {
-        $scope.features = features;
-        $scope.topFeature = _.first(features);
-        $scope.featurePreview = {
-            type: _.every(features, { type: $scope.topFeature.type }) ? $scope.topFeature.type : null
-        };
-    });
+    // Functions
     $scope.totalValue = function(features) {
         return _.reduce(features, function(sum, feature) {
             return sum + feature.value;
@@ -192,5 +184,17 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
     $scope.copyToBacklogMultiple = function() {
         FeatureService.copyToBacklogMultiple(listId);
     };
+    // Init
+    $scope.ids = listId;
+    $scope.topFeature = {};
+    $scope.featurePreview = {};
+    $scope.features = [];
+    FeatureService.getMultiple(listId).then(function(features) {
+        $scope.features = features;
+        $scope.topFeature = _.first(features);
+        $scope.featurePreview = {
+            type: _.every(features, { type: $scope.topFeature.type }) ? $scope.topFeature.type : null
+        };
+    });
 }]);
 

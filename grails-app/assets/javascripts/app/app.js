@@ -273,11 +273,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                             $modalInstance.close(true);
                         };
                         // Required because there is not input so the form cannot be submitted by "return"
-                        hotkeys.bindTo($scope) // to remove the hotkey when the scope is destroyed
-                            .add({
-                                combo: 'return',
-                                callback: $scope.submit
-                            });
+                        hotkeys.bindTo($scope).add({
+                            combo: 'return',
+                            callback: $scope.submit
+                        });
                     }]
                 });
                 var callCloseCallback = function(confirmed) {

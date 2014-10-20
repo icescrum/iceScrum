@@ -23,6 +23,7 @@
  */
 
 controllers.controller('storyCtrl', ['$scope', 'StoryService', function($scope, StoryService) {
+    // Functions
     $scope.accept = function(story) {
         StoryService.accept(story).then($scope.goToNewStory);
     };
@@ -41,6 +42,7 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', function($scope, 
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };
+    // Settings
     $scope.selectFeatureOptions = {
         formatResult: function(object, container) {
             container.css('border-left', '4px solid ' + object.color);
@@ -165,9 +167,11 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.isDirty = function() {
             return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
         };
-        $scope.disableEditableStoryMode = function() {
-            $scope.setEditableMode(false);
-            $scope.resetStoryForm();
+        $scope.editForm = function(value) {
+            $scope.setEditableMode(value); // global
+            if (!value) {
+                $scope.resetStoryForm();
+            }
         };
         $scope.getShowStoryForm = function(story) {
             return ($scope.getEditableMode() || $scope.formHolder.formHover)  && $scope.authorizedStory('update', story);
@@ -287,22 +291,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
-    $scope.topStory = {};
-    $scope.storyPreview = {};
-    $scope.stories = [];
-    $scope.allFollowed = false;
-    function refreshStories() {
-        StoryService.getMultiple(listId).then(function(stories) {
-            $scope.topStory = _.first(stories);
-            $scope.storyPreview = {
-                feature: _.every(stories, { feature: $scope.topStory.feature }) ? $scope.topStory.feature : null,
-                type: _.every(stories, { type: $scope.topStory.type }) ? $scope.topStory.type : null
-            };
-            $scope.stories = stories;
-            $scope.allFollowed = _.every(stories, 'followed');
-        });
-    }
-    refreshStories();
+    // Functions
     $scope.deleteMultiple = function() {
         StoryService.deleteMultiple(listId).then($scope.goToNewStory);
     };
@@ -323,12 +312,29 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.acceptAsMultiple = function(target) {
         StoryService.acceptAsMultiple(listId, target).then($scope.goToNewStory);
     };
+    // Init
+    $scope.topStory = {};
+    $scope.storyPreview = {};
+    $scope.stories = [];
+    $scope.allFollowed = false;
+    function refreshStories() {
+        StoryService.getMultiple(listId).then(function(stories) {
+            $scope.topStory = _.first(stories);
+            $scope.storyPreview = {
+                feature: _.every(stories, { feature: $scope.topStory.feature }) ? $scope.topStory.feature : null,
+                type: _.every(stories, { type: $scope.topStory.type }) ? $scope.topStory.type : null
+            };
+            $scope.stories = stories;
+            $scope.allFollowed = _.every(stories, 'followed');
+        });
+    }
+    refreshStories();
 }]);
 
 controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '$timeout', '$controller', 'StoryService', 'hotkeys',
     function($scope, $state, $http, $modal, $timeout, $controller, StoryService, hotkeys) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
-        $scope.formHolder = {};
+        // Functions
         $scope.resetStoryForm = function() {
             var defaultStory = {};
             if ($scope.story && $scope.story.template) {
@@ -339,14 +345,6 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                 $scope.formHolder.storyForm.$setPristine();
             }
         };
-        hotkeys
-            .bindTo($scope) // to remove the hotkey when the scope is destroyed
-            .add({
-                combo: 'esc',
-                allowIn: ['INPUT'],
-                callback: $scope.resetStoryForm
-            });
-        $scope.resetStoryForm();
         $scope.templateSelected = function() {
             if ($scope.story.template) {
                 $http.get('story/templatePreview?template=' + $scope.story.template.id).success(function(storyPreview) {
@@ -354,19 +352,6 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                 });
             } else {
                 $scope.storyPreview = {}
-            }
-        };
-        $scope.selectTemplateOptions = {
-            allowClear: true,
-            ajax: {
-                url: 'story/templateEntries',
-                cache: 'true',
-                data: function(term) {
-                    return { term: term };
-                },
-                results: function(data) {
-                    return { results: data };
-                }
             }
         };
         $scope.showEditTemplateModal = function(story) {
@@ -413,4 +398,26 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                 }, 500);
             }
         };
+        // Settings
+        $scope.selectTemplateOptions = {
+            allowClear: true,
+            ajax: {
+                url: 'story/templateEntries',
+                cache: 'true',
+                data: function(term) {
+                    return { term: term };
+                },
+                results: function(data) {
+                    return { results: data };
+                }
+            }
+        };
+        // Init
+        $scope.formHolder = {};
+        $scope.resetStoryForm();
+        hotkeys.bindTo($scope).add({
+            combo: 'esc',
+            allowIn: ['INPUT'],
+            callback: $scope.resetStoryForm
+        });
     }]);

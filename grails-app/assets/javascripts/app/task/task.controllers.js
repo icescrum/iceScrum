@@ -22,6 +22,7 @@
  *
  */
 controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+    // Functions
     $scope.save = function(task, obj) {
         TaskService.save(task, obj).then($scope.resetTaskForm);
     };

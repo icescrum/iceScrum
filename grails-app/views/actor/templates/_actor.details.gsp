@@ -97,7 +97,7 @@
                 <div class="form-half">
                     <label for="name">${message(code:'is.actor.name')}</label>
                     <input required
-                           ng-focus="setEditableMode(true)"
+                           ng-focus="editForm(true)"
                            ng-disabled="!getShowActorForm(actor)"
                            ng-maxlength="100"
                            name="name"
@@ -108,7 +108,7 @@
                 <div class="form-half">
                     <label for="instances">${message(code:'is.actor.instances')}</label>
                     <select class="form-control"
-                            ng-focus="setEditableMode(true)"
+                            ng-focus="editForm(true)"
                             ng-disabled="!getShowActorForm(actor)"
                             name="instances"
                             ng-model="editableActor.instances"
@@ -121,7 +121,7 @@
                 <div class="form-half">
                     <label for="expertnessLevel">${message(code:'is.actor.it.level')}</label>
                     <select class="form-control"
-                            ng-focus="setEditableMode(true)"
+                            ng-focus="editForm(true)"
                             ng-disabled="!getShowActorForm(actor)"
                             name="expertnessLevel"
                             ng-model="editableActor.expertnessLevel"
@@ -132,7 +132,7 @@
                 <div class="form-half">
                     <label for="useFrequency">${message(code:'is.actor.use.frequency')}</label>
                     <select class="form-control"
-                            ng-focus="setEditableMode(true)"
+                            ng-focus="editForm(true)"
                             ng-disabled="!getShowActorForm(actor)"
                             name="useFrequency"
                             ng-model="editableActor.useFrequency"
@@ -145,7 +145,7 @@
                 <label for="description">${message(code:'is.backlogelement.description')}</label>
                 <textarea class="form-control"
                           ng-maxlength="3000"
-                          ng-focus="setEditableMode(true)"
+                          ng-focus="editForm(true)"
                           ng-disabled="!getShowActorForm(actor)"
                           placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                           name="description"
@@ -154,7 +154,7 @@
             <div class="form-group">
                 <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                 <input type="hidden"
-                       ng-focus="setEditableMode(true)"
+                       ng-focus="editForm(true)"
                        ng-disabled="!getShowActorForm(actor)"
                        class="form-control"
                        value="{{ editableActor.tags.join(',') }}"
@@ -178,7 +178,7 @@
                      ng-disabled="!getShowActorForm(actor)"
                      ng-show="!showNotesTextarea"
                      ng-click="showNotesTextarea = getShowActorForm(actor)"
-                     ng-focus="setEditableMode(true); showNotesTextarea = getShowActorForm(actor)"
+                     ng-focus="editForm(true); showNotesTextarea = getShowActorForm(actor)"
                      ng-class="{'placeholder': !editableActor.notes_html}"
                      tabindex="0"
                      ng-bind-html="(editableActor.notes_html ? editableActor.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
@@ -195,7 +195,7 @@
                         tooltip-append-to-body="true"
                         tooltip="${message(code:'is.button.cancel')}"
                         type="button"
-                        ng-click="disableEditableActorMode()">
+                        ng-click="editForm(false)">
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>

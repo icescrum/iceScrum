@@ -85,9 +85,11 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-        $scope.disableEditableActorMode = function() {
-            $scope.setEditableMode(false);
-            $scope.resetActorForm();
+        $scope.editForm = function(value) {
+            $scope.setEditableMode(value); // global
+            if (!value) {
+                $scope.resetActorForm();
+            }
         };
         $scope.getShowActorForm = function(actor) {
             return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedActor('update', actor);
@@ -136,21 +138,13 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
 
 controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'ActorService', 'hotkeys', function($scope, $state, $controller, ActorService, hotkeys) {
     $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
-    $scope.formHolder = {};
+    // Functions
     $scope.resetActorForm = function() {
         $scope.actor = {};
         if ($scope.formHolder.actorForm) {
             $scope.formHolder.actorForm.$setPristine();
         }
     };
-    hotkeys
-        .bindTo($scope) // to remove the hotkey when the scope is destroyed
-        .add({
-            combo: 'esc',
-            allowIn: ['INPUT'],
-            callback: $scope.resetActorForm
-        });
-    $scope.resetActorForm();
     $scope.save = function(actor, andContinue) {
         ActorService.save(actor).then(function(actor) {
             if (andContinue) {
@@ -161,20 +155,30 @@ controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'Acto
             }
         });
     };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetActorForm();
+    hotkeys.bindTo($scope).add({
+        combo: 'esc',
+        allowIn: ['INPUT'],
+        callback: $scope.resetActorForm
+    });
 }]);
 
 controllers.controller('actorMultipleCtrl', ['$scope', '$controller', 'listId', 'ActorService', function($scope, $controller, listId, ActorService) {
     $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
-    $scope.ids = listId;
-    $scope.topActor = {};
-    ActorService.getMultiple(listId).then(function(actors) {
-        $scope.topActor = _.first(actors);
-    });
+    // Functions
     $scope.deleteMultiple = function() {
         ActorService.deleteMultiple(listId).then($scope.goToNewActor);
     };
     $scope.updateMultiple = function(updatedFields) {
         ActorService.updateMultiple(listId, updatedFields);
     };
+    // Init
+    $scope.ids = listId;
+    $scope.topActor = {};
+    ActorService.getMultiple(listId).then(function(actors) {
+        $scope.topActor = _.first(actors);
+    });
 }]);
 
