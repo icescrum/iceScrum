@@ -48,12 +48,14 @@
                             </a>
                         </span>
                         <span class="action">
-                            <a>
+                            <a tooltip="${message(code:'todo.is.backlogelement.attachments')}"
+                               tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
                             </a>
                         </span>
                         <span class="action">
-                            <a>
+                            <a tooltip="${message(code:'todo.is.story.comments')}"
+                               tooltip-append-to-body="true">
                                 <i class="fa fa-comment-o"></i>
                             </a>
                         </span>
