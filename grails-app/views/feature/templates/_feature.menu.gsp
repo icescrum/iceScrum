@@ -23,15 +23,15 @@
 
 <script type="text/ng-template" id="feature.menu.html">
 <li>
-    <a ng-if="authorizedFeature('copyToBacklog')" ng-click="copyToBacklog(feature)">
+    <a href ng-if="authorizedFeature('copyToBacklog')" ng-click="copyToBacklog(feature)">
         <g:message code='is.ui.feature.menu.copy'/>
     </a>
-    <a ng-if="authorizedFeature('delete')" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
+    <a href ng-if="authorizedFeature('delete')" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
         <g:message code='is.ui.feature.menu.delete'/>
     </a>
 </li>
 <li>
-    <a ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-F' + feature.uid)">
+    <a href ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-F' + feature.uid)">
         ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
     </a>
 </li>

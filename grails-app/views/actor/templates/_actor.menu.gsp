@@ -23,12 +23,12 @@
 
 <script type="text/ng-template" id="actor.menu.html">
 <li>
-    <a ng-if="authorizedActor('delete')" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [actor] })">
+    <a href ng-if="authorizedActor('delete')" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [actor] })">
         <g:message code='is.ui.actor.menu.delete'/>
     </a>
 </li>
 <li>
-    <a ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-A' + actor.uid)">
+    <a href ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-A' + actor.uid)">
         ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
     </a>
 </li>

@@ -23,37 +23,37 @@
 
 <script type="text/ng-template" id="story.menu.html">
 <li ng-if="authorizedStory('accept', story)">
-    <a ng-click="accept(story)">
+    <a href ng-click="accept(story)">
         <g:message code='is.ui.sandbox.menu.acceptAsStory'/>
     </a>
 </li>
 <li ng-if="authorizedStory('accept', story)">
-    <a ng-click="acceptAs(story, 'Feature')">
+    <a href ng-click="acceptAs(story, 'Feature')">
         <g:message code='is.ui.sandbox.menu.acceptAsFeature'/>
     </a>
 </li>
 <li ng-if="authorizedStory('accept', story)">
-    <a ng-click="acceptAs(story, 'Task')">
+    <a href ng-click="acceptAs(story, 'Task')">
         <g:message code='is.ui.sandbox.menu.acceptAsUrgentTask'/>
     </a>
 </li>
 <li>
-    <a ng-if="authorizedStory('create')" ng-click="copy(story)">
+    <a href ng-if="authorizedStory('create')" ng-click="copy(story)">
         <g:message code='is.ui.releasePlan.menu.story.clone'/>
     </a>
 </li>
 <li>
-    <a ng-if="authorizedStory('delete', story)" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [story] })">
+    <a href ng-if="authorizedStory('delete', story)" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [story] })">
         <g:message code='is.ui.sandbox.menu.delete'/>
     </a>
 </li>
 <li>
-    <a ng-if="authorizedStory('createTemplate')" ng-click="showNewTemplateModal(story)">
+    <a href ng-if="authorizedStory('createTemplate')" ng-click="showNewTemplateModal(story)">
         ${message(code: 'todo.is.ui.story.template.new')}
     </a>
 </li>
 <li>
-    <a ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-' + story.uid)">
+    <a href ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-' + story.uid)">
         ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
     </a>
 </li>
