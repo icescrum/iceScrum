@@ -186,9 +186,10 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     this.authorizedStory = function(action, story) {
         switch (action) {
             case 'create':
-            case 'createTemplate':
             case 'followMultiple':
                 return Session.authenticated();
+            case 'createTemplate':
+                return Session.inProduct();
             case 'upload':
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
