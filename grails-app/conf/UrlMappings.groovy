@@ -94,7 +94,17 @@ class UrlMappings {
 
         "/project/import" {
             controller = 'project'
-            action = [GET: "import", POST:"import"]
+            action = 'import'
+        }
+
+        "/project/importDialog" {
+            controller = 'project'
+            action = 'importDialog'
+        }
+
+        "/project/importStatus" {
+            controller = 'project'
+            action = 'importStatus'
         }
 
         "/project/$product" {
@@ -118,6 +128,22 @@ class UrlMappings {
         "/p/$product/export" {
             controller = 'project'
             action = 'export'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/exportDialog" {
+            controller = 'project'
+            action = 'exportDialog'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/exportStatus" {
+            controller = 'project'
+            action = 'exportStatus'
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }

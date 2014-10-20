@@ -26,6 +26,7 @@ package org.icescrum.web.presentation.app.project
 
 import grails.converters.XML
 import groovy.xml.MarkupBuilder
+import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
@@ -46,10 +47,8 @@ import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.User
 import feedsplugin.FeedBuilder
 import com.sun.syndication.io.SyndFeedOutput
-import org.codehaus.groovy.grails.web.util.StreamCharBuffer
 import org.apache.commons.io.FilenameUtils
 import java.text.DecimalFormat
 
@@ -179,6 +178,33 @@ class ProjectController {
         }
     }
 
+    @Secured(['owner()'])
+    def delete() {
+        withProduct{ Product product ->
+            def id = product.id
+            try {
+                productService.delete(product)
+                render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
+            }
+        }
+    }
+
+    @Secured(['permitAll()'])
+    def available() {
+        def result = false
+        //test for name
+        if (params.property == 'name'){
+            result = request.JSON.value && Product.countByName(request.JSON.value) == 0
+            //test for pkey
+        } else if (params.property == 'pkey'){
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && Product.countByPkey(request.JSON.value) == 0
+        }
+        render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
+    }
+
     @Secured(['owner() or scrumMaster() or productOwner()'])
     def exportDialog() {
         render(status:200, template: "dialogs/export")
@@ -218,11 +244,39 @@ class ProjectController {
                             params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
                         }
                     }
-                    session.progress.value = 100
-                    session.progress.complete = true
-                    session.progress.label = message(code:'todo.is.ui.progress.complete')
+                    session.progress.completeProgress(message(code:'todo.is.ui.progress.complete'))
                 }
             }
+        }
+    }
+
+    @Secured('owner() or scrumMaster()')
+    def edit() {
+        withProduct{ Product product ->
+            def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
+            if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                privateOption = false
+            }
+            def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
+            def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
+
+            def dialog = g.render(template: "dialogs/edit",
+                    model: [product: product,
+                            privateOption: privateOption,
+                            possibleViews: possibleViews,
+                            restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+        }
+    }
+
+    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
+    def editPractices() {
+        withProduct{ Product product ->
+            def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
+                                        (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
+                                        (PlanningPokerGame.CUSTOM_SUITE) : message(code: "is.estimationSuite.custom")]
+            def dialog = g.render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
 
@@ -253,33 +307,6 @@ class ProjectController {
             }
             render(status: 200, contentType: 'application/json', text:product as JSON)
         }
-    }
-
-    @Secured(['owner()'])
-    def delete() {
-        withProduct{ Product product ->
-            def id = product.id
-            try {
-                productService.delete(product)
-                render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
-            }
-        }
-    }
-
-    @Secured(['permitAll()'])
-    def available() {
-        def result = false
-        //test for name
-        if (params.property == 'name'){
-            result = request.JSON.value && Product.countByName(request.JSON.value) == 0
-            //test for pkey
-        } else if (params.property == 'pkey'){
-            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && Product.countByPkey(request.JSON.value) == 0
-        }
-        render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
     }
 
     @Secured('owner() or scrumMaster()')
@@ -337,36 +364,6 @@ class ProjectController {
             def addedAttachments = params.list('attachments')
             def attachments = manageAttachments(product, keptAttachments, addedAttachments)
             render status: 200, contentType: 'application/json', text: attachments as JSON
-        }
-    }
-
-    @Secured('owner() or scrumMaster()')
-    def edit() {
-        withProduct{ Product product ->
-            def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
-            if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                privateOption = false
-            }
-            def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
-            def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
-
-            def dialog = g.render(template: "dialogs/edit",
-                    model: [product: product,
-                            privateOption: privateOption,
-                            possibleViews: possibleViews,
-                            restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-        }
-    }
-
-    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
-    def editPractices() {
-        withProduct{ Product product ->
-            def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
-                                        (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
-                                        (PlanningPokerGame.CUSTOM_SUITE) : message(code: "is.estimationSuite.custom")]
-            def dialog = g.render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
 
@@ -520,73 +517,130 @@ class ProjectController {
 
     @Secured('isAuthenticated()')
     def "import"() {
-        def user = User.load(springSecurityService.principal.id)
-        if (params.cancel) {
-            session['import'] = null
-            session.progress = null
-            render(status: 200)
-            return
-        }
-        else if (params.file) {
-            File uploadedProject = null
-            "${params.file}".split(":")?.with {
-                if (session.uploadedFiles[it[0]])
-                    uploadedProject = new File((String) session.uploadedFiles[it[0]])
-            }
-            if (uploadedProject) {
-                session.progress = new ProgressSupport()
-                session['import'] = [:]
+        if (params.flowFilename){
+            session.import = [:]
+            session.progress = new ProgressSupport()
+
+            def endOfUpload = { uploadInfo ->
+                def path
+                def xmlFile
+                File uploadedProject = new File(uploadInfo.filePath)
                 if (FilenameUtils.getExtension(uploadedProject.name) == 'xml'){
                     if (log.debugEnabled){ log.debug 'Export is an xml file, processing now' }
-                    session['import']?.product = productService.parseXML(uploadedProject, session.progress)
-                    session['import']?.path = uploadedProject.absolutePath
+                    xmlFile = uploadedProject
+                    path = uploadedProject.absolutePath
                 } else if (FilenameUtils.getExtension(uploadedProject.name) == 'zip'){
                     if (log.debugEnabled){ log.debug 'Export is a zipped file, unzipping now' }
                     def tmpDir = ApplicationSupport.createTempDir(FilenameUtils.getBaseName(uploadedProject.name))
                     ApplicationSupport.unzip(uploadedProject,tmpDir)
-                    def xmlFile = tmpDir.listFiles().find { !it.isDirectory() && FilenameUtils.getExtension(it.name) == 'xml' }
-                    if (xmlFile){
-                        session['import']?.path = tmpDir.absolutePath
-                        session['import']?.product = productService.parseXML(xmlFile, session.progress)
-                    }else{
-                        session.progress.progressError(message(code:'is.error'))    
+                    xmlFile = tmpDir.listFiles().find { !it.isDirectory() && FilenameUtils.getExtension(it.name) == 'xml' }
+                    path = tmpDir.absolutePath
+                } else {
+                    render(status:400)
+                    return
+                }
+                def product = productService.parseXML(xmlFile, session.progress)
+                def changes = productService.validate(product, session.progress)
+                withFormat {
+                    html {
+                        session.import.product = product
+                        session.import.path = path
+                        render(status: 200, contentType:'application/json', text:changes as JSON)
+                    }
+                    xml  {
+                        //TODO do saveImport
+                        renderRESTXML(text:changes)
+                    }
+                    json {
+                        //TODO do saveImport
+                        renderRESTJSON(text:changes)
+                    }
+
+                }
+            }
+
+            UtilsWebComponents.handleUpload.delegate = this
+            UtilsWebComponents.handleUpload(request, params, endOfUpload)
+
+        } else if (session.import) {
+            def product = session.import.product
+            def path = session.import.path
+            if (params.changes){
+                def team = product.teams[0]
+                if (params.changes?.team?.name) {
+                    team.name = params.changes.team.name
+                }
+                if (params.changes?.users) {
+                    team.members?.each {
+                        if (params.changes.users."${it.uid}") {
+                            it.username = params.changes.users."${it.uid}"
+                        }
+                    }
+                    team.scrumMasters?.each {
+                        if (params.changes.users."${it.uid}") {
+                            it.username = params.changes.users."${it.uid}"
+                        }
+                    }
+                    product.productOwners?.each {
+                        if (params.changes.users."${it.uid}") {
+                            it.username = params.changes.users."${it.uid}"
+                        }
                     }
                 }
             }
-        }
-        else if (params.status) {
-            if (session.progress)
-                render(status: 200, contentType: 'application/json', text: session.progress as JSON)
-            else
-                render(status: 200)
-            return
-        }
-        else {
-            session.progress = null
-        }
 
-        if (session['import']) {
-            def unValidableErrors = this.validateImport()
-            if (unValidableErrors) {
-                session['import'] = null
-                session.progress = null
-                render(status: 400, contentType: 'application/json', text: [notice: [text: unValidableErrors, type: 'error']] as JSON)
-                return
+            def erase = params.boolean('changes.erase')?:false
+            product.pkey = !erase && params.changes?.product?.pkey != null ? params.changes.product.pkey : product.pkey
+            product.name = !erase && params.changes?.product?.name != null ? params.changes.product.name : product.name
 
+            def changes = productService.validate(product, session.progress, erase)
+            if (!changes){
+
+                Product.withTransaction { status ->
+                    try {
+                        productService.saveImport(product, path, erase)
+                        render(status:200, contentType:'application/json', text:product as JSON)
+                    } catch (RuntimeException e) {
+                        status.setRollbackOnly()
+                        if (log.debugEnabled) e.printStackTrace()
+                        render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.import.error')]] as JSON)
+                    } finally {
+                        //session.import = null
+                    }
+                }
             } else {
-                def importMustChangeValues = session['import'].product.hasErrors() ?: (true in session['import'].product.teams*.hasErrors()) ?: (true in session['import'].product.getAllUsers()*.hasErrors())
-                def dialog = g.render(template: 'dialogs/import', model: [
-                        user: user,
-                        product: session['import'].product,
-                        importMustChangeValues: importMustChangeValues,
-                        teamsErrors: session['import'].product.teams.findAll {it.hasErrors()},
-                        usersErrors: session['import'].product.getAllUsers().findAll {it.hasErrors()}
-                ])
-                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+                session.import.product = product
+                session.import.path = path
+                render(status:200, contentType:'application/json', text:changes as JSON)
+                if (log.infoEnabled) log.info(changes)
             }
         } else {
-            def dialog = g.render(template: 'dialogs/import', model: [user: user])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+            render(status:500)
+        }
+    }
+
+    @Secured('isAuthenticated()')
+    def importDialog() {
+        render(status:200, template: "dialogs/import")
+    }
+
+    @Secured('isAuthenticated()')
+    def importStatus() {
+        if(session.progress) {
+            withFormat {
+                html {
+                    render(status:200, contentType:"application/json", text:session.progress  as JSON)
+                }
+                xml {
+                    render(status:200, contentType:"text/xml", text:session.progress  as XML)
+                }
+            }
+            //we already sent the error so reset progress
+            if (session.progress.error){
+                session.progress = null
+            }
+        } else {
+            render(status: 404)
         }
     }
 
@@ -602,67 +656,6 @@ class ProjectController {
         if (!session['import']) {
             returnError(text:message(code:'is.import.error.no.backup'))
             return
-        }
-
-        if (params.team?.name) {
-            session['import'].product.teams.each {
-                if (params.team.name."${it.uid}") {
-                    it.name = params.team.name."${it.uid}"
-                }
-            }
-        }
-
-        if (params.user?.username) {
-            session['import'].product.teams.each {
-                it.members?.each {it2 ->
-                    if (params.user.username."${it2.uid}") {
-                        it2.username = params.user.username."${it2.uid}"
-                    }
-                }
-                it.scrumMasters?.each {it2 ->
-                    if (params.user.username."${it2.uid}") {
-                        it2.username = params.user.username."${it2.uid}"
-                    }
-                }
-            }
-            session['import'].product.productOwners?.each {
-                if (params.user.username."${it.uid}") {
-                    it.username = params.user.username."${it.uid}"
-                }
-            }
-        }
-
-        def erasableByUser = false
-        if (params.productd?.int('erasableByUser')) {
-            erasableByUser = params.productd?.int('erasableByUser') ? true : false
-        }
-        session['import'].product.erasableByUser = erasableByUser
-        if (!erasableByUser && params.productd?.pkey != null && params.productd?.name != null) {
-            session['import'].product.pkey = params.productd.pkey
-            session['import'].product.name = params.productd.name
-        }
-        def errors = this.validateImport(true, erasableByUser)
-        if (errors) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: errors]] as JSON)
-            return
-        }
-
-        Product.withTransaction { status ->
-            try {
-                productService.saveImport(session['import'].product, params.productd?.name, session['import'].path)
-            } catch (IllegalStateException ise) {
-                status.setRollbackOnly()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-                return
-            }
-            catch (RuntimeException e) {
-                status.setRollbackOnly()
-                if (log.debugEnabled) e.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.import.error')]] as JSON)
-                return
-            }
-            render(status:200, contentType:'application/json', text:session['import'].product as JSON)
-            session['import'] = null
         }
     }
 
@@ -798,74 +791,6 @@ class ProjectController {
         ]
     }
 
-    private def validateImport(def full = false, def erasableByUser = false) {
-
-        def p = session['import'].product
-        productService.validate(p, session.progress)
-        def beansErrors = null
-
-        if (p.hasErrors()) {
-            log.info("Product validation error (${p.name}): " + p.errors)
-            if (full && !erasableByUser) {
-                beansErrors = renderErrors(bean: p)
-            }
-
-            def pass = true
-            p.errors.each {
-                if (it.getFieldError().getField() != 'name' && it.getFieldError().getField() != 'pkey') {
-                    pass = false
-
-                }
-            }
-
-            if (!pass) {
-                beansErrors = renderErrors(bean: session['import'].product)
-            } else if (p.errors) {
-                log.info("Product validation with warning (${p.name}): " + p.errors)
-            } else {
-                log.info("Product validation (full=false) passed (${p.name})")
-            }
-        } else {
-            log.info("Product validation passed (${p.name})")
-        }
-
-        p.getAllUsers().each {
-            if (it.hasErrors()) {
-                if (full) {
-                    beansErrors = (beansErrors ?: '') + renderErrors(bean: it)
-                    log.info("User validation error (${it.username}): " + it.errors)
-                }
-                else if (it.errors.getErrorCount() >= 1 && (it.errors.getFieldError().getField() != 'username' || it.username == '')) {
-                    beansErrors = (beansErrors ?: '') + renderErrors(bean: it)
-                    log.info("User validation passed with warning (${it.username}): " + it.errors)
-                } else {
-                    log.info("User validation (full=false) passed (${it.username})")
-                }
-            } else {
-                log.info("User validation passed (${it.username})")
-            }
-        }
-
-        p.teams.each {
-            if (it.hasErrors()) {
-                if (full) {
-                    beansErrors = (beansErrors ?: '') + renderErrors(bean: it)
-                    log.info("Team validation error (${it.name}): " + it.errors)
-                }
-                else if (it.errors.getErrorCount() >= 1 && (it.errors.getFieldError().getField() != 'name' || it.name == '')) {
-                    beansErrors = (beansErrors ?: '') + renderErrors(bean: it)
-                    log.info("Team validation passed with warning (${it.name}): " + it.errors)
-                }
-                else {
-                    log.info("Team validation (full=false) passed (${it.name})")
-                }
-            } else {
-                log.info("Team validation passed (${it.name})")
-            }
-        }
-        return beansErrors
-    }
-
     private String exportProductXML (Product product) {
         def writer = new StringWriter()
         def builder = new MarkupBuilder(writer)
@@ -913,4 +838,5 @@ class ProjectController {
             xml.delete()
         }
     }
+
 }

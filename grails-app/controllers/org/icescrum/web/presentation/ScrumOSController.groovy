@@ -24,7 +24,6 @@
 
 package org.icescrum.web.presentation
 
-import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 

@@ -20,9 +20,9 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 **/
-@import (reference) "../vendors/todc/less/todc-bootstrap.less";
 @import (reference) "../vendors/bootstrap/less/forms.less";
 @import (reference) "../vendors/bootstrap/less/responsive-utilities.less";
+@import (reference) "../vendors/todc/less/todc-bootstrap.less";
 
 @light-bg:      #F5F5F5;
 @body-bg:       #fff;
@@ -1839,3 +1839,28 @@ ul.dropdown-menu[datepicker-popup-wrap]{
   }
 }
 
+.import {
+  .changes {
+    //TODO add make-row and remove row class in html
+    &:extend(.clearfix all);
+    .erase {
+      .form-group;
+      .checkbox;
+      .make-xs-column(6);
+    }
+    .changes-col-1 {
+      .form-group;
+      .make-xs-column(5);
+    }
+    .changes-col-2 {
+      .form-group;
+      .make-xs-column(6);
+    }
+    .changes-arrow {
+      text-align:center;
+      padding-top:28px;
+      .make-xs-column(1);
+    }
+  }
+
+}

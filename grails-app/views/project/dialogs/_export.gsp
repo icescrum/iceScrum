@@ -21,10 +21,10 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:modal title="${message(code:'is.dialog.exportProject.title')}">
-    <div class="help-block">
-        <g:message code="is.dialog.exportProject.description"/>
-    </div>
-    <form class="form-inline" role="form" ng-show="!started" ng-submit="start()">
+    <form class="form-inline" role="form" ng-show="progress.value < 0" ng-submit="start()" novalidate>
+        <div class="help-block">
+            <g:message code="is.dialog.exportProject.description"/>
+        </div>
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="zip"> ${message(code:'todo.is.ui.export.zip')}
@@ -32,8 +32,8 @@
         </div>
         <button type="submit" class="btn btn-primary" >${message(code:'todo.is.ui.export')}</button>
     </form>
-    <div ng-show="started">
-        <progressbar value="progress.value" type="{{ type }}">
+    <div ng-show="progress.value >= 0">
+        <progressbar value="progress.value" type="{{ progress.type }}">
             <b>{{progress.label}}</b>
         </progressbar>
     </div>

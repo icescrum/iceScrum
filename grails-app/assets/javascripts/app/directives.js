@@ -197,12 +197,28 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             }, true);
         }
     }
-}]).directive('isMatch', function () {
+}]).directive('notMatch', function () {
     return {
         require: 'ngModel',
         restrict: 'A',
         scope: {
-            match: '='
+            notMatch: '='
+        },
+        link: function(scope, elem, attrs, ctrl) {
+            scope.$watch(function() {
+                var modelValue = ctrl.$modelValue || ctrl.$$invalidModelValue;
+                return scope.notMatch != modelValue;
+            }, function(currentValue) {
+                ctrl.$setValidity('notMatch', currentValue);
+            });
+        }
+    };
+}).directive('isMatch', function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        scope: {
+            isMatch: '='
         },
         link: function(scope, elem, attrs, ctrl) {
             scope.$watch(function() {

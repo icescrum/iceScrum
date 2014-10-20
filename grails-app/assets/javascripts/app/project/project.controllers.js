@@ -24,19 +24,89 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     $scope.currentProject = Session.getProject();
 
     $scope['import'] = function(project) {
-        var modal = $modal.open({
-            templateUrl: icescrum.grailsServer + '/' + "project/importDialog",
-            size: 'md',
-            controller: function($scope){
-
+        var status;
+        var stopStatus = function() {
+            if (angular.isDefined(status)) {
+                $timeout.cancel(status);
+                status = undefined;
             }
+        };
+        var url = $scope.serverUrl + '/' + "project/import";
+        var modal = $modal.open({
+            templateUrl: url +"Dialog",
+            size: 'md',
+            controller: ['$scope', '$timeout', '$http',function($scope, $timeout, $http){
+                $scope.flowConfig = {target: url, singleFile:true};
+                $scope.validation = { value:-1 };
+
+                $scope.changes = false;
+                $scope._changes = {
+                    showTeam:false,
+                    showProject:false
+                };
+
+                var progress = function() {
+                    $http({
+                        method: "get",
+                        url: url +"Status"
+                    }).then(function (response) {
+                        if (!response.data.error && !response.data.complete) {
+                            status = $timeout(progress, 500);
+                        } else if (response.data.error){
+                            $scope.validation.type = 'danger';
+                        } else if (response.data.complete){
+                            $scope.validation.type = 'success';
+                        }
+                        $scope.validation = response.data;
+                    }, function(){
+                        $scope.validation.type = 'danger';
+                        $scope.validation.label = $scope.message("todo.is.error.import");
+                        $scope.validation.value = 100;
+                    });
+                };
+                $scope.progressStatus = progress;
+
+                $scope.checkValidation = function($message){
+                    if ($message){
+                        $scope.changes = !angular.isObject($message) ? JSON.parse($message) : $message;
+                        $scope._changes = angular.copy($scope.changes);
+                        $scope._changes = angular.extend($scope._changes, {
+                            showTeam:$scope.changes.team?true:false,
+                            showUsers:$scope.changes.users?true:false,
+                            showProjectName:$scope.changes.product? ($scope.changes.product.name ?true:false) :false,
+                            showProjectPkey:$scope.changes.product? ($scope.changes.product.pkey ?true:false) :false
+                        });
+                    }
+                };
+
+                $scope.applyChanges = function(){
+                    $http({ url: url,
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                            transformRequest: function (data) {
+                                return formObjectData(data, 'changes.');
+                            },
+                            data: $scope.changes })
+                        .then(function(response){
+                            if (response.data && response.data.class == 'Product'){
+                                document.location = $scope.serverUrl + '/p/' + response.data.pkey + '/';
+                            } else {
+                                $scope.checkValidation(response.data);
+                            }
+                        }, function(){
+                            $scope.validation.type = 'danger';
+                            $scope.validation.label = $scope.message("todo.is.error.import");
+                            $scope.validation.value = 100;
+                        });
+                };
+            }]
         });
         modal.result.then(
             function(result) {
-
+                stopStatus();
             },
             function(){
-
+                stopStatus();
             }
         );
     };
@@ -51,14 +121,14 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
         };
         var modal = $modal.open({
             templateUrl: "project/exportDialog",
-            size: 'sm',
+            size: 'md',
             controller: ['$scope', '$timeout', '$http',function($scope, $timeout, $http){
                 $scope.progress = {
-                    value:0,
-                    label:""
+                    value: -1,
+                    label: "",
+                    progress:'type'
                 };
                 $scope.zip = true;
-                $scope.type = 'primary';
                 $scope.started = false;
 
                 $scope.start = function(){
@@ -71,18 +141,17 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                             if (!response.data.error && !response.data.complete) {
                                 status = $timeout(progress, 500);
                             } else if (response.data.error){
-                                $scope.type = 'danger';
+                                $scope.progress.type = 'danger';
                             } else if (response.data.complete){
-                                $scope.type = 'success';
+                                $scope.progress.type = 'success';
                             }
                             $scope.progress = response.data;
                         }, function(){
-                            $scope.type = 'danger';
-                            $scope.progress.label = $scope.message("Error during export");
+                            $scope.progress.type = 'danger';
+                            $scope.progress.label = $scope.message("todo.is.error.export");
                             $scope.progress.value = 100;
                         });
                     };
-                    debugger;
                     $scope.downloadFile("project/export" + ($scope.zip ? "?zip=true" : ""));
                     status = $timeout(progress, 500);
                 }

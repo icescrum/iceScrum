@@ -276,16 +276,16 @@ log4j = {
     }
 
     if (ApplicationSupport.booleanValue(Holders.config.icescrum.debug.enable)) {
-        debug 'grails.app.service.org.icescrum'
-        debug 'grails.app.controller.org.icescrum'
+        debug 'grails.app.services.org.icescrum'
+        debug 'grails.app.controllers.org.icescrum'
         debug 'grails.app.domain.org.icescrum'
         debug 'grails.app.org.icescrum'
         debug 'org.icescrum.core'
         debug 'org.icescrum.plugins'
         debug 'org.icescrum.plugins.chat'
         debug 'net.sf.jasperreports'
-        debug 'grails.app.service.com.kagilum'
-        debug 'grails.app.controller.com.kagilum'
+        debug 'grails.app.services.com.kagilum'
+        debug 'grails.app.controllers.com.kagilum'
         debug 'grails.app.domain.com.kagilum'
         debug 'com.kagilum'
         debug 'org.icescrum.atmosphere'
