@@ -121,6 +121,7 @@
                                     type="button"
                                     style="background-color:{{ editableFeature.color }};"
                                     colorpicker-position="top"
+                                    ng-focus="editForm(true)"
                                     value="#bf3d3d"
                                     name="color"
                                     ng-model="editableFeature.color"><i class="fa fa-pencil"></i></button>

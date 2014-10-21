@@ -36,7 +36,7 @@
                 <div class="btn-group">
                     <a href="attachment/{{ clazz }}/{{ getSelected().id }}/{{ attachment.id }}" tooltip="todo.is.attachment.download" tooltip-append-to-body="true" class="btn btn-default btn-xs"><i class="fa fa-download"></i></a>
                     <button ng-click="showPreview(attachment, getSelected(), clazz)" type="button" class="btn btn-xs btn-default ng-hide" ng-show="isPreviewable(attachment)" tooltip="todo.is.attachment.preview" tooltip-append-to-body="true"><i class="fa fa-search"></i></button>
-                    <button ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [attachment, getSelected()] })" tooltip="todo.is.attachment.delete" tooltip-append-to-body="true" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
+                    <button ng-if="authorizedAttachment('delete', attachment)" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [attachment, getSelected()] })" tooltip="todo.is.attachment.delete" tooltip-append-to-body="true" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
                 </div>
             </div>
             <div ng-show="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'picture'">

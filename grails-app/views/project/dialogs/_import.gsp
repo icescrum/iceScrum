@@ -134,7 +134,7 @@
                            ng-model="changes.product.pkey">
                 </div>
             </div>
-            <div class="changes row" ng-show="_changes.showTeam">
+            <div class="changes row" ng-if="_changes.showTeam">
                 <div class="changes-col-1">
                     <label for="team.name_">${message(code:'todo.is.ui.import.changes.team.name')}</label>
                     <input required
@@ -159,7 +159,7 @@
                            ng-model="changes.team.name">
                 </div>
             </div>
-            <div class="changes row" ng-show="_changes.showUsers" ng-repeat="(key, value) in changes.users">
+            <div class="changes row" ng-if="_changes.showUsers" ng-repeat="(key, value) in changes.users">
                 <div class="changes-col-1">
                     <label for="_username{{ key }}">${message(code:'todo.is.ui.import.username')}</label>
                     <input required

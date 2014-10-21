@@ -54,10 +54,8 @@ services.service("AttachmentService", ['$q', 'Attachment', 'Session', function($
     };
     this.authorizedAttachment = function(action, attachment) {
         switch (action) {
-            case 'create':
-                return Session.authenticated();
             case 'delete':
-                return Session.poOrSm() || Session.user.id == attachment.attachmentable.poster.id;
+                return Session.poOrSm() || Session.user.id == attachment.posterId;
             default:
                 return false;
         }
