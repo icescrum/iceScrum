@@ -24,9 +24,13 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS', function ($scope, $modal, Session, AUTH_EVENTS) {
+controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' , 'Fullscreen', function ($scope, $modal, Session, AUTH_EVENTS, Fullscreen) {
     $scope.currentUser = Session.user;
     $scope.roles = Session.roles;
+
+    $scope.app = {
+        isFullScreen:false
+    };
 
     // TODO remove, user role change for dev only
     $scope.changeRole = function(newRole) {
@@ -61,6 +65,23 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS',
         start:$.icescrum.menuBar.start,
         update:$.icescrum.menuBar.update
     };
+
+    $scope.fullScreen = function(){
+        if (Fullscreen.isEnabled()){
+            Fullscreen.cancel();
+        }
+        else {
+            var el = angular.element('.window-content');
+            if (el.length > 0){
+                Fullscreen.enable(el[0]);
+                $scope.app.isFullScreen = !$scope.app.isFullScreen;
+            }
+        }
+    };
+
+    $scope.print = function(url){
+
+    }
 
 }]).controller('loginCtrl',['$scope', '$rootScope','$modalInstance', 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, $modalInstance, AUTH_EVENTS, AuthService) {
     $scope.credentials = {

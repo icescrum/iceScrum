@@ -40,7 +40,8 @@ var isApp = angular.module('isApp', [
     'ngPasswordStrength',
     'flow',
     'ngPDFViewer',
-    'remoteValidation'
+    'remoteValidation',
+    'FBAngular'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',

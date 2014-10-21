@@ -59,8 +59,8 @@
                         </g:if>
                         <g:if test="${importEnable}">
                             <li>
-                                <a hotkey="{ 'shift+i': import}" href="" ng-click="import()">
-                                    <g:message code="is.projectmenu.submenu.project.import"/> <small class="text-muted">(SHIFT+I)</small>
+                                <a hotkey="{ 'shift+m': import}" href="" ng-click="import()">
+                                    <g:message code="is.projectmenu.submenu.project.import"/> <small class="text-muted">(SHIFT+M)</small>
                                 </a>
                             </li>
                         </g:if>

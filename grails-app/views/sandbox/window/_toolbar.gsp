@@ -71,8 +71,8 @@
                 class="btn btn-default"
                 tooltip="${message(code:'is.ui.window.print')} (P)"
                 tooltip-append-to-body="true"
-                hotkey="{'P': hotkeyClick }"
-                href="${createLink(controller:controllerName,action:'print', params:[product:params.product?:null, format:'PDF'])}"
+                ng-click="print(true, 'sandbox')"
+                hotkey="{'P': print }"
                 data-ajax="true"><span class="glyphicon glyphicon-print"></span>
         </button>
     </g:if>
@@ -86,10 +86,19 @@
     </g:if>
     <g:if test="${params?.fullScreen}">
         <button type="button"
-                class="btn btn-default btn-fullscreen"
+                class="btn btn-default"
+                ng-show="!app.isFullScreen"
+                ng-click="fullScreen()"
                 tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
                 tooltip-append-to-body="true"
-                hotkey="{'F': hotkeyClick }"><span class="glyphicon glyphicon-fullscreen"></span>
+                hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
+        </button>
+        <button type="button"
+                class="btn btn-default"
+                ng-show="app.isFullScreen"
+                tooltip="${message(code:'is.ui.window.fullscreen')}"
+                tooltip-append-to-body="true"
+                ng-click="fullScreen()"><span class="fa fa-compress"></span>
         </button>
     </g:if>
 </div>
