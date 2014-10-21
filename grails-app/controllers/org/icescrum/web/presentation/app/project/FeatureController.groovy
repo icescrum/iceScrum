@@ -155,7 +155,7 @@ class FeatureController {
                         parkingLotValue: values[index].value
                 ]
             }
-            outputJasperReport('features', params.format, [[product: currentProduct.name, features: data ?: null]], currentProduct.name)
+            renderReport('features', params.format, [[product: currentProduct.name, features: data ?: null]], currentProduct.name)
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {

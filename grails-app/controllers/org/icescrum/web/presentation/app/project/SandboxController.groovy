@@ -24,52 +24,43 @@
 
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
-import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Product
+import static grails.async.Promises.*
 
-@Secured('stakeHolder() or inProduct()')
+@Secured(['stakeHolder() or inProduct()'])
 class SandboxController {
 
-    def springSecurityService
-
-    def index() {
-        withProduct { Product product ->
-            render(template: "${params.type ?: 'window'}/view", model: [stories: Story.findAllByBacklogAndState(product,Story.STATE_SUGGESTED)])
-        }
+    def index(long product, String type) {
+        type = type ?: 'window'
+        render(template: "$type/view", model: [stories: Story.findAllByBacklogAndState(Product.load(product),Story.STATE_SUGGESTED)])
     }
 
-    def print() {
-        withProduct { Product product ->
-            def data = []
-            def stories = Story.findAllByBacklogAndState(product, Story.STATE_SUGGESTED, [sort: 'suggestedDate', order: 'desc'])
-            if (!stories) {
-                returnError(text:message(code: 'is.report.error.no.data'))
-                return
-            } else if (params.get) {
+    def print(long product, String format) {
+        def _product = Product.get(product)
+        def stories = Story.findAllByBacklogAndState(_product, Story.STATE_SUGGESTED, [sort: 'suggestedDate', order: 'desc'])
+        if (!stories) {
+            returnError(text:message(code: 'is.report.error.no.data'))
+        } else {
+            return task {
+                def data = []
                 stories.each {
                     data << [
-                            uid: it.uid,
-                            name: it.name,
+                            uid        : it.uid,
+                            name       : it.name,
                             description: it.description,
-                            notes: it.notes?.replaceAll(/<.*?>/, ''),
-                            type: message(code: BundleUtils.storyTypes[it.type]),
+                            notes      : it.notes?.replaceAll(/<.*?>/, ''),
+                            type       : message(code: BundleUtils.storyTypes[it.type]),
                             suggestedDate: it.suggestedDate,
-                            creator: it.creator.firstName + ' ' + it.creator.lastName,
-                            feature: it.feature?.name,
+                            creator    : it.creator.firstName + ' ' + it.creator.lastName,
+                            feature    : it.feature?.name,
                     ]
                 }
-                outputJasperReport('sandbox', params.format, [[product: product.name, stories: data ?: null]], product.name)
-            } else if (params.status) {
-                render(status: 200, contentType: 'application/json', text: session.progress as JSON)
-            } else {
-                session.progress = new ProgressSupport()
-                def dialog = g.render(template: '/scrumOS/report')
-                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+                renderReport('sandbox', format ? format.toUpperCase() : 'PDF', [[product: _product.name, stories: data ?: null]], _product.name)
             }
         }
     }
+
 }

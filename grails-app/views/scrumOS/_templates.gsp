@@ -43,7 +43,22 @@
 
 <script type="text/ng-template" id="copy.html">
 <is:modal title="{{ title }}">
-    <p>${ message(code: 'todo.is.ui.copy.instructions')}</p>
+    <p class="help-block">${ message(code: 'todo.is.ui.copy.instructions')}</p>
     <input type="text" focus-me="true" select-on-focus class="form-control" value="{{ value }}"/>
 </is:modal>
+</script>
+
+<script type="text/ng-template" id="report.progress.html">
+<is:modal title="${message(code:'is.dialog.report.generation')}">
+    <p class="help-block">
+        <g:message code="is.dialog.report.description"/>
+    </p>
+    <is-progress start="progress"></is-progress>
+</is:modal>
+</script>
+
+<script type="text/ng-template" id="is.progress.html">
+    <progressbar value="progress.value" type="{{ progress.type }}">
+        <b>{{progress.label}}</b>
+    </progressbar>
 </script>

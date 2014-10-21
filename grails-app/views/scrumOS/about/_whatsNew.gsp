@@ -1,4 +1,26 @@
 <%@ page import="org.icescrum.core.support.ApplicationSupport;" %>
+%{--
+- Copyright (c) 2014 Kagilum SAS.
+-
+- This file is part of iceScrum.
+-
+- iceScrum is free software: you can redistribute it and/or modify
+- it under the terms of the GNU Affero General Public License as published by
+- the Free Software Foundation, either version 3 of the License.
+-
+- iceScrum is distributed in the hope that it will be useful,
+- but WITHOUT ANY WARRANTY; without even the implied warranty of
+- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Affero General Public License
+- along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+-
+- Authors:
+-
+- Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
+--}%
 <g:set var="releaseNotesURL" value="${message(code:'is.ui.whatsnew.releaseNotesURL', args:[ApplicationSupport.getNormalisedVersion()])}"/>
 <is:dialog
         resizable="false"
@@ -29,8 +51,8 @@
                         <g:message code="is.ui.whatsnew.more"/> <a href="${releaseNotesURL}" target="_blank" class="scrum-link">${message(code:"is.ui.whatsnew.releaseNotes", args:[g.meta(name:"app.version")])}</a>
                     </span>
                     <g:set var="now" value="${new Date()}"/>
-                    <g:set var="validFrom" value="${new Date('22/12/2013')}"/>
-                    <g:set var="validTo" value="${new Date('01/07/2014')}"/>
+                    <g:set var="validFrom" value="${new Date('22/12/2014')}"/>
+                    <g:set var="validTo" value="${new Date('01/07/2015')}"/>
                     <g:if test="${validFrom.before(now) && validTo.after(now)}">
                         <span class="more wishes">
                             <g:message code="is.ui.holidaySeasonWishes"/>

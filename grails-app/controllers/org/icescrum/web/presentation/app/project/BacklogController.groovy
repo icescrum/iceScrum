@@ -79,7 +79,7 @@ class BacklogController {
                         feature: it.feature?.name,
                 ]
             }
-            outputJasperReport('backlog', params.format, [[product: currentProduct.name, stories: data ?: null]], currentProduct.name)
+            renderReport('backlog', params.format, [[product: currentProduct.name, stories: data ?: null]], currentProduct.name)
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {

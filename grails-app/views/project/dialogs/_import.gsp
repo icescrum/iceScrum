@@ -55,16 +55,12 @@
         <div ng-hide="$flow.files.length">
             <button class="btn btn-primary" flow-btn><i class="fa fa-upload"></i> <g:message code="is.dialog.importProject.choose.file"/></button>
         </div>
-        <div ng-show="$flow.files[0].isUploading() && !validation">
+        <div ng-show="$flow.files[0].isUploading() && !progress">
             <progressbar value="$flow.files[0].sizeUploaded()" max="$flow.files[0].size" type="primary">
                 <b>{{ $flow.files[0].timeRemaining() }}sec ({{ $flow.files[0].currentSpeed }} bytes/sec)</b>
             </progressbar>
         </div>
-        <div ng-show="validation.value >= 0 && !changes">
-            <progressbar value="validation.value" type="{{ validation.type }}">
-                <b>{{validation.label}}</b>
-            </progressbar>
-        </div>
+        <is-progress start="progress" ng-show="progress"></is-progress>
         <form name="importProjectForm"
               role="form"
               show-validation

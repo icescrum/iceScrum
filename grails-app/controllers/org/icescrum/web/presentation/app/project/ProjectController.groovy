@@ -153,42 +153,38 @@ class ProjectController {
     }
 
     @Secured(['stakeHolder() or inProduct()'])
-    def feed() {
+    def feed(long product) {
         //todo make cache
-        withProduct{ Product product ->
-            def activities = Story.recentActivity(product)
-            activities.addAll(Product.recentActivity(product))
-            activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
+        _product = Product.get(product)
+        def activities = Story.recentActivity(_product)
+        activities.addAll(Product.recentActivity(_product))
+        activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
 
-            def builder = new FeedBuilder()
-            builder.feed(description: "${product.description?:''}",title: "$product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: product.pkey])}") {
-              activities.each() { a ->
-                    entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.cachedLabel.encodeAsHTML()}") {e ->
-                        if (a.code != Activity.CODE_DELETE)
-                            e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.cachedId)}"
-                        else
-                            e.link = "${is.createScrumLink(absolute: true, controller: 'project')}"
-                        e.publishedDate = a.dateCreated
-                    }
+        def builder = new FeedBuilder()
+        builder.feed(description: "${_product.description?:''}",title: "$_product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}") {
+          activities.each() { a ->
+                entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.cachedLabel.encodeAsHTML()}") {e ->
+                    if (a.code != Activity.CODE_DELETE)
+                        e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.cachedId)}"
+                    else
+                        e.link = "${is.createScrumLink(absolute: true, controller: 'project')}"
+                    e.publishedDate = a.dateCreated
                 }
             }
-            def feed = builder.makeFeed(FeedBuilder.TYPE_RSS,FeedBuilder.DEFAULT_VERSIONS[FeedBuilder.TYPE_RSS])
-            def outFeed = new SyndFeedOutput()
-            render(contentType: 'text/xml', text:outFeed.outputString(feed))
         }
+        def feed = builder.makeFeed(FeedBuilder.TYPE_RSS,FeedBuilder.DEFAULT_VERSIONS[FeedBuilder.TYPE_RSS])
+        def outFeed = new SyndFeedOutput()
+        render(contentType: 'text/xml', text:outFeed.outputString(feed))
     }
 
     @Secured(['owner()'])
-    def delete() {
-        withProduct{ Product product ->
-            def id = product.id
-            try {
-                productService.delete(product)
-                render(status: 200, contentType: 'application/json', text:[class:'Product',id:id] as JSON)
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
-            }
+    def delete(long product) {
+        try {
+            productService.delete(Product.get(product))
+            render(status: 200, contentType: 'application/json', text:[class:'Product',id:product] as JSON)
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
         }
     }
 
@@ -210,42 +206,21 @@ class ProjectController {
         render(status:200, template: "dialogs/export")
     }
 
-    @Secured(['owner() or scrumMaster() or productOwner()'])
-    def exportStatus() {
-        if(session.progress) {
-            withFormat {
-                html {
-                    render(status:200, contentType:"application/json", text:session.progress  as JSON)
-                }
-                xml {
-                    render(status:200, contentType:"text/xml", text:session.progress  as XML)
-                }
-            }
-            //we already sent the error so reset progress
-            if (session.progress.error){
-                session.progress = null
-            }
-        } else {
-            render(status: 404)
-        }
-    }
-
     @Secured('owner() or scrumMaster() or productOwner()')
-    def export() {
-        withProduct { Product _product ->
-            return task {
-                session.progress = new ProgressSupport()
-                Product.withNewSession {
-                    withFormat {
-                        html {
-                            params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
-                        }
-                        xml {
-                            params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
-                        }
+    def export(long product) {
+        Product _product = Product.get(product)
+        return task {
+            session.progress = new ProgressSupport()
+            Product.withNewSession {
+                withFormat {
+                    html {
+                        params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
                     }
-                    session.progress.completeProgress(message(code:'todo.is.ui.progress.complete'))
+                    xml {
+                        params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
+                    }
                 }
+                session.progress.completeProgress(message(code:'todo.is.ui.progress.complete'))
             }
         }
     }
@@ -625,26 +600,6 @@ class ProjectController {
     }
 
     @Secured('isAuthenticated()')
-    def importStatus() {
-        if(session.progress) {
-            withFormat {
-                html {
-                    render(status:200, contentType:"application/json", text:session.progress  as JSON)
-                }
-                xml {
-                    render(status:200, contentType:"text/xml", text:session.progress  as XML)
-                }
-            }
-            //we already sent the error so reset progress
-            if (session.progress.error){
-                session.progress = null
-            }
-        } else {
-            render(status: 404)
-        }
-    }
-
-    @Secured('isAuthenticated()')
     def saveImport() {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {
             if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
@@ -710,7 +665,7 @@ class ProjectController {
             if (data.size() <= 0) {
                 returnError(text:message(code: 'is.report.error.no.data'))
             } else if (params.get) {
-                outputJasperReport(chart ?: 'timeline', params.format, data, product.name, ['labels.projectName': product.name])
+                renderReport(chart ?: 'timeline', params.format, data, product.name, ['labels.projectName': product.name])
             } else if (params.status) {
                 render(status: 200, contentType: 'application/json', text: session.progress as JSON)
             } else {
@@ -767,7 +722,7 @@ class ProjectController {
                     }
 
                 }
-                outputJasperReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
+                renderReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
             } else if (params.status) {
                 render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
             } else {

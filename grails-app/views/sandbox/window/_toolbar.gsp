@@ -26,7 +26,7 @@
             tooltip-append-to-body="true"
             ng-click="view.asList = !view.asList"
             class="btn btn-default">
-        <span class="glyphicon glyphicon-th" ng-class="{'glyphicon-th-list': view.asList, 'glyphicon-th': !view.asList}"></span>
+        <span class="fa fa-th" ng-class="{'fa-th-list': view.asList, 'fa-th': !view.asList}"></span>
     </button>
     <div class="btn-group"
          dropdown
@@ -47,18 +47,19 @@
             ng-click="orderBy.reverse = !orderBy.reverse"
             tooltip="${message(code:'todo.is.ui.order')}"
             tooltip-append-to-body="true">
-        <span class="glyphicon glyphicon-sort-by-attributes{{ orderBy.reverse ? '-alt' : ''}}"></span>
+        <span class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></span>
     </button>
 </div>
 <div class="btn-group" tooltip-append-to-body="true" dropdown tooltip="${message(code:'todo.is.ui.export')}">
     <button class="btn btn-default dropdown-toggle" type="button">
-        <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
+        <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
     </button>
     <ul class="dropdown-menu"
         role="menu">
         <g:each in="${is.exportFormats()}" var="format">
             <li role="menuitem">
-                <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
+                <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
+                   ng-click="print($event)">${format.name}</a>
             </li>
         </g:each>
         <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
@@ -71,9 +72,9 @@
                 class="btn btn-default"
                 tooltip="${message(code:'is.ui.window.print')} (P)"
                 tooltip-append-to-body="true"
-                ng-click="print(true, 'sandbox')"
-                hotkey="{'P': print }"
-                data-ajax="true"><span class="glyphicon glyphicon-print"></span>
+                ng-click="print($event)"
+                ng-href="sandbox/print"
+                hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
         </button>
     </g:if>
     <g:if test="${params?.widgetable}">
@@ -81,7 +82,7 @@
                 class="btn btn-default btn-widget"
                 tooltip="${message(code:'is.ui.window.widgetable')} (W)"
                 tooltip-append-to-body="true"
-                hotkey="{'W': hotkeyClick }"><span class="glyphicon glyphicon-retweet"></span>
+                hotkey="{'W': hotkeyClick }"><span class="fa fa-retweet"></span>
         </button>
     </g:if>
     <g:if test="${params?.fullScreen}">

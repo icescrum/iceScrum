@@ -280,7 +280,7 @@ class TimelineController {
         if (data.size() <= 0) {
             returnError(text:message(code: 'is.report.error.no.data'))
         } else if (params.get) {
-            outputJasperReport(chart ?: 'timeline', params.format, data, currentProduct.name, ['labels.projectName': currentProduct.name])
+            renderReport(chart ?: 'timeline', params.format, data, currentProduct.name, ['labels.projectName': currentProduct.name])
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {

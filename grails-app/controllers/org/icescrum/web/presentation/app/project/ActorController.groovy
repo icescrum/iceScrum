@@ -163,7 +163,7 @@ class ActorController {
                         associatedStories: Story.countByActor(it)
                 ]
             }
-            outputJasperReport('actors', params.format, [[product: currentProduct.name, actors: data ?: null]], currentProduct.name)
+            renderReport('actors', params.format, [[product: currentProduct.name, actors: data ?: null]], currentProduct.name)
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {

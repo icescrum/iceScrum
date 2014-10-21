@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:modal title="${message(code:'is.dialog.exportProject.title')}">
-    <form class="form-inline" role="form" ng-show="progress.value < 0" ng-submit="start()" novalidate>
+    <form class="form-inline" role="form" ng-show="!progress" ng-submit="start()" novalidate>
         <div class="help-block">
             <g:message code="is.dialog.exportProject.description"/>
         </div>
@@ -32,9 +32,5 @@
         </div>
         <button type="submit" class="btn btn-primary" >${message(code:'todo.is.ui.export')}</button>
     </form>
-    <div ng-show="progress.value >= 0">
-        <progressbar value="progress.value" type="{{ progress.type }}">
-            <b>{{progress.label}}</b>
-        </progressbar>
-    </div>
+    <is-progress start="progress" ng-show="progress"></is-progress>
 </is:modal>

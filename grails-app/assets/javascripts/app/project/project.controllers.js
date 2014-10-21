@@ -20,54 +20,26 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$modal', '$timeout', function($scope, ProjectService, Session, $modal, $timeout) {
+controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$modal', function($scope, ProjectService, Session, $modal) {
     $scope.currentProject = Session.getProject();
 
     $scope['import'] = function(project) {
-        var status;
-        var stopStatus = function() {
-            if (angular.isDefined(status)) {
-                $timeout.cancel(status);
-                status = undefined;
-            }
-        };
         var url = $scope.serverUrl + '/' + "project/import";
         var modal = $modal.open({
             templateUrl: url +"Dialog",
             size: 'md',
-            controller: ['$scope', '$timeout', '$http',function($scope, $timeout, $http){
+            controller: ['$scope', '$http',function($scope, $http){
                 $scope.flowConfig = {target: url, singleFile:true};
-                $scope.validation = { value:-1 };
-
                 $scope.changes = false;
                 $scope._changes = {
                     showTeam:false,
                     showProject:false
                 };
-
-                var progress = function() {
-                    $http({
-                        method: "get",
-                        url: url +"Status"
-                    }).then(function (response) {
-                        if (!response.data.error && !response.data.complete) {
-                            status = $timeout(progress, 500);
-                        } else if (response.data.error){
-                            $scope.validation.type = 'danger';
-                        } else if (response.data.complete){
-                            $scope.validation.type = 'success';
-                        }
-                        $scope.validation = response.data;
-                    }, function(){
-                        $scope.validation.type = 'danger';
-                        $scope.validation.label = $scope.message("todo.is.error.import");
-                        $scope.validation.value = 100;
-                    });
-                };
-                $scope.progressStatus = progress;
+                $scope.progress = false;
 
                 $scope.checkValidation = function($message){
                     if ($message){
+                        $scope.progress = false;
                         $scope.changes = !angular.isObject($message) ? JSON.parse($message) : $message;
                         $scope._changes = angular.copy($scope.changes);
                         $scope._changes = angular.extend($scope._changes, {
@@ -94,76 +66,34 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                                 $scope.checkValidation(response.data);
                             }
                         }, function(){
-                            $scope.validation.type = 'danger';
-                            $scope.validation.label = $scope.message("todo.is.error.import");
-                            $scope.validation.value = 100;
-                        });
+                            $scope.progress = false;
+                    });
+                    $scope.progress = true;
                 };
             }]
         });
-        modal.result.then(
-            function(result) {
-                stopStatus();
-            },
-            function(){
-                stopStatus();
-            }
-        );
+        modal.result.then();
     };
 
     $scope['export'] = function(project) {
-        var status;
-        var stopStatus = function() {
-            if (angular.isDefined(status)) {
-                $timeout.cancel(status);
-                status = undefined;
-            }
-        };
+
         var modal = $modal.open({
             templateUrl: "project/exportDialog",
             size: 'md',
-            controller: ['$scope', '$timeout', '$http',function($scope, $timeout, $http){
-                $scope.progress = {
-                    value: -1,
-                    label: "",
-                    progress:'type'
-                };
+            controller: ['$scope',function($scope){
                 $scope.zip = true;
-                $scope.started = false;
-
+                $scope.progress = false;
                 $scope.start = function(){
-                    $scope.started = true;
-                    var progress = function() {
-                        $http({
-                            method: "get",
-                            url: "project/exportStatus"
-                        }).then(function (response) {
-                            if (!response.data.error && !response.data.complete) {
-                                status = $timeout(progress, 500);
-                            } else if (response.data.error){
-                                $scope.progress.type = 'danger';
-                            } else if (response.data.complete){
-                                $scope.progress.type = 'success';
-                            }
-                            $scope.progress = response.data;
-                        }, function(){
-                            $scope.progress.type = 'danger';
-                            $scope.progress.label = $scope.message("todo.is.error.export");
-                            $scope.progress.value = 100;
-                        });
-                    };
                     $scope.downloadFile("project/export" + ($scope.zip ? "?zip=true" : ""));
-                    status = $timeout(progress, 500);
+                    $scope.progress = true;
                 }
             }]
         });
         modal.result.then(
-            function(result) {
-                stopStatus();
+            function() {
                 $scope.downloadFile("");
             },
             function(){
-                stopStatus();
                 $scope.downloadFile("");
             }
         );

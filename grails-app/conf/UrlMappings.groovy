@@ -58,6 +58,10 @@ class UrlMappings {
             controller = 'scrumOS'
             action = 'index'
         }
+        "/progress" {
+            controller = 'scrumOS'
+            action = 'progress'
+        }
 
         "/login"(controller: 'login', action: 'auth')
 
@@ -102,11 +106,6 @@ class UrlMappings {
             action = 'importDialog'
         }
 
-        "/project/importStatus" {
-            controller = 'project'
-            action = 'importStatus'
-        }
-
         "/project/$product" {
             controller = 'project'
             action = [DELETE: "delete", PUT:"update"]
@@ -125,6 +124,14 @@ class UrlMappings {
         }
 
         //Everything under project context
+        "/p/$product/sandbox/print" {
+            controller = 'sandbox'
+            action = 'print'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
         "/p/$product/export" {
             controller = 'project'
             action = 'export'
@@ -136,14 +143,6 @@ class UrlMappings {
         "/p/$product/exportDialog" {
             controller = 'project'
             action = 'exportDialog'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-            }
-        }
-
-        "/p/$product/exportStatus" {
-            controller = 'project'
-            action = 'exportStatus'
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }

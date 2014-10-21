@@ -52,8 +52,9 @@ grails.war.resources = { stagingDir ->
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global"){
-        excludes "xml-apis", "maven-publisher"
+        excludes "xml-apis", "maven-publisher", "itext"
     }
+
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
         grailsPlugins()
@@ -73,6 +74,7 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         runtime 'mysql:mysql-connector-java:5.1.32'
+        build "com.lowagie:itext:2.1.7"
     }
 
     plugins {

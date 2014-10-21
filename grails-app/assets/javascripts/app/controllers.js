@@ -80,8 +80,28 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
         }
     };
 
-    $scope.print = function(url){
-
+    $scope.print = function(data){
+        var url = data;
+        if (angular.isObject(data)){
+            url = data.currentTarget.attributes['ng-href'] ? data.currentTarget.attributes['ng-href'].value : data.target.href;
+            data.preventDefault();
+        }
+        var modal = $modal.open({
+            templateUrl: "report.progress.html",
+            size: 'sm',
+            controller: ['$scope', function($scope){
+                $scope.downloadFile(url);
+                $scope.progress = true;
+            }]
+        });
+        modal.result.then(
+            function(result) {
+                $scope.downloadFile("");
+            },
+            function(){
+                $scope.downloadFile("");
+            }
+        );
     }
 
 }]).controller('loginCtrl',['$scope', '$rootScope','$modalInstance', 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, $modalInstance, AUTH_EVENTS, AuthService) {

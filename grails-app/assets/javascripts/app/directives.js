@@ -324,4 +324,60 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             });
         }
     };
-});
+}).directive('isProgress',['$rootScope', '$timeout', '$http', function($rootScope, $timeout, $http) {
+    return {
+        restrict: 'E',
+        scope: {
+            start:'='
+        },
+        templateUrl: 'is.progress.html',
+        link: function (scope, element, attrs) {
+            var status;
+
+            scope.progress = {
+                value: -1,
+                label: "",
+                type:'primary'
+            };
+
+            scope.$watch('start', function( value ) {
+                stopProgress();
+                if (value === true){
+                    $timeout(progress, 500);
+                }
+            });
+
+            var progress = function() {
+                $http({
+                    method: "get",
+                    url: $rootScope.serverUrl + "/progress"
+                }).then(function (response) {
+                    scope.progress = response.data;
+                    if (!response.data.error && !response.data.complete) {
+                        status = $timeout(progress, 500);
+                    }
+                    if (response.data.error){
+                        scope.progress.type = 'danger';
+                    }else if (response.data.complete){
+                        scope.progress.type = 'success';
+                    }
+                }, function(){
+                    scope.progress.type = 'danger';
+                    scope.progress.label = scope.message(attrs.errorMessage?attrs.errorMessage:'todo.is.ui.error');
+                    scope.progress.value = 100;
+                });
+            };
+
+            var stopProgress = function(){
+                if (angular.isDefined(status)) {
+                    $timeout.cancel(status);
+                    status = undefined;
+                }
+            };
+
+            element.on('$destroy', function() {
+                stopProgress();
+            });
+        }
+    };
+}]);

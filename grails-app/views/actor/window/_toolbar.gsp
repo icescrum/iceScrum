@@ -71,9 +71,8 @@
                 class="btn btn-default"
                 tooltip="${message(code:'is.ui.window.print')} (P)"
                 tooltip-append-to-body="true"
-                hotkey="{'P': hotkeyClick }"
-                href="${createLink(controller:controllerName,action:'print', params:[product:params.product?:null, format:'PDF'])}"
-                data-ajax="true"><span class="glyphicon glyphicon-print"></span>
+                hotkey="{'P': hotkeyClick }">
+            <span class="glyphicon glyphicon-print"></span>
         </button>
     </g:if>
     <g:if test="${params?.widgetable}">
@@ -86,10 +85,21 @@
     </g:if>
     <g:if test="${params?.fullScreen}">
         <button type="button"
-                class="btn btn-default btn-fullscreen"
+                class="btn btn-default"
                 tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
                 tooltip-append-to-body="true"
-                hotkey="{'F': hotkeyClick }"><span class="glyphicon glyphicon-fullscreen"></span>
+                ng-show="!isFullScreen"
+                ng-click="fullScreen()"
+                hotkey="{'F': fullScreen() }"><span class="glyphicon glyphicon-fullscreen"></span>
         </button>
+        <button type="button"
+                class="btn btn-default"
+                ng-show="isFullScreen"
+                tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
+                tooltip-append-to-body="true"
+                ng-click="fullScreen()"
+                hotkey="{'F': fullScreen() }"><span class="glyphicon glyphicon-resize-small"></span>
+        </button>
+        {{ isFullScreen }}
     </g:if>
 </div>

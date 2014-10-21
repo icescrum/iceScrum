@@ -24,6 +24,7 @@
 
 package org.icescrum.web.presentation
 
+import grails.converters.XML
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -281,6 +282,28 @@ class ScrumOSController {
             json {
                 renderRESTJSON(text:[version:g.meta([name:'app.version'])])
             }
+        }
+    }
+
+    def progress() {
+        if(session.progress) {
+            withFormat {
+                html {
+                    render(status:200, contentType:"application/json", text:session.progress  as JSON)
+                }
+                xml {
+                    render(status:200, contentType:"text/xml", text:session.progress  as XML)
+                }
+                json {
+                    render(status:200, contentType:"application/json", text:session.progress  as JSON)
+                }
+            }
+            //we already sent the error so reset progress
+            if (session.progress.error || session.progress.complete){
+                session.progress = null
+            }
+        } else {
+            render(status: 404)
         }
     }
 }

@@ -477,7 +477,7 @@ class SprintPlanController {
         if (data.size() <= 0) {
             returnError(text:message(code: 'is.report.error.no.data'))
         } else if (params.get) {
-            outputJasperReport(chart ?: 'sprintPlan', params.format, data, currentProduct.name, ['labels.projectName': currentProduct.name])
+            renderReport(chart ?: 'sprintPlan', params.format, data, currentProduct.name, ['labels.projectName': currentProduct.name])
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
         } else {
@@ -549,7 +549,7 @@ class SprintPlanController {
                     }
 
                 }
-                outputJasperReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
+                renderReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
             } else if (params.status) {
                 render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
             } else {
