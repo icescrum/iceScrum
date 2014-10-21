@@ -53,7 +53,7 @@
     </a>
 </li>
 <li>
-    <a href ng-click="showCopyModal('${message(code:'is.permalink')}', serverUrl + '/TODOPKEY-' + story.uid)">
+    <a href="{{ story.uid | permalink }}" ng-click="showCopyModal('${message(code:'is.permalink')}', $event.target.href); $event.preventDefault();">
         ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
     </a>
 </li>

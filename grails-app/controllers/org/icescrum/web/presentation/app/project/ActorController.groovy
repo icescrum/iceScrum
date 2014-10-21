@@ -138,6 +138,13 @@ class ActorController {
         }
     }
 
+    @Secured(['permitAll()'])
+    def permalink(){
+        withActor{ def actor ->
+            redirect(uri:"/p/$actor.backlog.pkey/#/actor/$actor.id")
+        }
+    }
+
     def view() {
         render(template: "${params.type ?: 'window'}/view")
     }

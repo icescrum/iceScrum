@@ -177,6 +177,11 @@ filters
             return items.slice().reverse();
         };
     })
+    .filter('permalink', ['$rootScope', 'Session', function($rootScope, Session) {
+        return function(id) {
+            return $rootScope.serverUrl + '/'+ Session.project.pkey +'-' + id;
+        };
+    }])
     .filter('flowFilesNotCompleted', function () {
         return function (items) {
             var filtered = [];

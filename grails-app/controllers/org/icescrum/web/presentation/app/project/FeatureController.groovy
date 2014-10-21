@@ -189,6 +189,13 @@ class FeatureController {
         }
     }
 
+    @Secured(['permitAll()'])
+    def permalink(){
+        withFeature{ def feature ->
+            redirect(uri:"/p/$feature.backlog.pkey/#/feature/$feature.id")
+        }
+    }
+
     def view() {
         render(template: "${params.type ?: 'window'}/view")
     }

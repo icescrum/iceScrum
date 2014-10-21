@@ -216,6 +216,31 @@ class StoryController {
         }
     }
 
+    @Secured(['permitAll()'])
+    def permalink() {
+        withStory { Story story ->
+            def uri
+            switch(story.state){
+                case Story.STATE_SUGGESTED:
+                    uri = "/p/$story.backlog.pkey/#/sandbox/$story.id"
+                    break
+                case Story.STATE_ACCEPTED:
+                case Story.STATE_ESTIMATED:
+                    uri = "/p/$story.backlog.pkey/#/backlog/$story.id"
+                    break
+                case Story.STATE_PLANNED:
+                case Story.STATE_INPROGRESS:
+                case Story.STATE_DONE:
+                    //TODO need to be fixed
+                    "/p/$story.backlog.pkey/#/sprint/$story.id"
+                    break
+                default:
+                    uri:"/"
+            }
+            redirect(uri:uri)
+        }
+    }
+
     @Secured('isAuthenticated()')
     def openDialogDelete() {
         def state = Story.getInProduct(params.long('product'), params.list('id').first().toLong()).list()?.state

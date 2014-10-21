@@ -54,6 +54,33 @@ class UrlMappings {
         }
 
         //New url mapping
+        "/$product-F$id/"{
+            controller = 'feature'
+            action = 'permalink'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /[0-9]*/)
+            }
+        }
+
+        "/$product-A$id/"{
+            controller = 'actor'
+            action = 'permalink'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /[0-9]*/)
+            }
+        }
+
+        "/$product-$id/" {
+            controller = 'story'
+            action = 'permalink'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /[0-9]*/)
+            }
+        }
+
         "/" {
             controller = 'scrumOS'
             action = 'index'

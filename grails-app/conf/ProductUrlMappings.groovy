@@ -47,15 +47,6 @@ class ProductUrlMappings {
         }
 
 
-        name shortURL: "/p/$product-$id/" {
-            controller = 'story'
-            action = 'shortURL'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                id(matches: /[0-9]*/)
-            }
-        }
-
         name shortURLTASK: "/p/$product-T$id/" {
             controller = 'task'
             action = 'shortURL'
