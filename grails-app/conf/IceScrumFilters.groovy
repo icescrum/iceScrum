@@ -54,14 +54,8 @@ class IceScrumFilters {
                 if (params.product && !(actionName == 'save' && controllerName == 'project')) {
                     params.product = params.product.decodeProductKey()
                     if (!params.product) {
-                        if (controllerName == 'project' && actionName == 'feed') {
-                            render(status: 404)
-                            return false
-                        } else {
-                            //TODO what happens if we already are in index action?
-                            redirect(controller: 'scrumOS', action: 'index')
-                            return false
-                        }
+                        render(status: 404)
+                        return false
                     }
                 }
                 securityService.filterRequest()
