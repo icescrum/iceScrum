@@ -256,6 +256,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.clickDescriptionPreview = function($event, template) {
             if ($event.target.nodeName != 'A' && $scope.getShowStoryForm($scope.story)) {
                 $scope.showDescriptionTextarea = true;
+                var $el = angular.element($event.currentTarget);
+                $el.prev().css('height', $el.outerHeight());
                 $scope.editForm(true);
                 if (!$scope.editableStory.description) {
                     ($scope.editableStory.description = template);
