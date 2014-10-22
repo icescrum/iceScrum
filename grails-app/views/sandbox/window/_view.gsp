@@ -98,12 +98,13 @@
                     </span>
                 </div>
             </div>
-            <div class="progress">
+            <!-- TODO remove
+                <div class="progress">
                 <span class="status">3/6</span>
                 <div class="progress-bar" style="width:16.666666666666668%">
                 </div>
             </div>
-            <div class="state" title="{{ story.state | i18n:'storyState' }}">{{ story.state | i18n:'storyState' }}</div>
+            <div class="state" title="{{ story.state | i18n:'storyState' }}">{{ story.state | i18n:'storyState' }}</div>-->
         </div>
     </div>
 </div>
