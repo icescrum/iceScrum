@@ -60,12 +60,12 @@
                         </a>
                         <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
                     </span>
-                    <span class="action" ng-class="{'active':story.attachments_count}">
+                    <span class="action" ng-class="{'active':story.attachments.length}">
                         <a href="#/sandbox/{{ story.id }}/attachments"
-                           tooltip="{{ story.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
+                           tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                            tooltip-append-to-body="true">
                             <i class="fa fa-paperclip"></i>
-                            <span class="badge" ng-show="story.attachments_count">{{ story.attachments_count }}</span>
+                            <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
                         </a>
                     </span>
                     <span class="action" ng-class="{'active':story.comments_count}">

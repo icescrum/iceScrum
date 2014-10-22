@@ -52,20 +52,20 @@
                     </a>
                     <ul class="dropdown-menu" ng-include="'actor.menu.html'"></ul>
                 </span>
-                <span class="action" ng-class="{'active':actor.attachments_count}">
+                <span class="action" ng-class="{'active':actor.attachments.length}">
                     <a href="#/actor/{{ actor.id }}/attachments"
-                       tooltip="{{ actor.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
+                       tooltip="{{ actor.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-paperclip"></i>
-                        <span class="badge" ng-show="actor.attachments_count">{{ actor.attachments_count }}</span>
+                        <span class="badge" ng-show="actor.attachments.length">{{ actor.attachments.length }}</span>
                     </a>
                 </span>
-                <span class="action" ng-class="{'active':actor.stories_count}">
+                <span class="action" ng-class="{'active':actor.stories_ids.length}">
                     <a href="#/actor/{{ actor.id }}/stories"
-                       tooltip="{{ actor.stories_count }} ${message(code:'todo.is.actor.stories')}"
+                       tooltip="{{ actor.stories_ids.length }} ${message(code:'todo.is.actor.stories')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-tasks"></i>
-                        <span class="badge" ng-show="actor.stories_count">{{ actor.stories_count }}</span>
+                        <span class="badge" ng-show="actor.stories_ids.length">{{ actor.stories_ids.length }}</span>
                     </a>
                 </span>
             </div>

@@ -63,10 +63,18 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
                 mustLoad = true;
             }
         });
-        obj.stories = alreadyLoadedStories;
+        if (alreadyLoadedStories.length > 0) {
+            obj.stories = alreadyLoadedStories;
+        }
         if (mustLoad) {
             Story.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
+                if (obj.stories === undefined) {
+                    obj.stories = [];
+                }
                 angular.forEach(data, function(story) {
+                    if (_.isEmpty(self.list)) {
+                        self.isListResolved.resolve(true);
+                    }
                     if (_.chain(obj.stories).where({ id: story.id }).isEmpty().value()) {
                         var newStory = new Story(story);
                         obj.stories.push(newStory);

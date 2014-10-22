@@ -93,6 +93,7 @@ grails.mail.props = ["mail.smtp.auth":"true",
 //remove total*
 icescrum.marshaller = [
         story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed'],
+               includeCount:['comments'],
                textile:['notes'],
                asShort:['state', 'effort','uid', 'name']],
 
@@ -109,8 +110,10 @@ icescrum.marshaller = [
         user:[exclude: ['password','accountExpired','accountLocked','passwordExpired'],
               asShort:['firstName', 'lastName']],
 
-        actor:[include:['tags', 'attachments']],
+        actor:[include:['tags', 'attachments'],
+               withIds:['stories']],
         feature:[include:['countDoneStories','state','effort','tags','attachments'],
+                 withIds:['stories'],
                  asShort:['color', 'name']],
         sprint:[include:['activable','totalRemaining'],
                 exclude:['cliches'],

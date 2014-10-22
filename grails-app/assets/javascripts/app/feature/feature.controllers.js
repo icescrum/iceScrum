@@ -41,6 +41,11 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
         $scope.feature = {};
         $scope.editableFeature = {};
         $scope.editableFeatureReference = {};
+        $scope.stories = function(feature) {
+            if (_.isEmpty(feature.stories)) {
+                StoryService.listByType(feature);
+            }
+        };
         FeatureService.get($stateParams.id).then(function(feature) {
             $scope.feature = feature;
             // For edit
@@ -48,6 +53,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             // For header
             $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
             $scope.next = FormService.next(FeatureService.list, $scope.feature);
+            $scope.stories(feature); // load the stories as soon as possible since we are sure that they are displayed
         });
         if ($state.params.tabId) {
             $scope.tabSelected = {};
@@ -74,11 +80,6 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
                 if ($state.$current.toString().indexOf('details') > 0){
                     $state.go('.tab', {tabId: tab});
                 }
-            }
-        };
-        $scope.stories = function(feature) {
-            if (_.isEmpty(feature.stories)) {
-                StoryService.listByType(feature);
             }
         };
         // Edit

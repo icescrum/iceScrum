@@ -31,7 +31,6 @@ services.service("AttachmentService", ['$q', 'Attachment', 'Session', function($
         attachment.typeId = attachmentable.id;
         attachment.attachmentable = {id: attachmentable.id };
         attachmentable.attachments.unshift(attachment);
-        attachmentable.attachments_count = attachmentable.attachments.length;
     };
     this['delete'] = function(attachment, attachmentable) {
         attachment.type = attachmentable.class.toLowerCase();
@@ -39,14 +38,12 @@ services.service("AttachmentService", ['$q', 'Attachment', 'Session', function($
         attachment.attachmentable = {id: attachmentable.id};
         return Attachment.delete(attachment, function() {
             _.remove(attachmentable.attachments, { id: attachment.id });
-            attachmentable.attachments_count = attachmentable.attachments.length;
         });
     };
     this.list = function(attachmentable) {
         if (_.isEmpty(attachmentable.attachments)) {
             return Attachment.query({ typeId: attachmentable.id, type: attachmentable.class.toLowerCase() }, function(data) {
                 attachmentable.attachments = data;
-                attachmentable.attachments_count = attachmentable.attachments.length;
             }).$promise;
         } else {
             return $q.when(attachmentable.attachments);

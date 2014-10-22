@@ -67,17 +67,17 @@
             <div class="btn-group pull-right">
                 <button name="attachments" class="btn btn-default"
                         ng-click="setTabSelected('attachments')"
-                        tooltip="{{ feature.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
+                        tooltip="{{ feature.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-paperclip"></span>
-                    <span class="badge" ng-show="feature.attachments_count">{{ feature.attachments_count }}</span>
+                    <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
                 </button>
                 <button name="stories" class="btn btn-default"
                         ng-click="setTabSelected('stories')"
-                        tooltip="{{ feature.stories_count }} ${message(code:'todo.is.feature.stories')}"
+                        tooltip="{{ feature.stories_ids.length }} ${message(code:'todo.is.feature.stories')}"
                         tooltip-append-to-body="true">
                     <span class="fa fa-tasks"></span>
-                    <span class="badge" ng-show="feature.stories_count">{{ feature.stories_count }}</span>
+                    <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>
                 </button>
             </div>
         </div>

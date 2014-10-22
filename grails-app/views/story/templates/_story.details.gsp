@@ -104,10 +104,10 @@
                             class="btn btn-default"
                             type="button"
                             ng-click="setTabSelected('attachments')"
-                            tooltip="{{ story.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
+                            tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                             tooltip-append-to-body="true">
                         <span class="fa fa-paperclip"></span>
-                        <span class="badge" ng-show="story.attachments_count">{{ story.attachments_count }}</span>
+                        <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
                     </button>
                     <button name="comments"
                             class="btn btn-default"

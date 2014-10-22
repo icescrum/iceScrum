@@ -54,8 +54,8 @@
                                 <i class="fa fa-cog"></i>
                             </a>
                         </span>
-                        <span class="action" ng-class="{'active':topStory.attachments_count}">
-                            <a tooltip="{{ topStory.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
+                        <span class="action" ng-class="{'active':topStory.attachments.length}">
+                            <a tooltip="{{ topStory.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
                             </a>

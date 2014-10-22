@@ -50,17 +50,17 @@
                                 <i class="fa fa-cog"></i>
                             </a>
                         </span>
-                        <span class="action" ng-class="{'active':topFeature.attachments_count}">
-                            <a tooltip="{{ topFeature.attachments_count }} ${message(code:'todo.is.backlogelement.attachments')}"
+                        <span class="action" ng-class="{'active':topFeature.attachments.length}">
+                            <a tooltip="{{ topFeature.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
                             </a>
                         </span>
-                        <span class="action" ng-class="{'active':topFeature.stories_count}">
-                            <a tooltip="{{ topFeature.stories_count }} ${message(code:'todo.is.feature.stories')}"
+                        <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
+                            <a tooltip="{{ topFeature.stories_ids.length }} ${message(code:'todo.is.feature.stories')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-tasks"></i>
-                                <span class="badge" ng-show="topFeature.stories_count">{{ topFeature.stories_count }}</span>
+                                <span class="badge" ng-show="topFeature.stories_ids.length">{{ topFeature.stories_ids.length }}</span>
                             </a>
                         </span>
                     </div>

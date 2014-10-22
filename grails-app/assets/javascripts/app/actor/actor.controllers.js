@@ -38,6 +38,11 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
         $scope.actor = {};
         $scope.editableActor = {};
         $scope.editableActorReference = {};
+        $scope.stories = function(actor) {
+            if (_.isEmpty(actor.stories)) {
+                StoryService.listByType(actor);
+            }
+        };
         ActorService.get($stateParams.id).then(function(actor) {
             $scope.actor = actor;
             // For edit
@@ -45,6 +50,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             // For header
             $scope.previous = FormService.previous(ActorService.list, $scope.actor);
             $scope.next = FormService.next(ActorService.list, $scope.actor);
+            $scope.stories(actor); // load the stories as soon as possible since we are sure that they are displayed
         });
         if ($state.params.tabId) {
             $scope.tabSelected = {};
@@ -71,11 +77,6 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
                 if ($state.$current.toString().indexOf('details') > 0){
                     $state.go('.tab', {tabId: tab});
                 }
-            }
-        };
-        $scope.stories = function(actor) {
-            if (_.isEmpty(actor.stories)) {
-                StoryService.listByType(actor);
             }
         };
         // edit

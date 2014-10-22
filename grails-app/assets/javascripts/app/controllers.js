@@ -178,7 +178,7 @@ controllers.controller('actorsCtrl', ['$scope', '$state', 'actors', function ($s
         values:[
             {id:'dateCreated', name:'todo.Date'},
             {id:'name', name:'todo.Name'},
-            {id:'stories_count', name:'todo.Stories'}
+            {id:'stories_ids.length', name:'todo.Stories'}
         ]
     };
     $scope.goToNewActor = function() {
@@ -221,7 +221,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'features', function
         values:[
             {id:'dateCreated', name:'todo.Date'},
             {id:'name', name:'todo.Name'},
-            {id:'stories_count', name:'todo.Stories'},
+            {id:'stories_ids.length', name:'todo.Stories'},
             {id:'value', name:'todo.Value'}
         ]
     };
