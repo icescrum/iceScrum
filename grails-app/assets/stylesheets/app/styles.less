@@ -1456,6 +1456,47 @@ a[data-toggle="tab"] button {
           }
         }
       }
+      position: relative;
+      .postit {
+        &.defect:after,&.functional:after {
+          content:"";
+          position: absolute;
+          top:0;
+          right: 0;
+          border-top-right-radius:3px;
+          border-bottom-left-radius:3px;
+          border-width:11px;
+          border-style:solid;
+          display: block;
+          -webkit-box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+          width: 0;
+          z-index:1;
+        }
+        &.defect:before,&.functional:before {
+          font: normal normal normal 14px/1 FontAwesome;
+          font-size: 12px;
+          text-rendering: auto;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          color:#fff;
+          z-index:2;
+          top: 1px;
+          right: 1px;
+          position: absolute;
+        }
+        &.defect:after {
+          border-color:red red transparent transparent;
+        }
+        &.defect:before {
+          content:"\f188";
+        }
+        &.functional:after {
+          border-color:blue blue transparent transparent;
+        }
+        &.functional:before {
+          content:"\f085";
+        }
+      }
     }
   }
   &.list-group {

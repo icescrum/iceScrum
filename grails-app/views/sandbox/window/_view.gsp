@@ -32,7 +32,7 @@
          ng-controller="storyCtrl"
          class="postit-container">
         <div style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
-             class="postit story {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }}">
+             class="postit story {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }} {{ story.type | storyType }}">
             <div class="head">
                 <a href
                    class="follow"

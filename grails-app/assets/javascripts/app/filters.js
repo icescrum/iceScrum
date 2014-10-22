@@ -35,6 +35,17 @@ filters
             return user ?  ($rootScope.serverUrl + '/user/avatar/'+ user.id + '?test=' + new Date(user.lastUpdated).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
         };
     }])
+    .filter('storyType', function() {
+        return function(type) {
+            if (type == 2) {
+                return 'defect';
+            } else if (type == 3) {
+                return 'functional';
+            } else {
+                return '';
+            }
+        };
+    })
     .filter('contrastColor', function() {
         return function(bg) {
             if (bg) {
