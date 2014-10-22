@@ -344,7 +344,7 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <tabset type="tabs nav-tabs-google">
-            <tab select="activities(story); ($state.params.tabId ? setTabSelected('activities') : '');"
+            <tab select="activities(story); ($state.params.tabId && $state.params.tabId != 'attachments' ? setTabSelected('activities') : '');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
                  active="tabSelected.activities">
                 <table class="table table-striped">

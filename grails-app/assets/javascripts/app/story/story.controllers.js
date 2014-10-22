@@ -118,7 +118,9 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         };
         if ($state.params.tabId) {
             $scope.tabSelected = {};
-            $scope.tabSelected[$state.params.tabId] = true;
+            if ($state.params.tabId != 'attachments') {
+                $scope.tabSelected[$state.params.tabId] = true;
+            }
         } else {
             $scope.tabSelected = {'activities': true};
         }

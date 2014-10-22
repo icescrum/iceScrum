@@ -2,7 +2,7 @@
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
 
- * Version: 0.11.2 - 2014-09-26
+ * Version: CUSTOMIZED 0.11.2 - 2014-09-26
  * License: MIT
  */
 angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.transition","ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.bindHtml","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.dropdown","ui.bootstrap.modal","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
@@ -2975,10 +2975,10 @@ angular.module('ui.bootstrap.tabs', [])
             }
         };
 
-        ctrl.removeTab = function removeTab(tab) {
+        ctrl.removeTab = function removeTab(tab, noSelect) {
             var index = tabs.indexOf(tab);
             //Select a new tab if the tab to be removed is selected
-            if (tab.active && tabs.length > 1) {
+            if (tab.active && tabs.length > 1  && !noSelect) {
                 //If this is the last tab, select the previous tab. else, the next tab.
                 var newActiveIndex = index == tabs.length - 1 ? index - 1 : index + 1;
                 ctrl.select(tabs[newActiveIndex]);
@@ -3154,7 +3154,7 @@ angular.module('ui.bootstrap.tabs', [])
 
                     tabsetCtrl.addTab(scope);
                     scope.$on('$destroy', function() {
-                        tabsetCtrl.removeTab(scope);
+                        tabsetCtrl.removeTab(scope, true);
                     });
 
                     //We need to transclude later, once the content container is ready.
