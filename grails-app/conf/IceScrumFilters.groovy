@@ -107,6 +107,35 @@ class IceScrumFilters {
             }
         }
 
+        userRegistrationEnable(controller:'user', action:'register'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
+                    render(status: 403)
+                    return false
+                }
+            }
+        }
+
+        userRegistrationEnable2(controller:'user', action:'save'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        render(status: 403)
+                        return false
+                    }
+                }
+            }
+        }
+
+        userRetrieveEnable(controller:'user', action:'retrieve'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)) {
+                    render(status: 403)
+                    return false
+                }
+            }
+        }
+
         webservices(uri: '/ws/**') {
             before = {
                 def webservices

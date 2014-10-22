@@ -57,14 +57,49 @@ isApp.config(['$stateProvider', '$httpProvider',
                 .state('root', {
                     url:'/'
                 })
+                .state('userregister', {
+                    url: "/user/register",
+                    onEnter: ["$state", "$modal", function($state, $modal) {
+                        var modal = $modal.open({
+                            //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
+                            templateUrl: icescrum.grailsServer + '/'+ 'user/register',
+                            size: 'md',
+                            controller: 'registerCtrl'
+                        });
+                        modal.result.then(
+                            function(result) {
+                                $state.transitionTo('root');
+                            }, function(){
+                                $state.transitionTo('root');
+                            });
+                    }]
+                })
+                .state('userretrieve', {
+                    url: "/user/retrieve",
+                    onEnter: ["$state", "$modal", function($state, $modal) {
+                        var modal = $modal.open({
+                            //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
+                            templateUrl: icescrum.grailsServer + '/'+ 'user/retrieve',
+                            size: 'sm',
+                            controller: 'retrieveCtrl'
+                        });
+                        modal.result.then(
+                            function(result) {
+                                $state.transitionTo('root');
+                            }, function(){
+                                $state.transitionTo('root');
+                            });
+                    }]
+                })
                 .state('project', {
                     url: '/project',
                     controller: 'projectCtrl'
                 })
                 .state('project.new', {
                     url: "/new",
-                    onEnter: ["$state", "$modal", 'WizardHandler', function($state, $modal, WizardHandler) {
+                    onEnter: ["$state", "$modal", function($state, $modal) {
                         var modal = $modal.open({
+                            //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
                             templateUrl: icescrum.grailsServer + '/' + "project/add",
                             size: 'lg',
                             controller: 'newProjectCtrl'

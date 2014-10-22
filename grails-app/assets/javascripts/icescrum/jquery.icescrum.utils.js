@@ -198,79 +198,7 @@
         },
 
         initAjaxSetup:function(){
-
             $.ajaxSetup({ timeout:45000 });
-
-            $(document).ajaxSend(function(event, xhr, settings){
-                xhr.setRequestHeader("If-Modified-Since",new Date(1970,1,1).toUTCString());
-                xhr.setRequestHeader("Pragma","no-cache");
-                if ($.icescrum.o.push && $.icescrum.o.push.uuid && settings.url.indexOf('X-Atmosphere-tracking-id') == -1){
-                    xhr.setRequestHeader("X-Atmosphere-tracking-id", $.icescrum.o.push.uuid);
-                }
-                $.icescrum.loading(true);
-            });
-
-            $(document).ajaxError(function(data) {
-                $.icescrum.loading(false, true);
-            });
-
-            $(document).ajaxComplete(function(e,xhr,settings){
-                $.icescrum.loading(false);
-                if(xhr.status == 403){
-                    $.icescrum.renderNotice('Access forbidden', 'error');
-                }else if(xhr.status == 401){
-                    ajaxRequest($(document.body), {url:$.icescrum.o.grailsServer+'/login'});
-                }else if(xhr.status == 400){
-                    var errors = $.parseJSON(xhr.responseText);
-                    if (_.isArray(errors)){
-                        _.each(errors, function(error){
-                            var $elem = $('[name="'+error.code+'"]', settings.container);
-                            $elem.addClass('error');
-                            var $popover = $elem.is('[data-at-data]') ? $elem.next() : ($elem.is('[data-mkp]') ? $elem.parent().next() : $elem);
-                            $popover.popover({
-                                content:error.text,
-                                title:'Error',
-                                trigger:'manual',
-                                placement:'top',
-                                template:'<div class="popover error"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
-                            })
-                            .popover('show');
-
-                            $elem.one('click keyup focus', function(){
-                                $popover.popover('destroy');
-                                $elem.removeClass('error');
-                            });
-                        });
-                    } else {
-                        var $alert = $('.alert.alert-danger', settings.container);
-                        if ($alert.size() == 1){
-                            $alert.html(errors.error).show();
-                        }
-                        $.icescrum.addModal($.template('modal-alert', {title:'Error', body:errors.error}));
-                    }
-                }else if(xhr.status == 500){
-                    var text;
-                    if (xhr.status) {
-                        var ct = xhr.getResponseHeader("content-type") || "";
-                        if (ct.indexOf('json') > -1) {
-                            text = $.parseJSON(xhr.responseText);
-                            if (text.error != undefined) {
-                                $.icescrum.renderNotice(text.error, 'error');
-                                return;
-                            }
-                        } else {
-                            text = this.htmlDecode(xhr.responseText);
-                        }
-                    } else {
-                        text = xhr;
-                    }
-                    $.icescrum.addModal($.template('report-error', {text:text}));
-                }
-            });
-
-            $(document).ajaxStop(function() {
-                $.icescrum.loading(false);
-            });
         },
 
         initNotifications:function(){

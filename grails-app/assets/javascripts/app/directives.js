@@ -223,9 +223,9 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
         link: function(scope, elem, attrs, ctrl) {
             scope.$watch(function() {
                 var modelValue = ctrl.$modelValue || ctrl.$$invalidModelValue;
-                return (ctrl.$pristine && angular.isUndefined(modelValue)) || scope.match === modelValue;
+                return (ctrl.$pristine && angular.isUndefined(modelValue)) || scope.isMatch === modelValue;
             }, function(currentValue) {
-                ctrl.$setValidity('match', currentValue);
+                ctrl.$setValidity('isMatch', currentValue);
             });
         }
     };

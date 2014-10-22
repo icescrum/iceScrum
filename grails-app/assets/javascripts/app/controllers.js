@@ -104,7 +104,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
         );
     }
 
-}]).controller('loginCtrl',['$scope', '$rootScope','$modalInstance', 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, $modalInstance, AUTH_EVENTS, AuthService) {
+}]).controller('loginCtrl',['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, AUTH_EVENTS, AuthService) {
     $scope.credentials = {
         j_username: '',
         j_password: ''
@@ -122,9 +122,22 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
             $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
         });
     };
-}]);
+}]).controller('registerCtrl',['$scope', 'User', 'UserService', '$modalInstance', function ($scope, User, UserService, $modalInstance) {
+    $scope.user = new User();
+    $scope.register = function(){
+        UserService.save($scope.user).then(function(){
+            $modalInstance.close();
+        });
+    }
+}]).controller('retrieveCtrl',['$scope', 'User', 'UserService', '$modalInstance', function ($scope, User, UserService, $modalInstance) {
+    $scope.user = new User();
+    $scope.retrieve = function(){
+        UserService.retrievePassword($scope.user).then(function(){
+            $modalInstance.close();
+        });
+    }
 
-controllers.controller('sandboxCtrl', ['$scope', '$state', 'StoryStatesByName', 'stories', 'StoryService', function ($scope, $state, StoryStatesByName, stories, StoryService) {
+}]).controller('sandboxCtrl', ['$scope', '$state', 'StoryStatesByName', 'stories', 'StoryService', function ($scope, $state, StoryStatesByName, stories, StoryService) {
     $scope.orderBy = {
         reverse: false,
         status: false,

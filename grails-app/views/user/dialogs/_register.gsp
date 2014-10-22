@@ -21,124 +21,92 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal name="register"
-          title="${message(code:'is.dialog.register')}"
-          form="[action:createLink(),method:'POST',success:'$.icescrum.user.registerSuccess',submit:message(code:'is.button.register')]">
+<is:modal   name="formHolder.registerForm"
+            form="register()"
+            validate="true"
+            submitButton="${message(code:'is.button.register')}"
+            closeButton="${message(code:'is.button.cancel')}"
+            title="${message(code:'is.dialog.register')}">
         <p>
             <g:message code="is.dialog.register.description"/>
         </p>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="user.username">${message(code:'is.user.username')}</label>
-                    <input type="text"
-                           name="user.username"
-                           class="form-control"
-                           required
-                           focus-me="true"/>
-                </div>
-                <div class="form-group">
-                    <label for="user.firstName">${message(code:'is.user.firstname')}</label>
-                    <input type="text"
-                           class="form-control"
-                           name="user.firstName"
-                           required/>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div id="user-avatar"
-                     class="avatar">
-                    <img src="${is.avatar()}">
-                </div>
-            </div>
+    <div class="row">
+        <div class="form-half">
+            <label for="username">${message(code:'is.user.username')}</label>
+            <input required
+                   type="text"
+                   class="form-control"
+                   name="user.username"
+                   ng-model="user.username"
+                   ng-remote-validate="/user/available/username"
+                   focus-me="true"/>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="user.lastName">${message(code:'is.user.lastname')}</label>
-                    <input type="text"
-                           class="form-control"
-                           name="user.lastName"
-                           required/>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="userAvatar">${message(code:'is.user.avatar')}</label>
-                    <select id= "userAvatar"
-                            name="user.avatar"
-                            data-sl2
-                            class="form-control"
-                            data-sl2-change="$.icescrum.user.selectAvatar"
-                            placeholder="${message(code:'todo.is.user.avatar.placeholder')}">
-                        <option></option>
-                        <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)}">
-                            <option value="gravatar">${message(code:'todo.is.user.avatar.gravatar')}</option>
-                        </g:if>
-                        <option></option>
-                        <option value="${asset.assetPath(src: 'avatars/dev-ico.png')}">${message(code:'todo.is.user.avatar.std.1')}</option>
-                        <option value="${asset.assetPath(src: 'avatars/po-ico.png')}">${message(code:'todo.is.user.avatar.std.2')}</option>
-                        <option value="${asset.assetPath(src: 'avatars/sh-ico.png')}">${message(code:'todo.is.user.avatar.std.3')}</option>
-                        <option value="${asset.assetPath(src: 'avatars/sm-ico.png')}">${message(code:'todo.is.user.avatar.std.4')}</option>
-                        <option value="${asset.assetPath(src: 'avatars/admin-ico.png')}">${message(code:'todo.is.user.avatar.std.5')}</option>
-                    </select>
-                </div>
-            </div>
+    </div>
+    <div class="row">
+        <div class="form-half">
+            <label for="user.firstName">${message(code:'is.user.firstname')}</label>
+            <input required
+                   type="text"
+                   class="form-control"
+                   name="user.firstName"
+                   ng-model="user.firstName"/>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="email">${message(code:'is.user.email')}</label>
-                    <input type="email"
-                           name="user.email"
-                           class="form-control"
-                           onchange="$.icescrum.user.selectAvatar(null, '#userAvatar')"
-                           required/>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
-                    <select name="user.preferences.language"
-                            data-sl2
-                            class="form-control"
-                            value="en">
-                        <is:options values="${is.languages()}" />
-                    </select>
-                </div>
-            </div>
+        <div class="form-half">
+            <label for="user.lastName">${message(code:'is.user.lastname')}</label>
+            <input required
+                   type="text"
+                   class="form-control"
+                   name="user.lastName"
+                   ng-model="user.lastName"/>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="user.password">${message(code:'is.user.password')}</label>
-                    <input required
-                           name="user.password"
-                           type="password"
-                           class="form-control"
-                           value="">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="confirmPassword">${message(code:'is.dialog.register.confirmPassword')}</label>
-                    <input required
-                           name="confirmPassword"
-                           type="password"
-                           class="form-control"
-                           value="">
-                </div>
-            </div>
+    </div>
+    <div class="row">
+        <div class="form-half">
+            <label for="user.email">${message(code:'is.user.email')}</label>
+            <input required
+                   type="email"
+                   name="user.email"
+                   class="form-control"
+                   ng-model="user.email"
+                   ng-remote-validate="/user/available/username"/>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="user.preferences.activity">${message(code:'is.user.preferences.activity')}</label>
-                    <input name="user.preferences.activity"
-                           type="text"
-                           class="form-control"
-                           value="">
-                </div>
-            </div>
+        <div class="form-half">
+            <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
+            <select required
+                    name="user.preferences.language"
+                    ui-select2
+                    class="form-control"
+                    ng-model="user.preferences.language">
+                <is:options values="${is.languages()}" />
+            </select>
         </div>
+    </div>
+    <div class="row" ng-show="!dataUser.accountExternal">
+        <div class="form-half">
+            <label for="user.password">${message(code:'is.user.password')}</label>
+            <input required
+                   name="user.password"
+                   type="password"
+                   class="form-control"
+                   ng-model="user.password">
+            <div ng-password-strength="user.password"></div>
+        </div>
+        <div class="form-half">
+            <label for="confirmPassword">${message(code:'is.dialog.register.confirmPassword')}</label>
+            <input name="confirmPassword"
+                   type="password"
+                   class="form-control"
+                   is-match="user.password"
+                   ng-model="user.confirmPassword">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <label for="user.preferences.activity">${message(code:'is.user.preferences.activity')}</label>
+            <input name="user.preferences.activity"
+                   type="text"
+                   class="form-control"
+                   ng-model="user.preferences.activity">
+        </div>
+    </div>
 </is:modal>

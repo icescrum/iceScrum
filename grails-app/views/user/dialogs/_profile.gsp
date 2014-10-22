@@ -43,7 +43,7 @@
                         <label for="username">${message(code:'is.user.username')}</label>
                         <p class="form-control-static">${user.username}</p>
                     </div>
-                    <div class="col-md-6">
+                    <div class="form-half">
                         <label for="userAvatar">${message(code:'is.user.avatar')}</label>
                         <div id="user-avatar" class="form-control-static">
                             <div class="col-md-12">

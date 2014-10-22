@@ -22,18 +22,26 @@
  *
  */
 services.factory('User', [ 'Resource', function($resource) {
-    return $resource('user/:id/:action',
+    return $resource(icescrum.grailsServer + '/' + 'user/:id/:action',
         {},
         {
-            current: {method: 'GET', params: {action: 'current'}}
+            current: {method: 'GET', params: {action: 'current'}},
         });
 }]);
 
-services.service("UserService", ['User', function(User) {
+services.service("UserService", ['User', '$http', '$rootScope', function(User, $http, $rootScope) {
     this.getCurrent = function() {
         return User.current().$promise;
     };
     this.update = function(user) {
+        user.class = 'user';
         return user.$update();
+    };
+    this.save = function(user) {
+        user.class = 'user';
+        return user.$save();
+    };
+    this.retrievePassword = function(user) {
+        return $http.post($rootScope.serverUrl + '/' + 'user/retrieve?user.username='+user.username)
     }
 }]);

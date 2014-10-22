@@ -38,14 +38,14 @@
                value="${params.username?:''}">
         <g:if test="${enableRegistration}">
             <span class="input-group-btn">
-                <button tabindex="-1"
+                <a tabindex="-1"
                         class="btn btn-default"
                         type="button"
-                        ng-click="showRegisterModal()"
+                        href="#user/register"
                         tooltip-placement="top"
                         tooltip="${message(code:'todo.is.new')}">
-                    <i class="glyphicon glyphicon-user"></i>
-                </button>
+                    <i class="fa fa-user"></i>
+                </a>
             </span>
         </g:if>
         <g:if test="${enableRegistration}"></div></g:if>
@@ -61,14 +61,14 @@
                value="">
         <g:if test="${activeLostPassword}">
             <span class="input-group-btn">
-                <button tabindex="-1"
+                <a tabindex="-1"
                         class="btn btn-default"
                         type="button"
-                        ng-click="showRetrieveModal()"
                         tooltip-placement="top"
-                        tooltip="${message(code:'todo.is.new')}">
-                    <i class="glyphicon glyphicon-flash"></i>
-                </button>
+                        href="#user/retrieve"
+                        tooltip="${message(code:'todo.is.retrieve')}">
+                    <i class="fa fa-flash"></i>
+                </a>
             </span>
         </g:if>
         <g:if test="${activeLostPassword}"></div></g:if>

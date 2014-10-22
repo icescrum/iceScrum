@@ -97,6 +97,11 @@ class UrlMappings {
             action = [GET: "list", POST:"save"]
         }
 
+        "/user/retrieve" {
+            controller = 'user'
+            action = [GET: "retrieve", POST:"retrieve"]
+        }
+
         "/user/$id" {
             controller = 'user'
             action = [GET: "index", PUT:"update", POST:"update"]
@@ -108,6 +113,22 @@ class UrlMappings {
         "/user/current" {
             controller = 'user'
             action = [GET: "current"]
+        }
+
+        "/user/avatar/$id" {
+            controller = 'user'
+            action = 'avatar'
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
+        "/user/available/$property" {
+            controller = 'user'
+            action = [POST: "available"]
+            constraints {
+                property(inList: ['username', 'email'])
+            }
         }
 
         "/feed/$product" {
@@ -170,14 +191,6 @@ class UrlMappings {
         "/p/$product/exportDialog" {
             controller = 'project'
             action = 'exportDialog'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-            }
-        }
-
-        "/p/$product/user/current" {
-            controller = 'user'
-            action = [GET: "current"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }

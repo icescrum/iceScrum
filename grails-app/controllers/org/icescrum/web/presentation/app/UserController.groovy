@@ -47,21 +47,31 @@ class UserController {
     def springSecurityService
     def grailsApplication
 
-    @Secured("hasRole('ROLE_ADMIN')")
+    @Secured(["hasRole('ROLE_ADMIN')"])
     def show() {
         redirect(action:'index', params:params)
     }
 
-    def save() {
-        if ((request?.format != 'html' || !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) && !request.admin) {
-            render(status: 403)
+    @Secured(["hasRole('ROLE_ADMIN')"])
+    def list() {
+        if (request?.format == 'html'){
+            render(status:404)
             return
         }
+        def users = User.getAll()
+        withFormat {
+            json { renderRESTJSON(text:users) }
+            xml  { renderRESTXML(text:users) }
+        }
+    }
+
+    @Secured(["!isAuthenticated()"])
+    def save() {
         if (!params.user){
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
-        if (!request.admin && (params.confirmPassword  || params.user.password != "") && (params.confirmPassword != params.user.password)) {
+        if (!request.admin && (params.user.confirmPassword  || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
             returnError(text: message(code: 'is.user.error.password.check'))
             return
         }
@@ -94,7 +104,6 @@ class UserController {
             }
 
             Map props = [:]
-            def papa = params
             if(params.flowIdentifier){
                 User.withTransaction {
                     def endOfUpload = {FileUploadInfo uploadInfo ->
@@ -147,8 +156,8 @@ class UserController {
                 }
                 if (params.user.preferences && params.user.preferences['emailsSettings']){
                     props.emailsSettings = [onStory:params.remove('user.preferences.emailsSettings.onStory'),
-                            autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
-                            onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
+                                            autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
+                                            onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
                 }
                 bindData(user, params, [include:['firstName','lastName','email']], "user")
                 //preferences using as Map for REST & HTTP support
@@ -167,17 +176,44 @@ class UserController {
         }
     }
 
-    @Secured("hasRole('ROLE_ADMIN')")
-    def list() {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
+    @Secured(['!isAuthenticated()'])
+    def register() {
+        render(status:200, contentType: 'application/json', template: 'dialogs/register')
+    }
+
+    def avatar(long id) {
+        User user = User.get(id)
+        File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter)new WildcardFileFilter("${user.id}.*"))
+        def avatar = files ? files[0] : null
+        if (!avatar?.exists()){
+            if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)){
+                redirect url:"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()
+                return
+            }
+            avatar = grailsApplication.parentContext.getResource("../grails-app/assets/images/avatars/avatar.png").file
         }
-        def users = User.getAll()
-        withFormat {
+        OutputStream out = response.getOutputStream()
+        out.write(avatar.bytes)
+        out.close()
+    }
+
+    @Secured(['isAuthenticated()'])
+    def search(String value, boolean showDisabled, boolean invit) {
+        def users = User.findUsersLike(value ?: '', false, showDisabled, [:])
+        if (!users && invit && GenericValidator.isEmail(value)){
+            users << [id:null, firstName:value.split('@')[0], lastName:'', email:value]
+        }
+        withFormat{
+            html { render(status:200, contentType:'application/json', text: users as JSON) }
             json { renderRESTJSON(text:users) }
             xml  { renderRESTXML(text:users) }
         }
+    }
+
+    @Secured(['isAuthenticated()'])
+    def openProfile() {
+        def user = springSecurityService.currentUser
+        render(status:200, template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
     }
 
     @Secured('isAuthenticated()')
@@ -245,32 +281,28 @@ class UserController {
         forward(action:'save', params:params)
     }
 
-    @Secured('!isAuthenticated()')
-    def register() {
-        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
-            render(status: 403)
-            return
+    @Secured(['permitAll()'])
+    def current() {
+        def user = [user:springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
+                    roles:[
+                            productOwner:request.productOwner,
+                            scrumMaster:request.scrumMaster,
+                            teamMember:request.teamMember,
+                            stakeHolder:request.stakeHolder
+                    ]]
+        withFormat{
+            html { render(status:200, contentType:'application/json', text: user as JSON) }
+            json { renderRESTJSON(text:user) }
+            xml  { renderRESTXML(text:user) }
         }
-        render(status:200, contentType: 'application/json', template: 'dialogs/register')
     }
 
-    @Secured('isAuthenticated()')
-    def openProfile() {
-        def user = springSecurityService.currentUser
-        render(status:200, template: 'dialogs/profile', model: [user: user, projects:grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : null])
-    }
-
+    @Secured(['!isAuthenticated()'])
     def retrieve() {
-
-        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)) {
-            returnError(text:message(code: 'todo.is.login.retrieve.not.activated'))
-            return
-        }
-
-        if (!params.text) {
+        if (!params.user?.username) {
             render(status:200, template: 'dialogs/retrieve')
         } else {
-            def user = User.findWhere(username:params.text)
+            def user = User.findWhere(username:params.user.username)
             if (!user || !user.enabled || user.accountExternal) {
                 def code = !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.dialog.login.error.disabled' : 'is.user.error.externalAccount')
                 returnError(text:message(code: code))
@@ -284,34 +316,14 @@ class UserController {
                     } catch (MailException e) {
                         status.setRollbackOnly()
                         returnError(text:message(code: 'is.mail.error'), exception:e)
-                        return
                     } catch (RuntimeException re) {
                         returnError(text:re.getMessage(), exception:re)
-                        return
                     } catch (Exception e) {
                         status.setRollbackOnly()
                         returnError(text:message(code: 'is.mail.error'), exception:e)
-                        return
                     }
                 }
             }
-        }
-    }
-
-    def avatar() {
-        withUser { User user ->
-            File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter)new WildcardFileFilter("${user.id}.*"))
-            def avatar = files ? files[0] : null
-            if (!avatar?.exists()){
-                if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)){
-                    redirect url:"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()
-                    return
-                }
-                avatar = grailsApplication.parentContext.getResource("../grails-app/assets/images/avatars/avatar.png").file
-            }
-            OutputStream out = response.getOutputStream()
-            out.write(avatar.bytes)
-            out.close()
         }
     }
 
@@ -336,31 +348,16 @@ class UserController {
         redirect(url: is.createScrumLink(controller: 'user', action: 'profile', id: params.id))
     }
 
-    @Secured(['isAuthenticated()'])
-    def search() {
-        def users = User.findUsersLike(params.value ?: '', false, params.boolean('showDisabled'), [:])
-        if (!users && params.boolean('invit') && GenericValidator.isEmail(params.value)){
-            users << [id:null, firstName:params.value.split('@')[0], lastName:'', email:params.value]
+    @Secured(['permitAll()'])
+    def available(String property) {
+        def result = false
+        //test for username
+        if (property == 'username'){
+            result = request.JSON.value && User.countByUsername(request.JSON.value) == 0
+            //test for email
+        } else if (property == 'email'){
+            result = request.JSON.value && User.countByEmail(request.JSON.value) == 0
         }
-        withFormat{
-            html { render(status:200, contentType:'application/json', text: users as JSON) }
-            json { renderRESTJSON(text:users) }
-            xml  { renderRESTXML(text:users) }
-        }
-    }
-
-    def current() {
-        def user = [user:springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
-                    roles:[
-                            productOwner:request.productOwner,
-                            scrumMaster:request.scrumMaster,
-                            teamMember:request.teamMember,
-                            stakeHolder:request.stakeHolder
-                    ]]
-        withFormat{
-            html { render(status:200, contentType:'application/json', text: user as JSON) }
-            json { renderRESTJSON(text:user) }
-            xml  { renderRESTXML(text:user) }
-        }
+        render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
     }
 }
