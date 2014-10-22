@@ -46,6 +46,14 @@ filters
             }
         };
     })
+    .filter('featureType', function() {
+        return function(type) {
+            if (type == 1) {
+                return 'architectural';
+            }
+            return '';
+        };
+    })
     .filter('contrastColor', function() {
         return function(bg) {
             if (bg) {

@@ -32,7 +32,7 @@
          ng-controller="featureCtrl"
          class="postit-container">
         <div style="{{ feature.color | createGradientBackground }}"
-             class="postit story {{ feature.color | contrastColor }}">
+             class="postit story {{ feature.color | contrastColor }} {{ feature.type | featureType }}">
             <div class="head">
                 <span class="id">{{ feature.id }}</span>
                 <span class="estimation">{{ feature.value ? feature.value : '' }}</span>
