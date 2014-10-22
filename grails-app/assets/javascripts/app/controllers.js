@@ -124,7 +124,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
     };
 }]);
 
-controllers.controller('sandboxCtrl', ['$scope', '$state', 'StoryStatesByName', 'stories', function ($scope, $state, StoryStatesByName, stories) {
+controllers.controller('sandboxCtrl', ['$scope', '$state', 'StoryStatesByName', 'stories', 'StoryService', function ($scope, $state, StoryStatesByName, stories, StoryService) {
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -167,6 +167,9 @@ controllers.controller('sandboxCtrl', ['$scope', '$state', 'StoryStatesByName', 
         } else {
             return false;
         }
+    };
+    $scope.authorizedStory = function(action, story) {
+        return StoryService.authorizedStory(action, story);
     };
 }]);
 

@@ -94,14 +94,15 @@
                 <div class="form-half">
                     <label for="name">${message(code:'is.story.name')}</label>
                     <input required
-                           ng-maxlength="100"
                            name="name"
-                           ng-model="story.name"
                            type="text"
                            class="form-control"
+                           autofocus="autofocus"
+                           placeholder="${message(code: 'is.ui.story.noname')}"
+                           ng-maxlength="100"
+                           ng-model="story.name"
                            ng-change="findDuplicates(story.name)"
-                           ng-readonly="!authorizedStory('create')"
-                           placeholder="${message(code: 'is.ui.story.noname')}"/>
+                           ng-readonly="!authorizedStory('create')"/>
                            <div ng-if="messageDuplicate"
                                 class="help-block bg-warning"
                                 ng-bind-html="messageDuplicate | sanitize"></div>
