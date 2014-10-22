@@ -71,7 +71,9 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             if ($state.params.tabId) {
                 $state.go('.', {tabId: tab});
             } else {
-                $state.go('.tab', {tabId: tab});
+                if ($state.$current.toString().indexOf('details') > 0){
+                    $state.go('.tab', {tabId: tab});
+                }
             }
         };
         $scope.stories = function(feature) {

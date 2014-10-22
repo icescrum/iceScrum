@@ -49,6 +49,7 @@ angular.module('ui.selectable', [])
                     if (scope.items) {
 
                         callbacks.stop = function(e, ui) {
+                            angular.element(e.target).find('.open > a[data-toggle]').dropdown('toggle');
                             refreshSelectedList();
                             return true;
                         };

@@ -139,7 +139,9 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             if ($state.params.tabId) {
                 $state.go('.', {tabId: tab});
             } else {
-                $state.go('.tab', {tabId: tab});
+                if ($state.$current.toString().indexOf('details') > 0){
+                    $state.go('.tab', {tabId: tab});
+                }
             }
         };
         $scope.update = function(story) {

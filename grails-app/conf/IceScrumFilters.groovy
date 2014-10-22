@@ -54,7 +54,6 @@ class IceScrumFilters {
                 if (params.product && !(actionName == 'save' && controllerName == 'project')) {
                     params.product = params.product.decodeProductKey()
                     if (!params.product) {
-                        request.pkey = null
                         if (controllerName == 'project' && actionName == 'feed') {
                             render(status: 404)
                             return false
