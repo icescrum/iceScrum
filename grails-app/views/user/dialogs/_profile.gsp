@@ -57,7 +57,7 @@
                                           flow-btn class="btn btn-default"><i class="fa fa-photo"></i></span>
                                     <img flow-btn
                                          ng-class="{'selected': dataUser.avatar == 'custom', 'hide': dataUser.avatar != 'custom' }"
-                                         flow-img="$flow.files[0] ? $flow.files[0] : '${asset.assetPath(src: 'avatars/dev-ico.png')}'" />
+                                         flow-img="$flow.files[0] ? $flow.files[0] : null" />
                                 </div>
                             </div>
                             <div class="col-md-12">
