@@ -21,6 +21,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="btn-group">
+    <a type="button"
+       ng-if="authorizedFeature('create')"
+       tooltip="${message(code:'todo.is.ui.new')}"
+       tooltip-append-to-body="true"
+       href="#feature"
+       class="btn btn-primary">
+        <span class="fa fa-plus"></span>
+    </a>
     <button type="button"
             tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
             tooltip-append-to-body="true"

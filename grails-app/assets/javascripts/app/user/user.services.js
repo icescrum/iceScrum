@@ -25,13 +25,13 @@ services.factory('User', [ 'Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/' + 'user/:id/:action',
         {},
         {
-            current: {method: 'GET', params: {action: 'current'}},
+            current: {method: 'GET', params: {action: 'current'}}
         });
 }]);
 
 services.service("UserService", ['User', '$http', '$rootScope', function(User, $http, $rootScope) {
     this.getCurrent = function() {
-        return User.current().$promise;
+        return User.current({ product: icescrum.product }).$promise;
     };
     this.update = function(user) {
         user.class = 'user';

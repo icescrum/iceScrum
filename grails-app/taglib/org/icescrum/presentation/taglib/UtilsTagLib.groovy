@@ -55,6 +55,7 @@ class UtilsTagLib {
         def jsCode = """var icescrum = {
                           isPro:${ApplicationSupport.isProVersion()},
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
+                          ${pageScope.space.name}: ${current.id},
                           baseUrl: "${createLink(controller: 'scrumOS')}",
                           versionUrl: "${createLink(controller: 'scrumOS', action:'version')}",
                           baseUrlSpace: ${p ? '\'' + createLink(controller: 'scrumOS', params: p, mapping:'baseUrl'+pageScope.variables.space.name.capitalize()) + '/\'' : null},

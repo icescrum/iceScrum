@@ -56,6 +56,7 @@
                     <label for="name">${message(code:'is.actor.name')}</label>
                     <input required
                            name="name"
+                           focus-me="true"
                            ng-model="actor.name"
                            type="text"
                            class="form-control"

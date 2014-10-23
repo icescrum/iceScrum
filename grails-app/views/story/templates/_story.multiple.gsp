@@ -32,7 +32,7 @@
         <div class="postits standalone">
             <div class="postit-container stack twisted">
                 <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
-                     class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}">
+                     class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}  {{ storyPreview.type | storyType }}">
                     <div class="head">
                         <a class="follow"
                            tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}"
@@ -99,13 +99,13 @@
               name='storyForm'
               show-validation
               novalidate>
-            <div class="clearfix no-padding">
+            <div ng-if="authorizedStory('updateMultiple', topStory)"
+                 class="clearfix no-padding">
                 <div class="form-half">
                     <label for="feature">${message(code:'is.feature')}</label>
                     <div ng-class="{'input-group':storyPreview.feature.id, 'select2-border':storyPreview.feature.id}">
                         <input type="hidden"
                                class="form-control"
-                               ng-readonly="!authorizedStory('updateMultiple', topStory)"
                                name="feature"
                                ng-model="storyPreview.feature"
                                ui-select2="selectFeatureOptions"
@@ -125,7 +125,6 @@
                             required
                             name="type"
                             ng-model="storyPreview.type"
-                            ng-readonly="!authorizedStory('updateMultiple', topStory)"
                             data-placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}"
                             ui-select2>
                         <option></option>
@@ -149,7 +148,7 @@
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>
-            <hr/>
+            <hr ng-if="authorizedStory('updateMultiple', topStory)"/>
             <div class="btn-toolbar">
                  <div ng-if="authorizedStory('accept', topStory)"
                       class="btn-group">

@@ -186,7 +186,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
     };
 }]);
 
-controllers.controller('actorsCtrl', ['$scope', '$state', 'actors', function ($scope, $state, actors) {
+controllers.controller('actorsCtrl', ['$scope', '$state', 'ActorService', 'actors', function ($scope, $state, ActorService, actors) {
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -227,9 +227,12 @@ controllers.controller('actorsCtrl', ['$scope', '$state', 'actors', function ($s
             return false;
         }
     };
+    $scope.authorizedActor = function(action) {
+        return ActorService.authorizedActor(action);
+    };
 }]);
 
-controllers.controller('featuresCtrl', ['$scope', '$state', 'features', function ($scope, $state, features) {
+controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function ($scope, $state, FeatureService, features) {
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -270,5 +273,8 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'features', function
         } else {
             return false;
         }
+    };
+    $scope.authorizedFeature = function(action) {
+        return FeatureService.authorizedFeature(action);
     };
 }]);

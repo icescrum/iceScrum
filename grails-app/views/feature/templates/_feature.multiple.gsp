@@ -32,7 +32,7 @@
         <div class="postits standalone">
             <div class="postit-container stack twisted">
                 <div style="{{ topFeature.color | createGradientBackground }}"
-                     class="postit feature {{ topFeature.color | contrastColor }}">
+                     class="postit feature {{ topFeature.color | contrastColor }} {{ topFeature.type | featureType }}">
                     <div class="head">
                         <span class="id">{{ topFeature.id }}</span>
                         <span class="estimation">{{ topFeature.value ? topFeature.value : '' }}</span>
@@ -77,14 +77,14 @@
               name='featureForm'
               show-validation
               novalidate>
-            <div class="clearfix no-padding">
+            <div ng-if="authorizedFeature('updateMultiple')"
+                 class="clearfix no-padding">
                 <div class="form-half">
                     <label for="type">${message(code:'is.feature.type')}</label>
                     <select class="form-control"
                             required
                             name="type"
                             ng-model="featurePreview.type"
-                            ng-readonly="!authorizedFeature('updateMultiple')"
                             data-placeholder="${message(code: 'todo.is.ui.feature.type.placeholder')}"
                             ui-select2>
                         <option></option>
@@ -108,7 +108,7 @@
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>
-            <hr/>
+            <hr ng-if="authorizedFeature('updateMultiple')"/>
             <div class="btn-toolbar">
                 <div ng-if="authorizedFeature('copyToBacklogMultiple')"
                      class="btn-group">

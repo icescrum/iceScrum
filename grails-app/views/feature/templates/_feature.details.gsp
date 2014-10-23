@@ -32,7 +32,6 @@
      ng-class="authorizedFeature('upload', feature) && class">
     <div class="panel-heading"
          fixed="#right"
-         fixed-offset-top="1"
          fixed-offset-width="-2">
         <h3 class="panel-title row">
             <div class="the-title">

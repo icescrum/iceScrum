@@ -74,17 +74,19 @@ filters
     })
     .filter('createGradientBackground', function() {
         return function(color) {
-            var ratio = 18;
-            var num = parseInt(color.substring(1),16),
-                ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
-                amt = Math.round(2.55 * ratio),
-                R = ((num >> 16) & 255) + amt,
-                G = ((num >> 8) & 255) + amt,
-                B = (num & 255) + amt;
-            return "background-image: -moz-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                "   background-image: -o-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                "   background-image: -webkit-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                "   background-image: linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%);"
+            if (color) {
+                var ratio = 18;
+                var num = parseInt(color.substring(1),16),
+                    ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
+                    amt = Math.round(2.55 * ratio),
+                    R = ((num >> 16) & 255) + amt,
+                    G = ((num >> 8) & 255) + amt,
+                    B = (num & 255) + amt;
+                return "background-image: -moz-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
+                    "   background-image: -o-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
+                    "   background-image: -webkit-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
+                    "   background-image: linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%);"
+            }
         };
     })
     .filter('descriptionHtml', function() {
@@ -93,12 +95,14 @@ filters
         };
     })
     .filter('i18n', ['StoryStates', 'FeatureStates', function(StoryStates, FeatureStates) {
-        return function(id, type){
-            if (type == 'storyState'){
-                return StoryStates[id].value;
-            }
-            if (type == 'featureState') {
-                return FeatureStates[id].value;
+        return function(id, type) {
+            if (id) {
+                if (type == 'storyState'){
+                    return StoryStates[id].value;
+                }
+                if (type == 'featureState') {
+                    return FeatureStates[id].value;
+                }
             }
         }
     }])
