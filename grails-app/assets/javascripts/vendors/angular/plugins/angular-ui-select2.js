@@ -164,7 +164,7 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                             scope.$apply(function () {
                                 var model = convertToAngularModel(elm.select2('data'));
                                 controller.$setViewValue(model);
-                                if(model.id == '' && opts.resultAsEmptyId){
+                                if(model && model.id == '' && opts.resultAsEmptyId){
                                     $timeout(function(){ elm.select2('data',null); });
                                 }
                             });

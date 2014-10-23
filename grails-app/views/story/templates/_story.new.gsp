@@ -36,7 +36,9 @@
                     </div>
                     <div class="content">
                         <h3 class="title" ng-bind-html="story.name | sanitize" ellipsis></h3>
-                        <div class="description-template" ng-bind-html="storyPreview.description | sanitize" ellipsis></div>
+                        <div class="description-template"
+                             ng-model="storyPreview.description"
+                             ng-bind-html="storyPreview.description | sanitize" ellipsis></div>
                     </div>
                     <div class="tags">
                         <a ng-repeat="tag in storyPreview.tags"><span class="tag">{{ tag }}</span></a>
@@ -76,12 +78,6 @@
                             </a>
                         </span>
                     </div>
-                    <div class="progress">
-                        <span class="status">3/6</span>
-                        <div class="progress-bar" style="width:16.666666666666668%">
-                        </div>
-                    </div>
-                    <div class="state">{{ defaultStoryState | i18n:'storyState' }}</div>
                 </div>
             </div>
         </div>

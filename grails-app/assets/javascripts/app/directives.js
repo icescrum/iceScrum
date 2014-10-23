@@ -253,14 +253,13 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
         required: 'ngBindHtml',
         restrict: 'A',
         priority: 100,
+        scope:{
+            ngModel:'='
+        },
         link: function (scope, element) {
-            element.data('hasEllipsis', false);
-            scope.$watch(element.html(), function(value) {
-                // apply only once
-                if (!element.data('hasEllipsis')) {
-                    element.data('hasEllipsis',true);
-                    element.ellipsis();
-                }
+            scope.$watch('ngModel', function(value) {
+                element.data('jqae', null);
+                element.ellipsis();
             });
         }
     };
