@@ -34,7 +34,7 @@
                        required
                        type="text"
                        name="team.name"
-                       autofocus="autofocus"
+                       focus-me="true"
                        class="form-control"
                        typeahead="team as team.name for team in searchTeam($viewValue)"
                        typeahead-loading="searching"
@@ -56,7 +56,7 @@
                            type="text"
                            name="member.search"
                            id="member.search"
-                           autofocus="autofocus"
+                           focus-me="true"
                            class="form-control"
                            ng-model="member.name"
                            typeahead="member as member.name for member in searchMembers($viewValue)"

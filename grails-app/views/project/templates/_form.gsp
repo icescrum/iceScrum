@@ -29,7 +29,7 @@
             <label for="name">${message(code:'is.product.name')}</label>
             <p class="input-group">
                 <input required
-                       autofocus="autofocus"
+                       focus-me="true"
                        name="name"
                        type="text"
                        class="form-control"
@@ -143,7 +143,7 @@
                        type="text"
                        name="productOwner.search"
                        id="productOwner.search"
-                       autofocus="autofocus"
+                       focus-me="true"
                        class="form-control"
                        ng-model="po.name"
                        typeahead="po as po.name for po in searchUsers($viewValue)"
@@ -170,7 +170,7 @@
                        type="text"
                        name="stakeHolder.search"
                        id="stakeHolder.search"
-                       autofocus="autofocus"
+                       focus-me="true"
                        class="form-control"
                        ng-model="sh.name"
                        typeahead="sh as sh.name for sh in searchUsers($viewValue)"

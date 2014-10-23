@@ -33,7 +33,7 @@
         <div class="form-group">
             <label for="user.username">${message(code:'is.dialog.retrieve.input')}</label>
             <input  required
-                    autofocus
+                    focus-me="true"
                     type="text"
                     name="username"
                     id="user.username"
