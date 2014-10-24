@@ -32,7 +32,7 @@ filters
     })
     .filter('userAvatar', ['$rootScope', function($rootScope) {
         return function(user) {
-            return user ?  ($rootScope.serverUrl + '/user/avatar/'+ user.id + '?test=' + new Date(user.lastUpdated).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
+            return user ?  ($rootScope.serverUrl + '/user/avatar/'+ user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
         };
     }])
     .filter('storyType', function() {

@@ -71,8 +71,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             $.icescrum.initAjaxSetup();
 
-            $.icescrum.initNotifications();
-
             $.icescrum.initUpgrade();
 
             $.icescrum.checkSidebar();

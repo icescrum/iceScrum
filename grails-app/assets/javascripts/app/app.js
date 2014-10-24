@@ -41,7 +41,8 @@ var isApp = angular.module('isApp', [
     'flow',
     'ngPDFViewer',
     'remoteValidation',
-    'FBAngular'
+    'FBAngular',
+    'angular-extended-notifications'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
@@ -226,6 +227,12 @@ isApp.config(['$stateProvider', '$httpProvider',
             console.log('catchAll', arguments);
         });
     }])
+    .config(['notificationsProvider', function (notificationsProvider) {
+        notificationsProvider.setDefaults({
+            faIcons: true,
+            closeOnRouteChange: 'state'
+        });
+    }])
     .factory('AuthInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', function ($rootScope, $q, AUTH_EVENTS) {
         return {
             responseError: function (response) {
@@ -242,7 +249,7 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config){
+    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', 'notifications', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config, notifications){
         uiSelect2Config.minimumResultsForSearch = 6;
 
         //used to handle click with shortcut hotkeys
@@ -253,6 +260,16 @@ isApp.config(['$stateProvider', '$httpProvider',
                     hotkey.el.click();
                 });
             }
+        };
+
+        $rootScope.notifError = function(error){
+            if (angular.isObject(error.data)) {
+                notifications.error(error.data.text);
+            }
+            else if (angular.isArray(error.data)) {
+                notifications.error(error.data[0].text);
+            }
+
         };
 
         var $download;

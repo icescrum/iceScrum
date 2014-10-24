@@ -1906,3 +1906,41 @@ ul.dropdown-menu[datepicker-popup-wrap]{
 .dropdown-toggle {
   cursor: pointer;
 }
+
+.notification {
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: 4px 0;
+  text-align: center;
+  background: none;
+  z-index:100;
+  div {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+
+    border:1px solid rgb(240, 195, 109);
+    background-color: rgb(249, 237, 190);
+    font-size: 13px;
+    font-weight: bold;
+    padding:2px 8px 2px 8px;
+
+    -webkit-transition: opacity 0.5s ease-out 4s;
+    -moz-transition: opacity 0.5s ease-out 4s;
+    -o-transition: opacity 0.5s ease-out 4s;
+    transition: opacity 0.5s ease-out 4s;
+  }
+  .notification-error {
+    background-color: #DD8181;
+    border: 1px solid #D54B4B;
+  }
+  .notification-close {
+    cursor:pointer;
+  }
+
+  a {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

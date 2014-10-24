@@ -43,7 +43,7 @@
     </a>
 </li>
 <li>
-    <a href ng-if="authorizedStory('delete', story)" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [story] })">
+    <a href ng-if="authorizedStory('delete', story)" ng-click="delete(story)">
         <g:message code='is.ui.sandbox.menu.delete'/>
     </a>
 </li>
