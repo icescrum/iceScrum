@@ -20,7 +20,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<%@ page import="grails.plugin.fluxiable.Activity; org.grails.comments.Comment" %>
+<%@ page import="org.icescrum.core.domain.Activity; org.grails.comments.Comment" %>
 
 <is:panelTab id="summary" selected="${!params.tab || 'summary' in params.tab ? 'true' : ''}">
     <g:if test="${summary?.size() > 0}">
@@ -39,7 +39,7 @@
                             <g:message code="is.fluxiable.${entry.code}"/>
                             %{-- Doesn't match against "acceptanceTest" alone because it's a legacy story activity --}%
                             <g:message code="is.${entry.code.startsWith('task') ? 'task' : entry.code =~ /acceptanceTest.+/ ? 'acceptanceTest' : 'story'}"/>
-                                <strong>${entry.cachedLabel.encodeAsHTML()}</strong></p>
+                                <strong>${entry.label.encodeAsHTML()}</strong></p>
 
                             <p><g:formatDate date="${entry.dateCreated}" formatName="is.date.format.short.time"
                                              timeZone="${product.preferences.timezone}"/></p>

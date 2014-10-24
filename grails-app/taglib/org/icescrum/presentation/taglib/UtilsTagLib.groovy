@@ -24,7 +24,6 @@
 
 package org.icescrum.presentation.taglib
 
-import grails.plugin.fluxiable.Activity
 import org.icescrum.core.ui.UiDefinition
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -39,7 +38,7 @@ import org.springframework.validation.Errors
 
 class UtilsTagLib {
 
-    static returnObjectForTags = ['internationalizeValues', 'exportFormats', 'iconActivity']
+    static returnObjectForTags = ['internationalizeValues', 'exportFormats']
 
     static namespace = 'is'
 
@@ -133,30 +132,6 @@ class UtilsTagLib {
         if (grailsApplication.config.icescrum.errors){
             out << """<a class="show-warning" ng-click="showAbout()" href tooltip-append-to-body="true" tooltip-placement="right" tooltip="${g.message(code:'is.warning')}"><i class="text-danger fa ${trueError ? 'fa-warning' : 'fa-cloud-download'}"></i></a>"""
         }
-    }
-
-    //TODO make it work for all codes type
-    def iconActivity = { attrs, body ->
-        assert attrs.code
-        def code = null
-        switch (attrs.code){
-            case Activity.CODE_SAVE:
-                code = "fa fa-plus"
-                break
-            case Activity.CODE_UPDATE:
-                code = "fa fa-edit"
-                break
-            case Activity.CODE_DELETE:
-                code = "fa fa-times"
-                break
-            case "acceptAs":
-                code = "fa fa-thumbs-up"
-                break
-            default:
-                code = ""
-                break
-        }
-        return code
     }
 
     def appId = {

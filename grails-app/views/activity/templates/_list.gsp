@@ -26,7 +26,19 @@
     </td>
 </tr>
 <tr ng-repeat="activity in getSelected().activities">
-    <td>{{ activity.cachedLabel }}</td>
+    <td>
+        <img height="21px"
+             ng-src="{{activity.poster | userAvatar}}"
+             alt="{{activity.poster | userFullName}}"/>
+        <span class="{{ activity | activityIcon}}"></span>
+        <span class="text-muted">
+            <time timeago datetime="'{{ activity.dateCreated }}'">
+                {{ activity.dateCreated }}
+            </time>
+            <i class="fa fa-clock-o"></i>
+        </span>
+        <p>{{ activity.label }}</p>
+    </td>
 </tr>
 <tr ng-show="!getSelected().activities && getSelected().activities !== undefined">
     <td class="empty-content">

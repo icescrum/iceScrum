@@ -216,4 +216,21 @@ filters
             }
             return filtered;
         };
+    }).filter('activityIcon', function () {
+        return function (activity) {
+            if (activity) {
+                switch (activity.code) {
+                    case 'save':
+                        return "fa fa-plus";
+                    case 'update':
+                        return "fa fa-edit";
+                    case 'delete':
+                        return "fa fa-times";
+                    case "acceptAs":
+                        return "fa fa-thumbs-up";
+                    case "comment":
+                        return "fa fa-comment"
+                }
+            }
+        };
     });

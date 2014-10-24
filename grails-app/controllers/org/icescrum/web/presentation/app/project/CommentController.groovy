@@ -32,6 +32,7 @@ import org.icescrum.core.event.IceScrumEventType
 class CommentController {
 
     def springSecurityService
+    def activityService
 
     @Secured('stakeHolder()')
     def show() {
@@ -80,7 +81,7 @@ class CommentController {
                     try {
                         grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['addComment':null])
                         commentable.addComment(poster, params.comment.body)
-                        commentable.addActivity(poster, 'comment', commentable.name)
+                        activityService.addActivity(commentable, poster, 'comment', commentable.name);
                         comment = commentable.comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
                         grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment':comment])
                         if (params.type == 'story') {

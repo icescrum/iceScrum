@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
-<%@ page import="grails.plugin.fluxiable.Activity" %>
+<%@ page import="org.icescrum.core.domain.Activity" %>
 <div class="row">
     <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7">
 
@@ -44,24 +44,24 @@
                 <g:if test="${activities.size() > 0}">
                     <g:each in="${activities}" var="a" status="i">
                         <div class="activity clearfix">
-                            <span class="text-muted ${is.iconActivity(code:a.code)}"></span>
+                            <span class="text-muted ${a.code}"></span>
                             <div class="content">
                                 <small class="text-muted pull-right">${a.dateCreated}<span class="fa fa-clock-o"></span></small>
                                 <span class="clearfix">
                                     <is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
                                     <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.${a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'}"/>
                                     <g:if test="${a.code != Activity.CODE_DELETE}">
-                                        <is:scrumLink controller="story" id="${a.cachedId}" params="${a.code == 'comment' ? ['tab':'comments'] : []}">
-                                            ${a.cachedLabel.encodeAsHTML()}
+                                        <is:scrumLink controller="story" id="${a.parentRef}" params="${a.code == 'comment' ? ['tab':'comments'] : []}">
+                                            ${a.label.encodeAsHTML()}
                                         </is:scrumLink>
                                     </g:if>
                                     <g:else>
-                                        ${a.cachedLabel.encodeAsHTML()}
+                                        ${a.label.encodeAsHTML()}
                                     </g:else>
                                 </span>
                                 <div class="sub-content">
                                     <img src="${is.avatar(user:a.poster)}" height="25px" class="pull-left"/>
-                                    <span class="text-muted">${a.cachedDescription}</span>
+                                    <span class="text-muted">${a.description}</span>
                                 </div>
                             </div>
                         </div>

@@ -19,7 +19,7 @@
 -
 - Vincent BARRIER (vbarrier@kagilum.com)
 --}%
-<%@ page import="grails.plugin.fluxiable.Activity; grails.plugin.fluxiable.ActivityLink; org.grails.comments.Comment" %>
+<%@ page import="org.icescrum.core.domain.Activity; org.grails.comments.Comment" %>
 <is:panel id="panel-activity">
     <is:panelTitle>${message(code: 'is.ui.backlogelement.activity')}</is:panelTitle>
     <is:panelTabButton id="panel-box-1">
@@ -46,10 +46,10 @@
                                 <g:message code="is.fluxiable.${a.code}"/>
                                 <g:message code="is.${a.code.startsWith('task') ? 'task' : 'story'}"/>
                                 <g:if test="${!a.code.startsWith('task') && a.code != Activity.CODE_DELETE}">
-                                    <is:scrumLink class="scrum-link" controller="story" id="${a.cachedId}">${a.cachedLabel.encodeAsHTML()}</is:scrumLink></p>
+                                    <is:scrumLink class="scrum-link" controller="story" id="${a.parentRef}">${a.label.encodeAsHTML()}</is:scrumLink></p>
                                 </g:if>
                                 <g:else>
-                                    <strong>${a.cachedLabel.encodeAsHTML()}</strong>
+                                    <strong>${a.label.encodeAsHTML()}</strong>
                                 </g:else>
                                 <p><g:formatDate date="${a.dateCreated}" formatName="is.date.format.short.time"/></p>
                             </div>

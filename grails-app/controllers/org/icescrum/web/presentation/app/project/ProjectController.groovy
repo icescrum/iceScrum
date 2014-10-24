@@ -37,7 +37,7 @@ import org.icescrum.core.utils.BundleUtils
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
-import grails.plugin.fluxiable.Activity
+import org.icescrum.core.domain.Activity
 import grails.plugin.springsecurity.annotation.Secured
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.Product
@@ -163,9 +163,9 @@ class ProjectController {
         def builder = new FeedBuilder()
         builder.feed(description: "${_product.description?:''}",title: "$_product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}") {
           activities.each() { a ->
-                entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.cachedLabel.encodeAsHTML()}") {e ->
+                entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.label.encodeAsHTML()}") {e ->
                     if (a.code != Activity.CODE_DELETE)
-                        e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.cachedId)}"
+                        e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.parentRef)}"
                     else
                         e.link = "${is.createScrumLink(absolute: true, controller: 'project')}"
                     e.publishedDate = a.dateCreated

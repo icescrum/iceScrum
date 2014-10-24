@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<%@ page import="grails.plugin.fluxiable.ActivityLink; grails.plugin.fluxiable.Activity; org.grails.comments.Comment; org.icescrum.core.domain.Story" %>
+<%@ page import="org.grails.comments.Comment; org.icescrum.core.domain.Story" %>
 <div class="dashboard">
     <div class="colset-2-80 clearfix">
         <div class="col1">
