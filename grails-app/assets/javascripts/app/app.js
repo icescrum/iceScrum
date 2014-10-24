@@ -243,8 +243,6 @@ isApp.config(['$stateProvider', '$httpProvider',
         };
     }]).
     run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config){
-        Session.create();
-
         uiSelect2Config.minimumResultsForSearch = 6;
 
         //used to handle click with shortcut hotkeys

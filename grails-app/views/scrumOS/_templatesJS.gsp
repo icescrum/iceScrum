@@ -45,7 +45,8 @@
         var $rootScope = angular.element(document).injector().get('$rootScope');
         var Session = angular.element(document).injector().get('Session');
         $rootScope.initMessages(${i18nMessages});
-        Session.setUser(${user as JSON});
         Session.setProject(${product as JSON});
+        Session.setUser(${user as JSON});
+        Session.create();
     });
 </script>

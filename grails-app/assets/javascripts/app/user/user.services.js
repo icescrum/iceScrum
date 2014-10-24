@@ -29,9 +29,10 @@ services.factory('User', [ 'Resource', function($resource) {
         });
 }]);
 
-services.service("UserService", ['User', '$http', '$rootScope', function(User, $http, $rootScope) {
+services.service("UserService", ['User', '$http', '$rootScope', '$injector', function(User, $http, $rootScope, $injector) {
     this.getCurrent = function() {
-        return User.current({ product: icescrum.product }).$promise;
+        var Session = $injector.get('Session');
+        return User.current( (Session.project ? { product: Session.project.pkey } : null) ).$promise;
     };
     this.update = function(user) {
         user.class = 'user';
