@@ -25,15 +25,20 @@
 controllers.controller('storyCtrl', ['$scope', 'StoryService', 'notifications', '$state', function($scope, StoryService, notifications, $state) {
     // Functions
     $scope.accept = function(story) {
-        StoryService.accept(story).then($scope.goToNewStory).then(function(){
-            notifications.info('', $scope.message('todo.is.ui.story.accepted'));
-        }).catch($scope.notifError);
+        StoryService.accept(story)
+            .then($scope.goToNewStory)
+            .then(function(){
+                notifications.info('', $scope.message('todo.is.ui.story.accepted'));
+            })
+            .catch($scope.notifError);
     };
     $scope.acceptAs = function(story, target) {
-        StoryService.acceptAs(story, target).then(function(){
-            $scope.goToNewStory();
-            notifications.info('', $scope.message('todo.is.ui.story.acceptedAs'));
-        }).catch($scope.notifError);
+        StoryService.acceptAs(story, target)
+            .then(function(){
+                $scope.goToNewStory();
+                notifications.info('', $scope.message('todo.is.ui.story.acceptedAs'));
+            })
+            .catch($scope.notifError);
     };
     $scope.follow = function(story) {
         StoryService.follow(story);
@@ -169,14 +174,17 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             }
         };
         $scope.update = function(story) {
-            StoryService.update(story).then(function(story) {
-                $scope.story = story;
-                $scope.resetStoryForm();
-                notifications.info('', $scope.message('todo.is.ui.story.updated'));
-            }).catch($scope.notifError);
+            StoryService.update(story)
+                .then(function(story) {
+                    $scope.story = story;
+                    $scope.resetStoryForm();
+                    notifications.info('', $scope.message('todo.is.ui.story.updated'));
+                })
+                .catch($scope.notifError);
         };
         $scope.like = function(story) {
-            StoryService.like(story).catch($scope.notifError);
+            StoryService.like(story)
+                .catch($scope.notifError);
         };
         $scope.activities = function(story) {
             StoryService.activities(story);
@@ -323,24 +331,34 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
     // Functions
     $scope.deleteMultiple = function() {
-        StoryService.deleteMultiple(listId).then($scope.goToNewStory).catch($scope.notifError);
+        StoryService.deleteMultiple(listId)
+            .then($scope.goToNewStory)
+            .catch($scope.notifError);
     };
     $scope.copyMultiple = function() {
-        StoryService.copyMultiple(listId).catch($scope.notifError);
+        StoryService.copyMultiple(listId)
+            .catch($scope.notifError);
     };
     $scope.updateMultiple = function(updatedFields) {
-        StoryService.updateMultiple(listId, updatedFields).catch($scope.notifError);
+        StoryService.updateMultiple(listId, updatedFields)
+            .catch($scope.notifError);
     };
     $scope.acceptMultiple = function() {
-        StoryService.acceptMultiple(listId).then($scope.goToNewStory).catch($scope.notifError);
+        StoryService.acceptMultiple(listId)
+            .then($scope.goToNewStory)
+            .catch($scope.notifError);
     };
     $scope.followMultiple = function(follow) {
-        StoryService.followMultiple(listId, follow).then(function() {
-            refreshStories();
-        }).catch($scope.notifError);
+        StoryService.followMultiple(listId, follow)
+            .then(function() {
+                refreshStories();
+            })
+            .catch($scope.notifError);
     };
     $scope.acceptAsMultiple = function(target) {
-        StoryService.acceptAsMultiple(listId, target).then($scope.goToNewStory).catch($scope.notifError);
+        StoryService.acceptAsMultiple(listId, target)
+            .then($scope.goToNewStory)
+            .catch($scope.notifError);
     };
     // Init
     $scope.topStory = {};
@@ -402,16 +420,18 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
             });
         };
         $scope.save = function(story, andContinue) {
-            StoryService.save(story).then(function(story) {
-                if (andContinue) {
-                    $scope.resetStoryForm();
-                    notifications.info('', $scope.message('todo.is.ui.story.saved'));
-                } else {
-                    $scope.setEditableMode(true);
-                    $state.go('^.details', { id: story.id });
-                    notifications.info('', $scope.message('todo.is.ui.story.saved'));
-                }
-            }).catch($scope.notifError);
+            StoryService.save(story)
+                .then(function(story) {
+                    if (andContinue) {
+                        $scope.resetStoryForm();
+                        notifications.info('', $scope.message('todo.is.ui.story.saved'));
+                    } else {
+                        $scope.setEditableMode(true);
+                        $state.go('^.details', { id: story.id });
+                        notifications.info('', $scope.message('todo.is.ui.story.saved'));
+                    }
+                })
+                .catch($scope.notifError);
         };
         $scope.findDuplicates = function(term) {
             if (term == null || term.length <= 5) {
