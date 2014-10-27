@@ -195,7 +195,7 @@
                             ng-switch="allFollowed"
                             class="btn btn-default"
                             ng-click="followMultiple(!allFollowed)">
-                        <i class="fa fa-star-o" ng-switch-default tooltip="${message(code: 'is.followable.start')}"></i>
+                        <i class="fa" ng-class="noneFollowed ? 'fa-star-o' : 'fa-star-half-o'" ng-switch-default tooltip="${message(code: 'is.followable.start')}"></i>
                         <i class="fa fa-star" ng-switch-when="true" tooltip="${message(code: 'is.followable.stop')}"></i>
                     </button>
                 </div>

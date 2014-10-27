@@ -367,6 +367,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.storyPreview = {};
     $scope.stories = [];
     $scope.allFollowed = false;
+    $scope.noneFollowed = true;
     function refreshStories() {
         StoryService.getMultiple(listId).then(function(stories) {
             $scope.topStory = _.first(stories);
@@ -376,6 +377,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
             };
             $scope.stories = stories;
             $scope.allFollowed = _.every(stories, 'followed');
+            $scope.noneFollowed = !_.some(stories, 'followed');
         });
     }
     refreshStories();
