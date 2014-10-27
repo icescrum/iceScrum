@@ -233,23 +233,25 @@ isApp.config(['$stateProvider', '$httpProvider',
             closeOnRouteChange: 'state'
         });
     }])
-    .factory('AuthInterceptor', ['$rootScope', '$q', 'AUTH_EVENTS', function ($rootScope, $q, AUTH_EVENTS) {
+    .factory('AuthInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function ($rootScope, $q, SERVER_ERRORS) {
         return {
-            responseError: function (response) {
+            responseError: function(response) {
                 if (response.status === 401) {
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated,response);
-                }
-                if (response.status === 403) {
-                    $rootScope.$broadcast(AUTH_EVENTS.notAuthorized,response);
-                }
-                if (response.status === 419 || response.status === 440) {
-                    $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout,response);
+                    $rootScope.$broadcast(SERVER_ERRORS.notAuthenticated, response);
+                } else if (response.status === 403) {
+                    $rootScope.$broadcast(SERVER_ERRORS.notAuthorized, response);
+                } else if (response.status === 419 || response.status === 440) {
+                    $rootScope.$broadcast(SERVER_ERRORS.sessionTimeout, response);
+                } else if (response.status > 399 && response.status <= 499) {
+                    $rootScope.$broadcast(SERVER_ERRORS.clientError, response);
+                } else if (response.status > 499) {
+                    $rootScope.$broadcast(SERVER_ERRORS.serverError, response);
                 }
                 return $q.reject(response);
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', 'notifications', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config, notifications){
+    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config){
         uiSelect2Config.minimumResultsForSearch = 6;
 
         //used to handle click with shortcut hotkeys
@@ -260,16 +262,6 @@ isApp.config(['$stateProvider', '$httpProvider',
                     hotkey.el.click();
                 });
             }
-        };
-
-        $rootScope.notifError = function(error){
-            if (angular.isObject(error.data)) {
-                notifications.error(error.data.text);
-            }
-            else if (angular.isArray(error.data)) {
-                notifications.error(error.data[0].text);
-            }
-
         };
 
         var $download;
@@ -373,11 +365,13 @@ isApp.config(['$stateProvider', '$httpProvider',
         });
 
     }])
-    .constant('AUTH_EVENTS', {
+    .constant('SERVER_ERRORS', {
         loginFailed: 'auth-login-failed',
         sessionTimeout: 'auth-session-timeout',
         notAuthenticated: 'auth-not-authenticated',
-        notAuthorized: 'auth-not-authorized'
+        notAuthorized: 'auth-not-authorized',
+        clientError: 'client-error',
+        serverError: 'server-error'
     })
     .constant('StoryStates', {
         1: {"value": "Suggested", "code": "suggested"},

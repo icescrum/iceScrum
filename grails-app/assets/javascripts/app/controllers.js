@@ -24,7 +24,7 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' , 'Fullscreen', function ($scope, $modal, Session, AUTH_EVENTS, Fullscreen) {
+controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS' , 'Fullscreen', 'notifications', function ($scope, $modal, Session, SERVER_ERRORS, Fullscreen, notifications) {
     $scope.currentUser = Session.user;
     $scope.roles = Session.roles;
 
@@ -37,13 +37,13 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
         Session.changeRole(newRole);
     };
 
-    $scope.showAbout = function () {
+    $scope.showAbout = function() {
         $modal.open({ templateUrl: 'scrumOS/about' });
     };
-    $scope.showProfile = function () {
+    $scope.showProfile = function() {
         $modal.open({ templateUrl: $scope.serverUrl + '/user/openProfile', controller: 'userCtrl' });
     };
-    $scope.showAuthModal = function () {
+    $scope.showAuthModal = function() {
         $modal.open({
             templateUrl: $scope.serverUrl + '/login/auth',
             controller:'loginCtrl',
@@ -51,8 +51,30 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
         });
     };
 
-    $scope.$on(AUTH_EVENTS.notAuthenticated, function(event, e){
+    $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
         $scope.showAuthModal();
+    });
+
+    $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
+        var options = { duration: 4000 };
+        if (angular.isArray(error.data)) {
+            notifications.error("", error.data[0].text, options);
+        } else if (angular.isObject(error.data)) {
+            notifications.error("", error.data.text, options);
+        } else {
+            notifications.error("", $scope.message('todo.is.ui.error.unknown'), options);
+        }
+    });
+
+    $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
+        var options = { duration: 4000 };
+        if (angular.isArray(error.data)) {
+            notifications.error($scope.message('todo.is.ui.error.server'), error.data[0].text, options);
+        } else if (angular.isObject(error.data)) {
+            notifications.error($scope.message('todo.is.ui.error.server'), error.data.text, options);
+        } else {
+            notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'), options);
+        }
     });
 
     $scope.menubarSortableOptions = {
@@ -104,7 +126,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
         );
     }
 
-}]).controller('loginCtrl',['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', function ($scope, $rootScope, AUTH_EVENTS, AuthService) {
+}]).controller('loginCtrl',['$scope', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $rootScope, SERVER_ERRORS, AuthService) {
     $scope.credentials = {
         j_username: '',
         j_password: ''
@@ -119,7 +141,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'AUTH_EVENTS' 
                 document.location.reload(true);
             }
         }, function () {
-            $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+            $rootScope.$broadcast(SERVER_ERRORS.loginFailed);
         });
     };
 }]).controller('registerCtrl',['$scope', 'User', 'UserService', '$modalInstance', function ($scope, User, UserService, $modalInstance) {

@@ -27,43 +27,41 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', 'notifications', 
     $scope.accept = function(story) {
         StoryService.accept(story)
             .then($scope.goToNewStory)
-            .then(function(){
-                notifications.info('', $scope.message('todo.is.ui.story.accepted'));
-            })
-            .catch($scope.notifError);
+            .then(function() {
+                notifications.success('', $scope.message('todo.is.ui.story.accepted'));
+            });
     };
     $scope.acceptAs = function(story, target) {
         StoryService.acceptAs(story, target)
-            .then(function(){
+            .then(function() {
                 $scope.goToNewStory();
-                notifications.info('', $scope.message('todo.is.ui.story.acceptedAs'));
-            })
-            .catch($scope.notifError);
+                notifications.success('', $scope.message('todo.is.ui.story.acceptedAs'));
+            });
     };
     $scope.follow = function(story) {
         StoryService.follow(story);
     };
     $scope.copy = function(story) {
-        StoryService.copy(story);
+        StoryService.copy(story)
     };
     $scope['delete'] = function(story) {
         //fake delete
         _.remove(StoryService.list, { id: story.id });
         $scope.goToNewStory();
-        var notif = notifications.info('', $scope.message('todo.is.ui.delete'), {
+        var notif = notifications.success('', $scope.message('todo.is.ui.delete'), {
             actions: [{
                 label: 'Undo',
-                fn:function(){
+                fn: function() {
                     notif.data.close = angular.noop;
                     StoryService.list.push(story);
                     $state.go('sandbox.details', { id: story.id });
-                    notifications.info('', $scope.message('todo.is.ui.delete.cancelled'));
+                    notifications.success('', $scope.message('todo.is.ui.delete.cancelled'));
                 }
             }],
-            close:function(){
+            close: function() {
                 StoryService.delete(story);
             },
-            duration:5000
+            duration: 5000
         });
     };
     $scope.authorizedStory = function(action, story) {
@@ -136,9 +134,11 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 size: 'sm',
                 controller: ["$scope", "$modalInstance", function($scope, $modalInstance) {
                     $scope.submit = function(template) {
-                        StoryService.saveTemplate(story, template.name).then(function() {
-                            $modalInstance.close();
-                        });
+                        StoryService.saveTemplate(story, template.name)
+                            .then(function() {
+                                notifications.success('', $scope.message('todo.is.ui.story.template.saved'));
+                                $modalInstance.close();
+                            });
                     };
                 }]
             });
@@ -168,7 +168,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             if ($state.params.tabId) {
                 $state.go('.', {tabId: tab});
             } else {
-                if ($state.$current.toString().indexOf('details') > 0){
+                if ($state.$current.toString().indexOf('details') > 0) {
                     $state.go('.tab', {tabId: tab});
                 }
             }
@@ -178,13 +178,11 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 .then(function(story) {
                     $scope.story = story;
                     $scope.resetStoryForm();
-                    notifications.info('', $scope.message('todo.is.ui.story.updated'));
-                })
-                .catch($scope.notifError);
+                    notifications.success('', $scope.message('todo.is.ui.story.updated'));
+                });
         };
         $scope.like = function(story) {
-            StoryService.like(story)
-                .catch($scope.notifError);
+            StoryService.like(story);
         };
         $scope.activities = function(story) {
             StoryService.activities(story);
@@ -209,7 +207,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             }
         };
         $scope.getShowStoryForm = function(story) {
-            return ($scope.getEditableMode() || $scope.formHolder.formHover)  && $scope.authorizedStory('update', story);
+            return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedStory('update', story);
         };
         $scope.resetStoryForm = function() {
             $scope.editableStory = angular.copy($scope.story);
@@ -262,15 +260,15 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
-        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
                 event.preventDefault(); // cancel the state change
                 $scope.mustConfirmStateChange = false;
                 $scope.confirm({
                     message: 'todo.is.ui.dirty.confirm',
                     condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                    callback: function () {
-                        if ($scope.flow != undefined && $scope.flow.isUploading()){
+                    callback: function() {
+                        if ($scope.flow != undefined && $scope.flow.isUploading()) {
                             $scope.flow.cancel();
                         }
                         $state.go(toState, toParams)
@@ -316,7 +314,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             return $scope.story;
         };
         $scope.clazz = 'story';
-        $scope.attachmentQuery = function($flow, story){
+        $scope.attachmentQuery = function($flow, story) {
             //to add flow in storyDetailsCtrl scope
             $scope.flow = $flow;
             $flow.opts.target = 'attachment/story/' + story.id + '/flow';
@@ -327,38 +325,42 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         };
     }]);
 
-controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
+controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', 'notifications', function($scope, $controller, StoryService, listId, notifications) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
     // Functions
     $scope.deleteMultiple = function() {
+        // TODO cancellable delete
         StoryService.deleteMultiple(listId)
-            .then($scope.goToNewStory)
-            .catch($scope.notifError);
+            .then($scope.goToNewStory);
     };
     $scope.copyMultiple = function() {
-        StoryService.copyMultiple(listId)
-            .catch($scope.notifError);
+        StoryService.copyMultiple(listId);
     };
     $scope.updateMultiple = function(updatedFields) {
         StoryService.updateMultiple(listId, updatedFields)
-            .catch($scope.notifError);
+            .then(function() {
+                notifications.success('', $scope.message('todo.is.ui.story.multiple.updated'));
+            });
     };
     $scope.acceptMultiple = function() {
         StoryService.acceptMultiple(listId)
             .then($scope.goToNewStory)
-            .catch($scope.notifError);
+            .then(function() {
+                notifications.success('', $scope.message('todo.is.ui.story.multiple.accepted'));
+            });
     };
     $scope.followMultiple = function(follow) {
         StoryService.followMultiple(listId, follow)
             .then(function() {
                 refreshStories();
-            })
-            .catch($scope.notifError);
+            });
     };
     $scope.acceptAsMultiple = function(target) {
         StoryService.acceptAsMultiple(listId, target)
             .then($scope.goToNewStory)
-            .catch($scope.notifError);
+            .then(function() {
+                notifications.success('', $scope.message('todo.is.ui.story.multiple.acceptedAs'));
+            });
     };
     // Init
     $scope.topStory = {};
@@ -411,6 +413,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                     $http.get('story/templateEntries').success(function(templateEntries) {
                         $scope.templateEntries = templateEntries;
                     });
+                    // TODO cancellable delete
                     $scope.deleteTemplate = function(templateEntry) {
                         StoryService.deleteTemplate(templateEntry.id).then(function() {
                             _.remove($scope.templateEntries, { id: templateEntry.id });
@@ -424,14 +427,12 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                 .then(function(story) {
                     if (andContinue) {
                         $scope.resetStoryForm();
-                        notifications.info('', $scope.message('todo.is.ui.story.saved'));
                     } else {
                         $scope.setEditableMode(true);
                         $state.go('^.details', { id: story.id });
-                        notifications.info('', $scope.message('todo.is.ui.story.saved'));
                     }
-                })
-                .catch($scope.notifError);
+                    notifications.success('', $scope.message('todo.is.ui.story.saved'));
+                });
         };
         $scope.findDuplicates = function(term) {
             if (term == null || term.length <= 5) {
