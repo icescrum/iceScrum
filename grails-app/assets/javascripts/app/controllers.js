@@ -56,24 +56,22 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS
     });
 
     $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
-        var options = { duration: 4000 };
         if (angular.isArray(error.data)) {
-            notifications.error("", error.data[0].text, options);
+            notifications.error("", error.data[0].text);
         } else if (angular.isObject(error.data)) {
-            notifications.error("", error.data.text, options);
+            notifications.error("", error.data.text);
         } else {
             notifications.error("", $scope.message('todo.is.ui.error.unknown'), options);
         }
     });
 
     $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
-        var options = { duration: 4000 };
         if (angular.isArray(error.data)) {
-            notifications.error($scope.message('todo.is.ui.error.server'), error.data[0].text, options);
+            notifications.error($scope.message('todo.is.ui.error.server'), error.data[0].text);
         } else if (angular.isObject(error.data)) {
-            notifications.error($scope.message('todo.is.ui.error.server'), error.data.text, options);
+            notifications.error($scope.message('todo.is.ui.error.server'), error.data.text);
         } else {
-            notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'), options);
+            notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
         }
     });
 

@@ -60,7 +60,7 @@
                     <textarea required
                               msd-elastic
                               ng-maxlength="5000"
-                              ng-blur="updateComment(editableComment, getSelected()); showCommentBodyTextarea = false;"
+                              ng-blur="update(editableComment, getSelected()); showCommentBodyTextarea = false;"
                               is-markitup
                               name="body"
                               ng-model="editableComment.body"

@@ -33,10 +33,18 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         }
     };
     $scope.save = function(acceptanceTest, story) {
-        AcceptanceTestService.save(acceptanceTest, story).then($scope.resetAcceptanceTestForm);
+        AcceptanceTestService.save(acceptanceTest, story)
+            .then(function() {
+                $scope.resetAcceptanceTestForm();
+                $scope.notifySuccess('todo.is.ui.acceptanceTest.saved');
+            });
     };
+    // TODO cancellable delete
     $scope['delete'] = function(acceptanceTest, story) {
-        AcceptanceTestService.delete(acceptanceTest, story);
+        AcceptanceTestService.delete(acceptanceTest, story)
+            .then(function() {
+                $scope.notifySuccess('todo.is.ui.deleted');
+            });
     };
     $scope.authorizedAcceptanceTest = function(action, acceptanceTest) {
         return AcceptanceTestService.authorizedAcceptanceTest(action, acceptanceTest);
@@ -56,12 +64,15 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         }
         $scope.formHolder.editing = value;
     };
-    $scope.updateAcceptanceTest = function(acceptanceTest, story) {
+    $scope.update = function(acceptanceTest, story) {
         if (!$scope.formHolder.acceptanceTestForm.$invalid) {
             $scope.formHover(false);
             $scope.editForm(false);
             if ($scope.formHolder.acceptanceTestForm.$dirty) {
-                AcceptanceTestService.update(acceptanceTest, story);
+                AcceptanceTestService.update(acceptanceTest, story)
+                    .then(function() {
+                        $scope.notifySuccess('todo.is.ui.acceptanceTest.updated');
+                    });
             }
         }
     };

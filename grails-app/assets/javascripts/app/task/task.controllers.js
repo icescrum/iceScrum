@@ -24,10 +24,18 @@
 controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
     // Functions
     $scope.save = function(task, obj) {
-        TaskService.save(task, obj).then($scope.resetTaskForm);
+        TaskService.save(task, obj)
+            .then(function() {
+                $scope.resetTaskForm();
+                $scope.notifySuccess('todo.is.ui.task.saved');
+            });
     };
+    // TODO cancellable delete
     $scope['delete'] = function(task, story) {
-        TaskService.delete(task, story);
+        TaskService.delete(task, story)
+            .then(function() {
+                $scope.notifySuccess('todo.is.ui.deleted');
+            });
     };
     $scope.authorizedTask = function(action, task) {
         return TaskService.authorizedTask(action, task);

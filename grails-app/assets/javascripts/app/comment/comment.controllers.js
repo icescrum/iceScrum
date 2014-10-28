@@ -30,10 +30,18 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
         }
     };
     $scope.save = function(comment, commentable) {
-        CommentService.save(comment, commentable).then($scope.resetCommentForm);
+        CommentService.save(comment, commentable)
+            .then(function() {
+                $scope.resetCommentForm();
+                $scope.notifySuccess('todo.is.ui.comment.saved');
+            });
     };
+    // TODO cancellable delete
     $scope['delete'] = function(comment, commentable) {
-        CommentService.delete(comment, commentable);
+        CommentService.delete(comment, commentable)
+            .then(function() {
+                $scope.notifySuccess('todo.is.ui.deleted');
+            });
     };
     $scope.authorizedComment = function(action, comment) {
         return CommentService.authorizedComment(action, comment);
@@ -53,12 +61,15 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
             hotkeys.del('esc');
         }
     };
-    $scope.updateComment = function(comment, commentable) {
+    $scope.update = function(comment, commentable) {
         if (!$scope.formHolder.commentForm.$invalid) {
             $scope.formHover(false);
             $scope.editForm(false);
             if ($scope.formHolder.commentForm.$dirty) {
-                CommentService.update(comment, commentable);
+                CommentService.update(comment, commentable)
+                    .then(function() {
+                        $scope.notifySuccess('todo.is.ui.comment.updated');
+                    });
             }
         }
     };

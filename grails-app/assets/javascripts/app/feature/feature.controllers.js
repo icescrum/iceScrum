@@ -26,11 +26,20 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
+    // TODO cancellable delete
     $scope['delete'] = function(feature) {
-        FeatureService.delete(feature).then($scope.goToNewFeature);
+        FeatureService.delete(feature)
+            .then(function() {
+                $scope.goToNewFeature();
+                $scope.notifySuccess('todo.is.ui.deleted');
+            });
     };
     $scope.copyToBacklog = function(feature) {
-        FeatureService.copyToBacklog(feature);
+        FeatureService.copyToBacklog(feature)
+            .then(function() {
+                $scope.goToNewFeature();
+                $scope.notifySuccess('todo.is.ui.feature.copied.to.backlog');
+            });
     };
 }]);
 
@@ -77,7 +86,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             if ($state.params.tabId) {
                 $state.go('.', {tabId: tab});
             } else {
-                if ($state.$current.toString().indexOf('details') > 0){
+                if ($state.$current.toString().indexOf('details') > 0) {
                     $state.go('.tab', {tabId: tab});
                 }
             }
@@ -90,6 +99,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             FeatureService.update(feature).then(function(feature) {
                 $scope.feature = feature;
                 $scope.resetFeatureForm();
+                $scope.notifySuccess('todo.is.ui.feature.updated');
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
@@ -110,15 +120,15 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             }
         };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
-        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
                 event.preventDefault(); // cancel the state change
                 $scope.mustConfirmStateChange = false;
                 $scope.confirm({
                     message: 'todo.is.ui.dirty.confirm',
                     condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                    callback: function () {
-                        if ($scope.flow != undefined && $scope.flow.isUploading()){
+                    callback: function() {
+                        if ($scope.flow != undefined && $scope.flow.isUploading()) {
                             $scope.flow.cancel();
                         }
                         $state.go(toState, toParams)
@@ -133,7 +143,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             return $scope.feature;
         };
         $scope.clazz = 'feature';
-        $scope.attachmentQuery = function($flow, feature){
+        $scope.attachmentQuery = function($flow, feature) {
             $scope.flow = $flow;
             $flow.opts.target = 'attachment/feature/' + feature.id + '/flow';
             $flow.upload();
@@ -160,6 +170,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
                 $scope.setEditableMode(true);
                 $state.go('^.details', { id: feature.id });
             }
+            $scope.notifySuccess('todo.is.ui.feature.saved');
         });
     };
     // Init
@@ -180,14 +191,25 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
             return sum + feature.value;
         }, 0);
     };
+    // TODO cancellable delete ?
     $scope.deleteMultiple = function() {
-        FeatureService.deleteMultiple(listId).then($scope.goToNewFeature);
+        FeatureService.deleteMultiple(listId)
+            .then(function() {
+                $scope.goToNewFeature();
+                $scope.notifySuccess('todo.is.ui.multiple.deleted');
+            });
     };
     $scope.updateMultiple = function(updatedFields) {
-        FeatureService.updateMultiple(listId, updatedFields);
+        FeatureService.updateMultiple(listId, updatedFields)
+            .then(function() {
+                $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
+            });
     };
     $scope.copyToBacklogMultiple = function() {
-        FeatureService.copyToBacklogMultiple(listId);
+        FeatureService.copyToBacklogMultiple(listId)
+            .then(function() {
+                $scope.notifySuccess('todo.is.ui.feature.multiple.copied.to.backlog');
+            });
     };
     // Init
     $scope.ids = listId;

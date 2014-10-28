@@ -230,7 +230,8 @@ isApp.config(['$stateProvider', '$httpProvider',
     .config(['notificationsProvider', function (notificationsProvider) {
         notificationsProvider.setDefaults({
             faIcons: true,
-            closeOnRouteChange: 'state'
+            closeOnRouteChange: 'state',
+            duration: 4500
         });
     }])
     .factory('AuthInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function ($rootScope, $q, SERVER_ERRORS) {
@@ -251,7 +252,7 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config){
+    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', 'notifications', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config, notifications){
         uiSelect2Config.minimumResultsForSearch = 6;
 
         //used to handle click with shortcut hotkeys
@@ -287,6 +288,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                 text = text.replace(placeholderMatcher, arg);
             });
             return text;
+        };
+        $rootScope.notifySuccess = function(code, options) {
+            return notifications.success('', $rootScope.message(code), options);
         };
 
         $rootScope.editableMode = false;

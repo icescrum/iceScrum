@@ -61,16 +61,6 @@ services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
             });
         });
     };
-    this.updateMultiple = function(ids, updatedFields) {
-        return Actor.updateArray({ id: ids }, { actor: updatedFields }, function(actors) {
-            angular.forEach(actors, function(actor) {
-                var index = self.list.indexOf(_.findWhere(self.list, { id: actor.id }));
-                if (index != -1) {
-                    self.list.splice(index, 1, actor);
-                }
-            });
-        }).$promise;
-    };
     this.deleteMultiple = function(ids) {
         return Actor.delete({id: ids}, function() {
             _.remove(self.list, function(actor) {

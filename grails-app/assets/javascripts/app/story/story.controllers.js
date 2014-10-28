@@ -22,20 +22,20 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', 'StoryService', 'notifications', '$state', function($scope, StoryService, notifications, $state) {
+controllers.controller('storyCtrl', ['$scope', 'StoryService', '$state', function($scope, StoryService, $state) {
     // Functions
     $scope.accept = function(story) {
         StoryService.accept(story)
-            .then($scope.goToNewStory)
             .then(function() {
-                notifications.success('', $scope.message('todo.is.ui.story.accepted'));
+                $scope.goToNewStory();
+                $scope.notifySuccess('todo.is.ui.story.accepted');
             });
     };
     $scope.acceptAs = function(story, target) {
         StoryService.acceptAs(story, target)
             .then(function() {
                 $scope.goToNewStory();
-                notifications.success('', $scope.message('todo.is.ui.story.acceptedAs'));
+                $scope.notifySuccess('todo.is.ui.story.acceptedAs');
             });
     };
     $scope.follow = function(story) {
@@ -48,14 +48,14 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', 'notifications', 
         //fake delete
         _.remove(StoryService.list, { id: story.id });
         $scope.goToNewStory();
-        var notif = notifications.success('', $scope.message('todo.is.ui.delete'), {
+        var notif = $scope.notifySuccess('todo.is.ui.deleted', {
             actions: [{
                 label: 'Undo',
                 fn: function() {
                     notif.data.close = angular.noop;
                     StoryService.list.push(story);
                     $state.go('sandbox.details', { id: story.id });
-                    notifications.success('', $scope.message('todo.is.ui.delete.cancelled'));
+                    $scope.notifySuccess('todo.is.ui.deleted.cancelled');
                 }
             }],
             close: function() {
@@ -97,8 +97,8 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', 'notifications', 
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'TaskService', 'CommentService', 'AcceptanceTestService', 'FormService', 'notifications',
-    function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, TaskService, CommentService, AcceptanceTestService, FormService, notifications) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'TaskService', 'CommentService', 'AcceptanceTestService', 'FormService',
+    function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, TaskService, CommentService, AcceptanceTestService, FormService) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         $scope.formHolder = {};
         $scope.story = {};
@@ -136,8 +136,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                     $scope.submit = function(template) {
                         StoryService.saveTemplate(story, template.name)
                             .then(function() {
-                                notifications.success('', $scope.message('todo.is.ui.story.template.saved'));
                                 $modalInstance.close();
+                                $scope.notifySuccess('todo.is.ui.story.template.saved');
                             });
                     };
                 }]
@@ -178,7 +178,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 .then(function(story) {
                     $scope.story = story;
                     $scope.resetStoryForm();
-                    notifications.success('', $scope.message('todo.is.ui.story.updated'));
+                    $scope.notifySuccess('todo.is.ui.story.updated');
                 });
         };
         $scope.like = function(story) {
@@ -325,13 +325,16 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         };
     }]);
 
-controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', 'notifications', function($scope, $controller, StoryService, listId, notifications) {
+controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
     // Functions
     $scope.deleteMultiple = function() {
-        // TODO cancellable delete
+        // TODO cancellable delete ?
         StoryService.deleteMultiple(listId)
-            .then($scope.goToNewStory);
+            .then(function() {
+                $scope.goToNewStory();
+                $scope.notifySuccess('todo.is.ui.multiple.deleted');
+            });
     };
     $scope.copyMultiple = function() {
         StoryService.copyMultiple(listId);
@@ -339,14 +342,14 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.updateMultiple = function(updatedFields) {
         StoryService.updateMultiple(listId, updatedFields)
             .then(function() {
-                notifications.success('', $scope.message('todo.is.ui.story.multiple.updated'));
+                $scope.notifySuccess('todo.is.ui.story.multiple.updated');
             });
     };
     $scope.acceptMultiple = function() {
         StoryService.acceptMultiple(listId)
-            .then($scope.goToNewStory)
             .then(function() {
-                notifications.success('', $scope.message('todo.is.ui.story.multiple.accepted'));
+                $scope.goToNewStory();
+                $scope.notifySuccess('todo.is.ui.story.multiple.accepted');
             });
     };
     $scope.followMultiple = function(follow) {
@@ -357,9 +360,9 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     };
     $scope.acceptAsMultiple = function(target) {
         StoryService.acceptAsMultiple(listId, target)
-            .then($scope.goToNewStory)
             .then(function() {
-                notifications.success('', $scope.message('todo.is.ui.story.multiple.acceptedAs'));
+                $scope.goToNewStory();
+                $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs');
             });
     };
     // Init
@@ -383,8 +386,8 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     refreshStories();
 }]);
 
-controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '$timeout', '$controller', 'StoryService', 'hotkeys', 'notifications',
-    function($scope, $state, $http, $modal, $timeout, $controller, StoryService, hotkeys, notifications) {
+controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '$timeout', '$controller', 'StoryService', 'hotkeys',
+    function($scope, $state, $http, $modal, $timeout, $controller, StoryService, hotkeys) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         // Functions
         $scope.resetStoryForm = function() {
@@ -417,9 +420,11 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                     });
                     // TODO cancellable delete
                     $scope.deleteTemplate = function(templateEntry) {
-                        StoryService.deleteTemplate(templateEntry.id).then(function() {
-                            _.remove($scope.templateEntries, { id: templateEntry.id });
-                        });
+                        StoryService.deleteTemplate(templateEntry.id)
+                            .then(function() {
+                                _.remove($scope.templateEntries, { id: templateEntry.id });
+                                $scope.notifySuccess('todo.is.ui.deleted');
+                            });
                     }
                 }]
             });
@@ -433,7 +438,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                         $scope.setEditableMode(true);
                         $state.go('^.details', { id: story.id });
                     }
-                    notifications.success('', $scope.message('todo.is.ui.story.saved'));
+                    $scope.notifySuccess('todo.is.ui.story.saved');
                 });
         };
         $scope.findDuplicates = function(term) {

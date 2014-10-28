@@ -26,8 +26,13 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
     $scope.authorizedActor = function(action) {
         return ActorService.authorizedActor(action);
     };
+    // TODO cancellable delete
     $scope['delete'] = function(actor) {
-        ActorService.delete(actor).then($scope.goToNewActor);
+        ActorService.delete(actor)
+            .then(function() {
+                $scope.goToNewActor();
+                $scope.notifySuccess('todo.is.ui.deleted');
+            });
     };
 }]);
 
@@ -74,7 +79,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             if ($state.params.tabId) {
                 $state.go('.', {tabId: tab});
             } else {
-                if ($state.$current.toString().indexOf('details') > 0){
+                if ($state.$current.toString().indexOf('details') > 0) {
                     $state.go('.tab', {tabId: tab});
                 }
             }
@@ -87,6 +92,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             ActorService.update(actor).then(function(actor) {
                 $scope.actor = actor;
                 $scope.resetActorForm();
+                $scope.notifySuccess('todo.is.ui.actor.updated');
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
@@ -107,15 +113,15 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             }
         };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
-        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
                 event.preventDefault(); // cancel the state change
                 $scope.mustConfirmStateChange = false;
                 $scope.confirm({
                     message: 'todo.is.ui.dirty.confirm',
                     condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                    callback: function () {
-                        if ($scope.flow != undefined && $scope.flow.isUploading()){
+                    callback: function() {
+                        if ($scope.flow != undefined && $scope.flow.isUploading()) {
                             $scope.flow.cancel();
                         }
                         $state.go(toState, toParams)
@@ -130,7 +136,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             return $scope.actor;
         };
         $scope.clazz = 'actor';
-        $scope.attachmentQuery = function($flow, actor){
+        $scope.attachmentQuery = function($flow, actor) {
             $scope.flow = $flow;
             $flow.opts.target = 'attachment/actor/' + actor.id + '/flow';
             $flow.upload();
@@ -158,6 +164,7 @@ controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'Acto
                 $scope.setEditableMode(true);
                 $state.go('^.details', { id: actor.id });
             }
+            $scope.notifySuccess('todo.is.ui.actor.saved');
         });
     };
     // Init
@@ -174,10 +181,12 @@ controllers.controller('actorMultipleCtrl', ['$scope', '$controller', 'listId', 
     $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
     // Functions
     $scope.deleteMultiple = function() {
-        ActorService.deleteMultiple(listId).then($scope.goToNewActor);
-    };
-    $scope.updateMultiple = function(updatedFields) {
-        ActorService.updateMultiple(listId, updatedFields);
+        // TODO cancellable delete ?
+        ActorService.deleteMultiple(listId)
+            .then(function() {
+                $scope.goToNewActor();
+                $scope.notifySuccess('todo.is.ui.multiple.deleted');
+            });
     };
     // Init
     $scope.ids = listId;

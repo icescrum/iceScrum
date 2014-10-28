@@ -55,7 +55,7 @@
                         <input required
                                ng-maxlength="255"
                                ng-focus="editForm(true)"
-                               ng-blur="updateAcceptanceTest(editableAcceptanceTest, story)"
+                               ng-blur="update(editableAcceptanceTest, story)"
                                type="text"
                                name="name"
                                ng-model="editableAcceptanceTest.name"
@@ -65,7 +65,7 @@
                     <div class="col-sm-4 form-group">
                         <select class="form-control"
                                 ng-focus="editForm(true)"
-                                ng-change="updateAcceptanceTest(editableAcceptanceTest, story)"
+                                ng-change="update(editableAcceptanceTest, story)"
                                 name="state"
                                 ng-model="editableAcceptanceTest.state"
                                 ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
@@ -83,7 +83,7 @@
                               ng-model="editableAcceptanceTest.description"
                               is-model-html="editableAcceptanceTest.description_html"
                               ng-show="showAcceptanceTestDescriptionTextarea"
-                              ng-blur="updateAcceptanceTest(editableAcceptanceTest, story); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
+                              ng-blur="update(editableAcceptanceTest, story); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
                               placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                     <div class="markitup-preview"
                          ng-show="!showAcceptanceTestDescriptionTextarea"
