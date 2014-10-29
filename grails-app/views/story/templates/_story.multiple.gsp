@@ -25,8 +25,8 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">${message(code: "is.ui.sandbox.toolbar.new")} ${message(code: "is.story")}</h3>
-        <div class="help-block">${message(code:'is.ui.sandbox.help')}</div>
+        <h3 class="panel-title">${message(code: "todo.is.ui.stories")} ({{ stories.length }})</h3>
+        <div class="help-block"></div>
     </div>
     <div class="panel-body">
         <div class="postits standalone">

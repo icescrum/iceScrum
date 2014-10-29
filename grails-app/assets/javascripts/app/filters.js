@@ -221,15 +221,35 @@ filters
             if (activity) {
                 switch (activity.code) {
                     case 'save':
+                    case 'taskSave':
+                    case 'acceptanceTestSave':
                         return "fa fa-plus";
                     case 'update':
-                        return "fa fa-edit";
+                        return "fa fa-pencil";
                     case 'delete':
+                    case 'taskDelete':
+                    case 'acceptanceTestDelete':
                         return "fa fa-times";
                     case "acceptAs":
                         return "fa fa-thumbs-up";
                     case "comment":
-                        return "fa fa-comment"
+                        return "fa fa-comment";
+                    case "icebox":
+                        return "fa fa-askerisk";
+                    case "restored":
+                        return "fa fa-repeat";
+                    case "estimate":
+                        return "fa fa-calculator";
+                    case "returnToSandbox":
+                        return "fa fa-undo";
+                    case "done":
+                        return "fa fa-check";
+                    case "unDone":
+                        return "fa fa-undo";
+                    case "taskInProgress":
+                        return "fa fa-?";
+                    case "taskWait":
+                        return "fa fa-?";
                 }
             }
         };

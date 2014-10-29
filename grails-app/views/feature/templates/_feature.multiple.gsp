@@ -25,8 +25,10 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">${message(code: "is.ui.feature.toolbar.new")} ${message(code: "is.feature")}</h3>
-        <div class="help-block">${message(code:'is.ui.feature.help')}</div>
+        <h3 class="panel-title">${message(code: "is.ui.feature")} ({{ features.length }})</h3>
+        <div class="help-block">
+            ${message(code: 'is.ui.feature.total.value')} {{ totalValue(features) }}
+        </div>
     </div>
     <div class="panel-body">
         <div class="postits standalone">
@@ -129,8 +131,6 @@
             </div>
         </form>
     </div>
-    <div class="panel-footer">
-        ${message(code: 'is.ui.feature.total.value')} {{ totalValue(features) }}
-    </div>
+
 </div>
 </script>

@@ -37,7 +37,25 @@
             </time>
             <i class="fa fa-clock-o"></i>
         </span>
-        <p>{{ activity.label }}</p>
+        <p ng-switch="activity.code == 'comment'">
+            <span ng-switch-default>
+                {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}}
+            </span>
+            <span ng-switch-when="true">
+                <a href ng-click="setTabSelected('comments')">
+                    {{ message('todo.is.ui.activity.' + activity.code )}}
+                </a>
+            </span>
+        </p>
+        <p ng-if="activity.beforeValue != null || activity.afterValue != null">
+            <i class="fa fa-question" ng-if="activity.beforeValue == null"></i>{{ activity.beforeValue != '' ? activity.beforeValue : '' }} <i class="fa fa-arrow-right"></i> <i class="fa fa-question" ng-if="activity.afterValue == null"></i>{{ activity.afterValue != '' ? activity.afterValue : '' }}
+        </p>
+    </td>
+</tr>
+<tr ng-if="getSelected().activities && getSelected().activities.length >= 10">
+    <td ng-switch="allActivities">
+        <button ng-switch-default class="btn btn-default" ng-click="activities(getSelected(), true)"><i class="fa fa-plus-square"></i> ${ message(code: 'tood.is.ui.activities.more')}</button>
+        <button ng-switch-when="true" class="btn btn-default" ng-click="activities(getSelected(), false)"><i class="fa fa-minus-square"></i> ${ message(code: 'tood.is.ui.activities.less')}</button>
     </td>
 </tr>
 <tr ng-show="!getSelected().activities && getSelected().activities !== undefined">

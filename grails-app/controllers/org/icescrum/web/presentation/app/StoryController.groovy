@@ -25,7 +25,7 @@ package org.icescrum.web.presentation.app
 
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Story
-
+import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Product
@@ -343,12 +343,21 @@ class StoryController {
     }
 
     @Secured('stakeHolder()')
-    def activities() {
+    def activities(boolean all) {
         withStory { Story story ->
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text: story.activity as JSON) }
-                json { renderRESTJSON(text:story.activity) }
-                xml  { renderRESTXML(text:story.activity) }
+                def activities = story.activity
+                if (!all) {
+                    def selectedActivities = activities.findAll { activity ->
+                        activity.code in [Activity.CODE_SAVE, 'estimated', 'acceptAs', 'done', 'unDone', 'returnToSandbox']
+                    }
+                    def remainingActivities = activities - selectedActivities
+                    activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
+                    activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
+                }
+                html { render(status: 200, contentType: 'application/json', text: activities as JSON) }
+                json { renderRESTJSON(text: activities) }
+                xml  { renderRESTXML(text: activities) }
             }
         }
     }

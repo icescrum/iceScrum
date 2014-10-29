@@ -347,7 +347,7 @@
             <tab select="activities(story); ($state.params.tabId && $state.params.tabId != 'attachments' ? setTabSelected('activities') : '');"
                  heading="${message(code: 'is.ui.backlogelement.activity')}"
                  active="tabSelected.activities">
-                <table class="table table-striped">
+                <table class="table">
                     <tbody ng-include="'activity.list.html'"></tbody>
                 </table>
             </tab>

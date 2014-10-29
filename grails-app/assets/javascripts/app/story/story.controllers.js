@@ -104,6 +104,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.story = {};
         $scope.editableStory = {};
         $scope.editableStoryReference = {};
+        $scope.allActivities = false;
         StoryService.get($stateParams.id).then(function(story) {
             $scope.story = story;
             // For edit
@@ -177,6 +178,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             StoryService.update(story)
                 .then(function(story) {
                     $scope.story = story;
+                    $scope.activities(story); // TODO check if not better solution
                     $scope.resetStoryForm();
                     $scope.notifySuccess('todo.is.ui.story.updated');
                 });
@@ -184,8 +186,9 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.like = function(story) {
             StoryService.like(story);
         };
-        $scope.activities = function(story) {
-            StoryService.activities(story);
+        $scope.activities = function(story, all) {
+            $scope.allActivities = all;
+            StoryService.activities(story, all);
         };
         $scope.tasks = function(story) {
             TaskService.list(story);

@@ -114,8 +114,12 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             story.followed = result.followed;
         });
     };
-    this.activities = function(story) {
-        return Story.activities({ id: story.id }, function(activities) {
+    this.activities = function(story, all) {
+        var params = { id: story.id };
+        if (all) {
+            params.all = true;
+        }
+        return Story.activities(params, function(activities) {
             story.activities = activities;
         }).$promise;
     };
