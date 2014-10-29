@@ -86,9 +86,14 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     };
     this.get = function(id) {
         return self.isListResolved.promise.then(function() {
-            return _.find(self.list, function(rw) {
+            var st = _.find(self.list, function(rw) {
                 return rw.id == id;
             });
+            if(st){
+               return st;
+            } else {
+                throw Error('todo.is.ui.story.does.not.exist');
+            }
         });
     };
     this.update = function(story) {

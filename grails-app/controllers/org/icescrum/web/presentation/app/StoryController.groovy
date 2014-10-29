@@ -45,14 +45,13 @@ class StoryController {
     def featureService
     def springSecurityService
 
-    @Secured('inProduct()')
-    def show() {
-        withStory { Story story ->
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: story as JSON }
-                json { renderRESTJSON(text:story) }
-                xml  { renderRESTXML(text:story) }
-            }
+    @Secured(['inProduct()'])
+    def show(long id) {
+        def story = Story.withStory(id)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: story as JSON }
+            json { renderRESTJSON(text:story) }
+            xml  { renderRESTXML(text:story) }
         }
     }
 
@@ -61,7 +60,7 @@ class StoryController {
         forward(action: 'show', params: params)
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured(['isAuthenticated() and !archivedProduct()'])
     def save() {
         def storyParams = params.story
         if (!storyParams){
@@ -110,85 +109,83 @@ class StoryController {
         }
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured(['isAuthenticated() and !archivedProduct()'])
     def update() {
-        withStories{ List<Story> stories ->
-            def storyParams = params.story
-            if (!storyParams){
-                returnError(text:message(code:'todo.is.ui.no.data'))
+        def stories = Story.withStories(params)
+        def storyParams = params.story
+        if (!storyParams){
+            returnError(text:message(code:'todo.is.ui.no.data'))
+            return
+        }
+        stories.each { Story story ->
+            if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
+                render(status: 403)
                 return
             }
-            stories.each { Story story ->
-                if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
-                    render(status: 403)
-                    return
+            Map props = [:]
+            if (storyParams.rank != null) {
+                props.rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
+            }
+            if (storyParams.state != null) {
+                props.state = storyParams.state instanceof Number ? storyParams.state : storyParams.state.toInteger()
+            }
+            if (storyParams.effort != null) {
+                if (storyParams.effort instanceof String) {
+                    def effort = storyParams.effort.replaceAll(',', '.')
+                    props.effort = effort.isBigDecimal() ? effort.toBigDecimal() : effort // can be a "?"
+                } else {
+                    props.effort = storyParams.effort
                 }
-                Map props = [:]
-                if (storyParams.rank != null) {
-                    props.rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
+            }
+            Story.withTransaction {
+                if (storyParams.tags != null) {
+                    story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
                 }
-                if (storyParams.state != null) {
-                    props.state = storyParams.state instanceof Number ? storyParams.state : storyParams.state.toInteger()
-                }
-                if (storyParams.effort != null) {
-                    if (storyParams.effort instanceof String) {
-                        def effort = storyParams.effort.replaceAll(',', '.')
-                        props.effort = effort.isBigDecimal() ? effort.toBigDecimal() : effort // can be a "?"
-                    } else {
-                        props.effort = storyParams.effort
-                    }
-                }
-                Story.withTransaction {
-                    if (storyParams.tags != null) {
-                        story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
-                    }
-                    //for rest support
-                    if ((request.format == 'xml' && storyParams.parentSprint == '') || storyParams.parentSprint?.id == '') {
-                        props.parentSprint = null
-                    } else {
-                        def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
-                        if (sprintId != null && story.parentSprint?.id != sprintId) {
-                            def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
-                            if (sprint) {
-                                props.parentSprint = sprint
-                            } else {
-                                returnError(text:message(code: 'is.sprint.error.not.exist'))
-                                return
-                            }
-                        } else if (params.boolean('shiftToNext')) {
-                            def nextSprint = story.parentSprint.nextSprint
-                            if (nextSprint) {
-                                props.parentSprint = nextSprint
-                            } else {
-                                returnError(text:message(code: 'is.sprint.error.not.exist'))
-                                return
-                            }
+                //for rest support
+                if ((request.format == 'xml' && storyParams.parentSprint == '') || storyParams.parentSprint?.id == '') {
+                    props.parentSprint = null
+                } else {
+                    def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
+                    if (sprintId != null && story.parentSprint?.id != sprintId) {
+                        def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
+                        if (sprint) {
+                            props.parentSprint = sprint
+                        } else {
+                            returnError(text:message(code: 'is.sprint.error.not.exist'))
+                            return
+                        }
+                    } else if (params.boolean('shiftToNext')) {
+                        def nextSprint = story.parentSprint.nextSprint
+                        if (nextSprint) {
+                            props.parentSprint = nextSprint
+                        } else {
+                            returnError(text:message(code: 'is.sprint.error.not.exist'))
+                            return
                         }
                     }
-                    bindData(story, storyParams, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']])
-                    storyService.update(story, props)
                 }
+                bindData(story, storyParams, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']])
+                storyService.update(story, props)
             }
-            def returnData = stories.size() > 1 ? stories : stories.first()
-            withFormat {
-                html {
-                    render status: 200, contentType: 'application/json', text: returnData as JSON
-                }
-                json { renderRESTJSON(text: returnData) }
-                xml  { renderRESTXML(text: returnData) }
+        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        withFormat {
+            html {
+                render status: 200, contentType: 'application/json', text: returnData as JSON
             }
+            json { renderRESTJSON(text: returnData) }
+            xml  { renderRESTXML(text: returnData) }
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured(['isAuthenticated()'])
     def delete() {
-        withStories{List<Story> stories ->
-            storyService.delete(stories, null, params.reason? params.reason.replaceAll("(\r\n|\n)", "<br/>") :null)
-            withFormat {
-                html { render(status: 200)  }
-                json { render(status: 204) }
-                xml { render(status: 204) }
-            }
+        def stories = Story.withStories(params)
+        storyService.delete(stories, null, params.reason? params.reason.replaceAll("(\r\n|\n)", "<br/>") :null)
+        withFormat {
+            html { render(status: 200)  }
+            json { render(status: 204) }
+            xml { render(status: 204) }
         }
     }
 
@@ -203,42 +200,40 @@ class StoryController {
         }
     }
 
-    @Secured('inProduct() and !archivedProduct()')
+    @Secured(['inProduct() and !archivedProduct()'])
     def copy() {
-        withStories{ List<Story> stories ->
-            def copiedStories = storyService.copy(stories)
-            withFormat {
-                def returnData = copiedStories.size() > 1 ? copiedStories : copiedStories.first()
-                html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
-                json { renderRESTJSON(text: returnData, status: 201) }
-                xml  { renderRESTXML(text: returnData, status: 201) }
-            }
+        def stories = Story.withStories(params)
+        def copiedStories = storyService.copy(stories)
+        withFormat {
+            def returnData = copiedStories.size() > 1 ? copiedStories : copiedStories.first()
+            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
+            json { renderRESTJSON(text: returnData, status: 201) }
+            xml  { renderRESTXML(text: returnData, status: 201) }
         }
     }
 
     @Secured(['permitAll()'])
-    def permalink() {
-        withStory { Story story ->
-            def uri
-            switch(story.state){
-                case Story.STATE_SUGGESTED:
-                    uri = "/p/$story.backlog.pkey/#/sandbox/$story.id"
-                    break
-                case Story.STATE_ACCEPTED:
-                case Story.STATE_ESTIMATED:
-                    uri = "/p/$story.backlog.pkey/#/backlog/$story.id"
-                    break
-                case Story.STATE_PLANNED:
-                case Story.STATE_INPROGRESS:
-                case Story.STATE_DONE:
-                    //TODO need to be fixed
-                    "/p/$story.backlog.pkey/#/sprint/$story.id"
-                    break
-                default:
-                    uri:"/"
-            }
-            redirect(uri:uri)
+    def permalink(long id) {
+        def story = Story.withStory(id)
+        def uri
+        switch(story.state){
+            case Story.STATE_SUGGESTED:
+                uri = "/p/$story.backlog.pkey/#/sandbox/$story.id"
+                break
+            case Story.STATE_ACCEPTED:
+            case Story.STATE_ESTIMATED:
+                uri = "/p/$story.backlog.pkey/#/backlog/$story.id"
+                break
+            case Story.STATE_PLANNED:
+            case Story.STATE_INPROGRESS:
+            case Story.STATE_DONE:
+                //TODO need to be fixed
+                "/p/$story.backlog.pkey/#/sprint/$story.id"
+                break
+            default:
+                uri:"/"
         }
+        redirect(uri:uri)
     }
 
     @Secured('isAuthenticated()')
@@ -248,73 +243,67 @@ class StoryController {
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
-    @Secured('productOwner() and !archivedProduct()')
-    def done() {
-        withStory { Story story ->
-            withFormat {
-                html {
-                    def testsNotSuccess = story.acceptanceTests.findAll { AcceptanceTest test -> test.stateEnum != AcceptanceTestState.SUCCESS }
-                    if (testsNotSuccess.size() > 0 && !params.boolean('confirm')) {
-                        def dialog = g.render(template: 'dialogs/confirmDone', model: [testsNotSuccess: testsNotSuccess.sort {it.uid}])
-                        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-                        return
-                    }
-                    storyService.done(story)
-                    render(status: 200, contentType: 'application/json', text: story as JSON)
+    @Secured(['productOwner() and !archivedProduct()'])
+    def done(long id) {
+        def story = Story.withStory(id)
+        withFormat {
+            html {
+                def testsNotSuccess = story.acceptanceTests.findAll { AcceptanceTest test -> test.stateEnum != AcceptanceTestState.SUCCESS }
+                if (testsNotSuccess.size() > 0 && !params.boolean('confirm')) {
+                    def dialog = g.render(template: 'dialogs/confirmDone', model: [testsNotSuccess: testsNotSuccess.sort {it.uid}])
+                    render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+                    return
                 }
-                json {
-                    storyService.done(story)
-                    renderRESTJSON(text:story)
-                }
-                xml  {
-                    storyService.done(story)
-                    renderRESTXML(text:story)
-                }
+                storyService.done(story)
+                render(status: 200, contentType: 'application/json', text: story as JSON)
+            }
+            json {
+                storyService.done(story)
+                renderRESTJSON(text:story)
+            }
+            xml  {
+                storyService.done(story)
+                renderRESTXML(text:story)
             }
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
-    def unDone() {
-        withStory {Story story ->
-            storyService.unDone(story)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
-                json { renderRESTJSON(text:story) }
-                xml  { renderRESTXML(text:story) }
-            }
+    @Secured(['productOwner() and !archivedProduct()'])
+    def unDone(long id) {
+        def story = Story.withStory(id)
+        storyService.unDone(story)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
+            json { renderRESTJSON(text:story) }
+            xml  { renderRESTXML(text:story) }
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
+    @Secured(['productOwner() and !archivedProduct()'])
     def acceptAsFeature() {
-        withStories{List<Story> stories ->
-            stories = stories.reverse()
-            def features = storyService.acceptToFeature(stories)
-            //case one story & d&d from sandbox to backlog
-            if (params.rank?.isInteger()){
-                Feature feature = (Feature) features.first()
-                feature.rank = params.int('rank')
-                featureService.update(feature)
-            }
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: features as JSON }
-                json { renderRESTJSON(text:features) }
-                xml  { renderRESTXML(text:features) }
-            }
+        def stories = Story.withStories(params)?.reverse()
+        def features = storyService.acceptToFeature(stories)
+        //case one story & d&d from sandbox to backlog
+        if (params.rank?.isInteger()){
+            Feature feature = (Feature) features.first()
+            feature.rank = params.int('rank')
+            featureService.update(feature)
+        }
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: features as JSON }
+            json { renderRESTJSON(text:features) }
+            xml  { renderRESTXML(text:features) }
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
+    @Secured(['productOwner() and !archivedProduct()'])
     def acceptAsTask() {
-        withStories{List<Story> stories ->
-            stories = stories.reverse()
-            def elements = storyService.acceptToUrgentTask(stories)
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: elements as JSON }
-                json { renderRESTJSON(text:elements) }
-                xml  { renderRESTXML(text:elements) }
-            }
+        def stories = Story.withStories(params)?.reverse()
+        def elements = storyService.acceptToUrgentTask(stories)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: elements as JSON }
+            json { renderRESTJSON(text:elements) }
+            xml  { renderRESTXML(text:elements) }
         }
     }
 
@@ -343,22 +332,21 @@ class StoryController {
     }
 
     @Secured('stakeHolder()')
-    def activities(boolean all) {
-        withStory { Story story ->
-            withFormat {
-                def activities = story.activity
-                if (!all) {
-                    def selectedActivities = activities.findAll { activity ->
-                        activity.code in [Activity.CODE_SAVE, 'estimated', 'acceptAs', 'done', 'unDone', 'returnToSandbox']
-                    }
-                    def remainingActivities = activities - selectedActivities
-                    activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
-                    activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
+    def activities(long id, boolean all) {
+        def story = Story.withStory(id)
+        withFormat {
+            def activities = story.activity
+            if (!all) {
+                def selectedActivities = activities.findAll { activity ->
+                    activity.code in [Activity.CODE_SAVE, 'estimated', 'acceptAs', 'done', 'unDone', 'returnToSandbox']
                 }
-                html { render(status: 200, contentType: 'application/json', text: activities as JSON) }
-                json { renderRESTJSON(text: activities) }
-                xml  { renderRESTXML(text: activities) }
+                def remainingActivities = activities - selectedActivities
+                activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
+                activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
             }
+            html { render(status: 200, contentType: 'application/json', text: activities as JSON) }
+            json { renderRESTJSON(text: activities) }
+            xml  { renderRESTXML(text: activities) }
         }
     }
 
@@ -379,97 +367,93 @@ class StoryController {
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def like() {
-        withStories { List<Story> stories ->
-            stories.each { Story story ->
-                User user = springSecurityService.currentUser
-                if (story.liked) {
-                    story.removeFromLikers(user)
+        def stories = Story.withStories(params)
+        stories.each { Story story ->
+            User user = springSecurityService.currentUser
+            if (story.liked) {
+                story.removeFromLikers(user)
+            } else {
+                story.addToLikers(user)
+            }
+            storyService.update(story)
+        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        withFormat {
+            html {
+                render status: 200, contentType: 'application/json', text: returnData as JSON
+            }
+            json { renderRESTJSON(text: returnData) }
+            xml  { renderRESTXML(text: returnData) }
+        }
+    }
+
+    @Secured(['isAuthenticated() and !archivedProduct()'])
+    def follow() {
+        def stories = Story.withStories(params)
+        stories.each { Story story ->
+            User user = (User)springSecurityService.currentUser
+            if (params.follow == null || params.boolean('follow') != story.followed) {
+                if (story.followed) {
+                    story.removeFromFollowers(user)
                 } else {
-                    story.addToLikers(user)
+                    story.addToFollowers(user)
                 }
                 storyService.update(story)
             }
-            def returnData = stories.size() > 1 ? stories : stories.first()
-            withFormat {
-                html {
-                    render status: 200, contentType: 'application/json', text: returnData as JSON
-                }
-                json { renderRESTJSON(text: returnData) }
-                xml  { renderRESTXML(text: returnData) }
+        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        withFormat {
+            html {
+                render status: 200, contentType: 'application/json', text: returnData as JSON
             }
+            json { renderRESTJSON(text: returnData) }
+            xml  { renderRESTXML(text: returnData) }
         }
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
-    def follow() {
-        withStories { List<Story> stories ->
-            stories.each { Story story ->
-                User user = springSecurityService.currentUser
-                if (params.follow == null || params.boolean('follow') != story.followed) {
-                    if (story.followed) {
-                        story.removeFromFollowers(user)
-                    } else {
-                        story.addToFollowers(user)
-                    }
-                    storyService.update(story)
-                }
-            }
-            def returnData = stories.size() > 1 ? stories : stories.first()
-            withFormat {
-                html {
-                    render status: 200, contentType: 'application/json', text: returnData as JSON
-                }
-                json { renderRESTJSON(text: returnData) }
-                xml  { renderRESTXML(text: returnData) }
-            }
+    @Secured(['stakeHolder() or inProduct()'])
+    def dependenceEntries(long id) {
+        def story = Story.withStory(id)
+        def stories = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
+        def storyEntries = stories.collect { [id: it.id, text: it.name + ' (' + it.uid + ')'] }
+        if (params.term) {
+            storyEntries = storyEntries.findAll { it.text.contains(params.term) }
         }
+        render status: 200, contentType: 'application/json', text: storyEntries as JSON
     }
 
-    @Secured('stakeHolder() or inProduct()')
-    def dependenceEntries() {
-        withStory { story ->
-            def stories = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
-            def storyEntries = stories.collect { [id: it.id, text: it.name + ' (' + it.uid + ')'] }
-            if (params.term) {
-                storyEntries = storyEntries.findAll { it.text.contains(params.term) }
+    @Secured(['isAuthenticated() and !archivedProduct()'])
+    def saveTemplate(long id) {
+        def story = Story.withStory(id)
+        def product = Product.get(params.long('product'))
+        def templateName = params.template.name
+        // Custom marshalling
+        def copyFields = { source, fieldNames ->
+            def copy = [:]
+            fieldNames.each { fieldName ->
+                def fieldValue = source."$fieldName"
+                if (fieldValue != null) {
+                    copy[fieldName] = fieldValue.hasProperty('id') ? [id: fieldValue.id] : fieldValue
+                }
             }
-            render status: 200, contentType: 'application/json', text: storyEntries as JSON
+            return copy
         }
-    }
-
-    @Secured('isAuthenticated() and !archivedProduct()')
-    def saveTemplate() {
-        withStory { story ->
-            def product = Product.get(params.long('product'))
-            def templateName = params.template.name
-            // Custom marshalling
-            def copyFields = { source, fieldNames ->
-                def copy = [:]
-                fieldNames.each { fieldName ->
-                    def fieldValue = source."$fieldName"
-                    if (fieldValue != null) {
-                        copy[fieldName] = fieldValue.hasProperty('id') ? [id: fieldValue.id] : fieldValue
-                    }
-                }
-                return copy
+        def storyData = copyFields(story, ['affectVersion', 'description', 'notes', 'tags', 'type', 'dependsOn', 'feature'])
+        if (story.tasks) {
+            storyData.tasks = story.tasks.collect { task ->
+                copyFields(task, ['color', 'description', 'estimation', 'name', 'notes', 'tags', 'type'])
             }
-            def storyData = copyFields(story, ['affectVersion', 'description', 'notes', 'tags', 'type', 'dependsOn', 'feature'])
-            if (story.tasks) {
-                storyData.tasks = story.tasks.collect { task ->
-                    copyFields(task, ['color', 'description', 'estimation', 'name', 'notes', 'tags', 'type'])
-                }
+        }
+        if (story.acceptanceTests) {
+            storyData.acceptanceTests = story.acceptanceTests.collect { acceptanceTest ->
+                copyFields(acceptanceTest, ['description', 'name'])
             }
-            if (story.acceptanceTests) {
-                storyData.acceptanceTests = story.acceptanceTests.collect { acceptanceTest ->
-                    copyFields(acceptanceTest, ['description', 'name'])
-                }
-            }
-            def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: product)
-            if (template.save()) {
-                render(status: 200)
-            } else {
-                throw new RuntimeException(template.errors?.toString())
-            }
+        }
+        def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: product)
+        if (template.save()) {
+            render(status: 200)
+        } else {
+            throw new RuntimeException(template.errors?.toString())
         }
     }
 

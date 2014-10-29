@@ -293,6 +293,10 @@ isApp.config(['$stateProvider', '$httpProvider',
             return notifications.success('', $rootScope.message(code), options);
         };
 
+        $rootScope.notifyError = function(code, options) {
+            return notifications.error('', $rootScope.message(code), options);
+        };
+
         $rootScope.editableMode = false;
         $rootScope.setEditableMode = function(editableMode) {
             $rootScope.editableMode = editableMode;

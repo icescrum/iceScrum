@@ -63,45 +63,43 @@ class AcceptanceTestController {
             returnError(text: message(code: 'todo.is.ui.no.data'))
             return
         }
-        def storyId = acceptanceTestParams.parentStory.id.toLong()
-        withStory(storyId) { story ->
-            if (story.state >= Story.STATE_DONE) {
-                returnError(text: message(code: 'is.acceptanceTest.error.save.storyState'))
-                return
-            }
-            def state = acceptanceTestParams.state?.toInteger()
-            def newState
-            if (state != null) {
-                if (AcceptanceTest.AcceptanceTestState.exists(state)) {
-                    newState = AcceptanceTest.AcceptanceTestState.byId(state)
-                    if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                        returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
-                        return
-                    }
-                } else {
-                    returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
+        def story = Story.withStory(acceptanceTestParams.parentStory.id.toLong())
+        if (story.state >= Story.STATE_DONE) {
+            returnError(text: message(code: 'is.acceptanceTest.error.save.storyState'))
+            return
+        }
+        def state = acceptanceTestParams.state?.toInteger()
+        def newState
+        if (state != null) {
+            if (AcceptanceTest.AcceptanceTestState.exists(state)) {
+                newState = AcceptanceTest.AcceptanceTestState.byId(state)
+                if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
+                    returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
                     return
                 }
-            }
-            User user = (User) springSecurityService.currentUser
-            def acceptanceTest = new AcceptanceTest()
-            try {
-                AcceptanceTest.withTransaction {
-                    if (newState) {
-                        acceptanceTest.stateEnum = newState
-                    }
-                    bindData(acceptanceTest, acceptanceTestParams, [include:['name','description']])
-                    acceptanceTestService.save(acceptanceTest, story, user)
-                }
-            } catch (RuntimeException e) {
-                returnError(object: acceptanceTest, exception: e)
+            } else {
+                returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
                 return
             }
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
-                json { renderRESTJSON status: 201, text:acceptanceTest }
-                xml  { renderRESTXML status: 201, text:acceptanceTest }
+        }
+        User user = (User) springSecurityService.currentUser
+        def acceptanceTest = new AcceptanceTest()
+        try {
+            AcceptanceTest.withTransaction {
+                if (newState) {
+                    acceptanceTest.stateEnum = newState
+                }
+                bindData(acceptanceTest, acceptanceTestParams, [include:['name','description']])
+                acceptanceTestService.save(acceptanceTest, story, user)
             }
+        } catch (RuntimeException e) {
+            returnError(object: acceptanceTest, exception: e)
+            return
+        }
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
+            json { renderRESTJSON status: 201, text:acceptanceTest }
+            xml  { renderRESTXML status: 201, text:acceptanceTest }
         }
     }
 

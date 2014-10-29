@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -23,6 +23,7 @@
 package org.icescrum.web.presentation
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 
 class ErrorsController {
 
@@ -35,6 +36,16 @@ class ErrorsController {
             render(status: 403, text: message(code: 'is.error.denied'))
         }
     }
+
+    @Secured(['permitAll()'])
+    def error404() {
+        if (springSecurityService.isAjax(request))
+            render(status: 404, text: '')
+        else {
+            render(text:'', status: 404)
+        }
+    }
+
     def error401() {
         if (springSecurityService.isAjax(request))
             render(status: 401, text: '')

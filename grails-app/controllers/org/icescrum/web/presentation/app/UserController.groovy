@@ -30,7 +30,6 @@ import org.icescrum.components.FileUploadInfo
 import org.icescrum.components.UtilsWebComponents
 import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
-import grails.plugin.fluxiable.Activity
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story

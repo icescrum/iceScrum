@@ -20,6 +20,8 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  */
 
+
+import org.hibernate.ObjectNotFoundException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.acls.model.NotFoundException
 import org.springframework.transaction.CannotCreateTransactionException
@@ -231,6 +233,7 @@ class UrlMappings {
         "403"(controller: "errors", action: "error403")
         "400"(controller: "errors", action: "fakeError")
         "302"(controller: "errors", action: "fakeError")
+        "500"(controller: "errors", action: "error404", exception: ObjectNotFoundException)
         "500"(controller: "errors", action: "error403", exception: AccessDeniedException)
         "500"(controller: "errors", action: "error403", exception: NotFoundException)
         "500"(controller: 'errors', action: 'memory', exception: OutOfMemoryError)
