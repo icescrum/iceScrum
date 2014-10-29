@@ -85,8 +85,8 @@ grails.project.dependency.resolution = {
         compile ":less-asset-pipeline:1.10.0"
         compile ":browser-detection:2.1.0"
         // runtime ":database-migration:1.4.0" TODO enable new migration
-        runtime ":hibernate4:4.3.5.5"
-        build ":tomcat:7.0.54"
+        runtime ":hibernate4:4.3.6.1"
+        build ":tomcat:7.0.55"
         if (Environment.current == Environment.PRODUCTION){
             compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"
         }
