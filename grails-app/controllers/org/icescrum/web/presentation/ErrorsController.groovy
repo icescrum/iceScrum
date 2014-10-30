@@ -37,12 +37,11 @@ class ErrorsController {
         }
     }
 
-    @Secured(['permitAll()'])
     def error404() {
         if (springSecurityService.isAjax(request))
             render(status: 404, text: '')
         else {
-            render(text:'', status: 404)
+            render(status: 404, text:'')
         }
     }
 

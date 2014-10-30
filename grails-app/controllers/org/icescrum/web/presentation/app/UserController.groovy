@@ -39,6 +39,7 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
+import asset.pipeline.AssetHelper
 
 class UserController {
 
@@ -140,7 +141,7 @@ class UserController {
             if(params.user.avatar && !(params.user.avatar in ['gravatar', 'custom'])){
                 if (params.user.avatar instanceof String){
                     params.user.avatar = params.user.avatar.split("/")?.last()
-                    props.avatar = grailsApplication.parentContext.getResource('../grails-app/assets/images/avatars/' + params.user.avatar).file
+                    props.avatar = AssetHelper.fileForUri(AssetHelper.nameWithoutExtension("avatars/"+ params.user.avatar),null,AssetHelper.extensionFromURI("avatars/"+ params.user.avatar))
                     props.scale = false
                 } else if (params.user.avatar){
                     def uploadedAvatar = request.getFile('user.avatar')
@@ -189,7 +190,7 @@ class UserController {
                 redirect url:"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()
                 return
             }
-            avatar = grailsApplication.parentContext.getResource("../grails-app/assets/images/avatars/avatar.png").file
+            avatar = AssetHelper.fileForUri(AssetHelper.nameWithoutExtension("avatars/avatar.png"),null,AssetHelper.nameWithoutExtension("avatars/avatar.png"))
         }
         OutputStream out = response.getOutputStream()
         out.write(avatar.bytes)
