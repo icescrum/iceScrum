@@ -161,12 +161,12 @@ class FeatureController {
         }
     }
 
-    def index(long id) {
+    def index(long id, long product) {
         if (request?.format == 'html'){
             render(status:404)
             return
         }
-        Feature feature = Feature.withFeature(id)
+        Feature feature = Feature.withFeature(product, id)
         withFormat {
             json { renderRESTJSON(text:feature) }
             xml { renderRESTXML(text:feature) }
@@ -178,14 +178,14 @@ class FeatureController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def attachments(long id) {
-        Feature feature = Feature.withFeature(id)
+    def attachments(long id, long product) {
+        Feature feature = Feature.withFeature(product, id)
         manageAttachmentsNew(feature)
     }
 
     @Secured(['permitAll()'])
-    def permalink(long id){
-        Feature feature = Feature.withFeature(id)
+    def permalink(long id, long product){
+        Feature feature = Feature.withFeature(product, id)
         redirect(uri:"/p/$feature.backlog.pkey/#/feature/$feature.id")
     }
 

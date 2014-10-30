@@ -282,8 +282,8 @@ class TaskController {
     }
 
     @Secured('stakeHolder() and !archivedProduct()')
-    def tasksStory(long id) {
-        def story = Story.withStory(id)
+    def tasksStory(long id, long product) {
+        def story = Story.withStory(product, id)
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: story.tasks as JSON) }
             json { renderRESTJSON(text:story.tasks) }

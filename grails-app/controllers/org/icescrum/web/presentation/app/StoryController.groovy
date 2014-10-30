@@ -46,8 +46,8 @@ class StoryController {
     def springSecurityService
 
     @Secured(['inProduct()'])
-    def show(long id) {
-        def story = Story.withStory(id)
+    def show(long id, long product) {
+        def story = Story.withStory(product, id)
         withFormat {
             html { render status: 200, contentType: 'application/json', text: story as JSON }
             json { renderRESTJSON(text:story) }
@@ -213,8 +213,8 @@ class StoryController {
     }
 
     @Secured(['permitAll()'])
-    def permalink(long id) {
-        def story = Story.withStory(id)
+    def permalink(long id, long product) {
+        def story = Story.withStory(product, id)
         def uri
         switch(story.state){
             case Story.STATE_SUGGESTED:
@@ -244,8 +244,8 @@ class StoryController {
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
-    def done(long id) {
-        def story = Story.withStory(id)
+    def done(long id, long product) {
+        def story = Story.withStory(product, id)
         withFormat {
             html {
                 def testsNotSuccess = story.acceptanceTests.findAll { AcceptanceTest test -> test.stateEnum != AcceptanceTestState.SUCCESS }
@@ -269,8 +269,8 @@ class StoryController {
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
-    def unDone(long id) {
-        def story = Story.withStory(id)
+    def unDone(long id, long product) {
+        def story = Story.withStory(product, id)
         storyService.unDone(story)
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: story as JSON)  }
@@ -330,8 +330,8 @@ class StoryController {
     }
 
     @Secured('stakeHolder()')
-    def activities(long id, boolean all) {
-        def story = Story.withStory(id)
+    def activities(long id, boolean all, long product) {
+        def story = Story.withStory(product, id)
         withFormat {
             def activities = story.activity
             if (!all) {
@@ -349,12 +349,12 @@ class StoryController {
     }
 
     @Secured('stakeHolder() and !archivedProduct()')
-    def listByType(long id) {
+    def listByType(long id, long product) {
         def stories
         if (params.type == 'actor') {
-            stories = Actor.withActor(id).stories
+            stories = Actor.withActor(product, id).stories
         } else if (params.type == 'feature') {
-            stories = Feature.withFeature(id).stories
+            stories = Feature.withFeature(product, id).stories
         }
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: stories as JSON) }
@@ -410,8 +410,8 @@ class StoryController {
     }
 
     @Secured(['stakeHolder() or inProduct()'])
-    def dependenceEntries(long id) {
-        def story = Story.withStory(id)
+    def dependenceEntries(long id, long product) {
+        def story = Story.withStory(product, id)
         def stories = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
         def storyEntries = stories.collect { [id: it.id, text: it.name + ' (' + it.uid + ')'] }
         if (params.term) {
@@ -421,9 +421,9 @@ class StoryController {
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])
-    def saveTemplate(long id) {
-        def story = Story.withStory(id)
-        def product = Product.get(params.long('product'))
+    def saveTemplate(long id, long product) {
+        Story story = Story.withStory(product, id)
+        Product _product = Product.withProduct(product)
         def templateName = params.template.name
         // Custom marshalling
         def copyFields = { source, fieldNames ->
@@ -447,7 +447,7 @@ class StoryController {
                 copyFields(acceptanceTest, ['description', 'name'])
             }
         }
-        def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: product)
+        def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: _product)
         if (template.save()) {
             render(status: 200)
         } else {

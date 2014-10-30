@@ -37,7 +37,7 @@ class AcceptanceTestController {
 
     @Secured('stakeHolder() and !archivedProduct()')
     def index(long id, long product) {
-        AcceptanceTest.withAcceptanceTest(id, product)
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
         withFormat {
             html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
             json { renderRESTJSON text:acceptanceTest }
@@ -46,8 +46,8 @@ class AcceptanceTestController {
     }
 
     @Secured('stakeHolder() and !archivedProduct()')
-    def list() {
-        def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(params.long('product'), params.long('parentStory')) : AcceptanceTest.getAllInProduct(params.long('product'))
+    def list(long product) {
+        def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(product, params.long('parentStory')) : AcceptanceTest.getAllInProduct(product)
         withFormat {
             html { render status: 200, contentType: 'application/json', text: acceptanceTests as JSON }
             json { renderRESTJSON text: acceptanceTests }
@@ -56,13 +56,13 @@ class AcceptanceTestController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def save() {
+    def save(long product) {
         def acceptanceTestParams = params.acceptanceTest
         if (!acceptanceTestParams) {
             returnError(text: message(code: 'todo.is.ui.no.data'))
             return
         }
-        def story = Story.withStory(acceptanceTestParams.parentStory.id.toLong())
+        def story = Story.withStory(product, acceptanceTestParams.parentStory.id.toLong())
         if (story.state >= Story.STATE_DONE) {
             returnError(text: message(code: 'is.acceptanceTest.error.save.storyState'))
             return
@@ -109,7 +109,7 @@ class AcceptanceTestController {
             returnError(text: message(code: 'todo.is.ui.no.data'))
             return
         }
-        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(id, product)
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
         def story = acceptanceTest.parentStory
         if (story.state >= Story.STATE_DONE) {
             returnError(text: message(code: 'is.acceptanceTest.error.update.storyState'))
@@ -151,7 +151,7 @@ class AcceptanceTestController {
 
     @Secured('inProduct() and !archivedProduct()')
     def delete(long id, long product) {
-        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(id, product)
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
         def deleted = [id: acceptanceTest.id,parentStory: [id:acceptanceTest.parentStory.id]]
         acceptanceTestService.delete(acceptanceTest)
         withFormat {

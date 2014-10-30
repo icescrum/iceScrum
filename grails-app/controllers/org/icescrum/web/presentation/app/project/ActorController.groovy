@@ -73,7 +73,7 @@ class ActorController {
     @Secured('productOwner() and !archivedProduct()')
     def update() {
         def actorParams = params.actor
-        List<Actor> actors = Actor.withActor(params)
+        List<Actor> actors = Actor.withActors(params)
         if (!actorParams) {
             returnError(text: message(code: 'todo.is.ui.no.data'))
             return
@@ -123,12 +123,12 @@ class ActorController {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    def index(long id) {
+    def index(long id, long product) {
         if (request?.format == 'html') {
             render(status: 404)
             return
         }
-        Actor actor = Actor.withActor(id)
+        Actor actor = Actor.withActor(product, id)
         withFormat {
             json { renderRESTJSON(text: actor) }
             xml { renderRESTXML(text: actor) }
@@ -136,8 +136,8 @@ class ActorController {
     }
 
     @Secured(['permitAll()'])
-    def permalink(long id){
-        Actor actor = Actor.withActor(id)
+    def permalink(long id, long product){
+        Actor actor = Actor.withActor(product, id)
         redirect(uri:"/p/$actor.backlog.pkey/#/actor/$actor.id")
     }
 
