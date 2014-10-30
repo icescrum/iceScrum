@@ -28,6 +28,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter
 import org.apache.commons.validator.GenericValidator
 import org.icescrum.components.FileUploadInfo
 import org.icescrum.components.UtilsWebComponents
+import org.icescrum.core.domain.Activity
 import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
@@ -93,85 +94,84 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def update() {
-        withUser{ User user ->
+    def update(long id) {
+        User user = User.withUser(id)
 
-            // profile is personal
-            if ((user.id != springSecurityService.principal.id || request.format in ['json','xml']) && !request.admin){
-                render(status:403)
-                return
-            }
+        // profile is personal
+        if ((user.id != springSecurityService.principal.id || request.format in ['json','xml']) && !request.admin){
+            render(status:403)
+            return
+        }
 
-            Map props = [:]
-            if(params.flowIdentifier){
-                User.withTransaction {
-                    def endOfUpload = {FileUploadInfo uploadInfo ->
-                        def uploadedAvatar = new File(uploadInfo.filePath)
-                        props.avatar = uploadedAvatar.canonicalPath
-                        props.scale = true
-                        userService.update(user, props)
-                        withFormat {
-                            html { render status: 200, contentType: 'application/json', text: user as JSON }
-                            json { renderRESTJSON(text:user) }
-                            xml  { renderRESTXML(text:user) }
-                        }
-                    }
-                    UtilsWebComponents.handleUpload.delegate = this
-                    UtilsWebComponents.handleUpload(request, params, endOfUpload)
-                }
-                return;
-            }
-
-            if (!params.user){
-                returnError(text:message(code:'todo.is.ui.no.data'))
-                return
-            }
-
-            if (!request.admin && ((params.confirmPassword  || params.user.password != "") && (params.confirmPassword != params.user.password))) {
-                returnError(text: message(code: 'is.user.error.password.check'))
-                return
-            }
-
+        Map props = [:]
+        if(params.flowIdentifier){
             User.withTransaction {
-                if (params.user.password?.trim() != ''){
-                    props.pwd = params.user.password
-                }
-                if(params.user.avatar && !(params.user.avatar in ['gravatar', 'custom'])){
-                    if (params.user.avatar instanceof String){
-                        params.user.avatar = params.user.avatar.split("/")?.last()
-                        props.avatar = grailsApplication.parentContext.getResource('../grails-app/assets/images/avatars/' + params.user.avatar).file
-                        props.scale = false
-                    } else if (params.user.avatar){
-                        def uploadedAvatar = request.getFile('user.avatar')
-                        props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${FilenameUtils.getExtension(uploadedAvatar.originalFilename)}")
-                        props.scale = true
-                        uploadedAvatar.transferTo(props.avatar)
+                def endOfUpload = {FileUploadInfo uploadInfo ->
+                    def uploadedAvatar = new File(uploadInfo.filePath)
+                    props.avatar = uploadedAvatar.canonicalPath
+                    props.scale = true
+                    userService.update(user, props)
+                    withFormat {
+                        html { render status: 200, contentType: 'application/json', text: user as JSON }
+                        json { renderRESTJSON(text:user) }
+                        xml  { renderRESTXML(text:user) }
                     }
-                    if (props.avatar){
-                        props.avatar = props.avatar.canonicalPath
-                    }
-                } else if (params.user.avatar == 'gravatar'){
-                    props.avatar = null
                 }
-                if (params.user.preferences && params.user.preferences['emailsSettings']){
-                    props.emailsSettings = [onStory:params.remove('user.preferences.emailsSettings.onStory'),
-                                            autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
-                                            onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
-                }
-                bindData(user, params, [include:['firstName','lastName','email']], "user")
-                //preferences using as Map for REST & HTTP support
-                if (params.user.preferences){
-                    bindData(user.preferences, params.user.preferences as Map, [include:['language', 'filterTask', 'activity']], "")
-                }
-                entry.hook(id:"${controllerName}-${actionName}", model:[user:user, props:props])
-                userService.update(user, props)
+                UtilsWebComponents.handleUpload.delegate = this
+                UtilsWebComponents.handleUpload(request, params, endOfUpload)
             }
+            return;
+        }
 
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: user as JSON }
-                json { renderRESTJSON(text:user) }
-                xml  { renderRESTXML(text:user) }
+        if (!params.user){
+            returnError(text:message(code:'todo.is.ui.no.data'))
+            return
+        }
+
+        if (!request.admin && ((params.confirmPassword  || params.user.password != "") && (params.confirmPassword != params.user.password))) {
+            returnError(text: message(code: 'is.user.error.password.check'))
+            return
+        }
+
+        User.withTransaction {
+            if (params.user.password?.trim() != ''){
+                props.pwd = params.user.password
             }
+            if(params.user.avatar && !(params.user.avatar in ['gravatar', 'custom'])){
+                if (params.user.avatar instanceof String){
+                    params.user.avatar = params.user.avatar.split("/")?.last()
+                    props.avatar = grailsApplication.parentContext.getResource('../grails-app/assets/images/avatars/' + params.user.avatar).file
+                    props.scale = false
+                } else if (params.user.avatar){
+                    def uploadedAvatar = request.getFile('user.avatar')
+                    props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${FilenameUtils.getExtension(uploadedAvatar.originalFilename)}")
+                    props.scale = true
+                    uploadedAvatar.transferTo(props.avatar)
+                }
+                if (props.avatar){
+                    props.avatar = props.avatar.canonicalPath
+                }
+            } else if (params.user.avatar == 'gravatar'){
+                props.avatar = null
+            }
+            if (params.user.preferences && params.user.preferences['emailsSettings']){
+                props.emailsSettings = [onStory:params.remove('user.preferences.emailsSettings.onStory'),
+                                        autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
+                                        onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
+            }
+            bindData(user, params, [include:['firstName','lastName','email']], "user")
+            //preferences using as Map for REST & HTTP support
+            if (params.user.preferences){
+                bindData(user.preferences, params.user.preferences as Map, [include:['language', 'filterTask', 'activity']], "")
+            }
+            entry.hook(id:"${controllerName}-${actionName}", model:[user:user, props:props])
+            userService.update(user, props)
+        }
+
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: user as JSON }
+            json { renderRESTJSON(text:user) }
+            xml  { renderRESTXML(text:user) }
         }
     }
 
@@ -216,60 +216,59 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def index() {
-        withUser{ User user ->
-            withFormat {
-                html {
-                    def permalink = createLink(absolute: true, mapping: "profile", id: params.id)
-                    def stories = Story.findAllByCreator(user, [order: 'desc', sort: 'lastUpdated', max: 150])
-                    def activities = Activity.findAllByPoster(user, [order: 'desc', sort: 'dateCreated', max: 15, cache:false])
-                    def tasks = Task.findAllByResponsibleAndState(user, Task.STATE_BUSY, [order: 'desc', sort: 'lastUpdated'])
-                    def inProgressTasks = tasks.size()
+    def index(long id) {
+        User user = User.withUser(id)
+        withFormat {
+            html {
+                def permalink = createLink(absolute: true, mapping: "profile", id: params.id)
+                def stories = Story.findAllByCreator(user, [order: 'desc', sort: 'lastUpdated', max: 150])
+                def activities = Activity.findAllByPoster(user, [order: 'desc', sort: 'dateCreated', max: 15, cache:false])
+                def tasks = Task.findAllByResponsibleAndState(user, Task.STATE_BUSY, [order: 'desc', sort: 'lastUpdated'])
+                def inProgressTasks = tasks.size()
 
-                    def currentAuth = springSecurityService.authentication
-                    def pId
-                    tasks = tasks.findAll {
-                        pId = it.backlog.parentRelease.parentProduct.id
-                        securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
-                    }
-
-                    stories = stories.findAll {
-                        pId = it.backlog.id
-                        securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
-                    }
-
-                    //Refactor using SpringSecurity ACL on all domains
-                    def taskDeletePattern = 'taskDelete'
-                    def taskPattern = 'task'
-                    def deletePattern = 'delete'
-                    activities = activities.findAll {
-                        if (it.code == taskDeletePattern) {
-                            pId = Story.get(it.cachedId)?.backlog
-                        } else if (it.code.startsWith(taskPattern)) {
-                            pId = Task.get(it.cachedId)?.backlog?.parentRelease?.parentProduct
-                        } else if (it.code == deletePattern) {
-                            pId = Product.get(it.cachedId)
-                        } else {
-                            pId = Story.get(it.cachedId)?.backlog
-                        }
-                        securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
-                    }
-
-
-                    render template: 'window/profile', model: [permalink: permalink,
-                            user: user,
-                            inProgressTasks: inProgressTasks,
-                            stories: stories,
-                            activities: activities,
-                            tasks: tasks
-                    ]
+                def currentAuth = springSecurityService.authentication
+                def pId
+                tasks = tasks.findAll {
+                    pId = it.backlog.parentRelease.parentProduct.id
+                    securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
                 }
-                json {
-                    renderRESTJSON(text:user)
+
+                stories = stories.findAll {
+                    pId = it.backlog.id
+                    securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
                 }
-                xml  {
-                    renderRESTXML(text:user)
+
+                //Refactor using SpringSecurity ACL on all domains
+                def taskDeletePattern = 'taskDelete'
+                def taskPattern = 'task'
+                def deletePattern = 'delete'
+                activities = activities.findAll {
+                    if (it.code == taskDeletePattern) {
+                        pId = Story.get(it.cachedId)?.backlog
+                    } else if (it.code.startsWith(taskPattern)) {
+                        pId = Task.get(it.cachedId)?.backlog?.parentRelease?.parentProduct
+                    } else if (it.code == deletePattern) {
+                        pId = Product.get(it.cachedId)
+                    } else {
+                        pId = Story.get(it.cachedId)?.backlog
+                    }
+                    securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
                 }
+
+
+                render template: 'window/profile', model: [permalink: permalink,
+                        user: user,
+                        inProgressTasks: inProgressTasks,
+                        stories: stories,
+                        activities: activities,
+                        tasks: tasks
+                ]
+            }
+            json {
+                renderRESTJSON(text:user)
+            }
+            xml  {
+                renderRESTXML(text:user)
             }
         }
     }
