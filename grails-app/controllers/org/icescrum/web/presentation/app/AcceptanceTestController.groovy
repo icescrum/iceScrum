@@ -36,13 +36,12 @@ class AcceptanceTestController {
     def acceptanceTestService
 
     @Secured('stakeHolder() and !archivedProduct()')
-    def index() {
-        withAcceptanceTest { AcceptanceTest acceptanceTest ->
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
-                json { renderRESTJSON text:acceptanceTest }
-                xml  { renderRESTXML text:acceptanceTest }
-            }
+    def index(long id, long product) {
+        AcceptanceTest.withAcceptanceTest(id, product)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
+            json { renderRESTJSON text:acceptanceTest }
+            xml  { renderRESTXML text:acceptanceTest }
         }
     }
 
@@ -104,64 +103,61 @@ class AcceptanceTestController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def update() {
+    def update(long id, long product) {
         def acceptanceTestParams = params.acceptanceTest
         if (!acceptanceTestParams) {
             returnError(text: message(code: 'todo.is.ui.no.data'))
             return
         }
-        withAcceptanceTest { AcceptanceTest acceptanceTest ->
-            def story = acceptanceTest.parentStory
-            if (story.state >= Story.STATE_DONE) {
-                returnError(text: message(code: 'is.acceptanceTest.error.update.storyState'))
-                return
-            }
-            def state = acceptanceTestParams.state?.toInteger()
-            def newState
-            if (state != null) {
-                if (AcceptanceTest.AcceptanceTestState.exists(state)) {
-                    newState = AcceptanceTest.AcceptanceTestState.byId(state)
-                    if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                        returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
-                        return
-                    }
-                } else {
-                    returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(id, product)
+        def story = acceptanceTest.parentStory
+        if (story.state >= Story.STATE_DONE) {
+            returnError(text: message(code: 'is.acceptanceTest.error.update.storyState'))
+            return
+        }
+        def state = acceptanceTestParams.state?.toInteger()
+        def newState
+        if (state != null) {
+            if (AcceptanceTest.AcceptanceTestState.exists(state)) {
+                newState = AcceptanceTest.AcceptanceTestState.byId(state)
+                if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
+                    returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
                     return
                 }
+            } else {
+                returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
+                return
             }
-            AcceptanceTest.withTransaction {
-                if (newState) {
-                    acceptanceTest.stateEnum = newState
-                }
-                bindData(acceptanceTest, acceptanceTestParams, [include: ['name', 'description']])
-                acceptanceTestService.update(acceptanceTest)
+        }
+        AcceptanceTest.withTransaction {
+            if (newState) {
+                acceptanceTest.stateEnum = newState
             }
-            withFormat {
-                html {
-                    // TODO suggest story done when last acceptance test done
+            bindData(acceptanceTest, acceptanceTestParams, [include: ['name', 'description']])
+            acceptanceTestService.update(acceptanceTest)
+        }
+        withFormat {
+            html {
+                // TODO suggest story done when last acceptance test done
 //                    if (request.productOwner && story.testStateEnum == Story.TestState.SUCCESS) {
 //                        responseData.dialogSuccess = g.render(template: 'dialogs/suggestDone', model: [storyId: story.id])
 //                    }
-                    render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
-                }
-                json { renderRESTJSON text:acceptanceTest }
-                xml  { renderRESTXML text:acceptanceTest }
+                render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
             }
-
+            json { renderRESTJSON text:acceptanceTest }
+            xml  { renderRESTXML text:acceptanceTest }
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def delete() {
-        withAcceptanceTest { AcceptanceTest acceptanceTest ->
-            def deleted = [id: acceptanceTest.id,parentStory: [id:acceptanceTest.parentStory.id]]
-            acceptanceTestService.delete(acceptanceTest)
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: deleted as JSON }
-                json { render status: 204 }
-                xml  { render status: 204 }
-            }
+    def delete(long id, long product) {
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(id, product)
+        def deleted = [id: acceptanceTest.id,parentStory: [id:acceptanceTest.parentStory.id]]
+        acceptanceTestService.delete(acceptanceTest)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: deleted as JSON }
+            json { render status: 204 }
+            xml  { render status: 204 }
         }
     }
 }
