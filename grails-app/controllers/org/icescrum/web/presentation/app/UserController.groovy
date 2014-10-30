@@ -181,7 +181,7 @@ class UserController {
     }
 
     def avatar(long id) {
-        User user = User.get(id)
+        User user = User.withUser(id)
         File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter)new WildcardFileFilter("${user.id}.*"))
         def avatar = files ? files[0] : null
         if (!avatar?.exists()){
