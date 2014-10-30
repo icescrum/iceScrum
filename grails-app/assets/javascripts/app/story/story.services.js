@@ -82,6 +82,10 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
                     }
                 });
             })
+        } else {
+            if (obj.stories === undefined) {
+                obj.stories = [];
+            }
         }
     };
     this.get = function(id) {
