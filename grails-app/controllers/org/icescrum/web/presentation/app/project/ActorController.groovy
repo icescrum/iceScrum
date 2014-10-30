@@ -73,41 +73,39 @@ class ActorController {
     @Secured('productOwner() and !archivedProduct()')
     def update() {
         def actorParams = params.actor
-        withActors { List<Actor> actors ->
-            if (!actorParams) {
-                returnError(text: message(code: 'todo.is.ui.no.data'))
-                return
-            }
-            actors.each { Actor actor ->
-                Actor.withTransaction {
-                    bindData(actor, actorParams, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']])
-                    if (actorParams.tags != null) {
-                        actor.tags = actorParams.tags instanceof String ? actorParams.tags.split(',') : (actorParams.tags instanceof String[] || actorParams.tags instanceof List) ? actorParams.tags : null
-                    }
-                    actorService.update(actor)
+        List<Actor> actors = Actor.withActor(params)
+        if (!actorParams) {
+            returnError(text: message(code: 'todo.is.ui.no.data'))
+            return
+        }
+        actors.each { Actor actor ->
+            Actor.withTransaction {
+                bindData(actor, actorParams, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']])
+                if (actorParams.tags != null) {
+                    actor.tags = actorParams.tags instanceof String ? actorParams.tags.split(',') : (actorParams.tags instanceof String[] || actorParams.tags instanceof List) ? actorParams.tags : null
                 }
+                actorService.update(actor)
             }
-            def returnData = actors.size() > 1 ? actors : actors.first()
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
-                json { renderRESTJSON(text: returnData) }
-                xml { renderRESTXML(text: returnData) }
-            }
+        }
+        def returnData = actors.size() > 1 ? actors : actors.first()
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
+            json { renderRESTJSON(text: returnData) }
+            xml { renderRESTXML(text: returnData) }
         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def delete() {
-        withActors { List<Actor> actors ->
-            Actor.withTransaction {
-                actors.each { actor ->
-                    actorService.delete(actor)
-                }
-                withFormat {
-                    html { render(status: 200)  }
-                    json { render(status: 204) }
-                    xml { render(status: 204) }
-                }
+        List<Actor> actors = Actor.withActors(params)
+        Actor.withTransaction {
+            actors.each { actor ->
+                actorService.delete(actor)
+            }
+            withFormat {
+                html { render(status: 200)  }
+                json { render(status: 204) }
+                xml { render(status: 204) }
             }
         }
     }
@@ -125,24 +123,22 @@ class ActorController {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    def index() {
+    def index(long id) {
         if (request?.format == 'html') {
             render(status: 404)
             return
         }
-        withActor { Actor actor ->
-            withFormat {
-                json { renderRESTJSON(text: actor) }
-                xml { renderRESTXML(text: actor) }
-            }
+        Actor actor = Actor.withActor(id)
+        withFormat {
+            json { renderRESTJSON(text: actor) }
+            xml { renderRESTXML(text: actor) }
         }
     }
 
     @Secured(['permitAll()'])
-    def permalink(){
-        withActor{ def actor ->
-            redirect(uri:"/p/$actor.backlog.pkey/#/actor/$actor.id")
-        }
+    def permalink(long id){
+        Actor actor = Actor.withActor(id)
+        redirect(uri:"/p/$actor.backlog.pkey/#/actor/$actor.id")
     }
 
     def view() {

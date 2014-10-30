@@ -349,10 +349,10 @@ class StoryController {
     }
 
     @Secured('stakeHolder() and !archivedProduct()')
-    def listByType() {
+    def listByType(long id) {
         def stories
         if (params.type == 'actor') {
-            withActor { Actor actor -> stories = actor.stories }
+            stories = Actor.withActor(id).stories
         } else if (params.type == 'feature') {
             withFeature { Feature feature -> stories = feature.stories }
         }
