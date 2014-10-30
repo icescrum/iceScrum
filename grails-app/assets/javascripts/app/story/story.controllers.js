@@ -130,7 +130,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             });
          }).catch(function(e){
             $state.go('^.new');
-            $scope.notifyError($scope.message(e.message));
+            $scope.notifyError(e.message);
         });
         $scope.showNewTemplateModal = function(story) {
             $modal.open({

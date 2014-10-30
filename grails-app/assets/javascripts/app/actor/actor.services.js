@@ -30,9 +30,14 @@ services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
     this.list = Actor.query();
     this.get = function(id) {
         return self.list.$promise.then(function(list) {
-            return _.find(list, function(rw) {
+            var actor = _.find(list, function(rw) {
                 return rw.id == id;
             });
+            if (actor) {
+                return actor;
+            } else {
+                throw Error('todo.is.ui.actor.does.not.exist');
+            }
         });
     };
     this.save = function(actor) {

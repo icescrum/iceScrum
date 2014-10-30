@@ -63,6 +63,9 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
             $scope.next = FormService.next(FeatureService.list, $scope.feature);
             $scope.stories(feature); // load the stories as soon as possible since we are sure that they are displayed
+        }).catch(function(e){
+            $state.go('^.new');
+            $scope.notifyError(e.message)
         });
         if ($state.params.tabId) {
             $scope.tabSelected = {};

@@ -56,6 +56,9 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             $scope.previous = FormService.previous(ActorService.list, $scope.actor);
             $scope.next = FormService.next(ActorService.list, $scope.actor);
             $scope.stories(actor); // load the stories as soon as possible since we are sure that they are displayed
+        }).catch(function(e){
+            $state.go('^.new');
+            $scope.notifyError(e.message)
         });
         if ($state.params.tabId) {
             $scope.tabSelected = {};

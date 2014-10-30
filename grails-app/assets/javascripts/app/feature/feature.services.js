@@ -30,9 +30,14 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
     this.list = Feature.query();
     this.get = function(id) {
         return self.list.$promise.then(function(list) {
-            return _.find(list, function(rw) {
+            var feature = _.find(list, function(rw) {
                 return rw.id == id;
             });
+            if (feature) {
+                return feature;
+            } else {
+                throw Error('todo.is.ui.feature.does.not.exist');
+            }
         });
     };
     this.save = function(feature) {

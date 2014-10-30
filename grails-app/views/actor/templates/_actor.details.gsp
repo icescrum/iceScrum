@@ -23,6 +23,7 @@
 --}%
 <script type="text/ng-template" id="actor.details.html">
 <div class="panel panel-default"
+     ng-if="actor"
      flow-drop
      flow-files-submitted="attachmentQuery($flow, actor)"
      flow-drop-enabled="authorizedActor('upload', actor)"
@@ -215,7 +216,8 @@
         </form>
     </div>
 </div>
-<div class="panel panel-default">
+<div class="panel panel-default"
+     ng-if="actor">
     <div class="panel-body">
         <tabset type="tabs nav-tabs-google">
             <tab select="stories(actor); ($state.params.tabId ? setTabSelected('stories') : '');"
