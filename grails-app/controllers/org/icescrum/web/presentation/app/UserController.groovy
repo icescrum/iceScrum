@@ -39,7 +39,6 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
-import asset.pipeline.AssetHelper
 
 class UserController {
 
@@ -141,7 +140,7 @@ class UserController {
             if(params.user.avatar && !(params.user.avatar in ['gravatar', 'custom'])){
                 if (params.user.avatar instanceof String){
                     params.user.avatar = params.user.avatar.split("/")?.last()
-                    props.avatar = AssetHelper.fileForUri(AssetHelper.nameWithoutExtension("avatars/"+ params.user.avatar),null,AssetHelper.extensionFromURI("avatars/"+ params.user.avatar))
+                    props.avatar = getAssetAvatarFile(params.user.avatar)
                     props.scale = false
                 } else if (params.user.avatar){
                     def uploadedAvatar = request.getFile('user.avatar')
@@ -190,7 +189,7 @@ class UserController {
                 redirect url:"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()
                 return
             }
-            avatar = AssetHelper.fileForUri(AssetHelper.nameWithoutExtension("avatars/avatar.png"),null,AssetHelper.nameWithoutExtension("avatars/avatar.png"))
+            avatar = getAssetAvatarFile("avatar.png")
         }
         OutputStream out = response.getOutputStream()
         out.write(avatar.bytes)
@@ -358,5 +357,13 @@ class UserController {
             result = request.JSON.value && User.countByEmail(request.JSON.value) == 0
         }
         render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
+    }
+
+    private File getAssetAvatarFile(String avatarFileName) {
+        avatarFileName = "assets/avatars/${avatarFileName}"
+        if (!grailsApplication.warDeployed) {
+            avatarFileName = "../grails-app/${avatarFileName}"
+        }
+        return grailsApplication.parentContext.getResource(avatarFileName).file
     }
 }
