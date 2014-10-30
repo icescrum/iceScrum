@@ -41,9 +41,8 @@ class TimelineController {
     def springSecurityService
 
     def toolbar() {
-        withProduct { Product product ->
-            render template: "window/toolbar", model: [id: controllerName, product: product, exportFormats:getExportFormats()]
-        }
+        Product _product = Product.withProduct(product)
+        render template: "window/toolbar", model: [id: controllerName, product: _product, exportFormats:getExportFormats()]
     }
 
     def titleBarContent() {

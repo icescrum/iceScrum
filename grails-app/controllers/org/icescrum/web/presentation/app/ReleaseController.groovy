@@ -39,31 +39,30 @@ class ReleaseController {
     def springSecurityService
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def save() {
-        withProduct { Product product ->
-            def releaseParams = params.release
-            if (releaseParams.startDate) {
-                releaseParams.startDate = new Date().parse(message(code: 'is.date.format.short'), releaseParams.startDate)
+    def save(long product) {
+        Product _product = Product.withProduct(product)
+        def releaseParams = params.release
+        if (releaseParams.startDate) {
+            releaseParams.startDate = new Date().parse(message(code: 'is.date.format.short'), releaseParams.startDate)
+        }
+        if (releaseParams.endDate) {
+            releaseParams.endDate = new Date().parse(message(code: 'is.date.format.short'), releaseParams.endDate)
+        }
+        def release = new Release()
+        try {
+            Release.withTransaction {
+                bindData(release, releaseParams, [include:['name','goal','startDate','endDate']])
+                releaseService.save(release, _product)
             }
-            if (releaseParams.endDate) {
-                releaseParams.endDate = new Date().parse(message(code: 'is.date.format.short'), releaseParams.endDate)
+            withFormat {
+                html { render status: 200, contentType: 'application/json', text: release as JSON }
+                json { renderRESTJSON(text:release, status: 201) }
+                xml  { renderRESTXML(text:release, status: 201) }
             }
-            def release = new Release()
-            try {
-                Release.withTransaction {
-                    bindData(release, releaseParams, [include:['name','goal','startDate','endDate']])
-                    releaseService.save(release, product)
-                }
-                withFormat {
-                    html { render status: 200, contentType: 'application/json', text: release as JSON }
-                    json { renderRESTJSON(text:release, status: 201) }
-                    xml  { renderRESTXML(text:release, status: 201) }
-                }
-            }catch (IllegalStateException e) {
-                returnError(exception:e)
-            } catch (RuntimeException e) {
-                returnError(object:release, exception:e)
-            }
+        }catch (IllegalStateException e) {
+            returnError(exception:e)
+        } catch (RuntimeException e) {
+            returnError(object:release, exception:e)
         }
     }
 
@@ -184,16 +183,15 @@ class ReleaseController {
         redirect(action:'index', controller: controllerName, params:params)
     }
 
-    def list() {
+    def list(long product) {
         if (request?.format == 'html'){
             render(status:404)
             return
         }
-        withProduct { Product product ->
-            withFormat {
-                json { renderRESTJSON(text:product.releases) }
-                xml  { renderRESTXML(text:product.releases) }
-            }
+        Product _product = Product.withProduct(product)
+        withFormat {
+            json { renderRESTJSON(text:_product.releases) }
+            xml  { renderRESTXML(text:_product.releases) }
         }
     }
 }

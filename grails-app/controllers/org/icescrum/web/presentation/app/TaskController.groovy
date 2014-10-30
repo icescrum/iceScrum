@@ -53,14 +53,13 @@ class TaskController {
     }
 
     @Secured('permitAll()')
-    def shortURL() {
-        withProduct { Product product ->
-            if (!springSecurityService.isLoggedIn() && product.preferences.hidden) {
-                redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + is.createScrumLink(controller: 'task', params: [uid: params.id]))
-                return
-            }
-            redirect(url: is.createScrumLink(controller: 'task', params: [uid: params.id]))
+    def shortURL(long product, long id) {
+        Product _product = Product.withProduct(product)
+        if (!springSecurityService.isLoggedIn() && _product.preferences.hidden) {
+            redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + is.createScrumLink(controller: 'task', params: [uid: id]))
+            return
         }
+        redirect(url: is.createScrumLink(controller: 'task', params: [uid: id]))
     }
 
     def index() {

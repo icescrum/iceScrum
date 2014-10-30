@@ -155,7 +155,7 @@ class ProjectController {
     @Secured(['stakeHolder() or inProduct()'])
     def feed(long product) {
         //todo make cache
-        _product = Product.get(product)
+        Product _product = Product.withProduct(product)
         def activities = Story.recentActivity(_product)
         activities.addAll(Product.recentActivity(_product))
         activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
@@ -180,7 +180,8 @@ class ProjectController {
     @Secured(['owner()'])
     def delete(long product) {
         try {
-            productService.delete(Product.get(product))
+            Product _product = Product.withProduct(product)
+            productService.delete(_product)
             render(status: 200, contentType: 'application/json', text:[class:'Product',id:product] as JSON)
         } catch (RuntimeException re) {
             if (log.debugEnabled) re.printStackTrace()
@@ -206,9 +207,9 @@ class ProjectController {
         render(status:200, template: "dialogs/export")
     }
 
-    @Secured('owner() or scrumMaster() or productOwner()')
+    @Secured(['owner() or scrumMaster() or productOwner()'])
     def export(long product) {
-        Product _product = Product.get(product)
+        Product _product = Product.withProduct(product)
         return task {
             session.progress = new ProgressSupport()
             Product.withNewSession {
@@ -226,267 +227,252 @@ class ProjectController {
     }
 
     @Secured('owner() or scrumMaster()')
-    def edit() {
-        withProduct{ Product product ->
-            def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
-            if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                privateOption = false
-            }
-            def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
-            def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
-
-            def dialog = g.render(template: "dialogs/edit",
-                    model: [product: product,
-                            privateOption: privateOption,
-                            possibleViews: possibleViews,
-                            restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+    def edit(long product) {
+        Product _product = Product.withProduct(product)
+        def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
+        if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+            privateOption = false
         }
+        def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
+        def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
+
+        def dialog = g.render(template: "dialogs/edit",
+                model: [product: _product,
+                        privateOption: privateOption,
+                        possibleViews: possibleViews,
+                        restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
-    def editPractices() {
-        withProduct{ Product product ->
-            def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
-                                        (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
-                                        (PlanningPokerGame.CUSTOM_SUITE) : message(code: "is.estimationSuite.custom")]
-            def dialog = g.render(template: "dialogs/editPractices", model: [product: product, estimationSuitSelect: estimationSuitSelect])
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-        }
+    def editPractices(long product) {
+        Product _product = Product.withProduct(product)
+        def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
+                                    (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
+                                    (PlanningPokerGame.CUSTOM_SUITE) : message(code: "is.estimationSuite.custom")]
+        def dialog = g.render(template: "dialogs/editPractices", model: [product: _product, estimationSuitSelect: estimationSuitSelect])
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
     def update() {
-        withProduct('productd.id'){ Product product ->
-            def msg
-            if (params.long('productd.version') != product.version) {
-                msg = message(code: 'is.stale.object', args: [message(code: 'is.product')])
-                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-                return
-            }
-            //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
-            boolean hasHiddenChanged = product.preferences.hidden != params.productd.preferences.hidden
-            product.properties = params.productd
-            if(!params.productd.preferences?.stakeHolderRestrictedViews){
-                product.preferences.stakeHolderRestrictedViews = null
-            }
-            try {
-                productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
-                entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
-            } catch (IllegalStateException ise) {
-                returnError(exception:ise)
-                return
-            } catch (RuntimeException re) {
-                returnError(exception:re, object:product)
-                return
-            }
-            render(status: 200, contentType: 'application/json', text:product as JSON)
+        Product product = Product.withProduct(params.long('productd.id'))
+        def msg
+        if (params.long('productd.version') != product.version) {
+            msg = message(code: 'is.stale.object', args: [message(code: 'is.product')])
+            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
+            return
         }
+        //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
+        boolean hasHiddenChanged = product.preferences.hidden != params.productd.preferences.hidden
+        product.properties = params.productd
+        if(!params.productd.preferences?.stakeHolderRestrictedViews){
+            product.preferences.stakeHolderRestrictedViews = null
+        }
+        try {
+            productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
+            entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
+        } catch (IllegalStateException ise) {
+            returnError(exception:ise)
+            return
+        } catch (RuntimeException re) {
+            returnError(exception:re, object:product)
+            return
+        }
+        render(status: 200, contentType: 'application/json', text:product as JSON)
     }
 
     @Secured('owner() or scrumMaster()')
-    def archive() {
-        withProduct{ Product product ->
-            try {
-                productService.archive(product)
-                render(status: 200, contentType: 'application/json', text:[class:'Product',id:product.id] as JSON)
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
-            }
+    def archive(long product) {
+        Product _product = Product.withProduct(product)
+        try {
+            productService.archive(_product)
+            render(status: 200, contentType: 'application/json', text:[class:'Product',id:_product.id] as JSON)
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
         }
     }
 
     @Secured("hasRole('ROLE_ADMIN')")
-    def unArchive() {
-        withProduct{ Product product ->
-            try {
-                productService.unArchive(product)
-                render(status: 200, contentType: 'application/json', text:[class:'Product',id:product.id] as JSON)
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
-            }
+    def unArchive(long product) {
+        Product _product = Product.withProduct(product)
+        try {
+            productService.unArchive(_product)
+            render(status: 200, contentType: 'application/json', text:[class:'Product',id:_product.id] as JSON)
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.archived')]] as JSON)
         }
     }
 
     @Secured(['stakeHolder() or inProduct()'])
-    def versions() {
-        withProduct { Product product ->
-            withFormat{
-                html {
-                    def versions = product.getVersions(false, true)
-                    render versions.collect{ [id:it, text:it] } as JSON
-                }
-                json { renderRESTJSON(text:product.versions) }
-                xml  { renderRESTXML(text:product.versions) }
+    def versions(long product) {
+        Product _product = Product.withProduct(product)
+        withFormat{
+            html {
+                def versions = _product.getVersions(false, true)
+                render versions.collect{ [id:it, text:it] } as JSON
             }
+            json { renderRESTJSON(text:_product.versions) }
+            xml  { renderRESTXML(text:_product.versions) }
         }
     }
 
     @Secured('inProduct()')
-    def addDocument() {
-        withProduct { Product product ->
-            def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:product, destController:'project'])
-            render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
-        }
+    def addDocument(long product) {
+        Product _product = Product.withProduct(product)
+        def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:_product, destController:'project'])
+        render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
     }
 
     @Secured('inProduct()')
-    def attachments() {
-        withProduct { Product product ->
-            def keptAttachments = params.list('product.attachments')
-            def addedAttachments = params.list('attachments')
-            def attachments = manageAttachments(product, keptAttachments, addedAttachments)
-            render status: 200, contentType: 'application/json', text: attachments as JSON
-        }
+    def attachments(long product) {
+        Product _product = Product.withProduct(product)
+        def keptAttachments = params.list('product.attachments')
+        def addedAttachments = params.list('attachments')
+        def attachments = manageAttachments(_product, keptAttachments, addedAttachments)
+        render status: 200, contentType: 'application/json', text: attachments as JSON
     }
 
-    def dashboard() {
-        withProduct{ Product product ->
-            def sprint = Sprint.findCurrentOrLastSprint(product.id).list()[0]
-            def release = Release.findCurrentOrNextRelease(product.id).list()[0]
-            def activities = Story.recentActivity(product)
-            activities.addAll(Product.recentActivity(product))
-            activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
+    def dashboard(long product) {
+        Product _product = Product.withProduct(product)
+        def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
+        def release = Release.findCurrentOrNextRelease(product).list()[0]
+        def activities = Story.recentActivity(_product)
+        activities.addAll(Product.recentActivity(_product))
+        activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
 
-            render template: 'window/view',
-                    model: [product: product,
-                            activities: activities,
-                            sprint: sprint,
-                            release: release,
-                            user: springSecurityService.currentUser,
-                            lang: RCU.getLocale(request).toString().substring(0, 2)]
-        }
+        render template: 'window/view',
+                model: [product: product,
+                        activities: activities,
+                        sprint: sprint,
+                        release: release,
+                        user: springSecurityService.currentUser,
+                        lang: RCU.getLocale(request).toString().substring(0, 2)]
     }
 
-    def productCumulativeFlowChart() {
+    def productCumulativeFlowChart(long product) {
         params.modal = params.boolean('modal')
-        withProduct{ Product product ->
-            def values = productService.cumulativeFlowValues(product)
-            if (values.size() > 0) {
-                def rendered = g.render(template: 'charts/productCumulativeFlowChart', model: [
-                        suggested: values.suggested as JSON,
-                        accepted: values.accepted as JSON,
-                        estimated: values.estimated as JSON,
-                        planned: values.planned as JSON,
-                        inprogress: values.inprogress as JSON,
-                        done: values.done as JSON,
-                        labels: values.label as JSON,
-                        controllerName: params.controllerName ?: controllerName])
-                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productCumulativeflow.title')],rendered) : rendered, status:200)
-            } else {
-                def msg = message(code: 'is.chart.error.no.values')
-                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            }
+        Product _product = Product.withProduct(product)
+        def values = productService.cumulativeFlowValues(_product)
+        if (values.size() > 0) {
+            def rendered = g.render(template: 'charts/productCumulativeFlowChart', model: [
+                    suggested: values.suggested as JSON,
+                    accepted: values.accepted as JSON,
+                    estimated: values.estimated as JSON,
+                    planned: values.planned as JSON,
+                    inprogress: values.inprogress as JSON,
+                    done: values.done as JSON,
+                    labels: values.label as JSON,
+                    controllerName: params.controllerName ?: controllerName])
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productCumulativeflow.title')],rendered) : rendered, status:200)
+        } else {
+            def msg = message(code: 'is.chart.error.no.values')
+            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
         }
     }
 
-    def productVelocityCapacityChart() {
+    def productVelocityCapacityChart(long product) {
         params.modal = params.boolean('modal')
-        withProduct{ Product product ->
-            def values = productService.productVelocityCapacityValues(product)
-            if (values.size() > 0) {
-                def rendered = g.render(template: 'charts/productVelocityCapacityChart', model: [
-                        modal: params.modal,
-                        capacity: values.capacity as JSON,
-                        velocity: values.velocity as JSON,
-                        labels: values.label as JSON,
-                        controllerName: params.controllerName ?: controllerName])
-                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocityCapacity.title')],rendered) : rendered, status:200)
-            } else {
-                def msg = message(code: 'is.chart.error.no.values')
-                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            }
+        Product _product = Product.withProduct(product)
+        def values = productService.productVelocityCapacityValues(_product)
+        if (values.size() > 0) {
+            def rendered = g.render(template: 'charts/productVelocityCapacityChart', model: [
+                    modal: params.modal,
+                    capacity: values.capacity as JSON,
+                    velocity: values.velocity as JSON,
+                    labels: values.label as JSON,
+                    controllerName: params.controllerName ?: controllerName])
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocityCapacity.title')],rendered) : rendered, status:200)
+        } else {
+            def msg = message(code: 'is.chart.error.no.values')
+            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
         }
     }
 
-    def productBurnupChart() {
+    def productBurnupChart(long product) {
         params.modal = params.boolean('modal')
-        withProduct{ Product product ->
-            def values = productService.productBurnupValues(product)
-            if (values.size() > 0) {
-                def rendered = g.render(template: 'charts/productBurnupChart', model: [
-                        all: values.all as JSON,
-                        done: values.done as JSON,
-                        labels: values.label as JSON,
-                        controllerName: params.controllerName ?: controllerName])
-                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnUp.title')],rendered) : rendered, status:200)
-            } else {
-                def msg = message(code: 'is.chart.error.no.values')
-                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            }
+        Product _product = Product.withProduct(product)
+        def values = productService.productBurnupValues(_product)
+        if (values.size() > 0) {
+            def rendered = g.render(template: 'charts/productBurnupChart', model: [
+                    all: values.all as JSON,
+                    done: values.done as JSON,
+                    labels: values.label as JSON,
+                    controllerName: params.controllerName ?: controllerName])
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnUp.title')],rendered) : rendered, status:200)
+        } else {
+            def msg = message(code: 'is.chart.error.no.values')
+            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
         }
     }
 
-    def productBurndownChart() {
+    def productBurndownChart(long product) {
         params.modal = params.boolean('modal')
-        withProduct{ Product product ->
-            def values = productService.productBurndownValues(product)
-            if (values.size() > 0) {
-                def rendered = g.render(template: 'charts/productBurndownChart', model: [
-                        userstories: values.userstories as JSON,
-                        technicalstories: values.technicalstories as JSON,
-                        defectstories: values.defectstories as JSON,
-                        labels: values.label as JSON,
-                        userstoriesLabels: values*.userstoriesLabel as JSON,
-                        technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
-                        defectstoriesLabels: values*.defectstoriesLabel as JSON,
-                        controllerName: params.controllerName ?: controllerName])
-                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnDown.title')],rendered) : rendered, status:200)
-            } else {
-                def msg = message(code: 'is.chart.error.no.values')
-                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            }
+        Product _product = Product.withProduct(product)
+        def values = productService.productBurndownValues(_product)
+        if (values.size() > 0) {
+            def rendered = g.render(template: 'charts/productBurndownChart', model: [
+                    userstories: values.userstories as JSON,
+                    technicalstories: values.technicalstories as JSON,
+                    defectstories: values.defectstories as JSON,
+                    labels: values.label as JSON,
+                    userstoriesLabels: values*.userstoriesLabel as JSON,
+                    technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
+                    defectstoriesLabels: values*.defectstoriesLabel as JSON,
+                    controllerName: params.controllerName ?: controllerName])
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnDown.title')],rendered) : rendered, status:200)
+        } else {
+            def msg = message(code: 'is.chart.error.no.values')
+            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
         }
     }
 
-    def productVelocityChart() {
+    def productVelocityChart(long product) {
         params.modal = params.boolean('modal')
-        withProduct{ Product product ->
-            def values = productService.productVelocityValues(product)
-            if (values.size() > 0) {
-                def rendered = g.render(template: 'charts/productVelocityChart', model: [
-                        userstories: values.userstories as JSON,
-                        technicalstories: values.technicalstories as JSON,
-                        defectstories: values.defectstories as JSON,
-                        labels: values.label as JSON,
-                        userstoriesLabels: values*.userstoriesLabel as JSON,
-                        technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
-                        defectstoriesLabels: values*.defectstoriesLabel as JSON,
-                        controllerName: params.controllerName ?: controllerName])
-                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocity.title')],rendered) : rendered, status:200)
-            } else {
-                def msg = message(code: 'is.chart.error.no.values')
-                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            }
+        Product _product = Product.withProduct(product)
+        def values = productService.productVelocityValues(_product)
+        if (values.size() > 0) {
+            def rendered = g.render(template: 'charts/productVelocityChart', model: [
+                    userstories: values.userstories as JSON,
+                    technicalstories: values.technicalstories as JSON,
+                    defectstories: values.defectstories as JSON,
+                    labels: values.label as JSON,
+                    userstoriesLabels: values*.userstoriesLabel as JSON,
+                    technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
+                    defectstoriesLabels: values*.defectstoriesLabel as JSON,
+                    controllerName: params.controllerName ?: controllerName])
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocity.title')],rendered) : rendered, status:200)
+        } else {
+            def msg = message(code: 'is.chart.error.no.values')
+            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
         }
     }
 
-    def productParkingLotChart() {
+    def productParkingLotChart(long product) {
         params.modal = params.boolean('modal')
-        withProduct{ Product product ->
-            def values = featureService.productParkingLotValues(product)
-            def indexF = 1
-            def valueToDisplay = []
-            values.value?.each {
-                def value = []
-                value << new DecimalFormat("#.##").format(it).toString()
-                value << indexF
-                valueToDisplay << value
-                indexF++
-            }
-            if (valueToDisplay.size() > 0){
-                def rendered = g.render(template: '../feature/charts/productParkinglot', model: [
-                        values: valueToDisplay as JSON,
-                        featuresNames: values.label as JSON,
-                        controllerName: params.controllerName ?: controllerName])
-                render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productParkinglot.title')],rendered) : rendered, status:200)
-            }
-            else {
-                def msg = message(code: 'is.chart.error.no.values')
-                render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            }
+        Product _product = Product.withProduct(product)
+        def values = featureService.productParkingLotValues(_product)
+        def indexF = 1
+        def valueToDisplay = []
+        values.value?.each {
+            def value = []
+            value << new DecimalFormat("#.##").format(it).toString()
+            value << indexF
+            valueToDisplay << value
+            indexF++
+        }
+        if (valueToDisplay.size() > 0){
+            def rendered = g.render(template: '../feature/charts/productParkinglot', model: [
+                    values: valueToDisplay as JSON,
+                    featuresNames: values.label as JSON,
+                    controllerName: params.controllerName ?: controllerName])
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productParkinglot.title')],rendered) : rendered, status:200)
+        }
+        else {
+            def msg = message(code: 'is.chart.error.no.values')
+            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
         }
     }
 
@@ -594,142 +580,125 @@ class ProjectController {
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured(['isAuthenticated()'])
     def importDialog() {
         render(status:200, template: "dialogs/import")
-    }
-
-    @Secured('isAuthenticated()')
-    def saveImport() {
-        if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {
-            if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                render(status: 403)
-                return
-            }
-        }
-
-        if (!session['import']) {
-            returnError(text:message(code:'is.import.error.no.backup'))
-            return
-        }
     }
 
     /**
      * Export the project elements in multiple format (PDF, DOCX, RTF, ODT)
      */
-    def print() {
-        withProduct{ Product product ->
-            def data
-            def chart = null
+    def print(long product) {
+        Product _product = Product.withProduct(product)
+        def data
+        def chart = null
 
-            if (params.locationHash) {
-                chart = processLocationHash(params.locationHash.decodeURL()).action
-            }
+        if (params.locationHash) {
+            chart = processLocationHash(params.locationHash.decodeURL()).action
+        }
 
-            switch (chart) {
-                case 'productCumulativeFlowChart':
-                    data = productService.cumulativeFlowValues(product)
-                    break
-                case 'productBurnupChart':
-                    data = productService.productBurnupValues(product)
-                    break
-                case 'productBurndownChart':
-                    data = productService.productBurndownValues(product)
-                    break
-                case 'productParkingLotChart':
-                    data = featureService.productParkingLotValues(product)
-                    break
-                case 'productVelocityChart':
-                    data = productService.productVelocityValues(product)
-                    break
-                case 'productVelocityCapacityChart':
-                    data = productService.productVelocityCapacityValues(product)
-                    break
-                default:
-                    chart = 'timeline'
-                    data = [
-                            [
-                                    releaseStateBundle: BundleUtils.releaseStates,
-                                    releases: product.releases,
-                                    productCumulativeFlowChart: productService.cumulativeFlowValues(product),
-                                    productBurnupChart: productService.productBurnupValues(product),
-                                    productBurndownChart: productService.productBurndownValues(product),
-                                    productParkingLotChart: featureService.productParkingLotValues(product),
-                                    productVelocityChart: productService.productVelocityValues(product),
-                                    productVelocityCapacityChart: productService.productVelocityCapacityValues(product)
-                            ]
-                    ]
-                    break
-            }
+        switch (chart) {
+            case 'productCumulativeFlowChart':
+                data = productService.cumulativeFlowValues(_product)
+                break
+            case 'productBurnupChart':
+                data = productService.productBurnupValues(_product)
+                break
+            case 'productBurndownChart':
+                data = productService.productBurndownValues(_product)
+                break
+            case 'productParkingLotChart':
+                data = featureService.productParkingLotValues(_product)
+                break
+            case 'productVelocityChart':
+                data = productService.productVelocityValues(_product)
+                break
+            case 'productVelocityCapacityChart':
+                data = productService.productVelocityCapacityValues(_product)
+                break
+            default:
+                chart = 'timeline'
+                data = [
+                        [
+                                releaseStateBundle: BundleUtils.releaseStates,
+                                releases: _product.releases,
+                                productCumulativeFlowChart: productService.cumulativeFlowValues(_product),
+                                productBurnupChart: productService.productBurnupValues(_product),
+                                productBurndownChart: productService.productBurndownValues(_product),
+                                productParkingLotChart: featureService.productParkingLotValues(_product),
+                                productVelocityChart: productService.productVelocityValues(_product),
+                                productVelocityCapacityChart: productService.productVelocityCapacityValues(_product)
+                        ]
+                ]
+                break
+        }
 
-            if (data.size() <= 0) {
-                returnError(text:message(code: 'is.report.error.no.data'))
-            } else if (params.get) {
-                renderReport(chart ?: 'timeline', params.format, data, product.name, ['labels.projectName': product.name])
-            } else if (params.status) {
-                render(status: 200, contentType: 'application/json', text: session.progress as JSON)
-            } else {
-                session.progress = new ProgressSupport()
-                def dialog = g.render(template: '/scrumOS/report')
-                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
-            }
+        if (data.size() <= 0) {
+            returnError(text:message(code: 'is.report.error.no.data'))
+        } else if (params.get) {
+            renderReport(chart ?: 'timeline', params.format, data, _product.name, ['labels.projectName': _product.name])
+        } else if (params.status) {
+            render(status: 200, contentType: 'application/json', text: session.progress as JSON)
+        } else {
+            session.progress = new ProgressSupport()
+            def dialog = g.render(template: '/scrumOS/report')
+            render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
     }
 
-    def printPostits() {
-        withProduct{ Product product ->
-            def stories1 = []
-            def stories2 = []
-            def first = 0
-            def stories = Story.findAllByBacklog(product, [sort: 'state', order: 'asc'])
-            if (!stories) {
-                returnError(text:message(code: 'is.report.error.no.data'))
-                return
-            } else if (params.get) {
-                stories.each {
-                    def testsByState = it.countTestsByState()
-                    def story = [
-                            name: it.name,
-                            id: it.uid,
-                            effort: it.effort,
-                            state: message(code: BundleUtils.storyStates[it.state]),
-                            description: is.storyDescription([story: it, displayBR: true]),
-                            notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
-                            type: message(code: BundleUtils.storyTypes[it.type]),
-                            suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
-                            acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,
-                            estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.estimatedDate]) : null,
-                            plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.plannedDate]) : null,
-                            inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.inProgressDate]) : null,
-                            doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.doneDate ?: null]) : null,
-                            rank: it.rank ?: null,
-                            sprint: it.parentSprint?.orderNumber ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.orderNumber : null,
-                            creator: it.creator.firstName + ' ' + it.creator.lastName,
-                            feature: it.feature?.name ?: null,
-                            dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
-                            permalink:createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid),
-                            featureColor: it.feature?.color ?: null,
-                            nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
-                            nbTestsFailed: testsByState[AcceptanceTestState.FAILED],
-                            nbTestsSuccess: testsByState[AcceptanceTestState.SUCCESS]
-                    ]
-                    if (first == 0) {
-                        stories1 << story
-                        first = 1
-                    } else {
-                        stories2 << story
-                        first = 0
-                    }
-
+    def printPostits(long product) {
+        Product _product = Product.withProduct(product)
+        def stories1 = []
+        def stories2 = []
+        def first = 0
+        def stories = Story.findAllByBacklog(_product, [sort: 'state', order: 'asc'])
+        if (!stories) {
+            returnError(text:message(code: 'is.report.error.no.data'))
+            return
+        } else if (params.get) {
+            stories.each {
+                def testsByState = it.countTestsByState()
+                def story = [
+                        name: it.name,
+                        id: it.uid,
+                        effort: it.effort,
+                        state: message(code: BundleUtils.storyStates[it.state]),
+                        description: is.storyDescription([story: it, displayBR: true]),
+                        notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
+                        type: message(code: BundleUtils.storyTypes[it.type]),
+                        suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.suggestedDate]) : null,
+                        acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.acceptedDate]) : null,
+                        estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.estimatedDate]) : null,
+                        plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.plannedDate]) : null,
+                        inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.inProgressDate]) : null,
+                        doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.doneDate ?: null]) : null,
+                        rank: it.rank ?: null,
+                        sprint: it.parentSprint?.orderNumber ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.orderNumber : null,
+                        creator: it.creator.firstName + ' ' + it.creator.lastName,
+                        feature: it.feature?.name ?: null,
+                        dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
+                        permalink:createLink(absolute: true, mapping: "shortURL", params: [product: _product.pkey], id: it.uid),
+                        featureColor: it.feature?.color ?: null,
+                        nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
+                        nbTestsFailed: testsByState[AcceptanceTestState.FAILED],
+                        nbTestsSuccess: testsByState[AcceptanceTestState.SUCCESS]
+                ]
+                if (first == 0) {
+                    stories1 << story
+                    first = 1
+                } else {
+                    stories2 << story
+                    first = 0
                 }
-                renderReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
-            } else if (params.status) {
-                render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
-            } else {
-                session.progress = new ProgressSupport()
-                def dialog = g.render(template: '/scrumOS/report')
-                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+
             }
+            renderReport('stories', params.format, [[product: _product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], _product.name)
+        } else if (params.status) {
+            render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
+        } else {
+            session.progress = new ProgressSupport()
+            def dialog = g.render(template: '/scrumOS/report')
+            render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
     }
 

@@ -308,27 +308,25 @@ class StoryController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def findDuplicate() {
+    def findDuplicate(long product) {
         def stories = null
-        withProduct{ product ->
-            def terms = params.term?.tokenize()?.findAll{ it.size() >= 5 }
-            if(terms){
-                stories = Story.search(product.id, [term:terms,list:[max:3]]).collect {
-                    "<a class='scrum-link' href='${createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid, title:it.description)}'>${it.name}</a>"
-                }
+        Product _product = Product.withProduct(product)
+        def terms = params.term?.tokenize()?.findAll{ it.size() >= 5 }
+        if(terms){
+            stories = Story.search(_product.id, [term:terms,list:[max:3]]).collect {
+                "<a class='scrum-link' href='${createLink(absolute: true, mapping: "shortURL", params: [product: _product.pkey], id: it.uid, title:it.description)}'>${it.name}</a>"
             }
-            render(status:200, text: stories ? "${message(code:'is.ui.story.duplicate')} ${stories.join(" or ")}" : "")
         }
+        render(status:200, text: stories ? "${message(code:'is.ui.story.duplicate')} ${stories.join(" or ")}" : "")
     }
 
-    def shortURL() {
-        withProduct{ Product product ->
-            if (!springSecurityService.isLoggedIn() && product.preferences.hidden){
-                redirect(url:createLink(controller:'login', action: 'auth')+'?ref='+is.createScrumLink(controller: 'story', params:[uid: params.id]))
-                return
-            }
-            redirect(url: is.createScrumLink(controller: 'story', params:[uid: params.id]))
+    def shortURL(long product, long id) {
+        Product _product = Product.withProduct(product)
+        if (!springSecurityService.isLoggedIn() && _product.preferences.hidden){
+            redirect(url:createLink(controller:'login', action: 'auth')+'?ref='+is.createScrumLink(controller: 'story', params:[uid: id]))
+            return
         }
+        redirect(url: is.createScrumLink(controller: 'story', params:[uid: id]))
     }
 
     @Secured('stakeHolder()')
