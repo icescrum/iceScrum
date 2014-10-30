@@ -66,43 +66,40 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def update() {
-        withFeatures { List<Feature> features ->
-            def featureParams = params.feature
-            if (!featureParams) {
-                returnError(text: message(code: 'todo.is.ui.no.data'))
-                return
-            }
-            features.each { Feature feature ->
-                Feature.withTransaction {
-                    bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
-                    if (featureParams.tags != null) {
-                        feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
-                    }
-                    featureService.update(feature)
-                    entry.hook(id: "${controllerName}-${actionName}", model: [feature: feature]) // TODO check if still needed
+        List<Feature> features = Feature.withFeatures(params)
+        def featureParams = params.feature
+        if (!featureParams) {
+            returnError(text: message(code: 'todo.is.ui.no.data'))
+            return
+        }
+        features.each { Feature feature ->
+            Feature.withTransaction {
+                bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
+                if (featureParams.tags != null) {
+                    feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
                 }
+                featureService.update(feature)
+                entry.hook(id: "${controllerName}-${actionName}", model: [feature: feature]) // TODO check if still needed
             }
-            def returnData = features.size() > 1 ? features : features.first()
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text:returnData as JSON }
-                json { renderRESTJSON(text:returnData) }
-                xml  { renderRESTXML(text:returnData) }
-            }
+        }
+        def returnData = features.size() > 1 ? features : features.first()
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text:returnData as JSON }
+            json { renderRESTJSON(text:returnData) }
+            xml  { renderRESTXML(text:returnData) }
         }
     }
 
     @Secured('productOwner() and !archivedProduct()')
     def delete() {
-        withFeatures{ List<Feature> features ->
-            Feature.withTransaction {
-                features.each { feature ->
-                    featureService.delete(feature)
-                }
-                withFormat {
-                    html { render(status: 200)  }
-                    json { render(status: 204) }
-                    xml { render(status: 204) }
-                }
+        Feature.withTransaction {
+            Feature.withFeatures(params).each { feature ->
+                featureService.delete(feature)
+            }
+            withFormat {
+                html { render(status: 200)  }
+                json { render(status: 204) }
+                xml { render(status: 204) }
             }
         }
     }
@@ -118,13 +115,12 @@ class FeatureController {
 
     @Secured('productOwner() and !archivedProduct()')
     def copyToBacklog() {
-        withFeatures{ List<Feature> features ->
-            List<Story> stories = featureService.copyToBacklog(features)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text:stories as JSON) }
-                json { renderRESTJSON(text:stories, status:201) }
-                xml  { renderRESTXML(text:stories, status:201) }
-            }
+        List<Feature> features = Feature.withFeatures(params)
+        List<Story> stories = featureService.copyToBacklog(features)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text:stories as JSON) }
+            json { renderRESTJSON(text:stories, status:201) }
+            xml  { renderRESTXML(text:stories, status:201) }
         }
     }
 
@@ -165,16 +161,15 @@ class FeatureController {
         }
     }
 
-    def index() {
+    def index(long id) {
         if (request?.format == 'html'){
             render(status:404)
             return
         }
-        withFeature{ Feature feature ->
-            withFormat {
-                json { renderRESTJSON(text:feature) }
-                xml { renderRESTXML(text:feature) }
-            }
+        Feature feature = Feature.withFeature(id)
+        withFormat {
+            json { renderRESTJSON(text:feature) }
+            xml { renderRESTXML(text:feature) }
         }
     }
 
@@ -183,17 +178,15 @@ class FeatureController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def attachments() {
-        withFeature { feature ->
-            manageAttachmentsNew(feature)
-        }
+    def attachments(long id) {
+        Feature feature = Feature.withFeature(id)
+        manageAttachmentsNew(feature)
     }
 
     @Secured(['permitAll()'])
-    def permalink(){
-        withFeature{ def feature ->
-            redirect(uri:"/p/$feature.backlog.pkey/#/feature/$feature.id")
-        }
+    def permalink(long id){
+        Feature feature = Feature.withFeature(id)
+        redirect(uri:"/p/$feature.backlog.pkey/#/feature/$feature.id")
     }
 
     def view() {

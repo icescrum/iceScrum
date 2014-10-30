@@ -354,7 +354,7 @@ class StoryController {
         if (params.type == 'actor') {
             stories = Actor.withActor(id).stories
         } else if (params.type == 'feature') {
-            withFeature { Feature feature -> stories = feature.stories }
+            stories = Feature.withFeature(id).stories
         }
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: stories as JSON) }
