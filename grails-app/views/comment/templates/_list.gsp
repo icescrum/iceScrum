@@ -78,7 +78,7 @@
         </div>
     </td>
 </tr>
-<tr ng-show="!getSelected().comments && getSelected().comments !== undefined">
+<tr ng-show="getSelected().comments !== undefined && getSelected().comments.length == 0">
     <td class="empty-content">
         <small>${message(code:'todo.is.ui.comment.empty')}</small>
     </td>
