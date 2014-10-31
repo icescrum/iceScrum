@@ -25,31 +25,33 @@
         <i class="fa fa-refresh fa-spin"></i>
     </td>
 </tr>
-<tr ng-repeat="activity in getSelected().activities">
+<tr ng-repeat="groupedActivity in groupedActivities">
     <td>
         <img height="21px"
-             ng-src="{{activity.poster | userAvatar}}"
-             alt="{{activity.poster | userFullName}}"/>
-        <span class="{{ activity | activityIcon}}"></span>
+             ng-src="{{groupedActivity.poster | userAvatar}}"
+             alt="{{groupedActivity.poster | userFullName}}"/>
         <span class="text-muted">
-            <time timeago datetime="'{{ activity.dateCreated }}'">
-                {{ activity.dateCreated }}
+            <time timeago datetime="'{{ groupedActivity.dateCreated }}'">
+                {{ groupedActivity.dateCreated }}
             </time>
             <i class="fa fa-clock-o"></i>
         </span>
-        <p ng-switch="activity.code == 'comment'">
-            <span ng-switch-default>
-                {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}}
-            </span>
-            <span ng-switch-when="true">
-                <a href ng-click="setTabSelected('comments')">
-                    {{ message('todo.is.ui.activity.' + activity.code )}}
-                </a>
-            </span>
-        </p>
-        <p ng-if="activity.beforeValue != null || activity.afterValue != null">
-            <i class="fa fa-question" ng-if="activity.beforeValue == null"></i>{{ activity.beforeValue != '' ? activity.beforeValue : '' }} <i class="fa fa-arrow-right"></i> <i class="fa fa-question" ng-if="activity.afterValue == null"></i>{{ activity.afterValue != '' ? activity.afterValue : '' }}
-        </p>
+        <div ng-repeat="activity in groupedActivity.activities">
+            <p ng-switch="activity.onClick !== undefined">
+                <span class="{{ activity | activityIcon}}"></span>
+                <span ng-switch-default>
+                    {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}}
+                </span>
+                <span ng-switch-when="true">
+                    <a href ng-click="activity.onClick()">
+                        {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}}
+                    </a>
+                </span>
+            </p>
+            <p ng-if="activity.beforeValue != null || activity.afterValue != null">
+                <i class="fa fa-question" ng-if="activity.beforeValue == null"></i>{{ activity.beforeValue != '' ? activity.beforeValue : '' }} <i class="fa fa-arrow-right"></i> <i class="fa fa-question" ng-if="activity.afterValue == null"></i>{{ activity.afterValue != '' ? activity.afterValue : '' }}
+            </p>
+        </div>
     </td>
 </tr>
 <tr ng-if="getSelected().activities && getSelected().activities.length >= 10">

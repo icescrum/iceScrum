@@ -130,6 +130,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         }
         return Story.activities(params, function(activities) {
             story.activities = activities;
+            return activities;
         }).$promise;
     };
     this.saveTemplate = function(story, name) {

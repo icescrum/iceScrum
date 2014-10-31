@@ -191,7 +191,37 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         };
         $scope.activities = function(story, all) {
             $scope.allActivities = all;
-            StoryService.activities(story, all);
+            StoryService.activities(story, all)
+                .then(function(activities) {
+                    var groupedActivities = [];
+                    angular.forEach(activities, function(activity) {
+                        var selectTab;
+                        if (activity.code == 'comment') {
+                            selectTab = 'comments'
+                        } else if (activity.code.indexOf("acceptanceTest") > -1 ) {
+                            selectTab = 'tests'
+                        } else if (activity.code.indexOf("task") > -1) {
+                            selectTab = 'tasks'
+                        }
+                        if (selectTab) {
+                            activity.onClick = function() {
+                                $scope.setTabSelected(selectTab);
+                            }
+                        }
+                        if (_.isEmpty(groupedActivities) ||
+                            _.last(groupedActivities).poster.id != activity.poster.id ||
+                            new Date(_.last(groupedActivities).dateCreated).getTime() - 86400000 > new Date(activity.dateCreated).getTime()) {
+                            groupedActivities.push({
+                                poster: activity.poster,
+                                dateCreated: activity.dateCreated,
+                                activities: [activity]
+                            });
+                        } else {
+                            _.last(groupedActivities).activities.push(activity);
+                        }
+                    });
+                    $scope.groupedActivities = groupedActivities;
+                });
         };
         $scope.tasks = function(story) {
             TaskService.list(story);
