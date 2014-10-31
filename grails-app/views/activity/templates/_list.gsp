@@ -38,13 +38,16 @@
         </span>
         <div ng-repeat="activity in groupedActivity.activities">
             <p ng-switch="activity.onClick !== undefined">
-                <span class="{{ activity | activityIcon}}"></span>
+                <span style="width:15px; text-align: center"
+                      tooltip="{{ activity.dateCreated }}"
+                      tooltip-append-to-body="true"
+                      class="{{ activity | activityIcon}}"></span>
                 <span ng-switch-default>
-                    {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}}
+                    {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
                 </span>
                 <span ng-switch-when="true">
                     <a href ng-click="activity.onClick()">
-                        {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}}
+                        {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
                     </a>
                 </span>
             </p>

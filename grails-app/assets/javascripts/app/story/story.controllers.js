@@ -208,6 +208,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                                 $scope.setTabSelected(selectTab);
                             }
                         }
+                        activity.count = 1;
                         if (_.isEmpty(groupedActivities) ||
                             _.last(groupedActivities).poster.id != activity.poster.id ||
                             new Date(_.last(groupedActivities).dateCreated).getTime() - 86400000 > new Date(activity.dateCreated).getTime()) {
@@ -217,7 +218,16 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                                 activities: [activity]
                             });
                         } else {
-                            _.last(groupedActivities).activities.push(activity);
+                            var lastActivity = _.last(_.last(groupedActivities).activities);
+                            if (activity.code == lastActivity.code
+                                && activity.parentType == lastActivity.parentType
+                                && activity.field == lastActivity.field
+                                && activity.beforeValue == lastActivity.beforeValue
+                                && activity.afterValue == lastActivity.afterValue) {
+                                lastActivity.count += 1;
+                            } else {
+                                _.last(groupedActivities).activities.push(activity);
+                            }
                         }
                     });
                     $scope.groupedActivities = groupedActivities;
