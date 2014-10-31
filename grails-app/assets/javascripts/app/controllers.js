@@ -24,13 +24,15 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS' , 'Fullscreen', 'notifications', function ($scope, $modal, Session, SERVER_ERRORS, Fullscreen, notifications) {
-    $scope.currentUser = Session.user;
-    $scope.roles = Session.roles;
+controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', function ($scope, $modal, Session, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout) {
 
     $scope.app = {
-        isFullScreen:false
+        isFullScreen:false,
+        loading:10
     };
+
+    $scope.currentUser = Session.user;
+    $scope.roles = Session.roles;
 
     // TODO remove, user role change for dev only
     $scope.changeRole = function(newRole) {
@@ -50,6 +52,22 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS
             size:'sm'
         });
     };
+
+    //fake loading
+    var loadingAppProgress = $interval(function() {
+        if ($scope.app.loading <= 80){
+            $scope.app.loading += 10;
+        }
+    }, 100);
+
+    //real ready app
+    $scope.$on(CONTENT_LOADED, function() {
+        $scope.app.loading = 90;
+        $timeout(function() {
+            $scope.app.loading = 100;
+            $interval.cancel(loadingAppProgress);
+        }, 500);
+    });
 
     $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
         $scope.showAuthModal();
@@ -74,17 +92,6 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS
             notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
         }
     });
-
-    $scope.menubarSortableOptions = {
-        revert:true,
-        helper:'clone',
-        delay: 100,
-        items:'> li.menubar',
-        placeholder: 'menubar ui-sortable-placeholder',
-        stop:$.icescrum.menuBar.stop,
-        start:$.icescrum.menuBar.start,
-        update:$.icescrum.menuBar.update
-    };
 
     $scope.fullScreen = function(){
         if (Fullscreen.isEnabled()){

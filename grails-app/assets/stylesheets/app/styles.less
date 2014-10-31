@@ -99,6 +99,31 @@ html,body,#main-content
 body {
   overflow: hidden;
   -ms-touch-action: none !important;
+  &.ready > .main {
+    opacity: 1.0;
+    transition: opacity 0.25s ease-in-out;
+    -moz-transition: opacity 0.25s ease-in-out;
+    -webkit-transition: opacity 0.25s ease-in-out;
+  }
+  &.loading > .main {
+    opacity: 0;
+  }
+  &.ready > .app-progress {
+    display: none;
+  }
+  &.loading > .app-progress {
+    .make-row();
+    display: block;
+    height: 100%;
+    > div:first-of-type {
+      .make-xs-column(6);
+      .make-sm-column(4);
+      .make-xs-column-offset(3);
+      .make-sm-column-offset(4);
+      top: 50%;
+      margin-top:-9px;
+    }
+  }
 }
 
 label:not(.btn):not(.checkbox-inline) {

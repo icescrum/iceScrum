@@ -62,3 +62,16 @@
         <b>{{progress.label}}</b>
     </progressbar>
 </script>
+
+<script type="text/ng-template" id="menubar.item.html">
+<a  hotkey="{ '{{ menu.shortcut }}' : hotkeyClick }"
+    hotkey-description="${message(code:'todo.is.open.view')} {{ menu.title }}"
+    tooltip="{{ menu.title }} ({{ menu.shortcut }})"
+    tooltip-placement="bottom"
+    href='#/{{ menu.id }}'>
+    <span class="drag text-muted">
+        <i class="fa fa-ellipsis-v"></i>
+    </span>
+    <i class="visible-xs {{ menu.icon }}"></i><span class="title">{{ menu.title }}</span>
+</a>
+</script>

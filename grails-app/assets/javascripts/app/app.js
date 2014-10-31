@@ -252,7 +252,14 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', 'notifications', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config, notifications){
+    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', 'notifications', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config, notifications, CONTENT_LOADED){
+
+        $rootScope.$watch('$viewContentLoaded', function() {
+            $timeout(function() {
+                $rootScope.$broadcast(CONTENT_LOADED);
+            }, 500)
+        });
+
         uiSelect2Config.minimumResultsForSearch = 6;
 
         //used to handle click with shortcut hotkeys
@@ -415,4 +422,6 @@ isApp.config(['$stateProvider', '$httpProvider',
         SM: 'SM',
         TM: 'TM',
         SH: 'SH'
-    });
+    })
+    .constant('CONTENT_LOADED', 'loadingFinished')
+;

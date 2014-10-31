@@ -1,3 +1,4 @@
+<%@ page import="grails.converters.JSON" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -
@@ -24,7 +25,7 @@
 <nav id="header" class="navbar navbar-masthead navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="pull-left navbar-toggle" onclick="return $.icescrum.toggleSidebar();">
+            <button type="button" class="pull-left navbar-toggle">
                 <span class="sr-only">${message(code:'todo.is.main.menu')}</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -40,7 +41,7 @@
             <is:errors/>
         </div>
         <div id="mainmenu" ng-controller="projectCtrl">
-            <ul class="nav navbar-nav scroll" ui-sortable="menubarSortableOptions">
+            <ul class="nav navbar-nav scroll" ng-init='menus = ${menus as JSON}; menusHidden = ${menusHidden as JSON};'>
                 <li class="dropdown contextual-menu">
                     <a class="dropdown-toggle">
                         ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>
@@ -130,42 +131,15 @@
                     </ul>
                 </li>
                 <entry:point id="menu-left" model="[product:product]"/>
-                <li class="menubar hidden">&nbsp;</li>
-                <g:each in="${menus}" var="menu" status="index">
-                    <li ng-class="{active:$state.includes('${menu.id}')}" class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
-                        <a  hotkey="{ 'ctrl+${index + 1}' : hotkeyClick }"
-                            hotkey-description="${message(code:'todo.is.open.view')} ${message(code: menu.title)}"
-                            tooltip="${message(code: menu.title)} (CTRL+${index + 1})"
-                            tooltip-placement="bottom"
-                            href='#/${menu.id}'>
-                            <span class="drag text-muted">
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                            <i class="visible-xs ${menu.icon}"></i><span class="title"> ${message(code: menu.title)}</span></a>
-                    </li>
-                </g:each>
-                <g:if test="${menusHidden}">
-                    <li class="dropdown menubar-hidden">
-                        <a class="dropdown-toggle" href="#">${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li class="menubar hidden" data-hidden="true">&nbsp;</li>
-                            <g:each in="${menusHidden}" var="menu" status="index">
-                                <li data-hidden="true" ng-class="{active:$state.includes('${menu.id}')}" class="menubar draggable-to-main ${menu.widgetable ? 'draggable-to-widgets' : ''}" id="elem_${menu.id}">
-                                    <a  hotkey="{ 'ctrl+${index + menus.size() + 1}' : hotkeyClick }"
-                                        hotkey-description="${message(code:'todo.is.open.view')} ${message(code: menu.title)}"
-                                        tooltip-placement="left"
-                                        tooltip="${message(code: menu.title)} (CTRL+${index + menus.size() + 1})"
-                                        href='#/${menu.id}'>
-                                        <span class="drag text-muted">
-                                            <span class="glyphicon glyphicon-th"></span>
-                                            <span class="glyphicon glyphicon-th"></span>
-                                        </span>
-                                        <i class="visible-xs ${menu.icon}"></i><span class="title"> ${message(code: menu.title)}</span></a>
-                                </li>
-                            </g:each>
-                        </ul>
-                    </li>
-                </g:if>
+                <li ng-repeat="menu in menus" ng-include="'menubar.item.html'" ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable}" class="menubar draggable-to-main"></li>
+                <li class="dropdown" ng-class="{ 'hidden': menusHidden.length == 0 }">
+                    <a class="dropdown-toggle" href="#">${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="menu in menusHidden"
+                            ng-include="'menubar.item.html'"
+                            ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable }" class="menubar draggable-to-main"></li>
+                    </ul>
+                </li>
             </ul>
             <entry:point id="menu-right" model="[curProduct:curProduct]"/>
             <div class="navbar-right">

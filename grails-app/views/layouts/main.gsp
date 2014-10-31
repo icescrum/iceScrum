@@ -42,55 +42,62 @@
     <script type="text/javascript" src="${grailsApplication.config.grails.serverURL}/assets/pdfjs/pdf.js"></script>
     <g:layoutHead/>
 </head>
-<body data-whatsnew="${user?.preferences?.displayWhatsNew?:false}" ng-controller="appCtrl" flow-prevent-drop="" ng-class="{'fullscreen':app.isFullScreen}">
-<is:header/>
-<div class="container-fluid">
-    <div class="row sidebar-hidden">
-        <g:if test="${product}">
-            <div id="sidebar">
-                <div class="sidebar-toggle">
-                    <button class="btn btn-xs btn-danger">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </button>
-                </div>
-                <g:if test="${request.archivedProduct}">
-                    <div class="alert alert-danger">
-                        <strong>${message(code: 'is.message.project.activate')}</strong>
+<body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'ready': app.loading == 100, 'loading':app.loading < 100 }" class="loading">
+<div class="app-progress">
+    <div>
+        <progressbar animate="true" value="app.loading" type="primary"></progressbar>
+    </div>
+</div>
+<div class="main">
+    <is:header/>
+    <div class="container-fluid">
+        <div class="row sidebar-hidden">
+            <g:if test="${product}">
+                <div id="sidebar">
+                    <div class="sidebar-toggle">
+                        <button class="btn btn-xs btn-danger">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
                     </div>
-                </g:if>
-                <g:if test="${!ApplicationSupport.isProVersion()}">
-                    <div class="alert alert-info alert-dismissable" id="upgrade" style="display:none;">
+                    <g:if test="${request.archivedProduct}">
+                        <div class="alert alert-danger">
+                            <strong>${message(code: 'is.message.project.activate')}</strong>
+                        </div>
+                    </g:if>
+                    <g:if test="${!ApplicationSupport.isProVersion()}">
+                        <div class="alert alert-info alert-dismissable" id="upgrade" style="display:none;">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong><g:message code="is.upgrade.icescrum.pro"/></strong>
+                        </div>
+                    </g:if>
+                    <div class="alert alert-info alert-dismissable" id="notifications" style="display:none;">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <strong><g:message code="is.upgrade.icescrum.pro"/></strong>
+                        <a href="#"><strong>${message(code: 'is.ui.html5.notifications')}</strong></a>
                     </div>
-                </g:if>
-                <div class="alert alert-info alert-dismissable" id="notifications" style="display:none;">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <a href="#"><strong>${message(code: 'is.ui.html5.notifications')}</strong></a>
+                    <entry:point id="sidebar-alerts"/>
+                    <div class="sidebar-content"
+                         data-ui-droppable-drop="$.icescrum.onDropToWidgetBar"
+                         data-ui-droppable-accept=".draggable-to-widgets"
+                         data-ui-sortable-handle=".panel-title > .drag"
+                         data-ui-sortable-items=".widget-sortable">
+                    </div>
                 </div>
-                <entry:point id="sidebar-alerts"/>
-                <div class="sidebar-content"
-                     data-ui-droppable-drop="$.icescrum.onDropToWidgetBar"
-                     data-ui-droppable-accept=".draggable-to-widgets"
-                     data-ui-sortable-handle=".panel-title > .drag"
-                     data-ui-sortable-items=".widget-sortable">
+            </g:if>
+            <div id="main">
+                <div id="main-content"
+                     data-ui-droppable-hover-class="pointer"
+                     data-ui-droppable-drop="$.icescrum.onDropToWindow"
+                     data-ui-droppable-accept=".draggable-to-main"
+                     ui-view>
+                    <g:layoutBody/>
                 </div>
-            </div>
-        </g:if>
-        <div id="main">
-            <div id="main-content"
-                 data-ui-droppable-hover-class="pointer"
-                 data-ui-droppable-drop="$.icescrum.onDropToWindow"
-                 data-ui-droppable-accept=".draggable-to-main"
-                 ui-view>
-                <g:layoutBody/>
             </div>
         </div>
     </div>
 </div>
-<asset:javascript src="application.js"/>
 <entry:point id="icescrum-footer"/>
+<asset:javascript src="application.js"/>
 <g:include controller="scrumOS" action="templates" params="[product: params.product]"/>
 </body>
 </html>

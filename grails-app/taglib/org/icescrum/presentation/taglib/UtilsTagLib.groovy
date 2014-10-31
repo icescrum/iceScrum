@@ -92,8 +92,8 @@ class UtilsTagLib {
         def menus = getMenuBarFromUiDefinitions()
         out << g.render(template: '/scrumOS/header',
                 model: [
-                        menus: menus.visible.sort {it.position},
-                        menusHidden: menus.hidden.sort {it.position},
+                        menus: menus.visible.sort{ it.position }.each{ it.title = message(code:it.title) },
+                        menusHidden: menus.hidden.sort{ it.position }.each{ it.title = message(code:it.title) },
                         importEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         exportEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         creationProjectEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
