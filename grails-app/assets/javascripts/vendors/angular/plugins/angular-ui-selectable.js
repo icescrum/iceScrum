@@ -1,7 +1,7 @@
 /*
- jQuery UI Sortable plugin wrapper
+ jQuery UI selectable plugin wrapper
 
- @param [ui-sortable] {object} Options to pass to $.fn.sortable() merged onto ui.config
+ @param [ui-selectable] {object} Options to pass to $.fn.selectable() merged onto ui.config
  */
 angular.module('ui.selectable', [])
     .value('uiSelectableConfig',{})

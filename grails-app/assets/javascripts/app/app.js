@@ -30,7 +30,6 @@ var isApp = angular.module('isApp', [
     'directives',
     'ui.router',
     'ui.selectable',
-    'ui.sortable',
     'ui.bootstrap',
     'ui.select2',
     'monospaced.elastic',
@@ -42,7 +41,8 @@ var isApp = angular.module('isApp', [
     'ngPDFViewer',
     'remoteValidation',
     'FBAngular',
-    'angular-extended-notifications'
+    'angular-extended-notifications',
+    'htmlSortable'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',

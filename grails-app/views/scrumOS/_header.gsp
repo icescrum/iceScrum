@@ -41,7 +41,11 @@
             <is:errors/>
         </div>
         <div id="mainmenu" ng-controller="projectCtrl">
-            <ul class="nav navbar-nav scroll" ng-init='menus = ${menus as JSON}; menusHidden = ${menusHidden as JSON};'>
+            <ul class="nav navbar-nav scroll menubar"
+                html-sortable="sortableOptions"
+                html-sortable-callback="menuSortableUpdate"
+                ng-init='menus.visible = ${menus as JSON};'
+                ng-model="menus.visible">
                 <li class="dropdown contextual-menu">
                     <a class="dropdown-toggle">
                         ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>
@@ -131,13 +135,22 @@
                     </ul>
                 </li>
                 <entry:point id="menu-left" model="[product:product]"/>
-                <li ng-repeat="menu in menus" ng-include="'menubar.item.html'" ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable}" class="menubar draggable-to-main"></li>
-                <li class="dropdown" ng-class="{ 'hidden': menusHidden.length == 0 }">
+                <li id="{{ menu.id }}"
+                    ng-repeat="menu in menus.visible"
+                    ng-include="'menuitem.item.html'"
+                    ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable}"
+                    class="menuitem draggable-to-main">
+                </li>
+                <li class="dropdown menubar-more" ng-class="{ 'hidden': menus.hidden.length == 0 }">
                     <a class="dropdown-toggle" href="#">${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li ng-repeat="menu in menusHidden"
-                            ng-include="'menubar.item.html'"
-                            ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable }" class="menubar draggable-to-main"></li>
+                    <ul class="dropdown-menu menubar"
+                        html-sortable="sortableOptions"
+                        html-sortable-callback="menuHiddenSortableUpdate"
+                        ng-init='menus.hidden = ${menusHidden as JSON};'
+                        ng-model="menus.hidden">
+                            <li ng-repeat="menu in menus.hidden"
+                                ng-include="'menuitem.item.html'"
+                                ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable }" class="menuitem draggable-to-main"></li>
                     </ul>
                 </li>
             </ul>

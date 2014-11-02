@@ -24,7 +24,7 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', function ($scope, $modal, Session, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout) {
+controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', function ($scope, $modal, Session, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http) {
 
     $scope.app = {
         isFullScreen:false,
@@ -51,6 +51,32 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS
             controller:'loginCtrl',
             size:'sm'
         });
+    };
+
+    $scope.menus = {
+        visible:[],
+        hidden:[]
+    };
+
+    $scope.sortableOptions = {
+        items:'li.menuitem',
+        connectWith:'.menubar',
+        handle:'.handle'
+    };
+
+    var updateMenu = function(info){
+        $http({ url: $scope.serverUrl + '/user/menu',
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+            transformRequest: function (data) { return formObjectData(data, ''); },
+            data:info});
+    };
+    $scope.menuSortableUpdate = function (startModel, destModel, start, end) {
+        updateMenu({id:destModel[end].id, position:end + 1, hidden:false});
+    };
+
+    $scope.menuHiddenSortableUpdate = function (startModel, destModel, start, end) {
+        updateMenu({id:destModel[end].id, position:end + 1, hidden:true});
     };
 
     //fake loading

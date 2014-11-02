@@ -326,15 +326,13 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def menuBar() {
-        if (!params.id && !params.position) {
+    def menu(String id, String position, boolean hidden) {
+        if (!id && !position) {
             returnError(text:message(code: 'is.user.preferences.error.menuBar'))
             return
         }
-        String id = "${params.id}".split("_")[1]
-        String position = params.position
         try {
-            userService.menuBar(springSecurityService.currentUser, id, position, params.boolean('hidden') ?: false)
+            userService.menu((User)springSecurityService.currentUser, id, position, hidden ?: false)
             render(status: 200)
         } catch (RuntimeException e) {
             returnError(text:message(code: 'is.user.preferences.error.menuBar'), exception:e)
