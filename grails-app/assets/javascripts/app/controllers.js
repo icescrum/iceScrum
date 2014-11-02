@@ -92,6 +92,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS
         $timeout(function() {
             $scope.app.loading = 100;
             $interval.cancel(loadingAppProgress);
+            angular.element('#app-progress').remove();
         }, 500);
     });
 

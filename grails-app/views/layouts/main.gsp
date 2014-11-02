@@ -43,7 +43,7 @@
     <g:layoutHead/>
 </head>
 <body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'ready': app.loading == 100, 'loading':app.loading < 100 }" class="loading">
-<div class="app-progress">
+<div id="app-progress">
     <div>
         <progressbar animate="true" value="app.loading" type="primary"></progressbar>
     </div>
