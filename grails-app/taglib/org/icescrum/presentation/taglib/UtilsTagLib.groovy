@@ -92,8 +92,8 @@ class UtilsTagLib {
         def menus = getMenuBarFromUiDefinitions()
         out << g.render(template: '/scrumOS/header',
                 model: [
-                        menus: menus.visible.sort{ it.position }.each{ it.title = message(code:it.title) },
-                        menusHidden: menus.hidden.sort{ it.position }.each{ it.title = message(code:it.title) },
+                        menus: menus.visible.sort{ it.position },
+                        menusHidden: menus.hidden.sort{ it.position },
                         importEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         exportEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         creationProjectEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
@@ -292,7 +292,7 @@ class UtilsTagLib {
 
     private getMenuBarFromUiDefinitions(boolean splitHidden = true) {
         def menus = splitHidden ? [visible:[], hidden:[]] : []
-        uiDefinitionService.getDefinitions().each {String id, UiDefinition uiDefinition ->
+        uiDefinitionService.getDefinitions().each { String id, UiDefinition uiDefinition ->
             def menuBar = uiDefinition.menuBar
             if(menuBar?.spaceDynamicBar) {
                 menuBar.show = menuBarSupport.spaceDynamicBar(id, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space)
@@ -303,8 +303,9 @@ class UtilsTagLib {
                 show = show()
             }
 
-            def menu = [title: menuBar?.title,
+            def menu = [title: message(code:menuBar?.title),
                     id: id,
+                    shortcut: "ctrl+${(menus.visible.size() + menus.hidden.size() + 1)}",
                     icon: uiDefinition.icon,
                     position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
                     widgetable: uiDefinition.widget ? true : false]
