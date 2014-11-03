@@ -21,43 +21,50 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<tr ng-show="story.tasks === undefined">
-    <td class="empty-content">
-        <i class="fa fa-refresh fa-spin"></i>
-    </td>
-</tr>
-<tr ng-repeat="task in story.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
-    <td>
-        <div class="content form-editable" ng-mouseover="showDelete=authorizedTask('delete', task)" ng-mouseleave="showDelete=false">
-            <div class="clearfix no-padding">
-                <div class="col-sm-1" ng-switch="showDelete">
-                    <button ng-switch-default
-                            class="btn btn-default elemid"
-                            disabled="disabled">{{ task.uid }}</button>
-                    <button ng-switch-when="true"
-                            class="btn btn-danger"
-                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"
-                            tooltip-placement="left"
-                            tooltip-append-to-body="true"
-                            tooltip="${message(code:'todo.is.ui.task.delete')}"><span class="fa fa-times"></span>
-                    </button>
+<div ng-if="story">
+    <table ng-init="tasks(story)" ng-controller="taskCtrl" class="table">
+        <tbody ng-if="authorizedTask('create')" ng-include="'story.task.new.html'"></tbody>
+    </table>
+    <table class="table">
+        <tr ng-show="story.tasks === undefined">
+            <td class="empty-content">
+                <i class="fa fa-refresh fa-spin"></i>
+            </td>
+        </tr>
+        <tr ng-repeat="task in story.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
+            <td>
+                <div class="content form-editable" ng-mouseover="showDelete=authorizedTask('delete', task)" ng-mouseleave="showDelete=false">
+                    <div class="clearfix no-padding">
+                        <div class="col-sm-1" ng-switch="showDelete">
+                            <button ng-switch-default
+                                    class="btn btn-default elemid"
+                                    disabled="disabled">{{ task.uid }}</button>
+                            <button ng-switch-when="true"
+                                    class="btn btn-danger"
+                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"
+                                    tooltip-placement="left"
+                                    tooltip-append-to-body="true"
+                                    tooltip="${message(code:'todo.is.ui.task.delete')}"><span class="fa fa-times"></span>
+                            </button>
+                        </div>
+                        <div class="form-group col-sm-8">
+                            <span class="form-control form-control-static">{{ task.name }}</span>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <span class="form-control form-control-static text-right">{{ task.estimation }}</span>
+                        </div>
+                    </div>
+                    <div class="clearfix no-padding" ng-if="task.description">
+                        <p class="form-control form-control-static" ng-bind-html="task.description | lineReturns | sanitize"></p>
+                    </div>
                 </div>
-                <div class="form-group col-sm-8">
-                    <span class="form-control form-control-static">{{ task.name }}</span>
-                </div>
-                <div class="form-group col-sm-3">
-                    <span class="form-control form-control-static text-right">{{ task.estimation }}</span>
-                </div>
-            </div>
-            <div class="clearfix no-padding" ng-if="task.description">
-                 <p class="form-control form-control-static" ng-bind-html="task.description | lineReturns | sanitize"></p>
-            </div>
-        </div>
-    </td>
-</tr>
-<tr ng-show="!story.tasks.length">
-    <td class="empty-content">
-        <small>${message(code:'todo.is.ui.task.empty')}</small>
-    </td>
-</tr>
+            </td>
+        </tr>
+        <tr ng-show="!story.tasks.length">
+            <td class="empty-content">
+                <small>${message(code:'todo.is.ui.task.empty')}</small>
+            </td>
+        </tr>
+    </table>
+</div>
 </script>

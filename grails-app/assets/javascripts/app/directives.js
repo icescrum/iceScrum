@@ -47,7 +47,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
         link: function(scope, element, attrs) {
             var settings = $.extend({
                     resizeHandle:false,
-                    scrollContainer:'#right',
+                    scrollContainer:'#main-content .details:first',
                     afterInsert: function() {
                         element.triggerHandler('input');
                     }

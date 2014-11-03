@@ -32,8 +32,7 @@
      flow-init
      ng-class="authorizedFeature('upload', feature) && class">
     <div class="panel-heading"
-         fixed="#right"
-         fixed-offset-width="-2">
+         fixed="#main-content .details:first">
         <h3 class="panel-title row">
             <div class="the-title">
                 <span>{{ feature.name }}</span>
@@ -72,13 +71,13 @@
                     <span class="fa fa-paperclip"></span>
                     <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
                 </button>
-                <button name="stories" class="btn btn-default"
-                        ng-click="setTabSelected('stories')"
-                        tooltip="{{ feature.stories_ids.length }} ${message(code:'todo.is.feature.stories')}"
-                        tooltip-append-to-body="true">
+                <a class="btn btn-default"
+                   href="#feature/{{ feature.id }}/stories"
+                   tooltip="{{ feature.stories_ids.length }} ${message(code:'todo.is.feature.stories')}"
+                   tooltip-append-to-body="true">
                     <span class="fa fa-tasks"></span>
                     <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>
-                </button>
+                </a>
             </div>
         </div>
     </div>
@@ -213,20 +212,6 @@
                 </div>
             </div>
         </form>
-    </div>
-</div>
-<div class="panel panel-default"
-     ng-if="feature">
-    <div class="panel-body">
-        <tabset type="tabs nav-tabs-google">
-            <tab select="stories(feature); ($state.params.tabId ? setTabSelected('stories') : '');"
-                 heading="${message(code: 'todo.is.feature.stories')}"
-                 active="tabSelected.stories">
-                <table class="table">
-                    <tbody ng-include="'nested.stories.html'"></tbody>
-                </table>
-            </tab>
-        </tabset>
     </div>
 </div>
 </script>

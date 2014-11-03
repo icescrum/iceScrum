@@ -32,8 +32,7 @@
      flow-init
      ng-class="authorizedActor('upload', actor) && class">
     <div class="panel-heading"
-         fixed="#right"
-         fixed-offset-width="-2">
+         fixed="#main-content .details:first">
         <h3 class="panel-title row">
             <div class="the-title">
                 <span>{{ actor.name }}</span>
@@ -73,13 +72,13 @@
                     <span class="fa fa-paperclip"></span>
                     <span class="badge" ng-show="actor.attachments.length">{{ actor.attachments.length }}</span>
                 </button>
-                <button name="stories" class="btn btn-default"
-                        ng-click="setTabSelected('stories')"
-                        tooltip="{{ actor.stories_ids.length }} ${message(code:'todo.is.actor.stories')}"
-                        tooltip-append-to-body="true">
+                <a class="btn btn-default"
+                   href="#actor/{{ actor.id }}/stories"
+                   tooltip="{{ actor.stories_ids.length }} ${message(code:'todo.is.actor.stories')}"
+                   tooltip-append-to-body="true">
                     <span class="fa fa-tasks"></span>
                     <span class="badge" ng-show="actor.stories_ids.length">{{ actor.stories_ids.length }}</span>
-                </button>
+                </a>
             </div>
         </div>
     </div>
@@ -214,20 +213,6 @@
                 </div>
             </div>
         </form>
-    </div>
-</div>
-<div class="panel panel-default"
-     ng-if="actor">
-    <div class="panel-body">
-        <tabset type="tabs nav-tabs-google">
-            <tab select="stories(actor); ($state.params.tabId ? setTabSelected('stories') : '');"
-                 heading="${message(code: 'todo.is.actor.stories')}"
-                 active="tabSelected.stories">
-                <table class="table">
-                    <tbody ng-include="'nested.stories.html'"></tbody>
-                </table>
-            </tab>
-        </tabset>
     </div>
 </div>
 </script>

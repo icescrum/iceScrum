@@ -20,27 +20,32 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+
 <script type="text/ng-template" id="nested.stories.html">
-<tr ng-show="getSelected().stories === undefined">
-    <td class="empty-content">
-        <i class="fa fa-refresh fa-spin"></i>
-    </td>
-</tr>
-<tr ng-repeat="story in getSelected().stories">
-    <td>
-        <div class="content">
-            <button class="btn btn-xs btn-default"
-                    disabled="disabled">{{ story.uid }}</button>
-            <a href="#">{{ story.name }}</a>
-            <div class="pretty-printed"
-                 ng-bind-html="story | descriptionHtml | sanitize">
-            </div>
-        </div>
-    </td>
-</tr>
-<tr ng-show="getSelected().stories !== undefined && getSelected().stories.length == 0">
-    <td class="empty-content">
-        <small>${message(code:'todo.is.ui.story.empty')}</small>
-    </td>
-</tr>
+<div ng-if="selected">
+    <table class="table">
+        <tr ng-show="selected.stories === undefined">
+            <td class="empty-content">
+                <i class="fa fa-refresh fa-spin"></i>
+            </td>
+        </tr>
+        <tr ng-repeat="story in selected.stories">
+            <td>
+                <div class="content">
+                    <button class="btn btn-xs btn-default"
+                            disabled="disabled">{{ story.uid }}</button>
+                    <a href="#">{{ story.name }}</a>
+                    <div class="pretty-printed"
+                         ng-bind-html="story | descriptionHtml | sanitize">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr ng-show="selected.stories !== undefined && selected.stories.length == 0">
+            <td class="empty-content">
+                <small>${message(code:'todo.is.ui.story.empty')}</small>
+            </td>
+        </tr>
+    </table>
+</div>
 </script>

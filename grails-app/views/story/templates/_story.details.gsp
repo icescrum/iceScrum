@@ -33,7 +33,7 @@
      ng-class="authorizedStory('upload', story) && class">
     <div id="story-header"
          class="panel-heading"
-         fixed="#right">
+         fixed="#main-content .details:first">
         <h3 class="panel-title row">
             <div class="the-title">
                 <a href
@@ -109,38 +109,34 @@
                         <span class="fa fa-paperclip"></span>
                         <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
                     </button>
-                    <button name="comments"
-                            class="btn btn-default"
-                            type="button"
-                            ng-click="setTabSelected('comments')"
-                            tooltip="{{ story.comments.length }} ${message(code:'todo.is.story.comments')}"
-                            tooltip-append-to-body="true"
-                            ng-switch="story.comments_count">
+                    <a class="btn btn-default"
+                       type="button"
+                       href="#sandbox/{{ story.id }}/comments"
+                       tooltip="{{ story.comments.length }} ${message(code:'todo.is.story.comments')}"
+                       tooltip-append-to-body="true"
+                       ng-switch="story.comments_count">
                         <span class="fa fa-comment-o" ng-switch-when="0"></span>
                         <span class="fa fa-comment" ng-switch-default></span>
                         <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
-                    </button>
-                    <button name="tasks"
-                            class="btn btn-default"
-                            type="button"
-                            ng-click="setTabSelected('tasks')"
-                            tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
-                            tooltip-append-to-body="true">
+                    </a>
+                    <a class="btn btn-default"
+                       href="#sandbox/{{ story.id }}/tasks"
+                       ng-click="setTabSelected('tasks')"
+                       tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
+                       tooltip-append-to-body="true">
                         <span class="fa fa-tasks"></span>
                         <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
-                    </button>
-                    <button name="tests"
-                            class="btn btn-default"
-                            type="button"
-                            ng-click="setTabSelected('tests')"
-                            tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="left"
-                            ng-switch="story.acceptanceTests_count">
+                    </a>
+                    <a class="btn btn-default"
+                       href="#sandbox/{{ story.id }}/tests"
+                       tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
+                       tooltip-append-to-body="true"
+                       tooltip-placement="left"
+                        ng-switch="story.acceptanceTests_count">
                         <span class="fa fa-check-square-o" ng-switch-when="0"></span>
                         <span class="fa fa-check-square" ng-switch-default></span>
                         <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -349,46 +345,6 @@
                  active="tabSelected.activities">
                 <table class="table">
                     <tbody ng-include="'activity.list.html'"></tbody>
-                </table>
-            </tab>
-            <tab select="comments(story); setTabSelected('comments');"
-                 heading="${message(code: 'is.ui.backlogelement.activity.comments')}"
-                 active="tabSelected.comments">
-                <table class="table">
-                    <tbody ng-include="'comment.list.html'"></tbody>
-                </table>
-                <table class="table" ng-controller="commentCtrl">
-                    <tbody>
-                    <tr ng-if="authorizedComment('create')">
-                        <td><div ng-include="'comment.editor.html'"></div></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </tab>
-            <tab select="tasks(story); setTabSelected('tasks');"
-                 heading="${message(code: 'is.ui.backlogelement.activity.task')}"
-                 active="tabSelected.tasks">
-                <table ng-controller="taskCtrl"
-                       class="table">
-                    <tbody ng-if="authorizedTask('create')"
-                           ng-include="'story.task.new.html'"></tbody>
-                </table>
-                <table class="table">
-                    <tbody ng-include="'story.tasks.html'"></tbody>
-                </table>
-            </tab>
-            <tab select="acceptanceTests(story); setTabSelected('tests');"
-                 heading="${message(code: 'is.ui.backlogelement.activity.test')}"
-                 active="tabSelected.tests">
-                <table class="table" ng-controller="acceptanceTestCtrl">
-                    <tbody>
-                    <tr ng-if="authorizedAcceptanceTest('create', editableAcceptanceTest)">
-                        <td><div ng-include="'story.acceptanceTest.editor.html'"></div></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table class="table">
-                    <tbody ng-include="'story.acceptanceTests.html'"></tbody>
                 </table>
             </tab>
         </tabset>

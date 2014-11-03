@@ -97,8 +97,8 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', '$state', functio
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'TaskService', 'CommentService', 'AcceptanceTestService', 'FormService',
-    function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, TaskService, CommentService, AcceptanceTestService, FormService) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'FormService',
+    function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, FormService) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         $scope.formHolder = {};
         $scope.story = {};
@@ -146,36 +146,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                     };
                 }]
             });
-        };
-        if ($state.params.tabId) {
-            $scope.tabSelected = {};
-            if ($state.params.tabId != 'attachments') {
-                $scope.tabSelected[$state.params.tabId] = true;
-            }
-        } else {
-            $scope.tabSelected = {'activities': true};
-        }
-        //watch from url change outside and keep updated of which tab is selected (getting params tabId in view)
-        $scope.$watch('$state.params', function() {
-            if ($state.params.tabId) {
-                if ($state.params.tabId != 'attachments') {
-                    $scope.tabSelected[$state.params.tabId] = true;
-                }
-                $timeout((function() {
-                    var container = angular.element('#right');
-                    var pos = $state.params.tabId == 'attachments' ? angular.element('#right .table.attachments').offset().top - angular.element('#right .panel-body').offset().top - 9 : angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
-                    container.animate({ scrollTop: pos }, 1000);
-                }));
-            }
-        });
-        $scope.setTabSelected = function(tab) {
-            if ($state.params.tabId) {
-                $state.go('.', {tabId: tab});
-            } else {
-                if ($state.$current.toString().indexOf('details') > 0) {
-                    $state.go('.tab', {tabId: tab});
-                }
-            }
         };
         $scope.update = function(story) {
             StoryService.update(story)
@@ -232,15 +202,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                     $scope.groupedActivities = groupedActivities;
                 });
         };
-        $scope.tasks = function(story) {
-            TaskService.list(story);
-        };
-        $scope.acceptanceTests = function(story) {
-            AcceptanceTestService.list(story);
-        };
-        $scope.comments = function(story) {
-            CommentService.list(story);
-        };
+
         // edit;
         $scope.isDirty = function() {
             return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
@@ -369,6 +331,27 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             $scope.formHolder.formHover = value;
         };
     }]);
+
+controllers.controller('storyDetailsTestsCtrl', ['$scope', '$controller', 'AcceptanceTestService', function($scope, $controller, AcceptanceTestService) {
+    $controller('storyDetailsCtrl', { $scope: $scope }); // inherit from storyDetailsCtrl
+    $scope.acceptanceTests = function(story){
+        AcceptanceTestService.list(story);
+    };
+}]);
+
+controllers.controller('storyDetailsTasksCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
+    $controller('storyDetailsCtrl', { $scope: $scope }); // inherit from storyDetailsCtrl
+    $scope.tasks = function(story) {
+        TaskService.list(story);
+    };
+}]);
+
+controllers.controller('storyDetailsCommentsCtrl', ['$scope', '$controller', 'CommentService', function($scope, $controller, CommentService) {
+    $controller('storyDetailsCtrl', { $scope: $scope }); // inherit from storyDetailsCtrl
+    $scope.comments = function(story) {
+        CommentService.list(story);
+    };
+}]);
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl

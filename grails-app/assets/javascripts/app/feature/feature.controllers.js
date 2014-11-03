@@ -46,15 +46,12 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams', '$timeout', '$controller', 'FeatureService', 'StoryService', 'FormService',
     function($scope, $state, $stateParams, $timeout, $controller, FeatureService, StoryService, FormService) {
         $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
+
         $scope.formHolder = {};
         $scope.feature = {};
         $scope.editableFeature = {};
         $scope.editableFeatureReference = {};
-        $scope.stories = function(feature) {
-            if (_.isEmpty(feature.stories)) {
-                StoryService.listByType(feature);
-            }
-        };
+
         FeatureService.get($stateParams.id).then(function(feature) {
             $scope.feature = feature;
             // For edit
@@ -62,38 +59,11 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             // For header
             $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
             $scope.next = FormService.next(FeatureService.list, $scope.feature);
-            $scope.stories(feature); // load the stories as soon as possible since we are sure that they are displayed
         }).catch(function(e){
             $state.go('^.new');
             $scope.notifyError(e.message)
         });
-        if ($state.params.tabId) {
-            $scope.tabSelected = {};
-            $scope.tabSelected[$state.params.tabId] = true;
-        } else {
-            $scope.tabSelected = {'stories': true};
-        }
-        $scope.$watch('$state.params', function() {
-            if ($state.params.tabId) {
-                if ($state.params.tabId != 'attachments') {
-                    $scope.tabSelected[$state.params.tabId] = true;
-                }
-                $timeout((function() {
-                    var container = angular.element('#right');
-                    var pos = $state.params.tabId == 'attachments' ? angular.element('#right .table.attachments').offset().top - angular.element('#right .panel-body').offset().top - 9 : angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
-                    container.animate({ scrollTop: pos }, 1000);
-                }));
-            }
-        });
-        $scope.setTabSelected = function(tab) {
-            if ($state.params.tabId) {
-                $state.go('.', {tabId: tab});
-            } else {
-                if ($state.$current.toString().indexOf('details') > 0) {
-                    $state.go('.tab', {tabId: tab});
-                }
-            }
-        };
+
         // Edit
         $scope.isDirty = function() {
             return !_.isEqual($scope.editableFeature, $scope.editableFeatureReference);
@@ -154,6 +124,17 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
         $scope.formHover = function(value) {
             $scope.formHolder.formHover = value;
         };
+    }]);
+
+controllers.controller('featureDetailsStoryCtrl', ['$scope', '$controller', 'StoryService',
+    function($scope, $controller, StoryService) {
+        $controller('featureDetailsCtrl', { $scope: $scope }); // inherit from featureDetailsCtrl
+        $scope.$watch('feature', function(){
+            $scope.selected = $scope.feature;
+            if (_.isEmpty($scope.selected.stories)) {
+                $scope.stories = StoryService.listByType($scope.selected);
+            }
+        });
     }]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {

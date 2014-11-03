@@ -237,10 +237,11 @@ table {
   margin-bottom:5px;
 }
 
-#right {
+.details {
   overflow-x: hidden;
   overflow-y: auto;
   height: 100%;
+  padding:0 !important;
   .panel {
     border:none;
   }
@@ -275,7 +276,7 @@ table {
       }
     }
   }
-  #contextual-properties .panel-heading.fixed {
+  .panel-heading.fixed {
     border-bottom: 1px solid @gray-lighter;
     margin-left: 1px;
   }
@@ -359,6 +360,10 @@ table {
     margin-right: 6px;
     width: 30px;
   }
+}
+
+.details-list {
+  padding:10px;
 }
 
 .modal-xxl {
@@ -1781,6 +1786,7 @@ ul.dropdown-menu[datepicker-popup-wrap]{
     }
   }
   &:after {
+    left:0;
     bottom:0;
     content: "";
     width: 100%;
@@ -1800,6 +1806,7 @@ ul.dropdown-menu[datepicker-popup-wrap]{
 .mixin-shadow-stack(@stacks){
   > div:nth-child(n) {
     border-left: 1px solid rgb(229, 229, 229);
+    z-index:11;
   }
   @nselector:~"-n+@{stacks}";
   > div:nth-child(@nselector) {
@@ -1861,6 +1868,7 @@ ul.dropdown-menu[datepicker-popup-wrap]{
   > div:nth-child(3) {
     .make-md-column-offset(7);
     .make-lg-column-offset(8);
+    overflow: auto;
   }
   > div:nth-child(4) {
     .make-md-column-offset(12);
@@ -1905,7 +1913,6 @@ ul.dropdown-menu[datepicker-popup-wrap]{
   > div:nth-child(n) {
     height: inherit;
     background: #fff;
-    padding:0 !important;
     position: fixed !important;
   }
 }

@@ -129,26 +129,62 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                     .state('sandbox.new', {
                         url: "/sandbox",
-                        templateUrl: 'story.new.html',
-                        controller: 'storyNewCtrl'
+                        views:{
+                            "details@sandbox": {
+                                templateUrl: 'story.new.html',
+                                controller: 'storyNewCtrl'
+                            }
+                        }
                     })
                     .state('sandbox.multiple', {
                         url: "/sandbox/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                        templateUrl: 'story.multiple.html',
-                        controller: 'storyMultipleCtrl',
                         resolve:{
                             listId:['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
                             }]
+                        },
+                        views:{
+                            "details@sandbox": {
+                                templateUrl: 'story.multiple.html',
+                                controller: 'storyMultipleCtrl'
+                            }
                         }
                     })
                     .state('sandbox.details', {
                         url: "/sandbox/{id:[0-9]+}",
-                        templateUrl: 'story.details.html',
-                        controller: 'storyDetailsCtrl'
+                        views:{
+                            "details@sandbox": {
+                                templateUrl: 'story.details.html',
+                                controller: 'storyDetailsCtrl'
+                            }
+                        }
                     })
                         .state('sandbox.details.tab', {
-                            url: "/{tabId:.+}"
+                            url: "/{tabId:.+}",
+                            views:{
+                                "details-list@sandbox": {
+                                    templateUrl: function($stateParams){
+                                        var tpl;
+                                        if ($stateParams.tabId == 'tests')
+                                            tpl = 'story.acceptanceTests.html';
+                                        else if($stateParams.tabId == 'tasks')
+                                            tpl = 'story.tasks.html';
+                                        else if($stateParams.tabId == 'comments')
+                                            tpl = 'comment.list.html';
+                                        return tpl;
+                                    },
+                                    controllerProvider: function($stateParams){
+                                        var tpl;
+                                        if ($stateParams.tabId == 'tests')
+                                            tpl = 'Tests';
+                                        else if($stateParams.tabId == 'tasks')
+                                            tpl = 'Tasks';
+                                        else if($stateParams.tabId == 'comments')
+                                            tpl = 'Comments';
+                                        return 'storyDetails'+tpl+'Ctrl';
+                                    }
+                                }
+                            }
                         })
 
                 .state('actor', {
@@ -162,26 +198,46 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                     .state('actor.new', {
                         url: '/actor',
-                        templateUrl: 'actor.new.html',
-                        controller: 'actorNewCtrl'
+                        views:{
+                            "details@actor": {
+                                templateUrl: 'actor.new.html',
+                                controller: 'actorNewCtrl'
+                            }
+                        }
+
                     })
                     .state('actor.multiple', {
                         url: "/actor/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                        templateUrl: 'actor.multiple.html',
-                        controller: 'actorMultipleCtrl',
                         resolve:{
                             listId:['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
                             }]
+                        },
+                        views:{
+                            "details@actor": {
+                                templateUrl: 'actor.multiple.html',
+                                controller: 'actorMultipleCtrl'
+                            }
                         }
                     })
                     .state('actor.details', {
                         url: "/actor/{id:[0-9]+}",
-                        templateUrl: 'actor.details.html',
-                        controller: 'actorDetailsCtrl'
+                        views:{
+                            "details@actor": {
+                                templateUrl: 'actor.details.html',
+                                controller: 'actorDetailsCtrl'
+                            }
+                        }
+
                     })
                         .state('actor.details.tab', {
-                            url: "/{tabId:.+}"
+                            url: "/{tabId:.+}",
+                            views:{
+                                "details-list@actor": {
+                                    templateUrl: 'nested.stories.html',
+                                    controller:'actorDetailsStoryCtrl'
+                                }
+                            }
                         })
 
                 .state('feature', {
@@ -195,26 +251,44 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                     .state('feature.new', {
                         url: '/feature',
-                        templateUrl: 'feature.new.html',
-                        controller: 'featureNewCtrl'
+                        views: {
+                            "details@feature": {
+                                templateUrl: 'feature.new.html',
+                                controller: 'featureNewCtrl'
+                            }
+                        }
                     })
                     .state('feature.multiple', {
                         url: "/feature/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                        templateUrl: 'feature.multiple.html',
-                        controller: 'featureMultipleCtrl',
                         resolve:{
                             listId:['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
                             }]
+                        },
+                        views: {
+                            "details@feature": {
+                                templateUrl: 'feature.multiple.html',
+                                controller: 'featureMultipleCtrl'
+                            }
                         }
                     })
                     .state('feature.details', {
                         url: "/feature/{id:[0-9]+}",
-                        templateUrl: 'feature.details.html',
-                        controller: 'featureDetailsCtrl'
+                        views:{
+                            "details@feature": {
+                                templateUrl: 'feature.details.html',
+                                controller: 'featureDetailsCtrl'
+                            }
+                        }
                     })
                         .state('feature.details.tab', {
-                            url: "/{tabId:.+}"
+                            url: "/{tabId:.+}",
+                            views:{
+                                "details-list@feature": {
+                                    templateUrl: 'nested.stories.html',
+                                    controller:'featureDetailsStoryCtrl'
+                                }
+                            }
                         });
         }
     ])

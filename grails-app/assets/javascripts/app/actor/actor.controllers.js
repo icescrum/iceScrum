@@ -43,11 +43,6 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
         $scope.actor = {};
         $scope.editableActor = {};
         $scope.editableActorReference = {};
-        $scope.stories = function(actor) {
-            if (_.isEmpty(actor.stories)) {
-                StoryService.listByType(actor);
-            }
-        };
         ActorService.get($stateParams.id).then(function(actor) {
             $scope.actor = actor;
             // For edit
@@ -55,38 +50,10 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             // For header
             $scope.previous = FormService.previous(ActorService.list, $scope.actor);
             $scope.next = FormService.next(ActorService.list, $scope.actor);
-            $scope.stories(actor); // load the stories as soon as possible since we are sure that they are displayed
         }).catch(function(e){
             $state.go('^.new');
             $scope.notifyError(e.message)
         });
-        if ($state.params.tabId) {
-            $scope.tabSelected = {};
-            $scope.tabSelected[$state.params.tabId] = true;
-        } else {
-            $scope.tabSelected = {'stories': true};
-        }
-        $scope.$watch('$state.params', function() {
-            if ($state.params.tabId) {
-                if ($state.params.tabId != 'attachments') {
-                    $scope.tabSelected[$state.params.tabId] = true;
-                }
-                $timeout((function() {
-                    var container = angular.element('#right');
-                    var pos = $state.params.tabId == 'attachments' ? angular.element('#right .table.attachments').offset().top - angular.element('#right .panel-body').offset().top - 9 : angular.element('#right .nav-tabs-google').offset().top - angular.element('#right .panel-body').offset().top - 9;
-                    container.animate({ scrollTop: pos }, 1000);
-                }));
-            }
-        });
-        $scope.setTabSelected = function(tab) {
-            if ($state.params.tabId) {
-                $state.go('.', {tabId: tab});
-            } else {
-                if ($state.$current.toString().indexOf('details') > 0) {
-                    $state.go('.tab', {tabId: tab});
-                }
-            }
-        };
         // edit
         $scope.isDirty = function() {
             return !_.isEqual($scope.editableActor, $scope.editableActorReference);
@@ -147,6 +114,17 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
         $scope.formHover = function(value) {
             $scope.formHolder.formHover = value;
         };
+    }]);
+
+controllers.controller('actorDetailsStoryCtrl', ['$scope', '$controller', 'StoryService',
+    function($scope, $controller, StoryService) {
+        $controller('actorDetailsCtrl', { $scope: $scope }); // inherit from actorDetailsCtrl
+        $scope.$watch('actor', function(){
+            $scope.selected = $scope.actor;
+            if (_.isEmpty($scope.selected.stories)) {
+                $scope.stories = StoryService.listByType($scope.selected);
+            }
+        });
     }]);
 
 
