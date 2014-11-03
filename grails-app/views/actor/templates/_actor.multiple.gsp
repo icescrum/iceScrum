@@ -26,7 +26,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">${message(code: "is.ui.actor")} ({{ actors.length }})</h3>
-        <div class="help-block"></div>
     </div>
     <div class="panel-body">
         <div class="postits standalone">
@@ -67,7 +66,7 @@
             </div>
         </div>
         <div class="btn-toolbar">
-            <div ng-if="authorizedActor('deleteMultiple')"
+            <div ng-if="authorizedActor('delete')"
                  class="btn-group">
                 <button type="button"
                         class="btn btn-default"
@@ -77,5 +76,8 @@
             </div>
         </div>
     </div>
+    <table class="table">
+        <tr><td>${message(code: 'is.ui.actor.total.stories')}</td><td>{{ sumStories(actors) }}</td></tr>
+    </table>
 </div>
 </script>

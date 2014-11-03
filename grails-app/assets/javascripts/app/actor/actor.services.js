@@ -79,7 +79,6 @@ services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
             case 'upload':
             case 'update':
             case 'delete':
-            case 'deleteMultiple':
                 return Session.po();
             default:
                 return false;

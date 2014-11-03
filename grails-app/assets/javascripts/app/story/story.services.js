@@ -207,8 +207,9 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     };
     this.authorizedStory = function(action, story) {
         switch (action) {
+            case 'copy':
             case 'create':
-            case 'followMultiple':
+            case 'follow':
                 return Session.authenticated();
             case 'createTemplate':
                 return Session.inProduct();
@@ -216,19 +217,26 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
-            case 'updateMultiple':
-                return Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
             case 'accept':
                 return Session.po() && story.state == StoryStatesByName.SUGGESTED;
-            case 'copyMultiple':
             case 'updateTemplate':
                 return Session.po();
             case 'delete':
-            case 'deleteMultiple':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             default:
                 return false;
+        }
+    };
+    this.authorizedStories = function(action, stories) {
+        var self = this;
+        switch (action) {
+            case 'copy':
+                return Session.po();
+            default:
+                return _.every(stories, function(story) {
+                    return self.authorizedStory(action, story);
+                });
         }
     }
 }]);

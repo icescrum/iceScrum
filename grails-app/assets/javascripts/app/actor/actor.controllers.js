@@ -183,6 +183,15 @@ controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'Acto
 controllers.controller('actorMultipleCtrl', ['$scope', '$controller', 'listId', 'ActorService', function($scope, $controller, listId, ActorService) {
     $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
     // Functions
+    function sum(actors, extractField) {
+        return _.reduce(actors, function(sum, actor) {
+            console.log(extractField(actor));
+            return sum + (extractField(actor) ? extractField(actor) : 0);
+        }, 0);
+    }
+    $scope.sumStories = function(actors) {
+        return sum(actors, function(actor) { return actor.stories_ids.length; });
+    };
     $scope.deleteMultiple = function() {
         // TODO cancellable delete ?
         ActorService.deleteMultiple(listId)
@@ -194,7 +203,9 @@ controllers.controller('actorMultipleCtrl', ['$scope', '$controller', 'listId', 
     // Init
     $scope.ids = listId;
     $scope.topActor = {};
+    $scope.actors = [];
     ActorService.getMultiple(listId).then(function(actors) {
+        $scope.actors = actors;
         $scope.topActor = _.first(actors);
     });
 }]);

@@ -26,9 +26,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">${message(code: "is.ui.feature")} ({{ features.length }})</h3>
-        <div class="help-block">
-            ${message(code: 'is.ui.feature.total.value')} {{ totalValue(features) }}
-        </div>
     </div>
     <div class="panel-body">
         <div class="postits standalone">
@@ -79,7 +76,7 @@
               name='featureForm'
               show-validation
               novalidate>
-            <div ng-if="authorizedFeature('updateMultiple')"
+            <div ng-if="authorizedFeature('update')"
                  class="clearfix no-padding">
                 <div class="form-half">
                     <label for="type">${message(code:'is.feature.type')}</label>
@@ -94,7 +91,7 @@
                     </select>
                 </div>
             </div>
-            <div ng-if="authorizedFeature('updateMultiple')"
+            <div ng-if="authorizedFeature('update')"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
@@ -110,9 +107,9 @@
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>
-            <hr ng-if="authorizedFeature('updateMultiple')"/>
+            <hr ng-if="authorizedFeature('update')"/>
             <div class="btn-toolbar">
-                <div ng-if="authorizedFeature('copyToBacklogMultiple')"
+                <div ng-if="authorizedFeature('copyToBacklog')"
                      class="btn-group">
                     <button type="button"
                             class="btn btn-default"
@@ -120,7 +117,7 @@
                         <g:message code='is.ui.feature.menu.copy'/>
                     </button>
                 </div>
-                <div ng-if="authorizedFeature('deleteMultiple')"
+                <div ng-if="authorizedFeature('delete')"
                      class="btn-group">
                     <button type="button"
                             class="btn btn-default"
@@ -131,6 +128,9 @@
             </div>
         </form>
     </div>
-
+    <table class="table">
+        <tr><td>${message(code: 'is.ui.feature.total.value')}</td><td>{{ sumValues(features) }}</td></tr>
+        <tr><td>${message(code: 'is.ui.feature.total.stories')}</td><td>{{ sumStories(features) }}</td></tr>
+    </table>
 </div>
 </script>

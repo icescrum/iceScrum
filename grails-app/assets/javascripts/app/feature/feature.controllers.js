@@ -189,10 +189,16 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
 controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId', 'FeatureService', function($scope, $controller, listId, FeatureService) {
     $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
     // Functions
-    $scope.totalValue = function(features) {
+    function sum(features, extractField) {
         return _.reduce(features, function(sum, feature) {
-            return sum + feature.value;
+            return sum + (extractField(feature) ? extractField(feature) : 0);
         }, 0);
+    }
+    $scope.sumValues = function(features) {
+        return sum(features, function(feature) { return feature.value; });
+    };
+    $scope.sumStories = function(features) {
+        return sum(features, function(feature) { return feature.stories_ids.length; });
     };
     // TODO cancellable delete ?
     $scope.deleteMultiple = function() {

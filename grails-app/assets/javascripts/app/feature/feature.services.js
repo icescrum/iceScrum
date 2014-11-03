@@ -92,13 +92,10 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
     this.authorizedFeature = function(action) {
         switch (action) {
             case 'create':
-            case 'updateMultiple':
             case 'copyToBacklog':
-            case 'copyToBacklogMultiple':
             case 'upload':
             case 'update':
             case 'delete':
-            case 'deleteMultiple':
                 return Session.po();
             default:
                 return false;

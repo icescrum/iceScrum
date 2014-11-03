@@ -374,6 +374,20 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
     // Functions
+    function sum(stories, extractField) {
+        return _.reduce(stories, function(sum, story) {
+            return sum + (extractField(story) ? extractField(story) : 0);
+        }, 0);
+    }
+    $scope.sumPoints = function(stories) {
+        return sum(stories, function(story) { return story.effort; });
+    };
+    $scope.sumTasks = function(stories) {
+        return sum(stories, function(story) { return story.tasks_count; });
+    };
+    $scope.sumAcceptanceTests = function(stories) {
+        return sum(stories, function(story) { return story.acceptanceTests_count; });
+    };
     $scope.deleteMultiple = function() {
         // TODO cancellable delete ?
         StoryService.deleteMultiple(listId)
@@ -411,12 +425,19 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
                 $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs');
             });
     };
+    $scope.authorizedStories = function(action, stories) {
+        return StoryService.authorizedStories(action, stories);
+    };
     // Init
     $scope.topStory = {};
     $scope.storyPreview = {};
     $scope.stories = [];
-    $scope.allFollowed = false;
-    $scope.noneFollowed = true;
+    $scope.allFollowed = function(stories) {
+        return _.every(stories, 'followed');
+    };
+    $scope.noneFollowed = function(stories) {
+        return !_.some(stories, 'followed');
+    };
     function refreshStories() {
         StoryService.getMultiple(listId).then(function(stories) {
             $scope.topStory = _.first(stories);
@@ -425,8 +446,6 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
                 type: _.every(stories, { type: $scope.topStory.type }) ? $scope.topStory.type : null
             };
             $scope.stories = stories;
-            $scope.allFollowed = _.every(stories, 'followed');
-            $scope.noneFollowed = !_.some(stories, 'followed');
         });
     }
     refreshStories();

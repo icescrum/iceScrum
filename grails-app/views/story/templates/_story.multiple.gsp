@@ -26,7 +26,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">${message(code: "todo.is.ui.stories")} ({{ stories.length }})</h3>
-        <div class="help-block"></div>
     </div>
     <div class="panel-body">
         <div class="postits standalone">
@@ -99,7 +98,7 @@
               name='storyForm'
               show-validation
               novalidate>
-            <div ng-if="authorizedStory('updateMultiple', topStory)"
+            <div ng-if="authorizedStories('update', stories)"
                  class="clearfix no-padding">
                 <div class="form-half">
                     <label for="feature">${message(code:'is.feature')}</label>
@@ -132,7 +131,7 @@
                     </select>
                 </div>
             </div>
-            <div ng-if="authorizedStory('updateMultiple', topStory)"
+            <div ng-if="authorizedStories('update', stories)"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
@@ -148,9 +147,9 @@
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>
-            <hr ng-if="authorizedStory('updateMultiple', topStory)"/>
+            <hr ng-if="authorizedStories('update', stories)"/>
             <div class="btn-toolbar">
-                 <div ng-if="authorizedStory('accept', topStory)"
+                 <div ng-if="authorizedStories('accept', stories)"
                       class="btn-group">
                     <button type="button"
                             class="btn btn-default dropdown-toggle"
@@ -177,30 +176,35 @@
                  </div>
                 <div class="btn-group">
                     <button type="button"
-                            ng-if="authorizedStory('copyMultiple', topStory)"
+                            ng-if="authorizedStories('copy', stories)"
                             class="btn btn-default"
                             ng-click="copyMultiple()">
                         <g:message code='is.ui.releasePlan.menu.story.clone'/>
                     </button>
                     <button type="button"
-                            ng-if="authorizedStory('deleteMultiple', topStory)"
+                            ng-if="authorizedStories('delete', stories)"
                             class="btn btn-default"
                             ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
                         <g:message code='is.ui.sandbox.menu.delete'/>
                     </button>
                 </div>
-                <div ng-if="authorizedStory('followMultiple')"
+                <div ng-if="authorizedStories('follow', stories)"
                      class="btn-group">
                     <button type="button"
-                            ng-switch="allFollowed"
+                            ng-switch="allFollowed(stories)"
                             class="btn btn-default"
-                            ng-click="followMultiple(!allFollowed)">
-                        <i class="fa" ng-class="noneFollowed ? 'fa-star-o' : 'fa-star-half-o'" ng-switch-default tooltip="${message(code: 'is.followable.start')}"></i>
+                            ng-click="followMultiple(!allFollowed(stories))">
+                        <i class="fa" ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'" ng-switch-default tooltip="${message(code: 'is.followable.start')}"></i>
                         <i class="fa fa-star" ng-switch-when="true" tooltip="${message(code: 'is.followable.stop')}"></i>
                     </button>
                 </div>
             </div>
         </form>
     </div>
+    <table class="table">
+        <tr><td>${message(code: 'is.ui.story.total.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
+        <tr><td>${message(code: 'is.ui.story.total.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>
+        <tr><td>${message(code: 'is.ui.story.total.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td></tr>
+    </table>
 </div>
 </script>

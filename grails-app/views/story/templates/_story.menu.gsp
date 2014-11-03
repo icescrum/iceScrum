@@ -38,7 +38,7 @@
     </a>
 </li>
 <li>
-    <a href ng-if="authorizedStory('create')" ng-click="copy(story)">
+    <a href ng-if="authorizedStory('copy')" ng-click="copy(story)">
         <g:message code='is.ui.releasePlan.menu.story.clone'/>
     </a>
 </li>
