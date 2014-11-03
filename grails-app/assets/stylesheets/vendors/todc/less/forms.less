@@ -127,9 +127,26 @@ input[type="month"] {
 
   &.input-sm {
     line-height: @input-height-small;
+    line-height: @line-height-small ~"\0";
   }
   &.input-lg {
     line-height: @input-height-large;
+    line-height: @line-height-large ~"\0";
+  }
+}
+
+// IE 11 hack to reverse the iOS temporal input hack.
+:root input[type="date"],
+:root input[type="time"],
+:root input[type="datetime-local"],
+:root input[type="month"] {
+  line-height: @line-height-base;
+
+  &.input-sm {
+    line-height: @line-height-small;
+  }
+  &.input-lg {
+    line-height: @line-height-large;
   }
 }
 
@@ -140,7 +157,9 @@ input[type="month"] {
 
 .radio,
 .checkbox {
-  min-height: @line-height-computed; // clear the floating input if there is no label text
+  label {
+    min-height: @line-height-computed; // Ensure the input doesn't jump when there is no text
+  }
 }
 input[type="radio"],
 .radio input[type="radio"],
@@ -238,12 +257,14 @@ input[type="checkbox"],
 // Build on `.form-control` with modifier classes to decrease or increase the
 // height and font-size of form controls.
 
-.input-sm {
-  .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-small);
+.input-sm,
+.form-group-sm .form-control {
+  .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @input-border-radius-small);
 }
 
-.input-lg {
-  .input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-large);
+.input-lg,
+.form-group-lg .form-control {
+  .input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @input-border-radius-large);
 }
 
 
@@ -287,6 +308,14 @@ input[type="checkbox"],
   .form-control-validation(#dd4b39; #dd4b39; @state-danger-bg);
 }
 
+// Reposition feedback icon if input has visible label above
+.has-feedback label {
+
+  & ~ .form-control-feedback {
+     top: (@line-height-computed + 5); // Height of the `label` and its margin
+  }
+}
+
 
 // Help text
 //
@@ -308,7 +337,6 @@ input[type="checkbox"],
 .form-horizontal .checkbox-inline {
   padding-top: @padding-base-vertical;
 }
-
 
 
 // Inline forms
@@ -340,6 +368,27 @@ input[type="checkbox"],
       vertical-align: middle;
     }
 
+    // Make static controls behave like regular ones
+    .form-control-static {
+      display: inline-block;
+    }
+
+    .input-group {
+      display: inline-table;
+      vertical-align: middle;
+
+      .input-group-addon,
+      .input-group-btn,
+      .form-control {
+        width: auto;
+      }
+    }
+
+    // Input groups need that 100% width though
+    .input-group > .form-control {
+      width: 100%;
+    }
+
     .control-label {
       margin-bottom: 0;
       vertical-align: middle;
@@ -366,10 +415,7 @@ input[type="checkbox"],
       margin-bottom: -2px;
     }
 
-    // Validation states
-    //
-    // Reposition the icon because it's now within a grid column and columns have
-    // `position: relative;` on them. Also accounts for the grid gutter padding.
+    // Re-override the feedback icon.
     .has-feedback .form-control-feedback {
       top: 0;
     }
@@ -418,18 +464,12 @@ input[type="checkbox"],
         padding-top: ((@padding-large-vertical * @line-height-large) + 1);
       }
     }
-    .form-control {
-      &:extend(.input-lg);
-    }
   }
   .form-group-sm {
     @media (min-width: @screen-sm-min) {
       .control-label {
         padding-top: (@padding-small-vertical + 1);
       }
-    }
-    .form-control {
-      &:extend(.input-sm);
     }
   }
 }
