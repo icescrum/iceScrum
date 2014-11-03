@@ -96,7 +96,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                     return;
                 }
                 var scrollTop = container.scrollTop();
-                if(manual || (initialTop - scrollTop <= 0)){
+                if(manual || (initialTop - scrollTop < 0)){
                     $this.css('width', $this.parent().outerWidth(true) + parseInt(attrs['fixedOffsetWidth'] ?  attrs['fixedOffsetWidth'] : 0))
                          .css('left', container.offset().left + parseInt((attrs['fixedOffsetLeft'] ?  attrs['fixedOffsetLeft'] : 0)));
                     if (!$this.hasClass('fixed')){
@@ -105,7 +105,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                             .css('top', container.offset().top + parseInt((attrs['fixedOffsetTop'] ?  attrs['fixedOffsetTop'] : 0)))
                             .css('position', 'fixed');
                     }
-                } else if (initialTop - scrollTop > 0 && $this.hasClass('fixed')) {
+                } else if (initialTop - scrollTop >= 0 && $this.hasClass('fixed')) {
                     $this.removeClass('fixed')
                         .css('top', '')
                         .css('width', '')

@@ -33,8 +33,7 @@
      ng-class="authorizedStory('upload', story) && class">
     <div id="story-header"
          class="panel-heading"
-         fixed="#right"
-         fixed-offset-width="-2">
+         fixed="#right">
         <h3 class="panel-title row">
             <div class="the-title">
                 <a href
