@@ -44,6 +44,7 @@ class StoryController {
     def acceptanceTestService
     def featureService
     def springSecurityService
+    def activityService
 
     @Secured(['inProduct()'])
     def show(long id, long product) {
@@ -118,7 +119,8 @@ class StoryController {
             return
         }
         stories.each { Story story ->
-            if (!story.canUpdate(request.productOwner, springSecurityService.currentUser)) {
+            def user = springSecurityService.currentUser
+            if (!story.canUpdate(request.productOwner, user)) {
                 render(status: 403)
                 return
             }
@@ -139,7 +141,11 @@ class StoryController {
             }
             Story.withTransaction {
                 if (storyParams.tags != null) {
+                    def oldTags = story.tags
                     story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
+                    if (oldTags != story.tags) {
+                        activityService.addActivity(story, user, Activity.CODE_UPDATE, story.name, 'tags', oldTags?.sort()?.join(','), story.tags?.sort()?.join(','))
+                    }
                 }
                 //for rest support
                 if ((request.format == 'xml' && storyParams.parentSprint == '') || storyParams.parentSprint?.id == '') {

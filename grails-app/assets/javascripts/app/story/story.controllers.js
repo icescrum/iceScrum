@@ -221,10 +221,9 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                             var lastActivity = _.last(_.last(groupedActivities).activities);
                             if (activity.code == lastActivity.code
                                 && activity.parentType == lastActivity.parentType
-                                && activity.field == lastActivity.field
-                                && activity.beforeValue == lastActivity.beforeValue
-                                && activity.afterValue == lastActivity.afterValue) {
+                                && activity.field == lastActivity.field) {
                                 lastActivity.count += 1;
+                                lastActivity.beforeValue = activity.beforeValue;
                             } else {
                                 _.last(groupedActivities).activities.push(activity);
                             }
