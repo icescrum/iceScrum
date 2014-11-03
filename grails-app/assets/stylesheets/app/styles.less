@@ -1782,14 +1782,14 @@ ul.dropdown-menu[datepicker-popup-wrap]{
     }
   }
   &:after {
+    bottom:0;
     content: "";
-    display: block;
-    position: fixed;
-    height: 100%;
     width: 100%;
     z-index: 10;
-    top:0;
-    bottom:0;
+    top:@fromTop;
+    height: 100%;
+    display: block;
+    position: fixed;
     background-color: rgba(0,0,0,@opacity);
     transition: background-color 0.25s ease-in-out;
     -o-transition: background-color 0.25s ease-in-out;
