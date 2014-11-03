@@ -379,6 +379,26 @@ isApp.config(['$stateProvider', '$httpProvider',
             $rootScope.previousState = fromState;
         });
 
+        $(document).on('click', '.stacks.three-stacks > div, .stacks.four-stacks > div', function(event){
+            if(angular.element(event.target).parent('a').length > 0){
+                return false;
+            }
+            var $this = $(this);
+            if($this.parent().hasClass('three-stacks')){
+                if($this.index() == 0){
+                    $state.go('^.');
+                }
+            } else {
+                //TODO need to be changed when we will have new subview
+                if($this.index() == 0){
+                    $state.go('^');
+                }
+                if($this.index() == 1){
+                    $state.go('^');
+                }
+            }
+        });
+
     }])
     .constant('SERVER_ERRORS', {
         loginFailed: 'auth-login-failed',
@@ -423,5 +443,4 @@ isApp.config(['$stateProvider', '$httpProvider',
         TM: 'TM',
         SH: 'SH'
     })
-    .constant('CONTENT_LOADED', 'loadingFinished')
-;
+    .constant('CONTENT_LOADED', 'loadingFinished');

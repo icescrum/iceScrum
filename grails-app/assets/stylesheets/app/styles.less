@@ -919,7 +919,7 @@ tr:hover .on-hover span {
 .fixed {
   box-shadow: 0 2px 2px -1px rgba(0,0,0,.1);
   -webkit-box-shadow: 0 2px 2px -1px rgba(0,0,0,.1);
-  z-index: 100;
+  z-index: 9;
   border-radius:0;
 }
 
@@ -1778,17 +1778,18 @@ ul.dropdown-menu[datepicker-popup-wrap]{
   &:hover {
     cursor:pointer;
     &:after {
-      background-color:transparent;
+      //background-color:transparent;
     }
   }
   &:after {
     content: "";
     display: block;
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
     z-index: 10;
     top:0;
+    bottom:0;
     background-color: rgba(0,0,0,@opacity);
     transition: background-color 0.25s ease-in-out;
     -o-transition: background-color 0.25s ease-in-out;
@@ -1810,16 +1811,16 @@ ul.dropdown-menu[datepicker-popup-wrap]{
   }
 }
 
-.mixin-two-stacks(){
+.mixin-one-stack(){
   > div:nth-child(1) {
-    .make-md-column(7);
-    .make-lg-column(8);
+    .make-lg-column(12);
   }
   > div:nth-child(2) {
     .make-md-column(5);
     .make-lg-column(4);
-    .make-md-column-offset(7);
-    .make-lg-column-offset(8);
+    .make-md-column-offset(12);
+    .make-lg-column-offset(12);
+
   }
   > div:nth-child(3) {
     .make-md-column(4);
@@ -1833,20 +1834,33 @@ ul.dropdown-menu[datepicker-popup-wrap]{
     .make-md-column-offset(12);
     .make-lg-column-offset(12);
   }
+  .transition-stacks()
+}
+
+.mixin-two-stacks(){
+  .mixin-one-stack();
+  > div:nth-child(1) {
+    .make-md-column(7);
+    .make-lg-column(8);
+  }
+  > div:nth-child(2) {
+    .make-md-column-offset(7);
+    .make-lg-column-offset(8);
+  }
 }
 
 .mixin-three-stacks(){
   .mixin-two-stacks();
   > div:nth-child(1) {
     .mixin-opacity-stack(0.5);
-    overflow: hidden;
+    overflow: hidden !important;
   }
   > div:nth-child(2) {
-    .make-lg-column-offset(2);
+    .make-md-column-offset(2);
     .make-lg-column-offset(4);
   }
   > div:nth-child(3) {
-    .make-lg-column-offset(7);
+    .make-md-column-offset(7);
     .make-lg-column-offset(8);
   }
   > div:nth-child(4) {
@@ -1858,9 +1872,10 @@ ul.dropdown-menu[datepicker-popup-wrap]{
 .mixin-four-stacks() {
   .mixin-three-stacks();
   > div:nth-child(2) {
+    .make-md-column-offset(1);
     .make-lg-column-offset(1);
     .mixin-opacity-stack(0.25);
-    overflow: hidden;
+    overflow: hidden !important;
   }
   > div:nth-child(3) {
     .make-md-column-offset(3);
@@ -1873,6 +1888,9 @@ ul.dropdown-menu[datepicker-popup-wrap]{
 }
 
 .stacks {
+  &.one-stack {
+    .mixin-one-stack();
+  }
   &.two-stacks {
     .mixin-two-stacks();
     .mixin-shadow-stack(1);
@@ -1890,10 +1908,14 @@ ul.dropdown-menu[datepicker-popup-wrap]{
     background: #fff;
     padding:0 !important;
     position: fixed !important;
-    transition: opacity 0.25s ease-in-out margin 0.25s ease-in-out;
-    -o-transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
-    -moz-transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
-    -webkit-transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
+}
 
+.transition-stacks() {
+  > div:nth-child(n) {
+    transition: width 0.25s ease-in-out, opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+    -o-transition: width 0.25s ease-in-out, opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+    -moz-transition: width 0.25s ease-in-out, opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+    -webkit-transition: width 0.25s ease-in-out, opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+  }
 }
