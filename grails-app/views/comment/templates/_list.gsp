@@ -42,6 +42,7 @@
                              class="form-group" >
                             <img class="comment-avatar"
                                  ng-switch-default
+                                 height="30px"
                                  ng-src="{{comment.poster | userAvatar}}"
                                  alt="{{comment.poster | userFullName}}"/>
                             <button ng-switch-when="true"
