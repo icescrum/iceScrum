@@ -1791,10 +1791,10 @@ ul.dropdown-menu[datepicker-popup-wrap]{
     display: block;
     position: fixed;
     background-color: rgba(0,0,0,@opacity);
-    transition: background-color 0.25s ease-in-out;
-    -o-transition: background-color 0.25s ease-in-out;
-    -moz-transition: background-color 0.25s ease-in-out;
-    -webkit-transition:  background-color 0.25s ease-in-out;
+    transition: background-color 0.25s linear;
+    -o-transition: background-color 0.25s linear;
+    -moz-transition: background-color 0.25s linear;
+    -webkit-transition:  background-color 0.25s linear;
   }
 }
 
@@ -1914,9 +1914,9 @@ ul.dropdown-menu[datepicker-popup-wrap]{
 
 .transition-stacks() {
   > div:nth-child(n) {
-    transition: width 0.25s ease-in-out, opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
-    -o-transition: width 0.25s ease-in-out, opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
-    -moz-transition: width 0.25s ease-in-out, opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
-    -webkit-transition: width 0.25s ease-in-out, opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+    transition: opacity 0.25s linear, margin 0.1s linear;
+    -o-transition: opacity 0.25s linear, margin 0.1s linear;
+    -moz-transition: opacity 0.25s linear, margin 0.1s linear;
+    -webkit-transition: opacity 0.25s linear, margin 0.1s linear;
   }
 }

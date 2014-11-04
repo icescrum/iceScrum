@@ -92,23 +92,19 @@
             </div>
             <div class="actions-right">
                 <div class="btn-group pull-right">
-                    <button name="activities"
-                            class="btn btn-default"
-                            type="button"
-                            ng-click="setTabSelected('activities')"
-                            tooltip="${message(code:'todo.is.story.lastActivity')}"
-                            tooltip-append-to-body="true">
+                    <a class="btn btn-default"
+                       href="#sandbox/{{ story.id }}"
+                       tooltip="${message(code:'todo.is.story.lastActivity')}"
+                       tooltip-append-to-body="true">
                         <span class="fa fa-clock-o"></span>
-                    </button>
-                    <button name="attachments"
-                            class="btn btn-default"
-                            type="button"
-                            ng-click="setTabSelected('attachments')"
-                            tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
-                            tooltip-append-to-body="true">
+                    </a>
+                    <a class="btn btn-default"
+                       href="#sandbox/{{ story.id }}"
+                       tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                       tooltip-append-to-body="true">
                         <span class="fa fa-paperclip"></span>
                         <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
-                    </button>
+                    </a>
                     <a class="btn btn-default"
                        type="button"
                        href="#sandbox/{{ story.id }}/comments"
@@ -121,7 +117,6 @@
                     </a>
                     <a class="btn btn-default"
                        href="#sandbox/{{ story.id }}/tasks"
-                       ng-click="setTabSelected('tasks')"
                        tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
                        tooltip-append-to-body="true">
                         <span class="fa fa-tasks"></span>
@@ -337,17 +332,8 @@
         </form>
     </div>
 </div>
-<div class="panel panel-default" ng-if="story">
-    <div class="panel-body">
-        <tabset type="tabs nav-tabs-google">
-            <tab select="activities(story); ($state.params.tabId && $state.params.tabId != 'attachments' ? setTabSelected('activities') : '');"
-                 heading="${message(code: 'is.ui.backlogelement.activity')}"
-                 active="tabSelected.activities">
-                <table class="table">
-                    <tbody ng-include="'activity.list.html'"></tbody>
-                </table>
-            </tab>
-        </tabset>
+<div ng-if="story">
+    <div class="panel panel-default"  ng-init="activities(story); selected = story;" ng-include="'activity.list.html'">
     </div>
 </div>
 </script>
