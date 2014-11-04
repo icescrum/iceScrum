@@ -1787,6 +1787,16 @@ ul.dropdown-menu[datepicker-popup-wrap]{
   }
 }
 
+.mixin-opacity-stack(@opacity){
+  &:hover {
+    cursor:pointer;
+  }
+  &:after {
+    visibility: visible;
+    background : rgba(0,0,0,@opacity);
+  }
+}
+
 .mixin-one-stack(){
   > div:nth-child(1) {
     .make-lg-column(12);
@@ -1828,6 +1838,7 @@ ul.dropdown-menu[datepicker-popup-wrap]{
   .mixin-two-stacks();
   > div:nth-child(1) {
     overflow: hidden !important;
+    .mixin-opacity-stack(0.5);
   }
   > div:nth-child(2) {
     .make-md-column-offset(2);
@@ -1850,6 +1861,7 @@ ul.dropdown-menu[datepicker-popup-wrap]{
     .make-md-column-offset(1);
     .make-lg-column-offset(1);
     overflow: hidden !important;
+    .mixin-opacity-stack(0.5);
   }
   > div:nth-child(3) {
     .make-md-column-offset(2);
@@ -1885,9 +1897,7 @@ ul.dropdown-menu[datepicker-popup-wrap]{
     -o-transition: opacity 0.25s linear, margin 0.25s linear;
     -moz-transition: opacity 0.25s linear, margin 0.25s linear;
     -webkit-transition: opacity 0.25s linear, margin 0.25s linear;
-    &.stacked:hover {
-      cursor:pointer;
-    }
+
     &:after {
       top: 0;
       left: 0;
@@ -1899,10 +1909,6 @@ ul.dropdown-menu[datepicker-popup-wrap]{
       background : transparent;
       visibility: hidden;
       transition : visibility 0.3s linear, background 0.3s linear;
-    }
-    &.stacked:after {
-      visibility: visible;
-      background : rgba(0,0,0,0.5);
     }
   }
 }
