@@ -25,7 +25,7 @@
        ng-if="authorizedFeature('create')"
        tooltip="${message(code:'todo.is.ui.new')}"
        tooltip-append-to-body="true"
-       href="#feature"
+       href="#feature/new"
        class="btn btn-primary">
         <span class="fa fa-plus"></span>
     </a>

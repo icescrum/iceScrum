@@ -46,7 +46,7 @@ var isApp = angular.module('isApp', [
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
-        function ($stateProvider, $httpProvider) {
+        function ($stateProvider, $httpProvider, $animateProvider) {
             $httpProvider.interceptors.push([
                 '$injector',
                 function ($injector) {
@@ -114,11 +114,12 @@ isApp.config(['$stateProvider', '$httpProvider',
                     }]
                 })
                 .state('sandbox', {
+                    url: "/sandbox",
                     templateUrl: 'openWindow/sandbox',
                     controller: 'sandboxCtrl',
                     data: {
                         filterListParams: {
-                            state:1
+                            state: 1
                         }
                     },
                     resolve:{
@@ -128,7 +129,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                     }
                 })
                     .state('sandbox.new', {
-                        url: "/sandbox",
+                        url: "/new",
+                        data:{
+                            stack: 2
+                        },
                         views:{
                             "details@sandbox": {
                                 templateUrl: 'story.new.html',
@@ -137,7 +141,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('sandbox.multiple', {
-                        url: "/sandbox/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                        url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                        data:{
+                            stack: 2
+                        },
                         resolve:{
                             listId:['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
@@ -151,7 +158,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('sandbox.details', {
-                        url: "/sandbox/{id:[0-9]+}",
+                        url: "/{id:[0-9]+}",
+                        data:{
+                            stack: 2
+                        },
                         views:{
                             "details@sandbox": {
                                 templateUrl: 'story.details.html',
@@ -161,6 +171,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                     })
                         .state('sandbox.details.tab', {
                             url: "/{tabId:.+}",
+                            data:{
+                                stack: 3
+                            },
                             views:{
                                 "details-list@sandbox": {
                                     templateUrl: function($stateParams){
@@ -188,6 +201,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         })
 
                 .state('actor', {
+                    url: "/actor",
                     templateUrl: 'openWindow/actor',
                     controller: 'actorsCtrl',
                     resolve:{
@@ -197,7 +211,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                     }
                 })
                     .state('actor.new', {
-                        url: '/actor',
+                        url: '/new',
+                        data:{
+                            stack: 2
+                        },
                         views:{
                             "details@actor": {
                                 templateUrl: 'actor.new.html',
@@ -207,7 +224,10 @@ isApp.config(['$stateProvider', '$httpProvider',
 
                     })
                     .state('actor.multiple', {
-                        url: "/actor/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                        url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                        data:{
+                            stack: 2
+                        },
                         resolve:{
                             listId:['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
@@ -221,7 +241,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('actor.details', {
-                        url: "/actor/{id:[0-9]+}",
+                        url: "/{id:[0-9]+}",
+                        data:{
+                            stack: 2
+                        },
                         views:{
                             "details@actor": {
                                 templateUrl: 'actor.details.html',
@@ -232,6 +255,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                     })
                         .state('actor.details.tab', {
                             url: "/{tabId:.+}",
+                            data:{
+                                stack: 3
+                            },
                             views:{
                                 "details-list@actor": {
                                     templateUrl: 'nested.stories.html',
@@ -241,6 +267,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         })
 
                 .state('feature', {
+                    url: "/feature",
                     templateUrl: 'openWindow/feature',
                     controller: 'featuresCtrl',
                     resolve:{
@@ -250,7 +277,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                     }
                 })
                     .state('feature.new', {
-                        url: '/feature',
+                        url: '/new',
+                        data:{
+                            stack: 2
+                        },
                         views: {
                             "details@feature": {
                                 templateUrl: 'feature.new.html',
@@ -259,7 +289,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('feature.multiple', {
-                        url: "/feature/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                        url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                        data:{
+                            stack: 2
+                        },
                         resolve:{
                             listId:['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
@@ -273,7 +306,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('feature.details', {
-                        url: "/feature/{id:[0-9]+}",
+                        url: "/{id:[0-9]+}",
+                        data:{
+                            stack: 2
+                        },
                         views:{
                             "details@feature": {
                                 templateUrl: 'feature.details.html',
@@ -283,6 +319,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                     })
                         .state('feature.details.tab', {
                             url: "/{tabId:.+}",
+                            data:{
+                                stack: 3
+                            },
                             views:{
                                 "details-list@feature": {
                                     templateUrl: 'nested.stories.html',

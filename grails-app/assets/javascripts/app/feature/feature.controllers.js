@@ -61,7 +61,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
             $scope.next = FormService.next(FeatureService.list, $scope.feature);
         }).catch(function(e){
-            $state.go('^.new');
+            $state.go('^');
             $scope.notifyError(e.message)
         });
 

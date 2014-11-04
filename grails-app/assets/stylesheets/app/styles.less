@@ -1801,6 +1801,7 @@ ul.dropdown-menu[datepicker-popup-wrap]{
 .mixin-one-stack(){
   > div:nth-child(1) {
     .make-lg-column(12);
+    transition: width .25s linear;
   }
   > div:nth-child(2) {
     .make-md-column(5);
@@ -1909,7 +1910,7 @@ ul.dropdown-menu[datepicker-popup-wrap]{
       position: absolute;
       background : transparent;
       visibility: hidden;
-      transition : visibility 0.3s linear, background 0.3s linear;
+      transition : visibility .25s linear, background .25s linear;
     }
   }
 }

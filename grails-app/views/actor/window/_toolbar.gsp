@@ -25,7 +25,7 @@
        ng-if="authorizedActor('create')"
        tooltip="${message(code:'todo.is.ui.new')}"
        tooltip-append-to-body="true"
-       href="#actor"
+       href="#actor/new"
        class="btn btn-primary">
         <span class="fa fa-plus"></span>
     </a>

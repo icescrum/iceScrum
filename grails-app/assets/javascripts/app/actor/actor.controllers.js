@@ -52,7 +52,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
             $scope.previous = FormService.previous(ActorService.list, $scope.actor);
             $scope.next = FormService.next(ActorService.list, $scope.actor);
         }).catch(function(e){
-            $state.go('^.new');
+            $state.go('^');
             $scope.notifyError(e.message)
         });
         // edit
@@ -162,7 +162,6 @@ controllers.controller('actorMultipleCtrl', ['$scope', '$controller', 'listId', 
     // Functions
     function sum(actors, extractField) {
         return _.reduce(actors, function(sum, actor) {
-            console.log(extractField(actor));
             return sum + (extractField(actor) ? extractField(actor) : 0);
         }, 0);
     }

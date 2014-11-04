@@ -214,7 +214,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS
         stop:function(e, ui, selectedItems) {
             switch (selectedItems.length){
                 case 0:
-                    $state.go('sandbox.new');
+                    $state.go('sandbox');
                     break;
                 case 1:
                     $state.go($state.params.tabId ? 'sandbox.details.tab' : 'sandbox.details', { id: selectedItems[0].id });
@@ -260,7 +260,7 @@ controllers.controller('actorsCtrl', ['$scope', '$state', 'ActorService', 'actor
         stop:function(e, ui, selectedItems) {
             switch (selectedItems.length){
                 case 0:
-                    $state.go('actor.new');
+                    $state.go('actor');
                     break;
                 case 1:
                     $state.go($state.params.tabId ? 'actor.details.tab' : 'actor.details', { id: selectedItems[0].id });
@@ -307,7 +307,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
         stop:function(e, ui, selectedItems) {
             switch (selectedItems.length){
                 case 0:
-                    $state.go('feature.new');
+                    $state.go('feature');
                     break;
                 case 1:
                     $state.go($state.params.tabId ? 'feature.details.tab' : 'feature.details', { id: selectedItems[0].id });

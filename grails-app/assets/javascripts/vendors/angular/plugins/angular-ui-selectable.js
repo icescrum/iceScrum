@@ -96,6 +96,12 @@ angular.module('ui.selectable', [])
 
                     // Create selectable
                     element.selectable(opts);
+                    element.parent().on('click', function(e){
+                        //click every where in window-contet will remove selection
+                        angular.element(this).find('.ui-selected').removeClass('ui-selected');
+                        var s = element.selectable( "option" , "stop");
+                        s(e);
+                    });
                 }
             };
         }
