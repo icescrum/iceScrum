@@ -106,7 +106,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS
         } else if (angular.isObject(error.data)) {
             notifications.error("", error.data.text);
         } else {
-            notifications.error("", $scope.message('todo.is.ui.error.unknown'), options);
+            notifications.error("", $scope.message('todo.is.ui.error.unknown'));
         }
     });
 

@@ -54,13 +54,12 @@
                     <ul class="dropdown-menu"
                         ng-include="'feature.menu.html'"></ul>
                 </span>
-                <span class="action" ng-class="{'active':feature.attachments.length}">
-                    <a href="#/feature/{{ feature.id }}/attachments"
-                       tooltip="{{ feature.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
-                       tooltip-append-to-body="true">
-                        <i class="fa fa-paperclip"></i>
-                        <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
-                    </a>
+                <span class="action"
+                      ng-class="{'active':feature.attachments.length}"
+                      tooltip="{{ feature.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                      tooltip-append-to-body="true">
+                    <i class="fa fa-paperclip"></i>
+                    <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
                 </span>
                 <span class="action" ng-class="{'active':feature.stories_ids.length}">
                     <a href="#/feature/{{ feature.id }}/stories"

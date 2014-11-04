@@ -45,6 +45,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
         $scope.editableActorReference = {};
         ActorService.get($stateParams.id).then(function(actor) {
             $scope.actor = actor;
+            $scope.selected = actor;
             // For edit
             $scope.resetActorForm();
             // For header
@@ -61,6 +62,7 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
         $scope.update = function(actor) {
             ActorService.update(actor).then(function(actor) {
                 $scope.actor = actor;
+                $scope.selected = actor;
                 $scope.resetActorForm();
                 $scope.notifySuccess('todo.is.ui.actor.updated');
             });
@@ -102,9 +104,6 @@ controllers.controller('actorDetailsCtrl', ['$scope', '$state', '$stateParams', 
                 });
             }
         });
-        $scope.getSelected = function() {
-            return $scope.actor;
-        };
         $scope.clazz = 'actor';
         $scope.attachmentQuery = function($flow, actor) {
             $scope.flow = $flow;
@@ -122,7 +121,7 @@ controllers.controller('actorDetailsStoryCtrl', ['$scope', '$controller', 'Story
         $scope.$watch('actor', function(){
             $scope.selected = $scope.actor;
             if (_.isEmpty($scope.selected.stories)) {
-                $scope.stories = StoryService.listByType($scope.selected);
+                StoryService.listByType($scope.selected);
             }
         });
     }]);

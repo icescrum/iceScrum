@@ -21,14 +21,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.list.html">
-<div ng-if="getSelected()">
-    <table ng-init="comments(getSelected())" class="table">
-        <tr ng-show="getSelected().comments === undefined">
+<div ng-if="selected">
+    <table ng-init="comments(selected)" class="table">
+        <tr ng-show="selected.comments === undefined">
             <td class="empty-content">
                 <i class="fa fa-refresh fa-spin"></i>
             </td>
         </tr>
-        <tr ng-repeat="comment in getSelected().comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
+        <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
             <td>
                 <div class="content">
                     <form name="formHolder.commentForm"
@@ -38,32 +38,37 @@
                           ng-class="{ 'form-editing': (formHolder.editing || formHolder.formHover) && authorizedComment('update', editableComment) }"
                           show-validation
                           novalidate>
-                        <div ng-switch="(formHolder.editing || formHolder.formHover) && authorizedComment('delete', editableComment)"
-                             class="form-group" >
-                            <img class="comment-avatar"
-                                 ng-switch-default
-                                 height="30px"
-                                 ng-src="{{comment.poster | userAvatar}}"
-                                 alt="{{comment.poster | userFullName}}"/>
-                            <button ng-switch-when="true"
-                                    class="btn btn-danger"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, story] })"
-                                    tooltip-placement="left"
-                                    tooltip-append-to-body="true"
-                                    tooltip="${message(code:'todo.is.ui.comment.delete')}"><span class="fa fa-times"></span>
-                            </button>
-                            <span>{{comment.poster | userFullName}}</span>
-                            <span class="text-muted">
-                                <time timeago datetime="'{{ comment.dateCreated }}'">
-                                    {{ comment.dateCreated }}
-                                </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>
-                            </span>
+                        <div class="clearfix no-padding">
+                            <div ng-switch="(formHolder.editing || formHolder.formHover) && authorizedComment('delete', editableComment)"
+                                 class="col-sm-1">
+                                <img ng-switch-default
+                                     height="30px"
+                                     ng-src="{{comment.poster | userAvatar}}"
+                                     alt="{{comment.poster | userFullName}}"/>
+                                <button ng-switch-when="true"
+                                        class="btn btn-danger"
+                                        ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, story] })"
+                                        tooltip-placement="left"
+                                        tooltip-append-to-body="true"
+                                        tooltip="${message(code:'todo.is.ui.comment.delete')}"><span class="fa fa-times"></span>
+                                </button>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <span disabled="disabled" class="form-control form-control-static">{{comment.poster | userFullName}}</span>
+                            </div>
+                            <div class="col-sm-5 form-group text-right">
+                                <span disabled="disabled" class="form-control form-control-statictext-muted">
+                                    <time timeago datetime="'{{ comment.dateCreated }}'">
+                                        {{ comment.dateCreated }}
+                                    </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <textarea required
                                       msd-elastic
                                       ng-maxlength="5000"
-                                      ng-blur="update(editableComment, getSelected()); showCommentBodyTextarea = false;"
+                                      ng-blur="update(editableComment, selected); showCommentBodyTextarea = false;"
                                       is-markitup
                                       name="body"
                                       ng-model="editableComment.body"
@@ -81,7 +86,7 @@
                 </div>
             </td>
         </tr>
-        <tr ng-show="getSelected().comments !== undefined && getSelected().comments.length == 0">
+        <tr ng-show="selected.comments !== undefined && selected.comments.length == 0">
             <td class="empty-content">
                 <small>${message(code:'todo.is.ui.comment.empty')}</small>
             </td>

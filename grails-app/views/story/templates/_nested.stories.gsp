@@ -34,7 +34,7 @@
                 <div class="content">
                     <button class="btn btn-xs btn-default"
                             disabled="disabled">{{ story.uid }}</button>
-                    <a href="#">{{ story.name }}</a>
+                    <a href="{{ story.uid | permalink }}">{{ story.name }}</a>
                     <div class="pretty-printed"
                          ng-bind-html="story | descriptionHtml | sanitize">
                     </div>

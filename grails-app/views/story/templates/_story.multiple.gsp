@@ -201,6 +201,8 @@
             </div>
         </form>
     </div>
+</div>
+<div class="panel panel-default">
     <table class="table">
         <tr><td>${message(code: 'is.ui.story.total.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
         <tr><td>${message(code: 'is.ui.story.total.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>

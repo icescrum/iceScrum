@@ -64,13 +64,6 @@
                 <ul class="dropdown-menu" ng-include="'feature.menu.html'"></ul>
             </div>
             <div class="btn-group pull-right">
-                <button name="attachments" class="btn btn-default"
-                        ng-click="setTabSelected('attachments')"
-                        tooltip="{{ feature.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
-                        tooltip-append-to-body="true">
-                    <span class="fa fa-paperclip"></span>
-                    <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
-                </button>
                 <a class="btn btn-default"
                    href="#feature/{{ feature.id }}/stories"
                    tooltip="{{ feature.stories_ids.length }} ${message(code:'todo.is.feature.stories')}"
@@ -198,7 +191,7 @@
                 </button>
             </div>
             <div class="form-group">
-                <label>${message(code:'is.backlogelement.attachment')}</label>
+                <label>${message(code:'is.backlogelement.attachment')} {{ feature.attachments.length > 0 ? '(' + feature.attachments.length + ')' : '' }}</label>
                 <div ng-if="authorizedFeature('upload', feature)">
                     <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i> todo.is.ui.new.upload</button>
                 </div>

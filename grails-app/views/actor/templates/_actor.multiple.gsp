@@ -76,6 +76,8 @@
             </div>
         </div>
     </div>
+</div>
+<div class="panel panel-default">
     <table class="table">
         <tr><td>${message(code: 'is.ui.actor.total.stories')}</td><td>{{ sumStories(actors) }}</td></tr>
     </table>

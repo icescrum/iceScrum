@@ -50,6 +50,11 @@
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
                              height="21px"/>
                     </span>
+                    <a class="btn btn-xs btn-default"
+                       tooltip="{{ story.activities && story.activities.length ? message('todo.is.ui.activity.' + story.activities[0].code) : '' }}"
+                       tooltip-append-to-body="true">
+                        <span class="fa fa-clock-o"></span>
+                    </a>
                     <button class="btn btn-xs btn-default"
                             disabled="disabled">{{ story.uid }}</button>
                     <a ng-if="previous"
@@ -92,19 +97,6 @@
             </div>
             <div class="actions-right">
                 <div class="btn-group pull-right">
-                    <a class="btn btn-default"
-                       href="#sandbox/{{ story.id }}"
-                       tooltip="${message(code:'todo.is.story.lastActivity')}"
-                       tooltip-append-to-body="true">
-                        <span class="fa fa-clock-o"></span>
-                    </a>
-                    <a class="btn btn-default"
-                       href="#sandbox/{{ story.id }}"
-                       tooltip="{{ story.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
-                       tooltip-append-to-body="true">
-                        <span class="fa fa-paperclip"></span>
-                        <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
-                    </a>
                     <a class="btn btn-default"
                        type="button"
                        href="#sandbox/{{ story.id }}/comments"
@@ -316,7 +308,7 @@
                 </button>
             </div>
             <div class="form-group">
-                <label>${message(code:'is.backlogelement.attachment')}</label>
+                <label>${message(code:'is.backlogelement.attachment')} {{ story.attachments.length > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
                 <div ng-if="authorizedStory('upload', story)">
                     <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i> todo.is.ui.new.upload</button>
                 </div>
@@ -332,8 +324,6 @@
         </form>
     </div>
 </div>
-<div ng-if="story">
-    <div class="panel panel-default"  ng-init="activities(story); selected = story;" ng-include="'activity.list.html'">
-    </div>
+<div ng-if="story" class="panel panel-default" ng-include="'activity.list.html'">
 </div>
 </script>

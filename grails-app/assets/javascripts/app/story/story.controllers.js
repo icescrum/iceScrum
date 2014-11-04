@@ -107,6 +107,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.allActivities = false;
         StoryService.get($stateParams.id).then(function(story) {
             $scope.story = story;
+            $scope.selected = story;
+            $scope.activities(story);
             // For edit
             $scope.resetStoryForm();
             $scope.selectDependsOnOptions.ajax.url = 'story/' + $scope.story.id + '/dependenceEntries';
@@ -151,6 +153,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             StoryService.update(story)
                 .then(function(story) {
                     $scope.story = story;
+                    $scope.selected = story;
                     $scope.activities(story); // TODO check if not better solution
                     $scope.resetStoryForm();
                     $scope.notifySuccess('todo.is.ui.story.updated');
@@ -165,17 +168,21 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 .then(function(activities) {
                     var groupedActivities = [];
                     angular.forEach(activities, function(activity) {
-                        var selectTab;
+                        var tabId;
                         if (activity.code == 'comment') {
-                            selectTab = 'comments'
+                            tabId = 'comments'
                         } else if (activity.code.indexOf("acceptanceTest") > -1 ) {
-                            selectTab = 'tests'
+                            tabId = 'tests'
                         } else if (activity.code.indexOf("task") > -1) {
-                            selectTab = 'tasks'
+                            tabId = 'tasks'
                         }
-                        if (selectTab) {
+                        if (tabId) {
                             activity.onClick = function() {
-                                $scope.setTabSelected(selectTab);
+                                if ($state.params.tabId) {
+                                    $state.go('.', { tabId: tabId, id: story.id });
+                                } else {
+                                    $state.go('.tab', { tabId: tabId, id: story.id });
+                                }
                             }
                         }
                         activity.count = 1;
@@ -316,9 +323,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                     $scope.editableStory.description = '';
                 }
             }
-        };
-        $scope.getSelected = function() {
-            return $scope.story;
         };
         $scope.clazz = 'story';
         $scope.attachmentQuery = function($flow, story) {

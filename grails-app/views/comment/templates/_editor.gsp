@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.editor.html">
-<form ng-submit="save(editableComment, getSelected())"
+<form ng-submit="save(editableComment, selected)"
       name="formHolder.commentForm"
       show-validation
       novalidate>

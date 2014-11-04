@@ -209,11 +209,14 @@ table {
   border: 1px solid rgb(217, 217, 217);
   border-top: 1px solid rgb(192, 192, 192);
   padding:5px 8px;
-  &.placeholder {
-    color: #757575;
-  }
   background: @body-bg;
   color: #555;
+}
+
+.markitup-preview, .atwho-preview, .form-control-static {
+  .placeholder {
+    color: #757575;
+  }
 }
 
 .markItUpContainer > .btn-toolbar > .btn-group {
@@ -242,6 +245,13 @@ table {
   overflow-y: auto;
   height: 100%;
   padding:10px !important;
+}
+
+.details-list {
+  padding:10px;
+}
+
+.details, .details-list {
   .panel {
     border:none;
   }
@@ -314,11 +324,6 @@ table {
   .form-group {
     margin-bottom: 10px;
   }
-  .tab-content {
-    .form-group {
-      margin-bottom: 8px;
-    }
-  }
   .markitup-preview, .atwho-preview, textarea {
     max-height: 115px;
     overflow: auto;
@@ -355,10 +360,6 @@ table {
   button.elemid {
     min-width: 36px;
   }
-}
-
-.details-list {
-  padding:10px;
 }
 
 .modal-xxl {

@@ -26,6 +26,7 @@ import grails.util.Metadata
 import grails.util.Holders
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
+import org.icescrum.core.domain.Activity
 import org.icescrum.core.support.ApplicationSupport
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.web.JQueryProvider
@@ -121,6 +122,7 @@ icescrum.marshaller = [
         release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
                 exclude:['cliches']
         ],
+        activity: [include: ['important']],
 
         userpreferences:[asShort:['activity', 'language', 'emailsSettings']],
         productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
@@ -143,6 +145,8 @@ icescrum.restMarshaller = [
         userpreferences:[asShort:['activity', 'language']],
         acceptancetest:[]
 ]
+
+icescrum.activities.important = [Activity.CODE_SAVE, 'estimated', 'acceptAs', 'done', 'unDone', 'returnToSandbox']
 
 /* Assets */
 grails.assets.less.compile = 'less4j'

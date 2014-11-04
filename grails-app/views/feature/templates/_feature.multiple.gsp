@@ -128,6 +128,8 @@
             </div>
         </form>
     </div>
+</div>
+<div class="panel panel-default">
     <table class="table">
         <tr><td>${message(code: 'is.ui.feature.total.value')}</td><td>{{ sumValues(features) }}</td></tr>
         <tr><td>${message(code: 'is.ui.feature.total.stories')}</td><td>{{ sumStories(features) }}</td></tr>

@@ -54,6 +54,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
 
         FeatureService.get($stateParams.id).then(function(feature) {
             $scope.feature = feature;
+            $scope.selected = feature;
             // For edit
             $scope.resetFeatureForm();
             // For header
@@ -71,6 +72,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
         $scope.update = function(feature) {
             FeatureService.update(feature).then(function(feature) {
                 $scope.feature = feature;
+                $scope.selected = feature;
                 $scope.resetFeatureForm();
                 $scope.notifySuccess('todo.is.ui.feature.updated');
             });
@@ -112,9 +114,6 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
                 });
             }
         });
-        $scope.getSelected = function() {
-            return $scope.feature;
-        };
         $scope.clazz = 'feature';
         $scope.attachmentQuery = function($flow, feature) {
             $scope.flow = $flow;
@@ -132,7 +131,7 @@ controllers.controller('featureDetailsStoryCtrl', ['$scope', '$controller', 'Sto
         $scope.$watch('feature', function(){
             $scope.selected = $scope.feature;
             if (_.isEmpty($scope.selected.stories)) {
-                $scope.stories = StoryService.listByType($scope.selected);
+                StoryService.listByType($scope.selected);
             }
         });
     }]);

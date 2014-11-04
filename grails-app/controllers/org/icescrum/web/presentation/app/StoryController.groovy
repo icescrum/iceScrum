@@ -56,7 +56,7 @@ class StoryController {
         }
     }
 
-    // TODO choose between show and index (also choose between list and index in other places)
+    @Secured(['inProduct()'])
     def index() {
         forward(action: 'show', params: params)
     }
@@ -219,8 +219,8 @@ class StoryController {
     }
 
     @Secured(['permitAll()'])
-    def permalink(long id, long product) {
-        def story = Story.withStory(product, id)
+    def permalink(Integer id, long product) { // it is not the id but the uid...
+        def story = Story.getInProductByUid(product, id).list() // TODO replace by withStory when fix uid / id stuff
         def uri
         switch(story.state){
             case Story.STATE_SUGGESTED:
@@ -341,9 +341,7 @@ class StoryController {
         withFormat {
             def activities = story.activity
             if (!all) {
-                def selectedActivities = activities.findAll { activity ->
-                    activity.code in [Activity.CODE_SAVE, 'estimated', 'acceptAs', 'done', 'unDone', 'returnToSandbox']
-                }
+                def selectedActivities = activities.findAll { it.important }
                 def remainingActivities = activities - selectedActivities
                 activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
                 activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
