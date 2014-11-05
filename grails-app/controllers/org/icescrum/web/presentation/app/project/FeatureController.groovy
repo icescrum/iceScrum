@@ -118,9 +118,10 @@ class FeatureController {
         List<Feature> features = Feature.withFeatures(params)
         List<Story> stories = featureService.copyToBacklog(features)
         withFormat {
-            html { render(status: 200, contentType: 'application/json', text:stories as JSON) }
-            json { renderRESTJSON(text:stories, status:201) }
-            xml  { renderRESTXML(text:stories, status:201) }
+            def returnData = stories.size() > 1 ? stories : stories.first()
+            html { render(status: 200, contentType: 'application/json', text:returnData as JSON) }
+            json { renderRESTJSON(text:returnData, status:201) }
+            xml  { renderRESTXML(text:returnData, status:201) }
         }
     }
 

@@ -114,14 +114,16 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         });
     };
     this.like = function(story) {
-        return story.$update({ action: 'like' }, function(result){
-            story.liked = result.liked;
-        });
+        return Story.update({ id: story.id, action: 'like' }, {}, function(resultStory) {
+            story.liked = resultStory.liked;
+            story.likers_count = resultStory.likers_count;
+        }).$promise;
     };
     this.follow = function(story) {
-        return story.$update({ action: 'follow' }, function(result){
-            story.followed = result.followed;
-        });
+        return Story.update({ id: story.id, action: 'follow' }, {}, function(resultStory){
+            story.followed = resultStory.followed;
+            story.followers_count = resultStory.followers_count;
+        }).$promise;
     };
     this.activities = function(story, all) {
         var params = { id: story.id };
@@ -130,11 +132,10 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         }
         return Story.activities(params, function(activities) {
             story.activities = activities;
-            return activities;
         }).$promise;
     };
     this.saveTemplate = function(story, name) {
-        return story.$update({ action: 'saveTemplate', 'template.name': name});
+        return Story.update({ id: story.id, action: 'saveTemplate', 'template.name': name}, {}).$promise;
     };
     this.deleteTemplate = function(templateId) {
         return $http.post('story/deleteTemplate?template.id=' + templateId);
@@ -144,9 +145,9 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return this.update(story);
     };
     this.acceptAs = function(story, target) {
-        return story.$update({ action: 'acceptAs' + target}, function() {
+        return Story.update({ id: story.id, action: 'acceptAs' + target}, {}, function() {
             _.remove(self.list, { id: story.id });
-        });
+        }).$promise;
     };
     this.copy = function(story) {
         return Story.update({ id: story.id, action: 'copy'}, {}, function(story) {

@@ -37,7 +37,6 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
     $scope.copyToBacklog = function(feature) {
         FeatureService.copyToBacklog(feature)
             .then(function() {
-                $scope.goToNewFeature();
                 $scope.notifySuccess('todo.is.ui.feature.copied.to.backlog');
             });
     };

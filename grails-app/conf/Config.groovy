@@ -146,7 +146,7 @@ icescrum.restMarshaller = [
         acceptancetest:[]
 ]
 
-icescrum.activities.important = [Activity.CODE_SAVE, 'estimated', 'acceptAs', 'done', 'unDone', 'returnToSandbox']
+icescrum.activities.important = [Activity.CODE_SAVE, 'acceptAs', 'estimate', 'plan', 'unPlan', 'done', 'unDone', 'returnToSandbox']
 
 /* Assets */
 grails.assets.less.compile = 'less4j'

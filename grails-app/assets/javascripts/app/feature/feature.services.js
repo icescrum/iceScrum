@@ -55,7 +55,7 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
         });
     };
     this.copyToBacklog = function(feature) {
-        return feature.$update({ action: 'copyToBacklog' });
+        return Feature.update({ id: feature.id, action: 'copyToBacklog' }, {}).$promise;
     };
     this['delete'] = function(feature) {
         return feature.$delete(function() {
