@@ -491,6 +491,29 @@ form .alert.alert-danger {
     margin-top:6px;
     cursor:pointer;
   }
+  .navbar-notif {
+    margin: 9px 15px 0 0;
+    height: 28px;
+    width: 28px;
+    position: relative;
+    cursor:pointer;
+    .fa {
+      font-size: 28px;
+    }
+    .badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font-size: 0.8em;
+      color: #4d90fe;
+      border: 1px solid;
+      padding: 1px 5px;
+    }
+  }
+  .notifications {
+    max-height: 500px;
+    overflow: auto;
+  }
   #panel-current-user {
     padding-bottom:0;
     .panel-footer {
@@ -602,93 +625,6 @@ form .alert.alert-danger {
     text-align: center;
     font-family: monospace;
     text-transform: uppercase;
-  }
-}
-
-/* Badger
-------------------------- */
-
-[class*="badger"] {
-  position: relative;
-  margin: 15px 0;
-  padding: 39px 19px 14px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  &:after{
-    content: attr(data-badger);
-    position: absolute;
-    top: 0;
-    padding: 3px 7px;
-    font-size: 12px;
-    font-weight: bold;
-    background: #999;
-    color: #fff;
-  }
-}
-
-
-.badger-left:after {
-  left: 0;
-  border-radius: 6px 0 6px 0;
-}
-
-.badger-right:after {
-  right: 0;
-  border-radius: 0 6px 0 6px;
-}
-
-.badger-danger:after {
-  background: @brand-danger;
-}
-
-.badger-warning:after {
-  background: @brand-warning;
-}
-
-.badger-success:after {
-  background: @brand-success;
-}
-
-.badger-info:after {
-  background: @brand-info;
-}
-
-.badger-primary:after {
-  background: @brand-primary;
-}
-
-.badger-inverse:after {
-  background: @gray-darker;
-}
-
-//** activities **/
-.activity {
-  &> span {
-    font-size: 2em;
-    left: auto;
-    padding-top: 8px;
-    position: absolute;
-    top: auto;
-  }
-  &> .content {
-    padding-left:3em;
-    &> .sub-content {
-      &> img {
-        margin-right:0.5em;
-      }
-    }
-  }
-  border-bottom: 1px solid @gray-lighter;
-  margin-bottom: 0.5em;
-  padding-bottom: 0.5em;
-}
-
-.activities {
-  &> div.activity:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0.5em;
   }
 }
 

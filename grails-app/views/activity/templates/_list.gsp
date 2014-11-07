@@ -43,7 +43,8 @@
                         <span style="width:15px; text-align: center"
                               tooltip="{{ activity.dateCreated }}"
                               tooltip-append-to-body="true"
-                              class="{{ activity | activityIcon}}"></span>
+                              class="{{ activity | activityIcon}}"
+                              ng-class="{ 'important-activity' : activity.important }"></span>
                         <span ng-switch-default>
                             {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
                         </span>

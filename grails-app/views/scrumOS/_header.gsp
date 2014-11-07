@@ -174,34 +174,20 @@
                         <a ng-class="{ 'text-warning': roles.stakeHolder }" ng-click="changeRole('SH')">SH</a>
                     </div>
                 </g:if>
-                <div ng-if="currentUser.username"
-                     data-toggle="dropdown"
-                     class="navbar-user pull-left dropdown-toggle">
-                    <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
+                <div ng-if="currentUser.username" dropdown class="pull-left" on-toggle="notificationToggle(open)">
+                    <div ng-switch="getUnreadActivitiesCount()"
+                         class="dropdown-toggle navbar-notif">
+                        <span class="fa fa-bell-o" ng-switch-when="0"></span>
+                        <span class="fa fa-bell" ng-switch-default></span>
+                        <span class="badge alert-info" ng-show="getUnreadActivitiesCount()">{{ getUnreadActivitiesCount()}}</span>
+                    </div>
+                    <div class="dropdown-menu notifications" ng-include="'notifications.panel.html'"></div>
                 </div>
-                <div ng-if="currentUser.username" class="panel panel-default dropdown-menu" id="panel-current-user">
-                    <div class="panel-body">
-                        <img ng-src="{{ currentUser | userAvatar }}" height="60px" width="60px" class="pull-left"/>
-                        {{ currentUser.username }}
-                        <g:if test="${product}">
-                            <br/>
-                            <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole product="${product.id}"/> </strong></a>
-                        </g:if>
+                <div ng-if="currentUser.username" dropdown class="pull-left">
+                    <div class="navbar-user pull-left dropdown-toggle">
+                        <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
                     </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div>
-                                <a class="btn btn-info"
-                                   hotkey="{'U':showProfile}"
-                                   tooltip="${message(code:'is.dialog.profile')} (U)"
-                                   tooltip-append-to-body="true"
-                                   ng-click="showProfile()">${message(code:'is.dialog.profile')}</a>
-                            </div>
-                            <div>
-                                <a class="btn btn-danger" href="${createLink(controller:'logout')}">${message(code:'is.logout')}</a>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="dropdown-menu" ng-include="'profile.panel.html'"></div>
                 </div>
                 <button id="login"
                         ng-show="!(currentUser.username)"

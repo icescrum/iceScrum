@@ -357,6 +357,26 @@ class UserController {
         render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
     }
 
+
+    def activities(long id) {
+        User user = springSecurityService.currentUser
+        if (id != user.id) {
+            render(status:403)
+        }
+        def activities = Activity.storyActivity(user).take(15)
+        user.preferences.lastReadActivities = new Date()
+        render(status:200, text: activities as JSON, contentType:'application/json')
+    }
+
+    def unreadActivitiesCount(long id) {
+        User user = springSecurityService.currentUser
+        if (id != user.id) {
+            render(status:403)
+        }
+        def unreadActivities =  Activity.storyActivity(user).findAll { it.dateCreated > user.preferences.lastReadActivities }
+        render(status:200, text: [unreadActivitiesCount: unreadActivities.size()] as JSON, contentType:'application/json')
+    }
+
     private File getAssetAvatarFile(String avatarFileName) {
         avatarFileName = "assets/avatars/${avatarFileName}"
         if (!grailsApplication.warDeployed) {

@@ -25,7 +25,9 @@ services.factory('User', [ 'Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/' + 'user/:id/:action',
         {},
         {
-            current: {method: 'GET', params: {action: 'current'}}
+            current: {method: 'GET', params: {action: 'current'}},
+            activities: {method: 'GET', isArray: true, params: {action: 'activities'}},
+            unreadActivitiesCount: {method: 'GET', params: {action: 'unreadActivitiesCount'}}
         });
 }]);
 
@@ -33,6 +35,12 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', fun
     this.getCurrent = function() {
         var Session = $injector.get('Session');
         return User.current( (Session.project ? { product: Session.project.pkey } : null) ).$promise;
+    };
+    this.getActivities = function(user) {
+        return User.activities({ id: user.id }, {}).$promise;
+    };
+    this.getUnreadActivitiesCount = function(user) {
+        return User.unreadActivitiesCount({ id: user.id }, {}).$promise;
     };
     this.update = function(user) {
         user.class = 'user';

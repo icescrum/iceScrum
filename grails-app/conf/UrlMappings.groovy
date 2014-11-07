@@ -112,6 +112,21 @@ class UrlMappings {
             }
         }
 
+        "/user/$id/activities" {
+            controller = 'user'
+            action = 'activities'
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+        "/user/$id/unreadActivitiesCount" {
+            controller = 'user'
+            action = 'unreadActivitiesCount'
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
         "/user/current" {
             controller = 'user'
             action = [GET: "current"]

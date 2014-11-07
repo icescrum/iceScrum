@@ -39,6 +39,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     var self = this;
     self.user = new User();
     self.project = new Project();
+    self.unreadActivitiesCount = 0;
 
     var defaultRoles = {
         productOwner: false,
@@ -49,10 +50,17 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     self.roles = _.clone(defaultRoles);
 
     this.create = function() {
-        UserService.getCurrent().then(function(data) {
-            _.extend(self.user, data.user);
-            _.merge(self.roles, data.roles);
-        });
+        UserService.getCurrent()
+            .then(function(data) {
+                if (data.user != "null") {
+                    _.extend(self.user, data.user);
+                    _.merge(self.roles, data.roles);
+                    UserService.getUnreadActivitiesCount(self.user)
+                        .then(function(data) {
+                            self.unreadActivitiesCount = data.unreadActivitiesCount;
+                        });
+                }
+            });
     };
 
     this.setUser = function(user){

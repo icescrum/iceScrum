@@ -24,140 +24,142 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', function ($scope, $modal, Session, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http) {
+controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http',
+    function ($scope, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http) {
+        $scope.app = {
+            isFullScreen:false,
+            loading:10
+        };
+        $scope.currentUser = Session.user;
+        $scope.roles = Session.roles;
 
-    $scope.app = {
-        isFullScreen:false,
-        loading:10
-    };
-
-    $scope.currentUser = Session.user;
-    $scope.roles = Session.roles;
-
-    // TODO remove, user role change for dev only
-    $scope.changeRole = function(newRole) {
-        Session.changeRole(newRole);
-    };
-
-    $scope.showAbout = function() {
-        $modal.open({ templateUrl: 'scrumOS/about' });
-    };
-    $scope.showProfile = function() {
-        $modal.open({ templateUrl: $scope.serverUrl + '/user/openProfile', controller: 'userCtrl' });
-    };
-    $scope.showAuthModal = function() {
-        $modal.open({
-            templateUrl: $scope.serverUrl + '/login/auth',
-            controller:'loginCtrl',
-            size:'sm'
-        });
-    };
-
-    $scope.menus = {
-        visible:[],
-        hidden:[]
-    };
-
-    $scope.sortableOptions = {
-        items:'li.menuitem',
-        connectWith:'.menubar',
-        handle:'.handle'
-    };
-
-    var updateMenu = function(info){
-        $http({ url: $scope.serverUrl + '/user/menu',
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-            transformRequest: function (data) { return formObjectData(data, ''); },
-            data:info});
-    };
-    $scope.menuSortableUpdate = function (startModel, destModel, start, end) {
-        updateMenu({id:destModel[end].id, position:end + 1, hidden:false});
-    };
-
-    $scope.menuHiddenSortableUpdate = function (startModel, destModel, start, end) {
-        updateMenu({id:destModel[end].id, position:end + 1, hidden:true});
-    };
-
-    //fake loading
-    var loadingAppProgress = $interval(function() {
-        if ($scope.app.loading <= 80){
-            $scope.app.loading += 10;
-        }
-    }, 100);
-
-    //real ready app
-    $scope.$on(CONTENT_LOADED, function() {
-        $scope.app.loading = 90;
-        $timeout(function() {
-            $scope.app.loading = 100;
-            $interval.cancel(loadingAppProgress);
-            angular.element('#app-progress').remove();
-        }, 500);
-    });
-
-    $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
-        $scope.showAuthModal();
-    });
-
-    $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
-        if (angular.isArray(error.data)) {
-            notifications.error("", error.data[0].text);
-        } else if (angular.isObject(error.data)) {
-            notifications.error("", error.data.text);
-        } else {
-            notifications.error("", $scope.message('todo.is.ui.error.unknown'));
-        }
-    });
-
-    $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
-        if (angular.isArray(error.data)) {
-            notifications.error($scope.message('todo.is.ui.error.server'), error.data[0].text);
-        } else if (angular.isObject(error.data)) {
-            notifications.error($scope.message('todo.is.ui.error.server'), error.data.text);
-        } else {
-            notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
-        }
-    });
-
-    $scope.fullScreen = function(){
-        if (Fullscreen.isEnabled()){
-            Fullscreen.cancel();
-            $scope.app.isFullScreen = false;
-        }
-        else {
-            var el = angular.element('#main-content > div:first-of-type');
-            if (el.length > 0){
-                Fullscreen.enable(el[0]);
-                $scope.app.isFullScreen = !$scope.app.isFullScreen;
+        $scope.notificationToggle = function(open) {
+            if (open) {
+                UserService.getActivities($scope.currentUser)
+                    .then(function(userActivities) {
+                        $scope.userActivities = userActivities;
+                    }
+                );
+            } else {
+                Session.unreadActivitiesCount = 0;
             }
-        }
-    };
+        };
+        $scope.getUnreadActivitiesCount = function() {
+            return Session.unreadActivitiesCount;
+        };
 
-    $scope.print = function(data){
-        var url = data;
-        if (angular.isObject(data)){
-            url = data.currentTarget.attributes['ng-href'] ? data.currentTarget.attributes['ng-href'].value : data.target.href;
-            data.preventDefault();
-        }
-        var modal = $modal.open({
-            templateUrl: "report.progress.html",
-            size: 'sm',
-            controller: ['$scope', function($scope){
-                $scope.downloadFile(url);
-                $scope.progress = true;
-            }]
-        });
-        modal.result.then(
-            function(result) {
-                $scope.downloadFile("");
-            },
-            function(){
-                $scope.downloadFile("");
+        // TODO remove, user role change for dev only
+        $scope.changeRole = function(newRole) {
+            Session.changeRole(newRole);
+        };
+        $scope.showAbout = function() {
+            $modal.open({ templateUrl: 'scrumOS/about' });
+        };
+        $scope.showProfile = function() {
+            $modal.open({ templateUrl: $scope.serverUrl + '/user/openProfile', controller: 'userCtrl' });
+        };
+        $scope.showAuthModal = function() {
+            $modal.open({
+                templateUrl: $scope.serverUrl + '/login/auth',
+                controller:'loginCtrl',
+                size:'sm'
+            });
+        };
+        $scope.menus = {
+            visible:[],
+            hidden:[]
+        };
+        $scope.sortableOptions = {
+            items:'li.menuitem',
+            connectWith:'.menubar',
+            handle:'.handle'
+        };
+        var updateMenu = function(info){
+            $http({ url: $scope.serverUrl + '/user/menu',
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                transformRequest: function (data) { return formObjectData(data, ''); },
+                data:info});
+        };
+        $scope.menuSortableUpdate = function (startModel, destModel, start, end) {
+            updateMenu({id:destModel[end].id, position:end + 1, hidden:false});
+        };
+
+        $scope.menuHiddenSortableUpdate = function (startModel, destModel, start, end) {
+            updateMenu({id:destModel[end].id, position:end + 1, hidden:true});
+        };
+        //fake loading
+        var loadingAppProgress = $interval(function() {
+            if ($scope.app.loading <= 80){
+                $scope.app.loading += 10;
             }
-        );
-    }
-
+        }, 100);
+        //real ready app
+        $scope.$on(CONTENT_LOADED, function() {
+            $scope.app.loading = 90;
+            $timeout(function() {
+                $scope.app.loading = 100;
+                $interval.cancel(loadingAppProgress);
+                angular.element('#app-progress').remove();
+            }, 500);
+        });
+        $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
+            $scope.showAuthModal();
+        });
+        $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
+            if (angular.isArray(error.data)) {
+                notifications.error("", error.data[0].text);
+            } else if (angular.isObject(error.data)) {
+                notifications.error("", error.data.text);
+            } else {
+                notifications.error("", $scope.message('todo.is.ui.error.unknown'));
+            }
+        });
+        $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
+            if (angular.isArray(error.data)) {
+                notifications.error($scope.message('todo.is.ui.error.server'), error.data[0].text);
+            } else if (angular.isObject(error.data)) {
+                notifications.error($scope.message('todo.is.ui.error.server'), error.data.text);
+            } else {
+                notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
+            }
+        });
+        $scope.fullScreen = function(){
+            if (Fullscreen.isEnabled()){
+                Fullscreen.cancel();
+                $scope.app.isFullScreen = false;
+            }
+            else {
+                var el = angular.element('#main-content > div:first-of-type');
+                if (el.length > 0){
+                    Fullscreen.enable(el[0]);
+                    $scope.app.isFullScreen = !$scope.app.isFullScreen;
+                }
+            }
+        };
+        $scope.print = function(data){
+            var url = data;
+            if (angular.isObject(data)){
+                url = data.currentTarget.attributes['ng-href'] ? data.currentTarget.attributes['ng-href'].value : data.target.href;
+                data.preventDefault();
+            }
+            var modal = $modal.open({
+                templateUrl: "report.progress.html",
+                size: 'sm',
+                controller: ['$scope', function($scope){
+                    $scope.downloadFile(url);
+                    $scope.progress = true;
+                }]
+            });
+            modal.result.then(
+                function(result) {
+                    $scope.downloadFile("");
+                },
+                function(){
+                    $scope.downloadFile("");
+                }
+            );
+        }
 }]).controller('loginCtrl',['$scope', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $rootScope, SERVER_ERRORS, AuthService) {
     $scope.credentials = {
         j_username: '',

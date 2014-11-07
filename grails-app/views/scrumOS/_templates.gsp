@@ -73,3 +73,68 @@
     <i class="visible-xs {{ menu.icon }}"></i><span class="title">{{ menu.title }}</span>
 </a>
 </script>
+
+<script type="text/ng-template" id="profile.panel.html">
+    <div class="panel panel-default" id="panel-current-user">
+        <div class="panel-body">
+            <img ng-src="{{ currentUser | userAvatar }}" height="60px" width="60px" class="pull-left"/>
+            {{ currentUser.username }}
+            <g:if test="${product}">
+                <br/>
+                <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole product="${product.id}"/> </strong></a>
+            </g:if>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div>
+                    <a class="btn btn-info"
+                       hotkey="{'U':showProfile}"
+                       tooltip="${message(code:'is.dialog.profile')} (U)"
+                       tooltip-append-to-body="true"
+                       ng-click="showProfile()">${message(code:'is.dialog.profile')}</a>
+                </div>
+                <div>
+                    <a class="btn btn-danger" href="${createLink(controller:'logout')}">${message(code:'is.logout')}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="notifications.panel.html">
+    <table class="table">
+        <tr ng-show="userActivities === undefined">
+            <td class="empty-content">
+                <i class="fa fa-refresh fa-spin"></i>
+            </td>
+        </tr>
+        <tr ng-repeat="activity in userActivities"
+            ng-class="{ 'info' : $index < getUnreadActivitiesCount() }">
+            <td>
+                <img height="21px"
+                     ng-src="{{activity.poster | userAvatar}}"
+                     alt="{{activity.poster | userFullName}}"/>
+                <span class="text-muted">
+                    <time timeago datetime="'{{ activity.dateCreated }}'">
+                        {{ activity.dateCreated }}
+                    </time>
+                    <i class="fa fa-clock-o"></i>
+                </span>
+                <p>
+                    <span style="width:15px; text-align: center"
+                          tooltip="{{ activity.dateCreated }}"
+                          tooltip-append-to-body="true"
+                          class="{{ activity | activityIcon}}"
+                          ng-class="{ 'important-activity' : activity.important }"></span>
+                    <span>
+                        {{ message('todo.is.ui.activity.type.' + activity.parentType) + ' ' + message('todo.is.ui.activity.' + activity.code ) }}
+                    </span>
+                </p>
+            </td>
+        </tr>
+        <tr ng-show="userActivities !== undefined && userActivities.length == 0">
+            <td class="empty-content">
+                <small>${message(code:'todo.is.ui.user.activities.empty')}</small>
+            </td>
+        </tr>
+    </table>
+</script>
