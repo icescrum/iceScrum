@@ -175,11 +175,11 @@
                     </div>
                 </g:if>
                 <div ng-if="currentUser.username" dropdown class="pull-left" on-toggle="notificationToggle(open)">
-                    <div ng-switch="getUnreadActivitiesCount()"
+                    <div ng-switch="getUnreadActivities()"
                          class="dropdown-toggle navbar-notif">
                         <span class="fa fa-bell-o" ng-switch-when="0"></span>
                         <span class="fa fa-bell" ng-switch-default></span>
-                        <span class="badge alert-info" ng-show="getUnreadActivitiesCount()">{{ getUnreadActivitiesCount()}}</span>
+                        <span class="badge alert-info" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                     </div>
                     <div class="dropdown-menu notifications" ng-include="'notifications.panel.html'"></div>
                 </div>

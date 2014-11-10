@@ -246,6 +246,10 @@ filters
                         return "fa fa-check";
                     case "unDone":
                         return "fa fa-undo";
+                    case "plan":
+                        return "fa fa-calendar";
+                    case "unPlan":
+                        return "fa fa-calendar-o";
                     case "taskInProgress":
                         return "fa fa-?";
                     case "taskWait":

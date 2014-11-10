@@ -339,8 +339,8 @@ class ProjectController {
         Product _product = Product.withProduct(product)
         def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
         def release = Release.findCurrentOrNextRelease(product).list()[0]
-        def activities = Story.recentActivity(_product)
-        activities.addAll(Product.recentActivity(_product))
+        def activities = Activity.recentStoryActivity(_product)
+        activities.addAll(Activity.recentProductActivity(_product))
         activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
 
         render template: 'window/view',

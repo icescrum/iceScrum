@@ -137,11 +137,29 @@ table {
         width:30px;
         padding-right:0;
       }
-      &.empty-content {
-        width: 100%;
-        padding: 10px;
-        text-align: center;
-      }
+    }
+  }
+}
+
+.empty-content {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.activity-group {
+  .activity-group-title {
+    padding: 14px 0 0 25px;
+    font-weight: bold;
+  }
+  .activity {
+    border-top: 1px solid @list-group-border;
+    &:last-child {
+      border-bottom: 1px solid @list-group-border;
+    }
+    padding: 10px 15px;
+    .activity-content {
+      padding-top: 5px;
     }
   }
 }

@@ -39,7 +39,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', fun
     this.getActivities = function(user) {
         return User.activities({ id: user.id }, {}).$promise;
     };
-    this.getUnreadActivitiesCount = function(user) {
+    this.getUnreadActivities = function(user) {
         return User.unreadActivitiesCount({ id: user.id }, {}).$promise;
     };
     this.update = function(user) {

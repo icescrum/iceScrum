@@ -55,7 +55,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
                 if (data.user != "null") {
                     _.extend(self.user, data.user);
                     _.merge(self.roles, data.roles);
-                    UserService.getUnreadActivitiesCount(self.user)
+                    UserService.getUnreadActivities(self.user)
                         .then(function(data) {
                             self.unreadActivitiesCount = data.unreadActivitiesCount;
                         });

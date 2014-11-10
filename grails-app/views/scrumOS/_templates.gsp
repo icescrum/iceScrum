@@ -101,40 +101,36 @@
     </div>
 </script>
 <script type="text/ng-template" id="notifications.panel.html">
-    <table class="table">
-        <tr ng-show="userActivities === undefined">
-            <td class="empty-content">
-                <i class="fa fa-refresh fa-spin"></i>
-            </td>
-        </tr>
-        <tr ng-repeat="activity in userActivities"
-            ng-class="{ 'info' : $index < getUnreadActivitiesCount() }">
-            <td>
-                <img height="21px"
+    <div class="list-group-item empty-content" ng-show="groupedUserActivities === undefined">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+    <div class="activity-group" ng-repeat="groupedActivity in groupedUserActivities">
+        <div class="activity-group-title"><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey }}">{{ groupedActivity.project.name }}</a></div>
+        <div class="media activity" ng-class="{ 'info': activity.read }" ng-repeat="activity in groupedActivity.activities">
+            <div class="media-left">
+                <img height="45px"
                      ng-src="{{activity.poster | userAvatar}}"
                      alt="{{activity.poster | userFullName}}"/>
+            </div>
+            <div class="media-body">
                 <span class="text-muted">
                     <time timeago datetime="'{{ activity.dateCreated }}'">
                         {{ activity.dateCreated }}
                     </time>
                     <i class="fa fa-clock-o"></i>
                 </span>
-                <p>
+                <div class="activity-content">
                     <span style="width:15px; text-align: center"
                           tooltip="{{ activity.dateCreated }}"
                           tooltip-append-to-body="true"
                           class="{{ activity | activityIcon}}"
                           ng-class="{ 'important-activity' : activity.important }"></span>
-                    <span>
-                        {{ message('todo.is.ui.activity.type.' + activity.parentType) + ' ' + message('todo.is.ui.activity.' + activity.code ) }}
-                    </span>
-                </p>
-            </td>
-        </tr>
-        <tr ng-show="userActivities !== undefined && userActivities.length == 0">
-            <td class="empty-content">
-                <small>${message(code:'todo.is.ui.user.activities.empty')}</small>
-            </td>
-        </tr>
-    </table>
+                    <span>{{ message('todo.is.ui.activity.' + activity.code ) }} <a href="{{ activity.story.uid | permalink }}">{{ activity.story.name }}</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="empty-content" ng-show="groupedUserActivities !== undefined && groupedUserActivities.length == 0">
+        <small>${message(code:'todo.is.ui.user.activities.empty')}</small>
+    </div>
 </script>

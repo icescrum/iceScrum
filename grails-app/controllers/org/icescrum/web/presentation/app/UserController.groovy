@@ -363,9 +363,19 @@ class UserController {
         if (id != user.id) {
             render(status:403)
         }
-        def activities = Activity.storyActivity(user).take(15)
+        def activitiesAndStories = Activity.storyActivities(user).take(15).collect {
+            def activity = it[0]
+            def story = it[1]
+            def project = story.backlog
+            [
+                activity: activity,
+                story: [uid: story.uid, name: story.name],
+                project: [pkey: project.pkey, name: project.name],
+                read: activity.dateCreated > user.preferences.lastReadActivities
+            ]
+        }
         user.preferences.lastReadActivities = new Date()
-        render(status:200, text: activities as JSON, contentType:'application/json')
+        render(status:200, text: activitiesAndStories as JSON, contentType:'application/json')
     }
 
     def unreadActivitiesCount(long id) {
@@ -373,7 +383,10 @@ class UserController {
         if (id != user.id) {
             render(status:403)
         }
-        def unreadActivities =  Activity.storyActivity(user).findAll { it.dateCreated > user.preferences.lastReadActivities }
+        def unreadActivities =  Activity.storyActivities(user).findAll {
+            def activity = it[0]
+            activity.dateCreated > user.preferences.lastReadActivities
+        }
         render(status:200, text: [unreadActivitiesCount: unreadActivities.size()] as JSON, contentType:'application/json')
     }
 

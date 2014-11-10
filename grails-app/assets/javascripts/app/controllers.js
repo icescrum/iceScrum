@@ -36,15 +36,29 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
         $scope.notificationToggle = function(open) {
             if (open) {
                 UserService.getActivities($scope.currentUser)
-                    .then(function(userActivities) {
-                        $scope.userActivities = userActivities;
+                    .then(function(data) {
+                        var groupedActivities = [];
+                        angular.forEach(data, function(toto) {
+                            var augmentedActivity = toto.activity;
+                            augmentedActivity.story = toto.story;
+                            augmentedActivity.read = toto.read;
+                            if (_.isEmpty(groupedActivities) || _.last(groupedActivities).project.pkey != toto.project.pkey) {
+                                groupedActivities.push({
+                                    project: toto.project,
+                                    activities: [augmentedActivity]
+                                });
+                            } else {
+                                _.last(groupedActivities).activities.push(augmentedActivity);
+                            }
+                        });
+                        $scope.groupedUserActivities = groupedActivities;
                     }
                 );
             } else {
                 Session.unreadActivitiesCount = 0;
             }
         };
-        $scope.getUnreadActivitiesCount = function() {
+        $scope.getUnreadActivities = function() {
             return Session.unreadActivitiesCount;
         };
 
