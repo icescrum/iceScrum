@@ -8,9 +8,7 @@ servlets = [
                 mapping: "/stream/app/*",
                 handler: IceScrumMeteorHandler,
                 initParams: [
-                        // Uncomment the line below use native WebSocket support with native Comet support.
-                        //"org.atmosphere.useWebSocketAndServlet3": "false",
-                        "org.atmosphere.cpr.broadcasterLifeCyclePolicy": "EMPTY_DESTROY",
+                        "org.atmosphere.cpr.broadcasterClass": "org.icescrum.atmosphere.IceScrumBroadcaster",
                         "org.atmosphere.cpr.broadcasterCacheClass": "org.atmosphere.cache.UUIDBroadcasterCache",
                         "org.atmosphere.cpr.AtmosphereInterceptor": """
                 org.atmosphere.client.TrackMessageSizeInterceptor,

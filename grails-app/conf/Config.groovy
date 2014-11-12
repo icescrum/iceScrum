@@ -92,6 +92,8 @@ grails.mail.props = ["mail.smtp.auth":"true",
                      "mail.smtp.socketFactory.fallback":"false"]*/
 
 /* Push */
+icescrum.push.enable = true
+
 //remove total*
 icescrum.marshaller = [
         story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed'],

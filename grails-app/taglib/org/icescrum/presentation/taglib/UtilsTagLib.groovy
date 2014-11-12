@@ -65,8 +65,6 @@ class UtilsTagLib {
                           uploading:"${message(code:'is.upload.inprogress.wait').encodeAsJavaScript()}",
                           locale:'${locale}',
                           push:{
-                            enable:${grailsApplication.config.icescrum.push.enable?:false},
-                            websocket:${grailsApplication.config.icescrum.push.websocket?:false},
                             url:"${createLink(controller: 'scrumOS', absolute: true)}stream/app${p ? '?'+pageScope.space.name+'=' + current.id : '' }"
                           }
                 };"""

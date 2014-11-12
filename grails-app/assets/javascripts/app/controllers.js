@@ -38,13 +38,13 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
                 UserService.getActivities($scope.currentUser)
                     .then(function(data) {
                         var groupedActivities = [];
-                        angular.forEach(data, function(toto) {
-                            var augmentedActivity = toto.activity;
-                            augmentedActivity.story = toto.story;
-                            augmentedActivity.read = toto.read;
-                            if (_.isEmpty(groupedActivities) || _.last(groupedActivities).project.pkey != toto.project.pkey) {
+                        angular.forEach(data, function(notif) {
+                            var augmentedActivity = notif.activity;
+                            augmentedActivity.story = notif.story;
+                            augmentedActivity.read = notif.read;
+                            if (_.isEmpty(groupedActivities) || _.last(groupedActivities).project.pkey != notif.project.pkey) {
                                 groupedActivities.push({
-                                    project: toto.project,
+                                    project: notif.project,
                                     activities: [augmentedActivity]
                                 });
                             } else {

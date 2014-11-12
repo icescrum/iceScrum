@@ -23,6 +23,7 @@
  */
 
 //= encoding          UTF-8
+//= require           atmosphere-meteor
 
 //= require           vendors/jquery/jquery-1.11.0.min
 //= require           vendors/jquery/jquery-migrate-1.2.1.min
