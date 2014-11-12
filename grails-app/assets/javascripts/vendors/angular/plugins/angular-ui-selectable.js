@@ -31,6 +31,7 @@ angular.module('ui.selectable', [])
                             return {id:$(this).data('id')};
                             //return _.where(scope.items, {id: $(this).data('id') });
                         }).get();
+                        selectedItems.size() ? element.addClass('has-selected') : element.addClass('remove-selected');
                     }
 
                     var opts = {};

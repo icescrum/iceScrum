@@ -1030,20 +1030,31 @@ a[data-toggle="tab"] button {
   &.grid-group {
     float: left;
     clear: both;
+    &.has-selected {
+      > :not(.ui-selected) {
+        opacity: 0.5;
+      }
+      > :not(.ui-selected):hover, > :not(.ui-selected):focus {
+        opacity: 1;
+        transition:opacity 0.25s linear;
+        -o-transition: opacity 0.25s linear;
+        -moz-transition: opacity 0.25s linear;
+        -webkit-transition: opacity 0.25s linear;
+      }
+      .ui-selected {
+        .postit {
+          border: 1px solid @brand-primary;
+        }
+      }
+    }
     .postit-container {
       font-family: "Myriad Pro", Arial, sans-serif;
       float: left;
       padding: 0;
       margin: 6px;
       &.ui-selected {
-        padding: 4px;
+        padding: 5px;
         margin: 1px;
-        border-radius: 3px;
-        border: 1px solid @postit-border-blue;
-        background-image: -moz-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
-        background-image: -o-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
-        background-image: -webkit-linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
-        background-image: linear-gradient(bottom, #e1e1e1 0%, #eee 47.27%, #f7f9fd 100%);
       }
       .postit {
         width: 196px;
@@ -1053,7 +1064,6 @@ a[data-toggle="tab"] button {
         color: @gray;
         border: 1px solid @postit-border;
         border-radius: 3px 3px 0px 0px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, .25), inset 0 0 3px rgba(255, 255, 255, .75);
         &.invert {
           color: @invert-color;
           .head {
@@ -1302,12 +1312,13 @@ a[data-toggle="tab"] button {
       position: relative;
       background-size: 8px 100%;
       background-repeat: no-repeat;
-      background-color: @gray-lighter;
+      //background-color: @gray-lighter;
       padding: 0 0 0 8px;
       .head {
         .make-sm-column(2);
         .make-xs-column(3);
-        min-height: 59px;
+        min-height: 63px;
+        background-color: @gray-lighter;
         a.follow i, .id {
           margin-top:@shared-margin;
           font-size:16px;
@@ -1865,6 +1876,9 @@ ul.dropdown-menu[datepicker-popup-wrap]{
       background : transparent;
       visibility: hidden;
       transition : visibility .25s linear, background .25s linear;
+      -o-transition: visibility 0.25s linear, background 0.25s linear;
+      -moz-transition: visibility 0.25s linear, background 0.25s linear;
+      -webkit-transition: visibility 0.25s linear, background 0.25s linear;
     }
   }
 }
