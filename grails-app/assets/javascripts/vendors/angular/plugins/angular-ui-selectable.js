@@ -31,7 +31,7 @@ angular.module('ui.selectable', [])
                             return {id:$(this).data('id')};
                             //return _.where(scope.items, {id: $(this).data('id') });
                         }).get();
-                        selectedItems.length > 0 ? element.addClass('has-selected') : element.addClass('remove-selected');
+                        selectedItems.length > 0 ? element.addClass('has-selected') : element.removeClass('has-selected');
                     }
 
                     var opts = {};
