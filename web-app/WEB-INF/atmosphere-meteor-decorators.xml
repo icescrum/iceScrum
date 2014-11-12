@@ -1,0 +1,5 @@
+<decorators>
+    <excludes>
+        <pattern>/stream/app/*</pattern>
+    </excludes>
+</decorators>

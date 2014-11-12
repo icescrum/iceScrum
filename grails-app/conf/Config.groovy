@@ -27,6 +27,7 @@ import grails.util.Holders
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
 import org.icescrum.core.domain.Activity
+import org.icescrum.core.domain.Product
 import org.icescrum.core.support.ApplicationSupport
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.web.JQueryProvider
@@ -168,6 +169,30 @@ icescrum.check.timeout  = 5000
 
 /* Array for visual & catched errors */
 icescrum.errors = []
+
+/* Spaces */
+icescrum {
+    spaces {
+        product {
+            spaceClass = Product
+            config = { product -> [key:product.pkey, path:'p'] }
+            params = { product -> [product:product.id] }
+            indexScrumOS = { productSpace, user, securityService, springSecurityService ->
+                def product = productSpace.object
+                if (product?.preferences?.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product,springSecurityService.authentication,false)){
+                    forward(action:springSecurityService.isLoggedIn() ? 'error403' : 'error401',controller:'errors')
+                    return
+                }
+
+                if (product && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProductOpened != product.pkey){
+                    user.preferences.lastProductOpened = product.pkey
+                    user.save()
+                }
+            }
+        }
+    }
+}
+
 /*
  Attachmentable section
  */
@@ -283,21 +308,21 @@ log4j = {
     }
 
     if (ApplicationSupport.booleanValue(Holders.config.icescrum.debug.enable)) {
-        debug 'grails.app.services.org.icescrum'
+        debug "org.grails.plugins.atmosphere_meteor"
         debug 'grails.app.controllers.org.icescrum'
-        debug 'grails.app.domain.org.icescrum'
-        debug 'grails.app.org.icescrum'
-        debug 'org.icescrum.core'
-        debug 'org.icescrum.plugins'
-        debug 'org.icescrum.plugins.chat'
-        debug 'net.sf.jasperreports'
-        debug 'grails.app.services.com.kagilum'
         debug 'grails.app.controllers.com.kagilum'
+        debug 'grails.app.services.org.icescrum'
+        debug 'grails.app.services.com.kagilum'
+        debug 'grails.app.domain.org.icescrum'
         debug 'grails.app.domain.com.kagilum'
-        debug 'com.kagilum'
+        debug 'org.icescrum.plugins.chat'
         debug 'org.icescrum.atmosphere'
+        debug 'grails.app.org.icescrum'
+        debug 'org.icescrum.plugins'
+        debug 'net.sf.jasperreports'
+        debug 'org.icescrum.core'
         debug 'org.atmosphere'
-        info  'com.hazelcast'
+        debug 'com.kagilum'
     }
 
     if (ApplicationSupport.booleanValue(Holders.config.icescrum.securitydebug.enable)) {
@@ -343,6 +368,7 @@ grails {
             fii.rejectPublicInvocations = true
             controllerAnnotations.staticRules = [
                     //app controllers rules
+                    '/stream/app/**':                 ['permitAll'],
                     '/scrumOS/**':                    ['permitAll'],
                     '/user/**':                       ['permitAll'],
                     '/errors/**':                     ['permitAll'],

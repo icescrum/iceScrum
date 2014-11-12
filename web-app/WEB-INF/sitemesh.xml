@@ -7,5 +7,5 @@
   <decorator-mappers>
     <mapper class="org.codehaus.groovy.grails.web.sitemesh.GrailsLayoutDecoratorMapper"/>
   </decorator-mappers>
-  <excludes file="/WEB-INF/atmosphere-decorators.xml"/>
+  <excludes file="/WEB-INF/atmosphere-meteor-decorators.xml"/>
 </sitemesh>
