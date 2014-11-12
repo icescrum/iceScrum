@@ -20,57 +20,49 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="activity.list.html">
-<table class="table">
-    <tbody>
-        <tr ng-show="selected.activities === undefined">
-            <td class="empty-content">
-                <i class="fa fa-refresh fa-spin"></i>
-            </td>
-        </tr>
-        <tr ng-repeat="groupedActivity in groupedActivities">
-            <td>
-                <img height="21px"
-                     ng-src="{{groupedActivity.poster | userAvatar}}"
-                     alt="{{groupedActivity.poster | userFullName}}"/>
-                <span class="text-muted">
-                    <time timeago datetime="'{{ groupedActivity.dateCreated }}'">
-                        {{ groupedActivity.dateCreated }}
-                    </time>
-                    <i class="fa fa-clock-o"></i>
+<div>
+    <div class="empty-content" ng-show="selected.activities === undefined">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+    <div class="custom-list-item media" ng-repeat="groupedActivity in groupedActivities">
+        <div class="media-left">
+            <img height="36px"
+                 ng-src="{{groupedActivity.poster | userAvatar}}"
+                 alt="{{groupedActivity.poster | userFullName}}"/>
+        </div>
+        <div class="media-body">
+            <div class="text-muted pull-right">
+                <time timeago datetime="'{{ groupedActivity.dateCreated }}'">
+                    {{ groupedActivity.dateCreated }}
+                </time>
+                <i class="fa fa-clock-o"></i>
+            </div>
+            <div>
+                {{groupedActivity.poster | userFullName}}
+            </div>
+            <div ng-switch="activity.onClick !== undefined"
+                 ng-repeat="activity in groupedActivity.activities">
+                <span tooltip="{{ activity.dateCreated }}"
+                      tooltip-append-to-body="true"
+                      class="{{ activity | activityIcon}}"
+                      ng-class="{ 'important-activity' : activity.important }"></span>
+                <span ng-switch-default>
+                    {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
                 </span>
-                <div ng-repeat="activity in groupedActivity.activities">
-                    <p ng-switch="activity.onClick !== undefined">
-                        <span style="width:15px; text-align: center"
-                              tooltip="{{ activity.dateCreated }}"
-                              tooltip-append-to-body="true"
-                              class="{{ activity | activityIcon}}"
-                              ng-class="{ 'important-activity' : activity.important }"></span>
-                        <span ng-switch-default>
-                            {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
-                        </span>
-                        <span ng-switch-when="true">
-                            <a href ng-click="activity.onClick()">
-                                {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
-                            </a>
-                        </span>
-                        <span ng-if="activity.beforeValue != null || activity.afterValue != null">
-                            <i class="fa fa-question" ng-if="activity.beforeValue == null"></i>{{ activity.beforeValue != '' ? activity.beforeValue : '' }} <i class="fa fa-arrow-right"></i> <i class="fa fa-question" ng-if="activity.afterValue == null"></i>{{ activity.afterValue != '' ? activity.afterValue : '' }}
-                        </span>
-                    </p>
-                </div>
-            </td>
-        </tr>
-        <tr ng-if="selected.activities && selected.activities.length >= 10">
-            <td ng-switch="allActivities">
-                <button ng-switch-default class="btn btn-default" ng-click="activities(selected, true)"><i class="fa fa-plus-square"></i> ${ message(code: 'tood.is.ui.activities.more')}</button>
-                <button ng-switch-when="true" class="btn btn-default" ng-click="activities(selected, false)"><i class="fa fa-minus-square"></i> ${ message(code: 'tood.is.ui.activities.less')}</button>
-            </td>
-        </tr>
-        <tr ng-show="!selected.activities && selected.activities !== undefined">
-            <td class="empty-content">
-                <small>${message(code:'todo.is.ui.activity.empty')}</small>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                <span ng-switch-when="true">
+                    <a href ng-click="activity.onClick()">
+                        {{ message('todo.is.ui.activity.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
+                    </a>
+                </span>
+                <span ng-if="activity.beforeValue != null || activity.afterValue != null">
+                    <i class="fa fa-question" ng-if="activity.beforeValue == null"></i>{{ activity.beforeValue != '' ? activity.beforeValue : '' }} <i class="fa fa-arrow-right"></i> <i class="fa fa-question" ng-if="activity.afterValue == null"></i>{{ activity.afterValue != '' ? activity.afterValue : '' }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div ng-if="selected.activities && selected.activities.length >= 10" ng-switch="allActivities">
+        <button ng-switch-default class="btn btn-default" ng-click="activities(selected, true)"><i class="fa fa-plus-square"></i> ${ message(code: 'tood.is.ui.activities.more')}</button>
+        <button ng-switch-when="true" class="btn btn-default" ng-click="activities(selected, false)"><i class="fa fa-minus-square"></i> ${ message(code: 'tood.is.ui.activities.less')}</button>
+    </div>
+</div>
 </script>

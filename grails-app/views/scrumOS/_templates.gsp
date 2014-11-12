@@ -101,36 +101,32 @@
     </div>
 </script>
 <script type="text/ng-template" id="notifications.panel.html">
-    <div class="list-group-item empty-content" ng-show="groupedUserActivities === undefined">
+    <div class="empty-content" ng-show="groupedUserActivities === undefined">
         <i class="fa fa-refresh fa-spin"></i>
     </div>
-    <div class="activity-group" ng-repeat="groupedActivity in groupedUserActivities">
-        <div class="activity-group-title"><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey }}">{{ groupedActivity.project.name }}</a></div>
-        <div class="media activity" ng-class="{ 'info': activity.read }" ng-repeat="activity in groupedActivity.activities">
+    <div ng-repeat="groupedActivity in groupedUserActivities">
+        <div class="custom-list-header"><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">{{ groupedActivity.project.name }}</a></div>
+        <div class="media custom-list-item" ng-class="{ 'info': activity.read }" ng-repeat="activity in groupedActivity.activities">
             <div class="media-left">
-                <img height="45px"
+                <img height="36px"
                      ng-src="{{activity.poster | userAvatar}}"
                      alt="{{activity.poster | userFullName}}"/>
             </div>
             <div class="media-body">
-                <span class="text-muted">
+                <div class="text-muted pull-right">
                     <time timeago datetime="'{{ activity.dateCreated }}'">
                         {{ activity.dateCreated }}
                     </time>
                     <i class="fa fa-clock-o"></i>
-                </span>
-                <div class="activity-content">
-                    <span style="width:15px; text-align: center"
-                          tooltip="{{ activity.dateCreated }}"
-                          tooltip-append-to-body="true"
-                          class="{{ activity | activityIcon}}"
-                          ng-class="{ 'important-activity' : activity.important }"></span>
+                </div>
+                <div>
+                    {{activity.poster | userFullName}}
+                </div>
+                <div>
+                    <span class="{{ activity | activityIcon}}"></span>
                     <span>{{ message('todo.is.ui.activity.' + activity.code ) }} <a href="{{ activity.story.uid | permalink }}">{{ activity.story.name }}</a></span>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="empty-content" ng-show="groupedUserActivities !== undefined && groupedUserActivities.length == 0">
-        <small>${message(code:'todo.is.ui.user.activities.empty')}</small>
     </div>
 </script>
