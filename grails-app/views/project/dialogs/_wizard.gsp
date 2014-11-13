@@ -20,7 +20,6 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
 <is:dialog
         resizable="false"
         noprefix="true"
@@ -32,7 +31,7 @@
            before="\$('#choose-select-is-team-teams').empty();\$('#choose-select-is-team-members').empty();"
            onSuccess="jQuery('#dialog').dialog('close'); jQuery.icescrum.renderNotice('${message(code:'is.product.saved.redirect')}'); jQuery.event.trigger('redirect_product',data);" update="dialog" action="save">
 
-    <is:fieldset title="is.dialog.wizard.section.project" description="is.dialog.wizard.section.project.description" id="stakeholder-autocomplete">
+    <is:fieldset title="is.dialog.wizard.section.project" description="is.dialog.wizard.section.project.description">
         <is:fieldInput for="productname" label="is.product.name">
             <is:input id="productname" name="product.name" value="${product.name}"/>
         </is:fieldInput>
@@ -41,82 +40,48 @@
                       name="product.pkey" value="${product.pkey}"/>
         </is:fieldInput>
         <is:fieldRadio rendered="${!privateOption}" for="product.preferences.hidden" label="is.product.preferences.project.hidden">
-            <is:radio id="product.preferences.hidden" name="product.preferences.hidden" value="${product.preferences.hidden}" onClick="jQuery.icescrum.toggleStakeHolders(this.value)"/>
+            <is:radio id="product.preferences.hidden" name="product.preferences.hidden" value="${product.preferences.hidden}"/>
         </is:fieldRadio>
         <is:fieldSelect for="product.preferences.timezone" label="is.product.preferences.timezone">
           <is:localeTimeZone width="250" name="product.preferences.timezone" value="UTC"/>
         </is:fieldSelect>
-        <is:fieldArea for="productdescription" label="is.product.description" noborder="${product.preferences.hidden ? 'false' : 'true'}" optional="true">
+        <is:fieldArea for="productdescription" label="is.product.description" noborder="true" optional="true">
             <is:area rich="[preview:true,width:335,height:200]" id="productdescription" name="product.description"/>
         </is:fieldArea>
-        <div id="show-stakeholders" style="display:${product.preferences.hidden ? 'block' : 'none'}">
-            <is:fieldInput for="stakeholders" label="is.role.stakeholders" noborder="true" optional="true">
-                <is:autoCompleteSkin
-                        controller="user"
-                        action="findUsers"
-                        cache="true"
-                        filter="jQuery('.choosen #member'+object.id).length == 0 ? true : false"
-                        id="stakeholders"
-                        name="find-stakeholders"
-                        appendTo="#stakeholder-autocomplete"
-                        onSelect="attachOnDomUpdate(jQuery('.stakeholders-list').jqoteapp('#sh-tmpl', ui.item));"
-                        renderItem="${link}"
-                        minLength="2"/>
-
-            </is:fieldInput>
-            <div class="stakeholders-list" style="border-left:215px solid #F4F4F4;">
-            </div>
-        </div>
     </is:fieldset>
 
     <is:fieldset title="is.dialog.wizard.section.team" description="is.dialog.wizard.section.team.description" id="member-autocomplete">
-        <g:if test="${teams}">
-                <is:fieldSelect for="product.existingTeam"
-                                label="is.team.choose">
-                        <is:select from="${teams}" optionKey="id" optionValue="name" noSelection="['':'Create a new team']"
-                               width="240" name="team.id"
-                               onchange="jQuery.icescrum.chooseOrDisplayTeam(this)"
-                               id="product.existingTeam" value=""/>
-                </is:fieldSelect>
-        </g:if>
-        <div class="existing-members-list members-list" id="existing-team" style="display:none;">
-        </div>
-        <div class="new-team">
-            <is:fieldInput for="teamname" label="is.team.name">
-                <is:input id="teamname" name="team.name" value="${product.name} ${message(code:'is.team')}"/>
-            </is:fieldInput>
-            <is:fieldInput for="find-members" label="is.dialog.wizard.section.team.find" class="members">
-                <is:autoCompleteSkin
+        <is:fieldInput for="find-members" label="is.dialog.wizard.section.team.find" class="members">
+            <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
+            <is:autoCompleteSkin
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('.choosen #member'+object.id+', #stakeholder-autocomplete #member'+object.id).length == 0 ? true : false"
+                        filter="jQuery('#member'+object.id).length == 0 ? true : false"
                         id="members"
                         name="find-members"
                         appendTo="#member-autocomplete"
-                        onSelect="attachOnDomUpdate(jQuery('.new-team .members-list').jqoteapp('#user-tmpl', ui.item));"
+                        onSelect="attachOnDomUpdate(jQuery('.members-list').jqoteapp('#user-tmpl', ui.item));"
                         renderItem="${link}"
                         minLength="2"/>
-            </is:fieldInput>
-            <div class="members-list choosen">
-                <span class="member ui-corner-all" id='member${user.id}'>
-                    <span class="button-s">
-                        <span style="display: block;" class="button-action button-delete" onclick="jQuery(this).closest('.member').remove();">del</span>
-                    </span>
-                    <img src="${is.avatar([user:user,link:true])}" height="48" class="avatar" width="48"/>
-                    <span class="fullname">${is.truncated(value:user.firstName+" "+user.lastName,size:17)}</span>
-                    <span class="activity">${user.preferences.activity?:'&nbsp;'}</span>
-                    <input type="hidden" name="members.${user.id}" value="${user.id}"/>
-                    <is:select width="110"
-                               id="${new Date().time}"
-                               from="${rolesLabels}"
-                               keys="${rolesKeys}"
-                               name="role.${user.id}"
-                               value="${Authority.PO_AND_SM}"/>
+        </is:fieldInput>
+        <div class="members-list">
+            <span class="member ui-corner-all" id='member${user.id}'>
+                <span class="button-s">
+                    <span style="display: block;" class="button-action button-delete" onclick="jQuery(this).closest('.member').remove();">del</span>
                 </span>
-            </div>
+                <img src="${is.avatar([user:user,link:true])}" height="48" class="avatar" width="48"/>
+                <span class="fullname">${is.truncated(value:user.firstName+" "+user.lastName,size:17)}</span>
+                <span class="activity">${user.preferences.activity?:'&nbsp;'}</span>
+                <input type="hidden" name="members.${user.id}" value="${user.id}"/>
+                 <is:select width="110"
+                            id="${new Date().time}"
+                            from="${BundleUtils.roles.values().collect {v -> message(code: v)}}"
+                            keys="${BundleUtils.roles.keySet().asList()}"
+                            name="role.${user.id}"
+                            value="${Authority.PO_AND_SM}"/>
+            </span>
         </div>
-
     </is:fieldset>
 
     <is:fieldset title="is.dialog.wizard.section.options" description="is.dialog.wizard.section.options.description">
@@ -198,11 +163,12 @@
                            minDate="${product.startDate}" mode="read-input" changeMonth="true" changeYear="true"/>
         </is:fieldDatePicker>
 
-        <is:fieldArea for="vision" label="is.release.vision" optional="true" noborder="true">
+        <is:fieldArea for="vision" label="is.release.vision" noborder="true" optional="true">
             <is:area rich="[preview:true,width:335,height:200]"
                      id="vision"
                      name="vision"/>
         </is:fieldArea>
+
     </is:fieldset>
 
 </is:wizard>

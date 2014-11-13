@@ -39,40 +39,10 @@
         <input type="hidden" name="members.?**=this.id**?" value="?**=this.id**?"/>
          <is:select width="110"
                     id="?**=id**?"
-                    from="${BundleUtils.roles.findAll{ it.key != 3 }.values().collect {v -> message(code: v)}}"
-                    keys="${BundleUtils.roles.findAll{ it.key != 3 }.keySet().asList()}"
+                    from="${BundleUtils.roles.values().collect {v -> message(code: v)}}"
+                    keys="${BundleUtils.roles.keySet().asList()}"
                     name="role.?**=this.id**?"
                     value="?**=role**?"/>
     </span>
-    ]]>
-</template>
-
-<template id="user-tmpl-readonly">
-    <![CDATA[
-    ?**
-    var name = this.name.length <= 20 ? this.name : this.name.substring(0,17)+'...';
-    var activity = this.activity ? this.activity : '&nbsp;';
-    var role = this.role >= 0 ? $.icescrum.user.roles[this.role] : 0;
-    **?
-    <span class="member ui-corner-all" id='member?**=this.id**?'>
-        <img src="?**=this.avatar**?" height="48" class="avatar" width="48"/>
-        <span class="fullname">?**=name**?</span>
-        <span class="activity">?**=activity**?</span>
-        ?**=role**?
-    </span>
-    ]]>
-</template>
-
-<template id="sh-tmpl">
-    <![CDATA[
-    ?**
-    var name = this.name.length <= 20 ? this.name : this.name.substring(0,17)+'...';
-    **?
-    <span class="stakeholder" id='member?**=this.id**?'>
-        ?**=name**?
-        <span class="remove" onclick="$(this).closest('.stakeholder').remove();">x</span>
-        <input type="hidden" name="members.?**=this.id**?" value="?**=this.id**?"/>
-        <input type="hidden" name="role.?**=this.id**?" value="3"/>
-</span>
     ]]>
 </template>

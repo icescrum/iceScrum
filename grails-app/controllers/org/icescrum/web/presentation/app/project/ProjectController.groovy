@@ -187,20 +187,12 @@ class ProjectController {
         if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
             privateOption = false
         }
-
-        def user = (User) springSecurityService.currentUser
-        def teams = Team.findAllByOwner(user.username, [:]).collect {
-            def testName = it.name.split("team")
-            def name = testName.size() > 1 && (testName[1].trim().startsWith('2012') || testName[1].trim().startsWith('2013') || testName[1].trim().startsWith('2014')) ? testName[0] : it.name
-            [id:it.id, name:name]
-        }
         def dialog = g.render(template: "dialogs/wizard", model: [ product: product,
                                                             estimationSuitSelect: estimationSuitSelect,
                                                             privateOption: privateOption,
-                                                            user:user,
-                                                            teams:teams,
-                                                            rolesLabels: BundleUtils.roles.findAll{ it.key != 3 }.values().collect {v -> message(code: v)},
-                                                            rolesKeys: BundleUtils.roles.findAll{ it.key != 3 }.keySet().asList()])
+                                                            user:springSecurityService.currentUser,
+                                                            rolesLabels: BundleUtils.roles.values().collect {v -> message(code: v)},
+                                                            rolesKeys: BundleUtils.roles.keySet().asList()])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
 
     }
@@ -242,78 +234,44 @@ class ProjectController {
         def team = null
         Product.withTransaction { status ->
             try {
+                team = new Team()
+                team.name = params.product.name+" team "+new Date().toTimestamp()
+                team.preferences = new TeamPreferences()
+                team.properties = params.team
+
+                def members  = []
                 def productOwners = []
-                def stakeHolders  = []
-
-                if (!params.team?.id){
-                    team = new Team()
-                    team.preferences = new TeamPreferences()
-                    team.properties = params.team
-                    team.name = params.product.name+" team "+new Date().toTimestamp()
-
-                    def members  = []
-                    def scrumMasters = []
-                    productOwners = []
-                    stakeHolders  = []
-
-                    params.members?.each{ k,v ->
-                        switch(params.role."${k}"){
-                            case Authority.MEMBER.toString():
-                                members.add(v.toLong())
-                                break;
-                            case Authority.SCRUMMASTER.toString():
-                                scrumMasters.add(v.toLong())
-                                break;
-                            case Authority.PRODUCTOWNER.toString():
-                                productOwners.add(v.toLong())
-                                break;
-                            case Authority.STAKEHOLDER.toString():
-                                stakeHolders.add(v.toLong())
-                                break;
-                            case Authority.PO_AND_SM.toString():
-                                scrumMasters.add(v.toLong())
-                                productOwners.add(v.toLong())
-                                break;
-                        }
+                def scrumMasters  = []
+                def stakeHolders = []
+                params.members?.each{ k,v ->
+                    switch(params.role."${k}"){
+                        case Authority.MEMBER.toString():
+                            members.add(v.toLong())
+                            break;
+                        case Authority.SCRUMMASTER.toString():
+                            scrumMasters.add(v.toLong())
+                            break;
+                        case Authority.PRODUCTOWNER.toString():
+                            productOwners.add(v.toLong())
+                            break;
+                        case Authority.STAKEHOLDER.toString():
+                            stakeHolders.add(v.toLong())
+                            break;
+                        case Authority.PO_AND_SM.toString():
+                            scrumMasters.add(v.toLong())
+                            productOwners.add(v.toLong())
+                            break;
                     }
-
-                    if (!scrumMasters && !members && !productOwners){
-                        render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.noMember')]] as JSON)
-                        return
-                    }
-
-                    teamService.save team, members, scrumMasters
-
-                } else {
-                   team = Team.findById(params.team.id)
-                   Product p = team.products.asList().first()
-                   productOwners = p.productOwners*.id
-                   stakeHolders  = []
-                   params.members?.each{ k,v ->
-                       switch(params.role."${k}"){
-                           case Authority.STAKEHOLDER.toString():
-                               stakeHolders.add(v.toLong())
-                               break;
-                       }
-                   }
                 }
+
+                if (!scrumMasters && !members && !productOwners){
+                    render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.noMember')]] as JSON)
+                    return
+                }
+
+                teamService.save team, members, scrumMasters
                 productService.save(product, productOwners, stakeHolders)
                 productService.addTeamsToProduct product, [team.id]
-
-                //Update old team name
-                //Ugly code
-                //I know
-                //I like it
-                def updateTeamName = team.name.split('team')
-                if (updateTeamName.size() > 1 && (updateTeamName[1].trim().startsWith('2012') || updateTeamName[1].trim().startsWith('2013') || updateTeamName[1].trim().startsWith('2014'))){
-                    def i = 0
-                    team.name = "${updateTeamName[0]}"
-                    while(!team.validate()){
-                        team.name = "${updateTeamName[0]} ${i}"
-                        i++
-                    }
-                    team.save()
-                }
 
                 def release = new Release(name: "R1",
                         startDate: product.startDate,
@@ -1012,7 +970,7 @@ class ProjectController {
         }
     }
 
-    @Secured('inProduct() owner()')
+    @Secured('inProduct()')
     def attachments = {
         withProduct { Product product ->
             def keptAttachments = params.list('product.attachments')

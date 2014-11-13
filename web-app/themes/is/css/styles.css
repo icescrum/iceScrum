@@ -2105,13 +2105,13 @@ li#li-roles {
     overflow: auto;
 }
 
-#member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item img, #stakeholder-autocomplete .ui-autocomplete.ui-menu .ui-menu-item img{
+#member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item img {
     margin:4px;
     float:left;
     width:40px;
 }
 
-#member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item a, #stakeholder-autocomplete .ui-autocomplete.ui-menu .ui-menu-item a {
+#member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item a {
     padding: 0;
     float: left;
     width: 100%;
@@ -2303,27 +2303,4 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 .custom-select2-dropdown {
     text-align: left;
     min-width: 65px;
-}
-
-.stakeholders-list {
-    background: none repeat scroll 0% 0% #FFF;
-    padding: 5px;
-}
-
-.stakeholder {
-    margin-left:2px;
-    margin-right:2px;
-}
-
-.stakeholder > .remove {
-    visibility:hidden;
-    display: inline-block;
-    margin-left:3px;
-    font-weight:bold;
-    font-size:14px;
-}
-
-.stakeholder:hover > .remove {
-    visibility:visible;
-    cursor: pointer;
 }
