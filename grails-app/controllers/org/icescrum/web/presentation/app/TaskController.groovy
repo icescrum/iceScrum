@@ -377,7 +377,6 @@ class TaskController {
         redirect(action:'index', controller: controllerName, params:params)
     }
 
-    @Cacheable(cache = 'taskCache', keyGenerator='tasksKeyGenerator')
     def list = {
 
         if (request?.format == 'html') {
