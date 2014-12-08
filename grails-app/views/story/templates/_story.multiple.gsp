@@ -150,10 +150,11 @@
             <hr ng-if="authorizedStories('update', stories)"/>
             <div class="btn-toolbar">
                  <div ng-if="authorizedStories('accept', stories)"
-                      class="btn-group">
+                      class="btn-group"
+                      dropdown>
                     <button type="button"
                             class="btn btn-default dropdown-toggle"
-                            data-toggle="dropdown">
+                            dropdown-toggle>
                         <g:message code='is.dialog.acceptAs.acceptAs.title'/> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">

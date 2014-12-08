@@ -25,6 +25,8 @@
 <g:render template="/story/templates/story.new" />
 <g:render template="/story/templates/story.menu" />
 <g:render template="/story/templates/story.template" />
+<g:render template="/story/templates/story" />
+<g:render template="/story/templates/story.effort" />
 <g:render template="/story/templates/nested.stories" />
 
 

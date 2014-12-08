@@ -24,8 +24,8 @@
     <div class="container-fluid">
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group">
-                <div class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.export')}">
-                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                <div dropdown class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.export')}">
+                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
                         <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -37,8 +37,8 @@
                         <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
                     </ul>
                 </div>
-                <div class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.charts')}">
-                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                <div dropdown class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.charts')}">
+                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
                         <span class="glyphicon glyphicon-stats"></span>&nbsp;<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">

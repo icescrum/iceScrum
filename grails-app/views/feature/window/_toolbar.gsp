@@ -25,6 +25,7 @@
        ng-if="authorizedFeature('create')"
        tooltip="${message(code:'todo.is.ui.new')}"
        tooltip-append-to-body="true"
+       tooltip-placement="right"
        href="#feature/new"
        class="btn btn-primary">
         <span class="fa fa-plus"></span>
@@ -32,16 +33,17 @@
     <button type="button"
             tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
             tooltip-append-to-body="true"
+            tooltip-placement="right"
             ng-click="view.asList = !view.asList"
             class="btn btn-default">
-        <span class="glyphicon glyphicon-th" ng-class="{'glyphicon-th-list': view.asList, 'glyphicon-th': !view.asList}"></span>
+        <span class="fa fa-th" ng-class="{'fa-th-list': view.asList, 'fa-th': !view.asList}"></span>
     </button>
     <div class="btn-group"
          dropdown
          is-open="orderBy.status"
          tooltip-append-to-body="true"
          tooltip="${message(code:'todo.is.ui.sort')}">
-        <button class="btn btn-default dropdown-toggle" type="button">
+        <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">
             <span id="sort">{{ orderBy.current.name }}</span>
             <span class="caret"></span>
         </button>
@@ -55,18 +57,19 @@
             ng-click="orderBy.reverse = !orderBy.reverse"
             tooltip="${message(code:'todo.is.ui.order')}"
             tooltip-append-to-body="true">
-        <span class="glyphicon glyphicon-sort-by-attributes{{ orderBy.reverse ? '-alt' : ''}}"></span>
+        <span class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></span>
     </button>
 </div>
 <div class="btn-group" tooltip-append-to-body="true" dropdown tooltip="${message(code:'todo.is.ui.export')}">
-    <button class="btn btn-default dropdown-toggle" type="button">
-        <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
+    <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">
+        <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
     </button>
     <ul class="dropdown-menu"
         role="menu">
         <g:each in="${is.exportFormats()}" var="format">
             <li role="menuitem">
-                <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
+                <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
+                   ng-click="print($event)">${format.name}</a>
             </li>
         </g:each>
         <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
@@ -79,9 +82,10 @@
                 class="btn btn-default"
                 tooltip="${message(code:'is.ui.window.print')} (P)"
                 tooltip-append-to-body="true"
-                hotkey="{'P': hotkeyClick }"
-                href="${createLink(controller:controllerName,action:'print', params:[product:params.product?:null, format:'PDF'])}"
-                data-ajax="true"><span class="glyphicon glyphicon-print"></span>
+                tooltip-placement="left"
+                ng-click="print($event)"
+                ng-href="feature/print"
+                hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
         </button>
     </g:if>
     <g:if test="${params?.widgetable}">
@@ -89,15 +93,27 @@
                 class="btn btn-default btn-widget"
                 tooltip="${message(code:'is.ui.window.widgetable')} (W)"
                 tooltip-append-to-body="true"
-                hotkey="{'W': hotkeyClick }"><span class="glyphicon glyphicon-retweet"></span>
+                tooltip-placement="left"
+                hotkey="{'W': hotkeyClick }"><span class="fa fa-retweet"></span>
         </button>
     </g:if>
     <g:if test="${params?.fullScreen}">
         <button type="button"
-                class="btn btn-default btn-fullscreen"
+                class="btn btn-default"
+                ng-show="!app.isFullScreen"
+                ng-click="fullScreen()"
                 tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
                 tooltip-append-to-body="true"
-                hotkey="{'F': hotkeyClick }"><span class="glyphicon glyphicon-fullscreen"></span>
+                tooltip-placement="left"
+                hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
+        </button>
+        <button type="button"
+                class="btn btn-default"
+                ng-show="app.isFullScreen"
+                tooltip="${message(code:'is.ui.window.fullscreen')}"
+                tooltip-append-to-body="true"
+                tooltip-placement="left"
+                ng-click="fullScreen()"><span class="fa fa-compress"></span>
         </button>
     </g:if>
 </div>

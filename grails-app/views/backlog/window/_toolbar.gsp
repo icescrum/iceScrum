@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,84 +18,102 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
-- Damien vitrac (damien@oocube.com)
-- Manuarii Stein (manuarii.stein@icescrum.com)
-- Stephane Maldini (stephane.maldini@icescrum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:if test="${request.productOwner}">
-    <li class="navigation-item">
-        <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
-           onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
-           data-is-shortcut
-           data-is-shortcut-key="ctrl+shift+c"
-           data-is-shortcut-on="#window-id-${controllerName}"
-           alt="${message(code:'is.ui.backlog.toolbar.alt.clone')}"
-           title="${message(code:'is.ui.backlog.toolbar.alt.clone')}">
-            <span class="start"></span>
-            <span class="content">
-                ${message(code: 'is.ui.backlog.toolbar.clone')}
-            </span>
-            <span class="end"></span>
-        </a>
-    </li>
-</g:if>
-
-<g:if test="${request.productOwner}">
-    <li class="navigation-item">
-       <a class="tool-button button-n on-selectable-disabled on-selectable-window-${controllerName}"
-          onclick="jQuery.icescrum.selectableAction('story/openDialogDelete',true,null,null);"
-          data-is-shortcut
-          data-is-shortcut-key="del"
-          data-is-shortcut-on="#window-id-${controllerName}"
-          alt="${message(code:'is.ui.backlog.toolbar.alt.delete')}"
-          title="${message(code:'is.ui.backlog.toolbar.alt.delete')}">
-              <span class="start"></span>
-              <span class="content">
-                  ${message(code: 'is.ui.backlog.toolbar.delete')}
-              </span>
-              <span class="end"></span>
-       </a>
-   </li>
-</g:if>
-
-%{--View--}%
-<is:panelButton alt="View" id="menu-display" arrow="true" icon="view">
-    <ul>
-        <li class="first">
-            <a href="${createLink(action:'list',controller:controllerName,params:[product:params.product])}"
-               data-default-view="postitsView"
-               data-ajax-begin="$.icescrum.setDefaultView"
-               data-ajax-update="#window-content-${controllerName}"
-               data-ajax="true">${message(code:'is.view.postitsView')}</a>
-        </li>
-        <li class="last">
-            <a href="${createLink(action:'list',controller:controllerName,params:[product:params.product, viewType:'tableView'])}"
-               data-default-view="tableView"
-               data-ajax-begin="$.icescrum.setDefaultView"
-               data-ajax-update="#window-content-${controllerName}"
-               data-ajax="true">${message(code:'is.view.tableView')}</a>
-        </li>
-    </ul>
-</is:panelButton>
-
-%{--Export--}%
-<is:panelButton alt="Export" id="menu-export" arrow="true" text="${message(code: 'is.ui.toolbar.export')}">
-    <ul>
-        <g:each in="${exportFormats}" var="format">
-            <li>
-                <div class="file-icon ${format.code.toLowerCase()}-format" style="display:inline-block">
-                    <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
-                </div>
+<div class="btn-group">
+    <a type="button"
+       ng-if="authorizedStory('create')"
+       tooltip="${message(code:'todo.is.ui.new')}"
+       tooltip-append-to-body="true"
+       tooltip-placement="right"
+       ng-click="goToNewStory()"
+       class="btn btn-primary">
+        <span class="fa fa-plus"></span>
+    </a>
+    <button type="button"
+            tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
+            tooltip-append-to-body="true"
+            tooltip-placement="right"
+            ng-click="view.asList = !view.asList"
+            class="btn btn-default">
+        <span class="fa fa-th" ng-class="{'fa-th-list': view.asList, 'fa-th': !view.asList}"></span>
+    </button>
+    <div class="btn-group"
+         dropdown
+         is-open="orderBy.status"
+         tooltip-append-to-body="true"
+         tooltip="${message(code:'todo.is.ui.sort')}">
+        <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">
+            <span id="sort">{{ orderBy.current.name }}</span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li role="menuitem" ng-repeat="order in orderBy.values">
+                <a ng-click="orderBy.current = order; orderBy.status = false;" href>{{ order.name }}</a>
+            </li>
+        </ul>
+    </div>
+    <button type="button" class="btn btn-default"
+            ng-click="orderBy.reverse = !orderBy.reverse"
+            tooltip="${message(code:'todo.is.ui.order')}"
+            tooltip-append-to-body="true">
+        <span class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></span>
+    </button>
+</div>
+<div class="btn-group" tooltip-append-to-body="true" dropdown tooltip="${message(code:'todo.is.ui.export')}">
+    <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">
+        <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu"
+        role="menu">
+        <g:each in="${is.exportFormats()}" var="format">
+            <li role="menuitem">
+                <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
+                   ng-click="print($event)">${format.name}</a>
             </li>
         </g:each>
+        <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
     </ul>
-</is:panelButton>
-
-%{--Search--}%
-
-<entry:point id="${controllerName}-${actionName}"/>
-
-<is:panelSearch id="search-ui">
-    <is:autoCompleteSearch elementId="autoCmpTxt" controller="backlog" action="list" update="window-content-${controllerName}" withTags="true"/>
-</is:panelSearch>
+</div>
+<div class="btn-group pull-right">
+    <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
+    <g:if test="${params?.printable}">
+        <button type="button"
+                class="btn btn-default"
+                tooltip="${message(code:'is.ui.window.print')} (P)"
+                tooltip-append-to-body="true"
+                tooltip-placement="left"
+                ng-click="print($event)"
+                ng-href="{{ viewName }}/print"
+                hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
+        </button>
+    </g:if>
+    <g:if test="${params?.widgetable}">
+        <button type="button"
+                class="btn btn-default btn-widget"
+                tooltip="${message(code:'is.ui.window.widgetable')} (W)"
+                tooltip-append-to-body="true"
+                tooltip-placement="left"
+                hotkey="{'W': hotkeyClick }"><span class="fa fa-retweet"></span>
+        </button>
+    </g:if>
+    <g:if test="${params?.fullScreen}">
+        <button type="button"
+                class="btn btn-default"
+                ng-show="!app.isFullScreen"
+                ng-click="fullScreen()"
+                tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
+                tooltip-append-to-body="true"
+                tooltip-placement="left"
+                hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
+        </button>
+        <button type="button"
+                class="btn btn-default"
+                ng-show="app.isFullScreen"
+                tooltip="${message(code:'is.ui.window.fullscreen')}"
+                tooltip-append-to-body="true"
+                tooltip-placement="left"
+                ng-click="fullScreen()"><span class="fa fa-compress"></span>
+        </button>
+    </g:if>
+</div>

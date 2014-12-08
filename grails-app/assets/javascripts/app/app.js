@@ -177,7 +177,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                             },
                             views:{
                                 "details-list@sandbox": {
-                                    templateUrl: function($stateParams){
+                                    templateUrl: function($stateParams) {
                                         var tpl;
                                         if ($stateParams.tabId == 'tests')
                                             tpl = 'story.acceptanceTests.html';
@@ -187,7 +187,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                                             tpl = 'comment.list.html';
                                         return tpl;
                                     },
-                                    controllerProvider: function($stateParams){
+                                    controllerProvider: ['$stateParams', function($stateParams) {
                                         var tpl;
                                         if ($stateParams.tabId == 'tests')
                                             tpl = 'Tests';
@@ -196,11 +196,96 @@ isApp.config(['$stateProvider', '$httpProvider',
                                         else if($stateParams.tabId == 'comments')
                                             tpl = 'Comments';
                                         return 'storyDetails'+tpl+'Ctrl';
-                                    }
+                                    }]
                                 }
                             }
                         })
-
+                .state('backlog', {
+                    url: "/backlog",
+                    templateUrl: 'openWindow/backlog',
+                    controller: 'backlogCtrl',
+                    data: {
+                        filterListParams: function(story) {
+                            return story.state == 2 || story.state == 3;
+                        }
+                    },
+                    resolve:{
+                        stories:['StoryService', function(StoryService){
+                            return StoryService.list;
+                        }]
+                    }
+                })
+                    .state('backlog.new', {
+                        url: "/new",
+                        data:{
+                            stack: 2
+                        },
+                        views:{
+                            "details@backlog": {
+                                templateUrl: 'story.new.html',
+                                controller: 'storyNewCtrl'
+                            }
+                        }
+                    })
+                    .state('backlog.multiple', {
+                        url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                        data:{
+                            stack: 2
+                        },
+                        resolve:{
+                            listId:['$stateParams', function($stateParams){
+                                return $stateParams.listId.split(',');
+                            }]
+                        },
+                        views:{
+                            "details@backlog": {
+                                templateUrl: 'story.multiple.html',
+                                controller: 'storyMultipleCtrl'
+                            }
+                        }
+                    })
+                    .state('backlog.details', {
+                        url: "/{id:[0-9]+}",
+                        data:{
+                            stack: 2
+                        },
+                        views:{
+                            "details@backlog": {
+                                templateUrl: 'story.details.html',
+                                controller: 'storyDetailsCtrl'
+                            }
+                        }
+                    })
+                        .state('backlog.details.tab', {
+                            url: "/{tabId:.+}",
+                            data:{
+                                stack: 3
+                            },
+                            views:{
+                                "details-list@backlog": {
+                                    templateUrl: function($stateParams) {
+                                        var tpl;
+                                        if ($stateParams.tabId == 'tests')
+                                            tpl = 'story.acceptanceTests.html';
+                                        else if($stateParams.tabId == 'tasks')
+                                            tpl = 'story.tasks.html';
+                                        else if($stateParams.tabId == 'comments')
+                                            tpl = 'comment.list.html';
+                                        return tpl;
+                                    },
+                                    controllerProvider: ['$stateParams', function($stateParams) {
+                                        var tpl;
+                                        if ($stateParams.tabId == 'tests')
+                                            tpl = 'Tests';
+                                        else if($stateParams.tabId == 'tasks')
+                                            tpl = 'Tasks';
+                                        else if($stateParams.tabId == 'comments')
+                                            tpl = 'Comments';
+                                        return 'storyDetails'+tpl+'Ctrl';
+                                    }]
+                                }
+                            }
+                        })
                 .state('actor', {
                     url: "/actor",
                     templateUrl: 'openWindow/actor',
@@ -366,7 +451,7 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$modal', 'uiSelect2Config', 'notifications', 'atmosphereService', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $modal, uiSelect2Config, notifications, atmosphereService, CONTENT_LOADED){
+    run(['Session', '$rootScope', '$timeout', '$state', '$modal', '$filter', 'uiSelect2Config', 'notifications', 'atmosphereService', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $modal, $filter, uiSelect2Config, notifications, atmosphereService, CONTENT_LOADED){
 
         $rootScope.$watch('$viewContentLoaded', function() {
             $timeout(function() {
@@ -462,17 +547,23 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
 
+        $rootScope.integerSuite = [];
+        for (var i = 0; i < 100; i++) {
+            $rootScope.integerSuite.push(i);
+        }
+        $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
+
         $rootScope.showCopyModal = function(title, value) {
             $modal.open({
                 templateUrl: 'copy.html',
                 size: 'sm',
                 controller: ["$scope", "$modalInstance", 'hotkeys', function($scope, $modalInstance, hotkeys) {
                     $scope.title = title;
-                    $scope.value = value;
+                    $scope.value = $filter('permalink')(value); // change that if you want to use showCopyModal to copy other things than permalinks
                     hotkeys
                         .bindTo($scope)
                         .add({
-                            combo: 'mod+c',
+                            combo: ['mod+c', 'mod+x'],
                             allowIn: ['INPUT'],
                             callback: $modalInstance.close
                         });

@@ -35,7 +35,7 @@
              class="postit story {{ feature.color | contrastColor }} {{ feature.type | featureType }}">
             <div class="head">
                 <span class="id">{{ feature.id }}</span>
-                <span class="estimation">{{ feature.value ? feature.value : '' }}</span>
+                <span class="value" ng-if="feature.value">{{ feature.value }} <i class="fa fa-line-chart"></i></span>
             </div>
             <div class="content">
                 <h3 class="title" ng-bind-html="feature.name | sanitize" ellipsis></h3>
@@ -45,8 +45,8 @@
                 <a ng-repeat="tag in feature.tags" href="#"><span class="tag">{{ tag }}</span></a>
             </div>
             <div class="actions">
-                <span class="action">
-                    <a data-toggle="dropdown"
+                <span dropdown class="action">
+                    <a dropdown-toggle
                        tooltip="${message(code: 'todo.is.ui.actions')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-cog"></i>

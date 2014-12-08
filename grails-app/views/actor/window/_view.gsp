@@ -44,8 +44,8 @@
                 <a ng-repeat="tag in actor.tags" href="#"><span class="tag">{{ tag }}</span></a>
             </div>
             <div class="actions">
-                <span class="action">
-                    <a data-toggle="dropdown"
+                <span dropdown class="action">
+                    <a dropdown-toggle
                        tooltip="${message(code: 'todo.is.ui.actions')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-cog"></i>

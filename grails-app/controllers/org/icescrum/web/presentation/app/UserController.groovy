@@ -371,7 +371,7 @@ class UserController {
                 activity: activity,
                 story: [uid: story.uid, name: story.name],
                 project: [pkey: project.pkey, name: project.name],
-                read: activity.dateCreated > user.preferences.lastReadActivities
+                notRead: activity.dateCreated > user.preferences.lastReadActivities
             ]
         }
         user.preferences.lastReadActivities = new Date()
@@ -391,7 +391,7 @@ class UserController {
     }
 
     private File getAssetAvatarFile(String avatarFileName) {
-        avatarFileName = "assets/avatars/${avatarFileName}"
+        avatarFileName = "assets/images/avatars/${avatarFileName}"
         if (!grailsApplication.warDeployed) {
             avatarFileName = "../grails-app/${avatarFileName}"
         }

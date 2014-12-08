@@ -41,7 +41,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
                         angular.forEach(data, function(notif) {
                             var augmentedActivity = notif.activity;
                             augmentedActivity.story = notif.story;
-                            augmentedActivity.read = notif.read;
+                            augmentedActivity.notRead = notif.notRead;
                             if (_.isEmpty(groupedActivities) || _.last(groupedActivities).project.pkey != notif.project.pkey) {
                                 groupedActivities.push({
                                     project: notif.project,
@@ -83,7 +83,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
             visible:[],
             hidden:[]
         };
-        $scope.sortableOptions = {
+        $scope.menuSortableOptions = {
             items:'li.menuitem',
             connectWith:'.menubar',
             handle:'.handle'
@@ -207,41 +207,31 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
         });
     }
 
-}]).controller('sandboxCtrl', ['$scope', '$state', 'StoryStatesByName', 'stories', 'StoryService', function ($scope, $state, StoryStatesByName, stories, StoryService) {
-    $scope.orderBy = {
-        reverse: false,
-        status: false,
-        current: {id:'suggestedDate', name:'Date'},
-        values:[
-            {id:'name', name:'Name'},
-            {id:'tasks_count', name:'Tasks'},
-            {id:'suggestedDate', name:'Date'},
-            {id:'feature.id', name:'Feature'},
-            {id:'type', name:'Type'}
-        ]
-    };
+}]).controller('storyViewCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', function ($scope, $state, $filter, StoryService, StoryStatesByName) {
     $scope.goToNewStory = function() {
-        $state.go('sandbox.new');
+        $state.go($scope.viewName + '.new');
+    };
+    $scope.goToTab = function(story, tabId) {
+        $state.go($scope.viewName + '.details.tab',  { id: story.id, tabId: tabId });
     };
     $scope.defaultStoryState = StoryStatesByName.SUGGESTED;
     $scope.selectableOptions = {
         filter:"> .postit-container",
-        cancel: "a",
-        stop:function(e, ui, selectedItems) {
-            switch (selectedItems.length){
+        cancel: "a,.ui-selectable-cancel",
+        stop: function(e, ui, selectedItems) {
+            switch (selectedItems.length) {
                 case 0:
-                    $state.go('sandbox');
+                    $state.go($scope.viewName);
                     break;
                 case 1:
-                    $state.go($state.params.tabId ? 'sandbox.details.tab' : 'sandbox.details', { id: selectedItems[0].id });
+                    $state.go($scope.viewName + ($state.params.tabId ? '.details.tab' : '.details'), { id: selectedItems[0].id });
                     break;
                 default:
-                    $state.go('sandbox.multiple',{listId:_.pluck(selectedItems, 'id').join(",")});
+                    $state.go($scope.viewName + '.multiple',{listId:_.pluck(selectedItems, 'id').join(",")});
                     break;
             }
-        } 
+        }
     };
-    $scope.stories = stories;
     $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id ;
@@ -253,6 +243,64 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
     };
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
+    };
+    //$scope.filterAndSortStories = function() {
+    //    var filteredStories = $filter('filter')($scope.stories, $state.current.data.filterListParams);
+    //    return $filter('orderBy')(filteredStories, $scope.orderBy.current.id, $scope.orderBy.current.reverse);
+    //};
+}]).controller('sandboxCtrl', ['$scope', '$controller', '$state', 'stories', function ($scope, $controller, $state, stories) {
+    $controller('storyViewCtrl', { $scope: $scope }); // inherit from storyViewCtrl
+    $scope.viewName = 'sandbox';
+    $scope.stories = stories;
+    $scope.orderBy = {
+        reverse: false,
+        status: false,
+        current: {id:'suggestedDate', name:'todo.is.ui.sort.date'},
+        values:[
+            {id:'name', name:'todo.is.ui.sort.name'},
+            {id:'tasks_count', name:'todo.is.ui.sort.tasks'},
+            {id:'suggestedDate', name:'todo.is.ui.sort.date'},
+            {id:'feature.id', name:'todo.is.ui.sort.feature'},
+            {id:'value', name:'todo.is.ui.sort.value'},
+            {id:'type', name:'todo.is.ui.sort.type'}
+        ]
+    };
+}]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'StoryService', function ($scope, $controller, $state, stories, StoryService) {
+    $controller('storyViewCtrl', { $scope: $scope }); // inherit from storyViewCtrl
+    $scope.viewName = 'backlog';
+    $scope.stories = stories;
+    $scope.orderBy = {
+        reverse: false,
+        status: false,
+        current: {id:'rank', name:'todo.is.ui.sort.rank'},
+        values:[
+            {id:'effort', name:'todo.is.ui.sort.effort'},
+            {id:'rank', name:'todo.is.ui.sort.rank'},
+            {id:'name', name:'todo.is.ui.sort.name'},
+            {id:'tasks_count', name:'todo.is.ui.sort.tasks'},
+            {id:'suggestedDate', name:'todo.is.ui.sort.date'},
+            {id:'feature.id', name:'todo.is.ui.sort.feature'},
+            {id:'value', name:'todo.is.ui.sort.value'},
+            {id:'type', name:'todo.is.ui.sort.type'}
+        ]
+    };
+    $scope.storySortableOptions = {
+        items:'.postit-container'
+    };
+    $scope.storySortableUpdate = function (startModel, destModel, start, end) {
+        var story = destModel[end];
+        var newRank = end + 1;
+        if (story.rank != newRank) {
+            story.rank = newRank;
+            StoryService.update(story).then(function() {
+                angular.forEach(destModel, function(s, index) {
+                    var currentRank = index + 1;
+                    if (s.rank != currentRank) {
+                        s.rank = currentRank;
+                    }
+                });
+            });
+        }
     };
 }]);
 

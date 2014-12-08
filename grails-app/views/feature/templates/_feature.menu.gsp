@@ -31,7 +31,7 @@
     </a>
 </li>
 <li>
-    <a href="{{ 'F'+feature.uid | permalink }}" ng-click="showCopyModal('${message(code:'is.permalink')}', $event.target.href); $event.preventDefault();">
+    <a href ng-click="showCopyModal('${message(code:'is.permalink')}', 'F' + feature.uid)">
         ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
     </a>
 </li>

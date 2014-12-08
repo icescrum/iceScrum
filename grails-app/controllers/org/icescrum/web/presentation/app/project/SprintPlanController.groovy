@@ -133,12 +133,6 @@ class SprintPlanController {
             urgentTasks = urgentTasks.intersect(tasksMatchingTermOrTag)
         }
 
-        def suiteSelect = ''
-        def currentSuite = PlanningPokerGame.getInteger(currentProduct.planningPokerGameType)
-
-        currentSuite = currentSuite.eachWithIndex { t, i ->
-            suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
-        }
         def template = params.viewType ? 'window/' + params.viewType : 'window/postitsView'
         render(template: template,
                 model: [sprint: sprint,
@@ -148,7 +142,6 @@ class SprintPlanController {
                         urgentTasks: urgentTasks,
                         columns: columns,
                         stateSelect: stateSelect,
-                        suiteSelect: suiteSelect,
                         previousSprintExist: (sprint.orderNumber > 1 || sprint.parentRelease.orderNumber > 1) ?: false,
                         nextSprintExist: sprint.hasNextSprint,
                         displayUrgentTasks: sprint.parentRelease.parentProduct.preferences.displayUrgentTasks,

@@ -1,4 +1,4 @@
-<%@ page import="org.icescrum.core.domain.PlanningPokerGame; org.icescrum.core.utils.BundleUtils" %>
+<%@ page import="org.icescrum.core.utils.BundleUtils" %>
 %{--
 - Copyright (c) 2014 Kagilum.
 -
@@ -56,9 +56,10 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
+                 dropdown
                  tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
                     <span class="fa fa-cog"></span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" ng-include="'feature.menu.html'"></ul>
@@ -127,8 +128,8 @@
                             ng-disabled="!getShowFeatureForm(feature)"
                             name="value"
                             ng-model="editableFeature.value"
+                            ng-options="i for i in integerSuite"
                             ui-select2>
-                        <is:options values="${PlanningPokerGame.getInteger(PlanningPokerGame.INTEGER_SUITE)}" />
                     </select>
                 </div>
             </div>

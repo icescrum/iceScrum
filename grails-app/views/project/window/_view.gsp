@@ -85,8 +85,8 @@
                 <h3 class="panel-title">
                     <g:message code="is.ui.project.chart.title"/>
                     <small class="pull-right">
-                        <div class="btn-group" tooltip="${message(code:'todo.is.ui.charts')}">
-                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        <div dropdown class="btn-group" tooltip="${message(code:'todo.is.ui.charts')}">
+                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
                                 <span class="glyphicon glyphicon-stats"></span>&nbsp;<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu"

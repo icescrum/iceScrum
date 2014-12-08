@@ -80,7 +80,7 @@ class StoryController {
         def story = new Story()
         try {
             Story.withTransaction {
-                bindData(story, storyParams, [include:['name','description','notes','type','affectVersion','feature','dependsOn']])
+                bindData(story, storyParams, [include:['name','description','notes','type','affectVersion','feature','dependsOn', 'value']])
                 def user = (User) springSecurityService.currentUser
                 def product = Product.get(params.long('product'))
                 storyService.save(story, product, user)
@@ -170,7 +170,7 @@ class StoryController {
                         }
                     }
                 }
-                bindData(story, storyParams, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn']])
+                bindData(story, storyParams, [include:['name','description','notes','type','affectVersion', 'feature', 'dependsOn', 'value']])
                 storyService.update(story, props)
             }
         }

@@ -196,6 +196,13 @@ class UrlMappings {
                 product(matches: /[0-9A-Z]*/)
             }
         }
+        "/p/$product/backlog/print" {
+            controller = 'backlog'
+            action = 'print'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
 
         "/p/$product/export" {
             controller = 'project'

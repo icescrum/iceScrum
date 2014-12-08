@@ -82,6 +82,9 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     this.inProduct = function() {
         return self.roles.productOwner || self.roles.scrumMaster || self.roles.teamMember;
     };
+    this.tmOrSm = function() {
+        return self.roles.scrumMaster || self.roles.teamMember;
+    };
     this.creator = function(item) {
         return this.authenticated  && !_.isEmpty(item) && !_.isEmpty(item.creator) && self.user.id == item.creator.id;
     };

@@ -77,11 +77,12 @@ uiDefinitions = {
         window {
             title 'is.ui.backlog'
             help 'is.ui.backlog.help'
-            init 'list'
+            right true
+            toolbar true
         }
         widget {
             title 'is.ui.backlog'
-            init 'list'
+            init 'index'
             toolbar true
             resizable = [defaultHeight:143,minHeight:26]
         }

@@ -56,9 +56,10 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
+                 dropdown
                  tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
                     <span class="fa fa-cog"></span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu"

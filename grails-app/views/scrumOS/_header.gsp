@@ -42,12 +42,12 @@
         </div>
         <div id="mainmenu" ng-controller="projectCtrl">
             <ul class="nav navbar-nav scroll menubar"
-                html-sortable="sortableOptions"
+                html-sortable="menuSortableOptions"
                 html-sortable-callback="menuSortableUpdate"
                 ng-init='menus.visible = ${menus as JSON};'
                 ng-model="menus.visible">
-                <li class="dropdown contextual-menu">
-                    <a class="dropdown-toggle">
+                <li class="dropdown contextual-menu" dropdown>
+                    <a class="dropdown-toggle" dropdown-toggle>
                         ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu">
@@ -141,10 +141,10 @@
                     ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable}"
                     class="menuitem draggable-to-main">
                 </li>
-                <li class="dropdown menubar-more" ng-class="{ 'hidden': menus.hidden.length == 0 }">
-                    <a class="dropdown-toggle" href="#">${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
+                <li class="dropdown menubar-more" dropdown ng-class="{ 'hidden': menus.hidden.length == 0 }">
+                    <a class="dropdown-toggle" dropdown-toggle href>${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu menubar"
-                        html-sortable="sortableOptions"
+                        html-sortable="menuSortableOptions"
                         html-sortable-callback="menuHiddenSortableUpdate"
                         ng-init='menus.hidden = ${menusHidden as JSON};'
                         ng-model="menus.hidden">
@@ -176,7 +176,8 @@
                 </g:if>
                 <div ng-if="currentUser.username" dropdown class="pull-left" on-toggle="notificationToggle(open)">
                     <div ng-switch="getUnreadActivities()"
-                         class="dropdown-toggle navbar-notif">
+                         class="dropdown-toggle navbar-notif"
+                         dropdown-toggle>
                         <span class="fa fa-bell-o" ng-switch-when="0"></span>
                         <span class="fa fa-bell" ng-switch-default></span>
                         <span class="badge alert-info" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
@@ -184,7 +185,7 @@
                     <div class="dropdown-menu notifications" ng-include="'notifications.panel.html'"></div>
                 </div>
                 <div ng-if="currentUser.username" dropdown class="pull-left">
-                    <div class="navbar-user pull-left dropdown-toggle">
+                    <div class="navbar-user pull-left dropdown-toggle" dropdown-toggle>
                         <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
                     </div>
                     <div class="dropdown-menu" ng-include="'profile.panel.html'"></div>

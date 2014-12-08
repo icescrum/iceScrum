@@ -257,4 +257,32 @@ filters
                 }
             }
         };
-    });
+    }).filter('stateProgress', ['StoryStatesByName', function(StoryStatesByName) {
+        return function(storyState) {
+            var percent;
+            switch (storyState) {
+                case StoryStatesByName.SUGGESTED:
+                    percent = 1;
+                    break;
+                case StoryStatesByName.ACCEPTED:
+                    percent = 2;
+                    break;
+                case StoryStatesByName.ESTIMATED:
+                    percent = 3;
+                    break;
+                case StoryStatesByName.PLANNED:
+                    percent = 4;
+                    break;
+                case StoryStatesByName.IN_PROGRESS:
+                    percent = 5;
+                    break;
+                case StoryStatesByName.DONE:
+                    percent = 6;
+                    break;
+                default:
+                    percent = 0;
+            }
+            var stateCount = 6;
+            return Math.floor((percent / stateCount) * 100);
+        }
+    }]);

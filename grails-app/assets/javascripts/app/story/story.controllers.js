@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', 'StoryService', '$state', function($scope, StoryService, $state) {
+controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $modal, StoryService, $state, Session, StoryStatesByName) {
     // Functions
     $scope.accept = function(story) {
         StoryService.accept(story)
@@ -95,6 +95,52 @@ controllers.controller('storyCtrl', ['$scope', 'StoryService', '$state', functio
             }
         }
     };
+    $scope.showNewTemplateModal = function(story) {
+        $modal.open({
+            templateUrl: 'story.template.new.html',
+            size: 'sm',
+            controller: ["$scope", "$modalInstance", function($scope, $modalInstance) {
+                $scope.submit = function(template) {
+                    StoryService.saveTemplate(story, template.name)
+                        .then(function() {
+                            $modalInstance.close();
+                            $scope.notifySuccess('todo.is.ui.story.template.saved');
+                        });
+                };
+            }]
+        });
+    };
+    $scope.isEffortCustom = function() {
+        return Session.getProject().planningPokerGameType == 2;
+    };
+    $scope.effortSuite = function() {
+        return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
+    };
+    $scope.isEffortNullable = function(story) {
+        return story.state <= StoryStatesByName.ESTIMATED;
+    };
+    $scope.showEditEffortModal = function(story) {
+        if (StoryService.authorizedStory('updateEstimate', story)) {
+            var parentScope = $scope;
+            $modal.open({
+                templateUrl: 'story.effort.html',
+                size: 'sm',
+                controller: ["$scope", "$modalInstance", function($scope, $modalInstance) {
+                    $scope.editableStory = angular.copy(parentScope.story);
+                    $scope.isEffortCustom = parentScope.isEffortCustom;
+                    $scope.effortSuite = parentScope.effortSuite;
+                    $scope.isEffortNullable = parentScope.isEffortNullable;
+                    $scope.submit = function(story) {
+                        StoryService.update(story)
+                            .then(function() {
+                                $modalInstance.close();
+                                $scope.notifySuccess('todo.is.ui.story.effort.updated');
+                            });
+                    };
+                }]
+            });
+        }
+    };
 }]);
 
 controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'FormService',
@@ -134,21 +180,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             $state.go('^');
             $scope.notifyError(e.message);
         });
-        $scope.showNewTemplateModal = function(story) {
-            $modal.open({
-                templateUrl: 'story.template.new.html',
-                size: 'sm',
-                controller: ["$scope", "$modalInstance", function($scope, $modalInstance) {
-                    $scope.submit = function(template) {
-                        StoryService.saveTemplate(story, template.name)
-                            .then(function() {
-                                $modalInstance.close();
-                                $scope.notifySuccess('todo.is.ui.story.template.saved');
-                            });
-                    };
-                }]
-            });
-        };
         $scope.update = function(story) {
             StoryService.update(story)
                 .then(function(story) {

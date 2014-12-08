@@ -24,9 +24,13 @@
 <div id="backlog-layout-window-${controllerName}"
      ui-selectable="selectableOptions"
      ui-selectable-list="stories"
+     %{--html-sortable="storySortableOptions"--}%
+     %{--html-sortable-callback="storySortableUpdate"--}%
+     %{--ng-model="filteredAndSortedStories"--}%
      ng-class="view.asList ? 'list-group' : 'grid-group'"
+     class="postits"
      ng-include="'story.html'"
-     class="postits"></div>
+     ng-init=""></div>
 <script>
     angular.element(document).injector().get('StoryService').addStories(${stories as JSON});
 </script>

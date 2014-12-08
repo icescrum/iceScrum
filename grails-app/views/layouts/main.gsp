@@ -22,7 +22,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <!DOCTYPE html>
-<html lang="en" ng-app="isApp">
+<html lang="en" ng-app="isApp" ng-strict-di>
 <head>
     <title>iceScrum - <g:layoutTitle/></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

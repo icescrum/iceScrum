@@ -106,7 +106,7 @@
     </div>
     <div ng-repeat="groupedActivity in groupedUserActivities">
         <div class="custom-list-header"><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">{{ groupedActivity.project.name }}</a></div>
-        <div class="media custom-list-item" ng-class="{ 'info': activity.read }" ng-repeat="activity in groupedActivity.activities">
+        <div class="media custom-list-item" ng-class="{ 'alert-info': activity.notRead }" ng-repeat="activity in groupedActivity.activities">
             <div class="media-left">
                 <img height="36px"
                      ng-src="{{activity.poster | userAvatar}}"

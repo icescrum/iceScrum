@@ -73,9 +73,10 @@
         <div class="actions">
             <div class="actions-left">
                 <div class="btn-group"
+                     dropdown
                      tooltip="${message(code: 'todo.is.ui.actions')}"
                      tooltip-append-to-body="true">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
@@ -209,6 +210,42 @@
                            ng-model="editableStory.affectVersion"
                            ui-select2="selectAffectionVersionOptions"
                            data-placeholder="${message(code:'is.ui.story.noaffectversion')}"/>
+                </div>
+            </div>
+            <div class="clearfix no-padding">
+                <div class="form-group"
+                     ng-class="{ 'form-half' : authorizedStory('updateEstimate', editableStory) }">
+                    <label for="value">${message(code:'is.story.value')}</label>
+                    <select class="form-control"
+                            ng-focus="editForm(true)"
+                            ng-disabled="!getShowStoryForm(story)"
+                            name="value"
+                            ng-model="editableStory.value"
+                            ng-options="i for i in integerSuite"
+                            ui-select2>
+                    </select>
+                </div>
+                <div class="form-half"
+                     ng-show="authorizedStory('updateEstimate', editableStory)"
+                     ng-switch="isEffortCustom()">
+                    <label for="effort">${message(code:'is.story.effort')}</label>
+                    <select ng-switch-default
+                            class="form-control"
+                            ng-focus="editForm(true)"
+                            ng-disabled="!getShowStoryForm(story)"
+                            name="effort"
+                            ng-model="editableStory.effort"
+                            ng-options="i for i in effortSuite()"
+                            ui-select2="selectEffortOptions">
+                        <option ng-show="isEffortNullable(story)" value="">?</option>
+                    </select>
+                    <input type="number"
+                           ng-switch-when="true"
+                           class="form-control"
+                           ng-focus="editForm(true)"
+                           ng-disabled="!getShowStoryForm(story)"
+                           name="effort"
+                           ng-model="editableStory.effort"/>
                 </div>
             </div>
             <div class="form-group">

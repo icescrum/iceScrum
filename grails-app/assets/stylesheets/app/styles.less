@@ -1050,6 +1050,14 @@ a[data-toggle="tab"] button {
         }
       }
     }
+    .sortable-placeholder {
+      border:2px dashed @brand-primary;
+      margin: 6px;
+      width: 196px;
+      height: 145px;
+      padding: 0 5px;
+      float: left;
+    }
     .postit-container {
       font-family: "Myriad Pro", Arial, sans-serif;
       float: left;
@@ -1074,7 +1082,7 @@ a[data-toggle="tab"] button {
               color: @invert-color;
               text-decoration: none;
             }
-            .estimation {
+            .estimation, .value {
               text-shadow: 0 1px 1px rgba(255, 255, 255, .15);
             }
           }
@@ -1106,7 +1114,7 @@ a[data-toggle="tab"] button {
         .head {
           padding-top: 3px;
           height: 25px;
-          .id, .estimation {
+          .id, .estimation, .value {
             display: inline-block;
           }
           .id {
@@ -1114,11 +1122,22 @@ a[data-toggle="tab"] button {
             padding-top: 2px;
             font-weight: 700;
           }
-          .estimation {
-            font-size: 18px;
+          .estimation, .value {
+            font-size: 16px;
             text-shadow: 0 1px 1px rgba(0, 0, 0, .15);
             position: absolute;
-            right: 5px;
+            i {
+              font-size: 0.6em;
+            }
+          }
+          .estimation {
+            &.editable {
+              cursor: text;
+            }
+            right: 55px;
+          }
+          .value {
+            right: 25px;
           }
         }
         .content {

@@ -218,6 +218,8 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
+            case 'updateEstimate':
+                return Session.tmOrSm() && story.state > StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
             case 'accept':
                 return Session.po() && story.state == StoryStatesByName.SUGGESTED;
             case 'updateTemplate':

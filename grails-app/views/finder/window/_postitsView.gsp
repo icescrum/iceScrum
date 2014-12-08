@@ -1,4 +1,4 @@
-<%@ page import="org.icescrum.core.domain.PlanningPokerGame; org.icescrum.core.domain.Story; org.icescrum.core.utils.BundleUtils" %>
+<%@ page import="org.icescrum.core.domain.Story; org.icescrum.core.utils.BundleUtils" %>
 <div id="search-result">
     <is:backlogElementLayout
             id="window-${controllerName}"

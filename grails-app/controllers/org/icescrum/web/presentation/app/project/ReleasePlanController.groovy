@@ -28,7 +28,6 @@ package org.icescrum.web.presentation.app.project
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
@@ -91,14 +90,8 @@ class ReleasePlanController {
              activeSprint = release?.sprints?.find { it.activable }
         }
 
-        def suiteSelect = ''
-        def currentSuite = PlanningPokerGame.getInteger(release.parentProduct.planningPokerGameType)
 
-        currentSuite = currentSuite.eachWithIndex { t, i ->
-            suiteSelect += "'${t}':'${t}'" + (i < currentSuite.size() - 1 ? ',' : '')
-        }
-
-        render(template: 'window/postitsView', model: [release: release, sprints: sprints,activeSprint: activeSprint, releaseId: release.id, suiteSelect: suiteSelect])
+        render(template: 'window/postitsView', model: [release: release, sprints: sprints,activeSprint: activeSprint, releaseId: release.id])
     }
 
 
