@@ -1,5 +1,5 @@
 /*
- * angular-elastic v2.4.0
+ * angular-elastic v2.4.2
  * (c) 2014 Monospaced http://monospaced.com
  * License: MIT
  */
@@ -49,7 +49,7 @@ angular.module('monospaced.elastic', [])
                             'min-height: 0 !important; height: 0 !important; padding: 0;' +
                             'word-wrap: break-word; border: 0;',
                         $mirror = angular.element('<textarea tabindex="-1" ' +
-                            'style="' + mirrorInitStyle + '"/>').data('elastic', true),
+                        'style="' + mirrorInitStyle + '"/>').data('elastic', true),
                         mirror = $mirror[0],
                         taStyle = getComputedStyle(ta),
                         resize = taStyle.getPropertyValue('resize'),
@@ -58,13 +58,13 @@ angular.module('monospaced.elastic', [])
                             taStyle.getPropertyValue('-webkit-box-sizing') === 'border-box',
                         boxOuter = !borderBox ? {width: 0, height: 0} : {
                             width:  parseInt(taStyle.getPropertyValue('border-right-width'), 10) +
-                                parseInt(taStyle.getPropertyValue('padding-right'), 10) +
-                                parseInt(taStyle.getPropertyValue('padding-left'), 10) +
-                                parseInt(taStyle.getPropertyValue('border-left-width'), 10),
+                            parseInt(taStyle.getPropertyValue('padding-right'), 10) +
+                            parseInt(taStyle.getPropertyValue('padding-left'), 10) +
+                            parseInt(taStyle.getPropertyValue('border-left-width'), 10),
                             height: parseInt(taStyle.getPropertyValue('border-top-width'), 10) +
-                                parseInt(taStyle.getPropertyValue('padding-top'), 10) +
-                                parseInt(taStyle.getPropertyValue('padding-bottom'), 10) +
-                                parseInt(taStyle.getPropertyValue('border-bottom-width'), 10)
+                            parseInt(taStyle.getPropertyValue('padding-top'), 10) +
+                            parseInt(taStyle.getPropertyValue('padding-bottom'), 10) +
+                            parseInt(taStyle.getPropertyValue('border-bottom-width'), 10)
                         },
                         minHeightValue = parseInt(taStyle.getPropertyValue('min-height'), 10),
                         heightValue = parseInt(taStyle.getPropertyValue('height'), 10),
@@ -154,7 +154,6 @@ angular.module('monospaced.elastic', [])
                                 mirrorHeight = minHeight;
                             }
                             mirrorHeight += boxOuter.height;
-
                             ta.style.overflowY = overflow || 'hidden';
 
                             if (taHeight !== mirrorHeight) {

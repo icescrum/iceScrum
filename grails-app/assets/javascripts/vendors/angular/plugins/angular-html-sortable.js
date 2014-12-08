@@ -49,7 +49,7 @@
                                 var $destModel = $parse($dest);
 
                                 var $start = data.oldindex;
-                                var $end   = data.item.parent().children(opts.items).index(data.item);
+                                var $end   = data.item.index();
 
                                 scope.$apply(function () {
                                     if ($sourceModel(data.startparent.scope()) === $destModel(data.endparent.scope())) {
@@ -67,7 +67,6 @@
 
                                         $sourceModel.assign(scope, $sourceItems);
                                         $destModel.assign(scope, $destItems);
-                                        data.item.remove();
                                     }
                                 });
 
@@ -81,4 +80,3 @@
             }
         ]);
 }(angular));
-

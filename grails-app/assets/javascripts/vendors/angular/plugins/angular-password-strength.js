@@ -6,7 +6,7 @@
  * @ngdoc directive
  * @name ngPasswordStrengthApp.directive:ngPasswordStrength
  * @description
- * # ngPasswordStrength
+ * # ngPasswordStrength CUSTOMISED
  */
 angular.module('ngPasswordStrength', [
     'ui.bootstrap.progressbar',
