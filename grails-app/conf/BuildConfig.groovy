@@ -81,8 +81,8 @@ grails.project.dependency.resolution = {
         compile "org.icescrum:entry-points:1.0"
 
         compile ":cache-headers:1.1.7"
-        compile ":asset-pipeline:1.9.9"
-        compile ":less-asset-pipeline:1.10.0"
+        compile ":asset-pipeline:2.0.15"
+        compile ":less-asset-pipeline:2.0.8"
         compile ":browser-detection:2.1.0"
         // runtime ":database-migration:1.4.0" TODO enable new migration
         runtime ":hibernate4:4.3.6.1"
