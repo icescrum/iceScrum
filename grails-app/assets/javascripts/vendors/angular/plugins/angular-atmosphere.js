@@ -1,7 +1,7 @@
-// https://github.com/spyboost/angular-atmosphere
+// https://github.com/spyboost/angular-atmosphere CUSTOMISED (injected $rootscope properly)
 // 19/10/2013
 angular.module('angular.atmosphere', [])
-    .service('atmosphereService', function($rootScope){
+    .service('atmosphereService', ['$rootScope', function($rootScope) {
         var responseParameterDelegateFunctions = ['onOpen', 'onClientTimeout', 'onReopen', 'onMessage', 'onClose', 'onError'];
         var delegateFunctions = responseParameterDelegateFunctions;
         delegateFunctions.push('onTransportFailure');
@@ -37,4 +37,4 @@ angular.module('angular.atmosphere', [])
                 return atmosphere.subscribe(result);
             }
         };
-    });
+    }]);
