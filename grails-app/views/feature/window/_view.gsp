@@ -38,8 +38,14 @@
                 <span class="value" ng-if="feature.value">{{ feature.value }} <i class="fa fa-line-chart"></i></span>
             </div>
             <div class="content">
-                <h3 class="title" ng-bind-html="feature.name | sanitize" ellipsis></h3>
-                <div class="description" ng-bind-html="feature.description | sanitize" ellipsis></div>
+                <h3 class="title"
+                    ng-model="feature.name"
+                    ng-bind-html="feature.name | sanitize"
+                    ellipsis></h3>
+                <div class="description"
+                     ng-model="feature.description"
+                     ng-bind-html="feature.description | sanitize"
+                     ellipsis></div>
             </div>
             <div class="tags">
                 <a ng-repeat="tag in feature.tags" href="#"><span class="tag">{{ tag }}</span></a>

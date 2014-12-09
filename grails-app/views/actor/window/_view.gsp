@@ -37,8 +37,14 @@
                 <span class="id">{{ actor.id }}</span>
             </div>
             <div class="content">
-                <h3 class="title" ng-bind-html="actor.name | sanitize" ellipsis></h3>
-                <div class="description" ng-bind-html="actor.description | sanitize" ellipsis></div>
+                <h3 class="title"
+                    ng-model="actor.name"
+                    ng-bind-html="actor.name | sanitize"
+                    ellipsis></h3>
+                <div class="description"
+                     ng-model="actor.description"
+                     ng-bind-html="actor.description | sanitize"
+                     ellipsis></div>
             </div>
             <div class="tags">
                 <a ng-repeat="tag in actor.tags" href="#"><span class="tag">{{ tag }}</span></a>

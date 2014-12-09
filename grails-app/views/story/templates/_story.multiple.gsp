@@ -41,8 +41,14 @@
                         <span class="estimation">{{ topStory.effort ? topStory.effort + ' pt' : '' }}</span>
                     </div>
                     <div class="content">
-                        <h3 class="title" ng-bind-html="topStory.name | sanitize" ellipsis></h3>
-                        <div class="description" ng-bind-html="topStory.description | sanitize" ellipsis></div>
+                        <h3 class="title"
+                            ng-model="topStory.name"
+                            ng-bind-html="topStory.name | sanitize"
+                            ellipsis></h3>
+                        <div class="description"
+                             ng-model="topStory.description"
+                             ng-bind-html="topStory.description | sanitize"
+                             ellipsis></div>
                     </div>
                     <div class="tags">
                         <a ng-repeat="tag in topStory.tags" href="#"><span class="tag">{{ tag }}</span></a>

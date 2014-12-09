@@ -37,8 +37,14 @@
                         <span class="estimation">{{ topFeature.value ? topFeature.value : '' }}</span>
                     </div>
                     <div class="content">
-                        <h3 class="title" ng-bind-html="topFeature.name | sanitize" ellipsis></h3>
-                        <div class="description" ng-bind-html="topFeature.description | sanitize" ellipsis></div>
+                        <h3 class="title"
+                            ng-model="topFeature.name"
+                            ng-bind-html="topFeature.name | sanitize"
+                            ellipsis></h3>
+                        <div class="description"
+                             ng-model="topFeature.description"
+                             ng-bind-html="topFeature.description | sanitize"
+                             ellipsis></div>
                     </div>
                     <div class="tags">
                         <a ng-repeat="tag in topFeature.tags" href="#"><span class="tag">{{ tag }}</span></a>

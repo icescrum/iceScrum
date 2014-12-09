@@ -35,7 +35,10 @@
                         <span class="id">42</span>
                     </div>
                     <div class="content">
-                        <h3 class="title" ng-bind-html="feature.name | sanitize" ellipsis></h3>
+                        <h3 class="title"
+                            ng-model="feature.name"
+                            ng-bind-html="feature.name | sanitize"
+                            ellipsis></h3>
                     </div>
                     <div class="tags"></div>
                     <div class="actions">

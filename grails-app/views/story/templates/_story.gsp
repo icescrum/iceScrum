@@ -41,8 +41,14 @@
             <span class="estimation editable ui-selectable-cancel" ng-if="story.state > 1" ng-click="showEditEffortModal(story)">{{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar"></i></span>
         </div>
         <div class="content">
-            <h3 class="title" ng-bind-html="story.name | sanitize" ellipsis></h3>
-            <div class="description" ng-bind-html="story.description | sanitize" ellipsis></div>
+            <h3 class="title"
+                ng-model="story.name"
+                ng-bind-html="story.name | sanitize"
+                ellipsis></h3>
+            <div class="description"
+                 ng-model="story.description"
+                 ng-bind-html="story.description | sanitize"
+                 ellipsis></div>
         </div>
         <div class="footer">
             <div class="tags">

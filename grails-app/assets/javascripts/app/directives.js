@@ -250,15 +250,17 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
     };
 }]).directive('ellipsis', [function () {
     return {
-        required: 'ngBindHtml',
+        required: 'ngModel', // explicit ng-model is required even in presence ng-bind-html because it creates the ng-model only when the field is updated
         restrict: 'A',
         priority: 100,
         scope:{
             ngModel:'='
         },
         link: function (scope, element) {
-            scope.$watch('ngModel', function(value) {
-                element.data('jqae', null);
+            scope.$watch(function() {
+                return scope.ngModel + element.width(); // ugly hack but it seems to work
+            }, function() {
+                //element.data('jqae', null);
                 element.ellipsis();
             });
         }

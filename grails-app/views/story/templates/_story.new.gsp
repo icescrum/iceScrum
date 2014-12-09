@@ -35,10 +35,14 @@
                         <span class="id">42</span>
                     </div>
                     <div class="content">
-                        <h3 class="title" ng-bind-html="story.name | sanitize" ellipsis></h3>
+                        <h3 class="title"
+                            ng-model="story.name"
+                            ng-bind-html="story.name | sanitize"
+                            ellipsis></h3>
                         <div class="description-template"
                              ng-model="storyPreview.description"
-                             ng-bind-html="storyPreview.description | sanitize" ellipsis></div>
+                             ng-bind-html="storyPreview.description | sanitize"
+                             ellipsis></div>
                     </div>
                     <div class="tags">
                         <a ng-repeat="tag in storyPreview.tags"><span class="tag">{{ tag }}</span></a>

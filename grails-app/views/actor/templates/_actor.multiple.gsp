@@ -36,8 +36,14 @@
                         <span class="id">{{ topActor.id }}</span>
                     </div>
                     <div class="content">
-                        <h3 class="title" ng-bind-html="topActor.name | sanitize" ellipsis></h3>
-                        <div class="description" ng-bind-html="topActor.description | sanitize" ellipsis></div>
+                        <h3 class="title"
+                            ng-model="topActor.name"
+                            ng-bind-html="topActor.name | sanitize"
+                            ellipsis></h3>
+                        <div class="description"
+                             ng-model="topActor.description"
+                             ng-bind-html="topActor.description | sanitize"
+                             ellipsis></div>
                     </div>
                     <div class="tags">
                         <a ng-repeat="tag in topActor.tags" href="#"><span class="tag">{{ tag }}</span></a>
