@@ -189,18 +189,11 @@ class UrlMappings {
         }
 
         //Everything under project context
-        "/p/$product/sandbox/print" {
-            controller = 'sandbox'
+        "/p/$product/$controller/print" {
             action = 'print'
             constraints {
                 product(matches: /[0-9A-Z]*/)
-            }
-        }
-        "/p/$product/backlog/print" {
-            controller = 'backlog'
-            action = 'print'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
+                controller(inList: ['sandbox', 'backlog', 'actor', 'feature'])
             }
         }
 

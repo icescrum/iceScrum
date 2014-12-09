@@ -28,11 +28,12 @@ package org.icescrum.web.presentation.app.project
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
-import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+
+import static grails.async.Promises.task
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class ActorController {
@@ -145,34 +146,31 @@ class ActorController {
         render(template: "${params.type ?: 'window'}/view")
     }
 
-    def print() {
-        def currentProduct = Product.load(params.product)
-        def data = []
-        def actors = Actor.findAllByBacklog(currentProduct, [sort: 'useFrequency', order: 'asc']);
+    def print(long product, String format) {
+        def _product = Product.get(product)
+        def actors = Actor.findAllByBacklog(_product, [sort: 'useFrequency', order: 'asc']);
         if (!actors) {
-            returnError(text: message(code: 'is.report.error.no.data'))
-            return
-        } else if (params.get) {
-            actors.each {
-                data << [
-                        uid: it.uid,
-                        name: it.name,
-                        description: it.description,
-                        notes: it.notes?.replaceAll(/<.*?>/, ''),
-                        expertnessLevel: message(code: BundleUtils.actorLevels[it.expertnessLevel]),
-                        satisfactionCriteria: it.satisfactionCriteria,
-                        useFrequency: message(code: BundleUtils.actorFrequencies[it.useFrequency]),
-                        instances: BundleUtils.actorInstances[it.instances],
-                        associatedStories: Story.countByActor(it)
-                ]
-            }
-            renderReport('actors', params.format, [[product: currentProduct.name, actors: data ?: null]], currentProduct.name)
-        } else if (params.status) {
-            render(status: 200, contentType: 'application/json', text: session.progress as JSON)
+            returnError(text:message(code: 'is.report.error.no.data'))
         } else {
-            session.progress = new ProgressSupport()
-            def dialog = g.render(template: '/scrumOS/report')
-            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+            return task {
+                def data = []
+                Actor.withNewSession {
+                    actors.each {
+                        data << [
+                                uid: it.uid,
+                                name: it.name,
+                                description: it.description,
+                                notes: it.notes?.replaceAll(/<.*?>/, ''),
+                                expertnessLevel: message(code: BundleUtils.actorLevels[it.expertnessLevel]),
+                                satisfactionCriteria: it.satisfactionCriteria,
+                                useFrequency: message(code: BundleUtils.actorFrequencies[it.useFrequency]),
+                                instances: BundleUtils.actorInstances[it.instances],
+                                associatedStories: Story.countByActor(it)
+                        ]
+                    }
+                }
+                renderReport('actors', format ? format.toUpperCase() : 'PDF', [[product: _product.name, actors: data ?: null]], _product.name)
+            }
         }
     }
 }

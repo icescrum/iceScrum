@@ -24,13 +24,14 @@
 
 package org.icescrum.web.presentation.app.project
 
-import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Story
+
+import static grails.async.Promises.task
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class FeatureController {
@@ -129,36 +130,34 @@ class FeatureController {
         forward controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName]
     }
 
-    def print() {
-        def currentProduct = Product.get(params.product)
-        def values = featureService.productParkingLotValues(currentProduct)
-        def data = []
-        if (!values) {
+    def print(long product, String format) {
+        def _product = Product.get(product)
+        def values = featureService.productParkingLotValues(_product)
+        def features = _product.features
+        if (!features) {
             returnError(text:message(code: 'is.report.error.no.data'))
-            return
-        } else if (params.get) {
-            currentProduct.features.eachWithIndex { feature, index ->
-                data << [
-                        uid: feature.uid,
-                        name: feature.name,
-                        description: feature.description,
-                        notes: feature.notes?.replaceAll(/<.*?>/, ''),
-                        rank: feature.rank,
-                        type: message(code: BundleUtils.featureTypes[feature.type]),
-                        value: feature.value,
-                        effort: feature.effort,
-                        associatedStories: Story.countByFeature(feature),
-                        associatedStoriesDone: feature.countDoneStories,
-                        parkingLotValue: values[index].value
-                ]
-            }
-            renderReport('features', params.format, [[product: currentProduct.name, features: data ?: null]], currentProduct.name)
-        } else if (params.status) {
-            render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
-            session.progress = new ProgressSupport()
-            def dialog = g.render(template: '/scrumOS/report')
-            render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+            return task {
+                def data = []
+                Feature.withNewSession {
+                    features.eachWithIndex { feature, index ->
+                        data << [
+                                uid: feature.uid,
+                                name: feature.name,
+                                description: feature.description,
+                                notes: feature.notes?.replaceAll(/<.*?>/, ''),
+                                rank: feature.rank,
+                                type: message(code: BundleUtils.featureTypes[feature.type]),
+                                value: feature.value,
+                                effort: feature.effort,
+                                associatedStories: Story.countByFeature(feature),
+                                associatedStoriesDone: feature.countDoneStories,
+                                parkingLotValue: values[index].value
+                        ]
+                    }
+                }
+                renderReport('features', format ? format.toUpperCase() : 'PDF', [[product: _product.name, features: data ?: null]], _product.name)
+            }
         }
     }
 
