@@ -260,7 +260,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             scope.$watch(function() {
                 return scope.ngModel + element.width(); // ugly hack but it seems to work
             }, function() {
-                //element.data('jqae', null);
+                element.data('jqae', null);
                 element.ellipsis();
             });
         }
