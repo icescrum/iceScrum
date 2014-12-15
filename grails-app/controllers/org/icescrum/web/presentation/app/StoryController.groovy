@@ -134,7 +134,11 @@ class StoryController {
             if (storyParams.effort != null) {
                 if (storyParams.effort instanceof String) {
                     def effort = storyParams.effort.replaceAll(',', '.')
-                    props.effort = effort.isBigDecimal() ? effort.toBigDecimal() : effort // can be a "?"
+                    if (effort.isBigDecimal()) {
+                        props.effort = effort.toBigDecimal()
+                    } else if (effort == "" || effort == "?") {
+                        props.effort = null
+                    }
                 } else {
                     props.effort = storyParams.effort
                 }

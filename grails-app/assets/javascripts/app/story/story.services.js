@@ -101,12 +101,12 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         });
     };
     this.update = function(story) {
-        return story.$update(function(updatedStory) {
+        return Story.update(story, function(updatedStory) {
             var index = self.list.indexOf(_.findWhere(self.list, { id: story.id }));
             if (index != -1) {
                 self.list.splice(index, 1, updatedStory);
             }
-        });
+        }).$promise;
     };
     this['delete'] = function(story) {
         return story.$delete(function() {

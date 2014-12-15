@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="story.html">
 <div ng-class="{ 'ui-selected': isSelected(story) }"
      data-id="{{ story.id }}"
-     ng-repeat="story in stories | filter: $state.current.data.filterListParams | orderBy:orderBy.current.id:orderBy.reverse"
+     ng-repeat="story in filteredAndSortedStories"
      ng-controller="storyCtrl"
      class="postit-container">
     <div style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"

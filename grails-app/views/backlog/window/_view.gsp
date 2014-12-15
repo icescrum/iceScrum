@@ -22,11 +22,11 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div id="backlog-layout-window-${controllerName}"
-     ui-selectable="selectableOptions"
-     ui-selectable-list="stories"
-     %{--html-sortable="storySortableOptions"--}%
-     %{--html-sortable-callback="storySortableUpdate"--}%
-     %{--ng-model="filteredAndSortedStories"--}%
+     %{--ui-selectable="selectableOptions"--}%
+     %{--ui-selectable-list="stories"--}%
+     html-sortable="storySortableOptions"
+     html-sortable-callback="storySortableUpdate"
+     ng-model="filteredAndSortedStories"
      ng-class="view.asList ? 'list-group' : 'grid-group'"
      class="postits"
      ng-include="'story.html'"

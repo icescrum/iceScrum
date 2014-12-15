@@ -129,8 +129,8 @@ class ProjectController {
                         team.save()
                     }
                 }
-                def productOwners = productParams.productOwners?.id*.collect { it.toLong() }?.flatten() ?: []
-                def stakeHolders  = productParams.stakeHolders?.id*.collect { it.toLong() }?.flatten() ?: []
+                def productOwners = productParams.productowners?.id*.collect { it.toLong() }?.flatten() ?: []
+                def stakeHolders  = productParams.stakeholders?.id*.collect { it.toLong() }?.flatten() ?: []
                 productService.save(product, productOwners, stakeHolders)
                 productService.addTeamsToProduct product, [team.id]
 

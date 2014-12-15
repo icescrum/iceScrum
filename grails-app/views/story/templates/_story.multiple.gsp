@@ -38,7 +38,8 @@
                            tooltip-append-to-body="true"
                            ng-switch="topStory.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
                         <span class="id">{{ topStory.id }}</span>
-                        <span class="estimation">{{ topStory.effort ? topStory.effort + ' pt' : '' }}</span>
+                        <span class="value" ng-if="topStory.value">{{ topStory.value }} <i class="fa fa-line-chart"></i></span>
+                        <span class="estimation ui-selectable-cancel" ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }} <i class="fa fa-dollar"></i></span>
                     </div>
                     <div class="content">
                         <h3 class="title"
@@ -51,7 +52,7 @@
                              ellipsis></div>
                     </div>
                     <div class="tags">
-                        <a ng-repeat="tag in topStory.tags" href="#"><span class="tag">{{ tag }}</span></a>
+                        <a ng-repeat="tag in topStory.tags" href><span class="tag">{{ tag }}</span></a>
                     </div>
                     <div class="actions">
                         <span class="action">
@@ -137,6 +138,36 @@
                     </select>
                 </div>
             </div>
+            <div class="clearfix no-padding">
+                <div class="form-group"
+                     ng-class="{ 'form-half' : authorizedStories('updateEstimate', stories) }">
+                    <label for="value">${message(code:'is.story.value')}</label>
+                    <select class="form-control"
+                            name="value"
+                            ng-model="storyPreview.value"
+                            ng-options="i for i in integerSuite"
+                            ui-select2>
+                    </select>
+                </div>
+                <div class="form-half"
+                     ng-show="authorizedStories('updateEstimate', stories)"
+                     ng-switch="isEffortCustom()">
+                    <label for="effort">${message(code:'is.story.effort')}</label>
+                    <select ng-switch-default
+                            class="form-control"
+                            name="effort"
+                            ng-model="storyPreview.effort"
+                            ng-options="i for i in effortSuite()"
+                            ui-select2>
+                        <option ng-show="isEffortNullable(topStory)" value="">?</option>
+                    </select>
+                    <input type="number"
+                           ng-switch-when="true"
+                           class="form-control"
+                           name="effort"
+                           ng-model="storyPreview.effort"/>
+                </div>
+            </div>
             <div ng-if="authorizedStories('update', stories)"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
@@ -165,17 +196,17 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <a ng-click="acceptMultiple()">
+                            <a href ng-click="acceptMultiple()">
                                 <g:message code='is.ui.sandbox.menu.acceptAsStory'/>
                             </a>
                         </li>
                         <li>
-                            <a ng-click="acceptAsMultiple('Feature')">
+                            <a href ng-click="acceptAsMultiple('Feature')">
                                 <g:message code='is.ui.sandbox.menu.acceptAsFeature'/>
                             </a>
                         </li>
                         <li>
-                            <a ng-click="acceptAsMultiple('Task')">
+                            <a href ng-click="acceptAsMultiple('Task')">
                                 <g:message code='is.ui.sandbox.menu.acceptAsUrgentTask'/>
                             </a>
                         </li>

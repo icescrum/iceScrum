@@ -244,10 +244,15 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };
-    //$scope.filterAndSortStories = function() {
-    //    var filteredStories = $filter('filter')($scope.stories, $state.current.data.filterListParams);
-    //    return $filter('orderBy')(filteredStories, $scope.orderBy.current.id, $scope.orderBy.current.reverse);
-    //};
+    // Required instead of ng-repeat stories | filters
+    // because for sortable we need to have the stories in a ng-model, so the expression must be assignable
+    $scope.refreshStories = function() {
+        var filteredStories = $filter('filter')($scope.stories, $state.current.data.filterListParams);
+        $scope.filteredAndSortedStories = $filter('orderBy')(filteredStories, $scope.orderBy.current.id, $scope.orderBy.reverse);
+    };
+    $scope.filteredAndSortedStories = [];
+    $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
+    $scope.$watch('stories', $scope.refreshStories, true);
 }]).controller('sandboxCtrl', ['$scope', '$controller', '$state', 'stories', function ($scope, $controller, $state, stories) {
     $controller('storyViewCtrl', { $scope: $scope }); // inherit from storyViewCtrl
     $scope.viewName = 'sandbox';

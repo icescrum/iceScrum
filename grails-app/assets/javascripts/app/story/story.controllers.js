@@ -459,6 +459,8 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
         StoryService.getMultiple(listId).then(function(stories) {
             $scope.topStory = _.first(stories);
             $scope.storyPreview = {
+                value: _.every(stories, { value: $scope.topStory.value }) ? $scope.topStory.value : null,
+                effort: _.every(stories, { value: $scope.topStory.effort }) ? $scope.topStory.effort : null,
                 feature: _.every(stories, { feature: $scope.topStory.feature }) ? $scope.topStory.feature : null,
                 type: _.every(stories, { type: $scope.topStory.type }) ? $scope.topStory.type : null
             };

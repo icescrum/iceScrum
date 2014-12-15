@@ -100,7 +100,7 @@ angular.module('ui.selectable', [])
 
                     // Click everywhere in selectable parent that is not a button / link will remove selection
                     element.parent().on('click', function(e) {
-                        if (!angular.element(e.target).is('button,a')) {
+                        if (angular.element(e.target).closest('button,a').length == 0) {
                             angular.element(this).find('.ui-selected').removeClass('ui-selected');
                             var s = element.selectable( "option" , "stop");
                             s(e);

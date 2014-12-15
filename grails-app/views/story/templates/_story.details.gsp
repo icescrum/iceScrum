@@ -236,7 +236,7 @@
                             name="effort"
                             ng-model="editableStory.effort"
                             ng-options="i for i in effortSuite()"
-                            ui-select2="selectEffortOptions">
+                            ui-select2>
                         <option ng-show="isEffortNullable(story)" value="">?</option>
                     </select>
                     <input type="number"
