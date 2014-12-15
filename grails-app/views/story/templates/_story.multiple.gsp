@@ -157,9 +157,9 @@
                             class="form-control"
                             name="effort"
                             ng-model="storyPreview.effort"
-                            ng-options="i for i in effortSuite()"
                             ui-select2>
-                        <option ng-show="isEffortNullable(topStory)" value="">?</option>
+                        <option ng-show="isEffortNullable(topStory)" value="?">?</option>
+                        <option ng-repeat="i in effortSuite()" value="{{ i }}">{{ i }}</option>
                     </select>
                     <input type="number"
                            ng-switch-when="true"

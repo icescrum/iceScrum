@@ -235,9 +235,9 @@
                             ng-disabled="!getShowStoryForm(story)"
                             name="effort"
                             ng-model="editableStory.effort"
-                            ng-options="i for i in effortSuite()"
                             ui-select2>
-                        <option ng-show="isEffortNullable(story)" value="">?</option>
+                        <option ng-show="isEffortNullable(story)" value="?">?</option>
+                        <option ng-repeat="i in effortSuite()" value="{{ i }}">{{ i }}</option>
                     </select>
                     <input type="number"
                            ng-switch-when="true"
