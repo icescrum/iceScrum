@@ -209,7 +209,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
 
 }]).controller('storyViewCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', function ($scope, $state, $filter, StoryService, StoryStatesByName) {
     $scope.goToNewStory = function() {
-        $state.go($scope.viewName + '.new');
+        $state.go('sandbox.new'); // Create only on sandbox
     };
     $scope.goToTab = function(story, tabId) {
         $state.go($scope.viewName + '.details.tab',  { id: story.id, tabId: tabId });
