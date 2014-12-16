@@ -457,7 +457,7 @@ class StoryController {
         }
         def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: _product)
         if (template.save()) {
-            render(status: 200)
+            render(text: [id:template.id, text:template.name] as JSON, contentType: 'application/json', status: 200)
         } else {
             throw new RuntimeException(template.errors?.toString())
         }

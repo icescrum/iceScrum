@@ -47,6 +47,7 @@
                 <button class="btn btn-xs btn-danger pull-right"
                         type="button"
                         tooltip-placement="left"
+                        tooltip-append-to-body="true"
                         tooltip="${message(code:'todo.is.ui.story.template.delete')}"
                         ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteTemplate, args: [templateEntry] })"><span class="fa fa-times"></span></button>
             </td>

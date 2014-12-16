@@ -110,19 +110,23 @@
                 <div class="form-half">
                     <label for="story.template">${message(code: 'todo.is.ui.story.template.choose')}</label>
                     <div ng-class="{'input-group': authorizedStory('updateTemplate')}">
-                        <input type="hidden"
-                               name="story.template"
-                               class="form-control"
-                               ng-model="story.template"
-                               ng-readonly="!authorizedStory('create')"
-                               ng-change="templateSelected()"
-                               data-placeholder="${message(code:'todo.is.ui.story.placeholder')}"
-                               ui-select2="selectTemplateOptions"/>
-                        <span class="input-group-btn" ng-show="authorizedStory('updateTemplate')">
+                        <select name="story.template"
+                                class="form-control"
+                                ng-model="story.template"
+                                ng-readonly="!authorizedStory('create')"
+                                ng-change="templateSelected()"
+                                data-placeholder="${message(code:'todo.is.ui.story.placeholder')}"
+                                ui-select2="selectTemplateOptions">
+                            <option value=""></option>
+                            <option ng-repeat="templateEntry in templateEntries" value="{{ templateEntry.id }}">{{ templateEntry.text }}</option>
+                        </select>
+                        <span class="input-group-btn"
+                              ng-show="authorizedStory('updateTemplate')">
                             <button type="button"
+                                    ng-disabled="templateEntries.length == 0"
                                     tabindex="-1"
                                     tooltip="${message(code:'todo.is.ui.story.template.edit')}"
-                                    tooltip-placement="left"
+                                    tooltip-placement="top"
                                     tooltip-append-to-body="true"
                                     ng-click="showEditTemplateModal()"
                                     class="btn btn-default">

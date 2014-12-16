@@ -486,7 +486,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
         };
         $scope.templateSelected = function() {
             if ($scope.story.template) {
-                $http.get('story/templatePreview?template=' + $scope.story.template.id).success(function(storyPreview) {
+                $http.get('story/templatePreview?template=' + $scope.story.template).success(function(storyPreview) {
                     $scope.storyPreview = storyPreview;
                 });
             } else {
@@ -494,19 +494,16 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
             }
         };
         $scope.showEditTemplateModal = function(story) {
+            var parentScope = $scope;
             $modal.open({
                 templateUrl: 'story.template.edit.html',
                 size: 'sm',
-                controller: ["$scope", "$http", function($scope, $http) {
-                    $scope.templateEntries = [];
-                    $http.get('story/templateEntries').success(function(templateEntries) {
-                        $scope.templateEntries = templateEntries;
-                    });
+                controller: ["$scope", function($scope) {
+                    $scope.templateEntries = parentScope.templateEntries;
                     // TODO cancellable delete
                     $scope.deleteTemplate = function(templateEntry) {
                         StoryService.deleteTemplate(templateEntry.id)
                             .then(function() {
-                                _.remove($scope.templateEntries, { id: templateEntry.id });
                                 $scope.notifySuccess('todo.is.ui.deleted');
                             });
                     }
@@ -544,17 +541,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
         };
         // Settings
         $scope.selectTemplateOptions = {
-            allowClear: true,
-            ajax: {
-                url: 'story/templateEntries',
-                cache: 'true',
-                data: function(term) {
-                    return { term: term };
-                },
-                results: function(data) {
-                    return { results: data };
-                }
-            }
+            allowClear: true
         };
         // Init
         $scope.formHolder = {};
@@ -563,5 +550,9 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
             combo: 'esc',
             allowIn: ['INPUT'],
             callback: $scope.resetStoryForm
+        });
+        $scope.templateEntries = [];
+        StoryService.getTemplateEntries().then(function(templateEntries) {
+            $scope.templateEntries = templateEntries;
         });
     }]);

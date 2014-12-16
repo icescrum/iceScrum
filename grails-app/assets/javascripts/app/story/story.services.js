@@ -36,15 +36,12 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     var self = this;
 
     this.addStories = function(stories) {
-        var listWasEmpty = _.isEmpty(self.list);
         angular.forEach(stories, function(story) {
             if (_.chain(self.list).where({ id: story.id }).isEmpty().value()) {
                 self.list.push(new Story(story));
             }
         });
-        if (listWasEmpty) {
-            self.isListResolved.resolve(true);
-        }
+        self.isListResolved.resolve(true);
     };
     this.save = function(story) {
         story.class = 'story';
@@ -133,12 +130,6 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return Story.activities(params, function(activities) {
             story.activities = activities;
         }).$promise;
-    };
-    this.saveTemplate = function(story, name) {
-        return Story.update({ id: story.id, action: 'saveTemplate', 'template.name': name}, {}).$promise;
-    };
-    this.deleteTemplate = function(templateId) {
-        return $http.post('story/deleteTemplate?template.id=' + templateId);
     };
     this.accept = function(story) {
         story.state = StoryStatesByName.ACCEPTED;
@@ -241,5 +232,32 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
                     return self.authorizedStory(action, story);
                 });
         }
-    }
+    };
+
+    // Templates
+    var cachedTemplateEntries;
+    this.getTemplateEntries = function() {
+        var deferred = $q.defer();
+        if (angular.isArray(cachedTemplateEntries)) {
+            deferred.resolve(cachedTemplateEntries);
+        } else {
+            $http.get('story/templateEntries').success(function(templateEntries) {
+                cachedTemplateEntries = templateEntries;
+                deferred.resolve(templateEntries);
+            });
+        }
+        return deferred.promise;
+    };
+    this.saveTemplate = function(story, name) {
+        return Story.update({ id: story.id, action: 'saveTemplate', 'template.name': name}, {}).$promise.then(function(templateEntry) {
+            if (angular.isArray(cachedTemplateEntries)) {
+                cachedTemplateEntries.push(templateEntry);
+            }
+        });
+    };
+    this.deleteTemplate = function(templateId) {
+        return $http.post('story/deleteTemplate?template.id=' + templateId).success(function() {
+            _.remove(cachedTemplateEntries, { id: templateId });
+        });
+    };
 }]);
