@@ -89,9 +89,14 @@ filters
             }
         };
     })
-    .filter('descriptionHtml', function() {
+    .filter('storyDescriptionHtml', function() {
         return function(story) {
             return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#/actor/$1">$2</a>') : "";
+        };
+    })
+    .filter('storyDescription', function() {
+        return function(story) {
+            return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '$2') : "";
         };
     })
     .filter('i18n', ['StoryStates', 'FeatureStates', function(StoryStates, FeatureStates) {

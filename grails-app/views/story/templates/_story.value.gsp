@@ -21,34 +21,26 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<script type="text/ng-template" id="story.effort.html">
+<script type="text/ng-template" id="story.value.html">
 <is:modal form="submit(editableStory)"
           submitButton="${message(code:'todo.is.ui.update')}"
           closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'todo.is.ui.story.effort.edit.title')}">
-    <div ng-switch="isEffortCustom()">
-        <label for="effort">${message(code:'is.story.effort')}</label>
-        <select ng-switch-default
-                class="form-control"
-                name="effort"
+          title="${message(code:'todo.is.ui.story.value.edit.title')}">
+    <div>
+        <label for="value">${message(code:'is.story.value')}</label>
+        <select class="form-control"
+                name="value"
+                ng-model="editableStory.value"
+                ng-options="i for i in integerSuite"
                 ng-change="updateTable()"
-                ng-model="editableStory.effort"
                 ui-select2>
-            <option ng-show="isEffortNullable(editableStory)" value="?">?</option>
-            <option ng-repeat="i in effortSuite()" value="{{ i }}">{{ i }}</option>
         </select>
-        <input type="number"
-               ng-switch-when="true"
-               class="form-control"
-               ng-change="updateTable()"
-               name="effort"
-               ng-model="editableStory.effort"/>
     </div>
     <div class="table-scrollable">
         <table class="table">
             <tr>
-                <th ng-repeat="effort in efforts">
-                    {{ effort }} ({{ count[$index] }})
+                <th ng-repeat="value in values">
+                    {{ value }} ({{ count[$index] }})
                 </th>
             </tr>
             <tr ng-repeat="storyRow in storyRows">
@@ -63,4 +55,3 @@
     </div>
 </is:modal>
 </script>
-

@@ -25,7 +25,8 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('story/:type/:typeId/:id/:action',
         {},
         {
-            activities: {method: 'GET', isArray: true, params: {action: 'activities'}}
+            activities: { method: 'GET', isArray: true, params: {action: 'activities'} },
+            listByField: { method: 'GET', params: {action: 'listByField' }}
         });
 }]);
 
@@ -260,4 +261,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             _.remove(cachedTemplateEntries, { id: templateId });
         });
     };
+    this.listByField = function(field) {
+        return Story.listByField({ field: field }).$promise
+    }
 }]);

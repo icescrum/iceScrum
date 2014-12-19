@@ -119,22 +119,145 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
     $scope.isEffortNullable = function(story) {
         return story.state <= StoryStatesByName.ESTIMATED;
     };
+    var scrollTable = function(dontAnimate, nbItems) {
+        var tableWidth = angular.element(angular.element('.table-scrollable').find('th')[0]).prop('offsetWidth');
+        var scrollLeft = (nbItems -1) * tableWidth;
+        if (dontAnimate) {
+            $('.table-scrollable').scrollLeft(scrollLeft);
+        } else {
+            $('.table-scrollable').animate({
+                scrollLeft: scrollLeft
+            }, 400);
+        }
+    };
+    var makeRows = function(storiesByField) {
+        var nbRows = _.max(storiesByField, function(stories) {
+            return stories.length;
+        }).length;
+        var nbColumns = storiesByField.length;
+        var rows = [];
+        for (var i = 0 ; i < nbRows ; i++) {
+            var row = [];
+            for (var j = 0 ; j < nbColumns ; j++) {
+                row = [];
+                angular.forEach(storiesByField, function(stories) {
+                    if (stories[i]) {
+                        row.push(stories[i]);
+                    } else {
+                        row.push({});
+                    }
+                });
+            }
+            rows.push(row);
+        }
+        return rows;
+    };
     $scope.showEditEffortModal = function(story) {
         if (StoryService.authorizedStory('updateEstimate', story)) {
             var parentScope = $scope;
             $modal.open({
                 templateUrl: 'story.effort.html',
-                size: 'sm',
-                controller: ["$scope", "$modalInstance", function($scope, $modalInstance) {
+                controller: ['$scope', '$modalInstance', '$timeout',  function($scope, $modalInstance, $timeout) {
                     $scope.editableStory = angular.copy(parentScope.story);
                     $scope.isEffortCustom = parentScope.isEffortCustom;
                     $scope.effortSuite = parentScope.effortSuite;
                     $scope.isEffortNullable = parentScope.isEffortNullable;
+                    if ($scope.editableStory.effort == undefined) {
+                        $scope.editableStory.effort = '?';
+                    }
+                    $scope.initialEffort = $scope.editableStory.effort;
+                    var initialEfforts = [];
+                    var initialStoriesByEffort = [];
+                    var initialCount = [];
+                    $scope.efforts = [];
+                    $scope.storyRows = [];
+                    $scope.count = [];
+                    StoryService.listByField('effort').then(function (effortsAndStories) {
+                        initialEfforts = effortsAndStories.fieldValues;
+                        initialEfforts.splice(0, 1, '?');
+                        initialStoriesByEffort = effortsAndStories.stories;
+                        initialCount = effortsAndStories.count;
+                        $scope.updateTable(true)
+                    });
+                    $scope.updateTable = function(dontAnimate) {
+                        var effort = $scope.editableStory.effort;
+                        $scope.efforts = angular.copy(initialEfforts);
+                        var storiesByEffort = angular.copy(initialStoriesByEffort);
+                        $scope.count = angular.copy(initialCount);
+                        // Required because of mix of strings (native select options) and numbers returned by the server
+                        var effortIndex = _.findIndex($scope.efforts, function(effort2) {
+                            return effort2 == effort;
+                        });
+                        if (effortIndex == -1) {
+                            effortIndex = _.sortedIndex($scope.efforts, effort);
+                            $scope.efforts.splice(effortIndex, 0, effort);
+                            storiesByEffort.splice(effortIndex, 0, []);
+                            $scope.count.splice(effortIndex, 0, 0);
+                        }
+                        var initialEffortIndex = $scope.efforts.indexOf($scope.initialEffort);
+                        _.remove(storiesByEffort[initialEffortIndex], { id: $scope.editableStory.id});
+                        storiesByEffort[effortIndex].unshift($scope.editableStory);
+                        $scope.storyRows = makeRows(storiesByEffort);
+                        $timeout(function() {
+                            scrollTable(dontAnimate, effortIndex);
+                        });
+                    };
                     $scope.submit = function(story) {
                         StoryService.update(story)
                             .then(function() {
                                 $modalInstance.close();
                                 $scope.notifySuccess('todo.is.ui.story.effort.updated');
+                            });
+                    };
+                }]
+            });
+        }
+    };
+    $scope.showEditValueModal = function(story) {
+        if (StoryService.authorizedStory('update', story)) {
+            var parentScope = $scope;
+            $modal.open({
+                templateUrl: 'story.value.html',
+                controller: ["$scope", "$modalInstance", '$timeout', function($scope, $modalInstance, $timeout) {
+                    $scope.editableStory = angular.copy(parentScope.story);
+                    $scope.initialValue = parentScope.story.value;
+                    var initialValues = [];
+                    var initialStoriesByValue = [];
+                    var initialCount = [];
+                    $scope.values = [];
+                    $scope.storyRows = [];
+                    $scope.count = [];
+                    StoryService.listByField('value').then(function (valuesAndStories) {
+                        initialValues = valuesAndStories.fieldValues;
+                        initialStoriesByValue = valuesAndStories.stories;
+                        initialCount = valuesAndStories.count;
+                        $scope.updateTable(true)
+                    });
+                    $scope.updateTable = function(dontAnimate) {
+                        var value = $scope.editableStory.value;
+                        $scope.values = angular.copy(initialValues);
+                        var storiesByValue = angular.copy(initialStoriesByValue);
+                        $scope.count = angular.copy(initialCount);
+                        var valueIndex = $scope.values.indexOf(value);
+                        if (valueIndex == -1) {
+                            valueIndex = _.sortedIndex($scope.values, value);
+                            $scope.values.splice(valueIndex, 0, value);
+                            storiesByValue.splice(valueIndex, 0, []);
+                            $scope.count.splice(valueIndex, 0, 0);
+                        }
+                        var initialValueIndex = $scope.values.indexOf($scope.initialValue);
+                        _.remove(storiesByValue[initialValueIndex], { id: $scope.editableStory.id});
+                        storiesByValue[valueIndex].unshift($scope.editableStory);
+                        $scope.storyRows = makeRows(storiesByValue);
+                        $timeout(function() {
+                            scrollTable(dontAnimate, valueIndex);
+                        });
+                    };
+                    $scope.submit = function(story) {
+                        StoryService.update(story)
+                            .then(function() {
+                                $modalInstance.close();
+                                $scope.notifySuccess('todo.is.ui.story.value.updated');
                             });
                     };
                 }]

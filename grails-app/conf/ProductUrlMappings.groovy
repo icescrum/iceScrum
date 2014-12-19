@@ -198,6 +198,14 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/story/listByField" {
+            controller = 'story'
+            action = 'listByField'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
         "/p/$product/actor" {
             controller = 'actor'
             action = [GET: "list", POST:"save"]

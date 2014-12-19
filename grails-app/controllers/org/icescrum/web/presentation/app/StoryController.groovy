@@ -357,11 +357,11 @@ class StoryController {
     }
 
     @Secured('stakeHolder() and !archivedProduct()')
-    def listByType(long id, long product) {
+    def listByType(long id, long product, String type) {
         def stories
-        if (params.type == 'actor') {
+        if (type == 'actor') {
             stories = Actor.withActor(product, id).stories
-        } else if (params.type == 'feature') {
+        } else if (type == 'feature') {
             stories = Feature.withFeature(product, id).stories
         }
         withFormat {
@@ -501,5 +501,26 @@ class StoryController {
             }
             render(text: parsedData as JSON, contentType: 'application/json', status: 200)
         }
+    }
+
+    @Secured('isAuthenticated() and !archivedProduct()')
+    def listByField(long product, String field) {
+        Product _product = Product.withProduct(product)
+        def productStories = _product.stories;
+        def groupedStories = [:]
+        if (field == "effort") {
+            groupedStories = productStories.groupBy { it.effort }
+        } else if (field == "value") {
+            groupedStories = productStories.groupBy { it.value }
+        }
+        def fieldValues = []
+        def stories = []
+        def count = []
+        groupedStories.entrySet().sort{ it.key }.each {
+            count << it.value.size()
+            fieldValues << it.key
+            stories << it.value.sort { a, b -> b.lastUpdated <=> a.lastUpdated }.take(3).collect{ [id: it.id, uid: it.uid, name: it.name, description: it.description, state: it.state]}
+        }
+        render(text: [fieldValues: fieldValues, stories: stories, count: count] as JSON, contentType: 'application/json', status: 200)
     }
 }

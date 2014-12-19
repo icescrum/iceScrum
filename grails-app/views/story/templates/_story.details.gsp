@@ -216,36 +216,52 @@
                 <div class="form-group"
                      ng-class="{ 'form-half' : authorizedStory('updateEstimate', editableStory) }">
                     <label for="value">${message(code:'is.story.value')}</label>
-                    <select class="form-control"
-                            ng-focus="editForm(true)"
-                            ng-disabled="!getShowStoryForm(story)"
-                            name="value"
-                            ng-model="editableStory.value"
-                            ng-options="i for i in integerSuite"
-                            ui-select2>
-                    </select>
+                    <div class="input-group">
+                        <select class="form-control"
+                                ng-focus="editForm(true)"
+                                ng-disabled="!getShowStoryForm(story)"
+                                name="value"
+                                ng-model="editableStory.value"
+                                ng-options="i for i in integerSuite"
+                                ui-select2>
+                        </select>
+                        <span class="input-group-btn" ng-if="authorizedStory('update', editableStory)">
+                            <button class="btn btn-default"
+                                    type="button"
+                                    name="edit-value"
+                                    ng-click="showEditValueModal(story)"><i class="fa fa-pencil"></i></button>
+                        </span>
+                    </div>
                 </div>
                 <div class="form-half"
                      ng-show="authorizedStory('updateEstimate', editableStory)"
                      ng-switch="isEffortCustom()">
                     <label for="effort">${message(code:'is.story.effort')}</label>
-                    <select ng-switch-default
-                            class="form-control"
-                            ng-focus="editForm(true)"
-                            ng-disabled="!getShowStoryForm(story)"
-                            name="effort"
-                            ng-model="editableStory.effort"
-                            ui-select2>
-                        <option ng-show="isEffortNullable(story)" value="?">?</option>
-                        <option ng-repeat="i in effortSuite()" value="{{ i }}">{{ i }}</option>
-                    </select>
-                    <input type="number"
-                           ng-switch-when="true"
-                           class="form-control"
-                           ng-focus="editForm(true)"
-                           ng-disabled="!getShowStoryForm(story)"
-                           name="effort"
-                           ng-model="editableStory.effort"/>
+                    <div class="input-group">
+                        <select ng-switch-default
+                                class="form-control"
+                                ng-focus="editForm(true)"
+                                ng-disabled="!getShowStoryForm(story)"
+                                name="effort"
+                                ng-model="editableStory.effort"
+                                ui-select2>
+                            <option ng-show="isEffortNullable(story)" value="?">?</option>
+                            <option ng-repeat="i in effortSuite()" value="{{ i }}">{{ i }}</option>
+                        </select>
+                        <input type="number"
+                               ng-switch-when="true"
+                               class="form-control"
+                               ng-focus="editForm(true)"
+                               ng-disabled="!getShowStoryForm(story)"
+                               name="effort"
+                               ng-model="editableStory.effort"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default"
+                                    type="button"
+                                    name="edit-effort"
+                                    ng-click="showEditEffortModal(story)"><i class="fa fa-pencil"></i></button>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -294,7 +310,7 @@
                      ng-mouseup="$parent.descriptionPreviewMouseDown = false"
                      ng-class="{'placeholder': !editableStory.description}"
                      tabindex="0"
-                     ng-bind-html="(editableStory.description ? (editableStory | descriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
+                     ng-bind-html="(editableStory.description ? (editableStory | storyDescriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
             </div>
             <div class="form-group">
                 <label for="tags">${message(code:'is.backlogelement.tags')}</label>

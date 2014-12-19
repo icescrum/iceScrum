@@ -140,6 +140,21 @@ table {
     }
   }
 }
+.table-scrollable {
+  margin-top: 10px;
+  overflow: auto;
+  table {
+    width: auto;
+    tr {
+      td, th {
+        min-width: floor((@modal-md - 2*@modal-inner-padding) / 3);
+      }
+      th {
+        text-align: center;
+      }
+    }
+  }
+}
 
 .empty-content {
   width: 100%;
@@ -1129,11 +1144,11 @@ a[data-toggle="tab"] button {
             i {
               font-size: 0.6em;
             }
+            &.editable {
+              cursor: pointer;
+            }
           }
           .estimation {
-            &.editable {
-              cursor: text;
-            }
             right: 55px;
           }
           .value {
