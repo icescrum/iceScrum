@@ -70,8 +70,8 @@ class StoryController {
         }
         def tasks
         def acceptanceTests
-        if (storyParams.template?.id != null) {
-            def template = Template.findByParentProductAndId(Product.get(params.long('product')), storyParams.template.id.toLong())
+        if (storyParams.template != null) {
+            def template = Template.findByParentProductAndId(Product.get(params.long('product')), storyParams.template.toLong())
             def parsedTemplateData = JSON.parse(template.serializedData) as Map
             tasks = parsedTemplateData.remove('tasks')
             acceptanceTests = parsedTemplateData.remove('acceptanceTests')
