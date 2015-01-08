@@ -104,13 +104,14 @@ class ProjectController {
                 if (!teamParams?.id){
                     team = new Team()
                     bindData(team, teamParams, [include:['name']])
-                    def members  = teamParams.members?.id*.collect { it.toLong() }?.flatten() ?: []
-                    def scrumMasters = teamParams.scrumMasters?.id*.collect { it.toLong() }?.flatten() ?: []
+                    def members  = teamParams.members?.list('id').collect { it.toLong() } ?: []
+                    def scrumMasters = teamParams.scrumMasters?.list('id').collect { it.toLong() } ?: []
+                    def invitedMembers = teamParams.invitedMembers?.list('email') ?: []
                     if (!scrumMasters && !members){
                         render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.noMember')]] as JSON)
                         return
                     }
-                    teamService.save(team, members, scrumMasters)
+                    teamService.save(team, members, scrumMasters, invitedMembers)
                 } else {
                     team = Team.findById(teamParams.id)
                     //TODO
@@ -129,8 +130,8 @@ class ProjectController {
                         team.save()
                     }
                 }
-                def productOwners = productParams.productowners?.id*.collect { it.toLong() }?.flatten() ?: []
-                def stakeHolders  = productParams.stakeholders?.id*.collect { it.toLong() }?.flatten() ?: []
+                def productOwners = productParams.productowners?.list('id').collect { it.toLong() } ?: []
+                def stakeHolders  = productParams.stakeholders?.list('id').collect { it.toLong() } ?: []
                 productService.save(product, productOwners, stakeHolders)
                 productService.addTeamsToProduct product, [team.id]
 

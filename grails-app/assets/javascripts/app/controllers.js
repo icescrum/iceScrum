@@ -192,8 +192,21 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
             $rootScope.$broadcast(SERVER_ERRORS.loginFailed);
         });
     };
-}]).controller('registerCtrl',['$scope', 'User', 'UserService', '$modalInstance', function ($scope, User, UserService, $modalInstance) {
+}]).controller('registerCtrl',['$scope', 'User', 'UserService', '$modalInstance', '$state', function ($scope, User, UserService, $modalInstance, $state) {
     $scope.user = new User();
+    if ($state.params.token) {
+        UserService.invitation($state.params.token).then(function(invitation) {
+            $scope.user.email = invitation.email;
+            var emailPrefix = invitation.email.split('@')[0];
+            $scope.user.username = emailPrefix;
+            var dotPosition = emailPrefix.indexOf('.');
+            if (dotPosition != -1) {
+                $scope.user.firstName = emailPrefix.substr(0, dotPosition);
+                $scope.user.lastName = emailPrefix.substr(dotPosition + 1);
+            }
+            $scope.user.token = $state.params.token;
+        });
+    }
     $scope.register = function(){
         UserService.save($scope.user).then(function(){
             $modalInstance.close();

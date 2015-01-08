@@ -224,13 +224,14 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 
 
     $scope.createProject = function(project){
         var p = angular.copy(project);
-        p.startDate = $filter( 'date')(project.startDate, "dd-MM-yyyy");
-        p.endDate = $filter( 'date')(project.endDate, "dd-MM-yyyy");
-        p.team.members = p.team.members.map(function(member){  return {id:member.id}; });
-        p.team.scrumMasters = p.team.scrumMasters.map(function(sm){ return {id:sm.id}; });
-        p.stakeholders = p.stakeholders.map(function(u){ return {id:u.id}; });
-        p.productowners = p.productowners.map(function(u){ return {id:u.id}; });
-        ProjectService.save(p).then(function(project){
+        p.startDate = $filter('date')(project.startDate, "dd-MM-yyyy");
+        p.endDate = $filter('date')(project.endDate, "dd-MM-yyyy");
+        p.team.members = project.team.members.map(function(member){  return {id:member.id}; });
+        p.team.scrumMasters = project.team.scrumMasters.map(function(sm){ return {id:sm.id}; });
+        p.stakeholders = project.stakeholders.map(function(u){ return {id:u.id}; });
+        p.productowners = project.productowners.map(function(u){ return {id:u.id}; });
+        p.team.invitedMembers = _.chain(project.team.members).where({id: null}).map(function(invite) { return {email:invite.email}; }).value();
+        ProjectService.save(p).then(function(project) {
             document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
         });
     };

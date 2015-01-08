@@ -22,16 +22,16 @@
 --}%
 <script type="text/ng-template" id="wizard.members.list.html">
     <tr>
-            <td>
+        <td>
             <a class="btn btn-danger btn-xs" ng-click="removeTeamMember(member)" ng-show="!team.id"><i class="fa fa-close"></i></a>
-    <img ng-src="{{ member | userAvatar }}" height="24" width="24" title="{{ member.username }}">
-            </td>
-    <td>
-    <span title="{{ member.username }}" class="text-overflow">{{ member.firstName }} {{ member.lastName }}</span>
-    <span ng-show="!member.id"><small>${message(code:'todo.is.ui.user.will.be.invited')}</small></span>
-    </td>
-    <td class="text-right">
+            <img ng-src="{{ member | userAvatar }}" height="24" width="24" title="{{ member.username }}">
+        </td>
+        <td>
+            <span title="{{ member.username }}" class="text-overflow">{{ member.firstName }} {{ member.lastName }}</span>
+            <span ng-show="!member.id"><small>${message(code:'todo.is.ui.user.will.be.invited')}</small></span>
+        </td>
+        <td class="text-right">
             <input type="checkbox" name="member.role" ng-model="member.scrumMaster" ng-disabled="team.id">
-            </td>
+        </td>
     </tr>
 </script>

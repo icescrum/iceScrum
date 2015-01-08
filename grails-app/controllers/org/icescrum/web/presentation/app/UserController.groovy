@@ -26,9 +26,11 @@ package org.icescrum.web.presentation.app
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.io.filefilter.WildcardFileFilter
 import org.apache.commons.validator.GenericValidator
+import org.hibernate.ObjectNotFoundException
 import org.icescrum.components.FileUploadInfo
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.Activity
+import org.icescrum.core.domain.Invitation
 import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
@@ -81,7 +83,7 @@ class UserController {
                 user.preferences = new UserPreferences()
                 bindData(user, this.params, [include:['username','firstName','lastName','email', 'password']], "user")
                 bindData(user.preferences, (Map)this.params.user, [include:['language', 'filterTask', 'activity']], "preferences")
-                userService.save(user)
+                userService.save(user, params.user.token)
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: user as JSON }
@@ -177,15 +179,19 @@ class UserController {
 
     @Secured(['!isAuthenticated()'])
     def register() {
-        render(status:200, contentType: 'application/json', template: 'dialogs/register')
+        render(status:200, template: 'dialogs/register')
     }
 
     def avatar(long id) {
-        User user = User.withUser(id)
-        File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter)new WildcardFileFilter("${user.id}.*"))
-        def avatar = files ? files[0] : null
+        def avatar
+        User user
+        if (id) {
+            user = User.withUser(id)
+            File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter)new WildcardFileFilter("${user.id}.*"))
+            avatar = files ? files[0] : null
+        }
         if (!avatar?.exists()){
-            if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)){
+            if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable && user)){
                 redirect url:"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()
                 return
             }
@@ -396,5 +402,13 @@ class UserController {
             avatarFileName = "../grails-app/${avatarFileName}"
         }
         return grailsApplication.parentContext.getResource(avatarFileName).file
+    }
+
+    def invitation(String token) {
+        def invitation = Invitation.findByToken(token)
+        if (!invitation) {
+            throw new ObjectNotFoundException(token, 'Invitation')
+        }
+        render(status: 200, text: invitation as JSON, contentType: 'application/json')
     }
 }

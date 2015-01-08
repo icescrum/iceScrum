@@ -60,11 +60,11 @@ isApp.config(['$stateProvider', '$httpProvider',
                     url:'/'
                 })
                 .state('userregister', {
-                    url: "/user/register",
+                    url: "/user/register/{token:.+}",
                     onEnter: ["$state", "$modal", function($state, $modal) {
                         var modal = $modal.open({
                             //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
-                            templateUrl: icescrum.grailsServer + '/'+ 'user/register',
+                            templateUrl: icescrum.grailsServer + '/user/register',
                             size: 'md',
                             controller: 'registerCtrl'
                         });
@@ -81,7 +81,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     onEnter: ["$state", "$modal", function($state, $modal) {
                         var modal = $modal.open({
                             //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
-                            templateUrl: icescrum.grailsServer + '/'+ 'user/retrieve',
+                            templateUrl: icescrum.grailsServer + '/user/retrieve',
                             size: 'sm',
                             controller: 'retrieveCtrl'
                         });
@@ -102,7 +102,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     onEnter: ["$state", "$modal", function($state, $modal) {
                         var modal = $modal.open({
                             //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
-                            templateUrl: icescrum.grailsServer + '/' + "project/add",
+                            templateUrl: icescrum.grailsServer + "/project/add",
                             size: 'lg',
                             controller: 'newProjectCtrl'
                             });
