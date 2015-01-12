@@ -39,11 +39,12 @@
         <g:if test="${enableRegistration}">
             <span class="input-group-btn">
                 <a tabindex="-1"
-                        class="btn btn-default"
-                        type="button"
-                        href="#user/register"
-                        tooltip-placement="top"
-                        tooltip="${message(code:'todo.is.new')}">
+                   class="btn btn-default"
+                   type="button"
+                   href
+                   ng-click="showRegisterModal()"
+                   tooltip-placement="top"
+                   tooltip="${message(code:'todo.is.new')}">
                     <i class="fa fa-user"></i>
                 </a>
             </span>
@@ -65,7 +66,8 @@
                         class="btn btn-default"
                         type="button"
                         tooltip-placement="top"
-                        href="#user/retrieve"
+                        href
+                        ng-click="showRetrieveModal()"
                         tooltip="${message(code:'todo.is.retrieve')}">
                     <i class="fa fa-flash"></i>
                 </a>

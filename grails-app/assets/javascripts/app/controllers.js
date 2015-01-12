@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http',
-    function ($scope, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http) {
+controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http',
+    function ($scope, $state, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http) {
         $scope.app = {
             isFullScreen:false,
             loading:10
@@ -73,11 +73,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
             $modal.open({ templateUrl: $scope.serverUrl + '/user/openProfile', controller: 'userCtrl' });
         };
         $scope.showAuthModal = function() {
-            $modal.open({
-                templateUrl: $scope.serverUrl + '/login/auth',
-                controller:'loginCtrl',
-                size:'sm'
-            });
+            $state.go('userlogin');
         };
         $scope.menus = {
             visible:[],
@@ -174,10 +170,17 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
                 }
             );
         }
-}]).controller('loginCtrl',['$scope', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $rootScope, SERVER_ERRORS, AuthService) {
+}]).controller('loginCtrl',['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
     $scope.credentials = {
-        j_username: '',
+        j_username: $state.params.username ? $state.params.username : '',
         j_password: ''
+    };
+    $rootScope.showRegisterModal = function() {
+        $scope.$close();
+        $state.go('userregister');
+    };
+    $rootScope.showRetrieveModal = function() {
+        $state.go('userretrieve');
     };
     $scope.login = function (credentials) {
         AuthService.login(credentials).then(function (stuff) {
@@ -192,7 +195,7 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
             $rootScope.$broadcast(SERVER_ERRORS.loginFailed);
         });
     };
-}]).controller('registerCtrl',['$scope', 'User', 'UserService', '$modalInstance', '$state', function ($scope, User, UserService, $modalInstance, $state) {
+}]).controller('registerCtrl',['$scope', 'User', 'UserService', '$state', function ($scope, User, UserService, $state) {
     $scope.user = new User();
     if ($state.params.token) {
         UserService.invitation($state.params.token).then(function(invitation) {
@@ -208,15 +211,15 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
         });
     }
     $scope.register = function(){
-        UserService.save($scope.user).then(function(){
-            $modalInstance.close();
+        UserService.save($scope.user).then(function() {
+            $scope.$close($scope.user.username);
         });
     }
-}]).controller('retrieveCtrl',['$scope', 'User', 'UserService', '$modalInstance', function ($scope, User, UserService, $modalInstance) {
+}]).controller('retrieveCtrl',['$scope', 'User', 'UserService', function ($scope, User, UserService) {
     $scope.user = new User();
     $scope.retrieve = function(){
         UserService.retrievePassword($scope.user).then(function(){
-            $modalInstance.close();
+            $scope.$close();
         });
     }
 

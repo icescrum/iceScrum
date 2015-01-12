@@ -21,11 +21,11 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('userCtrl', ['$scope', 'UserService', 'User', '$modalInstance', 'Session', function ($scope, UserService, User, $modalInstance, Session) {
+controllers.controller('userCtrl', ['$scope', 'UserService', 'User', 'Session', function ($scope, UserService, User, Session) {
     // Functions
     $scope.update = function(user) {
         UserService.update(user).then(function(userUpdated) {
-            $modalInstance.close();
+            $scope.$close();
             angular.extend(Session.user, userUpdated);
         });
     };

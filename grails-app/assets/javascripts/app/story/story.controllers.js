@@ -99,11 +99,11 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
         $modal.open({
             templateUrl: 'story.template.new.html',
             size: 'sm',
-            controller: ["$scope", "$modalInstance", function($scope, $modalInstance) {
+            controller: ["$scope", function($scope) {
                 $scope.submit = function(template) {
                     StoryService.saveTemplate(story, template.name)
                         .then(function() {
-                            $modalInstance.close();
+                            $scope.$close();
                             $scope.notifySuccess('todo.is.ui.story.template.saved');
                         });
                 };
@@ -157,7 +157,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
             var parentScope = $scope;
             $modal.open({
                 templateUrl: 'story.effort.html',
-                controller: ['$scope', '$modalInstance', '$timeout',  function($scope, $modalInstance, $timeout) {
+                controller: ['$scope', '$timeout',  function($scope, $timeout) {
                     $scope.editableStory = angular.copy(parentScope.story);
                     $scope.isEffortCustom = parentScope.isEffortCustom;
                     $scope.effortSuite = parentScope.effortSuite;
@@ -205,7 +205,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
                     $scope.submit = function(story) {
                         StoryService.update(story)
                             .then(function() {
-                                $modalInstance.close();
+                                $scope.$close();
                                 $scope.notifySuccess('todo.is.ui.story.effort.updated');
                             });
                     };
@@ -218,7 +218,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
             var parentScope = $scope;
             $modal.open({
                 templateUrl: 'story.value.html',
-                controller: ["$scope", "$modalInstance", '$timeout', function($scope, $modalInstance, $timeout) {
+                controller: ["$scope", '$timeout', function($scope, $timeout) {
                     $scope.editableStory = angular.copy(parentScope.story);
                     $scope.initialValue = parentScope.story.value;
                     var initialValues = [];
@@ -256,7 +256,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
                     $scope.submit = function(story) {
                         StoryService.update(story)
                             .then(function() {
-                                $modalInstance.close();
+                                $scope.$close();
                                 $scope.notifySuccess('todo.is.ui.story.value.updated');
                             });
                     };

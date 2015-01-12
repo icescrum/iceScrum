@@ -62,27 +62,36 @@ isApp.config(['$stateProvider', '$httpProvider',
                 .state('userregister', {
                     url: "/user/register/:token",
                     params: { token: { value: null } }, // doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
-                    onEnter: ["$state", "$modal", function($state, $modal) {
+                    onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
                         var modal = $modal.open({
-                            //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
-                            templateUrl: icescrum.grailsServer + '/user/register',
+                            templateUrl: $rootScope.serverUrl + '/user/register',
                             size: 'md',
                             controller: 'registerCtrl'
                         });
                         modal.result.then(
-                            function(result) {
-                                $state.transitionTo('root');
+                            function(username) {
+                                $state.go('userlogin', { username: username });
                             }, function(){
                                 $state.transitionTo('root');
                             });
                     }]
                 })
+                .state('userlogin', {
+                    url: "/user/login/:username",
+                    params: { username: { value: null } }, // doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
+                    onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
+                        $modal.open({
+                            templateUrl: $rootScope.serverUrl + '/login/auth',
+                            controller:'loginCtrl',
+                            size:'sm'
+                        });
+                    }]
+                })
                 .state('userretrieve', {
                     url: "/user/retrieve",
-                    onEnter: ["$state", "$modal", function($state, $modal) {
+                    onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
                         var modal = $modal.open({
-                            //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
-                            templateUrl: icescrum.grailsServer + '/user/retrieve',
+                            templateUrl: $rootScope.serverUrl + '/user/retrieve',
                             size: 'sm',
                             controller: 'retrieveCtrl'
                         });
@@ -100,10 +109,9 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                 .state('project.new', {
                     url: "/new",
-                    onEnter: ["$state", "$modal", function($state, $modal) {
+                    onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
                         var modal = $modal.open({
-                            //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
-                            templateUrl: icescrum.grailsServer + "/project/add",
+                            templateUrl: $rootScope.serverUrl + "/project/add",
                             size: 'lg',
                             controller: 'newProjectCtrl'
                             });
@@ -469,9 +477,6 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
 
-        //To be able to track state in app
-        $rootScope.$state = $state;
-
         var messages = {};
         $rootScope.initMessages = function(initMessages) {
             messages = initMessages;
@@ -512,11 +517,11 @@ isApp.config(['$stateProvider', '$httpProvider',
                 var modal = $modal.open({
                     templateUrl: 'confirm.modal.html',
                     size: 'sm',
-                    controller: ["$scope", "$modalInstance", "hotkeys", function($scope, $modalInstance, hotkeys) {
+                    controller: ["$scope", "hotkeys", function($scope, hotkeys) {
                         $scope.message = options.message;
                         $scope.submit = function() {
                             callCallback();
-                            $modalInstance.close(true);
+                            $scope.$close(true);
                         };
                         // Required because there is not input so the form cannot be submitted by "return"
                         hotkeys.bindTo($scope).add({
@@ -546,7 +551,7 @@ isApp.config(['$stateProvider', '$httpProvider',
             $modal.open({
                 templateUrl: 'copy.html',
                 size: 'sm',
-                controller: ["$scope", "$modalInstance", 'hotkeys', function($scope, $modalInstance, hotkeys) {
+                controller: ["$scope", 'hotkeys', function($scope, hotkeys) {
                     $scope.title = title;
                     $scope.value = $filter('permalink')(value); // change that if you want to use showCopyModal to copy other things than permalinks
                     hotkeys
@@ -554,7 +559,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         .add({
                             combo: ['mod+c', 'mod+x'],
                             allowIn: ['INPUT'],
-                            callback: $modalInstance.close
+                            callback: $scope.$close
                         });
                 }]
             });
@@ -567,11 +572,6 @@ isApp.config(['$stateProvider', '$httpProvider',
         $rootScope.view = {
             asList:false
         };
-
-        //store previous state
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState){
-            $rootScope.previousState = fromState;
-        });
 
         //init push system
         var request = {
