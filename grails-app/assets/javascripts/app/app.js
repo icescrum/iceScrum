@@ -47,7 +47,7 @@ var isApp = angular.module('isApp', [
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
-        function ($stateProvider, $httpProvider, $animateProvider) {
+        function ($stateProvider, $httpProvider) {
             $httpProvider.interceptors.push([
                 '$injector',
                 function ($injector) {
@@ -60,7 +60,8 @@ isApp.config(['$stateProvider', '$httpProvider',
                     url:'/'
                 })
                 .state('userregister', {
-                    url: "/user/register/{token:.+}",
+                    url: "/user/register/:token",
+                    params: { token: { value: null } }, // doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
                     onEnter: ["$state", "$modal", function($state, $modal) {
                         var modal = $modal.open({
                             //todo move to angular 1.3 to inject $scope and use $scope.serverUrl
@@ -159,7 +160,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('sandbox.details', {
-                        url: "/{id:[0-9]+}",
+                        url: "/{id:int}",
                         data:{
                             stack: 2
                         },
@@ -233,7 +234,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('backlog.details', {
-                        url: "/{id:[0-9]+}",
+                        url: "/{id:int}",
                         data:{
                             stack: 2
                         },
@@ -315,7 +316,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('actor.details', {
-                        url: "/{id:[0-9]+}",
+                        url: "/{id:int}",
                         data:{
                             stack: 2
                         },
@@ -380,7 +381,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }
                     })
                     .state('feature.details', {
-                        url: "/{id:[0-9]+}",
+                        url: "/{id:int}",
                         data:{
                             stack: 2
                         },

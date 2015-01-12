@@ -205,8 +205,16 @@ class UserController {
     @Secured(['isAuthenticated()'])
     def search(String value, boolean showDisabled, boolean invit) {
         def users = User.findUsersLike(value ?: '', false, showDisabled, [:])
-        if (!users && invit && GenericValidator.isEmail(value)){
-            users << [id:null, firstName:value.split('@')[0], lastName:'', email:value]
+        if (!users && invit && GenericValidator.isEmail(value)) {
+            def emailPrefix = value.split('@')[0]
+            def firstName = emailPrefix
+            def lastName = ""
+            def dotPosition = emailPrefix.indexOf('.')
+            if (dotPosition != -1) {
+                firstName = emailPrefix.substring(0, dotPosition)?.capitalize()
+                lastName = emailPrefix.substring(dotPosition + 1)?.capitalize()
+            }
+            users << [id: null, firstName: firstName, lastName: lastName, email: value]
         }
         withFormat{
             html { render(status:200, contentType:'application/json', text: users as JSON) }

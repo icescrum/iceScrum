@@ -201,8 +201,8 @@ controllers.controller('appCtrl', ['$scope', '$modal', 'Session', 'UserService',
             $scope.user.username = emailPrefix;
             var dotPosition = emailPrefix.indexOf('.');
             if (dotPosition != -1) {
-                $scope.user.firstName = emailPrefix.substr(0, dotPosition);
-                $scope.user.lastName = emailPrefix.substr(dotPosition + 1);
+                $scope.user.firstName = _.str.capitalize(emailPrefix.substr(0, dotPosition));
+                $scope.user.lastName = _.str.capitalize(emailPrefix.substr(dotPosition + 1));
             }
             $scope.user.token = $state.params.token;
         });

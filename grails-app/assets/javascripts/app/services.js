@@ -190,23 +190,16 @@ restResource.factory('Resource', ['$resource', function ($resource) {
 var formObjectData = function (obj, prefix) {
     var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
     _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
-    _prefix = toLowerCaseFirstLetter(_prefix);
 
-    // TODO consider making it available at top level or replacing it
-    // Custom functions because the real ones aren't available yet (apart from firefox)
-    function startsWith(str, start) {
-        return str.lastIndexOf(start, 0) === 0
-    }
-    function endsWith(str, end) {
-        return str.indexOf(end, str.length - end.length) !== -1;
-    }
-    function toLowerCaseFirstLetter(str) {
+    // TODO replace by _.str.decapitalize when Underscore.string 3.0 is released
+    function decapitalize(str) {
         return str.charAt(0).toLowerCase() + str.substring(1);
     }
+    _prefix = decapitalize(_prefix);
 
     for (name in obj) {
         value = obj[name];
-        if (value instanceof Array && !endsWith(name, '_ids')) {
+        if (value instanceof Array && !_.str.endsWith(name, '_ids')) {
             for (i = 0; i < value.length; ++i) {
                 subValue = value[i];
                 innerObj = {};
@@ -216,7 +209,7 @@ var formObjectData = function (obj, prefix) {
         }
         else if (value instanceof Object) {
             for (subName in value) {
-                if (subName != 'class' && !subName.startsWith('$')) {
+                if (subName != 'class' && !_.str.startsWith(subName, '$')) {
                     subValue = value[subName];
                     fullSubName = name + '.' + subName;
                     innerObj = {};
@@ -230,9 +223,9 @@ var formObjectData = function (obj, prefix) {
             //no class info needed
             && !_.contains(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
             //no angular object
-            && !startsWith(name, '$')
+            && !_.str.startsWith(name, '$')
             //no custom count / html values
-            && !endsWith(name, '_count') && !endsWith(name, '_html')) {
+            && !_.str.endsWith(name, '_count') && !_.str.endsWith(name, '_html')) {
             query += encodeURIComponent(_prefix + name) + '=' + encodeURIComponent(value) + '&';
         }
     }

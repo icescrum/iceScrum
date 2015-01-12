@@ -130,8 +130,8 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 
             displayUrgentTasks:true,
             hidden:true
         },
-        productowners:[Session.user],
-        stakeholders:[]
+        productOwners:[Session.user],
+        stakeHolders:[]
     });
 
     $scope.$watchCollection('[project.startDate, project.endDate]', function(newValues){
@@ -173,11 +173,11 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 
         }).then(function(response){
             return _.chain(response.data)
                 .filter(function(u){
-                    var found = _.find($scope.project.productowners, function(_u){
+                    var found = _.find($scope.project.productOwners, function(_u){
                         return u.email == _u.email;
                     });
                     if (!found){
-                        found = _.find($scope.project.stakeholders, function(_u){
+                        found = _.find($scope.project.stakeHolders, function(_u){
                             return u.email == _u.email;
                         });
                     }
@@ -191,7 +191,7 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 
                     return !found;
                 })
                 .map(function(member){
-                    member.name = member.firstName+' '+member.lastName;
+                    member.name = $filter('userFullName')(member);
                     return member;
                 })
                 .value();
@@ -202,21 +202,21 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 
     $scope.sh = {};
     $scope.addUser = function(user, role){
         if(role == 'po'){
-            $scope.project.productowners.push(user);
+            $scope.project.productOwners.push(user);
             $scope.po = {};
         } else if(role == 'sh'){
-            $scope.project.stakeholders.push(user);
+            $scope.project.stakeHolders.push(user);
             $scope.sh = {};
         }
     };
 
     $scope.removeUser = function(user, role){
         if(role == 'po'){
-            $scope.project.productowners = _.filter($scope.project.productowners, function(_member){
+            $scope.project.productOwners = _.filter($scope.project.productOwners, function(_member){
                 return _member.email != user.email;
             });
         } else if(role == 'sh'){
-            $scope.project.stakeholders = _.filter($scope.project.stakeholders, function(_member){
+            $scope.project.stakeHolders = _.filter($scope.project.stakeHolders, function(_member){
                 return _member.email != user.email;
             });
         }
@@ -228,9 +228,15 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 
         p.endDate = $filter('date')(project.endDate, "dd-MM-yyyy");
         p.team.members = project.team.members.map(function(member){  return {id:member.id}; });
         p.team.scrumMasters = project.team.scrumMasters.map(function(sm){ return {id:sm.id}; });
-        p.stakeholders = project.stakeholders.map(function(u){ return {id:u.id}; });
-        p.productowners = project.productowners.map(function(u){ return {id:u.id}; });
-        p.team.invitedMembers = _.chain(project.team.members).where({id: null}).map(function(invite) { return {email:invite.email}; }).value();
+        p.stakeHolders = project.stakeHolders.map(function(u){ return {id:u.id}; });
+        p.productOwners = project.productOwners.map(function(u){ return {id:u.id}; });
+        var invited = function(members) {
+            return _.chain(members).where({id: null}).map(function(member) { return {email:member.email}; }).value();
+        };
+        p.team.invitedMembers = invited(project.team.members);
+        p.team.invitedScrumMasters = invited(project.team.scrumMasters);
+        p.invitedStakeHolders = invited(project.stakeHolders);
+        p.invitedProductOwners = invited(project.productOwners);
         ProjectService.save(p).then(function(project) {
             document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
         });

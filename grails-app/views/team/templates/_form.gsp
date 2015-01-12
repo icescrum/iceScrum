@@ -72,8 +72,8 @@
             <table class="table table-striped table-responsive">
                 <thead>
                 <tr>
-                    <th>${message(code:'todo.is.ui.team.members')}</th>
-                    <th>${message(code:'todo.is.ui.team.name')}</th>
+                    <th></th>
+                    <th></th>
                     <th class="text-right">${message(code:'todo.is.ui.team.role')}</th>
                 </tr>
                 </thead>

@@ -24,7 +24,6 @@
 
 package org.icescrum.web.presentation.app.project
 
-import grails.converters.XML
 import groovy.xml.MarkupBuilder
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.preferences.ProductPreferences
@@ -107,11 +106,12 @@ class ProjectController {
                     def members  = teamParams.members?.list('id').collect { it.toLong() } ?: []
                     def scrumMasters = teamParams.scrumMasters?.list('id').collect { it.toLong() } ?: []
                     def invitedMembers = teamParams.invitedMembers?.list('email') ?: []
+                    def invitedScrumMasters = teamParams.invitedScrumMasters?.list('email') ?: []
                     if (!scrumMasters && !members){
                         render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.noMember')]] as JSON)
                         return
                     }
-                    teamService.save(team, members, scrumMasters, invitedMembers)
+                    teamService.save(team, members, scrumMasters, invitedMembers, invitedScrumMasters)
                 } else {
                     team = Team.findById(teamParams.id)
                     //TODO
@@ -130,9 +130,11 @@ class ProjectController {
                         team.save()
                     }
                 }
-                def productOwners = productParams.productowners?.list('id').collect { it.toLong() } ?: []
-                def stakeHolders  = productParams.stakeholders?.list('id').collect { it.toLong() } ?: []
-                productService.save(product, productOwners, stakeHolders)
+                def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
+                def stakeHolders  = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
+                def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
+                def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
+                productService.save(product, productOwners, stakeHolders, invitedProductOwners, invitedStakeHolders)
                 productService.addTeamsToProduct product, [team.id]
 
                 if (productParams.generateSprints){

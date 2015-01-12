@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('teamCtrl', ['$scope', '$http', 'Session', function($scope, $http, Session) {
+controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', function($scope, $http, $filter, Session) {
 
     $scope.team = {};
     $scope.searchTeam = function(val){
@@ -52,7 +52,7 @@ controllers.controller('teamCtrl', ['$scope', '$http', 'Session', function($scop
             });
         }
         if ($scope.project){
-            $scope.project.stakeholders = _.filter($scope.project.stakeholders, function(u){
+            $scope.project.stakeHolders = _.filter($scope.project.stakeHolders, function(u){
                 return !_.find($scope.team.members, function(_member){
                     return u.email == _member.email;
                 });
@@ -79,7 +79,7 @@ controllers.controller('teamCtrl', ['$scope', '$http', 'Session', function($scop
                 .filter(function(member){
                     var found = false;
                     if ($scope.project){
-                        found = _.find($scope.project.stakeholders, function(_member){
+                        found = _.find($scope.project.stakeHolders, function(_member){
                             return member.email == _member.email;
                         });
                     }
@@ -91,7 +91,7 @@ controllers.controller('teamCtrl', ['$scope', '$http', 'Session', function($scop
                     return !found;
                 })
                 .map(function(member){
-                    member.name = member.firstName+' '+member.lastName;
+                    member.name = $filter('userFullName')(member);
                     return member;
                 })
                 .value();
