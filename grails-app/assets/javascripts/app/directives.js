@@ -204,12 +204,14 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
         scope: {
             notMatch: '='
         },
-        link: function(scope, elem, attrs, ctrl) {
-            scope.$watch(function() {
-                var modelValue = ctrl.$modelValue || ctrl.$$invalidModelValue;
-                return scope.notMatch != modelValue;
-            }, function(currentValue) {
-                ctrl.$setValidity('notMatch', currentValue);
+        link: function(scope, elem, attrs, ngModel) {
+            ngModel.$validators.notMatch = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                var notMatch = scope.notMatch;
+                return value != notMatch;
+            };
+            scope.$watch('notMatch', function() {
+                ngModel.$validate();
             });
         }
     };
@@ -220,12 +222,14 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
         scope: {
             isMatch: '='
         },
-        link: function(scope, elem, attrs, ctrl) {
-            scope.$watch(function() {
-                var modelValue = ctrl.$modelValue || ctrl.$$invalidModelValue;
-                return (ctrl.$pristine && angular.isUndefined(modelValue)) || scope.isMatch === modelValue;
-            }, function(currentValue) {
-                ctrl.$setValidity('isMatch', currentValue);
+        link: function(scope, elem, attrs, ngModel) {
+            ngModel.$validators.isMatch = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                var isMatch = scope.isMatch;
+                return value === isMatch;
+            };
+            scope.$watch('isMatch', function() {
+                ngModel.$validate();
             });
         }
     };

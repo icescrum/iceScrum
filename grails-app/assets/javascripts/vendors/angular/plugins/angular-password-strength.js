@@ -6,23 +6,22 @@
  * @ngdoc directive
  * @name ngPasswordStrengthApp.directive:ngPasswordStrength
  * @description
- * # ngPasswordStrength CUSTOMISED
+ * # ngPasswordStrength HEAVILY CUSTOMISED
  */
 angular.module('ngPasswordStrength', [
     'ui.bootstrap.progressbar',
     'template/progressbar/progress.html',
     'template/progressbar/progressbar.html'
 ])
-    .directive('ngPasswordStrength', function() {
+    .directive('ngPasswordStrength', ['$compile', function($compile) {
         return {
-            template: '<div id="pass-strength-result" class="help-block {{class}}">{{ "todo.is.ui.password.strength." + label }}</div>',
             restrict: 'A',
+            require: 'ngModel',
             scope: {
-                pwd: '=ngPasswordStrength'
+                pwd: '=ngModel'
             },
-            link: function(scope /*, elem, attrs*/ ) {
-                var
-                    mesureStrength = function(p) {
+            link: function(scope, elem, attrs, ngModel) {
+                var mesureStrength = function(p) {
                         var matches = {
                                 pos: {},
                                 neg: {}
@@ -185,12 +184,18 @@ angular.module('ngPasswordStrength', [
                     };
 
 
+                var template = '<div id="pass-strength-result" class="help-block {{class}}">{{ "todo.is.ui.password.strength." + label }}</div>';
                 scope.$watch('pwd', function() {
-                    scope.value = mesureStrength(scope.pwd);
-                    scope.label = getLabel(scope.value);
-                    scope.class = getClass(scope.value);
+                    if (!ngModel.$pristine) {
+                        scope.value = mesureStrength(scope.pwd);
+                        scope.label = getLabel(scope.value);
+                        scope.class = getClass(scope.value);
+                        var compiledTemplate = angular.element($compile(template)(scope));
+                        elem.parent().find('#pass-strength-result').remove();
+                        elem.after(compiledTemplate);
+                    }
                 });
 
             }
         };
-    });
+    }]);

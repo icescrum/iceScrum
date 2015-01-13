@@ -128,8 +128,8 @@
                         <input name="user.password"
                                type="password"
                                class="form-control"
-                               ng-model="dataUser.password">
-                        <div ng-password-strength="dataUser.password"></div>
+                               ng-model="dataUser.password"
+                               ng-password-strength>
                     </div>
                     <div class="form-half">
                         <label for="confirmPassword">${message(code:'is.dialog.register.confirmPassword')}</label>
