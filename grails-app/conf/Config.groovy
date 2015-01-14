@@ -40,6 +40,7 @@ grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.ht
 /* Administration */
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = true
+icescrum.invitation.enable = false
 icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = true
 icescrum.alerts.default.from = "webmaster@icescrum.org"

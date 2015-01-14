@@ -205,7 +205,8 @@ class UserController {
     @Secured(['isAuthenticated()'])
     def search(String value, boolean showDisabled, boolean invit) {
         def users = User.findUsersLike(value ?: '', false, showDisabled, [:])
-        if (!users && invit && GenericValidator.isEmail(value)) {
+        def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
+        if (!users && invit && GenericValidator.isEmail(value) && enableInvitation) {
             def emailPrefix = value.split('@')[0]
             def firstName = emailPrefix
             def lastName = ""
