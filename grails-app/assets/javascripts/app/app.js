@@ -467,6 +467,9 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
 
+        // To be able to track state in views
+        $rootScope.$state = $state;
+
         var messages = {};
         $rootScope.initMessages = function(initMessages) {
             messages = initMessages;
