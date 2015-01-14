@@ -193,9 +193,7 @@
                 <button id="login"
                         ng-show="!(currentUser.username)"
                         class="btn btn-primary"
-                        hotkey="{'shift+l':showAuthModal}"
                         ng-click="showAuthModal()"
-                        hotkey-description="${message(code:'is.button.connect')}"
                         tooltip="${message(code:'is.button.connect')} (SHIFT+L)"
                         tooltip-append-to-body="true"
                         tooltip-placement="bottom"><g:message code="is.button.connect"/></button>

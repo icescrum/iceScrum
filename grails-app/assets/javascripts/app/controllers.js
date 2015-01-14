@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http',
-    function ($scope, $state, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http) {
+controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys',
+    function ($scope, $state, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys) {
         $scope.app = {
             isFullScreen:false,
             loading:10
@@ -166,8 +166,17 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                     $scope.downloadFile("");
                 }
             );
-        }
-}]).controller('loginCtrl',['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
+        };
+        hotkeys.bindTo($scope).add({
+            combo: 'shift+l',
+            description: $scope.message('is.button.connect'),
+            callback: function() {
+                if (!Session.authenticated()) {
+                    $scope.showAuthModal();
+                }
+            }
+        });
+    }]).controller('loginCtrl',['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
     $scope.credentials = {
         j_username: $scope.username ? $scope.username : '',
         j_password: ''
