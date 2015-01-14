@@ -72,9 +72,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
         $scope.showProfile = function() {
             $modal.open({ templateUrl: $scope.serverUrl + '/user/openProfile', controller: 'userCtrl' });
         };
-        $scope.showAuthModal = function() {
-            $state.go('userlogin');
-        };
         $scope.menus = {
             visible:[],
             hidden:[]
@@ -172,7 +169,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
         }
 }]).controller('loginCtrl',['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
     $scope.credentials = {
-        j_username: $state.params.username ? $state.params.username : '',
+        j_username: $scope.username ? $scope.username : '',
         j_password: ''
     };
     $rootScope.showRegisterModal = function() {

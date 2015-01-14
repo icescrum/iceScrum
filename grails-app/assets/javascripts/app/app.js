@@ -70,21 +70,11 @@ isApp.config(['$stateProvider', '$httpProvider',
                         });
                         modal.result.then(
                             function(username) {
-                                $state.go('userlogin', { username: username });
-                            }, function(){
+                                $state.transitionTo('root');
+                                $rootScope.showAuthModal(username);
+                            }, function() {
                                 $state.transitionTo('root');
                             });
-                    }]
-                })
-                .state('userlogin', {
-                    url: "/user/login/:username",
-                    params: { username: { value: null } }, // doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
-                    onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
-                        $modal.open({
-                            templateUrl: $rootScope.serverUrl + '/login/auth',
-                            controller:'loginCtrl',
-                            size:'sm'
-                        });
                     }]
                 })
                 .state('userretrieve', {
@@ -98,7 +88,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         modal.result.then(
                             function(result) {
                                 $state.transitionTo('root');
-                            }, function(){
+                            }, function() {
                                 $state.transitionTo('root');
                             });
                     }]
@@ -571,6 +561,19 @@ isApp.config(['$stateProvider', '$httpProvider',
         //to switch between grid / list view
         $rootScope.view = {
             asList:false
+        };
+
+        $rootScope.showAuthModal = function(username) {
+            var childScope = $rootScope.$new();
+            if (username) {
+                childScope.username = username;
+            }
+            $modal.open({
+                templateUrl: $rootScope.serverUrl + '/login/auth',
+                controller: 'loginCtrl',
+                scope: childScope,
+                size: 'sm'
+            });
         };
 
         //init push system
