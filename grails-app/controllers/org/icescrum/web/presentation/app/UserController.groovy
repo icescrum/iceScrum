@@ -130,7 +130,7 @@ class UserController {
             return
         }
 
-        if (!request.admin && ((params.confirmPassword  || params.user.password != "") && (params.confirmPassword != params.user.password))) {
+        if (!request.admin && (params.user.confirmPassword  || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
             returnError(text: message(code: 'is.user.error.password.check'))
             return
         }

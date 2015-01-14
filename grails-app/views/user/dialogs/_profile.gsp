@@ -137,7 +137,7 @@
                                type="password"
                                class="form-control"
                                is-match="dataUser.password"
-                               ng-model="passwordConfirm">
+                               ng-model="dataUser.confirmPassword">
                     </div>
                 </div>
                 <div class="row">
