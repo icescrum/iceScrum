@@ -205,7 +205,8 @@ class ScrumOSController {
                             appID: grailsApplication.config.icescrum.appID,
                             ip: request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
                             date: g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
-                            version: g.meta(name: 'app.version')]
+                            version: g.meta(name: 'app.version')],
+                    async: true
             ]);
             //render(status: 200, contentType: 'application/json', text:message(code: 'is.blame.sended') as JSON)
             render(status: 200)
