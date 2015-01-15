@@ -289,17 +289,20 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
         restrict: 'A',
         link: function (scope, element, attrs) {
             element.data('hasAt', false);
-            scope.$watch(element.val(), function(value) {
-                // apply only once
-                if (!element.data('hasAt')) {
-                    element.data('hasAt',true);
-                    var atOptions = scope.$eval(attrs.at);
-                    element.atwho(atOptions);
+            scope.$watch(function() {
+                // Cannot use isolated scope (e.g. scope { at: '=' } because there are already isolated scope on the element)
+                return scope.$eval(attrs.at);
+            }, function(newOptions) {
+                if (element.data('hasAt')) {
+                    // recreate if options has changed, eg. promise completed for data
+                    element.atwho('destroy');
+                } else {
+                    element.data('hasAt', true);
                 }
-            });
+                element.atwho(newOptions);
+            }, true);
         }
     };
-
 }]).directive('capitalize', function() {
         return {
             require: 'ngModel',

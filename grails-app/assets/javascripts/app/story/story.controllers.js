@@ -266,8 +266,8 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'FormService',
-    function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, FormService) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'FormService', 'ActorService',
+    function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, FormService, ActorService) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         $scope.formHolder = {};
         $scope.story = {};
@@ -449,9 +449,20 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         });
         $scope.atOptions = {
             tpl: "<li data-value='A[${uid}-${name}]'>${name}</li>",
-            data: "actor/search",
             at: 'a'
         };
+        var mapActors = function(actors) {
+            return _.map(actors, function(actor) {
+                return {uid: actor.uid, name: actor.name };
+            });
+        };
+        if (ActorService.list.$resolved) {
+            $scope.atOptions.data = mapActors(ActorService.list);
+        } else {
+            ActorService.list.$promise.then(function(actors) {
+                $scope.atOptions.data = mapActors(actors);
+            });
+        }
         $scope.clickDescriptionPreview = function($event, template) {
             if ($event.target.nodeName != 'A' && $scope.getShowStoryForm($scope.story)) {
                 $scope.showDescriptionTextarea = true;

@@ -40,12 +40,6 @@ class ActorController {
     def actorService
     def springSecurityService
 
-    def search() {
-        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term)
-        def result = actors.collect { [name: it.name, uid: it.uid] }
-        render(result as JSON)
-    }
-
     @Secured('productOwner() and !archivedProduct()')
     def save() {
         def actorParams = params.actor
