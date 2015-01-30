@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog valid="[action:'update',controller:'project',onSuccess:'jQuery.event.trigger(\'update_product\',[data]); jQuery.icescrum.renderNotice(\''+message(code:'is.product.updated')+'\');']"
-          width="600"
+          width="650"
           resizable="false"
           draggable="false">
 <form id="form-project" name="form-project" method="post" class='box-form box-form-250 box-form-200-legend'>
