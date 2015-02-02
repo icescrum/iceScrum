@@ -23,11 +23,11 @@
 controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$modal', function($scope, ProjectService, Session, $modal) {
     $scope.currentProject = Session.getProject();
 
-    $scope['import'] = function(project) {
-        var url = $scope.serverUrl + '/' + "project/import";
-        var modal = $modal.open({
+    $scope.import = function(project) {
+        var url = $scope.serverUrl + "/project/import";
+        $modal.open({
+            keyboard: false,
             templateUrl: url +"Dialog",
-            size: 'md',
             controller: ['$scope', '$http',function($scope, $http){
                 $scope.flowConfig = {target: url, singleFile:true};
                 $scope.changes = false;
@@ -72,14 +72,12 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                 };
             }]
         });
-        modal.result.then();
     };
 
-    $scope['export'] = function(project) {
-
+    $scope.export = function(project) {
         var modal = $modal.open({
+            keyboard: false,
             templateUrl: "project/exportDialog",
-            size: 'md',
             controller: ['$scope',function($scope){
                 $scope.zip = true;
                 $scope.progress = false;
@@ -115,7 +113,90 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     };
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 'ProjectService', '$filter', '$http', 'Session', function($scope, WizardHandler, Project, ProjectService, $filter, $http, Session){
+controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+    $scope.searchUsers = function(val){
+        return $http.get($scope.serverUrl+ '/user/search', {
+            params: {
+                value: val,
+                invit:true
+            }
+        }).then(function(response){
+            return _.chain(response.data)
+                .filter(function(u){
+                    var found = _.find($scope.project.productOwners, function(_u){
+                        return u.email == _u.email;
+                    });
+                    if (!found){
+                        found = _.find($scope.project.stakeHolders, function(_u){
+                            return u.email == _u.email;
+                        });
+                    }
+                    if (!found){
+                        if ($scope.project.team){
+                            found = _.find($scope.project.team.members, function(_u){
+                                return u.email == _u.email;
+                            });
+                        }
+                    }
+                    return !found;
+                })
+                .map(function(member){
+                    member.name = $filter('userFullName')(member);
+                    return member;
+                })
+                .value();
+        });
+    };
+    $scope.po = {};
+    $scope.sh = {};
+    $scope.addUser = function(user, role){
+        if(role == 'po'){
+            $scope.project.productOwners.push(user);
+            $scope.po = {};
+        } else if(role == 'sh'){
+            $scope.project.stakeHolders.push(user);
+            $scope.sh = {};
+        }
+    };
+    $scope.removeUser = function(user, role){
+        if(role == 'po'){
+            $scope.project.productOwners = _.filter($scope.project.productOwners, function(_member){
+                return _member.email != user.email;
+            });
+        } else if(role == 'sh'){
+            $scope.project.stakeHolders = _.filter($scope.project.stakeHolders, function(_member){
+                return _member.email != user.email;
+            });
+        }
+    };
+    $scope.prepareProject = function(project) {
+        var p = angular.copy(project);
+        var mapId = function(members) {
+            return _.map(members, function(member) {
+                return { id: member.id };
+            });
+        };
+        p.team.scrumMasters = mapId(project.team.scrumMasters);
+        p.team.members = _.filter(mapId(project.team.members), function(member) {
+            return !_.any(p.team.scrumMasters, { id: member.id });
+        });
+        p.stakeHolders = mapId(project.stakeHolders);
+        p.productOwners = mapId(project.productOwners);
+        var invited = function(members) {
+            return _.chain(members).where({id: null}).map(function(member) { return {email:member.email}; }).value();
+        };
+        p.team.invitedScrumMasters = invited(project.team.scrumMasters);
+        p.team.invitedMembers = _.filter(invited(project.team.members), function(member) {
+            return !_.any(p.team.invitedScrumMasters, { email: member.email });
+        });
+        p.invitedStakeHolders = invited(project.stakeHolders);
+        p.invitedProductOwners = invited(project.productOwners);
+        return p;
+    }
+}]);
+
+controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session){
+    $controller('abstractProjectCtrl', { $scope: $scope });
 
     $scope.project = new Project();
 
@@ -164,81 +245,40 @@ controllers.controller('newProjectCtrl', ["$scope", 'WizardHandler', 'Project', 
         return WizardHandler.wizard().currentStepNumber() == index
     };
 
-    $scope.searchUsers = function(val){
-        return $http.get($scope.serverUrl+ '/user/search', {
-            params: {
-                value: val,
-                invit:true
-            }
-        }).then(function(response){
-            return _.chain(response.data)
-                .filter(function(u){
-                    var found = _.find($scope.project.productOwners, function(_u){
-                        return u.email == _u.email;
-                    });
-                    if (!found){
-                        found = _.find($scope.project.stakeHolders, function(_u){
-                            return u.email == _u.email;
-                        });
-                    }
-                    if (!found){
-                        if ($scope.project.team){
-                            found = _.find($scope.project.team.members, function(_u){
-                                return u.email == _u.email;
-                            });
-                        }
-                    }
-                    return !found;
-                })
-                .map(function(member){
-                    member.name = $filter('userFullName')(member);
-                    return member;
-                })
-                .value();
-        });
-    };
-
-    $scope.po = {};
-    $scope.sh = {};
-    $scope.addUser = function(user, role){
-        if(role == 'po'){
-            $scope.project.productOwners.push(user);
-            $scope.po = {};
-        } else if(role == 'sh'){
-            $scope.project.stakeHolders.push(user);
-            $scope.sh = {};
-        }
-    };
-
-    $scope.removeUser = function(user, role){
-        if(role == 'po'){
-            $scope.project.productOwners = _.filter($scope.project.productOwners, function(_member){
-                return _member.email != user.email;
-            });
-        } else if(role == 'sh'){
-            $scope.project.stakeHolders = _.filter($scope.project.stakeHolders, function(_member){
-                return _member.email != user.email;
-            });
-        }
-    };
-
     $scope.createProject = function(project){
-        var p = angular.copy(project);
+        var p = $scope.prepareProject(project);
         p.startDate = $filter('date')(project.startDate, "dd-MM-yyyy");
         p.endDate = $filter('date')(project.endDate, "dd-MM-yyyy");
-        p.team.members = project.team.members.map(function(member){  return {id:member.id}; });
-        p.team.scrumMasters = project.team.scrumMasters.map(function(sm){ return {id:sm.id}; });
-        p.stakeHolders = project.stakeHolders.map(function(u){ return {id:u.id}; });
-        p.productOwners = project.productOwners.map(function(u){ return {id:u.id}; });
-        var invited = function(members) {
-            return _.chain(members).where({id: null}).map(function(member) { return {email:member.email}; }).value();
-        };
-        p.team.invitedMembers = invited(project.team.members);
-        p.team.invitedScrumMasters = invited(project.team.scrumMasters);
-        p.invitedStakeHolders = invited(project.stakeHolders);
-        p.invitedProductOwners = invited(project.productOwners);
         ProjectService.save(p).then(function(project) {
             document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
         });
     };
+
+    $scope.teamEditable = function(team) {
+        return team.id == null;
+    };
+}]);
+
+controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'ProjectService', 'Session', function($scope, $controller, ProjectService, Session) {
+    $controller('abstractProjectCtrl', { $scope: $scope });
+    $scope.teamEditable = function() {
+        return true;
+    };
+    $scope.project = Session.getProject();
+    $scope.project.stakeHolders = $scope.project.stakeHolders.concat($scope.project.invitedStakeHolders);
+    $scope.project.productOwners = $scope.project.productOwners.concat($scope.project.invitedProductOwners);
+    $scope.teamPromise = ProjectService.getTeam($scope.project);
+    $scope.updateProjectTeam = function(project) {
+        var p = $scope.prepareProject(project);
+        ProjectService.updateTeam(p)
+            .then(function() {
+                $scope.$close();
+                $scope.notifySuccess('todo.is.ui.project.members.updated');
+            });
+    };
+    $scope.leaveTeam = function(project) {
+        ProjectService.leaveTeam(project).then(function() {
+            document.location.reload(true);
+        });
+    }
 }]);

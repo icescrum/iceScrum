@@ -207,15 +207,7 @@ class UserController {
         def users = User.findUsersLike(value ?: '', false, showDisabled, [:])
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
         if (!users && invit && GenericValidator.isEmail(value) && enableInvitation) {
-            def emailPrefix = value.split('@')[0]
-            def firstName = emailPrefix
-            def lastName = ""
-            def dotPosition = emailPrefix.indexOf('.')
-            if (dotPosition != -1) {
-                firstName = emailPrefix.substring(0, dotPosition)?.capitalize()
-                lastName = emailPrefix.substring(dotPosition + 1)?.capitalize()
-            }
-            users << [id: null, firstName: firstName, lastName: lastName, email: value]
+            users << Invitation.getUserMock(value)
         }
         withFormat{
             html { render(status:200, contentType:'application/json', text: users as JSON) }
@@ -413,11 +405,12 @@ class UserController {
         return grailsApplication.parentContext.getResource(avatarFileName).file
     }
 
-    def invitation(String token) {
+    def invitationUserMock(String token) {
+        def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
         def invitation = Invitation.findByToken(token)
-        if (!invitation) {
-            throw new ObjectNotFoundException(token, 'Invitation')
+        if (!invitation || !enableInvitation) {
+            throw new ObjectNotFoundException(token, 'Invitation') // TODO manage error independently
         }
-        render(status: 200, text: invitation as JSON, contentType: 'application/json')
+        render(status: 200, text: invitation.userMock as JSON, contentType: 'application/json')
     }
 }

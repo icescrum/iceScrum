@@ -104,10 +104,10 @@ icescrum.marshaller = [
 
         comment: [textile:['body'], include: ['poster']],
 
-        product: [include: ['owner'],
+        product: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
                   exclude:['cliches']],
 
-        team: [include:['members', 'scrumMasters']],
+        team: [include:['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers']],
 
         task:[exclude:['impediment','participants'],
               include:['tags']],

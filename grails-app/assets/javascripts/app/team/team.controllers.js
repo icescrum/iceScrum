@@ -39,6 +39,7 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
         $scope.team.selected = true;
         //Add current user to the team
         if (!$scope.team.id){
+            $scope.team.class = 'team';
             var current = angular.copy(Session.user);
             $scope.team.members = [];
             $scope.team.members.push(current);
@@ -57,8 +58,21 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
                     return u.email == _member.email;
                 });
             });
+            $scope.project.team = $scope.team;
+        }
+        if (!_.isEmpty($model.invitedMembers)) {
+            $scope.team.members = $scope.team.members.concat($model.invitedMembers);
+        }
+        if (!_.isEmpty($model.invitedScrumMasters)) {
+            $scope.team.members = $scope.team.members.concat(_.map($model.invitedScrumMasters, function(member) { return _.merge(member, { scrumMaster: true })}));
         }
     };
+
+    if ($scope.teamPromise) {
+        $scope.teamPromise.then(function(team) {
+            $scope.selectTeam(null, team);
+        });
+    }
 
     $scope.unSelectTeam = function(){
         if ($scope.team.selected){
@@ -109,15 +123,11 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
         });
     };
 
-    $scope.addTeam = function(product, team){
-        team.scrumMasters = [];
-        _.forEach(team.members, function (member) {
-            if (member.scrumMaster) {
-                team.scrumMasters.push(member);
-            }
-        });
-        team.class = 'team';
-        product.team = team;
-        return true;
-    }
+    $scope.scrumMasterChanged = function(member) {
+        if (member.scrumMaster) {
+            $scope.team.scrumMasters.push(member);
+        } else {
+            _.remove($scope.team.scrumMasters, { email: member.email }); // equality on email because invited members have no id
+        }
+    };
 }]);

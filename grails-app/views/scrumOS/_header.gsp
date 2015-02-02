@@ -82,7 +82,7 @@
                                 ${message(code: 'todo.is.current.project')}
                             </li>
                             <li>
-                                <a hotkey="{ 'shift+t': hotkeyClick}" href="#project/members">
+                                <a hotkey="{ 'shift+t': hotkeyClick}" href ng-click="showProjectMembersModal()">
                                     <g:message code="is.projectmenu.submenu.project.team"/> <small class="text-muted">(SHIFT+T)</small>
                                 </a>
                             </li>

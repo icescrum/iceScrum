@@ -191,7 +191,6 @@ var formObjectData = function (obj, prefix) {
     var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
     _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
 
-    // TODO replace by _.str.decapitalize when Underscore.string 3.0 is released
     function decapitalize(str) {
         return str.charAt(0).toLowerCase() + str.substring(1);
     }

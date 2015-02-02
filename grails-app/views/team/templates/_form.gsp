@@ -49,7 +49,7 @@
         </div>
         <div class="col-sm-7" ng-show="team.selected">
             <h4>{{ team.name }} <small>{{ team.members.length }} ${message(code:'todo.is.ui.team.members')}</small></h4>
-            <div ng-show="!team.id">
+            <div ng-show="teamEditable(team)">
                 <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
                 <p class="input-group typeahead">
                     <input autocomplete="off"

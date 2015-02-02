@@ -38,7 +38,7 @@
                 <div ng-controller="teamCtrl">
                     <ng-include src="'form.team.html'"></ng-include>
                     <div class="wizard-next">
-                        <input type="submit" class="btn btn-default" ng-disabled="!team.members.length > 0" wz-next="addTeam(project, team)" value="${message(code:'todo.is.ui.wizard.step3')}" />
+                        <input type="submit" class="btn btn-default" ng-disabled="!team.members.length > 0" wz-next value="${message(code:'todo.is.ui.wizard.step3')}" />
                     </div>
                 </div>
             </wz-step>

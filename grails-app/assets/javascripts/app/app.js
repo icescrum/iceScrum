@@ -64,8 +64,8 @@ isApp.config(['$stateProvider', '$httpProvider',
                     params: { token: { value: null } }, // doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
                     onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
                         var modal = $modal.open({
+                            keyboard: false,
                             templateUrl: $rootScope.serverUrl + '/user/register',
-                            size: 'md',
                             controller: 'registerCtrl'
                         });
                         modal.result.then(
@@ -101,9 +101,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                     url: "/new",
                     onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
                         var modal = $modal.open({
-                            templateUrl: $rootScope.serverUrl + "/project/add",
-                            size: 'lg',
-                            controller: 'newProjectCtrl'
+                                keyboard: false,
+                                templateUrl: $rootScope.serverUrl + "/project/add",
+                                size: 'lg',
+                                controller: 'newProjectCtrl'
                             });
                         modal.result.then(
                             function(result) {
@@ -572,6 +573,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                 childScope.username = username;
             }
             $modal.open({
+                keyboard: false,
                 templateUrl: $rootScope.serverUrl + '/login/auth',
                 controller: 'loginCtrl',
                 scope: childScope,

@@ -135,58 +135,5 @@
                  ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.product.description.placeholder')}</p>') | sanitize"></div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <label for="productOwners.search">${message(code:'todo.is.ui.select.productowner')}</label>
-            <p class="input-group typeahead">
-                <input autocomplete="off"
-                       type="text"
-                       name="productOwner.search"
-                       id="productOwner.search"
-                       focus-me="true"
-                       class="form-control"
-                       ng-model="po.name"
-                       typeahead="po as po.name for po in searchUsers($viewValue)"
-                       typeahead-loading="searchingPo"
-                       typeahead-wait-ms="250"
-                       typeahead-on-select="addUser($item, 'po')"
-                       typeahead-template-url="select.member.html">
-                <span class="input-group-addon">
-                    <i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searchingPo, 'fa-refresh':searchingPo, 'fa-close':po.name }"></i>
-                </span>
-            </p>
-        </div>
-        <div class="col-sm-8">
-            <div ng-class="{'list-users':project.productOwners.length > 0}">
-                <ng-include ng-init="role = 'po';" ng-repeat="user in project.productOwners" src="'user.item.html'"></ng-include>
-            </div>
-        </div>
-    </div>
-    <div class="row" ng-show="project.preferences.hidden">
-        <div class="col-sm-4">
-            <label for="stakeHolders.search">${message(code:'todo.is.ui.select.stakeholder')}</label>
-            <p class="input-group typeahead">
-                <input autocomplete="off"
-                       type="text"
-                       name="stakeHolder.search"
-                       id="stakeHolder.search"
-                       focus-me="true"
-                       class="form-control"
-                       ng-model="sh.name"
-                       typeahead="sh as sh.name for sh in searchUsers($viewValue)"
-                       typeahead-loading="searchingSh"
-                       typeahead-wait-ms="250"
-                       typeahead-on-select="addUser($item, 'sh')"
-                       typeahead-template-url="select.member.html">
-                <span class="input-group-addon">
-                    <i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh, 'fa-close':sh.name }"></i>
-                </span>
-            </p>
-        </div>
-        <div class="col-sm-8">
-            <div ng-class="{'list-users':project.stakeHolders.length > 0}">
-                <ng-include ng-init="role = 'sh';" ng-repeat="user in project.stakeHolders" src="'user.item.html'"></ng-include>
-            </div>
-        </div>
-    </div>
+    <ng-include src="'form.members.project.html'"></ng-include>
 </script>

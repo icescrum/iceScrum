@@ -166,9 +166,36 @@ class UrlMappings {
             action = 'import'
         }
 
+
         "/project/importDialog" {
             controller = 'project'
             action = 'importDialog'
+        }
+
+        "/project/editMembers" {
+            controller = 'project'
+            action = 'editMembers'
+        }
+
+        "/project/$product/leaveTeam" {
+            controller = 'project'
+            action = 'leaveTeam'
+            constraints {
+                product(matches: /\d*/)
+            }
+        }
+
+        "/project/$product/team" {
+            controller = 'project'
+            action = 'team'
+            constraints {
+                product(matches: /\d*/)
+            }
+        }
+
+        "/project/$product/updateTeam" {
+            controller = 'project'
+            action = 'updateTeam'
         }
 
         "/project/$product" {

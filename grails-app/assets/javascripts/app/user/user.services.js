@@ -22,7 +22,7 @@
  *
  */
 services.factory('User', [ 'Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/' + 'user/:id/:action',
+    return $resource(icescrum.grailsServer + '/user/:id/:action',
         {},
         {
             current: {method: 'GET', params: {action: 'current'}},
@@ -53,8 +53,8 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', fun
     this.retrievePassword = function(user) {
         return $http.post($rootScope.serverUrl + '/user/retrieve?user.username='+user.username);
     };
-    this.invitation = function(token) {
-        return $http.get($rootScope.serverUrl + '/user/invitation?token='+token).then(function(response) {
+    this.getInvitationUserMock = function(token) {
+        return $http.get($rootScope.serverUrl + '/user/invitationUserMock?token='+token).then(function(response) {
             return response.data;
         });
     };

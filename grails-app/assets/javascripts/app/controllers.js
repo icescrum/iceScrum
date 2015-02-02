@@ -67,10 +67,24 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
             Session.changeRole(newRole);
         };
         $scope.showAbout = function() {
-            $modal.open({ templateUrl: 'scrumOS/about' });
+            $modal.open({
+                templateUrl: 'scrumOS/about'
+            });
         };
         $scope.showProfile = function() {
-            $modal.open({ templateUrl: $scope.serverUrl + '/user/openProfile', controller: 'userCtrl' });
+            $modal.open({
+                keyboard: false,
+                templateUrl: $scope.serverUrl + '/user/openProfile',
+                controller: 'userCtrl'
+            });
+        };
+        $scope.showProjectMembersModal = function() {
+            $modal.open({
+                keyboard: false,
+                templateUrl: $scope.serverUrl + "/project/editMembers",
+                size: 'lg',
+                controller: 'editProjectMembersCtrl'
+            });
         };
         $scope.menus = {
             visible:[],
@@ -151,6 +165,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 data.preventDefault();
             }
             var modal = $modal.open({
+                keyboard: false,
                 templateUrl: "report.progress.html",
                 size: 'sm',
                 controller: ['$scope', function($scope){
@@ -204,15 +219,8 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
 }]).controller('registerCtrl',['$scope', 'User', 'UserService', '$state', function ($scope, User, UserService, $state) {
     $scope.user = new User();
     if ($state.params.token) {
-        UserService.invitation($state.params.token).then(function(invitation) {
-            $scope.user.email = invitation.email;
-            var emailPrefix = invitation.email.split('@')[0];
-            $scope.user.username = emailPrefix;
-            var dotPosition = emailPrefix.indexOf('.');
-            if (dotPosition != -1) {
-                $scope.user.firstName = _.str.capitalize(emailPrefix.substr(0, dotPosition));
-                $scope.user.lastName = _.str.capitalize(emailPrefix.substr(dotPosition + 1));
-            }
+        UserService.getInvitationUserMock($state.params.token).then(function(mockUser) {
+            _.merge($scope.user, mockUser);
             $scope.user.token = $state.params.token;
         });
     }
