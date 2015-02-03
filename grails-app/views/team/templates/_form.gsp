@@ -46,6 +46,7 @@
                        ng-required="isCurrentStep(2)">
                 <span class="input-group-addon"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>
             </p>
+            <div ng-if="warning.on" class="help-block bg-danger">${ message(code: 'todo.is.ui.team.warning.product.members') }</div>
         </div>
         <div class="col-sm-7" ng-show="team.selected">
             <h4>{{ team.name }} <small>{{ team.members.length }} ${message(code:'todo.is.ui.team.members')}</small></h4>

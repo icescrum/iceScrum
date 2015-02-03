@@ -34,6 +34,8 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
         });
     };
 
+    $scope.warning = { on: false };
+
     $scope.selectTeam = function($item, $model, $label){
         $scope.team = $model;
         $scope.team.selected = true;
@@ -48,15 +50,26 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
         }
         if ($model.members && $model.scrumMasters){
             $scope.team.members = $model.members.map(function(member){
-                member.scrumMaster = _.find($model.scrumMasters, function(sm){ return member.id == sm.id }) ? true : false;
+                member.scrumMaster = _.find($model.scrumMasters, { id: member.id }) ? true : false;
                 return member;
             });
         }
-        if ($scope.project){
-            $scope.project.stakeHolders = _.filter($scope.project.stakeHolders, function(u){
-                return !_.find($scope.team.members, function(_member){
-                    return u.email == _member.email;
-                });
+        if ($scope.project) {
+            var filteredStakeHolders = _.filter($scope.project.stakeHolders, function(u) {
+                return !_.find($scope.team.members, { email: u.email });
+            });
+            var filteredProductOwners = _.filter($scope.project.productOwners, function(u) {
+                var member = _.find($scope.team.members, { email: u.email });
+                return member ? member.scrumMaster : true;
+            });
+            if (filteredProductOwners.length != $scope.project.productOwners.length || filteredStakeHolders.length != $scope.project.stakeHolders.length) {
+                $scope.warning.on = true;
+            }
+            $scope.project.stakeHolders = filteredStakeHolders;
+            $scope.project.productOwners = filteredProductOwners;
+            $scope.team.members = $scope.team.members.map(function(member) {
+                member.productOwner = _.find($scope.project.productOwners, { id: member.id }) ? true : false;
+                return member;
             });
             $scope.project.team = $scope.team;
         }
@@ -74,8 +87,10 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
         });
     }
 
-    $scope.unSelectTeam = function(){
-        if ($scope.team.selected){
+    $scope.unSelectTeam = function() {
+        $scope.warning.on = false;
+        $scope.project.team = {};
+        if ($scope.team.selected) {
             $scope.team = {};
             $scope.member = {};
         }
@@ -88,19 +103,15 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
                 value: val,
                 invit:true
             }
-        }).then(function(response){
+        }).then(function(response) {
             return _.chain(response.data)
                 .filter(function(member){
                     var found = false;
                     if ($scope.project){
-                        found = _.find($scope.project.stakeHolders, function(_member){
-                            return member.email == _member.email;
-                        });
+                        found = _.find($scope.project.stakeHolders, { email: member.email });
                     }
                     if (!found){
-                        found = _.find($scope.team.members, function(_member){
-                            return member.email == _member.email;
-                        });
+                        found = _.find($scope.team.members, { email: member.email });
                     }
                     return !found;
                 })
@@ -112,15 +123,20 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
         });
     };
 
-    $scope.addTeamMember = function(item){
-        $scope.team.members.push(item);
+    $scope.addTeamMember = function(member){
+        var po = _.find($scope.project.productOwners, { email: member.email });
+        if (po) {
+            member.scrumMaster = true;
+            member.productOwner = true;
+            $scope.team.scrumMasters.push(member);
+        }
+        $scope.team.members.push(member);
         $scope.member = {};
     };
 
-    $scope.removeTeamMember = function($member){
-        $scope.team.members = _.filter($scope.team.members, function(_member){
-            return _member.email != $member.email;
-        });
+    $scope.removeTeamMember = function(member) {
+        _.remove($scope.team.members, { email: member.email });
+        _.remove($scope.team.scrumMasters, { email: member.email });
     };
 
     $scope.scrumMasterChanged = function(member) {

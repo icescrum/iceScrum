@@ -114,7 +114,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
 }]);
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-    $scope.searchUsers = function(val){
+    $scope.searchUsers = function(val, isPo){
         return $http.get($scope.serverUrl+ '/user/search', {
             params: {
                 value: val,
@@ -123,19 +123,14 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
         }).then(function(response){
             return _.chain(response.data)
                 .filter(function(u){
-                    var found = _.find($scope.project.productOwners, function(_u){
-                        return u.email == _u.email;
-                    });
+                    var found = _.find($scope.project.productOwners, { email: u.email });
                     if (!found){
-                        found = _.find($scope.project.stakeHolders, function(_u){
-                            return u.email == _u.email;
-                        });
+                        found = _.find($scope.project.stakeHolders, { email: u.email });
                     }
-                    if (!found){
-                        if ($scope.project.team){
-                            found = _.find($scope.project.team.members, function(_u){
-                                return u.email == _u.email;
-                            });
+                    if (!found && $scope.project.team) {
+                        found = _.find($scope.project.team.members, { email: u.email });
+                        if (isPo && found && found.scrumMaster) {
+                            found = false;
                         }
                     }
                     return !found;
@@ -152,6 +147,12 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
     $scope.addUser = function(user, role){
         if(role == 'po'){
             $scope.project.productOwners.push(user);
+            if ($scope.project.team) {
+                var member = _.find($scope.project.team.members, { email: user.email });
+                if (member) {
+                    member.productOwner = true;
+                }
+            }
             $scope.po = {};
         } else if(role == 'sh'){
             $scope.project.stakeHolders.push(user);
@@ -160,13 +161,15 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
     };
     $scope.removeUser = function(user, role){
         if(role == 'po'){
-            $scope.project.productOwners = _.filter($scope.project.productOwners, function(_member){
-                return _member.email != user.email;
-            });
+            _.remove($scope.project.productOwners, { email: user.email});
+            if ($scope.project.team) {
+                var member = _.find($scope.project.team.members, { email: user.email });
+                if (member) {
+                    member.productOwner = false;
+                }
+            }
         } else if(role == 'sh'){
-            $scope.project.stakeHolders = _.filter($scope.project.stakeHolders, function(_member){
-                return _member.email != user.email;
-            });
+            _.remove($scope.project.stakeHolders, { email: user.email});
         }
     };
     $scope.prepareProject = function(project) {

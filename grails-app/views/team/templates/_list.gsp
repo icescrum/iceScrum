@@ -31,7 +31,7 @@
             <span ng-show="!member.id"><small>${message(code:'todo.is.ui.user.will.be.invited')}</small></span>
         </td>
         <td class="text-right">
-            <input type="checkbox" ng-change='scrumMasterChanged(member)' name="member.role" ng-model="member.scrumMaster" ng-disabled="!teamEditable(team)">
+            <input type="checkbox" ng-change='scrumMasterChanged(member)' name="member.role" ng-model="member.scrumMaster" ng-disabled="!teamEditable(team) || member.productOwner">
         </td>
     </tr>
 </script>

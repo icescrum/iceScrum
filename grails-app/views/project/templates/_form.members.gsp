@@ -32,7 +32,7 @@
                        id="productOwner.search"
                        class="form-control"
                        ng-model="po.name"
-                       typeahead="po as po.name for po in searchUsers($viewValue)"
+                       typeahead="po as po.name for po in searchUsers($viewValue, true)"
                        typeahead-loading="searchingPo"
                        typeahead-wait-ms="250"
                        typeahead-on-select="addUser($item, 'po')"
