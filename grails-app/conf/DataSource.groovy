@@ -75,13 +75,4 @@ environments {
             }
         }
     }
-    jardeploy {
-        dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:file:jarDb"
-            driverClassName = "org.h2.Driver"
-            username = "sa"
-            password = ""
-        }
-    }
 }
