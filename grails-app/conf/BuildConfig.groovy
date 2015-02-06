@@ -88,7 +88,7 @@ grails.project.dependency.resolution = {
         runtime ":hibernate4:4.3.6.1"
         build ":tomcat:7.0.55"
         if (Environment.current == Environment.PRODUCTION){
-            compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"
+            compile "org.icescrum:icescrum-core:1.7-SNAPSHOT"
         }
     }
 }
