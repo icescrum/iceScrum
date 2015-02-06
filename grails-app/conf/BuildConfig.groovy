@@ -36,7 +36,7 @@ grails.project.dependency.resolver = "maven"
 grails.project.war.osgi.headers = false
 grails.tomcat.nio = true
 
-if (Environment.current != Environment.PRODUCTION){
+if (Environment.current != Environment.PRODUCTION || Environment.current != Environment.CUSTOM){
     println "use inline plugin in env: ${Environment.current}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 }
@@ -88,7 +88,7 @@ grails.project.dependency.resolution = {
         // runtime ":database-migration:1.4.0" TODO enable new migration
         runtime ":hibernate4:4.3.6.1"
         build ":tomcat:7.0.55"
-        if (Environment.current == Environment.PRODUCTION){
+        if (Environment.current == Environment.PRODUCTION || Environment.current == Environment.CUSTOM){
             compile "org.icescrum:icescrum-core:1.7-SNAPSHOT"
         }
     }
