@@ -36,7 +36,7 @@ grails.project.dependency.resolver = "maven"
 grails.project.war.osgi.headers = false
 grails.tomcat.nio = true
 
-if (Environment.current != Environment.PRODUCTION || Environment.current != Environment.CUSTOM){
+if (Environment.current != Environment.PRODUCTION && Environment.current != Environment.CUSTOM){
     println "use inline plugin in env: ${Environment.current}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 }
