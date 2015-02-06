@@ -80,6 +80,7 @@ grails.project.dependency.resolution = {
     plugins {
         compile "org.icescrum:entry-points:1.0"
 
+        compile ":standalone:1.3"
         compile ":cache-headers:1.1.7"
         compile ":asset-pipeline:2.1.1"
         compile ":less-asset-pipeline:2.0.8"
