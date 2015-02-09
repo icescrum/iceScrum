@@ -34,7 +34,7 @@ eventSetClasspath = {
         if (System.getProperty('icescrum.clean') == 'true'){
             println "----- DELETE OLD ICESCRUM CORE START ---------"
             String iceScrumCore = "${userHome}/.ivy2/cache/org.icescrum/icescrum-core"
-            String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.6-SNAPSHOT"
+            String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.7-SNAPSHOT"
             file = new File(iceScrumCore)
             if (file.exists()){
                 println "----- deleting.... ${iceScrumCore}--------"
