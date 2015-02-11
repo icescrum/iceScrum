@@ -29,20 +29,19 @@
                 <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
                 <is:localeTimeZone required="required"
                                    class="form-control"
-                                   ng-required="type == 'newProject' && isCurrentStep(4)"
+                                   ng-required="isCurrentStep(4)"
                                    name="project.preferences.timezone"
                                    ng-model="project.preferences.timezone"
                                    ui-select2=""></is:localeTimeZone>
             </div>
             <div class="col-sm-6 col-xs-12 form-group">
                 <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>
-                <input required
-                       class="form-control"
+                <input class="form-control"
                        type="number"
                        name="project.preferences.estimatedSprintsDuration"
                        id="estimatedSprintsDuration"
                        ng-pattern="/^[0-9]+$/"
-                       ng-required="type == 'newProject' && isCurrentStep(4)"
+                       ng-required="isCurrentStep(4)"
                        ng-model="project.preferences.estimatedSprintsDuration">
             </div>
     </div>
@@ -50,8 +49,7 @@
         <div class="col-sm-6 col-xs-12 form-group">
             <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>
             <p class="input-group">
-                <input required
-                       type="text"
+                <input type="text"
                        class="form-control"
                        name="project.startDate"
                        ng-model="project.startDate"
@@ -61,7 +59,7 @@
                        close-text="Close"
                        show-button-bar="false"
                        max-date="projectMaxStartDate"
-                       ng-required="type == 'newProject' && isCurrentStep(4)"/>
+                       ng-required="isCurrentStep(4)"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
@@ -92,8 +90,7 @@
         <div class="col-sm-6 col-xs-12 form-group">
             <label for="project.firstSprint">${message(code:'is.dialog.wizard.firstSprint')}</label>
             <p class="input-group">
-                <input required
-                       type="text"
+                <input type="text"
                        class="form-control"
                        name="project.firstSprint"
                        ng-model="project.firstSprint"
@@ -105,7 +102,7 @@
                        min-date="sprintMinStartDate"
                        max-date="sprintMaxStartDate"
                        ng-class="{current:step.selected}"
-                       ng-required="type == 'newProject' && isCurrentStep(4)"/>
+                       ng-required="isCurrentStep(4)"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'firstSprint')"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
@@ -114,8 +111,7 @@
         <div class="col-sm-6 col-xs-12 form-group">
             <label for="project.endDate">${message(code:'is.dialog.wizard.project.endDate')}</label>
             <p class="input-group">
-                <input required
-                       type="text"
+                <input type="text"
                        class="form-control"
                        name="project.endDate"
                        ng-model="project.endDate"
@@ -126,7 +122,7 @@
                        show-button-bar="false"
                        min-date="projectMinEndDate"
                        ng-class="{current:step.selected}"
-                       ng-required="type == 'newProject' && isCurrentStep(4)"/>
+                       ng-required="isCurrentStep(4)"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>

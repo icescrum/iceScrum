@@ -146,7 +146,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                     var container = input.parent();
                     var inputModel = form[input.attr('name')];
                     scope.$watch(function() {
-                        return inputModel.$invalid && inputModel.$dirty;
+                        return inputModel.$invalid && (inputModel.$dirty || inputModel.$touched);
                     }, function(newIsInvalid, oldIsInvalid) {
                         if (newIsInvalid && !oldIsInvalid) {
                             var childScope = scope.$new();

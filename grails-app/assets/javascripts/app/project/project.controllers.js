@@ -218,8 +218,14 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
             document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
         });
     };
-    $scope.teamEditable = function(team) {
+    $scope.teamMembersEditable = function(team) {
         return team.id == null;
+    };
+    $scope.teamRemovable = function() {
+        return true;
+    };
+    $scope.projectMembersEditable = function() {
+        return true;
     };
     // Init
     $scope.project = new Project();
@@ -279,17 +285,28 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
     $scope.isCurrentPanel = function(panel) {
         return $scope.panel.current == panel;
     };
+    // Mock steps of wizard
+    $scope.isCurrentStep = function() {
+        return true;
+    };
     // Init
-    if (!$scope.panel) {
-        $scope.panel = { current: 'project' };
-    }
     $scope.currentProject = Session.getProject();
+    if (!$scope.panel) {
+        var defaultView = $scope.authorizedProject('update', $scope.currentProject) ? 'general' : 'team';
+        $scope.panel = { current: defaultView };
+    }
 }]);
 
 controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
     $controller('abstractProjectCtrl', { $scope: $scope });
-    $scope.teamEditable = function() {
-        return true;
+    $scope.teamMembersEditable = function() {
+        return ProjectService.authorizedProject('updateTeamMembers', $scope.project);
+    };
+    $scope.teamRemovable = function() {
+        return $scope.teamMembersEditable();
+    };
+    $scope.projectMembersEditable = function(project) {
+        return ProjectService.authorizedProject('updateProjectMembers', project);
     };
     $scope.resetTeamForm = function() {
         if ($scope.formHolder.editTeamForm) {

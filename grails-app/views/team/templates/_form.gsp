@@ -31,7 +31,6 @@
             <label for="team.name">${message(code:'todo.is.ui.create.or.select.team')}</label>
             <p class="input-group typeahead">
                 <input autocomplete="off"
-                       required
                        type="text"
                        name="team.name"
                        focus-me="true"
@@ -44,13 +43,13 @@
                        typeahead-wait-ms="250"
                        ng-model="team.name"
                        ng-required="isCurrentStep(2)">
-                <span class="input-group-addon"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>
+                <span class="input-group-addon" ng-if="teamRemovable()"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>
             </p>
             <div ng-if="warning.on" class="help-block bg-danger">${ message(code: 'todo.is.ui.team.warning.product.members') }</div>
         </div>
         <div class="col-sm-8" ng-show="team.selected">
             <h4>{{ team.name }} <small>{{ team.members.length }} ${message(code:'todo.is.ui.team.members')}</small></h4>
-            <div ng-show="teamEditable(team)">
+            <div ng-show="teamMembersEditable(team)">
                 <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
                 <p class="input-group typeahead">
                     <input autocomplete="off"

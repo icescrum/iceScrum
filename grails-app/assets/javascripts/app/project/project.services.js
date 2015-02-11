@@ -54,7 +54,9 @@ services.service("ProjectService", ['Project', 'Session', function(Project, Sess
     this.authorizedProject = function(action, project) {
         switch (action) {
             case 'update':
-                return Session.owner(project) && Session.sm();
+            case 'updateTeamMembers': // Should rather be in a team service but depends on the project...
+            case 'updateProjectMembers':
+                return Session.owner(project) || Session.sm();
             case 'delete':
                 return Session.owner(project);
             default:

@@ -28,13 +28,12 @@
         <div class="col-sm-8 col-xs-8 form-group">
             <label for="name">${message(code:'is.product.name')}</label>
             <p class="input-group">
-                <input required
-                       focus-me="true"
+                <input focus-me="true"
                        name="name"
                        type="text"
                        class="form-control"
                        ng-model="project.name"
-                       ng-required="type == 'newProject' && isCurrentStep(1)"
+                       ng-required="isCurrentStep(1)"
                        ng-remote-validate="/project/available/name">
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
@@ -52,14 +51,13 @@
         </div>
         <div class="col-sm-4 col-xs-4 form-group">
             <label for="pkey">${message(code:'is.product.pkey')}</label>
-            <input required
-                   name="pkey"
+            <input name="pkey"
                    type="text"
                    capitalize
                    class="form-control"
                    ng-model="project.pkey"
                    ng-pattern="/^[A-Z0-9]*$/"
-                   ng-required="type == 'newProject' && isCurrentStep(1)"
+                   ng-required="isCurrentStep(1)"
                    ng-remote-validate="/project/available/pkey">
         </div>
     </div>

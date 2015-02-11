@@ -24,8 +24,8 @@
 <is:modal title="${message(code: 'is.dialog.edit')}" class="wizard" footer="false">
     <div class="row wizard-row">
         <ul class="steps-indicator col-sm-3 nav nav-list">
-            <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('project') }">
-                <a ng-click="setCurrentPanel('project')">${ message(code: 'is.dialog.wizard.section.project')}</a>
+            <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('general') }">
+                <a ng-click="setCurrentPanel('general')">${ message(code: 'is.dialog.wizard.section.project')}</a>
             </li>
             <li ng-class="{ current: isCurrentPanel('team') }">
                 <a ng-click="setCurrentPanel('team')">${ message(code: 'is.dialog.wizard.section.team')}</a>
@@ -41,7 +41,7 @@
             </li>
         </ul>
         <div class="steps col-sm-9" ng-switch="getCurrentPanel()">
-            <section ng-switch-when="project"
+            <section ng-switch-when="general"
                      class="step current"
                      title="${ message(code: 'is.dialog.wizard.section.project')}">
                 <div ng-include="'edit.general.project.html'"></div>

@@ -23,7 +23,7 @@
 
 <script type="text/ng-template" id="form.members.project.html"><h4>${message(code:"is.dialog.wizard.section.product.members")}</h4>
 <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4" ng-if="projectMembersEditable(project)">
             <label for="productOwners.search">${message(code:'todo.is.ui.select.productowner')}</label>
             <p class="input-group typeahead">
                 <input autocomplete="off"
@@ -38,18 +38,18 @@
                        typeahead-on-select="addUser($item, 'po')"
                        typeahead-template-url="select.member.html">
                 <span class="input-group-addon">
-                    <i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searchingPo, 'fa-refresh':searchingPo, 'fa-close':po.name }"></i>
+                    <i class="fa" ng-class="{ 'fa-search': !searchingPo, 'fa-refresh':searchingPo }"></i>
                 </span>
             </p>
         </div>
-        <div class="col-sm-8">
+        <div ng-class="projectMembersEditable(project) ? 'col-sm-8' : 'col-sm-12' ">
             <div ng-class="{'list-users':project.productOwners.length > 0}">
                 <ng-include ng-init="role = 'po';" ng-repeat="user in project.productOwners" src="'user.item.html'"></ng-include>
             </div>
         </div>
     </div>
 <div class="row" ng-show="project.preferences.hidden">
-    <div class="col-sm-4">
+    <div class="col-sm-4" ng-if="projectMembersEditable(project)">
         <label for="stakeHolders.search">${message(code:'todo.is.ui.select.stakeholder')}</label>
         <p class="input-group typeahead">
             <input autocomplete="off"
@@ -64,11 +64,11 @@
                    typeahead-on-select="addUser($item, 'sh')"
                    typeahead-template-url="select.member.html">
             <span class="input-group-addon">
-                <i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh, 'fa-close':sh.name }"></i>
+                <i class="fa" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh }"></i>
             </span>
         </p>
     </div>
-    <div class="col-sm-8">
+    <div ng-class="projectMembersEditable(project) ? 'col-sm-8' : 'col-sm-12' ">
         <div ng-class="{'list-users':project.stakeHolders.length > 0}">
             <ng-include ng-init="role = 'sh';" ng-repeat="user in project.stakeHolders" src="'user.item.html'"></ng-include>
         </div>
