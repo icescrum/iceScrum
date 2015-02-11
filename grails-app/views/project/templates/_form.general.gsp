@@ -21,7 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<script type="text/ng-template" id="form.project.html">
+<script type="text/ng-template" id="form.general.project.html">
     <h4>${message(code:"is.dialog.wizard.section.project")}</h4>
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
     <div class="row">
@@ -34,7 +34,7 @@
                        type="text"
                        class="form-control"
                        ng-model="project.name"
-                       ng-required="isCurrentStep(1)"
+                       ng-required="type == 'newProject' && isCurrentStep(1)"
                        ng-remote-validate="/project/available/name">
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
@@ -59,60 +59,8 @@
                    class="form-control"
                    ng-model="project.pkey"
                    ng-pattern="/^[A-Z0-9]*$/"
-                   ng-required="isCurrentStep(1)"
+                   ng-required="type == 'newProject' && isCurrentStep(1)"
                    ng-remote-validate="/project/available/pkey">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4 col-xs-6 form-group">
-            <label for="project.startDate">${message(code:'is.product.startDate')}</label>
-            <p class="input-group">
-                <input required
-                       type="text"
-                       class="form-control"
-                       name="project.startDate"
-                       ng-model="project.startDate"
-                       datepicker-popup="{{startDate.format}}"
-                       datepicker-options="startDate"
-                       is-open="startDate.opened"
-                       close-text="Close"
-                       show-button-bar="false"
-                       max-date="projectMaxDate"
-                       ng-required="isCurrentStep(1)"/>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, false)"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-            </p>
-        </div>
-        <div class="col-sm-4 col-xs-6 form-group">
-            <label for="project.endDate">${message(code:'is.release.endDate')}</label>
-            <p class="input-group">
-                <input required
-                       type="text"
-                       class="form-control"
-                       name="project.endDate"
-                       ng-model="project.endDate"
-                       datepicker-popup="{{endDate.format}}"
-                       datepicker-options="endDate"
-                       is-open="endDate.opened"
-                       close-text="Close"
-                       show-button-bar="false"
-                       min-date="projectMinDate"
-                       ng-class="{current:step.selected}"
-                       ng-required="isCurrentStep(1)"/>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, true)"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-            </p>
-        </div>
-        <div class="col-sm-4 col-xs-12 form-group">
-            <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
-            <is:localeTimeZone required="required"
-                               class="form-control"
-                               ng-required="isCurrentStep(1)"
-                               name="project.preferences.timezone"
-                               ng-model="project.preferences.timezone"
-                               ui-select2=""></is:localeTimeZone>
         </div>
     </div>
     <div class="row">
@@ -135,5 +83,4 @@
                  ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.product.description.placeholder')}</p>') | sanitize"></div>
         </div>
     </div>
-    <ng-include src="'form.members.project.html'"></ng-include>
 </script>

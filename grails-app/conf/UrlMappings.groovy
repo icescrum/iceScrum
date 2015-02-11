@@ -172,9 +172,9 @@ class UrlMappings {
             action = 'importDialog'
         }
 
-        "/project/editMembers" {
+        "/project/edit" {
             controller = 'project'
-            action = 'editMembers'
+            action = 'edit'
         }
 
         "/project/$product/leaveTeam" {
@@ -198,9 +198,14 @@ class UrlMappings {
             action = 'updateTeam'
         }
 
+        "/project/$product/archive" {
+            controller = 'project'
+            action = 'archive'
+        }
+
         "/project/$product" {
             controller = 'project'
-            action = [DELETE: "delete", PUT:"update"]
+            action = [DELETE: "delete", POST: "update"]
             constraints {
                 //must be the id
                 product(matches: /\d*/)

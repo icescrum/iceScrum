@@ -83,13 +83,16 @@ class ProjectController {
 
         productParams.startDate = new Date().parse('dd-MM-yyyy', productParams.startDate)
         productParams.endDate = new Date().parse('dd-MM-yyyy', productParams.endDate)
+        if (productParams.firstSprint) {
+            productParams.firstSprint = new Date().parse('dd-MM-yyyy', productParams.firstSprint)
+        }
 
         if (productPreferencesParams.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
             productPreferencesParams.hidden = false
         }
 
         //Case user choose to generate sprints
-        if (productParams.generateSprints?.after(productParams.endDate) || productParams.generateSprints?.after(productParams.endDate) || productParams.generateSprints == productParams.endDate) {
+        if (productParams.initialize && (productParams.firstSprint?.before(productParams.startDate) || productParams.firstSprint?.after(productParams.endDate) || productParams.firstSprint == productParams.endDate)) {
             def msg = message(code: 'is.product.error.firstSprint')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
             return
@@ -100,7 +103,7 @@ class ProjectController {
         product.preferences = new ProductPreferences()
         Product.withTransaction { status ->
             bindData(product, productParams, [include:['name','description','startDate','endDate','pkey']])
-            bindData(product.preferences, productPreferencesParams, [include:['timezone','noEstimation','displayRecurrentTasks','displayUrgentTasks','estimatedSprintsDuration']])
+            bindData(product.preferences, productPreferencesParams, [exclude: ['archived']])
             try {
                 if (!teamParams?.id){
                     team = new Team()
@@ -141,10 +144,10 @@ class ProjectController {
                 userService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
                 productService.addTeamsToProduct product, [team.id]
 
-                if (productParams.generateSprints){
-                    def release = new Release(name: "Release 1", startDate: product.startDate, endDate: product.endDate)
+                if (productParams.initialize){
+                    def release = new Release(name: "Release 1", vision: product.vision, startDate: product.startDate, endDate: product.endDate)
                     releaseService.save(release, product)
-                    sprintService.generateSprints(release, productParams.generateSprints)
+                    sprintService.generateSprints(release, productParams.firstSprint)
                 }
 
                 render(status:200, contentType: 'application/json', text:product as JSON)
@@ -233,22 +236,9 @@ class ProjectController {
         }
     }
 
-    @Secured('owner() or scrumMaster()')
-    def edit(long product) {
-        Product _product = Product.withProduct(product)
-        def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
-        if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-            privateOption = false
-        }
-        def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
-        def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
-
-        def dialog = g.render(template: "dialogs/edit",
-                model: [product: _product,
-                        privateOption: privateOption,
-                        possibleViews: possibleViews,
-                        restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
-        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+    @Secured(['isAuthenticated()'])
+    def edit() {
+        render(status:200, template: "dialogs/edit")
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
@@ -262,31 +252,25 @@ class ProjectController {
     }
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
-    def update() {
-        Product product = Product.withProduct(params.long('productd.id'))
-        def msg
-        if (params.long('productd.version') != product.version) {
-            msg = message(code: 'is.stale.object', args: [message(code: 'is.product')])
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-            return
-        }
-        //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
-        boolean hasHiddenChanged = product.preferences.hidden != params.productd.preferences.hidden
-        product.properties = params.productd
-        if(!params.productd.preferences?.stakeHolderRestrictedViews){
-            product.preferences.stakeHolderRestrictedViews = null
-        }
+    def update(long product) {
+        Product _product = Product.withProduct(product)
+        def productPreferencesParams = params.productd?.remove('preferences')
+        def productParams = params.remove('productd')
         try {
-            productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
-            entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
-        } catch (IllegalStateException ise) {
-            returnError(exception:ise)
-            return
-        } catch (RuntimeException re) {
-            returnError(exception:re, object:product)
+            Product.withTransaction {
+                bindData(_product, productParams, [include:['name','description','startDate','pkey']])
+                bindData(_product.preferences, productPreferencesParams, [exclude: ['archived']])
+                if(!productPreferencesParams?.stakeHolderRestrictedViews){
+                    _product.preferences.stakeHolderRestrictedViews = null
+                }
+                productService.update(_product, _product.preferences.isDirty('hidden'), _product.isDirty('pkey') ? _product.getPersistentValue('pkey'): null)
+                entry.hook(id:"${controllerName}-${actionName}", model:[product:_product])
+                render(status: 200, contentType: 'application/json', text:_product as JSON)
+            }
+        } catch (RuntimeException e) {
+            returnError(exception:e, object:_product)
             return
         }
-        render(status: 200, contentType: 'application/json', text:product as JSON)
     }
 
     @Secured('owner() or scrumMaster()')
@@ -798,8 +782,8 @@ class ProjectController {
     @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def updateTeam(long product) {
         // Param extraction
-        def teamParams = params.project?.remove('team')
-        def productParams = params.remove('project')
+        def teamParams = params.productd?.remove('team')
+        def productParams = params.remove('productd')
         def members = teamParams.members?.list('id').collect { it.toLong() } ?: []
         def scrumMasters = teamParams.scrumMasters?.list('id').collect { it.toLong() } ?: []
         def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []

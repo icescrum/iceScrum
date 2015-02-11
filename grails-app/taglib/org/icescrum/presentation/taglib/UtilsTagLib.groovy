@@ -38,7 +38,7 @@ import org.springframework.validation.Errors
 
 class UtilsTagLib {
 
-    static returnObjectForTags = ['internationalizeValues', 'exportFormats']
+    static returnObjectForTags = ['internationalizeValues', 'exportFormats', 'getMenuBarFromUiDefinitions']
 
     static namespace = 'is'
 
@@ -288,7 +288,8 @@ class UtilsTagLib {
         resultErrorsList
     }
 
-    private getMenuBarFromUiDefinitions(boolean splitHidden = true) {
+    def getMenuBarFromUiDefinitions = { attrs ->
+        def splitHidden = attrs.splitHidden != false
         def menus = splitHidden ? [visible:[], hidden:[]] : []
         uiDefinitionService.getDefinitions().each { String id, UiDefinition uiDefinition ->
             def menuBar = uiDefinition.menuBar

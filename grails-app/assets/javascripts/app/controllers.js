@@ -78,14 +78,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 controller: 'userCtrl'
             });
         };
-        $scope.showProjectMembersModal = function() {
-            $modal.open({
-                keyboard: false,
-                templateUrl: $scope.serverUrl + "/project/editMembers",
-                size: 'lg',
-                controller: 'editProjectMembersCtrl'
-            });
-        };
         $scope.menus = {
             visible:[],
             hidden:[]

@@ -105,7 +105,8 @@ icescrum.marshaller = [
         comment: [textile:['body'], include: ['poster']],
 
         product: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
-                  exclude:['cliches']],
+                  exclude:['cliches'],
+                  textile:['description']],
 
         team: [include:['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers']],
 
@@ -129,7 +130,8 @@ icescrum.marshaller = [
         activity: [include: ['important']],
 
         userpreferences:[asShort:['activity', 'language', 'emailsSettings']],
-        productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
+        productpreferences:[asShort:['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks', 'assignOnCreateTask',
+                                     'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment:[include: ['filename']],
         acceptancetest:[textile:['description'], asShort:['state']]
 ]

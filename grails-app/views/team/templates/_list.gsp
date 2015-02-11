@@ -27,7 +27,7 @@
             <img ng-src="{{ member | userAvatar }}" height="24" width="24" title="{{ member.username }}">
         </td>
         <td>
-            <span title="{{ member.username }}" class="text-overflow">{{ member.firstName }} {{ member.lastName }}</span>
+            <span title="{{ member.username }} ({{ member.email }})" class="text-overflow">{{ member.firstName }} {{ member.lastName }}</span>
             <span ng-show="!member.id"><small>${message(code:'todo.is.ui.user.will.be.invited')}</small></span>
         </td>
         <td class="text-right">

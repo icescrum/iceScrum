@@ -29,32 +29,32 @@ services.service("ProjectService", ['Project', 'Session', function(Project, Sess
         project.class = 'product';
         return Project.save(project).$promise;
     };
-
     this.getTeam = function(project) {
         return Project.get({ id: project.id, action: 'team' }, {}, function(team) {
             project.team = team;
         }).$promise;
     };
-
     this.updateTeam = function (project) {
-        // Wrap the product inside a "project" because by default the formObjectData function will turn it into a "product" object
+        // Wrap the product inside a "productd" because by default the formObjectData function will turn it into a "product" object
         // The "product" object conflicts with the "product" attribute expected by a filter which expects it to be either a number (id) or string (pkey)
-        return Project.update({ id: project.id, action: 'updateTeam' }, { project: project }).$promise;
+        return Project.update({ id: project.id, action: 'updateTeam' }, { productd: project }).$promise;
     };
-
+    this.update = function (project) {
+        return Project.update({ id: project.id }, { productd: project }).$promise;
+    };
     this.leaveTeam = function (project) {
         return Project.update({ id: project.id, action: 'leaveTeam' }, {}).$promise;
     };
-
+    this.archive = function(project) {
+        return Project.update({ id: project.id, action: 'archive' }, {}).$promise;
+    };
     this['delete'] = function(project) {
         return project.$delete();
     };
-
     this.authorizedProject = function(action, project) {
         switch (action) {
-            case 'edit':
+            case 'update':
                 return Session.owner(project) && Session.sm();
-            case 'owner':
             case 'delete':
                 return Session.owner(project);
             default:

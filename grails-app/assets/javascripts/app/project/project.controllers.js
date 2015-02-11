@@ -21,9 +21,20 @@
  *
  */
 controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$modal', function($scope, ProjectService, Session, $modal) {
-    $scope.currentProject = Session.getProject();
-
-    $scope.import = function(project) {
+    $scope.showProjectEditModal = function(view) {
+        var childScope = $scope.$new();
+        if (view) {
+            $scope.panel = { current: view };
+        }
+        $modal.open({
+            keyboard: false,
+            templateUrl: $scope.serverUrl + "/project/edit",
+            size: 'lg',
+            scope: childScope,
+            controller: 'editProjectModalCtrl'
+        });
+    };
+    $scope['import'] = function(project) {
         var url = $scope.serverUrl + "/project/import";
         $modal.open({
             keyboard: false,
@@ -73,8 +84,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             }]
         });
     };
-
-    $scope.export = function(project) {
+    $scope['export'] = function(project) {
         var modal = $modal.open({
             keyboard: false,
             templateUrl: "project/exportDialog",
@@ -96,21 +106,8 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             }
         );
     };
-
-    $scope['delete'] = function(project) {
-        $scope.confirm({
-            message:$scope.message('todo.is.ui.projectmenu.submenu.project.delete'),
-            callback:function(){
-                ProjectService.delete(project).then(function(){
-                    document.location = $scope.serverUrl;
-                });
-            }
-        })
-    };
-
-    $scope.authorizedProject = function(action, project) {
-       return ProjectService.authorizedProject(action, project);
-    };
+    // Init
+    $scope.currentProject = Session.getProject();
 }]);
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
@@ -142,8 +139,6 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
                 .value();
         });
     };
-    $scope.po = {};
-    $scope.sh = {};
     $scope.addUser = function(user, role){
         if(role == 'po'){
             $scope.project.productOwners.push(user);
@@ -195,34 +190,59 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
         p.invitedStakeHolders = invited(project.stakeHolders);
         p.invitedProductOwners = invited(project.productOwners);
         return p;
-    }
+    };
+    // Init
+    $scope.po = {};
+    $scope.sh = {};
 }]);
 
 controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session){
     $controller('abstractProjectCtrl', { $scope: $scope });
-
+    $scope.type = 'newProject';
+    $scope.openDatepicker = function($event, name) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        if ($scope[name]) {
+            $scope[name].opened = true;
+        }
+    };
+    $scope.isCurrentStep = function(index) {
+        return WizardHandler.wizard().currentStepNumber() == index;
+    };
+    $scope.createProject = function(project){
+        var p = $scope.prepareProject(project);
+        p.startDate = $filter('date')(project.startDate, "dd-MM-yyyy");
+        p.endDate = $filter('date')(project.endDate, "dd-MM-yyyy");
+        p.firstSprint = $filter('date')(project.firstSprint, "dd-MM-yyyy");
+        ProjectService.save(p).then(function(project) {
+            document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
+        });
+    };
+    $scope.teamEditable = function(team) {
+        return team.id == null;
+    };
+    // Init
     $scope.project = new Project();
-
+    var today = new Date();
+    today.setHours(0,0,0,0);
+    var endDate = new Date();
+    endDate.setHours(0,0,0,0);
+    endDate.setMonth(today.getMonth() + 3);
     angular.extend($scope.project, {
-        startDate:new Date(),
-        endDate:new Date(new Date().setMonth(new Date().getMonth()+3)),
-        planningPokerGameType:1,
-        preferences:{
-            noEstimation:false,
-            sprintDuration:14,
-            displayRecurrentTasks:true,
-            displayUrgentTasks:true,
-            hidden:true
+        startDate: today,
+        firstSprint: today,
+        endDate: endDate,
+        planningPokerGameType: 1,
+        preferences: {
+            noEstimation: false,
+            estimatedSprintsDuration: 14,
+            displayRecurrentTasks: true,
+            displayUrgentTasks: true,
+            hidden: true
         },
-        productOwners:[Session.user],
-        stakeHolders:[]
+        productOwners: [Session.user],
+        stakeHolders: []
     });
-
-    $scope.$watchCollection('[project.startDate, project.endDate]', function(newValues){
-        $scope.projectMinDate = new Date(newValues[0]).setDate(newValues[0].getDate()+1);
-        $scope.projectMaxDate = new Date(newValues[1]).setDate(newValues[1].getDate()-1);
-    });
-
     $scope.startDate = {
         startingDay: 1,
         opened:false,
@@ -233,49 +253,58 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
 
     };
     $scope.endDate = angular.copy($scope.startDate);
-
-    $scope.openDatepicker = function($event, openEndDate) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        if(openEndDate) {
-            $scope.endDate.opened = true;
-        } else {
-            $scope.startDate.opened = true;
-        }
-    };
-
-    $scope.isCurrentStep = function(index){
-        return WizardHandler.wizard().currentStepNumber() == index
-    };
-
-    $scope.createProject = function(project){
-        var p = $scope.prepareProject(project);
-        p.startDate = $filter('date')(project.startDate, "dd-MM-yyyy");
-        p.endDate = $filter('date')(project.endDate, "dd-MM-yyyy");
-        ProjectService.save(p).then(function(project) {
-            document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
-        });
-    };
-
-    $scope.teamEditable = function(team) {
-        return team.id == null;
-    };
+    $scope.firstSprint = angular.copy($scope.startDate);
+    $scope.$watchCollection('[project.startDate, project.endDate, project.firstSprint]', function(newValues) {
+        var startDate = newValues[0];
+        var endDate = newValues[1];
+        var firstSprint = newValues[2];
+        $scope.projectMinEndDate = new Date(startDate).setDate(firstSprint.getDate() + 1);
+        $scope.projectMaxStartDate = new Date(endDate).setDate(endDate.getDate() - 1);
+        $scope.sprintMaxStartDate = $scope.projectMaxStartDate;
+        $scope.sprintMinStartDate = startDate;
+    });
 }]);
 
-controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'ProjectService', 'Session', function($scope, $controller, ProjectService, Session) {
+controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
+    $scope.type = 'editProject';
+    $scope.authorizedProject = function(action, project) {
+        return ProjectService.authorizedProject(action, project);
+    };
+    $scope.setCurrentPanel = function(panel) {
+        $scope.panel.current = panel;
+    };
+    $scope.getCurrentPanel = function() {
+        return $scope.panel.current;
+    };
+    $scope.isCurrentPanel = function(panel) {
+        return $scope.panel.current == panel;
+    };
+    // Init
+    if (!$scope.panel) {
+        $scope.panel = { current: 'project' };
+    }
+    $scope.currentProject = Session.getProject();
+}]);
+
+controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.teamEditable = function() {
         return true;
     };
-    $scope.project = Session.getProject();
-    $scope.project.stakeHolders = $scope.project.stakeHolders.concat($scope.project.invitedStakeHolders);
-    $scope.project.productOwners = $scope.project.productOwners.concat($scope.project.invitedProductOwners);
-    $scope.teamPromise = ProjectService.getTeam($scope.project);
+    $scope.resetTeamForm = function() {
+        if ($scope.formHolder.editTeamForm) {
+            $scope.formHolder.editTeamForm.$setPristine();
+        }
+        $scope.project = angular.copy($scope.currentProject);
+        $scope.project.stakeHolders = $scope.project.stakeHolders.concat($scope.project.invitedStakeHolders);
+        $scope.project.productOwners = $scope.project.productOwners.concat($scope.project.invitedProductOwners);
+        $scope.teamPromise = ProjectService.getTeam($scope.project);
+    };
     $scope.updateProjectTeam = function(project) {
         var p = $scope.prepareProject(project);
         ProjectService.updateTeam(p)
             .then(function() {
-                $scope.$close();
+                $scope.resetTeamForm();
                 $scope.notifySuccess('todo.is.ui.project.members.updated');
             });
     };
@@ -283,5 +312,54 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Proj
         ProjectService.leaveTeam(project).then(function() {
             document.location.reload(true);
         });
-    }
+    };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetTeamForm();
+}]);
+
+controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
+    $scope.views = [];
+    $scope.update = function(project) {
+        $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).where({hidden : true}).map('id').value().join(',');
+        ProjectService.update(project)
+            .then(function(updatedProject) {
+                Session.setProject(updatedProject);
+                $scope.notifySuccess('todo.is.ui.project.general.updated');
+                $scope.resetProjectForm();
+            });
+    };
+    $scope.resetProjectForm = function() {
+        if ($scope.formHolder.editProjectForm) {
+            $scope.formHolder.editProjectForm.$setPristine();
+        }
+        $scope.project = angular.copy($scope.currentProject);
+        var restrictedViews = $scope.project.preferences.stakeHolderRestrictedViews ? $scope.project.preferences.stakeHolderRestrictedViews.split(',') : [];
+        $scope.views = _.chain($scope.applicationMenus).map(function(menu) {
+            return { title: menu.title, id: menu.id, hidden: _.contains(restrictedViews, menu.id) };
+        }).sortBy('title').value();
+    };
+    $scope['delete'] = function(project) {
+        $scope.confirm({
+            message:$scope.message('todo.is.ui.projectmenu.submenu.project.delete'),
+            callback:function(){
+                ProjectService.delete(project).then(function() {
+                    document.location = $scope.serverUrl;
+                });
+            }
+        })
+    };
+    $scope.archive = function(project) {
+        $scope.confirm({
+            message: $scope.message('is.dialog.project.archive.confirm'),
+            callback: function(){
+                ProjectService.archive(project).then(function() {
+                    document.location = $scope.serverUrl;
+                });
+            }
+        })
+    };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetProjectForm();
 }]);

@@ -475,6 +475,12 @@ isApp.config(['$stateProvider', '$httpProvider',
         $rootScope.initMessages = function(initMessages) {
             messages = initMessages;
         };
+
+        $rootScope.applicationMenus = [];
+        $rootScope.initApplicationMenus = function(initMenus) {
+            $rootScope.applicationMenus = initMenus;
+        };
+
         $rootScope.message = function(code, args) {
             var text = messages[code] ? messages[code] : code;
             angular.forEach(args, function(arg, index) {

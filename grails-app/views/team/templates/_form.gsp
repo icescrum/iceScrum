@@ -26,7 +26,7 @@
             <h4>${message(code:"is.dialog.wizard.section.team")}</h4>
             <p class="help-block">${message(code:'is.dialog.wizard.section.team.description')}</p>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <h4>${message(code:'is.team')}</h4>
             <label for="team.name">${message(code:'todo.is.ui.create.or.select.team')}</label>
             <p class="input-group typeahead">
@@ -48,7 +48,7 @@
             </p>
             <div ng-if="warning.on" class="help-block bg-danger">${ message(code: 'todo.is.ui.team.warning.product.members') }</div>
         </div>
-        <div class="col-sm-7" ng-show="team.selected">
+        <div class="col-sm-8" ng-show="team.selected">
             <h4>{{ team.name }} <small>{{ team.members.length }} ${message(code:'todo.is.ui.team.members')}</small></h4>
             <div ng-show="teamEditable(team)">
                 <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>

@@ -82,32 +82,17 @@
                                 ${message(code: 'todo.is.current.project')}
                             </li>
                             <li>
-                                <a hotkey="{ 'shift+t': hotkeyClick}" href ng-click="showProjectMembersModal()">
-                                    <g:message code="is.projectmenu.submenu.project.team"/> <small class="text-muted">(SHIFT+T)</small>
-                                </a>
-                            </li>
-                            <li ng-if="authorizedProject('edit', currentProject)">
-                                <a hotkey="{ 'shift+e': hotkeyClick}" href="#project/edit">
+                                <a hotkey="{ 'shift+e': hotkeyClick}" href ng-click="showProjectEditModal()">
                                     <g:message code="is.projectmenu.submenu.project.edit"/> <small class="text-muted">(SHIFT+E)</small>
-                                </a>
-                            </li>
-                            <li ng-if="authorizedProject('edit', currentProject)">
-                                <a hotkey="{ 'shift+d': hotkeyClick}" href="#project/practices">
-                                    <g:message code="is.projectmenu.submenu.project.editPractices"/> <small class="text-muted">(SHIFT+D)</small>
                                 </a>
                             </li>
                             <g:if test="${exportEnable && (request.scrumMaster || request.productOwner || request.owner)}">
                                 <li>
-                                    <a hotkey="{ 'shift+d': export}" href="" ng-click="export(currentProject)">
+                                    <a hotkey="{ 'shift+d': export}" href ng-click="export(currentProject)">
                                         <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
                                     </a>
                                 </li>
                             </g:if>
-                            <li ng-if="authorizedProject('delete', currentProject)">
-                                <a href ng-click="delete(currentProject)">
-                                    <g:message code="is.projectmenu.submenu.project.delete"/>
-                                </a>
-                            </li>
                         </g:if>
                         <g:if test="${productFilteredsList}">
                             <li role="presentation" class="divider" style='display:${productFilteredsList ?'block':'none'}'></li>
