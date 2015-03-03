@@ -94,7 +94,9 @@ grails.project.dependency.resolution = {
             compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"
             compile ":tomcat:1.3.9"
         }else{
-            compile ":tomcatnio:1.3.4"
+            compile (":tomcatnio:1.3.4") {
+                excludes 'httpclient'
+            }
         }
     }
 }
