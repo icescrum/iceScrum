@@ -281,6 +281,22 @@ function attachOnDomUpdate(content){
         }
     });
 
+    $('input[data-local-tags="true"]', content).each(function(){
+        var element = $(this);
+        var select = element.select2({
+            width: "240",
+            tags: element.data('tags').split(','),
+            tokenSeparators: [",", " "],
+            initSelection : function (element, callback) {
+                var data = [];
+                $(element.val().split(",")).each(function () {
+                    data.push({id: this, text: this});
+                });
+                callback(data);
+            }
+        });
+    });
+
     $('a[data-shortcut]', content).each(function(){
         var elem = $(this);
         var onClean = elem.data('shortcutOn') ? elem.data('shortcutOn').replace(/\W/g, '')  : 'body';
