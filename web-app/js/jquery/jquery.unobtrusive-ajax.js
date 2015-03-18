@@ -283,9 +283,10 @@ function attachOnDomUpdate(content){
 
     $('input[data-local-tags="true"]', content).each(function(){
         var element = $(this);
-        var select = element.select2({
+        var tags = element.data('tags') ? element.data('tags').split(',') : [];
+        var options = {
             width: "240",
-            tags: element.data('tags').split(','),
+            tags: tags,
             tokenSeparators: [",", " "],
             initSelection : function (element, callback) {
                 var data = [];
@@ -294,7 +295,13 @@ function attachOnDomUpdate(content){
                 });
                 callback(data);
             }
-        });
+        };
+        if (element.data('allow-create')) {
+            options.createSearchChoice = function (term) {
+                return { id:term, text:term };
+            }
+        }
+        var select = element.select2(options);
     });
 
     $('a[data-shortcut]', content).each(function(){
