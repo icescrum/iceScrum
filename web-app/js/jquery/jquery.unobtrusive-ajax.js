@@ -58,6 +58,7 @@ function getFunction(code, argNames) {
         confirm = element.data("ajaxConfirm");
         if (confirm){
             confirm = confirm.replace(/\\n/g,"\n");
+            confirm = confirm.replace(/\\'/g,"'");
         }
         if (confirm && !window.confirm(confirm)) {
             return;
