@@ -59,14 +59,12 @@
                             ${message(code:'is.ui.acceptanceTest.edit')}
                         </a>
                     -
-                        <is:link history="false"
-                                remote="true"
-                                controller="story"
-                                action="deleteAcceptanceTest"
-                                id="${acceptanceTest.id}"
-                                onSuccess="jQuery.event.trigger('remove_acceptancetest',data);">
+                        <a href="${createLink(controller: "story", action: "deleteAcceptanceTest", params: [product:params.product,id:acceptanceTest.id])}"
+                           data-ajax="true"
+                           data-ajax-confirm="${message(code:'is.ui.acceptanceTest.delete.confirm').encodeAsJavaScript()}"
+                           data-ajax-success="jQuery.event.trigger('remove_acceptancetest',data);">
                             ${message(code:'is.ui.acceptanceTest.delete')}
-                        </is:link>
+                        </a>
                     )
                 </span>
             </g:if>
