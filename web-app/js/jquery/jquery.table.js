@@ -5,7 +5,8 @@
     $.table = {
         defaults: {
             'classNameFocus' : 'table-row-focus',
-            'sortable':false
+            'sortable':false,
+            'sortableOptions': {}
         }
     };
 
@@ -67,7 +68,7 @@
                     });
 
                     if (settings.sortable){
-                        $(this).tablesorter();
+                        $(this).tablesorter(settings.sortableOptions);
                     }
                     return this;
                 },

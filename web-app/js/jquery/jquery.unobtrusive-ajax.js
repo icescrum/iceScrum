@@ -132,6 +132,16 @@ function getFunction(code, argNames) {
         });
     });
 
+    $(document).on("click", 'a[data-ajax-data=true]', function (evt) {
+        var a = $(this);
+        evt.preventDefault();
+        ajaxRequest(a, {
+            url:  a.attr('href'),
+            type: a.attr('method') ? a.attr('method') : 'GET',
+            data: a.data('ajaxDataSource') ? getFunction(a.data('ajaxDataSource'), []).apply(this, []) : []
+        });
+    });
+
     $(document).on("hover", 'div[data-dropmenu=true], li[data-searchmenu=true]', function(){
         var elemt = $(this);
         if(!elemt.data('created')){
