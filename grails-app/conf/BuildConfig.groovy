@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS
+ * Copyright (c) 2015 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -24,7 +24,7 @@
 import grails.util.GrailsNameUtils
 import grails.util.Environment
 
-grails.servlet.version = "3.0" // Change depending on target container compliance (2.5 or 3.0)
+grails.servlet.version = "3.0"
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -32,11 +32,10 @@ grails.project.target.level = 1.7
 grails.project.source.level = 1.7
 grails.project.war.file = "target/${appName}.war"
 grails.project.dependency.resolver = "maven"
-
 grails.project.war.osgi.headers = false
 grails.tomcat.nio = true
 
-if (Environment.current != Environment.PRODUCTION){
+if (Environment.current != Environment.PRODUCTION) {
     println "use inline plugin in env: ${Environment.current}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
 }
@@ -50,51 +49,39 @@ grails.war.resources = { stagingDir ->
 }
 
 grails.project.dependency.resolution = {
-    // inherit Grails' default dependencies
-    inherits("global"){
+    inherits("global") {
         excludes "xml-apis", "maven-publisher", "itext"
     }
-
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "warn"
     repositories {
         grailsPlugins()
         grailsCentral()
         grailsHome()
-
-        // uncomment the below to enable remote dependency resolution
-        // from public Maven repositories
-        //mavenLocal()
         mavenCentral()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
         mavenRepo "http://repository.codehaus.org"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
     }
-
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-        runtime 'mysql:mysql-connector-java:5.1.34'
-        build "com.lowagie:itext:2.1.7"
+        runtime 'mysql:mysql-connector-java:5.1.35'
+        build 'com.lowagie:itext:2.1.7'
     }
-
     plugins {
-        compile "org.icescrum:entry-points:1.0"
-
-        compile ":standalone:1.3"
-        compile ":cache-headers:1.1.7"
-        compile ":asset-pipeline:2.1.1"
-        compile ":less-asset-pipeline:2.0.8"
-        compile ":browser-detection:2.2.0"
-        // runtime ":database-migration:1.4.0" TODO enable new migration
-        runtime ":hibernate4:4.3.6.1"
-        build ":tomcat:7.0.55"
-        if (Environment.current == Environment.PRODUCTION){
-            compile "org.icescrum:icescrum-core:1.7-SNAPSHOT"
+        compile ':standalone:1.3'
+        compile ':cache-headers:1.1.7'
+        compile ':asset-pipeline:2.1.5'
+        compile ':less-asset-pipeline:2.0.8'
+        compile ':browser-detection:2.2.0'
+        // runtime ':database-migration:1.4.0' TODO enable new migration
+        runtime ':hibernate4:4.3.8.1'
+        build   ':tomcat:7.0.55.3'
+        compile 'org.icescrum:entry-points:1.0'
+        if (Environment.current == Environment.PRODUCTION) {
+            compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
         }
     }
 }
 
-//iceScrum plugins management
 def iceScrumPluginsDir = System.getProperty("icescrum.plugins.dir") ?: false
 println "Compile and use icescrum plugins : ${iceScrumPluginsDir ? true : false}"
 
