@@ -253,6 +253,8 @@ println "log dir : ${icescrum.log.dir}"
 log4j = {
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
+    debug 'org.apache.http'
+
     error 'org.codehaus.groovy.grails.plugins',
           'org.grails.plugin',
           'grails.app'
