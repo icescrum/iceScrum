@@ -198,7 +198,7 @@ var formObjectData = function (obj, prefix) {
 
     for (name in obj) {
         value = obj[name];
-        if (value instanceof Array && !_.str.endsWith(name, '_ids')) {
+        if (value instanceof Array && !_.endsWith(name, '_ids')) {
             for (i = 0; i < value.length; ++i) {
                 subValue = value[i];
                 innerObj = {};
@@ -208,7 +208,7 @@ var formObjectData = function (obj, prefix) {
         }
         else if (value instanceof Object) {
             for (subName in value) {
-                if (subName != 'class' && !_.str.startsWith(subName, '$')) {
+                if (subName != 'class' && !_.startsWith(subName, '$')) {
                     subValue = value[subName];
                     fullSubName = name + '.' + subName;
                     innerObj = {};
@@ -222,9 +222,9 @@ var formObjectData = function (obj, prefix) {
             //no class info needed
             && !_.contains(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
             //no angular object
-            && !_.str.startsWith(name, '$')
+            && !_.startsWith(name, '$')
             //no custom count / html values
-            && !_.str.endsWith(name, '_count') && !_.str.endsWith(name, '_html')) {
+            && !_.endsWith(name, '_count') && !_.endsWith(name, '_html')) {
             query += encodeURIComponent(_prefix + name) + '=' + encodeURIComponent(value) + '&';
         }
     }

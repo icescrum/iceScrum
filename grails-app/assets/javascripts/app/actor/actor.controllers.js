@@ -160,13 +160,8 @@ controllers.controller('actorNewCtrl', ['$scope', '$state', '$controller', 'Acto
 controllers.controller('actorMultipleCtrl', ['$scope', '$controller', 'listId', 'ActorService', function($scope, $controller, listId, ActorService) {
     $controller('actorCtrl', { $scope: $scope }); // inherit from actorCtrl
     // Functions
-    function sum(actors, extractField) {
-        return _.reduce(actors, function(sum, actor) {
-            return sum + (extractField(actor) ? extractField(actor) : 0);
-        }, 0);
-    }
     $scope.sumStories = function(actors) {
-        return sum(actors, function(actor) { return actor.stories_ids.length; });
+        return _.sum(actors, function(actor) { return actor.stories_ids.length; });
     };
     $scope.deleteMultiple = function() {
         // TODO cancellable delete ?

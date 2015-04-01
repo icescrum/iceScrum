@@ -48,7 +48,7 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
     };
     this.update = function(feature) {
         return feature.$update(function(data) {
-            var index = self.list.indexOf(_.findWhere(self.list, { id: feature.id }));
+            var index = self.list.indexOf(_.find(self.list, { id: feature.id }));
             if (index != -1) {
                 self.list.splice(index, 1, data);
             }
@@ -72,7 +72,7 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
     this.updateMultiple = function(ids, updatedFields) {
         return Feature.updateArray({ id: ids }, { feature: updatedFields }, function(features) {
             angular.forEach(features, function(feature) {
-                var index = self.list.indexOf(_.findWhere(self.list, { id: feature.id }));
+                var index = self.list.indexOf(_.find(self.list, { id: feature.id }));
                 if (index != -1) {
                     self.list.splice(index, 1, feature);
                 }

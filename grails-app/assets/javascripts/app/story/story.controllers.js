@@ -525,19 +525,14 @@ controllers.controller('storyDetailsCommentsCtrl', ['$scope', '$controller', 'Co
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
     // Functions
-    function sum(stories, extractField) {
-        return _.reduce(stories, function(sum, story) {
-            return sum + (extractField(story) ? extractField(story) : 0);
-        }, 0);
-    }
     $scope.sumPoints = function(stories) {
-        return sum(stories, function(story) { return story.effort; });
+        return _.sum(stories, 'effort');
     };
     $scope.sumTasks = function(stories) {
-        return sum(stories, function(story) { return story.tasks_count; });
+        return _.sum(stories, 'tasks_count');
     };
     $scope.sumAcceptanceTests = function(stories) {
-        return sum(stories, function(story) { return story.acceptanceTests_count; });
+        return _.sum(stories, 'acceptanceTests_count');
     };
     $scope.deleteMultiple = function() {
         // TODO cancellable delete ?

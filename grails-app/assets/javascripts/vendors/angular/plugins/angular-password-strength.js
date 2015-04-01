@@ -80,12 +80,15 @@ angular.module('ngPasswordStrength', [
                             counts.neg.consecUpper = matches.neg.consecUpper ? matches.neg.consecUpper.length : 0;
                             counts.neg.consecNumbers = matches.neg.consecNumbers ? matches.neg.consecNumbers.length : 0;
 
+                            var reverse = function(str) {
+                                return str == null ? '' : str.split('').reverse().join('');
+                            };
 
                             // sequential letters (back and forth)
                             for (i = 0; i < letters.length - 2; i++) {
                                 var p2 = p.toLowerCase();
                                 forth = letters.substring(i, parseInt(i + 3));
-                                back = _.str.reverse(forth);
+                                back = reverse(forth);
                                 if (p2.indexOf(forth) !== -1 || p2.indexOf(back) !== -1) {
                                     counts.neg.seqLetter++;
                                 }
@@ -94,7 +97,7 @@ angular.module('ngPasswordStrength', [
                             // sequential numbers (back and forth)
                             for (i = 0; i < numbers.length - 2; i++) {
                                 forth = numbers.substring(i, parseInt(i + 3));
-                                back = _.str.reverse(forth);
+                                back = reverse(forth);
                                 if (p.indexOf(forth) !== -1 || p.toLowerCase().indexOf(back) !== -1) {
                                     counts.neg.seqNumber++;
                                 }
@@ -103,7 +106,7 @@ angular.module('ngPasswordStrength', [
                             // sequential symbols (back and forth)
                             for (i = 0; i < symbols.length - 2; i++) {
                                 forth = symbols.substring(i, parseInt(i + 3));
-                                back = _.str.reverse(forth);
+                                back = reverse(forth);
                                 if (p.indexOf(forth) !== -1 || p.toLowerCase().indexOf(back) !== -1) {
                                     counts.neg.seqSymbol++;
                                 }

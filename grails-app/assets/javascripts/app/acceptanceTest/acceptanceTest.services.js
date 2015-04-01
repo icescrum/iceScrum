@@ -42,7 +42,7 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
     };
     this.update = function(acceptanceTest, story) {
         return acceptanceTest.$update(function(returnedAcceptanceTest) {
-            angular.extend(_.findWhere(story.acceptanceTests, { id: returnedAcceptanceTest.id }), returnedAcceptanceTest);
+            angular.extend(_.find(story.acceptanceTests, { id: returnedAcceptanceTest.id }), returnedAcceptanceTest);
         });
     };
     this.list = function(story) {

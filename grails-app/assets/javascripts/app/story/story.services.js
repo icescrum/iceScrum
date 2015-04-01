@@ -100,7 +100,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     };
     this.update = function(story) {
         return Story.update(story, function(updatedStory) {
-            var index = self.list.indexOf(_.findWhere(self.list, { id: story.id }));
+            var index = self.list.indexOf(_.find(self.list, { id: story.id }));
             if (index != -1) {
                 self.list.splice(index, 1, updatedStory);
             }
@@ -156,7 +156,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     this.updateMultiple = function(ids, updatedFields) {
         return Story.updateArray({ id: ids }, { story: updatedFields }, function(stories) {
             angular.forEach(stories, function(story) {
-                var index = self.list.indexOf(_.findWhere(self.list, { id: story.id }));
+                var index = self.list.indexOf(_.find(self.list, { id: story.id }));
                 if (index != -1) {
                     self.list.splice(index, 1, story);
                 }
@@ -191,7 +191,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     this.followMultiple = function(ids, follow) {
         return Story.updateArray({ id: ids, action: 'follow' }, { follow: follow }, function(stories) {
             angular.forEach(stories, function(story) {
-                var index = self.list.indexOf(_.findWhere(self.list, { id: story.id }));
+                var index = self.list.indexOf(_.find(self.list, { id: story.id }));
                 if (index != -1) {
                     self.list.splice(index, 1, story);
                 }

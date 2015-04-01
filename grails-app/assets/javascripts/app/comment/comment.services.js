@@ -50,7 +50,7 @@ services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Com
         comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
         return comment.$update(function(returnedComment) {
-            angular.extend(_.findWhere(commentable.comments, { id: comment.id }), returnedComment);
+            angular.extend(_.find(commentable.comments, { id: comment.id }), returnedComment);
         });
     };
     this.list = function(commentable) {
