@@ -1,6 +1,6 @@
 /**
  * BEEN CUSTOMISEDDDDD !!! Easy to use Wizard library for AngularJS
- * @version v0.4.0 - 2014-07-10 * @link https://github.com/mgonto/angular-wizard
+ * @version v0.4.2 - 2015-01-01 * @link https://github.com/mgonto/angular-wizard
  * @author Martin Gontovnikas <martin@gon.to>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -8,8 +8,8 @@ angular.module('templates-angularwizard', ['step.html', 'wizard.html']);
 
 angular.module("step.html", []).run(["$templateCache", function($templateCache) {
     $templateCache.put("step.html",
-            "<section ng-show=\"selected\" ng-class=\"{current: selected, done: completed}\" class=\"step\" ng-transclude>\n" +
-            "</section>");
+        "<section ng-show=\"selected\" ng-class=\"{current: selected, done: completed}\" class=\"step\" ng-transclude>\n" +
+        "</section>");
 }]);
 
 angular.module("wizard.html", []).run(["$templateCache", function($templateCache) {
@@ -34,7 +34,9 @@ angular.module('mgo-angular-wizard').directive('wzStep', function() {
         transclude: true,
         scope: {
             wzTitle: '@',
-            title: '@'
+            title: '@',
+            canenter : '=',
+            canexit : '='
         },
         require: '^wizard',
         templateUrl: function(element, attributes) {
@@ -62,14 +64,17 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
         templateUrl: function(element, attributes) {
             return attributes.template || "wizard.html";
         },
-        controller: ['$scope', '$element', 'WizardHandler', function($scope, $element, WizardHandler) {
+        controller: ['$scope', '$element', '$log', 'WizardHandler', function($scope, $element, $log, WizardHandler) {
 
+            var firstRun = true;
             WizardHandler.addWizard($scope.name || WizardHandler.defaultName, this);
             $scope.$on('$destroy', function() {
                 WizardHandler.removeWizard($scope.name || WizardHandler.defaultName);
             });
 
             $scope.steps = [];
+
+            $scope.context = {};
 
             $scope.$watch('currentStep', function(step) {
                 if (!step) return;
@@ -98,19 +103,59 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 }
             };
 
+            this.context = $scope.context;
+
+            $scope.getStepNumber = function(step) {
+                return _.indexOf($scope.steps, step) + 1;
+            };
+
             $scope.goTo = function(step) {
-                unselectAll();
-                $scope.selectedStep = step;
-                if (!_.isUndefined($scope.currentStep)) {
-                    $scope.currentStep = step.title || step.wzTitle;
+                if(firstRun){
+                    unselectAll();
+                    $scope.selectedStep = step;
+                    if (!_.isUndefined($scope.currentStep)) {
+                        $scope.currentStep = step.title || step.wzTitle;
+                    }
+                    step.selected = true;
+                    $scope.$emit('wizard:stepChanged', {step: step, index: _.indexOf($scope.steps , step)});
+                    firstRun = false;
+                } else {
+                    var thisStep;
+                    var exitallowed = false;
+                    var enterallowed = false;
+                    if($scope.currentStepNumber() > 0){
+                        thisStep = $scope.currentStepNumber() - 1;
+                    } else if ($scope.currentStepNumber() === 0){
+                        thisStep = 0;
+                    }
+                    if(typeof($scope.steps[thisStep].canexit) === 'undefined' || $scope.steps[thisStep].canexit($scope.context) === true){
+                        exitallowed = true;
+                    }
+                    if($scope.getStepNumber(step) < $scope.currentStepNumber()){
+                        exitallowed = true;
+                    }
+                    if(exitallowed && step.canenter === undefined || exitallowed && step.canenter($scope.context) === true){
+                        enterallowed = true;
+                    }
+
+                    if(exitallowed && enterallowed){
+                        unselectAll();
+
+                        $scope.selectedStep = step;
+                        if (!_.isUndefined($scope.currentStep)) {
+                            $scope.currentStep = step.title || step.wzTitle;
+                        }
+                        step.selected = true;
+                        $scope.$emit('wizard:stepChanged', {step: step, index: _.indexOf($scope.steps , step)});
+                    } else {
+                        return;
+                    }
                 }
-                step.selected = true;
-                $scope.$emit('wizard:stepChanged', {step: step, index: _.indexOf($scope.steps , step)});
             };
 
             $scope.currentStepNumber = function() {
                 return _.indexOf($scope.steps , $scope.selectedStep) + 1;
-            }
+            };
 
             function unselectAll() {
                 _.each($scope.steps, function (step) {
@@ -119,9 +164,23 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 $scope.selectedStep = null;
             }
 
-            this.next = function(draft) {
+            this.currentStepNumber = function(){
+                return $scope.currentStepNumber();
+            };
+            this.next = function(callback) {
                 var index = _.indexOf($scope.steps , $scope.selectedStep);
-                if (!draft) {
+                if(angular.isFunction(callback)){
+                    if(callback()){
+                        if (index === $scope.steps.length - 1) {
+                            this.finish();
+                        } else {
+                            $scope.goTo($scope.steps[index + 1]);
+                        }
+                    } else {
+                        return;
+                    }
+                }
+                if (!callback) {
                     $scope.selectedStep.completed = true;
                 }
                 if (index === $scope.steps.length - 1) {
@@ -130,10 +189,6 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     $scope.goTo($scope.steps[index + 1]);
                 }
             };
-
-            this.currentStepNumber = function() {
-                return _.indexOf($scope.steps , $scope.selectedStep) + 1;
-            }
 
             this.goTo = function(step) {
                 var stepTo;
