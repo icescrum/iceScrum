@@ -25,19 +25,19 @@
     <div class="row wizard-row">
         <ul class="steps-indicator col-sm-3 nav nav-list">
             <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('general') }">
-                <a ng-click="setCurrentPanel('general')">${ message(code: 'is.dialog.wizard.section.project')}</a>
+                <a ng-click="setCurrentPanel('general')"><i class="fa fa-pencil"></i> ${ message(code: 'is.dialog.wizard.section.project')}</a>
             </li>
             <li ng-class="{ current: isCurrentPanel('team') }">
-                <a ng-click="setCurrentPanel('team')">${ message(code: 'is.dialog.wizard.section.team')}</a>
+                <a ng-click="setCurrentPanel('team')"><i class="fa fa-users"></i> ${ message(code: 'is.dialog.wizard.section.team')}</a>
             </li>
             <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('practices') }">
-                <a ng-click="setCurrentPanel('practices')">${ message(code: 'is.dialog.wizard.section.practices')}</a>
+                <a ng-click="setCurrentPanel('practices')"><i class="fa fa-sliders"></i> ${ message(code: 'todo.is.ui.practices')}</a>
             </li>
             <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('planning') }">
-                <a ng-click="setCurrentPanel('planning')">${ message(code: 'is.dialog.wizard.section.planning')}</a>
+                <a ng-click="setCurrentPanel('planning')"><i class="fa fa-calendar"></i> ${ message(code: 'todo.is.ui.planning')}</a>
             </li>
             <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('administration') }">
-                <a ng-click="setCurrentPanel('administration')">${ message(code: 'is.dialog.wizard.section.administration')}</a>
+                <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> ${ message(code: 'todo.is.ui.administration')}</a>
             </li>
         </ul>
         <div class="steps col-sm-9" ng-switch="getCurrentPanel()">
@@ -53,17 +53,17 @@
             </section>
             <section ng-switch-when="practices"
                      class="step current"
-                     title="${ message(code: 'is.dialog.wizard.section.practices')}">
+                     title="${ message(code: 'todo.is.ui.practices')}">
                 <div ng-include="'edit.practices.project.html'"></div>
             </section>
             <section ng-switch-when="planning"
                      class="step current"
-                     title="${ message(code: 'is.dialog.wizard.section.planning')}">
+                     title="${ message(code: 'todo.is.ui.planning')}">
                 <div ng-include="'edit.planning.project.html'"></div>
             </section>
             <section ng-switch-when="administration"
                      class="step current"
-                     title="${ message(code: 'is.dialog.wizard.section.administration')}">
+                     title="${ message(code: 'todo.is.ui.administration')}">
                 <div ng-include="'edit.administration.project.html'"></div>
             </section>
         </div>
