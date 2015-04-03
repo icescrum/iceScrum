@@ -129,4 +129,7 @@
             </div>
         </div>
     </div>
+    <div class="empty-content" ng-show="!story.acceptanceTests.length">
+        <small>${message(code:'todo.is.ui.activities.empty')}</small>
+    </div>
 </script>
