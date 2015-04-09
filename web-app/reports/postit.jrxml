@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="postit" language="groovy" pageWidth="405" pageHeight="283" orientation="Landscape" columnWidth="405" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="grails-app/i18n/report" whenResourceMissingType="Error">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="postit" language="groovy" pageWidth="405" pageHeight="283" orientation="Landscape" columnWidth="405" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="grails-app/i18n/report" whenResourceMissingType="Error" uuid="2c18d62c-e006-4199-b0e7-7100105b2d1b">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -58,7 +58,7 @@
 	<field name="permalink" class="java.lang.String"/>
 	<field name="dependsOn" class="java.lang.String"/>
 	<field name="nbTestsTocheck" class="java.lang.Number"/>
-	<field name="nbTestsFailed" class="java.lang.String"/>
+	<field name="nbTestsFailed" class="java.lang.Number"/>
 	<field name="nbTestsSuccess" class="java.lang.Number"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -66,21 +66,21 @@
 	<detail>
 		<band height="283" splitType="Stretch">
 			<textField>
-				<reportElement x="5" y="6" width="209" height="47"/>
+				<reportElement uuid="eef230c2-ea48-4514-a4f1-3e2a284c4f61" x="5" y="6" width="209" height="47"/>
 				<textElement verticalAlignment="Top">
 					<font size="16" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="26" width="138" height="20"/>
+				<reportElement uuid="98e1328e-249e-4a88-ab34-3b879ff6422b" x="262" y="26" width="138" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{effort}!=null?$F{effort}+" - ":"")+($F{state})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="262" y="258" width="116" height="20" isRemoveLineWhenBlank="true">
+				<reportElement uuid="03ecc044-5887-45a8-9553-1a4da7a4ecfc" mode="Opaque" x="262" y="258" width="116" height="20" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$F{featureColor}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -89,15 +89,15 @@
 				<textFieldExpression><![CDATA[$F{feature}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="5" y="52" width="252" height="226" isRemoveLineWhenBlank="true"/>
+				<reportElement uuid="df96039e-34ea-448f-b986-e665a2e45548" x="5" y="52" width="252" height="226" isRemoveLineWhenBlank="true"/>
 				<textElement verticalAlignment="Top" markup="html"/>
 				<textFieldExpression><![CDATA[$F{description}!=null?$F{description}+"\n\n":""+$F{notes}!=null?$F{notes}:""]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="259" y="53" width="1" height="225"/>
+				<reportElement uuid="5dfde441-65a7-48ee-be2d-634d677e0e52" x="259" y="53" width="1" height="225"/>
 			</line>
 			<rectangle>
-				<reportElement style="featureColor" x="378" y="258" width="22" height="19" isRemoveLineWhenBlank="true">
+				<reportElement uuid="19a17fc6-e6d6-4ebb-924c-71e3b10644e7" style="featureColor" x="378" y="258" width="22" height="19" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[$F{featureColor}!=null]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -105,84 +105,84 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="262" y="6" width="138" height="20"/>
+				<reportElement uuid="6aa0b2bd-3f7c-4094-95c1-2db533314f28" x="262" y="6" width="138" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["ID: "+$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="90" width="71" height="20"/>
+				<reportElement uuid="9303edd9-fd20-44cc-8b50-27f992cf1452" x="329" y="90" width="71" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="90" width="67" height="20"/>
+				<reportElement uuid="eb4c7f11-52b5-4bdf-bde3-9c950f4d27fc" x="262" y="90" width="67" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.type}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="111" width="67" height="20"/>
+				<reportElement uuid="a27f798d-e17f-4d0d-8c48-b9731506853d" x="262" y="111" width="67" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.creator}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="111" width="71" height="20"/>
+				<reportElement uuid="2794fa02-b305-4533-ac9b-ebf34d291f44" x="329" y="111" width="71" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{creator}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="132" width="67" height="20">
+				<reportElement uuid="d5f48a56-3c63-4d96-b562-25ab82135fe8" x="262" y="132" width="67" height="20">
 					<printWhenExpression><![CDATA[$F{dependsOn}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.dependsOn}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="262" y="153" width="138" height="20" isRemoveLineWhenBlank="true"/>
+				<reportElement uuid="e04cb59a-d951-464e-90aa-6bfaab91b816" x="262" y="153" width="138" height="20" isRemoveLineWhenBlank="true"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{dependsOn}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="69" width="67" height="20">
+				<reportElement uuid="e7af8b25-1eca-4e3a-92e0-56213d90c645" x="262" y="69" width="67" height="20">
 					<printWhenExpression><![CDATA[$F{rank}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.rank}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="329" y="69" width="71" height="20" isRemoveLineWhenBlank="true"/>
+				<reportElement uuid="e4444b63-7adc-40dc-b110-94366c426112" x="329" y="69" width="71" height="20" isRemoveLineWhenBlank="true"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rank}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="262" y="50" width="138" height="20" isRemoveLineWhenBlank="true"/>
+				<reportElement uuid="f0d99c65-0d61-4368-953b-eb18854118e1" x="262" y="50" width="138" height="20" isRemoveLineWhenBlank="true"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sprint}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="213" y="6" width="45" height="45"/>
+				<reportElement uuid="e172fe1c-299a-4087-8639-68e4dfb98a96" x="213" y="6" width="45" height="45"/>
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.qrcode.QRCodeWriter().encode($F{permalink}, com.google.zxing.BarcodeFormat.QR_CODE, 400, 400))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="262" y="174" width="110" height="20">
+				<reportElement uuid="d51ad6b0-89a4-42a4-9839-d465c34a676f" x="262" y="174" width="110" height="20">
 					<printWhenExpression><![CDATA[$F{nbTestsTocheck}!=null && $F{nbTestsTocheck} > 0]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.tests.tocheck}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="372" y="174" width="28" height="20">
+				<reportElement uuid="4f821713-df36-40c0-bcb2-e409540f18e7" x="372" y="174" width="28" height="20">
 					<printWhenExpression><![CDATA[$F{nbTestsTocheck}!=null && $F{nbTestsTocheck} > 0]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -191,7 +191,7 @@
 				<textFieldExpression><![CDATA[$F{nbTestsTocheck}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="372" y="195" width="28" height="20">
+				<reportElement uuid="aec6cf42-f106-4a9a-9295-2253a8454983" x="372" y="195" width="28" height="20">
 					<printWhenExpression><![CDATA[$F{nbTestsFailed}!=null && $F{nbTestsFailed} > 0]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -200,21 +200,21 @@
 				<textFieldExpression><![CDATA[$F{nbTestsFailed}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="195" width="110" height="20">
+				<reportElement uuid="26816719-3ec2-4ff6-8dd2-7d04610719cd" x="262" y="195" width="110" height="20">
 					<printWhenExpression><![CDATA[$F{nbTestsFailed}!=null && $F{nbTestsFailed} > 0]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.tests.failed}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="262" y="215" width="110" height="20">
+				<reportElement uuid="5b698301-51f9-4ac2-ab71-9f6d18f939c4" x="262" y="215" width="110" height="20">
 					<printWhenExpression><![CDATA[$F{nbTestsSuccess}!=null && $F{nbTestsSuccess} > 0]]></printWhenExpression>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{is.report.postit.tests.success}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="372" y="215" width="28" height="20">
+				<reportElement uuid="41fe8b32-1347-4e69-847e-b4fdad21744d" x="372" y="215" width="28" height="20">
 					<printWhenExpression><![CDATA[$F{nbTestsSuccess}!=null && $F{nbTestsSuccess} > 0]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
