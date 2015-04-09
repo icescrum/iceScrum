@@ -70,7 +70,7 @@ grails.project.dependency.resolution = {
         compile ':standalone:1.3'
         compile ':cache-headers:1.1.7'
         compile ':asset-pipeline:2.1.5'
-        compile ':less-asset-pipeline:2.0.8'
+        compile ':less-asset-pipeline:2.1.0'
         compile ':browser-detection:2.2.0'
         // runtime ':database-migration:1.4.0' TODO enable new migration
         runtime ':hibernate4:4.3.8.1'
