@@ -2105,13 +2105,31 @@ li#li-roles {
     overflow: auto;
 }
 
-#member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item img {
+.members-list#sh-list, .private-project .members-list#po-list {
+    height:158px;
+}
+
+.private-project .members-list#po-list {
+    background-image: url(../images/application/separator-h.png);
+    background-repeat: repeat-x;
+    background-position: 0 bottom;
+}
+
+.members-list#sh-list, #sh-search {
+    display: none;
+}
+
+.private-project .members-list#sh-list, .private-project #sh-search {
+    display: block;
+}
+
+.member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item img {
     margin:4px;
     float:left;
     width:40px;
 }
 
-#member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item a {
+.member-autocomplete .ui-autocomplete.ui-menu .ui-menu-item a {
     padding: 0;
     float: left;
     width: 100%;
@@ -2130,6 +2148,12 @@ li#li-roles {
 .members-list .member .avatar {
     float:left;
     margin:2px;
+}
+
+.members-list .member .scrum-master-checkbox {
+    width: auto;
+    margin: 0;
+    padding: 6px 0 0 0;
 }
 
 .members-list .member .fullname,.members-list .member .activity {

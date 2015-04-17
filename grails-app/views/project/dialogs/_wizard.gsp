@@ -26,10 +26,17 @@
         withTitlebar="false"
         width="800"
         draggable="false">
-<is:wizard next="is.dialog.wizard.next" cancel="is.button.cancel" previous="is.dialog.wizard.previous"
-           submit="is.dialog.wizard.submit" id="project-wizard" controller="project"
+<is:wizard next="is.dialog.wizard.next"
+           cancel="is.button.cancel"
+           previous="is.dialog.wizard.previous"
+           submit="is.dialog.wizard.submit"
+           id="project-wizard"
+           class="${product.preferences.hidden ? 'private-project' : ''}"
+           controller="project"
            before="\$('#choose-select-is-team-teams').empty();\$('#choose-select-is-team-members').empty();"
-           onSuccess="jQuery('#dialog').dialog('close'); jQuery.icescrum.renderNotice('${message(code:'is.product.saved.redirect')}'); jQuery.event.trigger('redirect_product',data);" update="dialog" action="save">
+           onSuccess="jQuery('#dialog').dialog('close'); jQuery.icescrum.renderNotice('${message(code:'is.product.saved.redirect')}'); jQuery.event.trigger('redirect_product',data);"
+           update="dialog"
+           action="save">
 
     <is:fieldset title="is.dialog.wizard.section.project" description="is.dialog.wizard.section.project.description">
         <is:fieldInput for="productname" label="is.product.name">
@@ -40,7 +47,14 @@
                       name="product.pkey" value="${product.pkey}"/>
         </is:fieldInput>
         <is:fieldRadio rendered="${!privateOption}" for="product.preferences.hidden" label="is.product.preferences.project.hidden">
-            <is:radio id="product.preferences.hidden" name="product.preferences.hidden" value="${product.preferences.hidden}"/>
+            <is:radio id="product.preferences.hidden"
+                      name="product.preferences.hidden"
+                      value="${product.preferences.hidden}"
+                      onClick="var isPrivate = jQuery(this).val() == 1;
+                               jQuery('#project-wizard').toggleClass('private-project', isPrivate);
+                               if (!isPrivate) {
+                                   jQuery('#sh-list').html('')
+                               }"/>
         </is:fieldRadio>
         <is:fieldSelect for="product.preferences.timezone" label="is.product.preferences.timezone">
           <is:localeTimeZone width="250" name="product.preferences.timezone" value="UTC"/>
@@ -50,38 +64,91 @@
         </is:fieldArea>
     </is:fieldset>
 
-    <is:fieldset title="is.dialog.wizard.section.team" description="is.dialog.wizard.section.team.description" id="member-autocomplete">
-        <is:fieldInput for="find-members" label="is.dialog.wizard.section.team.find" class="members">
-            <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
+    <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
+
+    <is:fieldset title="is.dialog.wizard.section.team"
+                 description="is.dialog.wizard.section.team.description"
+                 id="team-member-autocomplete"
+                 class="member-autocomplete">
+        <is:fieldSelect for="team.id"
+                        label="is.team">
+            <input id="teamFinder"
+                   type="hidden"
+                   value=""
+                   data-width="242"
+                   data-ajax-select="true"
+                   data-url="${createLink(controller: 'members', action:'getTeamEntries')}"
+                   data-placeholder="${message(code:'is.ui.team.choose')}"
+                   data-create-choice="true"
+                   data-change="jQuery.icescrum.product.teamChange"/>
+        </is:fieldSelect>
+        <input type="hidden" id="teamId" name="team.id" value=""/>
+        <input type="hidden" id="teamName" name="team.name" value=""/>
+        <is:fieldInput for="find-team-members" style="display:none" label="is.dialog.wizard.section.team.find" class="members">
             <is:autoCompleteSkin
                         controller="user"
                         action="findUsers"
                         cache="true"
                         filter="jQuery('#member'+object.id).length == 0 ? true : false"
                         id="members"
-                        name="find-members"
-                        appendTo="#member-autocomplete"
-                        onSelect="attachOnDomUpdate(jQuery('.members-list').jqoteapp('#user-tmpl', ui.item));"
+                        name="find-team-members"
+                        appendTo="#team-member-autocomplete"
+                        onSelect="ui.item.editable = true;
+                                  if (jQuery('#role'+ui.item.id).length && jQuery('#role'+ui.item.id).val() == ${Authority.PRODUCTOWNER}) {
+                                      ui.item.role = ${Authority.PO_AND_SM};
+                                      jQuery('#role'+ui.item.id).val(${Authority.PO_AND_SM});
+                                  } else {
+                                      ui.item.role = ${Authority.MEMBER};
+                                  }
+                                  attachOnDomUpdate(jQuery('#team-member-list').jqoteapp('#user-tmpl', ui.item));"
                         renderItem="${link}"
                         minLength="2"/>
         </is:fieldInput>
-        <div class="members-list">
-            <span class="member ui-corner-all" id='member${user.id}'>
-                <span class="button-s">
-                    <span style="display: block;" class="button-action button-delete" onclick="jQuery(this).closest('.member').remove();">del</span>
-                </span>
-                <img src="${is.avatar([user:user,link:true])}" height="48" class="avatar" width="48"/>
-                <span class="fullname">${is.truncated(value:user.firstName+" "+user.lastName,size:17)}</span>
-                <span class="activity">${user.preferences.activity?:'&nbsp;'}</span>
-                <input type="hidden" name="members.${user.id}" value="${user.id}"/>
-                 <is:select width="110"
-                            id="${new Date().time}"
-                            from="${BundleUtils.roles.values().collect {v -> message(code: v)}}"
-                            keys="${BundleUtils.roles.keySet().asList()}"
-                            name="role.${user.id}"
-                            value="${Authority.PO_AND_SM}"/>
-            </span>
-        </div>
+        <div id="team-member-list" class="members-list"></div>
+    </is:fieldset>
+
+    <is:fieldset title="is.dialog.wizard.section.product.members"
+                 description="is.dialog.wizard.section.product.members.description"
+                 id="product-member-autocomplete"
+                 class="member-autocomplete">
+        <is:fieldInput for="find-pos" label="is.dialog.wizard.section.pos.find" class="members">
+            <is:autoCompleteSkin
+                        controller="user"
+                        action="findUsers"
+                        cache="true"
+                        filter="jQuery('#member'+object.id).length == 0 || jQuery('#role'+object.id).val() == ${Authority.SCRUMMASTER}"
+                        id="pos"
+                        name="find-pos"
+                        appendTo="#product-member-autocomplete"
+                        onSelect="ui.item.editable = true;
+                                  if (jQuery('#role'+ui.item.id).length && jQuery('#role'+ui.item.id).val() == ${Authority.SCRUMMASTER}) {
+                                      ui.item.role = ${Authority.PO_AND_SM};
+                                      jQuery('#role'+ui.item.id).val(${Authority.PO_AND_SM});
+                                      jQuery('#scrum-master-'+ui.item.id).attr('disabled', 'disabled');
+                                  } else {
+                                      ui.item.role = ${Authority.PRODUCTOWNER};
+                                  }
+                                  attachOnDomUpdate(jQuery('#po-list').jqoteapp('#user-tmpl', ui.item));"
+                        renderItem="${link}"
+                        minLength="2"/>
+        </is:fieldInput>
+        <div id="po-list" class="members-list"></div>
+        <is:fieldInput id="sh-search" for="find-sh" label="is.dialog.wizard.section.sh.find" class="members">
+            <is:autoCompleteSkin
+                        controller="user"
+                        action="findUsers"
+                        cache="true"
+                        filter="jQuery('#member'+object.id).length == 0 ? true : false"
+                        id="sh"
+                        name="find-sh"
+                        appendTo="#product-member-autocomplete"
+                        onSelect="ui.item.editable = true;
+                                  ui.item.role = ${Authority.STAKEHOLDER};
+                                  attachOnDomUpdate(jQuery('#sh-list').jqoteapp('#user-tmpl', ui.item));"
+                        renderItem="${link}"
+                        minLength="2"/>
+        </is:fieldInput>
+        <div id="sh-list" class="members-list"></div>
     </is:fieldset>
 
     <is:fieldset title="is.dialog.wizard.section.options" description="is.dialog.wizard.section.options.description">

@@ -209,6 +209,39 @@
                         }else{
                             document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey+'#project';
                         }
+                    },
+
+                    teamChange: function(event){
+                        var value = event.val;
+                        var teamId = parseInt(value);
+                        var newTeam = isNaN(teamId);
+                        var $container = $(this).closest('.member-autocomplete');
+                        var $teamId = $('input#teamId', $container);
+                        var $teamName = $('input#teamName', $container);
+                        var $findMembers = $('.members', $container);
+                        var $memberList = $('.members-list', $container);
+                        if (newTeam) {
+                            $teamId.val('');
+                            $teamName.val(value);
+                            $container.removeClass('read-only');
+                            $findMembers.show();
+                        } else {
+                            $teamId.val(teamId);
+                            $teamName.val('');
+                            $container.addClass('read-only');
+                            $findMembers.hide();
+                        }
+                        $.getJSON($.icescrum.o.grailsServer + '/members/getTeamMembers/' + teamId, function(members) {
+                            $.each(members, function(index, member) {
+                                member.editable = newTeam;
+                            });
+                            attachOnDomUpdate($memberList.jqotesub('#user-tmpl', members));
+                            if (!newTeam) {
+                                $('select', $memberList).each(function(index, select) {
+                                    $(select).select2("enable", false);
+                                });
+                            }
+                        });
                     }
                 },
 

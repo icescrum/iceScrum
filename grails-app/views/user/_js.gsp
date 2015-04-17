@@ -1,4 +1,4 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils" %>
+<%@ page import="org.icescrum.core.domain.security.Authority; org.icescrum.core.utils.BundleUtils" %>
 %{--
 - Copyright (c) 2011 Kagilum SAS.
 -
@@ -28,21 +28,31 @@
         var activity = this.activity ? this.activity : '&nbsp;';
         var id = new Date().getTime();
         var role = this.role ? this.role : 0;
+        var disabled = this.editable && role != ${Authority.PO_AND_SM} ? '' : 'disabled="disabled"';
+        var checked = role == ${Authority.SCRUMMASTER} || role == ${Authority.PO_AND_SM} ? 'checked="checked"' : '';
     **?
     <span class="member ui-corner-all" id='member?**=this.id**?'>
-        <span class="button-s">
-            <span style="display: block;" class="button-action button-delete" onclick="jQuery(this).closest('.member').remove();">del</span>
-        </span>
+        ?** if (this.editable) { **?
+            <span class="button-s">
+                <span style="display: block;"
+                      class="button-action button-delete"
+                      onclick="jQuery(this).closest('.member').remove();">del</span>
+            </span>
+        ?** } **?
         <img src="?**=this.avatar**?" height="48" class="avatar" width="48"/>
         <span class="fullname">?**=name**?</span>
         <span class="activity">?**=activity**?</span>
         <input type="hidden" name="members.?**=this.id**?" value="?**=this.id**?"/>
-         <is:select width="110"
-                    id="?**=id**?"
-                    from="${BundleUtils.roles.values().collect {v -> message(code: v)}}"
-                    keys="${BundleUtils.roles.keySet().asList()}"
-                    name="role.?**=this.id**?"
-                    value="?**=role**?"/>
-    </span>
+        <input type="hidden" id="role?**=this.id**?" name="role.?**=this.id**?" value="?**=this.role**?"/>
+        ?** if (role == ${Authority.MEMBER} || role == ${Authority.SCRUMMASTER} || role == ${Authority.PO_AND_SM} ) { **?
+        <label class="scrum-master-checkbox">${message(code: 'is.role.scrumMaster')}
+            <input id="scrum-master-?**=this.id**?"
+                   ?**=disabled**?
+                   ?**=checked**?
+                   type="checkbox"
+                   onClick="$('#role?**=this.id**?').val($(this).is(':checked') ? ${Authority.SCRUMMASTER} : ${Authority.MEMBER});"/>
+        </label>
+        ?** } **?
+</span>
     ]]>
 </template>

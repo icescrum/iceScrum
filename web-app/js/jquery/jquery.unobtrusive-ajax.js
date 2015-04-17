@@ -292,6 +292,35 @@ function attachOnDomUpdate(content){
         }
     });
 
+    $('input[data-ajax-select="true"]', content).each(function(){
+        var element = $(this);
+        var options = element.data();
+        options.ajax = {
+            url: element.data('url'),
+                data: function (term) {
+                return {term: term};
+            },
+            results: function (data) {
+                var results = [];
+                $(data).each(function(){
+                    results.push({id: this.id, text: this.text });
+                });
+                return {results: results};
+            }
+        };
+        if (element.data('createChoice')) {
+            options.createSearchChoice = function (term) {
+                return {id: term, text: term};
+            };
+        }
+        var select = element.select2(options);
+        if (element.data('change')){
+            select.change(function(event){
+                getFunction(element.data("change"), ["event"]).apply(this,[event]);
+            });
+        }
+    });
+
     $('input[data-local-tags="true"]', content).each(function(){
         var element = $(this);
         var tags = element.data('tags') ? element.data('tags').split(',') : [];

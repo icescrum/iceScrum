@@ -26,6 +26,7 @@ package org.icescrum.web.presentation.app.project
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
@@ -117,5 +118,38 @@ class MembersController {
             if (log.debugEnabled) e.printStackTrace()
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
         }
+    }
+
+    @Secured('isAuthenticated()')
+    def getTeamEntries = {
+        def user = springSecurityService.currentUser
+        def teams = request.admin ? Team.list() : Team.findAllByOwner(user.username, null)
+        def teamEntries = teams.collect { team -> [id: team.id, text: team.name] }
+        render(status: 200, contentType: 'application/json', text: teamEntries as JSON)
+    }
+
+    @Secured('isAuthenticated()')
+    def getTeamMembers = {
+        def memberEntries = []
+        def addEntry = { User user, int role ->
+            memberEntries << [name: user.firstName + ' ' + user.lastName,
+                              activity: user.preferences.activity ?: '&nbsp;',
+                              id: user.id,
+                              avatar: is.avatar(user: user, link: true),
+                              role: role]
+        }
+        Long teamId = params.long('id')
+        if (teamId) {
+            Team team = Team.get(teamId)
+            def scrumMastersIds = team.scrumMasters*.id
+            team.members?.each { User member ->
+                int role = scrumMastersIds?.contains(member.id) ? Authority.SCRUMMASTER : Authority.MEMBER
+                addEntry(member, role)
+            }
+        } else {
+            addEntry(springSecurityService.currentUser, Authority.SCRUMMASTER)
+        }
+        memberEntries.sort{ a,b -> b.role <=> a.role ?: a.name <=> b.name }
+        render(status: 200, contentType: 'application/json', text: memberEntries as JSON)
     }
 }
