@@ -36,7 +36,17 @@
             <span class="button-s">
                 <span style="display: block;"
                       class="button-action button-delete"
-                      onclick="jQuery(this).closest('.member').remove();">del</span>
+                      onclick="var $this = jQuery(this);
+                               $this.closest('.member').remove();
+                               var isPoView = '?**=this.view**?' == 'pos';
+                               var $role = jQuery('#role?**=this.id**?');
+                               if ($role.length && $role.val() == ${Authority.PO_AND_SM}) {
+                                   $role.val(isPoView ? ${Authority.SCRUMMASTER} : ${Authority.PRODUCTOWNER});
+                                   if (isPoView) {
+                                       jQuery('#scrum-master-?**=this.id**?').removeAttr('disabled');
+                                   }
+                               }"
+                      }>del</span>
             </span>
         ?** } **?
         <img src="?**=this.avatar**?" height="48" class="avatar" width="48"/>
@@ -44,7 +54,7 @@
         <span class="activity">?**=activity**?</span>
         <input type="hidden" name="members.?**=this.id**?" value="?**=this.id**?"/>
         <input type="hidden" id="role?**=this.id**?" name="role.?**=this.id**?" value="?**=this.role**?"/>
-        ?** if (role == ${Authority.MEMBER} || role == ${Authority.SCRUMMASTER} || role == ${Authority.PO_AND_SM} ) { **?
+        ?** if ((role == ${Authority.MEMBER} || role == ${Authority.SCRUMMASTER} || role == ${Authority.PO_AND_SM}) && this.view == 'members') { **?
         <label class="scrum-master-checkbox">${message(code: 'is.role.scrumMaster')}
             <input id="scrum-master-?**=this.id**?"
                    ?**=disabled**?

@@ -219,7 +219,9 @@
                         var $teamId = $('input#teamId', $container);
                         var $teamName = $('input#teamName', $container);
                         var $findMembers = $('.members', $container);
-                        var $memberList = $('.members-list', $container);
+                        var $memberList = $('#team-member-list', $container);
+                        var $poList = $('#po-list');
+                        var $shList = $('#sh-list');
                         if (newTeam) {
                             $teamId.val('');
                             $teamName.val(value);
@@ -234,12 +236,13 @@
                         $.getJSON($.icescrum.o.grailsServer + '/members/getTeamMembers/' + teamId, function(members) {
                             $.each(members, function(index, member) {
                                 member.editable = newTeam;
+                                member.view = 'members';
                             });
                             attachOnDomUpdate($memberList.jqotesub('#user-tmpl', members));
-                            if (!newTeam) {
-                                $('select', $memberList).each(function(index, select) {
-                                    $(select).select2("enable", false);
-                                });
+                            if ($poList.html() || $shList.html()) {
+                                alert('PO & SH a re-initialized');
+                                $poList.html('');
+                                $shList.html('');
                             }
                         });
                     }

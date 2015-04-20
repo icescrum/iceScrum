@@ -309,7 +309,13 @@ function attachOnDomUpdate(content){
             }
         };
         if (element.data('createChoice')) {
-            options.createSearchChoice = function (term) {
+            options.createSearchChoice = function (term, data) {
+                if (element.data('createChoiceUnique')
+                    && $(data).filter(function() {
+                        return this.text.toLowerCase() == term.toLowerCase();
+                    }).length > 0) {
+                    return null;
+                }
                 return {id: term, text: term};
             };
         }

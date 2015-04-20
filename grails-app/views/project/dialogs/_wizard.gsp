@@ -80,6 +80,7 @@
                    data-url="${createLink(controller: 'members', action:'getTeamEntries')}"
                    data-placeholder="${message(code:'is.ui.team.choose')}"
                    data-create-choice="true"
+                   data-create-choice-unique="true"
                    data-change="jQuery.icescrum.product.teamChange"/>
         </is:fieldSelect>
         <input type="hidden" id="teamId" name="team.id" value=""/>
@@ -89,14 +90,16 @@
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0 ? true : false"
+                        filter="jQuery('#member'+object.id).length == 0 || jQuery('#role'+object.id).val() == ${Authority.PRODUCTOWNER}"
                         id="members"
                         name="find-team-members"
                         appendTo="#team-member-autocomplete"
                         onSelect="ui.item.editable = true;
-                                  if (jQuery('#role'+ui.item.id).length && jQuery('#role'+ui.item.id).val() == ${Authority.PRODUCTOWNER}) {
+                                  ui.item.view = 'members';
+                                  var role = jQuery('#role'+ui.item.id);
+                                  if (role.length && role.val() == ${Authority.PRODUCTOWNER}) {
                                       ui.item.role = ${Authority.PO_AND_SM};
-                                      jQuery('#role'+ui.item.id).val(${Authority.PO_AND_SM});
+                                      role.val(${Authority.PO_AND_SM});
                                   } else {
                                       ui.item.role = ${Authority.MEMBER};
                                   }
@@ -121,9 +124,11 @@
                         name="find-pos"
                         appendTo="#product-member-autocomplete"
                         onSelect="ui.item.editable = true;
-                                  if (jQuery('#role'+ui.item.id).length && jQuery('#role'+ui.item.id).val() == ${Authority.SCRUMMASTER}) {
+                                  ui.item.view = 'pos';
+                                  var role = jQuery('#role'+ui.item.id);
+                                  if (role.length && role.val() == ${Authority.SCRUMMASTER}) {
                                       ui.item.role = ${Authority.PO_AND_SM};
-                                      jQuery('#role'+ui.item.id).val(${Authority.PO_AND_SM});
+                                      role.val(${Authority.PO_AND_SM});
                                       jQuery('#scrum-master-'+ui.item.id).attr('disabled', 'disabled');
                                   } else {
                                       ui.item.role = ${Authority.PRODUCTOWNER};
@@ -143,6 +148,7 @@
                         name="find-sh"
                         appendTo="#product-member-autocomplete"
                         onSelect="ui.item.editable = true;
+                                  ui.item.view = 'shs';
                                   ui.item.role = ${Authority.STAKEHOLDER};
                                   attachOnDomUpdate(jQuery('#sh-list').jqoteapp('#user-tmpl', ui.item));"
                         renderItem="${link}"
