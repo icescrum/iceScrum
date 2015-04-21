@@ -251,6 +251,8 @@ class ProjectController {
                     bindData(team, teamParams, [include:['name']])
                     team.preferences = new TeamPreferences()
                     teamService.save(team, members, scrumMasters)
+                } else {
+                    team = Team.findById(teamParams.id)
                 }
                 product.preferences = new ProductPreferences()
                 product.properties = productParams
