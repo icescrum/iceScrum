@@ -23,96 +23,87 @@
 
 package org.icescrum.web.presentation.app.project
 
+import grails.converters.JSON
+import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.preferences.TeamPreferences
 import org.icescrum.core.domain.security.Authority
-import org.icescrum.core.utils.BundleUtils
-import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
 
 @Secured('isAuthenticated() and (stakeHolder() or inProduct() or owner())')
 class MembersController {
 
     def springSecurityService
     def productService
-    def securityService
+    def teamService
 
     def edit = {
         def product = Product.get(params.product)
-        def members = productService.getAllMembersProduct(product)
-        def ownerSelect = product.owner
-
-        def possibleOwners = members.clone()
-
-        ownerSelect = [name: ownerSelect.firstName+' '+ownerSelect.lastName,
-                         activity:ownerSelect.preferences.activity?:'&nbsp;',
-                         id: ownerSelect.id,
-                         avatar:is.avatar(user:ownerSelect,link:true)]
-
-        if (!possibleOwners*.id.contains(ownerSelect.id)){
-            possibleOwners.add(ownerSelect)
-        }
-
-        def listRoles = product.preferences.hidden ? 'roles' : 'rolesPublic'
-        def dialog = g.render(template: "dialogs/members", model: [product: product,
-                                                    members: members,
-                                                    ownerSelect:ownerSelect,
-                                                    possibleOwners:possibleOwners,
-                                                    user: springSecurityService.currentUser,
-                                                    rolesNames:BundleUtils."${listRoles}".values().collect {v -> message(code: v)},
-                                                    rolesKeys:BundleUtils."${listRoles}".keySet().asList()])
+        def memberEntries = getTeamMembersEntries(product.firstTeam.id)
+        def dialog = g.render(template: "dialogs/members", model: [product: product, team: product.firstTeam, memberEntries: memberEntries])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def update = {
         def product = Product.get(params.product)
-        def team = Team.get(product.firstTeam.id)
-        def currentMembers = productService.getAllMembersProduct(product)
-        try{
-            def idmembers = []
-            params.members?.each{ k,v ->
+        def teamId = params.long('team.id')
+        Team team
+        Team.withTransaction {
+            if (!teamId) {
+                team = new Team(name: params.team.name, preferences: new TeamPreferences())
+                teamService.save(team, [], [])
+                product.removeFromTeams(product.firstTeam)
+                product.addToTeams(team)
+            } else if (teamId != product.firstTeam.id) {
+                product.removeFromTeams(product.firstTeam)
+                team = Team.get(teamId)
+                product.addToTeams(team)
+            } else {
+                team = product.firstTeam
+            }
+            def currentMembers = productService.getAllMembersProduct(product)
+            try {
+                def idmembers = []
+                params.members?.each { k, v ->
                     def u = User.get(v.toLong())
-                    def found = currentMembers.find{ it.id == u.id}
-                    if (found){
-                        if (found.role.toString() != params.role."${k}"){
-                            productService.changeRole(product,team,u,Integer.parseInt(params.role."${k}"))
+                    def found = currentMembers.find { it.id == u.id }
+                    if (found) {
+                        if (found.role.toString() != params.role."${k}") {
+                            productService.changeRole(product, team, u, Integer.parseInt(params.role."${k}"))
                         }
-                    }else{
-                        productService.addRole(product,team,u,Integer.parseInt(params.role."${k}"))
+                    } else {
+                        productService.addRole(product, team, u, Integer.parseInt(params.role."${k}"))
                     }
-                idmembers << u.id
+                    idmembers << u.id
+                }
+                def commons = currentMembers*.id.intersect(idmembers)
+                def difference = currentMembers*.id.plus(commons)
+                difference.removeAll(commons)
+                difference?.each {
+                    def found = currentMembers.find { it2 -> it == it2.id }
+                    def u = User.get(found.id)
+                    productService.removeAllRoles(product, team, u)
+                }
+                render(status: 200)
+            } catch (RuntimeException re) {
+                if (log.debugEnabled) re.printStackTrace()
+                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.saved')]] as JSON)
             }
-            def commons = currentMembers*.id.intersect(idmembers)
-            def difference = currentMembers*.id.plus(commons)
-            difference.removeAll(commons)
-            difference?.each{
-                def found = currentMembers.find{ it2 -> it == it2.id}
-                def u = User.get(found.id)
-                productService.removeAllRoles(product,team,u)
-            }
-
-            if (params.creator && params.creator?.toLong() != product.owner.id){
-                securityService.changeOwner(User.get(params.creator.toLong()),product)
-            }
-            render (status:200)
-        }catch(RuntimeException re){
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.saved')]] as JSON)
         }
     }
 
     @Secured(['inProduct() or stakeHolder()', 'RUN_AS_PERMISSIONS_MANAGER'])
-     def leaveTeam = {
+    def leaveTeam = {
         def product = Product.get(params.product)
         def user = springSecurityService.currentUser
         def team = Team.get(product.firstTeam.id)
         def currentMembers = productService.getAllMembersProduct(product)
         try {
-            def found = currentMembers.find{ it.id == user.id}
+            def found = currentMembers.find { it.id == user.id }
             def u = User.get(found.id)
-            productService.removeAllRoles(product,team,u, false)
+            productService.removeAllRoles(product, team, u, false)
             render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
         } catch (e) {
             if (log.debugEnabled) e.printStackTrace()
@@ -130,6 +121,11 @@ class MembersController {
 
     @Secured('isAuthenticated()')
     def getTeamMembers = {
+        def memberEntries = getTeamMembersEntries(params.long('id'))
+        render(status: 200, contentType: 'application/json', text: memberEntries as JSON)
+    }
+
+    private getTeamMembersEntries (Long teamId) {
         def memberEntries = []
         def addEntry = { User user, int role ->
             memberEntries << [name: user.firstName + ' ' + user.lastName,
@@ -138,7 +134,6 @@ class MembersController {
                               avatar: is.avatar(user: user, link: true),
                               role: role]
         }
-        Long teamId = params.long('id')
         if (teamId) {
             Team team = Team.get(teamId)
             def scrumMastersIds = team.scrumMasters*.id
@@ -149,7 +144,6 @@ class MembersController {
         } else {
             addEntry(springSecurityService.currentUser, Authority.SCRUMMASTER)
         }
-        memberEntries.sort{ a,b -> b.role <=> a.role ?: a.name <=> b.name }
-        render(status: 200, contentType: 'application/json', text: memberEntries as JSON)
+        memberEntries.sort { a, b -> b.role <=> a.role ?: a.name <=> b.name }
     }
 }

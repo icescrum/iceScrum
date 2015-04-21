@@ -120,7 +120,8 @@
                         deleted:'Project deleted',
                         updated:'Project settings updated',
                         archived:'Project archived',
-                        unArchived:'Project unarchived'
+                        unArchived:'Project unarchived',
+                        poAndShEmptied:'POs and SHs have been reintialized'
                     },
 
                     add:function() {
@@ -216,31 +217,35 @@
                         var teamId = parseInt(value);
                         var newTeam = isNaN(teamId);
                         var $container = $(this).closest('.member-autocomplete');
+                        var newProj = $container.closest('#project-wizard').length != 0;
                         var $teamId = $('input#teamId', $container);
                         var $teamName = $('input#teamName', $container);
                         var $findMembers = $('.members', $container);
                         var $memberList = $('#team-member-list', $container);
-                        var $poList = $('#po-list');
-                        var $shList = $('#sh-list');
                         if (newTeam) {
                             $teamId.val('');
                             $teamName.val(value);
-                            $container.removeClass('read-only');
-                            $findMembers.show();
+                            if (newProj) {
+                                $findMembers.show();
+                            }
                         } else {
                             $teamId.val(teamId);
                             $teamName.val('');
-                            $container.addClass('read-only');
-                            $findMembers.hide();
+                            if (newProj) {
+                                $findMembers.hide();
+                            }
                         }
                         $.getJSON($.icescrum.o.grailsServer + '/members/getTeamMembers/' + teamId, function(members) {
+                            var editable = newTeam || !newProj;
                             $.each(members, function(index, member) {
-                                member.editable = newTeam;
+                                member.editable = editable;
                                 member.view = 'members';
                             });
                             attachOnDomUpdate($memberList.jqotesub('#user-tmpl', members));
+                            var $poList = $('#po-list');
+                            var $shList = $('#sh-list');
                             if ($poList.html() || $shList.html()) {
-                                alert('PO & SH a re-initialized');
+                                alert($.icescrum.product.i18n.poAndShEmptied);
                                 $poList.html('');
                                 $shList.html('');
                             }

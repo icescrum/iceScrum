@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.domain.security.Authority; grails.converters.JSON" %>
 %{--
 - Copyright (c) 2011 Kagilum.
 -
@@ -20,33 +21,26 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.owner || request.scrumMaster}"/>
-<is:dialog
-        valid="${ownerOrSm ? [action:'update',controller:'members',onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
-          buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
-          title="is.dialog.project.title"
-          width="650"
-          resizable="false"
-          draggable="false">
-<form id="form-project" name="form-project" method="post" class='box-form box-form-250 box-form-200-legend'>
+<is:dialog valid="${ownerOrSm ? [action:'update',
+                                 controller:'members',
+                                 onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
+           buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
+           title="is.dialog.project.title"
+           width="650"
+           resizable="false"
+           draggable="false">
+<form id="form-team" name="form-team" method="post" class='box-form box-form-250 box-form-200-legend'>
     <input type="hidden" name="product" value="${params.product}">
-    <is:fieldset title="is.team" id="member-autocomplete">
-        <g:if test="${request.admin}">
-            <is:fieldSelect for="creator" label="is.role.owner" class="productcreator">
-                <is:select
-                        width="240"
-                        from="${possibleOwners*.name}"
-                        keys="${possibleOwners*.id}"
-                        name="creator"
-                        value="${ownerSelect.id}"/>
-            </is:fieldSelect>
-        </g:if>
+    <is:fieldset title="is.team"
+                 id="team-member-autocomplete"
+                 class="member-autocomplete">
 
         <g:if test="${!request.admin && (request.inProduct || (request.stakeHolder && product.preferences.hidden))}">
             <is:fieldInput for="leaveTeam" label="is.dialog.members.leave.team" class="productcreator">
                 <button type="button" onClick="if (confirm('${message(code:'is.dialog.members.leave.team.confirm').encodeAsJavaScript()}')) {
                                       ${g.remoteFunction(action:'leaveTeam',
                                                          controller:'members',
-                                                         params:[product:params.product],
+                                                         params:[product: params.product],
                                                          onSuccess:'document.location=jQuery.icescrum.o.baseUrl;')
                                        };}return false;" class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>
                     <g:message code="is.dialog.members.leave.team"/>
@@ -55,43 +49,48 @@
         </g:if>
 
         <g:if test="${ownerOrSm}">
-            <is:fieldInput for="team.members" label="is.dialog.members.find" class="members">
-                <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
-                    <is:autoCompleteSkin
-                                controller="user"
-                                action="findUsers"
-                                cache="true"
-                                filter="jQuery('#member'+object.id).length == 0 ? true : false"
-                                id="members"
-                                name="team.members"
-                                appendTo="#member-autocomplete"
-                                onSelect="attachOnDomUpdate(jQuery('.members-list').jqoteapp('#user-tmpl', ui.item));"
-                                renderItem="${link}"
-                                minLength="2"/>
+            <is:fieldSelect for="teamFinder"
+                            label="is.team">
+                <input id="teamFinder"
+                       name="teamFinder"
+                       type="hidden"
+                       value="${team.id}"
+                       data-width="242"
+                       data-ajax-select="true"
+                       data-url="${createLink(controller: 'members', action:'getTeamEntries')}"
+                       data-placeholder="${message(code:'is.ui.team.choose')}"
+                       data-create-choice="true"
+                       data-create-choice-unique="true"
+                       data-init-selection="var members = ${(memberEntries as JSON).toString().replaceAll('"', "'")};
+                                            $.each(members, function(index, member) {
+                                                member.editable = true;
+                                                member.view = 'members';
+                                            });
+                                            attachOnDomUpdate(jQuery('#team-member-list').jqotesub('#user-tmpl',members));
+                                            var data = {id: element.val(), text: '${team.name}'};
+                                            callback(data);"
+                       data-change="jQuery.icescrum.product.teamChange"/>
+            </is:fieldSelect>
+            <input type="hidden" id="teamId" name="team.id" value="${team.id}"/>
+            <input type="hidden" id="teamName" name="team.name" value="${team.name}"/>
+            <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
+            <is:fieldInput for="find-team-members" label="is.dialog.members.find" class="members">
+                <is:autoCompleteSkin controller="user"
+                                     action="findUsers"
+                                     cache="true"
+                                     filter="jQuery('#member'+object.id).length == 0 ? true : false"
+                                     id="members"
+                                     name="find-team-members"
+                                     appendTo="#team-member-autocomplete"
+                                     onSelect="ui.item.editable = true;
+                                               ui.item.view = 'members';
+                                               ui.item.role = ${Authority.MEMBER};
+                                               attachOnDomUpdate(jQuery('#team-member-list').jqoteapp('#user-tmpl', ui.item));"
+                                     renderItem="${link}"
+                                     minLength="2"/>
             </is:fieldInput>
         </g:if>
-        <div class="members-list">
-            <g:each in="${members}" var="member">
-                <span class="member ui-corner-all" id='member${member.id}'>
-                    <g:if test="${ownerOrSm}">
-                        <span class="button-s">
-                            <span style="display: block;" class="button-action button-delete" onclick="jQuery(this).closest('.member').remove();">del</span>
-                        </span>
-                    </g:if>
-                    <img src="${member.avatar}" height="48" class="avatar" width="48"/>
-                    <span class="fullname">${is.truncated(value:member.name,size:17)}</span>
-                    <span class="activity">${member.activity}</span>
-                    <input type="hidden" name="members.${member.id}" value="${member.id}"/>
-                     <is:select width="110"
-                                id="member-role-select-${member.id}"
-                                disabled="${!ownerOrSm}"
-                                from="${rolesNames}"
-                                keys="${rolesKeys}"
-                                name="role.${member.id}"
-                                value="${member.role}"/>
-                </span>
-            </g:each>
-        </div>
+        <div id="team-member-list" class="members-list"></div>
     </is:fieldset>
 </form>
 </is:dialog>

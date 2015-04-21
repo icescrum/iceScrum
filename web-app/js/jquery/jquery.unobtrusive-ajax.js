@@ -308,6 +308,12 @@ function attachOnDomUpdate(content){
                 return {results: results};
             }
         };
+        if (element.data('initSelection')) {
+            var initSelectionFn = getFunction(element.data("initSelection"), ["element", "callback"]);
+            options.initSelection = function (element, callback) {
+                initSelectionFn.apply(this, [element, callback]);
+            }
+        }
         if (element.data('createChoice')) {
             options.createSearchChoice = function (term, data) {
                 if (element.data('createChoiceUnique')

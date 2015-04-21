@@ -52,8 +52,10 @@
                       value="${product.preferences.hidden}"
                       onClick="var isPrivate = jQuery(this).val() == 1;
                                jQuery('#project-wizard').toggleClass('private-project', isPrivate);
-                               if (!isPrivate) {
-                                   jQuery('#sh-list').html('')
+                               var shList = jQuery('#sh-list');
+                               if (!isPrivate && shList.html()) {
+                                   shList.html('');
+                                   alert('${ message(code:'is.ui.sh.removed')}')
                                }"/>
         </is:fieldRadio>
         <is:fieldSelect for="product.preferences.timezone" label="is.product.preferences.timezone">
@@ -70,9 +72,10 @@
                  description="is.dialog.wizard.section.team.description"
                  id="team-member-autocomplete"
                  class="member-autocomplete">
-        <is:fieldSelect for="team.id"
+        <is:fieldSelect for="teamFinder"
                         label="is.team">
             <input id="teamFinder"
+                   name="teamFinder"
                    type="hidden"
                    value=""
                    data-width="242"
@@ -143,7 +146,7 @@
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0 ? true : false"
+                        filter="jQuery('#member'+object.id).length == 0"
                         id="sh"
                         name="find-sh"
                         appendTo="#product-member-autocomplete"

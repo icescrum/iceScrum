@@ -55,12 +55,13 @@
         <input type="hidden" name="members.?**=this.id**?" value="?**=this.id**?"/>
         <input type="hidden" id="role?**=this.id**?" name="role.?**=this.id**?" value="?**=this.role**?"/>
         ?** if ((role == ${Authority.MEMBER} || role == ${Authority.SCRUMMASTER} || role == ${Authority.PO_AND_SM}) && this.view == 'members') { **?
-        <label class="scrum-master-checkbox">${message(code: 'is.role.scrumMaster')}
+        <label class="scrum-master-checkbox">
             <input id="scrum-master-?**=this.id**?"
                    ?**=disabled**?
                    ?**=checked**?
                    type="checkbox"
                    onClick="$('#role?**=this.id**?').val($(this).is(':checked') ? ${Authority.SCRUMMASTER} : ${Authority.MEMBER});"/>
+            ${message(code: 'is.role.scrumMaster')}
         </label>
         ?** } **?
 </span>
