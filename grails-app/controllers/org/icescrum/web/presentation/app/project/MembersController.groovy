@@ -35,6 +35,7 @@ class MembersController {
 
     def springSecurityService
     def productService
+    def teamService
 
     def edit = {
         def product = Product.get(params.product)
@@ -51,23 +52,28 @@ class MembersController {
                 def product = Product.get(params.product)
                 Team team
                 if (teamId != product.firstTeam.id) {
-                    product.removeFromTeams(product.firstTeam)
+                    teamService.removeTeamFromProduct(product, product.firstTeam)
                     team = Team.get(teamId)
-                    product.addToTeams(team)
+                    productService.addTeamToProduct(product, team)
                 } else {
                     team = product.firstTeam
                 }
-                def currentMembers = productService.getAllMembersProduct(product)
+                def currentMembers = team.scrumMasters.collect { [id: it.id, role: Authority.SCRUMMASTER]}
+                team.members.each { member ->
+                    if (!currentMembers.any { it.id == member.id }) {
+                        currentMembers << [id: member.id, role: Authority.MEMBER]
+                    }
+                }
                 def idmembers = []
                 params.members?.each { k, v ->
                     def u = User.get(v.toLong())
                     def found = currentMembers.find { it.id == u.id }
                     if (found) {
                         if (found.role.toString() != params.role."${k}") {
-                            productService.changeRole(product, team, u, Integer.parseInt(params.role."${k}"))
+                            productService.changeRole(null, team, u, Integer.parseInt(params.role."${k}"))
                         }
                     } else {
-                        productService.addRole(product, team, u, Integer.parseInt(params.role."${k}"))
+                        productService.addRole(null, team, u, Integer.parseInt(params.role."${k}"))
                     }
                     idmembers << u.id
                 }
@@ -77,7 +83,7 @@ class MembersController {
                 difference?.each {
                     def found = currentMembers.find { it2 -> it == it2.id }
                     def u = User.get(found.id)
-                    productService.removeAllRoles(product, team, u)
+                    productService.removeAllRoles(null, team, u)
                 }
                 render(status: 200)
             }

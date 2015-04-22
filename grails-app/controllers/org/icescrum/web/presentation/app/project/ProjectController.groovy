@@ -79,7 +79,7 @@ class ProjectController {
 
             def builder = new FeedBuilder()
             builder.feed(description: "${product.description?:''}",title: "$product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: product.pkey])}") {
-              activities.each() { a ->
+                activities.each() { a ->
                     entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.cachedLabel.encodeAsHTML()}") {e ->
                         if (a.code != Activity.CODE_DELETE)
                             e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.cachedId)}"
@@ -260,7 +260,7 @@ class ProjectController {
                     product.preferences.hidden = true
                 }
                 productService.save(product, productOwners, stakeHolders)
-                productService.addTeamsToProduct product, [team.id]
+                productService.addTeamToProduct(product, team)
                 def release = new Release(name: "R1", startDate: product.startDate, vision: params.vision, endDate: product.endDate)
                 releaseService.save(release, product)
                 sprintService.generateSprints(release, params.firstSprint)
