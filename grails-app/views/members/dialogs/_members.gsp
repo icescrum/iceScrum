@@ -21,9 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.owner || request.scrumMaster}"/>
-<is:dialog valid="${ownerOrSm ? [action:'update',
-                                 controller:'members',
-                                 onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
+<is:dialog valid="${ownerOrSm ? [action:'update', controller:'members', onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
            buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
            title="is.dialog.project.title"
            width="650"
@@ -34,7 +32,6 @@
     <is:fieldset title="is.team"
                  id="team-member-autocomplete"
                  class="member-autocomplete">
-
         <g:if test="${!request.admin && (request.inProduct || (request.stakeHolder && product.preferences.hidden))}">
             <is:fieldInput for="leaveTeam" label="is.dialog.members.leave.team" class="productcreator">
                 <button type="button" onClick="if (confirm('${message(code:'is.dialog.members.leave.team.confirm').encodeAsJavaScript()}')) {
@@ -47,7 +44,6 @@
                 </button>
             </is:fieldInput>
         </g:if>
-
         <g:if test="${ownerOrSm}">
             <is:fieldSelect for="teamFinder"
                             label="is.team">
@@ -61,36 +57,25 @@
                        data-placeholder="${message(code:'is.ui.team.choose')}"
                        data-create-choice="true"
                        data-create-choice-unique="true"
-                       data-init-selection="var members = ${(memberEntries as JSON).toString().replaceAll('"', "'")};
-                                            $.each(members, function(index, member) {
-                                                member.editable = true;
-                                                member.view = 'members';
-                                            });
-                                            attachOnDomUpdate(jQuery('#team-member-list').jqotesub('#user-tmpl',members));
-                                            var data = {id: element.val(), text: '${team.name}'};
+                       data-init-selection="var data = {id: element.val(), text: '${team.name}'};
                                             callback(data);"
                        data-change="jQuery.icescrum.product.teamChange"/>
             </is:fieldSelect>
             <input type="hidden" id="teamId" name="team.id" value="${team.id}"/>
-            <input type="hidden" id="teamName" name="team.name" value="${team.name}"/>
-            <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
-            <is:fieldInput for="find-team-members" label="is.dialog.members.find" class="members">
-                <is:autoCompleteSkin controller="user"
-                                     action="findUsers"
-                                     cache="true"
-                                     filter="jQuery('#member'+object.id).length == 0 ? true : false"
-                                     id="members"
-                                     name="find-team-members"
-                                     appendTo="#team-member-autocomplete"
-                                     onSelect="ui.item.editable = true;
-                                               ui.item.view = 'members';
-                                               ui.item.role = ${Authority.MEMBER};
-                                               attachOnDomUpdate(jQuery('#team-member-list').jqoteapp('#user-tmpl', ui.item));"
-                                     renderItem="${link}"
-                                     minLength="2"/>
+        </g:if><g:else>
+            <is:fieldInput label="is.project.team">
+                <span style="display: inline-block; padding-left: 10px; padding-top: 5px">${team.name}</span>
             </is:fieldInput>
-        </g:if>
+        </g:else>
         <div id="team-member-list" class="members-list"></div>
     </is:fieldset>
+    <jq:jquery>
+        var members = ${memberEntries as JSON};
+        $.each(members, function(index, member) {
+            member.editable = false;
+            member.view = 'members';
+        });
+        attachOnDomUpdate(jQuery('#team-member-list').jqotesub('#user-tmpl', members));
+    </jq:jquery>
 </form>
 </is:dialog>

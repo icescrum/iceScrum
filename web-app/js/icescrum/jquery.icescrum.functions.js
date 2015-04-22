@@ -217,7 +217,6 @@
                         var teamId = parseInt(value);
                         var newTeam = isNaN(teamId);
                         var $container = $(this).closest('.member-autocomplete');
-                        var newProj = $container.closest('#project-wizard').length != 0;
                         var $teamId = $('input#teamId', $container);
                         var $teamName = $('input#teamName', $container);
                         var $findMembers = $('.members', $container);
@@ -225,20 +224,15 @@
                         if (newTeam) {
                             $teamId.val('');
                             $teamName.val(value);
-                            if (newProj) {
-                                $findMembers.show();
-                            }
+                            $findMembers.show();
                         } else {
                             $teamId.val(teamId);
                             $teamName.val('');
-                            if (newProj) {
-                                $findMembers.hide();
-                            }
+                            $findMembers.hide();
                         }
                         $.getJSON($.icescrum.o.grailsServer + '/members/getTeamMembers/' + teamId, function(members) {
-                            var editable = newTeam || !newProj;
                             $.each(members, function(index, member) {
-                                member.editable = editable;
+                                member.editable = newTeam;
                                 member.view = 'members';
                             });
                             attachOnDomUpdate($memberList.jqotesub('#user-tmpl', members));

@@ -28,7 +28,6 @@ import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
-import org.icescrum.core.domain.preferences.TeamPreferences
 import org.icescrum.core.domain.security.Authority
 
 @Secured('isAuthenticated() and (stakeHolder() or inProduct() or owner())')
@@ -36,7 +35,6 @@ class MembersController {
 
     def springSecurityService
     def productService
-    def teamService
 
     def edit = {
         def product = Product.get(params.product)
@@ -47,24 +45,19 @@ class MembersController {
 
     @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def update = {
-        def product = Product.get(params.product)
         def teamId = params.long('team.id')
-        Team team
-        Team.withTransaction {
-            if (!teamId) {
-                team = new Team(name: params.team.name, preferences: new TeamPreferences())
-                teamService.save(team, [], [])
-                product.removeFromTeams(product.firstTeam)
-                product.addToTeams(team)
-            } else if (teamId != product.firstTeam.id) {
-                product.removeFromTeams(product.firstTeam)
-                team = Team.get(teamId)
-                product.addToTeams(team)
-            } else {
-                team = product.firstTeam
-            }
-            def currentMembers = productService.getAllMembersProduct(product)
-            try {
+        try {
+            Team.withTransaction {
+                def product = Product.get(params.product)
+                Team team
+                if (teamId != product.firstTeam.id) {
+                    product.removeFromTeams(product.firstTeam)
+                    team = Team.get(teamId)
+                    product.addToTeams(team)
+                } else {
+                    team = product.firstTeam
+                }
+                def currentMembers = productService.getAllMembersProduct(product)
                 def idmembers = []
                 params.members?.each { k, v ->
                     def u = User.get(v.toLong())
@@ -87,10 +80,10 @@ class MembersController {
                     productService.removeAllRoles(product, team, u)
                 }
                 render(status: 200)
-            } catch (RuntimeException re) {
-                if (log.debugEnabled) re.printStackTrace()
-                render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.saved')]] as JSON)
             }
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.saved')]] as JSON)
         }
     }
 
