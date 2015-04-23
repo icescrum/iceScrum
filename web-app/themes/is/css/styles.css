@@ -2140,6 +2140,7 @@ li#li-roles {
     border-width: 1px;
     cursor: default;
     margin: 7px;
+    margin-bottom: 2px;
     padding: 7px;
     position: relative;
     width: 166px;

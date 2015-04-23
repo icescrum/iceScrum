@@ -1464,6 +1464,10 @@ button.ui-button::-moz-focus-inner {
     z-index:1000 !important;
 }
 
+.ui-front.ui-autocomplete {
+    z-index: 1001!important;
+}
+
 .ui-draggable .ui-dialog-titlebar {
     cursor: move;
 }

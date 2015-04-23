@@ -44,52 +44,12 @@ class MembersController {
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
-    @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
     def update = {
-        def teamId = params.long('team.id')
-        try {
-            Team.withTransaction {
-                def product = Product.get(params.product)
-                Team team
-                if (teamId != product.firstTeam.id) {
-                    teamService.removeTeamFromProduct(product, product.firstTeam)
-                    team = Team.get(teamId)
-                    productService.addTeamToProduct(product, team)
-                } else {
-                    team = product.firstTeam
-                }
-                def currentMembers = team.scrumMasters.collect { [id: it.id, role: Authority.SCRUMMASTER]}
-                team.members.each { member ->
-                    if (!currentMembers.any { it.id == member.id }) {
-                        currentMembers << [id: member.id, role: Authority.MEMBER]
-                    }
-                }
-                def idmembers = []
-                params.members?.each { k, v ->
-                    def u = User.get(v.toLong())
-                    def found = currentMembers.find { it.id == u.id }
-                    if (found) {
-                        if (found.role.toString() != params.role."${k}") {
-                            productService.changeRole(null, team, u, Integer.parseInt(params.role."${k}"))
-                        }
-                    } else {
-                        productService.addRole(null, team, u, Integer.parseInt(params.role."${k}"))
-                    }
-                    idmembers << u.id
-                }
-                def commons = currentMembers*.id.intersect(idmembers)
-                def difference = currentMembers*.id.plus(commons)
-                difference.removeAll(commons)
-                difference?.each {
-                    def found = currentMembers.find { it2 -> it == it2.id }
-                    def u = User.get(found.id)
-                    productService.removeAllRoles(null, team, u)
-                }
-                render(status: 200)
-            }
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.saved')]] as JSON)
+        withTeam { Team team ->
+            def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger() ]}
+            productService.updateTeamMembers(team, newMembers)
+            render(status: 200)
         }
     }
 
@@ -120,29 +80,7 @@ class MembersController {
 
     @Secured('isAuthenticated()')
     def getTeamMembers = {
-        def memberEntries = getTeamMembersEntries(params.long('id'))
+        def memberEntries = teamService.getTeamMembersEntries(params.long('id'))
         render(status: 200, contentType: 'application/json', text: memberEntries as JSON)
-    }
-
-    private getTeamMembersEntries (Long teamId) {
-        def memberEntries = []
-        def addEntry = { User user, int role ->
-            memberEntries << [name: user.firstName + ' ' + user.lastName,
-                              activity: user.preferences.activity ?: '&nbsp;',
-                              id: user.id,
-                              avatar: is.avatar(user: user, link: true),
-                              role: role]
-        }
-        if (teamId) {
-            Team team = Team.get(teamId)
-            def scrumMastersIds = team.scrumMasters*.id
-            team.members?.each { User member ->
-                int role = scrumMastersIds?.contains(member.id) ? Authority.SCRUMMASTER : Authority.MEMBER
-                addEntry(member, role)
-            }
-        } else {
-            addEntry(springSecurityService.currentUser, Authority.SCRUMMASTER)
-        }
-        memberEntries.sort { a, b -> b.role <=> a.role ?: a.name <=> b.name }
     }
 }

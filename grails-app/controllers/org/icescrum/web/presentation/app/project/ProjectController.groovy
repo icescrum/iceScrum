@@ -105,11 +105,25 @@ class ProjectController {
             def menuTagLib = grailsApplication.mainContext.getBean('org.icescrum.core.taglib.MenuTagLib')
             def possibleViews = menuTagLib.getMenuBarFromUiDefinitions(false)
 
+            def getEntry = { int role, User user ->
+                return [name: user.firstName + ' ' + user.lastName,
+                        activity: user.preferences.activity ?: '&nbsp;',
+                        id: user.id,
+                        avatar: is.avatar(user: user, link: true),
+                        role: role]
+            }
+            def poEntries = product.productOwners.collect(getEntry.curry(Authority.PRODUCTOWNER))
+            def shEntries = product.stakeHolders.collect(getEntry.curry(Authority.STAKEHOLDER))
+            poEntries.sort { it.name }
+            shEntries.sort { it.name }
+
             def dialog = g.render(template: "dialogs/edit",
-                                  model: [product: product,
-                                          privateOption: privateOption,
-                                          possibleViews: possibleViews,
-                                          restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
+                    model: [product: product,
+                            privateOption: privateOption,
+                            possibleViews: possibleViews,
+                            poEntries: poEntries,
+                            shEntries: shEntries,
+                            restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
             render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
     }
@@ -136,13 +150,17 @@ class ProjectController {
             }
             //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
             boolean hasHiddenChanged = product.preferences.hidden != params.productd.preferences.hidden
-            product.properties = params.productd
-            if(!params.productd.preferences?.stakeHolderRestrictedViews){
-                product.preferences.stakeHolderRestrictedViews = null
-            }
             try {
-                productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
-                entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
+                Product.withTransaction {
+                    product.properties = params.productd
+                    if(!params.productd.preferences?.stakeHolderRestrictedViews){
+                        product.preferences.stakeHolderRestrictedViews = null
+                    }
+                    productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
+                    def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger()] }
+                    productService.updateProductMembers(product, newMembers)
+                    entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
+                }
             } catch (IllegalStateException ise) {
                 returnError(exception:ise)
                 return
@@ -961,6 +979,33 @@ class ProjectController {
             def addedAttachments = params.list('attachments')
             def attachments = manageAttachments(product, keptAttachments, addedAttachments)
             render status: 200, contentType: 'application/json', text: attachments as JSON
+        }
+    }
+
+    @Secured('isAuthenticated() and (stakeHolder() or inProduct() or owner())')
+    def editTeam = {
+        def product = Product.get(params.product)
+        def memberEntries = teamService.getTeamMembersEntries(product.firstTeam.id)
+        def dialog = g.render(template: "dialogs/team", model: [product: product, team: product.firstTeam, memberEntries: memberEntries])
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+    }
+
+    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
+    def changeTeam = {
+        def teamId = params.long('team.id')
+        try {
+            Team.withTransaction {
+                def product = Product.get(params.product)
+                if (teamId != product.firstTeam.id) {
+                    teamService.removeTeamFromProduct(product, product.firstTeam)
+                    Team team = Team.get(teamId)
+                    productService.addTeamToProduct(product, team)
+                }
+                render(status: 200)
+            }
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.saved')]] as JSON)
         }
     }
 }

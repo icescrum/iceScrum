@@ -21,7 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.owner || request.scrumMaster}"/>
-<is:dialog valid="${ownerOrSm ? [action:'update', controller:'members', onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
+<is:dialog valid="${ownerOrSm ? [action:'changeTeam', controller:'project', onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
            buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
            title="is.dialog.project.title"
            width="650"
@@ -29,7 +29,7 @@
            draggable="false">
 <form id="form-team" name="form-team" method="post" class='box-form box-form-250 box-form-200-legend'>
     <input type="hidden" name="product" value="${params.product}">
-    <is:fieldset title="is.team"
+    <is:fieldset title="is.ui.project.team"
                  id="team-member-autocomplete"
                  class="member-autocomplete">
         <g:if test="${!request.admin && (request.inProduct || (request.stakeHolder && product.preferences.hidden))}">
@@ -46,7 +46,7 @@
         </g:if>
         <g:if test="${ownerOrSm}">
             <is:fieldSelect for="teamFinder"
-                            label="is.team">
+                            label="is.ui.project.team">
                 <input id="teamFinder"
                        name="teamFinder"
                        type="hidden"
@@ -63,7 +63,7 @@
             </is:fieldSelect>
             <input type="hidden" id="teamId" name="team.id" value="${team.id}"/>
         </g:if><g:else>
-            <is:fieldInput label="is.project.team">
+            <is:fieldInput label="is.ui.project.team">
                 <span style="display: inline-block; padding-left: 10px; padding-top: 5px">${team.name}</span>
             </is:fieldInput>
         </g:else>

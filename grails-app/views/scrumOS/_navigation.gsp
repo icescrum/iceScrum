@@ -63,8 +63,8 @@
                   </g:if>
                   <g:if test="${product}">
                       <li id="edit-members">
-                          <a href="${createLink(controller:'members', action:'edit',params:[product:product.id])}" data-ajax="true">
-                              <g:message code="is.projectmenu.submenu.project.team"/>
+                          <a href="${createLink(controller:'project', action:'editTeam',params:[product:product.id])}" data-ajax="true">
+                              <g:message code="is.ui.project.team"/>...
                           </a>
                       </li>
                   </g:if>

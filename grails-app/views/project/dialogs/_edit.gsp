@@ -1,3 +1,4 @@
+<%@ page import="grails.converters.JSON; org.icescrum.core.domain.security.Authority" %>
 %{--
 - Copyright (c) 2010 iceScrum Technologies.
 -
@@ -21,10 +22,10 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog valid="[action:'update',controller:'project',onSuccess:'jQuery.event.trigger(\'update_product\',[data]); jQuery.icescrum.renderNotice(\''+message(code:'is.product.updated')+'\');']"
-          width="650"
+          width="666"
           resizable="false"
           draggable="false">
-<form id="form-project" name="form-project" method="post" class='box-form box-form-250 box-form-200-legend'>
+<form id="form-project" name="form-project" method="post" class="box-form box-form-250 box-form-200-legend ${product.preferences.hidden ? 'private-project' : ''}">
   <input type="hidden" name="productd.id" value="${params.product}">
   <input type="hidden" name="product" value="${params.product}">
   <input type="hidden" name="productd.version" value="${product.version}">
@@ -77,7 +78,14 @@
         </is:accordionSection>
         <is:accordionSection title="is.dialog.project.security.title">
             <is:fieldRadio rendered="${!privateOption}" for="productpreferenceshidden" label="is.product.preferences.project.hidden">
-                <is:radio id="productpreferenceshidden" name="productd.preferences.hidden" value="${product.preferences.hidden}"/>
+                <is:radio id="productpreferenceshidden"
+                          name="productd.preferences.hidden"
+                          value="${product.preferences.hidden}"
+                          onClick="var isPrivate = jQuery(this).val() == 1;
+                                   jQuery('#form-project').toggleClass('private-project', isPrivate);
+                                   if (!isPrivate) {
+                                       jQuery('#sh-list').html('');
+                                   }"/>
             </is:fieldRadio>
             <is:fieldFile for="productpreferencesStakeHolderRestrictedViews" label="is.product.preferences.project.stakeHolderRestrictedViews">
                 <div class="restrictedViews">
@@ -90,6 +98,70 @@
                 <is:radio id="productpreferenceswebservices" name="productd.preferences.webservices" value="${product.preferences.webservices}"/>
             </is:fieldRadio>
         </is:accordionSection>
+        <is:accordionSection title="is.dialog.project.members.title"
+                             id="product-member-autocomplete"
+                             class="member-autocomplete">
+            <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
+            <is:fieldInput for="find-pos" label="is.dialog.wizard.section.pos.find" class="members">
+                <is:autoCompleteSkin
+                        controller="user"
+                        action="findUsers"
+                        cache="true"
+                        filter="jQuery('#member'+object.id).length == 0"
+                        id="pos"
+                        name="find-pos"
+                        appendTo="#product-member-autocomplete"
+                        onSelect="ui.item.editable = true;
+                                  ui.item.view = 'pos';
+                                  var role = jQuery('#role'+ui.item.id);
+                                  if (role.length && role.val() == ${Authority.SCRUMMASTER}) {
+                                      ui.item.role = ${Authority.PO_AND_SM};
+                                      role.val(${Authority.PO_AND_SM});
+                                      jQuery('#scrum-master-'+ui.item.id).attr('disabled', 'disabled');
+                                  } else {
+                                      ui.item.role = ${Authority.PRODUCTOWNER};
+                                  }
+                                  attachOnDomUpdate(jQuery('#po-list').jqoteapp('#user-tmpl', ui.item));"
+                        renderItem="${link}"
+                        minLength="2"/>
+            </is:fieldInput>
+            <div id="po-list" class="members-list"></div>
+            <is:fieldInput id="sh-search" for="find-sh" label="is.dialog.wizard.section.sh.find" class="members">
+                <is:autoCompleteSkin
+                        controller="user"
+                        action="findUsers"
+                        cache="true"
+                        filter="jQuery('#member'+object.id).length == 0"
+                        id="sh"
+                        name="find-sh"
+                        appendTo="#product-member-autocomplete"
+                        onSelect="ui.item.editable = true;
+                                  ui.item.view = 'shs';
+                                  ui.item.role = ${Authority.STAKEHOLDER};
+                                  attachOnDomUpdate(jQuery('#sh-list').jqoteapp('#user-tmpl', ui.item));"
+                        renderItem="${link}"
+                        minLength="2"/>
+            </is:fieldInput>
+            <div id="sh-list" class="members-list"></div>
+        </is:accordionSection>
+        <jq:jquery>
+            var pos = ${poEntries as JSON};
+            $.each(pos, function(index, po) {
+                po.editable = true;
+                po.view = 'pos';
+            });
+            attachOnDomUpdate(jQuery('#po-list').jqotesub('#user-tmpl', pos));
+        </jq:jquery>
+        <g:if test="${product.preferences.hidden}">
+            <jq:jquery>
+                var shs = ${shEntries as JSON};
+                $.each(shs, function(index, sh) {
+                    sh.editable = true;
+                    sh.view = 'shs';
+                });
+                attachOnDomUpdate(jQuery('#sh-list').jqotesub('#user-tmpl', shs));
+            </jq:jquery>
+        </g:if>
         <entry:point id="${controllerName}-${actionName}" model="[product:product]"/>
     </is:accordion>
   </is:fieldset>
