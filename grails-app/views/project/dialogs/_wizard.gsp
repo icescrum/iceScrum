@@ -1,6 +1,6 @@
 <%@ page import="org.icescrum.core.domain.security.Authority; org.icescrum.core.utils.BundleUtils" %>
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -19,6 +19,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog
         resizable="false"
@@ -81,7 +82,7 @@
                    data-width="242"
                    data-ajax-select="true"
                    data-url="${createLink(controller: 'members', action:'getTeamEntries')}"
-                   data-placeholder="${message(code:'is.ui.team.choose')}"
+                   data-placeholder="${message(code:'is.ui.project.choose.or.create.team')}"
                    data-create-choice="true"
                    data-create-choice-unique="true"
                    data-change="jQuery.icescrum.product.teamChange"/>

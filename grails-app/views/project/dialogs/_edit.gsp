@@ -1,6 +1,6 @@
 <%@ page import="grails.converters.JSON; org.icescrum.core.domain.security.Authority" %>
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -59,7 +59,9 @@
                                                              controller:'project',
                                                              params:[product:params.product],
                                                              onSuccess:'jQuery.event.trigger(\'archive_product\',data);')
-                                           };}return false;" class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>
+                                           };}return false;"
+                            class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'
+                            type="button">
                         <g:message code="is.dialog.project.archive.button"/>
                     </button>
                 </is:fieldInput>
@@ -70,7 +72,9 @@
                                                              controller:'project',
                                                              params:[product:params.product],
                                                              onSuccess:'jQuery.event.trigger(\'unarchive_product\',data);')
-                                           } return false;" class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>
+                                           } return false;"
+                            class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'
+                            type="button">
                         <g:message code="is.dialog.project.unArchive.button"/>
                     </button>
                 </is:fieldInput>
@@ -107,7 +111,7 @@
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0"
+                        filter="jQuery('#member'+object.id).length == 0 && ${tmIds as JSON}.indexOf(object.id) == -1"
                         id="pos"
                         name="find-pos"
                         appendTo="#product-member-autocomplete"
@@ -131,7 +135,7 @@
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0"
+                        filter="jQuery('#member'+object.id).length == 0 && ${membersIds as JSON}.indexOf(object.id) == -1"
                         id="sh"
                         name="find-sh"
                         appendTo="#product-member-autocomplete"
@@ -167,4 +171,3 @@
   </is:fieldset>
 </form>
 </is:dialog>
-<is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-project" listenOn="'#form-project input'"/>

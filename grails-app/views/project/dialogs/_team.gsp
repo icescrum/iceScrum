@@ -1,6 +1,6 @@
 <%@ page import="org.icescrum.core.domain.security.Authority; grails.converters.JSON" %>
 %{--
-- Copyright (c) 2011 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -19,6 +19,7 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.owner || request.scrumMaster}"/>
 <is:dialog valid="${ownerOrSm ? [action:'changeTeam', controller:'project', onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
@@ -32,7 +33,7 @@
     <is:fieldset title="is.ui.project.team"
                  id="team-member-autocomplete"
                  class="member-autocomplete">
-        <g:if test="${!request.admin && (request.inProduct || (request.stakeHolder && product.preferences.hidden))}">
+        <g:if test="${!request.admin && (request.teamMember || request.scrumMaster)}">
             <is:fieldInput for="leaveTeam" label="is.dialog.members.leave.team" class="productcreator">
                 <button type="button" onClick="if (confirm('${message(code:'is.dialog.members.leave.team.confirm').encodeAsJavaScript()}')) {
                                       ${g.remoteFunction(action:'leaveTeam',
@@ -54,9 +55,6 @@
                        data-width="242"
                        data-ajax-select="true"
                        data-url="${createLink(controller: 'members', action:'getTeamEntries')}"
-                       data-placeholder="${message(code:'is.ui.team.choose')}"
-                       data-create-choice="true"
-                       data-create-choice-unique="true"
                        data-init-selection="var data = {id: element.val(), text: '${team.name}'};
                                             callback(data);"
                        data-change="jQuery.icescrum.product.teamChange"/>

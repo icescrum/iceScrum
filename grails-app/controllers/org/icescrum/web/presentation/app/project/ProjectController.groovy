@@ -117,12 +117,18 @@ class ProjectController {
             poEntries.sort { it.name }
             shEntries.sort { it.name }
 
+            def team = product.firstTeam
+            def membersIds = team.members*.id
+            def tmIds = membersIds - team.scrumMasters*.id
+
             def dialog = g.render(template: "dialogs/edit",
                     model: [product: product,
                             privateOption: privateOption,
                             possibleViews: possibleViews,
                             poEntries: poEntries,
                             shEntries: shEntries,
+                            tmIds: tmIds,
+                            membersIds: membersIds,
                             restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
             render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
@@ -992,20 +998,13 @@ class ProjectController {
 
     @Secured('(owner() or scrumMaster()) and !archivedProduct()')
     def changeTeam = {
-        def teamId = params.long('team.id')
-        try {
-            Team.withTransaction {
-                def product = Product.get(params.product)
-                if (teamId != product.firstTeam.id) {
-                    teamService.removeTeamFromProduct(product, product.firstTeam)
-                    Team team = Team.get(teamId)
-                    productService.addTeamToProduct(product, team)
-                }
-                render(status: 200)
+        withProduct { Product product ->
+            def teamId = params.long('team.id')
+            if (teamId != product.firstTeam.id) {
+                Team newTeam = Team.get(teamId)
+                productService.changeTeam(product, newTeam)
             }
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.team.error.not.saved')]] as JSON)
+            render(status: 200)
         }
     }
 }
