@@ -125,6 +125,14 @@
                           </a>
                       </li>
                   </g:if>
+                  <li class="menu-label">
+                      <g:message code="is.ui.team.menu"/>
+                  </li>
+                  <li>
+                      <a href="${createLink(controller:'members', action:'browse')}" data-ajax="true">
+                          <g:message code="is.ui.team.manage"/>
+                      </a>
+                  </li>
               </ul>
           </div>
         </div>

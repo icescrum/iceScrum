@@ -41,6 +41,7 @@ $(document).on('domUpdate.icescrum', function (event, content) {
                 },
                 success: function (data) {
                     $('#' + update).html(data);
+                    autocompletable.trigger('autocompleteupdated');
                     $.doTimeout(200, function () {
                         autocompletable.focus()
                     })

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Kagilum
+0 * Copyright (c) 2015 Kagilum
  *
  * This file is part of iceScrum.
  *
@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
@@ -28,30 +29,14 @@ import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
-import org.icescrum.core.domain.security.Authority
 
-@Secured('isAuthenticated() and (stakeHolder() or inProduct() or owner())')
+@Secured('isAuthenticated()')
 class MembersController {
 
     def springSecurityService
     def productService
     def teamService
-
-    def edit = {
-        def product = Product.get(params.product)
-        def memberEntries = getTeamMembersEntries(product.firstTeam.id)
-        def dialog = g.render(template: "dialogs/members", model: [product: product, team: product.firstTeam, memberEntries: memberEntries])
-        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-    }
-
-    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
-    def update = {
-        withTeam { Team team ->
-            def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger() ]}
-            productService.updateTeamMembers(team, newMembers)
-            render(status: 200)
-        }
-    }
+    def securityService
 
     @Secured(['inProduct() or stakeHolder()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def leaveTeam = {
@@ -70,7 +55,6 @@ class MembersController {
         }
     }
 
-    @Secured('isAuthenticated()')
     def getTeamEntries = {
         def user = springSecurityService.currentUser
         def teams = request.admin ? Team.list() : Team.findAllByOwner(user.username, null)
@@ -78,9 +62,82 @@ class MembersController {
         render(status: 200, contentType: 'application/json', text: teamEntries as JSON)
     }
 
-    @Secured('isAuthenticated()')
     def getTeamMembers = {
         def memberEntries = teamService.getTeamMembersEntries(params.long('id'))
         render(status: 200, contentType: 'application/json', text: memberEntries as JSON)
+    }
+
+    def browse = {
+        def dialog = g.render(template: 'dialogs/browse')
+        render(status:200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+    }
+
+    def browseList = {
+        User user = (User) springSecurityService.currentUser
+        def term = params.term ? '%' + params.term.trim().toLowerCase() + '%' : '%%';
+        def limit = 9
+        def options = [offset:params.int('offset') ?: 0, max: limit, sort: "name", order: "asc", cache:true]
+        def teams = request.admin ? Team.findAllByNameLike(term, options) : Team.findAllByOwner(user.username, options, term)
+        def total = request.admin ? Team.countByNameLike(term, [cache:true]) : Team.countByOwner(user.username, [cache:true], term)[0]
+        def results = []
+        teams?.each {
+            results << [id: it.id, label: it.name.encodeAsHTML(), image: resource(dir: is.currentThemeImage(), file: 'choose/default.png')]
+        }
+        render template: "/components/browserColumn",
+               plugin: 'icescrum-core',
+               model: [name: 'team-browse',
+                       max: limit,
+                       total: total,
+                       term: params.term,
+                       offset: params.int('offset') ?: 0,
+                       browserCollection: results,
+                       actionDetails: 'browseDetails',
+                       onSuccess: "attachOnDomUpdate(jQuery('#form-team'));"]
+    }
+
+    def browseDetails = {
+        withTeam { Team team ->
+            def owner = team.owner
+            if (!request.admin && owner != springSecurityService.currentUser){
+                render(status:403)
+                return
+            }
+            def memberEntries = teamService.getTeamMembersEntries(team.id)
+            def possibleOwners = memberEntries.clone()
+            if (!possibleOwners*.id.contains(owner.id)){
+                possibleOwners.add([name: owner.firstName+' '+owner.lastName,
+                                    activity:owner.preferences.activity?:'&nbsp;',
+                                    id: owner.id,
+                                    avatar:is.avatar(user:owner,link:true)])
+            }
+            render template: "dialogs/browseDetails", model: [team: team,
+                                                              possibleOwners: possibleOwners,
+                                                              memberEntries: memberEntries]
+        }
+    }
+
+    def update = {
+        withTeam { Team team ->
+            def owner = team.owner
+            if (!request.admin && owner != springSecurityService.currentUser){
+                render(status:403)
+                return
+            }
+            def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger() ]}
+            def newOwnerId = params.team.owner?.toLong()
+            Team.withTransaction {
+                if (team.name != params.team.name) {
+                    team.name = params.team.name
+                    if (!team.save()) {
+                        returnError(object:team, exception: new RuntimeException(team.errors.toString()))
+                    }
+                }
+                productService.updateTeamMembers(team, newMembers)
+                if (newOwnerId && newOwnerId != team.owner.id){
+                    securityService.changeOwner(User.get(newOwnerId), team)
+                }
+            }
+            render(status: 200)
+        }
     }
 }

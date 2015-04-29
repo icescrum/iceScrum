@@ -1488,6 +1488,10 @@ li#li-roles {
     height: 355px;
 }
 
+#form-team-browse .browse .col1 .browse-list {
+    height: 426px;
+}
+
 .browse .col2 .browse-list {
     padding-left: 10px;
     height: 250px;
@@ -1511,8 +1515,8 @@ li#li-roles {
 
 .browse .browse-list p {
     padding: 0;
+    padding-top: 4px;
     margin: 0;
-    line-height: 13px;
 }
 
 .browse .colset-2 .col1 {
@@ -1537,6 +1541,10 @@ li#li-roles {
 .browse .browse-content {
     padding: 10px 20px;
     height: 337px;
+}
+
+#form-team-browse .browse-content {
+    padding: 0;
 }
 
 .browse .browse-content .browse-informations {
@@ -1639,7 +1647,7 @@ li#li-roles {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.box-window .box-blank {
+.ui-dialog .box-blank, .box-window .box-blank {
     width: 300px;
     margin: 0 auto;
     text-align: center;
