@@ -72,7 +72,7 @@
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-ajax-notice="${message(code:'is.team.saved')}"
-                   data-ajax-confirm="${message(code: 'is.ui.team.change.warning')}"
+                   data-ajax-confirm="${message(code: 'is.ui.team.update.confirm')}"
                    data-ajax-success="var filter = jQuery('#team-browse-browse');
                                       filter.autocomplete('search', filter.val());
                                       filter.one('autocompleteupdated', function() {
@@ -87,6 +87,25 @@
                     <span class="end"></span>
                 </a>
             </td>
+            <g:if test="${!team.products}">
+                <td>
+                    <a id="delete-team-button"
+                       class="button-s clearfix"
+                       data-ajax="true"
+                       data-ajax-form="true"
+                       data-ajax-method="POST"
+                       data-ajax-notice="${message(code:'is.ui.team.deleted')}"
+                       data-ajax-confirm="${message(code: 'default.button.delete.confirm.message')}"
+                       data-ajax-success="var filter = jQuery('#team-browse-browse');
+                                          filter.autocomplete('search', filter.val());
+                                          jQuery('#team-browse-details').html('<div class=\'box-blank clearfix\' style=\'display:block;\'><p>${message(code: 'is.ui.team.explanation')}</p></div>');"
+                       href="${createLink(controller: 'members', action: 'delete', params: [id: team.id])}">
+                        <span class="start"></span>
+                        <span class="content">${message(code:'default.button.delete.label')}</span>
+                        <span class="end"></span>
+                    </a>
+                </td>
+            </g:if>
             <td>
                 <a id="cancel-team-button"
                    onClick="var filter = jQuery('#team-browse-browse');

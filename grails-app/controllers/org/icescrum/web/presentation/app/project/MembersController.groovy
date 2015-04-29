@@ -140,4 +140,16 @@ class MembersController {
             render(status: 200)
         }
     }
+
+    def delete = {
+        withTeam { Team team ->
+            def owner = team.owner
+            if (!request.admin && owner != springSecurityService.currentUser){
+                render(status:403)
+                return
+            }
+            teamService.delete(team)
+            render(status: 200)
+        }
+    }
 }
