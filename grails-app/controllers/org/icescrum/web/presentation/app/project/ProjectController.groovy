@@ -129,6 +129,7 @@ class ProjectController {
                             shEntries: shEntries,
                             tmIds: tmIds,
                             membersIds: membersIds,
+                            openPanelIndex: params.int('openPanelIndex'),
                             restrictedViews:product.preferences.stakeHolderRestrictedViews?.split(',')])
             render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
         }
@@ -992,7 +993,11 @@ class ProjectController {
     def editTeam = {
         def product = Product.get(params.product)
         def memberEntries = teamService.getTeamMembersEntries(product.firstTeam.id)
-        def dialog = g.render(template: "dialogs/team", model: [product: product, team: product.firstTeam, memberEntries: memberEntries])
+        def poNames = product.productOwners.collect { it.firstName + ' ' + it.lastName}
+        def shNames = product.stakeHolders.collect { it.firstName + ' ' + it.lastName}
+        poNames.sort()
+        shNames.sort()
+        def dialog = g.render(template: "dialogs/team", model: [product: product, team: product.firstTeam, memberEntries: memberEntries, poNames: poNames, shNames: shNames])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 

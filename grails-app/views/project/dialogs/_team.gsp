@@ -45,6 +45,22 @@
                 </button>
             </is:fieldInput>
         </g:if>
+        <p class="field-input clearfix">
+            <label>${ message(code: 'is.ui.project.members')}</label>
+            <span style="padding-left: 10px; display: inline-block; padding-top:5px">
+                <g:if test="${poNames}"><strong>${message(code: 'is.role.pos')}</strong> ${poNames.join(', ')}</g:if>
+                <g:if test="${poNames && shNames}"><br/></g:if>
+                <g:if test="${shNames}"><strong>${message(code: 'is.role.shs')}</strong> ${shNames.join(', ')}</g:if>
+                <g:if test="${ownerOrSm}">
+                    <g:if test="${poNames || shNames}"><br/></g:if>
+                    <a href="${createLink(controller:'project', action:'edit',params:[openPanelIndex: 2, product:params.product])}"
+                       data-ajax-begin="jQuery('#dialog').dialog('close');"
+                       data-ajax="true">
+                        ${message(code: 'is.ui.project.members.edit')}
+                    </a>
+                </g:if>
+            </span>
+        </p>
         <g:if test="${ownerOrSm}">
             <is:fieldSelect for="teamFinder"
                             label="is.ui.project.team">
