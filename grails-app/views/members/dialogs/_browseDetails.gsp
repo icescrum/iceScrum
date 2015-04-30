@@ -35,7 +35,7 @@
                    keys="${possibleOwners*.id}"
                    name="team.owner"
                    id="teamOwner"
-                   onchange="if (jQuery(this).val() != ${team.owner.id}) { alert('${message(code: 'is.ui.team.owner.change.warning')}'); }"
+                   onchange="if (jQuery(this).val() != ${team.owner.id}) { alert('${message(code: 'is.ui.team.owner.change.warning').encodeAsJavaScript()}'); }"
                    value="${team.owner.id}"/>
     </is:fieldSelect>
     <p class="field-input clearfix">

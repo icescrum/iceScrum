@@ -68,6 +68,7 @@
                        name="teamFinder"
                        type="hidden"
                        value="${team.id}"
+                       onClick="alert('${message(code: 'is.ui.team.change.warning')}');"
                        data-width="242"
                        data-ajax-select="true"
                        data-url="${createLink(controller: 'members', action:'getTeamEntries')}"
