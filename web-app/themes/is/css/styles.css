@@ -1488,7 +1488,7 @@ li#li-roles {
     height: 355px;
 }
 
-#form-team-browse .browse .col1 .browse-list {
+#dialog-team-browse .browse .col1 .browse-list {
     height: 426px;
 }
 
@@ -1543,7 +1543,7 @@ li#li-roles {
     height: 337px;
 }
 
-#form-team-browse .browse-content {
+#dialog-team-browse .browse-content {
     padding: 0;
 }
 

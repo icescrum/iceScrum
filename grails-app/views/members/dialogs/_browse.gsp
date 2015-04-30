@@ -20,17 +20,41 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:dialog width="940"
+<is:dialog id="dialog-team-browse"
+           width="940"
            buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
            height="585">
-<form id="form-team-browse" name="form-team-browse" method="post">
     <is:browser detailsLabel="is.ui.team.details"
                 browserLabel="is.ui.team.owner.of"
                 controller="members"
                 titleLabel="is.ui.team.menu"
                 actionColumn="browseList"
-                initContent="${message(code: 'is.ui.team.explanation')}"
                 name="team-browse" >
     </is:browser>
-</form>
+    <template id="empty-team-tmpl">
+        <form id="form-team-create" class="box-form box-form-250 box-form-200-legend" name="form-team-create" method="post">
+            <is:fieldInput for="teamName" label="is.ui.team.create.name">
+                <is:input id="teamName" name="team.name"/>
+                <a id="create-team-button"
+                   style="margin-top:5px"
+                   class="button-s clearfix"
+                   data-ajax="true"
+                   data-ajax-form="true"
+                   data-ajax-method="POST"
+                   data-ajax-notice="${message(code:'is.team.saved')}"
+                   data-ajax-success="var filter = jQuery('#team-browse-browse');
+                                      filter.autocomplete('search', filter.val());
+                                      jQuery('#teamName').val('');"
+                   href="${createLink(controller: 'members', action: 'save')}">
+                    <span class="start"></span>
+                    <span class="content">${message(code:'is.button.add')}</span>
+                    <span class="end"></span>
+                </a>
+            </is:fieldInput>
+        </form>
+        <div class='box-blank clearfix' style='display:block;'>
+            <p>${message(code: 'is.ui.team.explanation')}</p>
+        </div>
+    </template>
+    <jq:jquery>jQuery('#team-browse-details').html(jQuery('#empty-team-tmpl').html());</jq:jquery>
 </is:dialog>

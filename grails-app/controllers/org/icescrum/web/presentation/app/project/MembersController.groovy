@@ -29,6 +29,7 @@ import grails.plugins.springsecurity.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.preferences.TeamPreferences
 
 @Secured('isAuthenticated()')
 class MembersController {
@@ -151,5 +152,16 @@ class MembersController {
             teamService.delete(team)
             render(status: 200)
         }
+    }
+
+    def save = {
+        def team = new Team(preferences: new TeamPreferences(), name: params.team.name)
+        try {
+            teamService.save(team, null, null)
+        } catch (RuntimeException re) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
+            return
+        }
+        render(status: 200)
     }
 }
