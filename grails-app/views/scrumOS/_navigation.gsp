@@ -182,6 +182,7 @@
                             <g:message code="is.dialog.profile"/>
                         </a>
                     </div>
+                    <entry:point id="user-tooltip-buttons" model="[product: product]"/>
                 </div>
             </div>
         </sec:ifLoggedIn>
