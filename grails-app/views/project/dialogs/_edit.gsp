@@ -29,6 +29,7 @@
   <input type="hidden" name="productd.id" value="${params.product}">
   <input type="hidden" name="product" value="${params.product}">
   <input type="hidden" name="productd.version" value="${product.version}">
+  <input type="hidden" name="update_members" value="true">
   <is:fieldset nolegend="true" title="is.dialog.project.title">
     <is:accordion id="properties" active="${openPanelIndex ?: ''}">
         <is:accordionSection title="is.dialog.project.properties.title">
@@ -115,17 +116,7 @@
                         id="pos"
                         name="find-pos"
                         appendTo="#product-member-autocomplete"
-                        onSelect="ui.item.editable = true;
-                                  ui.item.view = 'pos';
-                                  var role = jQuery('#role'+ui.item.id);
-                                  if (role.length && role.val() == ${Authority.SCRUMMASTER}) {
-                                      ui.item.role = ${Authority.PO_AND_SM};
-                                      role.val(${Authority.PO_AND_SM});
-                                      jQuery('#scrum-master-'+ui.item.id).attr('disabled', 'disabled');
-                                  } else {
-                                      ui.item.role = ${Authority.PRODUCTOWNER};
-                                  }
-                                  attachOnDomUpdate(jQuery('#po-list').jqoteapp('#user-tmpl', ui.item));"
+                        onSelect="jQuery.icescrum.product.poChange(event, ui);"
                         renderItem="${link}"
                         minLength="2"/>
             </is:fieldInput>
@@ -139,10 +130,7 @@
                         id="sh"
                         name="find-sh"
                         appendTo="#product-member-autocomplete"
-                        onSelect="ui.item.editable = true;
-                                  ui.item.view = 'shs';
-                                  ui.item.role = ${Authority.STAKEHOLDER};
-                                  attachOnDomUpdate(jQuery('#sh-list').jqoteapp('#user-tmpl', ui.item));"
+                        onSelect="jQuery.icescrum.product.shChange(event, ui);"
                         renderItem="${link}"
                         minLength="2"/>
             </is:fieldInput>

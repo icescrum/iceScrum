@@ -164,8 +164,10 @@ class ProjectController {
                         product.preferences.stakeHolderRestrictedViews = null
                     }
                     productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
-                    def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger()] }
-                    productService.updateProductMembers(product, newMembers)
+                    if (params.boolean('update_members')) {
+                        def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger()] }
+                        productService.updateProductMembers(product, newMembers)
+                    }
                     entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
                 }
             } catch (IllegalStateException ise) {

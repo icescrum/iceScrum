@@ -30,7 +30,11 @@
                         addRoleProduct:'You have been added to the project:',
                         updateRoleProduct:'Your role has changed on the project:'
                     },
-
+                    AUTHORITY_MEMBER: 0,
+                    AUTHORITY_SCRUMMASTER: 1,
+                    AUTHORITY_PRODUCTOWNER: 2,
+                    AUTHORITY_STAKEHOLDER: 3,
+                    AUTHORITY_PO_AND_SM: 4,
                     scrumMaster:false,
                     productOwner:false,
                     teamMember:false,
@@ -210,6 +214,40 @@
                         }else{
                             document.location = $.icescrum.o.grailsServer+'/p/'+this.pkey+'#project';
                         }
+                    },
+
+                    memberChange: function(event, ui) {
+                        ui.item.editable = true;
+                        ui.item.view = 'members';
+                        var role = $('#role'+ui.item.id);
+                        if (role.length && role.val() == $.icescrum.user.AUTHORITY_PRODUCTOWNER) {
+                            ui.item.role = $.icescrum.user.AUTHORITY_PO_AND_SM;
+                            role.val($.icescrum.user.AUTHORITY_PO_AND_SM);
+                        } else {
+                            ui.item.role = $.icescrum.user.AUTHORITY_MEMBER;
+                        }
+                        attachOnDomUpdate($('#team-member-list').jqoteapp('#user-tmpl', ui.item));
+                    },
+
+                    poChange: function(event, ui) {
+                        ui.item.editable = true;
+                        ui.item.view = 'pos';
+                        var role = $('#role'+ui.item.id);
+                        if (role.length && role.val() == $.icescrum.user.AUTHORITY_SCRUMMASTER) {
+                            ui.item.role = $.icescrum.user.AUTHORITY_PO_AND_SM;
+                            role.val($.icescrum.user.AUTHORITY_PO_AND_SM);
+                            $('#scrum-master-'+ui.item.id).attr('disabled', 'disabled');
+                        } else {
+                            ui.item.role = $.icescrum.user.AUTHORITY_PRODUCTOWNER;
+                        }
+                        attachOnDomUpdate($('#po-list').jqoteapp('#user-tmpl', ui.item));
+                    },
+
+                    shChange: function(event, ui) {
+                        ui.item.editable = true;
+                        ui.item.view = 'shs';
+                        ui.item.role = $.icescrum.user.AUTHORITY_STAKEHOLDER;
+                        attachOnDomUpdate($('#sh-list').jqoteapp('#user-tmpl', ui.item));
                     },
 
                     teamChange: function(event){

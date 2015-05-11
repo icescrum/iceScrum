@@ -55,10 +55,7 @@
                              id="members"
                              name="find-team-members"
                              appendTo="#form-team"
-                             onSelect="ui.item.editable = true;
-                                       ui.item.view = 'members';
-                                       ui.item.role = ${Authority.MEMBER};
-                                       attachOnDomUpdate(jQuery('#team-member-list').jqoteapp('#user-tmpl', ui.item));"
+                             onSelect="jQuery.icescrum.product.memberChange(event, ui);"
                              renderItem="${link}"
                              minLength="2"/>
     </is:fieldInput>
