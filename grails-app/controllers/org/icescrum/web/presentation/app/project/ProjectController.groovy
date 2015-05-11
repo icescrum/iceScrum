@@ -169,6 +169,7 @@ class ProjectController {
                         productService.updateProductMembers(product, newMembers)
                     }
                     entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
+                    render(status: 200, contentType: 'application/json', text:product as JSON)
                 }
             } catch (IllegalStateException ise) {
                 returnError(exception:ise)
@@ -177,7 +178,6 @@ class ProjectController {
                 returnError(exception:re, object:product)
                 return
             }
-            render(status: 200, contentType: 'application/json', text:product as JSON)
         }
     }
 
