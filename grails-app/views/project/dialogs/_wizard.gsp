@@ -85,6 +85,7 @@
                    data-placeholder="${message(code:'is.ui.project.choose.or.create.team')}"
                    data-create-choice="true"
                    data-create-choice-unique="true"
+                   data-loaded="jQuery.icescrum.product.teamsLoaded"
                    data-change="jQuery.icescrum.product.teamChange"/>
         </is:fieldSelect>
         <input type="hidden" id="teamId" name="team.id" value=""/>

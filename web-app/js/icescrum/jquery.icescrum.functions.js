@@ -250,6 +250,8 @@
                         attachOnDomUpdate($('#sh-list').jqoteapp('#user-tmpl', ui.item));
                     },
 
+                    teamsLoaded: function(event) {},
+
                     teamChange: function(event){
                         var value = event.val;
                         var teamId = parseInt(value);

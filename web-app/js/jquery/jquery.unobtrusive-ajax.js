@@ -331,6 +331,11 @@ function attachOnDomUpdate(content){
                 getFunction(element.data("change"), ["event"]).apply(this,[event]);
             });
         }
+        if (element.data('loaded')){
+            select.on('select2-loaded', function(items){
+                getFunction(element.data("loaded"), ["items"]).apply(this,[items]);
+            });
+        }
     });
 
     $('input[data-local-tags="true"]', content).each(function(){
