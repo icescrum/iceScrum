@@ -125,6 +125,7 @@ class MembersController {
                 return
             }
             def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger() ]}
+            entry.hook(id:"${controllerName}-${actionName}-before", model:[newMembers: newMembers])
             def newOwnerId = params.team.owner?.toLong()
             Team.withTransaction {
                 if (team.name != params.team.name) {
@@ -158,10 +159,10 @@ class MembersController {
         def team = new Team(preferences: new TeamPreferences(), name: params.team.name)
         try {
             teamService.save(team, null, null)
+            render(status: 200)
         } catch (RuntimeException re) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
             return
         }
-        render(status: 200)
     }
 }

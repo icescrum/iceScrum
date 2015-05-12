@@ -1014,6 +1014,7 @@ class ProjectController {
             def teamId = params.long('team.id')
             if (teamId != product.firstTeam.id) {
                 Team newTeam = Team.get(teamId)
+                entry.hook(id:"${controllerName}-${actionName}-before", model:[newTeam: newTeam])
                 productService.changeTeam(product, newTeam)
             }
             render(status: 200)
