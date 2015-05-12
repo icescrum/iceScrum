@@ -158,6 +158,7 @@ class MembersController {
     def save = {
         def team = new Team(preferences: new TeamPreferences(), name: params.team.name)
         try {
+            entry.hook(id:"${controllerName}-${actionName}-before")
             teamService.save(team, null, null)
             render(status: 200)
         } catch (RuntimeException re) {

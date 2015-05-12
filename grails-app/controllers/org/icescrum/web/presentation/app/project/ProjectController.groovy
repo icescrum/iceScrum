@@ -277,7 +277,8 @@ class ProjectController {
                 entry.hook(id:"${controllerName}-${actionName}-before", model:[members: members,
                                                                                scrumMasters: scrumMasters,
                                                                                stakeHolders: stakeHolders,
-                                                                               productOwners: productOwners])
+                                                                               productOwners: productOwners,
+                                                                               teamParams: teamParams])
                 if (!teamParams?.id){
                     team = new Team()
                     bindData(team, teamParams, [include:['name']])
