@@ -166,6 +166,7 @@ class ProjectController {
                     productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
                     if (params.boolean('update_members')) {
                         def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger()] }
+                        entry.hook(id:"${controllerName}-${actionName}-before-members", model:[newMembers: newMembers])
                         productService.updateProductMembers(product, newMembers)
                     }
                     entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
@@ -273,6 +274,10 @@ class ProjectController {
         def product = new Product()
         Product.withTransaction { status ->
             try {
+                entry.hook(id:"${controllerName}-${actionName}-before", model:[members: members,
+                                                                               scrumMasters: scrumMasters,
+                                                                               stakeHolders: stakeHolders,
+                                                                               productOwners: productOwners])
                 if (!teamParams?.id){
                     team = new Team()
                     bindData(team, teamParams, [include:['name']])
