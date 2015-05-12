@@ -158,9 +158,14 @@ class MembersController {
     def save = {
         def team = new Team(preferences: new TeamPreferences(), name: params.team.name)
         try {
-            entry.hook(id:"${controllerName}-${actionName}-before")
-            teamService.save(team, null, null)
-            render(status: 200)
+            Team.withTransaction {
+                entry.hook(id:"${controllerName}-${actionName}-before")
+                teamService.save(team, null, null)
+                render(status: 200)
+            }
+        } catch (IllegalStateException ise) {
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
+            return
         } catch (RuntimeException re) {
             render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
             return
