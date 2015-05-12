@@ -76,7 +76,9 @@
                                           jQuery('.browse-item[data-elemid=${team.id}]').addClass('browse-item-active');
                                       });
                                       if (jQuery('#teamOwner').val() != ${team.owner.id}) {
-                                          jQuery('#team-browse-details').html(jQuery('#empty-team-tmpl').html());
+                                          var teamDetails = jQuery('#team-browse-details');
+                                          teamDetails.html(jQuery('#empty-team-tmpl').html());
+                                          attachOnDomUpdate(teamDetails);
                                       }"
                    href="${createLink(controller: 'members', action: 'update', params: [id: team.id])}">
                     <span class="start"></span>
@@ -95,7 +97,9 @@
                        data-ajax-confirm="${message(code: 'default.button.delete.confirm.message')}"
                        data-ajax-success="var filter = jQuery('#team-browse-browse');
                                           filter.autocomplete('search', filter.val());
-                                          jQuery('#team-browse-details').html(jQuery('#empty-team-tmpl').html());"
+                                          var teamDetails = jQuery('#team-browse-details');
+                                          teamDetails.html(jQuery('#empty-team-tmpl').html());
+                                          attachOnDomUpdate(teamDetails);"
                        href="${createLink(controller: 'members', action: 'delete', params: [id: team.id])}">
                         <span class="start"></span>
                         <span class="content">${message(code:'default.button.delete.label')}</span>
@@ -107,7 +111,9 @@
                 <a id="cancel-team-button"
                    onClick="var filter = jQuery('#team-browse-browse');
                             filter.autocomplete('search', filter.val());
-                            jQuery('#team-browse-details').html(jQuery('#empty-team-tmpl').html());"
+                            var teamDetails = jQuery('#team-browse-details');
+                            teamDetails.html(jQuery('#empty-team-tmpl').html());
+                            attachOnDomUpdate(teamDetails);"
                    class="button-s button-s-black">
                     <span class="start"></span>
                     <span class="content">${message(code:'is.button.cancel')}</span>

@@ -39,6 +39,8 @@
                    style="margin-top:5px"
                    class="button-s clearfix"
                    data-ajax="true"
+                   data-shortcut="return"
+                   data-shortcut-on="#form-team-create input"
                    data-ajax-form="true"
                    data-ajax-method="POST"
                    data-ajax-notice="${message(code:'is.team.saved')}"
