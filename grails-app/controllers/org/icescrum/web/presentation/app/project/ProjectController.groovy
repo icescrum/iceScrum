@@ -284,6 +284,7 @@ class ProjectController {
                     bindData(team, teamParams, [include:['name']])
                     team.preferences = new TeamPreferences()
                     teamService.save(team, members, scrumMasters)
+                    userService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
                 } else {
                     team = Team.findById(teamParams.id)
                 }
@@ -293,6 +294,7 @@ class ProjectController {
                     product.preferences.hidden = true
                 }
                 productService.save(product, productOwners, stakeHolders)
+                userService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
                 productService.addTeamToProduct(product, team)
                 def release = new Release(name: "R1", startDate: product.startDate, vision: params.vision, endDate: product.endDate)
                 releaseService.save(release, product)
