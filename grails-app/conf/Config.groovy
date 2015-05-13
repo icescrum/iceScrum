@@ -41,7 +41,7 @@ Administration section
  */
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = true
-
+icescrum.invitation.enable = false
 icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = true
 icescrum.alerts.default.from = "webmaster@icescrum.org"
