@@ -24,21 +24,17 @@
  */
 package org.icescrum.web.presentation.app
 
-import org.apache.commons.validator.GenericValidator
-import org.hibernate.ObjectNotFoundException
-import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
 import grails.plugin.fluxiable.Activity
+import grails.plugin.springcache.annotations.Cacheable
 import grails.plugins.springsecurity.Secured
-import org.icescrum.core.domain.Invitation
-import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Task
-import org.icescrum.core.domain.User
+import org.apache.commons.validator.GenericValidator
+import org.hibernate.ObjectNotFoundException
+import org.icescrum.core.domain.*
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
-import grails.plugin.springcache.annotations.Cacheable
+import org.springframework.security.acls.domain.BasePermission
 
 class UserController {
 
@@ -68,9 +64,27 @@ class UserController {
             render(status: 403)
             return
         }
-        render(template: 'window/register', model: [user: new User()])
+        String token = params.token
+        User user = new User()
+        if (token) {
+            def invitation = Invitation.findByToken(token)
+            if (!invitation || !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.invitation.enable)) {
+                throw new ObjectNotFoundException(token, 'Invitation')
+            }
+            user.email = invitation.email
+            def emailPrefix = user.email.split('@')[0]
+            user.username = emailPrefix
+            def dotPosition = emailPrefix.indexOf('.')
+            if (dotPosition != -1) {
+                user.firstName = emailPrefix.substring(0, dotPosition)?.capitalize()
+                user.lastName = emailPrefix.substring(dotPosition + 1)?.capitalize()
+            } else {
+                user.firstName = emailPrefix
+                user.lastName = ""
+            }
+        }
+        render(template: 'window/register', model: [user: user, token: token])
     }
-
 
     @Secured('isAuthenticated()')
     //@Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
@@ -93,7 +107,7 @@ class UserController {
         user.preferences = new UserPreferences()
         user.properties = params
         try {
-            userService.save(user, params.user.token)
+            userService.save(user, params.token)
         } catch (IllegalStateException e) {
             returnError(exception: e)
             return
@@ -332,32 +346,26 @@ class UserController {
         def value = params.term.trim()
         def users = User.findUsersLike(false, value, [max: 10, offset: 0])
         users?.each { User user ->
-            if(user.enabled || params.showDisabled) {
+            if (user.enabled || params.showDisabled) {
                 results << [id: user.id,
                             name: "$user.firstName $user.lastName",
-                            avatar: is.avatar([user:user,link:true]),
+                            avatar: is.avatar([user: user, link: true]),
                             activity: "${user.preferences.activity ?: ''}"]
             }
         }
-        def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
+        def enableInvitation = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable) && ApplicationSupport.booleanValue(grailsApplication.config.icescrum.invitation.enable)
         if (!results && GenericValidator.isEmail(value) && enableInvitation) {
-            users << Invitation.getUserMock(value)
+            results << [id: value,
+                        name: value,
+                        activity: '',
+                        avatar: is.avatar([user:[email: value, id: -1], link:true]),
+                        isInvited: true]
         }
-
         render(results as JSON)
     }
 
     def displayAvatar = {
         def user = [id:params.id, email:params.email]
         render is.avatar(user:user)
-    }
-
-    def invitationUserMock(String token) {
-        def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
-        def invitation = Invitation.findByToken(token)
-        if (!invitation || !enableInvitation) {
-            throw new ObjectNotFoundException(token, 'Invitation') // TODO manage error independently
-        }
-        render(status: 200, text: invitation.userMock as JSON, contentType: 'application/json')
     }
 }

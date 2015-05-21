@@ -37,20 +37,22 @@
     
     <form id="registerForm" name="registerForm" method="post" class='box-form box-form-small-legend box-content box-form-180' onsubmit="$('input[name=registerButton]').click();return false;">
 
-        <is:fieldInformation nobordertop="true">
+      <input type="hidden" name="token" value="${token}"/>
+
+      <is:fieldInformation nobordertop="true">
           <g:message code="is.welcome"/>
         </is:fieldInformation>
 
         <is:fieldInput for="firstName" label="is.user.firstname">
-          <is:input id="firstName" name="firstName" autofocus=""/>
+          <is:input id="firstName" name="firstName" autofocus="" value="${user.firstName}"/>
         </is:fieldInput>
 
         <is:fieldInput for="lastName" label="is.user.lastname">
-          <is:input name='lastName' id='lastName'/>
+          <is:input name='lastName' id='lastName' value="${user.lastName}" />
         </is:fieldInput>
 
         <is:fieldInput for="username" label="is.user.username">
-          <is:input name="username" id="username"/>
+          <is:input name="username" id="username" value="${user.username}" />
         </is:fieldInput>
 
         <is:fieldInput for="password" label="is.user.password">
@@ -62,7 +64,7 @@
         </is:fieldInput>
 
         <is:fieldInput for="email" label="is.user.email">
-          <is:input name='email' id='email'/>
+          <is:input name='email' id='email' value="${user.email}" />
         </is:fieldInput>
 
         <is:fieldInput for="activity" label="is.user.preferences.activity" optional="true">
@@ -81,7 +83,8 @@
           <is:button name="registerButton" type="submitToRemote" action='save' value="${message(code:'is.button.register')}" onSuccess="window.location.href='${createLink(controller:'login',action:'auth')}/?lang='+data.lang+'&username='+data.username;"/>
           <is:button type="link" button="button-s button-s-black" url="[controller:'login', action:'auth']" value="${message(code: 'is.button.cancel')}"/>
         </is:buttonBar>
-    </form>
+
+  </form>
   </div>
   <is:shortcut key="return" listenOn="'input'" callback="jQuery('input[name=registerButton]').click();"/>
 </is:simpleDesktop>
