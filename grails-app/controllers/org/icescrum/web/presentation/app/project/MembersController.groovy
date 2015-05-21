@@ -30,6 +30,7 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.TeamPreferences
+import org.icescrum.core.domain.security.Authority
 
 @Secured('isAuthenticated()')
 class MembersController {
@@ -124,7 +125,20 @@ class MembersController {
                 render(status:403)
                 return
             }
-            def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger() ]}
+            def newMembers = []
+            def invitedMembers = []
+            def invitedScrumMasters = []
+            // Trick to work around email with dots (which would be parsed as maps)
+            params.members.findAll { k, v -> ! (v instanceof Map) }.each { k, id ->
+                def role = params.role[id].toInteger()
+                if (id.isLong()) {
+                    newMembers << [id: id.toLong(), role: role]
+                } else if (role == Authority.MEMBER) {
+                    invitedMembers << id
+                } else if (role == Authority.SCRUMMASTER) {
+                    invitedScrumMasters << id
+                }
+            }
             entry.hook(id:"${controllerName}-${actionName}-before", model:[newMembers: newMembers])
             def newOwnerId = params.team.owner?.toLong()
             Team.withTransaction {
@@ -135,6 +149,7 @@ class MembersController {
                     }
                 }
                 productService.updateTeamMembers(team, newMembers)
+                productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
                 if (newOwnerId && newOwnerId != team.owner.id){
                     securityService.changeOwner(User.get(newOwnerId), team)
                 }

@@ -112,14 +112,33 @@ class ProjectController {
                         avatar: is.avatar(user: user, link: true),
                         role: role]
             }
+            def getInvitationEntry = { int role, Invitation invitation ->
+                return [id: invitation.email,
+                        name: invitation.email,
+                        activity: '',
+                        avatar: is.avatar([user:[email: invitation.email, id: -1], link:true]),
+                        role: role,
+                        isInvited: true]
+            }
             def poEntries = product.productOwners.collect(getEntry.curry(Authority.PRODUCTOWNER))
             def shEntries = product.stakeHolders.collect(getEntry.curry(Authority.STAKEHOLDER))
+            def invitedPoEntries = product.invitedProductOwners.collect(getInvitationEntry.curry(Authority.PRODUCTOWNER))
+            def invitedShEntries = product.invitedStakeHolders.collect(getInvitationEntry.curry(Authority.STAKEHOLDER))
             poEntries.sort { it.name }
             shEntries.sort { it.name }
+            invitedPoEntries.sort { it.name }
+            invitedShEntries.sort { it.name }
+            poEntries.addAll(invitedPoEntries)
+            shEntries.addAll(invitedShEntries)
 
             def team = product.firstTeam
             def membersIds = team.members*.id
+            def invitedMembersIds = team.invitedMembers*.email
+            def invitedScrumMasterIds = team.invitedScrumMasters*.email
+            membersIds.addAll(invitedMembersIds)
+            membersIds.addAll(invitedScrumMasterIds)
             def tmIds = membersIds - team.scrumMasters*.id
+            tmIds.addAll(invitedMembersIds)
 
             def dialog = g.render(template: "dialogs/edit",
                     model: [product: product,
@@ -165,9 +184,23 @@ class ProjectController {
                     }
                     productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
                     if (params.boolean('update_members')) {
-                        def newMembers = params.members.collect { k, v -> [id: v.toLong(), role: params.role[v].toInteger()] }
+                        def newMembers = []
+                        def invitedProductOwners = []
+                        def invitedStakeHolders = []
+                        // Trick to work around email with dots (which would be parsed as maps)
+                        params.members.findAll { k, v -> ! (v instanceof Map) }.each { k, id ->
+                            def role = params.role[id].toInteger()
+                            if (id.isLong()) {
+                                newMembers << [id: id.toLong(), role: role]
+                            } else if (role == Authority.PRODUCTOWNER) {
+                                invitedProductOwners << id
+                            } else if (role == Authority.STAKEHOLDER) {
+                                invitedStakeHolders << id
+                            }
+                        }
                         entry.hook(id:"${controllerName}-${actionName}-before-members", model:[newMembers: newMembers])
                         productService.updateProductMembers(product, newMembers)
+                        productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
                     }
                     entry.hook(id:"${controllerName}-${actionName}", model:[product:product])
                     render(status: 200, contentType: 'application/json', text:product as JSON)
@@ -240,30 +273,41 @@ class ProjectController {
         def productOwners = []
         def scrumMasters = []
         def stakeHolders = []
-        params.members?.each { k, v ->
-            if (params.role."${k}" instanceof String[]) {
-                params.role."${k}" = params.role."${k}".first()
+        def invitedMembers = []
+        def invitedProductOwners = []
+        def invitedScrumMasters = []
+        def invitedStakeHolders = []
+        // Trick to work around email with dots (which would be parsed as maps)
+        params.members?.findAll { k, v -> ! (v instanceof Map) }.each { k, id ->
+            def role = params.role."${k}" instanceof String[] ? params.role."${k}".first() : params.role."${k}"
+            role = role.toInteger()
+            if (id instanceof String[]) {
+                id = id.first()
             }
-            if (v instanceof String[]) {
-                v = v.first()
+            def isInvited = !id.isLong()
+            if (id.isLong()) {
+                id = id.toLong()
             }
-            switch (params.role."${k}") {
-                case Authority.MEMBER.toString():
-                    members.add(v.toLong())
+            def collections = []
+            switch (role) {
+                case Authority.MEMBER:
+                    collections << (isInvited ? invitedMembers : members)
                     break;
-                case Authority.SCRUMMASTER.toString():
-                    scrumMasters.add(v.toLong())
+                case Authority.SCRUMMASTER:
+                    collections << (isInvited ? invitedScrumMasters : scrumMasters)
                     break;
-                case Authority.PRODUCTOWNER.toString():
-                    productOwners.add(v.toLong())
+                case Authority.PRODUCTOWNER:
+                    collections << (isInvited ? invitedProductOwners : productOwners)
                     break;
-                case Authority.STAKEHOLDER.toString():
-                    stakeHolders.add(v.toLong())
+                case Authority.STAKEHOLDER:
+                    collections << (isInvited ? invitedStakeHolders : stakeHolders)
                     break;
-                case Authority.PO_AND_SM.toString():
-                    scrumMasters.add(v.toLong())
-                    productOwners.add(v.toLong())
+                case Authority.PO_AND_SM:
+                    collections.addAll(isInvited ? [invitedScrumMasters, invitedProductOwners] : [scrumMasters, productOwners])
                     break;
+            }
+            collections.each {
+                it << id
             }
         }
         if (!scrumMasters && !members && !productOwners) {
@@ -284,7 +328,7 @@ class ProjectController {
                     bindData(team, teamParams, [include:['name']])
                     team.preferences = new TeamPreferences()
                     teamService.save(team, members, scrumMasters)
-                    userService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
+                    productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
                 } else {
                     team = Team.findById(teamParams.id)
                 }
@@ -294,7 +338,7 @@ class ProjectController {
                     product.preferences.hidden = true
                 }
                 productService.save(product, productOwners, stakeHolders)
-                userService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
+                productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
                 productService.addTeamToProduct(product, team)
                 def release = new Release(name: "R1", startDate: product.startDate, vision: params.vision, endDate: product.endDate)
                 releaseService.save(release, product)
@@ -1007,6 +1051,8 @@ class ProjectController {
         def shNames = product.stakeHolders.collect { it.firstName + ' ' + it.lastName}
         poNames.sort()
         shNames.sort()
+        poNames.addAll(product.invitedProductOwners*.email.sort())
+        shNames.addAll(product.invitedStakeHolders*.email.sort())
         def dialog = g.render(template: "dialogs/team", model: [product: product, team: product.firstTeam, memberEntries: memberEntries, poNames: poNames, shNames: shNames])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
