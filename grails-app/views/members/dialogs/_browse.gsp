@@ -22,6 +22,7 @@
 --}%
 <is:dialog id="dialog-team-browse"
            width="940"
+           closeOnEscape="false"
            buttons="'${message(code: 'is.button.close')}': function() { \$(this).dialog('close'); }"
            height="585">
     <is:browser detailsLabel="is.ui.team.details"

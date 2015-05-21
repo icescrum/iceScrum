@@ -22,6 +22,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:dialog
+        closeOnEscape="false"
         resizable="false"
         noprefix="true"
         withTitlebar="false"
