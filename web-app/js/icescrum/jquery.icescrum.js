@@ -511,7 +511,12 @@ $.fn.icescrum = function(options) {
 };
 
 $.escapeSelector = function(unescapedSelector) {
-    return unescapedSelector.replace(/(!|\"|#|\$|\%|&|'|\(|\)|\*|\+|\,|\.|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\~)/g, "\\$1");
+    var isNumber = !isNaN(parseInt(unescapedSelector));
+    if (isNumber) {
+        return unescapedSelector;
+    } else {
+        return unescapedSelector.replace(/(!|\"|#|\$|\%|&|'|\(|\)|\*|\+|\,|\.|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\~)/g, "\\$1");
+    }
 };
 
 $.ui.dialog.prototype._allowInteraction = function(e) {
