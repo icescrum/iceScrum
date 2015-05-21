@@ -25,13 +25,12 @@
     <![CDATA[
     ?**
         var name = this.name.length <= 20 ? this.name : this.name.substring(0,17)+'...';
-        var activity = this.activity ? this.activity : '&nbsp;';
-        var id = new Date().getTime();
+        var activity = this.isInvited ? '<em>${message(code: 'is.ui.user.invited')}</em>' : (this.activity ? this.activity : '&nbsp;');
         var role = this.role ? this.role : 0;
         var disabled = this.editable && role != ${Authority.PO_AND_SM} ? '' : 'disabled="disabled"';
         var checked = role == ${Authority.SCRUMMASTER} || role == ${Authority.PO_AND_SM} ? 'checked="checked"' : '';
     **?
-    <span class="member ui-corner-all" id='member?**=this.id**?'>
+    <span class="member ui-corner-all" title="?**=this.name**?" id='member?**=this.id**?'>
         ?** if (this.editable) { **?
             <span class="button-s">
                 <span style="display: block;"
@@ -39,7 +38,7 @@
                       onclick="var $this = jQuery(this);
                                $this.closest('.member').remove();
                                var isPoView = '?**=this.view**?' == 'pos';
-                               var $role = jQuery('#role?**=this.id**?');
+                               var $role = jQuery('#role' + jQuery.escapeSelector('?**=this.id**?'));
                                if ($role.length && $role.val() == ${Authority.PO_AND_SM}) {
                                    $role.val(isPoView ? ${Authority.SCRUMMASTER} : ${Authority.PRODUCTOWNER});
                                    if (isPoView) {
@@ -60,7 +59,7 @@
                    ?**=disabled**?
                    ?**=checked**?
                    type="checkbox"
-                   onClick="$('#role?**=this.id**?').val($(this).is(':checked') ? ${Authority.SCRUMMASTER} : ${Authority.MEMBER});"/>
+                   onClick="$('#role' + $.escapeSelector('?**=this.id**?')).val($(this).is(':checked') ? ${Authority.SCRUMMASTER} : ${Authority.MEMBER});"/>
             ${message(code: 'is.role.scrumMaster')}
         </label>
         ?** } **?

@@ -219,7 +219,7 @@
                     memberChange: function(event, ui) {
                         ui.item.editable = true;
                         ui.item.view = 'members';
-                        var role = $('#role'+ui.item.id);
+                        var role = $('#role' + $.escapeSelector(ui.item.id));
                         if (role.length && role.val() == $.icescrum.user.AUTHORITY_PRODUCTOWNER) {
                             ui.item.role = $.icescrum.user.AUTHORITY_PO_AND_SM;
                             role.val($.icescrum.user.AUTHORITY_PO_AND_SM);
@@ -232,11 +232,12 @@
                     poChange: function(event, ui) {
                         ui.item.editable = true;
                         ui.item.view = 'pos';
-                        var role = $('#role'+ui.item.id);
+                        var escapedId = $.escapeSelector(ui.item.id);
+                        var role = $('#role' + escapedId);
                         if (role.length && role.val() == $.icescrum.user.AUTHORITY_SCRUMMASTER) {
                             ui.item.role = $.icescrum.user.AUTHORITY_PO_AND_SM;
                             role.val($.icescrum.user.AUTHORITY_PO_AND_SM);
-                            $('#scrum-master-'+ui.item.id).attr('disabled', 'disabled');
+                            $('#scrum-master-' + escapedId).attr('disabled', 'disabled');
                         } else {
                             ui.item.role = $.icescrum.user.AUTHORITY_PRODUCTOWNER;
                         }
@@ -250,9 +251,9 @@
                         attachOnDomUpdate($('#sh-list').jqoteapp('#user-tmpl', ui.item));
                     },
 
-                    teamsLoaded: function(event) {},
+                    teamsLoaded: function(event) { },
 
-                    teamChange: function(event){
+                    teamChange: function(event) {
                         var value = event.val;
                         var teamId = parseInt(value);
                         var newTeam = isNaN(teamId);

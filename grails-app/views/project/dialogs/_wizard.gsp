@@ -67,8 +67,6 @@
         </is:fieldArea>
     </is:fieldset>
 
-    <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
-
     <is:fieldset title="is.dialog.wizard.section.team"
                  description="is.dialog.wizard.section.team.description"
                  id="team-member-autocomplete"
@@ -95,12 +93,12 @@
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0 || jQuery('#role'+object.id).val() == ${Authority.PRODUCTOWNER}"
+                        filter="jQuery('#member'+ jQuery.escapeSelector(object.id)).length == 0 || jQuery('#role'+jQuery.escapeSelector(object.id)).val() == ${Authority.PRODUCTOWNER}"
                         id="members"
                         name="find-team-members"
                         appendTo="#team-member-autocomplete"
                         onSelect="jQuery.icescrum.product.memberChange(event, ui);"
-                        renderItem="${link}"
+                        renderItem="${is.autoCompleteRenderItem()}"
                         minLength="2"/>
         </is:fieldInput>
         <div id="team-member-list" class="members-list"></div>
@@ -115,12 +113,12 @@
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0 || jQuery('#role'+object.id).val() == ${Authority.SCRUMMASTER}"
+                        filter="jQuery('#member'+jQuery.escapeSelector(object.id)).length == 0 || jQuery('#role'+jQuery.escapeSelector(object.id)).val() == ${Authority.SCRUMMASTER}"
                         id="pos"
                         name="find-pos"
                         appendTo="#product-member-autocomplete"
                         onSelect="jQuery.icescrum.product.poChange(event, ui);"
-                        renderItem="${link}"
+                        renderItem="${is.autoCompleteRenderItem()}"
                         minLength="2"/>
         </is:fieldInput>
         <div id="po-list" class="members-list"></div>
@@ -129,12 +127,12 @@
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0"
+                        filter="jQuery('#member'+jQuery.escapeSelector(object.id)).length == 0"
                         id="sh"
                         name="find-sh"
                         appendTo="#product-member-autocomplete"
                         onSelect="jQuery.icescrum.product.shChange(event, ui);"
-                        renderItem="${link}"
+                        renderItem="${is.autoCompleteRenderItem()}"
                         minLength="2"/>
         </is:fieldInput>
         <div id="sh-list" class="members-list"></div>

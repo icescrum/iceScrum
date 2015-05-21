@@ -47,16 +47,15 @@
         </span>
     </p>
     <is:fieldInput for="find-team-members" label="is.dialog.wizard.section.team.find" class="members">
-        <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
         <is:autoCompleteSkin controller="user"
                              action="findUsers"
                              cache="true"
-                             filter="jQuery('#member'+object.id).length == 0"
+                             filter="jQuery('#member'+jQuery.escapeSelector(object.id)).length == 0"
                              id="members"
                              name="find-team-members"
                              appendTo="#form-team"
                              onSelect="jQuery.icescrum.product.memberChange(event, ui);"
-                             renderItem="${link}"
+                             renderItem="${is.autoCompleteRenderItem()}"
                              minLength="2"/>
     </is:fieldInput>
     <div id="team-member-list" class="members-list"></div>

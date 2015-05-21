@@ -510,6 +510,10 @@ $.fn.icescrum = function(options) {
     return $.icescrum;
 };
 
+$.escapeSelector = function(unescapedSelector) {
+    return unescapedSelector.replace(/(!|\"|#|\$|\%|&|'|\(|\)|\*|\+|\,|\.|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\~)/g, "\\$1");
+};
+
 $.ui.dialog.prototype._allowInteraction = function(e) {
     return !!$(e.target).closest('.ui-dialog, .ui-datepicker, .select2-drop').length;
 };

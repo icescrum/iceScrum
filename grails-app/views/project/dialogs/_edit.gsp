@@ -106,18 +106,17 @@
         <is:accordionSection title="is.dialog.project.members.title"
                              id="product-member-autocomplete"
                              class="member-autocomplete">
-            <% def link = "<a><img height='40' width='40' src='\" + item.avatar + \"'/><span><b>\" + item.name + \"</b><br/>\" + item.activity + \"</span></a>"%>
             <is:fieldInput for="find-pos" label="is.dialog.wizard.section.pos.find" class="members">
                 <is:autoCompleteSkin
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0 && ${tmIds as JSON}.indexOf(object.id) == -1"
+                        filter="jQuery('#member'+jQuery.escapeSelector(object.id)).length == 0 && ${tmIds as JSON}.indexOf(object.id) == -1"
                         id="pos"
                         name="find-pos"
                         appendTo="#product-member-autocomplete"
                         onSelect="jQuery.icescrum.product.poChange(event, ui);"
-                        renderItem="${link}"
+                        renderItem="${is.autoCompleteRenderItem()}"
                         minLength="2"/>
             </is:fieldInput>
             <div id="po-list" class="members-list"></div>
@@ -126,12 +125,12 @@
                         controller="user"
                         action="findUsers"
                         cache="true"
-                        filter="jQuery('#member'+object.id).length == 0 && ${membersIds as JSON}.indexOf(object.id) == -1"
+                        filter="jQuery('#member'+jQuery.escapeSelector(object.id)).length == 0 && ${membersIds as JSON}.indexOf(object.id) == -1"
                         id="sh"
                         name="find-sh"
                         appendTo="#product-member-autocomplete"
                         onSelect="jQuery.icescrum.product.shChange(event, ui);"
-                        renderItem="${link}"
+                        renderItem="${is.autoCompleteRenderItem()}"
                         minLength="2"/>
             </is:fieldInput>
             <div id="sh-list" class="members-list"></div>
