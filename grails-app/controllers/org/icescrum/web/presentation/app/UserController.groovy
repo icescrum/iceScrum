@@ -355,10 +355,11 @@ class UserController {
         }
         def enableInvitation = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable) && ApplicationSupport.booleanValue(grailsApplication.config.icescrum.invitation.enable)
         if (!results && GenericValidator.isEmail(value) && enableInvitation) {
-            results << [id: value,
-                        name: value,
+            def email = value.toLowerCase()
+            results << [id: email,
+                        name: email,
                         activity: '',
-                        avatar: is.avatar([user:[email: value, id: -1], link:true]),
+                        avatar: is.avatar([user:[email: email, id: -1], link:true]),
                         isInvited: true]
         }
         render(results as JSON)
