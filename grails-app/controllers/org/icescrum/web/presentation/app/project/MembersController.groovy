@@ -179,7 +179,7 @@ class MembersController {
         try {
             Team.withTransaction {
                 entry.hook(id:"${controllerName}-${actionName}-before")
-                teamService.save(team, null, null)
+                teamService.save(team, null, [springSecurityService.currentUser.id])
                 render(status: 200)
             }
         } catch (IllegalStateException ise) {
