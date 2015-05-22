@@ -54,6 +54,7 @@
                 <g:if test="${ownerOrSm}">
                     <g:if test="${poNames || shNames}"><br/></g:if>
                     <a href="${createLink(controller:'project', action:'edit',params:[openPanelIndex: 2, product:params.product])}"
+                       class="scrum-link"
                        data-ajax-begin="jQuery('#dialog').dialog('close');"
                        data-ajax="true">
                         ${message(code: 'is.ui.project.members.edit')}
@@ -72,10 +73,11 @@
                        data-width="242"
                        data-ajax-select="true"
                        data-url="${createLink(controller: 'members', action:'getTeamEntries')}"
-                       data-init-selection="var data = {id: element.val(), text: '${team.name}'};
+                       data-init-selection="var data = {id: element.val(), text: '${team.name.encodeAsJavascript()}'};
                                             callback(data);"
                        data-change="jQuery.icescrum.product.teamChange"/>
                 <a href="${createLink(controller:'members', action:'browse')}"
+                   class="scrum-link"
                    data-ajax-begin="jQuery('#dialog').dialog('close');"
                    data-ajax="true">
                     ${message(code: 'is.ui.team.manage.teams')}
@@ -85,7 +87,7 @@
             <input type="hidden" id="teamId" name="team.id" value="${team.id}"/>
         </g:if><g:else>
             <is:fieldInput label="is.ui.project.team">
-                <span style="display: inline-block; padding-left: 10px; padding-top: 5px">${team.name}</span>
+                <span style="display: inline-block; padding-left: 10px; padding-top: 5px">${team.name.encodeAsHTML()}</span>
             </is:fieldInput>
         </g:else>
         <div id="team-member-list" class="members-list"></div>

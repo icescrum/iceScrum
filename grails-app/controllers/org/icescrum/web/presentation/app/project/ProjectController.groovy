@@ -142,6 +142,7 @@ class ProjectController {
 
             def dialog = g.render(template: "dialogs/edit",
                     model: [product: product,
+                            teamName: team.name,
                             privateOption: privateOption,
                             possibleViews: possibleViews,
                             poEntries: poEntries,

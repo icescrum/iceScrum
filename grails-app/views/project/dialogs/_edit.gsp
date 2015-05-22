@@ -106,6 +106,15 @@
         <is:accordionSection title="is.dialog.project.members.title"
                              id="product-member-autocomplete"
                              class="member-autocomplete">
+            <is:fieldInput label="is.ui.project.team">
+                <a href="${createLink(controller:'project', action:'editTeam',params:[product:product.id])}"
+                   class="scrum-link"
+                   style="display: inline-block; padding-left: 10px; line-height: 20px; padding-top: 5px; line-height: 20px;"
+                   data-ajax-begin="jQuery('#dialog').dialog('close');"
+                   data-ajax="true">
+                    ${teamName.encodeAsHTML()}
+                </a>
+            </is:fieldInput>
             <is:fieldInput for="find-pos" label="is.dialog.wizard.section.pos.find" class="members">
                 <is:autoCompleteSkin
                         controller="user"

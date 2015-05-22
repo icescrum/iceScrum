@@ -27,7 +27,7 @@
       method="post"
       class='box-form box-form-250 box-form-200-legend member-autocomplete'>
     <is:fieldInput for="team.name" label="is.team.name">
-        <is:input id="team.name" name="team.name" value="${team.name}"/>
+        <is:input id="team.name" name="team.name" value="${team.name.encodeAsHTML()}"/>
     </is:fieldInput>
     <is:fieldSelect for="team.owner" label="is.ui.team.owner">
         <is:select width="240"

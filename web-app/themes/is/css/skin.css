@@ -46,7 +46,7 @@ a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover
 .kanban .kanban-label, .browse .browse-content h4, .chat-content .chat-users a,
 .chat-content .chat-status-change, .chat-content strong, .chat-content-hover .chat-selector,
 .button-s-light strong, #version-tab strong, .panel-tab-button .selected,
-.panel-tab-button a.selected:hover, .ui-widget-content .email,
+.panel-tab-button a.selected:hover, .ui-widget-content .email, .ui-widget-content .scrum-link,
 .members-medium .ui-selected strong, .event-select-item:hover {
     color: #4382bd;
 }
