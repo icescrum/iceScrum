@@ -75,7 +75,13 @@
                        data-init-selection="var data = {id: element.val(), text: '${team.name}'};
                                             callback(data);"
                        data-change="jQuery.icescrum.product.teamChange"/>
+                <a href="${createLink(controller:'members', action:'browse')}"
+                   data-ajax-begin="jQuery('#dialog').dialog('close');"
+                   data-ajax="true">
+                    ${message(code: 'is.ui.team.manage.teams')}
+                </a>
             </is:fieldSelect>
+
             <input type="hidden" id="teamId" name="team.id" value="${team.id}"/>
         </g:if><g:else>
             <is:fieldInput label="is.ui.project.team">
