@@ -198,7 +198,9 @@ class ProjectController {
                                 invitedStakeHolders << id
                             }
                         }
-                        entry.hook(id:"${controllerName}-${actionName}-before-members", model:[newMembers: newMembers])
+                        entry.hook(id:"${controllerName}-${actionName}-before-members", model:[newMembers: newMembers,
+                                                                                               invitedProductOwners: invitedProductOwners,
+                                                                                               invitedStakeHolders: invitedStakeHolders])
                         productService.updateProductMembers(product, newMembers)
                         productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
                     }
@@ -322,6 +324,10 @@ class ProjectController {
                                                                                scrumMasters: scrumMasters,
                                                                                stakeHolders: stakeHolders,
                                                                                productOwners: productOwners,
+                                                                               invitedMembers: invitedMembers,
+                                                                               invitedScrumMasters: invitedScrumMasters,
+                                                                               invitedStakeHolders: invitedStakeHolders,
+                                                                               invitedProductOwners: invitedProductOwners,
                                                                                teamParams: teamParams])
                 if (!teamParams?.id){
                     team = new Team()
