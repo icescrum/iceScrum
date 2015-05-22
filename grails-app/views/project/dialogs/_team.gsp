@@ -73,7 +73,7 @@
                        data-width="242"
                        data-ajax-select="true"
                        data-url="${createLink(controller: 'members', action:'getTeamEntries')}"
-                       data-init-selection="var data = {id: element.val(), text: '${team.name.encodeAsJavaScript()}'};
+                       data-init-selection="var data = {id: element.val(), text: '${team.name.encodeAsHTML().encodeAsJavaScript()}'};
                                             callback(data);"
                        data-change="jQuery.icescrum.product.teamChange"/>
                 <a href="${createLink(controller:'members', action:'browse')}"

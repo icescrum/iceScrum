@@ -27,7 +27,7 @@
       method="post"
       class='box-form box-form-250 box-form-200-legend member-autocomplete'>
     <is:fieldInput for="team.name" label="is.team.name">
-        <is:input id="team.name" name="team.name" value="${team.name.encodeAsHTML()}"/>
+        <is:input id="team.name" name="team.name" value="${team.name}"/>
     </is:fieldInput>
     <is:fieldSelect for="team.owner" label="is.ui.team.owner">
         <is:select width="240"
@@ -41,9 +41,18 @@
     <p class="field-input clearfix">
         <label>${ message(code: 'is.ui.team.projects')}</label>
         <span style="padding-left: 10px; display: inline-block; padding-top:5px">
-            <g:each in="${team.products}" var="product" status="i">
-                <a href="${grailsApplication.config.grails.serverURL}/p/${product.pkey}">${product.name}</a>${ i < team.products.size() -1 ? ', ' : '' }
-            </g:each>
+            <g:if test="${team.products}">
+                <g:each in="${team.products}" var="product" status="i">
+                    <a class="scrum-link" href="${grailsApplication.config.grails.serverURL}/p/${product.pkey}">${product.name}</a>${ i < team.products.size() -1 ? ', ' : '' }
+                </g:each>
+            </g:if><g:elseif test="${creationProjectEnable}">
+                <a href="${createLink(controller:'project', action:'openWizard')}"
+                   class="scrum-link"
+                   data-ajax-begin="jQuery('#dialog-team-browse').dialog('close');"
+                   data-ajax="true">
+                    <g:message code="is.projectmenu.submenu.project.create"/>
+                </a>
+            </g:elseif>
         </span>
     </p>
     <is:fieldInput for="find-team-members" label="is.dialog.wizard.section.team.find" class="members">

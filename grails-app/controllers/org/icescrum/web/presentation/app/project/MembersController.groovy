@@ -31,6 +31,7 @@ import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.TeamPreferences
 import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.support.ApplicationSupport
 
 @Secured('isAuthenticated()')
 class MembersController {
@@ -113,6 +114,7 @@ class MembersController {
                                     avatar:is.avatar(user:owner,link:true)])
             }
             render template: "dialogs/browseDetails", model: [team: team,
+                                                              creationProjectEnable: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || request.admin,
                                                               possibleOwners: possibleOwners,
                                                               memberEntries: memberEntries]
         }
