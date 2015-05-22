@@ -154,7 +154,7 @@ class MembersController {
                 }
                 productService.updateTeamMembers(team, newMembers)
                 productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
-                if (newOwnerId && newOwnerId != team.owner.id){
+                if (request.admin && newOwnerId && newOwnerId != team.owner.id){
                     securityService.changeOwner(User.get(newOwnerId), team)
                 }
             }

@@ -29,15 +29,16 @@
     <is:fieldInput for="team.name" label="is.team.name">
         <is:input id="team.name" name="team.name" value="${team.name}"/>
     </is:fieldInput>
-    <is:fieldSelect for="team.owner" label="is.ui.team.owner">
-        <is:select width="240"
-                   from="${possibleOwners*.name}"
-                   keys="${possibleOwners*.id}"
-                   name="team.owner"
-                   id="teamOwner"
-                   onchange="if (jQuery(this).val() != ${team.owner.id}) { alert('${message(code: 'is.ui.team.owner.change.warning').encodeAsJavaScript()}'); }"
-                   value="${team.owner.id}"/>
-    </is:fieldSelect>
+    <g:if test="${request.admin}">
+        <is:fieldSelect for="team.owner" label="is.ui.team.owner">
+            <is:select width="240"
+                       from="${possibleOwners*.name}"
+                       keys="${possibleOwners*.id}"
+                       name="team.owner"
+                       id="teamOwner"
+                       value="${team.owner.id}"/>
+        </is:fieldSelect>
+    </g:if>
     <p class="field-input clearfix">
         <label>${ message(code: 'is.ui.team.projects')}</label>
         <span style="padding-left: 10px; display: inline-block; padding-top:5px">
@@ -82,12 +83,7 @@
                                       filter.autocomplete('search', filter.val());
                                       filter.one('autocompleteupdated', function() {
                                           jQuery('.browse-item[data-elemid=${team.id}]').addClass('browse-item-active');
-                                      });
-                                      if (jQuery('#teamOwner').val() != ${team.owner.id}) {
-                                          var teamDetails = jQuery('#team-browse-details');
-                                          teamDetails.html(jQuery('#empty-team-tmpl').html());
-                                          attachOnDomUpdate(teamDetails);
-                                      }"
+                                      });"
                    href="${createLink(controller: 'members', action: 'update', params: [id: team.id])}">
                     <span class="start"></span>
                     <span class="content">${message(code:'is.button.update')}</span>
