@@ -75,6 +75,8 @@ class ScrumOSController {
                      productFilteredsList: pCount > productsLimit ? products?.subList(0, productsLimit) : products]
         if (space)
             attrs."$space.name" = space.object
+
+        entry.hook(id:"${controllerName}-${actionName}", model:[attrs:attrs])
         attrs
     }
 

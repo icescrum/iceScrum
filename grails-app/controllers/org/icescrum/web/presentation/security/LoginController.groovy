@@ -178,6 +178,7 @@ class LoginController {
      */
     def ajaxSuccess = {
         User u = (User)springSecurityService.currentUser
+        entry.hook(id:"${controllerName}-${actionName}", model:[user:u])
         if (u.preferences.lastProductOpened){
             def url = grailsApplication.config.grails.serverURL+'/p/'+u.preferences.lastProductOpened
             render(status:200, contentType: 'application/json', text:[url:url] as JSON)
