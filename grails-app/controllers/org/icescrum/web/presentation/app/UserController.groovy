@@ -58,8 +58,12 @@ class UserController {
         }
     }
 
-    @Cacheable(cache = 'applicationCache', keyGenerator="localeKeyGenerator")
+    @Cacheable(cache = 'userCache', keyGenerator = 'userKeyGenerator')
     def register = {
+        if (springSecurityService.isLoggedIn()) {
+            redirect(controller: 'login', action: 'index')
+            return
+        }
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
             render(status: 403)
             return
