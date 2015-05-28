@@ -39,14 +39,13 @@
                        value="${team.owner.id}"/>
         </is:fieldSelect>
     </g:if><g:else>
-    <p class="field-input clearfix">
-        <label>${ message(code: 'is.ui.team.owner')}</label>
-        <span style="padding-left: 10px; display: inline-block; padding-top:5px">
-            ${team.owner.firstName?.encodeAsHTML() + ' ' + team.owner.lastName?.encodeAsHTML()}
-        </span>
+        <is:fieldInput label="is.ui.team.owner">
+            <span style="padding-left: 10px; display: inline-block; padding-top:5px">
+                ${team.owner.firstName?.encodeAsHTML() + ' ' + team.owner.lastName?.encodeAsHTML()}
+            </span>
+        </is:fieldInput>
     </g:else>
-    <p class="field-input clearfix">
-        <label>${ message(code: 'is.ui.team.projects')}</label>
+    <is:fieldInput label="is.ui.team.projects">
         <span style="padding-left: 10px; display: inline-block; padding-top:5px">
             <g:if test="${team.products}">
                 <g:each in="${team.products}" var="product" status="i">
@@ -61,7 +60,7 @@
                 </a>
             </g:elseif>
         </span>
-    </p>
+    </is:fieldInput>
     <is:fieldInput for="find-team-members" label="is.dialog.wizard.section.team.find" class="members">
         <is:autoCompleteSkin controller="user"
                              action="findUsers"

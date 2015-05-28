@@ -45,8 +45,7 @@
                 </button>
             </is:fieldInput>
         </g:if>
-        <p class="field-input clearfix">
-            <label>${ message(code: 'is.ui.project.members')}</label>
+        <is:fieldInput label="is.ui.project.members">
             <span style="padding-left: 10px; display: inline-block; padding-top:5px">
                 <g:if test="${poNames}"><strong>${message(code: 'is.role.pos')}</strong> ${poNames.join(', ')}</g:if>
                 <g:if test="${poNames && shNames}"><br/></g:if>
@@ -61,7 +60,7 @@
                     </a>
                 </g:if>
             </span>
-        </p>
+        </is:fieldInput>
         <g:if test="${request.owner}">
             <is:fieldSelect for="teamFinder"
                             label="is.ui.project.team">
