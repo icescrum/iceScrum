@@ -21,7 +21,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:set var="ownerOrSm" value="${request.owner || request.scrumMaster}"/>
 <is:dialog valid="${request.owner ? [action:'changeTeam', controller:'project', onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
            buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
            title="is.dialog.project.title"
@@ -50,7 +49,7 @@
                 <g:if test="${poNames}"><strong>${message(code: 'is.role.pos')}</strong> ${poNames.join(', ')}</g:if>
                 <g:if test="${poNames && shNames}"><br/></g:if>
                 <g:if test="${shNames}"><strong>${message(code: 'is.role.shs')}</strong> ${shNames.join(', ')}</g:if>
-                <g:if test="${ownerOrSm}">
+                <g:if test="${request.scrumMaster}">
                     <g:if test="${poNames || shNames}"><br/></g:if>
                     <a href="${createLink(controller:'project', action:'edit',params:[openPanelIndex: 2, product:params.product])}"
                        class="scrum-link"

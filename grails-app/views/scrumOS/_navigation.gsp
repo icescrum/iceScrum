@@ -22,7 +22,6 @@
 - Manuarii Stein (manuarii.stein@icescrum.com)
 - Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
-<g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
 
 <div id="navigation">
 <div class="left">
@@ -68,14 +67,14 @@
                           </a>
                       </li>
                   </g:if>
-                  <g:if test="${ownerOrSm && product}">
+                  <g:if test="${request.scrumMaster && product}">
                       <li>
                           <a href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
                                 <g:message code="is.projectmenu.submenu.project.edit"/>
                           </a>
                       </li>
                   </g:if>
-                  <g:if test="${ownerOrSm && product}">
+                  <g:if test="${request.scrumMaster && product}">
                       <li>
                           <a href="${createLink(controller:'project', action:'editPractices',params:[product:product.id])}" data-ajax="true">
                                   <g:message code="is.projectmenu.submenu.project.editPractices"/>

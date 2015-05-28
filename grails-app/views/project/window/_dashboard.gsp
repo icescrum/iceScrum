@@ -21,7 +21,6 @@
 - Stephane Maldini (stephane.maldini@icescrum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
 <%@ page import="grails.plugin.fluxiable.Activity" %>
 <div class="dashboard">
     <div class="colset-2 clearfix">
@@ -52,7 +51,7 @@
             </is:panel>
             <is:panel id="panel-description">
                 <is:panelTitle>
-                    <g:if test="${ownerOrSm}">
+                    <g:if test="${request.scrumMaster}">
                         <span class="right">
                             <a href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
                                 <g:message code="default.button.edit.label"/>
