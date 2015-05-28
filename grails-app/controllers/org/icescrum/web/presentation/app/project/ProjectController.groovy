@@ -95,7 +95,7 @@ class ProjectController {
         }
     }
 
-    @Secured('owner() or scrumMaster()')
+    @Secured('scrumMaster()')
     def edit = {
         withProduct{ Product product ->
             def privateOption = !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable)
@@ -155,7 +155,7 @@ class ProjectController {
         }
     }
 
-    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
+    @Secured('scrumMaster() and !archivedProduct()')
     def editPractices = {
         withProduct{ Product product ->
             def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
@@ -166,7 +166,7 @@ class ProjectController {
         }
     }
 
-    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
+    @Secured('scrumMaster() and !archivedProduct()')
     def update = {
         withProduct('productd.id'){ Product product ->
             def msg
@@ -845,7 +845,7 @@ class ProjectController {
         }
     }
 
-    @Secured('owner() or scrumMaster()')
+    @Secured('scrumMaster()')
     def archive = {
         withProduct{ Product product ->
             try {
@@ -915,10 +915,8 @@ class ProjectController {
     @Cacheable(cache = 'projectCache', keyGenerator = 'projectKeyGenerator')
     def browseDetails = {
         withProduct('id'){ Product product ->
-            if (!securityService.owner(product, springSecurityService.authentication)){
-                if ((product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication))) {
-                    throw new AccessDeniedException('denied')
-                }
+            if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication)) {
+                throw new AccessDeniedException('denied')
             }
             render template: "dialogs/browseDetails", model: [product: product]
         }
@@ -1050,7 +1048,7 @@ class ProjectController {
         }
     }
 
-    @Secured('isAuthenticated() and (stakeHolder() or inProduct() or owner())')
+    @Secured('isAuthenticated() and (stakeHolder() or inProduct())')
     def editTeam = {
         def product = Product.get(params.product)
         def memberEntries = teamService.getTeamMembersEntries(product.firstTeam.id)
@@ -1064,7 +1062,7 @@ class ProjectController {
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
-    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
+    @Secured('owner() and !archivedProduct()')
     def changeTeam = {
         withProduct { Product product ->
             def teamId = params.long('team.id')
