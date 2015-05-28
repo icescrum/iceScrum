@@ -38,7 +38,13 @@
                        id="teamOwner"
                        value="${team.owner.id}"/>
         </is:fieldSelect>
-    </g:if>
+    </g:if><g:else>
+    <p class="field-input clearfix">
+        <label>${ message(code: 'is.ui.team.owner')}</label>
+        <span style="padding-left: 10px; display: inline-block; padding-top:5px">
+            ${team.owner.firstName?.encodeAsHTML() + ' ' + team.owner.lastName?.encodeAsHTML()}
+        </span>
+    </g:else>
     <p class="field-input clearfix">
         <label>${ message(code: 'is.ui.team.projects')}</label>
         <span style="padding-left: 10px; display: inline-block; padding-top:5px">

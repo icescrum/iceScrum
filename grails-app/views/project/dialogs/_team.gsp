@@ -22,7 +22,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:set var="ownerOrSm" value="${request.owner || request.scrumMaster}"/>
-<is:dialog valid="${ownerOrSm ? [action:'changeTeam', controller:'project', onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
+<is:dialog valid="${request.owner ? [action:'changeTeam', controller:'project', onSuccess:' jQuery.icescrum.renderNotice(\''+message(code:'is.team.saved')+'\');'] : null}"
            buttons="'${message(code:'is.button.close')}': function() { jQuery(this).dialog('close'); }"
            title="is.dialog.project.title"
            width="650"
@@ -62,7 +62,7 @@
                 </g:if>
             </span>
         </p>
-        <g:if test="${ownerOrSm}">
+        <g:if test="${request.owner}">
             <is:fieldSelect for="teamFinder"
                             label="is.ui.project.team">
                 <input id="teamFinder"
@@ -83,11 +83,18 @@
                     ${message(code: 'is.ui.team.manage.teams')}
                 </a>
             </is:fieldSelect>
-
             <input type="hidden" id="teamId" name="team.id" value="${team.id}"/>
         </g:if><g:else>
             <is:fieldInput label="is.ui.project.team">
-                <span style="display: inline-block; padding-left: 10px; padding-top: 5px">${team.name.encodeAsHTML()}</span>
+                <span style="display: inline-block; padding-left: 10px; padding-top: 5px">${team.name.encodeAsHTML() + ' (' + team.owner.firstName?.encodeAsHTML() + ' ' + team.owner.lastName?.encodeAsHTML() + ')'}</span>
+                <g:if test="${request.scrumMaster}">
+                    <a href="${createLink(controller:'members', action:'browse')}"
+                       class="scrum-link"
+                       data-ajax-begin="jQuery('#dialog').dialog('close');"
+                       data-ajax="true">
+                        ${message(code: 'is.ui.team.manage.teams')}
+                    </a>
+                </g:if>
             </is:fieldInput>
         </g:else>
         <div id="team-member-list" class="members-list"></div>

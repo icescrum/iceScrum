@@ -107,13 +107,15 @@
                              id="product-member-autocomplete"
                              class="member-autocomplete">
             <is:fieldInput label="is.ui.project.team">
-                <a href="${createLink(controller:'project', action:'editTeam',params:[product:product.id])}"
-                   class="scrum-link"
-                   style="display: inline-block; padding-left: 10px; line-height: 20px; padding-top: 5px; line-height: 20px;"
-                   data-ajax-begin="jQuery('#dialog').dialog('close');"
-                   data-ajax="true">
-                    ${teamName.encodeAsHTML()}
-                </a>
+                <span style="display: inline-block; padding-left: 10px; line-height: 20px; padding-top: 5px; line-height: 20px;">
+                    <a href="${createLink(controller:'project', action:'editTeam',params:[product:product.id])}"
+                       class="scrum-link"
+                       data-ajax-begin="jQuery('#dialog').dialog('close');"
+                       data-ajax="true">
+                        ${team.name.encodeAsHTML()}
+                    </a>
+                    ${'(' + team.owner.firstName?.encodeAsHTML() + ' ' + team.owner.lastName?.encodeAsHTML() + ')'}
+                </span>
             </is:fieldInput>
             <is:fieldInput for="find-pos" label="is.dialog.wizard.section.pos.find" class="members">
                 <is:autoCompleteSkin
