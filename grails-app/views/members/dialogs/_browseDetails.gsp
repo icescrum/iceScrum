@@ -95,7 +95,7 @@
                     <span class="end"></span>
                 </a>
             </td>
-            <g:if test="${!team.products}">
+            <g:if test="${!team.products && isOwner}">
                 <td>
                     <a id="delete-team-button"
                        class="button-s clearfix"

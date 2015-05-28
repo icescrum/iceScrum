@@ -80,8 +80,8 @@ class MembersController {
         def term = params.term ? '%' + params.term.trim().toLowerCase() + '%' : '%%';
         def limit = 9
         def options = [offset:params.int('offset') ?: 0, max: limit, sort: "name", order: "asc", cache:true]
-        def teams = request.admin ? Team.findAllByNameLike(term, options) : Team.findAllByOwner(user.username, options, term)
-        def total = request.admin ? Team.countByNameLike(term, [cache:true]) : Team.countByOwner(user.username, [cache:true], term)[0]
+        def teams = request.admin ? Team.findAllByNameLike(term, options) : Team.findAllByOwner(user.username, options, term) // TODO change to owner or SM
+        def total = request.admin ? Team.countByNameLike(term, [cache:true]) : Team.countByOwner(user.username, [cache:true], term)[0] // TODO change to owner or SM
         def results = []
         teams?.each {
             results << [id: it.id, label: it.name.encodeAsHTML(), image: resource(dir: is.currentThemeImage(), file: 'choose/default.png')]
@@ -100,13 +100,15 @@ class MembersController {
 
     def browseDetails = {
         withTeam { Team team ->
-            def owner = team.owner
-            if (!request.admin && owner != springSecurityService.currentUser){
+            def auth = springSecurityService.authentication
+            def isOwner = securityService.owner(team, auth) // Cannot check by annotation/request because we are not in a project context (URL)
+            if (!isOwner && !securityService.scrumMaster(team, auth)){
                 render(status:403)
                 return
             }
             def memberEntries = teamService.getTeamMembersEntries(team.id)
             def possibleOwners = memberEntries.clone()
+            def owner = team.owner
             if (!possibleOwners*.id.contains(owner.id)){
                 possibleOwners.add([name: owner.firstName+' '+owner.lastName,
                                     activity:owner.preferences.activity?:'&nbsp;',
@@ -114,6 +116,7 @@ class MembersController {
                                     avatar:is.avatar(user:owner,link:true)])
             }
             render template: "dialogs/browseDetails", model: [team: team,
+                                                              isOwner: isOwner,
                                                               creationProjectEnable: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || request.admin,
                                                               possibleOwners: possibleOwners,
                                                               memberEntries: memberEntries]
@@ -122,8 +125,9 @@ class MembersController {
 
     def update = {
         withTeam { Team team ->
-            def owner = team.owner
-            if (!request.admin && owner != springSecurityService.currentUser){
+            def auth = springSecurityService.authentication
+            // Cannot check by annotation/request because we are not in a project context (URL)
+            if (!securityService.owner(team, auth) && !securityService.scrumMaster(team, auth)){
                 render(status:403)
                 return
             }
@@ -164,8 +168,9 @@ class MembersController {
 
     def delete = {
         withTeam { Team team ->
-            def owner = team.owner
-            if (!request.admin && owner != springSecurityService.currentUser){
+            def auth = springSecurityService.authentication
+            // Cannot check by annotation/request because we are not in a project context (URL)
+            if (!securityService.owner(team, auth)){
                 render(status:403)
                 return
             }
