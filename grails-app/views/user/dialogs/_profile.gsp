@@ -58,6 +58,8 @@
                         <is:input id="useremail" name="user.email" disabled="${user.accountExternal?'disabled':false}" value="${user.email}"/>
                     </is:fieldInput>
 
+                <entry:point id="${controllerName}-${actionName}-general" model="[user:user]"/>
+
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar.enable)}">
                     <is:fieldInput for="avatar" label="is.dialog.profile.gravatar" class="profile-avatar">
                         <a href="http://gravatar.com/emails"><is:avatar user="${user}"/></a>

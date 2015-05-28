@@ -107,7 +107,7 @@
                              id="product-member-autocomplete"
                              class="member-autocomplete">
             <is:fieldInput label="is.ui.project.team">
-                <span style="display: inline-block; padding-left: 10px; line-height: 20px; padding-top: 5px; line-height: 20px;">
+                <span style="display: inline-block; padding-left: 10px; line-height: 20px; padding-top: 5px;">
                     <a href="${createLink(controller:'project', action:'editTeam',params:[product:product.id])}"
                        class="scrum-link"
                        data-ajax-begin="jQuery('#dialog').dialog('close');"
