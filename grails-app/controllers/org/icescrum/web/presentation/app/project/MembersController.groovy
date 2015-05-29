@@ -80,8 +80,8 @@ class MembersController {
         def term = params.term ? '%' + params.term.trim().toLowerCase() + '%' : '%%';
         def limit = 9
         def options = [offset:params.int('offset') ?: 0, max: limit, sort: "name", order: "asc", cache:true]
-        def teams = request.admin ? Team.findAllByNameLike(term, options) : Team.findAllByOwner(user.username, options, term) // TODO change to owner or SM
-        def total = request.admin ? Team.countByNameLike(term, [cache:true]) : Team.countByOwner(user.username, [cache:true], term)[0] // TODO change to owner or SM
+        def teams = request.admin ? Team.findAllByNameLike(term, options) : Team.findAllByOwnerOrSM(user.username, options, term)
+        def total = request.admin ? Team.countByNameLike(term, [cache:true]) : Team.countByOwnerOrSM(user.username, [cache:true], term)
         def results = []
         teams?.each {
             results << [id: it.id, label: it.name.encodeAsHTML(), image: resource(dir: is.currentThemeImage(), file: 'choose/default.png')]
