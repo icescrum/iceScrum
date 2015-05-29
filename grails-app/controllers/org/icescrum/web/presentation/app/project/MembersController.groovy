@@ -145,7 +145,8 @@ class MembersController {
                     invitedScrumMasters << id
                 }
             }
-            entry.hook(id:"${controllerName}-${actionName}-before", model:[newMembers: newMembers,
+            entry.hook(id:"${controllerName}-${actionName}-before", model:[team: team,
+                                                                           newMembers: newMembers,
                                                                            invitedMembers: invitedMembers,
                                                                            invitedScrumMasters: invitedScrumMasters])
             def newOwnerId = params.team.owner?.toLong()

@@ -199,7 +199,8 @@ class ProjectController {
                                 invitedStakeHolders << id
                             }
                         }
-                        entry.hook(id:"${controllerName}-${actionName}-before-members", model:[newMembers: newMembers,
+                        entry.hook(id:"${controllerName}-${actionName}-before-members", model:[product: product,
+                                                                                               newMembers: newMembers,
                                                                                                invitedProductOwners: invitedProductOwners,
                                                                                                invitedStakeHolders: invitedStakeHolders])
                         productService.updateProductMembers(product, newMembers)
