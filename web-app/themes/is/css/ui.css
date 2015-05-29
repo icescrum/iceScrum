@@ -1926,10 +1926,15 @@ html > body .ui-pnotify {
     margin: 0 auto;
 }
 
-.ui-pnotify .ui-state-error {
+.ui-pnotify .ui-state-error, .ui-pnotify .ui-state-error a {
     background: #d03218;
     color: white;
     border: 0 none;
+}
+
+.ui-pnotify .ui-state-error a {
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 .ui-pnotify .ui-state-highlight {
