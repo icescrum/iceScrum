@@ -210,7 +210,7 @@ class ProjectController {
                     render(status: 200, contentType: 'application/json', text:product as JSON)
                 }
             } catch (IllegalStateException ise) {
-                returnError(exception:ise)
+                returnError(text: message(code: ise.message))
                 return
             } catch (RuntimeException re) {
                 returnError(exception:re, object:product)
@@ -1066,13 +1066,17 @@ class ProjectController {
     @Secured('owner() and !archivedProduct()')
     def changeTeam = {
         withProduct { Product product ->
-            def teamId = params.long('team.id')
-            if (teamId != product.firstTeam.id) {
-                Team newTeam = Team.get(teamId)
-                entry.hook(id:"${controllerName}-${actionName}-before", model:[product: product, newTeam: newTeam])
-                productService.changeTeam(product, newTeam)
+            try {
+                def teamId = params.long('team.id')
+                if (teamId != product.firstTeam.id) {
+                    Team newTeam = Team.get(teamId)
+                    entry.hook(id:"${controllerName}-${actionName}-before", model:[product: product, newTeam: newTeam])
+                    productService.changeTeam(product, newTeam)
+                }
+                render(status: 200)
+            } catch(IllegalStateException ise) {
+                returnError(text: message(code: ise.message))
             }
-            render(status: 200)
         }
     }
 

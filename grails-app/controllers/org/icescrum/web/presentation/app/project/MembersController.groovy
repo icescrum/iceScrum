@@ -1,5 +1,5 @@
 /*
-0 * Copyright (c) 2015 Kagilum
+ * Copyright (c) 2015 Kagilum
  *
  * This file is part of iceScrum.
  *
@@ -129,26 +129,32 @@ class MembersController {
                     invitedScrumMasters << id
                 }
             }
-            entry.hook(id:"${controllerName}-${actionName}-before", model:[team: team,
+            try {
+                entry.hook(id:"${controllerName}-${actionName}-before", model:[team: team,
                                                                            newMembers: newMembers,
                                                                            invitedMembers: invitedMembers,
                                                                            invitedScrumMasters: invitedScrumMasters])
-            def newOwnerId = params.team.owner?.toLong()
-            Team.withTransaction {
-                if (team.name != params.team.name) {
-                    team.name = params.team.name
-                    if (!team.save()) {
-                        returnError(object:team, exception: new RuntimeException(team.errors.toString()))
+                def newOwnerId = params.team.owner?.toLong()
+                Team.withTransaction {
+                    if (team.name != params.team.name) {
+                        team.name = params.team.name
+                        if (!team.save()) {
+                            returnError(object:team, exception: new RuntimeException(team.errors.toString()))
+                        }
                     }
+                    productService.updateTeamMembers(team, newMembers)
+                    productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
+                    if (request.admin && newOwnerId && newOwnerId != team.owner.id){
+                        securityService.changeOwner(User.get(newOwnerId), team)
+                    }
+                    needReload = needReload && !securityService.scrumMaster(team, auth)
                 }
-                productService.updateTeamMembers(team, newMembers)
-                productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
-                if (request.admin && newOwnerId && newOwnerId != team.owner.id){
-                    securityService.changeOwner(User.get(newOwnerId), team)
-                }
-                needReload = needReload && !securityService.scrumMaster(team, auth)
+                render(status: 200, text: "$needReload")
+            } catch (IllegalStateException ise) {
+                returnError(text: message(code: ise.message))
+            } catch (RuntimeException re) {
+                returnError(object: team, exception: re)
             }
-            render(status: 200, text: "$needReload")
         }
     }
 
@@ -174,11 +180,9 @@ class MembersController {
                 render(status: 200)
             }
         } catch (IllegalStateException ise) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: ise.getMessage())]] as JSON)
-            return
+            returnError(text: message(code: ise.message))
         } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
-            return
+            returnError(object: team, exception: re)
         }
     }
 }
