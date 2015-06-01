@@ -88,7 +88,12 @@
                                       filter.autocomplete('search', filter.val());
                                       filter.one('autocompleteupdated', function() {
                                           jQuery('.browse-item[data-elemid=${team.id}]').addClass('browse-item-active');
-                                      });"
+                                      });
+                                      if (data == 'true') {
+                                          var teamDetails = jQuery('#team-browse-details');
+                                          teamDetails.html(jQuery('#empty-team-tmpl').html());
+                                          attachOnDomUpdate(teamDetails);
+                                      }"
                    href="${createLink(controller: 'members', action: 'update', params: [id: team.id])}">
                     <span class="start"></span>
                     <span class="content">${message(code:'is.button.update')}</span>

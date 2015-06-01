@@ -105,6 +105,7 @@ class MembersController {
         }
     }
 
+    @Secured(['isAuthenticated()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def update = {
         withTeam { Team team ->
             def auth = springSecurityService.authentication
@@ -113,6 +114,7 @@ class MembersController {
                 render(status:403)
                 return
             }
+            def needReload = securityService.scrumMaster(team, auth) && !securityService.owner(team, auth)
             def newMembers = []
             def invitedMembers = []
             def invitedScrumMasters = []
@@ -144,8 +146,9 @@ class MembersController {
                 if (request.admin && newOwnerId && newOwnerId != team.owner.id){
                     securityService.changeOwner(User.get(newOwnerId), team)
                 }
+                needReload = needReload && !securityService.scrumMaster(team, auth)
             }
-            render(status: 200)
+            render(status: 200, text: "$needReload")
         }
     }
 
