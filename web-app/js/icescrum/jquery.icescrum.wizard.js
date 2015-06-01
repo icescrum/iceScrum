@@ -16,6 +16,7 @@
 
     $.fn.isWizard = function(options) {
         options = $.extend({
+                    disableNext: [],
                     submitButton: "",
                     nextButton:"",
                     previousButton:"",
@@ -24,7 +25,6 @@
                 }, options);
 
         var element = this;
-
         var steps = $(element).find(".panel");
         var count = steps.size();
 
@@ -88,7 +88,10 @@
 
         function createNextButton(i) {
             var stepName = "step" + i;
-            $("#" + stepName + "commands").append("<button class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only next' id='" + stepName + "Next'><span class='ui-button-text'>" + options.nextButton + "</span></button>");
+            var disabled = options.disableNext.indexOf(i) != -1;
+            var disabledAttribute = disabled ? 'disabled="disabled"' : '';
+            var disabledClass = disabled ? 'ui-state-disabled' : '';
+            $("#" + stepName + "commands").append("<button " + disabledAttribute + " class='ui-button ui-widget ui-state-default " + disabledClass + " ui-corner-all ui-button-text-only next' id='" + stepName + "Next'><span class='ui-button-text'>" + options.nextButton + "</span></button>");
 
             $("#" + stepName + "Next").bind("click", function(e) {
                 $("#" + stepName).hide();

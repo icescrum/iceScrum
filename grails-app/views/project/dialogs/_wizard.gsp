@@ -32,6 +32,7 @@
            cancel="is.button.cancel"
            previous="is.dialog.wizard.previous"
            submit="is.dialog.wizard.submit"
+           disableNext="[1]"
            id="project-wizard"
            class="${product.preferences.hidden ? 'private-project' : ''}"
            controller="project"

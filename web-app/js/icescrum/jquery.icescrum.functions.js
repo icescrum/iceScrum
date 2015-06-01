@@ -284,6 +284,9 @@
                                 $poList.html('');
                                 $shList.html('');
                             }
+                            var nextButton = $('#step1Next');
+                            nextButton.removeAttr('disabled');
+                            nextButton.removeClass('ui-state-disabled');
                         });
                     }
                 },
