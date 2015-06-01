@@ -26,7 +26,6 @@ package org.icescrum.web.presentation.app.project
 
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
-import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.TeamPreferences
@@ -40,23 +39,6 @@ class MembersController {
     def productService
     def teamService
     def securityService
-
-    @Secured(['inProduct() or stakeHolder()', 'RUN_AS_PERMISSIONS_MANAGER'])
-    def leaveTeam = {
-        def product = Product.get(params.product)
-        def user = springSecurityService.currentUser
-        def team = Team.get(product.firstTeam.id)
-        def currentMembers = productService.getAllMembersProduct(product)
-        try {
-            def found = currentMembers.find { it.id == user.id }
-            def u = User.get(found.id)
-            productService.removeAllRoles(product, team, u, false)
-            render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
-        } catch (e) {
-            if (log.debugEnabled) e.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: renderErrors(bean: team)]] as JSON)
-        }
-    }
 
     def getTeamEntries = {
         def user = springSecurityService.currentUser

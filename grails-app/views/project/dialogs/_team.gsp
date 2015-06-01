@@ -36,7 +36,7 @@
             <is:fieldInput for="leaveTeam" label="is.dialog.members.leave.team" class="productcreator">
                 <button type="button" onClick="if (confirm('${message(code:'is.dialog.members.leave.team.confirm').encodeAsJavaScript()}')) {
                                       ${g.remoteFunction(action:'leaveTeam',
-                                                         controller:'members',
+                                                         controller:'project',
                                                          params:[product: params.product],
                                                          onSuccess:'document.location=jQuery.icescrum.o.baseUrl;')
                                        };}return false;" class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'>

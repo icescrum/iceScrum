@@ -1075,4 +1075,21 @@ class ProjectController {
             render(status: 200)
         }
     }
+
+    @Secured(['stakeHolder() or inProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    def leaveTeam = {
+        withProduct { Product product ->
+            Product.withTransaction {
+                def oldMembersByProduct = [:]
+                product.firstTeam.products.each { Product teamProduct ->
+                    oldMembersByProduct[teamProduct.id] = productService.getAllMembersProductByRole(teamProduct)
+                }
+                productService.removeAllRoles(product.firstTeam, springSecurityService.currentUser)
+                oldMembersByProduct.each { Long productId, Map oldMembers ->
+                    productService.manageProductEvents(Product.get(productId), oldMembers)
+                }
+            }
+            render(status: 200, contentType: 'application/json', text: [url: createLink(uri: '/')] as JSON)
+        }
+    }
 }
