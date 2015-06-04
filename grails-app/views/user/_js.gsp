@@ -24,7 +24,7 @@
 <template id="user-tmpl">
     <![CDATA[
     ?**
-        var name = this.name.length <= 20 ? this.name : this.name.substring(0,17)+'...';
+        var name = this.name.length <= 19 ? this.name : this.name.substring(0,16)+'...';
         var activity = this.isInvited ? '<em>${message(code: 'is.ui.user.invited')}</em>' : (this.activity ? this.activity : '&nbsp;');
         var role = this.role ? this.role : 0;
         var disabled = this.editable && role != ${Authority.PO_AND_SM} ? '' : 'disabled="disabled"';

@@ -46,7 +46,7 @@
         </is:fieldInput>
     </g:else>
     <is:fieldInput label="is.ui.team.projects">
-        <span style="padding-left: 10px; display: inline-block; padding-top:5px">
+        <span style="padding-left: 10px; display: inline-block; padding-top:5px; max-width: 444px; overflow:auto; max-height: 24px">
             <g:if test="${team.products}">
                 <g:each in="${team.products}" var="product" status="i">
                     <a class="scrum-link" href="${grailsApplication.config.grails.serverURL}/p/${product.pkey}">${product.name}</a>${ i < team.products.size() -1 ? ', ' : '' }

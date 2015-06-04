@@ -45,7 +45,7 @@
             </is:fieldInput>
         </g:if>
         <is:fieldInput label="is.ui.project.members">
-            <span style="padding-left: 10px; display: inline-block; padding-top:5px">
+            <span style="padding-left: 10px; display: inline-block; padding-top:5px; max-width: 375px;">
                 <g:if test="${poNames}"><strong>${message(code: 'is.role.pos')}</strong> ${poNames.join(', ')}</g:if>
                 <g:if test="${poNames && shNames}"><br/></g:if>
                 <g:if test="${shNames}"><strong>${message(code: 'is.role.shs')}</strong> ${shNames.join(', ')}</g:if>
