@@ -315,6 +315,13 @@ function attachOnDomUpdate(content){
             }
         }
         if (element.data('createChoice')) {
+            var prefix = '';
+            if (element.data('createChoicePrefix')) {
+                prefix = element.data('createChoicePrefix');
+                options.formatSelection = function(object) {
+                    return object.isNew ? object.id : object.text;
+                };
+            }
             options.createSearchChoice = function (term, data) {
                 if (element.data('createChoiceUnique')
                     && $(data).filter(function() {
@@ -322,7 +329,7 @@ function attachOnDomUpdate(content){
                     }).length > 0) {
                     return null;
                 }
-                return {id: term, text: term};
+                return {id: term, text: prefix + term, isNew: true};
             };
         }
         var select = element.select2(options);
