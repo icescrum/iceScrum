@@ -226,6 +226,6 @@
         </is:fieldArea>
 
     </is:fieldset>
-
+    <entry:point id="${controllerName}-${actionName}"/>
 </is:wizard>
 </is:dialog>
