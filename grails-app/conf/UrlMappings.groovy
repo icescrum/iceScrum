@@ -60,10 +60,11 @@ class UrlMappings {
             action = 'textileParser'
         }
 
-        "/user/register/$token?" {
-            controller = 'user'
-            action = 'register'
-        }
+        // TODO RE-ENABLE, was disabled because conflict with iceScrum Cloud
+//        "/user/register/$token?" {
+//            controller = 'user'
+//            action = 'register'
+//        }
 
         name privateURL: "/ws/$controller/$action/$id?" {
         }
