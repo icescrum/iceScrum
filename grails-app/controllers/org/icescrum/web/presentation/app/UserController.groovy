@@ -73,7 +73,8 @@ class UserController {
         if (token) {
             def invitation = Invitation.findByToken(token)
             if (!invitation || !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.invitation.enable)) {
-                throw new ObjectNotFoundException(token, 'Invitation')
+                render(status: 404, text: message(code: 'is.ui.user.token.error'))
+                return
             }
             user.email = invitation.email
             def emailPrefix = user.email.split('@')[0]
