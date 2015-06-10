@@ -54,7 +54,6 @@ class ScrumOSController {
 
     def index = {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
-        user.preferences.displayWhatsNew = true
 
         def space = ApplicationSupport.getCurrentSpace(params)
         if (space){

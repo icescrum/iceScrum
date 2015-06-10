@@ -3,7 +3,7 @@
 <is:dialog
         resizable="false"
         withTitlebar="false"
-        width="650"
+        width="800"
         id="dialog-whatsnew"
         buttons="'${message(code:'is.button.close')}': function() { ${remoteFunction(controller:'scrumOS',action:'whatsNew',params:[hide:true])}; jQuery(this).dialog('close'); }"
         draggable="false">
@@ -13,16 +13,20 @@
                 <div class="features-list">
                     <ul>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/customEffort.png"/></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Custom effort on stories</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/feedback.png" width="160px"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Collect feedback <br/>directly to iceScrum</a>
                         </li>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/bugzillaServer.png"/></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Bugzilla integration</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/new-team.png" width="160px"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Multiple projects <br/>team management</a>
                         </li>
                         <li>
-                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/customTags.png"/></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Imported stories custom tags</a>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/site.png" width="160px"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">New iceScrum.com <br/>website</a>
+                        </li>
+                        <li>
+                            <a href="${releaseNotesURL}" target="_blank"><r:img uri="/themes/is/images/whatsNew/slack.png" width="160px"/></a>
+                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Slack service <br/>integration</a>
                         </li>
                     </ul>
                     <span class="more">
