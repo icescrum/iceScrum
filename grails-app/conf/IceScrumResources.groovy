@@ -45,6 +45,7 @@ modules = {
         resource url: [dir: "themes/$icescrum.theme/css", file: 'select2-overriden.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "js/jquery", file: 'jqplot/css/jquery.jqplot.min.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
         resource url: [dir: "themes/$icescrum.theme/css", file: 'bacasable.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
+        resource url :[dir: "themes/$icescrum.theme/css", file: 'bootstrap-tour-standalone.min.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
     }
 
     'icescrum' {
@@ -128,6 +129,7 @@ modules = {
         resource url: [dir: 'js/jquery', file: 'jquery.fullscreen.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.select2.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/jquery', file: 'jquery.atwho.min.js'], nominify: true, bundle: 'icescrum'
+        resource url: [dir: 'js/jquery', file: 'jquery.bootstrap.min.js'], nominify: true, bundle: 'icescrum'
         resource url: [dir: 'js/markitup', file: 'jquery.markitup.js'], bundle: 'icescrum'
         resource url: [dir: 'js/markitup/sets/textile', file: 'set.js'], bundle: 'icescrum'
         resource url: [dir: 'js/markitup/sets/textile', file: 'style.css'], attrs: [media: 'screen,projection'], bundle: 'icescrum'
