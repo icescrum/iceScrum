@@ -26,7 +26,7 @@
             <div class="btn-group">
                 <div dropdown class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.export')}">
                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
-                        <span class="glyphicon glyphicon-export"></span>&nbsp;<span class="caret"></span>
+                        <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <g:each in="${is.exportFormats()}" var="format">
@@ -39,7 +39,7 @@
                 </div>
                 <div dropdown class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.charts')}">
                     <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
-                        <span class="glyphicon glyphicon-stats"></span>&nbsp;<span class="caret"></span>
+                        <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productCumulativeFlowChart">${message(code:'is.ui.project.charts.productCumulativeFlow')}</a></li>
@@ -65,7 +65,7 @@
                             data-is-shortcut-key="P"
                             title="${message(code:'is.ui.window.print')}"
                             href="${createLink(controller:controllerName,action:'print', params:[product:params.product?:null, format:'PDF'])}"
-                            data-ajax="true"><span class="glyphicon glyphicon-print"></span>
+                            data-ajax="true"><span class="fa fa-print"></span>
                     </button>
                 </g:if>
                 <g:if test="${params?.widgetable}">
@@ -75,7 +75,7 @@
                             tooltip="${message(code:'is.ui.window.widgetable')} (W)"
                             data-is-shortcut
                             data-is-shortcut-on="#window-id-${controllerName}"
-                            data-is-shortcut-key="W"><span class="glyphicon glyphicon-retweet"></span>
+                            data-is-shortcut-key="W"><span class="fa fa-retweet"></span>
                     </button>
                 </g:if>
                 <g:if test="${params?.fullScreen}">
@@ -85,7 +85,7 @@
                             tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
                             data-is-shortcut
                             data-is-shortcut-on="#window-id-${controllerName}"
-                            data-is-shortcut-key="F"><span class="glyphicon glyphicon-fullscreen"></span>
+                            data-is-shortcut-key="F"><span class="fa fa-expand"></span>
                     </button>
                 </g:if>
             </div>

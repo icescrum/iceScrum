@@ -87,7 +87,7 @@
                     <small class="pull-right">
                         <div dropdown class="btn-group" tooltip="${message(code:'todo.is.ui.charts')}">
                             <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
-                                <span class="glyphicon glyphicon-stats"></span>&nbsp;<span class="caret"></span>
+                                <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu"
                                 data-ui-dropdown-clickbsdropdown="$.icescrum.openChart"

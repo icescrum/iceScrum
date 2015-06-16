@@ -61,7 +61,7 @@
                        max-date="projectMaxStartDate"
                        ng-required="isCurrentStep(4)"/>
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'startDate')"><i class="fa fa-calendar"></i></button>
                 </span>
             </p>
         </div>
@@ -104,7 +104,7 @@
                        ng-class="{current:step.selected}"
                        ng-required="isCurrentStep(4)"/>
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'firstSprint')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'firstSprint')"><i class="fa fa-calendar"></i></button>
                 </span>
             </p>
         </div>
@@ -124,7 +124,7 @@
                        ng-class="{current:step.selected}"
                        ng-required="isCurrentStep(4)"/>
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'endDate')"><i class="fa fa-calendar"></i></button>
                 </span>
             </p>
         </div>

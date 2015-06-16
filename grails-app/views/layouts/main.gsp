@@ -56,8 +56,8 @@
                 <div id="sidebar">
                     <div class="sidebar-toggle">
                         <button class="btn btn-xs btn-danger">
-                            <span class="glyphicon glyphicon-chevron-left"></span>
-                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="fa fa-chevron-left"></span>
+                            <span class="fa fa-chevron-right"></span>
                         </button>
                     </div>
                     <g:if test="${request.archivedProduct}">

@@ -20,6 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <a href="#${controllerName}" tooltip-append-to-body="true" class="btn btn-danger" tooltip="${message(code:'is.ui.actor.toolbar.new')}">
-    <i class="glyphicon glyphicon-plus"></i>
+    <i class="fa fa-plus"></i>
 </a>
 <entry:point id="${controllerName}-${actionName}-widget-toolbar"/>
