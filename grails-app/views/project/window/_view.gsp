@@ -20,7 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
 <%@ page import="org.icescrum.core.domain.Activity" %>
 <div class="row">
     <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7">

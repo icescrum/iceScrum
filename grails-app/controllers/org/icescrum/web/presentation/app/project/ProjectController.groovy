@@ -54,7 +54,7 @@ import java.text.DecimalFormat
 
 import static grails.async.Promises.*
 
-@Secured('stakeHolder() or inProduct() or owner()')
+@Secured('stakeHolder() or inProduct()')
 class ProjectController {
 
     def productService
@@ -212,12 +212,12 @@ class ProjectController {
         render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
     }
 
-    @Secured(['owner() or scrumMaster() or productOwner()'])
+    @Secured(['scrumMaster() or productOwner()'])
     def exportDialog() {
         render(status:200, template: "dialogs/export")
     }
 
-    @Secured(['owner() or scrumMaster() or productOwner()'])
+    @Secured(['scrumMaster() or productOwner()'])
     def export(long product) {
         Product _product = Product.withProduct(product)
         return task {
@@ -241,7 +241,7 @@ class ProjectController {
         render(status:200, template: "dialogs/edit")
     }
 
-    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
+    @Secured('scrumMaster() and !archivedProduct()')
     def editPractices(long product) {
         Product _product = Product.withProduct(product)
         def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
@@ -251,7 +251,7 @@ class ProjectController {
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
-    @Secured('(owner() or scrumMaster()) and !archivedProduct()')
+    @Secured('scrumMaster() and !archivedProduct()')
     def update(long product) {
         Product _product = Product.withProduct(product)
         def productPreferencesParams = params.productd?.remove('preferences')
@@ -273,7 +273,7 @@ class ProjectController {
         }
     }
 
-    @Secured('owner() or scrumMaster()')
+    @Secured('scrumMaster()')
     def archive(long product) {
         Product _product = Product.withProduct(product)
         try {
@@ -779,7 +779,7 @@ class ProjectController {
         render(status:200, text: _product.firstTeam as JSON, contentType: 'application/json')
     }
 
-    @Secured(['(owner() or scrumMaster()) and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    @Secured(['scrumMaster() and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def updateTeam(long product) {
         // Param extraction
         def teamParams = params.productd?.remove('team')
