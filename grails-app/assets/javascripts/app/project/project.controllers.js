@@ -34,51 +34,80 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             controller: 'editProjectModalCtrl'
         });
     };
+    $scope.showProjectListModal = function(type) {
+        $modal.open({
+            keyboard: false,
+            templateUrl: $scope.serverUrl + "/project/listModal",
+            size: 'lg',
+            controller: ['$scope', 'ProjectService', function($scope, ProjectService) {
+                // Functions
+                $scope.selectProject = function(project) {
+                    $scope.selectedProject = project;
+                };
+                $scope.openProject = function(project) {
+                    document.location = $scope.serverUrl + '/p/' + project.pkey;
+                };
+                // Init
+                $scope.projects = [];
+                $scope.selectedProject = {};
+                var listPromise = type == 'public' ? ProjectService.listPublic() : ProjectService.listByUser();
+                listPromise.then(function(projects) {
+                    $scope.projects = projects;
+                    if (!_.isEmpty(projects)) {
+                        $scope.selectProject(_.first(projects));
+                    }
+                });
+            }]
+        });
+    };
     $scope['import'] = function(project) {
         var url = $scope.serverUrl + "/project/import";
         $modal.open({
             keyboard: false,
-            templateUrl: url +"Dialog",
-            controller: ['$scope', '$http',function($scope, $http){
-                $scope.flowConfig = {target: url, singleFile:true};
+            templateUrl: url + "Dialog",
+            controller: ['$scope', '$http', function($scope, $http) {
+                $scope.flowConfig = {target: url, singleFile: true};
                 $scope.changes = false;
                 $scope._changes = {
-                    showTeam:false,
-                    showProject:false
+                    showTeam: false,
+                    showProject: false
                 };
                 $scope.progress = false;
 
-                $scope.checkValidation = function($message){
-                    if ($message){
+                $scope.checkValidation = function($message) {
+                    if ($message) {
                         $scope.progress = false;
                         $scope.changes = !angular.isObject($message) ? JSON.parse($message) : $message;
                         $scope._changes = angular.copy($scope.changes);
                         $scope._changes = angular.extend($scope._changes, {
-                            showTeam:$scope.changes.team?true:false,
-                            showUsers:$scope.changes.users?true:false,
-                            showProjectName:$scope.changes.product? ($scope.changes.product.name ?true:false) :false,
-                            showProjectPkey:$scope.changes.product? ($scope.changes.product.pkey ?true:false) :false
+                            showTeam: $scope.changes.team ? true : false,
+                            showUsers: $scope.changes.users ? true : false,
+                            showProjectName: $scope.changes.product ? ($scope.changes.product.name ? true : false) : false,
+                            showProjectPkey: $scope.changes.product ? ($scope.changes.product.pkey ? true : false) : false
                         });
                     }
                 };
 
-                $scope.applyChanges = function(){
-                    $http({ url: url,
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                            transformRequest: function (data) {
-                                return formObjectData(data, 'changes.');
-                            },
-                            data: $scope.changes })
-                        .then(function(response){
-                            if (response.data && response.data.class == 'Product'){
+                $scope.applyChanges = function() {
+                    $http({
+                        url: url,
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                        transformRequest: function(data) {
+                            return formObjectData(data, 'changes.');
+                        },
+                        data: $scope.changes
+                    })
+                    .then(function(response) {
+                            if (response.data && response.data.class == 'Product') {
                                 document.location = $scope.serverUrl + '/p/' + response.data.pkey + '/';
                             } else {
                                 $scope.checkValidation(response.data);
                             }
-                        }, function(){
+                        }, function() {
                             $scope.progress = false;
-                    });
+                        }
+                    );
                     $scope.progress = true;
                 };
             }]
@@ -88,10 +117,10 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
         var modal = $modal.open({
             keyboard: false,
             templateUrl: "project/exportDialog",
-            controller: ['$scope',function($scope){
+            controller: ['$scope', function($scope) {
                 $scope.zip = true;
                 $scope.progress = false;
-                $scope.start = function(){
+                $scope.start = function() {
                     $scope.downloadFile("project/export" + ($scope.zip ? "?zip=true" : ""));
                     $scope.progress = true;
                 }
@@ -101,7 +130,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             function() {
                 $scope.downloadFile("");
             },
-            function(){
+            function() {
                 $scope.downloadFile("");
             }
         );
@@ -111,17 +140,17 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
 }]);
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-    $scope.searchUsers = function(val, isPo){
-        return $http.get($scope.serverUrl+ '/user/search', {
+    $scope.searchUsers = function(val, isPo) {
+        return $http.get($scope.serverUrl + '/user/search', {
             params: {
                 value: val,
-                invit:true
+                invit: true
             }
-        }).then(function(response){
+        }).then(function(response) {
             return _.chain(response.data)
-                .filter(function(u){
+                .filter(function(u) {
                     var found = _.find($scope.project.productOwners, { email: u.email });
-                    if (!found){
+                    if (!found) {
                         found = _.find($scope.project.stakeHolders, { email: u.email });
                     }
                     if (!found && $scope.project.team) {
@@ -132,15 +161,15 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
                     }
                     return !found;
                 })
-                .map(function(member){
+                .map(function(member) {
                     member.name = $filter('userFullName')(member);
                     return member;
                 })
                 .value();
         });
     };
-    $scope.addUser = function(user, role){
-        if(role == 'po'){
+    $scope.addUser = function(user, role) {
+        if (role == 'po') {
             $scope.project.productOwners.push(user);
             if ($scope.project.team) {
                 var member = _.find($scope.project.team.members, { email: user.email });
@@ -149,13 +178,13 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
                 }
             }
             $scope.po = {};
-        } else if(role == 'sh'){
+        } else if (role == 'sh') {
             $scope.project.stakeHolders.push(user);
             $scope.sh = {};
         }
     };
-    $scope.removeUser = function(user, role){
-        if(role == 'po'){
+    $scope.removeUser = function(user, role) {
+        if (role == 'po') {
             _.remove($scope.project.productOwners, { email: user.email});
             if ($scope.project.team) {
                 var member = _.find($scope.project.team.members, { email: user.email });
@@ -163,7 +192,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
                     member.productOwner = false;
                 }
             }
-        } else if(role == 'sh'){
+        } else if (role == 'sh') {
             _.remove($scope.project.stakeHolders, { email: user.email});
         }
     };
@@ -196,7 +225,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
     $scope.sh = {};
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session){
+controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session) {
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.type = 'newProject';
     $scope.openDatepicker = function($event, name) {
@@ -209,7 +238,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     $scope.isCurrentStep = function(index) {
         return WizardHandler.wizard().currentStepNumber() == index;
     };
-    $scope.createProject = function(project){
+    $scope.createProject = function(project) {
         var p = $scope.prepareProject(project);
         p.startDate = $filter('date')(project.startDate, "dd-MM-yyyy");
         p.endDate = $filter('date')(project.endDate, "dd-MM-yyyy");
@@ -230,9 +259,9 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     // Init
     $scope.project = new Project();
     var today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     var endDate = new Date();
-    endDate.setHours(0,0,0,0);
+    endDate.setHours(0, 0, 0, 0);
     endDate.setMonth(today.getMonth() + 3);
     angular.extend($scope.project, {
         startDate: today,
@@ -251,9 +280,9 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     });
     $scope.startDate = {
         startingDay: 1,
-        opened:false,
-        format:'dd/MM/yyyy',
-        disabled:function(date, mode) {
+        opened: false,
+        format: 'dd/MM/yyyy',
+        disabled: function(date, mode) {
             return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
         }
 
@@ -338,7 +367,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Proj
 controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
     $scope.views = [];
     $scope.update = function(project) {
-        $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).where({hidden : true}).map('id').value().join(',');
+        $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).where({hidden: true}).map('id').value().join(',');
         ProjectService.update(project)
             .then(function(updatedProject) {
                 Session.setProject(updatedProject);
@@ -358,8 +387,8 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
     };
     $scope['delete'] = function(project) {
         $scope.confirm({
-            message:$scope.message('todo.is.ui.projectmenu.submenu.project.delete'),
-            callback:function(){
+            message: $scope.message('todo.is.ui.projectmenu.submenu.project.delete'),
+            callback: function() {
                 ProjectService.delete(project).then(function() {
                     document.location = $scope.serverUrl;
                 });
@@ -369,7 +398,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
     $scope.archive = function(project) {
         $scope.confirm({
             message: $scope.message('is.dialog.project.archive.confirm'),
-            callback: function(){
+            callback: function() {
                 ProjectService.archive(project).then(function() {
                     document.location = $scope.serverUrl;
                 });

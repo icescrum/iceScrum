@@ -21,7 +21,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:set var="ownerOrSm" value="${request.scrumMaster || request.owner}"/>
 <nav id="header" class="navbar navbar-masthead navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -71,7 +70,7 @@
                         </g:if>
                         <g:if test="${browsableProductsExist}">
                             <li>
-                                <a hotkey="{ 'shift+a': hotkeyClick}" href="#project/list">
+                                <a hotkey="{ 'shift+a': hotkeyClick}" href ng-click="showProjectListModal('public')">
                                     <g:message code="is.projectmenu.submenu.project.browse"/> <small class="text-muted">(SHIFT+A)</small>
                                 </a>
                             </li>
@@ -86,7 +85,7 @@
                                     <g:message code="is.projectmenu.submenu.project.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                 </a>
                             </li>
-                            <g:if test="${exportEnable && (request.scrumMaster || request.productOwner || request.owner)}">
+                            <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
                                 <li>
                                     <a hotkey="{ 'shift+d': export}" href ng-click="export(currentProject)">
                                         <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
@@ -111,7 +110,7 @@
                         </g:if>
                         <g:if test="${moreProductsExist}">
                             <li>
-                                <a href="${createLink(controller:'project', action:'browse')}" data-ajax="true">
+                                <a href ng-click="showProjectListModal('byUser')">
                                     <g:message code="is.projectmenu.submenu.project.more"/>
                                 </a>
                             </li>
@@ -146,7 +145,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="${message(code:'todo.is.ui.search')}">
                             <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                                <button class="btn btn-primary" type="button"><span class="fa fa-search"></span></button>
                             </span>
                         </div>
                     </form>

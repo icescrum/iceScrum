@@ -21,7 +21,12 @@
  *
  */
 services.factory( 'Project', [ 'Resource', function( $resource ) {
-    return $resource(icescrum.grailsServer + '/project/:id/:action');
+    return $resource(icescrum.grailsServer + '/project/:id/:action',
+        {},
+        {
+            listPublic: {method: 'GET', isArray: true, params: {action: 'listPublic'}},
+            listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}}
+        });
 }]);
 
 services.service("ProjectService", ['Project', 'Session', function(Project, Session) {
@@ -50,6 +55,12 @@ services.service("ProjectService", ['Project', 'Session', function(Project, Sess
     };
     this['delete'] = function(project) {
         return project.$delete();
+    };
+    this.listPublic = function() {
+        return Project.listPublic().$promise;
+    };
+    this.listByUser = function() {
+        return Project.listByUser().$promise;
     };
     this.authorizedProject = function(action, project) {
         switch (action) {

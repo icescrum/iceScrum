@@ -838,4 +838,25 @@ class ProjectController {
         }
         render(status: 200)
     }
+
+    @Secured(['permitAll()'])
+    def listModal() {
+        render(status:200, template: "dialogs/list")
+    }
+
+    @Secured(['permitAll()'])
+    def listPublic() {
+        //def userProjects = Product.findAllByUser(springSecurityService.currentUser)
+        //def publicProjects = Product.findAll { preferences.hidden == false }
+        //def projects = publicProjects - userProjects
+        def projects = [] // TODO move to real one
+        render(status: 200, contentType:'application/json', text: projects as JSON)
+    }
+
+    @Secured(['permitAll()'])
+    def listByUser() {
+        //def projects = Product.findAllByUser(springSecurityService.currentUser)
+        def projects = [] // TODO move to real one
+        render(status: 200, contentType:'application/json', text: projects as JSON)
+    }
 }

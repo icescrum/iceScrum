@@ -1499,13 +1499,21 @@ a[data-toggle="tab"] button {
     font-family: @font-family-base;
   }
 }
-.wizard {
+
+.split-modal {
+  .left-panel {
+    max-height: 340px;
+    overflow: auto;
+  }
+}
+
+.wizard, .split-modal {
   .modal-body {
     padding-left:15px;
     padding-top:0;
     padding-bottom:0;
   }
-  .steps {
+  .steps, .right-panel {
     padding-bottom:15px;
     padding-top:15px;
     background: #fff;
@@ -1513,7 +1521,7 @@ a[data-toggle="tab"] button {
   .step {
     height:100%;
   }
-  .steps-indicator {
+  .steps-indicator, .left-panel {
     background-color:@light-bg;
     padding:0;
     list-style:none;
@@ -1545,7 +1553,6 @@ a[data-toggle="tab"] button {
           > i {
             color:@body-bg;
           }
-
         }
       }
     }
