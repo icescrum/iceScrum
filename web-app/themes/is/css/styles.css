@@ -2337,3 +2337,7 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
     text-align: left;
     min-width: 65px;
 }
+
+template {
+    display: none;
+}
