@@ -158,7 +158,7 @@ class UrlMappings {
 
         "/project" {
             controller = 'project'
-            action = [GET: "index", POST:"save"]
+            action = [POST:"save"]
         }
 
         "/project/import" {
