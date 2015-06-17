@@ -87,7 +87,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             var currentWindow = location.hash.replace(/^.*#/, '');
             var $menubar = $('li.menubar:first a');
-            if ($.icescrum.o.baseUrlSpace && !currentWindow && $menubar){
+            if ($.icescrum.o.baseUrlSpace && !currentWindow && $menubar.length > 0){
                 var menubar = $menubar.attr('href').replace(/^.*#/, '');
                 document.location.hash = menubar;
                 $.icescrum.removeFromWidgetsList(menubar);
