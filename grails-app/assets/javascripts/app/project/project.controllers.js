@@ -250,6 +250,9 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     $scope.teamMembersEditable = function(team) {
         return team.id == null;
     };
+    $scope.teamCreatable = function() {
+        return true;
+    };
     $scope.teamRemovable = function() {
         return true;
     };
@@ -329,6 +332,9 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
 controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.teamMembersEditable = function() {
+        return false;
+    };
+    $scope.teamCreatable = function() {
         return false;
     };
     $scope.teamRemovable = function() {

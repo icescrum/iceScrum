@@ -35,7 +35,7 @@
                        name="team.name"
                        focus-me="true"
                        class="form-control"
-                       typeahead="team as team.name for team in searchTeam($viewValue)"
+                       typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                        typeahead-loading="searching"
                        typeahead-on-select="selectTeam($item, $model, $label)"
                        typeahead-template-url="select.or.create.team.html"
