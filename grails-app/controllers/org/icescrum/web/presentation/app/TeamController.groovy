@@ -53,10 +53,15 @@ class TeamController {
             render(status:403)
             return
         }
-        def needReload = securityService.scrumMaster(team, auth) && !securityService.owner(team, auth)
         def newMembers = []
-        def invitedMembers = []
-        def invitedScrumMasters = []
+        params.team.members?.list('id').each {
+            newMembers << [id: it.toLong(), role: Authority.MEMBER]
+        }
+        params.team.scrumMasters?.list('id').each {
+            newMembers << [id: it.toLong(), role: Authority.SCRUMMASTER]
+        }
+        def invitedMembers = params.team.invitedMembers?.list('email') ?: []
+        def invitedScrumMasters = params.team.invitedScrumMasters?.list('email') ?: []
         try {
             def newOwnerId = params.team.owner?.toLong()
             Team.withTransaction {
@@ -71,9 +76,8 @@ class TeamController {
                 if (request.admin && newOwnerId && newOwnerId != team.owner.id){
                     securityService.changeOwner(User.get(newOwnerId), team)
                 }
-                needReload = needReload && !securityService.scrumMaster(team, auth)
             }
-            render(status: 200, text: "$needReload")
+            render(status:200, text:team as JSON, contentType:'application/json')
         } catch (IllegalStateException ise) {
             returnError(text: message(code: ise.message))
         } catch (RuntimeException re) {
@@ -100,7 +104,7 @@ class TeamController {
         try {
             Team.withTransaction {
                 teamService.save(team, null, [springSecurityService.currentUser.id])
-                render(status: 200)
+                render(status:200, text:team as JSON, contentType:'application/json')
             }
         } catch (IllegalStateException ise) {
             returnError(text: message(code: ise.message))
