@@ -771,7 +771,7 @@ class ProjectController {
             productService.updateProductMembers(_product, newMembers)
             productService.manageProductInvitations(_product, invitedProductOwners, invitedStakeHolders)
         }
-        render(status: 200)
+        render(status: 200, contentType: 'application/json', text:_product as JSON)
     }
 
     @Secured(['permitAll()'])

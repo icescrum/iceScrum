@@ -69,7 +69,7 @@
                     </span>
                 </p>
             </div>
-            <table class="table table-striped table-responsive">
+            <table ng-if="team.members.length" class="table table-striped table-responsive">
                 <thead>
                 <tr>
                     <th></th>
@@ -81,6 +81,9 @@
                        ng-include="'wizard.members.list.html'">
                 </tbody>
             </table>
+            <div ng-if="team.members.length == 0">
+                ${message(code: 'todo.is.ui.team.no.members')}
+            </div>
         </div>
     </div>
 </script>

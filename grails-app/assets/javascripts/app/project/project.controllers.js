@@ -329,7 +329,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
     }
 }]);
 
-controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
+controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Session', 'ProjectService', function($scope, $controller, Session, ProjectService) {
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.teamMembersEditable = function() {
         return false;
@@ -344,8 +344,8 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Proj
         return ProjectService.authorizedProject('updateProjectMembers', project);
     };
     $scope.resetTeamForm = function() {
-        if ($scope.formHolder.editTeamForm) {
-            $scope.formHolder.editTeamForm.$setPristine();
+        if ($scope.formHolder.editMembersForm) {
+            $scope.formHolder.editMembersForm.$setPristine();
         }
         $scope.project = angular.copy($scope.currentProject);
         $scope.project.stakeHolders = $scope.project.stakeHolders.concat($scope.project.invitedStakeHolders);
@@ -355,7 +355,8 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Proj
     $scope.updateProjectTeam = function(project) {
         var p = $scope.prepareProject(project);
         ProjectService.updateTeam(p)
-            .then(function() {
+            .then(function(updatedProject) {
+                Session.setProject(updatedProject);
                 $scope.resetTeamForm();
                 $scope.notifySuccess('todo.is.ui.project.members.updated');
             });
