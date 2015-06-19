@@ -115,6 +115,11 @@
                                 </a>
                             </li>
                         </g:if>
+                        <g:if test="${request.authenticated}">
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation" class="dropdown-header">${message(code: 'is.ui.team.menu')}</li>
+                            <li><a href ng-click="showManageTeamsModal()">${message(code: 'is.ui.team.manage')}</a></li>
+                        </g:if>
                         <entry:point id="menu-project" model="[curProduct:product,user:user]"/>
                     </ul>
                 </li>
