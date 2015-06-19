@@ -67,7 +67,7 @@ services.service("ProjectService", ['Project', 'Session', function(Project, Sess
             case 'update':
             case 'updateTeamMembers': // Should rather be in a team service but depends on the project...
             case 'updateProjectMembers':
-                return Session.owner(project) || Session.sm();
+                return Session.sm();
             case 'delete':
                 return Session.owner(project);
             default:

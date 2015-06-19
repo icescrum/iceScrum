@@ -329,10 +329,10 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
 controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.teamMembersEditable = function() {
-        return ProjectService.authorizedProject('updateTeamMembers', $scope.project);
+        return false;
     };
     $scope.teamRemovable = function() {
-        return $scope.teamMembersEditable();
+        return ProjectService.authorizedProject('updateTeamMembers', $scope.project);
     };
     $scope.projectMembersEditable = function(project) {
         return ProjectService.authorizedProject('updateProjectMembers', project);
