@@ -24,10 +24,11 @@
 controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', function($scope, $http, $filter, Session) {
 
     $scope.team = {};
-    $scope.searchTeam = function(val){
+    $scope.searchTeam = function(val, create){
         return $http.get($scope.serverUrl+ '/team/search', {
             params: {
-                value: val
+                term: val,
+                create: create
             }
         }).then(function(response){
             return response.data;
@@ -139,6 +140,109 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
         _.remove($scope.team.scrumMasters, { email: member.email });
     };
 
+    $scope.scrumMasterChanged = function(member) {
+        if (member.scrumMaster) {
+            $scope.team.scrumMasters.push(member);
+        } else {
+            _.remove($scope.team.scrumMasters, { email: member.email }); // equality on email because invited members have no id
+        }
+    };
+}]);
+
+controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', 'TeamService', function($scope, $http, TeamService) {
+    // Functions
+    $scope.selectTeam = function(team) {
+        $scope.team = angular.copy(team);
+        if (team.members && team.scrumMasters){
+            $scope.team.members = team.members.map(function(member){
+                member.scrumMaster = _.find(team.scrumMasters, { id: member.id }) ? true : false;
+                return member;
+            });
+            if (!_.isEmpty(team.invitedMembers)) {
+                $scope.team.members = $scope.team.members.concat(team.invitedMembers);
+            }
+            if (!_.isEmpty(team.invitedScrumMasters)) {
+                $scope.team.members = $scope.team.members.concat(_.map(team.invitedScrumMasters, function(member) { return _.merge(member, { scrumMaster: true })}));
+            }
+        }
+    };
+    $scope.save = function(team) {
+        TeamService.save(team)
+            .then(function() {
+                $scope.newTeam = {};
+                $scope.formHolder.newTeamForm.$setPristine();
+                $scope.notifySuccess('todo.is.ui.team.saved');
+            });
+    };
+    $scope.update = function(team) {
+        TeamService.update(team)
+            .then(function() {
+                $scope.formHolder.updateTeamForm.$setPristine();
+                $scope.notifySuccess('todo.is.ui.team.updated');
+            });
+    };
+    $scope.delete = function(team) {
+        // TODO cancellable delete
+        TeamService.delete(team)
+            .then(function() {
+                $scope.notifySuccess('todo.is.ui.deleted');
+                $scope.team = {};
+            });
+    };
+    $scope.cancel = function() {
+        $scope.team = {};
+        $scope.formHolder.updateTeamForm.$setPristine();
+    };
+    $scope.teamSelected = function() {
+        return !_.isEmpty($scope.team);
+    };
+    $scope.authorizedTeam = function(action, team) {
+        return TeamService.authorizedTeam(action, team);
+    };
+    // Init
+    $scope.teams = [];
+    $scope.formHolder = {};
+    $scope.team = {};
+    $scope.newTeam = {};
+    TeamService.listByUser().then(function(teams) {
+        $scope.teams = teams;
+    });
+
+    // Member management TODO remove duplication with controller above
+    $scope.teamMembersEditable = function(team) {
+        return true;
+    };
+    $scope.member = {};
+    $scope.searchMembers = function(val){
+        return $http.get($scope.serverUrl+ '/user/search', {
+            params: {
+                value: val,
+                invit:true
+            }
+        }).then(function(response) {
+            return _.chain(response.data)
+                .filter(function(member){
+                    var found = false;
+                    if (!found){
+                        found = _.find($scope.team.members, { email: member.email });
+                    }
+                    return !found;
+                })
+                .map(function(member){
+                    member.name = $filter('userFullName')(member);
+                    return member;
+                })
+                .value();
+        });
+    };
+    $scope.addTeamMember = function(member){
+        $scope.team.members.push(member);
+        $scope.member = {};
+    };
+    $scope.removeTeamMember = function(member) {
+        _.remove($scope.team.members, { email: member.email });
+        _.remove($scope.team.scrumMasters, { email: member.email });
+    };
     $scope.scrumMasterChanged = function(member) {
         if (member.scrumMaster) {
             $scope.team.scrumMasters.push(member);

@@ -26,7 +26,6 @@ package org.icescrum.web.presentation.app.project
 
 import groovy.xml.MarkupBuilder
 import org.icescrum.components.UtilsWebComponents
-import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
@@ -64,7 +63,7 @@ class ProjectController {
     def springSecurityService
     def featureService
     def attachmentableService
-    def userService
+    def securityService
 
     @Secured(['isAuthenticated()'])
     def add() {
@@ -117,39 +116,22 @@ class ProjectController {
                         return
                     }
                     teamService.save(team, members, scrumMasters)
-                    userService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
+                    productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
                 } else {
                     team = Team.findById(teamParams.id)
-                    //TODO
-                    // Update old team name
-                    //Ugly code
-                    //I know
-                    //I like it
-                    def updateTeamName = team.name.split('team')
-                    if (updateTeamName.size() > 1 && (updateTeamName[1].trim().startsWith('201'))){
-                        def i = 0
-                        team.name = "${updateTeamName[0]}"
-                        while(!team.validate()){
-                            team.name = "${updateTeamName[0]} ${i}"
-                            i++
-                        }
-                        team.save()
-                    }
                 }
                 def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
                 def stakeHolders  = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
                 def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
                 def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
                 productService.save(product, productOwners, stakeHolders)
-                userService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
-                productService.addTeamsToProduct product, [team.id]
-
+                productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
+                productService.addTeamToProduct(product, team)
                 if (productParams.initialize){
                     def release = new Release(name: "Release 1", vision: product.vision, startDate: product.startDate, endDate: product.endDate)
                     releaseService.save(release, product)
                     sprintService.generateSprints(release, productParams.firstSprint)
                 }
-
                 render(status:200, contentType: 'application/json', text:product as JSON)
             } catch (IllegalStateException ise) {
                 status.setRollbackOnly()
@@ -759,20 +741,6 @@ class ProjectController {
         render(status:200, template: "dialogs/editMembers")
     }
 
-    @Secured(['isAuthenticated()', 'RUN_AS_PERMISSIONS_MANAGER'])
-    def leaveTeam(long product) {
-        Product _product = Product.withProduct(product)
-        _product.withTransaction {
-            def currentMembers = productService.getAllMembersProduct(_product)
-            User user = springSecurityService.currentUser
-            def found = currentMembers.find { it.id == user.id }
-            if (found) {
-                productService.removeAllRoles(_product, _product.firstTeam, user, false)
-            }
-        }
-        render(status: 200)
-    }
-
     @Secured(['isAuthenticated()'])
     def team(long product) {
         Product _product = Product.withProduct(product)
@@ -784,57 +752,24 @@ class ProjectController {
         // Param extraction
         def teamParams = params.productd?.remove('team')
         def productParams = params.remove('productd')
-        def members = teamParams.members?.list('id').collect { it.toLong() } ?: []
-        def scrumMasters = teamParams.scrumMasters?.list('id').collect { it.toLong() } ?: []
         def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
         def stakeHolders = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
-        def invitedMembers = teamParams.invitedMembers?.list('email') ?: []
-        def invitedScrumMasters = teamParams.invitedScrumMasters?.list('email') ?: []
         def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
         def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
-        // Param validation
-        assert !members.intersect(scrumMasters)
-        assert !members.intersect(productOwners)
-        assert !members.intersect(stakeHolders)
-        assert !stakeHolders.intersect((scrumMasters))
-        assert !stakeHolders.intersect((productOwners))
-        def productOwnersAndScrumMasters = productOwners.intersect(scrumMasters)
-        if (!scrumMasters && !members) {
-            returnError(text: message(code: 'is.product.error.noMember'))
-        }
-        productOwners.removeAll(productOwnersAndScrumMasters)
-        scrumMasters.removeAll(productOwnersAndScrumMasters)
+        assert !stakeHolders.intersect(productOwners)
         // Compute roles
         def newMembers = []
-        members.each { newMembers << [id: it, role: Authority.MEMBER] }
-        scrumMasters.each { newMembers << [id: it, role: Authority.SCRUMMASTER] }
         productOwners.each { newMembers << [id: it, role: Authority.PRODUCTOWNER] }
         stakeHolders.each { newMembers << [id: it, role: Authority.STAKEHOLDER] }
-        productOwnersAndScrumMasters.each { newMembers << [id: it, role: Authority.PO_AND_SM] }
         // Update product & team
         Product _product = Product.withProduct(product)
         _product.withTransaction {
-            Team team = _product.firstTeam
-            if (teamParams.id != team.id) {
-                _product.removeFromTeams(team)
-                if (teamParams.id == null) {
-                    team = new Team(name: teamParams.name)
-                    teamService.save(team, [], [])
-                } else {
-                    team = Team.get(teamParams.long('id'))
-                    if (!team) {
-                        returnError(text: message(code: 'is.team.error.not.exist'))
-                    }
-                }
-                productService.addTeamsToProduct(_product, [team.id])
+            def teamId = teamParams.id
+            if (teamId != _product.firstTeam.id && securityService.owner(null, springSecurityService.authentication)) {
+                productService.changeTeam(_product, Team.get(teamId))
             }
-            productService.updateMembers(_product, newMembers)
-            userService.manageProductInvitations(_product, invitedProductOwners, invitedStakeHolders)
-            userService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
-            // Update owner TODO consider re-enabling this feature, below is legacy code doing that
-            // if (params.creator && params.creator?.toLong() != _product.owner.id) {
-            //    securityService.changeOwner(User.get(params.creator.toLong()), _product)
-            // }
+            productService.updateProductMembers(_product, newMembers)
+            productService.manageProductInvitations(_product, invitedProductOwners, invitedStakeHolders)
         }
         render(status: 200)
     }
@@ -846,17 +781,24 @@ class ProjectController {
 
     @Secured(['permitAll()'])
     def listPublic() {
-        //def userProjects = Product.findAllByUser(springSecurityService.currentUser)
-        //def publicProjects = Product.findAll { preferences.hidden == false }
-        //def projects = publicProjects - userProjects
-        def projects = [] // TODO move to real one
+        def userProjects = Product.findAllByUser(springSecurityService.currentUser)
+        def publicProjects = Product.findAll { preferences.hidden == false }
+        def projects = publicProjects - userProjects
         render(status: 200, contentType:'application/json', text: projects as JSON)
     }
 
     @Secured(['permitAll()'])
     def listByUser() {
-        //def projects = Product.findAllByUser(springSecurityService.currentUser)
-        def projects = [] // TODO move to real one
+        def projects = Product.findAllByUser(springSecurityService.currentUser)
         render(status: 200, contentType:'application/json', text: projects as JSON)
+    }
+
+    @Secured(['stakeHolder() or inProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    def leaveTeam(long product) {
+        Product _product = Product.withProduct(product)
+        _product.withTransaction {
+            productService.removeAllRoles(_product.firstTeam, springSecurityService.currentUser)
+        }
+        render(status: 200)
     }
 }
