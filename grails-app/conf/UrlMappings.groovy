@@ -277,6 +277,19 @@ class UrlMappings {
             }
         }
 
+        "/team/" {
+            controller = 'team'
+            action = [POST:"save"]
+        }
+
+        "/team/$id" {
+            controller = 'team'
+            action = [POST:"update", DELETE:"delete"]
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
         "403"(controller: "errors", action: "error403")
         "400"(controller: "errors", action: "fakeError")
         "302"(controller: "errors", action: "fakeError")
