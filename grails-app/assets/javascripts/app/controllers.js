@@ -78,6 +78,14 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 controller: 'userCtrl'
             });
         };
+        $scope.showManageTeamsModal = function() {
+            $modal.open({
+                keyboard: false,
+                templateUrl: $scope.serverUrl + "/team/manage",
+                size: 'lg',
+                controller: 'manageTeamsModalCtrl'
+            });
+        };
         $scope.menus = {
             visible:[],
             hidden:[]
