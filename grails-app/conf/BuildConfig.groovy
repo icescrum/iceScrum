@@ -35,6 +35,12 @@ grails.project.dependency.resolver = "maven"
 grails.project.war.osgi.headers = false
 grails.tomcat.nio = true
 
+grails.project.fork = [
+        test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
+        run: [maxMemory: 1024, minMemory: 512, debug: false, maxPerm: 256, forkReserve:false],
+        war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false]
+]
+
 if (Environment.current != Environment.PRODUCTION) {
     println "use inline plugin in env: ${Environment.current}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
