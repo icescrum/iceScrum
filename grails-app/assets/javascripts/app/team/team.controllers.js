@@ -149,7 +149,7 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
     };
 }]);
 
-controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', 'TeamService', function($scope, $http, TeamService) {
+controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', '$filter', 'TeamService', function($scope, $http, $filter, TeamService) {
     // Functions
     $scope.selectTeam = function(team) {
         $scope.team = angular.copy(team);
@@ -168,16 +168,19 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', 'TeamService'
     };
     $scope.save = function(team) {
         TeamService.save(team)
-            .then(function() {
+            .then(function(team) {
                 $scope.newTeam = {};
+                $scope.team = team;
+                $scope.teams.push(team);
                 $scope.formHolder.newTeamForm.$setPristine();
                 $scope.notifySuccess('todo.is.ui.team.saved');
             });
     };
     $scope.update = function(team) {
         TeamService.update(team)
-            .then(function() {
+            .then(function(returnedTeam) {
                 $scope.formHolder.updateTeamForm.$setPristine();
+                angular.extend(_.find($scope.teams, { id: team.id }), returnedTeam);
                 $scope.notifySuccess('todo.is.ui.team.updated');
             });
     };
