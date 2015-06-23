@@ -33,6 +33,7 @@ class BootStrap {
 
     def localeResolver
     DefaultGrailsApplication grailsApplication
+    def ehcacheCacheManager
 
     def init = { servletContext ->
 
@@ -42,6 +43,7 @@ class BootStrap {
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
         println("------------------");
         println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
+        println "cache manager name: ${ehcacheCacheManager?.name}"
         println("------------------");
 
         //Hack grails 1.3.x bug with accept header for request.format should be remove when upgrade to grails 2.x
