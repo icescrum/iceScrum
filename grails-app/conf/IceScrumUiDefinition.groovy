@@ -57,6 +57,7 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table']
         ]
+        guidedTour = true
     }
 
     'backlog' {
@@ -91,6 +92,7 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table']
         ]
+        guidedTour = true
     }
 
     'story' {
@@ -141,6 +143,7 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table','productParkingLotChart']
         ]
+        guidedTour = true
     }
 
     'project' {
@@ -161,6 +164,7 @@ uiDefinitions = {
                 view:'productCumulativeFlowChart',
                 viewTypes:['productCumulativeFlowChart','productVelocityCapacityChart','productBurnupChart','productBurndownChart','productVelocityChart','productParkingLotChart'],
         ]
+        guidedTour = true
     }
 
     'releasePlan' {
@@ -207,6 +211,7 @@ uiDefinitions = {
                     id
                 }
         ]
+        guidedTour = true
     }
 
     'sandbox' {
@@ -243,6 +248,7 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table']
         ]
+        guidedTour = true
     }
 
     'sprintPlan' {
@@ -280,6 +286,7 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.ctrlshiftd.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftd.text'],
             [code: 'is.ui.shortcut.ctrlshiftr.code', text: 'is.ui.shortcut.sprintPlan.ctrlshiftr.text']
         ]
+        guidedTour = true
         embedded = [
                 view:'index',
                 viewTypes:['postits','table','notes','sprintBurndownRemainingChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
@@ -311,6 +318,7 @@ uiDefinitions = {
             [code: 'is.ui.shortcut.escape.code', text: 'is.ui.shortcut.escape.text'],
             [code: 'is.ui.shortcut.ctrln.code', text: 'is.ui.shortcut.timeline.ctrln.text']
         ]
+        guidedTour = true
     }
 
     'user' {

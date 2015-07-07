@@ -52,6 +52,13 @@ class ScrumOSController {
     def grailsApplication
     def servletContext
 
+    def guidedTour = {
+        def script = g.render(template : '/scrumOS/guidedTour/' + params.tourName, model:['tourName':params.tourName, 'autoStart':params.boolean('autoStart')]).toString()
+        script = script.replaceAll('<script type="text/javascript">','');
+        script = script.replaceAll('</script>','');
+        render(status : 200 , text:script, contentType:"text/javascript")
+    }
+
     def index = {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
 
@@ -187,6 +194,7 @@ class ScrumOSController {
                         maximizeable: uiDefinition.window?.maximizeable,
                         closeable: uiDefinition.window?.closeable,
                         widgetable: uiDefinition.widget ? true : false,
+                        guidedTour: uiDefinition.options.guidedTour ? true : false,
                         init: params.actionWindow ?: uiDefinition.window?.init
                 ], {})
             }

@@ -29,7 +29,7 @@
 
         %{--Add button--}%
         <li class="navigation-item button-ico button-add close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
-            <a class="tool-button button-n"
+            <a class="tool-button button-n button-add "
                href="#sprintPlan/add/${sprint.id}"
                data-shortcut="ctrl+n"
                data-shortcut-on="#window-id-${controllerName}"
@@ -141,8 +141,8 @@
     <g:if test="${request.scrumMaster || request.productOwner}">
 
         %{--Activate button--}%
-        <li class="navigation-item separator activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'separator':'hidden'}">
-            <a class="tool-button button-n"
+        <li class="navigation-item separator  button-activate activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'separator':'hidden'}">
+            <a class="tool-button button-n button-activate"
                data-ajax="true"
                href="${createLink(action:'activate',controller:'releasePlan',params:[product:params.product],id:sprint.id)}"
                data-ajax-trigger='{"activate_sprint":"sprint","inProgress_story":"stories"}'
@@ -161,8 +161,8 @@
         </li>
 
         %{--Close button--}%
-        <li class="navigation-item close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'separator':'hidden'}">
-            <a class="tool-button button-n"
+        <li class="navigation-item  button-close close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'separator':'hidden'}">
+            <a class="tool-button button-close button-n"
                data-ajax="true"
                href="${createLink(action:'close',controller:'releasePlan',params:[product:params.product],id:sprint.id)}"
                data-ajax-trigger='{"close_sprint":"sprint","update_story":"stories"}'

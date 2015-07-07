@@ -2341,3 +2341,17 @@ table.kanban .kanban-col .table-cell .show-done-sprint a {
 template {
     display: none;
 }
+
+/** Bootstrap tour custom **/
+.tour-project.tour-project-3 {
+    margin-left:56px;
+}
+
+.guidedTour-button {
+    padding:3px;
+    margin: 0 5px 5px 0;
+}
+
+.btn[data-role="end"] {
+    margin-left: 5px;
+}

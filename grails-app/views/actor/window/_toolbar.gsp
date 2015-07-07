@@ -28,7 +28,7 @@
 
 <g:if test="${request.productOwner}">
     <li class="navigation-item button-ico button-add">
-        <a class="tool-button button-n"
+        <a class="tool-button button-n button-add"
            href="#${controllerName}/add"
            data-shortcut="ctrl+n"
            data-shortcut-on="#window-id-${controllerName}"

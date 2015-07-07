@@ -107,6 +107,8 @@
         accept: '.widgetable'
       });
 </jq:jquery>
+%{--TODO FIX--}%
+<script type="text/javascript" src="${r.resource(file:"setup.js", dir:"js")}"></script>
 <entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
 <is:onStream

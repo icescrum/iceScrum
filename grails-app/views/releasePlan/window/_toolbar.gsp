@@ -26,7 +26,7 @@
     <g:if test="${release.state <= Release.STATE_INPROGRESS && (request.productOwner || request.scrumMaster)}">
     %{-- Add button --}%
         <li class="navigation-item button-ico button-add close-release-${release.id}">
-            <a class="tool-button button-n"
+            <a class="tool-button button-n button-add "
                href="#${controllerName}/add/${release.id}"
                data-shortcut="ctrl+n"
                data-shortcut-on="#window-id-${controllerName}"
