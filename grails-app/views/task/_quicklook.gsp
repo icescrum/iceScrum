@@ -45,7 +45,7 @@
                 <strong><g:message code="is.backlogelement.notes"/> :</strong>
 
                 <div class="content rich-content">
-                    <wikitext:renderHtml markup="Textile">${task.notes}</wikitext:renderHtml>
+                    <is:renderHtml>${task.notes}</is:renderHtml>
                 </div>
             </div>
 

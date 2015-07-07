@@ -190,7 +190,7 @@ class SprintPlanController {
 
             def returnValue
             if (params.name == 'notes') {
-                returnValue = wikitext.renderHtml(markup: 'Textile', text: task."${params.name}")
+                returnValue = is.renderHtml([text: task."${params.name}"], null)
                 returnValue = returnValue ?: ''
             } else if (params.name == 'estimation') {
                 returnValue = task.estimation != null ? task.estimation.toString() : '?'
@@ -552,7 +552,7 @@ class SprintPlanController {
                             effort: it.effort,
                             state: message(code: BundleUtils.storyStates[it.state]),
                             description: is.storyDescription([story: it, displayBR: true]),
-                            notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
+                            notes: is.renderHtml([text:it.notes.decodeHTML()], null),
                             type: message(code: BundleUtils.storyTypes[it.type]),
                             suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
                             acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,

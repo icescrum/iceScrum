@@ -110,8 +110,7 @@
                 <is:tableColumn
                         editable="[type:'textarea',disabled:!taskEditable,name:'description']">${task.description?.encodeAsHTML()?.encodeAsNL2BR()}</is:tableColumn>
                 <is:tableColumn
-                        editable="[type:'richarea',disabled:!taskEditable,name:'notes']"><div class="rich-content"><wikitext:renderHtml
-                                            markup="Textile">${task.notes}</wikitext:renderHtml></div></is:tableColumn>
+                        editable="[type:'richarea',disabled:!taskEditable,name:'notes']"><div class="rich-content"><is:renderHtml>${task.notes}</is:renderHtml></div></is:tableColumn>
 
                 <is:tableColumn>${task.responsible?.firstName?.encodeAsHTML()} ${task.responsible?.lastName?.encodeAsHTML()}</is:tableColumn>
                 <is:tableColumn>${task.inProgressDate ? g.formatDate(formatName: 'is.date.format.short', date: task.inProgressDate) : ''}</is:tableColumn>

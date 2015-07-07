@@ -25,6 +25,8 @@
 
 package org.icescrum.presentation.taglib
 
+import org.eclipse.mylyn.wikitext.core.util.ServiceLocator
+import org.eclipse.mylyn.wikitext.core.parser.MarkupParser
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import grails.converters.JSON
@@ -357,5 +359,12 @@ class UtilsTagLib {
 
     def appId = {
         out << grailsApplication.config.icescrum.appID
+    }
+
+    def renderHtml = { attrs, body ->
+        MarkupParser parser = new MarkupParser()
+        parser.markupLanguage = ServiceLocator.instance.getMarkupLanguage('Textile')
+        def text = attrs.text ?: body().toString()
+        out << parser.parseToHtml(text.decodeHTML())
     }
 }

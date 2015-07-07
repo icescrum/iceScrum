@@ -62,7 +62,7 @@
                 </is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${product.description}">
-                        <div class="rich-content"><wikitext:renderHtml markup="Textile">${product.description}</wikitext:renderHtml></div>
+                        <div class="rich-content"><is:renderHtml>${product.description}</is:renderHtml></div>
                     </g:if>
                     <g:else>
                         <g:message code="is.product.empty.description"/>
@@ -82,7 +82,7 @@
                 </is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${release?.vision}">
-                        <div class="rich-content"><wikitext:renderHtml markup="Textile">${is.truncated(value: release.vision, size: 1000, encodedHTML: false)}</wikitext:renderHtml></div>
+                        <div class="rich-content"><is:renderHtml>${is.truncated(value: release.vision, size: 1000, encodedHTML: false)}</is:renderHtml></div>
                     </g:if>
                     <g:else>
                         <g:message code="is.release.empty.vision"/>
@@ -112,8 +112,7 @@
                 </is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${sprint?.doneDefinition}">
-                        <div class="rich-content"><wikitext:renderHtml
-                                markup="Textile">${is.truncated(value: sprint.doneDefinition, size: 1000, encodedHTML: false)}</wikitext:renderHtml></div>
+                        <div class="rich-content"><is:renderHtml>${is.truncated(value: sprint.doneDefinition, size: 1000, encodedHTML: false)}</is:renderHtml></div>
                     </g:if>
                     <g:else>
                         <g:message code="is.sprint.empty.doneDefinition"/>
@@ -143,8 +142,7 @@
                 </is:panelTitle>
                 <div class="panel-box-content">
                     <g:if test="${sprint?.retrospective}">
-                        <div class="rich-content"><wikitext:renderHtml
-                                markup="Textile">${is.truncated(value: sprint.retrospective, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
+                        <div class="rich-content"><is:renderHtml>${is.truncated(value: sprint.retrospective, size: 1000, encodedHTML: false)}</is:renderHtml>
                         </div>
                     </g:if>
                     <g:else>

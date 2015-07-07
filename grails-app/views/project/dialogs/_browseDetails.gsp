@@ -22,7 +22,7 @@
 <div class="browse-informations clearfix">
   <h4>${product.name.encodeAsHTML()}</h4>
   <div class="description">
-    <wikitext:renderHtml markup="Textile">${is.truncated(value:product.description,size:1000,encodedHTML:false)}</wikitext:renderHtml>
+    <is:renderHtml>${is.truncated(value:product.description,size:1000,encodedHTML:false)}</is:renderHtml>
     <g:if test="${product.description?.length() > 200}">
         <div class="read-more">
          <is:link

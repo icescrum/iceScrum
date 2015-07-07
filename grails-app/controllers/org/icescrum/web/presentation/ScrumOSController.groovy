@@ -248,7 +248,7 @@ class ScrumOSController {
             params.data = is.truncated([size: params.int('truncate')], params.data)
         }
         if (params.withoutHeader) {
-            render(text: '<div class="rich-content">'+wikitext.renderHtml([markup: "Textile"], params.data)+'</div>')
+            render(text: '<div class="rich-content">'+is.renderHtml([text:params.data])+'</div>')
         } else {
             render(status: 200, template: 'textileParser')
         }

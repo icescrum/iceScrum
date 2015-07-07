@@ -25,7 +25,7 @@
   <r:layoutResources/>
 </head>
 <body style="background:none;overflow-y:auto;">
-    <div class="rich-content"><wikitext:renderHtml markup="Textile">${params.data}</wikitext:renderHtml></div>
+    <div class="rich-content"><is:renderHtml>${params.data}</is:renderHtml></div>
 <r:layoutResources/>
 </body>
 </html>

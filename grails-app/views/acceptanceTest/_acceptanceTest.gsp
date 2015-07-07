@@ -75,7 +75,7 @@
                 ${acceptanceTest.description}
             </g:if>
             <g:else>
-                <div class="rich-content"><wikitext:renderHtml markup="Textile">${acceptanceTest.description}</wikitext:renderHtml></div>
+                <div class="rich-content"><is:renderHtml>${acceptanceTest.description}</is:renderHtml></div>
             </g:else>
         </div>
     </div>

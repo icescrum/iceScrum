@@ -294,7 +294,7 @@ class StoryController {
                 else if (params.name == 'feature.id')
                     returnValue = is.postitIcon(name: story.feature?.name?.encodeAsHTML() ?: message(code: message(code: 'is.ui.sandbox.manage.chooseFeature')), color: story.feature?.color ?: 'yellow') + (story.feature?.name?.encodeAsHTML() ?: message(code: message(code: 'is.ui.sandbox.manage.chooseFeature')))
                 else if (params.name == 'notes') {
-                    returnValue = wikitext.renderHtml(markup: 'Textile', text: story."${params.name}")
+                    returnValue = is.renderHtml([text: story."${params.name}"], null)
                 }
                 else if (params.name == 'description') {
                     returnValue = story.description?.encodeAsHTML()?.encodeAsNL2BR()

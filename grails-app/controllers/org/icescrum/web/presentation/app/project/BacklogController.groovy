@@ -94,7 +94,7 @@ class BacklogController {
                         rank: it.rank,
                         effort: it.effort,
                         description: it.description,
-                        notes: wikitext.renderHtml([markup: 'Textile', text: it.notes], null),
+                        notes: is.renderHtml([text: it.notes], null),
                         type: message(code: BundleUtils.storyTypes[it.type]),
                         acceptedDate: it.acceptedDate,
                         estimatedDate: it.estimatedDate,

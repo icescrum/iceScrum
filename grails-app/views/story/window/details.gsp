@@ -73,7 +73,7 @@
                     <is:panelLine legend="${message(code:'is.backlogelement.notes')}">
                         <g:if test="${story.notes}">
                             <div class="rich-content">
-                                <wikitext:renderHtml markup="Textile">${story.notes}</wikitext:renderHtml>
+                                <is:renderHtml>${story.notes}</is:renderHtml>
                             </div>
                         </g:if>
                     </is:panelLine>

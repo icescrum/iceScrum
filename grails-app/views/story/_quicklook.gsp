@@ -61,7 +61,7 @@
                 <strong><g:message code="is.backlogelement.notes"/> :</strong>
 
                 <div class="content rich-content">
-                    <wikitext:renderHtml markup="Textile">${story.notes}</wikitext:renderHtml>
+                    <is:renderHtml>${story.notes}</is:renderHtml>
                 </div>
             </div>
             <p>

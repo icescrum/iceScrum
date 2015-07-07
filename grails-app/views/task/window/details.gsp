@@ -63,7 +63,7 @@
                     </is:panelLine>
                     <is:panelLine legend="${message(code:'is.backlogelement.notes')}">
                         <g:if test="${task.notes}">
-                            <div class="rich-content"><wikitext:renderHtml markup="Textile">${task.notes}</wikitext:renderHtml></div>
+                            <div class="rich-content"><is:renderHtml>${task.notes}</is:renderHtml></div>
                         </g:if>
                     </is:panelLine>
                     <g:if test="${task.totalAttachments}">
