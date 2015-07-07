@@ -6,13 +6,13 @@
                     element: "#window-id-actor",
                     title: "${message(code:'is.ui.guidedTour.actor.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.actor.welcome').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.actor.welcome').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-id-actor #window-toolbar .button-add",
                     title: "${message(code:'is.ui.guidedTour.actor.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.actor.welcome').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.actor.welcome').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-id-actor .search .search-button",

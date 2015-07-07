@@ -6,13 +6,13 @@
                     element: "#elem_timeline",
                     title: "${message(code:'is.ui.guidedTour.timeline.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.timeline.welcome').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.timeline.welcome').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-id-timeline #window-toolbar .button-add",
                     title: "${message(code:'is.ui.guidedTour.timeline.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.timeline.new').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.timeline.new').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-id-timeline .button-graph",
@@ -39,19 +39,19 @@
                     element: ".tape-timeline-release:last",
                     title: "${message(code:'is.ui.guidedTour.timeline.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.timeline.sprint').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.timeline.sprint').encodeAsJavaScript()}"
                 },
                 {
                     element: ".timeline-event-label .dropmenu:last",
                     title: "${message(code:'is.ui.guidedTour.timeline.title').encodeAsJavaScript()}",
                     placement:"left",
-                    content: "${message(code:'is.ui.guidedTour.timeline.update').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.timeline.update').encodeAsJavaScript()}"
                 },
                 {
                     element: ".timeline-sprint:last",
                     title: "${message(code:'is.ui.guidedTour.timeline.title').encodeAsJavaScript()}",
                     placement : "left",
-                    content: "${message(code:'is.ui.guidedTour.timeline.detail').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.timeline.detail').encodeAsJavaScript()}"
                 }
             ]
         });

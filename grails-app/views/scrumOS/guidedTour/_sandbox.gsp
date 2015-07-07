@@ -75,19 +75,19 @@
                     element: "#window-toolbar  .navigation-item .button-accept",
                     title: "${message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.button.accept').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.button.accept').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-toolbar  .navigation-item .button-copy",
                     title: "${message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.button.copy').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.button.copy').encodeAsJavaScript()}"
                 },//$('#menu-postit-story-76 ').trigger('mouseenter')
                 {
                     element: "#window-toolbar  .navigation-item .button-delete",
                     title: "${message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.button.delete').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.button.delete').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-toolbar  .navigation-item .button-view ",
@@ -117,19 +117,19 @@
                     element: "#submitForm",
                     title: "${message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.new.suggest').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.new.suggest').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-id-sandbox #window-content-sandbox :first .backlog .postit-story:first",
                     title: "${message(code:'is.ui.guidedTour.product.sandbox.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.story').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.story').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-content-sandbox .postit-story:first p.postit-id",
                     title: "${message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.story.number').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.story.number').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-content-sandbox .dropmenu-action:first .dropmenu .dropmenu-content",
@@ -144,7 +144,7 @@
                     element: "#window-content-sandbox .postit-story:first > div > div.state.task-state > div",
                     title: "${message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.accept').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.accept').encodeAsJavaScript()}"
                 }
             ]
         });
