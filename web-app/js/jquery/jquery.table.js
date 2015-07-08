@@ -68,7 +68,16 @@
                     });
 
                     if (settings.sortable){
-                        $(this).tablesorter(settings.sortableOptions);
+                        var table = $(this);
+                        var sorts =table.find('th[data-sort-name]');
+                        //case we have sort on some columns not all
+                        if(sorts.length > 0){
+                            settings.sortableOptions.headers = {};
+                            $(this).find('th:not([data-sort-name])').each(function(){
+                                settings.sortableOptions.headers[$(this).index()] = { sorter: false };
+                            });
+                        }
+                         $(this).tablesorter(settings.sortableOptions);
                     }
                     return this;
                 },
