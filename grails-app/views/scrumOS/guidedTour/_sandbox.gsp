@@ -1,6 +1,7 @@
 <script type="text/javascript">
     (function ($) {
         var ${tourName} = new Tour({
+            template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
                     element: "#elem_sandbox",
@@ -17,7 +18,7 @@
                     element: "#window-id-sandbox #window-toolbar .button-add",
                     title: "${message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()}",
                     placement: "right",
-                    template: '<div class="popover" role="tooltip"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev">&laquo; Prev</button> <button class="btn btn-sm btn-default" data-role="skip">Skip</button> <button class="btn btn-sm btn-default" data-role="next">Next &raquo;</button> <button class="btn btn-sm btn-default" data-role="pause-resume" data-pause-text="Pause" data-resume-text="Resume">Pause</button> </div> <button class="btn btn-sm btn-default" data-role="end">End tour</button> </div> </div>',
+                    template:"${message(code:'is.ui.guidedTour.templateWithSkip').encodeAsJavaScript()}",
                     content: "${message(code:'is.ui.guidedTour.sandbox.new.create').encodeAsJavaScript()}",
                     onShown: function (${tourName}) {
                         $('button[data-role="skip"]').click(function(){

@@ -1,6 +1,7 @@
 <script type="text/javascript">
     (function ($) {
         var ${tourName} = new Tour({
+            template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
                     element: "#main",

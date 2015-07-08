@@ -2,6 +2,7 @@
     (function ($) {
         var ${tourName} = new Tour({
             name:'project',
+            template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
                     element: "#elem_project",
