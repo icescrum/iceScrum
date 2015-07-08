@@ -56,7 +56,7 @@
                     element: ".panel-vision:first",
                     title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.project.description.Release-vision').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.project.description.releaseVision').encodeAsJavaScript()}"
                 },
                 {
                     element: ".panel-doneDefinition:first",

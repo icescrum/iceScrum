@@ -1,4 +1,4 @@
-<g:set var="title" value="${message(code:'is.ui.guidedTour.title.project').encodeAsJavaScript()}"/>
+<g:set var="title" value="${message(code:'is.ui.guidedTour.creation.project.title').encodeAsJavaScript()}"/>
 <script type="text/javascript">
 (function ($) {
     var ${tourName} = new Tour({

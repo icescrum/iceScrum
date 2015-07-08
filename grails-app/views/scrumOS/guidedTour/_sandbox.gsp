@@ -23,7 +23,7 @@
                     content: "${message(code:'is.ui.guidedTour.sandbox.new.create').encodeAsJavaScript()}",
                     onShown: function (${tourName}) {
                         $('button[data-role="skip"]').click(function(){
-                            ${tourName}.goTo(10);
+                            ${tourName}.goTo(11);
                         })
                     },
                     onNext:function(${tourName}){
@@ -63,10 +63,10 @@
                     element: "#storydescription-field",
                     title: "${title}",
                     placement: "right",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.new.Describe').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.sandbox.new.describe').encodeAsJavaScript()}"
                 },
                 {
-                    element: "label[for=story\\.tags]",
+                    element: "label[for=story\\.tags]+.select",
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.sandbox.new.tag').encodeAsJavaScript()}"
@@ -75,13 +75,25 @@
                     element: "#storyattachments-field",
                     title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.new.Attach').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.sandbox.new.attach').encodeAsJavaScript()}"
                 },
                 {
                     element: "#storynotes",
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.sandbox.new.notes').encodeAsJavaScript()}"
+                },
+                {
+                    element: "#submitForm",
+                    title: "${title}",
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.new.suggest').encodeAsJavaScript()}"
+                },
+                {
+                    element: "#window-id-sandbox #window-content-sandbox :first .backlog .postit-story:first",
+                    title: "${title}",
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.sandbox.story').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-toolbar  .navigation-item .button-accept",
@@ -124,18 +136,6 @@
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.sandbox.search').encodeAsJavaScript()}"
-                },
-                {
-                    element: "#submitForm",
-                    title: "${title}",
-                    placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.new.suggest').encodeAsJavaScript()}"
-                },
-                {
-                    element: "#window-id-sandbox #window-content-sandbox :first .backlog .postit-story:first",
-                    title: "${title}",
-                    placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.story').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-content-sandbox .postit-story:first p.postit-id",
