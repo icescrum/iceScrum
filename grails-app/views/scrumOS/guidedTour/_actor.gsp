@@ -8,7 +8,12 @@
                     element: "#window-title-bar-actor",
                     title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.actor.welcome').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.actor.welcome').encodeAsJavaScript()}",
+                    onShow: function (${tourName}) {
+                        if (location.hash != '#actor') {
+                            return $.icescrum.openWindow('actor');
+                        }
+                    }
                 },
                 {
                     element: "#window-id-actor #window-toolbar .button-add",

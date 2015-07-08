@@ -8,7 +8,12 @@
                     element: "#window-title-bar-releasePlan",
                     title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.releasePlan.welcome').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.releasePlan.welcome').encodeAsJavaScript()}",
+                    onShow: function (${tourName}) {
+                        if (location.hash != '#releasePlan') {
+                            return $.icescrum.openWindow('releasePlan');
+                        }
+                    }
                 },
                 {
                     element: "#window-id-releasePlan .button-add",

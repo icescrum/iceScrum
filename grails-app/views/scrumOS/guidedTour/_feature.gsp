@@ -8,7 +8,12 @@
                     element: "#window-title-bar-feature",
                     title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.feature.welcome').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.feature.welcome').encodeAsJavaScript()}",
+                    onShow: function (${tourName}) {
+                        if (location.hash != '#feature') {
+                            return $.icescrum.openWindow('feature');
+                        }
+                    }
                 },
                 {
                     element: "#window-id-feature #window-toolbar .button-add",

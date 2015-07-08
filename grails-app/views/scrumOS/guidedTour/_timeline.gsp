@@ -8,7 +8,12 @@
                     element: "#window-title-bar-timeline",
                     title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.timeline.welcome').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.timeline.welcome').encodeAsJavaScript()}",
+                    onShow: function (${tourName}) {
+                        if (location.hash != '#timeline') {
+                            return $.icescrum.openWindow('timeline');
+                        }
+                    }
                 },
                 {
                     element: "#window-id-timeline #window-toolbar .button-add",

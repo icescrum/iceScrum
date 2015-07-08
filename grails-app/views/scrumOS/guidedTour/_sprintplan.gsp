@@ -8,7 +8,12 @@
                     element: "#window-title-bar-sprintPlan",
                     title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sprintplan.welcome').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.sprintplan.welcome').encodeAsJavaScript()}",
+                    onShow: function (${tourName}) {
+                        if (location.hash != '#sprintPlan') {
+                            return $.icescrum.openWindow('sprintPlan');
+                        }
+                    }
                 },
                 {
                     element: "#window-id-sprintPlan .button-add",

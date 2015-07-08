@@ -9,7 +9,12 @@
                     element: "#window-title-bar-project",
                     title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.project.welcome').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.project.welcome').encodeAsJavaScript()}",
+                    onShow: function (${tourName}) {
+                        if (location.hash != '#project') {
+                            return $.icescrum.openWindow('project');
+                        }
+                    }
                 },
                 {
                     element: "#menu-chart-navigation-item",
