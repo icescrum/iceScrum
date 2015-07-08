@@ -1,3 +1,4 @@
+<g:set var="title" value="${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}"/>
 <script type="text/javascript">
     (function ($) {
         var ${tourName} = new Tour({
@@ -5,62 +6,62 @@
             template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
-                    element: "#elem_project",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
-                    placement: "bottom",
+                    element: "#window-title-bar-project",
+                    title: "${title}",
+                    placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.welcome').encodeAsJavaScript()}"
                 },
                 {
                     element: "#menu-chart-navigation-item",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "right",
                     content: "${message(code:'is.ui.guidedTour.project.chart').encodeAsJavaScript()}"
                 },
                 {
                     element: "#menu-documents-list",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "right",
                     content: "${message(code:'is.ui.guidedTour.project.documents').encodeAsJavaScript()}"
                 },
                 {
                     element: "#menu-report-navigation-item",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "bottom",
                     backdropPadding :50,
                     content: "${message(code:'is.ui.guidedTour.project.publishas').encodeAsJavaScript()}"
                 },
                 {
                     element: "#panel-chart-container",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     content: "${message(code:'is.ui.guidedTour.project.projectindicators').encodeAsJavaScript()}"
                 },
                 {
                     element: "#panel-activity",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.activities').encodeAsJavaScript()}"
                 },
                 {
                     element: "#panel-description",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.description').encodeAsJavaScript()}"
                 },
                 {
                     element: ".panel-vision:first",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.description.Release-vision').encodeAsJavaScript()}"
                 },
                 {
                     element: ".panel-doneDefinition:first",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.description.current.definition').encodeAsJavaScript()}"
                 },
                 {
                     element: ".panel-retrospective:first",
-                    title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.description.current.retrospective').encodeAsJavaScript()}",
                     onNext: function (${tourName}) {

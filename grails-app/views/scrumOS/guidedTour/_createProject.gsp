@@ -1,3 +1,4 @@
+<g:set var="title" value="${message(code:'is.ui.guidedTour.title.project').encodeAsJavaScript()}"/>
 <script type="text/javascript">
 (function ($) {
     var ${tourName} = new Tour({
@@ -5,31 +6,31 @@
         steps: [
             {
                 element: "#stepDesc0",
-                title: "${message(code:'is.ui.guidedTour.title.project').encodeAsJavaScript()}",
+                title: "${title}",
                 placement: "left",
                 content: "${message(code:'is.ui.guidedTour.creation.project.step1').encodeAsJavaScript()}"
             },
             {
                 element: "#stepDesc1",
+                title: "${title}",
                 placement: "left",
-                title: "Choose a team ",
                 content: "${message(code:'is.ui.guidedTour.creation.project.step2').encodeAsJavaScript()}"
             },
             {
                 element: "#stepDesc2",
+                title: "${title}",
                 placement: "left",
-                title: "Choose a team",
                 content: "${message(code:'is.ui.guidedTour.creation.project.step3').encodeAsJavaScript()}"
             },
             {
                 element: "#stepDesc3",
-                title: "${message(code:'is.ui.guidedTour.title.project').encodeAsJavaScript()}",
+                title: "${title}",
                 placement: "left",
                 content: "${message(code:'is.ui.guidedTour.creation.project.step4').encodeAsJavaScript()}"
             },
             {
                 element: "#stepDesc4",
-                title: "${message(code:'is.ui.guidedTour.title.project').encodeAsJavaScript()}",
+                title: "${title}",
                 placement: "left",
                 content:  "${message(code:'is.ui.guidedTour.creation.project.step5').encodeAsJavaScript()}"
             }

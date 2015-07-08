@@ -1,35 +1,36 @@
+<g:set var="title" value="${message(code:'is.ui.guidedTour.releasePlan.title').encodeAsJavaScript()}"/>
 <script type="text/javascript">
     (function ($) {
         var ${tourName} = new Tour({
             template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
-                    element: "#elem_releasePlan",
-                    title: "${message(code:'is.ui.guidedTour.releasePlan.title').encodeAsJavaScript()}",
+                    element: "#window-title-bar-releasePlan",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.releasePlan.welcome').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-id-releasePlan .button-add",
-                    title: "${message(code:'is.ui.guidedTour.releasePlan.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.releasePlan.new').encodeAsJavaScript()}"
                 },
                 {
                     element: "#local",
-                    title: "${message(code:'is.ui.guidedTour.releasePlan.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "right",
                     content: "${message(code:'is.ui.guidedTour.releasePlan.backlog').encodeAsJavaScript()}"
                 },
                 {
                     element: ".postit-rect:first",
-                    title: "${message(code:'is.ui.guidedTour.releasePlan.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.releasePlan.story').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-content-releasePlan  .event-overflow .event-container .dropmenu:first",
-                    title: "${message(code:'is.ui.guidedTour.releasePlan.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.releasePlan.sprint').encodeAsJavaScript()}",
                     onShow:function(tour){
@@ -38,7 +39,7 @@
                 },
                 {
                     element: "#menu-postit-sprint-9",
-                    title: "${message(code:'is.ui.guidedTour.releasePlan.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.releasePlan.close.sprint').encodeAsJavaScript()}"
                 }

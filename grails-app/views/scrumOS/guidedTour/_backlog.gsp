@@ -1,35 +1,36 @@
+<g:set var="title" value="${message(code:'is.ui.guidedTour.backlog.title').encodeAsJavaScript()}"/>
 <script type="text/javascript">
     (function ($) {
         var ${tourName} = new Tour({
             template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
-                    element: "#elem_backlog",
-                    title: "${message(code:'is.ui.guidedTour.backlog.title').encodeAsJavaScript()}",
-                    placement: "right",
+                    element: "#window-title-bar-backlog",
+                    title: "${title}",
+                    placement: "left",
                     content: "${message(code:'is.ui.guidedTour.backlog.welcome').encodeAsJavaScript()}"
                 },
                 {
                     element: "#backlog-layout-window-backlog",
-                    title: "${message(code:'is.ui.guidedTour.backlog.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
                     content:"${message(code:'is.ui.guidedTour.backlog.accept').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-content-backlog .editable:first",
-                    title: "${message(code:'is.ui.guidedTour.backlog.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "right",
                     content: "${message(code:'is.ui.guidedTour.backlog.point').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-content-backlog  .text-state:first",
-                    title: "${message(code:'is.ui.guidedTour.backlog.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "right",
                     content: "${message(code:'is.ui.guidedTour.backlog.estimated').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-content-backlog .dropmenu-action:first .dropmenu .dropmenu-content",
-                    title: "${message(code:'is.ui.guidedTour.backlog.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "right",
                     content: "${message(code:'is.ui.guidedTour.backlog.menu').encodeAsJavaScript()}",
                     onShow:function(tour){
@@ -38,15 +39,15 @@
                 },
                 {
                     element: "#window-id-backlog #window-content-backlog :first .backlog .postit-story:first",
-                    title: "${message(code:'is.ui.guidedTour.backlog.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "right",
                     content: "${message(code:'is.ui.guidedTour.backlog.story.accepted').encodeAsJavaScript()}"
                 },
                 {
                     element: "#window-id-backlog .search .search-button",
-                    title: "${message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()}",
+                    title: "${title}",
                     placement: "left",
-                    content: "${message(code:'is.ui.guidedTour.sandbox.search').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.backlog.search').encodeAsJavaScript()}"
                 }
             ]
         });
