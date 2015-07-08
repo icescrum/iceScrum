@@ -1088,7 +1088,7 @@ class ProjectController {
                 product.firstTeam.products.each { Product teamProduct ->
                     oldMembersByProduct[teamProduct.id] = productService.getAllMembersProductByRole(teamProduct)
                 }
-                productService.removeAllRoles(product.firstTeam, springSecurityService.currentUser)
+                productService.removeAllRoles(product.firstTeam, springSecurityService.currentUser, false)
                 oldMembersByProduct.each { Long productId, Map oldMembers ->
                     productService.manageProductEvents(Product.get(productId), oldMembers)
                 }
