@@ -58,7 +58,7 @@
                         }
                     }
                     var view = this.getDefaultView();
-                    $.ajax({
+                    return $.ajax({
                                 type:'GET',
                                 async: async,
                                 url:this.o.urlOpenWindow + '/' + id + (view != 'postitsView' ? (id.indexOf('?') >= 0 ? '&' : '?') + 'viewType='+view : '' ),

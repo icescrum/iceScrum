@@ -62,8 +62,8 @@
                     title: "${message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.description.current.retrospective').encodeAsJavaScript()}",
-                    onNext: function (tour) {
-                        $.icescrum.openWindow('sandbox');
+                    onNext: function (${tourName}) {
+                        return $.icescrum.openWindow('sandbox');
                     }
                 }
             ]
