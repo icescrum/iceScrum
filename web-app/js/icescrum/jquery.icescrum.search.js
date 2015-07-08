@@ -31,22 +31,27 @@ $(document).on('domUpdate.icescrum', function (event, content) {
         var tagUrl = autocompletable.data('tag-url');
         var minLength = autocompletable.data('min-length');
         var searchOnInit = autocompletable.data('search-on-init');
+        var beforeSearch = autocompletable.data('before-search');
 
         function filterWindowContent(term) {
-            $.ajax({
-                url: url,
-                data: {
-                    term: term,
-                    viewType: $.icescrum.getDefaultView()
-                },
-                success: function (data) {
-                    $('#' + update).html(data);
-                    autocompletable.trigger('autocompleteupdated');
-                    $.doTimeout(200, function () {
-                        autocompletable.focus()
-                    })
-                }
-            });
+            var data = {
+                term: term,
+                viewType: $.icescrum.getDefaultView()
+            };
+
+            if(!beforeSearch || (beforeSearch && getFunction(beforeSearch, ["data"]).apply(this, [data]))){
+                $.ajax({
+                    url: url,
+                    data:data,
+                    success: function (data) {
+                        $('#' + update).html(data);
+                        autocompletable.trigger('autocompleteupdated');
+                        $.doTimeout(200, function () {
+                            autocompletable.focus()
+                        })
+                    }
+                });
+            }
         }
 
         autocompletable.autocomplete({
