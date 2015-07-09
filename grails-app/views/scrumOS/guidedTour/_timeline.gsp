@@ -9,7 +9,7 @@
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.timeline.welcome').encodeAsJavaScript()}",
-                    onShow: function (${tourName}) {
+                    onShow: function() {
                         if (location.hash != '#timeline') {
                             return $.icescrum.openWindow('timeline');
                         }
@@ -26,10 +26,10 @@
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.timeline.chart').encodeAsJavaScript()}",
-                    onShown: function (tour) {
+                    onShown: function() {
                         $("#window-id-timeline").find("#window-toolbar .button-graph").trigger('mouseenter');
                     },
-                    onHide:function(){
+                    onHide:function() {
                         $("#window-id-timeline").find("#window-toolbar .button-graph").trigger('mouseleave');
                     }
                 },
@@ -38,10 +38,10 @@
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.timeline.documents').encodeAsJavaScript()}",
-                    onShown: function (tour) {
+                    onShown: function() {
                         $("#window-id-timeline").find("#menu-documents-navigation-item a").trigger('mouseenter');
                     },
-                    onHide:function(){
+                    onHide: function() {
                         $("#window-id-timeline").find("#menu-documents-navigation-item a").trigger('mouseleave');
                     }
                 },
@@ -50,10 +50,10 @@
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.timeline.publishas').encodeAsJavaScript()}",
-                    onShown: function (tour) {
+                    onShown: function() {
                         $("#window-id-timeline").find("#menu-report-navigation-item a").trigger('mouseenter');
                     },
-                    onHide:function(){
+                    onHide: function() {
                         $("#window-id-timeline").find("#menu-report-navigation-item a").trigger('mouseleave');
                     }
                 },
@@ -68,10 +68,10 @@
                     title: "${title}",
                     placement:"left",
                     content: "${message(code:'is.ui.guidedTour.timeline.update').encodeAsJavaScript()}",
-                    onShown:function(){
+                    onShown: function() {
                         $("#window-id-timeline").find(".timeline-event-label .dropmenu:last .dropmenu-content").trigger('mouseenter');
                     },
-                    onHide:function(){
+                    onHide: function() {
                         $("#window-id-timeline").find(".timeline-event-label .dropmenu:last").trigger('mouseleave');
                     }
                 },
@@ -80,10 +80,10 @@
                     title: "${title}",
                     placement : "top",
                     content: "${message(code:'is.ui.guidedTour.timeline.detail').encodeAsJavaScript()}",
-                    onShown:function() {
+                    onShown: function() {
                         $("#window-id-timeline").find(".tape-timeline-release:last").trigger('mouseenter');
                     },
-                    onHide:function() {
+                    onHide: function() {
                         $("#window-id-timeline").find(".tape-timeline-release:last").trigger('mouseleave');
                     }
                 },
@@ -92,10 +92,10 @@
                     title: "${title}",
                     placement : "left",
                     content: "${message(code:'is.ui.guidedTour.timeline.sprint.detail').encodeAsJavaScript()}",
-                    onShown:function() {
+                    onShown: function() {
                         $("#window-id-timeline").find(".tape-timeline-sprint:last").trigger('mouseenter');
                     },
-                    onHide:function() {
+                    onHide: function() {
                         $("#window-id-timeline").find(".tape-timeline-sprint:last").trigger('mouseleave');
                     }
                 }
