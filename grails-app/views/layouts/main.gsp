@@ -42,7 +42,7 @@
     <g:layoutHead/>
 </head>
 
-<body class="icescrum" data-whatsnew="${user?.preferences?.displayWhatsNew?:''}">
+<body class="icescrum" data-whatsnew="${user?.preferences?.displayWhatsNew?:false}">
 
 <div id="application">
     <div id="head" class="${space ? 'is_header-normal' : 'is_header-full'}">
@@ -107,8 +107,6 @@
         accept: '.widgetable'
       });
 </jq:jquery>
-%{--TODO FIX--}%
-<script type="text/javascript" src="${r.resource(file:"setup.js", dir:"js")}"></script>
 <entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="templates" params="[product:params.product]"/>
 <is:onStream
