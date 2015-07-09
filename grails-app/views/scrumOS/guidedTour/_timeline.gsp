@@ -24,23 +24,38 @@
                 {
                     element: "#window-id-timeline .button-graph",
                     title: "${title}",
-                    placement: "right",
+                    placement: "left",
                     content: "${message(code:'is.ui.guidedTour.timeline.chart').encodeAsJavaScript()}",
-                    onShow: function (tour) {
-                        $("#window-toolbar").find("#window-id-timeline .button-graph").trigger('mouseenter');
+                    onShown: function (tour) {
+                        $("#window-id-timeline").find("#window-toolbar .button-graph").trigger('mouseenter');
+                    },
+                    onHide:function(){
+                        $("#window-id-timeline").find("#window-toolbar .button-graph").trigger('mouseleave');
                     }
                 },
                 {
-                    element: "#menu-documents-list",
+                    element: "#menu-documents-navigation-item",
                     title: "${title}",
-                    placement: "right",
-                    content: "${message(code:'is.ui.guidedTour.timeline.documents').encodeAsJavaScript()}"
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.timeline.documents').encodeAsJavaScript()}",
+                    onShown: function (tour) {
+                        $("#window-id-timeline").find("#menu-documents-navigation-item a").trigger('mouseenter');
+                    },
+                    onHide:function(){
+                        $("#window-id-timeline").find("#menu-documents-navigation-item a").trigger('mouseleave');
+                    }
                 },
                 {
                     element: "#menu-report-navigation-item",
                     title: "${title}",
-                    placement: "bottom",
-                    content: "${message(code:'is.ui.guidedTour.timeline.publishas').encodeAsJavaScript()}"
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.timeline.publishas').encodeAsJavaScript()}",
+                    onShown: function (tour) {
+                        $("#window-id-timeline").find("#menu-report-navigation-item a").trigger('mouseenter');
+                    },
+                    onHide:function(){
+                        $("#window-id-timeline").find("#menu-report-navigation-item a").trigger('mouseleave');
+                    }
                 },
                 {
                     element: ".tape-timeline-release:last",
@@ -52,13 +67,37 @@
                     element: ".timeline-event-label .dropmenu:last",
                     title: "${title}",
                     placement:"left",
-                    content: "${message(code:'is.ui.guidedTour.timeline.update').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.timeline.update').encodeAsJavaScript()}",
+                    onShown:function(){
+                        $("#window-id-timeline").find(".timeline-event-label .dropmenu:last .dropmenu-content").trigger('mouseenter');
+                    },
+                    onHide:function(){
+                        $("#window-id-timeline").find(".timeline-event-label .dropmenu:last").trigger('mouseleave');
+                    }
                 },
                 {
-                    element: ".timeline-sprint:last",
+                    element: ".tape-timeline-release:last",
+                    title: "${title}",
+                    placement : "top",
+                    content: "${message(code:'is.ui.guidedTour.timeline.detail').encodeAsJavaScript()}",
+                    onShown:function() {
+                        $("#window-id-timeline").find(".tape-timeline-release:last").trigger('mouseenter');
+                    },
+                    onHide:function() {
+                        $("#window-id-timeline").find(".tape-timeline-release:last").trigger('mouseleave');
+                    }
+                },
+                {
+                    element: ".tape-timeline-sprint:last",
                     title: "${title}",
                     placement : "left",
-                    content: "${message(code:'is.ui.guidedTour.timeline.detail').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.timeline.sprint.detail').encodeAsJavaScript()}",
+                    onShown:function() {
+                        $("#window-id-timeline").find(".tape-timeline-sprint:last").trigger('mouseenter');
+                    },
+                    onHide:function() {
+                        $("#window-id-timeline").find(".tape-timeline-sprint:last").trigger('mouseleave');
+                    }
                 }
             ]
         });
