@@ -2344,7 +2344,12 @@ template {
 
 /** Bootstrap tour custom **/
 .tour-project.tour-project-3 {
-    margin-left:56px;
+    margin-left: 56px;
+}
+
+.tour-project.tour-project-1 {
+    margin-left: 91px !important;
+    margin-top: 50px;
 }
 
 .guidedTour-button {
