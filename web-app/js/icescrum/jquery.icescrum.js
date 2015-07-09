@@ -150,6 +150,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             });
 
             $.icescrum.showUpgrade();
+            $.icescrum.guidedTour();
             $.icescrum.whatsNew();
         },
 
@@ -484,8 +485,18 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
         },
 
         guidedTour: function (tourName, autoStart) {
-            $('#script-tour-' + tourName).remove();
-            $(document.body).append('<script type="text/javascript" id="script-tour-' + tourName + '" src="' + $.icescrum.o.baseUrlSpace + 'guidedTour?tourName=' + tourName + '&autoStart=' + (autoStart ? true : false) + '"/>');
+            //start a named tour
+            if(tourName){
+                $('#script-tour-' + tourName).remove();
+                $(document.body).append('<script type="text/javascript" id="script-tour-' + tourName + '" src="' + $.icescrum.o.baseUrl + 'guidedTour?tourName=' + tourName + '&autoStart=' + (autoStart ? true : false) + '"/>');
+            } else {
+                var defaultTours = $(document.body).data('guided-tour');
+                if(defaultTours.welcomeTour && !$.icescrum.product.id){
+                    this.guidedTour('welcome', true);
+                } else if(defaultTours.fullProjectTour && $.icescrum.product.id){
+                    this.guidedTour('project', true);
+                }
+            }
         }
     };
 

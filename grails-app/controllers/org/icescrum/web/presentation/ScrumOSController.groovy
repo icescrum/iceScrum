@@ -53,10 +53,19 @@ class ScrumOSController {
     def servletContext
 
     def guidedTour = {
-        def script = g.render(template : '/scrumOS/guidedTour/' + params.tourName, model:['tourName':params.tourName, 'autoStart':params.boolean('autoStart')]).toString()
-        script = script.replaceAll('<script type="text/javascript">','');
-        script = script.replaceAll('</script>','');
-        render(status : 200 , text:script, contentType:"text/javascript")
+        def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
+        if(params.ended && params.tourName){
+            def tourName = "display${params.tourName.capitalize()}Tour"
+            if(user.preferences.hasProperty(tourName)){
+                user.preferences."$tourName" = false
+            }
+            render(status:200)
+        } else {
+            def script = g.render(template : '/scrumOS/guidedTour/' + params.tourName, model:['tourName':params.tourName, 'autoStart':params.boolean('autoStart'), user:user]).toString()
+            script = script.replaceAll('<script type="text/javascript">','');
+            script = script.replaceAll('</script>','');
+            render(status : 200 , text:script, contentType:"text/javascript")
+        }
     }
 
     def index = {

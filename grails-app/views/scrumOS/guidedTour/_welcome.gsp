@@ -30,9 +30,12 @@
                 {
                     element: "#menu-project",
                     title: "${title}",
-                    content: "${message(code:'is.ui.guidedTour.welcome.menu').encodeAsJavaScript()}"
+                    content: "${message(code:'is.ui.guidedTour.welcome.menu').encodeAsJavaScript()}",
                 }
-            ]
+            ],
+            onEnd:function(){
+                $.post($.icescrum.o.baseUrl + 'guidedTour', { ended:true, tourName:'${tourName}' });
+            }
         });
         <g:if test="${autoStart}">
         ${tourName}.restart();
