@@ -19,7 +19,61 @@
                     element: "#window-id-feature #window-toolbar .button-add",
                     title: "${title}",
                     placement: "right",
-                    content: ${message(code:'is.ui.guidedTour.feature.new').encodeAsJavaScript()}
+                    content: "${message(code:'is.ui.guidedTour.feature.new').encodeAsJavaScript()}",
+                    onShown: function() {
+                        $('#window-id-feature').find("#window-toolbar .button-add").trigger('mouseenter');
+                    },
+                    onHide: function() {
+                        $('#window-id-feature').find("#window-toolbar .button-add").trigger('mouseleave');
+                    }
+                },
+                {
+                    element: "#window-id-feature #window-toolbar .button-delete",
+                    title: "${title}",
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.feature.delete').encodeAsJavaScript()}",
+                    onShown: function() {
+                        $('#window-id-feature').find("#window-toolbar .button-delete").trigger('mouseenter');
+                    },
+                    onHide: function() {
+                        $('#window-id-feature').find("#window-toolbar .button-delete").trigger('mouseleave');
+                    }
+                },
+                {
+                    element: "#window-id-feature #window-toolbar #menu-display-navigation-item",
+                    title: "${title}",
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.feature.viewType').encodeAsJavaScript()}",
+                    onShown: function() {
+                        $('#window-id-feature').find("#window-toolbar #menu-display-navigation-item a").trigger('mouseenter');
+                    },
+                    onHide: function() {
+                        $('#window-id-feature').find("#window-toolbar #menu-display-navigation-item a").trigger('mouseleave');
+                    }
+                },
+                {
+                    element: "#menu-chart-navigation-item",
+                    title: "${title}",
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.feature.chart').encodeAsJavaScript()}",
+                    onShown: function() {
+                        $("#menu-chart-navigation-item a").trigger('mouseenter');
+                    },
+                    onHide: function() {
+                        $("#menu-chart-navigation-item a").trigger('mouseleave');
+                    }
+                },
+                {
+                    element: "#menu-report-navigation-item",
+                    title: "${title}",
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.feature.publishas').encodeAsJavaScript()}",
+                    onShown: function() {
+                        $("#window-id-feature").find("#menu-report-navigation-item a").trigger('mouseenter');
+                    },
+                    onHide: function() {
+                        $("#window-id-feature").find("#menu-report-navigation-item a").trigger('mouseleave');
+                    }
                 },
                 {
                     element: "#window-id-feature .search .search-button",
@@ -42,10 +96,13 @@
                 {
                     element: "#window-content-feature .dropmenu:first",
                     title: "${title}",
-                    placement: "right",
-                    content: "${message(code:'is.ui.guidedTour.feature.estimated').encodeAsJavaScript()}",
-                    onShow:function(tour){
-                        $("#window-toolbar").find("#window-content-feature .dropmenu:first").trigger('mouseenter');
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.feature.menu').encodeAsJavaScript()}",
+                    onShown: function() {
+                        $("#window-id-feature").find("#window-content-feature .dropmenu-action:first .dropmenu").trigger('mouseenter');
+                    },
+                    onHide: function() {
+                        $("#window-id-feature").find("#window-content-feature .dropmenu-action:first .dropmenu").trigger('mouseleave');
                     }
                 }
             ]

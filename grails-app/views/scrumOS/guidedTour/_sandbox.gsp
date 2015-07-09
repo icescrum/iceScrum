@@ -106,7 +106,7 @@
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.sandbox.button.copy').encodeAsJavaScript()}"
-                },//$('#menu-postit-story-76 ').trigger('mouseenter')
+                },
                 {
                     element: "#window-toolbar  .navigation-item .button-delete",
                     title: "${title}",
@@ -151,7 +151,7 @@
                     onShow:function(tour){
                         $("#window-toolbar").find("#window-content-sandbox .dropmenu-action:first .dropmenu .dropmenu-content").trigger('mouseenter');
                     }
-                }, //pb
+                },
                 {
                     element: "#window-content-sandbox .postit-story:first > div > div.state.task-state > div",
                     title: "${title}",

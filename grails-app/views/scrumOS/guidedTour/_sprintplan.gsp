@@ -52,7 +52,7 @@
                     element: "#window-id-sprintPlan  .button-create",
                     title: "${title}",
                     placement: "right",
-                    content: "${message(code:'is.ui.guidedTour.sprintplan.documents').encodeAsJavaScript()}",
+                    content: "${message(code:'is.ui.guidedTour.sprintplan.new').encodeAsJavaScript()}",
                     onShow:function(tour){
                         $("#window-toolbar").find("#window-id-sprintPlan .button-create").trigger('mouseenter');
                     }
