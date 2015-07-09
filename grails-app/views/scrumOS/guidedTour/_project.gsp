@@ -6,9 +6,9 @@
             template: "${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
-                    element: "#window-title-bar-project",
+                    element: "#window-title-bar-project .title",
                     title: "${title}",
-                    placement: "left",
+                    placement: "right",
                     content: "${message(code:'is.ui.guidedTour.project.welcome').encodeAsJavaScript()}",
                     onShow: function() {
                         if (location.hash != '#project') {
@@ -19,7 +19,7 @@
                 {
                     element: "#menu-chart-navigation-item",
                     title: "${title}",
-                    placement: "left",
+                    placement: "right",
                     content: "${message(code:'is.ui.guidedTour.project.chart').encodeAsJavaScript()}",
                     onShown: function() {
                         $("#menu-chart-navigation-item a").trigger('mouseenter');
@@ -44,7 +44,6 @@
                     element: "#menu-report-navigation-item",
                     title: "${title}",
                     placement: "bottom",
-                    backdropPadding :50,
                     content: "${message(code:'is.ui.guidedTour.project.publishas').encodeAsJavaScript()}"
                 },
                 {
