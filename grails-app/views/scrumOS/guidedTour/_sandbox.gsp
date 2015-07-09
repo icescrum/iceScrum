@@ -5,7 +5,7 @@
             template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
-                    element: "#window-title-bar-sandbox",
+                    element: "#window-title-bar-sandbox .title",
                     title: "${title}",
                     placement: "left",
                     content:"${message(code:'is.ui.guidedTour.sandbox.welcome').encodeAsJavaScript()}",

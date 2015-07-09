@@ -5,7 +5,7 @@
             template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
-                    element: "#window-title-bar-releasePlan",
+                    element: "#window-title-bar-releasePlan .title",
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.releasePlan.welcome').encodeAsJavaScript()}",
