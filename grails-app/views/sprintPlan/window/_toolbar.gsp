@@ -29,7 +29,7 @@
 
         %{--Add button--}%
         <li class="navigation-item button-ico button-add close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber}">
-            <a class="tool-button button-n button-add "
+            <a class="tool-button button-n"
                href="#sprintPlan/add/${sprint.id}"
                data-shortcut="ctrl+n"
                data-shortcut-on="#window-id-${controllerName}"
