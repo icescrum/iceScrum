@@ -2,15 +2,15 @@
 <script type="text/javascript">
     (function ($) {
         var ${tourName} = new Tour({
-            name:'project',
-            template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
+            name: 'project',
+            template: "${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             steps: [
                 {
                     element: "#window-title-bar-project",
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.welcome').encodeAsJavaScript()}",
-                    onShow: function (${tourName}) {
+                    onShow: function() {
                         if (location.hash != '#project') {
                             return $.icescrum.openWindow('project');
                         }
@@ -19,14 +19,26 @@
                 {
                     element: "#menu-chart-navigation-item",
                     title: "${title}",
-                    placement: "right",
-                    content: "${message(code:'is.ui.guidedTour.project.chart').encodeAsJavaScript()}"
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.project.chart').encodeAsJavaScript()}",
+                    onShown: function() {
+                        $("#menu-chart-navigation-item a").trigger('mouseenter');
+                    },
+                    onHide: function() {
+                        $("#menu-chart-navigation-item a").trigger('mouseleave');
+                    }
                 },
                 {
-                    element: "#menu-documents-list",
+                    element: "#menu-documents-navigation-item",
                     title: "${title}",
-                    placement: "right",
-                    content: "${message(code:'is.ui.guidedTour.project.documents').encodeAsJavaScript()}"
+                    placement: "left",
+                    content: "${message(code:'is.ui.guidedTour.project.documents').encodeAsJavaScript()}",
+                    onShown: function() {
+                        $("#menu-documents-navigation-item a").trigger('mouseenter');
+                    },
+                    onHide: function() {
+                        $("#menu-documents-navigation-item a").trigger('mouseleave');
+                    }
                 },
                 {
                     element: "#menu-report-navigation-item",
@@ -69,7 +81,7 @@
                     title: "${title}",
                     placement: "left",
                     content: "${message(code:'is.ui.guidedTour.project.description.current.retrospective').encodeAsJavaScript()}",
-                    onNext: function (${tourName}) {
+                    onNext: function() {
                         return $.icescrum.openWindow('sandbox');
                     }
                 }
