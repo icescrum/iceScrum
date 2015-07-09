@@ -42,7 +42,7 @@
     <g:layoutHead/>
 </head>
 
-<body class="icescrum" data-whatsnew="${user?.preferences?.displayWhatsNew?:false}" data-guided-tour='{\"welcomeTour\":${user?.preferences?.displayWelcomeTour?:false}, \"fullProjectTour\":${user?.preferences?.displayfullProjectTour?:false}}'>
+<body class="icescrum" data-whatsnew="${user?.preferences?.displayWhatsNew?:false}" data-guided-tour='{\"welcomeTour\":${user?.preferences?.displayWelcomeTour?:false}, \"fullProjectTour\":${user?.preferences?.displayFullProjectTour?:false}}'>
 
 <div id="application">
     <div id="head" class="${space ? 'is_header-normal' : 'is_header-full'}">
