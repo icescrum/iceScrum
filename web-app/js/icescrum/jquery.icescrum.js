@@ -494,7 +494,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 if(defaultTours.welcomeTour && !$.icescrum.product.id){
                     this.guidedTour('welcome', true);
                 } else if(defaultTours.fullProjectTour && $.icescrum.product.id){
-                    this.guidedTour('project', true);
+                    this.guidedTour('fullProject', true);
                 }
             }
         }

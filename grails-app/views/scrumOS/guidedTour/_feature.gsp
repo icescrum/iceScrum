@@ -1,9 +1,3 @@
-<g:set var="title" value="${message(code:'is.ui.guidedTour.feature.title').encodeAsJavaScript()}"/>
-<script type="text/javascript">
-    (function ($) {
-        var ${tourName} = new Tour({
-            template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
-            steps: [
                 {
                     element: "#window-title-bar-feature .title",
                     title: "${title}",
@@ -105,10 +99,3 @@
                         $("#window-id-feature").find("#window-content-feature .dropmenu-action:first .dropmenu").trigger('mouseleave');
                     }
                 }
-            ]
-        });
-        <g:if test="${autoStart}">
-        ${tourName}.restart();
-        </g:if>
-    })(jQuery);
-</script>
