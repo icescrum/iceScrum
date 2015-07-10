@@ -16,29 +16,32 @@
     content: "${message(code:'is.ui.guidedTour.releasePlan.new').encodeAsJavaScript()}"
 },
 {
-    element: "#local",
+    element: "#widget-title-bar-backlog",
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.releasePlan.backlog').encodeAsJavaScript()}"
 },
 {
-    element: ".postit-rect:first",
+    element: "#window-id-releasePlan .postit-rect:first",
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.releasePlan.story').encodeAsJavaScript()}"
 },
 {
-    element: "#window-content-releasePlan  .event-overflow .event-container .dropmenu:first",
+    element: "#window-id-releasePlan #window-content-releasePlan  .event-overflow .event-container .dropmenu:first",
     title: "${title}",
-    placement: "left",
-    content: "${message(code:'is.ui.guidedTour.releasePlan.sprint').encodeAsJavaScript()}",
-    onShow:function(tour){
-        $("#window-toolbar").find("#window-content-releasePlan  .event-overflow .event-container .dropmenu:first").trigger('mouseenter');
-    } //pb fonctionne que quand pas de projet
+    placement: "right",
+    content: "${message(code:'is.ui.guidedTour.releasePlan.sprint').encodeAsJavaScript()}"
 },
 {
-    element: "#menu-postit-sprint-9",
+    element: "#window-id-releasePlan #menu-postit-sprint-9",
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.releasePlan.close.sprint').encodeAsJavaScript()}"
+},
+{
+    element: "#window-id-releasePlan #s2id_selectOnReleasePlan",
+    title: "${title}",
+    placement: "bottom",
+    content: "${message(code:'is.ui.guidedTour.releasePlan.switch').encodeAsJavaScript()}"
 }

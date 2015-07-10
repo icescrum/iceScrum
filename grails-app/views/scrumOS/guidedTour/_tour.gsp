@@ -3,6 +3,7 @@
     (function ($) {
         var ${tourName} = new Tour({
             template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
+            name: "${tourName}",
             steps: [
                 <g:include view="scrumOS/guidedTour/_${tourName}.gsp" model="[title:title, tourName:tourName]" />
             ],

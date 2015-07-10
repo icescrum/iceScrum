@@ -44,8 +44,8 @@
 
 <g:if test="${request.productOwner}">
     %{--Accept button--}%
-    <li class="navigation-item ${!request.archivedProduct ? 'separator' : ''}">
-        <a class="tool-button button-n button-accept"
+    <li class="navigation-item button-accept ${!request.archivedProduct ? 'separator' : ''}">
+        <a class="tool-button button-n"
            data-ajax="true"
            href="${createLink(action:'openDialogAcceptAs',params:[product:params.product])}"
            data-shortcut="ctrl+shift+a"
@@ -60,8 +60,8 @@
         </a>
     </li>
 
-    <li class="navigation-item separator">
-        <a class="tool-button button-n button-copy"
+    <li class="navigation-item separator button-copy">
+        <a class="tool-button button-n"
            onclick="jQuery.icescrum.selectableAction('story/copy',true,null,function(data){ jQuery.event.trigger('add_story',[data]); jQuery.icescrum.renderNotice('${message(code:'is.story.selection.cloned')}'); });"
            data-shortcut="ctrl+shift+c"
            data-shortcut-on="#window-id-${controllerName}"
@@ -75,8 +75,8 @@
         </a>
     </li>
 
-    <li class="navigation-item separator">
-        <a class="tool-button button-n button-delete"
+    <li class="navigation-item separator button-delete">
+        <a class="tool-button button-n"
            onclick="jQuery.icescrum.selectableAction('story/openDialogDelete',true,null,null);"
            data-shortcut="del"
            data-shortcut-on="#window-id-${controllerName}"

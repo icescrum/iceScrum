@@ -2,7 +2,7 @@
     element: "#window-title-bar-sprintPlan .title",
     title: "${title}",
     placement: "right",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.welcome').encodeAsJavaScript()}",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.welcome').encodeAsJavaScript()}",
     onShow: function() {
         if (location.hash != '#sprintPlan') {
             return $.icescrum.openWindow('sprintPlan');
@@ -13,13 +13,13 @@
     element: "#window-id-sprintPlan .button-add",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.new').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.new').encodeAsJavaScript()}"
 },
 {
     element: "#window-id-sprintPlan  .button-filter",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.alltask').encodeAsJavaScript()}",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.alltask').encodeAsJavaScript()}",
     onShown: function() {
         $("#window-id-sprintPlan").find("#window-toolbar .button-filter").trigger('mouseenter');
     },
@@ -31,13 +31,13 @@
     element: "#window-id-sprintPlan  .button-close",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.close').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.close').encodeAsJavaScript()}"
 },
 {
     element: "#window-id-sprintPlan  #menu-documents-navigation-item",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.documents').encodeAsJavaScript()}",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.documents').encodeAsJavaScript()}",
     onShown: function() {
         $("#window-id-sprintPlan").find("#window-toolbar #menu-documents-navigation-item a").trigger('mouseenter');
     },
@@ -49,7 +49,7 @@
     element: "#window-id-sprintPlan #menu-chart-navigation-item",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.chart').encodeAsJavaScript()}",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.chart').encodeAsJavaScript()}",
     onShown: function() {
         $("#menu-chart-navigation-item a").trigger('mouseenter');
     },
@@ -58,32 +58,62 @@
     }
 },
 {
-    element: ".dropmenu-action .dropmenu:first",
+    element: "#window-id-sprintPlan .dropmenu-action #menu-urgent",
     title: "${title}",
     placement: "right",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.urgent.task').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.urgent.task').encodeAsJavaScript()}"
 },
 {
-    element: ".dropmenu-action .dropmenu:last",
+    element: "#window-id-sprintPlan .dropmenu-action #menu-recurrent",
     title: "${title}",
     placement: "right",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.recurring.task').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.recurring.task').encodeAsJavaScript()}"
 },
 {
-    element: "#dropmenu",
+    element: "#window-id-sprintPlan .postit-story:first .dropmenu-action .dropmenu",
     title: "${title}",
-    placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.task').encodeAsJavaScript()}"
+    placement: "right",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.story.task').encodeAsJavaScript()}"
+},
+{
+    element: "#window-id-sprintPlan .postit-task:first",
+    title: "${title}",
+    placement: "right",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.task.postit').encodeAsJavaScript()}"
+},
+{
+    element: "#window-id-sprintPlan .postit-task:first .dropmenu-action .dropmenu",
+    title: "${title}",
+    placement: "right",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.task.menu').encodeAsJavaScript()}",
+    onShown: function() {
+        $("#window-id-sprintPlan").find(".postit-task:first .dropmenu-action .dropmenu").trigger('mouseenter');
+    },
+    onHide: function() {
+        $("#window-id-sprintPlan").find(".postit-task:first .dropmenu-action .dropmenuu").trigger('mouseleave');
+    }
+},
+{
+    element: "#window-id-sprintPlan .postit-task:first .mini-value",
+    title: "${title}",
+    placement: "right",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.task.estimate').encodeAsJavaScript()}"
 },
 {
     element: "#window-toolbar > li.navigation-item.separator.button-activate",
     title: "${title}",
     placement: "bottom",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.sprint').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.sprint').encodeAsJavaScript()}"
 },
 {
     element: "#window-id-sprintPlan .search .search-button",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sprintplan.search').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.search').encodeAsJavaScript()}"
+},
+{
+    element: "#window-id-sprintPlan #s2id_selectOnSprintPlan",
+    title: "${title}",
+    placement: "bottom",
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.switch').encodeAsJavaScript()}"
 }

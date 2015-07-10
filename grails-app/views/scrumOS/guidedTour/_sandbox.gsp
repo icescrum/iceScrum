@@ -90,39 +90,51 @@
     content: "${message(code:'is.ui.guidedTour.sandbox.story').encodeAsJavaScript()}"
 },
 {
-    element: "#window-toolbar  .navigation-item .button-accept",
+    element: "#window-content-sandbox .postit-story:first p.postit-id",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sandbox.button.accept').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sandbox.story.number').encodeAsJavaScript()}"
 },
 {
-    element: "#window-toolbar  .navigation-item .button-copy",
+    element: "#window-content-sandbox .postit-story:first .dropmenu-action .dropmenu",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sandbox.button.copy').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sandbox.story.menu').encodeAsJavaScript()}",
+    onShown: function() {
+        $("#window-content-sandbox").find(".postit-story:first .dropmenu-action .dropmenu").trigger('mouseenter');
+    },
+    onHide: function() {
+        $("#window-content-sandbox").find(".postit-story:first .dropmenu-action .dropmenu").trigger('mouseleave');
+    }
 },
 {
-    element: "#window-toolbar  .navigation-item .button-delete",
+    element: "#window-toolbar .button-accept",
     title: "${title}",
-    placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sandbox.button.delete').encodeAsJavaScript()}"
+    placement: "bottom",
+    content: "${message(code:'is.ui.guidedTour.sandbox.multiple').encodeAsJavaScript()}"
 },
 {
     element: "#window-toolbar  .navigation-item .button-view ",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sandbox.button.postit').encodeAsJavaScript()}",
-    onShow:function(tour){
+    content: "${message(code:'is.ui.guidedTour.sandbox.postit').encodeAsJavaScript()}",
+    onShown: function() {
         $("#window-toolbar").find(".navigation-item .button-view ").trigger('mouseenter');
+    },
+    onHide: function() {
+        $("#window-toolbar").find(".navigation-item .button-view ").trigger('mouseleave');
     }
 },
 {
     element: "#window-toolbar  .navigation-item .button-print ",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sandbox.button.publishas').encodeAsJavaScript()}",
-    onShow:function(tour){
+    content: "${message(code:'is.ui.guidedTour.sandbox.publishas').encodeAsJavaScript()}",
+    onShown:function() {
         $("#window-toolbar").find(".navigation-item .button-print").trigger('mouseenter');
+    },
+    onHide:function() {
+        $("#window-toolbar").find(".navigation-item .button-print").trigger('mouseleave');
     }
 },
 {
@@ -132,23 +144,14 @@
     content: "${message(code:'is.ui.guidedTour.sandbox.search').encodeAsJavaScript()}"
 },
 {
-    element: "#window-content-sandbox .postit-story:first p.postit-id",
-    title: "${title}",
-    placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sandbox.story.number').encodeAsJavaScript()}"
-},
-{
-    element: "#window-content-sandbox .dropmenu-action:first .dropmenu .dropmenu-content",
-    title: "${title}",
-    placement: "right",
-    content: "${message(code:'is.ui.guidedTour.sandbox.story.number.manage').encodeAsJavaScript()}",
-    onShow:function(tour){
-        $("#window-toolbar").find("#window-content-sandbox .dropmenu-action:first .dropmenu .dropmenu-content").trigger('mouseenter');
-    }
-},
-{
     element: "#window-content-sandbox .postit-story:first > div > div.state.task-state > div",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.sandbox.accept').encodeAsJavaScript()}"
-}
+    content: "${message(code:'is.ui.guidedTour.sandbox.accept').encodeAsJavaScript()}",
+    onShown: function() {
+        $("#window-content-sandbox").find(".postit-story:first .dropmenu-action .dropmenu").trigger('mouseenter');
+    },
+    onHide: function() {
+        $("#window-content-sandbox").find(".postit-story:first .dropmenu-action .dropmenu").trigger('mouseleave');
+    }
+},

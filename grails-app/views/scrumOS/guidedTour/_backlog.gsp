@@ -10,7 +10,7 @@
     }
 },
 {
-    element: "#window-id-backlog #window-content-backlog :first .backlog .postit-story:first",
+    element: "#window-id-backlog #window-content-backlog .backlog .postit-story:first",
     title: "${title}",
     placement: "left",
     content:"${message(code:'is.ui.guidedTour.backlog.story').encodeAsJavaScript()}"
@@ -32,6 +32,12 @@
     onHide: function() {
         $("#window-id-backlog").find("#window-content-backlog .dropmenu-action:first .dropmenu").trigger('mouseleave');
     }
+},
+{
+    element: "#window-id-backlog #window-content-backlog .backlog .postit-story:first",
+    title: "${title}",
+    placement: "right",
+    content:"${message(code:'is.ui.guidedTour.backlog.story.priority').encodeAsJavaScript()}"
 },
 {
     element: "#window-id-backlog .search .search-button",

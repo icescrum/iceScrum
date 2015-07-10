@@ -2352,6 +2352,10 @@ template {
     margin-top: 50px;
 }
 
+.tour-sandbox.tour-sandbox-12 {
+    margin-left: 50px;
+}
+
 .guidedTour-button {
     padding:3px;
     margin: 0 5px 5px 0;
