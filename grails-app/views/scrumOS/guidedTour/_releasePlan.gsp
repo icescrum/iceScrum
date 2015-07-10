@@ -1,7 +1,7 @@
 {
     element: "#window-title-bar-releasePlan .title",
     title: "${title}",
-    placement: "left",
+    placement: "right",
     content: "${message(code:'is.ui.guidedTour.releasePlan.welcome').encodeAsJavaScript()}",
     onShow: function (${tourName}) {
         if (location.hash != '#releasePlan') {

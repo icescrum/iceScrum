@@ -142,7 +142,7 @@
 
         %{--Activate button--}%
         <li class="navigation-item separator  button-activate activate-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${(sprint.activable) ?'separator':'hidden'}">
-            <a class="tool-button button-n button-activate"
+            <a class="tool-button button-n"
                data-ajax="true"
                href="${createLink(action:'activate',controller:'releasePlan',params:[product:params.product],id:sprint.id)}"
                data-ajax-trigger='{"activate_sprint":"sprint","inProgress_story":"stories"}'

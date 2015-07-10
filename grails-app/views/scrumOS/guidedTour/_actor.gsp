@@ -1,7 +1,7 @@
 {
     element: "#window-title-bar-actor .title",
     title: "${title}",
-    placement: "left",
+    placement: "right",
     content: "${message(code:'is.ui.guidedTour.actor.welcome').encodeAsJavaScript()}",
     onShow: function() {
         if (location.hash != '#actor') {

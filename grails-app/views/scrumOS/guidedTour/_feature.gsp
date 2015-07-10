@@ -1,7 +1,7 @@
                 {
                     element: "#window-title-bar-feature .title",
                     title: "${title}",
-                    placement: "left",
+                    placement: "right",
                     content: "${message(code:'is.ui.guidedTour.feature.welcome').encodeAsJavaScript()}",
                     onShow: function (${tourName}) {
                         if (location.hash != '#feature') {

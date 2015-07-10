@@ -1,7 +1,7 @@
 {
     element: "#window-title-bar-sandbox .title",
     title: "${title}",
-    placement: "left",
+    placement: "right",
     content:"${message(code:'is.ui.guidedTour.sandbox.welcome').encodeAsJavaScript()}",
     onShow: function (${tourName}) {
         if (location.hash != '#sandbox') {

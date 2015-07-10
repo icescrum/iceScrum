@@ -1,7 +1,7 @@
 {
     element: "#window-title-bar-backlog .title",
     title: "${title}",
-    placement: "left",
+    placement: "right",
     content: "${message(code:'is.ui.guidedTour.backlog.welcome').encodeAsJavaScript()}",
     onShow: function() {
         if (location.hash != '#backlog') {

@@ -1,7 +1,7 @@
 {
     element: "#window-title-bar-timeline .title",
     title: "${title}",
-    placement: "left",
+    placement: "right",
     content: "${message(code:'is.ui.guidedTour.timeline.welcome').encodeAsJavaScript()}",
     onShow: function() {
         if (location.hash != '#timeline') {
