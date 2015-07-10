@@ -3,7 +3,7 @@
     title: "${title}",
     placement: "right",
     content:"${message(code:'is.ui.guidedTour.sandbox.welcome').encodeAsJavaScript()}",
-    onShow: function (${tourName}) {
+    onShow: function () {
         if (location.hash != '#sandbox') {
             return $.icescrum.openWindow('sandbox');
         }
@@ -15,12 +15,12 @@
     placement: "right",
     template:"${message(code:'is.ui.guidedTour.templateWithSkip').encodeAsJavaScript()}",
     content: "${message(code:'is.ui.guidedTour.sandbox.new.create').encodeAsJavaScript()}",
-    onShown: function (${tourName}) {
+    onShown: function (tour) {
         $('button[data-role="skip"]').click(function(){
-            ${tourName}.goTo(11);
+            tour.goTo(11);
         })
     },
-    onNext:function(${tourName}){
+    onNext:function(){
         if (location.hash != '#sandbox/add') {
             return $.icescrum.openWindow('sandbox/add');
         }
@@ -31,7 +31,7 @@
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.sandbox.new.name').encodeAsJavaScript()}",
-    onPrev: function (${tourName}) {
+    onPrev: function () {
         return $.icescrum.openWindow('sandbox');
     }
 },

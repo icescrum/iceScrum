@@ -3,7 +3,7 @@
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.feature.welcome').encodeAsJavaScript()}",
-    onShow: function (${tourName}) {
+    onShow: function () {
         if (location.hash != '#feature') {
             return $.icescrum.openWindow('feature');
         }

@@ -3,7 +3,7 @@
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.releasePlan.welcome').encodeAsJavaScript()}",
-    onShow: function (${tourName}) {
+    onShow: function () {
         if (location.hash != '#releasePlan') {
             return $.icescrum.openWindow('releasePlan');
         }
