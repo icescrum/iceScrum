@@ -162,7 +162,7 @@
 
         %{--Close button--}%
         <li class="navigation-item  button-close close-sprint-${sprint.parentRelease.id}-${sprint.orderNumber} ${sprint.state == Sprint.STATE_INPROGRESS ?'separator':'hidden'}">
-            <a class="tool-button button-close button-n"
+            <a class="tool-button button-n"
                data-ajax="true"
                href="${createLink(action:'close',controller:'releasePlan',params:[product:params.product],id:sprint.id)}"
                data-ajax-trigger='{"close_sprint":"sprint","update_story":"stories"}'
