@@ -26,6 +26,7 @@ package org.icescrum.web.presentation.app.project
 
 import grails.converters.JSON
 import grails.plugins.springsecurity.Secured
+import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.TeamPreferences
@@ -145,7 +146,11 @@ class MembersController {
                     productService.updateTeamMembers(team, newMembers)
                     productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
                     if (request.admin && newOwnerId && newOwnerId != team.owner.id){
-                        securityService.changeOwner(User.get(newOwnerId), team)
+                        def newOwner = User.get(newOwnerId)
+                        securityService.changeOwner(newOwner, team)
+                        team.products.each { Product product ->
+                            securityService.changeOwner(newOwner, product)
+                        }
                     }
                     needReload = needReload && !securityService.scrumMaster(team, auth)
                 }
