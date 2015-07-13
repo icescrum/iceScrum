@@ -17,7 +17,7 @@
     content: "${message(code:'is.ui.guidedTour.sandbox.new.create').encodeAsJavaScript()}",
     onShown: function (tour) {
         $('button[data-role="skip"]').click(function(){
-            tour.goTo(11);
+            tour.goTo(tour.getCurrentStep() + 9);
         })
     },
     onNext:function(){
