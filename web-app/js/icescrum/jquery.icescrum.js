@@ -484,6 +484,15 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             }
         },
 
+        openWizard: function(){
+            return $.get($.icescrum.o.baseUrl+"project/openWizard", function(data){
+                if (data.dialog){
+                    $(document.body).append(data.dialog);
+                    attachOnDomUpdate($('.ui-dialog'));
+                }
+            });
+        },
+
         guidedTour: function (tourName, autoStart) {
             //start a named tour
             if(tourName){

@@ -42,5 +42,9 @@
     },
     onHide: function() {
         $("#menu-project .dropmenu-button").trigger('mouseleave');
+    },
+    onNext: function() {
+        return $('.wizard').length || $.icescrum.openWizard();
     }
-}
+},
+<g:include view="scrumOS/guidedTour/_createProject.gsp" model="[title: title]" />

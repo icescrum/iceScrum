@@ -31,7 +31,7 @@
     <strong><g:message code="is.ui.guidedTour.welcome.label"/></strong> : <a href="javascript:;" onClick="jQuery('#dialog').dialog('close'); jQuery.icescrum.guidedTour('welcome', true)">${message(code: 'is.ui.guidedTour')}</a>
   </p>
   <p>
-    <strong><g:message code="is.ui.guidedTour.createProject.label"/></strong> : <a href="javascript:;" onClick="jQuery('#dialog').dialog('close'); jQuery.icescrum.guidedTour('createProject', true)">${message(code: 'is.ui.guidedTour')}</a>
+    <strong><g:message code="is.ui.guidedTour.createProject.label"/></strong> : <a href="javascript:;" onClick="jQuery('#dialog').dialog('close'); jQuery.icescrum.openWizard().done(function() { jQuery.icescrum.guidedTour('createProject', true) });">${message(code: 'is.ui.guidedTour')}</a>
   </p>
 </g:if>
 <p class="last">

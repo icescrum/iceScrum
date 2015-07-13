@@ -2,7 +2,10 @@
     element: "#stepDesc0",
     title: "${title}",
     placement: "left",
-    content: "${message(code:'is.ui.guidedTour.createProject.step1').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.createProject.step1').encodeAsJavaScript()}",
+    onPrev: function() {
+        $('#dialog').dialog('close');
+    }
 },
 {
     element: "#stepDesc1",
