@@ -5,7 +5,7 @@
             template:"${message(code:'is.ui.guidedTour.template').encodeAsJavaScript()}",
             name: "${tourName}",
             steps: [
-                <g:include view="scrumOS/guidedTour/_${tourName}.gsp" model="[title:title, tourName:tourName]" />
+                <g:include view="scrumOS/guidedTour/_${tourName}.gsp" model="[title:title, tourName:tourName, user: user]" />
             ],
             onEnd:function(){
                 $.post($.icescrum.o.baseUrl + 'guidedTour', { ended:true, tourName:'${tourName}' });
