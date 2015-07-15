@@ -40,6 +40,12 @@
     content: "${message(code:'is.ui.guidedTour.project.publishas').encodeAsJavaScript()}"
 },
 {
+    element: "#window-title-bar-project .help",
+    title: "${title}",
+    placement: "left",
+    content: "${message(code:'is.ui.guidedTour.project.help').encodeAsJavaScript()}"
+},
+{
     element: "#panel-chart-container",
     title: "${title}",
     content: "${message(code:'is.ui.guidedTour.project.projectindicators').encodeAsJavaScript()}"
