@@ -61,7 +61,9 @@ class ScrumOSController {
             }
             render(status:200)
         } else {
-            def script = g.render(template : '/scrumOS/guidedTour/tour', model:['tourName':params.tourName, 'autoStart':params.boolean('autoStart'), user:user]).toString()
+            def tourName = params.tourName
+            entry.hook(id:"${controllerName}-${actionName}", model:[tourName: tourName])
+            def script = g.render(template : '/scrumOS/guidedTour/tour', model:['tourName':tourName, 'autoStart':params.boolean('autoStart'), user:user, pluginName: params.pluginName]).toString()
             script = script.replaceAll('<script type="text/javascript">','');
             script = script.replaceAll('</script>','');
             render(status : 200 , text:script, contentType:"text/javascript")
