@@ -2343,19 +2343,21 @@ template {
 }
 
 /** Bootstrap tour custom **/
-.tour-project.tour-project-3 {
+/* DE LA */
+.tour-project.tour-project-3, .tour-fullProject.tour-fullProject-3 {
     margin-left: 56px;
 }
-.tour-project.tour-project-1 {
+.tour-project.tour-project-1 , .tour-fullProject.tour-fullProject-4  {
     margin-left: 91px !important;
     margin-top: 50px;
 }
-.tour-sandbox.tour-sandbox-1 {
+.tour-sandbox.tour-sandbox-1 , .tour-fullProject.tour-fullProject-29 {
     max-width: 345px;
 }
-.tour-sandbox.tour-sandbox-12 {
+.tour-sandbox.tour-sandbox-12 .tour-fullProject.tour-fullProject-40 {
     margin-left: 50px;
 }
+/* JUSQUE LA */
 .tour-welcome.tour-welcome-8 {
     max-width: 320px;
 }
@@ -2365,4 +2367,10 @@ template {
 }
 .btn[data-role="end"] {
     margin-left: 5px;
+}
+.tour-welcome-2-element {
+     background-color: #FFFAAE;
+ }
+.tour-welcome-3 {
+    background-color: #FFFAAE;
 }

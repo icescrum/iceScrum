@@ -46,7 +46,7 @@
     }
 },
 {
-    element: "#menu-chart-navigation-item",
+    element: "#window-id-feature  #menu-chart-navigation-item",
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.feature.chart').encodeAsJavaScript()}",
@@ -58,7 +58,7 @@
     }
 },
 {
-    element: "#menu-report-navigation-item",
+    element: "#window-id-feature  #menu-report-navigation-item",
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.feature.publishas').encodeAsJavaScript()}",
@@ -104,4 +104,5 @@
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.feature.search').encodeAsJavaScript()}"
+
 }

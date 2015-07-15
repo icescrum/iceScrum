@@ -46,7 +46,7 @@
     }
 },
 {
-    element: "#menu-report-navigation-item",
+    element: "#window-id-actor  #menu-report-navigation-item",
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.actor.publishas').encodeAsJavaScript()}",
@@ -62,4 +62,5 @@
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.actor.search').encodeAsJavaScript()}"
+
 }

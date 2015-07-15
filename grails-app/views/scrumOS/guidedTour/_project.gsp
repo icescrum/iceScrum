@@ -74,12 +74,11 @@
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.project.description.current.definition').encodeAsJavaScript()}"
 },
+
 {
     element: ".panel-retrospective:first",
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.project.description.current.retrospective').encodeAsJavaScript()}",
-    onNext: function() {
-        return $.icescrum.openWindow('sandbox');
-    }
+
 }

@@ -11,10 +11,12 @@
     content: "${message(code:'is.ui.guidedTour.welcome.navigation')}"
 },
 {
-    element: "#main",
+    element: "#main-content",
     title: "${title}",
     placement: "top",
-    content: "${message(code:'is.ui.guidedTour.welcome.main')}"
+    content: "${message(code:'is.ui.guidedTour.welcome.main')}",
+    %{--backdrop : true--}%
+
 },
 {
     element: "#local",
