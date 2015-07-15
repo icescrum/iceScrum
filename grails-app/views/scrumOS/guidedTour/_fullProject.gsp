@@ -6,4 +6,4 @@
 <g:include view="scrumOS/guidedTour/_timeline.gsp" model="[title:message(code:'is.ui.guidedTour.timeline.title').encodeAsJavaScript()]" />,
 <g:include view="scrumOS/guidedTour/_releasePlan.gsp" model="[title:message(code:'is.ui.guidedTour.releasePlan.title').encodeAsJavaScript()]" />,
 <g:include view="scrumOS/guidedTour/_sprintPlan.gsp" model="[title:message(code:'is.ui.guidedTour.sprintPlan.title').encodeAsJavaScript()]" />
-<entry:point id="${controllerName}-${actionName}"/>
+<entry:point id="${controllerName}-${actionName}-fullProject"/>
