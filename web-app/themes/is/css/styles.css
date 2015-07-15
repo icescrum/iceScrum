@@ -2346,21 +2346,23 @@ template {
 .tour-project.tour-project-3 {
     margin-left: 56px;
 }
-
 .tour-project.tour-project-1 {
     margin-left: 91px !important;
     margin-top: 50px;
 }
-
+.tour-sandbox.tour-sandbox-1 {
+    max-width: 345px;
+}
 .tour-sandbox.tour-sandbox-12 {
     margin-left: 50px;
 }
-
+.tour-welcome.tour-welcome-6 {
+    max-width: 320px;
+}
 .guidedTour-button {
     padding:3px;
     margin: 0 5px 5px 0;
 }
-
 .btn[data-role="end"] {
     margin-left: 5px;
 }

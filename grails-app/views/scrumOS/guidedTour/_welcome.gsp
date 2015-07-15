@@ -37,6 +37,7 @@
     element: "#menu-project .dropmenu-button",
     title: "${title}",
     content: "${message(code:'is.ui.guidedTour.welcome.menu').encodeAsJavaScript()}",
+    template:"${message(code:'is.ui.guidedTour.templateWithCreateProject').encodeAsJavaScript()}",
     onShown: function() {
         $("#menu-project .dropmenu-button").trigger('mouseenter');
     },
