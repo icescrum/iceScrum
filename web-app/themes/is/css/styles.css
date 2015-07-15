@@ -2343,22 +2343,6 @@ template {
 }
 
 /** Bootstrap tour custom **/
-.tour-project.tour-project-3, .tour-fullProject.tour-fullProject-3 {
-    margin-left: 56px;
-}
-.tour-project.tour-project-1 , .tour-fullProject.tour-fullProject-4  {
-    margin-left: 91px !important;
-    margin-top: 50px;
-}
-.tour-sandbox.tour-sandbox-1 , .tour-fullProject.tour-fullProject-29 {
-    max-width: 345px;
-}
-.tour-sandbox.tour-sandbox-12 .tour-fullProject.tour-fullProject-40 {
-    margin-left: 50px;
-}
-.tour-welcome.tour-welcome-8 {
-    max-width: 320px;
-}
 .guidedTour-button {
     padding:3px;
     margin: 0 5px 5px 0;
@@ -2366,9 +2350,32 @@ template {
 .btn[data-role="end"] {
     margin-left: 5px;
 }
+/* project.chart */
+.tour-project.tour-project-1, .tour-fullProject.tour-fullProject-1  {
+    margin-left: 91px !important;
+    margin-top: 50px;
+}
+/* project.publishas */
+.tour-project.tour-project-3, .tour-fullProject.tour-fullProject-3 {
+    margin-left: 56px;
+}
+/* sandbox.new.create */
+.tour-sandbox.tour-sandbox-1, .tour-fullProject.tour-fullProject-29 {
+    max-width: 345px;
+}
+/* sandbox.multiple */
+.tour-sandbox.tour-sandbox-14, .tour-fullProject.tour-fullProject-42 {
+    margin-left: 50px;
+}
+/* welcome.menu.create */
+.tour-welcome.tour-welcome-8 {
+    max-width: 320px;
+}
+/* welcome.main */
 .tour-welcome-2-element {
      background-color: #FFFAAE;
  }
+/* welcome.widget */
 .tour-welcome-3-element {
     background-color: #FFFAAE;
 }
