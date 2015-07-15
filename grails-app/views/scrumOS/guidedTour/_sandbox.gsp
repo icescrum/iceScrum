@@ -153,14 +153,5 @@
     },
     onHide: function() {
         $("#window-content-sandbox").find(".postit-story:first .dropmenu-action .dropmenu").trigger('mouseleave');
-        }
-
-},
-
-{
-    element: "#window-content-sandbox .postit-story:first > div > div.state.task-state > div",
-    title: "${title}",
-    placement: "left",
-    content: "${message(code:'is.ui.guidedTour.project.description.current.retrospective').encodeAsJavaScript()}",
-
-},
+    }
+}

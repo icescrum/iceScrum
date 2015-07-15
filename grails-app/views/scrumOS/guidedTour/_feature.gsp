@@ -104,5 +104,4 @@
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.feature.search').encodeAsJavaScript()}"
-
 }

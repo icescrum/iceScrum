@@ -14,9 +14,7 @@
     element: "#main-content",
     title: "${title}",
     placement: "top",
-    content: "${message(code:'is.ui.guidedTour.welcome.main')}",
-    %{--backdrop : true--}%
-
+    content: "${message(code:'is.ui.guidedTour.welcome.main')}"
 },
 {
     element: "#local",

@@ -44,5 +44,4 @@
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.backlog.search').encodeAsJavaScript()}"
-
 }
