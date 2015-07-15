@@ -1,4 +1,4 @@
-<g:include view="scrumOS/guidedTour/_project.gsp" model="[title:message(code:'is.ui.guidedTour.feature.title').encodeAsJavaScript()]" />,
+<g:include view="scrumOS/guidedTour/_project.gsp" model="[title:message(code:'is.ui.guidedTour.project.title').encodeAsJavaScript()]" />,
 <g:include view="scrumOS/guidedTour/_feature.gsp" model="[title:message(code:'is.ui.guidedTour.feature.title').encodeAsJavaScript()]" />,
 <g:include view="scrumOS/guidedTour/_actor.gsp" model="[title:message(code:'is.ui.guidedTour.actor.title').encodeAsJavaScript()]" />,
 <g:include view="scrumOS/guidedTour/_sandbox.gsp" model="[title:message(code:'is.ui.guidedTour.sandbox.title').encodeAsJavaScript()]" />,
