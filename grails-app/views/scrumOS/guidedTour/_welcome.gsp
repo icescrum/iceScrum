@@ -37,13 +37,29 @@
     element: "#menu-project .dropmenu-button",
     title: "${title}",
     content: "${message(code:'is.ui.guidedTour.welcome.menu').encodeAsJavaScript()}",
-    template:"${message(code:'is.ui.guidedTour.templateWithCreateProject').encodeAsJavaScript()}",
+    onPrev: function() {
+        $("#menu-project .dropmenu-button").trigger('mouseleave');
+    },
     onShown: function() {
         $("#menu-project .dropmenu-button").trigger('mouseenter');
     },
-    onHide: function() {
+    onNext: function() {
+        $("#menu-project .dropmenu-button").trigger('mouseenter');
+    },
+},
+{
+    element: "#my-projects",
+    title: "${title}",
+    content: "${message(code:'is.ui.guidedTour.welcome.menu.browse').encodeAsJavaScript()}",
+    onNext: function() {
         $("#menu-project .dropmenu-button").trigger('mouseleave');
     },
+},
+{
+    element: "#menu-project .dropmenu-button",
+    title: "${title}",
+    content: "${message(code:'is.ui.guidedTour.welcome.menu.create').encodeAsJavaScript()}",
+    template:"${message(code:'is.ui.guidedTour.templateWithCreateProject').encodeAsJavaScript()}",
     onNext: function() {
         return $('.wizard').length || $.icescrum.openWizard();
     }
