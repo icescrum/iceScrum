@@ -9,6 +9,7 @@
             ],
             onEnd:function(){
                 $.post($.icescrum.o.baseUrl + 'guidedTour', { ended:true, tourName:'${tourName}' });
+                return true;
             }
         });
         <g:if test="${autoStart}">
