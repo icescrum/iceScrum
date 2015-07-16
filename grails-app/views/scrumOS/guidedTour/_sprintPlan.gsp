@@ -64,37 +64,45 @@
     content: "${message(code:'is.ui.guidedTour.sprintPlan.urgent.task').encodeAsJavaScript()}"
 },
 {
-    element: "#window-id-sprintPlan .dropmenu-action #menu-recurrent",
+    element: "#window-id-sprintPlan .dropmenu-action #menu-recurrent ",
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.sprintPlan.recurring.task').encodeAsJavaScript()}"
 },
 {
-    element: "#window-id-sprintPlan .postit-story:first .dropmenu-action .dropmenu",
+    element: "#window-id-sprintPlan .postit-story:first .dropmenu-action .dropmenu, #window-id-sprintPlan .table-group .dropmenu-action .dropmenu:first",
     title: "${title}",
     placement: "right",
-    content: "${message(code:'is.ui.guidedTour.sprintPlan.story.task').encodeAsJavaScript()}"
+    content: "${message(code:'is.ui.guidedTour.sprintPlan.story.task').encodeAsJavaScript()}",
+     onShown: function() {
+        $("#window-id-sprintPlan").find(".postit-story:first .dropmenu-action .dropmenu, #window-id-sprintPlan .table-group .dropmenu-action .dropmenu:first").trigger('mouseenter');
+    },
+    onHide: function() {
+        $("#window-id-sprintPlan").find(".postit-story:first .dropmenu-action .dropmenu, #window-id-sprintPlan .table-group .dropmenu-action .dropmenu:first").trigger('mouseleave');
+    }
 },
+
 {
     element: "#window-id-sprintPlan .postit-task:first",
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.sprintPlan.task.postit').encodeAsJavaScript()}"
 },
+
 {
-    element: "#window-id-sprintPlan .postit-task:first .dropmenu-action .dropmenu",
+    element: "#window-id-sprintPlan .postit-task:first .dropmenu-action .dropmenu, #window-id-sprintPlan .table-cell .dropmenu-action .dropmenu:first",
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.sprintPlan.task.menu').encodeAsJavaScript()}",
     onShown: function() {
-        $("#window-id-sprintPlan").find(".postit-task:first .dropmenu-action .dropmenu").trigger('mouseenter');
+        $("#window-id-sprintPlan").find(".postit-task:first .dropmenu-action .dropmenu, #window-id-sprintPlan .table-cell .dropmenu-action .dropmenu:first").trigger('mouseenter');
     },
     onHide: function() {
-        $("#window-id-sprintPlan").find(".postit-task:first .dropmenu-action .dropmenuu").trigger('mouseleave');
+        $("#window-id-sprintPlan").find(".postit-task:first .dropmenu-action .dropmenu, #window-id-sprintPlan .table-cell .dropmenu-action .dropmenu:first").trigger('mouseleave');
     }
 },
 {
-    element: "#window-id-sprintPlan .postit-task:first .mini-value",
+    element: "#window-id-sprintPlan .postit-task:first .mini-value,#window-id-sprintPlan .estimation :first",
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.sprintPlan.task.estimate').encodeAsJavaScript()}"

@@ -10,21 +10,23 @@
     }
 },
 {
-    element: "#window-id-backlog #window-content-backlog .backlog .postit-story:first",
+    element: "#window-id-backlog #window-content-backlog .backlog .postit-story:first, #window-content-backlog .table-cell-postit-icon:first" ,
     title: "${title}",
     placement: "left",
     content:"${message(code:'is.ui.guidedTour.backlog.story').encodeAsJavaScript()}"
 },
+
 {
-    element: "#window-content-backlog .editable:first",
+    element: "#window-content-backlog .editable:first, #window-content-backlog .table-cell-editable-selectui-effort:first",
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.backlog.story.accepted').encodeAsJavaScript()}"
 },
+
 {
     element: "#window-content-backlog .dropmenu-action:first .dropmenu",
     title: "${title}",
-    placement: "top",
+    placement: "left",
     content: "${message(code:'is.ui.guidedTour.backlog.menu').encodeAsJavaScript()}",
     onShown: function() {
         $("#window-id-backlog").find("#window-content-backlog .dropmenu-action:first .dropmenu").trigger('mouseenter');
@@ -34,11 +36,12 @@
     }
 },
 {
-    element: "#window-id-backlog #window-content-backlog .backlog .postit-story:first",
+    element: "#window-id-backlog #window-content-backlog .backlog .postit-story:first, #window-content-backlog  .table-cell-editable-selectui-rank:first",
     title: "${title}",
     placement: "right",
     content:"${message(code:'is.ui.guidedTour.backlog.story.priority').encodeAsJavaScript()}"
 },
+
 {
     element: "#window-id-backlog .search .search-button",
     title: "${title}",

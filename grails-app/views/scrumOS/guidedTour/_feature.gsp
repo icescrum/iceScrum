@@ -94,11 +94,12 @@
     }
 },
 {
-    element: "#window-content-feature  .postit-feature:first",
+    element: "#window-content-feature  .postit-feature:first, #window-content-feature .table-cell-editable-selectui-rank:first",
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.feature.order').encodeAsJavaScript()}"
 },
+
 {
     element: "#window-id-feature .search .search-button",
     title: "${title}",
