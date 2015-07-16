@@ -10,7 +10,7 @@
     }
 },
 {
-    element: "#menu-chart-navigation-item",
+    element: "#window-id-project #menu-chart-navigation-item",
     title: "${title}",
     placement: "right",
     content: "${message(code:'is.ui.guidedTour.project.chart').encodeAsJavaScript()}",
@@ -22,7 +22,7 @@
     }
 },
 {
-    element: "#menu-documents-navigation-item",
+    element: "#window-id-project #menu-documents-navigation-item",
     title: "${title}",
     placement: "left",
     content: "${message(code:'is.ui.guidedTour.project.documents').encodeAsJavaScript()}",
@@ -34,7 +34,7 @@
     }
 },
 {
-    element: "#menu-report-navigation-item",
+    element: "#window-id-project #menu-report-navigation-item",
     title: "${title}",
     placement: "bottom",
     content: "${message(code:'is.ui.guidedTour.project.publishas').encodeAsJavaScript()}"
