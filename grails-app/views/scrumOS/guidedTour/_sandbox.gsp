@@ -97,7 +97,7 @@
     content: "${message(code: 'is.ui.guidedTour.sandbox.story.number').encodeAsJavaScript()}"
 },
 {
-    element: "#window-content-sandbox .postit-story:first .dropmenu-action .dropmenu, .dropmenu-action .dropmenu:first",
+    element: "#window-content-sandbox .postit-story:first .dropmenu-action .dropmenu, #window-content-sandbox .dropmenu-action .dropmenu:first",
     title: "${title}",
     placement: "left",
     content: "${message(code: 'is.ui.guidedTour.sandbox.story.menu').encodeAsJavaScript()}",
