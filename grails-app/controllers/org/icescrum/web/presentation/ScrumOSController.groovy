@@ -251,7 +251,7 @@ class ScrumOSController {
             file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
         }
         def dialog = g.render(template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
-        render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
+        render(status: 200, contentType: 'application/json', text:[dialogSuccess:dialog] as JSON)
     }
 
     def textileParser = {
