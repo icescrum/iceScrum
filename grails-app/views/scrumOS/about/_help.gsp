@@ -34,6 +34,9 @@
         <strong><g:message code="is.ui.guidedTour.createProject.label"/></strong> : <a href="javascript:;" onClick="jQuery('#dialog').dialog('close'); jQuery.icescrum.openWizard().done(function() { jQuery.icescrum.guidedTour('createProject', true) });">${message(code: 'is.ui.guidedTour')}</a>
     </p>
 </g:if>
-<p class="last">
+<p>
     <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.documentation}">${version.documentation}</a>
+</p>
+<p class="last">
+    <strong><g:message code="is.dialog.about.version.documentation.gettingStarted"/></strong> : <a href="${version.gettingStarted}">${version.gettingStarted}</a>
 </p>
