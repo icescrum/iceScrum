@@ -65,7 +65,6 @@ class UtilsTagLib {
                           more:"${message(code: 'is.menu.more').encodeAsJavaScript()}",
                           uploading:"${message(code:'is.upload.inprogress.wait').encodeAsJavaScript()}",
                           locale:'${locale}',
-                          showUpgrade:${!ApplicationSupport.isProVersion()},
                           push:{
                             enable:${grailsApplication.config.icescrum.push.enable?:false},
                             websocket:${grailsApplication.config.icescrum.push.websocket?:false},

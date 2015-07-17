@@ -48,7 +48,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             dialogErrorContent:null,
             openWindow:false,
             locale:'en',
-            showUpgrade:true,
             push:{enable:true,websocket:false,url:null},
             selectedObject:{obj:'',time:'',callback:''}
         },
@@ -149,7 +148,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 return true;
             });
 
-            $.icescrum.showUpgrade();
             $.icescrum.guidedTour();
             $.icescrum.whatsNew();
         },
@@ -456,21 +454,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 setTimeout(function () {
                     $(document).on("click", handler)
                 ;}, 10);
-            }
-        },
-
-        showUpgrade:function(){
-            if (this.o.showUpgrade){
-                var upgrade = $('#upgrade');
-                if (upgrade.length && $.cookie('hide_upgrade') != "true"){
-                    upgrade.show();
-                    upgrade.find('.close').click(function(){
-                        upgrade.remove();
-                        $.cookie('hide_upgrade', true, { expires: 30 });
-                    });
-                }else if(upgrade.length){
-                    upgrade.remove();
-                }
             }
         },
 
