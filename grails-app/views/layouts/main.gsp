@@ -52,10 +52,6 @@
     <div id="local">
         <div class="widget-bar">
           <div id="widget-list">
-            <div class="message" id="upgrade" style="display:none;">
-                <span class="close"><g:message code="is.ui.hide"/></span>
-                <g:message code="is.upgrade.icescrum.pro"/>
-            </div>
             <g:if test="${request.archivedProduct}">
                 <div class="message" style="display:block;">
                     <g:message code="is.message.project.activate"/>
