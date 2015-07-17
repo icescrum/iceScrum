@@ -1214,7 +1214,8 @@ li#li-roles {
 ////////////////////////////////////////////////////////////////////////////////
 */
 
-.postit-details .postit-details-information p, .postit-details-information .line .content, #version-tab p {
+.postit-details .postit-details-information p, .postit-details-information .line .content,
+#version-tab p, #help-tab p {
     padding: 2px 0 4px 0;
     margin: 0;
 }
@@ -1397,7 +1398,7 @@ li#li-roles {
     color: black;
 }
 
-#license-tab .field-information {
+#legal-tab .field-information {
     border-width: 1px;
 }
 

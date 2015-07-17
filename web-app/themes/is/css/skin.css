@@ -45,7 +45,7 @@ a:hover, .button-n strong, .scrum-link, .pagination a:hover, .table .table-hover
 .list-news strong, .event-header .drap-container,
 .kanban .kanban-label, .browse .browse-content h4, .chat-content .chat-users a,
 .chat-content .chat-status-change, .chat-content strong, .chat-content-hover .chat-selector,
-.button-s-light strong, #version-tab strong, .panel-tab-button .selected,
+.button-s-light strong, #version-tab strong, #help-tab strong, .panel-tab-button .selected,
 .panel-tab-button a.selected:hover, .ui-widget-content .email, .ui-widget-content .scrum-link,
 .members-medium .ui-selected strong, .event-select-item:hover {
     color: #4382bd;
@@ -125,7 +125,7 @@ body {
 .box-form .field-input, .box-form .field-area, .box-form .field-select,
 .box-form .field-checkbox, .box-form .field-rich, .box-form .field-color,
 .wizard #wizard-left #steps li, .postit-details .postit-details-information p,
-.list-news li, .box-blank .box-blank-button, #version-tab p,
+.list-news li, .box-blank .box-blank-button, #version-tab p, #help-tab p,
 .panel-line .line-left, .panel-line .line-right, .list-comments .comment,
 .postit-details-information .line, .list-acceptance-tests .acceptance-test, .separable-h {
     background-image: url(../images/application/separator-h.png);
@@ -467,7 +467,8 @@ event-content-list .ui-selected, .kanban .ui-selected {
 .box-form .field-noseparator, .box-form-200-legend .panel-nolegend,
 .simple #spinner-app, .pagination .pagination-action a,
 .postit-details .postit-details-information .last,
-.list-news .last, .list-comments .comment.last, .list-acceptance-tests .acceptance-test.last, .table-lines .table-lines-item td.first, #version-tab p.last,
+.list-news .last, .list-comments .comment.last, .list-acceptance-tests .acceptance-test.last, .table-lines .table-lines-item td.first,
+#version-tab p.last, #help-tab p.last,
 .panel-line-last .line-left, .panel-line-last .line-right {
     background: 0 none;
 }
