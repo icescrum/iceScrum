@@ -37,6 +37,9 @@
 <p>
     <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.documentation}">${version.documentation}</a>
 </p>
-<p class="last">
+<p>
     <strong><g:message code="is.dialog.about.version.documentation.gettingStarted"/></strong> : <a href="${version.gettingStarted}">${version.gettingStarted}</a>
+</p>
+<p class="last">
+    <strong><g:message code="is.dialog.about.version.forum.link"/></strong> : <a href="${version.forum}">${version.forum}</a>
 </p>
