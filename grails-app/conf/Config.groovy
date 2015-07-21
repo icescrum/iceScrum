@@ -154,7 +154,7 @@ icescrum.cors.url.pattern = '/ws/*'
 */
 icescrum.check.enable   = true
 icescrum.check.url      = 'https://www.icescrum.com'
-icescrum.check.path     = 'check'
+icescrum.check.path     = 'wc-api/v2/kagilum/check'
 icescrum.check.interval = 1440 //in minutes (24h)
 icescrum.check.timeout  = 5000
 
