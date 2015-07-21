@@ -244,6 +244,12 @@ body {
     background-repeat: repeat-y;
 }
 
+#about-tabs .about-panel {
+    background-image: url(../images/form/legend.png);
+    background-repeat: repeat-y;
+    background-position: -285px 0;
+}
+
 .view-postit .ui-selected {
     background: url(../images/view/postit-selectable.png) no-repeat 0 0;
 }
