@@ -271,7 +271,7 @@
                             $teamName.val('');
                             $findMembers.hide();
                         }
-                        $.getJSON($.icescrum.o.grailsServer + '/members/getTeamMembers/' + teamId, function(members) {
+                        $.getJSON($.icescrum.o.baseUrl + 'members/getTeamMembers/' + teamId, function(members) {
                             $.each(members, function(index, member) {
                                 member.editable = newTeam;
                                 member.view = 'members';
