@@ -1151,7 +1151,13 @@ li#li-roles {
     margin-top: 10px;
 }
 
-#project-wizard .panel {
+#wizard-left + form {
+    float: left;
+    padding: 0;
+    margin: 0
+}
+
+#wizard-left + form .panel {
     width: 610px;
     padding: 0;
     margin: 0;
@@ -1174,12 +1180,6 @@ li#li-roles {
 
 .wizard-commands .next, .wizard-commands .prev {
     float: right;
-}
-
-#project-wizard {
-    float: left;
-    padding: 0;
-    margin: 0;
 }
 
 .wizard #wizard-left #steps li {
