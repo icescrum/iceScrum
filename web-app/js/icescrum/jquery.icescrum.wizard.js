@@ -66,11 +66,13 @@
         });
 
         function createCancelButton(i) {
-            var stepName = "step" + i;
-            $("#" + stepName + "commands").append("<button class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only prev' id='" + stepName + "Cancel' class='prev'><span class='ui-button-text'>" + options.cancelButton + "</span></button>");
-            $("#" + stepName + "Cancel").bind("click", function(e) {
-                $('#dialog').dialog('close');
-            });
+            if(options.cancelButton) {
+                var stepName = "step" + i;
+                $("#" + stepName + "commands").append("<button class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only prev' id='" + stepName + "Cancel' class='prev'><span class='ui-button-text'>" + options.cancelButton + "</span></button>");
+                $("#" + stepName + "Cancel").bind("click", function (e) {
+                    $('#dialog').dialog('close');
+                });
+            }
         }
 
         function createPrevButton(i) {
