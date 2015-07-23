@@ -57,7 +57,17 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             if (typeof icescrum === undefined) {
                 icescrum = options;
             }
+
             this.o = jQuery.extend({}, this.defaults, icescrum);
+
+            if(window.location.href.indexOf(this.o.grailsServer) == -1){
+                var grailsServerUrl = document.createElement('a');
+                grailsServerUrl.href = this.o.grailsServer;
+                var currentServerUrl = document.createElement('a');
+                currentServerUrl.href = window.location.href;
+                document.location = grailsServerUrl.protocol + '//' + grailsServerUrl.host + currentServerUrl.pathname + currentServerUrl.hash;
+                return;
+            }
 
             $.ajaxSetup({ timeout:45000 });
             $(document).ajaxSend(function(event, xhr, settings){
