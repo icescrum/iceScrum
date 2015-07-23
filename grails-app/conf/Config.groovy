@@ -34,7 +34,8 @@ import javax.naming.InitialContext
 /*
  Public URL
 */
-grails.serverURL = "http://${System.getProperty('grails.server.host')?:'localhost'}:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
+grails.serverURL = System.getProperty('icescrum.serverURL') ?: "http://localhost:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
+grails.serverURLReadonly = System.getProperty('icescrum.serverURL') ? true : false
 
 /*
 Administration section
