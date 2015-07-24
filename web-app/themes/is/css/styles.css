@@ -1208,6 +1208,10 @@ li#li-roles {
     width: 130px;
 }
 
+.wizard #wizard-left #steps li.validated {
+    color:#006400;
+}
+
 /*
 ////////////////////////////////////////////////////////////////////////////////
 //	Postit Details

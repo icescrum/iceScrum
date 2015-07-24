@@ -21,7 +21,8 @@
                     nextButton:"",
                     previousButton:"",
                     cancelButton:"",
-                    submitFunction:""
+                    submitFunction:"",
+                    validateStep:false
                 }, options);
 
         var element = this;
@@ -96,11 +97,23 @@
             $("#" + stepName + "commands").append("<button " + disabledAttribute + " class='ui-button ui-widget ui-state-default " + disabledClass + " ui-corner-all ui-button-text-only next' id='" + stepName + "Next'><span class='ui-button-text'>" + options.nextButton + "</span></button>");
 
             $("#" + stepName + "Next").bind("click", function(e) {
-                $("#" + stepName).hide();
-                $("#step" + i + "commands").hide();
-                $("#step" + (i + 1) + "commands").show();
-                $("#step" + (i + 1)).show();
-                selectStep(i + 1);
+                if (options.validateStep){
+                    $.post(options.validateStep, $(':input', $("#" + stepName)).serialize() + '&step=' + i, function(data) {
+                        if(data.result){
+                            $("#" + stepName).hide();
+                            $("#step" + i + "commands").hide();
+                            $("#step" + (i + 1) + "commands").show();
+                            $("#step" + (i + 1)).show();
+                            selectStep(i + 1);
+                        }
+                    });
+                } else {
+                    $("#" + stepName).hide();
+                    $("#step" + i + "commands").hide();
+                    $("#step" + (i + 1) + "commands").show();
+                    $("#step" + (i + 1)).show();
+                    selectStep(i + 1);
+                }
             });
         }
 
@@ -120,10 +133,14 @@
             var $steps = $("#steps").find("li");
             $steps.removeClass("current");
             $steps.removeClass("old");
+            $steps.removeClass("validated");
             $("#stepDesc" + i).addClass("current");
 
             for (var j = i - 1; j >= 0; j--) {
                 $("#stepDesc" + j).addClass("old");
+                if(options.validateStep){
+                    $("#stepDesc" + j).addClass("validated");
+                }
             }
         }
 

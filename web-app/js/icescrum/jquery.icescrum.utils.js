@@ -78,6 +78,10 @@
                     return $('<div/>').html(value).text();
                 },
 
+                htmlDecodeSub:function(value, sub) {
+                    return $('<div/>').html(value).find(sub).text();
+                },
+
                 applyStringFunctionToJSON:function(object, f) {
                     return JSON.parse(f(JSON.stringify(object)));
                 },
@@ -148,11 +152,13 @@
                                 return;
                             }
                         } else {
-                            text = this.htmlDecode(xhr.responseText);
+                            text = this.htmlDecodeSub(xhr.responseText, '.message');
+                            text = text + this.htmlDecodeSub(xhr.responseText, '.stack');
                         }
                     } else {
                         text = xhr;
                     }
+
                     var $dialog = $('#dialog');
                     if($dialog.length){
                         $dialog.dialog('close');

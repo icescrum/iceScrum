@@ -493,10 +493,12 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 $(document.body).append('<script type="text/javascript" id="script-tour-' + tourName + '" src="' + $.icescrum.o.baseUrl + 'guidedTour?tourName=' + tourName + '&autoStart=' + (autoStart ? true : false) + '"/>');
             } else {
                 var defaultTours = $(document.body).data('guided-tour');
-                if(defaultTours.welcomeTour && !$.icescrum.product.id){
-                    this.guidedTour('welcome', true);
-                } else if(defaultTours.fullProjectTour && $.icescrum.product.id){
-                    this.guidedTour('fullProject', true);
+                if(defaultTours){
+                    if(defaultTours.welcomeTour && !$.icescrum.product.id){
+                        this.guidedTour('welcome', true);
+                    } else if(defaultTours.fullProjectTour && $.icescrum.product.id){
+                        this.guidedTour('fullProject', true);
+                    }
                 }
             }
         }
