@@ -36,6 +36,8 @@ class BootStrap {
 
     def init = { servletContext ->
 
+        //be sure we get the system property version
+        grailsApplication.config.grails.serverURL = System.getProperty('icescrum.serverURL') ?: grailsApplication.config.grails.serverURL
         localeResolver.defaultLocale = Locale.ENGLISH
         java.util.Locale.setDefault(Locale.ENGLISH)
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
