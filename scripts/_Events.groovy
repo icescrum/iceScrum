@@ -31,8 +31,7 @@ eventCreateWarStart = {warname, stagingDir ->
 }
 
 eventSetClasspath = {
-     println "${scriptName}"
-    if (System.getProperty('icescrum.clean') == 'true' && scriptName != 'buildStandalone'){
+    if (System.getProperty('icescrum.clean') == 'true' && scriptName != 'BuildStandalone'){
             println "----- DELETE OLD ICESCRUM CORE START ---------"
             String iceScrumCore = "${userHome}/.ivy2/cache/org.icescrum/icescrum-core"
             String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.6-SNAPSHOT"
