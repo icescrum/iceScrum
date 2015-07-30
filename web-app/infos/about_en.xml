@@ -23,11 +23,11 @@
 
 <about>
     <version>
-        <link>https://www.icescrum.com</link>
-        <pro>https://www.icescrum.com/pricing/</pro>
-        <documentation>https://www.icescrum.com/documentation</documentation>
-        <gettingStarted>https://www.icescrum.com/documentation/getting-started-with-icescrum</gettingStarted>
-        <forum>https://www.icescrum.com/forums/</forum>
+        <link><![CDATA[https://www.icescrum.com?utm_source=about&utm_medium=link&utm_campaign=icescrum]]></link>
+        <pro><![CDATA[https://www.icescrum.com/pricing/?utm_source=about&utm_medium=link&utm_campaign=icescrum]]></pro>
+        <documentation><![CDATA[https://www.icescrum.com/documentation?utm_source=about&utm_medium=link&utm_campaign=icescrum]]></documentation>
+        <gettingStarted><![CDATA[https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=about&utm_medium=link&utm_campaign=icescrum]]></gettingStarted>
+        <forum><![CDATA[https://www.icescrum.com/forums/?utm_source=about&utm_medium=link&utm_campaign=icescrum]]></forum>
         <library>
             <name>Simile Timeline</name>
             <version>1.0</version>

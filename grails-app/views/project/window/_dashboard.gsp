@@ -203,7 +203,7 @@
                             <div style="text-align: center; padding:5px; font-size:14px;">
                                 ${message(code:'is.ui.getting.started')}
                                 <br/><a class="scrum-link" href onClick="jQuery.icescrum.guidedTour('fullProject', true)">${message(code:'is.ui.getting.started.tour')}</a>
-                                <br/><a class="scrum-link" target="_blank" href="https://www.icescrum.com/documentation/getting-started-with-icescrum">${message(code:'is.ui.getting.started.link')}</a>
+                                <br/><a class="scrum-link" target="_blank" href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">${message(code:'is.ui.getting.started.link')}</a>
                             </div>
                         </div>
                     </g:else>
