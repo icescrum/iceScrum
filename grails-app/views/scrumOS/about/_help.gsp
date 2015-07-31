@@ -20,11 +20,12 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+<g:set var="analytics" value="?utm_source=about&utm_medium=link&utm_campaign=icescrum"/>
 <p>
-    <strong><g:message code="is.dialog.about.version.link"/></strong> : <a href="${version.link}">${version.link}</a>
+    <strong><g:message code="is.dialog.about.version.link"/></strong> : <a href="${version.link.toString() + analytics}">${version.link}</a>
 </p>
 <p>
-    <strong><g:message code="is.dialog.about.version.pro"/></strong> : <a href="${version.pro}">${version.pro}</a>
+    <strong><g:message code="is.dialog.about.version.pro"/></strong> : <a href="${version.pro.toString() + analytics}">${version.pro}</a>
 </p>
 <g:if test="${request.authenticated}">
     <p>
@@ -35,11 +36,11 @@
     </p>
 </g:if>
 <p>
-    <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.documentation}">${version.documentation}</a>
+    <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.documentation.toString() + analytics}">${version.documentation}</a>
 </p>
 <p>
-    <strong><g:message code="is.dialog.about.version.documentation.gettingStarted"/></strong> : <a href="${version.gettingStarted}">${version.gettingStarted}</a>
+    <strong><g:message code="is.dialog.about.version.documentation.gettingStarted"/></strong> : <a href="${version.gettingStarted.toString() + analytics}">${version.gettingStarted}</a>
 </p>
 <p class="last">
-    <strong><g:message code="is.dialog.about.version.forum.link"/></strong> : <a href="${version.forum}">${version.forum}</a>
+    <strong><g:message code="is.dialog.about.version.forum.link"/></strong> : <a href="${version.forum.toString() + analytics}">${version.forum}</a>
 </p>
