@@ -168,6 +168,7 @@ class ProjectController {
 
     @Secured('scrumMaster() and !archivedProduct()')
     def update = {
+        //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
         withProduct('productd.id'){ Product product ->
             def msg
             if (params.long('productd.version') != product.version) {
@@ -175,15 +176,13 @@ class ProjectController {
                 render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
                 return
             }
-            //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
-            boolean hasHiddenChanged = product.preferences.hidden != params.productd.preferences.hidden
             try {
                 Product.withTransaction {
                     product.properties = params.productd
                     if(!params.productd.preferences?.stakeHolderRestrictedViews){
                         product.preferences.stakeHolderRestrictedViews = null
                     }
-                    productService.update(product, hasHiddenChanged, product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
+                    productService.update(product, product.preferences.isDirty('hidden'), product.isDirty('pkey') ? product.getPersistentValue('pkey'): null)
                     if (params.boolean('update_members')) {
                         def newMembers = []
                         def invitedProductOwners = []
