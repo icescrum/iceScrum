@@ -127,7 +127,7 @@
                 <li id="{{ menu.id }}"
                     ng-repeat="menu in menus.visible"
                     ng-include="'menuitem.item.html'"
-                    ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable}"
+                    ng-class="{'active':$state.includes(menu.id)}"
                     class="menuitem draggable-to-main">
                 </li>
                 <li class="dropdown menubar-more" dropdown ng-class="{ 'hidden': menus.hidden.length == 0 }">
@@ -139,7 +139,7 @@
                         ng-model="menus.hidden">
                             <li ng-repeat="menu in menus.hidden"
                                 ng-include="'menuitem.item.html'"
-                                ng-class="{'active':$state.includes(menu.id), 'draggable-to-widget':menu.widgetable }" class="menuitem draggable-to-main"></li>
+                                ng-class="{'active':$state.includes(menu.id)}" class="menuitem draggable-to-main"></li>
                     </ul>
                 </li>
             </ul>

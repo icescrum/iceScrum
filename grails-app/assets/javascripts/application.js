@@ -43,8 +43,8 @@
 
 //= require_full_tree vendors
 
-//= require           icescrum/jquery.icescrum.js
-//= require_full_tree icescrum
+/*//= require           icescrum/jquery.icescrum.js*/
+/*//= require_full_tree icescrum*/
 
 //= require           app/app
 //= require           app/controllers

@@ -21,10 +21,6 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState; org.icescrum.core.domain.Story.TestState" %>
-<jq:jquery>
-    $.icescrum.init();
-</jq:jquery>
-
 <div class='templates'>
     <g:render template="templates"/>
     <g:render template="/project/templates"/>

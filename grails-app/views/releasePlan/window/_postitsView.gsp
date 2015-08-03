@@ -129,9 +129,6 @@
                  ajaxoptions = "{dataType:'json'}"
                  callback="jQuery(this).next().show();jQuery(this).html(value.effort);jQuery.event.trigger('sprintMesure_sprint', value.parentSprint);"
                  params="[product:params.product]"/>
-    <g:if test="${poOrSm}">
-        $.icescrum.openWidget('backlog');
-    </g:if>
 </jq:jquery>
 
 <is:shortcut key="space"

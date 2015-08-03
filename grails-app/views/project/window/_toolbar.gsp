@@ -68,16 +68,6 @@
                             data-ajax="true"><span class="fa fa-print"></span>
                     </button>
                 </g:if>
-                <g:if test="${params?.widgetable}">
-                    <button type="button"
-                            class="btn btn-default btn-widget"
-                            tooltip-append-to-body="true"
-                            tooltip="${message(code:'is.ui.window.widgetable')} (W)"
-                            data-is-shortcut
-                            data-is-shortcut-on="#window-id-${controllerName}"
-                            data-is-shortcut-key="W"><span class="fa fa-retweet"></span>
-                    </button>
-                </g:if>
                 <g:if test="${params?.fullScreen}">
                     <button type="button"
                             class="btn btn-default btn-fullscreen"

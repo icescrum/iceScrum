@@ -43,12 +43,6 @@ uiDefinitions = {
             right true
             toolbar true
         }
-        widget {
-            title 'is.ui.actor'
-            init 'view'
-            toolbar true
-            resizable = [defaultHeight:143,minHeight:26]
-        }
         embedded = [
                 view:'list',
                 viewTypes:['postits','table']
@@ -79,12 +73,6 @@ uiDefinitions = {
             help 'is.ui.backlog.help'
             right true
             toolbar true
-        }
-        widget {
-            title 'is.ui.backlog'
-            init 'index'
-            toolbar true
-            resizable = [defaultHeight:143,minHeight:26]
         }
         embedded = [
                 view:'list',
@@ -131,12 +119,6 @@ uiDefinitions = {
             init 'view'
             right true
             toolbar true
-        }
-        widget {
-            title 'is.ui.feature'
-            init 'view'
-            toolbar true
-            resizable = [defaultHeight:143,minHeight:26]
         }
 
         embedded = [
@@ -238,12 +220,6 @@ uiDefinitions = {
             help 'is.ui.sandbox.help'
             right true
             toolbar true
-        }
-        widget {
-            title 'is.ui.sandbox'
-            init 'index'
-            toolbar true
-            resizable = [defaultHeight:143,minHeight:26]
         }
 
         embedded = [

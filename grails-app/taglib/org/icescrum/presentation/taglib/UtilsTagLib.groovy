@@ -57,7 +57,6 @@ class UtilsTagLib {
                           baseUrl: "${createLink(controller: 'scrumOS')}",
                           versionUrl: "${createLink(controller: 'scrumOS', action:'version')}",
                           baseUrlSpace: ${p ? '\'' + createLink(controller: 'scrumOS', params: p, mapping:'baseUrl'+pageScope.variables.space.name.capitalize()) + '/\'' : null},
-                          urlOpenWidget:"${createLink(controller: 'scrumOS', action: 'openWidget', params: p)}",
                           urlOpenWindow:"${createLink(controller: 'scrumOS', action: 'openWindow', params: p)}",
                           deleteConfirmMessage:"${message(code: 'is.confirm.delete').encodeAsJavaScript()}",
                           cancelFormConfirmMessage:"${message(code: 'is.confirm.cancel.form').encodeAsJavaScript()}",
@@ -306,8 +305,7 @@ class UtilsTagLib {
                     id: id,
                     shortcut: "ctrl+${(menus.visible.size() + menus.hidden.size() + 1)}",
                     icon: uiDefinition.icon,
-                    position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
-                    widgetable: uiDefinition.widget ? true : false]
+                    position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1]
 
             if (splitHidden){
                 if (show && show.visible) {

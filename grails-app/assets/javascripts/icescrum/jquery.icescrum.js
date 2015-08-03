@@ -35,7 +35,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             grailsServer:null,
             urlOpenWidget:null,
             urlOpenWindow:null,
-            widgetContainer:"#sidebar .sidebar-content",
             windowContainer:"#main-content",
             deleting:false,
             fullscreen:false,

@@ -73,55 +73,6 @@ class ScrumOSController {
         attrs
     }
 
-
-    def openWidget() {
-        if (!request.xhr){
-            redirect(controller: 'scrumOS', action: 'index')
-            return
-        }
-
-        if (!params.window) {
-            returnError(text:message(code: 'is.error.no.widget'))
-            return
-        }
-
-
-        def uiRequested = params.window
-        def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
-        if (uiDefinition) {
-            def paramsWidget = null
-            if (params."$uiDefinition.space") {
-                paramsWidget = ApplicationSupport.getCurrentSpace(params,uiDefinition.space)
-                if (!paramsWidget){
-                    render(status:404)
-                    return
-                }else{
-                    paramsWidget = paramsWidget.params
-                }
-            }
-
-            def url = createLink(controller: params.window, action: uiDefinition.widget?.init, params: paramsWidget).toString() - request.contextPath
-            if (!menuBarSupport.permissionDynamicBar(url)) {
-                render(status: 400)
-                return
-            }
-
-            render is.widget([
-                    id: params.window,
-                    toolbar: uiDefinition.widget?.toolbar,
-                    closeable: uiDefinition.widget?.closeable,
-                    sortable: uiDefinition.widget?.sortable,
-                    icon: uiDefinition.icon,
-                    windowable: uiDefinition.window ? true : false,
-                    resizable: uiDefinition.widget?.resizable ?: false,
-                    title: message(code: uiDefinition.widget?.title),
-                    init: uiDefinition.widget?.init
-            ], {})
-        } else {
-            render(status:404)
-        }
-    }
-
     def openWindow() {
 
         if (!params.window) {
@@ -172,7 +123,6 @@ class ScrumOSController {
                         toolbar: uiDefinition.window?.toolbar,
                         printable: uiDefinition.window?.printable,
                         fullScreen: uiDefinition.window?.fullScreen,
-                        widgetable: uiDefinition.widget ? true : false,
                         init: params.actionWindow ?: uiDefinition.window?.init
                 ], {})
             }

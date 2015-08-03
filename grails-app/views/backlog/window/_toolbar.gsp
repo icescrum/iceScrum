@@ -88,15 +88,6 @@
                 hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
         </button>
     </g:if>
-    <g:if test="${params?.widgetable}">
-        <button type="button"
-                class="btn btn-default btn-widget"
-                tooltip="${message(code:'is.ui.window.widgetable')} (W)"
-                tooltip-append-to-body="true"
-                tooltip-placement="left"
-                hotkey="{'W': hotkeyClick }"><span class="fa fa-retweet"></span>
-        </button>
-    </g:if>
     <g:if test="${params?.fullScreen}">
         <button type="button"
                 class="btn btn-default"
