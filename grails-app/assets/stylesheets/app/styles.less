@@ -236,7 +236,9 @@ table {
       }
     }
     &.fixed {
-      padding: 5px 10px 0;
+      padding-left:20px;
+      padding-right:20px;
+      padding-top:5px;
     }
   }
 }
@@ -302,8 +304,12 @@ table {
     }
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
-  }
-  .panel-heading {
+    &.fixed {
+      padding-left:15px;
+      padding-right:15px;
+      border-bottom: 1px solid @gray-lighter;
+      margin-left: 1px;
+    }
     .actions {
       margin-top: 15px;
       .btn-default {
@@ -321,10 +327,6 @@ table {
         }
       }
     }
-  }
-  .panel-heading.fixed {
-    border-bottom: 1px solid @gray-lighter;
-    margin-left: 1px;
   }
   /** White background for disabled inputs **/
   .form-control[disabled] {
@@ -1612,15 +1614,6 @@ ul.dropdown-menu[datepicker-popup-wrap]{
 
 .dropdown-toggle {
   cursor: pointer;
-}
-
-#story-header {
-  padding-left:10px;
-  padding-right:10px;
-  &.fixed {
-    padding-left:15px;
-    padding-right:15px;
-  }
 }
 
 .notification {
