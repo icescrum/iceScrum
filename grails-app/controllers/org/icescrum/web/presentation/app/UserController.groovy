@@ -359,13 +359,17 @@ class UserController {
             }
         }
         def enableInvitation = ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable) && ApplicationSupport.booleanValue(grailsApplication.config.icescrum.invitation.enable)
-        if (!results && GenericValidator.isEmail(value) && enableInvitation) {
-            def email = value.toLowerCase()
-            results << [id: email,
-                        name: email,
-                        activity: '',
-                        avatar: is.avatar([user:[email: email, id: -1], link:true]),
-                        isInvited: true]
+        if (!results && GenericValidator.isEmail(value)) {
+            if (enableInvitation) {
+                def email = value.toLowerCase()
+                results << [id: email,
+                            name: email,
+                            activity: '',
+                            avatar: is.avatar([user:[email: email, id: -1], link:true]),
+                            isInvited: true]
+            } else {
+                results << [id: 'enableInvitation', name: 'enableInvitation', enableInvitation: true]
+            }
         }
         render(results as JSON)
     }
