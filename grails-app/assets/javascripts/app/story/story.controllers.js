@@ -366,10 +366,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
 
         // edit;
         $scope.isDirty = function() {
-            if ($scope.editableStory.effort === undefined) {
-                $scope.editableStory.effort = null; // UGLY HACK TODO FIX
-            }
-            return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
+            return false; // TODO FIX MESS
         };
         $scope.editForm = function(value) {
             $scope.setEditableMode(value); // global
