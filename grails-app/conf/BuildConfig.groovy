@@ -69,15 +69,15 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
     }
     dependencies {
-        runtime 'mysql:mysql-connector-java:5.1.35'
+        runtime 'mysql:mysql-connector-java:5.1.36'
         build 'com.lowagie:itext:2.1.7'
     }
     plugins {
         compile ':standalone:1.3'
         compile ':cache-headers:1.1.7'
-        compile ':asset-pipeline:2.1.5'
-        compile ':less-asset-pipeline:2.1.0'
-        compile ':browser-detection:2.2.0'
+        compile ':asset-pipeline:2.4.3'
+        compile ':less-asset-pipeline:2.1.0' // Cannot upgrade because less4j used in 2.1.1 and 2.2.0 cannot compile code.less (TODC)
+        compile ':browser-detection:2.5.0'
         // runtime ':database-migration:1.4.0' TODO enable new migration
         runtime ':hibernate4:4.3.8.1'
         build   ':tomcat:7.0.55.3'
