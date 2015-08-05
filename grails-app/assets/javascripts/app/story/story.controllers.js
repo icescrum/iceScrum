@@ -366,7 +366,13 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
 
         // edit;
         $scope.isDirty = function() {
-            return false; // TODO FIX MESS
+            if ($scope.editableStory.effort === undefined) {
+                $scope.editableStory.effort = null; // UGLY HACK TODO FIX
+            }
+            if ($scope.editableStory.value === undefined) {
+                $scope.editableStory.value = 0; // UGLY HACK TODO FIX
+            }
+            return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
         };
         $scope.editForm = function(value) {
             $scope.setEditableMode(value); // global
