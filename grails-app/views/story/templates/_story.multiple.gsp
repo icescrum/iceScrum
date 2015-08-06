@@ -197,17 +197,17 @@
                     <ul class="dropdown-menu" role="menu">
                         <li>
                             <a href ng-click="acceptMultiple()">
-                                <g:message code='is.ui.sandbox.menu.acceptAsStory'/>
+                                <g:message code='is.ui.backlog.menu.acceptAsStory'/>
                             </a>
                         </li>
                         <li>
                             <a href ng-click="acceptAsMultiple('Feature')">
-                                <g:message code='is.ui.sandbox.menu.acceptAsFeature'/>
+                                <g:message code='is.ui.backlog.menu.acceptAsFeature'/>
                             </a>
                         </li>
                         <li>
                             <a href ng-click="acceptAsMultiple('Task')">
-                                <g:message code='is.ui.sandbox.menu.acceptAsUrgentTask'/>
+                                <g:message code='is.ui.backlog.menu.acceptAsUrgentTask'/>
                             </a>
                         </li>
                     </ul>
@@ -223,7 +223,7 @@
                             ng-if="authorizedStories('delete', stories)"
                             class="btn btn-default"
                             ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
-                        <g:message code='is.ui.sandbox.menu.delete'/>
+                        <g:message code='is.ui.backlog.menu.delete'/>
                     </button>
                 </div>
                 <div ng-if="authorizedStories('follow', stories)"

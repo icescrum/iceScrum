@@ -239,7 +239,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
 
 }]).controller('storyViewCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', function ($scope, $state, $filter, StoryService, StoryStatesByName) {
     $scope.goToNewStory = function() {
-        $state.go('sandbox.new'); // Create only on sandbox
+        $state.go('backlog.new');
     };
     $scope.goToTab = function(story, tabId) {
         $state.go($scope.viewName + '.details.tab',  { id: story.id, tabId: tabId });
@@ -277,29 +277,11 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     // Required instead of ng-repeat stories | filters
     // because for sortable we need to have the stories in a ng-model, so the expression must be assignable
     $scope.refreshStories = function() {
-        var filteredStories = $filter('filter')($scope.stories, $state.current.data.filterListParams);
-        $scope.filteredAndSortedStories = $filter('orderBy')(filteredStories, $scope.orderBy.current.id, $scope.orderBy.reverse);
+        $scope.filteredAndSortedStories = $filter('orderBy')($scope.stories, $scope.orderBy.current.id, $scope.orderBy.reverse);
     };
     $scope.filteredAndSortedStories = [];
     $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
     $scope.$watch('stories', $scope.refreshStories, true);
-}]).controller('sandboxCtrl', ['$scope', '$controller', '$state', 'stories', function ($scope, $controller, $state, stories) {
-    $controller('storyViewCtrl', { $scope: $scope }); // inherit from storyViewCtrl
-    $scope.viewName = 'sandbox';
-    $scope.stories = stories;
-    $scope.orderBy = {
-        reverse: false,
-        status: false,
-        current: {id:'suggestedDate', name:'todo.is.ui.sort.date'},
-        values:[
-            {id:'name', name:'todo.is.ui.sort.name'},
-            {id:'tasks_count', name:'todo.is.ui.sort.tasks'},
-            {id:'suggestedDate', name:'todo.is.ui.sort.date'},
-            {id:'feature.id', name:'todo.is.ui.sort.feature'},
-            {id:'value', name:'todo.is.ui.sort.value'},
-            {id:'type', name:'todo.is.ui.sort.type'}
-        ]
-    };
 }]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'StoryService', function ($scope, $controller, $state, stories, StoryService) {
     $controller('storyViewCtrl', { $scope: $scope }); // inherit from storyViewCtrl
     $scope.viewName = 'backlog';

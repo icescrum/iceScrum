@@ -24,17 +24,17 @@
 <script type="text/ng-template" id="story.menu.html">
 <li ng-if="authorizedStory('accept', story)">
     <a href ng-click="accept(story)">
-        <g:message code='is.ui.sandbox.menu.acceptAsStory'/>
+        <g:message code='is.ui.backlog.menu.acceptAsStory'/>
     </a>
 </li>
 <li ng-if="authorizedStory('accept', story)">
     <a href ng-click="acceptAs(story, 'Feature')">
-        <g:message code='is.ui.sandbox.menu.acceptAsFeature'/>
+        <g:message code='is.ui.backlog.menu.acceptAsFeature'/>
     </a>
 </li>
 <li ng-if="authorizedStory('accept', story)">
     <a href ng-click="acceptAs(story, 'Task')">
-        <g:message code='is.ui.sandbox.menu.acceptAsUrgentTask'/>
+        <g:message code='is.ui.backlog.menu.acceptAsUrgentTask'/>
     </a>
 </li>
 <li>
@@ -44,7 +44,7 @@
 </li>
 <li>
     <a href ng-if="authorizedStory('delete', story)" ng-click="delete(story)">
-        <g:message code='is.ui.sandbox.menu.delete'/>
+        <g:message code='is.ui.backlog.menu.delete'/>
     </a>
 </li>
 <li>

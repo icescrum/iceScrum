@@ -42,10 +42,6 @@
                             <a href="${releaseNotesURL}" target="_blank"></a>
                             <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Better UI and search field on large drop-down lists</a>
                         </li>
-                        <li>
-                            <a href="${releaseNotesURL}" target="_blank"></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Move a story from the backlog back to the sandbox</a>
-                        </li>
                     </ul>
                     <span class="more">
                         <g:message code="is.ui.whatsnew.more"/> <a href="${releaseNotesURL}" target="_blank" class="scrum-link">${message(code:"is.ui.whatsnew.releaseNotes", args:[g.meta(name:"app.version")])}</a>

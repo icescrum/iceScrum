@@ -64,7 +64,7 @@ uiDefinitions = {
         menuBar {
             title 'is.ui.backlog'
             defaultVisibility true
-            defaultPosition 3
+            defaultPosition 2
             spaceDynamicBar true
         }
 
@@ -204,37 +204,7 @@ uiDefinitions = {
         ]
     }
 
-    'sandbox' {
 
-        icon = 'fa fa-lightbulb-o'
-
-        menuBar {
-            title 'is.ui.sandbox'
-            defaultVisibility true
-            defaultPosition 2
-            spaceDynamicBar true
-        }
-
-        window {
-            title 'is.ui.sandbox'
-            help 'is.ui.sandbox.help'
-            right true
-            toolbar true
-        }
-
-        embedded = [
-                view:'list',
-                viewTypes:['postits','table']
-        ]
-
-        exportFormats = {
-            [
-                    [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
-                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
-                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]
-            ]
-        }
-    }
 
     'sprintPlan' {
 

@@ -22,11 +22,10 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div id="backlog-layout-window-${controllerName}"
-     ui-selectable="selectableOptions"
-     ui-selectable-list="stories"
      ng-class="view.asList ? 'list-group' : 'grid-group'"
      ng-include="'story.html'"
-     class="postits"></div>
+     class="postits">
+</div>
 <script>
     angular.element(document).injector().get('StoryService').addStories(${stories as JSON});
 </script>

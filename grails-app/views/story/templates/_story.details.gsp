@@ -61,12 +61,12 @@
                        class="btn btn-xs btn-default"
                        role="button"
                        tabindex="0"
-                       href="#sandbox/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                       href="#backlog/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
                     <a ng-if="next"
                        class="btn btn-xs btn-default"
                        role="button"
                        tabindex="0"
-                       href="#sandbox/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                       href="#backlog/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 </div>
             </div>
         </h3>
@@ -100,7 +100,7 @@
                 <div class="btn-group pull-right">
                     <a class="btn btn-default"
                        type="button"
-                       href="#sandbox/{{ story.id }}/comments"
+                       href="#backlog/{{ story.id }}/comments"
                        tooltip="{{ story.comments.length }} ${message(code:'todo.is.story.comments')}"
                        tooltip-append-to-body="true"
                        ng-switch="story.comments_count">
@@ -109,14 +109,14 @@
                         <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
                     </a>
                     <a class="btn btn-default"
-                       href="#sandbox/{{ story.id }}/tasks"
+                       href="#backlog/{{ story.id }}/tasks"
                        tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
                        tooltip-append-to-body="true">
                         <span class="fa fa-tasks"></span>
                         <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
                     </a>
                     <a class="btn btn-default"
-                       href="#sandbox/{{ story.id }}/tests"
+                       href="#backlog/{{ story.id }}/tests"
                        tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
                        tooltip-append-to-body="true"
                        tooltip-placement="left"

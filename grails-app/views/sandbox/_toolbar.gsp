@@ -108,3 +108,21 @@
         </button>
     </g:if>
 </div>
+<div class="clearfix"></div>
+<div class="views" style="padding-top:5px;padding-bottom:5px;font-size: 0;text-align:center;">
+    <div style="float:left; margin-right:5px;width:104px;height:64px;overflow:hidden;font-size: 0;border:1px solid #dcdcdc;border-radius:2px;padding:2px;display:inline-block;">
+        <g:each var="test" in="${stories}">
+            <div style="opacity:0.6; width: 10px; height: 8px; background-color:${test.feature?.color?:'yellow'}; margin:2px; display: inline-block"></div>
+        </g:each>
+    </div>
+    <div style="float:left; margin-right:5px;width:104px;height:64px;overflow:hidden;font-size: 0;border:1px solid #dcdcdc;border-radius:2px;padding:2px;display:inline-block;">
+        <g:each var="test" in="${stories2}">
+            <div style="opacity:0.6; width: 10px; height: 8px; background-color:${test.feature?.color?:'yellow'}; margin:2px; display: inline-block"></div>
+        </g:each>
+    </div>
+    <div style="float:left; width:104px;height:64px;overflow:hidden;font-size: 0;border:1px solid #dcdcdc;border-radius:2px;padding:2px;display:inline-block;">
+        <g:each var="test" in="${stories3}">
+            <div style="opacity:0.6; width: 10px; height: 8px; background-color:${test.feature?.color?:'yellow'}; margin:2px; display: inline-block"></div>
+        </g:each>
+    </div>
+</div>

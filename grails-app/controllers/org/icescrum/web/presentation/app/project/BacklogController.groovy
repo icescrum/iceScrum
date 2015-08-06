@@ -24,6 +24,7 @@
 
 package org.icescrum.web.presentation.app.project
 
+import grails.converters.JSON
 import org.icescrum.core.utils.BundleUtils
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
@@ -33,10 +34,13 @@ import static grails.async.Promises.*
 @Secured(['stakeHolder() or inProduct()'])
 class BacklogController {
 
-    def index(long product, String type) {
-        type = type ?: 'window'
-        def stories = Story.findAllByBacklogAndStateBetween(Product.load(product), Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
-        render(template: "$type/view", model: [stories: stories])
+    def filters = [
+            'backlog':"{story:{state:[2,3]}}",
+            'sandbox':"{story:{state:1}}"
+    ]
+
+    def index(long product) {
+        render(template: "view", model: [stories: Story.search(product, JSON.parse(filters.sandbox))])
     }
 
     def print(long product, String format) {

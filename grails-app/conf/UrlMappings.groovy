@@ -225,7 +225,7 @@ class UrlMappings {
             action = 'print'
             constraints {
                 product(matches: /[0-9A-Z]*/)
-                controller(inList: ['sandbox', 'backlog', 'actor', 'feature'])
+                controller(inList: ['backlog', 'actor', 'feature'])
             }
         }
 

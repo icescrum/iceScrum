@@ -54,7 +54,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
                 fn: function() {
                     notif.data.close = angular.noop;
                     StoryService.list.push(story);
-                    $state.go('sandbox.details', { id: story.id });
+                    $state.go('backlog.details', { id: story.id });
                     $scope.notifySuccess('todo.is.ui.deleted.cancelled');
                 }
             }],
@@ -282,7 +282,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             $scope.resetStoryForm();
             $scope.selectDependsOnOptions.ajax.url = 'story/' + $scope.story.id + '/dependenceEntries';
             // For header
-            var list = $state.current.data.filterListParams ? $filter('filter')(StoryService.list, $state.current.data.filterListParams) : StoryService.list;
+            var list = StoryService.list;
             $scope.previous = FormService.previous(list, $scope.story);
             $scope.next = FormService.next(list, $scope.story);
             $scope.progressStates = [];

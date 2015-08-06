@@ -228,7 +228,7 @@ class StoryController {
         def uri
         switch(story.state){
             case Story.STATE_SUGGESTED:
-                uri = "/p/$story.backlog.pkey/#/sandbox/$story.id"
+                uri = "/p/$story.backlog.pkey/#/backlog/$story.id"
                 break
             case Story.STATE_ACCEPTED:
             case Story.STATE_ESTIMATED:
@@ -249,7 +249,7 @@ class StoryController {
     @Secured('isAuthenticated()')
     def openDialogDelete() {
         def state = Story.getInProduct(params.long('product'), params.list('id').first().toLong()).list()?.state
-        def dialog = g.render(template: 'dialogs/delete', model:[back: params.back ? params.back : state >= Story.STATE_ACCEPTED ? '#backlog' : '#sandbox'])
+        def dialog = g.render(template: 'dialogs/delete', model:[back: params.back ? params.back : '#backlog'])
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 

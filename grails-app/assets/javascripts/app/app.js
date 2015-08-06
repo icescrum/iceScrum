@@ -114,101 +114,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                             });
                     }]
                 })
-                .state('sandbox', {
-                    url: "/sandbox",
-                    templateUrl: 'openWindow/sandbox',
-                    controller: 'sandboxCtrl',
-                    data: {
-                        filterListParams: {
-                            state: 1
-                        }
-                    },
-                    resolve:{
-                        stories:['StoryService', function(StoryService){
-                            return StoryService.list;
-                        }]
-                    }
-                })
-                    .state('sandbox.new', {
-                        url: "/new",
-                        data:{
-                            stack: 2
-                        },
-                        views:{
-                            "details@sandbox": {
-                                templateUrl: 'story.new.html',
-                                controller: 'storyNewCtrl'
-                            }
-                        }
-                    })
-                    .state('sandbox.multiple', {
-                        url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                        data:{
-                            stack: 2
-                        },
-                        resolve:{
-                            listId:['$stateParams', function($stateParams){
-                                return $stateParams.listId.split(',');
-                            }]
-                        },
-                        views:{
-                            "details@sandbox": {
-                                templateUrl: 'story.multiple.html',
-                                controller: 'storyMultipleCtrl'
-                            }
-                        }
-                    })
-                    .state('sandbox.details', {
-                        url: "/{id:int}",
-                        data:{
-                            stack: 2
-                        },
-                        views:{
-                            "details@sandbox": {
-                                templateUrl: 'story.details.html',
-                                controller: 'storyDetailsCtrl'
-                            }
-                        }
-                    })
-                        .state('sandbox.details.tab', {
-                            url: "/{tabId:.+}",
-                            data:{
-                                stack: 3
-                            },
-                            views:{
-                                "details-list@sandbox": {
-                                    templateUrl: function($stateParams) {
-                                        var tpl;
-                                        if ($stateParams.tabId == 'tests')
-                                            tpl = 'story.acceptanceTests.html';
-                                        else if($stateParams.tabId == 'tasks')
-                                            tpl = 'story.tasks.html';
-                                        else if($stateParams.tabId == 'comments')
-                                            tpl = 'comment.list.html';
-                                        return tpl;
-                                    },
-                                    controllerProvider: ['$stateParams', function($stateParams) {
-                                        var tpl;
-                                        if ($stateParams.tabId == 'tests')
-                                            tpl = 'Tests';
-                                        else if($stateParams.tabId == 'tasks')
-                                            tpl = 'Tasks';
-                                        else if($stateParams.tabId == 'comments')
-                                            tpl = 'Comments';
-                                        return 'storyDetails'+tpl+'Ctrl';
-                                    }]
-                                }
-                            }
-                        })
                 .state('backlog', {
                     url: "/backlog",
                     templateUrl: 'openWindow/backlog',
                     controller: 'backlogCtrl',
-                    data: {
-                        filterListParams: function(story) {
-                            return story.state == 2 || story.state == 3;
-                        }
-                    },
                     resolve:{
                         stories:['StoryService', function(StoryService){
                             return StoryService.list;
