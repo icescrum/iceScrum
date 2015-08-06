@@ -234,16 +234,6 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
                         }
                         elm.prev().toggleClass('ng-pristine', controller.$pristine);
                     }
-
-                    // Experimental by Nico : init selection with option "selected" if there is one and if no value is set
-                    if (isSelect && !elm.select2('val') && !elm.select2('data')) {
-                        var selected = tElm.find('option[selected]');
-                        if (selected) {
-                            var value = selected.attr('value');
-                            elm.select2('val', value);
-                            controller.$setViewValue(convertToAngularModel(value));
-                        }
-                    }
                 });
             };
         }
