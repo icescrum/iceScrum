@@ -37,7 +37,6 @@ class BootStrap {
 
     def init = { servletContext ->
 
-        JSONObject.NULL.metaClass.asBoolean = {-> false}
         localeResolver.defaultLocale = Locale.ENGLISH
         java.util.Locale.setDefault(Locale.ENGLISH)
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
