@@ -8,6 +8,7 @@ servlets = [
                 mapping: "/stream/app/*",
                 handler: IceScrumMeteorHandler,
                 initParams: [
+                        "org.atmosphere.cpr.AtmosphereFramework.analytics":false,
                         "org.atmosphere.cpr.broadcasterClass": "org.icescrum.atmosphere.IceScrumBroadcaster",
                         "org.atmosphere.cpr.broadcasterCacheClass": "org.atmosphere.cache.UUIDBroadcasterCache",
                         "org.atmosphere.cpr.AtmosphereInterceptor": """

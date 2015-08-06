@@ -309,6 +309,7 @@ log4j = {
           'net.sf.ehcache.hibernate'
 
     warn  'org.mortbay.log'
+    warn  'org.atmosphere.cpr'
 
     if (Holders.config.grails.entryPoints.debug) {
         debug 'org.icescrum.plugins.entryPoints'
