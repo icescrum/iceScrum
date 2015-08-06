@@ -45,7 +45,8 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         productOwner: false,
         scrumMaster: false,
         teamMember: false,
-        stakeHolder: false
+        stakeHolder: false,
+        admin: false
     };
     self.roles = _.clone(defaultRoles);
 
@@ -75,6 +76,9 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     };
     this.sm = function() {
         return self.roles.scrumMaster;
+    };
+    this.admin = function() {
+        return self.roles.admin;
     };
     this.authenticated = function() {
         return !_.isEmpty(self.user);

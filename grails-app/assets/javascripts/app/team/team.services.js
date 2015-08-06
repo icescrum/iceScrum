@@ -47,6 +47,8 @@ services.service("TeamService", ['Team', 'Session', function(Team, Session) {
         switch (action) {
             case 'delete':
                 return Session.owner(team);
+            case 'changeOwner':
+                return Session.admin();
             default:
                 return false;
         }

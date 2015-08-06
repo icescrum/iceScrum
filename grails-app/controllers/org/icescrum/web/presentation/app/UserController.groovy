@@ -293,7 +293,8 @@ class UserController {
                             productOwner:request.productOwner,
                             scrumMaster:request.scrumMaster,
                             teamMember:request.teamMember,
-                            stakeHolder:request.stakeHolder
+                            stakeHolder:request.stakeHolder,
+                            admin:request.admin
                     ]]
         withFormat{
             html { render(status:200, contentType:'application/json', text: user as JSON) }

@@ -63,7 +63,7 @@ class TeamController {
         def invitedMembers = params.team.invitedMembers?.list('email') ?: []
         def invitedScrumMasters = params.team.invitedScrumMasters?.list('email') ?: []
         try {
-            def newOwnerId = params.team.owner?.toLong()
+            def newOwnerId = params.team.owner?.id?.toLong()
             Team.withTransaction {
                 if (team.name != params.team.name) {
                     team.name = params.team.name

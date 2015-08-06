@@ -165,6 +165,11 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', '$filter', 'T
                 $scope.team.members = $scope.team.members.concat(_.map(team.invitedScrumMasters, function(member) { return _.merge(member, { scrumMaster: true })}));
             }
         }
+        $scope.ownerCandidates = angular.copy($scope.team.members);
+        var owner = team.owner;
+        if (!_.find($scope.ownerCandidates, {id: owner.id})) {
+            $scope.ownerCandidates.push(owner);
+        }
     };
     $scope.save = function(team) {
         TeamService.save(team)

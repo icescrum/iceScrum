@@ -110,7 +110,7 @@ icescrum.marshaller = [
                   exclude:['cliches'],
                   textile:['description']],
 
-        team: [include:['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers']],
+        team: [include:['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
 
         task:[exclude:['impediment','participants'],
               include:['tags']],

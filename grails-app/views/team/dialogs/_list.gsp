@@ -70,6 +70,19 @@
                       name="formHolder.updateTeamForm"
                       show-validation
                       novalidate>
+                    <div class="col-sm-12 form-group"
+                         ng-switch="authorizedTeam('changeOwner', team)">
+                        <label for="team.name">${message(code:'todo.is.ui.owner')}</label>
+                        <span class="form-control-static"
+                              ng-switch-default>{{ team.owner | userFullName }}</span>
+                        <select class="form-control"
+                                name="owner"
+                                ng-switch-when="true"
+                                ng-options="ownerCandidate | userFullName for ownerCandidate in ownerCandidates"
+                                ng-model="team.owner"
+                                ui-select2>
+                        </select>
+                    </div>
                     <div class="form-half">
                         <label for="team.name">${message(code:'todo.is.ui.name')}</label>
                         <input required
