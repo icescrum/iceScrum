@@ -197,7 +197,9 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
         j_password: ''
     };
     $rootScope.showRegisterModal = function() {
-        $scope.$close();
+        if($scope.$close) {
+            $scope.$close(); // Close auth modal if present
+        }
         $state.go('userregister');
     };
     $rootScope.showRetrieveModal = function() {

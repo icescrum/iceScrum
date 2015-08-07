@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -15,7 +15,7 @@
 - You should have received a copy of the GNU Affero General Public License
 - along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
 -
-- Authors:
+- Authors:Marwah Soltani (msoltani@kagilum.com)
 -
 --}%
 
