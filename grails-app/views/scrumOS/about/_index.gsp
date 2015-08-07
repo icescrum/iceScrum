@@ -27,10 +27,13 @@
                 <g:render template="/${controllerName}/about/errors" model="[errors:errors]"/>
             </tab>
         </g:if>
+        <tab heading="${message(code:'is.dialog.about.help')}">
+            <g:render template="/${controllerName}/about/help" model="[version: about.version]"/>
+        </tab>
         <tab heading="${message(code:'is.dialog.about.version')}">
             <g:render template="/${controllerName}/about/version" model="[version:about.version, server:server]"/>
         </tab>
-        <tab heading="${message(code:'is.dialog.about.license')}">
+        <tab heading="${message(code:'is.dialog.about.legal')}">
             ${about.license.text().encodeAsNL2BR()}
         </tab>
         <entry:point id="about-tabs-last"/>
