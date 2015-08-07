@@ -57,7 +57,9 @@ isApp.config(['$stateProvider', '$httpProvider',
             $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
             $stateProvider
                 .state('root', {
-                    url:'/'
+                    url:'',
+                    templateUrl: 'home.html',
+                    controller: 'homeCtrl'
                 })
                 .state('userregister', {
                     url: "/user/register/:token",

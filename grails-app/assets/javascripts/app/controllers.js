@@ -367,6 +367,35 @@ controllers.controller('actorsCtrl', ['$scope', '$state', 'ActorService', 'actor
     };
 }]);
 
+
+controllers.controller('Accordion',['$scope', function ($scope) {
+    $scope.oneAtATime = true;
+
+    $scope.groups = [
+        {
+            title: 'Dynamic Group Header - 1',
+            content: 'Dynamic Group Body - 1'
+        },
+        {
+            title: 'Dynamic Group Header - 2',
+            content: 'Dynamic Group Body - 2'
+        }
+    ];
+
+    $scope.items = ['Item 1', 'Item 2', 'Item 3'];
+
+    $scope.addItem = function() {
+        var newItemNo = $scope.items.length + 1;
+        $scope.items.push('Item ' + newItemNo);
+    };
+
+    $scope.status = {
+        isFirstOpen: true,
+        isFirstDisabled: false
+    };
+}]);
+
+
 controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function ($scope, $state, FeatureService, features) {
     $scope.orderBy = {
         reverse: false,
@@ -412,4 +441,6 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
+
+
 }]);

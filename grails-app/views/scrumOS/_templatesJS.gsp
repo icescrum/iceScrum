@@ -23,6 +23,7 @@
 <%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState; org.icescrum.core.domain.Story.TestState" %>
 <div class='templates'>
     <g:render template="templates"/>
+    <g:render template="/home/templates"/>
     <g:render template="/project/templates"/>
     <g:render template="/team/templates"/>
     <g:if test="${params.product}">

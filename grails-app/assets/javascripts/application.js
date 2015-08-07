@@ -52,3 +52,4 @@
 //= require           app/filters
 //= require           app/services
 //= require_full_tree app
+

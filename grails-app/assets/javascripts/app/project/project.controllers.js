@@ -60,6 +60,19 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             }]
         });
     };
+
+    $scope.showProject = function(type) {
+        $scope.projects = [];
+        // Init
+        var listPromise = type == 'public' ? ProjectService.listPublic() : ProjectService.listByUser();
+        listPromise.then(function(projects) {
+            $scope.projects = projects;
+            if (!_.isEmpty(projects)) {
+                $scope.selectProject(_.first(projects));
+            }
+        });
+    };
+
     $scope['import'] = function(project) {
         var url = $scope.serverUrl + "/project/import";
         $modal.open({
