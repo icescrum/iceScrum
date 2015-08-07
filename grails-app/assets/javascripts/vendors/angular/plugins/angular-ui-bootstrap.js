@@ -75,7 +75,6 @@ angular.module('ui.bootstrap.collapse', [])
 })
 
 .controller('AccordionController', ['$scope', '$attrs', 'accordionConfig', function ($scope, $attrs, accordionConfig) {
-       $scope.oneAtATime = true;
   // This array keeps track of the accordion groups
   this.groups = [];
 

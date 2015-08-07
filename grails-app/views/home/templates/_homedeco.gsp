@@ -130,12 +130,13 @@
                                 <i class="pull-right glyphicon"
                                    ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
                             </accordion-heading>
+                            <a href ng-click="showProject('public')">
+                            clik
+                            </a>
                         </accordion-group>
                     </accordion>
                 </div>
-                %{--<a href ng-click="showProject('public')">--}%
-                %{--{{projects}}--}%
-                %{--</a>--}%
+
             </div>
         </div>
     </div>

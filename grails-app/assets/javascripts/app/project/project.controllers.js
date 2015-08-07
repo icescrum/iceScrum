@@ -62,14 +62,29 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     };
 
     $scope.showProject = function(type) {
-        $scope.projects = [];
-        // Init
-        var listPromise = type == 'public' ? ProjectService.listPublic() : ProjectService.listByUser();
-        listPromise.then(function(projects) {
-            $scope.projects = projects;
-            if (!_.isEmpty(projects)) {
-                $scope.selectProject(_.first(projects));
-            }
+        $modal.open({
+            keyboard: false,
+            templateUrl: $scope.serverUrl + "/project/listModal",
+            size: 'lg',
+            controller: ['$scope', 'ProjectService', function($scope, ProjectService) {
+                // Functions
+                $scope.selectProject = function(project) {
+                    $scope.selectedProject = project;
+                };
+                $scope.openProject = function(project) {
+                    document.location = $scope.serverUrl + '/p/' + project.pkey;
+                };
+                // Init
+                $scope.projects = [];
+                $scope.selectedProject = {};
+                var listPromise = type == 'public' ? ProjectService.listPublic() : ProjectService.listByUser();
+                listPromise.then(function(projects) {
+                    $scope.projects = projects;
+                    if (!_.isEmpty(projects)) {
+                        $scope.selectProject(_.first(projects));
+                    }
+                });
+            }]
         });
     };
 

@@ -248,7 +248,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     };
     $scope.defaultStoryState = StoryStatesByName.SUGGESTED;
     $scope.selectableOptions = {
-        filter:"> .postit-container",
+        filter:">.postit-container",
         cancel: "a,.ui-selectable-cancel",
         stop: function(e, ui, selectedItems) {
             switch (selectedItems.length) {
