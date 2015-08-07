@@ -52,7 +52,6 @@ class UtilsTagLib {
         def p = current ? pageScope.space.params : [:]
         def locale = attrs.locale ? attrs.locale : RCU.getLocale(request).toString()
         def jsCode = """var icescrum = {
-                          isPro:${ApplicationSupport.isProVersion()},
                           grailsServer:"${grailsApplication.config.grails.serverURL}",
                           baseUrl: "${createLink(controller: 'scrumOS')}",
                           versionUrl: "${createLink(controller: 'scrumOS', action:'version')}",

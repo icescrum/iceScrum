@@ -44,7 +44,6 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
             uploading:'',
             openWindow:false,
             locale:'en',
-            isPro:false,
             push:{enable:true,websocket:false,url:null},
             showAsGrid:true
         },
