@@ -502,7 +502,7 @@ isApp.config(['$stateProvider', '$httpProvider',
         var request = {
             url: $rootScope.serverUrl + '/stream/app/product-1',
             contentType: 'application/json',
-            logLevel: 'debug',
+            logLevel: 'info', // Set 'debug' to debug
             transport: 'websocket',
             trackMessageLength: true,
             reconnectInterval: 5000,
