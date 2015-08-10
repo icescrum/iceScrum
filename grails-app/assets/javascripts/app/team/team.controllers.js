@@ -207,14 +207,23 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', '$filter', 'T
     $scope.authorizedTeam = function(action, team) {
         return TeamService.authorizedTeam(action, team);
     };
+    $scope.searchTeams = function() {
+        var offset = $scope.teamsPerPage * ($scope.currentPage - 1);
+        TeamService.listByUser($scope.teamSearch, offset).then(function(teamsAndTotal) {
+            $scope.totalTeams = teamsAndTotal.total;
+            $scope.teams = teamsAndTotal.teams;
+        });
+    };
     // Init
+    $scope.totalTeams = 0;
+    $scope.currentPage = 1;
+    $scope.teamsPerPage = 4; // Constant
+    $scope.teamSearch = '';
     $scope.teams = [];
     $scope.formHolder = {};
     $scope.team = {};
     $scope.newTeam = {};
-    TeamService.listByUser().then(function(teams) {
-        $scope.teams = teams;
-    });
+    $scope.searchTeams();
 
     // Member management TODO remove duplication with controller above
     $scope.teamMembersEditable = function(team) {

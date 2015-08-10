@@ -25,17 +25,28 @@
           class="split-modal"
           footer="false">
     <div class="row">
-        <ul class="left-panel col-sm-3 nav nav-list">
+        <div class="left-panel col-sm-3">
             <div class="input-group">
-                <input type="text" ng-model="search" class="form-control" placeholder="todo.is.ui.search">
+                <input type="text" ng-model="teamSearch" ng-change="searchTeams()" ng-model-options="{debounce: 300}" class="form-control" placeholder="todo.is.ui.search">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
                 </span>
             </div>
-            <li ng-class="{ 'current': team.id == currentTeam.id }" ng-repeat="currentTeam in teams | fuzzy : search : ['name', 'description', 'pkey']">
-                <a ng-click="selectTeam(currentTeam)" href>{{ currentTeam.name }}</a>
-            </li>
-        </ul>
+            <ul class="nav nav-list">
+                <li ng-class="{ 'current': team.id == currentTeam.id }" ng-repeat="currentTeam in teams">
+                    <a ng-click="selectTeam(currentTeam)" href>{{ currentTeam.name }}</a>
+                </li>
+            </ul>
+            <pagination boundary-links="true"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                        class="pagination-sm"
+                        max-size="3"
+                        total-items="totalTeams"
+                        items-per-page="teamsPerPage"
+                        ng-model="currentPage"
+                        ng-change="searchTeams()">
+            </pagination>
+        </div>
         <div class="right-panel col-sm-9" ng-switch="teamSelected()">
             <div ng-switch-default>
                 <form ng-submit="save(newTeam)"

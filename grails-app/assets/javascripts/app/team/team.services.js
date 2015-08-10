@@ -25,7 +25,7 @@ services.factory('Team', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/team/:id/:action',
         {},
         {
-            listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}}
+            listByUser: {method: 'GET', params: {action: 'listByUser'}}
         });
 }]);
 
@@ -40,8 +40,8 @@ services.service("TeamService", ['Team', 'Session', function(Team, Session) {
     this['delete'] = function(team) {
         return team.$delete();
     };
-    this.listByUser = function() {
-        return Team.listByUser().$promise;
+    this.listByUser = function(term, offset) {
+        return Team.listByUser({ term: term, offset: offset }).$promise;
     };
     this.authorizedTeam = function(action, team) {
         switch (action) {

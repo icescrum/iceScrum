@@ -1405,34 +1405,39 @@ a[data-toggle="tab"] button {
   .steps-indicator, .left-panel {
     background-color:@light-bg;
     padding:0;
-    list-style:none;
-    li {
-      line-height: 40px;
-      cursor: pointer;
-      &.default {
-        pointer-events: none;
-      }
-      > a {
-        color: @gray-light;
-        padding: 3px 15px;
-        > i.fa-check {
-          float:right;
-          margin-top: 12px;
-          margin-right: -6px;
+    .pagination {
+      margin: 0;
+    }
+    ul.nav {
+      list-style:none;
+      li {
+        line-height: 40px;
+        cursor: pointer;
+        &.default {
+          pointer-events: none;
         }
-        &:hover {
-          color: @gray-darker;
-          > i {
+        > a {
+          color: @gray-light;
+          padding: 3px 15px;
+          > i.fa-check {
+            float:right;
+            margin-top: 12px;
+            margin-right: -6px;
+          }
+          &:hover {
             color: @gray-darker;
+            > i {
+              color: @gray-darker;
+            }
           }
         }
-      }
-      &.current, &.editing, &.current:hover, &.editing:hover {
-        > a, > a:hover {
-          background-color:@brand-primary;
-          color:@body-bg;
-          > i {
+        &.current, &.editing, &.current:hover, &.editing:hover {
+          > a, > a:hover {
+            background-color:@brand-primary;
             color:@body-bg;
+            > i {
+              color:@body-bg;
+            }
           }
         }
       }

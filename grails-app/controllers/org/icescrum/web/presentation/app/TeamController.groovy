@@ -32,15 +32,20 @@ class TeamController {
     }
 
     @Secured('isAuthenticated()')
-    def listByUser() {
-        def options = [sort: "name", order: "asc", cache:true]
-        def teams = request.admin ? Team.list(options) : Team.findAllByOwnerOrSM(springSecurityService.currentUser.username, options)
+    def listByUser(String term, Integer offset) {
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def limit = 4
+        def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache:true]
+        def user = springSecurityService.currentUser
+        def total = request.admin ? Team.countByNameLike(searchTerm, [cache:true]) : Team.countByOwnerOrSM(user.username, [cache:true], searchTerm)
+        def teams = request.admin ? Team.findAllByNameLike(searchTerm, options) : Team.findAllByOwnerOrSM(user.username, options, searchTerm)
+        def teamsAndTotal = [teams: teams, total: total]
         withFormat{
             html {
-                render(status:200, text:teams as JSON, contentType:'application/json')
+                render(status:200, text:teamsAndTotal as JSON, contentType:'application/json')
             }
-            json { renderRESTJSON(text:teams) }
-            xml  { renderRESTXML(text:teams) }
+            json { renderRESTJSON(text:teamsAndTotal) }
+            xml  { renderRESTXML(text:teamsAndTotal) }
         }
     }
 
