@@ -84,7 +84,7 @@
                                 <a hotkey="{ 'shift+e': hotkeyClick}" href ng-click="showProjectEditModal()">
                                     <g:message code="is.projectmenu.submenu.project.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                 </a>
-                            </li>
+                            </li>$
                             <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
                                 <li>
                                     <a hotkey="{ 'shift+d': export}" href ng-click="export(currentProject)">

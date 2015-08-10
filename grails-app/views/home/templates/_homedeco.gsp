@@ -26,7 +26,8 @@
                 <div class="panel-heading ">
                     <h3 class="panel-title">${message(code: 'is.connection')}</h3>
                 </div>
-                <div class="panel-body" ng-controller=" loginCtrl">
+
+                <div class="panel-body" ng-controller="loginCtrl">
                     <form novalidate role="form"
                           ng-submit="login(credentials)">
                         <div class="form-group">
@@ -42,11 +43,12 @@
                                     <span class="input-group-btn"><a tabindex="-1" class="btn btn-default" type="button"
                                                                      href ng-click="showRegisterModal()"
                                                                      tooltip-placement="top"
-                                                                     tooltip="${message(code: 'todo.is.new')}"><i
-                                                class="fa fa-user"></i></a>
+                                                                     tooltip="${message(code: 'todo.is.new')}">
+                                        <i class="fa fa-user"></i></a>
                                     </span>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <div class="col-sm-9">
                                     <label for="credentials.j_password"
@@ -71,6 +73,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="checkbox">
                                 <label>
                                     <input type='checkbox'
@@ -80,6 +83,7 @@
                                         code="is.dialog.login.rememberme"/>
                                 </label>
                             </div>
+
                             <div class="btn-toolbar pull-right">
                                 <button class="btn btn-primary pull-right"
                                         tooltip="${message(code: 'is.button.connect')} (RETURN)"
@@ -93,48 +97,65 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-5">
             <div class="panel panel-primary ">
                 <div class="panel-heading">
                     <h3 class="panel-title">${message(code: 'is.panel.rss')}</h3>
                 </div>
+
                 <div class="panel-body">.....</div>
             </div>
         </div>
-        <div class="col-md-9">
+
+        <div class="col-md-4">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h4 class="panel-title">Projets publics</h4></div>
                 <div ng-controller="Accordion">
-                    <accordion close-others="oneAtATime">
-                        <accordion-group>
-                            <accordion-heading>
-                                <i class="pull-right glyphicon"
-                                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                            </accordion-heading>
-                        </accordion-group>
-                        <accordion-group>
-                            <accordion-heading>
-                                <i class="pull-right glyphicon"
-                                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                            </accordion-heading>
-                        </accordion-group>
-                        <accordion-group>
-                            <accordion-heading>
-                                <i class="pull-right glyphicon"
-                                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                            </accordion-heading>
-                        </accordion-group>
-                        <accordion-group>
-                            <accordion-heading>
-                                <i class="pull-right glyphicon"
-                                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                            </accordion-heading>
-                            <a href ng-click="showProject('public')">
-                            clik
-                            </a>
-                        </accordion-group>
-                    </accordion>
+                    <div ng-controller="publicproject">
+                        <accordion close-others="oneAtATime">
+                            <div ng-repeat="project in projects">
+                                <accordion-group><accordion-heading>{{ project.name }}</accordion-heading>
+                                    <table >
+                                        <tr>
+                                            <td>name</td>
+                                            <td>{{ project.name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>pkey</td>
+                                            <td>{{ project.pkey }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>description</td>
+                                            <td>{{ project.description }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>startDate</td>
+                                            <td>{{ project.startDate }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>releases_count</td>
+                                            <td>{{ project.releases_count }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>features_count</td>
+                                            <td>{{ project.features_count }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>stories_count</td>
+                                            <td>{{ project.stories_count }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>actors_count</td>
+                                            <td>{{ project.actors_count }}</td>
+                                        </tr>
+                                    </table>
+                                </accordion-group>
+                            </div>
+                        </accordion>
+                    </div>
+
                 </div>
 
             </div>

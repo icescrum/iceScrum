@@ -24,7 +24,7 @@ services.factory( 'Project', [ 'Resource', function( $resource ) {
     return $resource(icescrum.grailsServer + '/project/:id/:action',
         {},
         {
-            listPublic: {method: 'GET', isArray: true, params: {action: 'listPublic'}},
+            listPublic: {method: 'GET', isArray: true, params: {action: 'listPublic'}}, // GET http://localhost:8080/icescrum/project/listPublic
             listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}}
         });
 }]);

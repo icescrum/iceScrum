@@ -24,11 +24,9 @@
         <div class="col-md-5">
             <div class="panel panel-primary">
                 <div class="panel-heading">${message(code: 'is.panel.rss')}</div>
-
                 <div class="panel-body">..</div>
             </div>
         </div>
-
         <div class="col-md-5">
             <div class="panel panel-primary">
                 <div class="panel-heading">${message(code: 'is.panel.notes')}</div>
@@ -38,57 +36,78 @@
                 <div class="panel-body">..</div>
             </div>
         </div>
-
-        <div class="col-md-7">
-            <div class="panel panel-primary">
-                <div class="panel-heading">${message(code: 'is.panel.myprojects')}</div>
-
-                <div class="panel-body">..</div>
-            </div>
-        </div>
-
-        <div class="col-md-7">
-            <div class="panel panel-primary">
-                <div class="panel-heading">${message(code: 'is.panel.mood')}</div>
-
-                <div class="panel-body">..</div>
-            </div>
-        </div>
-
         <div class="col-md-5">
             <div class="panel panel-primary">
-                <div class="panel-heading">${message(code: 'is.panel.mytask')}</div>
-
+                <div class="panel-heading">
+                    ${message(code: 'is.panel.myprojects')}
+                </div>
                 <div ng-controller="Accordion">
+                    <div ng-controller="userproject">
                     <accordion close-others="oneAtATime">
-                        <accordion-group>
-                            <accordion-heading>
-                                <i class="pull-right glyphicon"
-                                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                            </accordion-heading>
+                        <div ng-repeat="project in projects">
+                            <accordion-group><accordion-heading>{{ project.name }}</accordion-heading>
+                                <table >
+                                    <tr>
+                                        <td>name</td>
+                                        <td>{{ project.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>pkey</td>
+                                        <td>{{ project.pkey }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>description</td>
+                                        <td>{{ project.description }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>startDate</td>
+                                        <td>{{ project.startDate }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>releases_count</td>
+                                        <td>{{ project.releases_count }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>features_count</td>
+                                        <td>{{ project.features_count }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>stories_count</td>
+                                        <td>{{ project.stories_count }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>actors_count</td>
+                                        <td>{{ project.actors_count }}</td>
+                                    </tr>
+                                </table>
                         </accordion-group>
-                        <accordion-group>
-                            <accordion-heading>
-                                <i class="pull-right glyphicon"
-                                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                            </accordion-heading>
-                        </accordion-group>
-                        <accordion-group>
-                            <accordion-heading>
-                                <i class="pull-right glyphicon"
-                                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                            </accordion-heading>
-                        </accordion-group>
-                        <accordion-group>
-                            <accordion-heading>
-                                <i class="pull-right glyphicon"
-                                   ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                            </accordion-heading>
-                        </accordion-group>
+                            </div>
                     </accordion>
                 </div>
             </div>
         </div>
+        <div class="col-md-5">
+            <div class="panel panel-primary">
+                <div class="panel-heading">${message(code: 'is.panel.mood')}</div>
+                <div class="panel-body">..</div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel panel-primary">
+                <div class="panel-heading">${message(code: 'is.panel.mytask')}</div>
+                <div ng-controller="Accordion">
+                    <accordion close-others="oneAtATime">
+                        <accordion-group>
+                            <accordion-heading>
+
+
+                            </accordion-heading>
+                        </accordion-group>
+
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </div>
 </script>

@@ -35,8 +35,8 @@
                 </span>
             </div>
             <li ng-class="{ 'current': selectedProject.id == project.id }" ng-repeat="project in projects | fuzzy : search : ['name', 'description', 'pkey']">
-                <a ng-click="selectProject(project)" href>{{ project.name }}</a>
-            </li>
+            <a ng-click="selectProject(project)" href>{{ project.name }}</a>
+        </li>
         </ul>
         <div class="right-panel col-sm-9" ng-switch="projects != undefined && projects.length == 0">
             <div ng-switch-when="true">
