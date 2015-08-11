@@ -19,5 +19,5 @@
 -
 --}%
 <g:render template="/home/templates/home" />
-<g:render template="/home/templates/homeco" />
-<g:render template="/home/templates/homedeco" />
+<g:render template="/home/templates/home.connected" />
+<g:render template="/home/templates/home.not.connected" />
