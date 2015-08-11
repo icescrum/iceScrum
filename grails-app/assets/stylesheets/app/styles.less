@@ -248,14 +248,14 @@ table {
       margin-bottom: 0;
     }
   }
-  &.has-fixed-top{
+  &.has-fixed-top, &.has-fixed-bottom{
     .postits {
       padding-bottom:56px;
     }
   }
-  &.has-fixed-bottom{
+  &.has-fixed-top.has-fixed-bottom{
     .postits {
-      padding-bottom: 105px;
+      padding-bottom:95px;
     }
   }
 }
@@ -1833,6 +1833,62 @@ ul.dropdown-menu[datepicker-popup-wrap]{
   }
 }
 
-p.input-group {
-  margin: 0;
+.backlogs {
+  .backlog {
+    float:left;
+    font-size: 0;
+    width: 76px;
+    height: 50px;
+    display:inline-block;
+    overflow: hidden;
+    margin-left:5px !important;
+    margin-right:5px;
+    border: 1px solid #dcdcdc;
+    background-clip: border-box;
+    border-radius: 2px;
+    padding: 2px;
+    position: relative;
+    background: #FFF;
+    margin-top: 2px;
+    > div:not(.backlog-name) {
+      margin:2px;
+      margin-left:2px !important;
+      width: 10px;
+      height:7px;
+      display:inline-block;
+      opacity: 0.5;
+    }
+    > .backlog-name {
+      h3{
+        margin: 0;
+        margin-top: 3px;
+      }
+      position: absolute;
+      top:0;
+      left:0;
+      right: 0;
+      bottom: 0;
+      opacity:0.4;
+      text-align: center;
+      font-size: 14px;
+    }
+    &.selected {
+      border-color:#b1b1b1;
+      border-width: 3px;
+      width:80px;
+      height:54px;
+      margin-top:0;
+    }
+    &.selected, &:hover {
+      cursor:pointer;
+      > .backlog-name {
+        opacity:1.0;
+        visibility:visible;
+        background-color: rgba(255,255,255,0.7);
+      }
+      > div:not(.backlog-name) {
+        opacity: 0.2;
+      }
+    }
+  }
 }

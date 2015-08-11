@@ -34,8 +34,10 @@ import static grails.async.Promises.*
 @Secured(['stakeHolder() or inProduct()'])
 class BacklogController {
     def filters = [
+            'All':"{story:{}}",
             'backlog':"{story:{state:[2,3]}}",
-            'sandbox':"{story:{state:1}}"
+            'sandbox':"{story:{state:1}}",
+            'icebox':"{story:{state:7}}"
     ]
 
     def index(long product) {

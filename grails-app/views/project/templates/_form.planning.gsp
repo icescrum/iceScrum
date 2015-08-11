@@ -36,7 +36,7 @@
         </div>
         <div class="form-half">
             <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>
-            <p class="input-group">
+            <div class="input-group">
                 <input type="text"
                        class="form-control"
                        name="project.startDate"
@@ -51,7 +51,7 @@
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'startDate')"><i class="fa fa-calendar"></i></button>
                 </span>
-            </p>
+            </div>
         </div>
         <div class="form-half" ng-if="type != 'newProject'">
             <label for="hideWeekend" class="checkbox-inline">
@@ -77,7 +77,7 @@
     <div class="row" ng-if="project.initialize">
         <div class="form-half">
             <label for="project.firstSprint">${message(code:'is.dialog.wizard.firstSprint')}</label>
-            <p class="input-group">
+            <div class="input-group">
                 <input type="text"
                        class="form-control"
                        name="project.firstSprint"
@@ -94,11 +94,11 @@
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'firstSprint')"><i class="fa fa-calendar"></i></button>
                 </span>
-            </p>
+            </div>
         </div>
         <div class="form-half">
             <label for="project.endDate">${message(code:'is.dialog.wizard.project.endDate')}</label>
-            <p class="input-group">
+            <div class="input-group">
                 <input type="text"
                        class="form-control"
                        name="project.endDate"
@@ -114,7 +114,7 @@
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'endDate')"><i class="fa fa-calendar"></i></button>
                 </span>
-            </p>
+            </div>
         </div>
         <div class="form-half">
             <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>

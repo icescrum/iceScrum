@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-sm-8 col-xs-8 form-group">
             <label for="name">${message(code:'is.product.name')}</label>
-            <p class="input-group">
+            <div class="input-group">
                 <input focus-me="true"
                        name="name"
                        type="text"
@@ -47,7 +47,7 @@
                         </a>
                     </span>
                 </g:if>
-            </p>
+            </div>
         </div>
         <div class="col-sm-4 col-xs-4 form-group">
             <label for="pkey">${message(code:'is.product.pkey')}</label>

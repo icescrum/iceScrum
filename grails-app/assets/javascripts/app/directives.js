@@ -90,6 +90,8 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             var idR = 'resize.fixed'+(new Date().getTime());
             var fixedFunction = function(event, manual) {
                 //remove event
+                $this.removeClass('hidden');
+
                 if (!$this.is(':visible')){
                     container.off( id );
                     $(window).off( idR );
@@ -132,16 +134,15 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
 
             //when resize
             $(window).on(idR, function(e) {
-                fixedFunction(null);
-            });
+                fixedFunction(e);
+            }).resize();
 
             //when transition
-            $('#main, #sidebar').on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+            $('#main').on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
                 function(e) {
                     fixedFunction(null);
                 }
             );
-
         }
     };
 }]).directive('showValidation', ['$compile', '$rootScope', function($compile, $rootScope) {
