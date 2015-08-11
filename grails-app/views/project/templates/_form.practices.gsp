@@ -26,7 +26,7 @@
     <h5>${message(code:"is.dialog.wizard.section.practices.backlog")}</h5>
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.practices.backlog.help')}</p>
     <div class="row">
-        <div class="form-group" ng-class="{'col-sm-6': !project.preferences.noEstimation, 'col-sm-12': project.preferences.noEstimation}">
+        <div class="form-group" ng-class="project.preferences.noEstimation ? 'col-sm-12' : 'col-sm-6'">
             <label for="noEstimation" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.noEstimation"
@@ -35,7 +35,7 @@
                 ${message(code:'is.product.preferences.planification.noEstimation')}
             </label>
         </div>
-        <div class="form-group col-sm-12" ng-class="{'col-sm-6': !project.preferences.noEstimation}" ng-show="!project.preferences.noEstimation">
+        <div class="form-group col-sm-6" ng-show="!project.preferences.noEstimation">
             <label for="estimationSuite">${message(code:'is.product.preferences.planification.estimationSuite')}</label>
             <select class="form-control"
                     name="type"
@@ -50,24 +50,6 @@
     <h5>${message(code:"is.dialog.wizard.section.practices.sprint")}</h5>
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.practices.sprint.help')}</p>
     <div class="row">
-        <div class="form-group col-sm-6">
-            <label for="displayRecurrentTasks" class="checkbox-inline">
-                <input type="checkbox"
-                       name="project.preferences.displayRecurrentTasks"
-                       id="displayRecurrentTasks"
-                       ng-model="project.preferences.displayRecurrentTasks">
-                ${message(code:'is.product.preferences.sprint.displayRecurrentTasks')}
-            </label>
-        </div>
-        <div class="form-group col-sm-6">
-            <label for="displayUrgentTasks" class="checkbox-inline">
-                <input type="checkbox"
-                       name="project.preferences.displayUrgentTasks"
-                       id="displayUrgentTasks"
-                       ng-model="project.preferences.displayUrgentTasks">
-                ${message(code:'is.product.preferences.sprint.displayUrgentTasks')}
-            </label>
-        </div>
         <div class="form-group col-sm-6">
             <label for="autoDoneStory" class="checkbox-inline">
                 <input type="checkbox"
@@ -105,6 +87,26 @@
             </label>
         </div>
         <div class="form-group col-sm-6">
+            <label for="displayRecurrentTasks" class="checkbox-inline">
+                <input type="checkbox"
+                       name="project.preferences.displayRecurrentTasks"
+                       id="displayRecurrentTasks"
+                       ng-model="project.preferences.displayRecurrentTasks">
+                ${message(code:'is.product.preferences.sprint.displayRecurrentTasks')}
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group" ng-class="project.preferences.displayUrgentTasks ? 'col-sm-6' : 'col-sm-12'">
+            <label for="displayUrgentTasks" class="checkbox-inline">
+                <input type="checkbox"
+                       name="project.preferences.displayUrgentTasks"
+                       id="displayUrgentTasks"
+                       ng-model="project.preferences.displayUrgentTasks">
+                ${message(code:'is.product.preferences.sprint.displayUrgentTasks')}
+            </label>
+        </div>
+        <div class="form-group col-sm-6" ng-show="project.preferences.displayUrgentTasks">
             <label for="limitUrgentTasks">${message(code:'is.product.preferences.sprint.limitUrgentTasks')}</label>
             <input type="number"
                    class="form-control"
