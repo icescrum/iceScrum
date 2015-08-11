@@ -156,6 +156,9 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                     var input = angular.element(it);
                     input.attr('validation-watched','');
                     var container = input.parent();
+                    if (container.hasClass('input-group')) {
+                        container = container.parent();
+                    }
                     var inputModel = form[input.attr('name')];
                     scope.$watch(function() {
                         return inputModel.$invalid && (inputModel.$dirty || inputModel.$touched);
