@@ -121,6 +121,7 @@ class ScrumOSController {
                         icon: uiDefinition.icon,
                         right: uiDefinition.window?.right,
                         toolbar: uiDefinition.window?.toolbar,
+                        bottombar: uiDefinition.window?.bottombar,
                         printable: uiDefinition.window?.printable,
                         fullScreen: uiDefinition.window?.fullScreen,
                         init: params.actionWindow ?: uiDefinition.window?.init

@@ -33,14 +33,12 @@ import static grails.async.Promises.*
 
 @Secured(['stakeHolder() or inProduct()'])
 class BacklogController {
-
     def filters = [
             'backlog':"{story:{state:[2,3]}}",
             'sandbox':"{story:{state:1}}"
     ]
-
     def index(long product) {
-        render(template: "view", model: [stories: Story.search(product, JSON.parse(filters.sandbox))])
+        render(template: "view", model: [stories: Story.search(product, JSON.parse(filters.backlog))])
     }
 
     def print(long product, String format) {

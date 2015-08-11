@@ -95,23 +95,35 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                     $(window).off( idR );
                     return;
                 }
-                var scrollTop = container.scrollTop();
-                if(manual || (initialTop - scrollTop < 0)){
+                if(attrs['fixedBottom']){
                     $this.css('width', $this.parent().outerWidth(true) + parseInt(attrs['fixedOffsetWidth'] ?  attrs['fixedOffsetWidth'] : 0))
-                         .css('left', container.offset().left + parseInt((attrs['fixedOffsetLeft'] ?  attrs['fixedOffsetLeft'] : 0)));
+                        .css('left', container.offset().left + parseInt((attrs['fixedOffsetLeft'] ?  attrs['fixedOffsetLeft'] : 0)))
+                        .css('top', $(window).height() - $this.height() - parseInt((attrs['fixedOffsetBottom'] ?  attrs['fixedOffsetBottom'] : 0)))
                     if (!$this.hasClass('fixed')){
-                        $this.next().css('margin-top', $this.outerHeight());
-                        $this.addClass('fixed')
-                            .css('top', container.offset().top + parseInt((attrs['fixedOffsetTop'] ?  attrs['fixedOffsetTop'] : 0)))
-                            .css('position', 'fixed');
+                        container.addClass('has-fixed-bottom');
+                        $this.css('position', 'fixed');
+                        $this.addClass('fixed');
                     }
-                } else if (initialTop - scrollTop >= 0 && $this.hasClass('fixed')) {
-                    $this.removeClass('fixed')
-                        .css('top', '')
-                        .css('width', '')
-                        .css('left','')
-                        .css('position', '');
-                    $this.next().css('margin-top', '');
+                }else {
+                    var scrollTop = container.scrollTop();
+                    if(manual || (initialTop - scrollTop < 0)){
+                        $this.css('width', $this.parent().outerWidth(true) + parseInt(attrs['fixedOffsetWidth'] ?  attrs['fixedOffsetWidth'] : 0))
+                            .css('left', container.offset().left + parseInt((attrs['fixedOffsetLeft'] ?  attrs['fixedOffsetLeft'] : 0)));
+                        if (!$this.hasClass('fixed')){
+                            $this.addClass('fixed')
+                                .css('top', container.offset().top + parseInt((attrs['fixedOffsetTop'] ?  attrs['fixedOffsetTop'] : 0)))
+                                .css('position', 'fixed');
+                            container.addClass('has-fixed-top');
+                        }
+                    } else if (initialTop - scrollTop >= 0 && $this.hasClass('fixed')) {
+                        $this.removeClass('fixed')
+                            .css('top', '')
+                            .css('width', '')
+                            .css('left','')
+                            .css('position', '');
+                        $this.next().css('margin-top', '');
+                        container.removeClass('has-fixed-top');
+                    }
                 }
             };
 
