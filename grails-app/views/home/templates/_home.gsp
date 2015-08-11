@@ -24,5 +24,4 @@
         <div ng-if="authenticated()" ng-include="'home.connected.html'"></div>
         <div ng-if="!authenticated()" ng-include="'home.not.connected.html'"></div>
     </div>
-
 </script>

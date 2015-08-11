@@ -25,7 +25,6 @@
             <div class="panel-heading ">
                 <h3 class="panel-title">${message(code: 'is.connection')}</h3>
             </div>
-
             <div class="panel-body" ng-controller="loginCtrl">
                 <form novalidate role="form"
                       ng-submit="login(credentials)">
@@ -47,7 +46,6 @@
                                 </span>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="col-sm-9">
                                 <label for="credentials.j_password"
@@ -72,7 +70,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="checkbox">
                             <label>
                                 <input type='checkbox'
@@ -96,17 +93,14 @@
             </div>
         </div>
     </div>
-
     <div class="col-md-5">
         <div class="panel panel-primary ">
             <div class="panel-heading">
                 <h3 class="panel-title">${message(code: 'is.panel.rss')}</h3>
             </div>
-
             <div class="panel-body">.....</div>
         </div>
     </div>
-
     <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -154,9 +148,7 @@
                         </div>
                     </accordion>
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>
