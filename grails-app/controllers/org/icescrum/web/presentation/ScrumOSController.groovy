@@ -47,6 +47,7 @@ class ScrumOSController {
     def grailsApplication
     def servletContext
     def messageSource
+    def productService
 
     def index() {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
@@ -56,20 +57,20 @@ class ScrumOSController {
             space.indexScrumOS(space, user, securityService, springSecurityService)
         }
 
-        //For PO / SM : WRITE - TM / SH : READ
-        def products = user ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : []
-        def pCount = products?.size()
+        def products = user ? productService.getAllActiveProductsByUser().take(10) : []
         def productsLimit = 9
+        def moreProductExist = products?.size() > productsLimit
         def browsableProductsCount = request.admin ? Product.count() : ProductPreferences.countByHidden(false,[cache:true])
 
         def attrs = [user: user,
                      lang: RCU.getLocale(request).toString().substring(0, 2),
                      space:space,
                      browsableProductsExist: browsableProductsCount > 0,
-                     moreProductsExist: pCount > productsLimit,
-                     productFilteredsList: pCount > productsLimit ? products?.subList(0, productsLimit) : products]
-        if (space)
+                     moreProductsExist: moreProductExist,
+                     productFilteredsList: products.take(productsLimit)]
+        if (space) {
             attrs."$space.name" = space.object
+        }
         attrs
     }
 

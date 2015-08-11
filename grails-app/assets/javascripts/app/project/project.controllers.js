@@ -47,16 +47,25 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                 $scope.openProject = function(project) {
                     document.location = $scope.serverUrl + '/p/' + project.pkey;
                 };
+                $scope.searchProjects = function() {
+                    var offset = $scope.projectsPerPage * ($scope.currentPage - 1);
+                    var listFunction = type == 'public' ? ProjectService.listPublic : ProjectService.listByUser;
+                    listFunction($scope.projectSearch, offset).then(function(projectsAndTotal) {
+                        $scope.totalProjects = projectsAndTotal.total;
+                        $scope.projects = projectsAndTotal.projects;
+                        if (!_.isEmpty($scope.projects) && _.isEmpty($scope.selectedProject)) {
+                            $scope.selectProject(_.first($scope.projects));
+                        }
+                    });
+                };
                 // Init
+                $scope.totalProjects = 0;
+                $scope.currentPage = 1;
+                $scope.projectsPerPage = 9; // Constant
+                $scope.projectSearch = '';
                 $scope.projects = [];
                 $scope.selectedProject = {};
-                var listPromise = type == 'public' ? ProjectService.listPublic() : ProjectService.listByUser();
-                listPromise.then(function(projects) {
-                    $scope.projects = projects;
-                    if (!_.isEmpty(projects)) {
-                        $scope.selectProject(_.first(projects));
-                    }
-                });
+                $scope.searchProjects();
             }]
         });
     };
@@ -151,8 +160,8 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
         document.location = $scope.serverUrl + '/p/' + project.pkey;
     };
     $scope.projects = [];
-    ProjectService.listPublic().then(function (projects) {
-        $scope.projects = projects;
+    ProjectService.listPublic().then(function (projectsAndTotal) {
+        $scope.projects = projectsAndTotal.projects;
     });
 }]);
 
@@ -162,8 +171,8 @@ controllers.controller('userproject', ['$scope', 'ProjectService', function($sco
         document.location = $scope.serverUrl + '/p/' + project.pkey;
     };
     $scope.projects = [];
-    ProjectService.listByUser().then(function (projects) {
-        $scope.projects = projects;
+    ProjectService.listByUser().then(function (projectsAndTotal) {
+        $scope.projects = projectsAndTotal.projects;
     });
 }]);
 

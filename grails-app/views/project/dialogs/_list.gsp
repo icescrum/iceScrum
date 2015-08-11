@@ -29,14 +29,23 @@
     <div class="row">
         <ul class="left-panel col-sm-3 nav nav-list">
             <div class="input-group">
-                <input type="text" ng-model="search" class="form-control" placeholder="todo.is.ui.search">
+                <input type="text" ng-model="projectSearch" ng-change="searchProjects()" ng-model-options="{debounce: 300}" class="form-control" placeholder="todo.is.ui.search">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
                 </span>
             </div>
-            <li ng-class="{ 'current': selectedProject.id == project.id }" ng-repeat="project in projects | fuzzy : search : ['name', 'description', 'pkey']">
-            <a ng-click="selectProject(project)" href>{{ project.name }}</a>
-        </li>
+            <li ng-class="{ 'current': selectedProject.id == project.id }" ng-repeat="project in projects">
+                <a ng-click="selectProject(project)" href>{{ project.name }}</a>
+            </li>
+            <pagination boundary-links="true"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                        class="pagination-sm"
+                        max-size="3"
+                        total-items="totalProjects"
+                        items-per-page="projectsPerPage"
+                        ng-model="currentPage"
+                        ng-change="searchProjects()">
+            </pagination>
         </ul>
         <div class="right-panel col-sm-9" ng-switch="projects != undefined && projects.length == 0">
             <div ng-switch-when="true">

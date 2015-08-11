@@ -290,22 +290,4 @@ filters
             var stateCount = 6;
             return Math.floor((percent / stateCount) * 100);
         }
-    }]).filter('fuzzy', [function() {
-        return function(collection, term, fields) {
-            if (!_.isEmpty(collection) && !_.isEmpty(term) && !_.isEmpty(fields)) {
-                var searchTerm = _.deburr(_.trim(term.toLowerCase()));
-                return _.filter(collection, function(item) {
-                    return _.any(fields, function (field) {
-                        var value = item[field];
-                        if (!_.isEmpty(value) && _.isString(value)) {
-                            return _.deburr(value.toLowerCase()).indexOf(searchTerm) != -1;
-                        } else {
-                            return false;
-                        }
-                    });
-                });
-            } else {
-                return collection;
-            }
-        }
     }]);

@@ -34,7 +34,7 @@ class TeamController {
     @Secured('isAuthenticated()')
     def listByUser(String term, Integer offset) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def limit = 4
+        def limit = 9
         def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache:true]
         def user = springSecurityService.currentUser
         def total = request.admin ? Team.countByNameLike(searchTerm, [cache:true]) : Team.countByOwnerOrSM(user.username, [cache:true], searchTerm)

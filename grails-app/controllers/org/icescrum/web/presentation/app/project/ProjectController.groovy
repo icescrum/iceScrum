@@ -780,17 +780,29 @@ class ProjectController {
     }
 
     @Secured(['permitAll()'])
-    def listPublic() {
-        def userProjects = Product.findAllByUser(springSecurityService.currentUser)
-        def publicProjects = Product.findAll { preferences.hidden == false }
+    def listPublic(String term, Integer offset) {
+        if (!offset) {
+            offset = 0
+        }
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def limit = 9
+        def publicProjects = Product.where { preferences.hidden == false && name =~ searchTerm }.list(sort:"name")
+        def userProjects = Product.findAllByUserAndActive(springSecurityService.currentUser, null, null)
         def projects = publicProjects - userProjects
-        render(status: 200, contentType:'application/json', text: projects as JSON)
+        def projectsAndTotal = [projects: projects.drop(offset).take(limit), total: projects.size()]
+        render(status: 200, contentType:'application/json', text: projectsAndTotal as JSON)
     }
 
     @Secured(['permitAll()'])
-    def listByUser() {
-        def projects = Product.findAllByUser(springSecurityService.currentUser)
-        render(status: 200, contentType:'application/json', text: projects as JSON)
+    def listByUser(String term, Integer offset) {
+        if (!offset) {
+            offset = 0
+        }
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def limit = 9
+        def projects = productService.getAllActiveProductsByUser(searchTerm)
+        def projectsAndTotal = [projects: projects.drop(offset).take(limit), total:  projects.size()]
+        render(status: 200, contentType:'application/json', text: projectsAndTotal as JSON)
     }
 
     @Secured(['stakeHolder() or inProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])

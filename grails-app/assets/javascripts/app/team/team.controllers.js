@@ -217,7 +217,7 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', '$filter', 'T
     // Init
     $scope.totalTeams = 0;
     $scope.currentPage = 1;
-    $scope.teamsPerPage = 4; // Constant
+    $scope.teamsPerPage = 9; // Constant
     $scope.teamSearch = '';
     $scope.teams = [];
     $scope.formHolder = {};
