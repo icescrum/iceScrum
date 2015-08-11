@@ -73,6 +73,7 @@ uiDefinitions = {
             help 'is.ui.backlog.help'
             right true
             toolbar true
+            bottombar true
         }
         embedded = [
                 view:'list',

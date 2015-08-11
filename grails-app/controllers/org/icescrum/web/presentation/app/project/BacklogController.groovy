@@ -37,8 +37,18 @@ class BacklogController {
             'backlog':"{story:{state:[2,3]}}",
             'sandbox':"{story:{state:1}}"
     ]
+
     def index(long product) {
         render(template: "view", model: [stories: Story.search(product, JSON.parse(filters.backlog))])
+    }
+
+    def bottombar(long product){
+        def backlogs = []
+        filters?.each{
+            def colors = Story.search(product, JSON.parse(it.value), true)
+            backlogs << [count:colors.size(), colors:colors, name:it.key]
+        }
+        render(template:"bottombar", model:[backlogs:backlogs])
     }
 
     def print(long product, String format) {
