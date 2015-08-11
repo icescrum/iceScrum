@@ -146,8 +146,6 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
 
 
 
-
-
     controllers.controller('publicproject', ['$scope', 'ProjectService', function($scope, ProjectService) {
     $scope.openProject = function (project) {
         document.location = $scope.serverUrl + '/p/' + project.pkey;

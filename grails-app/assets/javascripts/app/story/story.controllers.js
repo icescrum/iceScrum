@@ -512,6 +512,7 @@ controllers.controller('storyDetailsTasksCtrl', ['$scope', '$controller', 'TaskS
     $controller('storyDetailsCtrl', { $scope: $scope }); // inherit from storyDetailsCtrl
     $scope.tasks = function(story) {
         TaskService.list(story);
+
     };
 }]);
 

@@ -23,7 +23,9 @@
 <script type="text/ng-template" id="story.tasks.html">
 <div ng-if="story">
     <table ng-init="tasks(story)" ng-controller="taskCtrl" class="table">
+
         <tbody ng-if="authorizedTask('create')" ng-include="'story.task.new.html'"></tbody>
+
     </table>
     <table class="table">
         <tr ng-show="story.tasks === undefined">
@@ -32,6 +34,7 @@
             </td>
         </tr>
         <tr ng-repeat="task in story.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
+
             <td>
                 <div class="content form-editable" ng-mouseover="showDelete=authorizedTask('delete', task)" ng-mouseleave="showDelete=false">
                     <div class="clearfix no-padding">
@@ -46,6 +49,7 @@
                                     tooltip-append-to-body="true"
                                     tooltip="${message(code:'todo.is.ui.task.delete')}"><span class="fa fa-times"></span>
                             </button>
+
                         </div>
                         <div class="form-group col-sm-8">
                             <span class="form-control form-control-static">{{ task.name }}</span>
@@ -59,6 +63,7 @@
                     </div>
                 </div>
             </td>
+
         </tr>
         <tr ng-show="!story.tasks.length">
             <td class="empty-content">

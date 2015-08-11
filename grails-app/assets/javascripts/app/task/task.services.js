@@ -25,7 +25,8 @@ services.factory('Task', [ 'Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action',
         {},
         {
-            activities: {method: 'GET', isArray: true, params: {action: 'activities'}}
+            activities: {method: 'GET', isArray: true, params: {action: 'activities'}},
+            listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}}
         });
 }]);
 
@@ -66,5 +67,8 @@ services.service("TaskService", ['$q', 'Task', 'Session', function($q, Task, Ses
             default:
                 return false;
         }
+    };
+    this.listByUser = function() {
+        return Task.listByUser().$promise;
     };
 }]);
