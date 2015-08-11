@@ -25,28 +25,16 @@
     <h4>${message(code:"is.dialog.wizard.section.planning")}</h4>
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.planning.help')}</p>
     <div class="row">
-            <div class="col-sm-6 col-xs-12 form-group">
-                <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
-                <is:localeTimeZone required="required"
-                                   class="form-control"
-                                   ng-required="isCurrentStep(4)"
-                                   name="project.preferences.timezone"
-                                   ng-model="project.preferences.timezone"
-                                   ui-select2=""></is:localeTimeZone>
-            </div>
-            <div class="col-sm-6 col-xs-12 form-group">
-                <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>
-                <input class="form-control"
-                       type="number"
-                       name="project.preferences.estimatedSprintsDuration"
-                       id="estimatedSprintsDuration"
-                       ng-pattern="/^[0-9]+$/"
-                       ng-required="isCurrentStep(4)"
-                       ng-model="project.preferences.estimatedSprintsDuration">
-            </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6 col-xs-12 form-group">
+        <div class="form-half">
+            <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
+            <is:localeTimeZone required="required"
+                               class="form-control"
+                               ng-required="isCurrentStep(4)"
+                               name="project.preferences.timezone"
+                               ng-model="project.preferences.timezone"
+                               ui-select2=""></is:localeTimeZone>
+        </div>
+        <div class="form-half">
             <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>
             <p class="input-group">
                 <input type="text"
@@ -65,7 +53,7 @@
                 </span>
             </p>
         </div>
-        <div class="col-sm-6 col-xs-12 form-group">
+        <div class="form-half" ng-if="type != 'newProject'">
             <label for="hideWeekend" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.hideWeekend"
@@ -76,7 +64,7 @@
         </div>
     </div>
     <div class="row" ng-if="type == 'newProject'">
-        <div class="form-group col-xs-12 col-sm-6">
+        <div class="form-half">
             <label for="initializeProject" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.initialize"
@@ -87,7 +75,7 @@
         </div>
     </div>
     <div class="row" ng-if="project.initialize">
-        <div class="col-sm-6 col-xs-12 form-group">
+        <div class="form-half">
             <label for="project.firstSprint">${message(code:'is.dialog.wizard.firstSprint')}</label>
             <p class="input-group">
                 <input type="text"
@@ -108,7 +96,7 @@
                 </span>
             </p>
         </div>
-        <div class="col-sm-6 col-xs-12 form-group">
+        <div class="form-half">
             <label for="project.endDate">${message(code:'is.dialog.wizard.project.endDate')}</label>
             <p class="input-group">
                 <input type="text"
@@ -127,6 +115,16 @@
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'endDate')"><i class="fa fa-calendar"></i></button>
                 </span>
             </p>
+        </div>
+        <div class="form-half">
+            <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>
+            <input class="form-control"
+                   type="number"
+                   name="project.preferences.estimatedSprintsDuration"
+                   id="estimatedSprintsDuration"
+                   ng-pattern="/^[0-9]+$/"
+                   ng-required="isCurrentStep(4)"
+                   ng-model="project.preferences.estimatedSprintsDuration">
         </div>
         <div class="col-sm-12 form-group">
             <label for="vision">${message(code:'is.release.vision')}</label>

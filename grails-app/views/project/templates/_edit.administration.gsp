@@ -31,7 +31,7 @@
     <h4>${message(code:"is.dialog.wizard.section.administration")}</h4>
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.administration.help')}</p>
     <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-half">
             <label for="webservices" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.webservices"

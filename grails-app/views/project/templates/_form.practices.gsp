@@ -35,7 +35,7 @@
                 ${message(code:'is.product.preferences.planification.noEstimation')}
             </label>
         </div>
-        <div class="form-group col-sm-6" ng-show="!project.preferences.noEstimation">
+        <div class="form-half" ng-show="!project.preferences.noEstimation">
             <label for="estimationSuite">${message(code:'is.product.preferences.planification.estimationSuite')}</label>
             <select class="form-control"
                     name="type"
@@ -50,7 +50,7 @@
     <h5>${message(code:"is.dialog.wizard.section.practices.sprint")}</h5>
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.practices.sprint.help')}</p>
     <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-half">
             <label for="autoDoneStory" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.autoDoneStory"
@@ -59,7 +59,7 @@
                 ${message(code:'is.product.preferences.sprint.autoDoneStory')}
             </label>
         </div>
-        <div class="form-group col-sm-6">
+        <div class="form-half">
             <label for="autoCreateTaskOnEmptyStory" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.autoCreateTaskOnEmptyStory"
@@ -68,7 +68,7 @@
                 ${message(code:'is.product.preferences.sprint.autoCreateTaskOnEmptyStory')}
             </label>
         </div>
-        <div class="form-group col-sm-6">
+        <div class="form-half">
             <label for="assignOnCreateTask" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.assignOnCreateTask"
@@ -77,7 +77,7 @@
                 ${message(code:'is.product.preferences.sprint.assignOnCreateTask')}
             </label>
         </div>
-        <div class="form-group col-sm-6">
+        <div class="form-half">
             <label for="assignOnBeginTask" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.assignOnBeginTask"
@@ -86,7 +86,7 @@
                 ${message(code:'is.product.preferences.sprint.assignOnBeginTask')}
             </label>
         </div>
-        <div class="form-group col-sm-6">
+        <div class="form-half">
             <label for="displayRecurrentTasks" class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.displayRecurrentTasks"
@@ -106,7 +106,7 @@
                 ${message(code:'is.product.preferences.sprint.displayUrgentTasks')}
             </label>
         </div>
-        <div class="form-group col-sm-6" ng-show="project.preferences.displayUrgentTasks">
+        <div class="form-half" ng-show="project.preferences.displayUrgentTasks">
             <label for="limitUrgentTasks">${message(code:'is.product.preferences.sprint.limitUrgentTasks')}</label>
             <input type="number"
                    class="form-control"

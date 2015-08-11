@@ -53,7 +53,7 @@
                                         tooltip="${message(code:'todo.is.ui.comment.delete')}"><span class="fa fa-times"></span>
                                 </button>
                             </div>
-                            <div class="col-sm-6 form-group">
+                            <div class="form-half">
                                 <span disabled="disabled" class="form-control form-control-static">{{comment.poster | userFullName}}</span>
                             </div>
                             <div class="col-sm-5 form-group text-right">
