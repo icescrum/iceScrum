@@ -826,6 +826,25 @@ tr:hover .on-hover span {
   }
 }
 
+.progress.form-bar {
+  border: none;
+  padding: 3px;
+  margin-bottom: 0;
+  background-color: @brand-primary;
+  .progress-bar {
+    background-color: @gray-lighter;
+    color: @gray;
+    border-right: 3px solid @brand-primary;
+    span {
+      display: inline-block;
+      padding: 6px 0;
+    }
+    &.last-bar {
+      border: none;
+    }
+  }
+}
+
 .progress-bar-suggested {
   background-color:@state-suggested;
 }

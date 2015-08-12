@@ -151,11 +151,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     $scope.currentProject = Session.getProject();
 }]);
 
-
-
-
-
-    controllers.controller('publicproject', ['$scope', 'ProjectService', function($scope, ProjectService) {
+controllers.controller('publicproject', ['$scope', 'ProjectService', function($scope, ProjectService) {
     $scope.openProject = function (project) {
         document.location = $scope.serverUrl + '/p/' + project.pkey;
     };
@@ -164,7 +160,6 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
         $scope.projects = projectsAndTotal.projects;
     });
 }]);
-
 
 controllers.controller('userproject', ['$scope', 'ProjectService', function($scope, ProjectService) {
     $scope.openProject = function (project) {
@@ -175,7 +170,6 @@ controllers.controller('userproject', ['$scope', 'ProjectService', function($sco
         $scope.projects = projectsAndTotal.projects;
     });
 }]);
-
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
     $scope.searchUsers = function(val, isPo) {
@@ -297,6 +291,26 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     $scope.projectMembersEditable = function() {
         return true;
     };
+    $scope.computePlanning = function() {
+        $scope.totalDuration = $scope.duration($scope.project.firstSprint, $scope.project.endDate);
+        if ($scope.project.preferences.estimatedSprintsDuration > $scope.totalDuration) {
+            $scope.project.preferences.estimatedSprintsDuration = $scope.totalDuration;
+        }
+        var sprintDuration = $scope.project.preferences.estimatedSprintsDuration;
+        var nbSprints = Math.floor($scope.totalDuration / sprintDuration);
+        $scope.sprints = [];
+        for (var i = 1; i <= nbSprints; i++) {
+            var startDate = new Date($scope.project.firstSprint);
+            startDate.setDate($scope.project.firstSprint.getDate() + (i - 1) * sprintDuration);
+            var endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + sprintDuration);
+            $scope.sprints.push({ orderNumber : i, startDate: startDate, endDate: endDate });
+        }
+    };
+    $scope.duration = function(startDateString, endDateString) {
+        var duration = new Date(endDateString) - new Date(startDateString);
+        return Math.floor(duration / (1000 * 3600 * 24)) + 1;
+    };
     // Init
     $scope.project = new Project();
     var today = new Date();
@@ -339,6 +353,9 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
         $scope.sprintMaxStartDate = $scope.projectMaxStartDate;
         $scope.sprintMinStartDate = startDate;
     });
+    $scope.totalDuration = 0;
+    $scope.sprints = [];
+    $scope.computePlanning();
 }]);
 
 controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {

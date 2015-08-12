@@ -37,6 +37,9 @@
         <div class="form-half">
             <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>
             <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'startDate')"><i class="fa fa-calendar"></i></button>
+                </span>
                 <input type="text"
                        class="form-control"
                        name="project.startDate"
@@ -48,9 +51,6 @@
                        show-button-bar="false"
                        max-date="projectMaxStartDate"
                        ng-required="isCurrentStep(4)"/>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'startDate')"><i class="fa fa-calendar"></i></button>
-                </span>
             </div>
         </div>
         <div class="form-half" ng-if="type != 'newProject'">
@@ -75,13 +75,17 @@
         </div>
     </div>
     <div class="row" ng-if="project.initialize">
-        <div class="form-half">
+        <div class="form-group col-md-4">
             <label for="project.firstSprint">${message(code:'is.dialog.wizard.firstSprint')}</label>
             <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'firstSprint')"><i class="fa fa-calendar"></i></button>
+                </span>
                 <input type="text"
                        class="form-control"
                        name="project.firstSprint"
                        ng-model="project.firstSprint"
+                       ng-change="computePlanning()"
                        datepicker-popup="{{firstSprint.format}}"
                        datepicker-options="firstSprint"
                        is-open="firstSprint.opened"
@@ -91,18 +95,30 @@
                        max-date="sprintMaxStartDate"
                        ng-class="{current:step.selected}"
                        ng-required="isCurrentStep(4)"/>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'firstSprint')"><i class="fa fa-calendar"></i></button>
-                </span>
             </div>
         </div>
-        <div class="form-half">
-            <label for="project.endDate">${message(code:'is.dialog.wizard.project.endDate')}</label>
+        <div class="form-group col-md-4">
+            <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>
+            <div class="input-group">
+                <input class="form-control"
+                       type="number"
+                       name="project.preferences.estimatedSprintsDuration"
+                       id="estimatedSprintsDuration"
+                       ng-pattern="/^[0-9]+$/"
+                       ng-required="isCurrentStep(4)"
+                       ng-change="computePlanning()"
+                       ng-model="project.preferences.estimatedSprintsDuration">
+                <div class="input-group-addon">${message(code:'is.dialog.wizard.project.days')}</div>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="project.endDate" class="text-right">${message(code:'is.dialog.wizard.project.endDate')}</label>
             <div class="input-group">
                 <input type="text"
-                       class="form-control"
+                       class="form-control text-right"
                        name="project.endDate"
                        ng-model="project.endDate"
+                       ng-change="computePlanning()"
                        datepicker-popup="{{endDate.format}}"
                        datepicker-options="endDate"
                        is-open="endDate.opened"
@@ -116,15 +132,15 @@
                 </span>
             </div>
         </div>
-        <div class="form-half">
-            <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>
-            <input class="form-control"
-                   type="number"
-                   name="project.preferences.estimatedSprintsDuration"
-                   id="estimatedSprintsDuration"
-                   ng-pattern="/^[0-9]+$/"
-                   ng-required="isCurrentStep(4)"
-                   ng-model="project.preferences.estimatedSprintsDuration">
+        <div class="col-sm-12 form-group">
+            <progress class="form-control-static form-bar" max="totalDuration">
+                <bar ng-repeat="sprint in sprints"
+                     class="{{ $last ? 'last-bar' : '' }}"
+                     tooltip="{{ sprint.startDate }} -> {{ sprint.endDate }}"
+                     value="project.preferences.estimatedSprintsDuration">
+                    #{{ sprint.orderNumber }}
+                </bar>
+            </progress>
         </div>
         <div class="col-sm-12 form-group">
             <label for="vision">${message(code:'is.release.vision')}</label>
