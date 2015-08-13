@@ -99,7 +99,7 @@ filters
             return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '$2') : "";
         };
     })
-    .filter('i18n', ['StoryStates', 'FeatureStates', function(StoryStates, FeatureStates) {
+    .filter('i18n', ['StoryStates', 'FeatureStates', 'SprintStates', function(StoryStates, FeatureStates, SprintStates) {
         return function(id, type) {
             if (id) {
                 if (type == 'storyState'){
@@ -107,6 +107,9 @@ filters
                 }
                 if (type == 'featureState') {
                     return FeatureStates[id].value;
+                }
+                if (type == 'sprintState') {
+                    return SprintStates[id].value;
                 }
             }
         }

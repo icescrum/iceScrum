@@ -498,6 +498,11 @@ isApp.config(['$stateProvider', '$httpProvider',
             });
         };
 
+        $rootScope.durationBetweenDates = function(startDateString, endDateString) {
+            var duration = new Date(endDateString) - new Date(startDateString);
+            return Math.floor(duration / (1000 * 3600 * 24)) + 1;
+        };
+
         //init push system
         var request = {
             url: $rootScope.serverUrl + '/stream/app/product-1',
@@ -621,6 +626,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         0: {"value": "todo.To do", "code": "wait"},
         1: {"value": "todo.In progress", "code": "inprogress"},
         2: {"value": "todo.Done", "code": "done"}
+    })
+    .constant('SprintStates', {
+        1: {"value": "todo.To do", "code": "wait"},
+        2: {"value": "todo.In progress", "code": "inprogress"},
+        3: {"value": "todo.Done", "code": "done"}
     })
     .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
         PO_SM: 'PO_SM',
