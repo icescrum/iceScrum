@@ -219,31 +219,29 @@ class ReleasePlanController {
         forward(action: 'edit', controller: 'story', params: [referrer: controllerName])
     }
 
-    def vision() {
-        withRelease{ Release release ->
-            render(template: 'window/visionView', model: [release: release])
-        }
+    def vision(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        render(template: 'window/visionView', model: [release: release])
     }
 
     def releaseBurndownChart() {
         forward(action:"releaseBurndownChartCached", params:params)
     }
 
-    def releaseBurndownChartCached() {
-        withRelease{ Release release ->
-            def values = releaseService.releaseBurndownValues(release)
-            if (values.size() > 0) {
-                render(template: 'charts/releaseBurndownChart', model: [
-                        userstories: values.userstories as JSON,
-                        technicalstories: values.technicalstories as JSON,
-                        defectstories: values.defectstories as JSON,
-                        labels: values.label as JSON,
-                        userstoriesLabels: values*.userstoriesLabel as JSON,
-                        technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
-                        defectstoriesLabels: values*.defectstoriesLabel as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
-            }
+    def releaseBurndownChartCached(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def values = releaseService.releaseBurndownValues(release)
+        if (values.size() > 0) {
+            render(template: 'charts/releaseBurndownChart', model: [
+                    userstories: values.userstories as JSON,
+                    technicalstories: values.technicalstories as JSON,
+                    defectstories: values.defectstories as JSON,
+                    labels: values.label as JSON,
+                    userstoriesLabels: values*.userstoriesLabel as JSON,
+                    technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
+                    defectstoriesLabels: values*.defectstoriesLabel as JSON])
+        } else {
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -251,24 +249,22 @@ class ReleasePlanController {
         forward(action:"releaseParkingLotChartCached", params:params)
     }
 
-    def releaseParkingLotChartCached() {
-        withRelease{ Release release ->
-            def values = featureService.releaseParkingLotValues(release)
-
-            def valueToDisplay = []
-            def indexF = 1
-            values.value?.each {
-                def value = []
-                value << new DecimalFormat("#.##").format(it).toString()
-                value << indexF
-                valueToDisplay << value
-                indexF++
-            }
-            if (valueToDisplay.size() > 0)
-                render(template: 'charts/releaseParkingLot', model: [values: valueToDisplay as JSON, featuresNames: values.label as JSON])
-            else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
-            }
+    def releaseParkingLotChartCached(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def values = featureService.releaseParkingLotValues(release)
+        def valueToDisplay = []
+        def indexF = 1
+        values.value?.each {
+            def value = []
+            value << new DecimalFormat("#.##").format(it).toString()
+            value << indexF
+            valueToDisplay << value
+            indexF++
+        }
+        if (valueToDisplay.size() > 0)
+            render(template: 'charts/releaseParkingLot', model: [values: valueToDisplay as JSON, featuresNames: values.label as JSON])
+        else {
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -276,23 +272,21 @@ class ReleasePlanController {
         forward(action:"notesCached", params:params)
     }
 
-    def notesCached() {
-        withRelease{ Release release ->
-            render(status:200,
-                    template: 'window/notes',
-                    model:[ release:release,
-                            tasks:release.sprints*.tasks.flatten().findAll{ it.type == Task.TYPE_URGENT && it.state == Task.STATE_DONE },
-                            technicalStories:release.sprints*.stories.flatten().findAll{ it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE },
-                            userStories:release.sprints*.stories.flatten().findAll{it.type == Story.TYPE_USER_STORY && it.state == Story.STATE_DONE},
-                            defectStories:release.sprints*.stories.flatten().findAll{it.type == Story.TYPE_DEFECT && it.state == Story.STATE_DONE}])
-        }
+    def notesCached(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        render(status:200,
+                template: 'window/notes',
+                model:[ release:release,
+                        tasks:release.sprints*.tasks.flatten().findAll{ it.type == Task.TYPE_URGENT && it.state == Task.STATE_DONE },
+                        technicalStories:release.sprints*.stories.flatten().findAll{ it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE },
+                        userStories:release.sprints*.stories.flatten().findAll{it.type == Story.TYPE_USER_STORY && it.state == Story.STATE_DONE},
+                        defectStories:release.sprints*.stories.flatten().findAll{it.type == Story.TYPE_DEFECT && it.state == Story.STATE_DONE}])
     }
 
     @Secured('inProduct()')
-    def addDocument() {
-        withRelease { Release release ->
-            def dialog = g.render(template: '/attachment/dialogs/documents', model: [bean:release, destController:'release'])
-            render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
-        }
+    def addDocument(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def dialog = g.render(template: '/attachment/dialogs/documents', model: [bean:release, destController:'release'])
+        render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
     }
 }

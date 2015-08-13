@@ -193,19 +193,17 @@ class TimelineController {
 
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def edit() {
-        withRelease{ Release release ->
-            def product = release.parentProduct
-            def previousRelease = release.previousRelease
-            def nextRelease = release.nextRelease
-
-            render(template: 'window/manage', model: [
-                    product: product,
-                    release: release,
-                    next: nextRelease?.id ?: null,
-                    previousRelease: previousRelease,
-            ])
-        }
+    def edit(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def _product = release.parentProduct
+        def previousRelease = release.previousRelease
+        def nextRelease = release.nextRelease
+        render(template: 'window/manage', model: [
+                product: _product,
+                release: release,
+                next: nextRelease?.id ?: null,
+                previousRelease: previousRelease,
+        ])
     }
 
     def productCumulativeFlowChart() {

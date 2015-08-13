@@ -38,36 +38,35 @@ class SprintController {
     def springSecurityService
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def save() {
+    def save(long product) {
         def sprintParams = params.sprint
         def releaseId = params.parentRelease?.id ?: sprintParams.parentRelease?.id
         if (!releaseId) {
             returnError(text: message(code: 'is.release.error.not.exist'))
             return
         }
-        withRelease(releaseId.toLong()) { Release release ->
-            if (sprintParams.startDate) {
-                sprintParams.startDate = new Date().parse(message(code: 'is.date.format.short'), sprintParams.startDate)
+        Release release = Release.withRelease(product, releaseId.toLong())
+        if (sprintParams.startDate) {
+            sprintParams.startDate = new Date().parse(message(code: 'is.date.format.short'), sprintParams.startDate)
+        }
+        if (sprintParams.endDate) {
+            sprintParams.endDate = new Date().parse(message(code: 'is.date.format.short'), sprintParams.endDate)
+        }
+        Sprint sprint = new Sprint()
+        try {
+            Sprint.withTransaction {
+                bindData(sprint, sprintParams, [include: ['resource', 'goal', 'startDate', 'endDate', 'deliveredVersion']])
+                sprintService.save(sprint, release)
             }
-            if (sprintParams.endDate) {
-                sprintParams.endDate = new Date().parse(message(code: 'is.date.format.short'), sprintParams.endDate)
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+                json { renderRESTJSON(text: sprint, status: 201) }
+                xml { renderRESTXML(text: sprint, status: 201) }
             }
-            Sprint sprint = new Sprint()
-            try {
-                Sprint.withTransaction {
-                    bindData(sprint, sprintParams, [include: ['resource', 'goal', 'startDate', 'endDate', 'deliveredVersion']])
-                    sprintService.save(sprint, release)
-                }
-                withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                    json { renderRESTJSON(text: sprint, status: 201) }
-                    xml { renderRESTXML(text: sprint, status: 201) }
-                }
-            } catch (IllegalStateException e) {
-                returnError(exception: e)
-            } catch (RuntimeException e) {
-                returnError(object: sprint, exception: e)
-            }
+        } catch (IllegalStateException e) {
+            returnError(exception: e)
+        } catch (RuntimeException e) {
+            returnError(object: sprint, exception: e)
         }
     }
 
@@ -168,24 +167,14 @@ class SprintController {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    def list() {
-        if (request?.format == 'html') {
-            render(status: 404)
-            return
-        }
-        if (params.id) {
-            withRelease { Release release ->
-                withFormat {
-                    json { renderRESTJSON(text: release.sprints) }
-                    xml { renderRESTXML(text: release.sprints) }
-                }
-            }
-        } else {
-            def release = Release.findCurrentOrNextRelease(params.product).list()[0]
-            withFormat {
-                json { renderRESTJSON(text: release.sprints) }
-                xml { renderRESTXML(text: release.sprints) }
-            }
+    @Secured('isAuthenticated()')
+    def list(long product, Long id) {
+        Release release = id ? Release.withRelease(product, id) : Release.findCurrentOrNextRelease(product).list()[0]
+        def sprints = release.sprints
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: sprints as JSON) }
+            json { renderRESTJSON(text: sprints) }
+            xml { renderRESTXML(text: sprints) }
         }
     }
 }

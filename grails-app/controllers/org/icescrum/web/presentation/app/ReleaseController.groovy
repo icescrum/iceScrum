@@ -22,13 +22,11 @@
  */
 package org.icescrum.web.presentation.app
 
-import org.icescrum.core.domain.Release
-
-import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.Product
-
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
 
 @Secured('inProduct()')
 class ReleaseController {
@@ -51,147 +49,140 @@ class ReleaseController {
         def release = new Release()
         try {
             Release.withTransaction {
-                bindData(release, releaseParams, [include:['name','goal','startDate','endDate']])
+                bindData(release, releaseParams, [include: ['name', 'goal', 'startDate', 'endDate']])
                 releaseService.save(release, _product)
             }
             withFormat {
                 html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { renderRESTJSON(text:release, status: 201) }
-                xml  { renderRESTXML(text:release, status: 201) }
+                json { renderRESTJSON(text: release, status: 201) }
+                xml { renderRESTXML(text: release, status: 201) }
             }
-        }catch (IllegalStateException e) {
-            returnError(exception:e)
+        } catch (IllegalStateException e) {
+            returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:release, exception:e)
+            returnError(object: release, exception: e)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def update() {
+    def update(long product, long id) {
         def releaseParams = params.release
-        withRelease{ Release release ->
-            if (release.state == Release.STATE_DONE){
-                returnError(text:message(code:'is.release.error.update.state.done'))
-                return
-            }
-            def startDate = releaseParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.startDate) : release.startDate
-            def endDate = releaseParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.endDate) : release.endDate
-            Release.withTransaction {
-                bindData(release, releaseParams, [include: ['name', 'goal', 'vision']], "release")
-                releaseService.update(release, startDate, endDate)
-            }
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text:release as JSON }
-                json { renderRESTJSON(text:release) }
-                xml  { renderRESTXML(text:release) }
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def delete() {
-        withRelease{ Release release ->
-            releaseService.delete(release)
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { render status: 204 }
-                xml  { render status: 204 }
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def close() {
-        withRelease{ Release release ->
-            releaseService.close(release)
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { renderRESTJSON(text:release) }
-                xml  { renderRESTXML(text:release) }
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def activate() {
-        withRelease{ Release release ->
-            releaseService.activate(release)
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: release as JSON }
-                json { renderRESTJSON(text:release) }
-                xml  { renderRESTXML(text:release) }
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def autoPlan() {
-        withRelease{ Release release ->
-            def capacity = params.capacity instanceof String ? params.capacity.replaceAll(',','.').toBigDecimal() : params.capacity
-            def plannedStories = storyService.autoPlan(release, capacity)
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: plannedStories as JSON }
-                json { renderRESTJSON(text:plannedStories, status: 201) }
-                xml { renderRESTXML(text:plannedStories, status: 201) }
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def unPlan() {
-        withRelease{ Release release ->
-            def sprints = Sprint.findAllByParentRelease(release)
-            def unPlanAllStories = []
-            if (sprints) {
-                unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
-            }
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON }
-                json { render status: 204, contentType: 'application/json', text: '' }
-                xml { render status: 204, contentType: 'text/xml', text: '' }
-            }
-        }
-    }
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def generateSprints() {
-        withRelease{ Release release ->
-            def sprints = sprintService.generateSprints(release)
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: sprints as JSON }
-                json { renderRESTJSON(text:sprints, status: 201) }
-                xml { renderRESTXML(text:sprints, status: 201) }
-            }
-        }
-    }
-
-    def index() {
-        if (request?.format == 'html'){
-            render(status:404)
+        Release release = Release.withRelease(product, id)
+        if (release.state == Release.STATE_DONE) {
+            returnError(text: message(code: 'is.release.error.update.state.done'))
             return
         }
+        def startDate = releaseParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.startDate) : release.startDate
+        def endDate = releaseParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.endDate) : release.endDate
+        Release.withTransaction {
+            bindData(release, releaseParams, [include: ['name', 'goal', 'vision']], "release")
+            releaseService.update(release, startDate, endDate)
+        }
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: release as JSON }
+            json { renderRESTJSON(text: release) }
+            xml { renderRESTXML(text: release) }
+        }
+    }
 
-        withRelease{ Release release ->
-            withFormat {
-                json { renderRESTJSON(text:release) }
-                xml  { renderRESTXML(text:release) }
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def delete(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        releaseService.delete(release)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: release as JSON }
+            json { render status: 204 }
+            xml { render status: 204 }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def close(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        releaseService.close(release)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: release as JSON }
+            json { renderRESTJSON(text: release) }
+            xml { renderRESTXML(text: release) }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def activate(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        releaseService.activate(release)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: release as JSON }
+            json { renderRESTJSON(text: release) }
+            xml { renderRESTXML(text: release) }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def autoPlan(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def capacity = params.capacity instanceof String ? params.capacity.replaceAll(',', '.').toBigDecimal() : params.capacity
+        def plannedStories = storyService.autoPlan(release, capacity)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: plannedStories as JSON }
+            json { renderRESTJSON(text: plannedStories, status: 201) }
+            xml { renderRESTXML(text: plannedStories, status: 201) }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def unPlan(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def sprints = Sprint.findAllByParentRelease(release)
+        def unPlanAllStories = []
+        if (sprints) {
+            unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
+        }
+        withFormat {
+            html {
+                render status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON
             }
+            json { render status: 204, contentType: 'application/json', text: '' }
+            xml { render status: 204, contentType: 'text/xml', text: '' }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def generateSprints(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def sprints = sprintService.generateSprints(release)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: sprints as JSON }
+            json { renderRESTJSON(text: sprints, status: 201) }
+            xml { renderRESTXML(text: sprints, status: 201) }
+        }
+    }
+
+    def index(long product, long id) {
+        if (request?.format == 'html') {
+            render(status: 404)
+            return
+        }
+        Release release = Release.withRelease(product, id)
+        withFormat {
+            json { renderRESTJSON(text: release) }
+            xml { renderRESTXML(text: release) }
         }
     }
 
     def show() {
-        redirect(action:'index', controller: controllerName, params:params)
+        redirect(action: 'index', controller: controllerName, params: params)
     }
 
     def list(long product) {
-        if (request?.format == 'html'){
-            render(status:404)
+        if (request?.format == 'html') {
+            render(status: 404)
             return
         }
         Product _product = Product.withProduct(product)
         withFormat {
-            json { renderRESTJSON(text:_product.releases) }
-            xml  { renderRESTXML(text:_product.releases) }
+            json { renderRESTJSON(text: _product.releases) }
+            xml { renderRESTXML(text: _product.releases) }
         }
     }
 }
