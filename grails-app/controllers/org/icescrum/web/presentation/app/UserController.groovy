@@ -161,7 +161,7 @@ class UserController {
                                         autoFollow:params.remove('user.preferences.emailsSettings.autoFollow'),
                                         onUrgentTask:params.remove('user.preferences.emailsSettings.onUrgentTask')]
             }
-            bindData(user, params, [include:['firstName','lastName','email']], "user")
+            bindData(user, params, [include:['firstName','lastName','email', 'notes']], "user")
             //preferences using as Map for REST & HTTP support
             if (params.user.preferences){
                 bindData(user.preferences, params.user.preferences as Map, [include:['language', 'filterTask', 'activity']], "")

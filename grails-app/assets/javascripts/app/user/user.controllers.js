@@ -52,3 +52,14 @@ controllers.controller('userCtrl', ['$scope', 'UserService', 'User', 'Session', 
     $scope.formHolder = {};
     $scope.dataUser = angular.copy(Session.user);
 }]);
+
+controllers.controller('savenote', ['$scope', 'UserService', 'Session', function ($scope, UserService, Session) {
+    $scope.update = function (user) {
+        UserService.update(user).then(function (userUpdated) {
+            angular.extend(Session.user, userUpdated);
+        });
+
+    };
+    $scope.editableUser=angular.copy(Session.user);
+
+}]);

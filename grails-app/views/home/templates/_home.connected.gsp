@@ -27,44 +27,28 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div class="panel panel-primary">
+        <div  ng-controller="savenote" class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.notes')}</div>
             <div class="panel-body">
                 <div class="form-group">
                     <label for="notes">${message(code:'is.backlogelement.notes')}</label>
                     <textarea is-markitup
-                              ng-maxlength="5000"
                               class="form-control"
                               name="notes"
-                              ng-model="editableStory.notes"
-                              is-model-html="editableStory.notes_html"
+                              ng-model="editableUser.notes"
+                              is-model-html="editableUser.notes_html"
                               ng-show="showNotesTextarea"
-                              ng-blur="showNotesTextarea = false"
+                              ng-blur="showNotesTextarea = false; update(editableUser)"
                               placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                     <div class="markitup-preview"
                          ng-disabled="true"
                          ng-show="!showNotesTextarea"
                          ng-click="showNotesTextarea = true"
-                         ng-focus="editForm(true); showNotesTextarea = getShowStoryForm(story)"
-                         ng-class="{'placeholder': !editableStory.notes_html}"
+                         ng-focus="editForm(true)"
+                         ng-class="{'placeholder': !editableUser.notes_html}"
                          tabindex="0"
-                         ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+                         ng-bind-html="(editableUser.notes_html ? editableUser.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"> </div>
                 </div>
-                <div class="btn-toolbar" ng-if="getShowStoryForm(story) && getEditableMode()">
-                    <button class="btn btn-primary pull-right"
-                            ng-disabled="!isDirty() || formHolder.storyForm.$invalid"
-                            tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
-                            tooltip-append-to-body="true"
-                            type="submit">
-                        ${message(code:'todo.is.ui.update')}
-                    </button>
-                    <button class="btn confirmation btn-default pull-right"
-                            tooltip-append-to-body="true"
-                            tooltip="${message(code:'is.button.cancel')}"
-                            type="button"
-                            ng-click="editForm(false)">
-                        ${message(code:'is.button.cancel')}
-                    </button>
                 </div>
             </div>
             </div>

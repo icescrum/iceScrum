@@ -116,7 +116,8 @@ icescrum.marshaller = [
               include:['tags']],
 
         user:[exclude: ['password','accountExpired','accountLocked','passwordExpired'],
-              asShort:['firstName', 'lastName']],
+              asShort:['firstName', 'lastName'],
+              textile:['notes']],
 
         actor:[include:['tags', 'attachments'],
                withIds:['stories']],
