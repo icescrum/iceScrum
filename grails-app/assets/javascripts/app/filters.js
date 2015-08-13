@@ -99,18 +99,11 @@ filters
             return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '$2') : "";
         };
     })
-    .filter('i18n', ['StoryStates', 'FeatureStates', 'SprintStates', function(StoryStates, FeatureStates, SprintStates) {
-        return function(id, type) {
-            if (id) {
-                if (type == 'storyState'){
-                    return StoryStates[id].value;
-                }
-                if (type == 'featureState') {
-                    return FeatureStates[id].value;
-                }
-                if (type == 'sprintState') {
-                    return SprintStates[id].value;
-                }
+    .filter('i18n', ['$injector', function($injector) {
+        return function(key, bundleName) {
+            if (key) {
+                // Inject the constant bundle by name, see app.js .constant('...
+                return $injector.get(bundleName)[key].value;
             }
         }
     }])

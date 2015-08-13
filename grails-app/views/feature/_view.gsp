@@ -81,7 +81,7 @@
                 <div class="progress-bar" style="width:16.666666666666668%">
                 </div>
             </div>
-            <div class="state">{{ feature.state | i18n:'featureState' }}</div>
+            <div class="state">{{ feature.state | i18n:'FeatureStates' }}</div>
         </div>
     </div>
 </div>

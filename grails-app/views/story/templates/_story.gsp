@@ -120,7 +120,7 @@
             <div class="progress-bar" style="width: {{ story.state | stateProgress }}%">
             </div>
         </div>
-        <div ng-if="story.state > 1" class="state" title="{{ story.state | i18n:'storyState' }}">{{ story.state | i18n:'storyState' }}</div>
+        <div ng-if="story.state > 1" class="state" title="{{ story.state | i18n:'StoryStates' }}">{{ story.state | i18n:'StoryStates' }}</div>
     </div>
 </div>
 </script>
