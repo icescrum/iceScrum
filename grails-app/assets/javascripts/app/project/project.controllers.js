@@ -59,6 +59,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                     });
                 };
                 // Init
+                $scope.release = {};
                 $scope.totalProjects = 0;
                 $scope.currentPage = 1;
                 $scope.projectsPerPage = 9; // Constant
@@ -292,7 +293,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
         return true;
     };
     $scope.computePlanning = function() {
-        $scope.totalDuration = $scope.duration($scope.project.firstSprint, $scope.project.endDate);
+        $scope.totalDuration = $scope.durationBetweenDates($scope.project.firstSprint, $scope.project.endDate);
         if ($scope.project.preferences.estimatedSprintsDuration > $scope.totalDuration) {
             $scope.project.preferences.estimatedSprintsDuration = $scope.totalDuration;
         }
@@ -306,10 +307,6 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
             endDate.setDate(startDate.getDate() + sprintDuration);
             $scope.sprints.push({ orderNumber : i, startDate: startDate, endDate: endDate });
         }
-    };
-    $scope.duration = function(startDateString, endDateString) {
-        var duration = new Date(endDateString) - new Date(startDateString);
-        return Math.floor(duration / (1000 * 3600 * 24)) + 1;
     };
     // Init
     $scope.project = new Project();

@@ -831,9 +831,25 @@ tr:hover .on-hover span {
   padding: 3px;
   margin-bottom: 0;
   background-color: @brand-primary;
+  .progress-empty {
+    display: block;
+    text-align: center;
+    padding: 5px 0;
+    color: @progress-bar-color;
+  }
   .progress-bar {
-    background-color: @gray-lighter;
-    color: @gray;
+    &.progress-bar-default {
+      background-color: @gray-lighter;
+      color: @gray;
+    }
+    &.progress-bar-progress {
+      background-color: #b5c7eb;
+      color: @gray;
+    }
+    &.progress-bar-done {
+      background-color: #c9e8a9;
+      color: @gray;
+    }
     border-right: 3px solid @brand-primary;
     span {
       display: inline-block;

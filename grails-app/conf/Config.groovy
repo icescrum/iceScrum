@@ -99,6 +99,7 @@ icescrum.push.enable = true
 
 //remove total*
 icescrum.marshaller = [
+        product:[textile:['description']],
         story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed'],
                includeCount:['comments'],
                textile:['notes'],
@@ -124,11 +125,12 @@ icescrum.marshaller = [
         feature:[include:['countDoneStories','state','effort','tags','attachments'],
                  withIds:['stories'],
                  asShort:['color', 'name']],
-        sprint:[include:['activable','totalRemaining'],
+        sprint:[include:['activable','totalRemaining', 'duration'],
                 exclude:['cliches'],
                 asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
-        release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
-                exclude:['cliches']
+        release:[include:['duration'],
+                 asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
+                 exclude:['cliches']
         ],
         activity: [include: ['important']],
 
