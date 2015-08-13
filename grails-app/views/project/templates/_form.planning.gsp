@@ -136,7 +136,8 @@
             <progress class="form-control-static form-bar" max="totalDuration">
                 <bar ng-repeat="sprint in sprints"
                      class="{{ $last ? 'last-bar' : '' }}"
-                     tooltip="{{ sprint.startDate }} -> {{ sprint.endDate }}"
+                     tooltip-template="'sprint.tooltip.html'"
+                     type="default"
                      value="project.preferences.estimatedSprintsDuration">
                     #{{ sprint.orderNumber }}
                 </bar>
