@@ -30,3 +30,4 @@
 <g:render template="/project/templates/edit.planning" />
 <g:render template="/project/templates/edit.administration" />
 <g:render template="/project/templates/user.item" />
+<g:render template="/project/templates/project.details" />

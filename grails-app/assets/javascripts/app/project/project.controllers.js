@@ -42,7 +42,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             controller: ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, ProjectService, ReleaseService, SprintService) {
                 // Functions
                 $scope.selectProject = function(project) {
-                    $scope.selectedProject = project;
+                    $scope.project = project;
                     ProjectService.countMembers(project).then(function(count) {
                         $scope.projectMembersCount = count;
                     });
@@ -64,7 +64,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                     listFunction($scope.projectSearch, offset).then(function(projectsAndTotal) {
                         $scope.totalProjects = projectsAndTotal.total;
                         $scope.projects = projectsAndTotal.projects;
-                        if (!_.isEmpty($scope.projects) && _.isEmpty($scope.selectedProject)) {
+                        if (!_.isEmpty($scope.projects) && _.isEmpty($scope.project)) {
                             $scope.selectProject(_.first($scope.projects));
                         }
                     });
@@ -76,7 +76,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                 $scope.projectsPerPage = 9; // Constant
                 $scope.projectSearch = '';
                 $scope.projects = [];
-                $scope.selectedProject = {};
+                $scope.project = {};
                 $scope.projectMembersCount = 0;
                 $scope.searchProjects();
             }]

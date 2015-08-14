@@ -22,7 +22,7 @@
 --}%
 
 <is:modal title="${message(code: 'is.dialog.browse.projects')}"
-          form="openProject(selectedProject)"
+          form="openProject(project)"
           submitButton="${message(code:'todo.is.ui.open')}"
           class="split-modal"
           footer="false">
@@ -34,8 +34,8 @@
                     <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
                 </span>
             </div>
-            <li ng-class="{ 'current': selectedProject.id == project.id }" ng-repeat="project in projects">
-                <a ng-click="selectProject(project)" href>{{ project.name }}</a>
+            <li ng-class="{ 'current': currentProject.id == project.id }" ng-repeat="currentProject in projects">
+                <a ng-click="selectProject(currentProject)" href>{{ currentProject.name }}</a>
             </li>
             <pagination boundary-links="true"
                         previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
@@ -52,29 +52,7 @@
                 ${ message(code: 'is.dialog.browse.noproject') }
             </div>
             <div class="col-md-12" ng-switch-default>
-                <h4 class="pull-right"><i class="fa fa-users"/> {{ selectedProject.team.name }}</h4>
-                <h4>{{ selectedProject.name }} ({{ selectedProject.pkey }})</h4>
-                <div class="row">
-                    <div class="col-md-6" ng-bind-html="(selectedProject.description_html ? selectedProject.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
-                    <div class="col-md-6">PLACEHOLDER CHART</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4"><i class="fa fa-user"/> {{ projectMembersCount }} ${ message(code: 'todo.is.ui.members') }</div>
-                    <div class="col-md-4"><i class="fa fa-sticky-note"/> {{ selectedProject.stories_count }} ${ message(code: 'todo.is.ui.stories') }</div>
-                    <div class="col-md-4"><i class="fa fa-calendar"/> {{ selectedProject.releases_count }} ${ message(code: 'todo.is.ui.releases') }</div>
-                </div>
-                <h5>${ message(code:'todo.is.ui.release')} {{ release.name }}</h5>
-                <progress class="form-control-static form-bar" max="release.duration">
-                    <bar ng-repeat="sprint in release.sprints"
-                         class="{{ $last ? 'last-bar' : '' }}"
-                         tooltip-template="'sprint.tooltip.html'"
-                         tooltip-placement="bottom"
-                         type="{{ { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] }}"
-                         value="sprint.duration">
-                        #{{ sprint.orderNumber }}
-                    </bar>
-                    <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
-                </progress>
+                <div ng-include="'project.details.html'"></div>
             </div>
         </div>
     </div>
