@@ -128,7 +128,7 @@ class ProjectController {
                 productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
                 productService.addTeamToProduct(product, team)
                 if (productParams.initialize){
-                    def release = new Release(name: "Release 1", vision: product.vision, startDate: product.startDate, endDate: product.endDate)
+                    def release = new Release(name: "Release 1", vision: productParams.vision, startDate: product.startDate, endDate: product.endDate)
                     releaseService.save(release, product)
                     sprintService.generateSprints(release, productParams.firstSprint)
                 }
