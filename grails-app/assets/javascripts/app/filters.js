@@ -101,7 +101,7 @@ filters
     })
     .filter('i18n', ['$injector', function($injector) {
         return function(key, bundleName) {
-            if (key) {
+            if (key != undefined && key != null) {
                 // Inject the constant bundle by name, see app.js .constant('...
                 return $injector.get(bundleName)[key].value;
             }
