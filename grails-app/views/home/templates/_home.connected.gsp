@@ -26,12 +26,11 @@
             <div class="panel-body">..</div>
         </div>
     </div>
-    <div class="col-md-5">
-        <div  ng-controller="savenote" class="panel panel-primary">
+    <div class="col-md-4">
+        <div ng-controller="savenote" class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.notes')}</div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label for="notes">${message(code:'is.backlogelement.notes')}</label>
                     <textarea is-markitup
                               class="form-control"
                               name="notes"
@@ -47,11 +46,10 @@
                          ng-focus="editForm(true)"
                          ng-class="{'placeholder': !editableUser.notes_html}"
                          tabindex="0"
-                         ng-bind-html="(editableUser.notes_html ? editableUser.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"> </div>
-                </div>
+                         ng-bind-html="(editableUser.notes_html ? editableUser.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
                 </div>
             </div>
-            </div>
+        </div>
     </div>
     <div class="col-md-5">
         <div class="panel panel-primary">
@@ -118,9 +116,14 @@
             <div ng-controller="Accordion">
                 <div ng-controller="usertaskCtrl">
                     <accordion close-others="oneAtATime">
-                             <div ng-repeat="task in tasks ">
-                            <accordion-group><accordion-heading> {{task.name }} </accordion-heading></accordion-group>
-                             </div>
+                        <div ng-repeat="task in tasks ">
+                            <accordion-group><accordion-heading>{{task.uid }} - {{task.name }}</accordion-heading>
+                                <table>
+                                    <tr><td>Estimation : {{ task.estimation }}</td></tr>
+                                    <tr><td>Etat : {{task.state | i18n:'TaskStates' }}</td></tr>
+                                </table>
+                            </accordion-group>
+                        </div>
                     </accordion>
                 </div>
             </div>

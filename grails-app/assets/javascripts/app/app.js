@@ -637,6 +637,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         2: {"value": "todo.In progress", "code": "inprogress"},
         3: {"value": "todo.Done", "code": "done"}
     })
+    .constant('TaskStates', {
+        0: {"value": "todo.To do", "code": "wait"},
+        1: {"value": "todo.In progress", "code": "inprogress"},
+        2: {"value": "todo.Done", "code": "done"}
+    })
     .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
         PO_SM: 'PO_SM',
         PO: 'PO',

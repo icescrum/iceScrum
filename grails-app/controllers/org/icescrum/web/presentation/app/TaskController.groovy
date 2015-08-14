@@ -333,7 +333,7 @@ class TaskController {
 
     @Secured(['permitAll()'])
     def listByUser() {
-        def tasks = Task.findAllByCreatorAndState(springSecurityService.currentUser ,0 , [max: 8])
+        def tasks = Task.findAllByResponsibleAndStateInList(springSecurityService.currentUser, [Task.STATE_WAIT, Task. STATE_BUSY], [max: 8])
         render(status: 200, contentType:'application/json', text: tasks  as JSON)
     }
 }
