@@ -22,14 +22,14 @@
  *
  */
 services.factory('Team', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/team/:id/:action',
+    return $resource(icescrum.grailsServer + '/team/:type/:id/:action',
         {},
         {
             listByUser: {method: 'GET', params: {action: 'listByUser'}}
         });
 }]);
 
-services.service("TeamService", ['Team', 'Session', function(Team, Session) {
+services.service("TeamService", ['$q', 'Team', 'Session', function($q, Team, Session) {
     this.save = function (team) {
         team.class = 'team';
         return Team.save(team).$promise;
@@ -52,5 +52,14 @@ services.service("TeamService", ['Team', 'Session', function(Team, Session) {
             default:
                 return false;
         }
-    }
+    };
+    this.get = function(project) {
+        if (_.isEmpty(project.team)) {
+            return Team.get({ id: project.id, type: 'project' }, {}, function(team) {
+                project.team = team;
+            }).$promise;
+        } else {
+            return $q.when(project.team);
+        }
+    };
 }]);

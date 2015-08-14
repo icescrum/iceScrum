@@ -122,6 +122,12 @@ class TeamController {
         }
     }
 
+    @Secured(['isAuthenticated()'])
+    def show(long product) {
+        Product _product = Product.withProduct(product)
+        render(status:200, text: _product.firstTeam as JSON, contentType: 'application/json')
+    }
+
     @Secured('isAuthenticated()')
     def manage() {
         render(status:200, template: "dialogs/list")

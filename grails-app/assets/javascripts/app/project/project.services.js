@@ -29,23 +29,13 @@ services.factory('Project', ['Resource', function($resource) {
         });
 }]);
 
-services.service("ProjectService", ['$q', 'Project', 'Session', function($q, Project, Session) {
-    var self = this;
+services.service("ProjectService", ['Project', 'Session', 'TeamService', function(Project, Session, TeamService) {
     this.save = function (project) {
         project.class = 'product';
         return Project.save(project).$promise;
     };
-    this.getTeam = function(project) {
-        if (_.isEmpty(project.team)) {
-            return Project.get({ id: project.id, action: 'team' }, {}, function(team) {
-                project.team = team;
-            }).$promise;
-        } else {
-            return $q.when(project.team);
-        }
-    };
     this.countMembers = function(project) {
-        return self.getTeam(project).then(function(team) {
+        return TeamService.get(project).then(function(team) {
             return _.union(_.map(team.scrumMasters, 'id'), _.map(team.members, 'id'), _.map(project.productOwners, 'id')).length;
         });
     };

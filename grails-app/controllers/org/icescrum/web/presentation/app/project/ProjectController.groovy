@@ -741,12 +741,6 @@ class ProjectController {
         render(status:200, template: "dialogs/editMembers")
     }
 
-    @Secured(['isAuthenticated()'])
-    def team(long product) {
-        Product _product = Product.withProduct(product)
-        render(status:200, text: _product.firstTeam as JSON, contentType: 'application/json')
-    }
-
     @Secured(['scrumMaster() and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def updateTeam(long product) {
         // Param extraction

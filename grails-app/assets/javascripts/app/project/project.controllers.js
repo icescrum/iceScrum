@@ -385,7 +385,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
     }
 }]);
 
-controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Session', 'ProjectService', function($scope, $controller, Session, ProjectService) {
+controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Session', 'ProjectService', 'TeamService', function($scope, $controller, Session, ProjectService, TeamService) {
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.teamMembersEditable = function() {
         return false;
@@ -406,7 +406,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         $scope.project = angular.copy($scope.currentProject);
         $scope.project.stakeHolders = $scope.project.stakeHolders.concat($scope.project.invitedStakeHolders);
         $scope.project.productOwners = $scope.project.productOwners.concat($scope.project.invitedProductOwners);
-        $scope.teamPromise = ProjectService.getTeam($scope.project);
+        $scope.teamPromise = TeamService.get($scope.project);
     };
     $scope.updateProjectTeam = function(project) {
         var p = $scope.prepareProject(project);

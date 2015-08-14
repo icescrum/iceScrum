@@ -290,6 +290,14 @@ class UrlMappings {
             }
         }
 
+        "/team/project/$product" {
+            controller = 'team'
+            action = 'show'
+            constraints {
+                product(matches: /\d*/)
+            }
+        }
+
         "403"(controller: "errors", action: "error403")
         "400"(controller: "errors", action: "fakeError")
         "302"(controller: "errors", action: "fakeError")
