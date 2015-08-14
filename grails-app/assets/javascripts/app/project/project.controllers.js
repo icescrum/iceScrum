@@ -43,6 +43,9 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                 // Functions
                 $scope.selectProject = function(project) {
                     $scope.selectedProject = project;
+                    ProjectService.countMembers(project).then(function(count) {
+                        $scope.projectMembersCount = count;
+                    });
                 };
                 $scope.openProject = function(project) {
                     document.location = $scope.serverUrl + '/p/' + project.pkey;
@@ -66,6 +69,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                 $scope.projectSearch = '';
                 $scope.projects = [];
                 $scope.selectedProject = {};
+                $scope.projectMembersCount = 0;
                 $scope.searchProjects();
             }]
         });

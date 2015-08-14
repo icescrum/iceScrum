@@ -20,7 +20,7 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-services.factory( 'Project', [ 'Resource', function( $resource ) {
+services.factory('Project', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/project/:id/:action',
         {},
         {
@@ -29,15 +29,25 @@ services.factory( 'Project', [ 'Resource', function( $resource ) {
         });
 }]);
 
-services.service("ProjectService", ['Project', 'Session', function(Project, Session) {
+services.service("ProjectService", ['$q', 'Project', 'Session', function($q, Project, Session) {
+    var self = this;
     this.save = function (project) {
         project.class = 'product';
         return Project.save(project).$promise;
     };
     this.getTeam = function(project) {
-        return Project.get({ id: project.id, action: 'team' }, {}, function(team) {
-            project.team = team;
-        }).$promise;
+        if (_.isEmpty(project.team)) {
+            return Project.get({ id: project.id, action: 'team' }, {}, function(team) {
+                project.team = team;
+            }).$promise;
+        } else {
+            return $q.when(project.team);
+        }
+    };
+    this.countMembers = function(project) {
+        return self.getTeam(project).then(function(team) {
+            return _.union(_.map(team.scrumMasters, 'id'), _.map(team.members, 'id'), _.map(project.productOwners, 'id')).length;
+        });
     };
     this.updateTeam = function (project) {
         // Wrap the product inside a "productd" because by default the formObjectData function will turn it into a "product" object
