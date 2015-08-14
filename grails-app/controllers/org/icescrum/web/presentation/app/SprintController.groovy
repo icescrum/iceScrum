@@ -168,8 +168,8 @@ class SprintController {
     }
 
     @Secured('isAuthenticated()')
-    def list(long product, Long id) {
-        Release release = id ? Release.withRelease(product, id) : Release.findCurrentOrNextRelease(product).list()[0]
+    def list(long product, Long releaseId) {
+        Release release = releaseId ? Release.withRelease(product, releaseId) : Release.findCurrentOrNextRelease(product).list()[0]
         def sprints = release?.sprints ?: []
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: sprints as JSON) }

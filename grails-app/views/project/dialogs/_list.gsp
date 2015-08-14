@@ -52,10 +52,14 @@
                 ${ message(code: 'is.dialog.browse.noproject') }
             </div>
             <div class="col-md-12" ng-switch-default>
+                <h4 class="pull-right"><i class="fa fa-users"/> {{ selectedProject.team.name }}</h4>
                 <h4>{{ selectedProject.name }} ({{ selectedProject.pkey }})</h4>
-                <div ng-bind-html="(selectedProject.description_html ? selectedProject.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
                 <div class="row">
-                    <div class="col-md-4"><i class="fa fa-users"/> {{ projectMembersCount }} ${ message(code: 'todo.is.ui.members') }</div>
+                    <div class="col-md-6" ng-bind-html="(selectedProject.description_html ? selectedProject.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
+                    <div class="col-md-6">PLACEHOLDER CHART</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><i class="fa fa-user"/> {{ projectMembersCount }} ${ message(code: 'todo.is.ui.members') }</div>
                     <div class="col-md-4"><i class="fa fa-sticky-note"/> {{ selectedProject.stories_count }} ${ message(code: 'todo.is.ui.stories') }</div>
                     <div class="col-md-4"><i class="fa fa-calendar"/> {{ selectedProject.releases_count }} ${ message(code: 'todo.is.ui.releases') }</div>
                 </div>

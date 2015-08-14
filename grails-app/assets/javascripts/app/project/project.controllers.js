@@ -39,12 +39,20 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             keyboard: false,
             templateUrl: $scope.serverUrl + "/project/listModal",
             size: 'lg',
-            controller: ['$scope', 'ProjectService', function($scope, ProjectService) {
+            controller: ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, ProjectService, ReleaseService, SprintService) {
                 // Functions
                 $scope.selectProject = function(project) {
                     $scope.selectedProject = project;
                     ProjectService.countMembers(project).then(function(count) {
                         $scope.projectMembersCount = count;
+                    });
+                    ReleaseService.list(project).then(function(releases) {
+                        $scope.release = _.chain(releases).sortBy('orderNumber').find(function(release) {
+                            return _.includes([1, 2], release.state);
+                        }).value();
+                        if ($scope.release) {
+                            SprintService.list($scope.release);
+                        }
                     });
                 };
                 $scope.openProject = function(project) {
@@ -74,8 +82,6 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             }]
         });
     };
-
-
 
     $scope['import'] = function(project) {
         var url = $scope.serverUrl + "/project/import";

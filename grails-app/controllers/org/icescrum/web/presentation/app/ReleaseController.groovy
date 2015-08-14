@@ -175,14 +175,12 @@ class ReleaseController {
     }
 
     def list(long product) {
-        if (request?.format == 'html') {
-            render(status: 404)
-            return
-        }
         Product _product = Product.withProduct(product)
+        def releases = _product.releases
         withFormat {
-            json { renderRESTJSON(text: _product.releases) }
-            xml { renderRESTXML(text: _product.releases) }
+            html { render status: 200, contentType: 'application/json', text: releases as JSON }
+            json { renderRESTJSON(text: releases) }
+            xml { renderRESTXML(text: releases) }
         }
     }
 }

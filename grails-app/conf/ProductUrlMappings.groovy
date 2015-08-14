@@ -295,5 +295,21 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/release" {
+            controller = 'release'
+            action = 'list'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/sprint/release/$releaseId" {
+            controller = 'sprint'
+            action = 'list'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                releaseId(matches: /[0-9A-Z]*/)
+            }
+        }
     }
 }
