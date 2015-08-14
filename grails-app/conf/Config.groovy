@@ -99,7 +99,6 @@ icescrum.push.enable = true
 
 //remove total*
 icescrum.marshaller = [
-        product:[textile:['description']],
         story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed'],
                includeCount:['comments'],
                textile:['notes'],
