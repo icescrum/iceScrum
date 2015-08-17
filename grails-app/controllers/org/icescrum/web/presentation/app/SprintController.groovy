@@ -30,7 +30,6 @@ import org.icescrum.core.domain.Story
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('inProduct()')
 class SprintController {
 
     def sprintService
@@ -150,6 +149,7 @@ class SprintController {
         }
     }
 
+    @Secured('inProduct()')
     def index() {
         if (request?.format == 'html') {
             render(status: 404)
@@ -163,11 +163,12 @@ class SprintController {
         }
     }
 
+    @Secured('inProduct()')
     def show() {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('stakeHolder()')
     def list(long product, Long releaseId) {
         Release release = releaseId ? Release.withRelease(product, releaseId) : Release.findCurrentOrNextRelease(product).list()[0]
         def sprints = release?.sprints ?: []

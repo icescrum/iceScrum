@@ -14,6 +14,7 @@
     <progress class="form-control-static form-bar" max="release.duration">
         <bar ng-repeat="sprint in release.sprints"
              class="{{ $last ? 'last-bar' : '' }}"
+             tooltip-append-to-body="true"
              tooltip-template="'sprint.tooltip.html'"
              tooltip-placement="bottom"
              type="{{ { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] }}"

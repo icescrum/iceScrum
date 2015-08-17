@@ -28,7 +28,6 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 
-@Secured('inProduct()')
 class ReleaseController {
 
     def releaseService
@@ -158,6 +157,7 @@ class ReleaseController {
         }
     }
 
+    @Secured('inProduct()')
     def index(long product, long id) {
         if (request?.format == 'html') {
             render(status: 404)
@@ -170,10 +170,12 @@ class ReleaseController {
         }
     }
 
+    @Secured('inProduct()')
     def show() {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
+    @Secured('stakeHolder()')
     def list(long product) {
         Product _product = Product.withProduct(product)
         def releases = _product.releases

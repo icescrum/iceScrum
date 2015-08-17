@@ -7,7 +7,6 @@ import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
 
-@Secured('isAuthenticated()')
 class TeamController {
 
     def springSecurityService
@@ -122,7 +121,7 @@ class TeamController {
         }
     }
 
-    @Secured(['isAuthenticated()'])
+    @Secured('stakeHolder()')
     def show(long product) {
         Product _product = Product.withProduct(product)
         render(status:200, text: _product.firstTeam as JSON, contentType: 'application/json')

@@ -39,25 +39,9 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             keyboard: false,
             templateUrl: $scope.serverUrl + "/project/listModal",
             size: 'lg',
-            controller: ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, ProjectService, ReleaseService, SprintService) {
+            controller: ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
+                $controller('abstractProjectListCtrl', { $scope: $scope });
                 // Functions
-                $scope.selectProject = function(project) {
-                    $scope.project = project;
-                    ProjectService.countMembers(project).then(function(count) {
-                        $scope.projectMembersCount = count;
-                    });
-                    ReleaseService.list(project).then(function(releases) {
-                        $scope.release = _.chain(releases).sortBy('orderNumber').find(function(release) {
-                            return _.includes([1, 2], release.state);
-                        }).value();
-                        if ($scope.release) {
-                            SprintService.list($scope.release);
-                        }
-                    });
-                };
-                $scope.openProject = function(project) {
-                    document.location = $scope.serverUrl + '/p/' + project.pkey;
-                };
                 $scope.searchProjects = function() {
                     var offset = $scope.projectsPerPage * ($scope.currentPage - 1);
                     var listFunction = type == 'public' ? ProjectService.listPublic : ProjectService.listByUser;
@@ -70,14 +54,11 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                     });
                 };
                 // Init
-                $scope.release = {};
                 $scope.totalProjects = 0;
                 $scope.currentPage = 1;
                 $scope.projectsPerPage = 9; // Constant
                 $scope.projectSearch = '';
                 $scope.projects = [];
-                $scope.project = {};
-                $scope.projectMembersCount = 0;
                 $scope.searchProjects();
             }]
         });
@@ -162,12 +143,42 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     $scope.currentProject = Session.getProject();
 }]);
 
-controllers.controller('projectListCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {
+controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, ProjectService, ReleaseService, SprintService) {
+    $scope.selectProject = function(project) {
+        $scope.project = project;
+        ProjectService.countMembers(project).then(function(count) {
+            $scope.projectMembersCount = count;
+        });
+        ReleaseService.list(project).then(function(releases) {
+            $scope.release = _.chain(releases).sortBy('orderNumber').find(function(release) {
+                return _.includes([1, 2], release.state);
+            }).value();
+            if ($scope.release) {
+                SprintService.list($scope.release);
+            }
+        });
+    };
     $scope.openProject = function (project) {
         document.location = $scope.serverUrl + '/p/' + project.pkey;
     };
     // Init
+    $scope.release = {};
+    $scope.project = {};
+    $scope.projectMembersCount = 0;
+}]);
+
+controllers.controller('projectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
+    $controller('abstractProjectListCtrl', { $scope: $scope });
+    // Init
     $scope.projects = [];
+    $scope.openedProjects = {};
+    $scope.$watch('openedProjects', function(newVal) { // Really ugly hack, only way to watch which accordion group is opened...
+        var selectedProjectId = _.invert(newVal)[true];
+        if (selectedProjectId != undefined) {
+            var selectedProject = _.find($scope.projects, { id: parseInt(selectedProjectId) });
+            $scope.selectProject(selectedProject);
+        }
+    }, true);
     var listFunction = $scope.type == 'public' ? ProjectService.listPublic : ProjectService.listByUser;
     listFunction().then(function (projectsAndTotal) {
         $scope.projects = projectsAndTotal.projects;

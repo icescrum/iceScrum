@@ -57,7 +57,9 @@
                 ${message(code: 'is.panel.myprojects')}
             </div>
             <accordion>
-                <accordion-group heading="{{ project.name }}" ng-repeat="project in projects">
+                <accordion-group heading="{{ project.name }}"
+                                 is-open="openedProjects[project.id]"
+                                 ng-repeat="project in projects">
                     <div ng-include="'project.details.html'"></div>
                 </accordion-group>
             </accordion>
