@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div ng-controller="savenote" class="panel panel-primary">
+        <div ng-controller="userCtrl" class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.notes')}</div>
             <div class="panel-body">
                 <div class="form-group">
@@ -51,8 +51,8 @@
             </div>
         </div>
     </div>
-    <div class="col-md-5">
-        <div class="panel panel-primary" ng-controller="userproject">
+    <div class="col-md-5" ng-init="type='user'">
+        <div class="panel panel-primary" ng-controller="projectListCtrl">
             <div class="panel-heading">
                 ${message(code: 'is.panel.myprojects')}
             </div>
@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div class="panel panel-primary" ng-controller="usertaskCtrl">
+        <div class="panel panel-primary" ng-controller="userTaskCtrl">
             <div class="panel-heading">
                 ${message(code: 'is.panel.mytask')}
             </div>

@@ -162,22 +162,14 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     $scope.currentProject = Session.getProject();
 }]);
 
-controllers.controller('publicproject', ['$scope', 'ProjectService', function($scope, ProjectService) {
+controllers.controller('projectListCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {
     $scope.openProject = function (project) {
         document.location = $scope.serverUrl + '/p/' + project.pkey;
     };
+    // Init
     $scope.projects = [];
-    ProjectService.listPublic().then(function (projectsAndTotal) {
-        $scope.projects = projectsAndTotal.projects;
-    });
-}]);
-
-controllers.controller('userproject', ['$scope', 'ProjectService', function($scope, ProjectService) {
-    $scope.openProject = function (project) {
-        document.location = $scope.serverUrl + '/p/' + project.pkey;
-    };
-    $scope.projects = [];
-    ProjectService.listByUser().then(function (projectsAndTotal) {
+    var listFunction = $scope.type == 'public' ? ProjectService.listPublic : ProjectService.listByUser;
+    listFunction().then(function (projectsAndTotal) {
         $scope.projects = projectsAndTotal.projects;
     });
 }]);

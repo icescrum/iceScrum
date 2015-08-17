@@ -101,8 +101,8 @@
             <div class="panel-body">.....</div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="panel panel-primary" ng-controller="publicproject">
+    <div class="col-md-4" ng-init="type='public'">
+        <div class="panel panel-primary" ng-controller="projectListCtrl">
             <div class="panel-heading">
                 <h4 class="panel-title">Projets publics</h4>
             </div>

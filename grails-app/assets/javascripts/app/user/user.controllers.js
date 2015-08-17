@@ -25,7 +25,9 @@ controllers.controller('userCtrl', ['$scope', 'UserService', 'User', 'Session', 
     // Functions
     $scope.update = function(user) {
         UserService.update(user).then(function(userUpdated) {
-            $scope.$close();
+            if($scope.$close) {
+                $scope.$close(); // Close auth modal if present
+            }
             angular.extend(Session.user, userUpdated);
         });
     };
@@ -48,18 +50,7 @@ controllers.controller('userCtrl', ['$scope', 'UserService', 'User', 'Session', 
         $scope.tabSelected[tab] = true;
     };
     // Init
-    $scope.dataUser = {};
+    $scope.editableUser = {};
     $scope.formHolder = {};
-    $scope.dataUser = angular.copy(Session.user);
-}]);
-
-controllers.controller('savenote', ['$scope', 'UserService', 'Session', function ($scope, UserService, Session) {
-    $scope.update = function (user) {
-        UserService.update(user).then(function (userUpdated) {
-            angular.extend(Session.user, userUpdated);
-        });
-
-    };
-    $scope.editableUser=angular.copy(Session.user);
-
+    $scope.editableUser = angular.copy(Session.user);
 }]);
