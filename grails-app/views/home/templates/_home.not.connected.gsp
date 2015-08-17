@@ -102,20 +102,15 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary" ng-controller="publicproject">
             <div class="panel-heading">
-                <h4 class="panel-title">Projets publics</h4></div>
-            <div ng-controller="Accordion">
-                <div ng-controller="publicproject">
-                    <accordion close-others="oneAtATime">
-                        <div ng-repeat="project in projects">
-                            <accordion-group><accordion-heading>{{ project.name }}</accordion-heading>
-                                <div ng-include="'project.details.html'"></div>
-                            </accordion-group>
-                        </div>
-                    </accordion>
-                </div>
+                <h4 class="panel-title">Projets publics</h4>
             </div>
+            <accordion>
+                <accordion-group heading="{{ project.name }}" ng-repeat="project in projects">
+                    <div ng-include="'project.details.html'"></div>
+                </accordion-group>
+            </accordion>
         </div>
     </div>
 </div>

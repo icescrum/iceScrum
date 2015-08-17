@@ -52,21 +52,15 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary" ng-controller="userproject">
             <div class="panel-heading">
                 ${message(code: 'is.panel.myprojects')}
             </div>
-            <div ng-controller="Accordion">
-                <div ng-controller="userproject">
-                    <accordion close-others="oneAtATime">
-                        <div ng-repeat="project in projects">
-                            <accordion-group><accordion-heading> {{ project.name }} </accordion-heading>
-                                <div ng-include="'project.details.html'"></div>
-                            </accordion-group>
-                        </div>
-                    </accordion>
-                </div>
-            </div>
+            <accordion>
+                <accordion-group heading="{{ project.name }}" ng-repeat="project in projects">
+                    <div ng-include="'project.details.html'"></div>
+                </accordion-group>
+            </accordion>
         </div>
     </div>
     <div class="col-md-5">
@@ -76,26 +70,20 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary" ng-controller="usertaskCtrl">
             <div class="panel-heading">
                 ${message(code: 'is.panel.mytask')}
             </div>
-            <div ng-controller="Accordion">
-                <div ng-controller="usertaskCtrl">
-                    <accordion close-others="oneAtATime">
-                        <div ng-repeat="task in tasks ">
-                            <accordion-group><accordion-heading>{{task.uid }} - {{task.name }}</accordion-heading>
-                                <table>
-                                    <tr><td>Estimation : {{ task.estimation }}</td></tr>
-                                    <tr><td>Etat : {{task.state | i18n:'TaskStates' }}</td></tr>
-                                    <tr><td>Description : {{ task.description }} </td></tr>
-                                    <tr><td>Story : {{ task.parentStory.name }} </td></tr>
-                                </table>
-                            </accordion-group>
-                        </div>
-                    </accordion>
-                </div>
-            </div>
+            <accordion>
+                <accordion-group heading="{{task.uid }} - {{task.name }}" ng-repeat="task in tasks">
+                    <table>
+                        <tr><td>Estimation : {{ task.estimation }}</td></tr>
+                        <tr><td>Etat : {{task.state | i18n:'TaskStates' }}</td></tr>
+                        <tr><td>Description : {{ task.description }} </td></tr>
+                        <tr><td>Story : {{ task.parentStory.name }} </td></tr>
+                    </table>
+                </accordion-group>
+            </accordion>
         </div>
     </div>
 </div>
