@@ -88,6 +88,8 @@
                                 <table>
                                     <tr><td>Estimation : {{ task.estimation }}</td></tr>
                                     <tr><td>Etat : {{task.state | i18n:'TaskStates' }}</td></tr>
+                                    <tr><td>Description : {{ task.description }} </td></tr>
+                                    <tr><td>Story : {{ task.parentStory.name }} </td></tr>
                                 </table>
                             </accordion-group>
                         </div>
