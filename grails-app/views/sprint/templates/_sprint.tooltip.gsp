@@ -21,8 +21,8 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="sprint.tooltip.html">
-    <p ng-if="sprint.state">{{ sprint.state | i18n:'SprintStates' }}</p>
     <p ng-if="sprint.goal">{{ sprint.goal }}</p>
+    <p ng-if="sprint.state">{{ sprint.state | i18n:'SprintStates' }}</p>
     <p ng-if="sprint.capacity || sprint.velocity">{{ sprint.velocity }} / {{ sprint.capacity }} (${message(code: 'is.sprint.velocity')} / ${message(code: 'is.sprint.capacity')})</p>
     <p>{{ sprint.startDate }} <i class="fa fa-arrow-right"/> {{ sprint.endDate }}</p>
 </script>
