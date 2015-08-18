@@ -135,36 +135,4 @@ class ActorController {
         Actor actor = Actor.withActor(product, id)
         redirect(uri:"/p/$actor.backlog.pkey/#/actor/$actor.id")
     }
-
-    def view() {
-        render(template: "${params.type ?: 'window'}/view")
-    }
-
-    def print(long product, String format) {
-        def _product = Product.get(product)
-        def actors = Actor.findAllByBacklog(_product, [sort: 'useFrequency', order: 'asc']);
-        if (!actors) {
-            returnError(text:message(code: 'is.report.error.no.data'))
-        } else {
-            return task {
-                def data = []
-                Actor.withNewSession {
-                    actors.each {
-                        data << [
-                                uid: it.uid,
-                                name: it.name,
-                                description: it.description,
-                                notes: it.notes?.replaceAll(/<.*?>/, ''),
-                                expertnessLevel: message(code: BundleUtils.actorLevels[it.expertnessLevel]),
-                                satisfactionCriteria: it.satisfactionCriteria,
-                                useFrequency: message(code: BundleUtils.actorFrequencies[it.useFrequency]),
-                                instances: BundleUtils.actorInstances[it.instances],
-                                associatedStories: Story.countByActor(it)
-                        ]
-                    }
-                }
-                renderReport('actors', format ? format.toUpperCase() : 'PDF', [[product: _product.name, actors: data ?: null]], _product.name)
-            }
-        }
-    }
 }

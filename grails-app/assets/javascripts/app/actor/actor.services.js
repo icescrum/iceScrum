@@ -25,63 +25,6 @@ services.factory('Actor', ['Resource', function($resource) {
     return $resource('actor/:id/:action');
 }]);
 
-services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
-    var self = this;
+services.service("ActorService", ['Actor', function(Actor) {
     this.list = Actor.query();
-    this.get = function(id) {
-        return self.list.$promise.then(function(list) {
-            var actor = _.find(list, function(rw) {
-                return rw.id == id;
-            });
-            if (actor) {
-                return actor;
-            } else {
-                throw Error('todo.is.ui.actor.does.not.exist');
-            }
-        });
-    };
-    this.save = function(actor) {
-        actor.class = 'actor';
-        return Actor.save(actor, function(actor) {
-            self.list.push(actor);
-        }).$promise;
-    };
-    this.update = function(actor) {
-        return actor.$update(function(data) {
-            var index = self.list.indexOf(_.find(self.list, { 'id': actor.id }));
-            if (index != -1) {
-                self.list.splice(index, 1, data);
-            }
-        });
-    };
-    this['delete'] = function(actor) {
-        return actor.$delete(function() {
-            _.remove(self.list, { id: actor.id });
-        });
-    };
-    this.getMultiple = function(ids) {
-        return self.list.$promise.then(function() {
-            return _.filter(self.list, function(actor) {
-                return _.contains(ids, actor.id.toString());
-            });
-        });
-    };
-    this.deleteMultiple = function(ids) {
-        return Actor.delete({id: ids}, function() {
-            _.remove(self.list, function(actor) {
-                return _.contains(ids, actor.id.toString());
-            });
-        }).$promise;
-    };
-    this.authorizedActor = function(action) {
-        switch (action) {
-            case 'create':
-            case 'upload':
-            case 'update':
-            case 'delete':
-                return Session.po();
-            default:
-                return false;
-        }
-    };
 }]);

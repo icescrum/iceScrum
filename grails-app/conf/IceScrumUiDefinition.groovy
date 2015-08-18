@@ -26,37 +26,6 @@ import org.icescrum.core.domain.Sprint
 
 uiDefinitions = {
 
-    'actor' {
-
-        icon = 'glyphicon glyphicon-user'
-
-        menuBar {
-            title 'is.ui.actor'
-            defaultVisibility false
-            defaultPosition 3
-            spaceDynamicBar true
-        }
-        window {
-            title 'is.ui.actor'
-            help 'is.ui.actor.help'
-            init 'view'
-            right true
-            toolbar true
-        }
-        embedded = [
-                view:'list',
-                viewTypes:['postits','table']
-        ]
-
-        exportFormats = {
-            [
-                    [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
-                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
-                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]
-            ]
-        }
-    }
-
     'backlog' {
 
         icon = 'glyphicon glyphicon-inbox'

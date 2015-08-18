@@ -323,52 +323,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     };
 }]);
 
-controllers.controller('actorsCtrl', ['$scope', '$state', 'ActorService', 'actors', function ($scope, $state, ActorService, actors) {
-    $scope.orderBy = {
-        reverse: false,
-        status: false,
-        current: {id:'dateCreated', name:'todo.Date'},
-        values:[
-            {id:'dateCreated', name:'todo.Date'},
-            {id:'name', name:'todo.Name'},
-            {id:'stories_ids.length', name:'todo.Stories'}
-        ]
-    };
-    $scope.goToNewActor = function() {
-        $state.go('actor.new');
-    };
-    $scope.selectableOptions = {
-        filter:"> .postit-container",
-        cancel: "a",
-        stop:function(e, ui, selectedItems) {
-            switch (selectedItems.length){
-                case 0:
-                    $state.go('actor');
-                    break;
-                case 1:
-                    $state.go($state.params.tabId ? 'actor.details.tab' : 'actor.details', { id: selectedItems[0].id });
-                    break;
-                default:
-                    $state.go('actor.multiple',{listId:_.pluck(selectedItems, 'id').join(",")});
-                    break;
-            }
-        }
-    };
-    $scope.actors = actors;
-    $scope.isSelected = function(feature) {
-        if ($state.params.id) {
-            return $state.params.id == feature.id ;
-        } else if ($state.params.listId) {
-            return _.contains($state.params.listId.split(','), feature.id.toString());
-        } else {
-            return false;
-        }
-    };
-    $scope.authorizedActor = function(action) {
-        return ActorService.authorizedActor(action);
-    };
-}]);
-
 controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function ($scope, $state, FeatureService, features) {
     $scope.orderBy = {
         reverse: false,
