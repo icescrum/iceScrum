@@ -66,12 +66,6 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div class="panel panel-primary">
-            <div class="panel-heading">${message(code: 'is.panel.mood')}</div>
-            <div class="panel-body">..</div>
-        </div>
-    </div>
-    <div class="col-md-5">
         <div class="panel panel-primary" ng-controller="userTaskCtrl">
             <div class="panel-heading">
                 ${message(code: 'is.panel.mytask')}
@@ -79,10 +73,10 @@
             <accordion>
                 <accordion-group heading="{{task.uid }} - {{task.name }}" ng-repeat="task in tasks">
                     <table>
-                        <tr><td>Estimation : {{ task.estimation }}</td></tr>
-                        <tr><td>Etat : {{task.state | i18n:'TaskStates' }}</td></tr>
-                        <tr><td>Description : {{ task.description }} </td></tr>
-                        <tr><td>Story : {{ task.parentStory.name }} </td></tr>
+                        <tr><td> ${message(code: 'is.panel.task.Estimation')} : {{ task.estimation }}</td></tr>
+                        <tr><td> ${message(code: 'is.panel.task.Etat')} : {{task.state | i18n:'TaskStates' }}</td></tr>
+                        <tr><td> ${message(code: 'is.panel.task.Description')} : {{ task.description }} </td></tr>
+                        <tr><td> ${message(code: 'is.panel.task.Story')} : {{ task.parentStory.name }} </td></tr>
                     </table>
                 </accordion-group>
             </accordion>

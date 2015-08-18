@@ -98,13 +98,13 @@
             <div class="panel-heading">
                 <h3 class="panel-title">${message(code: 'is.panel.rss')}</h3>
             </div>
-            <div class="panel-body">.....</div>
+            <div class="panel-body"> </div>
         </div>
     </div>
     <div class="col-md-4" ng-init="type='public'">
         <div class="panel panel-primary" ng-controller="projectListCtrl">
             <div class="panel-heading">
-                <h4 class="panel-title">Projets publics</h4>
+                <h4 class="panel-title">${message(code: 'is.panel.project.public')}</h4>
             </div>
             <accordion>
                 <accordion-group heading="{{ project.name }}"
