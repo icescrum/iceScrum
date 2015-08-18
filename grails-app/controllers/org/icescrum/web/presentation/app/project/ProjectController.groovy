@@ -308,16 +308,12 @@ class ProjectController {
         render status: 200, contentType: 'application/json', text: attachments as JSON
     }
 
-    def index(long product) {
+    def view(long product) {
         Product _product = Product.withProduct(product)
         def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
         def release = Release.findCurrentOrNextRelease(product).list()[0]
-        def activities = Activity.recentStoryActivity(_product)
-        activities.addAll(Activity.recentProductActivity(_product))
-        activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
         render template: 'view',
-                model: [product: product,
-                        activities: activities,
+                model: [product: _product,
                         sprint: sprint,
                         release: release,
                         user: springSecurityService.currentUser,

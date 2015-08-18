@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum SAS
+- Copyright (c) 2015 Kagilum SAS
 -
 - This file is part of iceScrum.
 -
@@ -20,18 +20,12 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.domain.Activity" %>
 <div class="row">
     <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7">
-
-        <g:render template="window/toolbar" model="[params:params]"/>
-
-        <entry:point id="${controllerName}-${actionName}-top-right" model="[sprint:sprint,release:release,product:product]"/>
-
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <g:message code="is.ui.project.activity.title"/>
+                    <i class="fa fa-bolt"/> <g:message code="is.ui.project.activity.title"/>
                     <small class="pull-right">
                         <g:link class="rss" data-toggle="tooltip" title="${message(code:'todo.is.ui.rss')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
                             <i class="fa fa-rss fa-lg"></i>
@@ -40,49 +34,19 @@
                 </h3>
             </div>
             <div class="panel-body activities">
-                <g:if test="${activities.size() > 0}">
-                    <g:each in="${activities}" var="a" status="i">
-                        <div class="activity clearfix">
-                            <span class="text-muted ${a.code}"></span>
-                            <div class="content">
-                                <small class="text-muted pull-right">${a.dateCreated}<span class="fa fa-clock-o"></span></small>
-                                <span class="clearfix">
-                                    <is:scrumLink controller="user" action='profile' id="${a.poster.username}">${a.poster.firstName.encodeAsHTML()} ${a.poster.lastName.encodeAsHTML()}</is:scrumLink>
-                                    <g:message code="is.fluxiable.${a.code}"/> <g:message code="is.${a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'}"/>
-                                    <g:if test="${a.code != Activity.CODE_DELETE}">
-                                        <is:scrumLink controller="story" id="${a.parentRef}" params="${a.code == 'comment' ? ['tab':'comments'] : []}">
-                                            ${a.label.encodeAsHTML()}
-                                        </is:scrumLink>
-                                    </g:if>
-                                    <g:else>
-                                        ${a.label.encodeAsHTML()}
-                                    </g:else>
-                                </span>
-                                <div class="sub-content">
-                                    <img src="${is.avatar(user:a.poster)}" height="25px" class="pull-left"/>
-                                    <span class="text-muted">${a.description}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </g:each>
-                </g:if>
-                <g:else>
-                    <div class="panel-box-empty">
-                        <div style="text-align: center; padding:5px; font-size:14px;">
-                            <a class="scrum-link" target="_blank" href="https://www.kagilum.com/documentation/getting-started-with-icescrum">${message(code:'is.ui.getting.started')}</a>
-                        </div>
+                <div class="panel-box-empty">
+                    <div style="text-align: center; padding:5px; font-size:14px;">
+                        <a class="scrum-link" target="_blank" href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">${message(code:'is.ui.getting.started')}</a>
                     </div>
-                </g:else>
+                </div>
             </div>
         </div>
-        <entry:point id="${controllerName}-${actionName}-bottom-right" model="[sprint:sprint,release:release,product:product,activities:activities]"/>
     </div>
     <div class="col-md-7 col-md-pull-5 col-sm-7 col-sm-pull-5">
-        <entry:point id="${controllerName}-${actionName}-top-left" model="[sprint:sprint,release:release,product:product]"/>
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <g:message code="is.ui.project.chart.title"/>
+                    <i class="fa fa-bar-chart"/> <g:message code="is.ui.project.chart.title"/>
                     <small class="pull-right">
                         <div dropdown class="btn-group" tooltip="${message(code:'todo.is.ui.charts')}">
                             <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
@@ -95,7 +59,6 @@
                                 data-ui-chart-default="${controllerName}/productBurnupChart/">
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
                                 <li><a data-ui-chart data-ui-chart-save="true" data-ui-chart-container="#panel-chart-container" href="${controllerName}/productBurnupChart/">${message(code: 'is.ui.project.chart.option.project')}</a></li>
-                                <entry:point id="${controllerName}-${actionName}-charts-product" model="[sprint:sprint,release:release,product:product]"/>
                                 <g:if test="${sprint && request.inProduct}">
                                     <li class="divider"></li>
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
@@ -115,32 +78,10 @@
             <div class="panel-body" id="panel-chart-container">
             </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <g:message code="is.ui.project.description.title"/>
-                    <g:if test="${request.productOwner}">
-                        <small class="pull-right on-hover">
-                            <a class="text-muted" tooltip="${message(code:'default.button.edit.label')}" href="${createLink(controller:'project', action:'edit',params:[product:product.id])}" data-ajax="true">
-                                <i class="fa fa-edit fa-lg"></i>
-                            </a>
-                        </small>
-                    </g:if>
-                </h3>
-            </div>
-            <div class="panel-body">
-                <g:if test="${product.description}">
-                    <wikitext:renderHtml markup="Textile">${product.description}</wikitext:renderHtml>
-                </g:if>
-                <g:else>
-                    <p class="text-muted"><g:message code="is.product.empty.description"/></p>
-                </g:else>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <g:message code="is.ui.project.vision.title"/>
+                    <i class="fa fa-eye"/> <g:message code="is.ui.project.vision.title"/>
                     <g:if test="${request.productOwner && release?.id}">
                         <small class="pull-right on-hover">
                             <a class="text-muted" href="#releasePlan/vision/${release.id}" tooltip="${message(code:'default.button.edit.label')}">
@@ -166,10 +107,10 @@
                 </g:if>
             </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <g:message code="is.ui.project.doneDefinition.title"/>
+                    <i class="fa fa-check-square-o"/> <g:message code="is.ui.project.doneDefinition.title"/>
                     <g:if test="${(request.productOwner || request.scrumMaster) && sprint?.id}">
                         <small class="pull-right on-hover">
                             <a class="text-muted" href="#sprintPlan/doneDefinition/${sprint.id}" tooltip="${message(code:'default.button.edit.label')}">
@@ -195,10 +136,10 @@
                 </g:if>
             </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <g:message code="is.ui.project.retrospective.title"/>
+                    <i class="fa fa-repeat"/> <g:message code="is.ui.project.retrospective.title"/>
                     <g:if test="${(request.productOwner || request.scrumMaster) && sprint?.id}">
                         <small class="pull-right on-hover">
                             <a class="text-muted" href="#sprintPlan/retrospective/${sprint.id}" tooltip="${message(code:'default.button.edit.label')}">
@@ -226,11 +167,5 @@
                 </g:if>
             </div>
         </div>
-        <entry:point id="${controllerName}-${actionName}-bottom-left" model="[sprint:sprint,release:release,product:product]"/>
     </div>
-
 </div>
-
-<is:onStream on=".panel-vision" events="[[object:'release',events:['vision']]]"/>
-<is:onStream on=".panel-retrospective" events="[[object:'sprint',events:['retrospective']]]"/>
-<is:onStream on=".panel-doneDefinition" events="[[object:'sprint',events:['doneDefinition']]]"/>

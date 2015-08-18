@@ -99,7 +99,7 @@ uiDefinitions = {
         window {
             title 'is.ui.project'
             help 'is.ui.project.help'
-            init 'dashboard'
+            init 'view'
         }
         embedded = [
                 view:'productCumulativeFlowChart',

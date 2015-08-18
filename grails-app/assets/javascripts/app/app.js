@@ -97,6 +97,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                 .state('project', {
                     url: '/project',
+                    templateUrl: 'openWindow/project',
                     controller: 'projectCtrl'
                 })
                 .state('project.new', {
