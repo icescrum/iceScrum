@@ -37,15 +37,17 @@
             <li ng-class="{ 'current': currentProject.id == project.id }" ng-repeat="currentProject in projects">
                 <a ng-click="selectProject(currentProject)" href>{{ currentProject.name }}</a>
             </li>
-            <pagination boundary-links="true"
-                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                        class="pagination-sm"
-                        max-size="3"
-                        total-items="totalProjects"
-                        items-per-page="projectsPerPage"
-                        ng-model="currentPage"
-                        ng-change="searchProjects()">
-            </pagination>
+            <div class="text-center">
+                <pagination boundary-links="true"
+                            previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                            class="pagination-sm"
+                            max-size="3"
+                            total-items="totalProjects"
+                            items-per-page="projectsPerPage"
+                            ng-model="currentPage"
+                            ng-change="searchProjects()">
+                </pagination>
+            </div>
         </ul>
         <div class="right-panel col-sm-9" ng-switch="projects != undefined && projects.length == 0">
             <div ng-switch-when="true">
