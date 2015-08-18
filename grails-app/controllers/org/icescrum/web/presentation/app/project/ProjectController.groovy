@@ -148,18 +148,14 @@ class ProjectController {
     def feed(long product) {
         //todo make cache
         Product _product = Product.withProduct(product)
-        def activities = Story.recentActivity(_product)
-        activities.addAll(Product.recentActivity(_product))
+        def activities = Activity.recentProductActivity(_product)
+        activities.addAll(Activity.recentStoryActivity(_product))
         activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
-
         def builder = new FeedBuilder()
         builder.feed(description: "${_product.description?:''}",title: "$_product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}") {
           activities.each() { a ->
                 entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.label.encodeAsHTML()}") {e ->
-                    if (a.code != Activity.CODE_DELETE)
-                        e.link = "${is.createScrumLink(absolute: true, controller: 'story', id: a.parentRef)}"
-                    else
-                        e.link = "${is.createScrumLink(absolute: true, controller: 'project')}"
+                    e.link = a.code != Activity.CODE_DELETE ? "${is.createScrumLink(absolute: true, controller: 'story', id: a.parentRef)}" : "${is.createScrumLink(absolute: true, controller: 'project')}"
                     e.publishedDate = a.dateCreated
                 }
             }
