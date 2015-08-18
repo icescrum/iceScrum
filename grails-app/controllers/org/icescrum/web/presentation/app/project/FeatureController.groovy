@@ -190,7 +190,7 @@ class FeatureController {
     }
 
     def view() {
-        render(template: "${params.type ?: 'window'}/view")
+        render(template: "view")
     }
 
     def featureEntries(long product) {
