@@ -308,15 +308,14 @@ class ProjectController {
         render status: 200, contentType: 'application/json', text: attachments as JSON
     }
 
-    def dashboard(long product) {
+    def index(long product) {
         Product _product = Product.withProduct(product)
         def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
         def release = Release.findCurrentOrNextRelease(product).list()[0]
         def activities = Activity.recentStoryActivity(_product)
         activities.addAll(Activity.recentProductActivity(_product))
         activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
-
-        render template: 'window/view',
+        render template: 'view',
                 model: [product: product,
                         activities: activities,
                         sprint: sprint,
@@ -339,7 +338,7 @@ class ProjectController {
                     done: values.done as JSON,
                     labels: values.label as JSON,
                     controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productCumulativeflow.title')],rendered) : rendered, status:200)
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productCumulativeflow.title')],rendered) : rendered, status:200)
         } else {
             def msg = message(code: 'is.chart.error.no.values')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -357,7 +356,7 @@ class ProjectController {
                     velocity: values.velocity as JSON,
                     labels: values.label as JSON,
                     controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocityCapacity.title')],rendered) : rendered, status:200)
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocityCapacity.title')],rendered) : rendered, status:200)
         } else {
             def msg = message(code: 'is.chart.error.no.values')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -374,7 +373,7 @@ class ProjectController {
                     done: values.done as JSON,
                     labels: values.label as JSON,
                     controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnUp.title')],rendered) : rendered, status:200)
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnUp.title')],rendered) : rendered, status:200)
         } else {
             def msg = message(code: 'is.chart.error.no.values')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -395,7 +394,7 @@ class ProjectController {
                     technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
                     defectstoriesLabels: values*.defectstoriesLabel as JSON,
                     controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnDown.title')],rendered) : rendered, status:200)
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnDown.title')],rendered) : rendered, status:200)
         } else {
             def msg = message(code: 'is.chart.error.no.values')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -416,7 +415,7 @@ class ProjectController {
                     technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
                     defectstoriesLabels: values*.defectstoriesLabel as JSON,
                     controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocity.title')],rendered) : rendered, status:200)
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocity.title')],rendered) : rendered, status:200)
         } else {
             def msg = message(code: 'is.chart.error.no.values')
             render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
@@ -441,7 +440,7 @@ class ProjectController {
                     values: valueToDisplay as JSON,
                     featuresNames: values.label as JSON,
                     controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="glyphicon glyphicon-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productParkinglot.title')],rendered) : rendered, status:200)
+            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productParkinglot.title')],rendered) : rendered, status:200)
         }
         else {
             def msg = message(code: 'is.chart.error.no.values')

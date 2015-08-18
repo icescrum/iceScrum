@@ -1,6 +1,5 @@
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
-
 /*
 * Copyright (c) 2012 Kagilum SAS
 *
@@ -25,18 +24,14 @@ import org.icescrum.core.domain.Sprint
 */
 
 uiDefinitions = {
-
     'backlog' {
-
-        icon = 'glyphicon glyphicon-inbox'
-
+        icon = 'fa fa-inbox'
         menuBar {
             title 'is.ui.backlog'
             defaultVisibility true
             defaultPosition 2
             spaceDynamicBar true
         }
-
         window {
             title 'is.ui.backlog'
             help 'is.ui.backlog.help'
@@ -48,7 +43,6 @@ uiDefinitions = {
                 view:'list',
                 viewTypes:['postits','table']
         ]
-
         exportFormats = {
             [
                 [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
@@ -57,7 +51,6 @@ uiDefinitions = {
             ]
         }
     }
-
     'story' {
         menuBar {
             title 'is.ui.backlogelement'
@@ -65,24 +58,19 @@ uiDefinitions = {
                 false
             }
         }
-
         window {
             title 'is.ui.story.details'
             init 'index'
         }
     }
-
     'feature' {
-
         icon = 'fa fa-puzzle-piece'
-
         menuBar {
             title 'is.ui.feature'
             defaultVisibility false
             defaultPosition 2
             spaceDynamicBar true
         }
-
         window {
             title 'is.ui.feature'
             help 'is.ui.feature.help'
@@ -90,30 +78,24 @@ uiDefinitions = {
             right true
             toolbar true
         }
-
         embedded = [
                 view:'list',
                 viewTypes:['postits','table','productParkingLotChart']
         ]
-
         exportFormats = {
             [[code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
                     [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
                     [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]]
         }
     }
-
     'project' {
-
-        icon = 'glyphicon glyphicon-dashboard'
-
+        icon = 'fa fa-dashboard'
         menuBar {
             title 'is.ui.project'
             defaultVisibility true
             defaultPosition 1
             spaceDynamicBar true
         }
-
         window {
             title 'is.ui.project'
             help 'is.ui.project.help'
@@ -123,7 +105,6 @@ uiDefinitions = {
                 view:'productCumulativeFlowChart',
                 viewTypes:['productCumulativeFlowChart','productVelocityCapacityChart','productBurnupChart','productBurndownChart','productVelocityChart','productParkingLotChart'],
         ]
-
         exportFormats = {
             [
                     [code:'pdf',name:message(code:'is.report.format.pdf'), action:'printPostits', params:[product:params.product, format:'PDF']],
@@ -133,18 +114,14 @@ uiDefinitions = {
             ]
         }
     }
-
     'releasePlan' {
-
-        icon = 'glyphicon glyphicon-th'
-
+        icon = 'fa fa-calendar'
         menuBar {
             title 'is.ui.releasePlan'
             defaultVisibility true
             defaultPosition 4
             spaceDynamicBar true
         }
-
         window {
             title 'is.ui.releasePlan'
             help 'is.ui.releasePlan.help'
@@ -160,7 +137,6 @@ uiDefinitions = {
                 isWindowContext || params.id
             }
         }
-
         embedded = [
                 view:'index',
                 viewTypes:['postits','notes','releaseBurndownChart','releaseParkingLotChart'],
@@ -173,20 +149,14 @@ uiDefinitions = {
                 }
         ]
     }
-
-
-
     'sprintPlan' {
-
         icon = 'fa fa-tasks'
-
         menuBar {
             title 'is.ui.sprintPlan'
             defaultVisibility true
             defaultPosition 5
             spaceDynamicBar true
         }
-
         window {
             title 'is.ui.sprintPlan'
             help 'is.ui.sprintPlan.help'
@@ -202,7 +172,6 @@ uiDefinitions = {
             }
             right true
         }
-
         embedded = [
                 view:'index',
                 viewTypes:['postits','table','notes','sprintBurndownRemainingChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
@@ -223,23 +192,18 @@ uiDefinitions = {
             ]
         }
     }
-
     'timeline' {
-
         icon = 'fa fa-clock-o'
-
         menuBar {
             title 'is.ui.timeline'
             defaultVisibility false
             defaultPosition 1
             spaceDynamicBar true
         }
-
         window {
             title 'is.ui.timeline'
             help 'is.ui.timeline.help'
         }
-
         exportFormats = {
             [
                 [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', locationHash:params.actionWindow?:'']],
@@ -248,7 +212,6 @@ uiDefinitions = {
             ]
         }
     }
-
     'user' {
         window {
             space = null
@@ -256,11 +219,8 @@ uiDefinitions = {
             init 'profile'
         }
     }
-
     'finder' {
-
-        icon = ' glyphicon glyphicon-search'
-
+        icon = ' fa fa-search'
         menuBar {
             title 'is.ui.finder'
             defaultVisibility false
@@ -272,7 +232,6 @@ uiDefinitions = {
             init 'index'
         }
     }
-
     'task' {
         menuBar {
             title 'is.ui.backlogelement'
@@ -280,7 +239,6 @@ uiDefinitions = {
                 false
             }
         }
-
         window {
             title 'is.ui.task.details'
             init 'index'
