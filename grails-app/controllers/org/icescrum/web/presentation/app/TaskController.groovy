@@ -332,8 +332,12 @@ class TaskController {
     }
 
     @Secured(['permitAll()'])
-    def listByUser() {
-        def tasks = Task.findAllByResponsibleAndStateInList(springSecurityService.currentUser, [Task.STATE_WAIT, Task. STATE_BUSY], [max: 8])
+    def listByUser(Long product) {
+        def user = springSecurityService.currentUser
+        def options = [max: 8]
+        def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
+        def tasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
+                                    : Task.findAllByResponsibleAndStateInList(user, taskStates, options)
         render(status: 200, contentType:'application/json', text: tasks  as JSON)
     }
 }
