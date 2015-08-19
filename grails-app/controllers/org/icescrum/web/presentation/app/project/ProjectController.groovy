@@ -798,4 +798,13 @@ class ProjectController {
         }
         render(status: 200)
     }
+
+    @Secured(['stakeHolder() or inProduct()'])
+    def activities(long product) {
+        Product _product = Product.withProduct(product)
+        def activities = Activity.recentStoryActivity(_product)
+        activities.addAll(Activity.recentProductActivity(_product))
+        activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
+        render(status:200, text: activities as JSON, contentType:'application/json')
+    }
 }

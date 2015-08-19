@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="row">
-    <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7">
+    <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7" ng-controller="dashboardCtrl">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -34,7 +34,29 @@
                 </h3>
             </div>
             <div class="panel-body activities">
-                <div class="panel-box-empty">
+                <div ng-repeat="activity in activities">
+                    <div class="media-left">
+                        <img height="36px"
+                             ng-src="{{activity.poster | userAvatar}}"
+                             alt="{{activity.poster | userFullName}}"/>
+                    </div>
+                    <div class="media-body">
+                        <div class="text-muted pull-right">
+                            <time timeago datetime="'{{ activity.dateCreated }}'">
+                                {{ activity.dateCreated }}
+                            </time>
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <div>
+                            {{activity.poster | userFullName}}
+                        </div>
+                        <div>
+                            <span class="{{ activity | activityIcon}}"></span>
+                            <span>{{ message('todo.is.ui.activity.' + activity.code ) }} <a href="{{ activity.story.uid | permalink }}">{{ activity.story.name }}</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="activities != undefined && activities.length == 0" class="panel-box-empty">
                     <div style="text-align: center; padding:5px; font-size:14px;">
                         <a class="scrum-link" target="_blank" href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">${message(code:'is.ui.getting.started')}</a>
                     </div>

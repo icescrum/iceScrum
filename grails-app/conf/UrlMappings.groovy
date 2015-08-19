@@ -193,6 +193,14 @@ class UrlMappings {
             }
         }
 
+        "/project/$product/activities" {
+            controller = 'project'
+            action = 'activities'
+            constraints {
+                product(matches: /\d*/)
+            }
+        }
+
         "/project/$product/updateTeam" {
             controller = 'project'
             action = 'updateTeam'

@@ -168,7 +168,7 @@ class SprintController {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    @Secured('stakeHolder()')
+    @Secured(['stakeHolder() or inProduct()'])
     def list(long product, Long releaseId) {
         Release release = releaseId ? Release.withRelease(product, releaseId) : Release.findCurrentOrNextRelease(product).list()[0]
         def sprints = release?.sprints ?: []

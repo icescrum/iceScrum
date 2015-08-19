@@ -121,7 +121,7 @@ class TeamController {
         }
     }
 
-    @Secured('stakeHolder()')
+    @Secured(['stakeHolder() or inProduct()'])
     def show(long product) {
         Product _product = Product.withProduct(product)
         render(status:200, text: _product.firstTeam as JSON, contentType: 'application/json')

@@ -175,7 +175,7 @@ class ReleaseController {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
-    @Secured('stakeHolder()')
+    @Secured(['stakeHolder() or inProduct()'])
     def list(long product) {
         Product _product = Product.withProduct(product)
         def releases = _product.releases

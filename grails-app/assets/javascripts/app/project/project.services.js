@@ -25,6 +25,7 @@ services.factory('Project', ['Resource', function($resource) {
         {},
         {
             listPublic: {method: 'GET', params: {action: 'listPublic'}},
+            activities: {method: 'GET', isArray: true, params: {action: 'activities'}},
             listByUser: {method: 'GET', params: {action: 'listByUser'}}
         });
 }]);
@@ -61,6 +62,9 @@ services.service("ProjectService", ['Project', 'Session', 'TeamService', functio
     };
     this.listByUser = function(term, offset) {
         return Project.listByUser({ term: term, offset: offset }).$promise;
+    };
+    this.getActivities = function(project) {
+        return Project.activities({ id: project.id }, {}).$promise;
     };
     this.authorizedProject = function(action, project) {
         switch (action) {

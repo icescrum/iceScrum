@@ -143,6 +143,13 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     $scope.currentProject = Session.getProject();
 }]);
 
+controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {
+    $scope.activities = [];
+    ProjectService.getActivities($scope.currentProject).then(function(activities) {
+        $scope.activities = activities;
+    });
+}]);
+
 controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, ProjectService, ReleaseService, SprintService) {
     $scope.selectProject = function(project) {
         $scope.project = project;
