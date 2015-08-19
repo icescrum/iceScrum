@@ -74,16 +74,14 @@
                 <h3> Date of : {{date | date:'dd-MM-yyyy'}}</h3>
 
                 <div ng-controller="moodCtrl">
-                <button ng-click="save(mood)" tooltip="Great" class="fa fa-smile-o fa-5x"> </button>
-                <button ng-click="save(mood)" tooltip="So-so"class="fa fa-meh-o fa-5x"> </button>
-                <button ng-click="save(mood)" tooltip="Bad"  class="fa fa-frown-o fa-5x"> </button>
+                <button ng-click="save('MOOD_GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"> </button>
+                <button ng-click="save('MOOD_MEH')" tooltip="So-so"class="fa fa-meh-o fa-5x"> </button>
+                <button ng-click="save('MOOD_BAD')" tooltip="Bad"  class="fa fa-frown-o fa-5x"> </button>
             </div>
             </div>
         </div>
 
     </div>
-
-
 
 <div class="col-md-5">
     <div class="panel panel-primary" ng-controller="userTaskCtrl">
