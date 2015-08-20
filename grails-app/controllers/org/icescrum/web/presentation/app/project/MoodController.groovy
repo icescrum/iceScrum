@@ -15,14 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Authors:Marwah Soltani (msoltani@kagilum.com)
+ * Authors:
  *
+ * Marwah Soltani (msoltani@kagilum.com)
  *
  */
-
-
-
 package org.icescrum.web.presentation.app.project
+import grails.converters.JSON
+
 import org.icescrum.core.domain.Mood
 
 class MoodController {
