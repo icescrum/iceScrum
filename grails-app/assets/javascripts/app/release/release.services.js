@@ -25,15 +25,30 @@ services.factory('Release', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/p/:projectId/release/:id/:action');
 }]);
 
-services.service("ReleaseService", ['$q', 'Release', function($q, Release) {
-    this.list = function(product) {
-        if (_.isEmpty(product.releases)) {
-            return Release.query({ projectId: product.id }, function(data) {
-                product.releases = data;
-                product.releases_count = product.releases.length;
+services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesByName', 'Session', function($q, $filter, Release, ReleaseStatesByName, Session) {
+    this.list = function(project) {
+        if (_.isEmpty(project.releases)) {
+            return Release.query({ projectId: project.id }, function(data) {
+                project.releases = data;
+                project.releases_count = project.releases.length;
             }).$promise;
         } else {
-            return $q.when(product.releases);
+            return $q.when(project.releases);
+        }
+    };
+    this.getCurrentOrNextRelease = function(project) {
+        return Release.get({ projectId: project.id, action: 'findCurrentOrNextRelease' }, {}).$promise;
+    };
+    this.update = function (release) {
+        var releaseToUpdate = _.omit(release, 'sprints');
+        return Release.update({ id: release.id, projectId: release.parentProduct.id }, releaseToUpdate).$promise;
+    };
+    this.authorizedRelease = function(action, release) {
+        switch (action) {
+            case 'update':
+                return Session.po() && release.state != ReleaseStatesByName.DONE;
+            default:
+                return false;
         }
     };
 }]);

@@ -572,6 +572,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         2: {"value": "todo.In progress", "code": "inprogress"},
         3: {"value": "todo.Done", "code": "done"}
     })
+    .constant('ReleaseStatesByName', {
+        "WAIT": 1,
+        "IN_PROGRESS": 2,
+        "DONE": 3
+    })
     .constant('TaskStates', {
         0: {"value": "todo.To do", "code": "wait"},
         1: {"value": "todo.In progress", "code": "inprogress"},
@@ -584,7 +589,8 @@ isApp.config(['$stateProvider', '$httpProvider',
         TM: 'TM',
         SH: 'SH'
     })
-    .constant('CONTENT_LOADED', 'loadingFinished');
+    .constant('CONTENT_LOADED', 'loadingFinished')
+    .constant('SHORT_DATE_FORMAT', 'dd-MM-yyyy');
 
 
 //TODO should be move

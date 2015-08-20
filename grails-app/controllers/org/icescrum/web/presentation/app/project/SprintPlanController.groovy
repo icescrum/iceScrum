@@ -35,7 +35,6 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Product
@@ -72,9 +71,7 @@ class SprintPlanController {
         if (params.id) {
             sprint = Sprint.getInProduct(params.long('product'),params.long('id')).list()
         }
-
         User user = (User) springSecurityService.currentUser
-
         render(template: 'window/toolbar',
                 model: [hideDoneState: user.preferences.hideDoneState,
                         currentFilter: user.preferences.filterTask,
@@ -268,64 +265,59 @@ class SprintPlanController {
         forward(action: 'edit', controller: 'story', params: [referrer: controllerName, id: params.id, product: params.product])
     }
 
-    def doneDefinition() {
-        withSprint{ Sprint sprint ->
-            render(template: 'window/doneDefinition', model: [sprint: sprint])
-        }
+    def doneDefinition(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        render(template: 'window/doneDefinition', model: [sprint: sprint])
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def copyFromPreviousDoneDefinition() {
-        withSprint{ Sprint sprint ->
-            Sprint.withTransaction {
-                def previousSprint = sprint.previousSprint
-                if (!previousSprint) {
-                    returnError(text:message(code: 'is.sprint.error.doneDefinition.no.previous'))
-                }
-                sprint.doneDefinition = previousSprint.doneDefinition
-                sprintService.update(sprint)
+    def copyFromPreviousDoneDefinition(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        Sprint.withTransaction {
+            def previousSprint = sprint.previousSprint
+            if (!previousSprint) {
+                returnError(text:message(code: 'is.sprint.error.doneDefinition.no.previous'))
             }
-            redirect(action: 'doneDefinition', params: [product: params.product, id: sprint.id])
+            sprint.doneDefinition = previousSprint.doneDefinition
+            sprintService.update(sprint)
         }
+        redirect(action: 'doneDefinition', params: [product: params.product, id: sprint.id])
     }
 
-    def retrospective() {
-        withSprint{ Sprint sprint ->
-            render(template: 'window/retrospective', model: [sprint: sprint])
-        }
+    def retrospective(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        render(template: 'window/retrospective', model: [sprint: sprint])
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def copyFromPreviousRetrospective() {
-        withSprint{ Sprint sprint ->
-            Sprint.withTransaction {
-                def previousSprint = sprint.previousSprint
-                if (!previousSprint) {
-                    returnError(text:message(code: 'is.sprint.error.doneDefinition.no.previous'))
-                }
-                sprint.retrospective = previousSprint.retrospective
-                sprintService.update(sprint)
+    def copyFromPreviousRetrospective(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        Sprint.withTransaction {
+            def previousSprint = sprint.previousSprint
+            if (!previousSprint) {
+                returnError(text:message(code: 'is.sprint.error.doneDefinition.no.previous'))
             }
-            redirect(action: 'retrospective', params: [product: params.product, id: sprint.id])
+            sprint.retrospective = previousSprint.retrospective
+            sprintService.update(sprint)
         }
+        redirect(action: 'retrospective', params: [product: params.product, id: sprint.id])
     }
 
     def sprintBurndownRemainingChart() {
         forward(action: "sprintBurndownRemainingChartCached", params:params)
     }
 
-    def sprintBurndownRemainingChartCached() {
-        withSprint{ Sprint sprint ->
-            def values = sprintService.sprintBurndownRemainingValues(sprint)
-            if (values.size() > 0) {
-                render(template: 'charts/sprintBurndownRemainingChart', model: [
-                        remainingTime: values.remainingTime as JSON,
-                        idealTime: values.first()?.idealTime ? values.idealTime as JSON : null,
-                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                        labels: values.label as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
-            }
+    def sprintBurndownRemainingChartCached(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def values = sprintService.sprintBurndownRemainingValues(sprint)
+        if (values.size() > 0) {
+            render(template: 'charts/sprintBurndownRemainingChart', model: [
+                    remainingTime: values.remainingTime as JSON,
+                    idealTime: values.first()?.idealTime ? values.idealTime as JSON : null,
+                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                    labels: values.label as JSON])
+        } else {
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -333,18 +325,17 @@ class SprintPlanController {
         forward(action:"sprintBurnupTasksChartCached",params:params)
     }
 
-    def sprintBurnupTasksChartCached() {
-            withSprint{ Sprint sprint ->
-            def values = sprintService.sprintBurnupTasksValues(sprint)
-            if (values.size() > 0) {
-                render(template: 'charts/sprintBurnupTasksChart', model: [
-                        tasks: values.tasks as JSON,
-                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                        tasksDone: values.tasksDone as JSON,
-                        labels: values.label as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
-            }
+    def sprintBurnupTasksChartCached(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def values = sprintService.sprintBurnupTasksValues(sprint)
+        if (values.size() > 0) {
+            render(template: 'charts/sprintBurnupTasksChart', model: [
+                    tasks: values.tasks as JSON,
+                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                    tasksDone: values.tasksDone as JSON,
+                    labels: values.label as JSON])
+        } else {
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -352,18 +343,17 @@ class SprintPlanController {
         forward(action:"sprintBurnupStoriesChartCached",params:params)
     }
 
-    def sprintBurnupStoriesChartCached() {
-        withSprint{ Sprint sprint ->
-            def values = sprintService.sprintBurnupStoriesValues(sprint)
-            if (values.size() > 0) {
-                render(template: 'charts/sprintBurnupStoriesChart', model: [
-                        stories: values.stories as JSON,
-                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                        storiesDone: values.storiesDone as JSON,
-                        labels: values.label as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
-            }
+    def sprintBurnupStoriesChartCached(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def values = sprintService.sprintBurnupStoriesValues(sprint)
+        if (values.size() > 0) {
+            render(template: 'charts/sprintBurnupStoriesChart', model: [
+                    stories: values.stories as JSON,
+                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                    storiesDone: values.storiesDone as JSON,
+                    labels: values.label as JSON])
+        } else {
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -371,18 +361,17 @@ class SprintPlanController {
         forward(action:"sprintBurnupPointsChartCached",params:params)
     }
 
-    def sprintBurnupPointsChartCached() {
-        withSprint{ Sprint sprint ->
-            def values = sprintService.sprintBurnupStoriesValues(sprint)
-            if (values.size() > 0) {
-                render(template: 'charts/sprintBurnupPointsChart', model: [
-                        points: values.totalPoints as JSON,
-                        withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
-                        pointsDone: values.pointsDone as JSON,
-                        labels: values.label as JSON])
-            } else {
-                returnError(text:message(code: 'is.chart.error.no.values'))
-            }
+    def sprintBurnupPointsChartCached(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def values = sprintService.sprintBurnupStoriesValues(sprint)
+        if (values.size() > 0) {
+            render(template: 'charts/sprintBurnupPointsChart', model: [
+                    points: values.totalPoints as JSON,
+                    withButtonBar: (params.withButtonBar != null) ? params.boolean('withButtonBar') : true,
+                    pointsDone: values.pointsDone as JSON,
+                    labels: values.label as JSON])
+        } else {
+            returnError(text:message(code: 'is.chart.error.no.values'))
         }
     }
 
@@ -405,11 +394,10 @@ class SprintPlanController {
     }
 
     // TODO check rights
-    def copyRecurrentTasksFromPreviousSprint() {
-        withSprint{ Sprint sprint ->
-            def tasks = sprintService.copyRecurrentTasksFromPreviousSprint(sprint)
-            render(status: 200, contentType: 'application/json', text: tasks as JSON)
-        }
+    def copyRecurrentTasksFromPreviousSprint(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def tasks = sprintService.copyRecurrentTasksFromPreviousSprint(sprint)
+        render(status: 200, contentType: 'application/json', text: tasks as JSON)
     }
 
     /**
@@ -484,72 +472,70 @@ class SprintPlanController {
         forward(action: "notesCached", params:params)
     }
 
-    def notesCached() {
-        withSprint{ Sprint sprint ->
-            render(status:200,
-                   template: 'window/notes',
-                   model:[sprint:sprint,
-                           tasks:sprint.tasks?.findAll{it.type == Task.TYPE_URGENT && it.state == Task.STATE_DONE},
-                           technicalStories:sprint.stories?.findAll{it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE},
-                           userStories:sprint.stories?.findAll{it.type == Story.TYPE_USER_STORY && it.state == Story.STATE_DONE},
-                           defectStories:sprint.stories?.findAll{it.type == Story.TYPE_DEFECT && it.state == Story.STATE_DONE}])
-        }
+    def notesCached(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        render(status:200,
+               template: 'window/notes',
+               model:[sprint:sprint,
+                       tasks:sprint.tasks?.findAll{it.type == Task.TYPE_URGENT && it.state == Task.STATE_DONE},
+                       technicalStories:sprint.stories?.findAll{it.type == Story.TYPE_TECHNICAL_STORY && it.state == Story.STATE_DONE},
+                       userStories:sprint.stories?.findAll{it.type == Story.TYPE_USER_STORY && it.state == Story.STATE_DONE},
+                       defectStories:sprint.stories?.findAll{it.type == Story.TYPE_DEFECT && it.state == Story.STATE_DONE}])
     }
 
-    def printPostits() {
-        withSprint{ Sprint sprint ->
-            def product = sprint.parentProduct
-            def stories1 = []
-            def stories2 = []
-            def first = 0
-            if (!sprint.stories) {
-                returnError(text:message(code: 'is.report.error.no.data'))
-                return
-            } else if (params.get) {
-                sprint.stories?.each {
-                    def testsByState = it.countTestsByState()
-                    def story = [
-                            name: it.name,
-                            id: it.uid,
-                            effort: it.effort,
-                            state: message(code: BundleUtils.storyStates[it.state]),
-                            description: is.storyDescription([story: it, displayBR: true]),
-                            notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
-                            type: message(code: BundleUtils.storyTypes[it.type]),
-                            suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
-                            acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,
-                            estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.estimatedDate]) : null,
-                            plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.plannedDate]) : null,
-                            inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.inProgressDate]) : null,
-                            doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.doneDate ?: null]) : null,
-                            rank: it.rank ?: null,
-                            sprint: g.message(code: 'is.release') + " " + sprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + sprint.orderNumber,
-                            creator: it.creator.firstName + ' ' + it.creator.lastName,
-                            feature: it.feature?.name ?: null,
-                            dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
-                            permalink:createLink(absolute: true, mapping: "shortURL", params: [product: product.pkey], id: it.uid),
-                            featureColor: it.feature?.color ?: null,
-                            nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
-                            nbTestsFailed: testsByState[AcceptanceTestState.FAILED],
-                            nbTestsSuccess: testsByState[AcceptanceTestState.SUCCESS]
-                    ]
-                    if (first == 0) {
-                        stories1 << story
-                        first = 1
-                    } else {
-                        stories2 << story
-                        first = 0
-                    }
-
+    def printPostits(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def _product = sprint.parentProduct
+        def stories1 = []
+        def stories2 = []
+        def first = 0
+        if (!sprint.stories) {
+            returnError(text:message(code: 'is.report.error.no.data'))
+            return
+        } else if (params.get) {
+            sprint.stories?.each {
+                def testsByState = it.countTestsByState()
+                def story = [
+                        name: it.name,
+                        id: it.uid,
+                        effort: it.effort,
+                        state: message(code: BundleUtils.storyStates[it.state]),
+                        description: is.storyDescription([story: it, displayBR: true]),
+                        notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
+                        type: message(code: BundleUtils.storyTypes[it.type]),
+                        suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.suggestedDate]) : null,
+                        acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.acceptedDate]) : null,
+                        estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.estimatedDate]) : null,
+                        plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.plannedDate]) : null,
+                        inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.inProgressDate]) : null,
+                        doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.doneDate ?: null]) : null,
+                        rank: it.rank ?: null,
+                        sprint: g.message(code: 'is.release') + " " + sprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + sprint.orderNumber,
+                        creator: it.creator.firstName + ' ' + it.creator.lastName,
+                        feature: it.feature?.name ?: null,
+                        dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
+                        permalink:createLink(absolute: true, mapping: "shortURL", params: [product: _product.pkey], id: it.uid),
+                        featureColor: it.feature?.color ?: null,
+                        nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
+                        nbTestsFailed: testsByState[AcceptanceTestState.FAILED],
+                        nbTestsSuccess: testsByState[AcceptanceTestState.SUCCESS]
+                ]
+                if (first == 0) {
+                    stories1 << story
+                    first = 1
+                } else {
+                    stories2 << story
+                    first = 0
                 }
-                renderReport('stories', params.format, [[product: product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], product.name)
-            } else if (params.status) {
-                render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
-            } else {
-                session.progress = new ProgressSupport()
-                def dialog = g.render(template: '/scrumOS/report', model: [sprint: sprint])
-                render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
+
             }
+            renderReport('stories', params.format, [[product: _product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], _product.name)
+        } else if (params.status) {
+            render(status: 200, contentType: 'application/json', text: session?.progress as JSON)
+        } else {
+            session.progress = new ProgressSupport()
+            def dialog = g.render(template: '/scrumOS/report', model: [sprint: sprint])
+            render(status: 200, contentType: 'application/json', text: [dialog:dialog] as JSON)
         }
     }
 
@@ -567,10 +553,9 @@ class SprintPlanController {
     }
 
     @Secured('inProduct()')
-    def addDocument() {
-        withSprint { Sprint sprint ->
-            def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:sprint, destController:'sprint'])
-            render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
-        }
+    def addDocument(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def dialog = g.render(template:'/attachment/dialogs/documents', model:[bean:sprint, destController:'sprint'])
+        render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
     }
 }

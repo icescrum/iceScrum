@@ -96,58 +96,55 @@ class ReleasePlanController {
 
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def close() {
-        withSprint{Sprint sprint ->
-            def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
-            if ((unDoneStories?.size() > 0 || !sprint.deliveredVersion) && !params.confirm) {
-                def dialog = g.render(template: "dialogs/confirmCloseSprintWithUnDoneStories", model: [stories: unDoneStories, sprint: sprint])
-                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-                return
-            }
-            if (unDoneStories?.size() > 0 && params.confirm) {
-                params.story.id.each {
-                    if (it.value.toInteger() == 1) {
-                        storyService.done(Story.get(it.key.toLong()))
-                    }
+    def close(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
+        if ((unDoneStories?.size() > 0 || !sprint.deliveredVersion) && !params.confirm) {
+            def dialog = g.render(template: "dialogs/confirmCloseSprintWithUnDoneStories", model: [stories: unDoneStories, sprint: sprint])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+            return
+        }
+        if (unDoneStories?.size() > 0 && params.confirm) {
+            params.story.id.each {
+                if (it.value.toInteger() == 1) {
+                    storyService.done(Story.get(it.key.toLong()))
                 }
             }
-
-            if (params.sprint?.deliveredVersion){
-                sprint.deliveredVersion = params.sprint.deliveredVersion
-            }
-            forward(action: 'close', controller: 'sprint', params: [product: params.product, id: sprint.id])
         }
+
+        if (params.sprint?.deliveredVersion){
+            sprint.deliveredVersion = params.sprint.deliveredVersion
+        }
+        forward(action: 'close', controller: 'sprint', params: [product: params.product, id: sprint.id])
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def activate() {
-        withSprint{Sprint sprint ->
-            if (sprint.orderNumber == 1 && sprint.parentRelease.state == Release.STATE_WAIT && !params.confirm) {
-                def dialog = g.render(template: "dialogs/confirmActivateSprintAndRelease", model: [sprint: sprint, release: sprint.parentRelease])
-                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-                return
-            }
-
-            if (params.confirm) {
-                def currentRelease = sprint.parentRelease.parentProduct.releases?.find {it.state == Release.STATE_INPROGRESS}
-                if (currentRelease)
-                    releaseService.close(currentRelease)
-                releaseService.activate(sprint.parentRelease)
-            }
-            forward(action: 'activate', controller: 'sprint', params: [product: params.product, id: sprint.id])
+    def activate(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        if (sprint.orderNumber == 1 && sprint.parentRelease.state == Release.STATE_WAIT && !params.confirm) {
+            def dialog = g.render(template: "dialogs/confirmActivateSprintAndRelease", model: [sprint: sprint, release: sprint.parentRelease])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+            return
         }
+
+        if (params.confirm) {
+            def currentRelease = sprint.parentRelease.parentProduct.releases?.find {it.state == Release.STATE_INPROGRESS}
+            if (currentRelease)
+                releaseService.close(currentRelease)
+            releaseService.activate(sprint.parentRelease)
+        }
+        forward(action: 'activate', controller: 'sprint', params: [product: params.product, id: sprint.id])
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def delete() {
-        withSprint{Sprint sprint ->
-            if (sprint.orderNumber < sprint.parentRelease.sprints.size() && !params.confirm) {
-                def dialog = g.render(template: "dialogs/confirmDeleteSprint", model: [sprint: sprint, release: sprint.parentRelease])
-                render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-                return
-            }
-            forward(action: 'delete', controller: 'sprint', params: [product: params.product, id: sprint.id])
+    def delete(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        if (sprint.orderNumber < sprint.parentRelease.sprints.size() && !params.confirm) {
+            def dialog = g.render(template: "dialogs/confirmDeleteSprint", model: [sprint: sprint, release: sprint.parentRelease])
+            render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+            return
         }
+        forward(action: 'delete', controller: 'sprint', params: [product: params.product, id: sprint.id])
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')

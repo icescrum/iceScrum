@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Kagilum / 2010 iceScrum Technlogies.
+ * Copyright (c) 2015 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 package org.icescrum.web.presentation.app
@@ -54,7 +55,7 @@ class SprintController {
         Sprint sprint = new Sprint()
         try {
             Sprint.withTransaction {
-                bindData(sprint, sprintParams, [include: ['resource', 'goal', 'startDate', 'endDate', 'deliveredVersion']])
+                bindData(sprint, sprintParams, [include: ['goal', 'startDate', 'endDate', 'deliveredVersion']])
                 sprintService.save(sprint, release)
             }
             withFormat {
@@ -70,96 +71,89 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def update() {
+    def update(long product, long id) {
         def sprintParams = params.sprint
-        withSprint { Sprint sprint ->
-            def startDate = sprintParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), sprintParams.startDate) : sprint.startDate
-            def endDate = sprintParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), sprintParams.endDate) : sprint.endDate
-            Sprint.withTransaction {
-                bindData(sprint, sprintParams, [include: ['resource', 'goal', 'deliveredVersion', 'retrospective', 'doneDefinition']])
-                sprintService.update(sprint, startDate, endDate)
-            }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                json { renderRESTJSON(text: sprint) }
-                xml { renderRESTXML(text: sprint) }
-            }
+        Sprint sprint = Sprint.withSprint(product, id)
+        def startDate = sprintParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), sprintParams.startDate) : sprint.startDate
+        def endDate = sprintParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), sprintParams.endDate) : sprint.endDate
+        Sprint.withTransaction {
+            bindData(sprint, sprintParams, [include: ['goal', 'deliveredVersion', 'retrospective', 'doneDefinition']])
+            sprintService.update(sprint, startDate, endDate)
+        }
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
+            json { renderRESTJSON(text: sprint) }
+            xml { renderRESTXML(text: sprint) }
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def delete() {
-        withSprint { Sprint sprint ->
-            try {
-                sprintService.delete(sprint)
-                withFormat {
-                    html { render(status: 200) }
-                    json { render(status: 204) }
-                    xml { render(status: 204) }
-                }
-            } catch (IllegalStateException e) {
-                returnError(exception: e)
-            } catch (RuntimeException e) {
-                returnError(object: sprint, exception: e)
-            }
-        }
-    }
-
-
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def unPlan() {
-        withSprint { Sprint sprint ->
-            def unPlanAllStories = storyService.unPlanAll([sprint])
+    def delete(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        try {
+            sprintService.delete(sprint)
             withFormat {
-                html {
-                    render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)
-                }
-                json { renderRESTJSON(text: sprint) }
-                xml { renderRESTXML(text: sprint) }
+                html { render(status: 200) }
+                json { render(status: 204) }
+                xml { render(status: 204) }
             }
+        } catch (IllegalStateException e) {
+            returnError(exception: e)
+        } catch (RuntimeException e) {
+            returnError(object: sprint, exception: e)
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def activate() {
-        withSprint { Sprint sprint ->
-            sprintService.activate(sprint)
-            withFormat {
-                html {
-                    render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)
-                }
-                json { renderRESTJSON(text: sprint) }
-                xml { renderRESTXML(text: sprint) }
+    def unPlan(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def unPlanAllStories = storyService.unPlanAll([sprint])
+        withFormat {
+            html {
+                render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)
             }
+            json { renderRESTJSON(text: sprint) }
+            xml { renderRESTXML(text: sprint) }
         }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def close() {
-        withSprint { Sprint sprint ->
-            def unDoneStories = sprint.stories.findAll { it.state != Story.STATE_DONE }
-            sprintService.close(sprint)
-            withFormat {
-                html {
-                    render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)
-                }
-                json { renderRESTJSON(text: sprint) }
-                xml { renderRESTXML(text: sprint) }
+    def activate(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        sprintService.activate(sprint)
+        withFormat {
+            html {
+                render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)
             }
+            json { renderRESTJSON(text: sprint) }
+            xml { renderRESTXML(text: sprint) }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def close(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        def unDoneStories = sprint.stories.findAll { it.state != Story.STATE_DONE }
+        sprintService.close(sprint)
+        withFormat {
+            html {
+                render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)
+            }
+            json { renderRESTJSON(text: sprint) }
+            xml { renderRESTXML(text: sprint) }
         }
     }
 
     @Secured('inProduct()')
-    def index() {
+    def index(long product, long id) {
         if (request?.format == 'html') {
             render(status: 404)
             return
         }
-        withSprint { Sprint sprint ->
-            withFormat {
-                json { renderRESTJSON(text: sprint) }
-                xml { renderRESTXML(text: sprint) }
-            }
+        Sprint sprint = Sprint.withSprint(product, id)
+        withFormat {
+            json { renderRESTJSON(text: sprint) }
+            xml { renderRESTXML(text: sprint) }
         }
     }
 
@@ -176,6 +170,16 @@ class SprintController {
             html { render(status: 200, contentType: 'application/json', text: sprints as JSON) }
             json { renderRESTJSON(text: sprints) }
             xml { renderRESTXML(text: sprints) }
+        }
+    }
+
+    @Secured(['stakeHolder() or inProduct()'])
+    def findCurrentOrLastSprint(long product) {
+        def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: sprint as JSON }
+            json { renderRESTJSON(text: sprint) }
+            xml { renderRESTXML(text: sprint) }
         }
     }
 }

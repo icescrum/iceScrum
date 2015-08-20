@@ -110,7 +110,7 @@
                         </g:if>
                         <g:if test="${moreProductsExist}">
                             <li>
-                                <a href ng-click="showProjectListModal('byUser')">
+                                <a href ng-click="showProjectListModal('user')">
                                     <g:message code="is.projectmenu.submenu.project.more"/>
                                 </a>
                             </li>

@@ -20,12 +20,12 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="row">
-    <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7" ng-controller="dashboardCtrl">
+<div class="row" ng-controller="dashboardCtrl">
+    <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-bolt"/> <g:message code="is.ui.project.activity.title"/>
+                    <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
                     <small class="pull-right">
                         <g:link class="rss" data-toggle="tooltip" title="${message(code:'todo.is.ui.rss')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
                             <i class="fa fa-rss fa-lg"></i>
@@ -68,7 +68,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-bar-chart"/> <g:message code="is.ui.project.chart.title"/>
+                    <i class="fa fa-bar-chart"></i> <g:message code="is.ui.project.chart.title"/>
                     <small class="pull-right">
                         <div dropdown class="btn-group" tooltip="${message(code:'todo.is.ui.charts')}">
                             <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
@@ -103,90 +103,73 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-eye"/> <g:message code="is.ui.project.vision.title"/>
-                    <g:if test="${request.productOwner && release?.id}">
-                        <small class="pull-right on-hover">
-                            <a class="text-muted" href="#releasePlan/vision/${release.id}" tooltip="${message(code:'default.button.edit.label')}">
-                                <i class="fa fa-edit fa-lg"></i>
-                            </a>
-                        </small>
-                    </g:if>
+                    <i class="fa fa-eye"></i> <g:message code="is.ui.project.vision.title"/>
                 </h3>
             </div>
             <div class="panel-body">
-                <g:if test="${release?.vision}">
-                    <wikitext:renderHtml markup="Textile">${is.truncated(value: release.vision, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
-                </g:if>
-                <g:else>
-                    <p class="text-muted"><g:message code="is.release.empty.vision"/></p>
-                </g:else>
-                <g:if test="${release?.vision?.length() > 1000}">
-                    <p class="pull-right">
-                        <a href="#releasePlan/vision/${release.id}">
-                            <g:message code="is.ui.project.link.more"/>
-                        </a>
-                    </p>
-                </g:if>
+                <textarea is-markitup
+                          class="form-control"
+                          name="vision"
+                          ng-model="editableRelease.vision"
+                          is-model-html="editableRelease.vision_html"
+                          ng-show="showVisionTextarea"
+                          ng-blur="showVisionTextarea = false; updateRelease(editableRelease)"
+                          placeholder="${message(code: 'todo.is.ui.release.novision')}"></textarea>
+                <div class="markitup-preview"
+                     ng-disabled="true"
+                     ng-show="!showVisionTextarea"
+                     ng-click="showVisionTextarea = authorizedRelease('update', editableRelease)"
+                     ng-class="{'placeholder': !editableRelease.vision_html}"
+                     tabindex="0"
+                     ng-bind-html="(editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
             </div>
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-check-square-o"/> <g:message code="is.ui.project.doneDefinition.title"/>
-                    <g:if test="${(request.productOwner || request.scrumMaster) && sprint?.id}">
-                        <small class="pull-right on-hover">
-                            <a class="text-muted" href="#sprintPlan/doneDefinition/${sprint.id}" tooltip="${message(code:'default.button.edit.label')}">
-                                <i class="fa fa-edit fa-lg"></i>
-                            </a>
-                        </small>
-                    </g:if>
+                    <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
                 </h3>
             </div>
             <div class="panel-body">
-                <g:if test="${sprint?.doneDefinition}">
-                    <wikitext:renderHtml markup="Textile">${is.truncated(value: sprint.doneDefinition, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
-                </g:if>
-                <g:else>
-                    <p class="text-muted"><g:message code="is.sprint.empty.doneDefinition"/></p>
-                </g:else>
-                <g:if test="${sprint?.doneDefinition?.length() > 1000}">
-                    <p class="pull-right">
-                        <a href="#sprintPlan/doneDefinition/${sprint.id}">
-                            <g:message code="is.ui.project.link.more"/>
-                        </a>
-                    </p>
-                </g:if>
+                <textarea is-markitup
+                          class="form-control"
+                          name="doneDefinition"
+                          ng-model="editableSprint.doneDefinition"
+                          is-model-html="editableSprint.doneDefinition_html"
+                          ng-show="showDoneDefinitionTextarea"
+                          ng-blur="showDoneDefinitionTextarea = false; updateSprint(editableSprint)"
+                          placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
+                <div class="markitup-preview"
+                     ng-disabled="true"
+                     ng-show="!showDoneDefinitionTextarea"
+                     ng-click="showDoneDefinitionTextarea = authorizedSprint('updateDoneDefinition', editableSprint)"
+                     ng-class="{'placeholder': !editableSprint.doneDefinition_html}"
+                     tabindex="0"
+                     ng-bind-html="(editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
             </div>
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="fa fa-repeat"/> <g:message code="is.ui.project.retrospective.title"/>
-                    <g:if test="${(request.productOwner || request.scrumMaster) && sprint?.id}">
-                        <small class="pull-right on-hover">
-                            <a class="text-muted" href="#sprintPlan/retrospective/${sprint.id}" tooltip="${message(code:'default.button.edit.label')}">
-                                <i class="fa fa-edit fa-lg"></i>
-                            </a>
-                        </small>
-                    </g:if>
+                    <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
                 </h3>
             </div>
             <div class="panel-body">
-                <g:if test="${sprint?.retrospective}">
-                    <div class="rich-content"><wikitext:renderHtml
-                            markup="Textile">${is.truncated(value: sprint.retrospective, size: 1000, encodedHTML: false)}</wikitext:renderHtml>
-                    </div>
-                </g:if>
-                <g:else>
-                    <p class="text-muted"><g:message code="is.sprint.empty.retrospective"/></p>
-                </g:else>
-                <g:if test="${sprint?.retrospective?.length() > 1000}">
-                    <p class="pull-right">
-                        <a href="#sprintPlan/retrospective/${sprint.id}">
-                            <g:message code="is.ui.project.link.more"/>
-                        </a>
-                    </p>
-                </g:if>
+                <textarea is-markitup
+                          class="form-control"
+                          name="retrospective"
+                          ng-model="editableSprint.retrospective"
+                          is-model-html="editableSprint.retrospective_html"
+                          ng-show="showRetrospectiveTextarea"
+                          ng-blur="showRetrospectiveTextarea = false; updateSprint(editableSprint)"
+                          placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
+                <div class="markitup-preview"
+                     ng-disabled="true"
+                     ng-show="!showRetrospectiveTextarea"
+                     ng-click="showRetrospectiveTextarea = authorizedSprint('updateRetrospective', editableSprint)"
+                     ng-class="{'placeholder': !editableSprint.retrospective_html}"
+                     tabindex="0"
+                     ng-bind-html="(editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
             </div>
         </div>
     </div>

@@ -297,9 +297,27 @@ class ProductUrlMappings {
 
         "/p/$product/release" {
             controller = 'release'
-            action = 'list'
+            action = [GET: "list"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/release/$id" {
+            controller = 'release'
+            action = [PUT:"update", POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+
+        "/p/$product/sprint/$id" {
+            controller = 'sprint'
+            action = [PUT:"update", POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
             }
         }
 

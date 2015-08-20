@@ -143,10 +143,45 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     $scope.currentProject = Session.getProject();
 }]);
 
-controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {
+controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, ProjectService, ReleaseService, SprintService) {
+    $scope.authorizedRelease = function(action, release) {
+        return ReleaseService.authorizedRelease(action, release);
+    };
+    $scope.authorizedSprint = function(action, sprint) {
+        return SprintService.authorizedSprint(action, sprint);
+    };
+    $scope.updateRelease = function(release) {
+        ReleaseService.update(release)
+            .then(function(updatedRelease) {
+                $scope.release = updatedRelease;
+                $scope.editableRelease = updatedRelease;
+                $scope.notifySuccess('todo.is.ui.release.updated');
+            });
+    };
+    $scope.updateSprint = function(sprint) {
+        SprintService.update(sprint, $scope.currentProject.id)
+            .then(function(updatedSprint) {
+                $scope.sprint = updatedSprint;
+                $scope.editableSprint = updatedSprint;
+                $scope.notifySuccess('todo.is.ui.sprint.updated');
+            });
+    };
+    // Init
     $scope.activities = [];
+    $scope.release = {};
+    $scope.editableRelease = {};
+    $scope.sprint = {};
+    $scope.editableSprint = {};
     ProjectService.getActivities($scope.currentProject).then(function(activities) {
         $scope.activities = activities;
+    });
+    ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
+        $scope.release = release;
+        $scope.editableRelease = release;
+    });
+    SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
+        $scope.sprint = sprint;
+        $scope.editableSprint = sprint;
     });
 }]);
 
@@ -156,13 +191,11 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
         ProjectService.countMembers(project).then(function(count) {
             $scope.projectMembersCount = count;
         });
-        ReleaseService.list(project).then(function(releases) {
-            $scope.release = _.chain(releases).sortBy('orderNumber').find(function(release) {
-                return _.includes([1, 2], release.state);
-            }).value();
-            if ($scope.release) {
-                SprintService.list($scope.release);
+        ReleaseService.getCurrentOrNextRelease(project).then(function(release) {
+            if (release) {
+                SprintService.list(release);
             }
+            $scope.release = release;
         });
     };
     $scope.openProject = function (project) {
@@ -278,7 +311,9 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
     $scope.sh = {};
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session) {
+controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'SHORT_DATE_FORMAT',
+    function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session, SHORT_DATE_FORMAT) {
+
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.type = 'newProject';
     $scope.openDatepicker = function($event, name) {
@@ -293,9 +328,9 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     };
     $scope.createProject = function(project) {
         var p = $scope.prepareProject(project);
-        p.startDate = $filter('date')(project.startDate, "dd-MM-yyyy");
-        p.endDate = $filter('date')(project.endDate, "dd-MM-yyyy");
-        p.firstSprint = $filter('date')(project.firstSprint, "dd-MM-yyyy");
+        p.startDate = $filter('date')(project.startDate, SHORT_DATE_FORMAT);
+        p.endDate = $filter('date')(project.endDate, SHORT_DATE_FORMAT);
+        p.firstSprint = $filter('date')(project.firstSprint, SHORT_DATE_FORMAT);
         ProjectService.save(p).then(function(project) {
             document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
         });

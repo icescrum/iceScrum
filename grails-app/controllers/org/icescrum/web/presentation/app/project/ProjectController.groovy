@@ -306,14 +306,7 @@ class ProjectController {
 
     def view(long product) {
         Product _product = Product.withProduct(product)
-        def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
-        def release = Release.findCurrentOrNextRelease(product).list()[0]
-        render template: 'view',
-                model: [product: _product,
-                        sprint: sprint,
-                        release: release,
-                        user: springSecurityService.currentUser,
-                        lang: RCU.getLocale(request).toString().substring(0, 2)]
+        render template: 'view', model: [product: _product]
     }
 
     def productCumulativeFlowChart(long product) {

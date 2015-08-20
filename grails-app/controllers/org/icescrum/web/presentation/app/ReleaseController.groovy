@@ -74,7 +74,7 @@ class ReleaseController {
         def startDate = releaseParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.startDate) : release.startDate
         def endDate = releaseParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.endDate) : release.endDate
         Release.withTransaction {
-            bindData(release, releaseParams, [include: ['name', 'goal', 'vision']], "release")
+            bindData(release, releaseParams, [include: ['name', 'goal', 'vision']])
             releaseService.update(release, startDate, endDate)
         }
         withFormat {
@@ -183,6 +183,16 @@ class ReleaseController {
             html { render status: 200, contentType: 'application/json', text: releases as JSON }
             json { renderRESTJSON(text: releases) }
             xml { renderRESTXML(text: releases) }
+        }
+    }
+
+    @Secured(['stakeHolder() or inProduct()'])
+    def findCurrentOrNextRelease(long product) {
+        def release = Release.findCurrentOrNextRelease(product).list()[0]
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: release as JSON }
+            json { renderRESTJSON(text: release) }
+            xml { renderRESTXML(text: release) }
         }
     }
 }
