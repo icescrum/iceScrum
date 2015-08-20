@@ -78,7 +78,7 @@ grails.project.dependency.resolution = {
         compile ':standalone:1.3'
         compile ':cache-headers:1.1.7'
         compile ':asset-pipeline:2.5.0'
-        compile ':less-asset-pipeline:2.3.0'
+        compile ':less-asset-pipeline:2.1.0' // Cannot upgrade because less4j used in 2.1.1 and 2.2.0 cannot compile code.less (TODC)
         compile ':browser-detection:2.5.0'
         // runtime ':database-migration:1.4.0' TODO enable new migration
         runtime ':hibernate4:4.3.10'
