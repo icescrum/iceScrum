@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -19,7 +19,7 @@
  *
  *
  */
-controllers.controller('homeCtrl', ['$scope', 'UserService', 'User', 'Session', function ($scope, UserService, User, Session) {
+controllers.controller('homeCtrl', ['$scope', 'Session', function ($scope, Session) {
     $scope.authenticated = function() {
         return Session.authenticated();
     };

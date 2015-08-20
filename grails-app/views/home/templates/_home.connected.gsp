@@ -43,7 +43,6 @@
                          ng-disabled="true"
                          ng-show="!showNotesTextarea"
                          ng-click="showNotesTextarea = true"
-                         ng-focus="editForm(true)"
                          ng-class="{'placeholder': !editableUser.notes_html}"
                          tabindex="0"
                          ng-bind-html="(editableUser.notes_html ? editableUser.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
