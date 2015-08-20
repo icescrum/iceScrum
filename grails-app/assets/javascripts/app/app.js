@@ -577,6 +577,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         "IN_PROGRESS": 2,
         "DONE": 3
     })
+    .constant('MoodFeelingsByName', {
+        "GOOD": 1,
+        "MEH": 2,
+        "BAD": 3
+    })
     .constant('TaskStates', {
         0: {"value": "todo.To do", "code": "wait"},
         1: {"value": "todo.In progress", "code": "inprogress"},

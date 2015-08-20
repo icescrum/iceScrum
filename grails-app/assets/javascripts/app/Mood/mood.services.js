@@ -1,6 +1,5 @@
-
 /*
- * Copyright (c) 2015 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum .
  *
  * This file is part of iceScrum.
  *
@@ -28,16 +27,12 @@ services.factory('Mood', ['Resource', function ($resource) {
             listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}}
         });
 }]);
-
 services.service("MoodService", ['$q', 'Mood', function ($q, Mood) {
-    this.save = function (moodCode) {
-        var mood = { moodUser : moodCode }
-         mood.class ='mood';
-        return Mood.save(mood).$promise;
+    this.save = function (mood) {
+        mood.class = 'mood';
+        return Mood.save({action: 'save'}, mood).$promise;
     };
     this.listByUser = function () {
         return Mood.listByUser().$promise;
-    }
+    };
 }]);
-
-

@@ -22,21 +22,21 @@
  */
 package org.icescrum.web.presentation.app.project
 import grails.converters.JSON
-
+import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Mood
 
+@Secured('isAuthenticated()')
 class MoodController {
-
     def springSecurityService
-    def MoodService
+    @Secured('isAuthenticated()')
     def save() {
         Mood mood = new Mood()
         try {
             Mood.withTransaction {
-                bindData(mood, [include: ['moodUser']])
-                MoodService.save(mood)
+                bindData(mood, params.mood ,[include: ['feeling']])
+                mood.user = springSecurityService.currentUser
+                mood.save(flush: true)
             }
-
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: mood as JSON) }
                 json { renderRESTJSON(status: 201, text: mood) }
@@ -45,7 +45,7 @@ class MoodController {
         } catch (IllegalStateException e) {
             returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object: task, exception: e)
+            returnError(object: mood, exception: e)
         }
     }
 }

@@ -59,45 +59,40 @@
                 <accordion-group heading="{{ project.name }}"
                                  is-open="openedProjects[project.id]"
                                  ng-repeat="project in projects">
-                    <div ng-include="'project.details.html'"> </div>
+                    <div ng-include="'project.details.html'"></div>
                 </accordion-group>
             </accordion>
         </div>
     </div>
-
     <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.mood')}</div>
-
             <div class="panel-body" ng-controller="Ctrldate">
-                <h3> Date of : {{date | date:'dd-MM-yyyy'}}</h3>
-
+                <h3>Date of : {{date | date:'dd-MM-yyyy'}}</h3>
                 <div ng-controller="moodCtrl">
-                <button ng-click="save('MOOD_GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"> </button>
-                <button ng-click="save('MOOD_MEH')" tooltip="So-so"class="fa fa-meh-o fa-5x"> </button>
-                <button ng-click="save('MOOD_BAD')" tooltip="Bad"  class="fa fa-frown-o fa-5x"> </button>
-            </div>
+                    <button ng-click="save('GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"></button>
+                    <button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button>
+                    <button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button>
+                </div>
             </div>
         </div>
-
     </div>
-
-<div class="col-md-5">
-    <div class="panel panel-primary" ng-controller="userTaskCtrl">
-        <div class="panel-heading">
-            ${message(code: 'is.panel.mytask')}
+    <div class="col-md-5">
+        <div class="panel panel-primary" ng-controller="userTaskCtrl">
+            <div class="panel-heading">
+                ${message(code: 'is.panel.mytask')}
+            </div>
+            <accordion>
+                <accordion-group heading="{{task.uid }} - {{task.name }}" ng-repeat="task in tasks">
+                    <table>
+                        <tr><td>${message(code: 'is.panel.task.Estimation')} : {{ task.estimation }}</td></tr>
+                        <tr><td>${message(code: 'is.panel.task.Etat')} : {{task.state | i18n:'TaskStates' }}</td></tr>
+                        <tr><td>${message(code: 'is.panel.task.Description')} : {{ task.description }}</td></tr>
+                        <tr><td>${message(code: 'is.panel.task.Story')} : {{ task.parentStory.name }}</td></tr>
+                    </table>
+                </accordion-group>
+            </accordion>
         </div>
-        <accordion>
-            <accordion-group heading="{{task.uid }} - {{task.name }}" ng-repeat="task in tasks">
-                <table>
-                    <tr><td>${message(code: 'is.panel.task.Estimation')} : {{ task.estimation }}</td></tr>
-                    <tr><td>${message(code: 'is.panel.task.Etat')} : {{task.state | i18n:'TaskStates' }}</td></tr>
-                    <tr><td>${message(code: 'is.panel.task.Description')} : {{ task.description }}</td></tr>
-                    <tr><td>${message(code: 'is.panel.task.Story')} : {{ task.parentStory.name }}</td></tr>
-                </table>
-            </accordion-group>
-        </accordion>
     </div>
-</div>
 </div>
 </script>
