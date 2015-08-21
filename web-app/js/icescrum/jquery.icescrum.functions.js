@@ -1239,7 +1239,16 @@
                             if (backlog.length) {
                                 backlog.sortable('disable', true);
                                 $('.postit-label.postit-sortable', backlog).removeClass('postit-sortable');
-                                $('.event-container[data-elemid=' + this.id + '] > .event-content-list').droppable('disable', true).removeClass('ui-state-disabled');
+                                var sprintColumn = $('.event-container[data-elemid=' + this.id + '] > .event-content-list');
+                                sprintColumn.removeClass('ui-state-disabled');
+                                // hack to disable droppable
+                                // if activated by click on story from widget, use regular API
+                                // if not activated then API won't work, prevent activation by simulating previous activation with init = true
+                                if (sprintColumn.data('init')) {
+                                    sprintColumn.droppable('disable', true);
+                                } else {
+                                    sprintColumn.data('init', true);
+                                }
                             }
                         }
                         if (this.activable) {
