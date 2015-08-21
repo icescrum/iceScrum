@@ -35,7 +35,10 @@ class MoodController {
             Mood.withTransaction {
                 bindData(mood, params.mood ,[include: ['feeling']])
                 mood.user = springSecurityService.currentUser
-                mood.save(flush: true)
+                mood.feelingDay = new Date().clearTime()
+                if (!mood.save(flush: true)) {
+                    throw new RuntimeException(mood.errors?.toString())
+                }
             }
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: mood as JSON) }
@@ -47,5 +50,11 @@ class MoodController {
         } catch (RuntimeException e) {
             returnError(object: mood, exception: e)
         }
+    }
+
+    @Secured(['permitAll()'])
+    def listByUser() {
+        def moods= Mood.findAllByUser(springSecurityService.currentUser)
+        render(status: 200, contentType:'application/json', text: moods  as JSON)
     }
 }

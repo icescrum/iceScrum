@@ -70,9 +70,18 @@
             <div class="panel-body" ng-controller="Ctrldate">
                 <h3>Date of : {{date | date:'dd-MM-yyyy'}}</h3>
                 <div ng-controller="moodCtrl">
-                    <button ng-click="save('GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"></button>
+                    <button ng-click="save('GOOD')"  tooltip="Great" class="fa fa-smile-o fa-5x"></button>
                     <button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button>
                     <button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button>
+
+                    <div ng-controller="userMood">
+                        <div ng-repeat="mood in moods">
+                        <table>
+                            <tr><td> Fellings : {{mood.feeling | i18n:'MoodFeelings'}}</td></tr>
+                            <tr><td>  FeelingDay: {{ mood.feelingDay}}</td></tr>
+                        </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

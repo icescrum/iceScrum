@@ -33,9 +33,9 @@ controllers.controller('Ctrldate', ['$scope', function ($scope) {
 }]);
 
 controllers.controller('userMood', ['$scope', 'MoodService', function ($scope, MoodService) {
-    $scope.mood = [];
-    MoodService.listByUser().then(function (mood) {
-        $scope.mood = mood;
+    $scope.moods = [];
+     MoodService.listByUser().then(function (moods) {
+         $scope.moods = moods;
 
     });
 }]);
