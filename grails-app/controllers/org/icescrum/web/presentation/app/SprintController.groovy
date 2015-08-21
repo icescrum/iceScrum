@@ -138,7 +138,7 @@ class SprintController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close = {
         withSprint{ Sprint sprint ->
-            def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
+            def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}.sort { it.rank }
             sprintService.close(sprint)
             withFormat {
                 html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)  }

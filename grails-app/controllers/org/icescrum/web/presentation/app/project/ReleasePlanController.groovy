@@ -106,7 +106,7 @@ class ReleasePlanController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close = {
         withSprint{Sprint sprint ->
-            def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}
+            def unDoneStories = sprint.stories.findAll {it.state != Story.STATE_DONE}.sort { it.rank }
             if ((unDoneStories?.size() > 0 || !sprint.deliveredVersion) && !params.confirm) {
                 def dialog = g.render(template: "dialogs/confirmCloseSprintWithUnDoneStories", model: [stories: unDoneStories, sprint: sprint])
                 render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
