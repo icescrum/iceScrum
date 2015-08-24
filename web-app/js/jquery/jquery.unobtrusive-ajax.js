@@ -318,8 +318,8 @@ function attachOnDomUpdate(content){
             var prefix = '';
             if (element.data('createChoicePrefix')) {
                 prefix = element.data('createChoicePrefix');
-                options.formatSelection = function(object) {
-                    return object.isNew ? object.id : object.text;
+                options.formatSelection = function(selected) {
+                    return selected.isNew ? selected.textCache : selected.text;
                 };
             }
             options.createSearchChoice = function (term, data) {
@@ -329,7 +329,7 @@ function attachOnDomUpdate(content){
                     }).length > 0) {
                     return null;
                 }
-                return {id: term, text: prefix + term, isNew: true};
+                return {id: -1, text: prefix + term, isNew: true, textCache: term};
             };
         }
         var select = element.select2(options);

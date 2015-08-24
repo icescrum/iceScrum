@@ -254,9 +254,9 @@
                     teamsLoaded: function(event) { },
 
                     teamChange: function(event) {
-                        var value = event.val;
-                        var teamId = parseInt(value);
-                        var newTeam = isNaN(teamId);
+                        var selected = event.added;
+                        var teamId = parseInt(event.val);
+                        var newTeam = selected.isNew;
                         var $container = $(this).closest('.member-autocomplete');
                         var $teamId = $('input#teamId', $container);
                         var $teamName = $('input#teamName', $container);
@@ -264,14 +264,14 @@
                         var $memberList = $('#team-member-list', $container);
                         if (newTeam) {
                             $teamId.val('');
-                            $teamName.val(value);
+                            $teamName.val(selected.textCache);
                             $findMembers.show();
                         } else {
                             $teamId.val(teamId);
                             $teamName.val('');
                             $findMembers.hide();
                         }
-                        $.getJSON($.icescrum.o.baseUrl + 'members/getTeamMembers/' + (isNaN(teamId) ? '' : teamId), function(members) {
+                        $.getJSON($.icescrum.o.baseUrl + 'members/getTeamMembers/' + (newTeam ? '' : teamId), function(members) {
                             $.each(members, function(index, member) {
                                 member.editable = newTeam;
                                 member.view = 'members';
