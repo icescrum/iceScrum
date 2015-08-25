@@ -67,20 +67,19 @@
     <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.mood')}</div>
-            <div class="panel-body" ng-controller="Ctrldate">
-                <h3>Date of : {{date | date:'dd-MM-yyyy'}}</h3>
-                <div ng-controller="moodCtrl">
-                    <button ng-click="save('GOOD')"  tooltip="Great" class="fa fa-smile-o fa-5x"></button>
-                    <button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button>
-                    <button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button>
-
-                    <div ng-controller="userMood">
-                        <div ng-repeat="mood in moods">
-                        <table>
-                            <tr><td> Fellings : {{mood.feeling | i18n:'MoodFeelings'}}</td></tr>
-                            <tr><td>  FeelingDay: {{ mood.feelingDay}}</td></tr>
+            <div class="panel-body" ng-controller="moodCtrl">
+                <div ng-switch="alreadySavedToday">
+                    <div ng-switch-default>
+                        <button ng-click="save('GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"></button>
+                        <button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button>
+                        <button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button>
+                    </div>
+                    <div ng-switch-when="true">
+                        <table ng-repeat="mood in moods">
+                            <tr><td>user :{{ mood.user.id}}</td></tr>
+                            <tr><td>Fellings : {{mood.feeling | i18n:'MoodFeelings'}}</td></tr>
+                            <tr><td>FeelingDay: {{ mood.feelingDay}}</td></tr>
                         </table>
-                        </div>
                     </div>
                 </div>
             </div>

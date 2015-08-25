@@ -24,10 +24,11 @@ services.factory('Mood', ['Resource', function ($resource) {
     return $resource(icescrum.grailsServer + '/mood/:id/:action',
         {},
         {
-            listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}}
+            listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}},
+            isAlreadySavedToday: {method: 'GET', params: {action: 'isAlreadySavedToday'}}
         });
 }]);
-services.service("MoodService", ['$q', 'Mood', function ($q, Mood) {
+services.service("MoodService", ['Mood', function (Mood) {
     this.save = function (mood) {
         mood.class = 'mood';
         return Mood.save({action: 'save'}, mood).$promise;
@@ -35,4 +36,7 @@ services.service("MoodService", ['$q', 'Mood', function ($q, Mood) {
     this.listByUser = function () {
         return Mood.listByUser().$promise;
     };
+    this.isAlreadySavedToday = function(){
+        return Mood.isAlreadySavedToday().$promise;
+    }
 }]);

@@ -33,9 +33,9 @@ class MoodController {
         Mood mood = new Mood()
         try {
             Mood.withTransaction {
-                bindData(mood, params.mood ,[include: ['feeling']])
+                bindData(mood, params.mood, [include: ['feeling']])
                 mood.user = springSecurityService.currentUser
-                mood.feelingDay = new Date().clearTime()
+                mood.feelingDay = new Date()
                 if (!mood.save(flush: true)) {
                     throw new RuntimeException(mood.errors?.toString())
                 }
@@ -54,7 +54,15 @@ class MoodController {
 
     @Secured(['permitAll()'])
     def listByUser() {
-        def moods= Mood.findAllByUser(springSecurityService.currentUser)
-        render(status: 200, contentType:'application/json', text: moods  as JSON)
+        def moods = Mood.findAllByUser(springSecurityService.currentUser)
+        render(status: 200, contentType: 'application/json', text: moods as JSON)
     }
+
+    @Secured(['permitAll()'])
+    def isAlreadySavedToday() {
+        def today = new Date().clearTime()
+        def moodCount = Mood.countByFeelingDayAndUser(today, springSecurityService.currentUser)
+        render(status: 200, contentType: 'application/json', text: [value: moodCount > 0 ? true : false] as JSON)
+    }
+
 }
