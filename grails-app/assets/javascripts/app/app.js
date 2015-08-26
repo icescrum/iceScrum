@@ -43,7 +43,8 @@ var isApp = angular.module('isApp', [
     'FBAngular',
     'angular-extended-notifications',
     'htmlSortable',
-    'angular.atmosphere'
+    'angular.atmosphere',
+    'nvd3'
 ]);
 
 isApp.config(['$stateProvider', '$httpProvider',
@@ -582,7 +583,7 @@ isApp.config(['$stateProvider', '$httpProvider',
         "MEH": 2,
         "BAD": 3
     })
-        .constant('MoodFeelings', {
+    .constant('MoodFeelings', {
         1: {"value": "todo.good", "code": "good"},
         2: {"value": "todo.meh", "code": "meh"},
         3: {"value": "todo.bad", "code": "bad"}

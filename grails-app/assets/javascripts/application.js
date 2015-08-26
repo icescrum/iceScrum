@@ -27,8 +27,9 @@
 
 //= require           vendors/jquery/jquery-1.11.0.min
 //= require           vendors/jquery/jquery-migrate-1.2.1.min
-//= require           vendors/jquery-jqplot/jquery.jqplot.min
 //= require_full_tree vendors/jquery
+
+//= require_full_tree vendors/d3
 
 //= require           vendors/bootstrap/bootstrap.min
 
