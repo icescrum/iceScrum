@@ -128,6 +128,18 @@ isApp.config(['$stateProvider', '$httpProvider',
                         }]
                     }
                 })
+                    .state('backlog.new', {
+                        url: "/new",
+                        data:{
+                            stack: 2
+                        },
+                        views:{
+                            "details@backlog": {
+                                templateUrl: 'story.new.html',
+                                controller: 'storyNewCtrl'
+                            }
+                        }
+                    })
                     .state('backlog.multiple', {
                         url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
                         data:{
