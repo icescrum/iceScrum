@@ -524,3 +524,4 @@ class StoryController {
         render(text: [fieldValues: fieldValues, stories: stories, count: count] as JSON, contentType: 'application/json', status: 200)
     }
 }
+

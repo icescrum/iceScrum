@@ -80,8 +80,8 @@ class TaskController {
                     html {
                         def permalink = createLink(absolute: true, mapping: "shortURLTASK", params: [product: product.pkey], id: task.uid)
                         render(view: 'window/details', model: [
-                                task: task,
-                                permalink: permalink,
+                                task        : task,
+                                permalink   : permalink,
                                 taskStateCode: BundleUtils.taskStates[task.state],
                                 taskTypeCode: BundleUtils.taskTypes[task.type]
                         ])
@@ -94,8 +94,8 @@ class TaskController {
     @Secured('inProduct() and !archivedProduct()')
     def save() {
         def taskParams = params.task
-        if (!taskParams){
-            returnError(text:message(code:'todo.is.ui.no.data'))
+        if (!taskParams) {
+            returnError(text: message(code: 'todo.is.ui.no.data'))
             return
         }
         if (taskParams?.estimation instanceof String) {
@@ -286,8 +286,8 @@ class TaskController {
         def story = Story.withStory(product, id)
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: story.tasks as JSON) }
-            json { renderRESTJSON(text:story.tasks) }
-            xml  { renderRESTXML(text:story.tasks) }
+            json { renderRESTJSON(text: story.tasks) }
+            xml { renderRESTXML(text: story.tasks) }
         }
     }
 
@@ -336,8 +336,11 @@ class TaskController {
         def user = springSecurityService.currentUser
         def options = [max: 8]
         def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
-        def tasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
-                                    : Task.findAllByResponsibleAndStateInList(user, taskStates, options)
-        render(status: 200, contentType:'application/json', text: tasks  as JSON)
+        def result = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
+                : Task.findAllByResponsibleAndStateInListAndCreationDateBetween(user, taskStates,new Date()-10,new Date(),options)
+
+        def tasks = [:]
+        tasks = result.groupBy { it.parentProduct }
+            render(status: 200, contentType: 'application/json', text: tasks as JSON)
+        }
     }
-}

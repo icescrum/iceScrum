@@ -262,6 +262,6 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         });
     };
     this.listByField = function(field) {
-        return Story.listByField({ field: field }).$promise
+        return Story.listByField({field: field}).$promise
     }
 }]);

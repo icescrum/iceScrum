@@ -56,13 +56,10 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
     }
 }]);
 
-
 controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
-    $scope.tasks = [];
-    TaskService.listByUser().then(function(tasks) {
-        $scope.tasks = tasks;
+    $scope.tasksByProject = [];
+    TaskService.listByUser().then(function(tasksByProject) {
+        $scope.tasksByProject = tasksByProject;
+
     });
 }]);
-
-
-

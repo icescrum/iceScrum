@@ -26,7 +26,7 @@ services.factory('Task', [ 'Resource', function($resource) {
         {},
         {
             activities: {method: 'GET', isArray: true, params: {action: 'activities'}},
-            listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}}
+            listByUser: {method: 'GET', params: {action: 'listByUser'}}
         });
 }]);
 
