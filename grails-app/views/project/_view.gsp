@@ -65,39 +65,39 @@
         </div>
     </div>
     <div class="col-md-7 col-md-pull-5 col-sm-7 col-sm-pull-5">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary"
+             ng-controller="chartCtrl">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-bar-chart"></i> <g:message code="is.ui.project.chart.title"/>
                     <small class="pull-right">
-                        <div dropdown class="btn-group" tooltip="${message(code:'todo.is.ui.charts')}">
+                        <div dropdown class="btn-group"
+                             tooltip="${message(code:'todo.is.ui.charts')}"
+                             tooltip-append-to-body="true">
                             <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
                                 <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu"
-                                data-ui-dropdown-clickbsdropdown="$.icescrum.openChart"
-                                data-ui-chart-container="#panel-chart-container"
-                                data-ui-chart-cookie="${sprint && request.inProduct}"
-                                data-ui-chart-default="${controllerName}/productBurnupChart/">
+                            <ul class="dropdown-menu">
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
-                                <li><a data-ui-chart data-ui-chart-save="true" data-ui-chart-container="#panel-chart-container" href="${controllerName}/productBurnupChart/">${message(code: 'is.ui.project.chart.option.project')}</a></li>
-                                <g:if test="${sprint && request.inProduct}">
-                                    <li class="divider"></li>
-                                    <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                                    <li><a data-ui-chart data-ui-chart-save="true" data-ui-chart-container="#panel-chart-container" href="sprintPlan/sprintBurndownRemainingChart">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
-                                    <li><a data-ui-chart data-ui-chart-save="true" data-ui-chart-container="#panel-chart-container" href="sprintPlan/sprintBurnupTasksChart">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
-                                    <li><a data-ui-chart data-ui-chart-save="true" data-ui-chart-container="#panel-chart-container" href="sprintPlan/sprintBurnupPointsChart">${message(code: 'is.ui.project.chart.option.points')}</a></li>
-                                    <li><a data-ui-chart data-ui-chart-save="true" data-ui-chart-container="#panel-chart-container" href="sprintPlan/sprintBurnupStoriesChart">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
-                                    <entry:point id="${controllerName}-${actionName}-charts-sprint" model="[sprint:sprint,release:release,product:product]"/>
-                                </g:if>
+                                <li><a href ng-click="openChart('productCumulativeFlowChart')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
+                                <li><a href ng-click="openChart('productBurnupChart')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>
+                                <li><a href ng-click="openChart('productBurndownChart')">${message(code: 'is.ui.project.charts.productBurndown')}</a></li>
+                                <li><a href ng-click="openChart('productParkingLotChart')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
+                                <li><a href ng-click="openChart('productVelocityChart')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
+                                <li><a href ng-click="openChart('productVelocityCapacityChart')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
+                                <li class="divider"></li>
+                                <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
+                                <li><a href ng-click="openChart('sprintBurndownRemainingChart')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
+                                <li><a href ng-click="openChart('sprintBurnupTasksChart')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
+                                <li><a href ng-click="openChart('sprintBurnupPointsChart')">${message(code: 'is.ui.project.chart.option.points')}</a></li>
+                                <li><a href ng-click="openChart('sprintBurnupStoriesChart')">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
                             </ul>
                         </div>
-                        <g:if test="${request.inProduct}">
-                        </g:if>
                     </small>
                 </h3>
             </div>
             <div class="panel-body" id="panel-chart-container">
+                <nvd3 options="options" data="data"></nvd3>
             </div>
         </div>
         <div class="panel panel-primary">

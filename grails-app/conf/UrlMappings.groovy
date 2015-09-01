@@ -211,6 +211,13 @@ class UrlMappings {
             action = 'archive'
         }
 
+        "/project/$product/$action" {
+            controller = 'project'
+            constraints {
+                action(inList: ['productCumulativeFlowChart', 'productVelocityCapacityChart', 'productVelocityChart', 'productParkingLotChart', 'productBurndownChart', 'productBurnupChart'])
+            }
+        }
+
         "/project/$product" {
             controller = 'project'
             action = [DELETE: "delete", POST: "update"]

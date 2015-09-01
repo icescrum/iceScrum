@@ -42,6 +42,9 @@ services.service("SprintService", ['$q', '$filter', 'Sprint', 'Session', functio
     this.update = function (sprint, projectId) {
         return Sprint.update({ id: sprint.id, projectId: projectId }, sprint).$promise;
     };
+    this.openChart = function(sprint, project, chart) {
+        return Sprint.query({ id: sprint.id, projectId: project.id, action: chart}, {}).$promise;
+    };
     this.authorizedSprint = function(action, sprint) {
         switch (action) {
             case 'updateRetrospective':

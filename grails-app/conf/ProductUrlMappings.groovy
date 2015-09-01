@@ -321,6 +321,13 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/sprint/$action" {
+            controller = 'sprint'
+            constraints {
+                action(inList: ['sprintBurnupStoriesChart', 'sprintBurnupPointsChart', 'sprintBurnupTasksChart', 'sprintBurndownRemainingChart'])
+            }
+        }
+
         "/p/$product/sprint/release/$releaseId" {
             controller = 'sprint'
             action = 'list'

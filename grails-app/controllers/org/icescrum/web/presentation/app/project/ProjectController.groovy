@@ -313,124 +313,57 @@ class ProjectController {
         params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.cumulativeFlowValues(_product)
-        if (values.size() > 0) {
-            def rendered = g.render(template: 'charts/productCumulativeFlowChart', model: [
-                    suggested: values.suggested as JSON,
-                    accepted: values.accepted as JSON,
-                    estimated: values.estimated as JSON,
-                    planned: values.planned as JSON,
-                    inprogress: values.inprogress as JSON,
-                    done: values.done as JSON,
-                    labels: values.label as JSON,
-                    controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productCumulativeflow.title')],rendered) : rendered, status:200)
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-        }
+        def computedValues = [[key: 'suggested', values: values.collect { return [it.suggested]}],
+                              [key: 'accepted', values: values.collect { return [it.accepted]}],
+                              [key: 'estimated', values: values.collect { return [it.estimated]}],
+                              [key: 'planned', values: values.collect { return [it.planned]}],
+                              [key: 'inprogress', values: values.collect { return [it.inprogress]}],
+                              [key: 'done', values: values.collect { return [it.done]}]].reverse()
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
     }
 
     def productVelocityCapacityChart(long product) {
         params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityCapacityValues(_product)
-        if (values.size() > 0) {
-            def rendered = g.render(template: 'charts/productVelocityCapacityChart', model: [
-                    modal: params.modal,
-                    capacity: values.capacity as JSON,
-                    velocity: values.velocity as JSON,
-                    labels: values.label as JSON,
-                    controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocityCapacity.title')],rendered) : rendered, status:200)
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-        }
+        def computedValues = [[key: 'velocity', values: values.collect { return [it.capacity]}],
+                              [key: 'capacity', values: values.collect { return [it.velocity]}]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
     }
 
     def productBurnupChart(long product) {
-        params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.productBurnupValues(_product)
-        if (values.size() > 0) {
-            def rendered = g.render(template: 'charts/productBurnupChart', model: [
-                    all: values.all as JSON,
-                    done: values.done as JSON,
-                    labels: values.label as JSON,
-                    controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnUp.title')],rendered) : rendered, status:200)
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-        }
+        def computedValues = [[key: 'All', values: values.collect { return [it.all]}], [key: 'Done', values: values.collect { return [it.done]}]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
     }
 
     def productBurndownChart(long product) {
         params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.productBurndownValues(_product)
-        if (values.size() > 0) {
-            def rendered = g.render(template: 'charts/productBurndownChart', model: [
-                    userstories: values.userstories as JSON,
-                    technicalstories: values.technicalstories as JSON,
-                    defectstories: values.defectstories as JSON,
-                    labels: values.label as JSON,
-                    userstoriesLabels: values*.userstoriesLabel as JSON,
-                    technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
-                    defectstoriesLabels: values*.defectstoriesLabel as JSON,
-                    controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productBurnDown.title')],rendered) : rendered, status:200)
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-        }
+        def computedValues = [[key: 'userstories', values: values.collect { return [it.userstories]}],
+                              [key: 'technicalstories', values: values.collect { return [it.technicalstories]}],
+                              [key: 'defectstories', values: values.collect { return [it.defectstories]}]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
     }
 
     def productVelocityChart(long product) {
         params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityValues(_product)
-        if (values.size() > 0) {
-            def rendered = g.render(template: 'charts/productVelocityChart', model: [
-                    userstories: values.userstories as JSON,
-                    technicalstories: values.technicalstories as JSON,
-                    defectstories: values.defectstories as JSON,
-                    labels: values.label as JSON,
-                    userstoriesLabels: values*.userstoriesLabel as JSON,
-                    technicalstoriesLabels: values*.technicalstoriesLabel as JSON,
-                    defectstoriesLabels: values*.defectstoriesLabel as JSON,
-                    controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productVelocity.title')],rendered) : rendered, status:200)
-        } else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-        }
+        def computedValues = [[key: 'userstories', values: values.collect { return [it.userstories]}],
+                              [key: 'technicalstories', values: values.collect { return [it.technicalstories]}],
+                              [key: 'defectstories', values: values.collect { return [it.defectstories]}]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
     }
 
     def productParkingLotChart(long product) {
         params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = featureService.productParkingLotValues(_product)
-        def indexF = 1
-        def valueToDisplay = []
-        values.value?.each {
-            def value = []
-            value << new DecimalFormat("#.##").format(it).toString()
-            value << indexF
-            valueToDisplay << value
-            indexF++
-        }
-        if (valueToDisplay.size() > 0){
-            def rendered = g.render(template: '../feature/charts/productParkinglot', model: [
-                    values: valueToDisplay as JSON,
-                    featuresNames: values.label as JSON,
-                    controllerName: params.controllerName ?: controllerName])
-            render(text:params.modal ? is.modal([button:[[shortcut:[key:'CTRL+S', title:message(code:'is.button.save.as.image')],text:'<span class="fa fa-save"></span>', class:'save-chart', color:'info']],size:'xxl', title:message(code:'is.chart.productParkinglot.title')],rendered) : rendered, status:200)
-        }
-        else {
-            def msg = message(code: 'is.chart.error.no.values')
-            render(status: 400, contentType: 'application/json', text: [notice: [text: msg]] as JSON)
-        }
+        def computedValues = [[key: 'featureachievement', values: values.collect { return [it.label, it.value]}]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues] as JSON)
     }
 
     @Secured('isAuthenticated()')

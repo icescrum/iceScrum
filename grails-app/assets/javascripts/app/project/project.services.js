@@ -66,6 +66,9 @@ services.service("ProjectService", ['Project', 'Session', 'TeamService', functio
     this.getActivities = function(project) {
         return Project.activities({ id: project.id }, {}).$promise;
     };
+    this.openChart = function(project, chart) {
+        return Project.get({ id: project.id, action: chart}, {}).$promise;
+    };
     this.authorizedProject = function(action, project) {
         switch (action) {
             case 'update':

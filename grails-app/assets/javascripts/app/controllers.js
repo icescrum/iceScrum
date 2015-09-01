@@ -371,3 +371,282 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
 
 
 }]);
+
+controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'SprintService', function($scope, Session, ProjectService, SprintService) {
+    $scope.charts = {
+        sprintBurnupStoriesChart: {
+            options: {
+                chart: {
+                    yAxis: {
+                        axisLabel: 'Stories'
+                    }
+                },
+                title: {
+                    text: 'sprintBurnupStoriesChart'
+                }
+            }
+        },
+        sprintBurnupPointsChart: {
+            options: {
+                chart: {
+                    yAxis: {
+                        axisLabel: 'Points'
+                    }
+                },
+                title: {
+                    text: 'sprintBurnupPointsChart'
+                }
+            }
+        },
+        sprintBurnupTasksChart: {
+            options: {
+                chart: {
+                    yAxis: {
+                        axisLabel: 'Tasks'
+                    }
+                },
+                title: {
+                    text: 'sprintBurnupTasksChart'
+                }
+            }
+        },
+        sprintBurndownRemainingChart: {
+            options: {
+                chart: {
+                    yAxis: {
+                        axisLabel: 'Remaining time'
+                    }
+                },
+                title: {
+                    text: 'sprintBurndownRemainingChart'
+                }
+            }
+        },
+        productBurnupChart: {
+            options: {
+                chart: {
+                    showValues: true,
+                    height: 350,
+                    type: 'lineChart',
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        axisLabel: 'Sprints',
+                        tickFormat: function(entry) {
+                            return $scope.charts.productBurnupChart.labels[entry];
+                        }
+                    },
+                    yAxis: {
+                        axisLabel: 'Points'
+                    }
+                },
+                title: {
+                    enable: true,
+                    text: 'Product burnup chart'
+                }
+            },
+            labels: [],
+            load: function() {
+                $scope.data = [];
+                $scope.options = $scope.charts.productBurnupChart.options;
+                ProjectService.openChart(Session.getProject(), 'productBurnupChart').then(function(chart) {
+                    $scope.data = chart.data;
+                    $scope.charts.productBurnupChart.labels = chart.labels;
+                });
+            }
+        },
+        productCumulativeFlowChart: {
+            options: {
+                chart: {
+                    showValues: true,
+                    height: 350,
+                    type: 'stackedAreaChart',
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        axisLabel: 'Sprints',
+                        tickFormat: function(entry) {
+                            return $scope.charts.productCumulativeFlowChart.labels[entry];
+                        }
+                    },
+                    yAxis: {
+                        axisLabel: 'Nb stories'
+                    }
+                },
+                title: {
+                    enable: true,
+                    text: 'Product cumulative flow chart'
+                }
+            },
+            labels: [],
+            load: function() {
+                $scope.data = [];
+                $scope.options = $scope.charts.productCumulativeFlowChart.options;
+                ProjectService.openChart(Session.getProject(), 'productCumulativeFlowChart').then(function(chart) {
+                    $scope.data = chart.data;
+                    $scope.charts.productCumulativeFlowChart.labels = chart.labels;
+                });
+            }
+        },
+        productBurndownChart: {
+            options: {
+                chart: {
+                    showValues: true,
+                    height: 350,
+                    type: 'multiBarChart',
+                    stacked: true,
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        axisLabel: 'Sprints',
+                        tickFormat: function(entry) {
+                            return $scope.charts.productBurndownChart.labels[entry];
+                        }
+                    },
+                    yAxis: {
+                        axisLabel: 'Points'
+                    }
+                },
+                title: {
+                    enable: true,
+                    text: 'Product cumulative flow chart'
+                }
+            },
+            labels: [],
+            load: function() {
+                $scope.data = [];
+                $scope.options = $scope.charts.productBurndownChart.options;
+                ProjectService.openChart(Session.getProject(), 'productBurndownChart').then(function(chart) {
+                    $scope.data = chart.data;
+                    $scope.charts.productBurndownChart.labels = chart.labels;
+                });
+            }
+        },
+        productVelocityChart: {
+            options: {
+                chart: {
+                    showValues: true,
+                    height: 350,
+                    type: 'multiBarChart',
+                    stacked: true,
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        axisLabel: 'Sprints',
+                        tickFormat: function(entry) {
+                            return $scope.charts.productVelocityChart.labels[entry];
+                        }
+                    },
+                    yAxis: {
+                        axisLabel: 'Points'
+                    }
+                },
+                title: {
+                    enable: true,
+                    text: 'Product velocity chart'
+                }
+            },
+            labels: [],
+            load: function() {
+                $scope.data = [];
+                $scope.options = $scope.charts.productVelocityChart.options;
+                ProjectService.openChart(Session.getProject(), 'productVelocityChart').then(function(chart) {
+                    $scope.data = chart.data;
+                    $scope.charts.productVelocityChart.labels = chart.labels;
+                });
+            }
+        },
+        productParkingLotChart: {
+            options: {
+                chart: {
+                    showValues: true,
+                    height: 350,
+                    type: 'multiBarHorizontalChart',
+                    stacked: true,
+                    x: function(entry) { return entry[0]; },
+                    y: function(entry) { return entry[1]; },
+                    yAxis: {
+                        axisLabel: '% achievement'
+                    }
+                },
+                title: {
+                    enable: true,
+                    text: 'Product parking lot chart'
+                }
+            },
+            load: function() {
+                $scope.data = [];
+                $scope.options = $scope.charts.productParkingLotChart.options;
+                ProjectService.openChart(Session.getProject(), 'productParkingLotChart').then(function(chart) {
+                    $scope.data = chart.data;
+                });
+            }
+        },
+        productVelocityCapacityChart: {
+            options: {
+                chart: {
+                    showValues: true,
+                    height: 350,
+                    type: 'lineChart',
+                    stacked: true,
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        axisLabel: 'Sprints',
+                        tickFormat: function(entry) {
+                            return $scope.charts.productVelocityCapacityChart.labels[entry];
+                        }
+                    },
+                    yAxis: {
+                        axisLabel: 'Points'
+                    }
+                },
+                title: {
+                    enable: true,
+                    text: 'Product velocity chart'
+                }
+            },
+            labels: [],
+            load: function() {
+                $scope.data = [];
+                $scope.options = $scope.charts.productVelocityCapacityChart.options;
+                ProjectService.openChart(Session.getProject(), 'productVelocityCapacityChart').then(function(chart) {
+                    $scope.data = chart.data;
+                    $scope.charts.productVelocityCapacityChart.labels = chart.labels;
+                });
+            }
+        },
+    };
+    $scope.openChart = function(chart) {
+        $scope.charts[chart].load ? $scope.charts[chart].load() : $scope.defaultLoad(chart);
+    };
+    $scope.defaultLoad = function(chart) {
+        var defaultLineOptions = {
+            chart: {
+                showValues: true,
+                height: 350,
+                type: 'lineChart',
+                x: function(entry) { return entry[0]; },
+                y: function(entry) { return entry[1]; },
+                xAxis: {
+                    axisLabel: 'Days',
+                    tickFormat: function(d) {
+                        return d3.time.format('%x')(new Date(d));
+                    }
+                }
+            },
+            title: {
+                enable: true
+            }
+        };
+        $scope.data = [];
+        $scope.options = _.merge({}, defaultLineOptions, $scope.charts[chart].options);
+        SprintService.openChart($scope.sprint, $scope.currentProject, chart).then(function(data) {
+            $scope.data = data;
+        });
+    };
+    // Init
+    $scope.options = {};
+    $scope.data = [];
+    $scope.openChart('productBurnupChart');
+}]);
