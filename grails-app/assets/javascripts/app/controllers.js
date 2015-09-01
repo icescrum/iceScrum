@@ -425,7 +425,6 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         productBurnupChart: {
             options: {
                 chart: {
-                    showValues: true,
                     height: 350,
                     type: 'lineChart',
                     x: function(entry, index) { return index; },
@@ -458,7 +457,6 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         productCumulativeFlowChart: {
             options: {
                 chart: {
-                    showValues: true,
                     height: 350,
                     type: 'stackedAreaChart',
                     x: function(entry, index) { return index; },
@@ -491,7 +489,6 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         productBurndownChart: {
             options: {
                 chart: {
-                    showValues: true,
                     height: 350,
                     type: 'multiBarChart',
                     stacked: true,
@@ -509,7 +506,7 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
                 },
                 title: {
                     enable: true,
-                    text: 'Product cumulative flow chart'
+                    text: 'Product burndown chart'
                 }
             },
             labels: [],
@@ -525,7 +522,6 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         productVelocityChart: {
             options: {
                 chart: {
-                    showValues: true,
                     height: 350,
                     type: 'multiBarChart',
                     stacked: true,
@@ -562,7 +558,6 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
                     showValues: true,
                     height: 350,
                     type: 'multiBarHorizontalChart',
-                    stacked: true,
                     x: function(entry) { return entry[0]; },
                     y: function(entry) { return entry[1]; },
                     yAxis: {
@@ -585,10 +580,8 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         productVelocityCapacityChart: {
             options: {
                 chart: {
-                    showValues: true,
                     height: 350,
                     type: 'lineChart',
-                    stacked: true,
                     x: function(entry, index) { return index; },
                     y: function(entry) { return entry[0]; },
                     xAxis: {
@@ -603,7 +596,7 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
                 },
                 title: {
                     enable: true,
-                    text: 'Product velocity chart'
+                    text: 'Product velocity capacity chart'
                 }
             },
             labels: [],
@@ -615,7 +608,7 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
                     $scope.charts.productVelocityCapacityChart.labels = chart.labels;
                 });
             }
-        },
+        }
     };
     $scope.openChart = function(chart) {
         $scope.charts[chart].load ? $scope.charts[chart].load() : $scope.defaultLoad(chart);
@@ -623,7 +616,6 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
     $scope.defaultLoad = function(chart) {
         var defaultLineOptions = {
             chart: {
-                showValues: true,
                 height: 350,
                 type: 'lineChart',
                 x: function(entry) { return entry[0]; },
