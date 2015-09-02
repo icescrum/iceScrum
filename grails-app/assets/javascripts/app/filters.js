@@ -202,8 +202,8 @@ filters
         };
     })
     .filter('permalink', ['$rootScope', 'Session', function($rootScope, Session) {
-        return function(id) {
-            return $rootScope.serverUrl + '/'+ Session.project.pkey +'-' + id;
+        return function(uid) {
+            return $rootScope.serverUrl + '/'+ Session.project.pkey +'-' + uid;
         };
     }])
     .filter('flowFilesNotCompleted', function () {

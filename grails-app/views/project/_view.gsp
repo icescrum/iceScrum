@@ -52,7 +52,7 @@
                         </div>
                         <div>
                             <span class="{{ activity | activityIcon}}"></span>
-                            <span>{{ message('todo.is.ui.activity.' + activity.code ) }} <a href="{{ activity.story.uid | permalink }}">{{ activity.story.name }}</a></span>
+                            <span>{{ message('todo.is.ui.activity.' + activity.code ) }} {{ activity.label }}</span>
                         </div>
                     </div>
                 </div>
