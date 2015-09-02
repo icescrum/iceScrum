@@ -375,10 +375,10 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
 controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'SprintService', function($scope, Session, ProjectService, SprintService) {
     var defaultOptions = {
         chart: {
-            height: 350,
-            title: {
-                enable: true
-            }
+            height: 350
+        },
+        title: {
+            enable: true
         }
     };
     $scope.chartOptions = {
@@ -432,6 +432,7 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         $scope.labels = [];
         ProjectService.openChart(Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
+            debugger;
             $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.chartOptions[chartName], chart.options);
             if (chart.labels) {
                 $scope.labels = chart.labels;
