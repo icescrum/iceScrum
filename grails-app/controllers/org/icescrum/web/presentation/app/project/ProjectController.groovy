@@ -310,60 +310,91 @@ class ProjectController {
     }
 
     def productCumulativeFlowChart(long product) {
-        params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.cumulativeFlowValues(_product)
-        def computedValues = [[key: 'suggested', values: values.collect { return [it.suggested]}],
-                              [key: 'accepted', values: values.collect { return [it.accepted]}],
-                              [key: 'estimated', values: values.collect { return [it.estimated]}],
-                              [key: 'planned', values: values.collect { return [it.planned]}],
-                              [key: 'inprogress', values: values.collect { return [it.inprogress]}],
-                              [key: 'done', values: values.collect { return [it.done]}]].reverse()
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
+        def computedValues = [[key: message(code:"is.chart.productCumulativeflow.serie.suggested.name"),
+                               values: values.collect { return [it.suggested]}],
+                              [key: message(code:"is.chart.productCumulativeflow.serie.accepted.name"),
+                               values: values.collect { return [it.accepted]}],
+                              [key: message(code:"is.chart.productCumulativeflow.serie.estimated.name"),
+                               values: values.collect { return [it.estimated]}],
+                              [key: message(code:"is.chart.productCumulativeflow.serie.planned.name"),
+                               values: values.collect { return [it.planned]}],
+                              [key: message(code:"is.chart.productCumulativeflow.serie.inprogress.name"),
+                               values: values.collect { return [it.inprogress]}],
+                              [key: message(code:"is.chart.productCumulativeflow.serie.done.name"),
+                               values: values.collect { return [it.done]}]].reverse()
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.xaxis.label')]],
+                       title: [text: message(code: "is.chart.productCumulativeflow.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
     def productVelocityCapacityChart(long product) {
-        params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityCapacityValues(_product)
-        def computedValues = [[key: 'velocity', values: values.collect { return [it.capacity]}],
-                              [key: 'capacity', values: values.collect { return [it.velocity]}]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
+        def computedValues = [[key: message(code:"is.chart.productVelocityCapacity.serie.velocity.name"),
+                               values: values.collect { return [it.capacity]}],
+                              [key: message(code:"is.chart.productVelocityCapacity.serie.capacity.name"),
+                               values: values.collect { return [it.velocity]}]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.xaxis.label')]],
+                       title: [text: message(code: "is.chart.productVelocityCapacity.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
     def productBurnupChart(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productBurnupValues(_product)
-        def computedValues = [[key: 'All', values: values.collect { return [it.all]}], [key: 'Done', values: values.collect { return [it.done]}]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
+        def computedValues = [[key: message(code:"is.chart.productBurnUp.serie.all.name"),
+                               values: values.collect { return [it.all]}],
+                              [key: message(code:"is.chart.productBurnUp.serie.done.name"),
+                               values: values.collect { return [it.done]}]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnUp.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.productBurnUp.xaxis.label')]],
+                       title: [text: message(code: "is.chart.productBurnUp.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
     def productBurndownChart(long product) {
-        params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.productBurndownValues(_product)
-        def computedValues = [[key: 'userstories', values: values.collect { return [it.userstories]}],
-                              [key: 'technicalstories', values: values.collect { return [it.technicalstories]}],
-                              [key: 'defectstories', values: values.collect { return [it.defectstories]}]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
+        def computedValues = [[key: message(code:'is.chart.productBurnDown.series.userstories.name'),
+                               values: values.collect { return [it.userstories]}],
+                              [key: message(code:'is.chart.productBurnDown.series.technicalstories.name'),
+                               values: values.collect { return [it.technicalstories]}],
+                              [key: message(code:'is.chart.productBurnDown.series.defectstories.name'),
+                               values: values.collect { return [it.defectstories]}]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnDown.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.productBurnDown.xaxis.label')]],
+                       title: [text: message(code: "is.chart.productBurnDown.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
     def productVelocityChart(long product) {
-        params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityValues(_product)
-        def computedValues = [[key: 'userstories', values: values.collect { return [it.userstories]}],
-                              [key: 'technicalstories', values: values.collect { return [it.technicalstories]}],
-                              [key: 'defectstories', values: values.collect { return [it.defectstories]}]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label] as JSON)
+        def computedValues = [[key: message(code:'is.chart.productVelocity.series.userstories.name'),
+                               values: values.collect { return [it.userstories]}],
+                              [key: message(code:'is.chart.productVelocity.series.technicalstories.name'),
+                               values: values.collect { return [it.technicalstories]}],
+                              [key: message(code:'is.chart.productVelocity.series.defectstories.name'),
+                               values: values.collect { return [it.defectstories]}]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocity.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.productVelocity.xaxis.label')]],
+                       title: [text: message(code: "is.chart.productVelocity.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
     def productParkingLotChart(long product) {
-        params.modal = params.boolean('modal')
         Product _product = Product.withProduct(product)
         def values = featureService.productParkingLotValues(_product)
-        def computedValues = [[key: 'featureachievement', values: values.collect { return [it.label, it.value]}]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues] as JSON)
+        def computedValues = [[key: message(code:"is.chart.productParkinglot.serie.name"),
+                               values: values.collect { return [it.label, it.value]}]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productParkinglot.xaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.productParkinglot.yaxis.label')]],
+                       title: [text: message(code: "is.chart.productParkinglot.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
     @Secured('isAuthenticated()')

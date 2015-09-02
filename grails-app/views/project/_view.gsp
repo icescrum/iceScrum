@@ -79,18 +79,18 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
-                                <li><a href ng-click="openChart('productCumulativeFlowChart')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
-                                <li><a href ng-click="openChart('productBurnupChart')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>
-                                <li><a href ng-click="openChart('productBurndownChart')">${message(code: 'is.ui.project.charts.productBurndown')}</a></li>
-                                <li><a href ng-click="openChart('productParkingLotChart')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
-                                <li><a href ng-click="openChart('productVelocityChart')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
-                                <li><a href ng-click="openChart('productVelocityCapacityChart')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
+                                <li><a href ng-click="openProjectChart('productCumulativeFlowChart')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
+                                <li><a href ng-click="openProjectChart('productBurnupChart')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>
+                                <li><a href ng-click="openProjectChart('productBurndownChart')">${message(code: 'is.ui.project.charts.productBurndown')}</a></li>
+                                <li><a href ng-click="openProjectChart('productParkingLotChart')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
+                                <li><a href ng-click="openProjectChart('productVelocityChart')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
+                                <li><a href ng-click="openProjectChart('productVelocityCapacityChart')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
                                 <li class="divider"></li>
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                                <li><a href ng-click="openChart('sprintBurndownRemainingChart')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
-                                <li><a href ng-click="openChart('sprintBurnupTasksChart')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
-                                <li><a href ng-click="openChart('sprintBurnupPointsChart')">${message(code: 'is.ui.project.chart.option.points')}</a></li>
-                                <li><a href ng-click="openChart('sprintBurnupStoriesChart')">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
+                                <li><a href ng-click="openSprintChart('sprintBurndownRemainingChart')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
+                                <li><a href ng-click="openSprintChart('sprintBurnupTasksChart')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
+                                <li><a href ng-click="openSprintChart('sprintBurnupPointsChart')">${message(code: 'is.ui.project.chart.option.points')}</a></li>
+                                <li><a href ng-click="openSprintChart('sprintBurnupStoriesChart')">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
                             </ul>
                         </div>
                     </small>
