@@ -374,54 +374,6 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
 
 controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'SprintService', function($scope, Session, ProjectService, SprintService) {
     $scope.charts = {
-        sprintBurnupStoriesChart: {
-            options: {
-                chart: {
-                    yAxis: {
-                        axisLabel: 'Stories'
-                    }
-                },
-                title: {
-                    text: 'sprintBurnupStoriesChart'
-                }
-            }
-        },
-        sprintBurnupPointsChart: {
-            options: {
-                chart: {
-                    yAxis: {
-                        axisLabel: 'Points'
-                    }
-                },
-                title: {
-                    text: 'sprintBurnupPointsChart'
-                }
-            }
-        },
-        sprintBurnupTasksChart: {
-            options: {
-                chart: {
-                    yAxis: {
-                        axisLabel: 'Tasks'
-                    }
-                },
-                title: {
-                    text: 'sprintBurnupTasksChart'
-                }
-            }
-        },
-        sprintBurndownRemainingChart: {
-            options: {
-                chart: {
-                    yAxis: {
-                        axisLabel: 'Remaining time'
-                    }
-                },
-                title: {
-                    text: 'sprintBurndownRemainingChart'
-                }
-            }
-        },
         productBurnupChart: {
             options: {
                 chart: {
@@ -611,17 +563,16 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         }
     };
     $scope.openChart = function(chart) {
-        $scope.charts[chart].load ? $scope.charts[chart].load() : $scope.defaultLoad(chart);
+        $scope.charts[chart] ? $scope.charts[chart].load() : $scope.sprintLoad(chart);
     };
-    $scope.defaultLoad = function(chart) {
-        var defaultLineOptions = {
+    $scope.sprintLoad = function(chart) {
+        var defaultSprintOptions = {
             chart: {
                 height: 350,
                 type: 'lineChart',
                 x: function(entry) { return entry[0]; },
                 y: function(entry) { return entry[1]; },
                 xAxis: {
-                    axisLabel: 'Days',
                     tickFormat: function(d) {
                         return d3.time.format('%x')(new Date(d));
                     }
@@ -632,9 +583,9 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
             }
         };
         $scope.data = [];
-        $scope.options = _.merge({}, defaultLineOptions, $scope.charts[chart].options);
-        SprintService.openChart($scope.sprint, $scope.currentProject, chart).then(function(data) {
-            $scope.data = data;
+        SprintService.openChart($scope.sprint, $scope.currentProject, chart).then(function(chart) {
+            $scope.options = _.merge({}, defaultSprintOptions, chart.options);
+            $scope.data = chart.data;
         });
     };
     // Init

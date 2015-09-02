@@ -43,7 +43,7 @@ services.service("SprintService", ['$q', '$filter', 'Sprint', 'Session', functio
         return Sprint.update({ id: sprint.id, projectId: projectId }, sprint).$promise;
     };
     this.openChart = function(sprint, project, chart) {
-        return Sprint.query({ id: sprint.id, projectId: project.id, action: chart}, {}).$promise;
+        return Sprint.get({ id: sprint.id, projectId: project.id, action: chart}, {}).$promise;
     };
     this.authorizedSprint = function(action, sprint) {
         switch (action) {

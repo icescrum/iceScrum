@@ -187,11 +187,16 @@ class SprintController {
     def sprintBurndownRemainingChart(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurndownRemainingValues(sprint)
-        def computedValues = [[key: 'remainingTime', values: values.findAll{ it.remainingTime != null }.collect { return [it.label, it.remainingTime]}]]
+        def computedValues = [[key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
+                               values: values.findAll{ it.remainingTime != null }.collect { return [it.label, it.remainingTime]}]]
         if (values.first()?.idealTime) {
-            computedValues << [key: 'idealTime', values: values.findAll{ it.idealTime != null }.collect { return [it.label, it.idealTime]}]
+            computedValues << [key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal"),
+                               values: values.findAll{ it.idealTime != null }.collect { return [it.label, it.idealTime]}]
         }
-        render(status: 200, contentType: 'application/json', text: computedValues as JSON)
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.xaxis.label')]],
+                       title: [text: message(code: "is.chart.sprintBurndownRemainingChart.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
     @Secured(['permitAll()'])
@@ -199,10 +204,15 @@ class SprintController {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurnupTasksValues(sprint)
         def computedValues = [
-                [key: 'tasksDone', values: values.findAll{ it.tasksDone != null }.collect { return [it.label, it.tasksDone]}],
-                [key: 'tasks', values: values.findAll{ it.tasks != null }.collect { return [it.label, it.tasks]}]
+                [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasksDone.name"),
+                 values: values.findAll{ it.tasksDone != null }.collect { return [it.label, it.tasksDone]}],
+                [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasks.name"),
+                 values: values.findAll{ it.tasks != null }.collect { return [it.label, it.tasks]}]
         ]
-        render(status: 200, contentType: 'application/json', text: computedValues as JSON)
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.xaxis.label')]],
+                       title: [text: message(code: "is.chart.sprintBurnupTasksChart.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
     @Secured(['permitAll()'])
@@ -210,10 +220,15 @@ class SprintController {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
-                [key: 'totalPoints', values: values.findAll{ it.totalPoints != null }.collect { return [it.label, it.totalPoints]}],
-                [key: 'pointsDone', values: values.findAll{ it.pointsDone != null }.collect { return [it.label, it.pointsDone]}]
+                [key: message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
+                 values: values.findAll{ it.totalPoints != null }.collect { return [it.label, it.totalPoints]}],
+                [key: message(code: "is.chart.sprintBurnupPointsChart.serie.pointsDone.name"),
+                 values: values.findAll{ it.pointsDone != null }.collect { return [it.label, it.pointsDone]}]
         ]
-        render(status: 200, contentType: 'application/json', text: computedValues as JSON)
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.xaxis.label')]],
+                       title: [text: message(code: "is.chart.sprintBurnupPointsChart.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
     @Secured(['permitAll()'])
@@ -221,9 +236,14 @@ class SprintController {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
-                [key: 'stories', values: values.findAll{ it.stories != null }.collect { return [it.label, it.stories]}],
-                [key: 'storiesDone', values: values.findAll{ it.storiesDone != null }.collect { return [it.label, it.storiesDone]}]
+                [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),
+                 values: values.findAll{ it.stories != null }.collect { return [it.label, it.stories]}],
+                [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.storiesDone.name"),
+                 values: values.findAll{ it.storiesDone != null }.collect { return [it.label, it.storiesDone]}]
         ]
-        render(status: 200, contentType: 'application/json', text: computedValues as JSON)
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.xaxis.label')]],
+                       title: [text: message(code: "is.chart.sprintBurnupStoriesChart.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 }
