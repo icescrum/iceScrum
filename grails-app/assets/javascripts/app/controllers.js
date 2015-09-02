@@ -453,8 +453,9 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
             }
         };
         $scope.data = [];
+        $scope.options = _.merge({}, defaultOptions, defaultSprintOptions);
         SprintService.openChart($scope.sprint, $scope.currentProject, chartName).then(function(chart) {
-            $scope.options = _.merge({}, defaultOptions, defaultSprintOptions, chart.options);
+            $scope.options = _.merge($scope.options, chart.options);
             $scope.data = chart.data;
         });
     };
