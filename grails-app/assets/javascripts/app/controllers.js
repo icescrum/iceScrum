@@ -430,9 +430,10 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         };
         $scope.data = [];
         $scope.labels = [];
+        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.chartOptions[chartName]);
         ProjectService.openChart(Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
-            $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.chartOptions[chartName], chart.options);
+            $scope.options = _.merge($scope.options, chart.options);
             if (chart.labels) {
                 $scope.labels = chart.labels;
             }
@@ -458,7 +459,7 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
         });
     };
     // Init
-    $scope.options = defaultOptions;
+    $scope.options = {};
     $scope.data = [];
     $scope.labels = [];
     $scope.openProjectChart('productBurnupChart');
