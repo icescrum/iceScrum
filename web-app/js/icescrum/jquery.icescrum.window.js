@@ -79,7 +79,7 @@
                                     if(loading.size() > 0){
                                         loading.stop().animate({opacity:0.0},250,function(){  $(this).remove(); });
                                     }
-                                    $('#tiptip_holder').remove();
+                                    $('#tiptip_holder').hide();
                                 },
                                 success:function(data, textStatus) {
                                     var content = '#window-id-' + targetWindow;

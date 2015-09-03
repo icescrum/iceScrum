@@ -82,7 +82,7 @@ function getFunction(code, argNames) {
             complete: function () {
                 loading.hide(duration);
                 getFunction(element.data("ajaxComplete"), ["xhr", "status"]).apply(this, arguments);
-                $('#tiptip_holder').remove();
+                $('#tiptip_holder').hide();
             },
             success: function (data, status, xhr) {
                 ajaxOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
