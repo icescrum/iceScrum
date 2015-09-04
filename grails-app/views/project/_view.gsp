@@ -97,6 +97,11 @@
                 </h3>
             </div>
             <div class="panel-body" id="panel-chart-container">
+                <button class="btn btn-default btn-sm"
+                        ng-click="saveChart()"
+                        type="button">
+                    <span class="fa fa-floppy-o"></span>
+                </button>
                 <nvd3 options="options" data="data"></nvd3>
             </div>
         </div>

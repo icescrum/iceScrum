@@ -372,7 +372,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
 
 }]);
 
-controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'SprintService', function($scope, Session, ProjectService, SprintService) {
+controllers.controller('chartCtrl', ['$scope', '$element', 'Session', 'ProjectService', 'SprintService', function($scope, $element, Session, ProjectService, SprintService) {
     var defaultOptions = {
         chart: {
             height: 350
@@ -458,6 +458,13 @@ controllers.controller('chartCtrl', ['$scope', 'Session', 'ProjectService', 'Spr
             $scope.options = _.merge($scope.options, chart.options);
             $scope.data = chart.data;
         });
+    };
+    $scope.saveChart = function() {
+        saveSvgAsPng($element.find('svg')[0], {},
+            function(imageBase64) {
+                // Server side "attachment" content type is needed because the a.download HTML5 feature is not supported in crappy browsers (safari & co).
+                jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': 'chart'});
+            });
     };
     // Init
     $scope.options = {};
