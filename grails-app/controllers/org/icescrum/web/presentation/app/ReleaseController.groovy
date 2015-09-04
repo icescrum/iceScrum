@@ -27,6 +27,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
+import org.icescrum.core.utils.ServicesUtils
 
 class ReleaseController {
 
@@ -71,8 +72,8 @@ class ReleaseController {
             returnError(text: message(code: 'is.release.error.update.state.done'))
             return
         }
-        def startDate = releaseParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.startDate) : release.startDate
-        def endDate = releaseParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), releaseParams.endDate) : release.endDate
+        def startDate = releaseParams.startDate ? ServicesUtils.parseDateISO8601(releaseParams.startDate) : release.startDate
+        def endDate = releaseParams.endDate ? ServicesUtils.parseDateISO8601(releaseParams.endDate) : release.endDate
         Release.withTransaction {
             bindData(release, releaseParams, [include: ['name', 'goal', 'vision']])
             releaseService.update(release, startDate, endDate)

@@ -30,6 +30,7 @@ import org.icescrum.core.domain.Story
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.utils.ServicesUtils
 
 class SprintController {
 
@@ -74,8 +75,8 @@ class SprintController {
     def update(long product, long id) {
         def sprintParams = params.sprint
         Sprint sprint = Sprint.withSprint(product, id)
-        def startDate = sprintParams.startDate ? new Date().parse(message(code: 'is.date.format.short'), sprintParams.startDate) : sprint.startDate
-        def endDate = sprintParams.endDate ? new Date().parse(message(code: 'is.date.format.short'), sprintParams.endDate) : sprint.endDate
+        def startDate = sprintParams.startDate ? ServicesUtils.parseDateISO8601(sprintParams.startDate) : sprint.startDate
+        def endDate = sprintParams.endDate ? ServicesUtils.parseDateISO8601(sprintParams.endDate) : sprint.endDate
         Sprint.withTransaction {
             bindData(sprint, sprintParams, [include: ['goal', 'deliveredVersion', 'retrospective', 'doneDefinition']])
             sprintService.update(sprint, startDate, endDate)
