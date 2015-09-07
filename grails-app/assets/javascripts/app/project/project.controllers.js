@@ -311,8 +311,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
     $scope.sh = {};
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'SHORT_DATE_FORMAT',
-    function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session, SHORT_DATE_FORMAT) {
+controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session) {
 
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.type = 'newProject';
@@ -328,9 +327,9 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     };
     $scope.createProject = function(project) {
         var p = $scope.prepareProject(project);
-        p.startDate = $filter('date')(project.startDate, SHORT_DATE_FORMAT);
-        p.endDate = $filter('date')(project.endDate, SHORT_DATE_FORMAT);
-        p.firstSprint = $filter('date')(project.firstSprint, SHORT_DATE_FORMAT);
+        p.startDate = $filter('dateToIso')(project.startDate);
+        p.endDate = $filter('dateToIso')(project.endDate);
+        p.firstSprint = $filter('dateToIso')(project.firstSprint);
         ProjectService.save(p).then(function(project) {
             document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
         });

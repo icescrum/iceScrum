@@ -32,8 +32,7 @@ import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 
 import org.icescrum.core.utils.BundleUtils
-
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
+import org.icescrum.core.utils.ServicesUtils
 
 import grails.converters.JSON
 import org.icescrum.core.domain.Activity
@@ -80,10 +79,10 @@ class ProjectController {
             returnError(text:message(code:'todo.is.ui.no.data'))
         }
 
-        productParams.startDate = new Date().parse('dd-MM-yyyy', productParams.startDate)
-        productParams.endDate = new Date().parse('dd-MM-yyyy', productParams.endDate)
+        productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate)
+        productParams.endDate = ServicesUtils.parseDateISO8601(productParams.endDate)
         if (productParams.firstSprint) {
-            productParams.firstSprint = new Date().parse('dd-MM-yyyy', productParams.firstSprint)
+            productParams.firstSprint = ServicesUtils.parseDateISO8601(productParams.firstSprint)
         }
 
         if (productPreferencesParams.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {

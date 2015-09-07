@@ -286,4 +286,8 @@ filters
             var stateCount = 6;
             return Math.floor((percent / stateCount) * 100);
         }
+    }]).filter('dateToIso', ['dateFilter', function(dateFilter) {
+        return function (date) {
+            return dateFilter(date, 'yyyy-MM-ddTHH:mm:ssZ');
+        };
     }]);

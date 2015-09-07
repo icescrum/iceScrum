@@ -612,8 +612,7 @@ isApp.config(['$stateProvider', '$httpProvider',
         TM: 'TM',
         SH: 'SH'
     })
-    .constant('CONTENT_LOADED', 'loadingFinished')
-    .constant('SHORT_DATE_FORMAT', 'dd-MM-yyyy');
+    .constant('CONTENT_LOADED', 'loadingFinished');
 
 
 //TODO should be move
