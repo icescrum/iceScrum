@@ -194,7 +194,8 @@ class SprintController {
             computedValues << [key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal"),
                                values: values.findAll{ it.idealTime != null }.collect { return [it.label, it.idealTime]}]
         }
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
+        def options = [chart: [xDomain: [values.label.min(), values.label.max()],
+                               yAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintBurndownRemainingChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
@@ -210,7 +211,8 @@ class SprintController {
                 [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasks.name"),
                  values: values.findAll{ it.tasks != null }.collect { return [it.label, it.tasks]}]
         ]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
+        def options = [chart: [xDomain: [values.label.min(), values.label.max()],
+                               yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintBurnupTasksChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
@@ -226,7 +228,8 @@ class SprintController {
                 [key: message(code: "is.chart.sprintBurnupPointsChart.serie.pointsDone.name"),
                  values: values.findAll{ it.pointsDone != null }.collect { return [it.label, it.pointsDone]}]
         ]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
+        def options = [chart: [xDomain: [values.label.min(), values.label.max()],
+                               yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintBurnupPointsChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
@@ -242,7 +245,8 @@ class SprintController {
                 [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.storiesDone.name"),
                  values: values.findAll{ it.storiesDone != null }.collect { return [it.label, it.storiesDone]}]
         ]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],
+        def options = [chart: [xDomain: [values.label.min(), values.label.max()],
+                               yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintBurnupStoriesChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)

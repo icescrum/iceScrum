@@ -372,7 +372,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
 
 }]);
 
-controllers.controller('chartCtrl', ['$scope', '$element', 'Session', 'ProjectService', 'SprintService', function($scope, $element, Session, ProjectService, SprintService) {
+controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', function($scope, $element, $filter, Session, ProjectService, SprintService) {
     var defaultOptions = {
         chart: {
             height: 350
@@ -445,9 +445,11 @@ controllers.controller('chartCtrl', ['$scope', '$element', 'Session', 'ProjectSe
                 type: 'lineChart',
                 x: function(entry) { return entry[0]; },
                 y: function(entry) { return entry[1]; },
+                xScale: d3.time.scale.utc(),
                 xAxis: {
                     tickFormat: function(d) {
-                        return d3.time.format('%x')(new Date(d));
+                        // TODO USE date format from i18n
+                        return $filter('date')(new Date(d), 'dd-MM-yyyy');
                     }
                 }
             }
