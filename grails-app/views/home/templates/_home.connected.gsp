@@ -31,7 +31,7 @@
             <div class="panel-heading">${message(code: 'is.panel.notes')}</div>
             <div class="panel-body">
                 <div class="form-group">
-                    <textarea is-markitup
+                    <textarea id="note-size"  is-markitup
                               class="form-control"
                               name="notes"
                               ng-model="editableUser.notes"
@@ -64,7 +64,7 @@
             </accordion>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         <div class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.mood')}</div>
             <div class="panel-body" ng-controller="moodCtrl">
@@ -76,10 +76,13 @@
                     </div>
                     <div ng-switch-when="true">
                         <table ng-repeat="mood in moods">
-                            <tr><td>user :{{ mood.user.id}}</td></tr>
-                            <tr><td>Fellings : {{mood.feeling | i18n:'MoodFeelings'}}</td></tr>
-                            <tr><td>FeelingDay: {{ mood.feelingDay}}</td></tr>
+                            <tr><td>${message(code: 'is.panel.mood.feeling')}: {{mood.feeling | i18n:'MoodFeelings'}}</td></tr>
                         </table>
+                        <div ng-controller="moodChartCtrl">
+                            <div class="panel-body" id="panel-chart-container">
+                                <nvd3 options="options" data="data"></nvd3>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

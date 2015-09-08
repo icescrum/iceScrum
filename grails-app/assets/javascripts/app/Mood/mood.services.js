@@ -25,7 +25,10 @@ services.factory('Mood', ['Resource', function ($resource) {
         {},
         {
             listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}},
-            isAlreadySavedToday: {method: 'GET', params: {action: 'isAlreadySavedToday'}}
+            isAlreadySavedToday: {method: 'GET', params: {action: 'isAlreadySavedToday'}},
+            chart: {method: 'GET', params: {action: 'chart'}},
+            chartUserRelease : {method: 'GET', params: {action: 'chartUserRelease '}},
+            chartUser  : {method: 'GET', params: {action: 'chartUser  '}}
         });
 }]);
 services.service("MoodService", ['Mood', function (Mood) {
@@ -38,5 +41,14 @@ services.service("MoodService", ['Mood', function (Mood) {
     };
     this.isAlreadySavedToday = function(){
         return Mood.isAlreadySavedToday().$promise;
+    };
+    this.chart = function() {
+        return Mood.chart().$promise;
+    };
+    this.chartUser = function(project) {
+        return Mood.chartUser({product: project.id}).$promise;
+    };
+    this.chartUserRelease = function(project) {
+        return Mood.chartUserRelease ({product: project.id}).$promise;
     }
 }]);

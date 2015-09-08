@@ -372,7 +372,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
 
 }]);
 
-controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', function($scope, $element, $filter, Session, ProjectService, SprintService) {
+controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'MoodService',function($scope, $element, $filter, Session, ProjectService, SprintService, MoodService) {
     var defaultOptions = {
         chart: {
             height: 350
@@ -469,6 +469,56 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                 jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': title.text()});
             });
     };
+    $scope.openMoodUserChart = function () {
+        var defaultUserMoodOptions = {
+            chart: {
+                type: 'lineChart',
+                x: function (entry) { return entry[0]; },
+                y: function (entry) { return entry[1]; },
+                xScale: d3.time.scale.utc(),
+                xAxis: {
+                    tickFormat: function(d) {
+                        // TODO USE date format from i18n
+                        return $filter('date')(new Date(d), 'dd-MM-yyyy');
+                    }
+                }
+            }
+        };
+        $scope.data = [];
+        $scope.options = _.merge({}, defaultOptions, defaultUserMoodOptions);
+        MoodService.chartUser($scope.currentProject).then(function (chart) {
+            $scope.data = chart.data;
+            $scope.options = _.merge($scope.options, chart.options);
+        });
+    };
+
+    $scope.openMoodSprintChart = function () {
+        var defaultMoodSprintOptions = {
+            chart: {
+                type: 'lineChart',
+                x: function (entry, index) {
+                    return index;
+                },
+                y: function (entry) {
+                    return entry[0];
+                },
+                xAxis: {
+                    tickFormat: function (entry) {
+                        return $scope.labels[entry];
+                    }
+                }
+            }
+        };
+        $scope.data = [];
+        $scope.labels = [];
+        $scope.options = _.merge({}, defaultOptions, defaultMoodSprintOptions);
+        MoodService.chartUserRelease($scope.currentProject).then(function (chart) {
+            $scope.data = chart.data;
+            $scope.labels = chart.labels;
+            $scope.options = _.merge($scope.options, chart.options);
+        });
+    };
+
     // Init
     $scope.options = {};
     $scope.data = [];

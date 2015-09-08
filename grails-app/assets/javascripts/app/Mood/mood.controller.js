@@ -47,4 +47,27 @@ controllers.controller('moodCtrl', ['$scope', 'MoodService', 'MoodFeelingsByName
         });
 }]);
 
+controllers.controller('moodChartCtrl',[ '$scope', 'MoodService','$element', '$filter',function($scope, MoodService,$element, $filter) {
+    $scope.data = [];
+    $scope.options = {
+        chart: {
+            height: 350,
+            type: 'lineChart',
+            x: function(d){ return d[0]; },
+            y: function(d){ return d[1]; },
+            xScale: d3.time.scale.utc(),
+            xAxis: {
+                tickFormat: function(d) {
+                    // TODO USE date format from i18n
+                    return $filter('date')(new Date(d), 'dd-MM-yyyy');
+                }
+            }
+        }
+    };
+    MoodService.chart()
+        .then(function (chart) {
+            $scope.data = chart.data;
+            $scope.options = _.merge($scope.options, chart.options)
+        });
+}]);
 

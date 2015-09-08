@@ -86,6 +86,10 @@
                                 <li><a href ng-click="openProjectChart('productVelocityChart')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
                                 <li><a href ng-click="openProjectChart('productVelocityCapacityChart')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
                                 <li class="divider"></li>
+                                <li role="presentation" class="dropdown-header">${message(code: 'is.mood')}</li>
+                                <li><a href ng-click="openMoodSprintChart() ">${message(code: 'is.ui.project.charts.MoodSprintChart')}</a></li>
+                                <li><a href ng-click="openMoodUserChart()">${message(code: 'is.ui.project.MoodUserChart')}</a></li>
+                                <li class="divider"></li>
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
                                 <li><a href ng-click="openSprintChart('sprintBurndownRemainingChart')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
                                 <li><a href ng-click="openSprintChart('sprintBurnupTasksChart')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
