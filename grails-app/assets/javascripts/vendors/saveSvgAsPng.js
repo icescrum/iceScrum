@@ -169,10 +169,7 @@
         });
     };
 
-    // CUSTOMIZED
-    // so it doesn't trigger a.download and use a callback instead
-    // and set the background to white
-    out$.saveSvgAsPng = function(el, options, callback) {
+    out$.saveSvgAsPng = function(el, name, options) {
         options = options || {};
         out$.svgAsDataUri(el, options, function(uri) {
             var image = new Image();
@@ -181,13 +178,49 @@
                 canvas.width = image.width;
                 canvas.height = image.height;
                 var context = canvas.getContext('2d');
-                context.fillStyle = 'rgba(255,255,255,1)';
-                context.fillRect(0, 0, image.width, image.height);
                 context.drawImage(image, 0, 0);
+
+                var a = document.createElement('a');
+                a.download = name;
+                a.href = canvas.toDataURL('image/png');
+                document.body.appendChild(a);
+                a.addEventListener("click", function(e) {
+                    a.parentNode.removeChild(a);
+                });
+                a.click();
+            };
+            image.src = uri;
+        });
+    };
+
+    // Custom function inspired by saveSvgAsPng but that also:
+    // - doesn't trigger a.download and use a callback instead
+    // - set the background to white
+    // - write the chart title, which is not svg but a separate div...
+    out$.saveChartAsPng = function(el, options, title, callback) {
+        options = options || {};
+        out$.svgAsDataUri(el, options, function(uri) {
+            var image = new Image();
+            image.onload = function() {
+                var canvas = document.createElement('canvas');
+                var offsetForTitle = 50; // Arbitrary offset that looks fine...
+                canvas.width = image.width;
+                canvas.height = image.height + offsetForTitle;
+                var context = canvas.getContext('2d');
+                context.fillStyle = 'rgba(255,255,255,1)';
+                context.fillRect(0, 0, image.width, image.height + offsetForTitle);
+                context.drawImage(image, 0, offsetForTitle);
+                var getCss = function(element, property) {
+                    return window.getComputedStyle(element).getPropertyValue(property);
+                };
+                context.font = [getCss(title, 'font-style'), getCss(title, 'font-size'), getCss(title, 'font-family')].join(' ');
+                context.fillStyle = getCss(title, 'color');
+                context.textAlign = 'center';
+                context.fillText(title.textContent, canvas.width / 2, offsetForTitle);
                 var imageBase64 = canvas.toDataURL('image/png');
                 callback(imageBase64);
             };
             image.src = uri;
         });
-    }
+    };
 })();
