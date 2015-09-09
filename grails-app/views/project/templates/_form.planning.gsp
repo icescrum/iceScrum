@@ -133,15 +133,15 @@
             </div>
         </div>
         <div class="col-sm-12 form-group">
-            <progress class="form-control-static form-bar" max="totalDuration">
-                <bar ng-repeat="sprint in sprints"
+            <uib-progress class="form-control-static form-bar" max="totalDuration">
+                <uib-bar ng-repeat="sprint in sprints"
                      class="{{ $last ? 'last-bar' : '' }}"
                      tooltip-template="'sprint.tooltip.html'"
                      type="default"
                      value="project.preferences.estimatedSprintsDuration">
                     #{{ sprint.orderNumber }}
-                </bar>
-            </progress>
+                </uib-bar>
+            </uib-progress>
         </div>
         <div class="col-sm-12 form-group">
             <label for="vision">${message(code:'is.release.vision')}</label>
