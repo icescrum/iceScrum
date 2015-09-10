@@ -23,9 +23,9 @@
 
 <script type="text/ng-template" id="story.effort.html">
 <is:modal form="submit(editableStory)"
-          submitButton="${message(code:'todo.is.ui.update')}"
+          submitButton="${message(code:'default.button.update.label')}"
           closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'todo.is.ui.story.effort.edit.title')}">
+          title="${message(code:'is.story.effort')}">
     <div ng-switch="isEffortCustom()">
         <label for="effort">${message(code:'is.story.effort')}</label>
         <select ng-switch-default

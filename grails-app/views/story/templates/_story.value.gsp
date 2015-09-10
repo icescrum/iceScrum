@@ -23,9 +23,9 @@
 
 <script type="text/ng-template" id="story.value.html">
 <is:modal form="submit(editableStory)"
-          submitButton="${message(code:'todo.is.ui.update')}"
+          submitButton="${message(code:'default.button.update.label')}"
           closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'todo.is.ui.story.value.edit.title')}">
+          title="${message(code:'is.story.value')}">
     <div>
         <label for="value">${message(code:'is.story.value')}</label>
         <select class="form-control"

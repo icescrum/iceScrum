@@ -34,7 +34,7 @@
                 </h3>
             </div>
             <div class="panel-body activities">
-                <div ng-repeat="activity in activities">
+                <div class="activity" ng-repeat="activity in activities">
                     <div class="media-left">
                         <img height="36px"
                              ng-src="{{activity.poster | userAvatar}}"
@@ -52,7 +52,7 @@
                         </div>
                         <div>
                             <span class="{{ activity | activityIcon}}"></span>
-                            <span>{{ message('todo.is.ui.activity.' + activity.code ) }} {{ activity.label }}</span>
+                            <span>{{ message('is.fluxiable.' + activity.code ) }} <strong>{{ activity.label }}</strong></span>
                         </div>
                     </div>
                 </div>

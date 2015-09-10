@@ -31,13 +31,13 @@
                 <a ng-click="setCurrentPanel('team')"><i class="fa fa-users"></i> ${ message(code: 'is.dialog.wizard.section.team')}</a>
             </li>
             <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('practices') }">
-                <a ng-click="setCurrentPanel('practices')"><i class="fa fa-sliders"></i> ${ message(code: 'todo.is.ui.practices')}</a>
+                <a ng-click="setCurrentPanel('practices')"><i class="fa fa-sliders"></i> ${ message(code: 'todo.is.ui.project.practices')}</a>
             </li>
             <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('planning') }">
-                <a ng-click="setCurrentPanel('planning')"><i class="fa fa-calendar"></i> ${ message(code: 'todo.is.ui.planning')}</a>
+                <a ng-click="setCurrentPanel('planning')"><i class="fa fa-calendar"></i> ${ message(code: 'todo.is.ui.project.planning')}</a>
             </li>
             <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('administration') }">
-                <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> ${ message(code: 'todo.is.ui.administration')}</a>
+                <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> ${ message(code: 'todo.is.ui.project.administration')}</a>
             </li>
         </ul>
         <div class="steps col-sm-9" ng-switch="getCurrentPanel()">
@@ -53,17 +53,17 @@
             </section>
             <section ng-switch-when="practices"
                      class="step current"
-                     title="${ message(code: 'todo.is.ui.practices')}">
+                     title="${ message(code: 'todo.is.ui.project.practices')}">
                 <div ng-include="'edit.practices.project.html'"></div>
             </section>
             <section ng-switch-when="planning"
                      class="step current"
-                     title="${ message(code: 'todo.is.ui.planning')}">
+                     title="${ message(code: 'todo.is.ui.project.planning')}">
                 <div ng-include="'edit.planning.project.html'"></div>
             </section>
             <section ng-switch-when="administration"
                      class="step current"
-                     title="${ message(code: 'todo.is.ui.administration')}">
+                     title="${ message(code: 'todo.is.ui.project.administration')}">
                 <div ng-include="'edit.administration.project.html'"></div>
             </section>
         </div>

@@ -63,10 +63,10 @@
                     <div class="btn-toolbar pull-right">
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.newTeamForm.$dirty || formHolder.newTeamForm.$invalid"
-                                tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
+                                tooltip="${message(code:'default.button.create.label')} (RETURN)"
                                 tooltip-append-to-body="true"
                                 type="submit">
-                            ${message(code:'todo.is.ui.save')}
+                            ${message(code:'default.button.create.label')}
                         </button>
                     </div>
                 </form>
@@ -81,7 +81,7 @@
                       novalidate>
                     <div class="col-sm-12 form-group"
                          ng-switch="authorizedTeam('changeOwner', team)">
-                        <label for="team.name">${message(code:'todo.is.ui.owner')}</label>
+                        <label for="team.owner">${message(code:'todo.is.ui.owner')}</label>
                         <span class="form-control-static"
                               ng-switch-default>{{ team.owner | userFullName }}</span>
                         <select class="form-control"
@@ -139,10 +139,10 @@
                     <div class="btn-toolbar">
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid"
-                                tooltip="${message(code:'todo.is.ui.update')}"
+                                tooltip="${message(code:'default.button.update.label')}"
                                 tooltip-append-to-body="true"
                                 type="submit">
-                            ${message(code:'todo.is.ui.update')}
+                            ${message(code:'default.button.update.label')}
                         </button>
                         <button class="btn btn-default pull-right"
                                 tooltip-append-to-body="true"
@@ -155,8 +155,8 @@
                                 ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [team] })"
                                 tooltip-placement="left"
                                 tooltip-append-to-body="true"
-                                tooltip="${message(code:'todo.is.ui.delete')}">
-                            ${message(code:'todo.is.ui.delete')}
+                                tooltip="${message(code:'default.button.delete.label')}">
+                            ${message(code:'default.button.delete.label')}
                         </button>
                     </div>
                 </form>

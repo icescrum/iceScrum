@@ -23,7 +23,7 @@
 <div class="btn-group">
     <a type="button"
        ng-if="authorizedFeature('create')"
-       tooltip="${message(code:'todo.is.ui.new')}"
+       tooltip="${message(code:'default.button.create.label')}"
        tooltip-append-to-body="true"
        tooltip-placement="right"
        href="#feature/new"

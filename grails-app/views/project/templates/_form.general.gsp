@@ -67,7 +67,7 @@
             <textarea is-markitup
                       name="project.description"
                       class="form-control"
-                      placeholder="${message(code: 'todo.is.ui.product.description.placeholder')}"
+                      placeholder="${message(code: 'todo.is.ui.project.description.placeholder')}"
                       ng-model="project.description"
                       ng-show="showDescriptionTextarea"
                       ng-blur="showDescriptionTextarea = false"
@@ -78,7 +78,7 @@
                  ng-click="showDescriptionTextarea = true"
                  ng-focus="showDescriptionTextarea = true"
                  ng-class="{'placeholder': !project.description_html}"
-                 ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.product.description.placeholder')}</p>') | sanitize"></div>
+                 ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.description.placeholder')}</p>') | sanitize"></div>
         </div>
     </div>
 </script>

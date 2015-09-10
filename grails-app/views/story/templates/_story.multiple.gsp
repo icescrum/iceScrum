@@ -171,10 +171,10 @@
             <div ng-if="authorizedStories('update', stories)"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
-                        tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
+                        tooltip="${message(code:'default.button.create.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
-                    ${message(code:'todo.is.ui.save')}
+                    ${message(code:'default.button.create.label')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"

@@ -57,7 +57,7 @@
                                         ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, story] })"
                                         tooltip-placement="left"
                                         tooltip-append-to-body="true"
-                                        tooltip="${message(code:'todo.is.ui.acceptanceTest.delete')}"><span class="fa fa-times"></span>
+                                        tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
                                 </button>
                             </div>
                             <div class="col-sm-7 form-group">

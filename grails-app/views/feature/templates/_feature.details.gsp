@@ -178,10 +178,10 @@
             <div class="btn-toolbar" ng-if="getShowFeatureForm(editableFeature) && getEditableMode()">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="!isDirty() || formHolder.featureForm.$invalid"
-                        tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
+                        tooltip="${message(code:'default.button.update.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
-                    ${message(code:'todo.is.ui.update')}
+                    ${message(code:'default.button.update.label')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"
@@ -194,7 +194,7 @@
             <div class="form-group">
                 <label>${message(code:'is.backlogelement.attachment')} {{ feature.attachments.length > 0 ? '(' + feature.attachments.length + ')' : '' }}</label>
                 <div ng-if="authorizedFeature('upload', feature)">
-                    <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i> todo.is.ui.new.upload</button>
+                    <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i>${message(code: 'todo.is.ui.new.upload')}</button>
                 </div>
                 <div class="form-control-static">
                     <div class="drop-zone">

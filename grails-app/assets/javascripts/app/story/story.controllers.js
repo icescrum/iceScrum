@@ -35,7 +35,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
         StoryService.acceptAs(story, target)
             .then(function() {
                 $scope.goToNewStory();
-                $scope.notifySuccess('todo.is.ui.story.acceptedAs');
+                $scope.notifySuccess('todo.is.ui.story.acceptedAs' + target);
             });
     };
     $scope.follow = function(story) {
@@ -569,7 +569,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
         StoryService.acceptAsMultiple(listId, target)
             .then(function() {
                 $scope.goToNewStory();
-                $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs');
+                $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs' + target);
             });
     };
     $scope.authorizedStories = function(action, stories) {

@@ -108,14 +108,14 @@
                                 ng-bind-html="messageDuplicate | sanitize"></div>
                 </div>
                 <div class="form-half">
-                    <label for="story.template">${message(code: 'todo.is.ui.story.template.choose')}</label>
+                    <label for="story.template">${message(code: 'todo.is.ui.story.template')}</label>
                     <div ng-class="{'input-group': authorizedStory('updateTemplate')}">
                         <select name="story.template"
                                 class="form-control"
                                 ng-model="story.template"
                                 ng-readonly="!authorizedStory('create')"
                                 ng-change="templateSelected()"
-                                data-placeholder="${message(code:'todo.is.ui.story.placeholder')}"
+                                data-placeholder="${message(code:'todo.is.ui.story.template.placeholder')}"
                                 ui-select2="selectTemplateOptions">
                             <option value=""></option>
                             <option ng-repeat="templateEntry in templateEntries" value="{{ templateEntry.id }}">{{ templateEntry.text }}</option>
@@ -139,20 +139,20 @@
             <div ng-if="authorizedStory('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.storyForm.$invalid"
-                        tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
+                        tooltip="${message(code:'default.button.create.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
-                    ${message(code:'todo.is.ui.save')}
+                    ${message(code:'default.button.create.label')}
                 </button>
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.storyForm.$invalid"
-                        tooltip="${message(code:'todo.is.ui.save.and.continue')} (SHIFT+RETURN)"
+                        tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                         tooltip-append-to-body="true"
                         hotkey="{'shift+return': hotkeyClick }"
                         hotkey-allow-in="INPUT"
                         type='button'
                         ng-click="save(story, true)">
-                    ${message(code:'todo.is.ui.save.and.continue')}
+                    ${message(code:'todo.is.ui.create.and.continue')}
                 </button>
             </div>
         </form>

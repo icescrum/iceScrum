@@ -500,7 +500,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
     };
     $scope['delete'] = function(project) {
         $scope.confirm({
-            message: $scope.message('todo.is.ui.projectmenu.submenu.project.delete'),
+            message: $scope.message('todo.is.ui.projectmenu.submenu.project.delete.confirm'),
             callback: function() {
                 ProjectService.delete(project).then(function() {
                     document.location = $scope.serverUrl;

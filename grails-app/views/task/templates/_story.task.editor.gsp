@@ -46,7 +46,7 @@
                            ng-model="task.estimation"
                            type="number"
                            step="any"
-                           placeholder="${message(code: 'todo.is.ui.task.noestimate')}"
+                           placeholder="${message(code: 'todo.is.ui.task.noeffort')}"
                            class="form-control text-right">
                 </div>
             </div>
@@ -61,10 +61,10 @@
             <div class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="!formHolder.taskForm.$dirty || formHolder.taskForm.$invalid"
-                        tooltip="${message(code:'todo.is.ui.save')} (RETURN)"
+                        tooltip="${message(code:'default.button.create.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
-                    ${message(code:'todo.is.ui.save')}
+                    ${message(code:'default.button.create.label')}
                 </button>
             </div>
         </form>

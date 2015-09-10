@@ -23,21 +23,21 @@
 
 <script type="text/ng-template" id="story.template.new.html">
 <is:modal form="submit(template)"
-          submitButton="${message(code:'todo.is.ui.save')}"
+          submitButton="${message(code:'default.button.create.label')}"
           closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'todo.is.ui.story.template.new.title')}">
+          title="${message(code:'todo.is.ui.story.template.new')}">
     <div class="form-group">
         <label for="template.name">${message(code:'todo.is.ui.story.template.name')}</label>
         <input focus-me="true"
                class="form-control"
                ng-model="template.name"
-               placeholder="${message(code:'todo.is.ui.story.template.new.placeholder')}"/>
+               placeholder="${message(code:'todo.is.ui.story.template.name.placeholder')}"/>
     </div>
 </is:modal>
 </script>
 
 <script type="text/ng-template" id="story.template.edit.html">
-<is:modal title="${message(code:'todo.is.ui.story.template.edit.title')}">
+<is:modal title="${message(code:'todo.is.ui.story.template.edit')}">
     <table class="table table-striped">
         <tr ng-repeat="templateEntry in templateEntries">
             <td>
@@ -48,7 +48,7 @@
                         type="button"
                         tooltip-placement="left"
                         tooltip-append-to-body="true"
-                        tooltip="${message(code:'todo.is.ui.story.template.delete')}"
+                        tooltip="${message(code:'default.button.delete.label')}"
                         ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteTemplate, args: [templateEntry] })"><span class="fa fa-times"></span></button>
             </td>
         </tr>

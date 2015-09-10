@@ -24,7 +24,7 @@
 <is:modal name="formHolder.profileForm"
           form="update(editableUser)"
           validate="true"
-          submitButton="${message(code:'todo.is.ui.save')}"
+          submitButton="${message(code:'default.button.create.label')}"
           closeButton="${message(code:'is.button.cancel')}"
           title="${message(code:'todo.is.dialog.profile')}">
     <tabset type="pills" justified="true">

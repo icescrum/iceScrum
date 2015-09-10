@@ -23,7 +23,7 @@
 <div class="btn-group">
     <a type="button"
        ng-if="authorizedStory('create')"
-       tooltip="${message(code:'todo.is.ui.new')}"
+       tooltip="${message(code:'default.button.create.label')}"
        tooltip-append-to-body="true"
        tooltip-placement="right"
        ng-click="goToNewStory()"

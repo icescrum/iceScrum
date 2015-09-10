@@ -51,7 +51,7 @@
                              height="21px"/>
                     </span>
                     <a class="btn btn-xs btn-default"
-                       tooltip="{{ story.activities && story.activities.length ? message('todo.is.ui.activity.' + story.activities[0].code) : '' }}"
+                       tooltip="{{ story.activities && story.activities.length ? message('is.fluxiable.' + story.activities[0].code) : '' }}"
                        tooltip-append-to-body="true">
                         <span class="fa fa-clock-o"></span>
                     </a>
@@ -347,10 +347,10 @@
             <div class="btn-toolbar" ng-if="getShowStoryForm(story) && getEditableMode()">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="!isDirty() || formHolder.storyForm.$invalid"
-                        tooltip="${message(code:'todo.is.ui.update')} (RETURN)"
+                        tooltip="${message(code:'default.button.update.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
-                    ${message(code:'todo.is.ui.update')}
+                    ${message(code:'default.button.update.label')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"
@@ -363,7 +363,7 @@
             <div class="form-group">
                 <label>${message(code:'is.backlogelement.attachment')} {{ story.attachments.length > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
                 <div ng-if="authorizedStory('upload', story)">
-                    <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i> todo.is.ui.new.upload</button>
+                    <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i>${message(code: 'todo.is.ui.new.upload')}</button>
                 </div>
                 <div class="form-control-static">
                     <div class="drop-zone">
