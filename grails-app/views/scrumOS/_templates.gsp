@@ -75,29 +75,40 @@
 </script>
 
 <script type="text/ng-template" id="profile.panel.html">
-    <div class="panel panel-default" id="panel-current-user">
-        <div class="panel-body">
-            <img ng-src="{{ currentUser | userAvatar }}" height="60px" width="60px" class="pull-left"/>
-            {{ currentUser.username }}
-            <g:if test="${product}">
-                <br/>
-                <a href="javascript:;" onclick="$('#edit-members').find('a').click();"><strong> <is:displayRole product="${product.id}"/> </strong></a>
-            </g:if>
+    <div class="media">
+        <div class="media-left">
+            <img ng-src="{{ currentUser | userAvatar }}"
+                 alt="{{currentUser | userFullName}}"
+                 height="60px"
+                 width="60px"/>
         </div>
-        <div class="panel-footer">
-            <div class="row">
-                <div>
-                    <a class="btn btn-info"
-                       hotkey="{'U':showProfile}"
-                       tooltip="${message(code:'is.dialog.profile')} (U)"
-                       tooltip-append-to-body="true"
-                       ng-click="showProfile()">${message(code:'is.dialog.profile')}</a>
-                </div>
-                <div>
-                    <a class="btn btn-danger" href="${createLink(controller:'logout')}">${message(code:'is.logout')}</a>
-                </div>
+        <div class="media-body">
+            <div>
+                {{currentUser | userFullName}} ({{ currentUser.username }})
+            </div>
+            <div class="text-muted">
+                <div>{{currentUser.email}}</div>
+                <div>{{currentUser.preferences.activity}}</div>
+                <g:if test="${product}">
+                    <div>
+                        <strong><is:displayRole product="${product.id}"/></strong>
+                    </div>
+                </g:if>
             </div>
         </div>
+    </div>
+    <div class="btn-toolbar pull-right">
+        <a href
+           class="btn btn-default"
+           hotkey="{'U':showProfile}"
+           tooltip="${message(code:'is.dialog.profile')} (U)"
+           tooltip-append-to-body="true"
+           ng-click="showProfile()">${message(code:'is.dialog.profile')}
+        </a>
+        <a class="btn btn-danger"
+           href="${createLink(controller:'logout')}">
+            ${message(code:'is.logout')}
+        </a>
     </div>
 </script>
 <script type="text/ng-template" id="notifications.panel.html">

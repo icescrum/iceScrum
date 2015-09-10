@@ -177,7 +177,7 @@
                     <div class="navbar-user pull-left dropdown-toggle" dropdown-toggle>
                         <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
                     </div>
-                    <div class="dropdown-menu" ng-include="'profile.panel.html'"></div>
+                    <div class="dropdown-menu profile-panel" ng-include="'profile.panel.html'"></div>
                 </div>
                 <button id="login"
                         ng-show="!(currentUser.username)"
