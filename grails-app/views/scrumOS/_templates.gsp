@@ -129,7 +129,7 @@
             </div>
         </div>
     </div>
-    <div class="empty-content" ng-show="!story.acceptanceTests.length">
+    <div class="empty-content" ng-show="groupedUserActivities != undefined && groupedUserActivities.length == 0">
         <small>${message(code:'todo.is.ui.activities.empty')}</small>
     </div>
 </script>
