@@ -166,7 +166,7 @@ class ProjectController {
         }
     }
 
-    @Secured('scrumMaster() and !archivedProduct()')
+    @Secured(['scrumMaster() and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def update = {
         //Oui pas une faute de frappe c'est bien productd pour pas confondra avec params.product ..... notre id de product
         withProduct('productd.id'){ Product product ->
