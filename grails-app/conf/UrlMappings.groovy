@@ -313,6 +313,19 @@ class UrlMappings {
             }
         }
 
+        "/rss/" {
+            controller = 'rss'
+            action = [POST:"save"]
+        }
+
+        "/rss/$id/getFeed" {
+            controller = 'rss'
+            action = 'getFeed'
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
         "403"(controller: "errors", action: "error403")
         "400"(controller: "errors", action: "fakeError")
         "302"(controller: "errors", action: "fakeError")

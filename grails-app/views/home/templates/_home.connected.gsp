@@ -23,9 +23,34 @@
     <div class="col-md-5">
         <div class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.rss')}</div>
-            <div class="panel-body">..</div>
+            <div ng-controller="FeedCtrl">
+                <form>
+                    ${message(code: 'is.panel.rss.input')}
+                    <input type="text" ng-model="rss.rssUrl"/> <button class="btn btn-primary" ng-click="save(rss)">Save</button>
+                </form>
+                    ${message(code: 'is.panel.list.rss')}
+                <select
+                      class="form-control"
+                      placeholder ="select Rss"
+                      ng-model="selectedRss"
+                      ng-change="selectRss(selectedRss)"
+                      ui-select2>
+                      <option value="all"> All Rss </option>
+                      <option ng-repeat="rss in rssList" value="{{rss.id}}"> {{rss.rssUrl}} </option>
+                </select>
+                <div>
+                    <h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
+                    <p class="text-left">{{feed.description}}</p>
+                    <span class="small">{{feed.pubDate}}</span>
+                </div>
+                <li ng-repeat="item in feedItems">
+                    <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
+                    <p class="text-left">{{item.item.description}}</p>
+                    <span class="small">{{item.item.pubDate}}</span>
+                </li>
+            </div>
+           </div>
         </div>
-    </div>
     <div class="col-md-4">
         <div ng-controller="userCtrl" class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.notes')}</div>
