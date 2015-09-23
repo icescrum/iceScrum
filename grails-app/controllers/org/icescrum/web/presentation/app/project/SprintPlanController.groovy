@@ -552,7 +552,7 @@ class SprintPlanController {
                             effort: it.effort,
                             state: message(code: BundleUtils.storyStates[it.state]),
                             description: is.storyDescription([story: it, displayBR: true]),
-                            notes: is.renderHtml([text:it.notes.decodeHTML()], null),
+                            notes: is.renderHtml([text:it.notes], null).decodeHTML(),
                             type: message(code: BundleUtils.storyTypes[it.type]),
                             suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.suggestedDate]) : null,
                             acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: product.preferences.timezone, date: it.acceptedDate]) : null,
