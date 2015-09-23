@@ -298,7 +298,7 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$modal', '$filter', 'uiSelect2Config', 'notifications', 'atmosphereService', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $modal, $filter, uiSelect2Config, notifications, atmosphereService, CONTENT_LOADED){
+    run(['Session', '$rootScope', '$timeout', '$state', '$modal', '$filter', 'uiSelect2Config', 'notifications', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $modal, $filter, uiSelect2Config, notifications, CONTENT_LOADED){
 
         $rootScope.$watch('$viewContentLoaded', function() {
             $timeout(function() {
@@ -451,73 +451,6 @@ isApp.config(['$stateProvider', '$httpProvider',
             return Math.floor(duration / (1000 * 3600 * 24)) + 1;
         };
 
-        //init push system
-        var request = {
-            url: $rootScope.serverUrl + '/stream/app/product-1',
-            contentType: 'application/json',
-            logLevel: 'info', // Set 'debug' to debug
-            transport: 'websocket',
-            trackMessageLength: true,
-            reconnectInterval: 5000,
-            enableXDR: true,
-            timeout: 60000
-        };
-
-        $rootScope.push = {};
-
-        request.onOpen = function(response){
-            $rootScope.push.transport = response.transport;
-            $rootScope.push.connected = true;
-            atmosphere.util.debug('Atmosphere connected using ' + response.transport);
-        };
-
-        request.onClientTimeout = function(response){
-            $rootScope.push.connected = false;
-            setTimeout(function(){
-                atmosphereService.subscribe(request);
-            }, request.reconnectInterval);
-            atmosphere.util.debug('Client closed the connection after a timeout. Reconnecting in ' + request.reconnectInterval);
-        };
-
-        request.onReopen = function(response){
-            $rootScope.push.connected = true;
-            atmosphere.util.debug('Atmosphere re-connected using ' + response.transport);
-        };
-
-        request.onTransportFailure = function(errorMsg, request){
-            atmosphere.util.info(errorMsg);
-            request.fallbackTransport = 'streaming';
-            atmosphere.util.debug('Default transport is WebSocket, fallback is ' + request.fallbackTransport);
-        };
-
-        request.onMessage = function(response){
-            var responseText = response.responseBody;
-            try{
-                var message = atmosphere.util.parseJSON(responseText);
-                //TODO What we should do
-
-            }catch(e){
-                atmosphere.util.debug("Error parsing JSON: " + responseText);
-                throw e;
-            }
-        };
-
-        request.onClose = function(response){
-            $rootScope.push.connected = false;
-            atmosphere.util.debug('Server closed the connection after a timeout');
-        };
-
-        request.onError = function(response){
-            atmosphere.util.debug("Sorry, but there's some problem with your socket or the server is down");
-        };
-
-        request.onReconnect = function(request, response){
-            $rootScope.push.connected = false;
-            atmosphere.util.debug('Connection lost. Trying to reconnect ' + request.reconnectInterval);
-        };
-
-        atmosphereService.subscribe(request);
-
         $(document).on('click', '.stacks.three-stacks > div, .stacks.four-stacks > div', function(event){
             if(angular.element(event.target).parent('a').length > 0){
                 return false;
@@ -611,6 +544,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         SM: 'SM',
         TM: 'TM',
         SH: 'SH'
+    })
+    .constant('IceScrumEventType', {
+        CREATE: 'CREATE',
+        UPDATE: 'UPDATE',
+        DELETE: 'DELETE'
     })
     .constant('CONTENT_LOADED', 'loadingFinished');
 

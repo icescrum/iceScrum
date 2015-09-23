@@ -35,7 +35,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
             })
         }
     };
-}]).service('Session',['UserService', 'USER_ROLES', 'User', 'Project', function (UserService, USER_ROLES, User, Project) {
+}]).service('Session',['UserService', 'USER_ROLES', 'User', 'Project', 'PushService', function (UserService, USER_ROLES, User, Project, PushService) {
     var self = this;
     self.user = new User();
     self.project = new Project();
@@ -118,6 +118,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     };
 
     this.setProject = function(project){
+        PushService.initProductPush(project.id);
         _.extend(self.project, project);
     };
 
