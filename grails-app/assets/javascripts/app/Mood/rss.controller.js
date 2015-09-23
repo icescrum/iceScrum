@@ -24,6 +24,7 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'RssService', function 
     $scope.save = function (rss) {
         RssService.save(rss).then(function (savedRss) {
             $scope.rss = savedRss;
+            $scope.rssList.push(savedRss);
             $scope.notifySuccess('todo.is.ui.rssUrl.saved');
         });
     };
@@ -39,6 +40,15 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'RssService', function 
                 $scope.feedItems = feed.channel.items;
             });
         }
+    };
+    $scope.delete = function(rssToDelete){
+        RssService.delete(rssToDelete).then(function(){
+            $scope.notifySuccess('todo.is.ui.rssUrl.delete');
+        })
+    };
+    $scope.view = true;
+    $scope.click = function() {
+        $scope.view = $scope.view === false ? true: false;
     };
     // Init
     // Feeds

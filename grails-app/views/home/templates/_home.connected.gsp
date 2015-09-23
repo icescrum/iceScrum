@@ -21,42 +21,51 @@
 <script type="text/ng-template" id="home.connected.html">
 <div html-sortable class="row" id="panelhome">
     <div class="col-md-5">
-        <div class="panel panel-primary">
-            <div class="panel-heading">${message(code: 'is.panel.rss')}</div>
-            <div ng-controller="FeedCtrl">
-                <form>
-                    ${message(code: 'is.panel.rss.input')}
-                    <input type="text" ng-model="rss.rssUrl"/> <button class="btn btn-primary" ng-click="save(rss)">Save</button>
-                </form>
-                    ${message(code: 'is.panel.list.rss')}
-                <select
-                      class="form-control"
-                      placeholder ="select Rss"
-                      ng-model="selectedRss"
-                      ng-change="selectRss(selectedRss)"
-                      ui-select2>
-                      <option value="all"> All Rss </option>
-                      <option ng-repeat="rss in rssList" value="{{rss.id}}"> {{rss.rssUrl}} </option>
-                </select>
-                <div>
-                    <h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
-                    <p class="text-left">{{feed.description}}</p>
-                    <span class="small">{{feed.pubDate}}</span>
-                </div>
+        <div ng-controller="FeedCtrl" class="panel panel-primary">
+            <div class="panel-heading">${message(code:'is.panel.rss')}
+                <button class="pull-right btn btn-default"  ng-click="click()"> <i class="fa fa-cog"></i> </button>
+            </div>
+            <span ng-show="view">
+                <table>
+                    <tr>
+                        <td>${message(code: 'todo.is.iu.panel.rss.input')} </td><td><input type="text" ng-model="rss.rssUrl"/> </td>
+                        <td><button class="btn btn-primary" ng-click="save(rss)">Save</button></td>
+                    </tr>
+                    <tr><td>${message(code: 'todo.is.iu.panel.rss.list')}</td>
+                        <td>
+                            <select
+                                class="form-control"
+                                placeholder="select Rss"
+                                ng-model="selectedRss"
+                                ng-change="selectRss(selectedRss)"
+                                ui-select2>
+                                <option value="all">${message(code: 'todo.is.iu.panel.rss.title.allRss')}</option>
+                                <option ng-repeat="rss in rssList" value="{{rss.id}}">{{rss.rssUrl}}</option>
+                            </select>
+                        </td>
+                        <td><button ng-model="selectedRss" ng-click="delete(selectedRss)"
+                                    class="btn btn-primary">Delete</button></td>
+                    </tr>
+                </table>
+           </span>
+            <span ng-hide="view">
+                <h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
+                <p class="text-left">{{feed.description | limitTo: 100}}{{feed.description .length > 100 ? '...' : ''}}</p>
+                <span class="small">{{feed.pubDate}}</span>
                 <li ng-repeat="item in feedItems">
                     <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
-                    <p class="text-left">{{item.item.description}}</p>
+                    <p class="text-left">{{item.item.description | limitTo: 100}}{{item.item.description.length > 100 ? '...' : ''}}</p>
                     <span class="small">{{item.item.pubDate}}</span>
                 </li>
-            </div>
-           </div>
+           </span>
         </div>
-    <div class="col-md-4">
+    </div>
+    <div class="col-md-5">
         <div ng-controller="userCtrl" class="panel panel-primary">
             <div class="panel-heading">${message(code: 'is.panel.notes')}</div>
             <div class="panel-body">
                 <div class="form-group">
-                    <textarea id="note-size"  is-markitup
+                    <textarea id="note-size" is-markitup
                               class="form-control"
                               name="notes"
                               ng-model="editableUser.notes"
@@ -122,11 +131,11 @@
                 {{project}}
                 <accordion-group heading="{{task.uid }} - {{task.name }}" ng-repeat="task in tasks">
                     <table>
-                        <tr><td> ${message(code: 'is.panel.task.Estimation')} : {{ task.creationDate}} </td></tr>
-                        <tr><td> ${message(code: 'is.panel.task.Estimation')} : {{ task.estimation }} </td></tr>
-                        <tr><td> ${message(code: 'is.panel.task.Etat')} : {{task.state | i18n:'TaskStates' }} </td></tr>
-                        <tr><td> ${message(code: 'is.panel.task.Description')} : {{ task.description }} </td></tr>
-                        <tr><td> ${message(code: 'is.panel.task.Story')} : {{ task.parentStory.name }} </td></tr>
+                        <tr><td>${message(code: 'is.panel.task.Estimation')} : {{ task.creationDate}}</td></tr>
+                        <tr><td>${message(code: 'is.panel.task.Estimation')} : {{ task.estimation }}</td></tr>
+                        <tr><td>${message(code: 'is.panel.task.Etat')} : {{task.state | i18n:'TaskStates' }}</td></tr>
+                        <tr><td>${message(code: 'is.panel.task.Description')} : {{ task.description }}</td></tr>
+                        <tr><td>${message(code: 'is.panel.task.Story')} : {{ task.parentStory.name }}</td></tr>
                     </table>
                 </accordion-group>
             </accordion>

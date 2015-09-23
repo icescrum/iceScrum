@@ -26,7 +26,7 @@ services.factory('Rss', ['Resource',  function($resource) {
         {
             getFeed: {method: 'GET', params: {action: 'getFeed'}},
             rssByUser: {method: 'GET',isArray: true, params: {action: 'rssByUser'}},
-            getAllFeeds: {method: 'GET',isArray: true,params: {action: 'getAllFeeds'}}
+            getAllFeeds: {method: 'GET',isArray: true, params: {action: 'getAllFeeds'}}
         });
 }]);
 
@@ -35,14 +35,17 @@ services.service("RssService", ['Rss',function (Rss) {
         rss.class = 'rss';
         return Rss.save(rss).$promise;
     };
-    this.rssByUser=function(){
+    this.rssByUser = function(){
         return Rss.rssByUser().$promise;
     };
-    this.getFeed =function(rssUserSelect){
+    this.getFeed = function(rssUserSelect){
         return Rss.getFeed({id: rssUserSelect}).$promise;
     };
-    this.getAllFeeds=function() {
+    this.getAllFeeds = function() {
         return Rss.getAllFeeds().$promise;
+    };
+    this.delete = function(rssToDelete) {
+        return Rss.delete({id: rssToDelete}).$promise;
     };
 }]);
 

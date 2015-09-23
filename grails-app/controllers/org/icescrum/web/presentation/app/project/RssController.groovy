@@ -29,6 +29,7 @@ import org.icescrum.core.domain.Rss
 
 @Secured('isAuthenticated()')
 class RssController {
+
     def springSecurityService
 
     @Secured('isAuthenticated()')
@@ -55,7 +56,7 @@ class RssController {
     }
 
     @Secured('isAuthenticated()')
-    def rssByUser () {
+    def rssByUser() {
         def user = springSecurityService.currentUser
         def rssUser = Rss.findAllByUser(user);
         render(status: 200, contentType: 'application/json', text: rssUser as JSON)
@@ -63,7 +64,7 @@ class RssController {
 
     @Secured('isAuthenticated()')
     def getFeed(long id) {
-        Rss rss = Rss.findByUserAndId(springSecurityService.currentUser,id)
+        Rss rss = Rss.findByUserAndId(springSecurityService.currentUser, id)
         def connection = new URL(rss.rssUrl).openConnection()
         def xmlRss = new XmlSlurper().parse(connection.inputStream)
         def channel = xmlRss.channel
@@ -71,14 +72,14 @@ class RssController {
         channel.item.each { xmlItem ->
             jsonRss.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: xmlItem.pubDate.text()]])
         }
-        render(status:200, contentType:"application/json", text: jsonRss as JSON)
+        render(status: 200, contentType: "application/json", text: jsonRss as JSON)
     }
 
 
     @Secured('isAuthenticated()')
     def getAllFeeds() {
         def allJsonRss = []
-        def allUserRss= Rss.findAllByUser(springSecurityService.currentUser)
+        def allUserRss = Rss.findAllByUser(springSecurityService.currentUser)
         allUserRss.collect {
             it.rssUrl
         }.each { url ->
@@ -87,13 +88,27 @@ class RssController {
             def channel = xmlRss.channel
             def jsonRss = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate: channel.pubDate.text()]]
             channel.item.each { xmlItem ->
-                jsonRss.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z" , xmlItem.pubDate.text())]])
+                jsonRss.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text())]])
             }
             allJsonRss.addAll(jsonRss.channel.items)
         }
-        render(status:200, contentType:"application/json", text: allJsonRss as JSON)
+        render(status: 200, contentType: "application/json", text: allJsonRss as JSON)
     }
 
+    @Secured('isAuthenticated()')
+    def delete(long id) {
+        try {
+            def rssToDelete = Rss.findById(id)
+            rssToDelete.delete()
+            withFormat {
+                html { render(status: 200) }
+                json { render(status: 204) }
+                xml { render(status: 204) }
+            }
+        } catch (RuntimeException e) {
+            returnError(exception: e)
+        }
+    }
 }
 
 
