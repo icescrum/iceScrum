@@ -42,7 +42,7 @@
         <div id="mainmenu" ng-controller="projectCtrl">
             <ul class="nav navbar-nav scroll menubar"
                 html-sortable="menuSortableOptions"
-                html-sortable-callback="menuSortableUpdate"
+                html-sortable-callback="menuSortableUpdate(startModel, destModel, start, end)"
                 ng-init='menus.visible = ${menus as JSON};'
                 ng-model="menus.visible">
                 <li class="dropdown contextual-menu" dropdown>
@@ -134,7 +134,7 @@
                     <a class="dropdown-toggle" dropdown-toggle href>${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu menubar"
                         html-sortable="menuSortableOptions"
-                        html-sortable-callback="menuHiddenSortableUpdate"
+                        html-sortable-callback="menuHiddenSortableUpdate(startModel, destModel, start, end)"
                         ng-init='menus.hidden = ${menusHidden as JSON};'
                         ng-model="menus.hidden">
                             <li ng-repeat="menu in menus.hidden"

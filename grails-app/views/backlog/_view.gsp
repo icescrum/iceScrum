@@ -25,7 +25,7 @@
      %{--ui-selectable="selectableOptions"--}%
      %{--ui-selectable-list="stories"--}%
      html-sortable="storySortableOptions"
-     html-sortable-callback="storySortableUpdate"
+     html-sortable-callback="storySortableUpdate(startModel, destModel, start, end)"
      ng-model="filteredAndSortedStories"
      ng-class="view.asList ? 'list-group' : 'grid-group'"
      class="postits"
