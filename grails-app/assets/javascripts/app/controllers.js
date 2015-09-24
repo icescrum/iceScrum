@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys',
-    function ($scope, $state, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys) {
+controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED' , 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys', 'PushService',
+    function ($scope, $state, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys, PushService) {
         $scope.app = {
             isFullScreen:false,
             loading:10
@@ -89,6 +89,9 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
         $scope.menus = {
             visible:[],
             hidden:[]
+        };
+        $scope.getPushState = function() {
+            return PushService.push.connected ? 'connected' : 'disconnected'
         };
         $scope.menuSortableOptions = {
             items:'li.menuitem',

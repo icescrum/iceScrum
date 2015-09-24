@@ -35,7 +35,7 @@
                hotkey-description="${message(code: 'is.about')}"
                ng-click="showAbout()"
                href>
-                <span id="is-logo" class="disconnected" title="${message(code: 'is.about')} (I)"><g:message code="is.shortname"/></span>
+                <span id="is-logo" ng-class="getPushState()" title="${message(code: 'is.about')} (I)"><g:message code="is.shortname"/></span>
             </a>
             <is:errors/>
         </div>
