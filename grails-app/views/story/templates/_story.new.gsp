@@ -88,7 +88,6 @@
 
         <form ng-submit="save(story, false)"
               name='formHolder.storyForm'
-              show-validation
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">

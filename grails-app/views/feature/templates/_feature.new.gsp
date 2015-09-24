@@ -57,7 +57,6 @@
 
         <form ng-submit="save(feature, false)"
               name='formHolder.featureForm'
-              show-validation
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
