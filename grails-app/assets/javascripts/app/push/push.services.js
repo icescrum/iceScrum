@@ -22,16 +22,13 @@
  *
  */
 
-services.service("PushService", ['$rootScope', 'atmosphereService', function($rootScope, atmosphereService) {
-
+services.service("PushService", ['$rootScope', 'atmosphereService', 'IceScrumEventType', function($rootScope, atmosphereService, IceScrumEventType) {
     var self = this;
     self.push = {};
-
-    this.handlers = {};
-
-    this.initProductPush = function(productId) {
+    this.listeners = {};
+    this.initPush = function(projectId) {
         var options = {
-            url: $rootScope.serverUrl + '/stream/app/product-' + productId,
+            url: $rootScope.serverUrl + '/stream/app' + (projectId ? ('/product-' + projectId) : ''),
             contentType: 'application/json',
             logLevel: 'info', // Set 'debug' to debug
             transport: 'websocket',
@@ -86,26 +83,42 @@ services.service("PushService", ['$rootScope', 'atmosphereService', function($ro
         };
         atmosphereService.subscribe(options);
     };
-
-    this.registerListener = function(domain, eventType, callback) {
+    this.registerListener = function(domain, eventType, listener) {
         domain = domain.toLowerCase();
-        if (_.isUndefined(self.handlers[domain])) {
-            self.handlers[domain] = {};
+        if (_.isUndefined(self.listeners[domain])) {
+            self.listeners[domain] = {};
         }
-        if (_.isUndefined(self.handlers[domain][eventType])) {
-            self.handlers[domain][eventType] = [];
+        if (_.isUndefined(self.listeners[domain][eventType])) {
+            self.listeners[domain][eventType] = [];
         }
-        self.handlers[domain][eventType].push(callback);
+        var listeners = self.listeners[domain][eventType];
+        console.log('register listener on ' + eventType + ' ' + domain);
+        listeners.push(listener);
+        return {
+            unregister: function() {
+                console.log('unregister listener on ' + eventType + ' ' + domain);
+                _.remove(listeners, function(registeredListener) {
+                    return registeredListener == listener;
+                });
+            }
+        };
     };
-
     this.publishEvent = function(jsonBody) {
         var object = jsonBody.object;
         var domain = object['class'].toLowerCase();
-        if (!_.isEmpty(self.handlers[domain])) {
+        if (!_.isEmpty(self.listeners[domain])) {
             var eventType = jsonBody.eventType;
-            _.each(self.handlers[domain][eventType], function(handler) {
-                handler(eventType, object);
+            _.each(self.listeners[domain][eventType], function(listener) {
+                console.log('call listener on ' + eventType + ' ' + domain);
+                listener(object);
             });
         }
+    };
+    this.synchronizeItem = function(domain, item) {
+        return self.registerListener(domain, IceScrumEventType.UPDATE, function(object) {
+            if (item.id == object.id) {
+                angular.extend(item, object);
+            }
+        });
     };
 }]);
