@@ -306,9 +306,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.update = function(story) {
             StoryService.update(story)
                 .then(function(story) {
-                    $scope.story = story;
-                    $scope.selected = story;
-                    $scope.activities(story); // TODO check if not better solution
+                    $scope.activities(story); // TODO check if not better solution to refresh the activities
                     $scope.resetStoryForm();
                     $scope.notifySuccess('todo.is.ui.story.updated');
                 });
@@ -369,8 +367,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
         };
         $scope.editForm = function(value) {
-            $scope.setEditableMode(value); // global
-            if (!value) {
+            if (value != $scope.getEditableMode()) {
+                $scope.setEditableMode(value); // global
                 $scope.resetStoryForm();
             }
         };
@@ -378,8 +376,13 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedStory('update', story);
         };
         $scope.resetStoryForm = function() {
-            $scope.editableStory = angular.copy($scope.story);
-            $scope.editableStoryReference = angular.copy($scope.story);
+            if ($scope.getEditableMode()) {
+                $scope.editableStory = angular.copy($scope.story);
+                $scope.editableStoryReference = angular.copy($scope.story);
+            } else {
+                $scope.editableStory = $scope.story;
+                $scope.editableStoryReference = $scope.story;
+            }
             if ($scope.formHolder.storyForm) {
                 $scope.formHolder.storyForm.$setPristine();
             }

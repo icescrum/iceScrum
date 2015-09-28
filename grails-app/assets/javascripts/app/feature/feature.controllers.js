@@ -70,16 +70,14 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
         };
         $scope.update = function(feature) {
             FeatureService.update(feature).then(function(feature) {
-                $scope.feature = feature;
-                $scope.selected = feature;
                 $scope.resetFeatureForm();
                 $scope.notifySuccess('todo.is.ui.feature.updated');
             });
         };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
         $scope.editForm = function(value) {
-            $scope.setEditableMode(value); // global
-            if (!value) {
+            if (value != $scope.getEditableMode()) {
+                $scope.setEditableMode(value); // global
                 $scope.resetFeatureForm();
             }
         };
@@ -87,8 +85,13 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedFeature('update', feature);
         };
         $scope.resetFeatureForm = function() {
-            $scope.editableFeature = angular.copy($scope.feature);
-            $scope.editableFeatureReference = angular.copy($scope.feature);
+            if ($scope.getEditableMode()) {
+                $scope.editableFeature = angular.copy($scope.feature);
+                $scope.editableFeatureReference = angular.copy($scope.feature);
+            } else {
+                $scope.editableFeature = $scope.feature;
+                $scope.editableFeatureReference = $scope.feature;
+            }
             if ($scope.formHolder.featureForm) {
                 $scope.formHolder.featureForm.$setPristine();
             }
