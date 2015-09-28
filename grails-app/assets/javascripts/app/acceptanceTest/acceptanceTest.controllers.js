@@ -24,7 +24,7 @@
 controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'AcceptanceTestStatesByName', 'hotkeys', function($scope, AcceptanceTestService, AcceptanceTestStatesByName, hotkeys) {
     // Functions
     $scope.resetAcceptanceTestForm = function() {
-        $scope.editableAcceptanceTest = $scope.acceptanceTest ? angular.copy($scope.acceptanceTest) : {
+        $scope.editableAcceptanceTest = $scope.acceptanceTest ? $scope.acceptanceTest : {
             parentStory: $scope.story,
             state: AcceptanceTestStatesByName.TOCHECK
         };
@@ -54,6 +54,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     };
     $scope.editForm = function(value) {
         if (value) {
+            $scope.editableAcceptanceTest = angular.copy($scope.editableAcceptanceTest);
             hotkeys.bindTo($scope).add({
                 combo: 'esc',
                 allowIn: ['INPUT', 'TEXTAREA', 'SELECT'],
@@ -71,8 +72,11 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             if ($scope.formHolder.acceptanceTestForm.$dirty) {
                 AcceptanceTestService.update(acceptanceTest, story)
                     .then(function() {
+                        $scope.resetAcceptanceTestForm();
                         $scope.notifySuccess('todo.is.ui.acceptanceTest.updated');
                     });
+            } else {
+                $scope.resetAcceptanceTestForm();
             }
         }
     };
