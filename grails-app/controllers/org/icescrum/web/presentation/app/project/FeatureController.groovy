@@ -94,11 +94,13 @@ class FeatureController {
     @Secured('productOwner() and !archivedProduct()')
     def delete() {
         Feature.withTransaction {
-            Feature.withFeatures(params).each { feature ->
+            def features = Feature.withFeatures(params)
+            features.each { feature ->
                 featureService.delete(feature)
             }
+            def data = features.size() > 1 ? features.collect {[id : it.id]} : (features ? [id: features.first().id] : [:])
             withFormat {
-                html { render(status: 200)  }
+                html { render(status: 200, text: data as JSON)  }
                 json { render(status: 204) }
                 xml { render(status: 204) }
             }
