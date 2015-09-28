@@ -25,9 +25,27 @@ services.factory('Feature', [ 'Resource', function($resource) {
     return $resource('feature/:id/:action');
 }]);
 
-services.service("FeatureService", ['Feature', 'Session', function(Feature, Session) {
+services.service("FeatureService", ['Feature', 'Session', 'PushService', 'IceScrumEventType', function(Feature, Session, PushService, IceScrumEventType) {
     var self = this;
     this.list = Feature.query();
+    var crudMethods = {};
+    crudMethods[IceScrumEventType.CREATE] = function(feature) {
+        var existingFeature = _.find(self.list, {id: feature.id});
+        if (existingFeature) {
+            angular.extend(existingFeature, feature);
+        } else {
+            self.list.push(new Feature(feature));
+        }
+    };
+    crudMethods[IceScrumEventType.UPDATE] = function(feature) {
+        angular.extend(_.find(self.list, { id: feature.id }), feature);
+    };
+    crudMethods[IceScrumEventType.DELETE] = function(feature) {
+        _.remove(self.list, { id: feature.id });
+    };
+    _.each(crudMethods, function(crudMethod, eventType) {
+        PushService.registerListener('feature', eventType, crudMethod);
+    });
     this.get = function(id) {
         return self.list.$promise.then(function(list) {
             var feature = _.find(list, function(rw) {
@@ -42,25 +60,16 @@ services.service("FeatureService", ['Feature', 'Session', function(Feature, Sess
     };
     this.save = function(feature) {
         feature.class = 'feature';
-        return Feature.save(feature, function(feature) {
-            self.list.push(feature);
-        }).$promise;
+        return Feature.save(feature, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.update = function(feature) {
-        return feature.$update(function(data) {
-            var index = self.list.indexOf(_.find(self.list, { id: feature.id }));
-            if (index != -1) {
-                self.list.splice(index, 1, data);
-            }
-        });
+        return feature.$update(crudMethods[IceScrumEventType.UPDATE]);
     };
     this.copyToBacklog = function(feature) {
         return Feature.update({ id: feature.id, action: 'copyToBacklog' }, {}).$promise;
     };
     this['delete'] = function(feature) {
-        return feature.$delete(function() {
-            _.remove(self.list, { id: feature.id });
-        });
+        return feature.$delete(crudMethods[IceScrumEventType.DELETE]);
     };
     this.getMultiple = function(ids) {
         return self.list.$promise.then(function() {

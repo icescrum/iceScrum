@@ -30,12 +30,28 @@ services.factory('Story', ['Resource', function($resource) {
         });
 }]);
 
-services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryStatesByName', function($q, $http, Story, Session, StoryStatesByName) {
+services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, StoryStatesByName, IceScrumEventType, PushService) {
     this.list = [];
     this.isListResolved = $q.defer();
-
     var self = this;
-
+    var crudMethods = {};
+    crudMethods[IceScrumEventType.CREATE] = function(story) {
+        var existingStory = _.find(self.list, {id: story.id});
+        if (existingStory) {
+            angular.extend(existingStory, story);
+        } else {
+            self.list.push(new Story(story));
+        }
+    };
+    crudMethods[IceScrumEventType.UPDATE] = function(story) {
+        angular.extend(_.find(self.list, { id: story.id }), story);
+    };
+    crudMethods[IceScrumEventType.DELETE] = function(story) {
+        _.remove(self.list, { id: story.id });
+    };
+    _.each(crudMethods, function(crudMethod, eventType) {
+        PushService.registerListener('story', eventType, crudMethod);
+    });
     this.addStories = function(stories) {
         angular.forEach(stories, function(story) {
             if (_.chain(self.list).where({ id: story.id }).isEmpty().value()) {
@@ -46,9 +62,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     };
     this.save = function(story) {
         story.class = 'story';
-        return Story.save(story, function(story) {
-            self.list.push(story);
-        }).$promise;
+        return Story.save(story, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.listByType = function(obj) {
         var alreadyLoadedStories = [];
@@ -99,17 +113,10 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         });
     };
     this.update = function(story) {
-        return Story.update(story, function(updatedStory) {
-            var index = self.list.indexOf(_.find(self.list, { id: story.id }));
-            if (index != -1) {
-                self.list.splice(index, 1, updatedStory);
-            }
-        }).$promise;
+        return Story.update(story, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(story) {
-        return story.$delete(function() {
-            _.remove(self.list, { id: story.id });
-        });
+        return story.$delete(crudMethods[IceScrumEventType.DELETE]);
     };
     this.like = function(story) {
         return Story.update({ id: story.id, action: 'like' }, {}, function(resultStory) {

@@ -30,7 +30,27 @@ services.factory('Task', [ 'Resource', function($resource) {
         });
 }]);
 
-services.service("TaskService", ['$q', 'Task', 'Session', function($q, Task, Session) {
+services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', 'PushService', function($q, Task, Session, IceScrumEventType, PushService) {
+    var self = this;
+    this.getCrudMethods = function(obj) {
+        var crudMethods = {};
+        crudMethods[IceScrumEventType.CREATE] = function(task) {
+            if (obj.class == 'Story' ? task.parentStory.id == obj.id : task.backlog.id == obj.id) {
+                var existingTask = _.find(obj.tasks, {id: task.id});
+                if (existingTask) {
+                    angular.extend(existingTask, task);
+                } else {
+                    obj.tasks.push(new Task(task));
+                    obj.tasks_count = obj.tasks.length;
+                }
+            }
+        };
+        crudMethods[IceScrumEventType.DELETE] = function(task) {
+            _.remove(obj.tasks, { id: task.id });
+            obj.tasks_count = obj.tasks.length;
+        };
+        return crudMethods;
+    };
     this.save = function(task, obj) {
         task.class = 'task';
         if (obj.class == 'Story') {
@@ -38,21 +58,20 @@ services.service("TaskService", ['$q', 'Task', 'Session', function($q, Task, Ses
         } else {
             task.backlog = {id: obj.id};
         }
-        return Task.save(task, function(task) {
-            obj.tasks.push(task);
-            obj.tasks_count = obj.tasks.length;
-        }).$promise;
+        return Task.save(task, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
     };
     this['delete'] = function(task, obj) {
-        return task.$delete(function() {
-            _.remove(obj.tasks, { id: task.id });
-            obj.tasks_count = obj.tasks.length;
-        });
+        return task.$delete(self.getCrudMethods(obj)[IceScrumEventType.DELETE]);
     };
     this.list = function(obj) {
         if (_.isEmpty(obj.tasks)) {
             return Task.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
                 obj.tasks = data;
+                obj.tasks_count = obj.tasks.length;
+                var crudMethods = self.getCrudMethods(obj);
+                _.each(crudMethods, function(crudMethod, eventType) {
+                    PushService.registerListener('task', eventType, crudMethod);
+                });
             }).$promise;
         } else {
             return $q.when(obj.tasks);

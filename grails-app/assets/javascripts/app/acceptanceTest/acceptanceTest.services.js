@@ -25,31 +25,51 @@ services.factory('AcceptanceTest', [ 'Resource', function($resource) {
     return $resource('acceptanceTest/:type/:storyId/:id');
 }]);
 
-services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesByName', 'Session', function($q, AcceptanceTest, StoryStatesByName, Session) {
+services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesByName', 'Session', 'IceScrumEventType', 'PushService', function($q, AcceptanceTest, StoryStatesByName, Session, IceScrumEventType, PushService) {
+    var self = this;
+    this.getCrudMethods = function(story) {
+        var crudMethods = {};
+        crudMethods[IceScrumEventType.CREATE] = function(acceptanceTest) {
+            if (acceptanceTest.parentStory.id == story.id) {
+                var existingAcceptanceTest = _.find(story.acceptanceTests, {id: acceptanceTest.id});
+                if (existingAcceptanceTest) {
+                    angular.extend(existingAcceptanceTest, acceptanceTest);
+                } else {
+                    story.acceptanceTests.push(new AcceptanceTest(acceptanceTest));
+                    story.acceptanceTests_count = story.acceptanceTests.length;
+                }
+            }
+        };
+        crudMethods[IceScrumEventType.UPDATE] = function(acceptanceTest) {
+            var foundAcceptanceTest = _.find(story.acceptanceTests, {id: acceptanceTest.id});
+            angular.extend(foundAcceptanceTest, acceptanceTest);
+        };
+        crudMethods[IceScrumEventType.DELETE] = function(acceptanceTest) {
+            _.remove(story.acceptanceTests, { id: acceptanceTest.id });
+            story.acceptanceTests_count = story.acceptanceTests.length;
+        };
+        return crudMethods;
+    };
     this.save = function(acceptanceTest, story) {
         acceptanceTest.class = 'acceptanceTest';
         acceptanceTest.parentStory = { id: story.id };
-        return AcceptanceTest.save(acceptanceTest, function(acceptanceTest) {
-            story.acceptanceTests.push(acceptanceTest);
-            story.acceptanceTests_count = story.acceptanceTests.length;
-        }).$promise;
+        return AcceptanceTest.save(acceptanceTest, self.getCrudMethods(story)[IceScrumEventType.CREATE]).$promise;
     };
     this['delete'] = function(acceptanceTest, story) {
-        return acceptanceTest.$delete(function() {
-            _.remove(story.acceptanceTests, { id: acceptanceTest.id });
-            story.acceptanceTests_count = story.acceptanceTests.length;
-        });
+        return acceptanceTest.$delete(self.getCrudMethods(story)[IceScrumEventType.DELETE]);
     };
     this.update = function(acceptanceTest, story) {
-        return acceptanceTest.$update(function(returnedAcceptanceTest) {
-            angular.extend(_.find(story.acceptanceTests, { id: returnedAcceptanceTest.id }), returnedAcceptanceTest);
-        });
+        return acceptanceTest.$update(self.getCrudMethods(story)[IceScrumEventType.UPDATE]);
     };
     this.list = function(story) {
         if (_.isEmpty(story.acceptanceTests)) {
             return AcceptanceTest.query({ storyId: story.id, type: 'story' }, function(data) {
                 story.acceptanceTests = data;
                 story.acceptanceTests_count = story.acceptanceTests.length;
+                var crudMethods = self.getCrudMethods(story);
+                _.each(crudMethods, function(crudMethod, eventType) {
+                    PushService.registerListener('acceptanceTest', eventType, crudMethod);
+                });
             }).$promise;
         } else {
             return $q.when(story.acceptanceTests);
