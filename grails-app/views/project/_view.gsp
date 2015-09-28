@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="row" ng-controller="dashboardCtrl">
+    <div class="row" ng-controller="dashboardCtrl">
     <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -119,18 +119,18 @@
                 <textarea is-markitup
                           class="form-control"
                           name="vision"
-                          ng-model="editableRelease.vision"
-                          is-model-html="editableRelease.vision_html"
+                          ng-model="release.vision"
+                          is-model-html="release.vision_html"
                           ng-show="showVisionTextarea"
-                          ng-blur="showVisionTextarea = false; updateRelease(editableRelease)"
+                          ng-blur="showVisionTextarea = false; updateRelease(release)"
                           placeholder="${message(code: 'todo.is.ui.release.novision')}"></textarea>
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showVisionTextarea"
-                     ng-click="showVisionTextarea = authorizedRelease('update', editableRelease)"
-                     ng-class="{'placeholder': !editableRelease.vision_html}"
+                     ng-click="showVisionTextarea = authorizedRelease('update', release)"
+                     ng-class="{'placeholder': !release.vision_html}"
                      tabindex="0"
-                     ng-bind-html="(editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
+                     ng-bind-html="(release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
             </div>
         </div>
         <div class="panel panel-primary">
@@ -143,18 +143,18 @@
                 <textarea is-markitup
                           class="form-control"
                           name="doneDefinition"
-                          ng-model="editableSprint.doneDefinition"
-                          is-model-html="editableSprint.doneDefinition_html"
+                          ng-model="sprint.doneDefinition"
+                          is-model-html="sprint.doneDefinition_html"
                           ng-show="showDoneDefinitionTextarea"
-                          ng-blur="showDoneDefinitionTextarea = false; updateSprint(editableSprint)"
+                          ng-blur="showDoneDefinitionTextarea = false; updateSprint(sprint)"
                           placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showDoneDefinitionTextarea"
-                     ng-click="showDoneDefinitionTextarea = authorizedSprint('updateDoneDefinition', editableSprint)"
-                     ng-class="{'placeholder': !editableSprint.doneDefinition_html}"
+                     ng-click="showDoneDefinitionTextarea = authorizedSprint('updateDoneDefinition', sprint)"
+                     ng-class="{'placeholder': !sprint.doneDefinition_html}"
                      tabindex="0"
-                     ng-bind-html="(editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
+                     ng-bind-html="(sprint.doneDefinition_html ? sprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
             </div>
         </div>
         <div class="panel panel-primary">
@@ -167,18 +167,18 @@
                 <textarea is-markitup
                           class="form-control"
                           name="retrospective"
-                          ng-model="editableSprint.retrospective"
-                          is-model-html="editableSprint.retrospective_html"
+                          ng-model="sprint.retrospective"
+                          is-model-html="sprint.retrospective_html"
                           ng-show="showRetrospectiveTextarea"
-                          ng-blur="showRetrospectiveTextarea = false; updateSprint(editableSprint)"
+                          ng-blur="showRetrospectiveTextarea = false; updateSprint(sprint)"
                           placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showRetrospectiveTextarea"
-                     ng-click="showRetrospectiveTextarea = authorizedSprint('updateRetrospective', editableSprint)"
-                     ng-class="{'placeholder': !editableSprint.retrospective_html}"
+                     ng-click="showRetrospectiveTextarea = authorizedSprint('updateRetrospective', sprint)"
+                     ng-class="{'placeholder': !sprint.retrospective_html}"
                      tabindex="0"
-                     ng-bind-html="(editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
+                     ng-bind-html="(sprint.retrospective_html ? sprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
             </div>
         </div>
     </div>
