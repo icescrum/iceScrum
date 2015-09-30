@@ -61,10 +61,7 @@ class UtilsTagLib {
                           cancelFormConfirmMessage:"${message(code: 'is.confirm.cancel.form').encodeAsJavaScript()}",
                           more:"${message(code: 'is.menu.more').encodeAsJavaScript()}",
                           uploading:"${message(code:'is.upload.inprogress.wait').encodeAsJavaScript()}",
-                          locale:'${locale}',
-                          push:{
-                            url:"${createLink(controller: 'scrumOS', absolute: true)}stream/app${p ? '?'+pageScope.space.name+'=' + current.id : '' }"
-                          }
+                          locale:'${locale}'
                 };"""
         out << g.javascript(null, jsCode)
     }

@@ -12,11 +12,12 @@ servlets = [
                         "org.atmosphere.cpr.broadcasterClass": "org.icescrum.atmosphere.IceScrumBroadcaster",
                         "org.atmosphere.cpr.broadcasterCacheClass": "org.atmosphere.cache.UUIDBroadcasterCache",
                         "org.atmosphere.cpr.AtmosphereInterceptor": """
-                org.atmosphere.client.TrackMessageSizeInterceptor,
-                org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor,
-                org.atmosphere.interceptor.HeartbeatInterceptor,
-                org.atmosphere.interceptor.OnDisconnectInterceptor
-            """
+                                org.atmosphere.client.TrackMessageSizeInterceptor,
+                                org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor,
+                                org.atmosphere.interceptor.HeartbeatInterceptor,
+                                org.atmosphere.interceptor.OnDisconnectInterceptor
+                        """,
+                        "org.atmosphere.cpr.broadcasterLifeCyclePolicy": "EMPTY_DESTROY"
                 ]
         ]
 ]
