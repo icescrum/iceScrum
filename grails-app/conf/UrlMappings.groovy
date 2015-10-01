@@ -147,10 +147,6 @@ class UrlMappings {
                 property(inList: ['username', 'email'])
             }
         }
-        "/user/panel" {
-            controller = 'user'
-            action = [POST: "panel"]
-        }
 
         "/feed/$product" {
             controller = 'project'
@@ -333,6 +329,11 @@ class UrlMappings {
             constraints {
                 id(matches: /\d*/)
             }
+        }
+
+        "/home/panels" {
+            controller = 'home'
+            action = [POST: "position", GET:"panels"]
         }
 
         "403"(controller: "errors", action: "error403")

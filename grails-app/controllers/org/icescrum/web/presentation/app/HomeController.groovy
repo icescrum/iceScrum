@@ -32,8 +32,9 @@ import org.icescrum.core.domain.User
 class HomeController {
 
     def userService
+    def springSecurityService
 
-    def index(){
+    def panels(){
         User user= (User)springSecurityService.currentUser
         def userData  = User.findByPreferences(user.preferences)
         def userPreferences =userData.preferences
@@ -57,8 +58,6 @@ class HomeController {
             returnError(text:message(code: 'is.user.preferences.error.panel'), exception:e)
         }
     }
-
-    def springSecurityService
 
     @Secured('isAuthenticated()')
     def feed(long id) {

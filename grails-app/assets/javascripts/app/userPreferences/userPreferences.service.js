@@ -19,10 +19,10 @@
  *
  */
 services.factory('UserPreferences', [ 'Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/user/:id/:action',
+    return $resource(icescrum.grailsServer + '/home/:id/:action',
         {},
         {
-            getPanels: {method: 'GET', isArray: true, params: {action: 'getPanels'}}
+            getPanels: {method: 'GET', isArray: true, params: {action: 'index'}}
         });
 }]);
 services.service("UserPreferencesService", ['UserPreferences', function(UserPreferences) {
