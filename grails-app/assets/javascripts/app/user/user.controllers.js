@@ -25,6 +25,7 @@ controllers.controller('userCtrl', ['$scope', 'UserService', 'User', 'Session', 
     // Functions
     $scope.update = function(user) {
         UserService.update(user).then(function(userUpdated) {
+
             if($scope.$close) {
                 $scope.$close(); // Close auth modal if present
             }

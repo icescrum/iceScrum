@@ -35,7 +35,7 @@
                hotkey-description="${message(code: 'is.about')}"
                ng-click="showAbout()"
                href>
-                <span id="is-logo" ng-class="getPushState()" title="${message(code: 'is.about')} (I)"><g:message code="is.shortname"/></span>
+                <span id="is-logo" class="disconnected" title="${message(code: 'is.about')} (I)"><g:message code="is.shortname"/></span>
             </a>
             <is:errors/>
         </div>
@@ -45,6 +45,7 @@
                 html-sortable-callback="menuSortableUpdate(startModel, destModel, start, end)"
                 ng-init='menus.visible = ${menus as JSON};'
                 ng-model="menus.visible">
+
                 <li class="dropdown contextual-menu" dropdown>
                     <a class="dropdown-toggle" dropdown-toggle>
                         ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>

@@ -31,7 +31,7 @@ services.factory('User', [ 'Resource', function($resource) {
         });
 }]);
 
-services.service("UserService", ['User', '$http', '$rootScope', '$injector', function(User, $http, $rootScope, $injector) {
+services.service("UserService", ['User','$http', '$rootScope', '$injector', function(User, $http, $rootScope, $injector) {
     this.getCurrent = function() {
         var Session = $injector.get('Session');
         return User.current( (Session.project ? { product: Session.project.pkey } : null) ).$promise;
@@ -44,7 +44,8 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', fun
     };
     this.update = function(user) {
         user.class = 'user';
-        return user.$update();
+        return user.$update(user, function(updatedUser){
+        });
     };
     this.save = function(user) {
         user.class = 'user';
@@ -57,5 +58,13 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', fun
         return $http.get($rootScope.serverUrl + '/user/invitationUserMock?token='+token).then(function(response) {
             return response.data;
         });
+    };
+    this.update = function(story) {
+        return Story.update(story, function(updatedStory) {
+            var index = self.list.indexOf(_.find(self.list, { id: story.id }));
+            if (index != -1) {
+                self.list.splice(index, 1, updatedStory);
+            }
+        }).$promise;
     };
 }]);

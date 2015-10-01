@@ -75,7 +75,7 @@
                   }
                 });
 
-                scallback(scope, {
+                scallback(scope,{
                   startModel: $sourceModel(data.startparent.scope()),
                   destModel: $destModel(data.endparent.scope()),
                   start: $start,

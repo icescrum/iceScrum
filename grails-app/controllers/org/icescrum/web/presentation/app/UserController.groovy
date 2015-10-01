@@ -347,6 +347,32 @@ class UserController {
         }
     }
 
+
+   def getPanels(){
+       User user= springSecurityService.currentUser
+         def userData  = User.findByPreferences(user.preferences)
+         def userPreferences =userData.preferences
+         def panel=userPreferences.panel
+         panel = panel.collect{
+            return [id : it.key  , position : it.value]
+        }.sort{ it.position }
+       render(status: 200, contentType: 'application/json', text: panel  as JSON)
+
+   }
+    @Secured('isAuthenticated()')
+    def panel(String id, String position) {
+        if (!id && !position) {
+            returnError(text:message(code: 'is.user.preferences.error.panel'))
+            return
+        }
+        try {
+            userService.panel((User)springSecurityService.currentUser, id, position)
+            render(status: 200)
+        } catch (RuntimeException e) {
+            returnError(text:message(code: 'is.user.preferences.error.panel'), exception:e)
+        }
+    }
+
     @Secured('isAuthenticated()')
     def profileURL() {
         redirect(url: is.createScrumLink(controller: 'user', action: 'profile', id: params.id))

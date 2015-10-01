@@ -147,6 +147,10 @@ class UrlMappings {
                 property(inList: ['username', 'email'])
             }
         }
+        "/user/panel" {
+            controller = 'user'
+            action = [POST: "panel"]
+        }
 
         "/feed/$product" {
             controller = 'project'

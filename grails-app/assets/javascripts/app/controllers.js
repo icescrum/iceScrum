@@ -106,7 +106,9 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 data:info});
         };
         $scope.menuSortableUpdate = function (startModel, destModel, start, end) {
+
             updateMenu({id:destModel[end].id, position:end + 1, hidden:false});
+
         };
 
         $scope.menuHiddenSortableUpdate = function (startModel, destModel, start, end) {
@@ -522,9 +524,27 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         });
     };
 
+
     // Init
     $scope.options = {};
     $scope.data = [];
     $scope.labels = [];
     $scope.openProjectChart('productBurnupChart');
+}]);
+
+controllers.controller('orderCtrl',['$scope','$http','UserPreferencesService',function ($scope ,$http,UserPreferencesService) {
+    UserPreferencesService.getPanels().then(function(panels) {
+        $scope.panels = panels;
+    });
+    var updatePanel = function(info){
+        $http({ url: $scope.serverUrl + '/user/panel',
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+            transformRequest: function (data) { return formObjectData(data, '');},
+            data:info});
+    };
+    $scope.sortablePanelUpdate = function (startModel, destModel, start, end) {
+        updatePanel  ({id:destModel[end].id, position:end});
+
+    };
 }]);
