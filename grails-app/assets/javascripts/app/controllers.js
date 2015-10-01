@@ -532,7 +532,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
     $scope.openProjectChart('productBurnupChart');
 }]);
 
-controllers.controller('orderCtrl',['$scope','$http','UserPreferencesService',function ($scope ,$http,UserPreferencesService) {
+controllers.controller('positionPanelCtrl',['$scope','$http','UserPreferencesService',function ($scope ,$http,UserPreferencesService) {
     UserPreferencesService.getPanels().then(function(panels) {
         $scope.panels = panels;
     });

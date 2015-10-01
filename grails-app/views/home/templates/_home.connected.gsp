@@ -19,7 +19,7 @@
 -
 --}%
 <script type="text/ng-template" id="home.connected.html">
-<ul id = panel style="list-style-type:none;" ng-controller="orderCtrl"
+<ul id =panel style="list-style-type:none;" ng-controller="positionPanelCtrl"
      html-sortable html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
      ng-model='panels'
      ng-init='panels'
