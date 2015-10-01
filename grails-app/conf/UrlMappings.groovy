@@ -318,22 +318,45 @@ class UrlMappings {
             }
         }
 
-        "/home/rss" {
+        "/home/feed" {
             controller = 'home'
-            action = [POST:"saveFeed", GET:["feedByUser", "allFeeds"]]
+            action = [POST:"saveFeed"]
         }
 
-        "/home/rss/$id" {
+        "/home/feed/merged" {
             controller = 'home'
-            action = [DELETE: "deleteFeed", GET:"feed"]
+            action = [GET:'mergedContentFeed']
+        }
+
+        "/home/feed/list" {
+            controller = 'home'
+            action = [GET:'listFeeds']
+        }
+
+        "/home/feed/$id" {
+            controller = 'home'
+            action = [DELETE:'deleteFeed']
             constraints {
                 id(matches: /\d*/)
             }
         }
 
-        "/home/panels" {
+        "/home/feed/$id/content" {
             controller = 'home'
-            action = [POST: "position", GET:"panels"]
+            action = [GET:'contentFeed']
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
+        "/home/panel" {
+            controller = 'home'
+            action = [POST: "panelPosition"]
+        }
+
+        "/home/panel/list" {
+            controller = 'home'
+            action = [GET:"panels"]
         }
 
         "403"(controller: "errors", action: "error403")

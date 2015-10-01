@@ -19,8 +19,6 @@
 -
 --}%
 <g:render template="/home/templates/home" />
-<g:render template="/home/templates/home.connected" />
-<g:render template="/home/templates/home.not.connected" />
 <g:render template="/home/templates/login.panel" />
 <g:render template="/home/templates/projectsList.panel" />
 <g:render template="/home/templates/notes.panel" />

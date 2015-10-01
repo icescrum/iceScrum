@@ -20,8 +20,14 @@
 --}%
 
 <script type="text/ng-template" id="home.html">
+
     <div class="window-content">
-        <div ng-if="authenticated()" ng-include="'home.connected.html'"></div>
-        <div ng-if="!authenticated()" ng-include="'home.not.connected.html'"></div>
+        <ul style="list-style-type:none;" html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
+            ng-model='panels'
+            class="row">
+            <li id="{{ panel.id }}" ng-repeat="panel in panels" class="col-md-5" ng-class="{'sortable':panel.position }">
+                <div ng-include="panel.id+'.panel.html'"></div>
+            </li>
+        </ul>
     </div>
 </script>

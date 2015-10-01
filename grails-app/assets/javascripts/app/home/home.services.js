@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Kagilum .
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -15,18 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Authors:Marwah Soltani (msoltani@kagilum.com)
+ * Authors:
+ *
  *
  */
-services.factory('UserPreferences', [ 'Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/home/:id/:action',
-        {},
-        {
-            getPanels: {method: 'GET', isArray: true, params: {action: 'index'}}
-        });
-}]);
-services.service("UserPreferencesService", ['UserPreferences', function(UserPreferences) {
-    this.getPanels= function() {
-        return UserPreferences.getPanels().$promise;
+services.service("HomeService", ['User','$http', '$rootScope', function(User, $http, $rootScope) {
+    this.getPanels = function () {
+        return $http.get($rootScope.serverUrl + '/home/panel/list');
     };
+
+    this.updatePositionPanel = function(_data){
+        $http({ url: $rootScope.serverUrl + '/home/panel',
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+            transformRequest: function (data) { return formObjectData(data, '');},
+            data:_data});
+    }
 }]);

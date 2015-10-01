@@ -30,12 +30,12 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
     };
     $scope.selectFeed = function(selectedFeed){
         if(selectedFeed == "all") {
-            FeedService.getAllFeeds().then(function (allFeedsItems) {
+            FeedService.merged().then(function (allFeedsItems) {
                 $scope.feed = {};
                 $scope.feedItems = $filter('orderBy')(allFeedsItems, '-item.pubDate');
             });
         } else {
-            FeedService.getFeed(selectedFeed).then(function (feed) {
+            FeedService.content(selectedFeed).then(function (feed) {
                 $scope.feed = feed.channel;
                 $scope.feedItems = feed.channel.items;
             });
@@ -59,9 +59,9 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
     // URL
     $scope.feedList = [];
     $scope.feed = {};
-    FeedService.feedByUser()
-        .then(function (feedList) {
-            $scope.feedList = feedList;
+    FeedService.list()
+        .then(function (feeds) {
+            $scope.feeds = feeds;
         });
 }]);
 

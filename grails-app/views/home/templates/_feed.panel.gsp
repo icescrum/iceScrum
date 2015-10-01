@@ -19,7 +19,7 @@
                                 ng-change="selectFeed(selectedFeed)"
                                 ui-select2>
                             <option value="all">${message(code: 'todo.is.iu.panel.feed.title.allFeed')}</option>
-                            <option ng-repeat="feed in feedList" value="{{feed.id}}">{{feed.feedUrl}}</option>
+                            <option ng-repeat="feed in feeds" value="{{feed.id}}">{{feed.feedUrl}}</option>
                         </select>
                     </td>
                     <td><button ng-model="selectedFeed" ng-click="delete(selectedFeed)"

@@ -29,24 +29,21 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Feed
 import org.icescrum.core.domain.User
 
+@Secured('isAuthenticated()')
 class HomeController {
 
     def userService
     def springSecurityService
 
+    @Secured(['permitAll()'])
     def panels(){
         User user= (User)springSecurityService.currentUser
-        def userData  = User.findByPreferences(user.preferences)
-        def userPreferences =userData.preferences
-        def panel=userPreferences.panel
-        panel = panel.collect{
-            return [id : it.key  , position : it.value]
-        }.sort{ it.position }
-        render(status: 200, contentType: 'application/json', text: panel  as JSON)
+        def panels = user ? user.preferences.panels.collect{ return [id : it.key  , position : it.value] }.sort{ it.position } : [[id:'login'], [id:'projectsList']]
+        render(status: 200, contentType: 'application/json', text: panels  as JSON)
 
     }
-    @Secured('isAuthenticated()')
-    def position(String id, String position) {
+
+    def panelPosition(String id, String position) {
         if (!id && !position) {
             returnError(text:message(code: 'is.user.preferences.error.panel'))
             return
@@ -59,20 +56,6 @@ class HomeController {
         }
     }
 
-    @Secured('isAuthenticated()')
-    def feed(long id) {
-        Feed feed = Feed.findByUserAndId((User)springSecurityService.currentUser, id)
-        def connection = new URL(feed.feedUrl).openConnection()
-        def xmlFeed = new XmlSlurper().parse(connection.inputStream)
-        def channel = xmlFeed.channel
-        def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate: channel.pubDate.text()]]
-        channel.item.each { xmlItem ->
-            jsonFeed.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: xmlItem.pubDate.text()]])
-        }
-        render(status: 200, contentType: "application/json", text: jsonFeed as JSON)
-    }
-
-    @Secured('isAuthenticated()')
     def saveFeed() {
         Feed feed = new Feed()
         try {
@@ -95,7 +78,6 @@ class HomeController {
         }
     }
 
-    @Secured('isAuthenticated()')
     def deleteFeed(long id) {
         try {
             def feedToDelete = Feed.findById(id)
@@ -110,15 +92,25 @@ class HomeController {
         }
     }
 
-    @Secured('isAuthenticated()')
-    def feedByUser() {
-        def user = springSecurityService.currentUser
-        def feedUser = Feed.findAllByUser(user);
-        render(status: 200, contentType: 'application/json', text: feedUser as JSON)
+    def listFeeds() {
+        def user = (User)springSecurityService.currentUser
+        def feeds = Feed.findAllByUser(user);
+        render(status: 200, contentType: 'application/json', text: feeds as JSON)
     }
 
-    @Secured('isAuthenticated()')
-    def allFeeds() {
+    def contentFeed(long id) {
+        Feed feed = Feed.findByUserAndId((User)springSecurityService.currentUser, id)
+        def connection = new URL(feed.feedUrl).openConnection()
+        def xmlFeed = new XmlSlurper().parse(connection.inputStream)
+        def channel = xmlFeed.channel
+        def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate: channel.pubDate.text()]]
+        channel.item.each { xmlItem ->
+            jsonFeed.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: xmlItem.pubDate.text()]])
+        }
+        render(status: 200, contentType: "application/json", text: jsonFeed as JSON)
+    }
+
+    def mergedContentFeed() {
         def allJsonFeed = []
         def allUserFeed = Feed.findAllByUser((User)springSecurityService.currentUser)
         allUserFeed.collect {

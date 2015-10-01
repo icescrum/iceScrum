@@ -17,15 +17,15 @@
  *
  * Authors:Marwah Soltani (msoltani@kagilum.com)
  *
- *
  */
 
 services.factory('Feed', ['Resource',  function($resource) {
     return $resource(icescrum.grailsServer + '/home/feed/:id/:action',
         {},
         {
-            feedByUser: {method: 'GET',isArray: true, params: {action: 'feedByUser'}},
-            getAllFeeds: {method: 'GET',isArray: true, params: {action: 'getAllFeeds'}}
+            content: {method: 'GET', params: {action: 'content'}},
+            list:    {method: 'GET',isArray: true, params: {action: 'list'}},
+            merged:  {method: 'GET', isArray:true, params: {action: 'merged'}}
         });
 }]);
 
@@ -34,14 +34,14 @@ services.service("FeedService", ['Feed',function (Feed) {
         feed.class = 'feed';
         return Feed.save(feed).$promise;
     };
-    this.feedByUser = function(){
-        return Feed.feedByUser().$promise;
+    this.list = function(){
+        return Feed.list().$promise;
     };
-    this.getFeed = function(feedUserSelect){
-        return Feed.get({id: feedUserSelect}).$promise;
+    this.content = function(feedUserSelect){
+        return Feed.content({id: feedUserSelect}).$promise;
     };
-    this.getAllFeeds = function() {
-        return Feed.getAllFeeds().$promise;
+    this.merged = function() {
+        return Feed.merged().$promise;
     };
     this.delete = function(feedToDelete) {
         return Feed.delete({id: feedToDelete}).$promise;
