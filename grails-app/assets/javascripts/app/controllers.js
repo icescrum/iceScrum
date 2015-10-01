@@ -106,9 +106,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 data:info});
         };
         $scope.menuSortableUpdate = function (startModel, destModel, start, end) {
-
             updateMenu({id:destModel[end].id, position:end + 1, hidden:false});
-
         };
 
         $scope.menuHiddenSortableUpdate = function (startModel, destModel, start, end) {
@@ -251,7 +249,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     $scope.goToTab = function(story, tabId) {
         $state.go($scope.viewName + '.details.tab',  { id: story.id, tabId: tabId });
     };
-    $scope.defaultStoryState = StoryStatesByName.SUGGESTED;
+
     $scope.selectableOptions = {
         filter:">.postit-container",
         cancel: "a,.ui-selectable-cancel",
@@ -288,11 +286,16 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     };
     $scope.filteredAndSortedStories = [];
     $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
+
     $scope.$watch('stories', $scope.refreshStories, true);
-}]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'StoryService', function ($scope, $controller, $state, stories, StoryService) {
+
+}]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'backlogs', 'StoryService', function ($scope, $controller, $state, stories, backlogs, StoryService) {
     $controller('storyViewCtrl', { $scope: $scope }); // inherit from storyViewCtrl
     $scope.viewName = 'backlog';
+
     $scope.stories = stories;
+    $scope.backlogs = backlogs;
+
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -420,7 +423,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         }
     };
-    $scope.openProjectChart = function(chartName) {
+    $scope.openProjectChart = function(chartName, project) {
         var defaultProjectOptions = {
             chart: {
                 type: 'lineChart',
@@ -435,8 +438,8 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.data = [];
         $scope.labels = [];
-        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.chartOptions[chartName]);
-        ProjectService.openChart(Session.getProject(), chartName).then(function(chart) {
+        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.options, $scope.chartOptions[chartName]);
+        ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
             if (chart.labels) {
@@ -460,7 +463,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.data = [];
-        $scope.options = _.merge({}, defaultOptions, defaultSprintOptions);
+        $scope.options = _.merge({}, defaultOptions, defaultSprintOptions, $scope.options);
         SprintService.openChart($scope.sprint, $scope.currentProject, chartName).then(function(chart) {
             $scope.options = _.merge($scope.options, chart.options);
             $scope.data = chart.data;
@@ -490,7 +493,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.data = [];
-        $scope.options = _.merge({}, defaultOptions, defaultUserMoodOptions);
+        $scope.options = _.merge({}, defaultOptions, defaultUserMoodOptions, $scope.options);
         MoodService.chartUser($scope.currentProject).then(function (chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
@@ -516,7 +519,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.data = [];
         $scope.labels = [];
-        $scope.options = _.merge({}, defaultOptions, defaultMoodSprintOptions);
+        $scope.options = _.merge({}, defaultOptions, defaultMoodSprintOptions, $scope.options);
         MoodService.chartUserRelease($scope.currentProject).then(function (chart) {
             $scope.data = chart.data;
             $scope.labels = chart.labels;
@@ -529,7 +532,11 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
     $scope.options = {};
     $scope.data = [];
     $scope.labels = [];
-    $scope.openProjectChart('productBurnupChart');
+
+    $scope.init = function(chart, options, project){
+        $scope.options = options ? options : {};
+        $scope.openProjectChart(chart ? chart : 'burnup', project);
+    }
 }]);
 
 controllers.controller('positionPanelCtrl',['$scope','$http','UserPreferencesService',function ($scope ,$http,UserPreferencesService) {

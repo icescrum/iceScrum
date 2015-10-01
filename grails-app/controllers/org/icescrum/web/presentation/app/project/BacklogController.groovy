@@ -25,6 +25,8 @@
 package org.icescrum.web.presentation.app.project
 
 import grails.converters.JSON
+import org.icescrum.core.domain.Backlog
+import org.icescrum.core.domain.User
 import org.icescrum.core.utils.BundleUtils
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
@@ -33,48 +35,16 @@ import static grails.async.Promises.*
 
 @Secured(['stakeHolder() or inProduct()'])
 class BacklogController {
-    def filters = [
-            'All':"{story:{}}",
-            'backlog':"{story:{state:[2,3]}}",
-            'sandbox':"{story:{state:1}}",
-            'icebox':"{story:{state:7}}"
-    ]
 
-    def index(long product) {
-        render(template: "view", model: [stories: Story.search(product, JSON.parse(filters.backlog))])
-    }
+    def springSecurityService
 
-    def bottombar(long product){
-        def backlogs = []
-        filters?.each{
-            def colors = Story.search(product, JSON.parse(it.value), true)
-            backlogs << [count:colors.size(), colors:colors, name:it.key]
-        }
-        render(template:"bottombar", model:[backlogs:backlogs])
-    }
-
-    def print(long product, String format) {
-        def _product = Product.get(product)
-        def stories = Story.findAllByBacklogAndStateBetween(_product, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
-        if (!stories) {
-            returnError(text:message(code: 'is.report.error.no.data'))
-        } else {
-            return task {
-                def data = []
-                stories.each {
-                    data << [
-                            uid        : it.uid,
-                            name       : it.name,
-                            description: it.description,
-                            notes      : it.notes?.replaceAll(/<.*?>/, ''),
-                            type       : message(code: BundleUtils.storyTypes[it.type]),
-                            suggestedDate: it.suggestedDate,
-                            creator    : it.creator.firstName + ' ' + it.creator.lastName,
-                            feature    : it.feature?.name,
-                    ]
-                }
-                renderReport('backlog', format ? format.toUpperCase() : 'PDF', [[product: _product.name, stories: data ?: null]], _product.name)
-            }
+    @Secured(['stakeHolder() or inProduct()'])
+    def list(long product, boolean shared) {
+        def backlogs = Backlog.findAllByProductAndSharedOrOwner(product, shared, springSecurityService.currentUser?.id)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text:backlogs as JSON) }
+            json { renderRESTJSON(text: backlogs) }
+            xml  { renderRESTXML(text: backlogs) }
         }
     }
 }

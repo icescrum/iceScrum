@@ -218,8 +218,13 @@ class UrlMappings {
         "/project/$product/$action" {
             controller = 'project'
             constraints {
-                action(inList: ['productCumulativeFlowChart', 'productVelocityCapacityChart', 'productVelocityChart', 'productParkingLotChart', 'productBurndownChart', 'productBurnupChart'])
+                action(inList: ['cumulativeFlow', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
             }
+        }
+
+        "/project/$product/backlogs" {
+            controller = 'project'
+            action = 'backlogs'
         }
 
         "/project/$product" {
@@ -317,22 +322,14 @@ class UrlMappings {
             }
         }
 
-        "/rss/" {
-            controller = 'rss'
-            action = [POST:"save"]
+        "/home/rss" {
+            controller = 'home'
+            action = [POST:"saveFeed", GET:["feedByUser", "allFeeds"]]
         }
 
-        "/rss/$id/getFeed" {
-            controller = 'rss'
-            action = 'getFeed'
-            constraints {
-                id(matches: /\d*/)
-            }
-        }
-
-        "/rss/$id" {
-            controller = 'rss'
-            action = [DELETE: "delete"]
+        "/home/rss/$id" {
+            controller = 'home'
+            action = [DELETE: "deleteFeed", GET:"feed"]
             constraints {
                 id(matches: /\d*/)
             }

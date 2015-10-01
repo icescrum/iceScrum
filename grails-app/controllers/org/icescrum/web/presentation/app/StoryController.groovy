@@ -36,6 +36,10 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
+import org.icescrum.core.utils.BundleUtils
+import org.icescrum.web.presentation.app.project.BacklogController
+
+import static grails.async.Promises.task
 
 class StoryController {
 
@@ -201,9 +205,8 @@ class StoryController {
     }
 
     @Secured('stakeHolder() or inProduct()')
-    def list() {
-        def currentProduct = Product.load(params.long('product'))
-        def stories = Story.searchAllByTermOrTag(currentProduct.id, params.term).sort { Story story -> story.id }
+    def list(long product, def filter) {
+        def stories = Story.search(product, JSON.parse(BacklogController.filters.all)).sort { Story story -> story.id }
         withFormat {
             html { render(status:200, text:stories as JSON, contentType: 'application/json') }
             json { renderRESTJSON(text:stories) }
@@ -245,13 +248,6 @@ class StoryController {
                 uri:"/"
         }
         redirect(uri:uri)
-    }
-
-    @Secured('isAuthenticated()')
-    def openDialogDelete() {
-        def state = Story.getInProduct(params.long('product'), params.list('id').first().toLong()).list()?.state
-        def dialog = g.render(template: 'dialogs/delete', model:[back: params.back ? params.back : '#backlog'])
-        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
@@ -523,6 +519,38 @@ class StoryController {
             stories << it.value.sort { a, b -> b.lastUpdated <=> a.lastUpdated }.take(3).collect{ [id: it.id, uid: it.uid, name: it.name, description: it.description, state: it.state]}
         }
         render(text: [fieldValues: fieldValues, stories: stories, count: count] as JSON, contentType: 'application/json', status: 200)
+    }
+
+    def print(long product, String format) {
+        def _product = Product.get(product)
+        def stories = Story.findAllByBacklogAndStateBetween(_product, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
+        if (!stories) {
+            returnError(text:message(code: 'is.report.error.no.data'))
+        } else {
+            return task {
+                def data = []
+                stories.each {
+                    data << [
+                            uid        : it.uid,
+                            name       : it.name,
+                            description: it.description,
+                            notes      : it.notes?.replaceAll(/<.*?>/, ''),
+                            type       : message(code: BundleUtils.storyTypes[it.type]),
+                            suggestedDate: it.suggestedDate,
+                            creator    : it.creator.firstName + ' ' + it.creator.lastName,
+                            feature    : it.feature?.name,
+                    ]
+                }
+                renderReport('backlog', format ? format.toUpperCase() : 'PDF', [[product: _product.name, stories: data ?: null]], _product.name)
+            }
+        }
+    }
+
+    @Secured('isAuthenticated()')
+    def openDialogDelete() {
+        def state = Story.getInProduct(params.long('product'), params.list('id').first().toLong()).list()?.state
+        def dialog = g.render(template: 'dialogs/delete', model:[back: params.back ? params.back : '#backlog'])
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 }
 

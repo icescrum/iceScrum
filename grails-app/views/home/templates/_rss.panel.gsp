@@ -1,28 +1,28 @@
-<script type="text/ng-template" id="rss.panel.html">
+<script type="text/ng-template" id="feed.panel.html">
     <div ng-controller="FeedCtrl" class="panel panel-primary">
-        <div class="panel-heading">${message(code: 'is.panel.rss')}
+        <div class="panel-heading">${message(code: 'is.panel.feed')}
             <button class="pull-right btn btn-default" ng-click="click()"><i class="fa fa-cog"></i></button>
         </div>
         <span ng-show="view">
             <table>
                 <tr>
-                    <td>${message(code: 'todo.is.iu.panel.rss.input')}</td><td><input type="text" ng-model="rss.rssUrl"/>
+                    <td>${message(code: 'todo.is.iu.panel.feed.input')}</td><td><input type="text" ng-model="feed.feedUrl"/>
                 </td>
-                    <td><button class="btn btn-primary" ng-click="save(rss)">Save</button></td>
+                    <td><button class="btn btn-primary" ng-click="save(feed)">Save</button></td>
                 </tr>
-                <tr><td>${message(code: 'todo.is.iu.panel.rss.list')}</td>
+                <tr><td>${message(code: 'todo.is.iu.panel.feed.list')}</td>
                     <td>
                         <select
                                 class="form-control"
-                                placeholder="select Rss"
-                                ng-model="selectedRss"
-                                ng-change="selectRss(selectedRss)"
+                                placeholder="select Feed"
+                                ng-model="selectedFeed"
+                                ng-change="selectFeed(selectedFeed)"
                                 ui-select2>
-                            <option value="all">${message(code: 'todo.is.iu.panel.rss.title.allRss')}</option>
-                            <option ng-repeat="rss in rssList" value="{{rss.id}}">{{rss.rssUrl}}</option>
+                            <option value="all">${message(code: 'todo.is.iu.panel.feed.title.allFeed')}</option>
+                            <option ng-repeat="feed in feedList" value="{{feed.id}}">{{feed.feedUrl}}</option>
                         </select>
                     </td>
-                    <td><button ng-model="selectedRss" ng-click="delete(selectedRss)"
+                    <td><button ng-model="selectedFeed" ng-click="delete(selectedFeed)"
                                 class="btn btn-primary">Delete</button></td>
                 </tr>
             </table>

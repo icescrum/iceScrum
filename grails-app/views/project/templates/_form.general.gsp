@@ -33,6 +33,7 @@
                        type="text"
                        class="form-control"
                        ng-model="project.name"
+                       ng-blur="initPkey()"
                        ng-required="isCurrentStep(1)"
                        ng-remote-validate="/project/available/name">
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">

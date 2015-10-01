@@ -22,7 +22,7 @@
 <g:render template="/home/templates/home.connected" />
 <g:render template="/home/templates/home.not.connected" />
 <g:render template="/home/templates/notes.panel" />
-<g:render template="/home/templates/rss.panel" />
+<g:render template="/home/templates/feed.panel" />
 <g:render template="/home/templates/mood.panel" />
 <g:render template="/home/templates/projects.panel" />
 <g:render template="/home/templates/tasks.panel" />

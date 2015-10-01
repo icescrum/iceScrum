@@ -295,6 +295,31 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/backlog" {
+            controller = 'backlog'
+            action = [GET: "list", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+
+        "/p/$product/backlog/$id" {
+            controller = 'backlog'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+
+        "/p/$product/backlog/$id/$action" {
+            controller = 'backlog'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+
         "/p/$product/release" {
             controller = 'release'
             action = [GET: "list"]
@@ -324,7 +349,7 @@ class ProductUrlMappings {
         "/p/$product/sprint/$action" {
             controller = 'sprint'
             constraints {
-                action(inList: ['sprintBurnupStoriesChart', 'sprintBurnupPointsChart', 'sprintBurnupTasksChart', 'sprintBurndownRemainingChart'])
+                action(inList: ['burnupStories', 'burnupPoints', 'burnupTasks', 'burndownRemaining'])
             }
         }
 

@@ -308,7 +308,7 @@ class ProjectController {
         render template: 'view', model: [product: _product]
     }
 
-    def productCumulativeFlowChart(long product) {
+    def cumulativeFlow(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.cumulativeFlowValues(_product)
         def computedValues = [[key: message(code:"is.chart.productCumulativeflow.serie.suggested.name"),
@@ -329,7 +329,7 @@ class ProjectController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
-    def productVelocityCapacityChart(long product) {
+    def velocityCapacity(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityCapacityValues(_product)
         def computedValues = [[key: message(code:"is.chart.productVelocityCapacity.serie.velocity.name"),
@@ -342,7 +342,8 @@ class ProjectController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
-    def productBurnupChart(long product) {
+    @Secured('stakeHolder(#product) or inProduct(#product)')
+    def burnup(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productBurnupValues(_product)
         def computedValues = [[key: message(code:"is.chart.productBurnUp.serie.all.name"),
@@ -355,7 +356,7 @@ class ProjectController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
-    def productBurndownChart(long product) {
+    def burndown(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productBurndownValues(_product)
         def computedValues = [[key: message(code:'is.chart.productBurnDown.series.userstories.name'),
@@ -370,7 +371,7 @@ class ProjectController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
-    def productVelocityChart(long product) {
+    def velocity(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityValues(_product)
         def computedValues = [[key: message(code:'is.chart.productVelocity.series.userstories.name'),
@@ -385,7 +386,7 @@ class ProjectController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
     }
 
-    def productParkingLotChart(long product) {
+    def parkingLot(long product) {
         Product _product = Product.withProduct(product)
         def values = featureService.productParkingLotValues(_product)
         def computedValues = [[key: message(code:"is.chart.productParkinglot.serie.name"),

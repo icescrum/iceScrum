@@ -20,30 +20,30 @@
  * Marwah Soltani (msoltani@kagilum.com)
  */
 
-controllers.controller("FeedCtrl", ['$scope', '$filter', 'RssService', function ($scope, $filter, RssService) {
-    $scope.save = function (rss) {
-        RssService.save(rss).then(function (savedRss) {
-            $scope.rss = savedRss;
-            $scope.rssList.push(savedRss);
-            $scope.notifySuccess('todo.is.ui.rssUrl.saved');
+controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function ($scope, $filter, FeedService) {
+    $scope.save = function (feed) {
+        FeedService.save(feed).then(function (savedFeed) {
+            $scope.feed = savedFeed;
+            $scope.feedList.push(savedFeed);
+            $scope.notifySuccess('todo.is.ui.feed.saved');
         });
     };
-    $scope.selectRss = function(selectedRss){
-        if(selectedRss == "all") {
-            RssService.getAllFeeds().then(function (allFeedsItems) {
+    $scope.selectFeed = function(selectedFeed){
+        if(selectedFeed == "all") {
+            FeedService.getAllFeeds().then(function (allFeedsItems) {
                 $scope.feed = {};
                 $scope.feedItems = $filter('orderBy')(allFeedsItems, '-item.pubDate');
             });
         } else {
-            RssService.getFeed(selectedRss).then(function (feed) {
+            FeedService.getFeed(selectedFeed).then(function (feed) {
                 $scope.feed = feed.channel;
                 $scope.feedItems = feed.channel.items;
             });
         }
     };
-    $scope.delete = function(rssToDelete){
-        RssService.delete(rssToDelete).then(function(){
-            $scope.notifySuccess('todo.is.ui.rssUrl.delete');
+    $scope.delete = function(feedToDelete){
+        FeedService.delete(feedToDelete).then(function(){
+            $scope.notifySuccess('todo.is.ui.feed.delete');
         })
     };
     $scope.view = true;
@@ -54,14 +54,14 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'RssService', function 
     // Feeds
     $scope.feed = {};
     $scope.feedItems = [];
-    $scope.selectedRss = 'all';
-    $scope.selectRss($scope.selectedRss);
+    $scope.selectedFeed = 'all';
+    $scope.selectFeed($scope.selectedFeed);
     // URL
-    $scope.rssList = [];
-    $scope.rss = {};
-    RssService.rssByUser()
-        .then(function (rssList) {
-            $scope.rssList = rssList;
+    $scope.feedList = [];
+    $scope.feed = {};
+    FeedService.feedByUser()
+        .then(function (feedList) {
+            $scope.feedList = feedList;
         });
 }]);
 

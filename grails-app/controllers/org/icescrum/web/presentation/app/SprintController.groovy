@@ -184,8 +184,8 @@ class SprintController {
         }
     }
 
-    @Secured(['permitAll()'])
-    def sprintBurndownRemainingChart(long product, long id) {
+    @Secured(['stakeHolder() or inProduct()'])
+    def burndownRemaining(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurndownRemainingValues(sprint)
         def computedValues = [[key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
@@ -201,8 +201,8 @@ class SprintController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    @Secured(['permitAll()'])
-    def sprintBurnupTasksChart(long product, long id) {
+    @Secured(['stakeHolder() or inProduct()'])
+    def burnupTasks(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurnupTasksValues(sprint)
         def computedValues = [
@@ -218,8 +218,8 @@ class SprintController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    @Secured(['permitAll()'])
-    def sprintBurnupPointsChart(long product, long id) {
+    @Secured(['stakeHolder() or inProduct()'])
+    def burnupPoints(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
@@ -235,8 +235,8 @@ class SprintController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    @Secured(['permitAll()'])
-    def sprintBurnupStoriesChart(long product, long id) {
+    @Secured(['stakeHolder() or inProduct()'])
+    def burnupStories(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [

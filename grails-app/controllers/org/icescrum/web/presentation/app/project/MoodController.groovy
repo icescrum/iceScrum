@@ -31,14 +31,15 @@ import org.icescrum.core.domain.User
 
 @Secured('isAuthenticated()')
 class MoodController {
+
     def springSecurityService
-    @Secured('isAuthenticated()')
+
     def save() {
         Mood mood = new Mood()
         try {
             Mood.withTransaction {
                 bindData(mood, params.mood, [include: ['feeling']])
-                mood.user = springSecurityService.currentUser
+                mood.user = (User)springSecurityService.currentUser
                 mood.feelingDay = new Date()
                 if (!mood.save(flush: true)) {
                     throw new RuntimeException(mood.errors?.toString())
@@ -56,24 +57,20 @@ class MoodController {
         }
     }
 
-    @Secured(['permitAll()'])
     def listByUser() {
         def today = new Date().clearTime()
-        def moods = Mood.findAllByUserAndFeelingDay(springSecurityService.currentUser, today)
+        def moods = Mood.findAllByUserAndFeelingDay((User)springSecurityService.currentUser, today)
         render(status: 200, contentType: 'application/json', text: moods as JSON)
     }
 
-    @Secured(['permitAll()'])
     def isAlreadySavedToday() {
         def today = new Date().clearTime()
-        def moodCount = Mood.countByFeelingDayAndUser(today, springSecurityService.currentUser)
-        render(status: 200, contentType: 'application/json', text: [value: moodCount > 0 ? true : false] as JSON)
+        def moodCount = Mood.countByFeelingDayAndUser(today, (User)springSecurityService.currentUser)
+        render(status: 200, contentType: 'application/json', text: [value: moodCount > 0] as JSON)
     }
 
-
-    @Secured(['permitAll()'])
     def chart() {
-        def user = springSecurityService.currentUser
+        def user = (User)springSecurityService.currentUser
         def values = Mood.findAllByUser(user)
         def sprintInProgress = Sprint.findByState(Sprint.STATE_INPROGRESS)
         def sprintActivationDate = sprintInProgress.activationDate.clone().clearTime()

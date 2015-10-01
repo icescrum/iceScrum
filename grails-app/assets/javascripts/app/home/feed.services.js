@@ -20,32 +20,31 @@
  *
  */
 
-services.factory('Rss', ['Resource',  function($resource) {
-    return $resource(icescrum.grailsServer + '/rss/:id/:action',
+services.factory('Feed', ['Resource',  function($resource) {
+    return $resource(icescrum.grailsServer + '/home/feed/:id/:action',
         {},
         {
-            getFeed: {method: 'GET', params: {action: 'getFeed'}},
-            rssByUser: {method: 'GET',isArray: true, params: {action: 'rssByUser'}},
+            feedByUser: {method: 'GET',isArray: true, params: {action: 'feedByUser'}},
             getAllFeeds: {method: 'GET',isArray: true, params: {action: 'getAllFeeds'}}
         });
 }]);
 
-services.service("RssService", ['Rss',function (Rss) {
-    this.save = function (rss) {
-        rss.class = 'rss';
-        return Rss.save(rss).$promise;
+services.service("FeedService", ['Feed',function (Feed) {
+    this.save = function (feed) {
+        feed.class = 'feed';
+        return Feed.save(feed).$promise;
     };
-    this.rssByUser = function(){
-        return Rss.rssByUser().$promise;
+    this.feedByUser = function(){
+        return Feed.feedByUser().$promise;
     };
-    this.getFeed = function(rssUserSelect){
-        return Rss.getFeed({id: rssUserSelect}).$promise;
+    this.getFeed = function(feedUserSelect){
+        return Feed.get({id: feedUserSelect}).$promise;
     };
     this.getAllFeeds = function() {
-        return Rss.getAllFeeds().$promise;
+        return Feed.getAllFeeds().$promise;
     };
-    this.delete = function(rssToDelete) {
-        return Rss.delete({id: rssToDelete}).$promise;
+    this.delete = function(feedToDelete) {
+        return Feed.delete({id: feedToDelete}).$promise;
     };
 }]);
 

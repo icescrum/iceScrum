@@ -52,11 +52,7 @@
     <div class="row">
         <is:header/>
     </div>
-    <div class="row"
-         id="main-content"
-         data-ui-droppable-hover-class="pointer"
-         data-ui-droppable-drop="$.icescrum.onDropToWindow"
-         data-ui-droppable-accept=".draggable-to-main"
+    <div id="main-view" class="row stacks" ng-class="{ 'one-stack': !$state.current.data.stack, 'two-stacks': $state.current.data.stack == 2 , 'three-stacks': $state.current.data.stack == 3 }"
          ui-view>
         <g:layoutBody/>
     </div>

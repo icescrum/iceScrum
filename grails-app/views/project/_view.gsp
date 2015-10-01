@@ -20,20 +20,21 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-    <div class="row" ng-controller="dashboardCtrl">
-    <div class="col-sm-5 col-sm-push-7 col-md-5 col-md-push-7">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
-                    <small class="pull-right">
-                        <g:link class="rss" data-toggle="tooltip" title="${message(code:'todo.is.ui.rss')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
-                            <i class="fa fa-rss fa-lg"></i>
-                        </g:link>
-                    </small>
-                </h3>
-            </div>
-            <div class="panel-body activities">
+<div ng-controller="dashboardCtrl">
+    <div class="row">
+        <div class="col-sm-6">
+            <ng-include src="'project.details.html'"></ng-include>
+        </div>
+        <div class="col-sm-6">
+            <h2 class="sub-header">
+                <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
+                <small class="pull-right">
+                    <g:link class="rss" data-toggle="tooltip" title="${message(code:'todo.is.ui.rss')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
+                        <i class="fa fa-rss fa-lg"></i>
+                    </g:link>
+                </small>
+            </h2>
+            <div class="activities">
                 <div class="activity" ng-repeat="activity in activities">
                     <div class="media-left">
                         <img height="36px"
@@ -63,44 +64,39 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-7 col-md-pull-5 col-sm-7 col-sm-pull-5">
-        <div class="panel panel-primary"
-             ng-controller="chartCtrl">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-bar-chart"></i> <g:message code="is.ui.project.chart.title"/>
-                    <small class="pull-right">
-                        <div dropdown class="btn-group"
-                             tooltip="${message(code:'todo.is.ui.charts')}"
-                             tooltip-append-to-body="true">
-                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
-                                <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
-                                <li><a href ng-click="openProjectChart('productCumulativeFlowChart')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
-                                <li><a href ng-click="openProjectChart('productBurnupChart')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>
-                                <li><a href ng-click="openProjectChart('productBurndownChart')">${message(code: 'is.ui.project.charts.productBurndown')}</a></li>
-                                <li><a href ng-click="openProjectChart('productParkingLotChart')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
-                                <li><a href ng-click="openProjectChart('productVelocityChart')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
-                                <li><a href ng-click="openProjectChart('productVelocityCapacityChart')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
-                                <li class="divider"></li>
-                                <li role="presentation" class="dropdown-header">${message(code: 'is.mood')}</li>
-                                <li><a href ng-click="openMoodSprintChart() ">${message(code: 'is.ui.project.charts.MoodSprintChart')}</a></li>
-                                <li><a href ng-click="openMoodUserChart()">${message(code: 'is.ui.project.MoodUserChart')}</a></li>
-                                <li class="divider"></li>
-                                <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                                <li><a href ng-click="openSprintChart('sprintBurndownRemainingChart')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
-                                <li><a href ng-click="openSprintChart('sprintBurnupTasksChart')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
-                                <li><a href ng-click="openSprintChart('sprintBurnupPointsChart')">${message(code: 'is.ui.project.chart.option.points')}</a></li>
-                                <li><a href ng-click="openSprintChart('sprintBurnupStoriesChart')">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
-                            </ul>
-                        </div>
-                    </small>
-                </h3>
-            </div>
-            <div class="panel-body" id="panel-chart-container">
+        <div class="col-sm-6" ng-controller="chartCtrl" ng-init="init('burnup')" id="panel-chart-container">
+            <h2 class="sub-header">
+                <i class="fa fa-bolt"></i> <g:message code="is.ui.project.chart.title"/>
+                <small class="pull-right">
+                    <div dropdown class="btn-group"
+                         tooltip="${message(code:'todo.is.ui.charts')}"
+                         tooltip-append-to-body="true">
+                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
+                            <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
+                            <li><a href ng-click="openProjectChart('cumulativeFlow')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
+                            <li><a href ng-click="openProjectChart('burnup')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>
+                            <li><a href ng-click="openProjectChart('burndown')">${message(code: 'is.ui.project.charts.productBurndown')}</a></li>
+                            <li><a href ng-click="openProjectChart('parkingLot')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
+                            <li><a href ng-click="openProjectChart('velocity')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
+                            <li><a href ng-click="openProjectChart('velocityCapacity')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
+                            <li class="divider"></li>
+                            <li role="presentation" class="dropdown-header">${message(code: 'is.mood')}</li>
+                            <li><a href ng-click="openMoodSprintChart() ">${message(code: 'is.ui.project.charts.MoodSprintChart')}</a></li>
+                            <li><a href ng-click="openMoodUserChart()">${message(code: 'is.ui.project.MoodUserChart')}</a></li>
+                            <li class="divider"></li>
+                            <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
+                            <li><a href ng-click="openSprintChart('burndownRemaining')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
+                            <li><a href ng-click="openSprintChart('burnupTasks')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
+                            <li><a href ng-click="openSprintChart('burnupPoints')">${message(code: 'is.ui.project.chart.option.points')}</a></li>
+                            <li><a href ng-click="openSprintChart('burnupStories')">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
+                        </ul>
+                    </div>
+                </small>
+            </h2>
+            <div>
                 <button class="btn btn-default btn-sm"
                         ng-click="saveChart()"
                         type="button">
@@ -109,13 +105,13 @@
                 <nvd3 options="options" data="data"></nvd3>
             </div>
         </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-eye"></i> <g:message code="is.ui.project.vision.title"/>
-                </h3>
-            </div>
-            <div class="panel-body">
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="sub-header">
+                <i class="fa fa-eye"></i> <g:message code="is.ui.project.vision.title"/>
+            </h2>
+            <div class="body">
                 <textarea is-markitup
                           class="form-control"
                           name="vision"
@@ -133,13 +129,11 @@
                      ng-bind-html="(release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
             </div>
         </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
-                </h3>
-            </div>
-            <div class="panel-body">
+        <div class="col-sm-6">
+            <h2 class="sub-header">
+                <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
+            </h2>
+            <div class="body">
                 <textarea is-markitup
                           class="form-control"
                           name="doneDefinition"
@@ -157,13 +151,13 @@
                      ng-bind-html="(sprint.doneDefinition_html ? sprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
             </div>
         </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
-                </h3>
-            </div>
-            <div class="panel-body">
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="sub-header">
+                <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
+            </h2>
+            <div class="body">
                 <textarea is-markitup
                           class="form-control"
                           name="retrospective"
