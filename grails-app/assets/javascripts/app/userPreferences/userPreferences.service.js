@@ -18,12 +18,11 @@
  * Authors:Marwah Soltani (msoltani@kagilum.com)
  *
  */
-
 services.factory('UserPreferences', [ 'Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/user/:id/:action',
         {},
         {
-            getPanels: {method: 'GET', isArray: true, params: {action: 'getpanels'}}
+            getPanels: {method: 'GET', isArray: true, params: {action: 'getPanels'}}
         });
 }]);
 services.service("UserPreferencesService", ['UserPreferences', function(UserPreferences) {
