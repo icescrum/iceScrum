@@ -19,19 +19,17 @@
  *
  *
  */
-controllers.controller('homeCtrl', ['$scope', 'HomeService', function ($scope, HomeService) {
-    $scope.panels = [];
-
-    $scope.sortable_options = {
-        sortableClass:"sortable"
+controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, HomeService) {
+    // Functions
+    $scope.sortablePanelUpdate = function(startModel, destModel, start, end) {
+        HomeService.updatePositionPanel({id: destModel[end].id, position: end});
     };
-
-    HomeService.getPanels().then(function(callback){
+    // Init
+    $scope.panels = [];
+    $scope.sortable_options = {
+        sortableClass: "sortable"
+    };
+    HomeService.getPanels().then(function(callback) {
         $scope.panels = callback.data;
     });
-
-    $scope.sortablePanelUpdate = function (startModel, destModel, start, end) {
-        HomeService.updatePositionPanel({id:destModel[end].id, position:end});
-    };
-
 }]);

@@ -249,7 +249,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     $scope.goToTab = function(story, tabId) {
         $state.go($scope.viewName + '.details.tab',  { id: story.id, tabId: tabId });
     };
-
     $scope.selectableOptions = {
         filter:">.postit-container",
         cancel: "a,.ui-selectable-cancel",
@@ -286,7 +285,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     };
     $scope.filteredAndSortedStories = [];
     $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
-
     $scope.$watch('stories', $scope.refreshStories, true);
 
 }]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'backlogs', 'StoryService', function ($scope, $controller, $state, stories, backlogs, StoryService) {
@@ -499,7 +497,6 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
-
     $scope.openMoodSprintChart = function () {
         var defaultMoodSprintOptions = {
             chart: {
@@ -526,15 +523,12 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
-
-
+    $scope.init = function(chart, options, project) {
+        $scope.options = options ? options : {};
+        $scope.openProjectChart(chart ? chart : 'burnup', project);
+    };
     // Init
     $scope.options = {};
     $scope.data = [];
     $scope.labels = [];
-
-    $scope.init = function(chart, options, project){
-        $scope.options = options ? options : {};
-        $scope.openProjectChart(chart ? chart : 'burnup', project);
-    }
 }]);

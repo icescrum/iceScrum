@@ -364,8 +364,8 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
             $scope.sprints.push({ orderNumber : i, startDate: startDate, endDate: endDate });
         }
     };
-    $scope.initPkey = function(){
-        if($scope.project.name && !$scope.project.pkey){
+    $scope.initPkey = function() {
+        if ($scope.project.name && !$scope.project.pkey) {
             $scope.project.pkey = $filter('uppercase')($scope.project.name.replace(/\W+/g, ""));
         }
     };

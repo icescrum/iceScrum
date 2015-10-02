@@ -20,7 +20,6 @@
 --}%
 
 <script type="text/ng-template" id="home.html">
-
     <div class="window-content">
         <ul style="list-style-type:none;" html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
             ng-model='panels'

@@ -39,7 +39,7 @@ class MoodController {
         try {
             Mood.withTransaction {
                 bindData(mood, params.mood, [include: ['feeling']])
-                mood.user = (User)springSecurityService.currentUser
+                mood.user = (User) springSecurityService.currentUser
                 mood.feelingDay = new Date()
                 if (!mood.save(flush: true)) {
                     throw new RuntimeException(mood.errors?.toString())
@@ -59,18 +59,18 @@ class MoodController {
 
     def listByUser() {
         def today = new Date().clearTime()
-        def moods = Mood.findAllByUserAndFeelingDay((User)springSecurityService.currentUser, today)
+        def moods = Mood.findAllByUserAndFeelingDay((User) springSecurityService.currentUser, today)
         render(status: 200, contentType: 'application/json', text: moods as JSON)
     }
 
     def isAlreadySavedToday() {
         def today = new Date().clearTime()
-        def moodCount = Mood.countByFeelingDayAndUser(today, (User)springSecurityService.currentUser)
+        def moodCount = Mood.countByFeelingDayAndUser(today, (User) springSecurityService.currentUser)
         render(status: 200, contentType: 'application/json', text: [value: moodCount > 0] as JSON)
     }
 
     def chart() {
-        def user = (User)springSecurityService.currentUser
+        def user = (User) springSecurityService.currentUser
         def values = Mood.findAllByUser(user)
         def sprintInProgress = Sprint.findByState(Sprint.STATE_INPROGRESS)
         def sprintActivationDate = sprintInProgress.activationDate.clone().clearTime()
