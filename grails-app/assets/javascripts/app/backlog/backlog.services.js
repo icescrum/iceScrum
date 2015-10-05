@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -20,18 +20,21 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-services.factory( 'Backlog', [ 'Resource', function( $resource ) {
+services.factory('Backlog', ['Resource', function($resource) {
     return $resource('backlog/:id/:action',
         {},
         {
-            list: { method: 'GET', params: {shared: true }},
-            listOwner: { method: 'GET', params: {shared: false }}
+            list: {method: 'GET', isArray: true, params: {shared: true}},
+            listOwner: {method: 'GET', isArray: true, params: {shared: false}}
         });
 }]);
 
 services.service("BacklogService", ['Backlog', 'Session', function(Backlog) {
-    this.save = function (backlog) {
+    this.save = function(backlog) {
         backlog.class = 'backlog';
         return Backlog.save(backlog).$promise;
+    };
+    this.list = function() {
+        return Backlog.list().$promise;
     };
 }]);
