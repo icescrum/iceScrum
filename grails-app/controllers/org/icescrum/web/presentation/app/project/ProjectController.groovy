@@ -751,7 +751,14 @@ class ProjectController {
     def leaveTeam(long product) {
         Product _product = Product.withProduct(product)
         _product.withTransaction {
+            def oldMembersByProduct = [:]
+            _product.firstTeam.products.each { Product teamProduct ->
+                oldMembersByProduct[teamProduct.id] = productService.getAllMembersProductByRole(teamProduct)
+            }
             productService.removeAllRoles(_product.firstTeam, springSecurityService.currentUser)
+            oldMembersByProduct.each { Long productId, Map oldMembers ->
+                productService.manageProductEvents(Product.get(productId), oldMembers)
+            }
         }
         render(status: 200)
     }

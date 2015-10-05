@@ -22,7 +22,7 @@
  *
  */
 
-services.service("PushService", ['$rootScope', 'atmosphereService', 'IceScrumEventType', function($rootScope, atmosphereService, IceScrumEventType) {
+services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', function($rootScope, $http, atmosphereService, IceScrumEventType) {
     var self = this;
     self.push = {};
     this.listeners = {};
@@ -40,6 +40,8 @@ services.service("PushService", ['$rootScope', 'atmosphereService', 'IceScrumEve
         options.onOpen = function(response) {
             self.push.transport = response.transport;
             self.push.connected = true;
+            self.push.uuid = response.request.uuid;
+            $http.defaults.headers.common['X-Atmosphere-tracking-id'] = response.request.uuid;
             atmosphere.util.debug('Atmosphere connected using ' + response.transport);
         };
         options.onClientTimeout = function(response) {
