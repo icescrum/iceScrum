@@ -354,9 +354,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         $rootScope.notifySuccess = function(code, options) {
             return notifications.success('', $rootScope.message(code), options);
         };
-
         $rootScope.notifyError = function(code, options) {
             return notifications.error('', $rootScope.message(code), options);
+        };
+        $rootScope.notifyWarning = function(code, options) {
+            return notifications.warning('', $rootScope.message(code), options);
         };
 
         $rootScope.editableMode = false;

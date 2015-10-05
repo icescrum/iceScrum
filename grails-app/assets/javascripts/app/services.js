@@ -35,7 +35,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
             })
         }
     };
-}]).service('Session',['UserService', 'USER_ROLES', 'User', 'Project', function (UserService, USER_ROLES, User, Project) {
+}]).service('Session',['$timeout', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', function ($timeout, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType) {
     var self = this;
     self.user = new User();
     self.project = new Project();
@@ -119,6 +119,34 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
 
     this.setProject = function(project){
         _.extend(self.project, project);
+        var reload = function() {
+            $timeout(function() {
+                document.location.reload(true);
+            }, 2000);
+        };
+        PushService.registerListener('product', IceScrumEventType.UPDATE, function(updatedProject) {
+            var localProject = self.project;
+            if (updatedProject.pkey != localProject.pkey) {
+                $rootScope.notifyWarning('todo.is.ui.project.updated.pkey');
+                document.location = document.location.href.replace(localProject.pkey, updatedProject.pkey);
+            } else if (updatedProject.preferences.hidden && !localProject.preferences.hidden && !self.inProduct()){
+                $rootScope.notifyWarning('todo.is.ui.project.updated.visibility');
+                reload();
+            } else if (updatedProject.preferences.archived != localProject.preferences.archived) {
+                if (updatedProject.preferences.archived == true) {
+                    $rootScope.notifyWarning('todo.is.ui.project.updated.archived');
+                } else {
+                    $rootScope.notifyWarning('todo.is.ui.project.updated.unarchived');
+                }
+                reload();
+            } else {
+                angular.extend(localProject, updatedProject);
+            }
+        });
+        PushService.registerListener('product', IceScrumEventType.DELETE, function() {
+            $rootScope.notifyWarning('todo.is.ui.project.deleted');
+            reload();
+        });
     };
 
     this.getProject = function(){
