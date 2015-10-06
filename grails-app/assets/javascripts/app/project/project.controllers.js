@@ -169,15 +169,24 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     $scope.release = {};
     $scope.sprint = {};
     $scope.listeners = [];
+    $scope.projectMembersCount = 0;
+    $scope.project = $scope.currentProject;
     ProjectService.getActivities($scope.currentProject).then(function(activities) {
         $scope.activities = activities;
     });
     ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
         $scope.release = release;
+        if (release) {
+            SprintService.list(release); // TODO push on sprints
+        }
         $scope.listeners.push(PushService.synchronizeItem('release', $scope.release));
     });
+    ProjectService.countMembers($scope.currentProject).then(function(count) {
+        $scope.projectMembersCount = count;
+    });
+    // Needs a separate call because it may not be in the currentOrNextRelease
     SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
-        $scope.sprint = sprint;
+        $scope.currentOrLastSprint = sprint;
         $scope.listeners.push(PushService.synchronizeItem('sprint', $scope.sprint));
     });
     $scope.$on('$destroy', function() {
