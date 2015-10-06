@@ -32,13 +32,13 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 
-@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class TaskController {
 
     def securityService
     def springSecurityService
     def taskService
 
+    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def toolbar() {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
         withTask(id, params.uid ? true : false) { Task task ->
@@ -52,7 +52,7 @@ class TaskController {
         }
     }
 
-    @Secured('permitAll()')
+    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def shortURL(long product, long id) {
         Product _product = Product.withProduct(product)
         if (!springSecurityService.isLoggedIn() && _product.preferences.hidden) {
@@ -62,6 +62,7 @@ class TaskController {
         redirect(url: is.createScrumLink(controller: 'task', params: [uid: id]))
     }
 
+    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def index() {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
         withTask(id, params.uid ? true : false) { Task task ->
@@ -250,10 +251,12 @@ class TaskController {
         }
     }
 
+    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def show() {
         redirect(action: 'index', controller: controllerName, params: params)
     }
 
+    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def list() {
         if (request?.format == 'html') {
             render(status: 404)
@@ -281,7 +284,7 @@ class TaskController {
         }
     }
 
-    @Secured('stakeHolder() and !archivedProduct()')
+    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def tasksStory(long id, long product) {
         def story = Story.withStory(product, id)
         withFormat {
@@ -291,18 +294,7 @@ class TaskController {
         }
     }
 
-    def summaryPanel() {
-        withTask { Task task ->
-            def summary = task.comments + task.activities
-            summary = summary.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }
-            render(template: "/backlogElement/summary",
-                    model: [summary: summary,
-                            backlogElement: task,
-                            product: Product.get(params.long('product'))
-                    ])
-        }
-    }
-
+    @Secured('inProduct() and !archivedProduct()')
     def mylyn() {
         def sprint = (Sprint) params.id ? Sprint.getInProduct(params.product.toLong(), params.id.toLong()).list() : Sprint.findCurrentOrNextSprint(params.product.toLong()).list()
         if (!sprint) {
@@ -331,16 +323,14 @@ class TaskController {
         }
     }
 
-    @Secured(['permitAll()'])
+    @Secured('isAuthenticated()')
     def listByUser(Long product) {
         def user = springSecurityService.currentUser
         def options = [max: 8]
         def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
         def result = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
                 : Task.findAllByResponsibleAndStateInListAndCreationDateBetween(user, taskStates,new Date()-10,new Date(),options)
-
-        def tasks = [:]
-        tasks = result.groupBy { it.parentProduct }
-            render(status: 200, contentType: 'application/json', text: tasks as JSON)
-        }
+        def tasks = result.groupBy { it.parentProduct }
+        render(status: 200, contentType: 'application/json', text: tasks as JSON)
     }
+}
