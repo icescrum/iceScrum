@@ -50,6 +50,12 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     };
     self.roles = _.clone(defaultRoles);
 
+    var reload = function() {
+        $timeout(function() {
+            document.location.reload(true);
+        }, 2000);
+    };
+
     this.create = function() {
         UserService.getCurrent()
             .then(function(data) {
@@ -68,6 +74,30 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         _.extend(self.user, user);
         PushService.registerListener('activity', IceScrumEventType.CREATE, function(activity) {
             self.unreadActivitiesCount += 1;
+        });
+        PushService.registerListener('user', IceScrumEventType.UPDATE, function(user) {
+            if (user.updatedRole) {
+                var updatedRole = user.updatedRole;
+                var project = updatedRole.product;
+                if (updatedRole.role == undefined) {
+                    $rootScope.notifyWarning($rootScope.message('is.user.role.removed.product') + ' ' + project.name);
+                    if (project.id == self.project.id) {
+                        $timeout(function() {
+                            document.location = $rootScope.serverUrl
+                        }, 2000);
+                    }
+                } else if (updatedRole.oldRole == undefined) {
+                    $rootScope.notifySuccess($rootScope.message('is.user.role.added.product') + ' ' + project.name);
+                    if (project.id == self.project.id) {
+                        reload();
+                    }
+                } else {
+                    $rootScope.notifySuccess($rootScope.message('is.user.role.updated.product') + ' ' + project.name);
+                    if (project.id == self.project.id) {
+                        reload();
+                    }
+                }
+            }
         });
     };
 
@@ -122,11 +152,6 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
 
     this.setProject = function(project){
         _.extend(self.project, project);
-        var reload = function() {
-            $timeout(function() {
-                document.location.reload(true);
-            }, 2000);
-        };
         PushService.registerListener('product', IceScrumEventType.UPDATE, function(updatedProject) {
             var localProject = self.project;
             if (updatedProject.pkey != localProject.pkey) {
