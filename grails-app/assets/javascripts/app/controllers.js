@@ -52,16 +52,14 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                             }
                         });
                         $scope.groupedUserActivities = groupedActivities;
+                        Session.unreadActivitiesCount = 0; // Cannot do that on open == false for the moment because it is called randomly
                     }
                 );
-            } else {
-                Session.unreadActivitiesCount = 0;
             }
         };
         $scope.getUnreadActivities = function() {
             return Session.unreadActivitiesCount;
         };
-
         // TODO remove, user role change for dev only
         $scope.changeRole = function(newRole) {
             Session.changeRole(newRole);
