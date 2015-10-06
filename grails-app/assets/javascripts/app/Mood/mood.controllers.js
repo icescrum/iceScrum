@@ -30,7 +30,7 @@ controllers.controller('moodCtrl', ['$scope', 'MoodService', 'MoodFeelingsByName
                 $scope.listMoodsIfNeeded();
             });
     };
-    $scope.listMoodsIfNeeded = function() {
+    $scope.listMoodsIfNeeded = function () {
         if ($scope.alreadySavedToday) {
             MoodService.listByUser()
                 .then(function (moods) {
@@ -47,23 +47,27 @@ controllers.controller('moodCtrl', ['$scope', 'MoodService', 'MoodFeelingsByName
         });
 }]);
 
-controllers.controller('moodChartCtrl',[ '$scope', 'MoodService','$element', '$filter',function($scope, MoodService,$element, $filter) {
-    $scope.data = [];
+controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$filter', function ($scope, MoodService, $element, $filter) {
     $scope.options = {
         chart: {
             height: 350,
             type: 'lineChart',
-            x: function(d){ return d[0]; },
-            y: function(d){ return d[1]; },
+            x: function (d) {
+                return d[0];
+            },
+            y: function (d) {
+                return d[1];
+            },
             xScale: d3.time.scale.utc(),
             xAxis: {
-                tickFormat: function(d) {
+                tickFormat: function (d) {
                     // TODO USE date format from i18n
                     return $filter('date')(new Date(d), 'dd-MM-yyyy');
                 }
             }
         }
     };
+    $scope.data = [];
     MoodService.chart()
         .then(function (chart) {
             $scope.data = chart.data;

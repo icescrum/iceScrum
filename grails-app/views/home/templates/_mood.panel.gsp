@@ -3,13 +3,18 @@
         <div class="panel-heading">${message(code: 'is.panel.mood')}</div>
 
         <div class="panel-body" ng-controller="moodCtrl">
-            <div ng-switch="alreadySavedToday">
-                <div ng-switch-default>
-                    <button ng-click="save('GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"></button>
-                    <button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button>
-                    <button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button>
-                </div>
+            <div class=emoticon  ng-switch="alreadySavedToday">
 
+                <div ng-switch-default>
+                    <table>
+                        ${message(code: 'is.panel.mood.choose')}:
+                        <tr>
+                                <td><button ng-click="save('GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"></button></td>
+                                 <td><button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button></td>
+                                 <td><button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button></td>
+                             </tr>
+                    </table>
+                </div>
                 <div ng-switch-when="true">
                     <table ng-repeat="mood in moods">
                         <tr><td>${message(code: 'is.panel.mood.feeling')}: {{mood.feeling | i18n:'MoodFeelings'}}</td>

@@ -86,6 +86,8 @@
                             <li role="presentation" class="dropdown-header">${message(code: 'is.mood')}</li>
                             <li><a href ng-click="openMoodSprintChart() ">${message(code: 'is.ui.project.charts.MoodSprintChart')}</a></li>
                             <li><a href ng-click="openMoodUserChart()">${message(code: 'is.ui.project.MoodUserChart')}</a></li>
+                            <li><a href ng-click="openChartTeam()">${message(code: 'is.ui.project.MoodTeam')}</a></li>
+                            <li><a href ng-click="openTeamMoodReleaseChart()">${message(code: 'is.ui.project.MoodTeamBysprint')}</a></li>
                             <li class="divider"></li>
                             <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
                             <li><a href ng-click="openSprintChart('burndownRemaining')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
@@ -166,6 +168,7 @@
                           ng-show="showRetrospectiveTextarea"
                           ng-blur="showRetrospectiveTextarea = false; updateSprint(currentOrLastSprint)"
                           placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
+
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showRetrospectiveTextarea"
