@@ -66,6 +66,9 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
 
     this.setUser = function(user){
         _.extend(self.user, user);
+        PushService.registerListener('activity', IceScrumEventType.CREATE, function(activity) {
+            self.unreadActivitiesCount += 1;
+        });
     };
 
     this.poOrSm = function() {
