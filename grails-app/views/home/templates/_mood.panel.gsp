@@ -1,18 +1,16 @@
 <script type="text/ng-template" id="mood.panel.html">
     <div class="panel panel-primary">
         <div class="panel-heading">${message(code: 'is.panel.mood')}</div>
-
         <div class="panel-body" ng-controller="moodCtrl">
-            <div class=emoticon  ng-switch="alreadySavedToday">
-
+            <div class="emoticon" ng-switch="alreadySavedToday">
                 <div ng-switch-default>
                     <table>
                         ${message(code: 'is.panel.mood.choose')}:
                         <tr>
-                                <td><button ng-click="save('GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"></button></td>
-                                 <td><button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button></td>
-                                 <td><button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button></td>
-                             </tr>
+                            <td><button ng-click="save('GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"></button></td>
+                            <td><button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button></td>
+                            <td><button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button></td>
+                        </tr>
                     </table>
                 </div>
                 <div ng-switch-when="true">

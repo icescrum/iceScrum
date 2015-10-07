@@ -70,7 +70,7 @@ class MoodController {
         render(status: 200, contentType: 'application/json', text: [value: moodCount > 0] as JSON)
     }
 
-    //chart of mood of just current user for sprintInprogress
+    // Current user mood by day for current sprint WHAT ?
     def chart() {
         def user = (User) springSecurityService.currentUser
         def values = Mood.findAllByUser(user)
@@ -86,8 +86,7 @@ class MoodController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    //chart of mood of every  project's user for sprintInprogress
-    @Secured(['permitAll()'])
+    // User mood by day for current sprint
     def chartUser(long product) {
         Product _product = Product.withProduct(product)
         def sprintInProgress = Sprint.findByState(Sprint.STATE_INPROGRESS)
@@ -106,8 +105,7 @@ class MoodController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    //chart of mood of team of one project during sprintInprogress
-    @Secured(['permitAll()'])
+    // Mean team mood by day for current sprint
     def chartTeam(long product) {
         Product _product = Product.withProduct(product)
         def sprintInProgress = Sprint.findByState(Sprint.STATE_INPROGRESS)
@@ -127,8 +125,7 @@ class MoodController {
 
     }
 
-    //chart of mood of every user during one release ( mean by sprint)
-    @Secured(['permitAll()'])
+    // User mood by sprint for current or last release
     def chartUserRelease(long product) {
         def release = Release.findCurrentOrLastRelease(product).list()[0]
         Product _product = Product.withProduct(product)
@@ -158,9 +155,7 @@ class MoodController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: sprintLabel, options: options] as JSON)
     }
 
-//chart of team during one release ( mean by sprint)
-
-    @Secured(['permitAll()'])
+    // Mean team mood by sprint for current or last release
     def chartTeamRelease(long product) {
         def release = Release.findCurrentOrLastRelease(product).list()[0]
         Product _product = Product.withProduct(product)
@@ -182,4 +177,3 @@ class MoodController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: sprintLabel, options: options] as JSON)
     }
 }
-

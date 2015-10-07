@@ -53,13 +53,11 @@ services.service("MoodService", ['Mood', function (Mood) {
     };
     this.chartUserRelease = function(project) {
         return Mood.chartUserRelease ({product: project.id}).$promise;
-    }
+    };
     this.chartTeam = function(project) {
         return Mood.chartTeam ({product: project.id}).$promise;
-    }
+    };
     this.chartTeamRelease = function(project) {
         return Mood.chartTeamRelease ({product: project.id}).$promise;
-    }
-
-
+    };
 }]);

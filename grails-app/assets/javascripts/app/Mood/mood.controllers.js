@@ -20,20 +20,20 @@
  * Marwah Soltani (msoltani@kagilum.com)
  */
 
-controllers.controller('moodCtrl', ['$scope', 'MoodService', 'MoodFeelingsByName', function ($scope, MoodService, MoodFeelingsByName) {
-    $scope.save = function (feelingString) {
+controllers.controller('moodCtrl', ['$scope', 'MoodService', 'MoodFeelingsByName', function($scope, MoodService, MoodFeelingsByName) {
+    $scope.save = function(feelingString) {
         var mood = {feeling: MoodFeelingsByName[feelingString]};
         MoodService.save(mood)
-            .then(function (savedMood) {
+            .then(function(savedMood) {
                 $scope.mood = savedMood;
                 $scope.alreadySavedToday = true;
                 $scope.listMoodsIfNeeded();
             });
     };
-    $scope.listMoodsIfNeeded = function () {
+    $scope.listMoodsIfNeeded = function() {
         if ($scope.alreadySavedToday) {
             MoodService.listByUser()
-                .then(function (moods) {
+                .then(function(moods) {
                     $scope.moods = moods;
                 });
         }
@@ -41,26 +41,26 @@ controllers.controller('moodCtrl', ['$scope', 'MoodService', 'MoodFeelingsByName
     // Init
     $scope.moods = [];
     MoodService.isAlreadySavedToday()
-        .then(function (data) {
+        .then(function(data) {
             $scope.alreadySavedToday = data.value;
             $scope.listMoodsIfNeeded();
         });
 }]);
 
-controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$filter', function ($scope, MoodService, $element, $filter) {
+controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$filter', function($scope, MoodService, $element, $filter) {
     $scope.options = {
         chart: {
             height: 350,
             type: 'lineChart',
-            x: function (d) {
+            x: function(d) {
                 return d[0];
             },
-            y: function (d) {
+            y: function(d) {
                 return d[1];
             },
             xScale: d3.time.scale.utc(),
             xAxis: {
-                tickFormat: function (d) {
+                tickFormat: function(d) {
                     // TODO USE date format from i18n
                     return $filter('date')(new Date(d), 'dd-MM-yyyy');
                 }
@@ -69,7 +69,7 @@ controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$
     };
     $scope.data = [];
     MoodService.chart()
-        .then(function (chart) {
+        .then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options)
         });

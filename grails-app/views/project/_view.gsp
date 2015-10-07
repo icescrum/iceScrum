@@ -168,7 +168,6 @@
                           ng-show="showRetrospectiveTextarea"
                           ng-blur="showRetrospectiveTextarea = false; updateSprint(currentOrLastSprint)"
                           placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
-
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showRetrospectiveTextarea"

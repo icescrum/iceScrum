@@ -25,7 +25,7 @@
 var controllers = angular.module('controllers', []);
 
 controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys', 'PushService',
-    function ($scope, $state, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys, PushService) {
+    function($scope, $state, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys, PushService) {
         $scope.app = {
             isFullScreen: false,
             loading: 10
@@ -33,12 +33,12 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
         $scope.currentUser = Session.user;
         $scope.roles = Session.roles;
 
-        $scope.notificationToggle = function (open) {
+        $scope.notificationToggle = function(open) {
             if (open) {
                 UserService.getActivities($scope.currentUser)
-                    .then(function (data) {
+                    .then(function(data) {
                         var groupedActivities = [];
-                        angular.forEach(data, function (notif) {
+                        angular.forEach(data, function(notif) {
                             var augmentedActivity = notif.activity;
                             augmentedActivity.story = notif.story;
                             augmentedActivity.notRead = notif.notRead;
@@ -57,26 +57,26 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 );
             }
         };
-        $scope.getUnreadActivities = function () {
+        $scope.getUnreadActivities = function() {
             return Session.unreadActivitiesCount;
         };
         // TODO remove, user role change for dev only
-        $scope.changeRole = function (newRole) {
+        $scope.changeRole = function(newRole) {
             Session.changeRole(newRole);
         };
-        $scope.showAbout = function () {
+        $scope.showAbout = function() {
             $modal.open({
                 templateUrl: 'scrumOS/about'
             });
         };
-        $scope.showProfile = function () {
+        $scope.showProfile = function() {
             $modal.open({
                 keyboard: false,
                 templateUrl: $scope.serverUrl + '/user/openProfile',
                 controller: 'userCtrl'
             });
         };
-        $scope.showManageTeamsModal = function () {
+        $scope.showManageTeamsModal = function() {
             $modal.open({
                 keyboard: false,
                 templateUrl: $scope.serverUrl + "/team/manage",
@@ -88,7 +88,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
             visible: [],
             hidden: []
         };
-        $scope.getPushState = function () {
+        $scope.getPushState = function() {
             return PushService.push.connected ? 'connected' : 'disconnected'
         };
         $scope.menuSortableOptions = {
@@ -96,43 +96,43 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
             connectWith: '.menubar',
             handle: '.handle'
         };
-        var updateMenu = function (info) {
+        var updateMenu = function(info) {
             $http({
                 url: $scope.serverUrl + '/user/menu',
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: function (data) {
+                transformRequest: function(data) {
                     return formObjectData(data, '');
                 },
                 data: info
             });
         };
-        $scope.menuSortableUpdate = function (startModel, destModel, start, end) {
+        $scope.menuSortableUpdate = function(startModel, destModel, start, end) {
             updateMenu({id: destModel[end].id, position: end + 1, hidden: false});
         };
 
-        $scope.menuHiddenSortableUpdate = function (startModel, destModel, start, end) {
+        $scope.menuHiddenSortableUpdate = function(startModel, destModel, start, end) {
             updateMenu({id: destModel[end].id, position: end + 1, hidden: true});
         };
         //fake loading
-        var loadingAppProgress = $interval(function () {
+        var loadingAppProgress = $interval(function() {
             if ($scope.app.loading <= 80) {
                 $scope.app.loading += 10;
             }
         }, 100);
         //real ready app
-        $scope.$on(CONTENT_LOADED, function () {
+        $scope.$on(CONTENT_LOADED, function() {
             $scope.app.loading = 90;
-            $timeout(function () {
+            $timeout(function() {
                 $scope.app.loading = 100;
                 $interval.cancel(loadingAppProgress);
                 angular.element('#app-progress').remove();
             }, 500);
         });
-        $scope.$on(SERVER_ERRORS.notAuthenticated, function (event, e) {
+        $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
             $scope.showAuthModal();
         });
-        $scope.$on(SERVER_ERRORS.clientError, function (event, error) {
+        $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
             if (angular.isArray(error.data)) {
                 notifications.error("", error.data[0].text);
             } else if (angular.isObject(error.data)) {
@@ -141,7 +141,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 notifications.error("", $scope.message('todo.is.ui.error.unknown'));
             }
         });
-        $scope.$on(SERVER_ERRORS.serverError, function (event, error) {
+        $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
             if (angular.isArray(error.data)) {
                 notifications.error($scope.message('todo.is.ui.error.server'), error.data[0].text);
             } else if (angular.isObject(error.data)) {
@@ -150,7 +150,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
             }
         });
-        $scope.fullScreen = function () {
+        $scope.fullScreen = function() {
             if (Fullscreen.isEnabled()) {
                 Fullscreen.cancel();
                 $scope.app.isFullScreen = false;
@@ -163,7 +163,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 }
             }
         };
-        $scope.print = function (data) {
+        $scope.print = function(data) {
             var url = data;
             if (angular.isObject(data)) {
                 url = data.currentTarget.attributes['ng-href'] ? data.currentTarget.attributes['ng-href'].value : data.target.href;
@@ -173,16 +173,16 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 keyboard: false,
                 templateUrl: "report.progress.html",
                 size: 'sm',
-                controller: ['$scope', function ($scope) {
+                controller: ['$scope', function($scope) {
                     $scope.downloadFile(url);
                     $scope.progress = true;
                 }]
             });
             modal.result.then(
-                function (result) {
+                function(result) {
                     $scope.downloadFile("");
                 },
-                function () {
+                function() {
                     $scope.downloadFile("");
                 }
             );
@@ -190,28 +190,28 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
         hotkeys.bindTo($scope).add({
             combo: 'shift+l',
             description: $scope.message('is.button.connect'),
-            callback: function () {
+            callback: function() {
                 if (!Session.authenticated()) {
                     $scope.showAuthModal();
                 }
             }
         });
-    }]).controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
+    }]).controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
     $scope.credentials = {
         j_username: $scope.username ? $scope.username : '',
         j_password: ''
     };
-    $rootScope.showRegisterModal = function () {
+    $rootScope.showRegisterModal = function() {
         if ($scope.$close) {
             $scope.$close(); // Close auth modal if present
         }
         $state.go('userregister');
     };
-    $rootScope.showRetrieveModal = function () {
+    $rootScope.showRetrieveModal = function() {
         $state.go('userretrieve');
     };
-    $scope.login = function (credentials) {
-        AuthService.login(credentials).then(function (stuff) {
+    $scope.login = function(credentials) {
+        AuthService.login(credentials).then(function(stuff) {
             var lastOpenedUrl = stuff.data.url;
             var normalizedCurrentLocation = window.location.href.charAt(window.location.href.length - 1) == '/' ? window.location.href.substring(0, window.location.href.length - 1) : window.location.href;
             if (normalizedCurrentLocation == $rootScope.serverUrl && lastOpenedUrl) {
@@ -219,42 +219,42 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
             } else {
                 document.location.reload(true);
             }
-        }, function () {
+        }, function() {
             $rootScope.$broadcast(SERVER_ERRORS.loginFailed);
         });
     };
-}]).controller('registerCtrl', ['$scope', 'User', 'UserService', '$state', function ($scope, User, UserService, $state) {
+}]).controller('registerCtrl', ['$scope', 'User', 'UserService', '$state', function($scope, User, UserService, $state) {
     $scope.user = new User();
     if ($state.params.token) {
-        UserService.getInvitationUserMock($state.params.token).then(function (mockUser) {
+        UserService.getInvitationUserMock($state.params.token).then(function(mockUser) {
             _.merge($scope.user, mockUser);
             $scope.user.token = $state.params.token;
         });
     }
-    $scope.register = function () {
-        UserService.save($scope.user).then(function () {
+    $scope.register = function() {
+        UserService.save($scope.user).then(function() {
             $scope.$close($scope.user.username);
         });
     }
-}]).controller('retrieveCtrl', ['$scope', 'User', 'UserService', function ($scope, User, UserService) {
+}]).controller('retrieveCtrl', ['$scope', 'User', 'UserService', function($scope, User, UserService) {
     $scope.user = new User();
-    $scope.retrieve = function () {
-        UserService.retrievePassword($scope.user).then(function () {
+    $scope.retrieve = function() {
+        UserService.retrievePassword($scope.user).then(function() {
             $scope.$close();
         });
     }
 
-}]).controller('storyViewCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', function ($scope, $state, $filter, StoryService, StoryStatesByName) {
-    $scope.goToNewStory = function () {
+}]).controller('storyViewCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', function($scope, $state, $filter, StoryService, StoryStatesByName) {
+    $scope.goToNewStory = function() {
         $state.go('backlog.new');
     };
-    $scope.goToTab = function (story, tabId) {
+    $scope.goToTab = function(story, tabId) {
         $state.go($scope.viewName + '.details.tab', {id: story.id, tabId: tabId});
     };
     $scope.selectableOptions = {
         filter: ">.postit-container",
         cancel: "a,.ui-selectable-cancel",
-        stop: function (e, ui, selectedItems) {
+        stop: function(e, ui, selectedItems) {
             switch (selectedItems.length) {
                 case 0:
                     $state.go($scope.viewName);
@@ -268,7 +268,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
             }
         }
     };
-    $scope.isSelected = function (story) {
+    $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id;
         } else if ($state.params.listId) {
@@ -277,19 +277,19 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
             return false;
         }
     };
-    $scope.authorizedStory = function (action, story) {
+    $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };
     // Required instead of ng-repeat stories | filters
     // because for sortable we need to have the stories in a ng-model, so the expression must be assignable
-    $scope.refreshStories = function () {
+    $scope.refreshStories = function() {
         $scope.filteredAndSortedStories = $filter('orderBy')($scope.stories, $scope.orderBy.current.id, $scope.orderBy.reverse);
     };
     $scope.filteredAndSortedStories = [];
     $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
     $scope.$watch('stories', $scope.refreshStories, true);
 
-}]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'backlogs', 'StoryService', function ($scope, $controller, $state, stories, backlogs, StoryService) {
+}]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'backlogs', 'StoryService', function($scope, $controller, $state, stories, backlogs, StoryService) {
     $controller('storyViewCtrl', {$scope: $scope}); // inherit from storyViewCtrl
     $scope.viewName = 'backlog';
 
@@ -314,13 +314,13 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     $scope.storySortableOptions = {
         items: '.postit-container'
     };
-    $scope.storySortableUpdate = function (startModel, destModel, start, end) {
+    $scope.storySortableUpdate = function(startModel, destModel, start, end) {
         var story = destModel[end];
         var newRank = end + 1;
         if (story.rank != newRank) {
             story.rank = newRank;
-            StoryService.update(story).then(function () {
-                angular.forEach(destModel, function (s, index) {
+            StoryService.update(story).then(function() {
+                angular.forEach(destModel, function(s, index) {
                     var currentRank = index + 1;
                     if (s.rank != currentRank) {
                         s.rank = currentRank;
@@ -331,7 +331,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
     };
 }]);
 
-controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function ($scope, $state, FeatureService, features) {
+controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function($scope, $state, FeatureService, features) {
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -343,13 +343,13 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
             {id: 'value', name: 'todo.Value'}
         ]
     };
-    $scope.goToNewFeature = function () {
+    $scope.goToNewFeature = function() {
         $state.go('feature.new');
     };
     $scope.selectableOptions = {
         filter: "> .postit-container",
         cancel: "a",
-        stop: function (e, ui, selectedItems) {
+        stop: function(e, ui, selectedItems) {
             switch (selectedItems.length) {
                 case 0:
                     $state.go('feature');
@@ -364,7 +364,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
         }
     };
     $scope.features = features;
-    $scope.isSelected = function (feature) {
+    $scope.isSelected = function(feature) {
         if ($state.params.id) {
             return $state.params.id == feature.id;
         } else if ($state.params.listId) {
@@ -373,14 +373,14 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
             return false;
         }
     };
-    $scope.authorizedFeature = function (action) {
+    $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
 
 
 }]);
 
-controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'MoodService', function ($scope, $element, $filter, Session, ProjectService, SprintService, MoodService) {
+controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, MoodService) {
     var defaultOptions = {
         chart: {
             height: 350
@@ -412,33 +412,25 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         productParkingLotChart: {
             chart: {
                 type: 'multiBarHorizontalChart',
-                x: function (entry) {
-                    return entry[0];
-                },
-                y: function (entry) {
-                    return entry[1];
-                },
+                x: function(entry) { return entry[0]; },
+                y: function(entry) { return entry[1]; },
                 showValues: true,
                 xAxis: {
-                    tickFormat: function (entry) {
+                    tickFormat: function(entry) {
                         return entry;
                     }
                 }
             }
         }
     };
-    $scope.openProjectChart = function (chartName, project) {
+    $scope.openProjectChart = function(chartName, project) {
         var defaultProjectOptions = {
             chart: {
                 type: 'lineChart',
-                x: function (entry, index) {
-                    return index;
-                },
-                y: function (entry) {
-                    return entry[0];
-                },
+                x: function(entry, index) { return index; },
+                y: function(entry) { return entry[0]; },
                 xAxis: {
-                    tickFormat: function (entry) {
+                    tickFormat: function(entry) {
                         return $scope.labels[entry];
                     }
                 }
@@ -446,7 +438,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.options, $scope.chartOptions[chartName]);
-        ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function (chart) {
+        ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
             if (chart.labels) {
@@ -454,19 +446,15 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         });
     };
-    $scope.openSprintChart = function (chartName) {
+    $scope.openSprintChart = function(chartName) {
         var defaultSprintOptions = {
             chart: {
                 type: 'lineChart',
-                x: function (entry) {
-                    return entry[0];
-                },
-                y: function (entry) {
-                    return entry[1];
-                },
+                x: function(entry) { return entry[0]; },
+                y: function(entry) { return entry[1]; },
                 xScale: d3.time.scale.utc(),
                 xAxis: {
-                    tickFormat: function (d) {
+                    tickFormat: function(d) {
                         // TODO USE date format from i18n
                         return $filter('date')(new Date(d), 'dd-MM-yyyy');
                     }
@@ -475,20 +463,20 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, defaultSprintOptions, $scope.options);
-        SprintService.openChart($scope.sprint, $scope.currentProject, chartName).then(function (chart) {
+        SprintService.openChart($scope.sprint, $scope.currentProject, chartName).then(function(chart) {
             $scope.options = _.merge($scope.options, chart.options);
             $scope.data = chart.data;
         });
     };
-    $scope.saveChart = function () {
+    $scope.saveChart = function() {
         var title = $element.find('.title.h4');
         saveChartAsPng($element.find('svg')[0], {}, title[0],
-            function (imageBase64) {
+            function(imageBase64) {
                 // Server side "attachment" content type is needed because the a.download HTML5 feature is not supported in crappy browsers (safari & co).
                 jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': title.text()});
             });
     };
-    $scope.openMoodUserChart = function () {
+    $scope.openMoodUserChart = function() {
         $scope.options = {
             chart: {
                 type: 'lineChart',
@@ -496,7 +484,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                 y: function (entry) { return entry[1]; },
                 xScale: d3.time.scale.utc(),
                 xAxis: {
-                    tickFormat: function (d) {
+                    tickFormat: function(d) {
                         // TODO USE date format from i18n
                         return $filter('date')(new Date(d), 'dd-MM-yyyy');
                     }
@@ -505,23 +493,23 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, $scope.options);
-        MoodService.chartUser($scope.currentProject).then(function (chart) {
+        MoodService.chartUser($scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
-    $scope.openMoodSprintChart = function () {
+    $scope.openMoodSprintChart = function() {
         $scope.options = {
             chart: {
                 type: 'lineChart',
-                x: function (entry, index) {
+                x: function(entry, index) {
                     return index;
                 },
-                y: function (entry) {
+                y: function(entry) {
                     return entry[0];
                 },
                 xAxis: {
-                    tickFormat: function (entry) {
+                    tickFormat: function(entry) {
                         return $scope.labels[entry];
                     }
                 }
@@ -529,13 +517,13 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, $scope.options);
-        MoodService.chartUserRelease($scope.currentProject).then(function (chart) {
+        MoodService.chartUserRelease($scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.labels = chart.labels;
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
-    $scope.openChartTeam = function () {
+    $scope.openChartTeam = function() {
         $scope.options = {
             chart: {
                 type: 'lineChart',
@@ -543,7 +531,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                 y: function (entry) { return entry[1]; },
                 xScale: d3.time.scale.utc(),
                 xAxis: {
-                    tickFormat: function (d) {
+                    tickFormat: function(d) {
                         // TODO USE date format from i18n
                         return $filter('date')(new Date(d), 'dd-MM-yyyy');
                     }
@@ -552,23 +540,23 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, $scope.options);
-        MoodService.chartTeam($scope.currentProject).then(function (chart) {
+        MoodService.chartTeam($scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
-    $scope.openTeamMoodReleaseChart = function () {
+    $scope.openTeamMoodReleaseChart = function() {
         $scope.options = {
             chart: {
                 type: 'lineChart',
-                x: function (entry, index) {
+                x: function(entry, index) {
                     return index;
                 },
-                y: function (entry) {
+                y: function(entry) {
                     return entry[0];
                 },
                 xAxis: {
-                    tickFormat: function (entry) {
+                    tickFormat: function(entry) {
                         return $scope.labels[entry];
                     }
                 }
@@ -576,15 +564,15 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, $scope.options);
-        MoodService.chartTeamRelease($scope.currentProject).then(function (chart) {
+        MoodService.chartTeamRelease($scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.labels = chart.labels;
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
-    $scope.init = function (chart, options, project) {
+    $scope.init = function(chart, options, project) {
         $scope.options = options ? options : {};
-        $scope.openProjectChart(chart ? chart:'burnup', project);
+        $scope.openProjectChart(chart ? chart : 'burnup', project);
     };
     $scope.cleanData = function() {
         $scope.data = [];
