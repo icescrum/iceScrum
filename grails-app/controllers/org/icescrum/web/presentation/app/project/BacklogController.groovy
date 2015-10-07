@@ -54,7 +54,7 @@ class BacklogController {
 
         if (currentProduct.features) {
             featureSelect += ','
-            featureSelect += currentProduct.features.collect {v -> "'$v.id':'${v.name.encodeAsHTML().encodeAsJavaScript()}'"}.join(',')
+            featureSelect += currentProduct.features.collect {v -> "'$v.id':'${v.name.encodeAsJavaScript()}'"}.join(',')
         }
 
         def suiteSelect = "'?':'?',"

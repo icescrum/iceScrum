@@ -58,7 +58,7 @@ class SandboxController {
         def featureSelect = "'':'${message(code: 'is.ui.sandbox.manage.chooseFeature')}'"
         if (currentProduct.features) {
             featureSelect += ','
-            featureSelect += currentProduct.features.collect {v -> "'$v.id':'${v.name.encodeAsHTML().encodeAsJavaScript()}'"}.join(',')
+            featureSelect += currentProduct.features.collect {v -> "'$v.id':'${v.name.encodeAsJavaScript()}'"}.join(',')
         }
 
         def sprint = Sprint.findCurrentSprint(currentProduct.id).list()
