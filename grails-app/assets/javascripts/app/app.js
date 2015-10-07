@@ -541,9 +541,9 @@ isApp.config(['$stateProvider', '$httpProvider',
         "BAD": 3
     })
     .constant('MoodFeelings', {
-        1: {"value": "good", "code": "good"},
-        2: {"value": "meh", "code": "meh"},
-        3: {"value": "bad", "code": "bad"}
+        1: {"value": "todo.good", "code": "good"},
+        2: {"value": "todo.meh", "code": "meh"},
+        3: {"value": "todo.bad", "code": "bad"}
     })
     .constant('TaskStates', {
         0: {"value": "todo.To do", "code": "wait"},
