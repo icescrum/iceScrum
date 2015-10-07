@@ -177,14 +177,14 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', '$filter', 'T
                 $scope.newTeam = {};
                 $scope.team = team;
                 $scope.teams.push(team);
-                $scope.formHolder.newTeamForm.$setPristine();
+                $scope.resetFormValidation($scope.formHolder.newTeamForm);
                 $scope.notifySuccess('todo.is.ui.team.saved');
             });
     };
     $scope.update = function(team) {
         TeamService.update(team)
             .then(function(returnedTeam) {
-                $scope.formHolder.updateTeamForm.$setPristine();
+                $scope.resetFormValidation($scope.formHolder.updateTeamForm);
                 angular.extend(_.find($scope.teams, { id: team.id }), returnedTeam);
                 $scope.notifySuccess('todo.is.ui.team.updated');
             });
@@ -199,7 +199,7 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', '$filter', 'T
     };
     $scope.cancel = function() {
         $scope.team = {};
-        $scope.formHolder.updateTeamForm.$setPristine();
+        $scope.resetFormValidation($scope.formHolder.updateTeamForm);
     };
     $scope.teamSelected = function() {
         return !_.isEmpty($scope.team);

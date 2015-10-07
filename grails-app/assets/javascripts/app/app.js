@@ -369,6 +369,13 @@ isApp.config(['$stateProvider', '$httpProvider',
             return $rootScope.editableMode;
         };
 
+        $rootScope.resetFormValidation = function(form) {
+            if (form) {
+                form.$setPristine();
+                form.$setUntouched();
+            }
+        };
+
         $rootScope.confirm = function(options) {
             var callCallback = function() {
                 if (options.args) {

@@ -28,9 +28,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             parentStory: $scope.story,
             state: AcceptanceTestStatesByName.TOCHECK
         };
-        if ($scope.formHolder.acceptanceTestForm) {
-            $scope.formHolder.acceptanceTestForm.$setPristine();
-        }
+        $scope.resetFormValidation($scope.formHolder.acceptanceTestForm);
     };
     $scope.save = function(acceptanceTest, story) {
         AcceptanceTestService.save(acceptanceTest, story)

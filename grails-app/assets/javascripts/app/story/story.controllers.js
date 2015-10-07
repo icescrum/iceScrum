@@ -383,9 +383,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 $scope.editableStory = $scope.story;
                 $scope.editableStoryReference = $scope.story;
             }
-            if ($scope.formHolder.storyForm) {
-                $scope.formHolder.storyForm.$setPristine();
-            }
+            $scope.resetFormValidation($scope.formHolder.storyForm);
         };
         $scope.selectDependsOnOptions = {
             formatSelection: function(object) {
@@ -613,9 +611,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
                 defaultStory.template = $scope.story.template
             }
             $scope.story = defaultStory;
-            if ($scope.formHolder.storyForm) {
-                $scope.formHolder.storyForm.$setPristine();
-            }
+            $scope.resetFormValidation($scope.formHolder.storyForm);
         };
         $scope.templateSelected = function() {
             if ($scope.story.template) {

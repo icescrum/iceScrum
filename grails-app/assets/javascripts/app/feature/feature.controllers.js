@@ -92,9 +92,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
                 $scope.editableFeature = $scope.feature;
                 $scope.editableFeatureReference = $scope.feature;
             }
-            if ($scope.formHolder.featureForm) {
-                $scope.formHolder.featureForm.$setPristine();
-            }
+            $scope.resetFormValidation($scope.formHolder.featureForm);
         };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -143,9 +141,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     // Functions
     $scope.resetFeatureForm = function() {
         $scope.feature = {};
-        if ($scope.formHolder.featureForm) {
-            $scope.formHolder.featureForm.$setPristine();
-        }
+        $scope.resetFormValidation($scope.formHolder.featureForm);
     };
     $scope.save = function(feature, andContinue) {
         FeatureService.save(feature).then(function(feature) {

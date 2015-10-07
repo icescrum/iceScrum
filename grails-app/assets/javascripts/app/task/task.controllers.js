@@ -42,9 +42,7 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
     };
     $scope.resetTaskForm = function() {
         $scope.task = {};
-        if ($scope.formHolder.taskForm) {
-            $scope.formHolder.taskForm.$setPristine();
-        }
+        $scope.resetFormValidation($scope.formHolder.taskForm);
     };
     $scope.disabledForm = function() {
         return $scope.formHolder.taskForm.$dirty && !$scope.formHolder.taskForm.$invalid;

@@ -466,9 +466,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         return ProjectService.authorizedProject('updateProjectMembers', project);
     };
     $scope.resetTeamForm = function() {
-        if ($scope.formHolder.editMembersForm) {
-            $scope.formHolder.editMembersForm.$setPristine();
-        }
+        $scope.resetFormValidation($scope.formHolder.editMembersForm);
         $scope.project = angular.copy($scope.currentProject);
         $scope.project.stakeHolders = $scope.project.stakeHolders.concat($scope.project.invitedStakeHolders);
         $scope.project.productOwners = $scope.project.productOwners.concat($scope.project.invitedProductOwners);
@@ -505,9 +503,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
             });
     };
     $scope.resetProjectForm = function() {
-        if ($scope.formHolder.editProjectForm) {
-            $scope.formHolder.editProjectForm.$setPristine();
-        }
+        $scope.resetFormValidation($scope.formHolder.editProjectForm);
         $scope.project = angular.copy($scope.currentProject);
         var restrictedViews = $scope.project.preferences.stakeHolderRestrictedViews ? $scope.project.preferences.stakeHolderRestrictedViews.split(',') : [];
         $scope.views = _.chain($scope.applicationMenus).map(function(menu) {
