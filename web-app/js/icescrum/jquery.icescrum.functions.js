@@ -1194,7 +1194,13 @@
                         $.icescrum.sprint.current = null;
                         $('li.menu-accept-task').hide();
                         var kanban = $('table#kanban-sprint-' + this.id);
-                        $('td:not(:first-child)',kanban).sortable('destroy');
+                        $('td:not(:first-child)',kanban).each(function() {
+                            var $this = $(this);
+                            // When a story has just been moved to done (without F5), sortable is not initialized so destroying it will fail
+                            if ($this.data('init')) {
+                                $this.sortable('destroy');
+                            }
+                        });
                          if (this.tasks){
                             var tasks = this.tasks;
                             $('.row-urgent-task td:not(:last-child) .postit-task,.row-recurrent-task td:not(:last-child) .postit-task',kanban).each(function(){
