@@ -70,19 +70,19 @@ class MoodController {
         render(status: 200, contentType: 'application/json', text: [value: moodCount > 0] as JSON)
     }
 
-    // Current user mood by day for current sprint WHAT ?
+    // Current user mood by day for current last days
     def chart() {
         def user = (User) springSecurityService.currentUser
         def values = Mood.findAllByUser(user)
-        def sprintInProgress = Sprint.findByState(Sprint.STATE_INPROGRESS)
-        def sprintActivationDate = sprintInProgress.activationDate.clone().clearTime()
+        def lastDays= new Date() - 14
         def computedValues = [[key   : message(code: 'todo.is.ui.mymood'),
-                               values: values.findAll { it.feelingDay >= sprintActivationDate }.collect {
+                               values: values.findAll { it.feelingDay >= lastDays}.collect {
                                    return [it.feelingDay.time, it.feeling]
                                }]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodUser.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.mooduser.xaxis.label')]],
+                               xAxis: [axisLabel: message(code: 'is.chart.moodUser.xaxis.label')]],
                        title: [text: message(code: "is.chart.moodUser.title")]]
+
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
@@ -99,9 +99,9 @@ class MoodController {
         }
 
 
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodSprint.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.moodSprint.xaxis.label')]],
-                       title: [text: message(code: "is.chart.moodRelease.title")]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodUserSprint.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.moodUserSprint.xaxis.label')]],
+                       title: [text: message(code: "is.chart.moodUserSprint.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
@@ -120,7 +120,7 @@ class MoodController {
         def computedValues = [[key: "TeamMood", values: listFellingByDay.collect { it -> return [it.key.time, it.value] }]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.TeamMoodSprint.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.TeamMoodSprint.xaxis.label')]],
-                       title: [text: message(code: "is.chart.TeamMood.title")]]
+                       title: [text: message(code: "is.chart.TeamMoodSprint.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
 
     }

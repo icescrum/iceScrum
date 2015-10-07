@@ -5,20 +5,19 @@
             <div class="emoticon" ng-switch="alreadySavedToday">
                 <div ng-switch-default>
                     <table>
-                        ${message(code: 'is.panel.mood.choose')}:
+                        ${message(code: 'is.panel.mood.day')}:
                         <tr>
-                            <td><button ng-click="save('GOOD')" tooltip="Great" class="fa fa-smile-o fa-5x"></button></td>
-                            <td><button ng-click="save('MEH')" tooltip="So-so" class="fa fa-meh-o fa-5x"></button></td>
-                            <td><button ng-click="save('BAD')" tooltip="Bad" class="fa fa-frown-o fa-5x"></button></td>
+                            <td><button ng-click="save('GOOD')" tooltip="GOOD" class="fa fa-smile-o fa-5x"></button></td>
+                            <td><button ng-click="save('MEH')" tooltip="MEH" class="fa fa-meh-o fa-5x"></button></td>
+                            <td><button ng-click="save('BAD')" tooltip="BAD" class="fa fa-frown-o fa-5x"></button></td>
                         </tr>
                     </table>
                 </div>
                 <div ng-switch-when="true">
                     <table ng-repeat="mood in moods">
-                        <tr><td>${message(code: 'is.panel.mood.feeling')}: {{mood.feeling | i18n:'MoodFeelings'}}</td>
+                        <tr><td>${message(code: 'is.panel.mood.feeling')} {{mood.feeling | i18n:'MoodFeelings'}}</td>
                         </tr>
                     </table>
-
                     <div ng-controller="moodChartCtrl">
                         <div class="panel-body" id="panel-chart-container">
                             <nvd3 options="options" data="data"></nvd3>
