@@ -97,8 +97,6 @@ class MoodController {
             return [key   : user.firstName,
                     values: moods.findAll { mood -> mood.feelingDay >= sprintActivationDate }.collect { mood -> return [mood.feelingDay.time, mood.feeling] }]
         }
-
-
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodUserSprint.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.moodUserSprint.xaxis.label')]],
                        title: [text: message(code: "is.chart.moodUserSprint.title")]]
