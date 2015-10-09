@@ -26,11 +26,25 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
     var self = this;
     self.push = {};
     this.listeners = {};
+    var logLevel = 'info';
+    var _canLog = function(level) {
+        if (level == 'debug') {
+            return logLevel === 'debug';
+        } else if (level == 'info') {
+            return logLevel === 'info' || logLevel === 'debug';
+        } else if (level == 'warn') {
+            return logLevel === 'warn' || logLevel === 'info' || logLevel === 'debug';
+        } else if (level == 'error') {
+            return logLevel === 'error' || logLevel === 'warn' || logLevel === 'info' || logLevel === 'debug';
+        } else {
+            return false;
+        }
+    };
     this.initPush = function(projectId) {
         var options = {
             url: $rootScope.serverUrl + '/stream/app' + (projectId ? ('/product-' + projectId) : ''),
             contentType: 'application/json',
-            logLevel: 'info', // Set 'debug' to debug
+            logLevel: logLevel,
             transport: 'websocket',
             trackMessageLength: true,
             reconnectInterval: 5000,
@@ -42,23 +56,33 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             self.push.connected = true;
             self.push.uuid = response.request.uuid;
             $http.defaults.headers.common['X-Atmosphere-tracking-id'] = response.request.uuid;
-            atmosphere.util.debug('Atmosphere connected using ' + response.transport);
+            if (_canLog('debug')) {
+                atmosphere.util.debug('Atmosphere connected using ' + response.transport);
+            }
         };
         options.onClientTimeout = function(response) {
             self.push.connected = false;
             setTimeout(function() {
                 atmosphereService.subscribe(options);
             }, options.reconnectInterval);
-            atmosphere.util.debug('Client closed the connection after a timeout. Reconnecting in ' + options.reconnectInterval);
+            if (_canLog('debug')) {
+                atmosphere.util.debug('Client closed the connection after a timeout. Reconnecting in ' + options.reconnectInterval);
+            }
         };
         options.onReopen = function(response) {
             self.push.connected = true;
-            atmosphere.util.debug('Atmosphere re-connected using ' + response.transport);
+            if (_canLog('debug')) {
+                atmosphere.util.debug('Atmosphere re-connected using ' + response.transport);
+            }
         };
         options.onTransportFailure = function(errorMsg, request) {
-            atmosphere.util.info(errorMsg);
+            if (_canLog('info')) {
+                atmosphere.util.info(errorMsg);
+            }
             request.fallbackTransport = 'streaming';
-            atmosphere.util.debug('Default transport is WebSocket, fallback is ' + request.fallbackTransport);
+            if (_canLog('debug')) {
+                atmosphere.util.debug('Default transport is WebSocket, fallback is ' + request.fallbackTransport);
+            }
         };
         options.onMessage = function(response) {
             var textBody = response.responseBody;
@@ -68,20 +92,28 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                    self.publishEvent(jsonBody);
                 }
             } catch (e) {
-                atmosphere.util.debug("Error parsing JSON: " + textBody);
+                if (_canLog('debug')) {
+                    atmosphere.util.debug("Error parsing JSON: " + textBody);
+                }
                 throw e;
             }
         };
         options.onClose = function(response) {
             self.push.connected = false;
-            atmosphere.util.debug('Server closed the connection after a timeout');
+            if (_canLog('debug')) {
+                atmosphere.util.debug('Server closed the connection after a timeout');
+            }
         };
         options.onError = function(response) {
-            atmosphere.util.debug("Sorry, but there's some problem with your socket or the server is down");
+            if (_canLog('debug')) {
+                atmosphere.util.debug("Sorry, but there's some problem with your socket or the server is down");
+            }
         };
         options.onReconnect = function(request, response) {
             self.push.connected = false;
-            atmosphere.util.debug('Connection lost. Trying to reconnect ' + request.reconnectInterval);
+            if (_canLog('debug')) {
+                atmosphere.util.debug('Connection lost. Trying to reconnect ' + request.reconnectInterval);
+            }
         };
         atmosphereService.subscribe(options);
     };
@@ -94,11 +126,15 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             self.listeners[domain][eventType] = [];
         }
         var listeners = self.listeners[domain][eventType];
-        console.log('register listener on ' + eventType + ' ' + domain);
+        if (_canLog('debug')) {
+            atmosphere.util.debug('Register listener on ' + eventType + ' ' + domain);
+        }
         listeners.push(listener);
         return {
             unregister: function() {
-                console.log('unregister listener on ' + eventType + ' ' + domain);
+                if (_canLog('debug')) {
+                    atmosphere.util.debug('Unregister listener on ' + eventType + ' ' + domain);
+                }
                 _.remove(listeners, function(registeredListener) {
                     return registeredListener == listener;
                 });
@@ -111,7 +147,9 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
         if (!_.isEmpty(self.listeners[domain])) {
             var eventType = jsonBody.eventType;
             _.each(self.listeners[domain][eventType], function(listener) {
-                console.log('call listener on ' + eventType + ' ' + domain);
+                if (_canLog('debug')) {
+                    atmosphere.util.debug('Call listener on ' + eventType + ' ' + domain);
+                }
                 listener(object);
             });
         }

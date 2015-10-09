@@ -66,7 +66,7 @@
         </div>
         <div class="col-sm-6" ng-controller="chartCtrl" ng-init="init('burnup')" id="panel-chart-container">
             <h2 class="sub-header">
-                <i class="fa fa-bolt"></i> <g:message code="is.ui.project.chart.title"/>
+                <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
                 <small class="pull-right">
                     <div dropdown class="btn-group"
                          tooltip="${message(code:'todo.is.ui.charts')}"
@@ -117,18 +117,18 @@
                 <textarea is-markitup
                           class="form-control"
                           name="vision"
-                          ng-model="release.vision"
-                          is-model-html="release.vision_html"
+                          ng-model="editableRelease.vision"
+                          is-model-html="editableRelease.vision_html"
                           ng-show="showVisionTextarea"
-                          ng-blur="showVisionTextarea = false; updateRelease(release)"
+                          ng-blur="showVisionTextarea = false; updateRelease(editableRelease)"
                           placeholder="${message(code: 'todo.is.ui.release.novision')}"></textarea>
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showVisionTextarea"
-                     ng-click="showVisionTextarea = authorizedRelease('update', release)"
-                     ng-class="{'placeholder': !release.vision_html}"
+                     ng-click="showVisionTextarea = authorizedRelease('update', editableRelease); editRelease(showVisionTextarea)"
+                     ng-class="{'placeholder': !editableRelease.vision_html}"
                      tabindex="0"
-                     ng-bind-html="(release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
+                     ng-bind-html="(editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
             </div>
         </div>
         <div class="col-sm-6">
@@ -139,18 +139,18 @@
                 <textarea is-markitup
                           class="form-control"
                           name="doneDefinition"
-                          ng-model="currentOrLastSprint.doneDefinition"
-                          is-model-html="currentOrLastSprint.doneDefinition_html"
+                          ng-model="editableCurrentOrLastSprint.doneDefinition"
+                          is-model-html="editableCurrentOrLastSprint.doneDefinition_html"
                           ng-show="showDoneDefinitionTextarea"
-                          ng-blur="showDoneDefinitionTextarea = false; updateSprint(currentOrLastSprint)"
+                          ng-blur="showDoneDefinitionTextarea = false; updateSprint(editableCurrentOrLastSprint)"
                           placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showDoneDefinitionTextarea"
-                     ng-click="showDoneDefinitionTextarea = authorizedSprint('updateDoneDefinition', currentOrLastSprint)"
-                     ng-class="{'placeholder': !currentOrLastSprint.doneDefinition_html}"
+                     ng-click="showDoneDefinitionTextarea = authorizedSprint('updateDoneDefinition', editableCurrentOrLastSprint); editSprint(showDoneDefinitionTextarea)"
+                     ng-class="{'placeholder': !editableCurrentOrLastSprint.doneDefinition_html}"
                      tabindex="0"
-                     ng-bind-html="(currentOrLastSprint.doneDefinition_html ? currentOrLastSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
+                     ng-bind-html="(editableCurrentOrLastSprint.doneDefinition_html ? editableCurrentOrLastSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
             </div>
         </div>
     </div>
@@ -163,18 +163,18 @@
                 <textarea is-markitup
                           class="form-control"
                           name="retrospective"
-                          ng-model="currentOrLastSprint.retrospective"
-                          is-model-html="currentOrLastSprint.retrospective_html"
+                          ng-model="editableCurrentOrLastSprint.retrospective"
+                          is-model-html="editableCurrentOrLastSprint.retrospective_html"
                           ng-show="showRetrospectiveTextarea"
-                          ng-blur="showRetrospectiveTextarea = false; updateSprint(currentOrLastSprint)"
+                          ng-blur="showRetrospectiveTextarea = false; updateSprint(editableCurrentOrLastSprint)"
                           placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showRetrospectiveTextarea"
-                     ng-click="showRetrospectiveTextarea = authorizedSprint('updateRetrospective', currentOrLastSprint)"
-                     ng-class="{'placeholder': !currentOrLastSprint.retrospective_html}"
+                     ng-click="showRetrospectiveTextarea = authorizedSprint('updateRetrospective', editableCurrentOrLastSprint); editSprint(showRetrospectiveTextarea)"
+                     ng-class="{'placeholder': !editableCurrentOrLastSprint.retrospective_html}"
                      tabindex="0"
-                     ng-bind-html="(currentOrLastSprint.retrospective_html ? currentOrLastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
+                     ng-bind-html="(editableCurrentOrLastSprint.retrospective_html ? editableCurrentOrLastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
             </div>
         </div>
     </div>
