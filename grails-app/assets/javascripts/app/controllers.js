@@ -389,41 +389,41 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             enable: true
         }
     };
-    $scope.chartOptions = {
-        productBurnupChart: {},
-        productVelocityCapacityChart: {},
-        productCumulativeFlowChart: {
-            chart: {
-                type: 'stackedAreaChart'
-            }
-        },
-        productBurndownChart: {
-            chart: {
-                type: 'multiBarChart',
-                stacked: true
-            }
-        },
-        productVelocityChart: {
-            chart: {
-                type: 'multiBarChart',
-                stacked: true
-            }
-        },
-        productParkingLotChart: {
-            chart: {
-                type: 'multiBarHorizontalChart',
-                x: function(entry) { return entry[0]; },
-                y: function(entry) { return entry[1]; },
-                showValues: true,
-                xAxis: {
-                    tickFormat: function(entry) {
-                        return entry;
+    $scope.openProjectChart = function(chartName, project) {
+        var chartOptions = {
+            burnup: {},
+            velocityCapacity: {},
+            cumulativeFlow: {
+                chart: {
+                    type: 'stackedAreaChart'
+                }
+            },
+            burndown: {
+                chart: {
+                    type: 'multiBarChart',
+                    stacked: true
+                }
+            },
+            velocity: {
+                chart: {
+                    type: 'multiBarChart',
+                    stacked: true
+                }
+            },
+            parkingLot: {
+                chart: {
+                    type: 'multiBarHorizontalChart',
+                    x: function(entry) { return entry[0]; },
+                    y: function(entry) { return entry[1]; },
+                    showValues: true,
+                    xAxis: {
+                        tickFormat: function(entry) {
+                            return entry;
+                        }
                     }
                 }
             }
-        }
-    };
-    $scope.openProjectChart = function(chartName, project) {
+        };
         var defaultProjectOptions = {
             chart: {
                 type: 'lineChart',
@@ -437,7 +437,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.options, $scope.chartOptions[chartName]);
+        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.options, chartOptions[chartName]);
         ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
