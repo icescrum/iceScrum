@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6" ng-controller="chartCtrl" ng-init="init('burnup')" id="panel-chart-container">
+        <div class="col-sm-6" ng-controller="chartCtrl" ng-init="initProjectChart('burnup')" id="panel-chart-container">
             <h2 class="sub-header">
                 <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
                 <small class="pull-right">

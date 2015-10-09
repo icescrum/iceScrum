@@ -5,7 +5,7 @@
     </div>
     <div class="row project-desc-chart">
         <div class="col-md-5" ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
-        <div class="col-md-7" ng-controller="chartCtrl" ng-init="init('burnup', {chart:{height: 200}, title:{enable: false}}, project)">
+        <div class="col-md-7" ng-controller="chartCtrl" ng-init="initProjectChart('burnup', {chart:{height: 200}, title:{enable: false}}, project)">
             <nvd3 options="options" data="data"></nvd3>
         </div>
     </div>

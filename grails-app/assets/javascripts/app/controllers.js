@@ -437,7 +437,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.options, chartOptions[chartName]);
+        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.initOptions, chartOptions[chartName]);
         ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
@@ -462,7 +462,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, defaultSprintOptions, $scope.options);
+        $scope.options = _.merge({}, defaultOptions, defaultSprintOptions);
         SprintService.openChart($scope.sprint, $scope.currentProject, chartName).then(function(chart) {
             $scope.options = _.merge($scope.options, chart.options);
             $scope.data = chart.data;
@@ -477,7 +477,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             });
     };
     $scope.openMoodUserChart = function() {
-        $scope.options = {
+        var options = {
             chart: {
                 type: 'lineChart',
                 x: function (entry) { return entry[0]; },
@@ -492,14 +492,14 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, $scope.options);
+        $scope.options = _.merge({}, defaultOptions, options);
         MoodService.chartUser($scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
     $scope.openMoodSprintChart = function() {
-        $scope.options = {
+        var options = {
             chart: {
                 type: 'lineChart',
                 x: function(entry, index) {
@@ -516,7 +516,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, $scope.options);
+        $scope.options = _.merge({}, defaultOptions, options);
         MoodService.chartUserRelease($scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.labels = chart.labels;
@@ -524,7 +524,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         });
     };
     $scope.openChartTeam = function() {
-        $scope.options = {
+        var options = {
             chart: {
                 type: 'lineChart',
                 x: function (entry) { return entry[0]; },
@@ -539,14 +539,14 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, $scope.options);
+        $scope.options = _.merge({}, defaultOptions, options);
         MoodService.chartTeam($scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
     $scope.openTeamMoodReleaseChart = function() {
-        $scope.options = {
+        var options = {
             chart: {
                 type: 'lineChart',
                 x: function(entry, index) {
@@ -563,23 +563,22 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, $scope.options);
+        $scope.options = _.merge({}, defaultOptions, options);
         MoodService.chartTeamRelease($scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.labels = chart.labels;
             $scope.options = _.merge($scope.options, chart.options);
         });
     };
-    $scope.init = function(chart, options, project) {
-        $scope.options = options ? options : {};
+    $scope.initProjectChart = function(chart, options, project) {
+        $scope.initOptions = options ? options : {};
         $scope.openProjectChart(chart ? chart : 'burnup', project);
     };
     $scope.cleanData = function() {
         $scope.data = [];
         $scope.labels = [];
+        $scope.options = {};
     };
     // Init
-    $scope.options = {};
-    $scope.data = [];
-    $scope.labels = [];
+    $scope.cleanData();
 }]);
