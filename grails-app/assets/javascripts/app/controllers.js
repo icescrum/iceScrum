@@ -393,7 +393,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         var chartOptions = {
             burnup: {},
             velocityCapacity: {},
-            cumulativeFlow: {
+            flowCumulative: {
                 chart: {
                     type: 'stackedAreaChart'
                 }

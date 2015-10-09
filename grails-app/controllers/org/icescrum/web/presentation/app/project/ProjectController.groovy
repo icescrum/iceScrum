@@ -308,7 +308,8 @@ class ProjectController {
         render template: 'view', model: [product: _product]
     }
 
-    def cumulativeFlow(long product) {
+    // Cannot end with Flow because of f*cked up filter in SpringSecurity (AnnotationFilterInvocationDefinition.java:256)
+    def flowCumulative(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.cumulativeFlowValues(_product)
         def computedValues = [[key: message(code:"is.chart.productCumulativeflow.serie.suggested.name"),

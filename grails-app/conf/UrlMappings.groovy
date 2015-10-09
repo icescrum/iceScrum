@@ -214,7 +214,7 @@ class UrlMappings {
         "/project/$product/$action" {
             controller = 'project'
             constraints {
-                action(inList: ['cumulativeFlow', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
+                action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
             }
         }
 

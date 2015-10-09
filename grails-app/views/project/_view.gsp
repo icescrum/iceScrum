@@ -76,7 +76,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
-                            <li><a href ng-click="openProjectChart('cumulativeFlow')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
+                            <li><a href ng-click="openProjectChart('flowCumulative')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
                             <li><a href ng-click="openProjectChart('burnup')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>
                             <li><a href ng-click="openProjectChart('burndown')">${message(code: 'is.ui.project.charts.productBurndown')}</a></li>
                             <li><a href ng-click="openProjectChart('parkingLot')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
