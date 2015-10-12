@@ -235,6 +235,7 @@ class ProjectController {
         def productParams = params.remove('productd')
         try {
             Product.withTransaction {
+                productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate);
                 bindData(_product, productParams, [include:['name','description','startDate','pkey']])
                 bindData(_product.preferences, productPreferencesParams, [exclude: ['archived']])
                 if(!productPreferencesParams?.stakeHolderRestrictedViews){

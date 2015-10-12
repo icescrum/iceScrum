@@ -454,7 +454,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     $scope.computePlanning();
 }]);
 
-controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
+controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', 'ReleaseService', function($scope, Session, ProjectService, ReleaseService) {
     $scope.type = 'editProject';
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
@@ -472,8 +472,33 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
     $scope.isCurrentStep = function() {
         return true;
     };
+
+    $scope.openDatepicker = function($event, name) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        if ($scope[name]) {
+            $scope[name].opened = true;
+        }
+    };
+
     // Init
     $scope.currentProject = Session.getProject();
+
+    ReleaseService.list($scope.currentProject).then(function(releases){
+        if(releases.length > 0){
+            $scope.projectMaxStartDate = new Date(releases[0].startDate);
+        }
+    });
+
+    $scope.startDate = {
+        startingDay: 1,
+        opened: false,
+        format: 'dd/MM/yyyy',
+        disabled: function(date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        }
+    };
+
     if (!$scope.panel) {
         var defaultView = $scope.authorizedProject('update', $scope.currentProject) ? 'general' : 'team';
         $scope.panel = { current: defaultView };
@@ -520,10 +545,11 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
     $scope.resetTeamForm();
 }]);
 
-controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
+controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', '$filter', function($scope, Session, ProjectService, $filter) {
     $scope.views = [];
     $scope.update = function(project) {
         $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).where({hidden: true}).map('id').value().join(',');
+        project.startDate = $filter('dateToIso')(project.startDate);
         ProjectService.update(project)
             .then(function(updatedProject) {
                 Session.setProject(updatedProject);
