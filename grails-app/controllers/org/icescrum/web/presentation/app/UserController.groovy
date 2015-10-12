@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS
+ * Copyright (c) 2015 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -98,17 +98,15 @@ class UserController {
     @Secured('isAuthenticated()')
     def update(long id) {
         User user = User.withUser(id)
-
         // profile is personal
         if ((user.id != springSecurityService.principal.id || request.format in ['json','xml']) && !request.admin){
             render(status:403)
             return
         }
-
         Map props = [:]
         if(params.flowIdentifier){
             User.withTransaction {
-                def endOfUpload = {FileUploadInfo uploadInfo ->
+                def endOfUpload = { FileUploadInfo uploadInfo ->
                     def uploadedAvatar = new File(uploadInfo.filePath)
                     props.avatar = uploadedAvatar.canonicalPath
                     props.scale = true
@@ -124,17 +122,14 @@ class UserController {
             }
             return;
         }
-
         if (!params.user){
             returnError(text:message(code:'todo.is.ui.no.data'))
             return
         }
-
         if (!request.admin && (params.user.confirmPassword  || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
             returnError(text: message(code: 'is.user.error.password.check'))
             return
         }
-
         User.withTransaction {
             if (params.user.password?.trim() != ''){
                 props.pwd = params.user.password
@@ -169,7 +164,6 @@ class UserController {
             entry.hook(id:"${controllerName}-${actionName}", model:[user:user, props:props])
             userService.update(user, props)
         }
-
         withFormat {
             html { render status: 200, contentType: 'application/json', text: user as JSON }
             json { renderRESTJSON(text:user) }

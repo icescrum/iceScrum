@@ -21,12 +21,20 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('userCtrl', ['$scope', 'UserService', 'User', 'Session', function ($scope, UserService, User, Session) {
+controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User', 'Session', function ($scope, $timeout, UserService, User, Session) {
     // Functions
     $scope.update = function(user) {
         UserService.update(user).then(function(userUpdated) {
             if($scope.$close) {
                 $scope.$close(); // Close auth modal if present
+            }
+            if (Session.user.preferences.language != userUpdated.preferences.language) {
+                $scope.notifySuccess($scope.message('todo.is.ui.profile.updated.refreshing'));
+                $timeout(function() {
+                    document.location.reload(true);
+                }, 2000);
+            } else {
+                $scope.notifySuccess($scope.message('todo.is.ui.profile.updated'));
             }
             angular.extend(Session.user, userUpdated);
         });
