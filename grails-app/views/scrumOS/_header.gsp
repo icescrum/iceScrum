@@ -176,7 +176,7 @@
                         <span class="fa fa-bolt" ng-switch-default></span>
                         <span class="badge alert-info" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                     </div>
-                    <div class="dropdown-menu notifications" ng-include="'notifications.panel.html'"></div>
+                    <div class="dropdown-menu notifications selection-disable" ng-include="'notifications.panel.html'"></div>
                 </div>
                 <div ng-if="currentUser.username" dropdown class="pull-left">
                     <div class="navbar-user pull-left dropdown-toggle" dropdown-toggle>

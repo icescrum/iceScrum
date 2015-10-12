@@ -52,6 +52,15 @@
   transform: translateY(-50%);
 }
 
+.disable-text-selection {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+}
+
 //custom css
 #pass-strength-result {
   background-color: @light-bg;
@@ -593,6 +602,7 @@ form .alert.alert-danger {
     }
   }
   .notifications {
+    .disable-text-selection;
     width: 500px;
     max-height: 500px;
     overflow: auto;
