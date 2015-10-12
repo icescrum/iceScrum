@@ -62,14 +62,14 @@
                 </span>
                 <span class="action"
                       ng-class="{'active':feature.attachments.length}"
-                      tooltip="{{ feature.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                      tooltip="{{ feature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                       tooltip-append-to-body="true">
                     <a><i class="fa fa-paperclip"></i></a>
                     <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
                 </span>
                 <span class="action" ng-class="{'active':feature.stories_ids.length}">
                     <a href="#/feature/{{ feature.id }}/stories"
-                       tooltip="{{ feature.stories_ids.length }} ${message(code:'todo.is.feature.stories')}"
+                       tooltip="{{ feature.stories_ids.length | orElse: 0  }} ${message(code:'todo.is.ui.feature.stories.count')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-tasks"></i>
                         <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>

@@ -15,11 +15,16 @@
                                    id="credentials.j_username"
                                    class="form-control ng-isolate-scope ng-dirty ng-valid-parse ng-valid ng-valid-required ng-touched"
                                    focus-me="true" value="">
-                            <span class="input-group-btn"><a tabindex="-1" class="btn btn-default" type="button"
-                                                             href ng-click="showRegisterModal()"
-                                                             tooltip-placement="top"
-                                                             tooltip="${message(code: 'todo.is.new')}">
-                                <i class="fa fa-user"></i></a>
+                            <span class="input-group-btn">
+                                <a tabindex="-1"
+                                   class="btn btn-default"
+                                   type="button"
+                                   href ng-click="showRegisterModal()"
+                                   tooltip-append-to-body="true"
+                                   tooltip-placement="top"
+                                   tooltip="${message(code: 'is.button.register')}">
+                                    <i class="fa fa-user"></i>
+                                </a>
                             </span>
                         </div>
                     </div>
@@ -37,10 +42,11 @@
                                     <a tabindex="-1"
                                        class="btn btn-default"
                                        type="button"
-                                       tooltip-placement="top"
                                        href
                                        ng-click="showRetrieveModal()"
-                                       tooltip="${message(code: 'todo.is.retrieve')}">
+                                       tooltip-append-to-body="true"
+                                       tooltip-placement="top"
+                                       tooltip="${message(code: 'is.dialog.retrieve')}">
                                         <i class="fa fa-flash"></i>
                                     </a>
                                 </span>

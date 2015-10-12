@@ -24,11 +24,11 @@
 <is:modal name="formHolder.profileForm"
           form="update(editableUser)"
           validate="true"
-          submitButton="${message(code:'default.button.create.label')}"
+          submitButton="${message(code:'is.button.update')}"
           closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'todo.is.dialog.profile')}">
+          title="${message(code:'todo.is.ui.profile')}">
     <tabset type="pills" justified="true">
-        <tab heading="${message(code: 'todo.is.dialog.profile.general.title')}"
+        <tab heading="${message(code: 'todo.is.ui.profile.general.title')}"
              active="tabSelected.general"
              select="setTabSelected('general')">
             <div flow-files-added="editableUser.avatar = 'custom';"

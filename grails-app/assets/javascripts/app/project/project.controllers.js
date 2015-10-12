@@ -473,7 +473,6 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
     $scope.isCurrentStep = function() {
         return true;
     };
-
     $scope.openDatepicker = function($event, name) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -481,17 +480,14 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
             $scope[name].opened = true;
         }
     };
-
     // Init
     $scope.currentProject = Session.getProject();
     $scope.checkProjectPropertyUrl = '/project/' + $scope.currentProject.id + '/available';
-
-    ReleaseService.list($scope.currentProject).then(function(releases){
-        if(releases.length > 0){
+    ReleaseService.list($scope.currentProject).then(function(releases) {
+        if (releases.length > 0) {
             $scope.projectMaxStartDate = new Date(releases[0].startDate);
         }
     });
-
     $scope.startDate = {
         startingDay: 1,
         opened: false,
@@ -500,7 +496,6 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
             return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
         }
     };
-
     if (!$scope.panel) {
         var defaultView = $scope.authorizedProject('update', $scope.currentProject) ? 'general' : 'team';
         $scope.panel = { current: defaultView };

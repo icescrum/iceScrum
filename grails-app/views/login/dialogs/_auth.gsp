@@ -44,7 +44,8 @@
                    href
                    ng-click="showRegisterModal()"
                    tooltip-placement="top"
-                   tooltip="${message(code:'todo.is.new')}">
+                   tooltip-append-to-body="true"
+                   tooltip="${message(code:'is.button.register')}">
                     <i class="fa fa-user"></i>
                 </a>
             </span>
@@ -63,12 +64,13 @@
         <g:if test="${activeLostPassword}">
             <span class="input-group-btn">
                 <a tabindex="-1"
-                        class="btn btn-default"
-                        type="button"
-                        tooltip-placement="top"
-                        href
-                        ng-click="showRetrieveModal()"
-                        tooltip="${message(code:'todo.is.retrieve')}">
+                   class="btn btn-default"
+                   type="button"
+                   href
+                   ng-click="showRetrieveModal()"
+                   tooltip-placement="top"
+                   tooltip-append-to-body="true"
+                   tooltip="${message(code:'is.dialog.retrieve')}">
                     <i class="fa fa-flash"></i>
                 </a>
             </span>
@@ -77,11 +79,10 @@
     </div>
     <div class="checkbox">
         <label>
-            <input
-                    type='checkbox'
-                    name='${rememberMeParameter}'
-                    id='remember_me'
-                    <g:if test='${hasCookie}'>checked='checked'</g:if>/> <g:message code="is.dialog.login.rememberme"/>
+            <input type='checkbox'
+                   name='${rememberMeParameter}'
+                   id='remember_me'
+                   <g:if test='${hasCookie}'>checked='checked'</g:if>/> <g:message code="is.dialog.login.rememberme"/>
         </label>
     </div>
 </is:modal>

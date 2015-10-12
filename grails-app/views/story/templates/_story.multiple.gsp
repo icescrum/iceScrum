@@ -61,13 +61,13 @@
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topStory.attachments.length}">
-                            <a tooltip="{{ topStory.attachments.length }} ${message(code:'todo.is.backlogelement.attachments')}"
+                            <a tooltip="{{ topStory.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topStory.comments_count}">
-                            <a tooltip="{{ topStory.comments_count }} ${message(code:'todo.is.story.comments')}"
+                            <a tooltip="{{ topStory.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
                                tooltip-append-to-body="true"
                                ng-switch="topStory.comments_count">
                                 <i class="fa fa-comment-o" ng-switch-when="0"></i>
@@ -76,14 +76,14 @@
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topStory.tasks_count}">
-                            <a tooltip="{{ topStory.tasks_count }} ${message(code:'todo.is.story.tasks')}"
+                            <a tooltip="{{ topStory.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-tasks"></i>
                                 <span class="badge" ng-show="topStory.tasks_count">{{ topStory.tasks_count }}</span>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
-                            <a tooltip="{{ topStory.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
+                            <a tooltip="{{ topStory.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                                tooltip-append-to-body="true"
                                ng-switch="topStory.acceptanceTests_count">
                                 <i class="fa fa-check-square-o" ng-switch-when="0"></i>

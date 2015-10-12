@@ -54,26 +54,26 @@
                             </a>
                         </span>
                         <span class="action">
-                            <a tooltip="${message(code:'todo.is.backlogelement.attachments')}"
+                            <a tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
                             </a>
                         </span>
                         <span class="action">
-                            <a tooltip="${message(code:'todo.is.story.comments')}"
+                            <a tooltip="${message(code:'todo.is.ui.comments')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-comment-o"></i>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                            <a tooltip="{{ storyPreview.tasks_count }} ${message(code:'todo.is.story.tasks')}"
+                            <a tooltip="{{ storyPreview.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-tasks"></i>
                                 <span class="badge" ng-show="storyPreview.tasks_count">{{ storyPreview.tasks_count }}</span>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                            <a tooltip="{{ storyPreview.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
+                            <a tooltip="{{ storyPreview.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                                tooltip-append-to-body="true"
                                ng-switch="storyPreview.acceptanceTests_count">
                                 <i class="fa fa-check-square-o" ng-switch-when="0"></i>

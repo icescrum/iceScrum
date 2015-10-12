@@ -65,7 +65,7 @@
 
 <script type="text/ng-template" id="menuitem.item.html">
 <a  hotkey="{ '{{ menu.shortcut }}' : hotkeyClick }"
-    hotkey-description="${message(code:'todo.is.open.view')} {{ menu.title }}"
+    hotkey-description="${message(code:'todo.is.ui.open.view')} {{ menu.title }}"
     tooltip="{{ menu.title }} ({{ menu.shortcut }})"
     tooltip-placement="bottom"
     href='#/{{ menu.id }}'>

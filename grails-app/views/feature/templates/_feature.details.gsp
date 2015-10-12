@@ -67,7 +67,7 @@
             <div class="btn-group pull-right">
                 <a class="btn btn-default"
                    href="#feature/{{ feature.id }}/stories"
-                   tooltip="{{ feature.stories_ids.length }} ${message(code:'todo.is.feature.stories')}"
+                   tooltip="{{ feature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}"
                    tooltip-append-to-body="true">
                     <span class="fa fa-tasks"></span>
                     <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>

@@ -6,11 +6,11 @@
         <span ng-show="view">
             <table>
                 <tr>
-                    <td>${message(code: 'todo.is.iu.panel.feed.input')}</td><td><input type="text" ng-model="feed.feedUrl"/>
+                    <td>${message(code: 'todo.is.ui.panel.feed.input')}</td><td><input type="text" ng-model="feed.feedUrl"/>
                 </td>
-                    <td><button class="btn btn-primary" ng-click="save(feed)">Save</button></td>
+                    <td><button class="btn btn-primary" ng-click="save(feed)">${message(code: 'is.button.add')}</button></td>
                 </tr>
-                <tr><td>${message(code: 'todo.is.iu.panel.feed.list')}</td>
+                <tr><td>${message(code: 'todo.is.ui.panel.feed.list')}</td>
                     <td>
                         <select
                                 class="form-control"
@@ -18,12 +18,12 @@
                                 ng-model="selectedFeed"
                                 ng-change="selectFeed(selectedFeed)"
                                 ui-select2>
-                            <option value="all">${message(code: 'todo.is.iu.panel.feed.title.allFeed')}</option>
+                            <option value="all">${message(code: 'todo.is.ui.panel.feed.title.allFeed')}</option>
                             <option ng-repeat="feed in feeds" value="{{feed.id}}">{{feed.feedUrl}}</option>
                         </select>
                     </td>
                     <td><button ng-model="selectedFeed" ng-click="delete(selectedFeed)"
-                                class="btn btn-primary">Delete</button></td>
+                                class="btn btn-primary">${message(code: 'default.button.delete.label')}</button></td>
                 </tr>
             </table>
         </span>

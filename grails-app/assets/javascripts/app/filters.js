@@ -290,4 +290,8 @@ filters
         return function (date) {
             return dateFilter(date, 'yyyy-MM-ddTHH:mm:ssZ');
         };
+    }]).filter('orElse', [function() {
+        return function (value, defaultValue) {
+            return (!_.isUndefined(value) && !_.isNull(value)) ? value : defaultValue;
+        };
     }]);

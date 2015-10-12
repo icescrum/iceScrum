@@ -25,7 +25,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="pull-left navbar-toggle">
-                <span class="sr-only">${message(code:'todo.is.main.menu')}</span>
+                <span class="sr-only">${message(code:'todo.is.ui.main.menu')}</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -56,7 +56,7 @@
                             </a>
                         </li>
                         <li role="presentation" class="dropdown-header">
-                            ${message(code: 'todo.is.projects')}
+                            ${message(code: 'todo.is.ui.projects')}
                         </li>
                         <g:if test="${creationProjectEnable}">
                             <li>
@@ -83,7 +83,7 @@
                         <g:if test="${product}">
                             <li role="presentation" class="divider"></li>
                             <li role="presentation" class="dropdown-header">
-                                ${message(code: 'todo.is.current.project')}
+                                ${message(code: 'todo.is.ui.projects.current')}
                             </li>
                             <li>
                                 <a hotkey="{ 'shift+e': hotkeyClick}" href ng-click="showProjectEditModal()">
@@ -136,7 +136,7 @@
                     class="menuitem draggable-to-main">
                 </li>
                 <li class="dropdown menubar-more" dropdown ng-class="{ 'hidden': menus.hidden.length == 0 }">
-                    <a class="dropdown-toggle" dropdown-toggle href>${message(code:'todo.is.more')} <i class="fa fa-caret-down"></i></a>
+                    <a class="dropdown-toggle" dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu menubar"
                         html-sortable="menuSortableOptions"
                         html-sortable-callback="menuHiddenSortableUpdate(startModel, destModel, start, end)"

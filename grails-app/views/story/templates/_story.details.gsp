@@ -101,7 +101,7 @@
                     <a class="btn btn-default"
                        type="button"
                        href="#backlog/{{ story.id }}/comments"
-                       tooltip="{{ story.comments.length }} ${message(code:'todo.is.story.comments')}"
+                       tooltip="{{ story.comments.length | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
                        tooltip-append-to-body="true"
                        ng-switch="story.comments_count">
                         <span class="fa fa-comment-o" ng-switch-when="0"></span>
@@ -110,14 +110,14 @@
                     </a>
                     <a class="btn btn-default"
                        href="#backlog/{{ story.id }}/tasks"
-                       tooltip="{{ story.tasks_count }} ${message(code:'todo.is.story.tasks')}"
+                       tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                        tooltip-append-to-body="true">
                         <span class="fa fa-tasks"></span>
                         <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
                     </a>
                     <a class="btn btn-default"
                        href="#backlog/{{ story.id }}/tests"
-                       tooltip="{{ story.acceptanceTests_count }} ${message(code:'todo.is.acceptanceTests')}"
+                       tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                        tooltip-append-to-body="true"
                        tooltip-placement="left"
                         ng-switch="story.acceptanceTests_count">
