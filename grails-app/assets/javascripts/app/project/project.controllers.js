@@ -140,8 +140,8 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
         );
     };
 
-    $scope['gotoHome'] = function(){
-        $scope.$state.go('home');
+    $scope.goToHome = function(){
+        $scope.$state.go('root');
     };
 
     // Init
