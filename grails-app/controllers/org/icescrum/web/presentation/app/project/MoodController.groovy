@@ -91,12 +91,14 @@ class MoodController {
         def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
         def sprintActivationDate = sprint.activationDate.clone().clearTime()
         def values = Mood.findAllByUserInList(_product.allUsers).findAll { mood -> mood.feelingDay >= sprintActivationDate }
-        def moodsByDay = values.groupBy { it.feelingDay }
+        // Mood by user
         def moodsByUser = values.groupBy { it.user }
         def computedValues = moodsByUser.collect { user, moods ->
             return [key   : user.firstName + (user.lastName ? (' ' + user.lastName) : ''),
                     values: moods.collect { mood -> return [mood.feelingDay.time, mood.feeling] }]
         }
+        // Mean mood
+        def moodsByDay = values.groupBy { it.feelingDay }
         def listFellingByDay = [:]
         moodsByDay.each { feelingDay, moods ->
             listFellingByDay[feelingDay] = Math.round(moods.collect { Mood mood -> return mood.feeling }.sum() / moods.collect { Mood mood -> return mood.feeling }.size())
@@ -113,7 +115,7 @@ class MoodController {
         Product _product = Product.withProduct(product)
         def sprintDone = Sprint.findAllByStateAndParentRelease(Sprint.STATE_DONE, release)
         def moodsOfTeam = Mood.findAllByUserInList(_product.allUsers)
-        def sprintLabel = sprintDone.collect { 'Sprint' + it.id }
+        def sprintLabel = sprintDone.collect { message(code:'is.sprint') + ' ' + it.orderNumber }
         // Mood by user
         def moodsByUser = moodsOfTeam.groupBy { it.user }
         def meanMoodByUser = [:]

@@ -86,12 +86,12 @@
                             <li role="presentation" class="dropdown-header">${message(code: 'todo.is.ui.mood')}</li>
                             <li><a href ng-click="openMoodChart('releaseUserMood')">${message(code: 'is.chart.releaseUserMood')}</a></li>
                             <li><a href ng-click="openMoodChart('sprintUserMood')">${message(code: 'is.chart.sprintUserMood')}</a></li>
-                            <li class="divider"></li>
-                            <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                            <li><a href ng-click="openSprintChart('burndownRemaining')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
-                            <li><a href ng-click="openSprintChart('burnupTasks')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
-                            <li><a href ng-click="openSprintChart('burnupPoints')">${message(code: 'is.ui.project.chart.option.points')}</a></li>
-                            <li><a href ng-click="openSprintChart('burnupStories')">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
+                            <li ng-if="currentOrLastSprint" class="divider"></li>
+                            <li ng-if="currentOrLastSprint" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
+                            <li ng-if="currentOrLastSprint"><a href ng-click="openSprintChart('burndownRemaining')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
+                            <li ng-if="currentOrLastSprint"><a href ng-click="openSprintChart('burnupTasks')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
+                            <li ng-if="currentOrLastSprint"><a href ng-click="openSprintChart('burnupPoints')">${message(code: 'is.ui.project.chart.option.points')}</a></li>
+                            <li ng-if="currentOrLastSprint"><a href ng-click="openSprintChart('burnupStories')">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
                         </ul>
                     </div>
                 </small>

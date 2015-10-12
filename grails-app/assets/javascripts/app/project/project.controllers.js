@@ -20,7 +20,7 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$modal', function($scope, ProjectService, Session, $modal) {
+controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$modal', '$state', function($scope, ProjectService, Session, $modal, $state) {
     $scope.showProjectEditModal = function(view) {
         var childScope = $scope.$new();
         if (view) {
@@ -139,11 +139,9 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             }
         );
     };
-
     $scope.goToHome = function(){
-        $scope.$state.go('root');
+        $state.go('root');
     };
-
     // Init
     $scope.currentProject = Session.getProject();
 }]);
