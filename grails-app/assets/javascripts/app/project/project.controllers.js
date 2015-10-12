@@ -355,6 +355,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
 
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.type = 'newProject';
+    $scope.checkProjectPropertyUrl = '/project/available';
     $scope.openDatepicker = function($event, name) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -483,6 +484,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
 
     // Init
     $scope.currentProject = Session.getProject();
+    $scope.checkProjectPropertyUrl = '/project/' + $scope.currentProject.id + '/available';
 
     ReleaseService.list($scope.currentProject).then(function(releases){
         if(releases.length > 0){

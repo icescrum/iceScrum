@@ -232,10 +232,21 @@ class UrlMappings {
             }
         }
 
+        //case new project
         "/project/available/$property" {
             controller = 'project'
             action = [POST: "available"]
             constraints {
+                property(inList: ['name', 'pkey'])
+            }
+        }
+
+        //case update project
+        "/project/$product/available/$property" {
+            controller = 'project'
+            action = [POST: "available"]
+            constraints {
+                product(matches: /\d*/)
                 property(inList: ['name', 'pkey'])
             }
         }

@@ -177,14 +177,14 @@ class ProjectController {
     }
 
     @Secured(['permitAll()'])
-    def available(String property) {
+    def available(long product, String property) {
         def result = false
         //test for name
         if (property == 'name'){
-            result = request.JSON.value && Product.countByName(request.JSON.value) == 0
+            result = request.JSON.value && (product ? Product.countByNameAndIdNotEqual(request.JSON.value, product) : Product.countByName(request.JSON.value)) == 0
             //test for pkey
         } else if (property == 'pkey'){
-            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && Product.countByPkey(request.JSON.value) == 0
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && (product ? Product.countByPkeyAndId(request.JSON.value, product) : Product.countByPkey(request.JSON.value)) == 0
         }
         render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
     }
