@@ -38,11 +38,12 @@
                        ng-remote-validate="{{ checkProjectPropertyUrl }}/name">
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
-                        <a class="btn"
+                        <a class="btn btn-model"
                            tooltip="{{project.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.ui.product.preferences.project.public')}' }}"
                            tooltip-append-to-body="true"
                            type="button"
-                           ng-click="project.preferences.hidden = !project.preferences.hidden"
+                           ng-model="project.preferences.hidden"
+                           ng-click="project.preferences.hidden = !project.preferences.hidden;"
                            ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
                             <i class="fa fa-lock" ng-class="{ 'fa-lock': project.preferences.hidden, 'fa-unlock': !project.preferences.hidden }"></i>
                         </a>

@@ -341,6 +341,17 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                 capitalize(scope[attrs.ngModel]);
             }
         };
+}).directive('btnModel', function() {
+    return {
+        restrict: 'C',
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+            element.on('click', function(){
+                modelCtrl.$setDirty();
+                modelCtrl.$setTouched();
+            });
+        }
+    };
 }).directive('selectOnFocus', function () {
     return {
         restrict: 'A',
