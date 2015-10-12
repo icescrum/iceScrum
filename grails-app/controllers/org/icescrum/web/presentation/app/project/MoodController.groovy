@@ -86,53 +86,37 @@ class MoodController {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    // User mood by day for current sprint
-    def chartUser(long product) {
+    def sprintUserMood(long product) {
         Product _product = Product.withProduct(product)
-        def sprintInProgress = Sprint.findByState(Sprint.STATE_INPROGRESS)
-        def sprintActivationDate = sprintInProgress.activationDate.clone().clearTime()
-        def values = Mood.findAllByUserInList(_product.allUsers)
-        def groupedByUser = values.groupBy { it.user }
-        def computedValues = groupedByUser.collect { user, moods ->
-            return [key   : user.firstName,
-                    values: moods.findAll { mood -> mood.feelingDay >= sprintActivationDate }.collect { mood -> return [mood.feelingDay.time, mood.feeling] }]
+        def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
+        def sprintActivationDate = sprint.activationDate.clone().clearTime()
+        def values = Mood.findAllByUserInList(_product.allUsers).findAll { mood -> mood.feelingDay >= sprintActivationDate }
+        def moodsByDay = values.groupBy { it.feelingDay }
+        def moodsByUser = values.groupBy { it.user }
+        def computedValues = moodsByUser.collect { user, moods ->
+            return [key   : user.firstName + (user.lastName ? (' ' + user.lastName) : ''),
+                    values: moods.collect { mood -> return [mood.feelingDay.time, mood.feeling] }]
         }
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodUserSprint.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.moodUserSprint.xaxis.label')]],
-                       title: [text: message(code: "is.chart.moodUserSprint.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
-    }
-
-    // Mean team mood by day for current sprint
-    def chartTeam(long product) {
-        Product _product = Product.withProduct(product)
-        def sprintInProgress = Sprint.findByState(Sprint.STATE_INPROGRESS)
-        def sprintActivationDate = sprintInProgress.activationDate.clone().clearTime()
-        def values = Mood.findAllByUserInList(_product.allUsers)
-        def moodsByDday = values.groupBy { it.feelingDay }
-        def moodsByDayInSprint = moodsByDday.findAll { it.key >= sprintActivationDate }
         def listFellingByDay = [:]
-        moodsByDayInSprint.each { feelingDay, moods ->
+        moodsByDay.each { feelingDay, moods ->
             listFellingByDay[feelingDay] = Math.round(moods.collect { Mood mood -> return mood.feeling }.sum() / moods.collect { Mood mood -> return mood.feeling }.size())
         }
-        def computedValues = [[key: "TeamMood", values: listFellingByDay.collect { it -> return [it.key.time, it.value] }]]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.TeamMoodSprint.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.TeamMoodSprint.xaxis.label')]],
-                       title: [text: message(code: "is.chart.TeamMoodSprint.title")]]
+        computedValues << [key: message(code: 'is.chart.sprintUserMood.teamMood'), values: listFellingByDay.collect { it -> return [it.key.time, it.value] }]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintUserMood.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.sprintUserMood.xaxis.label')]],
+                       title: [text: message(code: "is.chart.sprintUserMood.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
-
     }
 
-    // User mood by sprint for current or last release
-    def chartUserRelease(long product) {
+    def releaseUserMood(long product) {
         def release = Release.findCurrentOrLastRelease(product).list()[0]
         Product _product = Product.withProduct(product)
         def sprintDone = Sprint.findAllByStateAndParentRelease(Sprint.STATE_DONE, release)
         def moodsOfTeam = Mood.findAllByUserInList(_product.allUsers)
-
-        Map<User, List<Mood>> moodsByUser = moodsOfTeam.groupBy { it.user }
         def sprintLabel = sprintDone.collect { 'Sprint' + it.id }
-        Map<User, List<Long>> meanMoodByUser = [:]
+        // Mood by user
+        def moodsByUser = moodsOfTeam.groupBy { it.user }
+        def meanMoodByUser = [:]
         moodsByUser.each { User user, List<Mood> moods ->
             meanMoodByUser[user] = []
             sprintDone.each { Sprint sprint ->
@@ -145,23 +129,11 @@ class MoodController {
             }
         }
         def computedValues = meanMoodByUser.collect { user, means ->
-            return [key: user.firstName, values: means]
+            return [key: user.firstName + (user.lastName ? (' ' + user.lastName) : ''), values: means]
         }
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodUserRelease.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.moodUserRelease.xaxis.label')]],
-                       title: [text: message(code: "is.chart.moodUserRelease.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: sprintLabel, options: options] as JSON)
-    }
-
-    // Mean team mood by sprint for current or last release
-    def chartTeamRelease(long product) {
-        def release = Release.findCurrentOrLastRelease(product).list()[0]
-        Product _product = Product.withProduct(product)
-        def sprintDone = Sprint.findAllByStateAndParentRelease(Sprint.STATE_DONE, release)
-        def moodsOfTeam = Mood.findAllByUserInList(_product.allUsers)
-        def sprintLabel = sprintDone.collect { 'Sprint' + it.id }
         def listOfMoodBySprint = [:]
         def meanOfmoodBySprint = [:]
+        // Mean mood
         sprintDone.each { sprint ->
             List<Integer> list = moodsOfTeam.findAll {
                 it.feelingDay >= sprint.startDate && it.feelingDay <= sprint.endDate
@@ -169,9 +141,10 @@ class MoodController {
             listOfMoodBySprint[sprint] = list
             meanOfmoodBySprint[sprint] = Math.round(list ? Math.round((list.sum() / list.size())) : 0)
         }
-        def computedValues = [[key: "TeamMoodRelease", values: meanOfmoodBySprint.collect { sprint, mean -> return [mean] }]]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodTeamRelease.yaxis.label')], xAxis: [axisLabel: message(code: 'is.chart.moodTeamRelease.xaxis.label')]],
-                       title: [text: message(code: "is.chart.moodTeamRelease.title")]]
+        computedValues << [key: message(code: 'is.chart.releaseUserMood.teamMood'), values: meanOfmoodBySprint.collect { sprint, mean -> return [mean] }]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseUserMood.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.releaseUserMood.xaxis.label')]],
+                       title: [text: message(code: "is.chart.releaseUserMood.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: sprintLabel, options: options] as JSON)
     }
 }

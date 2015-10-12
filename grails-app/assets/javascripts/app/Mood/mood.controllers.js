@@ -68,7 +68,7 @@ controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$
         }
     };
     $scope.data = [];
-    MoodService.chart()
+    MoodService.openChart('chart')
         .then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options)

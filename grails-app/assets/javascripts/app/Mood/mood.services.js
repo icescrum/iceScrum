@@ -25,12 +25,7 @@ services.factory('Mood', ['Resource', function ($resource) {
         {},
         {
             listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}},
-            isAlreadySavedToday: {method: 'GET', params: {action: 'isAlreadySavedToday'}},
-            chart: {method: 'GET', params: {action: 'chart'}},
-            chartUserRelease : {method: 'GET', params: {action: 'chartUserRelease '}},
-            chartUser  : {method: 'GET', params: {action: 'chartUser  '}},
-            chartTeam: {method: 'GET', params: {action: 'chartTeam  '}},
-            chartTeamRelease: {method: 'GET', params: {action: 'chartTeamRelease  '}}
+            isAlreadySavedToday: {method: 'GET', params: {action: 'isAlreadySavedToday'}}
         });
 }]);
 
@@ -45,19 +40,11 @@ services.service("MoodService", ['Mood', function (Mood) {
     this.isAlreadySavedToday = function(){
         return Mood.isAlreadySavedToday().$promise;
     };
-    this.chart = function() {
-        return Mood.chart().$promise;
-    };
-    this.chartUser = function(project) {
-        return Mood.chartUser({product: project.id}).$promise;
-    };
-    this.chartUserRelease = function(project) {
-        return Mood.chartUserRelease ({product: project.id}).$promise;
-    };
-    this.chartTeam = function(project) {
-        return Mood.chartTeam ({product: project.id}).$promise;
-    };
-    this.chartTeamRelease = function(project) {
-        return Mood.chartTeamRelease ({product: project.id}).$promise;
+    this.openChart = function(chart, project) {
+        var settings = { action: chart };
+        if (project) {
+            settings.product = project.id;
+        }
+        return Mood.get(settings, {}).$promise;
     };
 }]);

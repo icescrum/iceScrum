@@ -83,11 +83,9 @@
                             <li><a href ng-click="openProjectChart('velocity')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
                             <li><a href ng-click="openProjectChart('velocityCapacity')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
                             <li class="divider"></li>
-                            <li role="presentation" class="dropdown-header">${message(code: 'is.mood')}</li>
-                            <li><a href ng-click="openMoodSprintChart() ">${message(code: 'is.ui.project.charts.MoodSprintChart')}</a></li>
-                            <li><a href ng-click="openMoodUserChart()">${message(code: 'is.ui.project.MoodUserChart')}</a></li>
-                            <li><a href ng-click="openChartTeam()">${message(code: 'is.ui.project.MoodTeam')}</a></li>
-                            <li><a href ng-click="openTeamMoodReleaseChart()">${message(code: 'is.ui.project.MoodTeamBysprint')}</a></li>
+                            <li role="presentation" class="dropdown-header">${message(code: 'todo.is.ui.mood')}</li>
+                            <li><a href ng-click="openMoodChart('releaseUserMood')">${message(code: 'is.chart.releaseUserMood')}</a></li>
+                            <li><a href ng-click="openMoodChart('sprintUserMood')">${message(code: 'is.chart.sprintUserMood')}</a></li>
                             <li class="divider"></li>
                             <li role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
                             <li><a href ng-click="openSprintChart('burndownRemaining')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>

@@ -390,27 +390,22 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         }
     };
     $scope.openProjectChart = function(chartName, project) {
-        var chartOptions = {
-            burnup: {},
-            velocityCapacity: {},
-            flowCumulative: {
+        var options = {};
+        if (chartName == 'flowCumulative') {
+            options = {
                 chart: {
                     type: 'stackedAreaChart'
                 }
-            },
-            burndown: {
+            }
+        } else if (chartName == 'burndown' || chartName == 'velocity') {
+            options = {
                 chart: {
                     type: 'multiBarChart',
                     stacked: true
                 }
-            },
-            velocity: {
-                chart: {
-                    type: 'multiBarChart',
-                    stacked: true
-                }
-            },
-            parkingLot: {
+            }
+        } else if (chartName == 'parkingLot') {
+            options = {
                 chart: {
                     type: 'multiBarHorizontalChart',
                     x: function(entry) { return entry[0]; },
@@ -423,7 +418,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                     }
                 }
             }
-        };
+        }
         var defaultProjectOptions = {
             chart: {
                 type: 'lineChart',
@@ -437,7 +432,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.initOptions, chartOptions[chartName]);
+        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.initOptions, options);
         ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
@@ -476,98 +471,49 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                 jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': title.text()});
             });
     };
-    $scope.openMoodUserChart = function() {
-        var options = {
-            chart: {
-                type: 'lineChart',
-                x: function (entry) { return entry[0]; },
-                y: function (entry) { return entry[1]; },
-                xScale: d3.time.scale.utc(),
-                xAxis: {
-                    tickFormat: function(d) {
-                        // TODO USE date format from i18n
-                        return $filter('date')(new Date(d), 'dd-MM-yyyy');
+    $scope.openMoodChart = function(chartName) {
+        var options = {};
+        if (chartName == 'sprintUserMood') {
+            options = {
+                chart: {
+                    type: 'lineChart',
+                    x: function (entry) { return entry[0]; },
+                    y: function (entry) { return entry[1]; },
+                    xScale: d3.time.scale.utc(),
+                    xAxis: {
+                        tickFormat: function(d) {
+                            // TODO USE date format from i18n
+                            return $filter('date')(new Date(d), 'dd-MM-yyyy');
+                        }
                     }
                 }
-            }
-        };
-        $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, options);
-        MoodService.chartUser($scope.currentProject).then(function(chart) {
-            $scope.data = chart.data;
-            $scope.options = _.merge($scope.options, chart.options);
-        });
-    };
-    $scope.openMoodSprintChart = function() {
-        var options = {
-            chart: {
-                type: 'lineChart',
-                x: function(entry, index) {
-                    return index;
-                },
-                y: function(entry) {
-                    return entry[0];
-                },
-                xAxis: {
-                    tickFormat: function(entry) {
-                        return $scope.labels[entry];
+            };
+        } else if (chartName == 'releaseUserMood') {
+            options = {
+                chart: {
+                    type: 'lineChart',
+                    x: function(entry, index) {
+                        return index;
+                    },
+                    y: function(entry) {
+                        return entry[0];
+                    },
+                    xAxis: {
+                        tickFormat: function(entry) {
+                            return $scope.labels[entry];
+                        }
                     }
                 }
-            }
-        };
+            };
+        }
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, options);
-        MoodService.chartUserRelease($scope.currentProject).then(function(chart) {
+        MoodService.openChart(chartName, $scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
-            $scope.labels = chart.labels;
             $scope.options = _.merge($scope.options, chart.options);
-        });
-    };
-    $scope.openChartTeam = function() {
-        var options = {
-            chart: {
-                type: 'lineChart',
-                x: function (entry) { return entry[0]; },
-                y: function (entry) { return entry[1]; },
-                xScale: d3.time.scale.utc(),
-                xAxis: {
-                    tickFormat: function(d) {
-                        // TODO USE date format from i18n
-                        return $filter('date')(new Date(d), 'dd-MM-yyyy');
-                    }
-                }
+            if (chart.labels) {
+                $scope.labels = chart.labels;
             }
-        };
-        $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, options);
-        MoodService.chartTeam($scope.currentProject).then(function(chart) {
-            $scope.data = chart.data;
-            $scope.options = _.merge($scope.options, chart.options);
-        });
-    };
-    $scope.openTeamMoodReleaseChart = function() {
-        var options = {
-            chart: {
-                type: 'lineChart',
-                x: function(entry, index) {
-                    return index;
-                },
-                y: function(entry) {
-                    return entry[0];
-                },
-                xAxis: {
-                    tickFormat: function(entry) {
-                        return $scope.labels[entry];
-                    }
-                }
-            }
-        };
-        $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, options);
-        MoodService.chartTeamRelease($scope.currentProject).then(function(chart) {
-            $scope.data = chart.data;
-            $scope.labels = chart.labels;
-            $scope.options = _.merge($scope.options, chart.options);
         });
     };
     $scope.initProjectChart = function(chart, options, project) {
