@@ -139,6 +139,11 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             }
         );
     };
+
+    $scope['gotoHome'] = function(){
+        $scope.$state.go('home');
+    };
+
     // Init
     $scope.currentProject = Session.getProject();
 }]);

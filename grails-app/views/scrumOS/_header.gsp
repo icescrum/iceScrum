@@ -50,6 +50,11 @@
                         ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu">
+                        <li>
+                            <a hotkey="{ 'shift+h': goToHome}" href ng-click="goToHome()">
+                                <g:message code="is.projectmenu.submenu.user.home"/> <small class="text-muted">(SHIFT+H)</small>
+                            </a>
+                        </li>
                         <li role="presentation" class="dropdown-header">
                             ${message(code: 'todo.is.projects')}
                         </li>
