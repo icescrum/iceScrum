@@ -41,6 +41,7 @@
 @invert-color : #FFFFFF;
 
 @fromTop: 46px;
+@min-height-textarea:150px;
 
 //custom mixins
 .vertical-align() {
@@ -264,14 +265,24 @@ table {
   color: #555;
 }
 
+
 .markitup-preview, .atwho-preview, .form-control-static {
   .placeholder {
     color: #757575;
   }
 }
 
-.markItUpContainer > .btn-toolbar > .btn-group {
-  margin-left:5px;
+.markitup-preview {
+  min-height:@min-height-textarea;
+}
+
+.markItUpContainer {
+  textarea {
+    min-height:@min-height-textarea;
+  }
+  > .btn-toolbar > .btn-group {
+    margin-left: 5px;
+  }
 }
 
 .markItUpFooter {

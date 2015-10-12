@@ -60,7 +60,9 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             scope.$watch('show', function(value) {
                 if (value === true){
                     container.show();
-                    element[0].focus();
+                    setTimeout(function(){
+                        element[0].focus();
+                    }, 50);
                 } else {
                     container.hide();
                 }
