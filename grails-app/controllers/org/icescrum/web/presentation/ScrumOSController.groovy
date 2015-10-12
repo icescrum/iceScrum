@@ -54,6 +54,7 @@ class ScrumOSController {
 
         def space = ApplicationSupport.getCurrentSpace(params)
         if (space){
+            space.indexScrumOS.delegate = this
             space.indexScrumOS(space, user, securityService, springSecurityService)
         }
 
