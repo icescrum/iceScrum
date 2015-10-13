@@ -3,22 +3,22 @@
         <div class="panel-heading">
             ${message(code: 'is.panel.myprojects')}
         </div>
-        <accordion>
-            <accordion-group is-open="openedProjects[project.id]"
-                             ng-repeat="project in projects">
-                <accordion-heading>
+        <uib-accordion>
+            <uib-accordion-group is-open="openedProjects[project.id]"
+                                 ng-repeat="project in projects">
+                <uib-accordion-heading>
                     {{ project.name }}
                     <button type="button"
                             class="btn btn-default"
                             ng-click="$event.stopPropagation(); openProject(project)"
-                            tooltip="${message(code:'todo.is.ui.project.open')}"
+                            uib-tooltip="${message(code:'todo.is.ui.project.open')}"
                             tooltip-append-to-body="true"
                             tooltip-placement="top">
                         <span class="fa fa-expand"></span>
                     </button>
-                </accordion-heading>
+                </uib-accordion-heading>
                 <div ng-include="'project.details.html'"></div>
-            </accordion-group>
-        </accordion>
+            </uib-accordion-group>
+        </uib-accordion>
     </div>
 </script>

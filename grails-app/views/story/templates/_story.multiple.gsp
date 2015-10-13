@@ -34,7 +34,7 @@
                      class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}  {{ storyPreview.type | storyType }}">
                     <div class="head">
                         <a class="follow"
-                           tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                           uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                            tooltip-append-to-body="true"
                            ng-switch="topStory.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
                         <span class="id">{{ topStory.id }}</span>
@@ -56,18 +56,18 @@
                     </div>
                     <div class="actions">
                         <span class="action">
-                            <a tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
+                            <a uib-tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
                                 <i class="fa fa-cog"></i>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topStory.attachments.length}">
-                            <a tooltip="{{ topStory.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
+                            <a uib-tooltip="{{ topStory.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topStory.comments_count}">
-                            <a tooltip="{{ topStory.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
+                            <a uib-tooltip="{{ topStory.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
                                tooltip-append-to-body="true"
                                ng-switch="topStory.comments_count">
                                 <i class="fa fa-comment-o" ng-switch-when="0"></i>
@@ -76,14 +76,14 @@
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topStory.tasks_count}">
-                            <a tooltip="{{ topStory.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
+                            <a uib-tooltip="{{ topStory.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-tasks"></i>
                                 <span class="badge" ng-show="topStory.tasks_count">{{ topStory.tasks_count }}</span>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
-                            <a tooltip="{{ topStory.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
+                            <a uib-tooltip="{{ topStory.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                                tooltip-append-to-body="true"
                                ng-switch="topStory.acceptanceTests_count">
                                 <i class="fa fa-check-square-o" ng-switch-when="0"></i>
@@ -171,14 +171,14 @@
             <div ng-if="authorizedStories('update', stories)"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
-                        tooltip="${message(code:'default.button.create.label')} (RETURN)"
+                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'default.button.create.label')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"
-                        tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
+                        uib-tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
                         type="button"
                         ng-click="goToNewStory()">
                     ${message(code:'is.button.cancel')}
@@ -188,13 +188,13 @@
             <div class="btn-toolbar">
                  <div ng-if="authorizedStories('accept', stories)"
                       class="btn-group"
-                      dropdown>
+                      uib-dropdown>
                     <button type="button"
-                            class="btn btn-default dropdown-toggle"
-                            dropdown-toggle>
+                            class="btn btn-default"
+                            uib-dropdown-toggle>
                         <g:message code='is.dialog.acceptAs.acceptAs.title'/> <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="uib-dropdown-menu" role="menu">
                         <li>
                             <a href ng-click="acceptMultiple()">
                                 <g:message code='is.ui.backlog.menu.acceptAsStory'/>
@@ -232,8 +232,8 @@
                             ng-switch="allFollowed(stories)"
                             class="btn btn-default"
                             ng-click="followMultiple(!allFollowed(stories))">
-                        <i class="fa" ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'" ng-switch-default tooltip="${message(code: 'is.followable.start')}"></i>
-                        <i class="fa fa-star" ng-switch-when="true" tooltip="${message(code: 'is.followable.stop')}"></i>
+                        <i class="fa" ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'" ng-switch-default uib-tooltip="${message(code: 'is.followable.start')}"></i>
+                        <i class="fa fa-star" ng-switch-when="true" uib-tooltip="${message(code: 'is.followable.stop')}"></i>
                     </button>
                 </div>
             </div>

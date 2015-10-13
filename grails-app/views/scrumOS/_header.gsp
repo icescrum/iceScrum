@@ -45,11 +45,11 @@
                 html-sortable-callback="menuSortableUpdate(startModel, destModel, start, end)"
                 ng-init='menus.visible = ${menus as JSON};'
                 ng-model="menus.visible">
-                <li class="dropdown contextual-menu" dropdown>
-                    <a class="dropdown-toggle" dropdown-toggle>
+                <li class="contextual-menu" uib-dropdown>
+                    <a uib-dropdown-toggle>
                         ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="uib-dropdown-menu">
                         <li>
                             <a hotkey="{ 'shift+h': goToHome}" href ng-click="goToHome()">
                                 <g:message code="is.projectmenu.submenu.user.home"/> <small class="text-muted">(SHIFT+H)</small>
@@ -135,9 +135,9 @@
                     ng-class="{'active':$state.includes(menu.id)}"
                     class="menuitem draggable-to-main">
                 </li>
-                <li class="dropdown menubar-more" dropdown ng-class="{ 'hidden': menus.hidden.length == 0 }">
-                    <a class="dropdown-toggle" dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
-                    <ul class="dropdown-menu menubar"
+                <li class="menubar-more" uib-dropdown ng-class="{ 'hidden': menus.hidden.length == 0 }">
+                    <a uib-dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
+                    <ul class="uib-dropdown-menu menubar"
                         html-sortable="menuSortableOptions"
                         html-sortable-callback="menuHiddenSortableUpdate(startModel, destModel, start, end)"
                         ng-init='menus.hidden = ${menusHidden as JSON};'
@@ -168,27 +168,27 @@
                         <a ng-class="{ 'text-warning': roles.stakeHolder }" ng-click="changeRole('SH')">SH</a>
                     </div>
                 </g:if>
-                <div ng-if="currentUser.username" dropdown class="pull-left" on-toggle="notificationToggle(open)">
+                <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
                     <div ng-switch="getUnreadActivities()"
-                         class="dropdown-toggle navbar-notif"
-                         dropdown-toggle>
+                         class="navbar-notif"
+                         uib-dropdown-toggle>
                         <span class="fa fa-bolt text-muted" ng-switch-when="0"></span>
                         <span class="fa fa-bolt" ng-switch-default></span>
                         <span class="badge alert-info" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                     </div>
-                    <div class="dropdown-menu notifications selection-disable" ng-include="'notifications.panel.html'"></div>
+                    <div class="uib-dropdown-menu notifications selection-disable" ng-include="'notifications.panel.html'"></div>
                 </div>
-                <div ng-if="currentUser.username" dropdown class="pull-left">
-                    <div class="navbar-user pull-left dropdown-toggle" dropdown-toggle>
+                <div ng-if="currentUser.username" uib-dropdown class="pull-left">
+                    <div class="navbar-user pull-left" uib-dropdown-toggle>
                         <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
                     </div>
-                    <div class="dropdown-menu profile-panel" ng-include="'profile.panel.html'"></div>
+                    <div class="uib-dropdown-menu profile-panel" ng-include="'profile.panel.html'"></div>
                 </div>
                 <button id="login"
                         ng-show="!(currentUser.username)"
                         class="btn btn-primary"
                         ng-click="showAuthModal()"
-                        tooltip="${message(code:'is.button.connect')} (SHIFT+L)"
+                        uib-tooltip="${message(code:'is.button.connect')} (SHIFT+L)"
                         tooltip-append-to-body="true"
                         tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
             </div>

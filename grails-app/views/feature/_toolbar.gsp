@@ -23,7 +23,7 @@
 <div class="btn-group">
     <a type="button"
        ng-if="authorizedFeature('create')"
-       tooltip="${message(code:'default.button.create.label')}"
+       uib-tooltip="${message(code:'default.button.create.label')}"
        tooltip-append-to-body="true"
        tooltip-placement="right"
        href="#feature/new"
@@ -31,7 +31,7 @@
         <span class="fa fa-plus"></span>
     </a>
     <button type="button"
-            tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
+            uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
             tooltip-append-to-body="true"
             tooltip-placement="right"
             ng-click="view.asList = !view.asList"
@@ -39,15 +39,15 @@
         <span class="fa fa-th" ng-class="{'fa-th-list': view.asList, 'fa-th': !view.asList}"></span>
     </button>
     <div class="btn-group"
-         dropdown
+         uib-dropdown
          is-open="orderBy.status"
          tooltip-append-to-body="true"
-         tooltip="${message(code:'todo.is.ui.sort')}">
-        <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">
+         uib-tooltip="${message(code:'todo.is.ui.sort')}">
+        <button class="btn btn-default" uib-dropdown-toggle type="button">
             <span id="sort">{{ orderBy.current.name }}</span>
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu">
+        <ul class="uib-dropdown-menu" role="menu">
             <li role="menuitem" ng-repeat="order in orderBy.values">
                 <a ng-click="orderBy.current = order; orderBy.status = false;" href>{{ order.name }}</a>
             </li>
@@ -55,16 +55,16 @@
     </div>
     <button type="button" class="btn btn-default"
             ng-click="orderBy.reverse = !orderBy.reverse"
-            tooltip="${message(code:'todo.is.ui.order')}"
+            uib-tooltip="${message(code:'todo.is.ui.order')}"
             tooltip-append-to-body="true">
         <span class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></span>
     </button>
 </div>
-<div class="btn-group" tooltip-append-to-body="true" dropdown tooltip="${message(code:'todo.is.ui.export')}">
-    <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">
+<div class="btn-group" tooltip-append-to-body="true" uib-dropdown uib-tooltip="${message(code:'todo.is.ui.export')}">
+    <button class="btn btn-default" uib-dropdown-toggle type="button">
         <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
     </button>
-    <ul class="dropdown-menu"
+    <ul class="uib-dropdown-menu"
         role="menu">
         <g:each in="${is.exportFormats()}" var="format">
             <li role="menuitem">
@@ -80,7 +80,7 @@
     <g:if test="${params?.printable}">
         <button type="button"
                 class="btn btn-default"
-                tooltip="${message(code:'is.ui.window.print')} (P)"
+                uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                 tooltip-append-to-body="true"
                 tooltip-placement="left"
                 ng-click="print($event)"
@@ -93,7 +93,7 @@
                 class="btn btn-default"
                 ng-show="!app.isFullScreen"
                 ng-click="fullScreen()"
-                tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
+                uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
                 tooltip-append-to-body="true"
                 tooltip-placement="left"
                 hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
@@ -101,7 +101,7 @@
         <button type="button"
                 class="btn btn-default"
                 ng-show="app.isFullScreen"
-                tooltip="${message(code:'is.ui.window.fullscreen')}"
+                uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
                 tooltip-append-to-body="true"
                 tooltip-placement="left"
                 ng-click="fullScreen()"><span class="fa fa-compress"></span>

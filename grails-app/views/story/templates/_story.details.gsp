@@ -37,7 +37,7 @@
         <h3 class="panel-title row">
             <div class="the-title">
                 <a href
-                   tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                   uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                    tooltip-append-to-body="true"
                    ng-click="follow(story)"
                    ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
@@ -45,13 +45,13 @@
             </div>
             <div class="the-id">
                 <div class="pull-right">
-                    <span tooltip="${message(code: 'is.story.creator')} : {{ story.creator | userFullName }}"
+                    <span uib-tooltip="${message(code: 'is.story.creator')} : {{ story.creator | userFullName }}"
                           tooltip-append-to-body="true">
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
                              height="21px"/>
                     </span>
                     <a class="btn btn-xs btn-default"
-                       tooltip="{{ story.activities && story.activities.length ? message('is.fluxiable.' + story.activities[0].code) : '' }}"
+                       uib-tooltip="{{ story.activities && story.activities.length ? message('is.fluxiable.' + story.activities[0].code) : '' }}"
                        tooltip-append-to-body="true">
                         <span class="fa fa-clock-o"></span>
                     </a>
@@ -73,13 +73,13 @@
         <div class="actions">
             <div class="actions-left">
                 <div class="btn-group"
-                     dropdown
-                     tooltip="${message(code: 'todo.is.ui.actions')}"
+                     uib-dropdown
+                     uib-tooltip="${message(code: 'todo.is.ui.actions')}"
                      tooltip-append-to-body="true">
-                    <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
+                    <ul class="uib-dropdown-menu" ng-include="'story.menu.html'"></ul>
                 </div>
                 <div class="btn-group">
                     <button class="btn btn-default"
@@ -88,7 +88,7 @@
                             ng-switch="story.liked"
                             role="button"
                             tabindex="0"
-                            tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
+                            uib-tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}"
                             tooltip-append-to-body="true">
                         <i class="fa fa-thumbs-o-up" ng-switch-default></i>
                         <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
@@ -101,7 +101,7 @@
                     <a class="btn btn-default"
                        type="button"
                        href="#backlog/{{ story.id }}/comments"
-                       tooltip="{{ story.comments.length | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
+                       uib-tooltip="{{ story.comments.length | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
                        tooltip-append-to-body="true"
                        ng-switch="story.comments_count">
                         <span class="fa fa-comment-o" ng-switch-when="0"></span>
@@ -110,14 +110,14 @@
                     </a>
                     <a class="btn btn-default"
                        href="#backlog/{{ story.id }}/tasks"
-                       tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
+                       uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                        tooltip-append-to-body="true">
                         <span class="fa fa-tasks"></span>
                         <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
                     </a>
                     <a class="btn btn-default"
                        href="#backlog/{{ story.id }}/tests"
-                       tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
+                       uib-tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                        tooltip-append-to-body="true"
                        tooltip-placement="left"
                         ng-switch="story.acceptanceTests_count">
@@ -134,7 +134,7 @@
                      class="progress-bar progress-bar-{{ progressState.code }}"
                      tooltip-placement="left"
                      tooltip-append-to-body="true"
-                     tooltip="{{ progressState.name }}" style="width:{{ progressState.width }}%">
+                     uib-tooltip="{{ progressState.name }}" style="width:{{ progressState.width }}%">
                     {{ progressState.days }}
                 </div>
             </div>
@@ -347,14 +347,14 @@
             <div class="btn-toolbar" ng-if="getShowStoryForm(story) && getEditableMode()">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="!isDirty() || formHolder.storyForm.$invalid"
-                        tooltip="${message(code:'default.button.update.label')} (RETURN)"
+                        uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'default.button.update.label')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"
-                        tooltip="${message(code:'is.button.cancel')}"
+                        uib-tooltip="${message(code:'is.button.cancel')}"
                         type="button"
                         ng-click="editForm(false)">
                     ${message(code:'is.button.cancel')}

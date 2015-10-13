@@ -54,26 +54,26 @@
                             </a>
                         </span>
                         <span class="action">
-                            <a tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}"
+                            <a uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
                             </a>
                         </span>
                         <span class="action">
-                            <a tooltip="${message(code:'todo.is.ui.comments')}"
+                            <a uib-tooltip="${message(code:'todo.is.ui.comments')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-comment-o"></i>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                            <a tooltip="{{ storyPreview.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
+                            <a uib-tooltip="{{ storyPreview.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-tasks"></i>
                                 <span class="badge" ng-show="storyPreview.tasks_count">{{ storyPreview.tasks_count }}</span>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                            <a tooltip="{{ storyPreview.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
+                            <a uib-tooltip="{{ storyPreview.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                                tooltip-append-to-body="true"
                                ng-switch="storyPreview.acceptanceTests_count">
                                 <i class="fa fa-check-square-o" ng-switch-when="0"></i>
@@ -124,7 +124,7 @@
                             <button type="button"
                                     ng-disabled="templateEntries.length == 0"
                                     tabindex="-1"
-                                    tooltip="${message(code:'todo.is.ui.story.template.edit')}"
+                                    uib-tooltip="${message(code:'todo.is.ui.story.template.edit')}"
                                     tooltip-placement="top"
                                     tooltip-append-to-body="true"
                                     ng-click="showEditTemplateModal()"
@@ -138,14 +138,14 @@
             <div ng-if="authorizedStory('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.storyForm.$invalid"
-                        tooltip="${message(code:'default.button.create.label')} (RETURN)"
+                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'default.button.create.label')}
                 </button>
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.storyForm.$invalid"
-                        tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                        uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                         tooltip-append-to-body="true"
                         hotkey="{'shift+return': hotkeyClick }"
                         hotkey-allow-in="INPUT"

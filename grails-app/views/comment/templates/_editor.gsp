@@ -48,7 +48,7 @@
     <div class="btn-toolbar pull-right">
         <button class="btn btn-primary pull-right"
                 ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid"
-                tooltip="${message(code:'default.button.create.label')} (RETURN)"
+                uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                 tooltip-append-to-body="true"
                 type="submit">
             ${message(code:'default.button.create.label')}

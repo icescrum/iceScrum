@@ -32,20 +32,20 @@
         <div class="head">
             <a href
                class="follow"
-               tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+               uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                tooltip-append-to-body="true"
                ng-click="follow(story)"
                ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
             <span class="id">{{ story.id }}</span>
             <span class="value editable ui-selectable-cancel"
-                  tooltip="${message(code: 'is.story.value')}"
+                  uib-tooltip="${message(code: 'is.story.value')}"
                   tooltip-append-to-body="true"
                   ng-click="showEditValueModal(story)"
                   ng-if="story.value">
                     {{ story.value }} <i class="fa fa-line-chart"></i>
             </span>
             <span class="estimation editable ui-selectable-cancel"
-                  tooltip="${message(code: 'is.story.effort')}"
+                  uib-tooltip="${message(code: 'is.story.effort')}"
                   tooltip-append-to-body="true"
                   ng-if="story.state > 1"
                   ng-click="showEditEffortModal(story)">
@@ -67,17 +67,17 @@
                 <a ng-repeat="tag in story.tags" href="#"><span class="tag">{{ tag }}</span></a>
             </div>
             <div class="actions">
-                <span dropdown class="action">
-                    <a dropdown-toggle
-                       tooltip="${message(code: 'todo.is.ui.actions')}"
+                <span uib-dropdown class="action">
+                    <a uib-dropdown-toggle
+                       uib-tooltip="${message(code: 'todo.is.ui.actions')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-cog"></i>
                     </a>
-                    <ul class="dropdown-menu" ng-include="'story.menu.html'"></ul>
+                    <ul class="uib-dropdown-menu" ng-include="'story.menu.html'"></ul>
                 </span>
                 <span class="action"
                       ng-class="{'active':story.attachments.length}"
-                      tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
+                      uib-tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                       tooltip-append-to-body="true">
                     <a><i class="fa fa-paperclip"></i></a>
                     <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
@@ -85,7 +85,7 @@
                 <span class="action" ng-class="{'active':story.comments_count}">
                     <a href
                        ng-click="goToTab(story, 'comments')"
-                       tooltip="{{ story.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
+                       uib-tooltip="{{ story.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
                        tooltip-append-to-body="true"
                        ng-switch="story.comments_count">
                         <i class="fa fa-comment-o" ng-switch-when="0"></i>
@@ -96,7 +96,7 @@
                 <span class="action" ng-class="{'active':story.tasks_count}">
                     <a href
                        ng-click="goToTab(story, 'tasks')"
-                       tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
+                       uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-tasks"></i>
                         <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
@@ -105,7 +105,7 @@
                 <span class="action" ng-class="{'active':story.acceptanceTests_count}">
                     <a href
                        ng-click="goToTab(story, 'tests')"
-                       tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
+                       uib-tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                        tooltip-append-to-body="true"
                        ng-switch="story.acceptanceTests_count">
                         <i class="fa fa-check-square-o" ng-switch-when="0"></i>

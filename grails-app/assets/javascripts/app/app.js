@@ -65,8 +65,8 @@ isApp.config(['$stateProvider', '$httpProvider',
                 .state('userregister', {
                     url: "/user/register/:token",
                     params: { token: { value: null } }, // doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
-                    onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
-                        var modal = $modal.open({
+                    onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
+                        var modal = $uibModal.open({
                             keyboard: false,
                             templateUrl: $rootScope.serverUrl + '/user/register',
                             controller: 'registerCtrl'
@@ -82,8 +82,8 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                 .state('userretrieve', {
                     url: "/user/retrieve",
-                    onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
-                        var modal = $modal.open({
+                    onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
+                        var modal = $uibModal.open({
                             templateUrl: $rootScope.serverUrl + '/user/retrieve',
                             size: 'sm',
                             controller: 'retrieveCtrl'
@@ -103,8 +103,8 @@ isApp.config(['$stateProvider', '$httpProvider',
                 })
                 .state('project.new', {
                     url: "/new",
-                    onEnter: ["$state", "$modal", "$rootScope", function($state, $modal, $rootScope) {
-                        var modal = $modal.open({
+                    onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
+                        var modal = $uibModal.open({
                                 keyboard: false,
                                 templateUrl: $rootScope.serverUrl + "/project/add",
                                 size: 'lg',
@@ -301,7 +301,7 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$modal', '$filter', 'uiSelect2Config', 'notifications', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $modal, $filter, uiSelect2Config, notifications, CONTENT_LOADED){
+    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', 'uiSelect2Config', 'notifications', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, uiSelect2Config, notifications, CONTENT_LOADED){
 
         $rootScope.$watch('$viewContentLoaded', function() {
             $timeout(function() {
@@ -385,7 +385,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                 }
             };
             if (options.condition !== false) {
-                var modal = $modal.open({
+                var modal = $uibModal.open({
                     templateUrl: 'confirm.modal.html',
                     size: 'sm',
                     controller: ["$scope", "hotkeys", function($scope, hotkeys) {
@@ -419,7 +419,7 @@ isApp.config(['$stateProvider', '$httpProvider',
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
 
         $rootScope.showCopyModal = function(title, value) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'copy.html',
                 size: 'sm',
                 controller: ["$scope", 'hotkeys', function($scope, hotkeys) {
@@ -449,7 +449,7 @@ isApp.config(['$stateProvider', '$httpProvider',
             if (username) {
                 childScope.username = username;
             }
-            $modal.open({
+            $uibModal.open({
                 keyboard: false,
                 templateUrl: $rootScope.serverUrl + '/login/auth',
                 controller: 'loginCtrl',

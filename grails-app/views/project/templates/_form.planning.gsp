@@ -136,7 +136,7 @@
             <uib-progress class="form-control-static form-bar" max="totalDuration">
                 <uib-bar ng-repeat="sprint in sprints"
                      class="{{ $last ? 'last-bar' : '' }}"
-                     tooltip-template="'sprint.tooltip.html'"
+                     uib-tooltip-template="'sprint.tooltip.html'"
                      type="default"
                      value="project.preferences.estimatedSprintsDuration">
                     #{{ sprint.orderNumber }}

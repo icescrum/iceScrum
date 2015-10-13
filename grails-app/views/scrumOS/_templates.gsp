@@ -58,15 +58,15 @@
 </script>
 
 <script type="text/ng-template" id="is.progress.html">
-    <progressbar value="progress.value" type="{{ progress.type }}">
+    <uib-progressbar value="progress.value" type="{{ progress.type }}">
         <b>{{progress.label}}</b>
-    </progressbar>
+    </uib-progressbar>
 </script>
 
 <script type="text/ng-template" id="menuitem.item.html">
 <a  hotkey="{ '{{ menu.shortcut }}' : hotkeyClick }"
     hotkey-description="${message(code:'todo.is.ui.open.view')} {{ menu.title }}"
-    tooltip="{{ menu.title }} ({{ menu.shortcut }})"
+    uib-tooltip="{{ menu.title }} ({{ menu.shortcut }})"
     tooltip-placement="bottom"
     href='#/{{ menu.id }}'>
     <span class="handle">::</span>
@@ -101,7 +101,7 @@
         <a href
            class="btn btn-default"
            hotkey="{'U':showProfile}"
-           tooltip="${message(code:'is.dialog.profile')} (U)"
+           uib-tooltip="${message(code:'is.dialog.profile')} (U)"
            tooltip-append-to-body="true"
            ng-click="showProfile()">${message(code:'is.dialog.profile')}
         </a>

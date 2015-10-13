@@ -56,18 +56,18 @@
         </h3>
         <div class="actions">
             <div class="btn-group"
-                 dropdown
-                 tooltip="${message(code: 'todo.is.ui.actions')}"
+                 uib-dropdown
+                 uib-tooltip="${message(code: 'todo.is.ui.actions')}"
                  tooltip-append-to-body="true">
-                <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+                <button type="button" class="btn btn-default" uib-dropdown-toggle>
                     <span class="fa fa-cog"></span> <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" ng-include="'feature.menu.html'"></ul>
+                <ul class="uib-dropdown-menu" ng-include="'feature.menu.html'"></ul>
             </div>
             <div class="btn-group pull-right">
                 <a class="btn btn-default"
                    href="#feature/{{ feature.id }}/stories"
-                   tooltip="{{ feature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}"
+                   uib-tooltip="{{ feature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}"
                    tooltip-append-to-body="true">
                     <span class="fa fa-tasks"></span>
                     <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>
@@ -178,14 +178,14 @@
             <div class="btn-toolbar" ng-if="getShowFeatureForm(editableFeature) && getEditableMode()">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="!isDirty() || formHolder.featureForm.$invalid"
-                        tooltip="${message(code:'default.button.update.label')} (RETURN)"
+                        uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'default.button.update.label')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"
-                        tooltip="${message(code:'is.button.cancel')}"
+                        uib-tooltip="${message(code:'is.button.cancel')}"
                         type="button"
                         ng-click="editForm(false)">
                     ${message(code:'is.button.cancel')}

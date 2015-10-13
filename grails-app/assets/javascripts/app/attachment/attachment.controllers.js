@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('attachmentCtrl', ['$scope', '$modal', 'AttachmentService', function($scope, $modal, AttachmentService) {
+controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', function($scope, $uibModal, AttachmentService) {
     //manual save from flow js
     $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
         var attachment = JSON.parse(message);
@@ -68,7 +68,7 @@ controllers.controller('attachmentCtrl', ['$scope', '$modal', 'AttachmentService
     $scope.showPreview = function(attachment, attachmentable, type){
         var previewType = $scope.isPreviewable(attachment);
         if(previewType == 'pdf'){
-            $modal.open({
+            $uibModal.open({
                 templateUrl: "attachment.preview.pdf.html",
                 size:'lg',
                 controller:[ '$scope', 'PDFViewerService', function($scope, pdf) {
@@ -89,7 +89,7 @@ controllers.controller('attachmentCtrl', ['$scope', '$modal', 'AttachmentService
                 }]
             });
         } else if (previewType == 'picture'){
-            $modal.open({
+            $uibModal.open({
                 templateUrl: "attachment.preview.picture.html",
                 size:'lg',
                 controller:[ '$scope', function($scope) {

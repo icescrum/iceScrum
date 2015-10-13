@@ -45,7 +45,7 @@
 <body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'ready': app.loading == 100, 'loading':app.loading < 100 }" class="loading">
 <div id="app-progress">
     <div>
-        <progressbar animate="true" value="app.loading" type="primary"></progressbar>
+        <uib-progressbar animate="true" value="app.loading" type="primary"></uib-progressbar>
     </div>
 </div>
 <div class="container-fluid">

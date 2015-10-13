@@ -24,11 +24,11 @@
     <div class="container-fluid">
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group">
-                <div dropdown class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.export')}">
-                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
+                <div uib-dropdown class="btn-group" tooltip-append-to-body="true" uib-tooltip="${message(code:'todo.is.ui.export')}">
+                    <button class="btn btn-default btn-sm" type="button" uib-dropdown-toggle>
                         <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="uib-dropdown-menu">
                         <g:each in="${is.exportFormats()}" var="format">
                             <li>
                                 <a data-ajax="true" href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}">${format.name}</a>
@@ -37,11 +37,11 @@
                         <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
                     </ul>
                 </div>
-                <div dropdown class="btn-group" tooltip-append-to-body="true" tooltip="${message(code:'todo.is.ui.charts')}">
-                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
+                <div uib-dropdown class="btn-group" tooltip-append-to-body="true" uib-tooltip="${message(code:'todo.is.ui.charts')}">
+                    <button class="btn btn-default btn-sm" type="button" uib-dropdown-toggle>
                         <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="uib-dropdown-menu">
                         <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productCumulativeFlowChart">${message(code:'is.ui.project.charts.productCumulativeFlow')}</a></li>
                         <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productBurnupChart">${message(code:'is.ui.project.charts.productBurnup')}</a></li>
                         <li><a data-ui-chart data-ui-chart-container="modal" href="${controllerName}/productBurndownChart">${message(code:'is.ui.project.charts.productBurndown')}</a></li>
@@ -59,7 +59,7 @@
                     <button type="button"
                             class="btn btn-default"
                             tooltip-append-to-body="true"
-                            tooltip="${message(code:'is.ui.window.print')} (P)"
+                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                             data-is-shortcut
                             data-is-shortcut-on="#window-id-${controllerName}"
                             data-is-shortcut-key="P"
@@ -72,7 +72,7 @@
                     <button type="button"
                             class="btn btn-default btn-fullscreen"
                             tooltip-append-to-body="true"
-                            tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
+                            uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
                             data-is-shortcut
                             data-is-shortcut-on="#window-id-${controllerName}"
                             data-is-shortcut-key="F"><span class="fa fa-expand"></span>

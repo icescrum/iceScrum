@@ -1,7 +1,7 @@
 <div class="backlogs">
     <div ng-repeat="backlog in backlogs"
          class="backlog ${index == 0 ? 'selected' : ''}"
-         tooltip="{{ backlog.name }}"
+         uib-tooltip="{{ backlog.name }}"
          tooltip-append-to-body="true"
          tooltip-placement="top">
         <div class="backlog-name text-center">

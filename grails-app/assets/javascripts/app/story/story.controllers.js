@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $modal, StoryService, $state, Session, StoryStatesByName) {
+controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName) {
     // Functions
     $scope.accept = function(story) {
         StoryService.accept(story)
@@ -96,7 +96,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
         }
     };
     $scope.showNewTemplateModal = function(story) {
-        $modal.open({
+        $uibModal.open({
             templateUrl: 'story.template.new.html',
             size: 'sm',
             controller: ["$scope", function($scope) {
@@ -155,7 +155,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
     $scope.showEditEffortModal = function(story) {
         if (StoryService.authorizedStory('updateEstimate', story)) {
             var parentScope = $scope;
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'story.effort.html',
                 controller: ['$scope', '$timeout',  function($scope, $timeout) {
                     $scope.editableStory = angular.copy(parentScope.story);
@@ -216,7 +216,7 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
     $scope.showEditValueModal = function(story) {
         if (StoryService.authorizedStory('update', story)) {
             var parentScope = $scope;
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'story.value.html',
                 controller: ["$scope", '$timeout', function($scope, $timeout) {
                     $scope.editableStory = angular.copy(parentScope.story);
@@ -266,8 +266,8 @@ controllers.controller('storyCtrl', ['$scope', '$modal', 'StoryService', '$state
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$modal', 'StoryService', 'StoryStates', 'FormService', 'ActorService',
-    function($scope, $controller, $state, $timeout, $filter, $stateParams, $modal, StoryService, StoryStates, FormService, ActorService) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$uibModal', 'StoryService', 'StoryStates', 'FormService', 'ActorService',
+    function($scope, $controller, $state, $timeout, $filter, $stateParams, $uibModal, StoryService, StoryStates, FormService, ActorService) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         $scope.formHolder = {};
         $scope.story = {};
@@ -601,8 +601,8 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     refreshStories();
 }]);
 
-controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '$timeout', '$controller', 'StoryService', 'hotkeys',
-    function($scope, $state, $http, $modal, $timeout, $controller, StoryService, hotkeys) {
+controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$uibModal', '$timeout', '$controller', 'StoryService', 'hotkeys',
+    function($scope, $state, $http, $uibModal, $timeout, $controller, StoryService, hotkeys) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         // Functions
         $scope.resetStoryForm = function() {
@@ -624,7 +624,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$modal', '
         };
         $scope.showEditTemplateModal = function(story) {
             var parentScope = $scope;
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'story.template.edit.html',
                 size: 'sm',
                 controller: ["$scope", function($scope) {

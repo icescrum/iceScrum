@@ -51,25 +51,25 @@
                 <a ng-repeat="tag in feature.tags" href="#"><span class="tag">{{ tag }}</span></a>
             </div>
             <div class="actions">
-                <span dropdown class="action">
-                    <a dropdown-toggle
-                       tooltip="${message(code: 'todo.is.ui.actions')}"
+                <span uib-dropdown class="action">
+                    <a uib-dropdown-toggle
+                       uib-tooltip="${message(code: 'todo.is.ui.actions')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-cog"></i>
                     </a>
-                    <ul class="dropdown-menu"
+                    <ul class="uib-dropdown-menu"
                         ng-include="'feature.menu.html'"></ul>
                 </span>
                 <span class="action"
                       ng-class="{'active':feature.attachments.length}"
-                      tooltip="{{ feature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
+                      uib-tooltip="{{ feature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                       tooltip-append-to-body="true">
                     <a><i class="fa fa-paperclip"></i></a>
                     <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
                 </span>
                 <span class="action" ng-class="{'active':feature.stories_ids.length}">
                     <a href="#/feature/{{ feature.id }}/stories"
-                       tooltip="{{ feature.stories_ids.length | orElse: 0  }} ${message(code:'todo.is.ui.feature.stories.count')}"
+                       uib-tooltip="{{ feature.stories_ids.length | orElse: 0  }} ${message(code:'todo.is.ui.feature.stories.count')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-tasks"></i>
                         <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>

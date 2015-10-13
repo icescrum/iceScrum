@@ -39,7 +39,7 @@
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
                         <a class="btn btn-model"
-                           tooltip="{{project.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.ui.product.preferences.project.public')}' }}"
+                           uib-tooltip="{{project.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.ui.product.preferences.project.public')}' }}"
                            tooltip-append-to-body="true"
                            type="button"
                            ng-model="project.preferences.hidden"

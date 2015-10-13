@@ -77,13 +77,13 @@
                     <h3 class="panel-title">
                         <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
                         <small class="pull-right visible-on-hover">
-                            <div dropdown class="btn-group"
-                                 tooltip="${message(code:'todo.is.ui.charts')}"
+                            <div uib-dropdown class="btn-group"
+                                 uib-tooltip="${message(code:'todo.is.ui.charts')}"
                                  tooltip-append-to-body="true">
-                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" dropdown-toggle>
+                                <button class="btn btn-default btn-sm" type="button" uib-dropdown-toggle>
                                     <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="uib-dropdown-menu">
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
                                     <li><a href ng-click="openProjectChart('flowCumulative')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
                                     <li><a href ng-click="openProjectChart('burnup')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>

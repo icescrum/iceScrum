@@ -51,18 +51,18 @@
                     </div>
                     <div class="actions">
                         <span class="action">
-                            <a tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
+                            <a uib-tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
                                 <i class="fa fa-cog"></i>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topFeature.attachments.length}">
-                            <a tooltip="{{ topFeature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
+                            <a uib-tooltip="{{ topFeature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                            <a tooltip="{{ topFeature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}"
+                            <a uib-tooltip="{{ topFeature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-tasks"></i>
                                 <span class="badge" ng-show="topFeature.stories_ids.length">{{ topFeature.stories_ids.length }}</span>
@@ -100,14 +100,14 @@
             <div ng-if="authorizedFeature('update')"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
-                        tooltip="${message(code:'default.button.create.label')} (RETURN)"
+                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'default.button.create.label')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"
-                        tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
+                        uib-tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
                         type="button"
                         ng-click="goToNewFeature()">
                     ${message(code:'is.button.cancel')}

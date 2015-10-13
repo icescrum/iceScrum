@@ -22,7 +22,7 @@
                                    href ng-click="showRegisterModal()"
                                    tooltip-append-to-body="true"
                                    tooltip-placement="top"
-                                   tooltip="${message(code: 'is.button.register')}">
+                                   uib-tooltip="${message(code: 'is.button.register')}">
                                     <i class="fa fa-user"></i>
                                 </a>
                             </span>
@@ -46,7 +46,7 @@
                                        ng-click="showRetrieveModal()"
                                        tooltip-append-to-body="true"
                                        tooltip-placement="top"
-                                       tooltip="${message(code: 'is.dialog.retrieve')}">
+                                       uib-tooltip="${message(code: 'is.dialog.retrieve')}">
                                         <i class="fa fa-flash"></i>
                                     </a>
                                 </span>
@@ -65,7 +65,7 @@
 
                     <div class="btn-toolbar pull-right">
                         <button class="btn btn-primary pull-right"
-                                tooltip="${message(code: 'is.button.connect')} (RETURN)"
+                                uib-tooltip="${message(code: 'is.button.connect')} (RETURN)"
                                 tooltip-append-to-body="true"
                                 type="submit">
                             ${message(code: 'is.button.connect')}

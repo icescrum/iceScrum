@@ -7,9 +7,9 @@
                     <table>
                         ${message(code: 'is.panel.mood.day')}
                         <tr>
-                            <td><button ng-click="save('GOOD')" tooltip="${message(code: 'is.panel.mood.good')}" class="fa fa-smile-o fa-5x"></button></td>
-                            <td><button ng-click="save('MEH')" tooltip="${message(code: 'is.panel.mood.meh')}" class="fa fa-meh-o fa-5x"></button></td>
-                            <td><button ng-click="save('BAD')" tooltip="${message(code: 'is.panel.mood.bad')}" class="fa fa-frown-o fa-5x"></button></td>
+                            <td><button ng-click="save('GOOD')" uib-tooltip="${message(code: 'is.panel.mood.good')}" class="fa fa-smile-o fa-5x"></button></td>
+                            <td><button ng-click="save('MEH')" uib-tooltip="${message(code: 'is.panel.mood.meh')}" class="fa fa-meh-o fa-5x"></button></td>
+                            <td><button ng-click="save('BAD')" uib-tooltip="${message(code: 'is.panel.mood.bad')}" class="fa fa-frown-o fa-5x"></button></td>
                         </tr>
                     </table>
                 </div>

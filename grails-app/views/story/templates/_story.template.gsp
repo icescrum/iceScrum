@@ -48,7 +48,7 @@
                         type="button"
                         tooltip-placement="left"
                         tooltip-append-to-body="true"
-                        tooltip="${message(code:'default.button.delete.label')}"
+                        uib-tooltip="${message(code:'default.button.delete.label')}"
                         ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteTemplate, args: [templateEntry] })"><span class="fa fa-times"></span></button>
             </td>
         </tr>

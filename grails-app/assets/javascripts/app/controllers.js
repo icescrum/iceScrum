@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys', 'PushService',
-    function($scope, $state, $modal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys, PushService) {
+controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys', 'PushService',
+    function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys, PushService) {
         $scope.app = {
             isFullScreen: false,
             loading: 10
@@ -65,19 +65,19 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
             Session.changeRole(newRole);
         };
         $scope.showAbout = function() {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: 'scrumOS/about'
             });
         };
         $scope.showProfile = function() {
-            $modal.open({
+            $uibModal.open({
                 keyboard: false,
                 templateUrl: $scope.serverUrl + '/user/openProfile',
                 controller: 'userCtrl'
             });
         };
         $scope.showManageTeamsModal = function() {
-            $modal.open({
+            $uibModal.open({
                 keyboard: false,
                 templateUrl: $scope.serverUrl + "/team/manage",
                 size: 'lg',
@@ -169,7 +169,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$modal', 'Session', 'Use
                 url = data.currentTarget.attributes['ng-href'] ? data.currentTarget.attributes['ng-href'].value : data.target.href;
                 data.preventDefault();
             }
-            var modal = $modal.open({
+            var modal = $uibModal.open({
                 keyboard: false,
                 templateUrl: "report.progress.html",
                 size: 'sm',

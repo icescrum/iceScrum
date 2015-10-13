@@ -20,13 +20,13 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$modal', '$state', function($scope, ProjectService, Session, $modal, $state) {
+controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$uibModal', '$state', function($scope, ProjectService, Session, $uibModal, $state) {
     $scope.showProjectEditModal = function(view) {
         var childScope = $scope.$new();
         if (view) {
             $scope.panel = { current: view };
         }
-        $modal.open({
+        $uibModal.open({
             keyboard: false,
             templateUrl: $scope.serverUrl + "/project/edit",
             size: 'lg',
@@ -35,7 +35,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
         });
     };
     $scope.showProjectListModal = function(type) {
-        $modal.open({
+        $uibModal.open({
             keyboard: false,
             templateUrl: $scope.serverUrl + "/project/listModal",
             size: 'lg',
@@ -66,7 +66,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
 
     $scope['import'] = function(project) {
         var url = $scope.serverUrl + "/project/import";
-        $modal.open({
+        $uibModal.open({
             keyboard: false,
             templateUrl: url + "Dialog",
             controller: ['$scope', '$http', function($scope, $http) {
@@ -118,7 +118,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
         });
     };
     $scope['export'] = function(project) {
-        var modal = $modal.open({
+        var modal = $uibModal.open({
             keyboard: false,
             templateUrl: "project/exportDialog",
             controller: ['$scope', function($scope) {

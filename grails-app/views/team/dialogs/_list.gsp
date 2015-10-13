@@ -63,7 +63,7 @@
                     <div class="btn-toolbar pull-right">
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.newTeamForm.$dirty || formHolder.newTeamForm.$invalid"
-                                tooltip="${message(code:'default.button.create.label')} (RETURN)"
+                                uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                                 tooltip-append-to-body="true"
                                 type="submit">
                             ${message(code:'default.button.create.label')}
@@ -139,14 +139,14 @@
                     <div class="btn-toolbar">
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid"
-                                tooltip="${message(code:'default.button.update.label')}"
+                                uib-tooltip="${message(code:'default.button.update.label')}"
                                 tooltip-append-to-body="true"
                                 type="submit">
                             ${message(code:'default.button.update.label')}
                         </button>
                         <button class="btn btn-default pull-right"
                                 tooltip-append-to-body="true"
-                                tooltip="${message(code:'is.button.cancel')}"
+                                uib-tooltip="${message(code:'is.button.cancel')}"
                                 type="button"
                                 ng-click="cancel()">
                             ${message(code:'is.button.cancel')}
@@ -155,7 +155,7 @@
                                 ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [team] })"
                                 tooltip-placement="left"
                                 tooltip-append-to-body="true"
-                                tooltip="${message(code:'default.button.delete.label')}">
+                                uib-tooltip="${message(code:'default.button.delete.label')}">
                             ${message(code:'default.button.delete.label')}
                         </button>
                     </div>

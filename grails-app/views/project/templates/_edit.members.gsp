@@ -36,7 +36,7 @@
                 role="button"
                 class="btn btn-danger"
                 ng-click="confirm({ message: '${message(code: 'is.dialog.members.leave.team.confirm')}', callback: leaveTeam, args: [project] })"
-                tooltip="${message(code: 'is.dialog.members.leave.team')}"
+                uib-tooltip="${message(code: 'is.dialog.members.leave.team')}"
                 tooltip-append-to-body="true">
             <i class="fa fa-times"></i> ${ message(code: 'is.dialog.members.leave.team')}
         </button>
@@ -46,7 +46,7 @@
             role="button"
             class="btn btn-default"
             tooltip-append-to-body="true"
-            tooltip="${ message(code:'is.button.cancel')}"
+            uib-tooltip="${ message(code:'is.button.cancel')}"
             ng-click="resetTeamForm()">
             ${ message(code:'is.button.cancel')}
         </button>

@@ -17,13 +17,13 @@
         </div>
         <uib-progress class="form-control-static form-bar"
                       tooltip-append-to-body="true"
-                      tooltip="{{ release.name }}"
+                      uib-tooltip="{{ release.name }}"
                       tooltip-placement="top"
                       max="release.duration">
             <uib-bar ng-repeat="sprint in release.sprints"
                      class="{{ $last ? 'last-bar' : '' }}"
                      tooltip-append-to-body="true"
-                     tooltip-template="'sprint.tooltip.html'"
+                     uib-tooltip-template="'sprint.tooltip.html'"
                      tooltip-placement="bottom"
                      type="{{ { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] }}"
                      value="sprint.duration">

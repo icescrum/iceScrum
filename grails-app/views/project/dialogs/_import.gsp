@@ -56,9 +56,9 @@
             <button class="btn btn-primary" flow-btn><i class="fa fa-upload"></i> <g:message code="is.dialog.importProject.choose.file"/></button>
         </div>
         <div ng-show="$flow.files[0].isUploading() && !progress">
-            <progressbar value="$flow.files[0].sizeUploaded()" max="$flow.files[0].size" type="primary">
+            <uib-progressbar value="$flow.files[0].sizeUploaded()" max="$flow.files[0].size" type="primary">
                 <b>{{ $flow.files[0].timeRemaining() }}sec ({{ $flow.files[0].currentSpeed }} bytes/sec)</b>
-            </progressbar>
+            </uib-progressbar>
         </div>
         <is-progress start="progress" ng-show="progress"></is-progress>
         <form name="importProjectForm"
