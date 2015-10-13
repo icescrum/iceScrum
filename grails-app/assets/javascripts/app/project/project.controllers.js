@@ -238,9 +238,6 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
             $scope.release = release;
         });
     };
-    $scope.openProject = function (project) {
-        document.location = $scope.serverUrl + '/p/' + project.pkey;
-    };
     // Init
     $scope.release = {};
     $scope.project = {};
@@ -372,7 +369,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
         p.endDate = $filter('dateToIso')(project.endDate);
         p.firstSprint = $filter('dateToIso')(project.firstSprint);
         ProjectService.save(p).then(function(project) {
-            document.location = $scope.serverUrl + '/p/' + project.pkey + '/';
+            $scope.openProject(project);
         });
     };
     $scope.teamMembersEditable = function(team) {

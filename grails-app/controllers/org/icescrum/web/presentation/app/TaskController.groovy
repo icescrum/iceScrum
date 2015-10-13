@@ -23,14 +23,10 @@
  */
 package org.icescrum.web.presentation.app
 
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.User
-import org.icescrum.core.domain.Task
-import org.icescrum.core.domain.Sprint
-import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.*
+import org.icescrum.core.utils.BundleUtils
 
 class TaskController {
 
@@ -328,9 +324,13 @@ class TaskController {
         def user = springSecurityService.currentUser
         def options = [max: 8]
         def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
-        def result = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
-                : Task.findAllByResponsibleAndStateInListAndCreationDateBetween(user, taskStates,new Date()-10,new Date(),options)
-        def tasks = result.groupBy { it.parentProduct }
-        render(status: 200, contentType: 'application/json', text: tasks as JSON)
+        def userTasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
+                                     : Task.findAllByResponsibleAndStateInListAndCreationDateBetween(user, taskStates, new Date() - 10, new Date(), options)
+        def tasksByProject = userTasks.groupBy {
+            it.parentProduct
+        }.collect { project, tasks ->
+            [project: project, tasks: tasks]
+        }
+        render(status: 200, contentType: 'application/json', text: tasksByProject as JSON)
     }
 }

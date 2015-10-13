@@ -58,6 +58,5 @@ controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope
     $scope.tasksByProject = [];
     TaskService.listByUser().then(function(tasksByProject) {
         $scope.tasksByProject = tasksByProject;
-
     });
 }]);

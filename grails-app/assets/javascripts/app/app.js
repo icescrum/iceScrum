@@ -463,6 +463,10 @@ isApp.config(['$stateProvider', '$httpProvider',
             return Math.floor(duration / (1000 * 3600 * 24)) + 1;
         };
 
+        $rootScope.openProject = function (project) {
+            document.location = $rootScope.serverUrl + '/p/' + project.pkey + '/';
+        };
+
         $(document).on('click', '.stacks.three-stacks > div, .stacks.four-stacks > div', function(event){
             if(angular.element(event.target).parent('a').length > 0){
                 return false;
