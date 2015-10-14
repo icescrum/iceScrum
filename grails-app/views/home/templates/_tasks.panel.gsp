@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="tasks.panel.html">
-<div class="panel panel-primary" ng-controller="userTaskCtrl">
+<div class="panel panel-default" ng-controller="userTaskCtrl">
         <div class="panel-heading">
-            ${message(code: 'is.panel.mytask')}
+            <h3 class="panel-title">${message(code: 'is.panel.mytask')}</h3>
         </div>
         <uib-accordion ng-repeat="entry in tasksByProject">
             {{ entry.project.name }}

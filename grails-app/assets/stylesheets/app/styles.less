@@ -482,24 +482,6 @@ table {
   }
 }
 
-#panel {
-  .sortable-placeholder {
-    border: 2px dashed @brand-primary;
-    margin: 6px;
-    width: 750px;
-    height: 200px;
-    padding: 0 5px;
-    float: left;
-  }
-}
-
-.panel-body {
-  .emoticon {
-    text-align: center;
-    align-content: center;
-  }
-}
-
 /** nav **/
 #mainmenu .nav {
   > li {
@@ -696,8 +678,17 @@ form .alert.alert-danger {
 }
 
 /** dashboards **/
-#view-project {
+#view-project, #view-home {
   padding: 20px 30px;
+
+  .sortable-placeholder {
+    border: 2px dashed @brand-primary;
+    margin: 6px;
+    width: 750px;
+    height: 200px;
+    padding: 0 5px;
+    float: left;
+  }
 
   .panel {
     border-radius: 0;
@@ -712,12 +703,16 @@ form .alert.alert-danger {
     .panel-title {
       font-size: 20px;
     }
-
+    .panel-body {
+      .emoticon {
+        text-align: center;
+        align-content: center;
+      }
+    }
     .visible-on-hover {
       opacity: 0;
       transition: opacity 0.3s ease 0s;
     }
-
     &:hover {
       .visible-on-hover {
         opacity: 1;

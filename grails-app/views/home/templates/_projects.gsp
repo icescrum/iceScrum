@@ -1,7 +1,8 @@
 <script type="text/ng-template" id="projects.html">
-    <div class="panel panel-primary" ng-controller="projectListCtrl">
+    <div class="panel panel-default" ng-controller="projectListCtrl">
         <div class="panel-heading">
-            <h3 class="panel-title">${message(code: 'is.panel.project.public')}</h3>
+            <h3 ng-if="type == 'public'" class="panel-title">${message(code: 'is.panel.project.public')}</h3>
+            <h3 ng-if="type == 'user'" class="panel-title">${message(code: 'is.panel.project.user')}</h3>
         </div>
         <uib-accordion>
             <uib-accordion-group is-open="openedProjects[project.id]"

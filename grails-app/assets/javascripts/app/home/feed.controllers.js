@@ -46,17 +46,15 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
             $scope.notifySuccess('todo.is.ui.feed.delete');
         })
     };
-    $scope.view = true;
-    $scope.click = function() {
-        $scope.view = $scope.view === false ? true: false;
+    $scope.toggleSettings = function() {
+        $scope.showSettings = !$scope.showSettings;
     };
     // Init
-    // Feeds
+    $scope.showSettings = false;
     $scope.feed = {};
     $scope.feedItems = [];
     $scope.selectedFeed = 'all';
     $scope.selectFeed($scope.selectedFeed);
-    // URL
     $scope.feedList = [];
     $scope.feed = {};
     FeedService.list()

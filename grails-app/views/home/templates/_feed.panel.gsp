@@ -1,10 +1,16 @@
 <script type="text/ng-template" id="feed.panel.html">
-    <div ng-controller="FeedCtrl" class="panel panel-primary">
-        <div class="panel-heading">${message(code: 'is.panel.feed')}
-            <button class="pull-right btn btn-default" ng-click="click()"><i class="fa fa-cog"></i></button>
+    <div ng-controller="FeedCtrl" class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                ${message(code: 'is.panel.feed')}
+                <button class="pull-right visible-on-hover btn btn-default"
+                        ng-click="toggleSettings()">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </h3>
         </div>
-        <span ng-show="view">
-            <table>
+        <div class="panel-body" ng-switch="showSettings">
+            <table ng-switch-when="true">
                 <tr>
                     <td>${message(code: 'todo.is.ui.panel.feed.input')}</td><td><input type="text" ng-model="feed.feedUrl"/>
                 </td>
@@ -12,8 +18,7 @@
                 </tr>
                 <tr><td>${message(code: 'todo.is.ui.panel.feed.list')}</td>
                     <td>
-                        <select
-                                class="form-control"
+                        <select class="form-control"
                                 placeholder="select Feed"
                                 ng-model="selectedFeed"
                                 ng-change="selectFeed(selectedFeed)"
@@ -26,18 +31,16 @@
                                 class="btn btn-primary">${message(code: 'default.button.delete.label')}</button></td>
                 </tr>
             </table>
-        </span>
-        <span ng-hide="view">
-            <h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
-
-            <p class="text-left">{{feed.description | limitTo: 100}}{{feed.description .length > 100 ? '...' : ''}}</p>
-            <span class="small">{{feed.pubDate}}</span>
-            <li ng-repeat="item in feedItems">
-                <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
-
-                <p class="text-left">{{item.item.description | limitTo: 100}}{{item.item.description.length > 100 ? '...' : ''}}</p>
-                <span class="small">{{item.item.pubDate}}</span>
-            </li>
-        </span>
+            <div ng-switch-default>
+                <h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
+                <p class="text-left">{{feed.description | limitTo: 100}}{{feed.description .length > 100 ? '...' : ''}}</p>
+                <span class="small">{{feed.pubDate}}</span>
+                <li ng-repeat="item in feedItems">
+                    <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
+                    <p class="text-left">{{item.item.description | limitTo: 100}}{{item.item.description.length > 100 ? '...' : ''}}</p>
+                    <span class="small">{{item.item.pubDate}}</span>
+                </li>
+            </div>
+        </div>
     </div>
 </script>

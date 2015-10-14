@@ -1,7 +1,8 @@
 <script type="text/ng-template" id="notes.panel.html">
-    <div ng-controller="userCtrl" class="panel panel-primary">
-        <div class="panel-heading">${message(code: 'is.panel.notes')}</div>
-
+    <div ng-controller="userCtrl" class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">${message(code: 'is.panel.notes')}</h3>
+        </div>
         <div class="panel-body">
             <div class="form-group">
                 <textarea id="note-size" is-markitup

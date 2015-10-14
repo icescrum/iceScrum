@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="login.panel.html">
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
         <div class="panel-heading ">
             <h3 class="panel-title">${message(code: 'is.connection')}</h3>
         </div>
@@ -9,7 +9,6 @@
                     <div class="col-md-9">
                         <label align="text-center"
                                for="credentials.j_username">${message(code: 'is.user.username')}</label>
-
                         <div class="input-group">
                             <input required="" ng-model="credentials.j_username" type="text"
                                    id="credentials.j_username"
@@ -62,7 +61,6 @@
                                 code="is.dialog.login.rememberme"/>
                         </label>
                     </div>
-
                     <div class="btn-toolbar pull-right">
                         <button class="btn btn-primary pull-right"
                                 uib-tooltip="${message(code: 'is.button.connect')} (RETURN)"
