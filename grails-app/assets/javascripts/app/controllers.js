@@ -248,8 +248,14 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     $scope.goToNewStory = function() {
         $state.go('backlog.new');
     };
-    $scope.goToTab = function(story, tabId) {
-        $state.go($scope.viewName + '.details.tab', {id: story.id, tabId: tabId});
+    $scope.goToStory = function(story, tabId) {
+        var params = {id: story.id};
+        var state = $scope.viewName + '.details';
+        if (tabId) {
+            params.tabId = tabId;
+            state += '.tab';
+        }
+        $state.go(state, params);
     };
     $scope.selectableOptions = {
         filter: ">.postit-container",
