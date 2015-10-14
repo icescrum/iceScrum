@@ -36,23 +36,22 @@ class HomeController {
     def springSecurityService
 
     @Secured(['permitAll()'])
-    def panels(){
-        User user= (User)springSecurityService.currentUser
-        def panels = user ? user.preferences.panels.collect{ return [id : it.key  , position : it.value] }.sort{ it.position } : [[id:'login'], [id:'projectsList']]
-        render(status: 200, contentType: 'application/json', text: panels  as JSON)
-
+    def panels() {
+        User user = (User) springSecurityService.currentUser
+        def panels = user ? user.preferences.panels.collect { return [id: it.key, position: it.value] }.sort { it.position } : [[id: 'login'], [id: 'publicProjects']]
+        render(status: 200, contentType: 'application/json', text: panels as JSON)
     }
 
     def panelPosition(String id, String position) {
         if (!id && !position) {
-            returnError(text:message(code: 'is.user.preferences.error.panel'))
+            returnError(text: message(code: 'is.user.preferences.error.panel'))
             return
         }
         try {
-            userService.panel((User)springSecurityService.currentUser, id, position)
+            userService.panel((User) springSecurityService.currentUser, id, position)
             render(status: 200)
         } catch (RuntimeException e) {
-            returnError(text:message(code: 'is.user.preferences.error.panel'), exception:e)
+            returnError(text: message(code: 'is.user.preferences.error.panel'), exception: e)
         }
     }
 
@@ -60,21 +59,21 @@ class HomeController {
         Feed feed = new Feed()
         try {
             Feed.withTransaction {
-                bindData( feed, params.feed, [include: ['feedUrl']])
-                 feed.user = springSecurityService.currentUser
-                if (! feed.save(flush: true)) {
-                    throw new RuntimeException( feed.errors?.toString())
+                bindData(feed, params.feed, [include: ['feedUrl']])
+                feed.user = springSecurityService.currentUser
+                if (!feed.save(flush: true)) {
+                    throw new RuntimeException(feed.errors?.toString())
                 }
             }
             withFormat {
-                html { render(status: 200, contentType: 'application/json', text:  feed as JSON) }
-                json { renderRESTJSON(status: 201, text:  feed) }
-                xml { renderRESTXML(status: 201, text:  feed) }
+                html { render(status: 200, contentType: 'application/json', text: feed as JSON) }
+                json { renderRESTJSON(status: 201, text: feed) }
+                xml { renderRESTXML(status: 201, text: feed) }
             }
         } catch (IllegalStateException e) {
             returnError(exception: e)
         } catch (RuntimeException e) {
-            returnError(object:  feed, exception: e)
+            returnError(object: feed, exception: e)
         }
     }
 
@@ -93,13 +92,13 @@ class HomeController {
     }
 
     def listFeeds() {
-        def user = (User)springSecurityService.currentUser
+        def user = (User) springSecurityService.currentUser
         def feeds = Feed.findAllByUser(user);
         render(status: 200, contentType: 'application/json', text: feeds as JSON)
     }
 
     def contentFeed(long id) {
-        Feed feed = Feed.findByUserAndId((User)springSecurityService.currentUser, id)
+        Feed feed = Feed.findByUserAndId((User) springSecurityService.currentUser, id)
         def connection = new URL(feed.feedUrl).openConnection()
         def xmlFeed = new XmlSlurper().parse(connection.inputStream)
         def channel = xmlFeed.channel
@@ -112,7 +111,7 @@ class HomeController {
 
     def mergedContentFeed() {
         def allJsonFeed = []
-        def allUserFeed = Feed.findAllByUser((User)springSecurityService.currentUser)
+        def allUserFeed = Feed.findAllByUser((User) springSecurityService.currentUser)
         allUserFeed.collect {
             it.feedUrl
         }.each { url ->

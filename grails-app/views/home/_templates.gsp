@@ -20,9 +20,10 @@
 --}%
 <g:render template="/home/templates/home" />
 <g:render template="/home/templates/login.panel" />
-<g:render template="/home/templates/projectsList.panel" />
 <g:render template="/home/templates/notes.panel" />
 <g:render template="/home/templates/feed.panel" />
 <g:render template="/home/templates/mood.panel" />
-<g:render template="/home/templates/projects.panel" />
 <g:render template="/home/templates/tasks.panel" />
+<g:render template="/home/templates/projects" />
+<g:render template="/home/templates/publicProjects.panel" />
+<g:render template="/home/templates/userProjects.panel" />
