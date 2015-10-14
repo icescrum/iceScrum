@@ -1,8 +1,8 @@
 <script type="text/ng-template" id="feed.panel.html">
-    <div ng-controller="FeedCtrl" class="panel panel-default">
+    <div ng-controller="FeedCtrl" class="panel panel-light">
         <div class="panel-heading">
             <h3 class="panel-title">
-                ${message(code: 'is.panel.feed')}
+                <i class="fa fa-rss"></i> ${message(code: 'is.panel.feed')}
                 <button class="pull-right visible-on-hover btn btn-default"
                         ng-click="toggleSettings()">
                     <i class="fa fa-cog"></i>

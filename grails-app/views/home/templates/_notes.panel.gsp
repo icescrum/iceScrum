@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="notes.panel.html">
-    <div ng-controller="userCtrl" class="panel panel-default">
+    <div ng-controller="userCtrl" class="panel panel-light">
         <div class="panel-heading">
-            <h3 class="panel-title">${message(code: 'is.panel.notes')}</h3>
+            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> ${message(code: 'is.panel.notes')}</h3>
         </div>
         <div class="panel-body">
             <div class="form-group">

@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="login.panel.html">
-    <div class="panel panel-default">
+    <div class="panel panel-light">
         <div class="panel-heading ">
-            <h3 class="panel-title">${message(code: 'is.connection')}</h3>
+            <h3 class="panel-title"><i class="fa fa-user"></i> ${message(code: 'is.dialog.login')}</h3>
         </div>
         <div class="panel-body">
             <form novalidate role="form" ng-submit="login(credentials)" ng-controller="loginCtrl">
@@ -22,7 +22,7 @@
                                    tooltip-append-to-body="true"
                                    tooltip-placement="top"
                                    uib-tooltip="${message(code: 'is.button.register')}">
-                                    <i class="fa fa-user"></i>
+                                    <i class="fa fa-user-plus"></i>
                                 </a>
                             </span>
                         </div>
@@ -46,7 +46,7 @@
                                        tooltip-append-to-body="true"
                                        tooltip-placement="top"
                                        uib-tooltip="${message(code: 'is.dialog.retrieve')}">
-                                        <i class="fa fa-flash"></i>
+                                        <i class="fa fa-question"></i>
                                     </a>
                                 </span>
                             </div>

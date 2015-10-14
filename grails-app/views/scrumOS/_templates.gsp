@@ -107,7 +107,7 @@
         </a>
         <a class="btn btn-danger"
            href="${createLink(controller:'logout')}">
-            ${message(code:'is.logout')}
+            ${message(code:'is.logout')} <i class="fa fa-sign-out"></i>
         </a>
     </div>
 </script>

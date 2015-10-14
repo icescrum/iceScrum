@@ -1,10 +1,10 @@
 <script type="text/ng-template" id="mood.panel.html">
-    <div class="panel panel-default">
+    <div class="panel panel-light">
         <div class="panel-heading">
-            <h3 class="panel-title">${message(code: 'is.panel.mood')}</h3>
+            <h3 class="panel-title"><i class="fa fa-smile-o"></i> ${message(code: 'is.panel.mood')}</h3>
         </div>
         <div class="panel-body" ng-controller="moodCtrl">
-            <div class="emoticon" ng-switch="alreadySavedToday">
+            <div ng-switch="alreadySavedToday">
                 <div ng-switch-default>
                     <table>
                         ${message(code: 'is.panel.mood.day')}

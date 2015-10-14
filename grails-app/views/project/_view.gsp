@@ -26,7 +26,7 @@
             <ng-include src="'project.details.html'"></ng-include>
         </div>
         <div class="col-sm-6">
-            <div class="panel panel-default">
+            <div class="panel panel-light">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
@@ -38,7 +38,7 @@
                     </h3>
                     <hr/>
                 </div>
-                <div class="panel-body activities">
+                <div class="panel-body activities panel-light">
                     <div ng-repeat="activity in activities">
                         <div class="activity">
                             <div class="media-left">
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="col-sm-6" ng-controller="chartCtrl" ng-init="initProjectChart('burnup')" id="panel-chart-container">
-            <div class="panel panel-default">
+            <div class="panel panel-light">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
@@ -119,10 +119,10 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="panel panel-default">
+            <div class="panel panel-light">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="fa fa-eye"></i> <g:message code="is.ui.project.vision.title"/>
+                        <i class="fa fa-picture"></i> <g:message code="is.ui.project.vision.title"/>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -145,7 +145,7 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="panel panel-default">
+            <div class="panel panel-light">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
@@ -173,7 +173,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="panel panel-default">
+            <div class="panel panel-light">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>

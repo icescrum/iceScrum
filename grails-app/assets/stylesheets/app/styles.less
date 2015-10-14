@@ -680,7 +680,6 @@ form .alert.alert-danger {
 /** dashboards **/
 #view-project, #view-home {
   padding: 20px 30px;
-
   .sortable-placeholder {
     border: 2px dashed @brand-primary;
     margin: 6px;
@@ -689,25 +688,19 @@ form .alert.alert-danger {
     padding: 0 5px;
     float: left;
   }
-
-  .panel {
+  .panel.panel-light {
+    .panel-default;
     border-radius: 0;
     border-bottom-width: 1px;
-    .panel-heading {
+    > .panel-heading {
       padding-bottom: 10px;
+      .panel-title {
+        font-size: 20px;
+      }
     }
     hr {
       margin-top: 8px;
       margin-bottom: 6px;
-    }
-    .panel-title {
-      font-size: 20px;
-    }
-    .panel-body {
-      .emoticon {
-        text-align: center;
-        align-content: center;
-      }
     }
     .visible-on-hover {
       opacity: 0;
@@ -718,6 +711,26 @@ form .alert.alert-danger {
         opacity: 1;
       }
     }
+  }
+}
+
+// Accordion style
+.panel-group .panel {
+  border: 1px solid @gray-lighter; // Replace ugly dashed border by a nice one
+  .panel-heading {
+    border: 0 none;
+    padding: 0 5px; // Space it nicely
+    a {
+      &:before {
+        content: ""; // Remove TODC ugly plus/minus glyphicon
+      }
+      &:hover {
+        background: none; // Remove weird grey on a hover
+      }
+    }
+  }
+  .panel-collapse.collapsing.in {
+    border-top: 1px solid @gray-lighter;
   }
 }
 
