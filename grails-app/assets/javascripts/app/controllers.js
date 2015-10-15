@@ -305,16 +305,16 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     $scope.orderBy = {
         reverse: false,
         status: false,
-        current: {id: 'rank', name: 'todo.is.ui.sort.rank'},
+        current: {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
         values: [
-            {id: 'effort', name: 'todo.is.ui.sort.effort'},
-            {id: 'rank', name: 'todo.is.ui.sort.rank'},
-            {id: 'name', name: 'todo.is.ui.sort.name'},
-            {id: 'tasks_count', name: 'todo.is.ui.sort.tasks'},
-            {id: 'suggestedDate', name: 'todo.is.ui.sort.date'},
-            {id: 'feature.id', name: 'todo.is.ui.sort.feature'},
-            {id: 'value', name: 'todo.is.ui.sort.value'},
-            {id: 'type', name: 'todo.is.ui.sort.type'}
+            {id: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
+            {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
+            {id: 'name', name: $scope.message('todo.is.ui.sort.name')},
+            {id: 'tasks_count', name: $scope.message('todo.is.ui.sort.tasks')},
+            {id: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
+            {id: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
+            {id: 'value', name: $scope.message('todo.is.ui.sort.value')},
+            {id: 'type', name: $scope.message('todo.is.ui.sort.type')}
         ]
     };
     $scope.storySortableOptions = {
@@ -341,12 +341,12 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     $scope.orderBy = {
         reverse: false,
         status: false,
-        current: {id: 'dateCreated', name: 'todo.Date'},
+        current: {id: 'dateCreated', name: $scope.message('todo.is.ui.sort.date')},
         values: [
-            {id: 'dateCreated', name: 'todo.Date'},
-            {id: 'name', name: 'todo.Name'},
-            {id: 'stories_ids.length', name: 'todo.Stories'},
-            {id: 'value', name: 'todo.Value'}
+            {id: 'dateCreated', name: $scope.message('todo.is.ui.sort.date')},
+            {id: 'name', name: $scope.message('todo.is.ui.sort.name')},
+            {id: 'stories_ids.length', name: $scope.message('todo.is.ui.sort.stories')},
+            {id: 'value', name: $scope.message('todo.is.ui.sort.value')}
         ]
     };
     $scope.goToNewFeature = function() {

@@ -496,15 +496,17 @@ isApp.config(['$stateProvider', '$httpProvider',
         clientError: 'client-error',
         serverError: 'server-error'
     })
-    .constant('StoryStates', {
-        1: {"value": "Suggested", "code": "suggested"},
-        2: {"value": "Accepted", "code": "accepted"},
-        3: {"value": "Estimated", "code": "estimated"},
-        4: {"value": "Planned", "code": "planned"},
-        5: {"value": "In progress", "code": "inprogress"},
-        7: {"value": "Done", "code": "done"},
-        '-1': {"value": "In the Icebox", "code": "icebox"}
-    })
+    .factory('StoryStates', ['$rootScope', function($rootScope) {
+        return {
+            1: {"value": $rootScope.message("is.story.state.suggested"), "code": "suggested"},
+            2: {"value": $rootScope.message("is.story.state.accepted"), "code": "accepted"},
+            3: {"value": $rootScope.message("is.story.state.estimated"), "code": "estimated"},
+            4: {"value": $rootScope.message("is.story.state.planned"), "code": "planned"},
+            5: {"value": $rootScope.message("is.story.state.inprogress"), "code": "inprogress"},
+            7: {"value": $rootScope.message("is.story.state.done"), "code": "done"},
+            '-1': {"value": $rootScope.message("is.story.state.icebox"), "code": "icebox"}
+        };
+    }])
     .constant('StoryStatesByName', {
         "SUGGESTED": 1,
         "ACCEPTED": 2,
@@ -519,21 +521,27 @@ isApp.config(['$stateProvider', '$httpProvider',
         "FAILED": 5,
         "SUCCESS": 10
     })
-    .constant('FeatureStates', {
-        0: {"value": "todo.To do", "code": "wait"},
-        1: {"value": "todo.In progress", "code": "inprogress"},
-        2: {"value": "todo.Done", "code": "done"}
-    })
-    .constant('SprintStates', {
-        1: {"value": "todo.To do", "code": "wait"},
-        2: {"value": "todo.In progress", "code": "inprogress"},
-        3: {"value": "todo.Done", "code": "done"}
-    })
-    .constant('ReleaseStates', {
-        1: {"value": "todo.To do", "code": "wait"},
-        2: {"value": "todo.In progress", "code": "inprogress"},
-        3: {"value": "todo.Done", "code": "done"}
-    })
+    .factory('FeatureStates', ['$rootScope', function($rootScope) {
+        return {
+        0: {"value": $rootScope.message("is.feature.state.wait"), "code": "wait"},
+        1: {"value": $rootScope.message("is.feature.state.inprogress"), "code": "inprogress"},
+        2: {"value": $rootScope.message("is.feature.state.done"), "code": "done"}
+        };
+    }])
+    .factory('SprintStates', ['$rootScope', function($rootScope) {
+        return {
+            1: {"value": $rootScope.message("is.sprint.state.wait"), "code": "wait"},
+            2: {"value": $rootScope.message("is.sprint.state.inprogress"), "code": "inprogress"},
+            3: {"value": $rootScope.message("is.sprint.state.done"), "code": "done"}
+        };
+    }])
+    .factory('ReleaseStates', ['$rootScope', function($rootScope) {
+        return {
+            1: {"value": $rootScope.message("is.release.state.wait"), "code": "wait"},
+            2: {"value": $rootScope.message("is.release.state.inprogress"), "code": "inprogress"},
+            3: {"value": $rootScope.message("is.release.state.done"), "code": "done"}
+        };
+    }])
     .constant('ReleaseStatesByName', {
         "WAIT": 1,
         "IN_PROGRESS": 2,
@@ -544,16 +552,20 @@ isApp.config(['$stateProvider', '$httpProvider',
         "MEH": 2,
         "BAD": 3
     })
-    .constant('MoodFeelings', {
-        1: {"value": "todo.good", "code": "good"},
-        2: {"value": "todo.meh", "code": "meh"},
-        3: {"value": "todo.bad", "code": "bad"}
-    })
-    .constant('TaskStates', {
-        0: {"value": "todo.To do", "code": "wait"},
-        1: {"value": "todo.In progress", "code": "inprogress"},
-        2: {"value": "todo.Done", "code": "done"}
-    })
+    .factory('MoodFeelings', ['$rootScope', function($rootScope) {
+        return {
+            1: {"value": $rootScope.message("is.panel.mood.good"), "code": "good"},
+            2: {"value": $rootScope.message("is.panel.mood.meh"), "code": "meh"},
+            3: {"value": $rootScope.message("is.panel.mood.bad"), "code": "bad"}
+        };
+    }])
+    .factory('TaskStates', ['$rootScope', function($rootScope) {
+        return {
+            0: {"value": $rootScope.message("is.task.state.wait"), "code": "wait"},
+            1: {"value": $rootScope.message("is.task.state.inprogress"), "code": "inprogress"},
+            2: {"value": $rootScope.message("is.task.state.done"), "code": "done"}
+        };
+    }])
     .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
         PO_SM: 'PO_SM',
         PO: 'PO',
