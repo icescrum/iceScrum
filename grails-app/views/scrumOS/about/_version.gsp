@@ -21,7 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <p>
-  <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : ${g.meta(name:"app.version").contains('Pro_Cloud') ? g.meta(name:"app.version") : g.meta(name:"app.version") + ' Standalone'} <g:if test="${Metadata.current['app.promoteVersion'] == 'true'}">(<a data-ajax="true" href="${g.createLink(controller: "scrumOS", action: "whatsNew")}">${message(code:'is.ui.whatsnew.title')}</a>)</g:if>
+  <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : ${g.meta(name:"app.version").contains('Cloud') ? g.meta(name:"app.version") : g.meta(name:"app.version") + ' Standalone'} <g:if test="${Metadata.current['app.promoteVersion'] == 'true'}">(<a data-ajax="true" href="${g.createLink(controller: "scrumOS", action: "whatsNew")}">${message(code:'is.ui.whatsnew.title')}</a>)</g:if>
 </p>
 <p>
     <strong><g:message code="is.dialog.about.appID"/></strong> : <is:appId/>
