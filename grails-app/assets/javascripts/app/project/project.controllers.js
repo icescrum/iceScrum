@@ -63,7 +63,6 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
             }]
         });
     };
-
     $scope['import'] = function(project) {
         var url = $scope.serverUrl + "/project/import";
         $uibModal.open({
@@ -141,6 +140,9 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
     };
     $scope.goToHome = function(){
         $state.go('root');
+    };
+    $scope.goToNewProject = function(){
+        $state.go('newProject');
     };
     // Init
     $scope.currentProject = Session.getProject();

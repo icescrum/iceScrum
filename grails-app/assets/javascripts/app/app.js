@@ -102,8 +102,8 @@ isApp.config(['$stateProvider', '$httpProvider',
                     templateUrl: 'openWindow/project',
                     controller: 'projectCtrl'
                 })
-                .state('project.new', {
-                    url: "/new",
+                .state('newProject', {
+                    url: "/project/new",
                     onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
                         var modal = $uibModal.open({
                                 keyboard: false,
