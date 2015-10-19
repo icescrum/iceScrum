@@ -24,6 +24,7 @@
 
 var isApp = angular.module('isApp', [
     'ngRoute',
+    'ngAnimate',
     'controllers',
     'services',
     'filters',
