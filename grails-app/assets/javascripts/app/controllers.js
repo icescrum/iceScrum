@@ -491,6 +491,11 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                             // TODO USE date format from i18n
                             return $filter('date')(new Date(d), 'dd-MM-yyyy');
                         }
+                    },
+                    yAxis: {
+                        tickFormat: function(entry) {
+                            return $scope.labelsY[entry];
+                        }
                     }
                 }
             };
@@ -506,7 +511,12 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                     },
                     xAxis: {
                         tickFormat: function(entry) {
-                            return $scope.labels[entry];
+                            return $scope.labelsX[entry];
+                        }
+                    },
+                    yAxis: {
+                        tickFormat: function(d) {
+                            return $scope.labelsY[d];
                         }
                     }
                 }
@@ -517,8 +527,9 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         MoodService.openChart(chartName, $scope.currentProject).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
-            if (chart.labels) {
-                $scope.labels = chart.labels;
+            if (chart.labelsX  ||  chart.labelsY) {
+                $scope.labelsX = chart.labelsX;
+                $scope.labelsY = chart.labelsY;
             }
         });
     };
@@ -528,7 +539,8 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
     };
     $scope.cleanData = function() {
         $scope.data = [];
-        $scope.labels = [];
+        $scope.labelsX = [];
+        $scope.labelsY = [];
         $scope.options = {};
     };
     // Init

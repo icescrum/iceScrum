@@ -64,6 +64,11 @@ controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$
                     // TODO USE date format from i18n
                     return $filter('date')(new Date(d), 'dd-MM-yyyy');
                 }
+            },
+            yAxis: {
+                tickFormat: function(d) {
+                    return $scope.labelsY[d];
+                }
             }
         }
     };
@@ -71,7 +76,10 @@ controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$
     MoodService.openChart('chart')
         .then(function(chart) {
             $scope.data = chart.data;
-            $scope.options = _.merge($scope.options, chart.options)
+            $scope.options = _.merge($scope.options, chart.options);
+            if (chart.labelsY) {
+                $scope.labelsY = chart.labelsY;
+            }
         });
 }]);
 

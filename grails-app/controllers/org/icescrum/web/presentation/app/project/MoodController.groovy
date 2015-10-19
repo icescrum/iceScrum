@@ -82,8 +82,8 @@ class MoodController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodUser.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.moodUser.xaxis.label')]],
                        title: [text: message(code: "is.chart.moodUser.title")]]
-
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
+        def moodLabel = [message(code: "is.panel.mood.bad"), message(code: "is.panel.mood.meh"), message(code: "is.panel.mood.good")]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsY: moodLabel, options: options] as JSON)
     }
 
     def sprintUserMood(long product) {
@@ -107,7 +107,8 @@ class MoodController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintUserMood.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.sprintUserMood.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintUserMood.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
+        def moodLabel = [message(code: "is.panel.mood.bad"), message(code: "is.panel.mood.meh"), message(code: "is.panel.mood.good")]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues,labelsY: moodLabel, options: options] as JSON)
     }
 
     def releaseUserMood(long product) {
@@ -115,7 +116,6 @@ class MoodController {
         Product _product = Product.withProduct(product)
         def sprintDone = Sprint.findAllByStateAndParentRelease(Sprint.STATE_DONE, release)
         def moodsOfTeam = Mood.findAllByUserInList(_product.allUsers)
-        def sprintLabel = sprintDone.collect { message(code:'is.sprint') + ' ' + it.orderNumber }
         // Mood by user
         def moodsByUser = moodsOfTeam.groupBy { it.user }
         def meanMoodByUser = [:]
@@ -147,6 +147,8 @@ class MoodController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseUserMood.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.releaseUserMood.xaxis.label')]],
                        title: [text: message(code: "is.chart.releaseUserMood.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: sprintLabel, options: options] as JSON)
+        def sprintLabel = sprintDone.collect { message(code:'is.sprint') + ' ' + it.orderNumber }
+        def moodLabel = [message(code: "is.panel.mood.bad"), message(code: "is.panel.mood.meh"), message(code: "is.panel.mood.good")]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: sprintLabel,labelsY: moodLabel, options: options] as JSON)
     }
 }
