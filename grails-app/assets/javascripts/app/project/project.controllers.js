@@ -232,7 +232,7 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
             $scope.projectMembersCount = count;
         });
         ReleaseService.getCurrentOrNextRelease(project).then(function(release) {
-            if (release) {
+            if (release.id != undefined) {
                 SprintService.list(release);
             }
             $scope.release = release;

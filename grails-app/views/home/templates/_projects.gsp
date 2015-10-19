@@ -6,20 +6,22 @@
         </div>
         <div class="panel-body">
             <uib-accordion>
-                <uib-accordion-group is-open="openedProjects[project.id]"
-                                     ng-repeat="project in projects">
+                <uib-accordion-group is-open="openedProjects[currentProject.id]"
+                                     ng-repeat="currentProject in projects">
                     <uib-accordion-heading>
-                        {{ project.name }}
+                        {{ currentProject.name }}
                         <button type="button"
                                 class="pull-right btn btn-xs btn-default"
-                                ng-click="$event.stopPropagation(); openProject(project)"
+                                ng-click="$event.stopPropagation(); openProject(currentProject)"
                                 uib-tooltip="${message(code:'todo.is.ui.project.open')}"
                                 tooltip-append-to-body="true"
                                 tooltip-placement="top">
                             <span class="fa fa-expand"></span>
                         </button>
                     </uib-accordion-heading>
-                    <div ng-include="'project.details.html'"></div>
+                    <div ng-if="currentProject.id == project.id"
+                         ng-include="'project.details.html'">
+                    </div>
                 </uib-accordion-group>
             </uib-accordion>
         </div>
