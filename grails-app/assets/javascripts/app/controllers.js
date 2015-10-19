@@ -432,7 +432,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                 y: function(entry) { return entry[0]; },
                 xAxis: {
                     tickFormat: function(entry) {
-                        return $scope.labels[entry];
+                        return $scope.labelsX[entry];
                     }
                 }
             }
@@ -442,8 +442,8 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
-            if (chart.labels) {
-                $scope.labels = chart.labels;
+            if (chart.labelsX) {
+                $scope.labelsX = chart.labelsX;
             }
         });
     };

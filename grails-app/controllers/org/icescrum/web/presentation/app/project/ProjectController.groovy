@@ -328,7 +328,7 @@ class ProjectController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.xaxis.label')]],
                        title: [text: message(code: "is.chart.productCumulativeflow.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
     def velocityCapacity(long product) {
@@ -341,7 +341,7 @@ class ProjectController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.xaxis.label')]],
                        title: [text: message(code: "is.chart.productVelocityCapacity.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
     @Secured('stakeHolder(#product) or inProduct(#product)')
@@ -355,7 +355,7 @@ class ProjectController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnUp.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productBurnUp.xaxis.label')]],
                        title: [text: message(code: "is.chart.productBurnUp.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
     def burndown(long product) {
@@ -370,7 +370,7 @@ class ProjectController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.productBurnDown.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
     def velocity(long product) {
@@ -385,7 +385,7 @@ class ProjectController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocity.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productVelocity.xaxis.label')]],
                        title: [text: message(code: "is.chart.productVelocity.title")]]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labels: values.label, options: options] as JSON)
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
     def parkingLot(long product) {
@@ -559,7 +559,7 @@ class ProjectController {
         if (data.size() <= 0) {
             returnError(text:message(code: 'is.report.error.no.data'))
         } else if (params.get) {
-            renderReport(chart ?: 'timeline', params.format, data, _product.name, ['labels.projectName': _product.name])
+            renderReport(chart ?: 'timeline', params.format, data, _product.name, ['labelsX.projectName': _product.name])
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {
