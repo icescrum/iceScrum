@@ -27,8 +27,8 @@
           submitButton="${message(code:'is.button.update')}"
           closeButton="${message(code:'is.button.cancel')}"
           title="${message(code:'todo.is.ui.profile')}">
-    <tabset type="pills" justified="true">
-        <tab heading="${message(code: 'todo.is.ui.profile.general.title')}"
+    <uib-tabset type="pills" justified="true">
+        <uib-tab heading="${message(code: 'todo.is.ui.profile.general.title')}"
              active="tabSelected.general"
              select="setTabSelected('general')">
             <div flow-files-added="editableUser.avatar = 'custom';"
@@ -150,9 +150,9 @@
                     </div>
                 </div>
             </div>
-        </tab>
+        </uib-tab>
         <g:if test="${projects}">
-            <tab heading="${message(code: 'is.dialog.profile.emailsSettings')}"
+            <uib-tab heading="${message(code: 'is.dialog.profile.emailsSettings')}"
                  active="tabSelected.emailSettings"
                  select="setTabSelected('emailSettings')">
                 <div class="row">
@@ -194,8 +194,8 @@
                         </select>
                     </div>
                 </div>
-            </tab>
+            </uib-tab>
         </g:if>
         <entry:point id="${controllerName}-${actionName}-contentd"/>
-    </tabset>
+    </uib-tabset>
 </is:modal>

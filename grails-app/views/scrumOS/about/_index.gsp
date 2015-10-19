@@ -20,22 +20,22 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <is:modal title="${message(code:'is.about')}">
-    <tabset type="pills" justified="true">
+    <uib-tabset type="pills" justified="true">
         <entry:point id="about-tabs-first"/>
         <g:if test="${errors}">
-            <tab heading="${message(code:'is.dialog.about.errors')}">
+            <uib-tab heading="${message(code:'is.dialog.about.errors')}">
                 <g:render template="/${controllerName}/about/errors" model="[errors:errors]"/>
-            </tab>
+            </uib-tab>
         </g:if>
-        <tab heading="${message(code:'is.dialog.about.help')}">
+        <uib-tab heading="${message(code:'is.dialog.about.help')}">
             <g:render template="/${controllerName}/about/help" model="[version: about.version]"/>
-        </tab>
-        <tab heading="${message(code:'is.dialog.about.version')}">
+        </uib-tab>
+        <uib-tab heading="${message(code:'is.dialog.about.version')}">
             <g:render template="/${controllerName}/about/version" model="[version:about.version, server:server]"/>
-        </tab>
-        <tab heading="${message(code:'is.dialog.about.legal')}">
+        </uib-tab>
+        <uib-tab heading="${message(code:'is.dialog.about.legal')}">
             ${about.license.text().encodeAsNL2BR()}
-        </tab>
+        </uib-tab>
         <entry:point id="about-tabs-last"/>
-    </tabset>
+    </uib-tabset>
 </is:modal>

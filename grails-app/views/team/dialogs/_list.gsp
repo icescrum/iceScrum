@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-half">
                         <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
-                        <p class="input-group typeahead">
+                        <p class="input-group">
                             <input autocomplete="off"
                                    type="text"
                                    name="member.search"
@@ -111,7 +111,7 @@
                                    focus-me="true"
                                    class="form-control"
                                    ng-model="member.name"
-                                   typeahead="member as member.name for member in searchMembers($viewValue)"
+                                   uib-typeahead="member as member.name for member in searchMembers($viewValue)"
                                    typeahead-loading="searchingMember"
                                    typeahead-wait-ms="250"
                                    typeahead-on-select="addTeamMember($item, $model, $label)"

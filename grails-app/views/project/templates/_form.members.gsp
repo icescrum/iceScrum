@@ -25,14 +25,14 @@
 <div class="row">
         <div class="col-sm-4" ng-if="projectMembersEditable(project)">
             <label for="productOwners.search">${message(code:'todo.is.ui.select.productowner')}</label>
-            <p class="input-group typeahead">
+            <p class="input-group">
                 <input autocomplete="off"
                        type="text"
                        name="productOwner.search"
                        id="productOwner.search"
                        class="form-control"
                        ng-model="po.name"
-                       typeahead="po as po.name for po in searchUsers($viewValue, true)"
+                       uib-typeahead="po as po.name for po in searchUsers($viewValue, true)"
                        typeahead-loading="searchingPo"
                        typeahead-wait-ms="250"
                        typeahead-on-select="addUser($item, 'po')"
@@ -51,14 +51,14 @@
 <div class="row" ng-show="project.preferences.hidden">
     <div class="col-sm-4" ng-if="projectMembersEditable(project)">
         <label for="stakeHolders.search">${message(code:'todo.is.ui.select.stakeholder')}</label>
-        <p class="input-group typeahead">
+        <p class="input-group">
             <input autocomplete="off"
                    type="text"
                    name="stakeHolder.search"
                    id="stakeHolder.search"
                    class="form-control"
                    ng-model="sh.name"
-                   typeahead="sh as sh.name for sh in searchUsers($viewValue)"
+                   uib-typeahead="sh as sh.name for sh in searchUsers($viewValue)"
                    typeahead-loading="searchingSh"
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'sh')"

@@ -29,13 +29,13 @@
         <div class="col-sm-4">
             <h4>${message(code:'is.team')}</h4>
             <label for="team.name">${message(code:'todo.is.ui.create.or.select.team')}</label>
-            <p class="input-group typeahead">
+            <p class="input-group">
                 <input autocomplete="off"
                        type="text"
                        name="team.name"
                        focus-me="true"
                        class="form-control"
-                       typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
+                       uib-typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                        typeahead-loading="searching"
                        typeahead-on-select="selectTeam($item, $model, $label)"
                        typeahead-template-url="select.or.create.team.html"
@@ -51,7 +51,7 @@
             <h4>{{ team.name }} <small>{{ team.members.length }} ${message(code:'todo.is.ui.team.members')}</small></h4>
             <div ng-show="teamMembersEditable(team)">
                 <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
-                <p class="input-group typeahead">
+                <p class="input-group">
                     <input autocomplete="off"
                            type="text"
                            name="member.search"
@@ -59,7 +59,7 @@
                            focus-me="true"
                            class="form-control"
                            ng-model="member.name"
-                           typeahead="member as member.name for member in searchMembers($viewValue)"
+                           uib-typeahead="member as member.name for member in searchMembers($viewValue)"
                            typeahead-loading="searchingMember"
                            typeahead-wait-ms="250"
                            typeahead-on-select="addTeamMember($item, $model, $label)"
