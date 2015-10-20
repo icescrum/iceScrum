@@ -35,7 +35,7 @@
                 <li ng-class="{ 'current': team.id == currentTeam.id }" ng-repeat="currentTeam in teams">
                     <a ng-click="selectTeam(currentTeam)" href>{{ currentTeam.name }}</a>
                 </li>
-            <pagination boundary-links="true"
+            <uib-pagination boundary-links="true"
                         previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
                         class="pagination-sm"
                         max-size="3"
@@ -43,7 +43,7 @@
                         items-per-page="teamsPerPage"
                         ng-model="currentPage"
                         ng-change="searchTeams()">
-            </pagination>
+            </uib-pagination>
         </ul>
         <div class="right-panel col-sm-9" ng-switch="teamSelected()">
             <div ng-switch-default>

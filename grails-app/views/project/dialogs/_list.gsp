@@ -38,7 +38,7 @@
                 <a ng-click="selectProject(currentProject)" href>{{ currentProject.name }}</a>
             </li>
             <div class="text-center">
-                <pagination boundary-links="true"
+                <uib-pagination boundary-links="true"
                             previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
                             class="pagination-sm"
                             max-size="3"
@@ -46,7 +46,7 @@
                             items-per-page="projectsPerPage"
                             ng-model="currentPage"
                             ng-change="searchProjects()">
-                </pagination>
+                </uib-pagination>
             </div>
         </ul>
         <div class="right-panel col-sm-9" ng-switch="projects != undefined && projects.length == 0">
