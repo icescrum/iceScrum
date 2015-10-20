@@ -188,7 +188,9 @@ angular.module('angular-extended-notifications', ['notification.html']).
                                 throw new Error('Invalid property closeOnRouteChange. Should be a string, like "route" to match an event like "routeChangeStart"');
 
                             var removeListener = $rootScope.$on('$' + data.closeOnRouteChange + 'ChangeStart', function () {
-                                notif.close();
+                                if (!notif.closed) {
+                                    notif.close();
+                                }
                                 removeListener();
                             });
                         }
