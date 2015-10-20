@@ -5,7 +5,7 @@
                 <i class="fa fa-rss"></i> ${message(code: 'is.panel.feed')}
                 <button class="pull-right visible-on-hover btn btn-default"
                         ng-click="toggleSettings()"
-                        uib-tooltip="${message(code:'todo.is.ui.setting')}">
+                        uib-tooltip="${message(code: 'todo.is.ui.setting')}">
                     <i class="fa fa-cog"></i>
                 </button>
             </h3>
@@ -13,15 +13,23 @@
         <div class="panel-body" ng-switch="showSettings ">
             <table ng-switch-when="false">
                 <tr>
-                    <td>${message(code: 'todo.is.ui.panel.feed.input')} </td><td><input type="text" ng-model="feed.feedUrl"/>
-                </td>
-                    <td><button class="btn btn-default" type="button" ng-click="save(feed)">  ${message(code: 'is.button.add')} </button></td>
+                    <td>
+                        ${message(code: 'todo.is.ui.panel.feed.input')}
+                    </td>
+                    <td>
+                        <input type="text" ng-model="feed.feedUrl"/>
+                    </td>
+                    <td>
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="save(feed)">
+                            ${message(code: 'is.button.add')}
+                        </button>
+                    </td>
                 </tr>
-                <tr ng-show="showRss" ><td>${message(code: 'todo.is.ui.panel.feed.list')}</td>
-                    <td >
+                <tr ng-show="showRss"><td>${message(code: 'todo.is.ui.panel.feed.list')}</td>
+                    <td>
                         <select class="form-control"
-                                type="text"
-                                placeholder=""
                                 ng-model="selectedFeed"
                                 ng-change="selectFeed(selectedFeed)"
                                 ui-select2>
@@ -29,8 +37,15 @@
                             <option ng-repeat="feed in feeds" value="{{feed.id}}">{{feed.feedUrl}}</option>
                         </select>
                     </td>
-                    <td><button class="btn btn-default" ng-disabled="disableDeleteButton" type="button"ng-model="selectedFeed" ng-click="delete(selectedFeed)">
-                        ${message(code: 'default.button.delete.label')}</button></td>
+                    <td>
+                        <button class="btn btn-default"
+                                ng-disabled="disableDeleteButton"
+                                type="button"
+                                ng-model="selectedFeed"
+                                ng-click="delete(selectedFeed)">
+                            ${message(code: 'default.button.delete.label')}
+                        </button>
+                    </td>
                 </tr>
             </table>
             <div class="feed" ng-switch-when="true">
