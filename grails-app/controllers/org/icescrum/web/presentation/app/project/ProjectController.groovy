@@ -559,7 +559,7 @@ class ProjectController {
         if (data.size() <= 0) {
             returnError(text:message(code: 'is.report.error.no.data'))
         } else if (params.get) {
-            renderReport(chart ?: 'timeline', params.format, data, _product.name, ['labelsX.projectName': _product.name])
+            renderReport(chart ?: 'timeline', params.format, data, _product.name, ['labels.projectName': _product.name])
         } else if (params.status) {
             render(status: 200, contentType: 'application/json', text: session.progress as JSON)
         } else {

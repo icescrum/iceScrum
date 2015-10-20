@@ -35,6 +35,7 @@ uiDefinitions = {
         window {
             title 'is.ui.backlog'
             help 'is.ui.backlog.help'
+            init 'view'
             right true
             toolbar true
             bottombar true
@@ -189,26 +190,6 @@ uiDefinitions = {
                     [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', id:params.id]],
                     [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX', id:params.id]],
                     [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT', id:params.id]]
-            ]
-        }
-    }
-    'timeline' {
-        icon = 'fa fa-clock-o'
-        menuBar {
-            title 'is.ui.timeline'
-            defaultVisibility false
-            defaultPosition 1
-            spaceDynamicBar true
-        }
-        window {
-            title 'is.ui.timeline'
-            help 'is.ui.timeline.help'
-        }
-        exportFormats = {
-            [
-                [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', locationHash:params.actionWindow?:'']],
-                [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX', locationHash:params.actionWindow?:'']],
-                [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT', locationHash:params.actionWindow?:'']]
             ]
         }
     }
