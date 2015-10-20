@@ -21,10 +21,10 @@
 
 <script type="text/ng-template" id="home.html">
     <div id="view-home">
-        <ul style="list-style-type:none;" html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
+        <ul html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
             ng-model='panels'
             class="row">
-            <li id="{{ panel.id }}" ng-repeat="panel in panels" class="col-md-5" ng-class="{'sortable':panel.position }">
+            <li id="{{ panel.id }}" ng-repeat="panel in panels" class="col-md-6" ng-class="{'sortable':panel.position }">
                 <div ng-include="panel.id+'.panel.html'"></div>
             </li>
         </ul>

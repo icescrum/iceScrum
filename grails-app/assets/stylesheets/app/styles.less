@@ -184,6 +184,10 @@ table {
   padding-bottom: 5px;
 }
 
+.sortable-placeholder {
+  border: 2px dashed @brand-primary;
+}
+
 .custom-list-item {
   border-top: 1px solid @list-group-border;
   &:last-of-type {
@@ -524,13 +528,11 @@ table {
       &.sortable-placeholder {
         width: 75px;
         height: 31px;
-        border: 2px dashed @brand-primary;
         margin-top: -2px;
       }
       > ul {
         > li.sortable-placeholder {
           height: 31px;
-          border: 2px dashed @brand-primary;
           margin-top: -2px;
         }
       }
@@ -682,14 +684,24 @@ form .alert.alert-danger {
   overflow-x: hidden;
   overflow-y: auto;
   padding: 20px 30px;
-  .sortable-placeholder {
-    border: 2px dashed @brand-primary;
-    margin: 6px;
-    width: 750px;
-    height: 200px;
-    padding: 0 5px;
-    float: left;
+
+  &> ul:first-of-type {
+    list-style-type:none;
+    padding-left:0;
+    .sortable-placeholder{
+      .make-md-column(6);
+      border:none;
+      > div {
+        height: 100%;
+        border: 2px dashed @brand-primary;
+      }
+      margin-bottom:20px;
+    }
+    li.sortable .panel-heading, li.sortable-placeholder {
+      cursor:move;
+    }
   }
+
   .panel.panel-light {
     .panel-default;
     border-radius: 0;
@@ -1157,7 +1169,6 @@ a[data-toggle="tab"] button {
       }
     }
     .sortable-placeholder {
-      border: 2px dashed @brand-primary;
       margin: 6px;
       width: 196px;
       height: 145px;

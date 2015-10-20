@@ -309,7 +309,8 @@ var sortable = function(selector, options) {
       dragging.attr('aria-grabbed', 'true');
       // grab values
       index = dragging.index();
-      draggingHeight = dragging.height();
+      //TODO pull request?
+      draggingHeight = options.forcePlaceholderSize === true || undefined ? dragging.height() : dragging.find(options.forcePlaceholderSize).height();
       startParent = $(this).parent();
       // trigger sortstar update
       dragging.parent().triggerHandler('sortstart', {

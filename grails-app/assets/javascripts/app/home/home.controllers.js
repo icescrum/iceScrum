@@ -27,7 +27,10 @@ controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, Ho
     // Init
     $scope.panels = [];
     $scope.sortable_options = {
-        sortableClass: "sortable"
+        handle:".panel-heading",
+        sortableClass: "sortable",
+        forcePlaceholderSize:"> div",
+        placeholder: '<li><div>&nbsp;</div></li>'
     };
     HomeService.getPanels().then(function(callback) {
         $scope.panels = callback.data;
