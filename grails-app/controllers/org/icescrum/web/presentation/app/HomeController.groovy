@@ -91,6 +91,11 @@ class HomeController {
         }
     }
 
+   def  feedExist(){
+       def feedUrlCount=Feed.countByUser((User)springSecurityService.currentUser)
+         render(status: 200, contentType: 'application/json', text: [value: feedUrlCount > 0] as JSON)
+   }
+
     def listFeeds() {
         def user = (User) springSecurityService.currentUser
         def feeds = Feed.findAllByUser(user);

@@ -679,6 +679,8 @@ form .alert.alert-danger {
 
 /** dashboards **/
 #view-project, #view-home {
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 20px 30px;
   .sortable-placeholder {
     border: 2px dashed @brand-primary;
@@ -2091,4 +2093,11 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
 .project-desc-chart > div:first-of-type {
   margin-top: 20px;
 }
-
+.feed {
+  height: 300px;
+  overflow-y: scroll;
+}
+.panel-body {
+  button{
+  width:60px}
+}

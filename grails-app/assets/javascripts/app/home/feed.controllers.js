@@ -24,25 +24,37 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
     $scope.save = function (feed) {
         FeedService.save(feed).then(function (savedFeed) {
             $scope.feed = savedFeed;
-            $scope.feedList.push(savedFeed);
+            $scope.feeds.push(savedFeed);
             $scope.notifySuccess('todo.is.ui.feed.saved');
+            $scope.showRss=true
         });
     };
+         FeedService.feedExist().then(function(data){
+            $scope.showSettings=data.value;
+             if($scope.showSettings==true){
+             $scope.showRss=true }
+        });
+
     $scope.selectFeed = function(selectedFeed){
         if(selectedFeed == "all") {
             FeedService.merged().then(function (allFeedsItems) {
                 $scope.feed = {};
                 $scope.feedItems = $filter('orderBy')(allFeedsItems, '-item.pubDate');
+                $scope.disableDeleteButton=true;
+
             });
         } else {
+            $scope.disableDeleteButton=false;
             FeedService.content(selectedFeed).then(function (feed) {
-                $scope.feed = feed.channel;
+                $scope.feed =feed.channel;
                 $scope.feedItems = feed.channel.items;
             });
         }
     };
     $scope.delete = function(feedToDelete){
-        FeedService.delete(feedToDelete).then(function(){
+        FeedService.delete(feedToDelete).then(function(feedDelete){
+            $scope.feedToDelete = feedDelete;
+            $scope.feeds.pop(feedDelete);
             $scope.notifySuccess('todo.is.ui.feed.delete');
         })
     };
@@ -50,12 +62,11 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
         $scope.showSettings = !$scope.showSettings;
     };
     // Init
-    $scope.showSettings = false;
     $scope.feed = {};
     $scope.feedItems = [];
-    $scope.selectedFeed = 'all';
+    $scope.selectedFeed ='all';
     $scope.selectFeed($scope.selectedFeed);
-    $scope.feedList = [];
+    $scope.feeds = [];
     $scope.feed = {};
     FeedService.list()
         .then(function (feeds) {
