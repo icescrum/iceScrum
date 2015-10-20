@@ -23,7 +23,12 @@
 <script type="text/ng-template" id="wizard.members.list.html">
     <tr>
         <td>
-            <a class="btn btn-danger btn-xs" ng-click="removeTeamMember(member)" ng-show="teamMembersEditable(team)"><i class="fa fa-close"></i></a>
+            <a class="btn btn-danger btn-xs btn-model"
+               ng-model="foo"
+               ng-click="removeTeamMember(member)"
+               ng-show="teamMembersEditable(team)">
+                <i class="fa fa-close"></i>
+            </a>
             <img ng-src="{{ member | userAvatar }}" height="24" width="24" title="{{ member.username }}">
         </td>
         <td>

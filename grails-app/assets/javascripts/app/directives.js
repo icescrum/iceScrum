@@ -346,7 +346,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
         restrict: 'C',
         require: 'ngModel',
         link: function(scope, element, attrs, modelCtrl) {
-            element.on('click', function(){
+            element.on('mousedown', function() {
                 modelCtrl.$setDirty();
                 modelCtrl.$setTouched();
             });
