@@ -12,7 +12,7 @@
                         {{ currentProject.name }}
                         <button type="button"
                                 class="pull-right btn btn-xs btn-default"
-                                ng-click="$event.stopPropagation(); openProject(currentProject)"
+                                ng-click="openProject(currentProject)"
                                 uib-tooltip="${message(code:'todo.is.ui.project.open')}"
                                 tooltip-append-to-body="true"
                                 tooltip-placement="top">
