@@ -38,8 +38,7 @@ grails.tomcat.nio = true
 def jvmArgs = ['-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005',
                '-Dicescrum.clean=true',
                '-Dfile.encoding=UTF-8',
-               '-Duser.timezone=UTC',
-               '-Djavax.net.ssl.trustStore=/Library/Java/Home/lib/security/cacerts']
+               '-Duser.timezone=UTC']
 
 grails.project.fork = [
         test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
