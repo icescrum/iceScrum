@@ -198,7 +198,7 @@
             </is:tableGroup>
 
     %{-- Table group for stories --}%
-        <g:each in="${stories.sort{it.rank}}" var="story">
+        <g:each in="${stories.sort{it.rank} + storiesDone.sort{it.rank}}" var="story">
             <is:tableGroup
                     elementId="${story.id}"
                     editable="[controller:controllerName,action:'updateTable',params:[product:params.product],onExitCell:'submit',success:'jQuery.icescrum.sprint.updateRemaining();']">
