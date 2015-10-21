@@ -10,8 +10,8 @@
                 </button>
             </h3>
         </div>
-        <div class="panel-body" ng-switch="showSettings ">
-            <table ng-switch-when="false">
+        <div class="panel-body" ng-switch="showSettings">
+            <table ng-switch-when="true">
                 <tr>
                     <td>
                         ${message(code: 'todo.is.ui.panel.feed.input')}
@@ -27,7 +27,7 @@
                         </button>
                     </td>
                 </tr>
-                <tr ng-show="showRss"><td>${message(code: 'todo.is.ui.panel.feed.list')}</td>
+                <tr ng-show="hasFeeds()"><td>${message(code: 'todo.is.ui.panel.feed.list')}</td>
                     <td>
                         <select class="form-control"
                                 ng-model="selectedFeed"
@@ -48,10 +48,13 @@
                     </td>
                 </tr>
             </table>
-            <div class="feed" ng-switch-when="true">
-                <h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
-                <p class="text-left">{{feed.description | limitTo: 100}}{{feed.description .length > 100 ? '...' : ''}}</p>
-                <span class="small">{{feed.pubDate}}</span>
+            <div class="feed" ng-switch-default>
+                <div ng-if="hasFeedChannel()">
+                    <h5><a target="_blank" href="{{feedChannel.link}}">{{feedChannel.title}}</a></h5>
+                    <p class="text-left">{{feedChannel.description | limitTo: 100}}{{feedChannel.description .length > 100 ? '...' : ''}}</p>
+                    <span class="small">{{feedChannel.pubDate}}</span>
+                    <hr/>
+                </div>
                 <li ng-repeat="item in feedItems">
                     <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
                     <p class="text-left">{{item.item.description | limitTo: 100}}{{item.item.description.length > 100 ? '...' : ''}}</p>

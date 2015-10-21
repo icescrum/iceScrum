@@ -334,12 +334,6 @@ class UrlMappings {
             action = [POST:"saveFeed"]
         }
 
-        "/home/feed/feedExist" {
-            controller = 'home'
-            action = [GET:'feedExist']
-        }
-
-
         "/home/feed/merged" {
             controller = 'home'
             action = [GET:'mergedContentFeed']

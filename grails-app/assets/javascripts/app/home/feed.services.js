@@ -25,8 +25,7 @@ services.factory('Feed', ['Resource',  function($resource) {
         {
             content: {method: 'GET', params: {action: 'content'}},
             list:    {method: 'GET',isArray: true, params: {action: 'list'}},
-            merged:  {method: 'GET', isArray:true, params: {action: 'merged'}},
-            feedExist: {method: 'GET', params: {action: 'feedExist'}}
+            merged:  {method: 'GET', isArray:true, params: {action: 'merged'}}
         });
 }]);
 
@@ -47,9 +46,5 @@ services.service("FeedService", ['Feed',function (Feed) {
     this.delete = function(feedToDelete) {
         return Feed.delete({id: feedToDelete}).$promise;
     };
-    this.feedExist = function() {
-        return Feed.feedExist().$promise;
-    };
-
 }]);
 

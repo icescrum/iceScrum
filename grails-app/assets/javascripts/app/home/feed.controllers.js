@@ -20,57 +20,56 @@
  * Marwah Soltani (msoltani@kagilum.com)
  */
 
-controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function ($scope, $filter, FeedService) {
-    $scope.save = function (feed) {
-        FeedService.save(feed).then(function (savedFeed) {
-            $scope.feed = savedFeed;
+controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function($scope, $filter, FeedService) {
+    $scope.save = function(feed) {
+        FeedService.save(feed).then(function(savedFeed) {
             $scope.feeds.push(savedFeed);
+            $scope.feed = {};
             $scope.notifySuccess('todo.is.ui.feed.saved');
-            $scope.showRss=true
         });
     };
-         FeedService.feedExist().then(function(data){
-            $scope.showSettings=data.value;
-             if($scope.showSettings==true){
-             $scope.showRss=true }
-        });
-
-    $scope.selectFeed = function(selectedFeed){
-        if(selectedFeed == "all") {
-            FeedService.merged().then(function (allFeedsItems) {
-                $scope.feed = {};
+    $scope.selectFeed = function(selectedFeed) {
+        if (selectedFeed == "all") {
+            FeedService.merged().then(function(allFeedsItems) {
+                $scope.feedChannel = {};
                 $scope.feedItems = $filter('orderBy')(allFeedsItems, '-item.pubDate');
-                $scope.disableDeleteButton=true;
+                $scope.disableDeleteButton = true;
 
             });
         } else {
-            $scope.disableDeleteButton=false;
-            FeedService.content(selectedFeed).then(function (feed) {
-                $scope.feed =feed.channel;
+            $scope.disableDeleteButton = false;
+            FeedService.content(selectedFeed).then(function(feed) {
+                $scope.feedChannel = feed.channel;
                 $scope.feedItems = feed.channel.items;
             });
         }
     };
-    $scope.delete = function(feedToDelete){
-        FeedService.delete(feedToDelete).then(function(feedDelete){
-            $scope.feedToDelete = feedDelete;
-            $scope.feeds.pop(feedDelete);
+    $scope.delete = function(feedToDelete) {
+        FeedService.delete(feedToDelete).then(function() {
+            _.remove($scope.feeds, { id: parseInt(feedToDelete) });
             $scope.notifySuccess('todo.is.ui.feed.delete');
         })
     };
     $scope.toggleSettings = function() {
         $scope.showSettings = !$scope.showSettings;
     };
+    $scope.hasFeeds = function() {
+        return $scope.feeds.length != 0;
+    };
+    $scope.hasFeedChannel = function() {
+        return !_.isEmpty($scope.feedChannel);
+    };
     // Init
-    $scope.feed = {};
     $scope.feedItems = [];
-    $scope.selectedFeed ='all';
-    $scope.selectFeed($scope.selectedFeed);
-    $scope.feeds = [];
+    $scope.feedChannel = {};
     $scope.feed = {};
+    $scope.selectedFeed = 'all';
+    $scope.feeds = [];
+    $scope.selectFeed($scope.selectedFeed);
     FeedService.list()
-        .then(function (feeds) {
+        .then(function(feeds) {
             $scope.feeds = feeds;
+            $scope.showSettings = !$scope.hasFeeds();
         });
 }]);
 
