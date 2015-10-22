@@ -8,6 +8,7 @@
   }
 }(this, function($) {
 /*
+ * CUSTOM!
  * HTML5 Sortable jQuery Plugin
  * https://github.com/voidberg/html5sortable
  *
@@ -310,7 +311,7 @@ var sortable = function(selector, options) {
       // grab values
       index = dragging.index();
       //TODO pull request?
-      draggingHeight = options.forcePlaceholderSize === true || undefined ? dragging.height() : dragging.find(options.forcePlaceholderSize).height();
+      draggingHeight = (options.forcePlaceholderSize === true || options.forcePlaceholderSize == undefined) ? dragging.height() : dragging.find(options.forcePlaceholderSize).height();
       startParent = $(this).parent();
       // trigger sortstar update
       dragging.parent().triggerHandler('sortstart', {
