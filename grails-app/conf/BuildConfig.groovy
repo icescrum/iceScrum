@@ -36,6 +36,7 @@ grails.project.war.osgi.headers = false
 grails.tomcat.nio = true
 
 def jvmArgs = ['-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005',
+               '-Dicescrum.plugins.dir='+System.getProperty("icescrum.plugins.dir"),
                '-Dicescrum.clean=true',
                '-Dfile.encoding=UTF-8',
                '-Duser.timezone=UTC']
@@ -86,7 +87,7 @@ grails.project.dependency.resolution = {
         // runtime ':database-migration:1.4.0' TODO enable new migration
         runtime ':hibernate4:4.3.10'
         build   ':tomcat:7.0.55.3'
-        compile 'org.icescrum:entry-points:1.0'
+        compile 'org.icescrum:entry-points:1.1'
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
         }
