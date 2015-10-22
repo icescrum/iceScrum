@@ -49,7 +49,6 @@
             <ul class="nav navbar-nav scroll menubar"
                 html-sortable="menuSortableOptions"
                 html-sortable-callback="menuSortableUpdate(startModel, destModel, start, end)"
-                ng-init='menus.visible = ${menus as JSON};'
                 ng-model="menus.visible">
                 <li class="contextual-menu" uib-dropdown>
                     <a uib-dropdown-toggle>
@@ -147,7 +146,6 @@
                     <ul class="uib-dropdown-menu menubar"
                         html-sortable="menuSortableOptions"
                         html-sortable-callback="menuHiddenSortableUpdate(startModel, destModel, start, end)"
-                        ng-init='menus.hidden = ${menusHidden as JSON};'
                         ng-model="menus.hidden">
                             <li ng-repeat="menu in menus.hidden"
                                 ng-include="'menuitem.item.html'"

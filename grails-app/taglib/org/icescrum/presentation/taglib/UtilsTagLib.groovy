@@ -24,17 +24,16 @@
 
 package org.icescrum.presentation.taglib
 
-import org.icescrum.core.ui.UiDefinition
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
+import groovy.xml.MarkupBuilder
+import org.apache.commons.lang.StringEscapeUtils
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.ui.UiDefinition
 import org.icescrum.core.utils.BundleUtils
-import org.apache.commons.lang.StringEscapeUtils
-import groovy.xml.MarkupBuilder
 import org.springframework.validation.Errors
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 class UtilsTagLib {
 
@@ -82,11 +81,8 @@ class UtilsTagLib {
     }
 
     def header = { attrs, body ->
-        def menus = getMenuBarFromUiDefinitions()
         out << g.render(template: '/scrumOS/header',
                 model: [
-                        menus: menus.visible.sort{ it.position },
-                        menusHidden: menus.hidden.sort{ it.position },
                         importEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         exportEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         creationProjectEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
@@ -284,35 +280,24 @@ class UtilsTagLib {
     }
 
     def getMenuBarFromUiDefinitions = { attrs ->
-        def splitHidden = attrs.splitHidden != false
-        def menus = splitHidden ? [visible:[], hidden:[]] : []
-        uiDefinitionService.getDefinitions().each { String id, UiDefinition uiDefinition ->
+        def menus = []
+        uiDefinitionService.getDefinitions().each { String uiDefinitionId, UiDefinition uiDefinition ->
             def menuBar = uiDefinition.menuBar
-            if(menuBar?.spaceDynamicBar) {
-                menuBar.show = menuBarSupport.spaceDynamicBar(id, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space)
+            if (menuBar?.spaceDynamicBar) {
+                menuBar.show = menuBarSupport.spaceDynamicBar(uiDefinitionId, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space)
             }
             def show = menuBar?.show
             if (show in Closure) {
                 show.delegate = delegate
                 show = show()
             }
-
-            def menu = [title: message(code:menuBar?.title),
-                    id: id,
-                    shortcut: "ctrl+${(menus.visible.size() + menus.hidden.size() + 1)}",
-                    icon: uiDefinition.icon,
-                    position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1]
-
-            if (splitHidden){
-                if (show && show.visible) {
-                    menus.visible << menu
-                } else if (show) {
-                    menus.hidden << menu
-                }
-            } else {
-                if (show){
-                    menus << menu
-                }
+            if (show) {
+                menus << [title: message(code: menuBar?.title),
+                          id: uiDefinitionId,
+                          shortcut: "ctrl+" + (menus.size() + 1),
+                          icon: uiDefinition.icon,
+                          position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
+                          visible: show.visible]
             }
         }
         return menus

@@ -42,7 +42,7 @@
         var $rootScope = angular.element(document).injector().get('$rootScope');
         var Session = angular.element(document).injector().get('Session');
         var PushService = angular.element(document).injector().get('PushService');
-        $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions(splitHidden: false) as JSON});
+        $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions() as JSON});
         $rootScope.initMessages(${i18nMessages});
         Session.setProject(${product as JSON});
         Session.setUser(${user as JSON});

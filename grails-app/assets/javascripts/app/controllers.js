@@ -84,10 +84,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 controller: 'manageTeamsModalCtrl'
             });
         };
-        $scope.menus = {
-            visible: [],
-            hidden: []
-        };
         $scope.getPushState = function() {
             return PushService.push.connected ? 'connected' : 'disconnected'
         };
@@ -382,7 +378,9 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
+}]);
 
+controllers.controller('releasePlanCtrl', [function() {
 
 }]);
 

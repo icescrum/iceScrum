@@ -68,8 +68,8 @@ uiDefinitions = {
         icon = 'fa fa-puzzle-piece'
         menuBar {
             title 'is.ui.feature'
-            defaultVisibility false
-            defaultPosition 2
+            defaultVisibility true
+            defaultPosition 5
             spaceDynamicBar true
         }
         window {
@@ -120,23 +120,13 @@ uiDefinitions = {
         menuBar {
             title 'is.ui.releasePlan'
             defaultVisibility true
-            defaultPosition 4
+            defaultPosition 3
             spaceDynamicBar true
         }
         window {
             title 'is.ui.releasePlan'
             help 'is.ui.releasePlan.help'
-            init 'index'
-            before { def product, def action ->
-                def isWindowContext = actionName == 'openWindow'
-                if (!params.id && (!isWindowContext || action.contains('Chart'))) {
-                    params.id = Release.findCurrentOrLastRelease(product.id).list()[0]?.id
-                }
-                if (!params.id) {
-                    params.id = Release.findCurrentOrNextRelease(product.id).list()[0]?.id
-                }
-                isWindowContext || params.id
-            }
+            init 'view'
         }
         embedded = [
                 view:'index',
@@ -155,7 +145,7 @@ uiDefinitions = {
         menuBar {
             title 'is.ui.sprintPlan'
             defaultVisibility true
-            defaultPosition 5
+            defaultPosition 4
             spaceDynamicBar true
         }
         window {
@@ -205,7 +195,7 @@ uiDefinitions = {
         menuBar {
             title 'is.ui.finder'
             defaultVisibility false
-            defaultPosition 4
+            defaultPosition 1
             spaceDynamicBar true
         }
         window {

@@ -265,7 +265,12 @@ isApp.config(['$stateProvider', '$httpProvider',
                                     controller:'featureDetailsStoryCtrl'
                                 }
                             }
-                        });
+                        })
+                .state('releasePlan', {
+                    url: "/releasePlan",
+                    templateUrl: 'openWindow/releasePlan',
+                    controller: 'releasePlanCtrl'
+                })
         }
     ])
     .config(['flowFactoryProvider', function (flowFactoryProvider) {
@@ -342,6 +347,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         $rootScope.applicationMenus = [];
         $rootScope.initApplicationMenus = function(initMenus) {
             $rootScope.applicationMenus = initMenus;
+            var menusByVisibility = _.groupBy(initMenus, 'visible');
+            $rootScope.menus = {
+                visible: _.sortBy(menusByVisibility[true], 'position'),
+                hidden: _.sortBy(menusByVisibility[false], 'position')
+            }
         };
 
         $rootScope.message = function(code, args) {
