@@ -264,6 +264,19 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group"
+                 ng-show="authorizedStory('updateParentSprint', editableStory)">
+                <label for="parentSprint">${message(code:'is.sprint')}</label>
+                <input type="hidden"
+                       ng-focus="editForm(true)"
+                       ng-disabled="!getShowStoryForm(story)"
+                       class="form-control"
+                       value="{{ editableStory.parentSprint.id ? editableStory.parentSprint : '' }}"
+                       name="parentSprint"
+                       ng-model="editableStory.parentSprint"
+                       ui-select2="selectParentSprintOptions"
+                       data-placeholder="${message(code: 'is.ui.story.noparentsprint')}"/>
+            </div>
             <div class="form-group">
                 <label for="dependsOn">${message(code:'is.story.dependsOn')}</label>
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">

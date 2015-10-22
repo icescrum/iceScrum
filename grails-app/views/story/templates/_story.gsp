@@ -77,7 +77,7 @@
                 </span>
                 <span class="action" ng-class="{'active':story.attachments.length}">
                     <a href
-                       ng-click="goToStory(story, 'tests')"
+                       ng-click="goToStory(story)"
                        uib-tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-paperclip"></i>

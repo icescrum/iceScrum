@@ -427,6 +427,27 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
+        $scope.selectParentSprintOptions = {
+            formatSelection: function(object) {
+                return object.text ? object.text : object.parentReleaseName + ' - ' + $scope.message('is.sprint') + object.orderNumber;
+            },
+            allowClear: true,
+            createChoiceOnEmpty: false,
+            resultAsEmptyId: true, //important to preserve logic id='' server side
+            initSelection: function(element, callback) {
+                callback(JSON.parse(element.val()));
+            },
+            ajax: {
+                url: 'story/sprintEntries',
+                cache: 'true',
+                data: function(term) {
+                    return { term: term };
+                },
+                results: function(data) {
+                    return { results: data };
+                }
+            }
+        };
         $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {

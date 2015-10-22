@@ -24,6 +24,7 @@
 package org.icescrum.web.presentation.app
 
 import org.icescrum.core.domain.Actor
+import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Feature
@@ -414,7 +415,7 @@ class StoryController {
         }
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
+    @Secured(['isAuthenticated() and !archivedProduct()'])
     def dependenceEntries(long id, long product) {
         def story = Story.withStory(product, id)
         def stories = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
@@ -423,6 +424,24 @@ class StoryController {
             storyEntries = storyEntries.findAll { it.text.contains(params.term) }
         }
         render status: 200, contentType: 'application/json', text: storyEntries as JSON
+    }
+
+    @Secured(['isAuthenticated() and !archivedProduct()'])
+    def sprintEntries(long product) {
+        def sprintEntries = []
+        Product _product = Product.withProduct(product)
+        def releases = Release.findAllByParentProductAndStateNotEqual(_product, Release.STATE_DONE)
+        if (releases) {
+            Sprint.findAllByStateNotEqualAndParentReleaseInList(Sprint.STATE_DONE, releases).groupBy { it.parentRelease }.each { Release release, List<Sprint> sprints ->
+                sprints.sort { it.orderNumber }.each { Sprint sprint ->
+                    sprintEntries << [id: sprint.id, text: release.name + ' - ' + message(code: 'is.sprint') + sprint.orderNumber]
+                }
+            }
+        }
+        if (params.term) {
+            sprintEntries = sprintEntries.findAll { it.text.contains(params.term) }
+        }
+        render status: 200, contentType: 'application/json', text: sprintEntries as JSON
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])

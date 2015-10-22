@@ -127,7 +127,7 @@ icescrum.marshaller = [
         sprint:[include:['activable','totalRemaining', 'duration'],
                 exclude:['cliches'],
                 textile:['retrospective', 'doneDefinition'],
-                asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
+                asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName']],
         release:[include:['duration'],
                  textile:['vision'],
                  asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
