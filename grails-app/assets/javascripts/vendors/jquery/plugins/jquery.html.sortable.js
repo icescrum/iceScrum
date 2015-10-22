@@ -8,7 +8,7 @@
   }
 }(this, function($) {
 /*
- * CUSTOM!
+ * CUSTOMIZED!
  * HTML5 Sortable jQuery Plugin
  * https://github.com/voidberg/html5sortable
  *

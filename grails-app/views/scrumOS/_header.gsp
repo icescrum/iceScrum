@@ -48,7 +48,7 @@
         <div id="mainmenu" ng-controller="projectCtrl">
             <ul class="nav navbar-nav scroll menubar"
                 html-sortable="menuSortableOptions"
-                html-sortable-callback="menuSortableUpdate(startModel, destModel, start, end)"
+                html-sortable-callback="menuSortableUpdate(startModel, destModel, start, end, false)"
                 ng-model="menus.visible">
                 <li class="contextual-menu" uib-dropdown>
                     <a uib-dropdown-toggle>
@@ -145,7 +145,7 @@
                     <a uib-dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                     <ul class="uib-dropdown-menu menubar"
                         html-sortable="menuSortableOptions"
-                        html-sortable-callback="menuHiddenSortableUpdate(startModel, destModel, start, end)"
+                        html-sortable-callback="menuSortableUpdate(startModel, destModel, start, end, true)"
                         ng-model="menus.hidden">
                             <li ng-repeat="menu in menus.hidden"
                                 ng-include="'menuitem.item.html'"

@@ -103,12 +103,8 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 data: info
             });
         };
-        $scope.menuSortableUpdate = function(startModel, destModel, start, end) {
-            updateMenu({id: destModel[end].id, position: end + 1, hidden: false});
-        };
-
-        $scope.menuHiddenSortableUpdate = function(startModel, destModel, start, end) {
-            updateMenu({id: destModel[end].id, position: end + 1, hidden: true});
+        $scope.menuSortableUpdate = function(startModel, destModel, start, end, hidden) {
+            updateMenu({id: destModel[end].id, position: end + 1, hidden: hidden});
         };
         //fake loading
         var loadingAppProgress = $interval(function() {

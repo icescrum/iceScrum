@@ -1,4 +1,5 @@
 /*
+ * CUSTOMIZED!
  * AngularJS integration with the HTML5 Sortable jQuery Plugin
  * https://github.com/voidberg/html5sortable
  *
@@ -52,7 +53,7 @@
                 var $destModel = $parse($dest);
 
                 var $start = data.oldindex;
-                var $end   = data.item.index();
+                var $end   = data.index; // item.index() was giving a wrong value (good value + 1) in the menu bar
 
                 scope.$apply(function() {
                   // TODO: fix this, if you know angular
