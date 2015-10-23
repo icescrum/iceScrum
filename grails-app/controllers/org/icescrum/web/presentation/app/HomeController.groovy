@@ -105,7 +105,6 @@ class HomeController {
         User user = (User) springSecurityService.currentUser
         Feed feed = Feed.findByUserAndId(user, id)
         userService.saveFeed(user, feed)
-        println "add feed $id to user preferences"
         def connection = new URL(feed.feedUrl).openConnection()
         def xmlFeed = new XmlSlurper().parse(connection.inputStream)
         def channel = xmlFeed.channel
