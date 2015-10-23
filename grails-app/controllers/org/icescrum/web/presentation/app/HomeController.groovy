@@ -78,8 +78,12 @@ class HomeController {
     }
 
     def deleteFeed(long id) {
+        User user = (User) springSecurityService.currentUser
         try {
             def feedToDelete = Feed.findById(id)
+            if (user.preferences.feed == feedToDelete) {
+                userService.saveFeed(user, null)
+            }
             feedToDelete.delete()
             withFormat {
                 html { render(status: 200) }
@@ -98,7 +102,10 @@ class HomeController {
     }
 
     def contentFeed(long id) {
-        Feed feed = Feed.findByUserAndId((User) springSecurityService.currentUser, id)
+        User user = (User) springSecurityService.currentUser
+        Feed feed = Feed.findByUserAndId(user, id)
+        userService.saveFeed(user, feed)
+        println "add feed $id to user preferences"
         def connection = new URL(feed.feedUrl).openConnection()
         def xmlFeed = new XmlSlurper().parse(connection.inputStream)
         def channel = xmlFeed.channel
@@ -109,9 +116,17 @@ class HomeController {
         render(status: 200, contentType: "application/json", text: jsonFeed as JSON)
     }
 
+    def userFeed() {
+        User user = (User) springSecurityService.currentUser
+        def feed = user.preferences.feed
+        render(status: 200, contentType: 'application/json', text: feed as JSON)
+    }
+
     def mergedContentFeed() {
         def allJsonFeed = []
-        def allUserFeed = Feed.findAllByUser((User) springSecurityService.currentUser)
+        User user = (User) springSecurityService.currentUser
+        userService.saveFeed(user, null)
+        def allUserFeed = Feed.findAllByUser(user)
         allUserFeed.collect {
             it.feedUrl
         }.each { url ->

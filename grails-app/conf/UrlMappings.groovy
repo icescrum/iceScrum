@@ -370,6 +370,11 @@ class UrlMappings {
             action = [GET:"panels"]
         }
 
+        "/home/feed/userFeed" {
+            controller = 'home'
+            action = [GET:"userFeed"]
+        }
+
         "403"(controller: "errors", action: "error403")
         "400"(controller: "errors", action: "fakeError")
         "302"(controller: "errors", action: "fakeError")

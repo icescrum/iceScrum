@@ -46,7 +46,8 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
     };
     $scope.delete = function(feedToDelete) {
         FeedService.delete(feedToDelete).then(function() {
-            _.remove($scope.feeds, { id: parseInt(feedToDelete) });
+            _.remove($scope.feeds, {id: parseInt(feedToDelete)});
+            $scope.holder.selectedFeed = 'all';
             $scope.notifySuccess('todo.is.ui.feed.delete');
         })
     };
@@ -63,14 +64,16 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
     $scope.feedItems = [];
     $scope.feedChannel = {};
     $scope.feed = {};
-    $scope.selectedFeed = 'all';
+    $scope.holder = {selectedFeed: 'all'}; // Holder required to share the references across the ctrl chain, otherwise primitive values are copied and changes are not propagated
     $scope.feeds = [];
-    $scope.selectFeed($scope.selectedFeed);
-    FeedService.list()
-        .then(function(feeds) {
-            $scope.feeds = feeds;
-            $scope.showSettings = !$scope.hasFeeds();
-        });
+    FeedService.userFeed().then(function(feed) {
+        if (feed.id) {
+            $scope.holder.selectedFeed = feed.id;
+        }
+        $scope.selectFeed($scope.holder.selectedFeed);
+    });
+    FeedService.list().then(function(feeds) {
+        $scope.feeds = feeds;
+        $scope.showSettings = !$scope.hasFeeds();
+    });
 }]);
-
-

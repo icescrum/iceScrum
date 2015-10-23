@@ -10,7 +10,7 @@
                 </button>
             </h3>
         </div>
-        <div class="panel-body" ng-switch="showSettings">
+        <div class="panel-body feed" ng-switch="showSettings">
             <table ng-switch-when="true">
                 <tr>
                     <td>
@@ -30,8 +30,8 @@
                 <tr ng-show="hasFeeds()"><td>${message(code: 'todo.is.ui.panel.feed.list')}</td>
                     <td>
                         <select class="form-control"
-                                ng-model="selectedFeed"
-                                ng-change="selectFeed(selectedFeed)"
+                                ng-model="holder.selectedFeed"
+                                ng-change="selectFeed(holder.selectedFeed)"
                                 ui-select2>
                             <option value="all">${message(code: 'todo.is.ui.panel.feed.title.allFeed')}</option>
                             <option ng-repeat="feed in feeds" value="{{feed.id}}">{{feed.feedUrl}}</option>
@@ -41,14 +41,13 @@
                         <button class="btn btn-default"
                                 ng-disabled="disableDeleteButton"
                                 type="button"
-                                ng-model="selectedFeed"
-                                ng-click="delete(selectedFeed)">
+                                ng-click="delete(holder.selectedFeed)">
                             ${message(code: 'default.button.delete.label')}
                         </button>
                     </td>
                 </tr>
             </table>
-            <div class="feed" ng-switch-default>
+            <div class="items" ng-switch-default>
                 <div ng-if="hasFeedChannel()">
                     <h5><a target="_blank" href="{{feedChannel.link}}">{{feedChannel.title}}</a></h5>
                     <p class="text-left">{{feedChannel.description | limitTo: 100}}{{feedChannel.description .length > 100 ? '...' : ''}}</p>
