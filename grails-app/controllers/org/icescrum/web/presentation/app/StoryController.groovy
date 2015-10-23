@@ -452,6 +452,7 @@ class StoryController {
                 def nextSprint = Sprint.findByParentReleaseAndOrderNumber(story.parentSprint.parentRelease, story.parentSprint.orderNumber + 1) ?: Sprint.findByParentReleaseAndOrderNumber(Release.findByOrderNumberAndParentProduct(story.parentSprint.parentRelease.orderNumber + 1, story.parentSprint.parentProduct), 1)
                 if (nextSprint) {
                     storyService.plan(nextSprint, story)
+                    storyService.rank(story, 1)
                 } else {
                     returnError(text:message(code: 'is.story.error.not.shiftedToNext'))
                     return
