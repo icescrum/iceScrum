@@ -65,7 +65,8 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
                 grailsServerUrl.href = this.o.grailsServer;
                 var currentServerUrl = document.createElement('a');
                 currentServerUrl.href = window.location.href;
-                document.location = grailsServerUrl.protocol + '//' + grailsServerUrl.host + currentServerUrl.pathname + currentServerUrl.hash;
+                var pathname = (currentServerUrl.pathname.charAt(0) == "/") ? currentServerUrl.pathname : "/" + currentServerUrl.pathname;
+                document.location = grailsServerUrl.protocol + '//' + grailsServerUrl.host + pathname + currentServerUrl.hash;
                 return;
             }
 
