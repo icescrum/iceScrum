@@ -60,7 +60,7 @@ var autoCompleteCache = {}, autoCompleteLastXhr;
 
             this.o = jQuery.extend({}, this.defaults, icescrum);
 
-            if(window.location.href.indexOf(this.o.grailsServer) == -1){
+            if(window.location.href.indexOf(this.o.grailsServer.toLowerCase()) == -1){
                 var grailsServerUrl = document.createElement('a');
                 grailsServerUrl.href = this.o.grailsServer;
                 var currentServerUrl = document.createElement('a');
