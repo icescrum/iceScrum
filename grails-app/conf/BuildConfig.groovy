@@ -50,6 +50,7 @@ grails.project.fork = [
 if (Environment.current != Environment.PRODUCTION) {
     println "use inline plugin in env: ${Environment.current}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+    grails.plugin.location.'kagilum-licenseable' = '../plugins/kagilum-licenseable'
 }
 
 grails.war.resources = { stagingDir ->
@@ -75,8 +76,10 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
     }
     dependencies {
-        runtime 'mysql:mysql-connector-java:5.1.36'
         build 'com.lowagie:itext:2.1.7'
+        runtime 'mysql:mysql-connector-java:5.1.36'
+        //compile "com.kagilum:kagilum-licenseable:2.0"
+        //compile "com.kagilum:icescrum-plugin-bugtracker:2.0"
     }
     plugins {
         compile ':standalone:1.3'
