@@ -50,7 +50,7 @@ grails.project.fork = [
 if (Environment.current != Environment.PRODUCTION) {
     println "use inline plugin in env: ${Environment.current}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
-    grails.plugin.location.'kagilum-licenseable' = '../plugins/kagilum-licenseable'
+    //grails.plugin.location.'kagilum-licenseable' = '../plugins/kagilum-licenseable'
 }
 
 grails.war.resources = { stagingDir ->
