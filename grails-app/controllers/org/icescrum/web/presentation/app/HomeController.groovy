@@ -56,11 +56,16 @@ class HomeController {
     }
 
     def saveFeed() {
-        Feed feed = new Feed()
         try {
+            def connection = new URL(params.feed.feedUrl).openConnection()
+            def xmlFeed = new XmlSlurper().parse(connection.inputStream)
+            def channel = xmlFeed.channel
+            def title = channel.title.text()
+            Feed feed = new Feed()
             Feed.withTransaction {
                 bindData(feed, params.feed, [include: ['feedUrl']])
                 feed.user = springSecurityService.currentUser
+                feed.title = title
                 if (!feed.save(flush: true)) {
                     throw new RuntimeException(feed.errors?.toString())
                 }
@@ -70,10 +75,13 @@ class HomeController {
                 json { renderRESTJSON(status: 201, text: feed) }
                 xml { renderRESTXML(status: 201, text: feed) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: feed, exception: e)
+
+        }
+        catch (IllegalStateException e) {
+            returnError(exception: e)}
+        catch (RuntimeException e) {
+            returnError(object: feed)
+            return
         }
     }
 
@@ -108,9 +116,9 @@ class HomeController {
         def connection = new URL(feed.feedUrl).openConnection()
         def xmlFeed = new XmlSlurper().parse(connection.inputStream)
         def channel = xmlFeed.channel
-        def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate: channel.pubDate.text()]]
+        def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text()]]
         channel.item.each { xmlItem ->
-            jsonFeed.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: xmlItem.pubDate.text()]])
+            jsonFeed.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
         }
         render(status: 200, contentType: "application/json", text: jsonFeed as JSON)
     }
@@ -132,9 +140,9 @@ class HomeController {
             def connection = new URL(url).openConnection()
             def xmlFeed = new XmlSlurper().parse(connection.inputStream)
             def channel = xmlFeed.channel
-            def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate: channel.pubDate.text()]]
+            def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate:channel.pubDate.text()]]
             channel.item.each { xmlItem ->
-                jsonFeed.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text())]])
+                jsonFeed.channel.items.add([item: [titlefeed:channel.title.text(), link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
             }
             allJsonFeed.addAll(jsonFeed.channel.items)
         }
