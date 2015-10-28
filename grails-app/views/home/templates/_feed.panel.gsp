@@ -22,8 +22,7 @@
                             placeholder="${message(code: 'todo.is.ui.panel.feed.input.add')}"
                                ng-model="feed.feedUrl"/>
                     </div>
-                    <button
-                            type="button"
+                    <button type="button"
                             class="btn btn-default btn-sm"
                             ng-click="save(feed)">
                         ${message(code: 'is.button.add')}
@@ -41,8 +40,7 @@
                             <option ng-repeat="feed in feeds" value="{{feed.id}}">{{feed.title}}</option>
                         </select>
                     </div>
-                    <button
-                            ng-disabled="disableDeleteButton"
+                    <button ng-disabled="disableDeleteButton"
                             type="button"
                             class="btn btn-default btn-sm"
                             ng-click="delete(holder.selectedFeed)">
