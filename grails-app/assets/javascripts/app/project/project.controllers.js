@@ -206,7 +206,7 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
         $scope.release = release;
         $scope.editableRelease = release;
-        if (release) {
+        if (release.id) {
             SprintService.list(release); // TODO push on sprints
         }
         $scope.listeners.push(PushService.synchronizeItem('release', $scope.release));

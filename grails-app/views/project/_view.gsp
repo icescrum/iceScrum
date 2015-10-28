@@ -91,16 +91,18 @@
                                     <li><a href ng-click="openProjectChart('parkingLot')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
                                     <li><a href ng-click="openProjectChart('velocity')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
                                     <li><a href ng-click="openProjectChart('velocityCapacity')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
-                                    <li class="divider"></li>
-                                    <li role="presentation" class="dropdown-header">${message(code: 'todo.is.ui.mood')}</li>
-                                    <li><a href ng-click="openMoodChart('releaseUserMood')">${message(code: 'is.chart.releaseUserMood')}</a></li>
-                                    <li><a href ng-click="openMoodChart('sprintUserMood')">${message(code: 'is.chart.sprintUserMood')}</a></li>
-                                    <li ng-if="currentOrLastSprint" class="divider"></li>
-                                    <li ng-if="currentOrLastSprint" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                                    <li ng-if="currentOrLastSprint"><a href ng-click="openSprintChart('burndownRemaining')">${message(code: 'is.ui.project.chart.option.remaining')}</a></li>
-                                    <li ng-if="currentOrLastSprint"><a href ng-click="openSprintChart('burnupTasks')">${message(code: 'is.ui.project.chart.option.tasks')}</a></li>
-                                    <li ng-if="currentOrLastSprint"><a href ng-click="openSprintChart('burnupPoints')">${message(code: 'is.ui.project.chart.option.points')}</a></li>
-                                    <li ng-if="currentOrLastSprint"><a href ng-click="openSprintChart('burnupStories')">${message(code: 'is.ui.project.chart.option.stories')}</a></li>
+                                    <li ng-if="release.id" class="divider"></li>
+                                    <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
+                                    <li ng-if="release.id"><a href ng-click="openReleaseChart('burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>
+                                    <li ng-if="release.id"><a href ng-click="openReleaseChart('parkingLot', release)">${message(code: 'is.chart.releaseParkingLot')}</a></li>
+                                    <li ng-if="release.id"><a href ng-click="openMoodChart('releaseUserMood')">${message(code: 'is.chart.releaseUserMood')}</a></li>
+                                    <li ng-if="currentOrLastSprint.id" class="divider"></li>
+                                    <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
+                                    <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burndownRemaining', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>
+                                    <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupTasks', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a></li>
+                                    <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupPoints', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a></li>
+                                    <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupStories', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a></li>
+                                    <li ng-if="currentOrLastSprint.id"><a href ng-click="openMoodChart('sprintUserMood')">${message(code: 'is.chart.sprintUserMood')}</a></li>
                                 </ul>
                             </div>
                         </small>

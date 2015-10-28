@@ -35,6 +35,7 @@ class ReleaseController {
     def sprintService
     def storyService
     def springSecurityService
+    def featureService
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def save(long product) {
@@ -195,5 +196,33 @@ class ReleaseController {
             json { renderRESTJSON(text: release) }
             xml { renderRESTXML(text: release) }
         }
+    }
+
+    @Secured(['stakeHolder() or inProduct()'])
+    def burndown(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def values = releaseService.releaseBurndownValues(release)
+        def computedValues = [[key: message(code:'is.chart.releaseBurnDown.series.userstories.name'),
+                               values: values.collect { return [it.userstories]}],
+                              [key: message(code:'is.chart.releaseBurnDown.series.technicalstories.name'),
+                               values: values.collect { return [it.technicalstories]}],
+                              [key: message(code:'is.chart.releaseBurnDown.series.defectstories.name'),
+                               values: values.collect { return [it.defectstories]}]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.xaxis.label')]],
+                       title: [text: message(code: "is.chart.releaseBurnDown.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
+    }
+
+    @Secured(['stakeHolder() or inProduct()'])
+    def parkingLot(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        def values = featureService.releaseParkingLotValues(release)
+        def computedValues = [[key: message(code:"is.chart.releaseParkingLot.serie.name"),
+                               values: values.collect { return [it.label, it.value]}]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseParkingLot.xaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.releaseParkingLot.yaxis.label')]],
+                       title: [text: message(code: "is.chart.releaseParkingLot.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 }

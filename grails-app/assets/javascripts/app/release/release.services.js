@@ -43,6 +43,9 @@ services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesBy
         var releaseToUpdate = _.omit(release, 'sprints');
         return Release.update({ id: release.id, projectId: release.parentProduct.id }, releaseToUpdate).$promise;
     };
+    this.openChart = function(release, chart) {
+        return Release.get({ id: release.id, projectId: release.parentProduct.id, action: chart}, {}).$promise;
+    };
     this.authorizedRelease = function(action, release) {
         switch (action) {
             case 'update':

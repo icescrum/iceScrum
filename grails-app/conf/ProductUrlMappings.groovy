@@ -337,6 +337,13 @@ class ProductUrlMappings {
             }
         }
 
+        "/p/$product/release/$action" {
+            controller = 'release'
+            constraints {
+                action(inList: ['burndown', 'parkingLot'])
+            }
+        }
+
         "/p/$product/sprint/$id" {
             controller = 'sprint'
             action = [PUT:"update", POST:'update']
