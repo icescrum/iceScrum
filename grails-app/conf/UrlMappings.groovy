@@ -355,9 +355,6 @@ class UrlMappings {
         "/home/feed/$id/content" {
             controller = 'home'
             action = [GET:'contentFeed']
-            constraints {
-                id(matches: /\d*/)
-            }
         }
 
         "/home/panel" {

@@ -19,7 +19,6 @@
  *
  * Marwah Soltani (msoltani@kagilum.com)
  */
-
 controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function($scope, $filter, FeedService) {
     $scope.save = function(feed) {
         FeedService.save(feed).then(function(savedFeed) {
@@ -34,19 +33,21 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
                 $scope.feedChannel = {};
                 $scope.feedItems = $filter('orderBy')(allFeedsItems, '-item.pubDate');
                 $scope.disableDeleteButton = true;
-
             });
         } else {
-            $scope.disableDeleteButton = false;
+            $scope.disableDeleteButton = selectedFeed == "defaultFeed";
             FeedService.content(selectedFeed).then(function(feed) {
                 $scope.feedChannel = feed.channel;
                 $scope.feedItems = feed.channel.items;
             });
         }
+        $scope.showSettings = false;
     };
     $scope.delete = function(feedToDelete) {
         FeedService.delete(feedToDelete).then(function() {
             _.remove($scope.feeds, {id: parseInt(feedToDelete)});
+            $scope.feedItems = [];
+            $scope.feedChannel = {};
             $scope.holder.selectedFeed = 'all';
             $scope.notifySuccess('todo.is.ui.feed.delete');
         })
@@ -74,6 +75,5 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
     });
     FeedService.list().then(function(feeds) {
         $scope.feeds = feeds;
-        $scope.showSettings = !$scope.hasFeeds();
     });
 }]);

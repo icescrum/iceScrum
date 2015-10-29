@@ -75,13 +75,10 @@ class HomeController {
                 json { renderRESTJSON(status: 201, text: feed) }
                 xml { renderRESTXML(status: 201, text: feed) }
             }
-
-        }
-        catch (IllegalStateException e) {
-            returnError(exception: e)}
-        catch (RuntimeException e) {
-            returnError(object: feed)
-            return
+        } catch (IllegalStateException e) {
+            returnError(exception: e)
+        } catch (RuntimeException e) {
+            returnError(object: feed, exception: e)
         }
     }
 
@@ -106,6 +103,9 @@ class HomeController {
     def listFeeds() {
         def user = (User) springSecurityService.currentUser
         def feeds = Feed.findAllByUser(user);
+        if (grailsApplication.config.icescrum.feed.default.url != null && grailsApplication.config.icescrum.feed.default.title != null) {
+            feeds << [feedUrl: grailsApplication.config.icescrum.feed.default.url, title: grailsApplication.config.icescrum.feed.default.title, id: "defaultFeed"]
+        }
         render(status: 200, contentType: 'application/json', text: feeds as JSON)
     }
 
@@ -113,7 +113,8 @@ class HomeController {
         User user = (User) springSecurityService.currentUser
         Feed feed = Feed.findByUserAndId(user, id)
         userService.saveFeed(user, feed)
-        def connection = new URL(feed.feedUrl).openConnection()
+        URL url = new URL(feed ? feed.feedUrl : grailsApplication.config.icescrum.feed.default.url)
+        def connection = url.openConnection()
         def xmlFeed = new XmlSlurper().parse(connection.inputStream)
         def channel = xmlFeed.channel
         def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text()]]
@@ -125,7 +126,12 @@ class HomeController {
 
     def userFeed() {
         User user = (User) springSecurityService.currentUser
-        def feed = user.preferences.feed
+        def feed
+        if (user.preferences.feed != null) {
+            feed = user.preferences.feed
+        } else if (grailsApplication.config.icescrum.feed.default.url != null && grailsApplication.config.icescrum.feed.default.title != null) {
+            feed = [feedUrl: grailsApplication.config.icescrum.feed.default.url, title: grailsApplication.config.icescrum.feed.default.title, id: "defaultFeed"]
+        }
         render(status: 200, contentType: 'application/json', text: feed as JSON)
     }
 
@@ -134,15 +140,19 @@ class HomeController {
         User user = (User) springSecurityService.currentUser
         userService.saveFeed(user, null)
         def allUserFeed = Feed.findAllByUser(user)
-        allUserFeed.collect {
+        def allUsersFeedUrls = allUserFeed.collect {
             it.feedUrl
-        }.each { url ->
+        }
+        if (grailsApplication.config.icescrum.feed.default.url != null) {
+             allUsersFeedUrls << grailsApplication.config.icescrum.feed.default.url
+        }
+        allUsersFeedUrls.each { url ->
             def connection = new URL(url).openConnection()
             def xmlFeed = new XmlSlurper().parse(connection.inputStream)
             def channel = xmlFeed.channel
-            def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate:channel.pubDate.text()]]
+            def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate: channel.pubDate.text()]]
             channel.item.each { xmlItem ->
-                jsonFeed.channel.items.add([item: [titlefeed:channel.title.text(), link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
+                jsonFeed.channel.items.add([item: [titlefeed: channel.title.text(), link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
             }
             allJsonFeed.addAll(jsonFeed.channel.items)
         }
