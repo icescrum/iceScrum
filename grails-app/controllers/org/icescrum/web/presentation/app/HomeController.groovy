@@ -56,12 +56,12 @@ class HomeController {
     }
 
     def saveFeed() {
+        Feed feed = new Feed()
         try {
             def connection = new URL(params.feed.feedUrl).openConnection()
             def xmlFeed = new XmlSlurper().parse(connection.inputStream)
             def channel = xmlFeed.channel
             def title = channel.title.text()
-            Feed feed = new Feed()
             Feed.withTransaction {
                 bindData(feed, params.feed, [include: ['feedUrl']])
                 feed.user = springSecurityService.currentUser
@@ -75,10 +75,10 @@ class HomeController {
                 json { renderRESTJSON(status: 201, text: feed) }
                 xml { renderRESTXML(status: 201, text: feed) }
             }
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
         } catch (RuntimeException e) {
             returnError(object: feed, exception: e)
+        } catch (Exception e) {
+            returnError(text: message(code: 'todo.is.ui.panel.feed.error'), exception: e)
         }
     }
 
