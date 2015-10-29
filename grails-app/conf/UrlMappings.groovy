@@ -283,7 +283,7 @@ class UrlMappings {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task', 'actor', 'feature'])
+                type(inList: ['story', 'task', 'actor', 'feature', 'release', 'sprint'])
             }
         }
 

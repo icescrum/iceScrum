@@ -48,10 +48,10 @@ class SprintController {
         }
         Release release = Release.withRelease(product, releaseId.toLong())
         if (sprintParams.startDate) {
-            sprintParams.startDate = new Date().parse(message(code: 'is.date.format.short'), sprintParams.startDate)
+            sprintParams.startDate = ServicesUtils.parseDateISO8601(sprintParams.startDate)
         }
         if (sprintParams.endDate) {
-            sprintParams.endDate = new Date().parse(message(code: 'is.date.format.short'), sprintParams.endDate)
+            sprintParams.endDate = ServicesUtils.parseDateISO8601(sprintParams.endDate)
         }
         Sprint sprint = new Sprint()
         try {

@@ -105,38 +105,31 @@ icescrum.marshaller = [
                includeCount:['comments'],
                textile:['notes'],
                asShort:['state', 'effort','uid', 'name']],
-
         comment: [textile:['body'], include: ['poster']],
-
         product: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
                   exclude:['cliches'],
                   textile:['description']],
-
         team: [include:['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
-
         task:[exclude:['impediment','participants'],
               include:['tags']],
-
         user:[exclude: ['password','accountExpired','accountLocked','passwordExpired'],
               asShort:['firstName', 'lastName'],
               textile:['notes']],
-
         actor:[include:['tags', 'attachments'],
                withIds:['stories']],
         feature:[include:['countDoneStories','state','effort','tags','attachments'],
                  withIds:['stories'],
                  asShort:['color', 'name']],
-        sprint:[include:['activable','totalRemaining', 'duration'],
+        sprint:[include:['activable','totalRemaining', 'duration','attachments'],
                 exclude:['cliches'],
                 textile:['retrospective', 'doneDefinition'],
                 asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName']],
-        release:[include:['duration'],
+        release:[include:['duration', 'closable','activable','attachments'],
                  textile:['vision'],
                  asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
                  exclude:['cliches']
         ],
         activity: [include: ['important']],
-
         userpreferences:[asShort:['activity', 'language', 'emailsSettings']],
         productpreferences:[asShort:['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks', 'assignOnCreateTask',
                                      'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],

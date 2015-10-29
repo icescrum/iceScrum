@@ -26,6 +26,8 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.event.IceScrumEventType
@@ -133,6 +135,12 @@ class AttachmentController {
                 break
             case 'feature':
                 attachmentable = Feature.getInProduct(params.long('product'),params.long('attachmentable')).list()
+                break
+            case 'release':
+                attachmentable = Release.getInProduct(params.long('product'),params.long('attachmentable')).list()
+                break
+            case 'sprint':
+                attachmentable = Sprint.getInProduct(params.long('product'),params.long('attachmentable')).list()
                 break
             default:
                 attachmentable = null

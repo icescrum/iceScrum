@@ -322,7 +322,7 @@ class ProductUrlMappings {
 
         "/p/$product/release" {
             controller = 'release'
-            action = [GET: "list"]
+            action = [GET: "list", POST: "save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -341,6 +341,14 @@ class ProductUrlMappings {
             controller = 'release'
             constraints {
                 action(inList: ['burndown', 'parkingLot'])
+            }
+        }
+
+        "/p/$product/sprint" {
+            controller = 'sprint'
+            action = [POST: "save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
             }
         }
 

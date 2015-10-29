@@ -1,7 +1,6 @@
-import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 /*
-* Copyright (c) 2012 Kagilum SAS
+* Copyright (c) 2015 Kagilum SAS
 *
 * This file is part of iceScrum.
 *
@@ -127,6 +126,7 @@ uiDefinitions = {
             title 'is.ui.releasePlan'
             help 'is.ui.releasePlan.help'
             init 'view'
+            right true
         }
         embedded = [
                 view:'index',
