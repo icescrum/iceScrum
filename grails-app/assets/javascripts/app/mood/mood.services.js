@@ -20,28 +20,23 @@
  *
  */
 
-services.factory('Mood', ['Resource', function ($resource) {
-    return $resource(icescrum.grailsServer + '/mood/:id/:action',
-        {},
-        {
-            listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}},
-            isAlreadySavedToday: {method: 'GET', params: {action: 'isAlreadySavedToday'}}
-        });
+services.factory('Mood', ['Resource', function($resource) {
+    return $resource(icescrum.grailsServer + '/mood/:id/:action');
 }]);
 
-services.service("MoodService", ['Mood', function (Mood) {
-    this.save = function (mood) {
+services.service("MoodService", ['Mood', function(Mood) {
+    this.save = function(mood) {
         mood.class = 'mood';
         return Mood.save({action: 'save'}, mood).$promise;
     };
-    this.listByUser = function () {
-        return Mood.listByUser().$promise;
+    this.listByUser = function() {
+        return Mood.query({action: 'listByUser'}).$promise;
     };
-    this.isAlreadySavedToday = function(){
-        return Mood.isAlreadySavedToday().$promise;
+    this.isAlreadySavedToday = function() {
+        return Mood.get({action: 'isAlreadySavedToday'}).$promise;
     };
     this.openChart = function(chart, project) {
-        var settings = { action: chart };
+        var settings = {action: chart};
         if (project) {
             settings.product = project.id;
         }

@@ -21,17 +21,11 @@
  *
  */
 services.factory('Project', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/project/:id/:action',
-        {},
-        {
-            listPublic: {method: 'GET', params: {action: 'listPublic'}},
-            activities: {method: 'GET', isArray: true, params: {action: 'activities'}},
-            listByUser: {method: 'GET', params: {action: 'listByUser'}}
-        });
+    return $resource(icescrum.grailsServer + '/project/:id/:action');
 }]);
 
 services.service("ProjectService", ['Project', 'Session', 'TeamService', function(Project, Session, TeamService) {
-    this.save = function (project) {
+    this.save = function(project) {
         project.class = 'product';
         return Project.save(project).$promise;
     };
@@ -40,34 +34,34 @@ services.service("ProjectService", ['Project', 'Session', 'TeamService', functio
             return _.union(_.map(team.scrumMasters, 'id'), _.map(team.members, 'id'), _.map(project.productOwners, 'id')).length;
         });
     };
-    this.updateTeam = function (project) {
+    this.updateTeam = function(project) {
         // Wrap the product inside a "productd" because by default the formObjectData function will turn it into a "product" object
         // The "product" object conflicts with the "product" attribute expected by a filter which expects it to be either a number (id) or string (pkey)
-        return Project.update({ id: project.id, action: 'updateTeam' }, { productd: project }).$promise;
+        return Project.update({id: project.id, action: 'updateTeam'}, {productd: project}).$promise;
     };
-    this.update = function (project) {
-        return Project.update({ id: project.id }, { productd: project }).$promise;
+    this.update = function(project) {
+        return Project.update({id: project.id}, {productd: project}).$promise;
     };
-    this.leaveTeam = function (project) {
-        return Project.update({ id: project.id, action: 'leaveTeam' }, {}).$promise;
+    this.leaveTeam = function(project) {
+        return Project.update({id: project.id, action: 'leaveTeam'}, {}).$promise;
     };
     this.archive = function(project) {
-        return Project.update({ id: project.id, action: 'archive' }, {}).$promise;
+        return Project.update({id: project.id, action: 'archive'}, {}).$promise;
     };
     this['delete'] = function(project) {
         return project.$delete();
     };
     this.listPublic = function(term, offset) {
-        return Project.listPublic({ term: term, offset: offset }).$promise;
+        return Project.get({action: 'listPublic', term: term, offset: offset}).$promise;
     };
     this.listByUser = function(term, offset) {
-        return Project.listByUser({ term: term, offset: offset }).$promise;
+        return Project.get({action: 'listByUser', term: term, offset: offset}).$promise;
     };
     this.getActivities = function(project) {
-        return Project.activities({ id: project.id }, {}).$promise;
+        return Project.query({action: 'activities', id: project.id}).$promise;
     };
     this.openChart = function(project, chart) {
-        return Project.get({ id: project.id, action: chart}, {}).$promise;
+        return Project.get({id: project.id, action: chart}, {}).$promise;
     };
     this.authorizedProject = function(action, project) {
         switch (action) {

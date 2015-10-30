@@ -218,7 +218,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
     };
 }]);
 
-var restResource = angular.module('restResource', [ 'ngResource' ]);
+var restResource = angular.module('restResource', ['ngResource']);
 restResource.factory('Resource', ['$resource', function ($resource) {
     return function (url, params, methods) {
         var defaultParams = {
@@ -240,9 +240,7 @@ restResource.factory('Resource', ['$resource', function ($resource) {
             }
         };
         defaultMethods.update = angular.copy(defaultMethods.save); // for the moment there is no difference between save & update
-        var updateArrayOptions = angular.copy(defaultMethods.save);
-        updateArrayOptions.isArray = true;
-        defaultMethods.updateArray = updateArrayOptions;
+        defaultMethods.updateArray = angular.copy(defaultMethods.update).isArray = true;
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));
     };
 }]);

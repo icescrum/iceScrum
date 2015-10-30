@@ -21,12 +21,7 @@
  *
  */
 services.factory('Backlog', ['Resource', function($resource) {
-    return $resource('backlog/:id/:action',
-        {},
-        {
-            list: {method: 'GET', isArray: true, params: {shared: true}},
-            listOwner: {method: 'GET', isArray: true, params: {shared: false}}
-        });
+    return $resource('backlog');
 }]);
 
 services.service("BacklogService", ['Backlog', 'Session', function(Backlog) {
@@ -35,6 +30,6 @@ services.service("BacklogService", ['Backlog', 'Session', function(Backlog) {
         return Backlog.save(backlog).$promise;
     };
     this.list = function() {
-        return Backlog.list().$promise;
+        return Backlog.query({shared: true}).$promise;
     };
 }]);

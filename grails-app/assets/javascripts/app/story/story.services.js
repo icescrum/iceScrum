@@ -22,12 +22,7 @@
  *
  */
 services.factory('Story', ['Resource', function($resource) {
-    return $resource('story/:type/:typeId/:id/:action',
-        {},
-        {
-            activities: { method: 'GET', isArray: true, params: {action: 'activities'} },
-            listByField: { method: 'GET', params: {action: 'listByField' }}
-        });
+    return $resource('story/:type/:typeId/:id/:action');
 }]);
 
 services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, StoryStatesByName, IceScrumEventType, PushService) {
@@ -44,17 +39,17 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         }
     };
     crudMethods[IceScrumEventType.UPDATE] = function(story) {
-        angular.extend(_.find(self.list, { id: story.id }), story);
+        angular.extend(_.find(self.list, {id: story.id}), story);
     };
     crudMethods[IceScrumEventType.DELETE] = function(story) {
-        _.remove(self.list, { id: story.id });
+        _.remove(self.list, {id: story.id});
     };
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('story', eventType, crudMethod);
     });
     this.addStories = function(stories) {
         angular.forEach(stories, function(story) {
-            if (_.chain(self.list).where({ id: story.id }).isEmpty().value()) {
+            if (_.chain(self.list).where({id: story.id}).isEmpty().value()) {
                 self.list.push(new Story(story));
             }
         });
@@ -68,7 +63,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         var alreadyLoadedStories = [];
         var mustLoad = false;
         angular.forEach(obj.stories_ids, function(story) {
-            var alreadyLoadedStory = _.find(self.list, { id: story.id });
+            var alreadyLoadedStory = _.find(self.list, {id: story.id});
             if (!_.isEmpty(alreadyLoadedStory)) {
                 alreadyLoadedStories.push(alreadyLoadedStory);
             } else {
@@ -79,7 +74,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             obj.stories = alreadyLoadedStories;
         }
         if (mustLoad) {
-            Story.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
+            Story.query({typeId: obj.id, type: obj.class.toLowerCase()}, function(data) {
                 if (obj.stories === undefined) {
                     obj.stories = [];
                 }
@@ -87,7 +82,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
                     if (_.isEmpty(self.list)) {
                         self.isListResolved.resolve(true);
                     }
-                    if (_.chain(obj.stories).where({ id: story.id }).isEmpty().value()) {
+                    if (_.chain(obj.stories).where({id: story.id}).isEmpty().value()) {
                         var newStory = new Story(story);
                         obj.stories.push(newStory);
                         self.list.push(newStory);
@@ -119,23 +114,23 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return story.$delete(crudMethods[IceScrumEventType.DELETE]);
     };
     this.like = function(story) {
-        return Story.update({ id: story.id, action: 'like' }, {}, function(resultStory) {
+        return Story.update({id: story.id, action: 'like'}, {}, function(resultStory) {
             story.liked = resultStory.liked;
             story.likers_count = resultStory.likers_count;
         }).$promise;
     };
     this.follow = function(story) {
-        return Story.update({ id: story.id, action: 'follow' }, {}, function(resultStory){
+        return Story.update({id: story.id, action: 'follow'}, {}, function(resultStory) {
             story.followed = resultStory.followed;
             story.followers_count = resultStory.followers_count;
         }).$promise;
     };
     this.activities = function(story, all) {
-        var params = { id: story.id };
+        var params = {action: 'activities', id: story.id};
         if (all) {
             params.all = true;
         }
-        return Story.activities(params, function(activities) {
+        return Story.query(params, function(activities) {
             story.activities = activities;
         }).$promise;
     };
@@ -144,12 +139,12 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return this.update(story);
     };
     this.acceptAs = function(story, target) {
-        return Story.update({ id: story.id, action: 'acceptAs' + target}, {}, function() {
-            _.remove(self.list, { id: story.id });
+        return Story.update({id: story.id, action: 'acceptAs' + target}, {}, function() {
+            _.remove(self.list, {id: story.id});
         }).$promise;
     };
     this.copy = function(story) {
-        return Story.update({ id: story.id, action: 'copy'}, {}, function(story) {
+        return Story.update({id: story.id, action: 'copy'}, {}, function(story) {
             self.list.push(story);
         }).$promise;
     };
@@ -161,9 +156,9 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         });
     };
     this.updateMultiple = function(ids, updatedFields) {
-        return Story.updateArray({ id: ids }, { story: updatedFields }, function(stories) {
+        return Story.updateArray({id: ids}, {story: updatedFields}, function(stories) {
             angular.forEach(stories, function(story) {
-                var index = self.list.indexOf(_.find(self.list, { id: story.id }));
+                var index = self.list.indexOf(_.find(self.list, {id: story.id}));
                 if (index != -1) {
                     self.list.splice(index, 1, story);
                 }
@@ -178,27 +173,27 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         }).$promise;
     };
     this.copyMultiple = function(ids) {
-        return Story.updateArray({ id: ids, action: 'copy'}, {}, function(stories) {
+        return Story.updateArray({id: ids, action: 'copy'}, {}, function(stories) {
             angular.forEach(stories, function(story) {
                 self.list.push(new Story(story));
             });
         }).$promise;
     };
     this.acceptMultiple = function(ids) {
-        var fields = { state : StoryStatesByName.ACCEPTED };
+        var fields = {state: StoryStatesByName.ACCEPTED};
         return this.updateMultiple(ids, fields);
     };
     this.acceptAsMultiple = function(ids, target) {
-        return Story.updateArray({ id: ids, action: 'acceptAs' + target}, {}, function() {
+        return Story.updateArray({id: ids, action: 'acceptAs' + target}, {}, function() {
             _.remove(self.list, function(story) {
                 return _.contains(ids, story.id.toString());
             });
         }).$promise;
     };
     this.followMultiple = function(ids, follow) {
-        return Story.updateArray({ id: ids, action: 'follow' }, { follow: follow }, function(stories) {
+        return Story.updateArray({id: ids, action: 'follow'}, {follow: follow}, function(stories) {
             angular.forEach(stories, function(story) {
-                var index = self.list.indexOf(_.find(self.list, { id: story.id }));
+                var index = self.list.indexOf(_.find(self.list, {id: story.id}));
                 if (index != -1) {
                     self.list.splice(index, 1, story);
                 }
@@ -216,7 +211,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             case 'upload':
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
-                       (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
+                    (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             case 'updateEstimate':
                 return Session.tmOrSm() && story.state > StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
             case 'updateParentSprint':
@@ -227,7 +222,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
                 return Session.po();
             case 'delete':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
-                       (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
+                    (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             default:
                 return false;
         }
@@ -259,7 +254,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return deferred.promise;
     };
     this.saveTemplate = function(story, name) {
-        return Story.update({ id: story.id, action: 'saveTemplate', 'template.name': name}, {}).$promise.then(function(templateEntry) {
+        return Story.update({id: story.id, action: 'saveTemplate', 'template.name': name}, {}).$promise.then(function(templateEntry) {
             if (angular.isArray(cachedTemplateEntries)) {
                 cachedTemplateEntries.push(templateEntry);
             }
@@ -267,10 +262,10 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     };
     this.deleteTemplate = function(templateId) {
         return $http.post('story/deleteTemplate?template.id=' + templateId).success(function() {
-            _.remove(cachedTemplateEntries, { id: templateId });
+            _.remove(cachedTemplateEntries, {id: templateId});
         });
     };
     this.listByField = function(field) {
-        return Story.listByField({field: field}).$promise
+        return Story.get({action: 'listByField', field: field}).$promise
     }
 }]);

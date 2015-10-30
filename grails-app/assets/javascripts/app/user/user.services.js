@@ -21,26 +21,24 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('User', [ 'Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/user/:id/:action',
-        {},
-        {
-            current: {method: 'GET', params: {action: 'current'}},
-            activities: {method: 'GET', isArray: true, params: {action: 'activities'}},
-            unreadActivitiesCount: {method: 'GET', params: {action: 'unreadActivitiesCount'}}
-        });
+services.factory('User', ['Resource', function($resource) {
+    return $resource(icescrum.grailsServer + '/user/:id/:action');
 }]);
 
 services.service("UserService", ['User', '$http', '$rootScope', '$injector', function(User, $http, $rootScope, $injector) {
     this.getCurrent = function() {
         var Session = $injector.get('Session');
-        return User.current( (Session.project ? { product: Session.project.pkey } : null) ).$promise;
+        var params = {action: 'current'};
+        if (Session.getProject()) {
+            params.product = Session.getProject().pkey;
+        }
+        return User.get(params).$promise;
     };
     this.getActivities = function(user) {
-        return User.activities({ id: user.id }, {}).$promise;
+        return User.query({action: 'activities', id: user.id}).$promise;
     };
     this.getUnreadActivities = function(user) {
-        return User.unreadActivitiesCount({ id: user.id }, {}).$promise;
+        return User.get({action: 'unreadActivitiesCount', id: user.id}).$promise;
     };
     this.update = function(user) {
         user.class = 'user';
@@ -51,10 +49,10 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', fun
         return user.$save();
     };
     this.retrievePassword = function(user) {
-        return $http.post($rootScope.serverUrl + '/user/retrieve?user.username='+user.username);
+        return $http.post($rootScope.serverUrl + '/user/retrieve?user.username=' + user.username);
     };
     this.getInvitationUserMock = function(token) {
-        return $http.get($rootScope.serverUrl + '/user/invitationUserMock?token='+token).then(function(response) {
+        return $http.get($rootScope.serverUrl + '/user/invitationUserMock?token=' + token).then(function(response) {
             return response.data;
         });
     };

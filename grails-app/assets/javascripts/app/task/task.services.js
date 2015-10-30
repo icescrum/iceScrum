@@ -22,12 +22,7 @@
  *
  */
 services.factory('Task', [ 'Resource', function($resource) {
-    return $resource('task/:type/:typeId/:id/:action',
-        {},
-        {
-            activities: {method: 'GET', isArray: true, params: {action: 'activities'}},
-            listByUser: {method: 'GET', isArray: true, params: {action: 'listByUser'}}
-        });
+    return $resource('task/:type/:typeId/:id/:action');
 }]);
 
 services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', 'PushService', function($q, Task, Session, IceScrumEventType, PushService) {
@@ -88,6 +83,6 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
         }
     };
     this.listByUser = function() {
-        return Task.listByUser().$promise;
+        return Task.query({action: 'listByUser'}).$promise;
     };
 }]);

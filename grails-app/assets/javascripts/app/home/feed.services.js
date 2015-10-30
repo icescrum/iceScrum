@@ -19,36 +19,29 @@
  *
  */
 
-services.factory('Feed', ['Resource',  function($resource) {
-    return $resource(icescrum.grailsServer + '/home/feed/:id/:action',
-        {},
-        {
-            content: {method: 'GET', params: {action: 'content'}},
-            list:    {method: 'GET',isArray: true, params: {action: 'list'}},
-            merged:  {method: 'GET', isArray:true, params: {action: 'merged'}},
-            userFeed:  {method: 'GET', params: {action: 'userFeed'}}
-        });
+services.factory('Feed', ['Resource', function($resource) {
+    return $resource(icescrum.grailsServer + '/home/feed/:id/:action');
 }]);
 
-services.service("FeedService", ['Feed',function (Feed) {
-    this.save = function (feed) {
+services.service("FeedService", ['Feed', function(Feed) {
+    this.save = function(feed) {
         feed.class = 'feed';
         return Feed.save(feed).$promise;
     };
-    this.list = function(){
-        return Feed.list().$promise;
-    };
-    this.content = function(feedUserSelect){
-        return Feed.content({id: feedUserSelect}).$promise;
+    this.list = function() {
+        return Feed.query({action: 'list'}).$promise;
     };
     this.merged = function() {
-        return Feed.merged().$promise;
+        return Feed.query({action: 'merged'}).$promise;
+    };
+    this.content = function(feedUserSelect) {
+        return Feed.get({id: feedUserSelect, action: 'content'}).$promise;
+    };
+    this.userFeed = function() {
+        return Feed.get({action: 'userFeed'}).$promise;
     };
     this.delete = function(feedToDelete) {
         return Feed.delete({id: feedToDelete}).$promise;
-    };
-    this.userFeed= function() {
-        return Feed.userFeed().$promise;
     };
 }]);
 
