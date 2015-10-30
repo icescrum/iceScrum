@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<is:modal title="${message(code: 'is.dialog.edit')}" class="wizard" footer="false">
+<is:modal title="${message(code: 'todo.is.ui.project.edit')}" class="wizard" footer="false">
     <div class="row wizard-row">
         <ul class="steps-indicator col-sm-3 nav nav-list">
             <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('general') }">
