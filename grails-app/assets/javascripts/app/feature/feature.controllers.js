@@ -42,99 +42,94 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
     };
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams', '$timeout', '$controller', 'FeatureService', 'StoryService', 'FormService',
-    function($scope, $state, $stateParams, $timeout, $controller, FeatureService, StoryService, FormService) {
-        $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
-
-        $scope.formHolder = {};
-        $scope.feature = {};
-        $scope.editableFeature = {};
-        $scope.editableFeatureReference = {};
-
-        FeatureService.get($stateParams.id).then(function(feature) {
-            $scope.feature = feature;
-            $scope.selected = feature;
-            // For edit
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'FeatureService', 'FormService', function($scope, $state, $stateParams, $controller, FeatureService, FormService) {
+    $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
+    $scope.formHolder = {};
+    $scope.feature = {};
+    $scope.editableFeature = {};
+    $scope.editableFeatureReference = {};
+    FeatureService.get($stateParams.id).then(function(feature) {
+        $scope.feature = feature;
+        $scope.selected = feature;
+        // For edit
+        $scope.resetFeatureForm();
+        // For header
+        $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
+        $scope.next = FormService.next(FeatureService.list, $scope.feature);
+    }).catch(function(e){
+        $state.go('^');
+        $scope.notifyError(e.message)
+    });
+    // Edit
+    $scope.isDirty = function() {
+        return !_.isEqual($scope.editableFeature, $scope.editableFeatureReference);
+    };
+    $scope.update = function(feature) {
+        FeatureService.update(feature).then(function(feature) {
             $scope.resetFeatureForm();
-            // For header
-            $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
-            $scope.next = FormService.next(FeatureService.list, $scope.feature);
-        }).catch(function(e){
-            $state.go('^');
-            $scope.notifyError(e.message)
+            $scope.notifySuccess('todo.is.ui.feature.updated');
         });
-
-        // Edit
-        $scope.isDirty = function() {
-            return !_.isEqual($scope.editableFeature, $scope.editableFeatureReference);
-        };
-        $scope.update = function(feature) {
-            FeatureService.update(feature).then(function(feature) {
-                $scope.resetFeatureForm();
-                $scope.notifySuccess('todo.is.ui.feature.updated');
-            });
-        };
-        $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-        $scope.editForm = function(value) {
-            if (value != $scope.getEditableMode()) {
-                $scope.setEditableMode(value); // global
-                $scope.resetFeatureForm();
-            }
-        };
-        $scope.getShowFeatureForm = function(feature) {
-            return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedFeature('update', feature);
-        };
-        $scope.resetFeatureForm = function() {
-            if ($scope.getEditableMode()) {
-                $scope.editableFeature = angular.copy($scope.feature);
-                $scope.editableFeatureReference = angular.copy($scope.feature);
-            } else {
-                $scope.editableFeature = $scope.feature;
-                $scope.editableFeatureReference = $scope.feature;
-            }
-            $scope.resetFormValidation($scope.formHolder.featureForm);
-        };
-        $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
-        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-            if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
-                event.preventDefault(); // cancel the state change
-                $scope.mustConfirmStateChange = false;
-                $scope.confirm({
-                    message: 'todo.is.ui.dirty.confirm',
-                    condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                    callback: function() {
-                        if ($scope.flow != undefined && $scope.flow.isUploading()) {
-                            $scope.flow.cancel();
-                        }
-                        $state.go(toState, toParams)
-                    },
-                    closeCallback: function() {
-                        $scope.mustConfirmStateChange = true;
+    };
+    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
+    $scope.editForm = function(value) {
+        if (value != $scope.getEditableMode()) {
+            $scope.setEditableMode(value); // global
+            $scope.resetFeatureForm();
+        }
+    };
+    $scope.getShowFeatureForm = function(feature) {
+        return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedFeature('update', feature);
+    };
+    $scope.resetFeatureForm = function() {
+        if ($scope.getEditableMode()) {
+            $scope.editableFeature = angular.copy($scope.feature);
+            $scope.editableFeatureReference = angular.copy($scope.feature);
+        } else {
+            $scope.editableFeature = $scope.feature;
+            $scope.editableFeatureReference = $scope.feature;
+        }
+        $scope.resetFormValidation($scope.formHolder.featureForm);
+    };
+    $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
+    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+            event.preventDefault(); // cancel the state change
+            $scope.mustConfirmStateChange = false;
+            $scope.confirm({
+                message: 'todo.is.ui.dirty.confirm',
+                condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
+                callback: function() {
+                    if ($scope.flow != undefined && $scope.flow.isUploading()) {
+                        $scope.flow.cancel();
                     }
-                });
-            }
-        });
-        $scope.clazz = 'feature';
-        $scope.attachmentQuery = function($flow, feature) {
-            $scope.flow = $flow;
-            $flow.opts.target = 'attachment/feature/' + feature.id + '/flow';
-            $flow.upload();
-        };
-        $scope.formHover = function(value) {
-            $scope.formHolder.formHover = value;
-        };
-    }]);
+                    $state.go(toState, toParams)
+                },
+                closeCallback: function() {
+                    $scope.mustConfirmStateChange = true;
+                }
+            });
+        }
+    });
+    $scope.clazz = 'feature';
+    $scope.attachmentQuery = function($flow, feature) {
+        $scope.flow = $flow;
+        $flow.opts.target = 'attachment/feature/' + feature.id + '/flow';
+        $flow.upload();
+    };
+    $scope.formHover = function(value) {
+        $scope.formHolder.formHover = value;
+    };
+}]);
 
-controllers.controller('featureDetailsStoryCtrl', ['$scope', '$controller', 'StoryService',
-    function($scope, $controller, StoryService) {
-        $controller('featureDetailsCtrl', { $scope: $scope }); // inherit from featureDetailsCtrl
-        $scope.$watch('feature', function(){
-            $scope.selected = $scope.feature;
-            if (_.isEmpty($scope.selected.stories)) {
-                StoryService.listByType($scope.selected);
-            }
-        });
-    }]);
+controllers.controller('featureDetailsStoryCtrl', ['$scope', '$controller', 'StoryService', function($scope, $controller, StoryService) {
+    $controller('featureDetailsCtrl', { $scope: $scope }); // inherit from featureDetailsCtrl
+    $scope.$watch('feature', function(){
+        $scope.selected = $scope.feature;
+        if (_.isEmpty($scope.selected.stories)) {
+            StoryService.listByType($scope.selected);
+        }
+    });
+}]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {
     $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
