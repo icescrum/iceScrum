@@ -26,9 +26,10 @@ services.factory('Release', ['Resource', function($resource) {
 }]);
 
 services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesByName', 'Session', function($q, $filter, Release, ReleaseStatesByName, Session) {
+    var self = this;
     this.list = function(project) {
         if (_.isEmpty(project.releases)) {
-            return Release.query({ projectId: project.id }, function(data) {
+            return Release.query({projectId: project.id}, function(data) {
                 project.releases = data;
                 project.releases_count = project.releases.length;
             }).$promise;
@@ -37,19 +38,58 @@ services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesBy
         }
     };
     this.getCurrentOrNextRelease = function(project) {
-        return Release.get({ projectId: project.id, action: 'findCurrentOrNextRelease' }, {}).$promise;
+        return Release.get({projectId: project.id, action: 'findCurrentOrNextRelease'}, {}).$promise;
     };
-    this.update = function (release) {
+    this.update = function(release, project) {
         var releaseToUpdate = _.omit(release, 'sprints');
-        return Release.update({ id: release.id, projectId: release.parentProduct.id }, releaseToUpdate).$promise;
+        return Release.update({id: release.id, projectId: release.parentProduct.id}, releaseToUpdate, function(release) {
+            angular.extend(_.find(project.releases, { id: release.id }), release);
+        }).$promise;
+    };
+    this.save = function(release, project) {
+        release.class = 'release';
+        return Release.save({projectId: project.id}, release, function(release) {
+            var existingRelease = _.find(project.releases, {id: release.id});
+            if (existingRelease) {
+                angular.extend(existingRelease, release);
+            } else {
+                project.releases.push(new Release(release));
+            }
+            project.releases_count = project.releases.length;
+        }).$promise;
+    };
+    this.get = function(project, id) {
+        return self.list(project).then(function(releases) {
+            var release = _.find(releases, function(rw) {
+                return rw.id == id;
+            });
+            if (release) {
+                return release;
+            } else {
+                throw Error('todo.is.ui.release.does.not.exist');
+            }
+        });
     };
     this.openChart = function(release, chart) {
-        return Release.get({ id: release.id, projectId: release.parentProduct.id, action: chart}, {}).$promise;
+        return Release.get({id: release.id, projectId: release.parentProduct.id, action: chart}, {}).$promise;
     };
     this.authorizedRelease = function(action, release) {
         switch (action) {
             case 'update':
-                return Session.po() && release.state != ReleaseStatesByName.DONE;
+            case 'generateSprints':
+            case 'autoPlan':
+            case 'dissociateAll':
+                return Session.poOrSm() && release.state != ReleaseStatesByName.DONE;
+            case 'activate':
+                return Session.poOrSm() && release.state == ReleaseStatesByName.WAIT && release.activable;
+            case 'close':
+                return Session.poOrSm() && release.state == ReleaseStatesByName.IN_PROGRESS && release.closable;
+            case 'delete':
+                return Session.poOrSm() && release.state == ReleaseStatesByName.WAIT;
+            case 'create':
+                return Session.poOrSm();
+            case 'upload':
+                return Session.inProduct();
             default:
                 return false;
         }

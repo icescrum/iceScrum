@@ -220,9 +220,29 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
 
 var restResource = angular.module('restResource', ['ngResource']);
 restResource.factory('Resource', ['$resource', function ($resource) {
-    return function (url, params, methods) {
+        return function (url, params, methods) {
         var defaultParams = {
             id: '@id'
+        };
+        var transformStringToDate = function(item) {
+            if (item.hasOwnProperty('startDate')) {
+                item.startDate = new Date(item.startDate);
+            }
+            if (item.hasOwnProperty('endDate')) {
+                item.endDate = new Date(item.endDate);
+            }
+        };
+        var arrayInterceptor = {
+            response: function(response) {
+                _.each(response.resource, transformStringToDate);
+                return response.resource;
+            }
+        };
+        var singleInterceptor = {
+            response: function(response) {
+                transformStringToDate(response.resource);
+                return response.resource;
+            }
         };
         var defaultMethods = {
             save: {
@@ -231,16 +251,31 @@ restResource.factory('Resource', ['$resource', function ($resource) {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: function (data) {
                     return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
-                }
+                },
+                interceptor: singleInterceptor
+            },
+            updateArray: {
+                method: 'post',
+                isArray: false,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                transformRequest: function (data) {
+                    return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
+                },
+                interceptor: arrayInterceptor
+            },
+            get: {
+                method: 'get',
+                cache: true,
+                interceptor: singleInterceptor
             },
             query: {
                 method: 'get',
                 isArray: true,
-                cache: true
+                cache: true,
+                interceptor: arrayInterceptor
             }
         };
         defaultMethods.update = angular.copy(defaultMethods.save); // for the moment there is no difference between save & update
-        defaultMethods.updateArray = angular.copy(defaultMethods.update).isArray = true;
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));
     };
 }]);

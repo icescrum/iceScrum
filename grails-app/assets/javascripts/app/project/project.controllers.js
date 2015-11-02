@@ -355,13 +355,6 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.type = 'newProject';
     $scope.checkProjectPropertyUrl = '/project/available';
-    $scope.openDatepicker = function($event, name) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        if ($scope[name]) {
-            $scope[name].opened = true;
-        }
-    };
     $scope.isCurrentStep = function(index) {
         return WizardHandler.wizard().currentStepNumber() == index;
     };
@@ -430,13 +423,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
         stakeHolders: []
     });
     $scope.startDate = {
-        startingDay: 1,
-        opened: false,
-        format: 'dd/MM/yyyy',
-        disabled: function(date, mode) {
-            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-        }
-
+        opened: false
     };
     $scope.endDate = angular.copy($scope.startDate);
     $scope.firstSprint = angular.copy($scope.startDate);
@@ -472,13 +459,6 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
     $scope.isCurrentStep = function() {
         return true;
     };
-    $scope.openDatepicker = function($event, name) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        if ($scope[name]) {
-            $scope[name].opened = true;
-        }
-    };
     // Init
     $scope.currentProject = Session.getProject();
     $scope.checkProjectPropertyUrl = '/project/' + $scope.currentProject.id + '/available';
@@ -488,12 +468,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
         }
     });
     $scope.startDate = {
-        startingDay: 1,
-        opened: false,
-        format: 'dd/MM/yyyy',
-        disabled: function(date, mode) {
-            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-        }
+        opened: false
     };
     if (!$scope.panel) {
         var defaultView = $scope.authorizedProject('update', $scope.currentProject) ? 'general' : 'team';

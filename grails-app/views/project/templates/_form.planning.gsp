@@ -38,17 +38,14 @@
             <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>
             <div class="input-group">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'startDate')"><i class="fa fa-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, startDate)"><i class="fa fa-calendar"></i></button>
                 </span>
                 <input type="text"
                        class="form-control"
                        name="project.startDate"
                        ng-model="project.startDate"
-                       uib-datepicker-popup="{{startDate.format}}"
-                       datepicker-options="startDate"
+                       uib-datepicker-popup
                        is-open="startDate.opened"
-                       close-text="Close"
-                       show-button-bar="false"
                        max-date="projectMaxStartDate"
                        ng-required="isCurrentStep(4)"/>
             </div>
@@ -79,18 +76,15 @@
             <label for="project.firstSprint">${message(code:'is.dialog.wizard.firstSprint')}</label>
             <div class="input-group">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'firstSprint')"><i class="fa fa-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, firstSprint)"><i class="fa fa-calendar"></i></button>
                 </span>
                 <input type="text"
                        class="form-control"
                        name="project.firstSprint"
                        ng-model="project.firstSprint"
                        ng-change="computePlanning()"
-                       uib-datepicker-popup="{{firstSprint.format}}"
-                       datepicker-options="firstSprint"
+                       uib-datepicker-popup
                        is-open="firstSprint.opened"
-                       close-text="Close"
-                       show-button-bar="false"
                        min-date="sprintMinStartDate"
                        max-date="sprintMaxStartDate"
                        ng-class="{current:step.selected}"
@@ -119,16 +113,13 @@
                        name="project.endDate"
                        ng-model="project.endDate"
                        ng-change="computePlanning()"
-                       uib-datepicker-popup="{{endDate.format}}"
-                       datepicker-options="endDate"
+                       uib-datepicker-popup
                        is-open="endDate.opened"
-                       close-text="Close"
-                       show-button-bar="false"
                        min-date="projectMinEndDate"
                        ng-class="{current:step.selected}"
                        ng-required="isCurrentStep(4)"/>
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, 'endDate')"><i class="fa fa-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openDatepicker($event, endDate)"><i class="fa fa-calendar"></i></button>
                 </span>
             </div>
         </div>

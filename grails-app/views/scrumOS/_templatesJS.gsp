@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2011 Kagilum SAS.
+- Copyright (c) 2015 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -35,6 +35,7 @@
         <g:render template="/activity/templates"/>
         <g:render template="/feature/templates"/>
         <g:render template="/acceptanceTest/templates"/>
+        <g:render template="/release/templates"/>
     </g:if>
 </div>
 <script>

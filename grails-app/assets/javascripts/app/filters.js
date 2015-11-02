@@ -203,7 +203,7 @@ filters
     })
     .filter('permalink', ['$rootScope', 'Session', function($rootScope, Session) {
         return function(uid) {
-            return $rootScope.serverUrl + '/'+ Session.project.pkey +'-' + uid;
+            return $rootScope.serverUrl + '/'+ Session.getProject().pkey +'-' + uid;
         };
     }])
     .filter('flowFilesNotCompleted', function () {

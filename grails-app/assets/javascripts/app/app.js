@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -271,6 +271,30 @@ isApp.config(['$stateProvider', '$httpProvider',
                     templateUrl: 'openWindow/releasePlan',
                     controller: 'releasePlanCtrl'
                 })
+                    .state('releasePlan.new', {
+                        url: "/new",
+                        data:{
+                            stack: 2
+                        },
+                        views:{
+                            "details@releasePlan": {
+                                templateUrl: 'release.new.html',
+                                controller: 'releaseNewCtrl'
+                            }
+                        }
+                    })
+                    .state('releasePlan.details', {
+                        url: "/{id:int}",
+                        data:{
+                            stack: 2
+                        },
+                        views:{
+                            "details@releasePlan": {
+                                templateUrl: 'release.details.html',
+                                controller: 'releaseDetailsCtrl'
+                            }
+                        }
+                    })
         }
     ])
     .config(['flowFactoryProvider', function (flowFactoryProvider) {
@@ -287,6 +311,17 @@ isApp.config(['$stateProvider', '$httpProvider',
             faIcons: true,
             closeOnRouteChange: 'state',
             duration: 4500
+        });
+    }])
+    .config(['uibDatepickerConfig', function (uibDatepickerConfig) {
+        angular.extend(uibDatepickerConfig, {
+            startingDay: 1 // TODO make it i18n
+        });
+    }])
+    .config(['uibDatepickerPopupConfig', function (uibDatepickerPopupConfig) {
+        angular.extend(uibDatepickerPopupConfig, {
+            showButtonBar: false,
+            datepickerPopup: 'dd/MM/yyyy' // TODO make it i18n
         });
     }])
     .factory('AuthInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function ($rootScope, $q, SERVER_ERRORS) {
@@ -476,6 +511,14 @@ isApp.config(['$stateProvider', '$httpProvider',
 
         $rootScope.openProject = function (project) {
             document.location = $rootScope.serverUrl + '/p/' + project.pkey + '/';
+        };
+
+        $rootScope.openDatepicker = function($event, holder) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            if (holder) {
+                holder.opened = true;
+            }
         };
 
         $(document).on('click', '.stacks.three-stacks > div, .stacks.four-stacks > div', function(event){
