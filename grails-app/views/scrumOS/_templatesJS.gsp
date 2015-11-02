@@ -45,7 +45,10 @@
         var PushService = angular.element(document).injector().get('PushService');
         $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions() as JSON});
         $rootScope.initMessages(${i18nMessages});
-        Session.setProject(${product as JSON});
+        var project = ${product as JSON};
+        project.startDate = new Date(project.startDate);
+        project.endDate = new Date(project.endDate);
+        Session.setProject(project);
         Session.setUser(${user as JSON});
         Session.create();
         PushService.initPush(${product?.id});

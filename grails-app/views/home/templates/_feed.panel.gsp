@@ -61,7 +61,7 @@
                 {{item.item.titlefeed}}
                 <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
                 <p class="text-left">{{item.item.description | limitTo: 100}}{{item.item.description.length > 100 ? '...' : ''}}</p>
-                <span class="small">{{item.item.pubDate | date:"dd/MM/yyyy - HH:mm:ss"}}</span><hr/>
+                <span class="small">{{item.item.pubDate | date: message('is.date.format.short.time')}}</span><hr/>
             </li>
         </div>
     </div>

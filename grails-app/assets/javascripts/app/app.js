@@ -482,6 +482,17 @@ isApp.config(['$stateProvider', '$httpProvider',
             });
         };
 
+        $rootScope.immutableAddDaysToDate = function(date, days) {
+            var newDate = new Date(date);
+            newDate.setDate(date.getDate() + days);
+            return newDate;
+        };
+        $rootScope.immutableAddMonthsToDate = function(date, months) {
+            var newDate = new Date(date);
+            newDate.setMonth(date.getMonth() + months);
+            return newDate;
+        };
+
         // TODO Change ugly hack
         $rootScope.serverUrl = icescrum.grailsServer;
 

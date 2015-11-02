@@ -388,10 +388,8 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
         var nbSprints = Math.floor($scope.totalDuration / sprintDuration);
         $scope.sprints = [];
         for (var i = 1; i <= nbSprints; i++) {
-            var startDate = new Date($scope.project.firstSprint);
-            startDate.setDate($scope.project.firstSprint.getDate() + (i - 1) * sprintDuration);
-            var endDate = new Date(startDate);
-            endDate.setDate(startDate.getDate() + sprintDuration);
+            var startDate = $scope.immutableAddDaysToDate($scope.project.firstSprint, (i - 1) * sprintDuration);
+            var endDate = $scope.immutableAddDaysToDate(startDate, sprintDuration);
             $scope.sprints.push({ orderNumber : i, startDate: startDate, endDate: endDate });
         }
     };
@@ -404,9 +402,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     $scope.project = new Project();
     var today = new Date();
     today.setHours(0, 0, 0, 0);
-    var endDate = new Date();
-    endDate.setHours(0, 0, 0, 0);
-    endDate.setMonth(today.getMonth() + 3);
+    var endDate = $scope.immutableAddMonthsToDate(today, 3);
     angular.extend($scope.project, {
         startDate: today,
         firstSprint: today,
@@ -431,8 +427,8 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
         var startDate = newValues[0];
         var endDate = newValues[1];
         var firstSprint = newValues[2];
-        $scope.projectMinEndDate = new Date(startDate).setDate(firstSprint.getDate() + 1);
-        $scope.projectMaxStartDate = new Date(endDate).setDate(endDate.getDate() - 1);
+        $scope.projectMinEndDate = $scope.immutableAddDaysToDate(firstSprint, 1);
+        $scope.projectMaxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
         $scope.sprintMaxStartDate = $scope.projectMaxStartDate;
         $scope.sprintMinStartDate = startDate;
     });

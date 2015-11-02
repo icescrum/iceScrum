@@ -330,7 +330,7 @@ class ProductUrlMappings {
 
         "/p/$product/release/$id" {
             controller = 'release'
-            action = [PUT:"update", POST:'update']
+            action = [PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)

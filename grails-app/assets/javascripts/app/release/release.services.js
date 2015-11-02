@@ -58,7 +58,7 @@ services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesBy
             project.releases_count = project.releases.length;
         }).$promise;
     };
-    this.get = function(project, id) {
+    this.get = function(id, project) {
         return self.list(project).then(function(releases) {
             var release = _.find(releases, function(rw) {
                 return rw.id == id;
@@ -68,6 +68,11 @@ services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesBy
             } else {
                 throw Error('todo.is.ui.release.does.not.exist');
             }
+        });
+    };
+    this['delete'] = function(release, project) {
+        return release.$delete({projectId: project.id}, function() {
+            _.remove(project.releases, {id: release.id});
         });
     };
     this.openChart = function(release, chart) {
