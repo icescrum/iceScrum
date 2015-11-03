@@ -56,4 +56,16 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', fun
             return response.data;
         });
     };
+
+    this.updateMenuPreferences = function(info) {
+        $http({
+            url: $scope.serverUrl + '/user/menu',
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+            transformRequest: function(data) {
+                return formObjectData(data, '');
+            },
+            data: info
+        });
+    }
 }]);

@@ -43,7 +43,7 @@ var isApp = angular.module('isApp', [
     'remoteValidation',
     'FBAngular',
     'angular-extended-notifications',
-    'htmlSortable',
+    'as.sortable',
     'angular.atmosphere',
     'nvd3'
 ]);

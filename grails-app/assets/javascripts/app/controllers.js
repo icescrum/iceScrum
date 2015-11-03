@@ -87,25 +87,22 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         $scope.getPushState = function() {
             return PushService.push.connected ? 'connected' : 'disconnected'
         };
-        $scope.menuSortableOptions = {
-            items: 'li.menuitem',
-            connectWith: '.menubar',
-            handle: '.handle'
+
+        $scope.menuDragging = false;
+
+        $scope.menuSortableListeners = {
+            accept: function (sourceItemHandleScope, destSortableScope) { return true; },
+            itemMoved: function (event) {
+                UserService.updateMenuPreferences({id:event.source.itemScope.modelValue.id, position:event.dest.index + 1, hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden});
+            },
+            orderChanged: function(event) {
+                UserService.updateMenuPreferences({id:event.source.itemScope.modelValue.id, position:event.dest.index + 1, hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden});
+            },
+            containment: '#header',
+            dragStart:function(){ $scope.menuDragging = true; },
+            dragEnd:function(){ $scope.menuDragging = false; }
         };
-        var updateMenu = function(info) {
-            $http({
-                url: $scope.serverUrl + '/user/menu',
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: function(data) {
-                    return FormService.formObjectData(data, '');
-                },
-                data: info
-            });
-        };
-        $scope.menuSortableUpdate = function(startModel, destModel, start, end, hidden) {
-            updateMenu({id: destModel[end].id, position: end + 1, hidden: hidden});
-        };
+
         //fake loading
         var loadingAppProgress = $interval(function() {
             if ($scope.app.loading <= 80) {

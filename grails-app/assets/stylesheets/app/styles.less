@@ -184,7 +184,7 @@ table {
   padding-bottom: 5px;
 }
 
-.sortable-placeholder {
+.as-sortable-placeholder {
   border: 2px dashed @brand-primary;
 }
 
@@ -501,15 +501,6 @@ table {
     margin: 8px 0;
   }
   .navbar-nav.menubar {
-    &.dragstart > li.dropdown.menubar-more {
-      &.hidden {
-        visibility: visible !important;
-        display: inline-block !important;
-      }
-      .dropdown-menu {
-        display: block;
-      }
-    }
     > li {
       &.menuitem {
         border: 1px solid transparent;
@@ -525,21 +516,12 @@ table {
         padding-bottom: 5px;
         padding-top: 5px;
       }
-      &.sortable-placeholder {
-        width: 75px;
-        height: 31px;
-        margin-top: -2px;
-      }
-      > ul {
-        > li.sortable-placeholder {
-          height: 31px;
-          margin-top: -2px;
-        }
-      }
     }
-    .menuitem:hover {
-      .handle {
-        visibility: visible;
+    &.sortable, .sortable {
+      .menuitem:hover {
+        .handle {
+          visibility: visible;
+        }
       }
     }
   }
@@ -683,23 +665,10 @@ form .alert.alert-danger {
 #view-project, #view-home {
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 20px 30px;
+  padding: 20px 0;
 
-  &> ul:first-of-type {
-    list-style-type:none;
-    padding-left:0;
-    .sortable-placeholder{
-      .make-md-column(6);
-      border:none;
-      > div {
-        height: 100%;
-        border: 2px dashed @brand-primary;
-      }
-      margin-bottom:20px;
-    }
-    li.sortable .panel-heading, li.sortable-placeholder {
-      cursor:move;
-    }
+  .sortable .panel-heading, li.as-sortable-placeholder {
+    cursor:move;
   }
 
   .panel-body.feed {
@@ -1175,11 +1144,7 @@ a[data-toggle="tab"] button {
         }
       }
     }
-    .sortable-placeholder {
-      margin: 6px;
-      width: 196px;
-      height: 145px;
-      padding: 0 5px;
+    .as-sortable-placeholder {
       float: left;
     }
     .postit-container {

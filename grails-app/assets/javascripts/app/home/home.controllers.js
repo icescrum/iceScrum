@@ -22,17 +22,27 @@
 controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, HomeService) {
     // Functions
     $scope.sortablePanelUpdate = function(startModel, destModel, start, end) {
-        HomeService.updatePositionPanel({id: destModel[end].id, position: end});
+        var $panels = $('#view-home').find('>>');
+        //HomeService.updatePositionPanel({id: destModel[end].id, position: pos});
     };
     // Init
-    $scope.panels = [];
+    $scope.panels_l = [];
+    $scope.panels_r = [];
     $scope.sortable_options = {
         handle:".panel-heading",
+        connectWith:'panel',
         sortableClass: "sortable",
         forcePlaceholderSize:"> div",
-        placeholder: '<li><div>&nbsp;</div></li>'
+        placeholder: '<div>&nbsp;</div>'
     };
     HomeService.getPanels().then(function(callback) {
-        $scope.panels = callback.data;
+        angular.forEach(callback.data, function(value, key) {
+            console.log(key+' '+value.id);
+            if(key % 2 == 0){
+                $scope.panels_l.push(value);
+            } else {
+                $scope.panels_r.push(value);
+            }
+        });
     });
 }]);

@@ -21,12 +21,13 @@
 
 <script type="text/ng-template" id="home.html">
     <div id="view-home">
-        <ul html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
-            ng-model='panels'
-            class="row">
-            <li id="{{ panel.id }}" ng-repeat="panel in panels" class="col-md-6" ng-class="{'sortable':panel.position }">
-                <div ng-include="panel.id+'.panel.html'"></div>
-            </li>
-        </ul>
+        <div class="col-md-6" html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
+             ng-model='panels_l'>
+            <div ng-include="panel.id+'.panel.html'" data-d="{{ $index }}" id="{{ panel.id }}" ng-repeat="panel in panels_l" ng-class="{'sortable':panel.position }"></div>
+        </div>
+        <div class="col-md-6" html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
+             ng-model='panels_r'>
+            <div ng-include="panel.id+'.panel.html'" data-d="{{ $index }}" id="{{ panel.id }}" ng-repeat="panel in panels_r" ng-class="{'sortable':panel.position }"></div>
+        </div>
     </div>
 </script>
