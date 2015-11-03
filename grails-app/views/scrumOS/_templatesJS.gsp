@@ -38,7 +38,7 @@
         <g:render template="/release/templates"/>
     </g:if>
 </div>
-<script>
+<script type="text/javascript">
     angular.element(document).ready(function () {
         var $rootScope = angular.element(document).injector().get('$rootScope');
         var Session = angular.element(document).injector().get('Session');

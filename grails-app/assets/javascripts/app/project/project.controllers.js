@@ -20,7 +20,7 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$uibModal', '$state', function($scope, ProjectService, Session, $uibModal, $state) {
+controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, Session, $uibModal, $state) {
     $scope.showProjectEditModal = function(view) {
         var childScope = $scope.$new();
         if (view) {
@@ -97,7 +97,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'Session', '$
                         method: 'POST',
                         headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                         transformRequest: function(data) {
-                            return formObjectData(data, 'changes.');
+                            return FormService.formObjectData(data, 'changes.');
                         },
                         data: $scope.changes
                     })
@@ -360,9 +360,6 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
     };
     $scope.createProject = function(project) {
         var p = $scope.prepareProject(project);
-        p.startDate = $filter('dateToIso')(project.startDate);
-        p.endDate = $filter('dateToIso')(project.endDate);
-        p.firstSprint = $filter('dateToIso')(project.firstSprint);
         ProjectService.save(p).then(function(project) {
             $scope.openProject(project);
         });
@@ -516,7 +513,6 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
     $scope.views = [];
     $scope.update = function(project) {
         $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).where({hidden: true}).map('id').value().join(',');
-        project.startDate = $filter('dateToIso')(project.startDate);
         ProjectService.update(project)
             .then(function(updatedProject) {
                 Session.setProject(updatedProject);

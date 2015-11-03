@@ -22,20 +22,20 @@
  *
  */
 
-var services = angular.module('services', [ 'restResource' ]);
+var services = angular.module('services', ['restResource']);
 
-services.factory('AuthService',['$http', '$rootScope', 'Session', function ($http, $rootScope, Session) {
+services.factory('AuthService', ['$http', '$rootScope', 'FormService', function($http, $rootScope, FormService) {
     return {
-        login: function (credentials) {
+        login: function(credentials) {
             return $http.post($rootScope.serverUrl + '/j_spring_security_check', credentials, {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: function (data) {
-                    return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
+                transformRequest: function(data) {
+                    return angular.isObject(data) && String(data) !== '[object File]' ? FormService.formObjectData(data) : data;
                 }
             })
         }
     };
-}]).service('Session',['$timeout', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', function ($timeout, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType) {
+}]).service('Session', ['$timeout', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', function($timeout, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType) {
     var self = this;
     self.user = new User();
     self.project = new Project();
@@ -70,7 +70,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
             });
     };
 
-    this.setUser = function(user){
+    this.setUser = function(user) {
         _.extend(self.user, user);
         PushService.registerListener('activity', IceScrumEventType.CREATE, function(activity) {
             self.unreadActivitiesCount += 1;
@@ -123,7 +123,7 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         return self.roles.scrumMaster || self.roles.teamMember;
     };
     this.creator = function(item) {
-        return this.authenticated  && !_.isEmpty(item) && !_.isEmpty(item.creator) && self.user.id == item.creator.id;
+        return this.authenticated && !_.isEmpty(item) && !_.isEmpty(item.creator) && self.user.id == item.creator.id;
     };
     this.owner = function(item) {
         return !_.isEmpty(item) && !_.isEmpty(item.owner) && self.user.id == item.owner.id;
@@ -150,14 +150,14 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         _.merge(self.roles, defaultRoles, newRoles);
     };
 
-    this.setProject = function(project){
+    this.setProject = function(project) {
         _.extend(self.project, project);
         PushService.registerListener('product', IceScrumEventType.UPDATE, function(updatedProject) {
             var localProject = self.project;
             if (updatedProject.pkey != localProject.pkey) {
                 $rootScope.notifyWarning('todo.is.ui.project.updated.pkey');
                 document.location = document.location.href.replace(localProject.pkey, updatedProject.pkey);
-            } else if (updatedProject.preferences.hidden && !localProject.preferences.hidden && !self.inProduct()){
+            } else if (updatedProject.preferences.hidden && !localProject.preferences.hidden && !self.inProduct()) {
                 $rootScope.notifyWarning('todo.is.ui.project.updated.visibility');
                 reload();
             } else if (updatedProject.preferences.archived != localProject.preferences.archived) {
@@ -177,39 +177,82 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
         });
     };
 
-    this.getProject = function(){
+    this.getProject = function() {
         return self.project;
     };
 
-}]).service('FormService', [function() {
-    this.previous = function (list, element) {
+}]).service('FormService', ['$filter', function($filter) {
+    var self = this;
+    this.previous = function(list, element) {
         var ind = list.indexOf(element);
         return ind > 0 ? list[ind - 1] : null;
     };
-    this.next = function (list, element) {
+    this.next = function(list, element) {
         var ind = list.indexOf(element);
         return ind + 1 <= list.length ? list[ind + 1] : null;
+    };
+    this.formObjectData = function(obj, prefix) {
+        var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
+        _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
+        function decapitalize(str) {
+            return str.charAt(0).toLowerCase() + str.substring(1);
+        }
+        _prefix = decapitalize(_prefix);
+        for (name in obj) {
+            value = obj[name];
+            if (value instanceof Array && !_.endsWith(name, '_ids')) {
+                for (i = 0; i < value.length; ++i) {
+                    subValue = value[i];
+                    innerObj = {};
+                    innerObj[name] = subValue;
+                    query += self.formObjectData(innerObj, _prefix) + '&';
+                }
+            } else if (value instanceof Date) {
+                var encodedDate = $filter('dateToIso')(value);
+                query += encodeURIComponent(_prefix + name) + '=' + encodeURIComponent(encodedDate) + '&';
+            } else if (value instanceof Object) {
+                for (subName in value) {
+                    if (subName != 'class' && !_.startsWith(subName, '$')) {
+                        subValue = value[subName];
+                        fullSubName = name + '.' + subName;
+                        innerObj = {};
+                        innerObj[fullSubName] = subValue;
+                        query += self.formObjectData(innerObj, _prefix) + '&';
+                    }
+                }
+            } else if (value !== undefined
+                && value !== null
+                    //no class info needed
+                && !_.contains(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
+                    //no angular object
+                && !_.startsWith(name, '$')
+                    //no custom count / html values
+                && !_.endsWith(name, '_count') && !_.endsWith(name, '_html')) {
+                query += encodeURIComponent(_prefix + name) + '=' + encodeURIComponent(value) + '&';
+            }
+        }
+        return query.length ? query.substr(0, query.length - 1) : query;
     };
     this.selectTagsOptions = {
         tags: [],
         multiple: true,
         array_tags: true,
         tokenSeparators: [",", " "],
-        createSearchChoice: function (term) {
-            return { id: term, text: term };
+        createSearchChoice: function(term) {
+            return {id: term, text: term};
         },
-        formatSelection: function (object) {
+        formatSelection: function(object) {
             return '<a href="#finder/?tag=' + object.text + '" onclick="document.location=this.href;"> <i class="fa fa-tag"></i> ' + object.text + '</a>';
         },
         ajax: {
             url: 'finder/tag',
             cache: 'true',
-            data: function (term) {
+            data: function(term) {
                 return {term: term};
             },
-            results: function (data) {
+            results: function(data) {
                 var results = [];
-                angular.forEach(data, function (result) {
+                angular.forEach(data, function(result) {
                     results.push({id: result, text: result});
                 });
                 return {results: results};
@@ -219,8 +262,8 @@ services.factory('AuthService',['$http', '$rootScope', 'Session', function ($htt
 }]);
 
 var restResource = angular.module('restResource', ['ngResource']);
-restResource.factory('Resource', ['$resource', function ($resource) {
-        return function (url, params, methods) {
+restResource.factory('Resource', ['$resource', 'FormService', function($resource, FormService) {
+    return function(url, params, methods) {
         var defaultParams = {
             id: '@id'
         };
@@ -244,23 +287,22 @@ restResource.factory('Resource', ['$resource', function ($resource) {
                 return response.resource;
             }
         };
+        var transformRequest = function(data) {
+            return angular.isObject(data) && String(data) !== '[object File]' ? FormService.formObjectData(data) : data;
+        };
         var defaultMethods = {
             save: {
                 method: 'post',
                 isArray: false,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: function (data) {
-                    return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
-                },
+                transformRequest: transformRequest,
                 interceptor: singleInterceptor
             },
             updateArray: {
                 method: 'post',
                 isArray: false,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: function (data) {
-                    return angular.isObject(data) && String(data) !== '[object File]' ? formObjectData(data) : data;
-                },
+                transformRequest: transformRequest,
                 interceptor: arrayInterceptor
             },
             get: {
@@ -279,48 +321,3 @@ restResource.factory('Resource', ['$resource', function ($resource) {
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));
     };
 }]);
-
-var formObjectData = function (obj, prefix) {
-    var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
-    _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
-
-    function decapitalize(str) {
-        return str.charAt(0).toLowerCase() + str.substring(1);
-    }
-    _prefix = decapitalize(_prefix);
-
-    for (name in obj) {
-        value = obj[name];
-        if (value instanceof Array && !_.endsWith(name, '_ids')) {
-            for (i = 0; i < value.length; ++i) {
-                subValue = value[i];
-                innerObj = {};
-                innerObj[name] = subValue;
-                query += formObjectData(innerObj, _prefix) + '&';
-            }
-        }
-        else if (value instanceof Object) {
-            for (subName in value) {
-                if (subName != 'class' && !_.startsWith(subName, '$')) {
-                    subValue = value[subName];
-                    fullSubName = name + '.' + subName;
-                    innerObj = {};
-                    innerObj[fullSubName] = subValue;
-                    query += formObjectData(innerObj, _prefix) + '&';
-                }
-            }
-        }
-        else if (value !== undefined
-            && value !== null
-            //no class info needed
-            && !_.contains(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
-            //no angular object
-            && !_.startsWith(name, '$')
-            //no custom count / html values
-            && !_.endsWith(name, '_count') && !_.endsWith(name, '_html')) {
-            query += encodeURIComponent(_prefix + name) + '=' + encodeURIComponent(value) + '&';
-        }
-    }
-
-    return query.length ? query.substr(0, query.length - 1) : query;
-};

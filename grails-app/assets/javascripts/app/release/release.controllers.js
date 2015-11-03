@@ -50,8 +50,6 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', '$f
         $scope.resetFormValidation($scope.formHolder.releaseForm);
     };
     $scope.save = function(release, andContinue) {
-        release.startDate = $filter('dateToIso')(release.startDate);
-        release.endDate = $filter('dateToIso')(release.endDate);
         ReleaseService.save(release, $scope.project)
             .then(function(release) {
                 if (andContinue) {
@@ -101,8 +99,6 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$filter', '$s
         return !_.isEqual($scope.editableRelease, $scope.editableReleaseReference);
     };
     $scope.update = function(release) {
-        release.startDate = $filter('dateToIso')(release.startDate);
-        release.endDate = $filter('dateToIso')(release.endDate);
         ReleaseService.update(release, $scope.project).then(function(release) {
             $scope.resetReleaseForm();
             $scope.notifySuccess('todo.is.ui.release.updated');

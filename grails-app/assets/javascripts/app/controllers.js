@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys', 'PushService',
-    function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys, PushService) {
+controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'FormService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys', 'PushService',
+    function($scope, $state, $uibModal, Session, UserService, FormService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys, PushService) {
         $scope.app = {
             isFullScreen: false,
             loading: 10
@@ -98,7 +98,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: function(data) {
-                    return formObjectData(data, '');
+                    return FormService.formObjectData(data, '');
                 },
                 data: info
             });
@@ -376,8 +376,17 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     };
 }]);
 
-controllers.controller('releasePlanCtrl', [function() {
-
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'Session', function($scope, $state, ReleaseService, Session) {
+    $scope.releases = [];
+    ReleaseService.list(Session.getProject()).then(function(releases) {
+        $scope.releases = releases;
+    });
+    $scope.goToRelease = function(release) {
+        $state.go('releasePlan.details', {id: release.id});
+    };
+    $scope.goToNewRelease  = function() {
+        $state.go('releasePlan.new');
+    };
 }]);
 
 controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {

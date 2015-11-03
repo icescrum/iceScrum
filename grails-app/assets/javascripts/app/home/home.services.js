@@ -19,16 +19,19 @@
  *
  *
  */
-services.service("HomeService", ['User','$http', '$rootScope', function(User, $http, $rootScope) {
-    this.getPanels = function () {
+services.service("HomeService", ['User', '$http', '$rootScope', 'FormService', function(User, $http, $rootScope, FormService) {
+    this.getPanels = function() {
         return $http.get($rootScope.serverUrl + '/home/panel/list');
     };
-
-    this.updatePositionPanel = function(_data){
-        $http({ url: $rootScope.serverUrl + '/home/panel',
+    this.updatePositionPanel = function(_data) {
+        $http({
+            url: $rootScope.serverUrl + '/home/panel',
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-            transformRequest: function (data) { return formObjectData(data, '');},
-            data:_data});
+            transformRequest: function(data) {
+                return FormService.formObjectData(data, '');
+            },
+            data: _data
+        });
     }
 }]);
