@@ -42,7 +42,7 @@ class ReleaseController {
         Product _product = Product.withProduct(product)
         def releaseParams = params.release
         if (releaseParams.startDate) {
-            releaseParams.startDate =  ServicesUtils.parseDateISO8601(releaseParams.startDate)
+            releaseParams.startDate = ServicesUtils.parseDateISO8601(releaseParams.startDate)
         }
         if (releaseParams.endDate) {
             releaseParams.endDate = ServicesUtils.parseDateISO8601(releaseParams.endDate)
