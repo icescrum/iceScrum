@@ -151,6 +151,28 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$filter', '$s
         $scope.formHolder.formHover = value;
     };
     // Init
+    $scope.$watchCollection('project.releases', function(releases) {
+        if (!_.isUndefined(releases)) {
+            var previousRelease = _.findLast(_.sortBy(releases, 'orderNumber'), function(release) {
+                return release.orderNumber < $scope.release.orderNumber;
+            });
+            if (_.isEmpty(previousRelease)) {
+                $scope.minStartDate = $scope.project.startDate;
+            } else {
+                $scope.minStartDate =  $scope.immutableAddDaysToDate(previousRelease.endDate, 1);
+            }
+        }
+    });
+    $scope.$watchCollection('[editableRelease.startDate, editableRelease.endDate]', function(newValues) {
+        var startDate = newValues[0];
+        var endDate = newValues[1];
+        if (startDate) {
+            $scope.minEndDate = $scope.immutableAddDaysToDate(startDate, 1);
+        }
+        if (endDate) {
+            $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
+        }
+    });
     $scope.formHolder = {};
     $scope.release = {};
     $scope.editableRelease = {};
