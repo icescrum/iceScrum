@@ -165,7 +165,7 @@
                     <div class="markitup-preview"
                          ng-disabled="true"
                          ng-show="!showDoneDefinitionTextarea"
-                         ng-click="showDoneDefinitionTextarea = authorizedSprint('updateDoneDefinition', editableCurrentOrLastSprint); editSprint(showDoneDefinitionTextarea)"
+                         ng-click="showDoneDefinitionTextarea = authorizedSprint('update', editableCurrentOrLastSprint); editSprint(showDoneDefinitionTextarea)"
                          ng-class="{'placeholder': !editableCurrentOrLastSprint.doneDefinition_html}"
                          tabindex="0"
                          ng-bind-html="(editableCurrentOrLastSprint.doneDefinition_html ? editableCurrentOrLastSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
@@ -193,7 +193,7 @@
                     <div class="markitup-preview"
                          ng-disabled="true"
                          ng-show="!showRetrospectiveTextarea"
-                         ng-click="showRetrospectiveTextarea = authorizedSprint('updateRetrospective', editableCurrentOrLastSprint); editSprint(showRetrospectiveTextarea)"
+                         ng-click="showRetrospectiveTextarea = authorizedSprint('update', editableCurrentOrLastSprint); editSprint(showRetrospectiveTextarea)"
                          ng-class="{'placeholder': !editableCurrentOrLastSprint.retrospective_html}"
                          tabindex="0"
                          ng-bind-html="(editableCurrentOrLastSprint.retrospective_html ? editableCurrentOrLastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>

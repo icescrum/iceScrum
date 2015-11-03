@@ -600,6 +600,11 @@ isApp.config(['$stateProvider', '$httpProvider',
             3: {"value": $rootScope.message("is.sprint.state.done"), "code": "done"}
         };
     }])
+    .constant('SprintStatesByName', {
+        "WAIT": 1,
+        "IN_PROGRESS": 2,
+        "DONE": 3
+    })
     .factory('ReleaseStates', ['$rootScope', function($rootScope) {
         return {
             1: {"value": $rootScope.message("is.release.state.wait"), "code": "wait"},

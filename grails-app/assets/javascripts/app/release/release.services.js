@@ -83,7 +83,7 @@ services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesBy
             case 'update':
             case 'generateSprints':
             case 'autoPlan':
-            case 'dissociateAll':
+            case 'unPlan':
                 return Session.poOrSm() && release.state != ReleaseStatesByName.DONE;
             case 'activate':
                 return Session.poOrSm() && release.state == ReleaseStatesByName.WAIT && release.activable;

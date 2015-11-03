@@ -21,34 +21,24 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<script type="text/ng-template" id="release.menu.html">
-<li ng-if="authorizedRelease('activate', release)">
-    <a href ng-click="activate(release)">
+<script type="text/ng-template" id="sprint.menu.html">
+<li ng-if="authorizedSprint('activate', sprint)">
+    <a href ng-click="activate(sprint)">
         ${message(code:'is.ui.timeline.menu.activate')}
     </a>
 </li>
-<li ng-if="authorizedRelease('close', release)">
-    <a href ng-click="close(release)">
+<li ng-if="authorizedSprint('close', sprint)">
+    <a href ng-click="close(sprint)">
         ${message(code:'is.ui.timeline.menu.close')}
     </a>
 </li>
-<li ng-if="authorizedRelease('generateSprints', release)">
-    <a href ng-click="generateSprints(release)">
-        ${message(code:'is.ui.releasePlan.toolbar.generateSprints')}
+<li ng-if="authorizedSprint('unPlan', sprint)">
+    <a href ng-click="unPlan(sprint)">
+        ${message(code:'is.ui.releasePlan.menu.sprint.dissociateAll')}
     </a>
 </li>
-<li ng-if="authorizedRelease('autoPlan', release)">
-    <a href ng-click="autoPlan(release)">
-        ${message(code:'is.ui.releasePlan.toolbar.autoPlan')}
-    </a>
-</li>
-<li ng-if="authorizedRelease('unPlan', release)">
-    <a href ng-click="unPlan(release)">
-        ${message(code:'is.ui.releasePlan.toolbar.dissociateAll')}
-    </a>
-</li>
-<li ng-if="authorizedRelease('delete', release)">
-    <a href ng-click="delete(release)">
+<li ng-if="authorizedSprint('delete', sprint)">
+    <a href ng-click="delete(sprint)">
         ${message(code:'is.ui.timeline.menu.delete')}
     </a>
 </li>

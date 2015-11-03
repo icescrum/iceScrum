@@ -20,4 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+<g:render template="/sprint/templates/sprint.details" />
+<g:render template="/sprint/templates/sprint.menu" />
+<g:render template="/sprint/templates/sprint.new" />
 <g:render template="/sprint/templates/sprint.tooltip" />

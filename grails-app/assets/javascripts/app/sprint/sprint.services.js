@@ -25,7 +25,7 @@ services.factory('Sprint', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/p/:projectId/sprint/:type/:id/:action');
 }]);
 
-services.service("SprintService", ['$q', '$filter', 'Sprint', 'Session', function($q, $filter, Sprint, Session) {
+services.service("SprintService", ['$q', '$filter', 'Sprint', 'SprintStatesByName', 'ReleaseStatesByName', 'Session', function($q, $filter, Sprint, SprintStatesByName, ReleaseStatesByName, Session) {
     this.list = function(release) {
         if (_.isEmpty(release.sprints)) {
             return Sprint.query({ projectId: release.parentProduct.id, type: 'release', id: release.id }, function(data) {
@@ -39,17 +39,56 @@ services.service("SprintService", ['$q', '$filter', 'Sprint', 'Session', functio
     this.getCurrentOrLastSprint = function(project) {
         return Sprint.get({ projectId: project.id, action: 'findCurrentOrLastSprint' }, {}).$promise;
     };
-    this.update = function (sprint, projectId) {
-        return Sprint.update({ id: sprint.id, projectId: projectId }, sprint).$promise;
+    this.update = function(sprint, release) {
+        return Sprint.update({id: sprint.id, projectId: release.parentProduct.id}, sprint, function(sprint) {
+            angular.extend(_.find(release.sprints, { id: sprint.id }), sprint);
+        }).$promise;
+    };
+    this.save = function(sprint, release) {
+        sprint.class = 'sprint';
+        return Sprint.save({projectId: release.parentProduct.id}, sprint, function(sprint) {
+            var existingSprint = _.find(release.sprints, {id: sprint.id});
+            if (existingSprint) {
+                angular.extend(existingSprint, sprint);
+            } else {
+                release.sprints.push(new Sprint(sprint));
+            }
+            release.sprints_count = release.sprints.length;
+        }).$promise;
+    };
+    this.get = function(id, release) {
+        return self.list(release).then(function(sprints) {
+            var sprint = _.find(sprints, function(rw) {
+                return rw.id == id;
+            });
+            if (sprint) {
+                return sprint;
+            } else {
+                throw Error('todo.is.ui.sprint.does.not.exist');
+            }
+        });
+    };
+    this['delete'] = function(sprint, release) {
+        return sprint.$delete({projectId: release.parentProduct.id}, function() {
+            _.remove(release.sprints, {id: sprint.id});
+        });
     };
     this.openChart = function(sprint, project, chart) {
         return Sprint.get({ id: sprint.id, projectId: project.id, action: chart}, {}).$promise;
     };
     this.authorizedSprint = function(action, sprint) {
         switch (action) {
-            case 'updateRetrospective':
-            case 'updateDoneDefinition':
-                return Session.poOrSm();
+            case 'create':
+                return Session.poOrSm() && sprint.parentRelease.state <= ReleaseStatesByName.IN_PROGRESS;
+            case 'activate':
+                return Session.poOrSm() && sprint.state == SprintStatesByName.WAIT && sprint.activable;
+            case 'delete':
+                return Session.poOrSm() && sprint.state == SprintStatesByName.WAIT;
+            case 'close':
+                return Session.poOrSm() && sprint.state == SprintStatesByName.IN_PROGRESS;
+            case 'unPlan':
+            case 'update':
+                return Session.poOrSm() && sprint.state != SprintStatesByName.DONE;
             default:
                 return false;
         }
