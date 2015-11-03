@@ -183,8 +183,9 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$filter', '$s
         $scope.release = release;
         $scope.selected = release;
         $scope.resetReleaseForm();
-        $scope.previous = FormService.previous($scope.project.releases, $scope.release);
-        $scope.next = FormService.next($scope.project.releases, $scope.release);
+        var sortedReleases = _.sortBy($scope.project.releases, 'orderNumber');
+        $scope.previous = FormService.previous(sortedReleases, $scope.release);
+        $scope.next = FormService.next(sortedReleases, $scope.release);
     }).catch(function(e){
         $state.go('^');
         $scope.notifyError(e.message)
