@@ -55,7 +55,7 @@ services.service("TeamService", ['$q', 'Team', 'Session', function($q, Team, Ses
     };
     this.get = function(project) {
         if (_.isEmpty(project.team)) {
-            return Team.get({ id: project.id, type: 'project' }, {}, function(team) {
+            return Team.get({ id: project.id, type: 'project' }, function(team) {
                 project.team = team;
             }).$promise;
         } else {

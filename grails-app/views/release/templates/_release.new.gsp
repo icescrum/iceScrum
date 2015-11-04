@@ -38,7 +38,6 @@
                        ng-model="release.name"
                        type="text"
                        class="form-control"
-                       ng-readonly="!authorizedRelease('create')"
                        placeholder="${message(code: 'is.ui.release.noname')}"/>
             </div>
             <div class="clearfix no-padding">
@@ -84,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="authorizedRelease('create')" class="btn-toolbar pull-right">
+            <div class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.releaseForm.$invalid"
                         uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"

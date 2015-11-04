@@ -509,7 +509,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
     $scope.resetTeamForm();
 }]);
 
-controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', '$filter', function($scope, Session, ProjectService, $filter) {
+controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
     $scope.views = [];
     $scope.update = function(project) {
         $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).where({hidden: true}).map('id').value().join(',');

@@ -34,7 +34,6 @@
                     <select class="form-control"
                             ng-model="holder.selectedFeed"
                             ng-change="selectFeed(holder.selectedFeed)"
-                            class="form-control"
                             ui-select2>
                         <option value="all">${message(code: 'todo.is.ui.panel.feed.title.allFeed')}</option>
                         <option ng-repeat="feed in feeds" value="{{feed.id}}">{{feed.title}}</option>

@@ -40,6 +40,6 @@ services.service("MoodService", ['Mood', function(Mood) {
         if (project) {
             settings.product = project.id;
         }
-        return Mood.get(settings, {}).$promise;
+        return Mood.get(settings).$promise;
     };
 }]);
