@@ -25,7 +25,7 @@ services.factory('User', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/user/:id/:action');
 }]);
 
-services.service("UserService", ['User', '$http', '$rootScope', '$injector', function(User, $http, $rootScope, $injector) {
+services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'FormService', function(User, $http, $rootScope, $injector, FormService) {
     this.getCurrent = function() {
         var Session = $injector.get('Session');
         var params = {action: 'current'};
@@ -56,14 +56,13 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', fun
             return response.data;
         });
     };
-
     this.updateMenuPreferences = function(info) {
         $http({
-            url: $scope.serverUrl + '/user/menu',
+            url: $rootScope.serverUrl + '/user/menu',
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
             transformRequest: function(data) {
-                return formObjectData(data, '');
+                return FormService.formObjectData(data, '');
             },
             data: info
         });

@@ -29,16 +29,15 @@ controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, Ho
     $scope.panels_l = [];
     $scope.panels_r = [];
     $scope.sortable_options = {
-        handle:".panel-heading",
-        connectWith:'panel',
+        handle: ".panel-heading",
+        connectWith: 'panel',
         sortableClass: "sortable",
-        forcePlaceholderSize:"> div",
+        forcePlaceholderSize: "> div",
         placeholder: '<div>&nbsp;</div>'
     };
     HomeService.getPanels().then(function(callback) {
         angular.forEach(callback.data, function(value, key) {
-            console.log(key+' '+value.id);
-            if(key % 2 == 0){
+            if (key % 2 == 0) {
                 $scope.panels_l.push(value);
             } else {
                 $scope.panels_r.push(value);
