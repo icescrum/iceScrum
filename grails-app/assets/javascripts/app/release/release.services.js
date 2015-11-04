@@ -38,7 +38,7 @@ services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesBy
         }
     };
     this.getCurrentOrNextRelease = function(project) {
-        return Release.get({projectId: project.id, action: 'findCurrentOrNextRelease'}, {}).$promise;
+        return Release.get({projectId: project.id, action: 'findCurrentOrNextRelease'}).$promise;
     };
     this.update = function(release, project) {
         var releaseToUpdate = _.omit(release, 'sprints');
@@ -70,13 +70,28 @@ services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesBy
             }
         });
     };
+    this.activate = function(release) {
+        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'activate'}, {}).$promise;
+    };
+    this.close = function(release) {
+        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'close'}, {}).$promise;
+    };
+    this.generateSprints = function(release) {
+        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'generateSprints'}, {}).$promise;
+    };
+    this.autoPlan = function(release) {
+        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'autoPlan'}, {}).$promise;
+    };
+    this.unPlan = function(release) {
+        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'unPlan'}, {}).$promise;
+    };
     this['delete'] = function(release, project) {
         return release.$delete({projectId: project.id}, function() {
             _.remove(project.releases, {id: release.id});
         });
     };
     this.openChart = function(release, chart) {
-        return Release.get({id: release.id, projectId: release.parentProduct.id, action: chart}, {}).$promise;
+        return Release.get({id: release.id, projectId: release.parentProduct.id, action: chart}).$promise;
     };
     this.authorizedRelease = function(action, release) {
         switch (action) {

@@ -22,10 +22,35 @@
  *
  */
 
-controllers.controller('releaseCtrl', ['$scope', '$state', 'Session', 'ReleaseService', function($scope, $state, Session, ReleaseService) {
+controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', function($scope, Session, ReleaseService) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
+    };
+    $scope.activate = function(release) {
+        ReleaseService.activate(release).then(function() {
+            $scope.notifySuccess('todo.is.ui.release.activated');
+        });
+    };
+    $scope.close = function(release) {
+        ReleaseService.close(release).then(function() {
+            $scope.notifySuccess('todo.is.ui.release.closed');
+        });
+    };
+    $scope.generateSprints = function(release) {
+        ReleaseService.generateSprints(release).then(function() {
+            $scope.notifySuccess('todo.is.ui.release.generatedSprints');
+        });
+    };
+    $scope.autoPlan = function(release) {
+        ReleaseService.autoPlan(release).then(function() {
+            $scope.notifySuccess('todo.is.ui.release.autoPlanned');
+        });
+    };
+    $scope.unPlan = function(release) {
+        ReleaseService.unPlan(release).then(function() {
+            $scope.notifySuccess('todo.is.ui.release.unPlanned');
+        });
     };
     $scope['delete'] = function(release) {
         ReleaseService.delete(release, $scope.project)
@@ -42,7 +67,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', 'Session', 'ReleaseSe
     $scope.endDateOptions = angular.copy($scope.startDateOptions);
 }]);
 
-controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', '$filter', 'ReleaseService', 'hotkeys', function($scope, $controller, $state, $filter, ReleaseService, hotkeys) {
+controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'ReleaseService', 'hotkeys', function($scope, $controller, $state, ReleaseService, hotkeys) {
     $controller('releaseCtrl', { $scope: $scope }); // inherit from releaseCtrl
     // Functions
     $scope.resetReleaseForm = function() {
@@ -92,7 +117,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', '$f
     });
 }]);
 
-controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$filter', '$stateParams', '$controller', 'ReleaseService', 'FormService', function($scope, $state, $filter, $stateParams, $controller, ReleaseService, FormService) {
+controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'ReleaseService', 'FormService', function($scope, $state, $stateParams, $controller, ReleaseService, FormService) {
     $controller('releaseCtrl', { $scope: $scope }); // inherit from releaseCtrl
     // Functions
     $scope.isDirty = function() {

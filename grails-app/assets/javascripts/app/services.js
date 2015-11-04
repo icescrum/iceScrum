@@ -300,7 +300,7 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
             },
             updateArray: {
                 method: 'post',
-                isArray: false,
+                isArray: true,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: transformRequest,
                 interceptor: arrayInterceptor
