@@ -147,14 +147,11 @@ class SprintController {
 
     @Secured('inProduct()')
     def index(long product, long id) {
-        if (request?.format == 'html') {
-            render(status: 404)
-            return
-        }
         Sprint sprint = Sprint.withSprint(product, id)
         withFormat {
+            html { render status: 200, contentType: 'application/json', text: sprint as JSON }
             json { renderRESTJSON(text: sprint) }
-            xml { renderRESTXML(text: sprint) }
+            xml  { renderRESTXML(text: sprint) }
         }
     }
 

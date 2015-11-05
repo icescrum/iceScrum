@@ -295,6 +295,33 @@ isApp.config(['$stateProvider', '$httpProvider',
                             }
                         }
                     })
+                    .state('releasePlan.sprint', {
+                        url: "/sprint"
+                    })
+                        .state('releasePlan.sprint.details', {
+                            url: "/{id:int}",
+                            data:{
+                                stack: 2
+                            },
+                            views:{
+                                "details@releasePlan": {
+                                    templateUrl: 'sprint.details.html',
+                                    controller: 'sprintDetailsCtrl'
+                                }
+                            }
+                        })
+                        .state('releasePlan.sprint.new', {
+                            url: "/new",
+                            data:{
+                                stack: 2
+                            },
+                            views:{
+                                "details@releasePlan": {
+                                    templateUrl: 'sprint.new.html',
+                                    controller: 'sprintNewCtrl'
+                                }
+                            }
+                        })
         }
     ])
     .config(['flowFactoryProvider', function (flowFactoryProvider) {

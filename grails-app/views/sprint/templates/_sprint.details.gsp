@@ -35,7 +35,7 @@
          fixed="#main-content .details:first" fixed-offset-width="10">
         <h3 class="panel-title row">
             <div class="the-title">
-                <span>{{ sprint.name }}</span>
+                <span>{{ sprint.parentRelease.name }} {{ sprint.orderNumber}} </span>
             </div>
             <div class="the-id">
                 <div class="pull-right">
@@ -80,19 +80,20 @@
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-group">
-                    <label for="name">${message(code:'is.sprint.name')}</label>
-                    <input required
-                           name="name"
-                           ng-focus="editForm(true)"
-                           ng-model="editableSprint.name"
-                           type="text"
-                           class="form-control"
-                           placeholder="${message(code: 'is.ui.sprint.noname')}"/>
+                    <label for="sprint.parentRelease">${message(code:'is.sprint.parentRelease')}</label>
+                    <select class="form-control"
+                            ng-model="sprint.parentRelease.id"
+                            ng-change="selectRelease(sprint.parentRelease.id)"
+                            ui-select2
+                            required>
+                        <option ng-repeat="release in releases" value="{{release.id}}">{{release.name}}</option>
+                    </select>
                 </div>
                 <div class="form-half">
                     <label for="sprint.startDate">${message(code:'is.sprint.startDate')}</label>
-                    <div class="input-group">
-                        <span class="input-group-btn">
+                    <div ng-class="{'input-group': authorizedSprint('update', sprint)}">
+                        <span class="input-group-btn"
+                              ng-if="authorizedSprint('update', sprint)">
                             <button type="button"
                                     class="btn btn-default"
                                     ng-focus="editForm(true)"
@@ -114,7 +115,7 @@
                 </div>
                 <div class="form-half">
                     <label for="sprint.endDate" class="text-right">${message(code:'is.sprint.endDate')}</label>
-                    <div class="input-group">
+                    <div ng-class="{'input-group': authorizedSprint('update', sprint)}">
                         <input type="text"
                                class="form-control text-right"
                                required
@@ -124,7 +125,8 @@
                                uib-datepicker-popup
                                min-date="minEndDate"
                                is-open="endDateOptions.opened"/>
-                        <span class="input-group-btn">
+                        <span class="input-group-btn"
+                              ng-if="authorizedSprint('update', sprint)">
                             <button type="button"
                                     class="btn btn-default"
                                     ng-focus="editForm(true)"
@@ -137,23 +139,13 @@
             </div>
             <div class="form-group">
                 <label for="goal">${message(code:'is.ui.sprintPlan.toolbar.goal')}</label>
-                <textarea is-markitup
-                          ng-maxlength="5000"
+                <textarea name="goal"
                           class="form-control"
-                          name="goal"
+                          ng-focus="editForm(true)"
+                          ng-maxlength="5000"
+                          msd-elastic
                           ng-model="editableSprint.goal"
-                          is-model-html="editableSprint.goal_html"
-                          ng-show="showGoalTextarea"
-                          ng-blur="showGoalTextarea = false"
                           placeholder="${message(code: 'todo.is.ui.sprint.nogoal')}"></textarea>
-                <div class="markitup-preview"
-                     ng-disabled="!getShowSprintForm(sprint)"
-                     ng-show="!showGoalTextarea"
-                     ng-click="showGoalTextarea = getShowSprintForm(sprint)"
-                     ng-focus="editForm(true); showGoalTextarea = getShowSprintForm(sprint)"
-                     ng-class="{'placeholder': !editableSprint.goal_html}"
-                     tabindex="0"
-                     ng-bind-html="(editableSprint.goal_html ? editableSprint.goal_html : '<p>${message(code: 'todo.is.ui.sprint.nogoal')}</p>') | sanitize"></div>
             </div>
             <div class="btn-toolbar" ng-if="getShowSprintForm(sprint) && getEditableMode()">
                 <button class="btn btn-primary pull-right"

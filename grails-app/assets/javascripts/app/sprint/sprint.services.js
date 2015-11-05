@@ -37,7 +37,7 @@ services.service("SprintService", ['$q', '$filter', 'Sprint', 'SprintStatesByNam
         }
     };
     this.getCurrentOrLastSprint = function(project) {
-        return Sprint.get({ projectId: project.id, action: 'findCurrentOrLastSprint' }, {}).$promise;
+        return Sprint.get({ projectId: project.id, action: 'findCurrentOrLastSprint' }).$promise;
     };
     this.update = function(sprint, release) {
         return Sprint.update({id: sprint.id, projectId: release.parentProduct.id}, sprint, function(sprint) {
@@ -56,17 +56,17 @@ services.service("SprintService", ['$q', '$filter', 'Sprint', 'SprintStatesByNam
             release.sprints_count = release.sprints.length;
         }).$promise;
     };
-    this.get = function(id, release) {
-        return self.list(release).then(function(sprints) {
-            var sprint = _.find(sprints, function(rw) {
-                return rw.id == id;
-            });
-            if (sprint) {
-                return sprint;
-            } else {
-                throw Error('todo.is.ui.sprint.does.not.exist');
-            }
-        });
+    this.get = function(id, project) {
+        return Sprint.get({id: id, projectId: project.id}).$promise;
+    };
+    this.activate = function(sprint, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'activate'}, {}).$promise;
+    };
+    this.close = function(sprint, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'close'}, {}).$promise;
+    };
+    this.unPlan = function(sprint, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'unPlan'}, {}).$promise;
     };
     this['delete'] = function(sprint, release) {
         return sprint.$delete({projectId: release.parentProduct.id}, function() {
@@ -74,7 +74,7 @@ services.service("SprintService", ['$q', '$filter', 'Sprint', 'SprintStatesByNam
         });
     };
     this.openChart = function(sprint, project, chart) {
-        return Sprint.get({ id: sprint.id, projectId: project.id, action: chart}, {}).$promise;
+        return Sprint.get({ id: sprint.id, projectId: project.id, action: chart}).$promise;
     };
     this.authorizedSprint = function(action, sprint) {
         switch (action) {

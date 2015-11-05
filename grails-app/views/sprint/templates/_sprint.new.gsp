@@ -31,15 +31,14 @@
               name='formHolder.sprintForm'
               novalidate>
             <div class="form-group">
-                <label for="name">${message(code:'is.sprint.name')}</label>
-                <input required
-                       name="name"
-                       focus-me="true"
-                       ng-model="sprint.name"
-                       type="text"
-                       class="form-control"
-                       ng-readonly="!authorizedSprint('create')"
-                       placeholder="${message(code: 'is.ui.sprint.noname')}"/>
+                <label for="sprint.parentRelease">${message(code:'is.sprint.parentRelease')}</label>
+                <select class="form-control"
+                        ng-model="sprint.parentRelease.id"
+                        ng-change="selectRelease(sprint.parentRelease.id)"
+                        ui-select2
+                        required>
+                    <option ng-repeat="release in releases" value="{{release.id}}">{{release.name}}</option>
+                </select>
             </div>
             <div class="clearfix no-padding">
                 <div class="form-half">
@@ -84,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-if="authorizedSprint('create')" class="btn-toolbar pull-right">
+            <div class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.sprintForm.$invalid"
                         uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"

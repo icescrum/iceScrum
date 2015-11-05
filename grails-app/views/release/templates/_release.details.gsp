@@ -91,8 +91,9 @@
                 </div>
                 <div class="form-half">
                     <label for="release.startDate">${message(code:'is.release.startDate')}</label>
-                    <div class="input-group">
-                        <span class="input-group-btn">
+                    <div ng-class="{'input-group': authorizedRelease('update', release)}">
+                        <span class="input-group-btn"
+                              ng-if="authorizedRelease('update', release)">
                             <button type="button"
                                     class="btn btn-default"
                                     ng-focus="editForm(true)"
@@ -114,7 +115,7 @@
                 </div>
                 <div class="form-half">
                     <label for="release.endDate" class="text-right">${message(code:'is.release.endDate')}</label>
-                    <div class="input-group">
+                    <div ng-class="{'input-group': authorizedRelease('update', release)}">
                         <input type="text"
                                class="form-control text-right"
                                required
@@ -124,7 +125,8 @@
                                uib-datepicker-popup
                                min-date="minEndDate"
                                is-open="endDateOptions.opened"/>
-                        <span class="input-group-btn">
+                        <span class="input-group-btn"
+                              ng-if="authorizedRelease('update', release)">
                             <button type="button"
                                     class="btn btn-default"
                                     ng-focus="editForm(true)"
