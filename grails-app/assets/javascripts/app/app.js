@@ -322,6 +322,11 @@ isApp.config(['$stateProvider', '$httpProvider',
                                 }
                             }
                         })
+                .state('sprintPlan', {
+                    url: "/sprintPlan",
+                    templateUrl: 'openWindow/sprintPlan',
+                    controller: 'sprintPlanCtrl'
+                })
         }
     ])
     .config(['flowFactoryProvider', function (flowFactoryProvider) {

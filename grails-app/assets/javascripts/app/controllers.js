@@ -373,10 +373,13 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     };
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'Session', function($scope, $state, ReleaseService, Session) {
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'Session', function($scope, $state, ReleaseService, SprintService, Session) {
     $scope.releases = [];
     ReleaseService.list(Session.getProject()).then(function(releases) {
         $scope.releases = releases;
+        _.each($scope.releases, function(release) {
+            SprintService.list(release);
+        });
     });
     $scope.goToRelease = function(release) {
         $state.go('releasePlan.details', {id: release.id});
@@ -384,6 +387,16 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.goToNewRelease  = function() {
         $state.go('releasePlan.new');
     };
+    $scope.goToSprint = function(sprint) {
+        $state.go('releasePlan.sprint.details', {id: sprint.id});
+    };
+    $scope.goToNewSprint  = function(release) {
+        $scope.release = release;
+        $state.go('releasePlan.sprint.new');
+    };
+}]);
+
+controllers.controller('sprintPlanCtrl', ['$scope', function($scope) {
 }]);
 
 controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {

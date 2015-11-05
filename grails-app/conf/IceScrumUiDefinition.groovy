@@ -1,4 +1,3 @@
-import org.icescrum.core.domain.Sprint
 /*
 * Copyright (c) 2015 Kagilum SAS
 *
@@ -151,16 +150,7 @@ uiDefinitions = {
         window {
             title 'is.ui.sprintPlan'
             help 'is.ui.sprintPlan.help'
-            before { def product, def action ->
-                def isWindowContext = actionName == 'openWindow'
-                if (!params.id && (!isWindowContext || action.contains('Chart'))) {
-                    params.id = Sprint.findCurrentOrLastSprint(product.id).list()[0]?.id
-                }
-                if (!params.id) {
-                    params.id = Sprint.findCurrentOrNextSprint(product.id).list()[0]?.id
-                }
-                isWindowContext || params.id
-            }
+            init 'view'
             right true
         }
         embedded = [
