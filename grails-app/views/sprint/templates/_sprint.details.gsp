@@ -81,13 +81,7 @@
             <div class="clearfix no-padding">
                 <div class="form-group">
                     <label for="sprint.parentRelease">${message(code:'is.sprint.parentRelease')}</label>
-                    <select class="form-control"
-                            ng-model="sprint.parentRelease.id"
-                            ng-change="selectRelease(sprint.parentRelease.id)"
-                            ui-select2
-                            required>
-                        <option ng-repeat="release in releases" value="{{release.id}}">{{release.name}}</option>
-                    </select>
+                    <div class="form-control-static">{{ sprint.parentRelease.name }}</div>
                 </div>
                 <div class="form-half">
                     <label for="sprint.startDate">${message(code:'is.sprint.startDate')}</label>
