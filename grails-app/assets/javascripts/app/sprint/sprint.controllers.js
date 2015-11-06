@@ -187,11 +187,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams',
             var previousSprint = _.findLast(_.sortBy(sprints, 'orderNumber'), function(sprint) {
                 return sprint.orderNumber < $scope.sprint.orderNumber;
             });
-            if (_.isEmpty(previousSprint)) {
-                $scope.minStartDate = $scope.release.startDate;
-            } else {
-                $scope.minStartDate =  $scope.immutableAddDaysToDate(previousSprint.endDate, 1);
-            }
+            $scope.minStartDate = _.isEmpty(previousSprint) ? $scope.release.startDate : $scope.immutableAddDaysToDate(previousSprint.endDate, 1);
         }
     });
     $scope.$watchCollection('[editableSprint.startDate, editableSprint.endDate]', function(newValues) {
@@ -216,6 +212,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams',
         $scope.resetSprintForm();
         ReleaseService.get(sprint.parentRelease.id, $scope.project).then(function (release) {
             $scope.release = release;
+            $scope.maxEndDate = $scope.release.endDate;
             var sortedSprints = _.sortBy($scope.release.sprints, 'orderNumber');
             $scope.previous = FormService.previous(sortedSprints, $scope.sprint);
             $scope.next = FormService.next(sortedSprints, $scope.sprint);

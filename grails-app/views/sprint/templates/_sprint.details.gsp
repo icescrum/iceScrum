@@ -118,6 +118,7 @@
                                ng-model="editableSprint.endDate"
                                uib-datepicker-popup
                                min-date="minEndDate"
+                               max-date="maxEndDate"
                                is-open="endDateOptions.opened"/>
                         <span class="input-group-btn"
                               ng-if="authorizedSprint('update', sprint)">
