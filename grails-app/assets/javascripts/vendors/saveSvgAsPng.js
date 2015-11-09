@@ -116,11 +116,13 @@
             var width, height, box, svg;
             if (el.tagName == 'svg') {
                 box = el.getBoundingClientRect();
-                width = parseInt(clone.getAttribute('width') ||
+                var widthAttr = clone.getAttribute('width') && clone.getAttribute('width').indexOf('%') == -1 ? clone.getAttribute('width') : null; // <- Customized to not parse % (e.g. coming from angular-nvd3) as pixels
+                width = parseInt(widthAttr ||
                     box.width ||
                     clone.style.width ||
                     window.getComputedStyle(el).getPropertyValue('width'));
-                height = parseInt(clone.getAttribute('height') ||
+                var heightAttr = clone.getAttribute('height') && clone.getAttribute('height').indexOf('%') == -1 ? clone.getAttribute('height') : null; // <- Customized to not parse % (e.g. coming from angular-nvd3) as pixels
+                height = parseInt(heightAttr ||
                     box.height ||
                     clone.style.height ||
                     window.getComputedStyle(el).getPropertyValue('height'));
