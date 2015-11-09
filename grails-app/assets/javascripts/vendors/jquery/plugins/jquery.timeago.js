@@ -3,7 +3,7 @@
  * updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
  *
  * @name timeago
- * @version 1.4.1
+ * @version 1.4.3
  * @requires jQuery v1.2.3+
  * @author Ryan McGeary
  * @license MIT License - http://www.opensource.org/licenses/mit-license.php
@@ -11,13 +11,17 @@
  * For usage and examples, visit:
  * http://timeago.yarp.com/
  *
- * Copyright (c) 2008-2013, Ryan McGeary (ryan -[at]- mcgeary [*dot*] org)
+ * CUSTOMIZED
+ *
+ * Copyright (c) 2008-2015, Ryan McGeary (ryan -[at]- mcgeary [*dot*] org)
  */
 
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(['jquery'], factory);
+    } else if (typeof module === 'object' && typeof module.exports === 'object') {
+        factory(require('jquery'));
     } else {
         // Browser globals
         factory(jQuery);
@@ -37,7 +41,7 @@
     var $t = $.timeago;
 
     $.extend($.timeago, {
-        locales: {},
+        locales: {}, // <- Customized !!
         settings: {
             refreshMillis: 60000,
             allowPast: true,
@@ -176,6 +180,13 @@
     };
 
     function refresh() {
+        //check if it's still visible
+        if(!$.contains(document.documentElement,this)){
+            //stop if it has been removed
+            $(this).timeago("dispose");
+            return this;
+        }
+
         var data = prepareData(this);
         var $s = $t.settings;
 
