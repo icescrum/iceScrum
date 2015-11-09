@@ -29,8 +29,7 @@
      ng-model="filteredAndSortedStories"
      ng-class="view.asList ? 'list-group' : 'grid-group'"
      class="postits"
-     ng-include="'story.html'"
-     ng-init=""></div>
+     ng-include="'story.html'"></div>
 <script>
     angular.element(document).injector().get('StoryService').addStories(${stories as JSON});
 </script>

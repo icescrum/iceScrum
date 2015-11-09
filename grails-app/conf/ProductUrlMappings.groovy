@@ -175,7 +175,7 @@ class ProductUrlMappings {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
-                type(inList: ['actor', 'feature'])
+                type(inList: ['actor', 'feature', 'sprint'])
             }
         }
         "/p/$product/story/listByField" {

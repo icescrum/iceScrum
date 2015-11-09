@@ -361,6 +361,8 @@ class StoryController {
             stories = Actor.withActor(product, id).stories
         } else if (type == 'feature') {
             stories = Feature.withFeature(product, id).stories
+        } else if (type == 'sprint') {
+            stories = Sprint.withSprint(product, id).stories
         }
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: stories as JSON) }

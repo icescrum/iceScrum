@@ -62,6 +62,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     this.listByType = function(obj) {
         var alreadyLoadedStories = [];
         var mustLoad = false;
+        var promise;
         angular.forEach(obj.stories_ids, function(story) {
             var alreadyLoadedStory = _.find(self.list, {id: story.id});
             if (!_.isEmpty(alreadyLoadedStory)) {
@@ -74,7 +75,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             obj.stories = alreadyLoadedStories;
         }
         if (mustLoad) {
-            Story.query({typeId: obj.id, type: obj.class.toLowerCase()}, function(data) {
+            promise = Story.query({typeId: obj.id, type: obj.class.toLowerCase()}, function(data) {
                 if (obj.stories === undefined) {
                     obj.stories = [];
                 }
@@ -88,12 +89,13 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
                         self.list.push(newStory);
                     }
                 });
-            })
+            }).$promise;
         } else {
             if (obj.stories === undefined) {
                 obj.stories = [];
             }
         }
+        return promise ? promise : $q.when(obj.stories);
     };
     this.get = function(id) {
         return self.isListResolved.promise.then(function() {
