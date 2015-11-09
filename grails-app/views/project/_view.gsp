@@ -124,7 +124,7 @@
             <div class="panel panel-light">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="fa fa-picture"></i> <g:message code="is.ui.project.vision.title"/>
+                        <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
                     </h3>
                 </div>
                 <div class="panel-body">
