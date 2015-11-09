@@ -545,11 +545,10 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
     };
     $scope.saveChart = function() {
         var title = $element.find('.title.h4');
-        saveChartAsPng($element.find('svg')[0], {}, title[0],
-            function(imageBase64) {
-                // Server side "attachment" content type is needed because the a.download HTML5 feature is not supported in crappy browsers (safari & co).
-                jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': title.text()});
-            });
+        saveChartAsPng($element.find('svg')[0], {}, title[0], function(imageBase64) {
+            // Server side "attachment" content type is needed because the a.download HTML5 feature is not supported in crappy browsers (safari & co).
+            jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': title.text()});
+        });
     };
     $scope.openMoodChart = function(chartName) {
         var options = {};

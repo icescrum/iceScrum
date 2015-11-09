@@ -1,6 +1,7 @@
 /**************************************************************************
  * AngularJS-nvD3, v1.0.3; MIT License; 06/11/2015 13:30
  * http://krispo.github.io/angular-nvd3
+ * CUSTOMIZED
  **************************************************************************/
 (function(){
 
@@ -24,7 +25,7 @@
                         visible: true,
                         disabled: false,
                         autorefresh: true,
-                        refreshDataOnly: false,
+                        refreshDataOnly: false, // <--- THIS IS CUSTOMIZED
                         deepWatchOptions: true,
                         deepWatchData: false, // to increase performance by default
                         deepWatchConfig: true,
