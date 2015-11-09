@@ -47,7 +47,7 @@
                             </div>
                             <div class="media-body">
                                 <div class="text-muted pull-right">
-                                    <time timeago datetime="'{{ activity.dateCreated }}'">
+                                    <time timeago datetime="{{ activity.dateCreated }}">
                                         {{ activity.dateCreated }}
                                     </time>
                                     <i class="fa fa-clock-o"></i>
