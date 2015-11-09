@@ -21,7 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<nav id="header" class="navbar navbar-masthead navbar-default" role="navigation">
+<nav class="navbar navbar-masthead navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="pull-left navbar-toggle">

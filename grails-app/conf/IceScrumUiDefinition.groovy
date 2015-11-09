@@ -31,12 +31,10 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
+            right true
+            init 'view'
             title 'is.ui.backlog'
             help 'is.ui.backlog.help'
-            init 'view'
-            right true
-            toolbar true
-            bottombar true
         }
         embedded = [
                 view:'list',
@@ -58,8 +56,8 @@ uiDefinitions = {
             }
         }
         window {
-            title 'is.ui.story.details'
             init 'index'
+            title 'is.ui.story.details'
         }
     }
     'feature' {
@@ -71,11 +69,10 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
+            right true
+            init 'view'
             title 'is.ui.feature'
             help 'is.ui.feature.help'
-            init 'view'
-            right true
-            toolbar true
         }
         embedded = [
                 view:'list',
@@ -96,9 +93,10 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
-            title 'is.ui.project'
-            help 'is.ui.project.help'
+            flex false
             init 'view'
+            title 'is.ui.project'
+            help 'is.ui.projedt.help'
         }
         embedded = [
                 view:'productCumulativeFlowChart',
@@ -122,10 +120,10 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
+            right true
+            init 'view'
             title 'is.ui.releasePlan'
             help 'is.ui.releasePlan.help'
-            init 'view'
-            right true
         }
         embedded = [
                 view:'index',
@@ -148,10 +146,10 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
+            right true
+            init 'view'
             title 'is.ui.sprintPlan'
             help 'is.ui.sprintPlan.help'
-            init 'view'
-            right true
         }
         embedded = [
                 view:'index',
@@ -189,8 +187,8 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
-            title 'is.ui.finder'
             init 'index'
+            title 'is.ui.finder'
         }
     }
     'task' {
@@ -201,8 +199,8 @@ uiDefinitions = {
             }
         }
         window {
-            title 'is.ui.task.details'
             init 'index'
+            title 'is.ui.task.details'
         }
     }
 }

@@ -21,12 +21,15 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.new.html">
-<div class="panel panel-default">
+<div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">${message(code: "is.ui.sandbox.toolbar.new")} ${message(code: "is.story")}</h3>
-        <div class="help-block">${message(code:'is.ui.sandbox.help')}</div>
+        <h3 class="panel-title">
+            <i class="fa fa-sticky-note" style="color: #f9f157;"></i>
+            ${message(code: "is.ui.sandbox.toolbar.new")} ${message(code: "is.story")}
+        </h3>
     </div>
     <div class="panel-body">
+        <div class="help-block">${message(code:'is.ui.sandbox.help')}</div>
         <div class="postits standalone">
             <div class="postit-container">
                 <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
@@ -102,9 +105,9 @@
                            ng-model="story.name"
                            ng-change="findDuplicates(story.name)"
                            ng-readonly="!authorizedStory('create')"/>
-                           <div ng-if="messageDuplicate"
-                                class="help-block bg-warning"
-                                ng-bind-html="messageDuplicate | sanitize"></div>
+                    <div ng-if="messageDuplicate"
+                         class="help-block bg-warning"
+                         ng-bind-html="messageDuplicate | sanitize"></div>
                 </div>
                 <div class="form-half">
                     <label for="story.template">${message(code: 'todo.is.ui.story.template')}</label>
@@ -136,14 +139,7 @@
                 </div>
             </div>
             <div ng-if="authorizedStory('create')" class="btn-toolbar pull-right">
-                <button class="btn btn-primary pull-right"
-                        ng-disabled="formHolder.storyForm.$invalid"
-                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
-                        tooltip-append-to-body="true"
-                        type="submit">
-                    ${message(code:'default.button.create.label')}
-                </button>
-                <button class="btn btn-primary pull-right"
+                <button class="btn btn-primary"
                         ng-disabled="formHolder.storyForm.$invalid"
                         uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                         tooltip-append-to-body="true"
@@ -152,6 +148,13 @@
                         type='button'
                         ng-click="save(story, true)">
                     ${message(code:'todo.is.ui.create.and.continue')}
+                </button>
+                <button class="btn btn-primary"
+                        ng-disabled="formHolder.storyForm.$invalid"
+                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
+                        tooltip-append-to-body="true"
+                        type="submit">
+                    ${message(code:'default.button.create.label')}
                 </button>
             </div>
         </form>

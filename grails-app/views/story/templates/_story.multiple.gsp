@@ -22,82 +22,147 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.multiple.html">
-
-<div class="panel panel-default">
+<div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title">${message(code: "todo.is.ui.stories")} ({{ stories.length }})</h3>
     </div>
     <div class="panel-body">
-        <div class="postits standalone">
-            <div class="postit-container stack twisted">
-                <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
-                     class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}  {{ storyPreview.type | storyType }}">
-                    <div class="head">
-                        <a class="follow"
-                           uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-                           tooltip-append-to-body="true"
-                           ng-switch="topStory.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
-                        <span class="id">{{ topStory.id }}</span>
-                        <span class="value" ng-if="topStory.value">{{ topStory.value }} <i class="fa fa-line-chart"></i></span>
-                        <span class="estimation ui-selectable-cancel" ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }} <i class="fa fa-dollar"></i></span>
-                    </div>
-                    <div class="content">
-                        <h3 class="title"
-                            ng-model="topStory.name"
-                            ng-bind-html="topStory.name | sanitize"
-                            ellipsis></h3>
-                        <div class="description"
-                             ng-model="topStory.description"
-                             ng-bind-html="topStory.description | sanitize"
-                             ellipsis></div>
-                    </div>
-                    <div class="tags">
-                        <a ng-repeat="tag in topStory.tags" href><span class="tag">{{ tag }}</span></a>
-                    </div>
-                    <div class="actions">
-                        <span class="action">
-                            <a uib-tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
-                                <i class="fa fa-cog"></i>
-                            </a>
-                        </span>
-                        <span class="action" ng-class="{'active':topStory.attachments.length}">
-                            <a uib-tooltip="{{ topStory.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
-                               tooltip-append-to-body="true">
-                                <i class="fa fa-paperclip"></i>
-                            </a>
-                        </span>
-                        <span class="action" ng-class="{'active':topStory.comments_count}">
-                            <a uib-tooltip="{{ topStory.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
-                               tooltip-append-to-body="true"
-                               ng-switch="topStory.comments_count">
-                                <i class="fa fa-comment-o" ng-switch-when="0"></i>
-                                <i class="fa fa-comment" ng-switch-default></i>
-                                <span class="badge" ng-show="topStory.comments_count">{{ topStory.comments_count }}</span>
-                            </a>
-                        </span>
-                        <span class="action" ng-class="{'active':topStory.tasks_count}">
-                            <a uib-tooltip="{{ topStory.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
-                               tooltip-append-to-body="true">
-                                <i class="fa fa-tasks"></i>
-                                <span class="badge" ng-show="topStory.tasks_count">{{ topStory.tasks_count }}</span>
-                            </a>
-                        </span>
-                        <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
-                            <a uib-tooltip="{{ topStory.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
-                               tooltip-append-to-body="true"
-                               ng-switch="topStory.acceptanceTests_count">
-                                <i class="fa fa-check-square-o" ng-switch-when="0"></i>
-                                <i class="fa fa-check-square" ng-switch-default></i>
-                                <span class="badge" ng-if="topStory.acceptanceTests_count">{{ topStory.acceptanceTests_count }}</span>
-                            </a>
-                        </span>
-                    </div>
-                    <div class="progress">
-                        <span class="status">3/6</span>
-                        <div class="progress-bar" style="width:16.666666666666668%">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="postits standalone">
+                    <div class="postit-container stack twisted">
+                        <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
+                             class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}  {{ storyPreview.type | storyType }}">
+                            <div class="head">
+                                <a class="follow"
+                                   uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                                   tooltip-append-to-body="true"
+                                   ng-switch="topStory.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
+                                <span class="id">{{ topStory.id }}</span>
+                                <span class="value" ng-if="topStory.value">{{ topStory.value }} <i class="fa fa-line-chart"></i></span>
+                                <span class="estimation ui-selectable-cancel" ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }} <i class="fa fa-dollar"></i></span>
+                            </div>
+                            <div class="content">
+                                <h3 class="title"
+                                    ng-model="topStory.name"
+                                    ng-bind-html="topStory.name | sanitize"
+                                    ellipsis></h3>
+                                <div class="description"
+                                     ng-model="topStory.description"
+                                     ng-bind-html="topStory.description | sanitize"
+                                     ellipsis></div>
+                            </div>
+                            <div class="tags">
+                                <a ng-repeat="tag in topStory.tags" href><span class="tag">{{ tag }}</span></a>
+                            </div>
+                            <div class="actions">
+                                <span class="action">
+                                    <a uib-tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
+                                        <i class="fa fa-cog"></i>
+                                    </a>
+                                </span>
+                                <span class="action" ng-class="{'active':topStory.attachments.length}">
+                                    <a uib-tooltip="{{ topStory.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
+                                       tooltip-append-to-body="true">
+                                        <i class="fa fa-paperclip"></i>
+                                    </a>
+                                </span>
+                                <span class="action" ng-class="{'active':topStory.comments_count}">
+                                    <a uib-tooltip="{{ topStory.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
+                                       tooltip-append-to-body="true"
+                                       ng-switch="topStory.comments_count">
+                                        <i class="fa fa-comment-o" ng-switch-when="0"></i>
+                                        <i class="fa fa-comment" ng-switch-default></i>
+                                        <span class="badge" ng-show="topStory.comments_count">{{ topStory.comments_count }}</span>
+                                    </a>
+                                </span>
+                                <span class="action" ng-class="{'active':topStory.tasks_count}">
+                                    <a uib-tooltip="{{ topStory.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
+                                       tooltip-append-to-body="true">
+                                        <i class="fa fa-tasks"></i>
+                                        <span class="badge" ng-show="topStory.tasks_count">{{ topStory.tasks_count }}</span>
+                                    </a>
+                                </span>
+                                <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
+                                    <a uib-tooltip="{{ topStory.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
+                                       tooltip-append-to-body="true"
+                                       ng-switch="topStory.acceptanceTests_count">
+                                        <i class="fa fa-check-square-o" ng-switch-when="0"></i>
+                                        <i class="fa fa-check-square" ng-switch-default></i>
+                                        <span class="badge" ng-if="topStory.acceptanceTests_count">{{ topStory.acceptanceTests_count }}</span>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="progress">
+                                <span class="status">3/6</span>
+                                <div class="progress-bar" style="width:16.666666666666668%">
+                                </div>
+                            </div>
+                            <div class="state">{{ topStory.state | i18n:'StoryStates' }}</div>
                         </div>
                     </div>
-                    <div class="state">{{ topStory.state | i18n:'StoryStates' }}</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-toolbar">
+                    <div ng-if="authorizedStories('accept', stories)"
+                         class="btn-group"
+                         uib-dropdown>
+                        <button type="button"
+                                class="btn btn-default"
+                                uib-dropdown-toggle>
+                            <g:message code='is.dialog.acceptAs.acceptAs.title'/> <span class="caret"></span>
+                        </button>
+                        <ul class="uib-dropdown-menu" role="menu">
+                            <li>
+                                <a href ng-click="acceptMultiple()">
+                                    <g:message code='is.ui.backlog.menu.acceptAsStory'/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href ng-click="acceptAsMultiple('Feature')">
+                                    <g:message code='is.ui.backlog.menu.acceptAsFeature'/>
+                                </a>
+                            </li>
+                            <li>
+                                <a href ng-click="acceptAsMultiple('Task')">
+                                    <g:message code='is.ui.backlog.menu.acceptAsUrgentTask'/>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button"
+                                ng-if="authorizedStories('copy', stories)"
+                                class="btn btn-default"
+                                ng-click="copyMultiple()">
+                            <g:message code='is.ui.releasePlan.menu.story.clone'/>
+                        </button>
+                        <button type="button"
+                                ng-if="authorizedStories('delete', stories)"
+                                class="btn btn-default"
+                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
+                            <g:message code='is.ui.backlog.menu.delete'/>
+                        </button>
+                    </div>
+                    <div ng-if="authorizedStories('follow', stories)"
+                         class="btn-group">
+                        <button type="button"
+                                ng-switch="allFollowed(stories)"
+                                class="btn btn-default"
+                                ng-click="followMultiple(!allFollowed(stories))">
+                            <i class="fa" ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'" ng-switch-default uib-tooltip="${message(code: 'is.followable.start')}"></i>
+                            <i class="fa fa-star" ng-switch-when="true" uib-tooltip="${message(code: 'is.followable.stop')}"></i>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr><td>${message(code: 'is.ui.story.total.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
+                        <tr><td>${message(code: 'is.ui.story.total.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>
+                        <tr><td>${message(code: 'is.ui.story.total.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td></tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -184,67 +249,7 @@
                     ${message(code:'is.button.cancel')}
                 </button>
             </div>
-            <hr ng-if="authorizedStories('update', stories)"/>
-            <div class="btn-toolbar">
-                 <div ng-if="authorizedStories('accept', stories)"
-                      class="btn-group"
-                      uib-dropdown>
-                    <button type="button"
-                            class="btn btn-default"
-                            uib-dropdown-toggle>
-                        <g:message code='is.dialog.acceptAs.acceptAs.title'/> <span class="caret"></span>
-                    </button>
-                    <ul class="uib-dropdown-menu" role="menu">
-                        <li>
-                            <a href ng-click="acceptMultiple()">
-                                <g:message code='is.ui.backlog.menu.acceptAsStory'/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href ng-click="acceptAsMultiple('Feature')">
-                                <g:message code='is.ui.backlog.menu.acceptAsFeature'/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href ng-click="acceptAsMultiple('Task')">
-                                <g:message code='is.ui.backlog.menu.acceptAsUrgentTask'/>
-                            </a>
-                        </li>
-                    </ul>
-                 </div>
-                <div class="btn-group">
-                    <button type="button"
-                            ng-if="authorizedStories('copy', stories)"
-                            class="btn btn-default"
-                            ng-click="copyMultiple()">
-                        <g:message code='is.ui.releasePlan.menu.story.clone'/>
-                    </button>
-                    <button type="button"
-                            ng-if="authorizedStories('delete', stories)"
-                            class="btn btn-default"
-                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
-                        <g:message code='is.ui.backlog.menu.delete'/>
-                    </button>
-                </div>
-                <div ng-if="authorizedStories('follow', stories)"
-                     class="btn-group">
-                    <button type="button"
-                            ng-switch="allFollowed(stories)"
-                            class="btn btn-default"
-                            ng-click="followMultiple(!allFollowed(stories))">
-                        <i class="fa" ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'" ng-switch-default uib-tooltip="${message(code: 'is.followable.start')}"></i>
-                        <i class="fa fa-star" ng-switch-when="true" uib-tooltip="${message(code: 'is.followable.stop')}"></i>
-                    </button>
-                </div>
-            </div>
         </form>
     </div>
-</div>
-<div class="panel panel-default">
-    <table class="table">
-        <tr><td>${message(code: 'is.ui.story.total.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
-        <tr><td>${message(code: 'is.ui.story.total.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>
-        <tr><td>${message(code: 'is.ui.story.total.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td></tr>
-    </table>
 </div>
 </script>

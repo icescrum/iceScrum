@@ -20,14 +20,12 @@
 --}%
 
 <script type="text/ng-template" id="home.html">
-    <div id="view-home">
-        <div class="col-md-6" html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
-             ng-model='panels_l'>
-            <div ng-include="panel.id+'.panel.html'" data-d="{{ $index }}" id="{{ panel.id }}" ng-repeat="panel in panels_l" ng-class="{'sortable':panel.position }"></div>
+    <div id="view-home" class="view col-sm-12 no-flex">
+        <div class="col-md-6" ng-model='panels_l'>
+            <div ng-include="panel.id+'.panel.html'" data-d="{{ $index }}" id="{{ panel.id }}" ng-repeat="panel in panels_l"></div>
         </div>
-        <div class="col-md-6" html-sortable="sortable_options" html-sortable-callback="sortablePanelUpdate(startModel, destModel, start, end)"
-             ng-model='panels_r'>
-            <div ng-include="panel.id+'.panel.html'" data-d="{{ $index }}" id="{{ panel.id }}" ng-repeat="panel in panels_r" ng-class="{'sortable':panel.position }"></div>
+        <div class="col-md-6" ng-model='panels_r'>
+            <div ng-include="panel.id+'.panel.html'" data-d="{{ $index }}" id="{{ panel.id }}" ng-repeat="panel in panels_r"></div>
         </div>
     </div>
 </script>

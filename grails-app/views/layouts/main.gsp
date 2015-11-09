@@ -42,18 +42,17 @@
     <script type="text/javascript" src="${grailsApplication.config.grails.serverURL}/assets/pdfjs/pdf.js"></script>
     <g:layoutHead/>
 </head>
-<body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'ready': app.loading == 100, 'loading':app.loading < 100 }" class="loading">
+<body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'ready': app.loading == 100, 'loading':app.loading < 100 }" class="loading flex">
 <div id="app-progress">
     <div>
         <uib-progressbar animate="true" value="app.loading" type="primary"></uib-progressbar>
     </div>
 </div>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row header">
         <is:header/>
     </div>
-    <div id="main-view" class="row stacks" ng-class="{ 'one-stack': !$state.current.data.stack, 'two-stacks': $state.current.data.stack == 2 , 'three-stacks': $state.current.data.stack == 3 }"
-         ui-view>
+    <div class="row content" ui-view>
         <g:layoutBody/>
     </div>
 </div>

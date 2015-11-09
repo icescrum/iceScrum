@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div ng-controller="dashboardCtrl">
+<div class="col-sm-12 no-flex" ng-controller="dashboardCtrl">
     <div class="row">
         <div class="col-sm-6">
             <ng-include src="'project.details.html'"></ng-include>

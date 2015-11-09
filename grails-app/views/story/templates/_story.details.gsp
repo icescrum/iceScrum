@@ -22,7 +22,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.details.html">
-<div class="panel panel-default"
+<div class="panel panel-light"
      ng-if="story"
      flow-drop
      flow-files-submitted="attachmentQuery($flow, story)"
@@ -32,8 +32,7 @@
      flow-init
      ng-class="authorizedStory('upload', story) && class">
     <div id="story-header"
-         class="panel-heading"
-         fixed="#main-content .details:first" fixed-offset-width="10">
+         class="panel-heading">
         <h3 class="panel-title row">
             <div class="the-title">
                 <a href
@@ -140,7 +139,6 @@
             </div>
         </div>
     </div>
-
     <div id="right-story-container"
          class="panel-body">
         <form ng-submit="update(editableStory)"
@@ -388,8 +386,8 @@
                 </div>
             </div>
         </form>
+        <div ng-if="story" ng-include="'activity.list.html'">
+        </div>
     </div>
-</div>
-<div ng-if="story" class="panel panel-default" ng-include="'activity.list.html'">
 </div>
 </script>

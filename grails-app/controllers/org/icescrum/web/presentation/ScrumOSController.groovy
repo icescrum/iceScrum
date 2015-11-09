@@ -117,15 +117,14 @@ class ScrumOSController {
             } else {
                 render is.window([
                         window: params.window,
-                        spaceName: space?.object?.name,
-                        title: message(code: uiDefinition.window?.title),
-                        help: message(code: uiDefinition.window?.help),
                         icon: uiDefinition.icon,
+                        spaceName: space?.object?.name,
+                        flex: uiDefinition.window?.flex,
                         right: uiDefinition.window?.right,
-                        toolbar: uiDefinition.window?.toolbar,
-                        bottombar: uiDefinition.window?.bottombar,
                         printable: uiDefinition.window?.printable,
                         fullScreen: uiDefinition.window?.fullScreen,
+                        help: message(code: uiDefinition.window?.help),
+                        title: message(code: uiDefinition.window?.title),
                         init: params.actionWindow ?: uiDefinition.window?.init
                 ], {})
             }

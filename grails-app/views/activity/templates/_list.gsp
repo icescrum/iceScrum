@@ -20,14 +20,13 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="activity.list.html">
-<div>
+<div class="activities">
     <div class="empty-content" ng-show="selected.activities === undefined">
         <i class="fa fa-refresh fa-spin"></i>
     </div>
-    <div class="custom-list-item media" ng-repeat="groupedActivity in groupedActivities">
+    <div class="activity" ng-repeat="groupedActivity in groupedActivities">
         <div class="media-left">
-            <img height="36px"
-                 ng-src="{{groupedActivity.poster | userAvatar}}"
+            <img ng-src="{{groupedActivity.poster | userAvatar}}"
                  alt="{{groupedActivity.poster | userFullName}}"/>
         </div>
         <div class="media-body">
@@ -40,8 +39,7 @@
             <div>
                 {{groupedActivity.poster | userFullName}}
             </div>
-            <div ng-switch="activity.onClick !== undefined"
-                 ng-repeat="activity in groupedActivity.activities">
+            <div ng-switch="activity.onClick !== undefined" ng-repeat="activity in groupedActivity.activities">
                 <span uib-tooltip="{{ activity.dateCreated }}"
                       tooltip-append-to-body="true"
                       class="{{ activity | activityIcon}}"
@@ -59,6 +57,7 @@
                 </span>
             </div>
         </div>
+        <hr>
     </div>
     <div ng-if="selected.activities && selected.activities.length >= 10" ng-switch="allActivities">
         <button ng-switch-default class="btn btn-default" ng-click="activities(selected, true)"><i class="fa fa-plus-square"></i> ${ message(code: 'tood.is.ui.activities.more')}</button>
