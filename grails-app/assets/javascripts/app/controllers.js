@@ -373,8 +373,10 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     };
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'Session', function($scope, $state, ReleaseService, SprintService, Session) {
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'StoryService', 'Session', function($scope, $state, ReleaseService, SprintService, StoryService, Session) {
     $scope.releases = [];
+    $scope.selectedSprintsModel = {};
+    $scope.selectedSprints = [];
     ReleaseService.list(Session.getProject()).then(function(releases) {
         $scope.releases = releases;
         _.each($scope.releases, function(release) {
@@ -384,7 +386,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.goToRelease = function(release) {
         $state.go('releasePlan.details', {id: release.id});
     };
-    $scope.goToNewRelease  = function() {
+    $scope.goToNewRelease = function() {
         $state.go('releasePlan.new');
     };
     $scope.goToSprint = function(sprint) {
@@ -394,6 +396,24 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
         $scope.release = release;
         $state.go('releasePlan.sprint.new');
     };
+    $scope.updateSelectedSprints = function() {
+        var allSprintsSorted = _.chain($scope.releases).sortBy('orderNumber').map(function(release) {
+            return _.sortBy(release.sprints, 'orderNumber');
+        }).flatten().value();
+        var selectedSprintsIds = _.map(_.invert($scope.selectedSprintsModel, true)[true], function(sprintId) {
+            return parseInt(sprintId);
+        });
+        $scope.selectedSprints = _.filter(allSprintsSorted, function(sprint) {
+            return _.contains(selectedSprintsIds, sprint.id);
+        });
+    }
+}]);
+
+controllers.controller('sprintBacklogCtrl', ['$scope', '$state', 'StoryService', function($scope, $state, StoryService) {
+    $scope.filteredAndSortedStories = [];
+    StoryService.listByType($scope.sprint).then(function(stories) {
+        $scope.filteredAndSortedStories = _.sortBy(stories, 'rank');
+    });
 }]);
 
 controllers.controller('sprintPlanCtrl', ['$scope', function($scope) {
