@@ -21,7 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<nav class="navbar navbar-masthead navbar-default" role="navigation">
+<nav class="navbar navbar-masthead navbar-icescrum navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="pull-left navbar-toggle">
@@ -164,7 +164,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="${message(code:'todo.is.ui.search')}">
                             <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button"><span class="fa fa-search"></span></button>
+                                <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
                             </span>
                         </div>
                     </form>
@@ -195,7 +195,7 @@
                 </div>
                 <button id="login"
                         ng-show="!(currentUser.username)"
-                        class="btn btn-primary"
+                        class="btn btn-default"
                         ng-click="showAuthModal()"
                         uib-tooltip="${message(code:'is.button.connect')} (SHIFT+L)"
                         tooltip-append-to-body="true"
