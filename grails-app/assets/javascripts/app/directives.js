@@ -220,19 +220,13 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             });
         }
     };
-}]).directive('timeago', [function() {
+}]).directive('timeago', ['$timeout', function($timeout) {
     return {
         restrict: 'A',
-        link: function (scope, element, attrs) {
-            element.data('hasTimeago', false);
-            var dateTimeNotParsed = attrs.datetime;
-            scope.$watch(dateTimeNotParsed, function(value) {
-                // apply only once
-                if (!element.data('hasTimeago')) {
-                    element.data('hasTimeago',true);
-                    element.timeago();
-                }
-            });
+        link: function (scope, element) {
+            $timeout(function() {
+                element.timeago();
+            })
         }
     };
 }]).directive('at', [function() {
