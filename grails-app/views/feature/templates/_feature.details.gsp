@@ -22,7 +22,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="feature.details.html">
-<div class="panel panel-default"
+<div class="panel panel-light"
      ng-if="feature"
      flow-drop
      flow-files-submitted="attachmentQuery($flow, feature)"
@@ -31,8 +31,7 @@
      flow-drag-leave="class='panel panel-default'"
      flow-init
      ng-class="authorizedFeature('upload', feature) && class">
-    <div class="panel-heading"
-         fixed="#main-content .details:first">
+    <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="the-title">
                 <span>{{ feature.name }}</span>

@@ -21,12 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="feature.new.html">
-<div class="panel panel-default">
+<div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title">${message(code: "is.ui.feature.toolbar.new")} ${message(code: "is.feature")}</h3>
-        <div class="help-block">${message(code:'is.ui.feature.help')}</div>
     </div>
     <div class="right-properties new panel-body">
+        <div class="help-block">${message(code:'is.ui.feature.help')}</div>
         <div class="postits standalone">
             <div class="postit-container">
                 <div style="{{ '#f9f157' | createGradientBackground }}"
@@ -74,13 +74,6 @@
             <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.featureForm.$invalid"
-                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
-                        tooltip-append-to-body="true"
-                        type="submit">
-                    ${message(code:'default.button.create.label')}
-                </button>
-                <button class="btn btn-primary pull-right"
-                        ng-disabled="formHolder.featureForm.$invalid"
                         uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                         tooltip-append-to-body="true"
                         hotkey="{'shift+return': hotkeyClick }"
@@ -88,6 +81,13 @@
                         type='button'
                         ng-click="save(feature, true)">
                     ${message(code:'todo.is.ui.create.and.continue')}
+                </button>
+                <button class="btn btn-primary pull-right"
+                        ng-disabled="formHolder.featureForm.$invalid"
+                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
+                        tooltip-append-to-body="true"
+                        type="submit">
+                    ${message(code:'default.button.create.label')}
                 </button>
             </div>
         </form>

@@ -21,12 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="sprint.new.html">
-<div class="panel panel-default">
+<div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title">${message(code: "is.ui.sprint.toolbar.new")} ${message(code: "is.sprint")}</h3>
-        <div class="help-block">${message(code:'is.ui.sprint.help')}</div>
     </div>
     <div class="right-properties new panel-body">
+        <div class="help-block">${message(code:'is.ui.sprint.help')}</div>
         <form ng-submit="save(sprint, false)"
               name='formHolder.sprintForm'
               novalidate>

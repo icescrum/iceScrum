@@ -21,12 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="release.new.html">
-<div class="panel panel-default">
+<div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title">${message(code: "is.ui.release.toolbar.new")} ${message(code: "is.release")}</h3>
-        <div class="help-block">${message(code:'is.ui.release.help')}</div>
     </div>
     <div class="right-properties new panel-body">
+        <div class="help-block">${message(code:'is.ui.release.help')}</div>
         <form ng-submit="save(release, false)"
               name='formHolder.releaseForm'
               novalidate>

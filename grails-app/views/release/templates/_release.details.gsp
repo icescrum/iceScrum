@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="release.details.html">
-<div class="panel panel-default"
+<div class="panel panel-light"
      ng-if="release"
      flow-drop
      flow-files-submitted="attachmentQuery($flow, release)"
@@ -31,8 +31,7 @@
      flow-init
      ng-class="authorizedRelease('upload', release) && class">
     <div id="release-header"
-         class="panel-heading"
-         fixed="#main-content .details:first" fixed-offset-width="10">
+         class="panel-heading">
         <h3 class="panel-title row">
             <div class="the-title">
                 <span>{{ release.name }}</span>

@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="sprint.details.html">
-<div class="panel panel-default"
+<div class="panel panel-light"
      ng-if="sprint"
      flow-drop
      flow-files-submitted="attachmentQuery($flow, sprint)"
@@ -31,8 +31,7 @@
      flow-init
      ng-class="authorizedSprint('upload', sprint) && class">
     <div id="sprint-header"
-         class="panel-heading"
-         fixed="#main-content .details:first" fixed-offset-width="10">
+         class="panel-heading">
         <h3 class="panel-title row">
             <div class="the-title">
                 <span>{{ sprint.parentRelease.name }} {{ sprint.orderNumber}} </span>
