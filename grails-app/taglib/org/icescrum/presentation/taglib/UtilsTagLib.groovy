@@ -24,15 +24,10 @@
 
 package org.icescrum.presentation.taglib
 
-import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
-import groovy.xml.MarkupBuilder
-import org.apache.commons.lang.StringEscapeUtils
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.UiDefinition
-import org.icescrum.core.utils.BundleUtils
-import org.springframework.validation.Errors
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 class UtilsTagLib {
@@ -65,21 +60,6 @@ class UtilsTagLib {
         out << g.javascript(null, jsCode)
     }
 
-    def changeRank = { attrs, body ->
-
-        attrs.addParams = "params = jQuery.extend({}, params, ${attrs.params as JSON});"
-        out << """\$.icescrum.changeRank(${attrs.selector ? '\'' + attrs.selector + '\'' : 'container'}, this, ${attrs.ui ?: 'ui.item'}, '${attrs.name?:'position'}',function(params, ui) { ${ attrs.addParams ?: '' }
-    ${
-            remoteFunction(
-                    action: attrs.action,
-                    controller: attrs.controller,
-                    id: attrs.id,
-                    params: 'params',
-                    onSuccess: attrs.onSuccess,
-                    onFailure: "\$(ui).sortable(\"cancel\"); ${ attrs.onFailure?:'' }" )
-        }})"""
-    }
-
     def header = { attrs, body ->
         out << g.render(template: '/scrumOS/header',
                 model: [
@@ -107,15 +87,6 @@ class UtilsTagLib {
         return internationalizedMap
     }
 
-    def bundleLocaleToJs = { attrs ->
-        assert attrs.bundle
-        def val = [:]
-        attrs.bundle.each {
-            val."${it.key}" = attrs.code ? [value:message(code: it.value), code:it.value.split(/\./).last()] : message(code: it.value)
-        }
-        out << "${val as JSON}"
-    }
-
     def errors = {
         def trueError = grailsApplication.config.icescrum.errors?.find{ it.error }
         if (grailsApplication.config.icescrum.errors){
@@ -125,158 +96,6 @@ class UtilsTagLib {
 
     def appId = {
         out << grailsApplication.config.icescrum.appID
-    }
-
-    //TODO REMOVE
-    def bundle = {attrs, body ->
-        out << g.message(code: BundleUtils."${attrs.bundle}".get(attrs.value))
-    }
-
-    //TODO REMOVE
-    def onStream = { attrs ->
-        if (request.noPush){
-            return
-        }
-        def jqCode = ""
-        attrs.events.each { it ->
-            def events = [];
-            it.events.each { event ->
-                events << event + '_' + it.object + '.stream'
-            }
-            jqCode += "jQuery(${attrs.on? '\''+attrs.on+'\'' : 'document.body' }).bind('${events.join(' ')}',function(event,${it.object}){ "
-            jqCode += "var type = event.type.split('_')[0];"
-            def callback = attrs.callback ?: "jQuery.icescrum.${it.object}[type].apply(${it.object}${attrs.template ? ",['" + attrs.template + "']" : ''});"
-            jqCode += attrs.constraint ? " if ( ${attrs.constraint} ) { $callback }" : callback
-            jqCode += "});"
-        }
-        out << jq.jquery(null, jqCode)
-    }
-
-    /**
-     * Loops through each error and renders it using one of the supported mechanisms (defaults to "list" if unsupported).
-     *
-     * @attr bean REQUIRED The bean to check for errors
-     * @attr field The field of the bean or model reference to check
-     * @attr model The model reference to check for errors
-     */
-    def renderErrors = { attrs, body ->
-        def renderAs = attrs.remove('as')
-        if (!renderAs) renderAs = 'list'
-
-        if (renderAs == 'list') {
-            def codec = attrs.codec ?: 'HTML'
-            if (codec == 'none') codec = ''
-
-            out << "<ul>"
-            out << eachErrorInternal(attrs, {
-                out << "<li>${message(error:it, encodeAs:codec)}</li>"
-            })
-            out << "</ul>"
-        }
-        else if (renderAs.equalsIgnoreCase("json")) {
-            def errors = []
-            eachErrorInternal(attrs, {
-                    errors << [error:[object: it.objectName,field: it.field, message: message(error:it)?.toString(),'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue.toString())]]
-                })
-            out << (errors as JSON).toString()
-        }
-        else if (renderAs.equalsIgnoreCase("xml")) {
-            def mkp = new MarkupBuilder(out)
-            mkp.errors() {
-                eachErrorInternal(attrs, {
-                    error(object: it.objectName,
-                          field: it.field,
-                          message: message(error:it)?.toString(),
-                            'rejected-value': StringEscapeUtils.escapeXml(it.rejectedValue.toString()))
-                })
-            }
-        }
-    }
-
-    def eachErrorInternal(attrs, body, boolean outputResult = false) {
-        def errorsList = extractErrors(attrs)
-        def var = attrs.var
-        def field = attrs.field
-
-        def errorList = []
-        for (errors in errorsList) {
-            if (field) {
-                if (errors.hasFieldErrors(field)) {
-                    errorList += errors.getFieldErrors(field)
-                }
-            }
-            else {
-                errorList += errors.allErrors
-            }
-        }
-
-        for (error in errorList) {
-            def result
-            if (var) {
-                result = body([(var):error])
-            }
-            else {
-                result = body(error)
-            }
-            if (outputResult) {
-                out << result
-            }
-        }
-
-        null
-    }
-
-    def extractErrors(attrs) {
-        def model = attrs.model
-        def checkList = []
-        if (attrs.containsKey('bean')) {
-            if (attrs.bean) {
-                checkList << attrs.bean
-            }
-        }
-        else if (attrs.containsKey('model')) {
-            if (model) {
-                checkList = model.findAll {it.value?.errors instanceof Errors}.collect {it.value}
-            }
-        }
-        else {
-            for (attributeName in request.attributeNames) {
-                def ra = request[attributeName]
-                if (ra) {
-                    def mc = GroovySystem.metaClassRegistry.getMetaClass(ra.getClass())
-                    if (ra instanceof Errors && !checkList.contains(ra)) {
-                        checkList << ra
-                    }
-                    else if (mc.hasProperty(ra, 'errors') && ra.errors instanceof Errors && !checkList.contains(ra.errors)) {
-                        checkList << ra.errors
-                    }
-                }
-            }
-        }
-
-        def resultErrorsList = []
-
-        for (i in checkList) {
-            def errors = null
-            if (i instanceof Errors) {
-                errors = i
-            }
-            else {
-                def mc = GroovySystem.metaClassRegistry.getMetaClass(i.getClass())
-                if (mc.hasProperty(i, 'errors')) {
-                    errors = i.errors
-                }
-            }
-            if (errors?.hasErrors()) {
-                // if the 'field' attribute is not provided then we should output a body,
-                // otherwise we should check for field-specific errors
-                if (!attrs.field || errors.hasFieldErrors(attrs.field)) {
-                    resultErrorsList << errors
-                }
-            }
-        }
-
-        resultErrorsList
     }
 
     def getMenuBarFromUiDefinitions = { attrs ->
