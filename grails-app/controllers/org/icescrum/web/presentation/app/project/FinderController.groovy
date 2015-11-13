@@ -100,6 +100,10 @@ class FinderController {
                 }
             }
 
+            if (term == null) {
+                term = '%'
+            }
+
             def tags = Tag.executeQuery(findTagsByTermAndProduct, [term: term +'%', product: _product.id])
             tags.addAll(Tag.executeQuery(findTagsByTermAndProductInTasks, [term: term +'%', product: _product.id]))
             tags.unique()

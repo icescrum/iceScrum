@@ -194,13 +194,4 @@ class FeatureController {
     def view() {
         render(template: "view")
     }
-
-    def featureEntries(long product) {
-        Product _product = Product.withProduct(product)
-        def featureEntries = _product.features.collect { [id: it.id, text: it.name, color:it.color] }
-        if (params.term) {
-            featureEntries = featureEntries.findAll { it.text.contains(params.term) }
-        }
-        render status: 200, contentType: 'application/json', text: featureEntries as JSON
-    }
 }

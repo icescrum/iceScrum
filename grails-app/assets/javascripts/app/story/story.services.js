@@ -269,5 +269,15 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     };
     this.listByField = function(field) {
         return Story.get({action: 'listByField', field: field}).$promise
+    };
+    this.getDependenceEntries = function(story) {
+        return $http.get('story/' + story.id + '/dependenceEntries').then(function(response) {
+            return response.data;
+        });
+    };
+    this.getParentSprintEntries = function() {
+        return $http.get('story/sprintEntries').then(function(response) {
+            return response.data;
+        });
     }
 }]);

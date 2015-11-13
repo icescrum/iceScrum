@@ -421,10 +421,7 @@ class StoryController {
     def dependenceEntries(long id, long product) {
         def story = Story.withStory(product, id)
         def stories = Story.findPossiblesDependences(story).list()?.sort{ a -> a.feature == story.feature ? 0 : 1}
-        def storyEntries = stories.collect { [id: it.id, text: it.name + ' (' + it.uid + ')'] }
-        if (params.term) {
-            storyEntries = storyEntries.findAll { it.text.contains(params.term) }
-        }
+        def storyEntries = stories.collect { [id: it.id, name: it.name, uid: it.uid] }
         render status: 200, contentType: 'application/json', text: storyEntries as JSON
     }
 
@@ -436,12 +433,9 @@ class StoryController {
         if (releases) {
             Sprint.findAllByStateNotEqualAndParentReleaseInList(Sprint.STATE_DONE, releases).groupBy { it.parentRelease }.each { Release release, List<Sprint> sprints ->
                 sprints.sort { it.orderNumber }.each { Sprint sprint ->
-                    sprintEntries << [id: sprint.id, text: release.name + ' - ' + message(code: 'is.sprint') + sprint.orderNumber]
+                    sprintEntries << [id: sprint.id, parentRelease: [name: release.name], orderNumber: sprint.orderNumber]
                 }
             }
-        }
-        if (params.term) {
-            sprintEntries = sprintEntries.findAll { it.text.contains(params.term) }
         }
         render status: 200, contentType: 'application/json', text: sprintEntries as JSON
     }
