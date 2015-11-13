@@ -25,6 +25,7 @@
 var isApp = angular.module('isApp', [
     'ngRoute',
     'ngAnimate',
+    'ngSanitize',
     'controllers',
     'services',
     'filters',
@@ -33,6 +34,7 @@ var isApp = angular.module('isApp', [
     'ui.selectable',
     'ui.bootstrap',
     'ui.select2',
+    'ui.select',
     'monospaced.elastic',
     'cfp.hotkeys',
     'colorpicker.module',
@@ -356,6 +358,11 @@ isApp.config(['$stateProvider', '$httpProvider',
             datepickerPopup: 'dd/MM/yyyy' // TODO make it i18n
         });
     }])
+    .config(['uiSelectConfig', function(uiSelectConfig) {
+        uiSelectConfig.theme = 'bootstrap';
+        uiSelectConfig.appendToBody = false;
+        uiSelectConfig.searchEnabled = false;
+    }])
     .factory('AuthInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function ($rootScope, $q, SERVER_ERRORS) {
         return {
             responseError: function(response) {
@@ -494,7 +501,10 @@ isApp.config(['$stateProvider', '$httpProvider',
         for (var i = 0; i < 100; i++) {
             $rootScope.integerSuite.push(i);
         }
+        $rootScope.integerSuiteNullable = ['?'].concat($rootScope.integerSuite);
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
+        $rootScope.fibonacciSuiteNullable = ['?'].concat($rootScope.fibonacciSuite);
+        $rootScope.storyTypes = [0, 2, 3];
 
         $rootScope.showCopyModal = function(title, value) {
             $uibModal.open({
@@ -602,6 +612,13 @@ isApp.config(['$stateProvider', '$httpProvider',
             5: {"value": $rootScope.message("is.story.state.inprogress"), "code": "inprogress"},
             7: {"value": $rootScope.message("is.story.state.done"), "code": "done"},
             '-1': {"value": $rootScope.message("is.story.state.icebox"), "code": "icebox"}
+        };
+    }])
+    .factory('StoryTypes', ['$rootScope', function($rootScope) {
+        return {
+            0: {"value": $rootScope.message("is.story.type.story")},
+            2: {"value": $rootScope.message("is.story.type.defect")},
+            3: {"value": $rootScope.message("is.story.type.technical")}
         };
     }])
     .constant('StoryStatesByName', {
