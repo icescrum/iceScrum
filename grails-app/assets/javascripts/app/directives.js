@@ -87,7 +87,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             scope.$watch(function() {
                 return scope.$eval(attrs.name);
             }, function(form, oldForm) {
-                var inputs = element.find('input[ng-model]:not([validation-watched]), textarea[ng-model]:not([validation-watched])');
+                var inputs = element.find('input[ng-model]:not([validation-watched]):not(.ui-select-search), textarea[ng-model]:not([validation-watched])');
                 angular.forEach(inputs, function(it) {
                     var input = angular.element(it);
                     input.attr('validation-watched','');
@@ -103,7 +103,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                             var childScope = scope.$new();
                             childScope.inputModel = inputModel;
                             childScope.errorMessages = function(errors) {
-                                return  _.transform(errors, function(errorMessages, value, key) {
+                                return _.transform(errors, function(errorMessages, value, key) {
                                     if (value) {
                                         var name = input.siblings("label[for='" + input.attr('name') + "']").text();
                                         var errorMessage = '';
