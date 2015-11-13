@@ -41,14 +41,11 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.Release
-import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
-import org.icescrum.core.domain.Sprint
 import feedsplugin.FeedBuilder
 import com.sun.syndication.io.SyndFeedOutput
 import org.apache.commons.io.FilenameUtils
-import java.text.DecimalFormat
 
 import static grails.async.Promises.*
 
@@ -219,16 +216,6 @@ class ProjectController {
     }
 
     @Secured('scrumMaster() and !archivedProduct()')
-    def editPractices(long product) {
-        Product _product = Product.withProduct(product)
-        def estimationSuitSelect = [(PlanningPokerGame.FIBO_SUITE) : message(code: "is.estimationSuite.fibonacci"),
-                                    (PlanningPokerGame.INTEGER_SUITE) : message(code: "is.estimationSuite.integer"),
-                                    (PlanningPokerGame.CUSTOM_SUITE) : message(code: "is.estimationSuite.custom")]
-        def dialog = g.render(template: "dialogs/editPractices", model: [product: _product, estimationSuitSelect: estimationSuitSelect])
-        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-    }
-
-    @Secured('scrumMaster() and !archivedProduct()')
     def update(long product) {
         Product _product = Product.withProduct(product)
         def productPreferencesParams = params.productd?.remove('preferences')
@@ -236,7 +223,7 @@ class ProjectController {
         try {
             Product.withTransaction {
                 productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate);
-                bindData(_product, productParams, [include:['name','description','startDate','pkey']])
+                bindData(_product, productParams, [include:['name','description','startDate','pkey','planningPokerGameType']])
                 bindData(_product.preferences, productPreferencesParams, [exclude: ['archived']])
                 if(!productPreferencesParams?.stakeHolderRestrictedViews){
                     _product.preferences.stakeHolderRestrictedViews = null
