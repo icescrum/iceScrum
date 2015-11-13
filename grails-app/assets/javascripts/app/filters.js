@@ -294,4 +294,30 @@ filters
         return function (value, defaultValue) {
             return (!_.isUndefined(value) && !_.isNull(value)) ? value : defaultValue;
         };
+    }]).filter('orFilter', [function() {
+        return function(items, patternObject) {
+            if (angular.isArray(items)) {
+                return _.filter(items, function(item) {
+                    return _.any(_.pairs(patternObject), function(objectProperty) {
+                        var key = objectProperty[0];
+                        var value = objectProperty[1].toString().toLowerCase();
+                        return item[key].toString().toLowerCase().indexOf(value) !== -1;
+                    });
+                });
+            } else {
+                return items;
+            }
+        }
+    }]).filter('dependsOnLabel', [function() {
+        return function(dependsOn) {
+            if (dependsOn) {
+                return dependsOn.name + ' (' + dependsOn.uid + ')';
+            }
+        }
+    }]).filter('parentSprintLabel', ['$rootScope', function($rootScope) {
+        return function(parentSprint) {
+            if (parentSprint) {
+                return $rootScope.message('is.sprint') + ' ' + parentSprint.orderNumber;
+            }
+        }
     }]);
