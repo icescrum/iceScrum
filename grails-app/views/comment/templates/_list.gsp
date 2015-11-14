@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.list.html">
-<div ng-if="selected">
+<div ng-if="selected" class="comments panel-body">
     <table ng-init="comments(selected)" class="table">
         <tr ng-show="selected.comments === undefined">
             <td class="empty-content">
@@ -29,61 +29,55 @@
             </td>
         </tr>
         <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
-            <td>
-                <div class="content">
-                    <form name="formHolder.commentForm"
-                          ng-mouseleave="formHover(false)"
-                          ng-mouseover="formHover(true)"
-                          class="form-editable"
-                          ng-class="{ 'form-editing': (formHolder.editing || formHolder.formHover) && authorizedComment('update', editableComment) }"
-                          show-validation
-                          novalidate>
-                        <div class="clearfix no-padding">
-                            <div ng-switch="(formHolder.editing || formHolder.formHover) && authorizedComment('delete', editableComment)"
-                                 class="col-sm-1">
-                                <img ng-switch-default
-                                     height="30px"
-                                     ng-src="{{comment.poster | userAvatar}}"
-                                     alt="{{comment.poster | userFullName}}"/>
-                                <button ng-switch-when="true"
-                                        class="btn btn-danger"
-                                        ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, story] })"
-                                        tooltip-placement="left"
-                                        tooltip-append-to-body="true"
-                                        uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
-                                </button>
-                            </div>
-                            <div class="form-half">
-                                <span disabled="disabled" class="form-control form-control-static">{{comment.poster | userFullName}}</span>
-                            </div>
-                            <div class="col-sm-5 form-group text-right">
-                                <span disabled="disabled" class="form-control form-control-statictext-muted">
-                                    <time timeago datetime="{{ comment.dateCreated }}">
-                                        {{ comment.dateCreated }}
-                                    </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>
-                                </span>
-                            </div>
+            <td class="content">
+                <form name="formHolder.commentForm"
+                      ng-class="{'form-deletable': formHolder.deletable, 'form-editable': formHolder.editable, 'form-editing': formHolder.editing }"
+                      show-validation
+                      novalidate>
+                    <div class="clearfix no-padding">
+                        <div class="col-sm-1">
+                            <img height="30px"
+                                 class="hidden-deletable"
+                                 ng-src="{{comment.poster | userAvatar}}"
+                                 alt="{{comment.poster | userFullName}}"/>
+                            <button class="btn btn-danger visible-deletable"
+                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, story] })"
+                                    tooltip-placement="left"
+                                    tooltip-append-to-body="true"
+                                    uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <textarea required
-                                      msd-elastic
-                                      ng-maxlength="5000"
-                                      ng-blur="update(editableComment, selected); showCommentBodyTextarea = false;"
-                                      is-markitup
-                                      name="body"
-                                      ng-model="editableComment.body"
-                                      is-model-html="editableComment.body_html"
-                                      ng-show="showCommentBodyTextarea"
-                                      class="form-control"></textarea>
-                            <div class="markitup-preview"
-                                 ng-show="!showCommentBodyTextarea"
-                                 ng-click="editForm(true); showCommentBodyTextarea = true"
-                                 ng-focus="editForm(true); showCommentBodyTextarea = true"
-                                 tabindex="0"
-                                 ng-bind-html="editableComment.body_html | sanitize"></div>
+                        <div class="form-half">
+                            <span class="poster form-control-static">{{comment.poster | userFullName}}</span>
                         </div>
-                    </form>
-                </div>
+                        <div class="col-sm-5 form-group text-right">
+                            <span class="dateCreated form-control-static text-muted">
+                                <time timeago datetime="{{ comment.dateCreated }}">
+                                    {{ comment.dateCreated }}
+                                </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea required
+                                  msd-elastic
+                                  ng-maxlength="5000"
+                                  ng-blur="update(editableComment, selected); showCommentBodyTextarea = false;"
+                                  is-markitup
+                                  name="body"
+                                  ng-model="editableComment.body"
+                                  is-model-html="editableComment.body_html"
+                                  ng-show="showCommentBodyTextarea"
+                                  class="form-control"></textarea>
+                        <div class="markitup-preview"
+                             ng-show="!showCommentBodyTextarea"
+                             ng-click="editForm(true); showCommentBodyTextarea = true"
+                             ng-focus="editForm(true); showCommentBodyTextarea = true"
+                             tabindex="0"
+                             ng-bind-html="editableComment.body_html | sanitize"></div>
+                    </div>
+                </form>
+                <hr ng-if="!$last"/>
             </td>
         </tr>
         <tr ng-show="selected.comments !== undefined && selected.comments.length == 0">
@@ -92,12 +86,8 @@
             </td>
         </tr>
     </table>
-    <table class="table" ng-controller="commentCtrl">
-        <tbody>
-        <tr ng-if="authorizedComment('create')">
-            <td><div ng-include="'comment.editor.html'"></div></td>
-        </tr>
-        </tbody>
-    </table>
+</div>
+<div class="panel-footer" ng-controller="commentCtrl">
+    <div ng-include="'comment.editor.html'"></div>
 </div>
 </script>

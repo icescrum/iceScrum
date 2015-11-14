@@ -209,10 +209,12 @@ filters
     .filter('flowFilesNotCompleted', function () {
         return function (items) {
             var filtered = [];
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i];
-                if (!item.isComplete()) {
-                    filtered.push(item);
+            if(items){
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    if (!item.isComplete()) {
+                        filtered.push(item);
+                    }
                 }
             }
             return filtered;

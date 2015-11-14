@@ -21,12 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div ng-if="story">
-    <table ng-init="tasks(story)" ng-controller="taskCtrl" class="table">
-
-        <tbody ng-if="authorizedTask('create')" ng-include="'story.task.new.html'"></tbody>
-
-    </table>
+<div ng-if="story" class="tasks panel-body" ng-init="tasks(story)" ng-controller="taskCtrl">
     <table class="table">
         <tr ng-show="story.tasks === undefined">
             <td class="empty-content">
@@ -34,36 +29,31 @@
             </td>
         </tr>
         <tr ng-repeat="task in story.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
+            <td class="content" ng-class="{'deletable': deletable}">
+                <div class="clearfix no-padding">
+                    <div class="col-sm-1">
+                        <button class="btn btn-default elemid hidden-deletable"
+                                disabled="disabled">{{ task.uid }}</button>
+                        <button class="btn btn-danger visible-deletable"
+                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"
+                                tooltip-placement="left"
+                                tooltip-append-to-body="true"
+                                uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
+                        </button>
 
-            <td>
-                <div class="content form-editable" ng-mouseover="showDelete=authorizedTask('delete', task)" ng-mouseleave="showDelete=false">
-                    <div class="clearfix no-padding">
-                        <div class="col-sm-1" ng-switch="showDelete">
-                            <button ng-switch-default
-                                    class="btn btn-default elemid"
-                                    disabled="disabled">{{ task.uid }}</button>
-                            <button ng-switch-when="true"
-                                    class="btn btn-danger"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"
-                                    tooltip-placement="left"
-                                    tooltip-append-to-body="true"
-                                    uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
-                            </button>
-
-                        </div>
-                        <div class="form-group col-sm-8">
-                            <span class="form-control form-control-static">{{ task.name }}</span>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <span class="form-control form-control-static text-right">{{ task.estimation }}</span>
-                        </div>
                     </div>
-                    <div class="clearfix no-padding" ng-if="task.description">
-                        <p class="form-control form-control-static" ng-bind-html="task.description | lineReturns | sanitize"></p>
+                    <div class="form-group col-sm-8">
+                        <span class="name form-control-static">{{ task.name }}</span>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <span class="estimation form-control-static text-right">{{ task.estimation }}</span>
                     </div>
                 </div>
+                <div class="clearfix no-padding" ng-if="task.description">
+                    <p class="description form-control-static" ng-bind-html="task.description | lineReturns | sanitize"></p>
+                </div>
+                <hr ng-if="!$last"/>
             </td>
-
         </tr>
         <tr ng-show="!story.tasks.length">
             <td class="empty-content">
@@ -71,5 +61,8 @@
             </td>
         </tr>
     </table>
+</div>
+<div class="panel-footer" ng-controller="taskCtrl">
+    <div ng-if="authorizedTask('create')" ng-include="'story.task.new.html'"></div>
 </div>
 </script>

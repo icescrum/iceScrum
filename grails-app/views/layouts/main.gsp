@@ -52,7 +52,7 @@
     <div class="row header">
         <is:header/>
     </div>
-    <div class="row content" ui-view>
+    <div class="row main" ui-view>
         <g:layoutBody/>
     </div>
 </div>

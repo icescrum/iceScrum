@@ -70,7 +70,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
                 if (andContinue) {
                     $scope.resetSprintForm();
                 } else {
-                    $scope.setEditableMode(true);
+                    $scope.setInEditingMode(true);
                     $state.go('^.details', { id: sprint.id });
                 }
                 $scope.notifySuccess('todo.is.ui.sprint.saved');
@@ -136,16 +136,16 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams',
         });
     };
     $scope.editForm = function(value) {
-        if (value != $scope.getEditableMode()) {
-            $scope.setEditableMode(value); // global
+        if (value != $scope.isInEditingMode()) {
+            $scope.setInEditingMode(value); // global
             $scope.resetSprintForm();
         }
     };
     $scope.getShowSprintForm = function(sprint) {
-        return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedSprint('update', sprint);
+        return ($scope.isInEditingMode() || $scope.formHolder.formHover) && $scope.authorizedSprint('update', sprint);
     };
     $scope.resetSprintForm = function() {
-        if ($scope.getEditableMode()) {
+        if ($scope.isInEditingMode()) {
             $scope.editableSprint = angular.copy($scope.sprint);
             $scope.editableSprintReference = angular.copy($scope.sprint);
         } else {

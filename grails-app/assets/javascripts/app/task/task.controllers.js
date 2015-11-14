@@ -51,6 +51,9 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
     $scope.formHolder = {};
     if ($scope.task === undefined) {
         $scope.task = {};
+        $scope.deletable = false;
+    }  else {
+        $scope.deletable = $scope.authorizedTask('delete', $scope.task);
     }
 }]);
 

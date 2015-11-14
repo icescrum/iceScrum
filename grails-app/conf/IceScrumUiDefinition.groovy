@@ -31,7 +31,7 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
-            right true
+            details true
             init 'view'
             title 'is.ui.backlog'
             help 'is.ui.backlog.help'
@@ -69,7 +69,7 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
-            right true
+            details true
             init 'view'
             title 'is.ui.feature'
             help 'is.ui.feature.help'
@@ -120,7 +120,7 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
-            right true
+            details true
             init 'view'
             title 'is.ui.releasePlan'
             help 'is.ui.releasePlan.help'
@@ -146,7 +146,7 @@ uiDefinitions = {
             spaceDynamicBar true
         }
         window {
-            right true
+            details true
             init 'view'
             title 'is.ui.sprintPlan'
             help 'is.ui.sprintPlan.help'

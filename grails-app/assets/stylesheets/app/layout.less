@@ -1,0 +1,383 @@
+@import (reference) "../vendors/bootstrap/less/forms.less";
+@import (reference) "../vendors/bootstrap/less/responsive-utilities.less";
+@import (reference) "../vendors/todc/less/todc-bootstrap.less";
+@import (reference) "./variables.less";
+@import (reference) "./mixin.less";
+
+body {
+  overflow: hidden;
+  &.ready > .main {
+    opacity: 1.0;
+    transition: opacity 0.25s ease-in-out;
+    -moz-transition: opacity 0.25s ease-in-out;
+    -webkit-transition: opacity 0.25s ease-in-out;
+  }
+  &.ready > #app-progress {
+    display: none;
+  }
+  &.loading > .main {
+    opacity: 0;
+  }
+  &.loading > #app-progress {
+    .make-row();
+    display: block;
+    height: 100%;
+    > div:first-of-type {
+      .make-xs-column(6);
+      .make-sm-column(4);
+      .make-xs-column-offset(3);
+      .make-sm-column-offset(4);
+      top: 50%;
+      margin-top: -9px;
+    }
+  }
+  >.container-fluid {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+  }
+}
+
+
+body > .container-fluid > .header {
+  .navbar-masthead {
+    margin-bottom: 0;
+    .navbar-nav {
+      margin: 8px 0;
+    }
+    .navbar-nav.menubar {
+      > li {
+        &.menuitem {
+          border: 1px solid transparent;
+          margin-top: -2px;
+        }
+        &.menuitem.active {
+          border-left: 1px solid transparent;
+          border-right: 1px solid transparent;
+          border-top: 1px solid transparent;
+          border-bottom: 4px solid #fff;
+        }
+        > a {
+          padding-bottom: 5px;
+          padding-top: 5px;
+        }
+      }
+      &.sortable, .sortable {
+        .menuitem:hover {
+          .handle {
+            visibility: visible;
+          }
+        }
+      }
+    }
+    .navbar-right {
+      form.navbar-form {
+        max-width: 200px;
+      }
+      margin-right: 0;
+    }
+  }
+
+  .navbar-user {
+    margin-top: 6px;
+    cursor: pointer;
+  }
+  .navbar-notif {
+    margin: 9px 15px 0 0;
+    height: 28px;
+    width: 28px;
+    position: relative;
+    cursor: pointer;
+    .fa {
+      font-size: 28px;
+    }
+    .badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font-size: 0.8em;
+      color: #4d90fe;
+      border: 1px solid;
+      padding: 1px 5px;
+    }
+  }
+  .notifications {
+    .disable-text-selection;
+    width: 500px;
+    max-height: 500px;
+    overflow: auto;
+  }
+  .profile-panel {
+    width: 400px;
+    padding: 15px;
+    .btn-toolbar {
+      margin-top: 10px;
+      .btn {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+  li.project a {
+    .text-overflow();
+    width: 185px;
+    &.active {
+      font-weight: bold;
+    }
+  }
+}
+
+body > .container-fluid > .main {
+  flex: 1;
+  display: flex;
+  //view
+  > .view {
+    background: #fafafa;
+    > .navbar-toolbar {
+      padding: 5px 5px 0;
+      border: none;
+      margin-bottom: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      > .container-fluid {
+        padding: 0;
+        margin: 0;
+        .btn-toolbar:first-child {
+          margin-left: 0;
+          :first-child {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+    &:not(.no-flex) {
+      flex: 1;
+      display: flex;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      //col-md etc..
+      > div {
+        display: flex;
+        > div {
+          flex: 1;
+          display: flex;
+          flex-flow: column;
+          &.panel {
+            margin-bottom: 0;
+          }
+          > div.panel-heading {
+          }
+          > div.panel-body {
+            flex: 1;
+            padding-top: 0;
+            margin-top: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+          }
+          > div.panel-footer {
+            //nothing
+          }
+        }
+      }
+    }
+
+    > .content {
+      .make-md-column(12);
+    }
+    > [ui-view='details'] {
+      display: none;
+    }
+
+    &.with-details {
+      > .content {
+        .make-md-column(8);
+      }
+      > [ui-view='details'] {
+        .make-md-column(4);
+        padding-left: 0;
+        > .panel {
+          > .panel-heading {
+            padding: 0;
+            > .panel-title {
+              padding: 15px 20px;
+            }
+            > .progress-container {
+              padding-left: 20px;
+              padding-right: 20px;
+            }
+          }
+        }
+        > .panel > [ui-view='details-tab'] {
+
+          form.form-editable:not(:hover):not(.form-editing), form:not(.form-editable) {
+            .form-control {
+              background: none;
+              border-color: transparent;
+              cursor: text;
+              box-shadow: none;
+              resize: none;
+            }
+            .atwho-preview, textarea {
+              min-height: 0;
+            }
+            .input-group-btn {
+              visibility:hidden;
+            }
+            .select2-container {
+              box-shadow: none;
+              .select2-choice, .select2-choices {
+                &, &:hover {
+                  background: none;
+                  border-color: transparent;
+                  cursor: text;
+                  box-shadow: none;
+                  .select2-arrow {
+                    display: none;
+                  }
+                }
+              }
+            }
+            .form-group div {
+              border-color: transparent;
+            }
+          }
+
+          form.form-editable {
+            .panel-footer {
+              .responsive-invisibility();
+            }
+            &.form-editing {
+              .markitup-preview {
+                border-color: rgb(217, 217, 217);
+                border-top-color: rgb(192, 192, 192);
+              }
+              .panel-footer {
+                .responsive-visibility();
+              }
+            }
+          }
+
+          form.form-editable:hover {
+            .markitup-preview {
+              border-color: rgb(217, 217, 217);
+              border-top-color: rgb(192, 192, 192);
+            }
+          }
+
+          form:not(.form-editable) {
+            .panel-footer {
+              .responsive-invisibility();
+            }
+          }
+
+          .form-deletable, .deletable {
+            .visible-deletable {
+              .responsive-invisibility();
+            }
+            .hidden-deletable {
+              .responsive-visibility();
+            }
+            &:hover .visible-deletable {
+              .responsive-visibility();
+            }
+            &:hover .hidden-deletable {
+              .responsive-invisibility();
+            }
+          }
+
+          form:not(.form-deletable) {
+            .visible-deletable {
+              .responsive-invisibility();
+            }
+            .hidden-deletable {
+              .responsive-visibility();
+            }
+          }
+
+          flex: 1;
+          display: flex;
+          flex-flow: column;
+          overflow: hidden;
+          > form {
+            flex: 1;
+            display: flex;
+            flex-flow: column;
+            overflow: hidden;
+            .panel-body {
+              flex: 1;
+              overflow: auto
+            }
+          }
+          .panel-body {
+            flex: 1;
+            overflow: auto;
+          }
+          .panel-footer {
+            padding: 0;
+            > div:first-child {
+              padding: 15px 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal-xxl {
+  width: 98%;
+  margin: 1% auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  .modal-content {
+    height: 100%;
+  }
+  .modal-header {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .modal-footer {
+    left: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  .modal-body {
+    bottom: 69px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 56px;
+  }
+}
+
+.comments, .tasks, .activities, .acceptanceTests {
+  .form-control-static {
+    display: block;
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+  hr {
+    width: 50%;
+    margin: 10px auto;
+  }
+  > div:last-of-type {
+    hr {
+      display: none;
+    }
+  }
+  .table {
+    td {
+      padding:0;
+      border:none;
+    }
+  }
+  .markitup-preview {
+    min-height:inherit;
+    max-height:inherit;
+  }
+}

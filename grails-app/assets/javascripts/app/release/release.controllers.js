@@ -80,7 +80,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
                 if (andContinue) {
                     $scope.resetReleaseForm();
                 } else {
-                    $scope.setEditableMode(true);
+                    $scope.setInEditingMode(true);
                     $state.go('^.details', { id: release.id });
                 }
                 $scope.notifySuccess('todo.is.ui.release.saved');
@@ -130,16 +130,16 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams'
         });
     };
     $scope.editForm = function(value) {
-        if (value != $scope.getEditableMode()) {
-            $scope.setEditableMode(value); // global
+        if (value != $scope.isInEditingMode()) {
+            $scope.setInEditingMode(value); // global
             $scope.resetReleaseForm();
         }
     };
     $scope.getShowReleaseForm = function(release) {
-        return ($scope.getEditableMode() || $scope.formHolder.formHover) && $scope.authorizedRelease('update', release);
+        return ($scope.isInEditingMode() || $scope.formHolder.formHover) && $scope.authorizedRelease('update', release);
     };
     $scope.resetReleaseForm = function() {
-        if ($scope.getEditableMode()) {
+        if ($scope.isInEditingMode()) {
             $scope.editableRelease = angular.copy($scope.release);
             $scope.editableReleaseReference = angular.copy($scope.release);
         } else {

@@ -233,10 +233,11 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         });
     }
 
-}]).controller('storyViewCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', function($scope, $state, $filter, StoryService, StoryStatesByName) {
+}]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'backlogs', 'StoryService', '$filter', function($scope, $controller, $state, stories, backlogs, StoryService, $filter) {
     $scope.goToNewStory = function() {
         $state.go('backlog.new');
     };
+
     $scope.goToStory = function(story, tabId) {
         var params = {id: story.id};
         var state = $scope.viewName + '.details';
@@ -246,23 +247,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         }
         $state.go(state, params);
     };
-    $scope.selectableOptions = {
-        filter: ">.postit-container",
-        cancel: "a,.ui-selectable-cancel",
-        stop: function(e, ui, selectedItems) {
-            switch (selectedItems.length) {
-                case 0:
-                    $state.go($scope.viewName);
-                    break;
-                case 1:
-                    $state.go($scope.viewName + ($state.params.tabId ? '.details.tab' : '.details'), {id: selectedItems[0].id});
-                    break;
-                default:
-                    $state.go($scope.viewName + '.multiple', {listId: _.pluck(selectedItems, 'id').join(",")});
-                    break;
-            }
-        }
-    };
+
     $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id;
@@ -280,16 +265,47 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     $scope.refreshStories = function() {
         $scope.filteredAndSortedStories = $filter('orderBy')($scope.stories, $scope.orderBy.current.id, $scope.orderBy.reverse);
     };
-    $scope.filteredAndSortedStories = [];
-    $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
-    $scope.$watch('stories', $scope.refreshStories, true);
 
-}]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'backlogs', 'StoryService', function($scope, $controller, $state, stories, backlogs, StoryService) {
-    $controller('storyViewCtrl', {$scope: $scope}); // inherit from storyViewCtrl
+    $scope.storySortableUpdate = function(startModel, destModel, start, end) {
+        var story = destModel[end];
+        var newRank = end + 1;
+        if (story.rank != newRank) {
+            story.rank = newRank;
+            StoryService.update(story).then(function() {
+                angular.forEach(destModel, function(s, index) {
+                    var currentRank = index + 1;
+                    if (s.rank != currentRank) {
+                        s.rank = currentRank;
+                    }
+                });
+            });
+        }
+    };
+
     $scope.viewName = 'backlog';
-
+    $scope.selectableOptions = {
+        filter: ">.postit-container",
+        cancel: "a,.ui-selectable-cancel",
+        stop: function(e, ui, selectedItems) {
+            switch (selectedItems.length) {
+                case 0:
+                    $state.go($scope.viewName);
+                    break;
+                case 1:
+                    $state.go($scope.viewName + ($state.params.tabId ? '.details.tab' : '.details'), {id: selectedItems[0].id});
+                    break;
+                default:
+                    $state.go($scope.viewName + '.multiple', {listId: _.pluck(selectedItems, 'id').join(",")});
+                    break;
+            }
+        }
+    };
     $scope.stories = stories;
     $scope.backlogs = backlogs;
+    $scope.filteredAndSortedStories = [];
+
+    $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
+    $scope.$watch('stories', $scope.refreshStories, true);
 
     $scope.orderBy = {
         reverse: false,
@@ -309,21 +325,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     $scope.storySortableOptions = {
         items: '.postit-container'
     };
-    $scope.storySortableUpdate = function(startModel, destModel, start, end) {
-        var story = destModel[end];
-        var newRank = end + 1;
-        if (story.rank != newRank) {
-            story.rank = newRank;
-            StoryService.update(story).then(function() {
-                angular.forEach(destModel, function(s, index) {
-                    var currentRank = index + 1;
-                    if (s.rank != currentRank) {
-                        s.rank = currentRank;
-                    }
-                });
-            });
-        }
-    };
+
 }]);
 
 controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function($scope, $state, FeatureService, features) {

@@ -22,7 +22,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="panel panel-light">
-   <div class="panel-heading">
+    <div class="panel-heading">
        <div class="btn-group">
            <a type="button"
               ng-if="authorizedStory('create')"
@@ -125,7 +125,5 @@
        <script>
            angular.element(document).injector().get('StoryService').addStories(${stories as JSON});
        </script>
-   </div>
-   <div class="panel-footer">
    </div>
 </div>

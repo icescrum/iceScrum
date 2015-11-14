@@ -40,17 +40,20 @@
 </div>
 <script type="text/javascript">
     angular.element(document).ready(function () {
-        var $rootScope = angular.element(document).injector().get('$rootScope');
-        var Session = angular.element(document).injector().get('Session');
-        var PushService = angular.element(document).injector().get('PushService');
-        $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions() as JSON});
-        $rootScope.initMessages(${i18nMessages});
-        var project = ${product as JSON};
-        project.startDate = new Date(project.startDate);
-        project.endDate = new Date(project.endDate);
-        Session.setProject(project);
-        Session.setUser(${user as JSON});
-        Session.create();
-        PushService.initPush(${product?.id});
+        //TODO setTimeout must be remove before PROD (it helps BATARANG to work)
+        setTimeout(function(){
+            var $rootScope = angular.element(document).injector().get('$rootScope');
+            var Session = angular.element(document).injector().get('Session');
+            var PushService = angular.element(document).injector().get('PushService');
+            $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions() as JSON});
+            $rootScope.initMessages(${i18nMessages});
+            var project = ${product as JSON};
+            project.startDate = new Date(project.startDate);
+            project.endDate = new Date(project.endDate);
+            Session.setProject(project);
+            Session.setUser(${user as JSON});
+            Session.create();
+            PushService.initPush(${product?.id});
+        }, 100);
     });
 </script>

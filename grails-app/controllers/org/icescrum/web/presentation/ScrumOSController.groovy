@@ -120,7 +120,7 @@ class ScrumOSController {
                         icon: uiDefinition.icon,
                         spaceName: space?.object?.name,
                         flex: uiDefinition.window?.flex,
-                        right: uiDefinition.window?.right,
+                        details: uiDefinition.window?.details,
                         printable: uiDefinition.window?.printable,
                         fullScreen: uiDefinition.window?.fullScreen,
                         help: message(code: uiDefinition.window?.help),

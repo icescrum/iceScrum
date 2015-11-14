@@ -28,6 +28,10 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             parentStory: $scope.story,
             state: AcceptanceTestStatesByName.TOCHECK
         };
+        $scope.formHolder.editing = false;
+        $scope.formHolder.editable = $scope.acceptanceTest ? $scope.authorizedAcceptanceTest('update', $scope.editableAcceptanceTest) : false;
+        $scope.formHolder.deletable = $scope.acceptanceTest ? $scope.authorizedAcceptanceTest('delete', $scope.editableAcceptanceTest) : false;
+
         $scope.resetFormValidation($scope.formHolder.acceptanceTestForm);
     };
     $scope.save = function(acceptanceTest, story) {
@@ -47,10 +51,9 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.authorizedAcceptanceTest = function(action, acceptanceTest) {
         return AcceptanceTestService.authorizedAcceptanceTest(action, acceptanceTest);
     };
-    $scope.formHover = function(value) {
-        $scope.formHolder.formHover = value;
-    };
+
     $scope.editForm = function(value) {
+        $scope.formHolder.editing = value;
         if (value) {
             $scope.editableAcceptanceTest = angular.copy($scope.editableAcceptanceTest);
             hotkeys.bindTo($scope).add({
@@ -61,11 +64,9 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         } else {
             hotkeys.del('esc');
         }
-        $scope.formHolder.editing = value;
     };
     $scope.update = function(acceptanceTest, story) {
         if (!$scope.formHolder.acceptanceTestForm.$invalid) {
-            $scope.formHover(false);
             $scope.editForm(false);
             if ($scope.formHolder.acceptanceTestForm.$dirty) {
                 AcceptanceTestService.update(acceptanceTest, story)

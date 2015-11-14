@@ -25,20 +25,21 @@
 <script type="text/ng-template" id="story.acceptanceTest.editor.html">
 <form ng-submit="save(editableAcceptanceTest, selected)"
       name="formHolder.acceptanceTestForm"
+        class="form-editable form-editing"
       show-validation
       novalidate>
     <div class="clearfix no-padding">
-        <div class="col-sm-1">
-            <button class="btn btn-default elemid" disabled="disabled">42</button>
-        </div>
-        <div class="col-sm-7 form-group">
-            <input required
-                   type="text"
-                   ng-maxlength="255"
-                   name="name"
-                   ng-model="editableAcceptanceTest.name"
-                   class="form-control"
-                   placeholder="${message(code: 'is.ui.backlogelement.noname')}">
+        <div class="col-sm-8 form-group">
+            <div class="input-group">
+                <span class="input-group-addon">42</span>
+                <input required
+                       type="text"
+                       ng-maxlength="255"
+                       name="name"
+                       ng-model="editableAcceptanceTest.name"
+                       class="form-control"
+                       placeholder="${message(code: 'is.ui.backlogelement.noname')}">
+            </div>
         </div>
         <div class="col-sm-4 form-group">
             <select class="form-control"
@@ -69,7 +70,7 @@
              tabindex="0"
              ng-bind-html="(editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>') | sanitize"></div>
     </div>
-    <div class="btn-toolbar pull-right">
+    <div class="btn-toolbar">
         <button class="btn btn-primary pull-right"
                 ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid"
                 uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"

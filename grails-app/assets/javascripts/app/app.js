@@ -137,7 +137,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('backlog.new', {
                         url: "/new",
                         data:{
-                            stack: 2
+                            view: 'details'
                         },
                         views:{
                             "details@backlog": {
@@ -149,7 +149,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('backlog.multiple', {
                         url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
                         data:{
-                            stack: 2
+                            view: 'details'
                         },
                         resolve:{
                             listId:['$stateParams', function($stateParams){
@@ -166,10 +166,10 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('backlog.details', {
                         url: "/{id:int}",
                         data:{
-                            stack: 2
+                            view: 'details'
                         },
                         views:{
-                            "details@backlog": {
+                            "details": {
                                 templateUrl: 'story.details.html',
                                 controller: 'storyDetailsCtrl'
                             }
@@ -177,11 +177,8 @@ isApp.config(['$stateProvider', '$httpProvider',
                     })
                         .state('backlog.details.tab', {
                             url: "/{tabId:.+}",
-                            data:{
-                                stack: 3
-                            },
                             views:{
-                                "details-list@backlog": {
+                                "details-tab": {
                                     templateUrl: function($stateParams) {
                                         var tpl;
                                         if ($stateParams.tabId == 'tests')
@@ -190,10 +187,12 @@ isApp.config(['$stateProvider', '$httpProvider',
                                             tpl = 'story.tasks.html';
                                         else if($stateParams.tabId == 'comments')
                                             tpl = 'comment.list.html';
+                                        else if($stateParams.tabId == 'activities')
+                                            tpl = 'activity.list.html';
                                         return tpl;
                                     },
                                     controllerProvider: ['$stateParams', function($stateParams) {
-                                        var tpl;
+                                        var tpl = '';
                                         if ($stateParams.tabId == 'tests')
                                             tpl = 'Tests';
                                         else if($stateParams.tabId == 'tasks')
@@ -218,7 +217,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('feature.new', {
                         url: '/new',
                         data:{
-                            stack: 2
+                            view: 'details'
                         },
                         views: {
                             "details@feature": {
@@ -230,7 +229,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('feature.multiple', {
                         url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
                         data:{
-                            stack: 2
+                            view: 'details'
                         },
                         resolve:{
                             listId:['$stateParams', function($stateParams){
@@ -247,7 +246,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('feature.details', {
                         url: "/{id:int}",
                         data:{
-                            stack: 2
+                            view: 'details'
                         },
                         views:{
                             "details@feature": {
@@ -259,7 +258,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         .state('feature.details.tab', {
                             url: "/{tabId:.+}",
                             data:{
-                                stack: 3
+                                view: 'details-list'
                             },
                             views:{
                                 "details-list@feature": {
@@ -276,7 +275,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('releasePlan.new', {
                         url: "/new",
                         data:{
-                            stack: 2
+                            view: 'details'
                         },
                         views:{
                             "details@releasePlan": {
@@ -288,7 +287,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     .state('releasePlan.details', {
                         url: "/{id:int}",
                         data:{
-                            stack: 2
+                            view: 'details'
                         },
                         views:{
                             "details@releasePlan": {
@@ -303,7 +302,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         .state('releasePlan.sprint.details', {
                             url: "/{id:int}",
                             data:{
-                                stack: 2
+                                view: 'details'
                             },
                             views:{
                                 "details@releasePlan": {
@@ -315,7 +314,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                         .state('releasePlan.sprint.new', {
                             url: "/new",
                             data:{
-                                stack: 2
+                                view: 'details'
                             },
                             views:{
                                 "details@releasePlan": {
@@ -362,6 +361,9 @@ isApp.config(['$stateProvider', '$httpProvider',
         uiSelectConfig.theme = 'bootstrap';
         uiSelectConfig.appendToBody = false;
         uiSelectConfig.searchEnabled = false;
+    }])
+    .config(['$animateProvider', function ($animateProvider) {
+        $animateProvider.classNameFilter(/ng-animate-enabled/);
     }])
     .factory('AuthInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function ($rootScope, $q, SERVER_ERRORS) {
         return {
@@ -446,12 +448,12 @@ isApp.config(['$stateProvider', '$httpProvider',
             return notifications.warning('', $rootScope.message(code), options);
         };
 
-        $rootScope.editableMode = false;
-        $rootScope.setEditableMode = function(editableMode) {
-            $rootScope.editableMode = editableMode;
+        $rootScope.inEditingMode = false;
+        $rootScope.setInEditingMode = function(inEditingMode) {
+            $rootScope.inEditingMode = inEditingMode;
         };
-        $rootScope.getEditableMode = function() {
-            return $rootScope.editableMode;
+        $rootScope.isInEditingMode = function() {
+            return $rootScope.inEditingMode;
         };
 
         $rootScope.resetFormValidation = function(form) {
@@ -573,27 +575,6 @@ isApp.config(['$stateProvider', '$httpProvider',
                 holder.opened = true;
             }
         };
-
-        $(document).on('click', '.stacks.three-stacks > div, .stacks.four-stacks > div', function(event){
-            if(angular.element(event.target).parent('a').length > 0){
-                return false;
-            }
-            var $this = $(this);
-            if($this.parent().hasClass('three-stacks')){
-                if($this.index() == 0){
-                    $state.go('^.');
-                }
-            } else {
-                //TODO need to be changed when we will have new subview
-                if($this.index() == 0){
-                    $state.go('^');
-                }
-                if($this.index() == 1){
-                    $state.go('^');
-                }
-            }
-        });
-
     }])
     .constant('SERVER_ERRORS', {
         loginFailed: 'auth-login-failed',

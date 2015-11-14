@@ -23,6 +23,7 @@
 <script type="text/ng-template" id="comment.editor.html">
 <form ng-submit="save(editableComment, selected)"
       name="formHolder.commentForm"
+      class="form-editable form-editing"
       show-validation
       novalidate>
     <div class="form-group">
@@ -45,7 +46,7 @@
              ng-class="{'placeholder': !editableComment.body_html}"
              ng-bind-html="(editableComment.body_html ? editableComment.body_html : '<p>${message(code: 'todo.is.ui.comment')}</p>') | sanitize"></div>
     </div>
-    <div class="btn-toolbar pull-right">
+    <div class="btn-toolbar">
         <button class="btn btn-primary pull-right"
                 ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid"
                 uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
