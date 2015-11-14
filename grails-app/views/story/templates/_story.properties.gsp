@@ -6,40 +6,37 @@
       show-validation
       novalidate>
     <div class="panel-body">
-        <div class="clearfix no-padding">
-            <div class="form-half">
-                <label for="name">${message(code: 'is.story.name')}</label>
-                <input required
-                       ng-maxlength="100"
+        <div class="form-group">
+            <label for="name">${message(code: 'is.story.name')}</label>
+            <input required
+                   ng-maxlength="100"
+                   ng-focus="editForm(true)"
+                   ng-disabled="!formHolder.editable"
+                   name="name"
+                   ng-model="editableStory.name"
+                   type="text"
+                   class="form-control important">
+        </div>
+
+        <div class="form-group">
+            <label for="feature">${message(code: 'is.feature')}</label>
+            <div ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
+                <input type="hidden"
                        ng-focus="editForm(true)"
                        ng-disabled="!formHolder.editable"
-                       name="name"
-                       ng-model="editableStory.name"
-                       type="text"
-                       class="form-control">
-            </div>
-
-            <div class="form-half">
-                <label for="feature">${message(code: 'is.feature')}</label>
-
-                <div ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
-                    <input type="hidden"
-                           ng-focus="editForm(true)"
-                           ng-disabled="!formHolder.editable"
-                           class="form-control"
-                           value="{{ editableStory.feature.id ? editableStory.feature : '' }}"
-                           name="feature"
-                           ng-model="editableStory.feature"
-                           ui-select2-tamere="selectFeatureOptions"
-                           data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
-                    <span class="input-group-btn" ng-show="editableStory.feature.id">
-                        <a href="#feature/{{ editableStory.feature.id }}"
-                           title="{{ editableStory.feature.name }}"
-                           class="btn btn-default">
-                            <i class="fa fa-external-link"></i>
-                        </a>
-                    </span>
-                </div>
+                       class="form-control"
+                       value="{{ editableStory.feature.id ? editableStory.feature : '' }}"
+                       name="feature"
+                       ng-model="editableStory.feature"
+                       ui-select2-tamere="selectFeatureOptions"
+                       data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
+                <span class="input-group-btn" ng-show="editableStory.feature.id">
+                    <a href="#feature/{{ editableStory.feature.id }}"
+                       title="{{ editableStory.feature.name }}"
+                       class="btn btn-default">
+                        <i class="fa fa-external-link"></i>
+                    </a>
+                </span>
             </div>
         </div>
 
@@ -173,6 +170,19 @@
         </div>
 
         <div class="form-group">
+            <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
+            <input type="hidden"
+                   ng-focus="editForm(true)"
+                   ng-disabled="!formHolder.editable"
+                   class="form-control"
+                   value="{{ editableStory.tags.join(',') }}"
+                   name="tags"
+                   ng-model="editableStory.tags"
+                   data-placeholder="${message(code: 'is.ui.backlogelement.notags')}"
+                   ui-select2-tamere="selectTagsOptions"/>
+        </div>
+
+        <div class="form-group">
             <label for="description">${message(code: 'is.backlogelement.description')}</label>
             <textarea class="form-control"
                       ng-maxlength="3000"
@@ -184,7 +194,7 @@
                       focus-me="{{ showDescriptionTextarea }}"
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
 
-            <div class="atwho-preview form-control-static"
+            <div class="atwho-preview form-control-static important"
                  ng-disabled="!formHolder.editable"
                  ng-show="!showDescriptionTextarea"
                  ng-click="clickDescriptionPreview($event, '${is.generateStoryTemplate(newLine: '\\n')}')"
@@ -194,19 +204,6 @@
                  ng-class="{'placeholder': !editableStory.description}"
                  tabindex="0"
                  ng-bind-html="(editableStory.description ? (editableStory | storyDescriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
-        </div>
-
-        <div class="form-group">
-            <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
-            <input type="hidden"
-                   ng-focus="editForm(true)"
-                   ng-disabled="!formHolder.editable"
-                   class="form-control"
-                   value="{{ editableStory.tags.join(',') }}"
-                   name="tags"
-                   ng-model="editableStory.tags"
-                   data-placeholder="${message(code: 'is.ui.backlogelement.notags')}"
-                   ui-select2-tamere="selectTagsOptions"/>
         </div>
 
         <div class="form-group">
@@ -221,7 +218,7 @@
                       ng-blur="showNotesTextarea = false"
                       placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
 
-            <div class="markitup-preview"
+            <div class="markitup-preview important"
                  ng-disabled="!formHolder.editable"
                  ng-show="!showNotesTextarea"
                  ng-click="showNotesTextarea = formHolder.editable"

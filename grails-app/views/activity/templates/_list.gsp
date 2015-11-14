@@ -66,7 +66,7 @@
         <hr/>
     </div>
 
-    <div ng-if="selected.activities.length >= 10" ng-switch="allActivities">
+    <div ng-if="selected.activities.length >= 10" ng-switch="allActivities" class="text-center">
         <button ng-switch-default class="btn btn-default" ng-click="activities(selected, true)"><i
                 class="fa fa-plus-square"></i> ${message(code: 'tood.is.ui.activities.more')}</button>
         <button ng-switch-when="true" class="btn btn-default" ng-click="activities(selected, false)"><i

@@ -169,7 +169,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                             view: 'details'
                         },
                         views:{
-                            "details": {
+                            "details@backlog": {
                                 templateUrl: 'story.details.html',
                                 controller: 'storyDetailsCtrl'
                             }
