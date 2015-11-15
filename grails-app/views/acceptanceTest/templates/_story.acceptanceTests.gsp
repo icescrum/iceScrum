@@ -35,29 +35,22 @@
                       ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable, 'form-deletable':formHolder.deletable }"
                       show-validation
                       novalidate>
-                    <div class="clearfix no-padding">
-                        <div class="col-sm-1">
-                            <button class="btn btn-default elemid hidden-deletable"
-                                    disabled="disabled">{{ editableAcceptanceTest.uid }}</button>
-                            <button class="btn btn-danger visible-deletable"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, story] })"
-                                    tooltip-placement="left"
-                                    tooltip-append-to-body="true"
-                                    uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
-                            </button>
+                    <div class="clearfix no-padding form-group">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">{{ editableAcceptanceTest.uid }}</span>
+                                <input required
+                                       ng-maxlength="255"
+                                       ng-focus="editForm(true)"
+                                       ng-blur="update(editableAcceptanceTest, story)"
+                                       type="text"
+                                       name="name"
+                                       ng-model="editableAcceptanceTest.name"
+                                       class="form-control"
+                                       placeholder="${message(code: 'is.ui.backlogelement.noname')}">
+                            </div>
                         </div>
-                        <div class="col-sm-7 form-group">
-                            <input required
-                                   ng-maxlength="255"
-                                   ng-focus="editForm(true)"
-                                   ng-blur="update(editableAcceptanceTest, story)"
-                                   type="text"
-                                   name="name"
-                                   ng-model="editableAcceptanceTest.name"
-                                   class="form-control"
-                                   placeholder="${message(code: 'is.ui.backlogelement.noname')}">
-                        </div>
-                        <div class="col-sm-4 form-group">
+                        <div class="col-sm-4">
                             <select class="form-control"
                                     ng-focus="editForm(true)"
                                     ng-change="update(editableAcceptanceTest, story)"
@@ -67,6 +60,14 @@
                                     ui-select2="selectAcceptanceTestStateOptions">
                                 <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
                             </select>
+                        </div>
+                        <div class="col-sm-2 text-right">
+                            <button class="btn btn-danger pull-right visible-deletable"
+                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, story] })"
+                                    tooltip-placement="left"
+                                    tooltip-append-to-body="true"
+                                    uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -80,7 +81,7 @@
                                   ng-show="showAcceptanceTestDescriptionTextarea"
                                   ng-blur="update(editableAcceptanceTest, story); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
                                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-                        <div class="markitup-preview"
+                        <div class="markitup-preview important"
                              ng-show="!showAcceptanceTestDescriptionTextarea"
                              ng-click="showAcceptanceTestDescriptionTextarea = true"
                              ng-focus="editForm(true); showAcceptanceTestDescriptionTextarea = true; editableAcceptanceTest.description || (editableAcceptanceTest.description = '${is.generateAcceptanceTestTemplate()}')"
