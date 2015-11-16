@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -35,12 +35,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             })
         }
     };
-}]).service('Session', ['$timeout', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', function($timeout, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType) {
+}]).service('Session', ['$timeout', '$http', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', function($timeout, $http, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType) {
     var self = this;
     self.user = new User();
     self.project = new Project();
     self.unreadActivitiesCount = 0;
-
     var defaultRoles = {
         productOwner: false,
         scrumMaster: false,
@@ -179,6 +178,17 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
 
     this.getProject = function() {
         return self.project;
+    };
+
+    this.getLanguages = function() {
+        return $http.get($rootScope.serverUrl + '/scrumOS/languages', { cache: true }).then(function(response) {
+            return response.data;
+        })
+    };
+    this.getTimezones = function() {
+        return $http.get($rootScope.serverUrl + '/scrumOS/timezones', { cache: true }).then(function(response) {
+            return response.data;
+        })
     };
 
 }]).service('FormService', ['$filter', function($filter) {

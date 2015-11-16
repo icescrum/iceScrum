@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -25,6 +25,7 @@
 package org.icescrum.web.presentation
 
 import grails.converters.XML
+import grails.util.BuildSettingsHolder
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -33,7 +34,6 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.springframework.mail.MailException
 import org.icescrum.core.domain.Sprint
-import org.springframework.security.acls.domain.BasePermission
 import org.icescrum.core.domain.preferences.ProductPreferences
 import sun.misc.BASE64Decoder
 
@@ -258,5 +258,44 @@ class ScrumOSController {
         } else {
             render(status: 404)
         }
+    }
+
+    def languages() {
+        List locales = []
+        def i18n
+        if (grailsApplication.warDeployed) {
+            i18n = grailsAttributes.getApplicationContext().getResource("WEB-INF/grails-app/i18n/").getFile().toString()
+        } else {
+            i18n = "$BuildSettingsHolder.settings.baseDir/grails-app/i18n"
+        }
+        //Default language
+        locales << new Locale("en")
+        new File(i18n).eachFile {
+            def arr = it.name.split("[_.]")
+            if (arr[1] != 'svn' && arr[1] != 'properties' && arr[0].startsWith('messages')) {
+                locales << (arr.length > 3 ? new Locale(arr[1], arr[2]) : arr.length > 2 ? new Locale(arr[1]) : new Locale(""))
+            }
+        }
+        def returnLocales = locales.collect { locale ->
+            [id: locale.toString(), name: locale.getDisplayName(locale).capitalize()]
+        }
+        render(returnLocales as JSON)
+    }
+
+    def timezones() {
+        def timezones = TimeZone.availableIDs.sort().findAll {
+            it.matches("^(Africa|America|Asia|Atlantic|Australia|Europe|Indian|Pacific)/.*")
+        }.collect {
+            TimeZone timeZone = TimeZone.getTimeZone(it)
+            def offset = timeZone.rawOffset
+            def offsetSign = offset < 0 ? '-' : '+'
+            Integer hour = Math.abs(offset / (60 * 60 * 1000))
+            Integer min = Math.abs(offset / (60 * 1000)) % 60
+            def calendar = Calendar.instance
+            calendar.set(Calendar.HOUR_OF_DAY, hour)
+            calendar.set(Calendar.MINUTE, min)
+            return [id: it, name: "$timeZone.ID (UTC$offsetSign${String.format('%tR', calendar)})"]
+        }
+        render(timezones as JSON)
     }
 }
