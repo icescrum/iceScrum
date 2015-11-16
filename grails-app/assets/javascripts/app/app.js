@@ -33,7 +33,6 @@ var isApp = angular.module('isApp', [
     'ui.router',
     'ui.selectable',
     'ui.bootstrap',
-    'ui.select2',
     'ui.select',
     'monospaced.elastic',
     'cfp.hotkeys',
