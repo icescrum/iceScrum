@@ -1,6 +1,5 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils" %>
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
