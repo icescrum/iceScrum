@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -321,5 +321,21 @@ filters
             if (parentSprint) {
                 return $rootScope.message('is.sprint') + ' ' + parentSprint.orderNumber;
             }
+        }
+    }]).filter('acceptanceTestColor', ['AcceptanceTestStatesByName', function(AcceptanceTestStatesByName) {
+        return function (state) {
+            var colorClass;
+            switch (state) {
+                case AcceptanceTestStatesByName.TOCHECK:
+                    colorClass = 'text-default';
+                    break;
+                case AcceptanceTestStatesByName.FAILED:
+                    colorClass = 'text-danger';
+                    break;
+                case AcceptanceTestStatesByName.SUCCESS:
+                    colorClass = 'text-success';
+                    break;
+            }
+            return colorClass;
         }
     }]);
