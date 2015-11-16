@@ -28,11 +28,12 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.UiDefinition
+import org.icescrum.core.utils.BundleUtils
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 class UtilsTagLib {
 
-    static returnObjectForTags = ['internationalizeValues', 'exportFormats', 'getMenuBarFromUiDefinitions']
+    static returnObjectForTags = ['i18nBundle', 'exportFormats', 'getMenuBarFromUiDefinitions']
 
     static namespace = 'is'
 
@@ -81,10 +82,12 @@ class UtilsTagLib {
         return exportFormats
     }
 
-    def internationalizeValues = { attrs ->
-        Map internationalizedMap = [:]
-        attrs.map.collect { k, v -> internationalizedMap[k] = message(code: v) }
-        return internationalizedMap
+    def i18nBundle = {
+        def bundles = ['storyStates', 'storyTypes', 'taskStates', 'featureTypes', 'featureStates', 'sprintStates',
+                       'releaseStates', 'planningPokerGameSuites', 'acceptanceTestStates', 'moodFeelings']
+        return bundles.collectEntries { bundleName -> [
+            (bundleName.capitalize()): BundleUtils."$bundleName".collectEntries { k, v -> [(k): message(code: v)]}
+        ]}
     }
 
     def errors = {

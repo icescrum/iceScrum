@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON; org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState; org.icescrum.core.domain.Story.TestState" %>
+<%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON;" %>
 <div class='templates'>
     <g:render template="templates"/>
     <g:render template="/home/templates"/>
@@ -41,12 +41,19 @@
 <script type="text/javascript">
     angular.element(document).ready(function () {
         //TODO setTimeout must be remove before PROD (it helps BATARANG to work)
-        setTimeout(function(){
-            var $rootScope = angular.element(document).injector().get('$rootScope');
-            var Session = angular.element(document).injector().get('Session');
-            var PushService = angular.element(document).injector().get('PushService');
+        setTimeout(function() {
+            var $injector = angular.element(document).injector();
+            var $rootScope = $injector.get('$rootScope');
+            var Session = $injector.get('Session');
+            var PushService = $injector.get('PushService');
+            var BundleService = $injector.get('BundleService');
             $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions() as JSON});
             $rootScope.initMessages(${i18nMessages});
+            BundleService.initBundles(${is.i18nBundle() as JSON});
+            $rootScope.storyTypes = ${BundleUtils.storyTypes.keySet() as JSON};
+            $rootScope.featureTypes = ${BundleUtils.featureTypes.keySet() as JSON}; 
+            $rootScope.acceptanceTestStates = ${BundleUtils.acceptanceTestStates.keySet() as JSON}; 
+            $rootScope.planningPokerTypes = ${BundleUtils.planningPokerGameSuites.keySet() as JSON}; 
             var project = ${product as JSON};
             project.startDate = new Date(project.startDate);
             project.endDate = new Date(project.endDate);

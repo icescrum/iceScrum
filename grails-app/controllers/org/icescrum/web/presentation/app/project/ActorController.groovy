@@ -27,13 +27,8 @@ package org.icescrum.web.presentation.app.project
 
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.Story
-import org.icescrum.core.utils.BundleUtils
-
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-
-import static grails.async.Promises.task
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class ActorController {

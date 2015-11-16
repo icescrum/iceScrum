@@ -190,7 +190,6 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             return response.data;
         })
     };
-
 }]).service('FormService', ['$filter', function($filter) {
     var self = this;
     this.previous = function(list, element) {
@@ -269,6 +268,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             }
         }
     };
+}]).service('BundleService', [function() {
+    this.bundles = {};
+    this.initBundles = function(bundles) {
+        this.bundles = bundles;
+    }
 }]);
 
 var restResource = angular.module('restResource', ['ngResource']);

@@ -358,8 +358,8 @@ isApp.config(['$stateProvider', '$httpProvider',
         });
     }])
     .config(['uiSelectConfig', function(uiSelectConfig) {
-        uiSelectConfig.theme = 'bootstrap';
-        uiSelectConfig.appendToBody = false;
+        uiSelectConfig.theme = 'select2';
+        uiSelectConfig.appendToBody = true;
         uiSelectConfig.searchEnabled = false;
     }])
     .config(['$animateProvider', function($animateProvider) {
@@ -383,15 +383,13 @@ isApp.config(['$stateProvider', '$httpProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', 'uiSelect2Config', 'notifications', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, uiSelect2Config, notifications, CONTENT_LOADED){
+    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', 'notifications', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, notifications, CONTENT_LOADED){
 
         $rootScope.$watch('$viewContentLoaded', function() {
             $timeout(function() {
                 $rootScope.$broadcast(CONTENT_LOADED);
             }, 500)
         });
-
-        uiSelect2Config.minimumResultsForSearch = 6;
 
         //used to handle click with shortcut hotkeys
         $rootScope.hotkeyClick = function(event, hotkey) {
@@ -506,7 +504,6 @@ isApp.config(['$stateProvider', '$httpProvider',
         $rootScope.integerSuiteNullable = ['?'].concat($rootScope.integerSuite);
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
         $rootScope.fibonacciSuiteNullable = ['?'].concat($rootScope.fibonacciSuite);
-        $rootScope.storyTypes = [0, 2, 3];
 
         $rootScope.showCopyModal = function(title, value) {
             $uibModal.open({
@@ -584,24 +581,15 @@ isApp.config(['$stateProvider', '$httpProvider',
         clientError: 'client-error',
         serverError: 'server-error'
     })
-    .factory('StoryStates', ['$rootScope', function($rootScope) {
-        return {
-            1: {"value": $rootScope.message("is.story.state.suggested"), "code": "suggested"},
-            2: {"value": $rootScope.message("is.story.state.accepted"), "code": "accepted"},
-            3: {"value": $rootScope.message("is.story.state.estimated"), "code": "estimated"},
-            4: {"value": $rootScope.message("is.story.state.planned"), "code": "planned"},
-            5: {"value": $rootScope.message("is.story.state.inprogress"), "code": "inprogress"},
-            7: {"value": $rootScope.message("is.story.state.done"), "code": "done"},
-            '-1': {"value": $rootScope.message("is.story.state.icebox"), "code": "icebox"}
-        };
-    }])
-    .factory('StoryTypes', ['$rootScope', function($rootScope) {
-        return {
-            0: {"value": $rootScope.message("is.story.type.story")},
-            2: {"value": $rootScope.message("is.story.type.defect")},
-            3: {"value": $rootScope.message("is.story.type.technical")}
-        };
-    }])
+    .constant('StoryCodesByState', {
+        1: "suggested",
+        2: "accepted",
+        3: "estimated",
+        4: "planned",
+        5: "inprogress",
+        7: "done",
+        '-1': "icebox"
+    })
     .constant('StoryStatesByName', {
         "SUGGESTED": 1,
         "ACCEPTED": 2,
@@ -616,32 +604,11 @@ isApp.config(['$stateProvider', '$httpProvider',
         "FAILED": 5,
         "SUCCESS": 10
     })
-    .factory('FeatureStates', ['$rootScope', function($rootScope) {
-        return {
-        0: {"value": $rootScope.message("is.feature.state.wait"), "code": "wait"},
-        1: {"value": $rootScope.message("is.feature.state.inprogress"), "code": "inprogress"},
-        2: {"value": $rootScope.message("is.feature.state.done"), "code": "done"}
-        };
-    }])
-    .factory('SprintStates', ['$rootScope', function($rootScope) {
-        return {
-            1: {"value": $rootScope.message("is.sprint.state.wait"), "code": "wait"},
-            2: {"value": $rootScope.message("is.sprint.state.inprogress"), "code": "inprogress"},
-            3: {"value": $rootScope.message("is.sprint.state.done"), "code": "done"}
-        };
-    }])
     .constant('SprintStatesByName', {
         "WAIT": 1,
         "IN_PROGRESS": 2,
         "DONE": 3
     })
-    .factory('ReleaseStates', ['$rootScope', function($rootScope) {
-        return {
-            1: {"value": $rootScope.message("is.release.state.wait"), "code": "wait"},
-            2: {"value": $rootScope.message("is.release.state.inprogress"), "code": "inprogress"},
-            3: {"value": $rootScope.message("is.release.state.done"), "code": "done"}
-        };
-    }])
     .constant('ReleaseStatesByName', {
         "WAIT": 1,
         "IN_PROGRESS": 2,
@@ -652,20 +619,6 @@ isApp.config(['$stateProvider', '$httpProvider',
         "MEH": 2,
         "BAD": 3
     })
-    .factory('MoodFeelings', ['$rootScope', function($rootScope) {
-        return {
-            1: {"value": $rootScope.message("is.panel.mood.good"), "code": "good"},
-            2: {"value": $rootScope.message("is.panel.mood.meh"), "code": "meh"},
-            3: {"value": $rootScope.message("is.panel.mood.bad"), "code": "bad"}
-        };
-    }])
-    .factory('TaskStates', ['$rootScope', function($rootScope) {
-        return {
-            0: {"value": $rootScope.message("is.task.state.wait"), "code": "wait"},
-            1: {"value": $rootScope.message("is.task.state.inprogress"), "code": "inprogress"},
-            2: {"value": $rootScope.message("is.task.state.done"), "code": "done"}
-        };
-    }])
     .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
         PO_SM: 'PO_SM',
         PO: 'PO',

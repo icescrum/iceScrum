@@ -99,11 +99,10 @@ filters
             return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '$2') : "";
         };
     })
-    .filter('i18n', ['$injector', function($injector) {
+    .filter('i18n', ['BundleService', function(BundleService) {
         return function(key, bundleName) {
             if (key != undefined && key != null) {
-                // Inject the constant bundle by name, see app.js .constant('...
-                return $injector.get(bundleName)[key].value;
+                return BundleService.bundles[bundleName][key];
             }
         }
     }])
