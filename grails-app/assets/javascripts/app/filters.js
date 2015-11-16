@@ -101,8 +101,8 @@ filters
     })
     .filter('i18n', ['BundleService', function(BundleService) {
         return function(key, bundleName) {
-            if (key != undefined && key != null) {
-                return BundleService.bundles[bundleName][key];
+            if (key != undefined && key != null && BundleService.getBundle(bundleName)) {
+                return BundleService.getBundle(bundleName)[key];
             }
         }
     }])

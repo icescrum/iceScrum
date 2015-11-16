@@ -272,6 +272,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     this.bundles = {};
     this.initBundles = function(bundles) {
         this.bundles = bundles;
+    };
+    this.getBundle = function(bundleName) {
+        return this.bundles[bundleName];
     }
 }]);
 
