@@ -17,7 +17,6 @@
                    type="text"
                    class="form-control important">
         </div>
-
         <div class="form-group">
             <label for="feature">${message(code: 'is.feature')}</label>
             <div ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
@@ -39,7 +38,6 @@
                 </span>
             </div>
         </div>
-
         <div class="clearfix no-padding">
             <div class="form-group"
                  ng-class="{ 'form-half' : editableStory.type == 2 }">
@@ -53,7 +51,6 @@
                     <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}"/>
                 </select>
             </div>
-
             <div class="form-half"
                  ng-show="editableStory.type == 2">
                 <label for="affectVersion">${message(code: 'is.story.affectVersion')}</label>
@@ -68,12 +65,10 @@
                        data-placeholder="${message(code: 'is.ui.story.noaffectversion')}"/>
             </div>
         </div>
-
         <div class="clearfix no-padding">
             <div class="form-group"
                  ng-class="{ 'form-half' : authorizedStory('updateEstimate', editableStory) }">
                 <label for="value">${message(code: 'is.story.value')}</label>
-
                 <div class="input-group">
                     <select class="form-control"
                             ng-focus="editForm(true)"
@@ -91,12 +86,10 @@
                     </span>
                 </div>
             </div>
-
             <div class="form-half"
                  ng-show="authorizedStory('updateEstimate', editableStory)"
                  ng-switch="isEffortCustom()">
                 <label for="effort">${message(code: 'is.story.effort')}</label>
-
                 <div class="input-group">
                     <select ng-switch-default
                             class="form-control"
@@ -124,7 +117,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group"
              ng-show="authorizedStory('updateParentSprint', editableStory)">
             <label for="parentSprint">${message(code: 'is.sprint')}</label>
@@ -138,10 +130,8 @@
                    ui-select2-tamere="selectParentSprintOptions"
                    data-placeholder="${message(code: 'is.ui.story.noparentsprint')}"/>
         </div>
-
         <div class="form-group">
             <label for="dependsOn">${message(code: 'is.story.dependsOn')}</label>
-
             <div ng-class="{'input-group':editableStory.dependsOn.id}">
                 <input type="hidden"
                        ng-focus="editForm(true)"
@@ -161,14 +151,12 @@
                     </a>
                 </span>
             </div>
-
             <div class="clearfix" style="margin-top: 15px;" ng-if="editableStory.dependences.length">
                 <strong>${message(code: 'is.story.dependences')} :</strong>
                 <a class="scrum-link" title="{{ dependence.name }}"
                    ng-repeat="dependence in editableStory.dependences track by dependence.id">{{ dependence.name }}</a>
             </div>
         </div>
-
         <div class="form-group">
             <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
             <input type="hidden"
@@ -181,7 +169,6 @@
                    data-placeholder="${message(code: 'is.ui.backlogelement.notags')}"
                    ui-select2-tamere="selectTagsOptions"/>
         </div>
-
         <div class="form-group">
             <label for="description">${message(code: 'is.backlogelement.description')}</label>
             <textarea class="form-control"
@@ -193,7 +180,6 @@
                       at="atOptions"
                       focus-me="{{ showDescriptionTextarea }}"
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-
             <div class="atwho-preview form-control-static important"
                  ng-disabled="!formHolder.editable"
                  ng-show="!showDescriptionTextarea"
@@ -205,7 +191,6 @@
                  tabindex="0"
                  ng-bind-html="(editableStory.description ? (editableStory | storyDescriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
         </div>
-
         <div class="form-group">
             <label for="notes">${message(code: 'is.backlogelement.notes')}</label>
             <textarea is-markitup
@@ -217,7 +202,6 @@
                       ng-show="showNotesTextarea"
                       ng-blur="showNotesTextarea = false"
                       placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
-
             <div class="markitup-preview important"
                  ng-disabled="!formHolder.editable"
                  ng-show="!showNotesTextarea"
@@ -227,15 +211,12 @@
                  tabindex="0"
                  ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
         </div>
-
         <div class="form-group">
             <label>${message(code: 'is.backlogelement.attachment')} {{ story.attachments.length > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
-
             <div ng-if="authorizedStory('upload', story)">
                 <button type="button" class="btn btn-default"><i
                         class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
             </div>
-
             <div class="form-control-static">
                 <div class="drop-zone">
                     <h2>${message(code: 'todo.is.ui.drop.here')}</h2>

@@ -362,7 +362,7 @@ isApp.config(['$stateProvider', '$httpProvider',
         uiSelectConfig.appendToBody = false;
         uiSelectConfig.searchEnabled = false;
     }])
-    .config(['$animateProvider', function ($animateProvider) {
+    .config(['$animateProvider', function($animateProvider) {
         $animateProvider.classNameFilter(/ng-animate-enabled/);
     }])
     .factory('AuthInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function ($rootScope, $q, SERVER_ERRORS) {

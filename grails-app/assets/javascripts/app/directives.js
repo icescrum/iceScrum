@@ -87,7 +87,7 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             scope.$watch(function() {
                 return scope.$eval(attrs.name);
             }, function(form, oldForm) {
-                if(form == undefined){
+                if (form == undefined) {
                     return;
                 }
                 var inputs = element.find('input[ng-model]:not([validation-watched]):not(.ui-select-search), textarea[ng-model]:not([validation-watched])');

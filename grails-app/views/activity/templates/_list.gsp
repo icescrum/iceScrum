@@ -24,13 +24,11 @@
     <div class="empty-content" ng-show="selected.activities === undefined">
         <i class="fa fa-refresh fa-spin"></i>
     </div>
-
     <div ng-repeat="groupedActivity in groupedActivities">
         <div class="activity">
             <div class="media-left">
                 <img ng-src="{{groupedActivity.poster | userAvatar}}" alt="{{groupedActivity.poster | userFullName}}"/>
             </div>
-
             <div class="media-body">
                 <div class="text-muted pull-right">
                     <time timeago datetime="{{ groupedActivity.dateCreated }}">
@@ -38,9 +36,7 @@
                     </time>
                     <i class="fa fa-clock-o"></i>
                 </div>
-
                 <div>{{groupedActivity.poster | userFullName}}</div>
-
                 <div ng-switch="activity.onClick !== undefined" ng-repeat="activity in groupedActivity.activities">
                     <span uib-tooltip="{{ activity.dateCreated }}"
                           tooltip-append-to-body="true"
@@ -65,7 +61,6 @@
         </div>
         <hr/>
     </div>
-
     <div ng-if="selected.activities.length >= 10" ng-switch="allActivities" class="text-center">
         <button ng-switch-default class="btn btn-default" ng-click="activities(selected, true)"><i
                 class="fa fa-plus-square"></i> ${message(code: 'tood.is.ui.activities.more')}</button>
