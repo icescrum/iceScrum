@@ -492,17 +492,12 @@
     border-radius:0;
 }
 
-
 .select2-container .select2-choice:hover {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset;
 }
 
 .select2-chosen, .select2-choice > span:first-child, .select2-container .select2-choices .select2-search-field input {
     padding:5px 10px;
-}
-
-.select2-border .select2-chosen {
-    border-left:4px solid;
 }
 
 .select2-container .select2-choice div {

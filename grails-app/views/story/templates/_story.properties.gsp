@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
             <label for="feature">${message(code: 'is.feature')}</label>
-            <div ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
+            <div ng-class="{'input-group':editableStory.feature.id}">
                 <ui-select ng-click="editForm(true)"
                            ng-disabled="!formHolder.editable"
                            class="form-control"
@@ -48,10 +48,10 @@
                            search-enabled="true"
                            ng-model="editableStory.feature">
                     <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
-                        <span style="border-left: 4px solid {{ $select.selected.color }}">{{ $select.selected.name }}</span>
+                        <i class="fa fa-sticky-note" style="color: {{ $select.selected.color }};"></i> {{ $select.selected.name }}
                     </ui-select-match>
                     <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
-                        <span style="border-left: 4px solid {{ feature.color }}" ng-bind-html="feature.name | highlight: $select.search"></span>
+                        <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
                 <span class="input-group-btn" ng-show="editableStory.feature.id">
